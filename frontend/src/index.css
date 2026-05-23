@@ -1,0 +1,162 @@
+/* @tailwind base; - Disabled to prevent conflicts with MUI */
+@tailwind components;
+@tailwind utilities;
+
+/* ─── グローバルフォント ─────────────────────
+   @tailwind base が無効なため body に直接設定。
+   各コンポーネントの fontFamily インライン style を不要にする。  */
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+/* SP版ボトムナビゲーション（h-16 = 64px）がコンテンツを隠さないよう余白を確保 */
+@media (max-width: 639px) {
+  body {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ─── アニメーション ─────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Moodle page コンテンツ用HTMLスタイル */
+.moodle-content {
+  color: #4b3a33;
+  font-size: 15px;
+  line-height: 1.7;
+  word-break: break-word;
+}
+.moodle-content h1,
+.moodle-content h2,
+.moodle-content h3,
+.moodle-content h4,
+.moodle-content h5,
+.moodle-content h6 {
+  color: #4b3a33;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.3;
+}
+.moodle-content h1 { font-size: 1.75em; }
+.moodle-content h2 { font-size: 1.4em; }
+.moodle-content h3 { font-size: 1.2em; }
+.moodle-content h4 { font-size: 1.05em; }
+.moodle-content p  { margin-top: 0.75em; margin-bottom: 0.75em; }
+.moodle-content ul,
+.moodle-content ol {
+  margin: 0.75em 0;
+  padding-left: 1.6em;
+}
+.moodle-content ul { list-style-type: disc; }
+.moodle-content ol { list-style-type: decimal; }
+.moodle-content li { margin: 0.3em 0; }
+.moodle-content a  { color: #e86d78; text-decoration: none; }
+.moodle-content a:hover { text-decoration: underline; }
+.moodle-content strong,
+.moodle-content b { font-weight: 700; color: #4b3a33; }
+.moodle-content em,
+.moodle-content i  { font-style: italic; }
+.moodle-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 0.5em 0;
+}
+.moodle-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+  font-size: 0.9em;
+}
+.moodle-content th,
+.moodle-content td {
+  border: 1px solid #e8e0dc;
+  padding: 0.5em 0.75em;
+  text-align: left;
+}
+.moodle-content th {
+  background: #faf8f4;
+  font-weight: 600;
+}
+.moodle-content code {
+  background: #f6f6f6;
+  color: #e86d78;
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.875em;
+  font-family: monospace;
+}
+.moodle-content pre {
+  background: #f6f6f6;
+  border-radius: 12px;
+  padding: 1em;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+.moodle-content pre code {
+  background: none;
+  color: #4b3a33;
+  padding: 0;
+}
+.moodle-content blockquote {
+  border-left: 4px solid #e86d78;
+  margin: 1em 0;
+  padding: 0.5em 1em;
+  color: #7e6e68;
+  background: #faf8f4;
+  border-radius: 0 8px 8px 0;
+}
+.moodle-content hr {
+  border: none;
+  border-top: 1px solid #f0ebe8;
+  margin: 1.5em 0;
+}
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 0 0% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 0 0% 3.9%;
+  --primary: 0 0% 9%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 96.1%;
+  --secondary-foreground: 0 0% 9%;
+  --muted: 0 0% 96.1%;
+  --muted-foreground: 0 0% 45.1%;
+  --accent: 0 0% 96.1%;
+  --accent-foreground: 0 0% 9%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 89.8%;
+  --input: 0 0% 89.8%;
+  --ring: 0 0% 3.9%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 0 0% 3.9%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 0 0% 9%;
+  --secondary: 0 0% 14.9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 14.9%;
+  --muted-foreground: 0 0% 63.9%;
+  --accent: 0 0% 14.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 14.9%;
+  --input: 0 0% 14.9%;
+  --ring: 0 0% 83.1%;
+}

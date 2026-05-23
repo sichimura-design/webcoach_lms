@@ -1,0 +1,123 @@
+{
+  "/uat-CognitoStack": [
+    {
+      "type": "aws:cdk:stack-tags",
+      "data": [
+        {
+          "key": "Environment",
+          "value": "uat"
+        },
+        {
+          "key": "ManagedBy",
+          "value": "cdk-uat"
+        },
+        {
+          "key": "Project",
+          "value": "moodle-spa"
+        }
+      ]
+    }
+  ],
+  "/uat-CognitoStack/UserPoolId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UserPoolId"
+    }
+  ],
+  "/uat-CognitoStack/UserPoolArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UserPoolArn"
+    }
+  ],
+  "/uat-CognitoStack/SpaClientId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpaClientId"
+    }
+  ],
+  "/uat-CognitoStack/MoodleClientId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MoodleClientId"
+    }
+  ],
+  "/uat-CognitoStack/UserPoolDomainUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UserPoolDomainUrl"
+    }
+  ],
+  "/uat-CognitoStack/IssuerUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "IssuerUrl"
+    }
+  ],
+  "/uat-CognitoStack/AuthorizationEndpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AuthorizationEndpoint"
+    }
+  ],
+  "/uat-CognitoStack/TokenEndpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TokenEndpoint"
+    }
+  ],
+  "/uat-CognitoStack/UserInfoEndpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "UserInfoEndpoint"
+    }
+  ],
+  "/uat-CognitoStack/JwksUri": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "JwksUri"
+    }
+  ],
+  "/uat-CognitoStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/uat-CognitoStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/uat-CognitoStack/MoodleUserPool/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MoodleUserPoolA6FB468B"
+    }
+  ],
+  "/uat-CognitoStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    }
+  ],
+  "/uat-CognitoStack/MoodleUserPool/CognitoDomain/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MoodleUserPoolCognitoDomain0A2181AD"
+    }
+  ],
+  "/uat-CognitoStack/MoodleUserPool/SpaClient/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MoodleUserPoolSpaClient31D13F68"
+    }
+  ],
+  "/uat-CognitoStack/MoodleUserPool/MoodleClient/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MoodleUserPoolMoodleClient3CEDB4CD"
+    }
+  ]
+}

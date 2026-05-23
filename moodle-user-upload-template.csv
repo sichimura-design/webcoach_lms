@@ -1,0 +1,3 @@
+username,password,firstname,lastname,email,city,country,lang,auth,idnumber,institution,department,phone1
+test,Test123!,test,user,kanegaemasaki@gmail.com,,,,,,,,
+apiuser,api123!,api,user,api@example.com,,,,,,,,

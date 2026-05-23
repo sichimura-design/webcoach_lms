@@ -1,0 +1,378 @@
+{
+  "/uat-BackendStack": [
+    {
+      "type": "aws:cdk:stack-tags",
+      "data": [
+        {
+          "key": "Environment",
+          "value": "uat"
+        },
+        {
+          "key": "ManagedBy",
+          "value": "cdk-uat"
+        },
+        {
+          "key": "Project",
+          "value": "moodle-spa"
+        }
+      ]
+    }
+  ],
+  "/uat-BackendStack/SsmParameterValue:--aws--service--ecs--optimized-ami--amazon-linux-2--recommended--image_id:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SsmParameterValueawsserviceecsoptimizedamiamazonlinux2recommendedimageidC96584B6F00A464EAD1953AFF4B05118Parameter"
+    }
+  ],
+  "/uat-BackendStack/AlbDnsName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AlbDnsName"
+    }
+  ],
+  "/uat-BackendStack/ClusterName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterName"
+    }
+  ],
+  "/uat-BackendStack/DbEndpoint": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DbEndpoint"
+    }
+  ],
+  "/uat-BackendStack/DbSecretArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DbSecretArn"
+    }
+  ],
+  "/uat-BackendStack/CognitoSecretArn": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CognitoSecretArn"
+    }
+  ],
+  "/uat-BackendStack/EfsId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "EfsId"
+    }
+  ],
+  "/uat-BackendStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/uat-BackendStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/uat-BackendStack/AlbSg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AlbSg1155C1BE"
+    }
+  ],
+  "/uat-BackendStack/Ec2Sg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Ec2SgF43886FE"
+    }
+  ],
+  "/uat-BackendStack/Ec2Sg/from uatBackendStackAlbSg556A3AEB:80": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Ec2SgfromuatBackendStackAlbSg556A3AEB8091BE4998"
+    }
+  ],
+  "/uat-BackendStack/RdsSg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RdsSg7F9F43B6"
+    }
+  ],
+  "/uat-BackendStack/RdsSg/from uatBackendStackEc2Sg0CE04C23:3306": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "RdsSgfromuatBackendStackEc2Sg0CE04C233306612386FB"
+    }
+  ],
+  "/uat-BackendStack/EfsSg/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "EfsSgCAB16DA1"
+    }
+  ],
+  "/uat-BackendStack/EfsSg/from uatBackendStackEc2Sg0CE04C23:2049": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "EfsSgfromuatBackendStackEc2Sg0CE04C2320494A6EB80A"
+    }
+  ],
+  "/uat-BackendStack/DbSecret/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DbSecret685A0FA5"
+    }
+  ],
+  "/uat-BackendStack/CognitoSecret/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CognitoSecretF26B21D5"
+    }
+  ],
+  "/uat-BackendStack/AnthropicSecret/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AnthropicSecret23999694"
+    }
+  ],
+  "/uat-BackendStack/Database/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DatabaseB269D8BB"
+    }
+  ],
+  "/uat-BackendStack/MoodleEfs/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MoodleEfs22B2FF26"
+    }
+  ],
+  "/uat-BackendStack/MoodleEfs/EfsMountTarget-DatabaseSubnet1": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MoodleEfsEfsMountTargetDatabaseSubnet1C36418B2"
+    }
+  ],
+  "/uat-BackendStack/MoodleEfs/EfsMountTarget-DatabaseSubnet2": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MoodleEfsEfsMountTargetDatabaseSubnet275BF85FD"
+    }
+  ],
+  "/uat-BackendStack/LogGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "LogGroupF5B46931"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEB0386A7"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity": [
+    {
+      "type": "aws:cdk:warning",
+      "data": "desiredCapacity has been configured. Be aware this will reset the size of your AutoScalingGroup on every deployment. See https://github.com/aws/aws-cdk/issues/5215 [ack: @aws-cdk/aws-autoscaling:desiredCapacitySet]",
+      "trace": [
+        "Annotations.addMessage (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/aws-cdk-lib/core/lib/annotations.js:1:2270)",
+        "Annotations.addWarningV2 (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/aws-cdk-lib/core/lib/annotations.js:1:984)",
+        "new AutoScalingGroup2 (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/aws-cdk-lib/aws-autoscaling/lib/auto-scaling-group.js:1:25537)",
+        "new AutoScalingGroup2 (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/aws-cdk-lib/core/lib/prop-injectable.js:1:726)",
+        "WrappedClass.addCapacity (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/aws-cdk-lib/aws-ecs/lib/cluster.js:1:21719)",
+        "WrappedClass.<anonymous> (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/aws-cdk-lib/core/lib/metadata-resource.js:1:2015)",
+        "new UatBackendStack (/home/kanegae100860/moodle-spa/cdk-uat/lib/backend-stack.ts:195:25)",
+        "Object.<anonymous> (/home/kanegae100860/moodle-spa/cdk-uat/bin/uat-app.ts:95:22)",
+        "Module._compile (node:internal/modules/cjs/loader:1521:14)",
+        "Module.m._compile (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/ts-node/src/index.ts:1618:23)",
+        "Module._extensions..js (node:internal/modules/cjs/loader:1623:10)",
+        "Object.require.extensions.<computed> [as .ts] (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/ts-node/src/index.ts:1621:12)",
+        "Module.load (node:internal/modules/cjs/loader:1266:32)",
+        "Function.Module._load (node:internal/modules/cjs/loader:1091:12)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)",
+        "phase4 (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/ts-node/src/bin.ts:649:14)",
+        "bootstrap (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/ts-node/src/bin.ts:95:10)",
+        "main (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/ts-node/src/bin.ts:55:10)",
+        "Object.<anonymous> (/home/kanegae100860/moodle-spa/cdk-uat/node_modules/ts-node/src/bin.ts:800:3)",
+        "Module._compile (node:internal/modules/cjs/loader:1521:14)",
+        "Object.Module._extensions..js (node:internal/modules/cjs/loader:1623:10)",
+        "Module.load (node:internal/modules/cjs/loader:1266:32)",
+        "Function.Module._load (node:internal/modules/cjs/loader:1091:12)",
+        "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:164:12)",
+        "node:internal/main/run_main_module:28:49"
+      ]
+    }
+  ],
+  "/uat-BackendStack/TaskDef/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TaskDef54694570"
+    }
+  ],
+  "/uat-BackendStack/Service/Service": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ServiceD69D759B"
+    }
+  ],
+  "/uat-BackendStack/Alb/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Alb16C2F182"
+    }
+  ],
+  "/uat-BackendStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    }
+  ],
+  "/uat-BackendStack/DbSecret/Attachment/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DbSecretAttachment0609CE05"
+    }
+  ],
+  "/uat-BackendStack/Database/SubnetGroup/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DatabaseSubnetGroup7D60F180"
+    }
+  ],
+  "/uat-BackendStack/MoodleEfs/MoodledataAP/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "MoodleEfsMoodledataAPA6C3997B"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/InstanceProfile": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityInstanceProfile60EE3528"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/ASG": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityASG7F2B3D77"
+    }
+  ],
+  "/uat-BackendStack/TaskDef/TaskRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TaskDefTaskRole1EDB4A67"
+    }
+  ],
+  "/uat-BackendStack/TaskDef/ExecutionRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TaskDefExecutionRoleB4775C97"
+    }
+  ],
+  "/uat-BackendStack/Alb/HttpListener/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AlbHttpListener00C8B33E"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/InstanceSecurityGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityInstanceSecurityGroup3503DF39"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/InstanceSecurityGroup/from uatBackendStackAlbSg556A3AEB:80": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityInstanceSecurityGroupfromuatBackendStackAlbSg556A3AEB800D808D78"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/InstanceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityInstanceRoleDA6048E0"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/LaunchTemplate/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityLaunchTemplateE0DD6E1C"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/LifecycleHookDrainHook/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityLifecycleHookDrainHook36C6E770"
+    }
+  ],
+  "/uat-BackendStack/TaskDef/TaskRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TaskDefTaskRoleDefaultPolicyA592CB18"
+    }
+  ],
+  "/uat-BackendStack/TaskDef/ExecutionRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TaskDefExecutionRoleDefaultPolicy0DBB737A"
+    }
+  ],
+  "/uat-BackendStack/Alb/HttpListener/EcsTargetsGroup/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AlbHttpListenerEcsTargetsGroupE3EBF65A"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/InstanceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityInstanceRoleDefaultPolicy3CA9E22C"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/DrainECSHook/Function/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityDrainECSHookFunctionAA773E9B"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/DrainECSHook/Function/AllowInvoke:uatBackendStackClusterEc2CapacityLifecycleHookDrainHookTopicDEB29A3E": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityDrainECSHookFunctionAllowInvokeuatBackendStackClusterEc2CapacityLifecycleHookDrainHookTopicDEB29A3EACEC41F2"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/LifecycleHookDrainHook/Topic/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityLifecycleHookDrainHookTopic740835ED"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/LifecycleHookDrainHook/Role/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityLifecycleHookDrainHookRole2678DC0C"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/DrainECSHook/Function/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityDrainECSHookFunctionServiceRole43FE3DB5"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/DrainECSHook/Function/Topic/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityDrainECSHookFunctionTopic9EE355B1"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/LifecycleHookDrainHook/Role/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityLifecycleHookDrainHookRoleDefaultPolicy742FB685"
+    }
+  ],
+  "/uat-BackendStack/Cluster/Ec2Capacity/DrainECSHook/Function/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ClusterEc2CapacityDrainECSHookFunctionServiceRoleDefaultPolicy70234200"
+    }
+  ]
+}

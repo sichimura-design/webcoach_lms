@@ -1,0 +1,889 @@
+{
+ "Resources": {
+  "MoodleVpc895D09D1": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-moodle-vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/Resource"
+   }
+  },
+  "MoodleVpcPublicSubnet1Subnet47E239D7": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-northeast-1a",
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PublicSubnet1/Subnet"
+   }
+  },
+  "MoodleVpcPublicSubnet1RouteTable81E6DEDE": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/PublicSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PublicSubnet1/RouteTable"
+   }
+  },
+  "MoodleVpcPublicSubnet1RouteTableAssociationB8D8EA28": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcPublicSubnet1RouteTable81E6DEDE"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPublicSubnet1Subnet47E239D7"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PublicSubnet1/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcPublicSubnet1DefaultRoute909064EA": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "MoodleVpcIGWEB666E00"
+    },
+    "RouteTableId": {
+     "Ref": "MoodleVpcPublicSubnet1RouteTable81E6DEDE"
+    }
+   },
+   "DependsOn": [
+    "MoodleVpcVPCGWAF2FED52"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PublicSubnet1/DefaultRoute"
+   }
+  },
+  "MoodleVpcPublicSubnet1EIP57558D09": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/PublicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PublicSubnet1/EIP"
+   }
+  },
+  "MoodleVpcPublicSubnet1NATGatewayFCF3D029": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "MoodleVpcPublicSubnet1EIP57558D09",
+      "AllocationId"
+     ]
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPublicSubnet1Subnet47E239D7"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/PublicSubnet1"
+     }
+    ]
+   },
+   "DependsOn": [
+    "MoodleVpcPublicSubnet1DefaultRoute909064EA",
+    "MoodleVpcPublicSubnet1RouteTableAssociationB8D8EA28"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PublicSubnet1/NATGateway"
+   }
+  },
+  "MoodleVpcPublicSubnet2Subnet804EDB4A": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-northeast-1c",
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PublicSubnet2/Subnet"
+   }
+  },
+  "MoodleVpcPublicSubnet2RouteTable78D40B03": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/PublicSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PublicSubnet2/RouteTable"
+   }
+  },
+  "MoodleVpcPublicSubnet2RouteTableAssociationADE317AD": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcPublicSubnet2RouteTable78D40B03"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPublicSubnet2Subnet804EDB4A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PublicSubnet2/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcPublicSubnet2DefaultRouteA4B6773B": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "MoodleVpcIGWEB666E00"
+    },
+    "RouteTableId": {
+     "Ref": "MoodleVpcPublicSubnet2RouteTable78D40B03"
+    }
+   },
+   "DependsOn": [
+    "MoodleVpcVPCGWAF2FED52"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PublicSubnet2/DefaultRoute"
+   }
+  },
+  "MoodleVpcPrivateSubnet1SubnetF81FBA56": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-northeast-1a",
+    "CidrBlock": "10.0.2.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PrivateSubnet1/Subnet"
+   }
+  },
+  "MoodleVpcPrivateSubnet1RouteTableD2EE0C83": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/PrivateSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PrivateSubnet1/RouteTable"
+   }
+  },
+  "MoodleVpcPrivateSubnet1RouteTableAssociation52975B8D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcPrivateSubnet1RouteTableD2EE0C83"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPrivateSubnet1SubnetF81FBA56"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PrivateSubnet1/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcPrivateSubnet1DefaultRoute4CA1C383": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "MoodleVpcPublicSubnet1NATGatewayFCF3D029"
+    },
+    "RouteTableId": {
+     "Ref": "MoodleVpcPrivateSubnet1RouteTableD2EE0C83"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PrivateSubnet1/DefaultRoute"
+   }
+  },
+  "MoodleVpcPrivateSubnet2SubnetA94BEFA2": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-northeast-1c",
+    "CidrBlock": "10.0.3.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PrivateSubnet2/Subnet"
+   }
+  },
+  "MoodleVpcPrivateSubnet2RouteTable55AD31E3": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/PrivateSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PrivateSubnet2/RouteTable"
+   }
+  },
+  "MoodleVpcPrivateSubnet2RouteTableAssociationD98E67BE": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcPrivateSubnet2RouteTable55AD31E3"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcPrivateSubnet2SubnetA94BEFA2"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PrivateSubnet2/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcPrivateSubnet2DefaultRoute69672EB8": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "MoodleVpcPublicSubnet1NATGatewayFCF3D029"
+    },
+    "RouteTableId": {
+     "Ref": "MoodleVpcPrivateSubnet2RouteTable55AD31E3"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/PrivateSubnet2/DefaultRoute"
+   }
+  },
+  "MoodleVpcIsolatedSubnet1SubnetDE085280": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-northeast-1a",
+    "CidrBlock": "10.0.4.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/IsolatedSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/IsolatedSubnet1/Subnet"
+   }
+  },
+  "MoodleVpcIsolatedSubnet1RouteTable67A52B29": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/IsolatedSubnet1"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/IsolatedSubnet1/RouteTable"
+   }
+  },
+  "MoodleVpcIsolatedSubnet1RouteTableAssociation3C9B85B6": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcIsolatedSubnet1RouteTable67A52B29"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcIsolatedSubnet1SubnetDE085280"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/IsolatedSubnet1/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcIsolatedSubnet2SubnetE81DCE81": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "AvailabilityZone": "ap-northeast-1c",
+    "CidrBlock": "10.0.5.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Isolated"
+     },
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/IsolatedSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/IsolatedSubnet2/Subnet"
+   }
+  },
+  "MoodleVpcIsolatedSubnet2RouteTable0327443F": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/IsolatedSubnet2"
+     }
+    ],
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/IsolatedSubnet2/RouteTable"
+   }
+  },
+  "MoodleVpcIsolatedSubnet2RouteTableAssociation1C6FBBB1": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "MoodleVpcIsolatedSubnet2RouteTable0327443F"
+    },
+    "SubnetId": {
+     "Ref": "MoodleVpcIsolatedSubnet2SubnetE81DCE81"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/IsolatedSubnet2/RouteTableAssociation"
+   }
+  },
+  "MoodleVpcIGWEB666E00": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-moodle-vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/IGW"
+   }
+  },
+  "MoodleVpcVPCGWAF2FED52": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "InternetGatewayId": {
+     "Ref": "MoodleVpcIGWEB666E00"
+    },
+    "VpcId": {
+     "Ref": "MoodleVpc895D09D1"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/VPCGW"
+   }
+  },
+  "MoodleVpcRestrictDefaultSecurityGroupCustomResource4E08D705": {
+   "Type": "Custom::VpcRestrictDefaultSG",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E",
+      "Arn"
+     ]
+    },
+    "DefaultSecurityGroupId": {
+     "Fn::GetAtt": [
+      "MoodleVpc895D09D1",
+      "DefaultSecurityGroup"
+     ]
+    },
+    "Account": "822824391912"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/RestrictDefaultSecurityGroupCustomResource/Default"
+   }
+  },
+  "MoodleVpcFlowLogIAMRole24900022": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "vpc-flow-logs.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/FlowLog"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/FlowLog/IAMRole/Resource"
+   }
+  },
+  "MoodleVpcFlowLogIAMRoleDefaultPolicy9CABFFE9": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "MoodleVpcFlowLogLogGroupB05CF7B3",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "MoodleVpcFlowLogIAMRoleDefaultPolicy9CABFFE9",
+    "Roles": [
+     {
+      "Ref": "MoodleVpcFlowLogIAMRole24900022"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/FlowLog/IAMRole/DefaultPolicy/Resource"
+   }
+  },
+  "MoodleVpcFlowLogLogGroupB05CF7B3": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 731,
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/FlowLog"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/FlowLog/LogGroup/Resource"
+   }
+  },
+  "MoodleVpcFlowLogE83860EF": {
+   "Type": "AWS::EC2::FlowLog",
+   "Properties": {
+    "DeliverLogsPermissionArn": {
+     "Fn::GetAtt": [
+      "MoodleVpcFlowLogIAMRole24900022",
+      "Arn"
+     ]
+    },
+    "LogDestinationType": "cloud-watch-logs",
+    "LogGroupName": {
+     "Ref": "MoodleVpcFlowLogLogGroupB05CF7B3"
+    },
+    "ResourceId": {
+     "Ref": "MoodleVpc895D09D1"
+    },
+    "ResourceType": "VPC",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "uat-VpcStack/MoodleVpc/FlowLog"
+     }
+    ],
+    "TrafficType": "REJECT"
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/MoodleVpc/FlowLog/FlowLog"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Version": "2012-10-17",
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ]
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+     }
+    ],
+    "Policies": [
+     {
+      "PolicyName": "Inline",
+      "PolicyDocument": {
+       "Version": "2012-10-17",
+       "Statement": [
+        {
+         "Effect": "Allow",
+         "Action": [
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:AuthorizeSecurityGroupEgress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupEgress"
+         ],
+         "Resource": [
+          {
+           "Fn::Join": [
+            "",
+            [
+             "arn:aws:ec2:ap-northeast-1:822824391912:security-group/",
+             {
+              "Fn::GetAtt": [
+               "MoodleVpc895D09D1",
+               "DefaultSecurityGroup"
+              ]
+             }
+            ]
+           ]
+          }
+         ]
+        }
+       ]
+      }
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role"
+   }
+  },
+  "CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-822824391912-ap-northeast-1",
+     "S3Key": "7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200.zip"
+    },
+    "Timeout": 900,
+    "MemorySize": 128,
+    "Handler": "__entrypoint__.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs22.x",
+    "Description": "Lambda function for removing all inbound/outbound rules from the VPC default security group"
+   },
+   "DependsOn": [
+    "CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler",
+    "aws:asset:path": "asset.7fa1e366ee8a9ded01fc355f704cff92bfd179574e6f9cfee800a3541df1b200",
+    "aws:asset:property": "Code"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/+1WXW/TMBT9LfMj8sIoYhJ9y6IxBY2taqs9UFXo1r7NvDp25I+UEuW/IyduCkxDQvCQB55sn3vP8fGN5ZtJMnl7mVycwd6eM747l2KTNAsHbEdhb780yCZJ81CxVUPqit1BiWRKXhFKRJVybtBatBEp4Wv67bhQ4G7A4R4OR8T6jUKXabUVhTfghFZkumqIOmn2KctDFYCZ30jBCCVMcPMJ7K5LaulvGEbU4PBPKLnVEhzyZ5x1u6bZVj3MMtobWXS0VUOgBiFhI6Rwh89aHWXriuU8zoPUldRsN1Sm6kXy6l7dglfskUyd8RjKWF9mv6SDtaJQeVVfxhLfq8xgrFg80ChcdEY4vxu+NZmuyCuyHo3Bcbjor1J/gcJsrr3DJWwknvATllqrmegEhuQwuc5nYTgVm8b7/s9v5hakHUHN/87GeJyMxMZ4nPy3MTob3QuVK4dG4fC+9P0vrlLngD2WqBz9IPX+Vherhhi02huGsZuGrThaJ9RJmhJnYLsVLObMrz9eZ8u4Y1RqqYAyaeZaYhDVEn/40QBrfYn86kCmDamMUExUIFPGtFfup5zAT9npULE9LfXsyJppKVjoUk3bN6nuULmSQuEQGzrYi8F1/zBLpD0e0IGw1CHyTOc5zPnCgcNQUhstdcK9ZkulLmzS3OrixmhfdbwQPgJtS+ex/DTz1unyuBxSX4jPjK4FR3MFFmlqLbqFg0KoInDuvau8a6nSHJMn+7qeXCRv3ifvzp6sEOfGKydKTOb9+B3h3SlzPgoAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-VpcStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "VpcId": {
+   "Description": "VPC ID",
+   "Value": {
+    "Ref": "MoodleVpc895D09D1"
+   },
+   "Export": {
+    "Name": "uat-VpcId"
+   }
+  },
+  "PublicSubnets": {
+   "Description": "Public Subnet IDs",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      {
+       "Ref": "MoodleVpcPublicSubnet1Subnet47E239D7"
+      },
+      ",",
+      {
+       "Ref": "MoodleVpcPublicSubnet2Subnet804EDB4A"
+      }
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "uat-PublicSubnets"
+   }
+  },
+  "PrivateSubnets": {
+   "Description": "Private Subnet IDs",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      {
+       "Ref": "MoodleVpcPrivateSubnet1SubnetF81FBA56"
+      },
+      ",",
+      {
+       "Ref": "MoodleVpcPrivateSubnet2SubnetA94BEFA2"
+      }
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "uat-PrivateSubnets"
+   }
+  },
+  "ExportsOutputFnGetAttMoodleVpc895D09D1CidrBlock84532412": {
+   "Value": {
+    "Fn::GetAtt": [
+     "MoodleVpc895D09D1",
+     "CidrBlock"
+    ]
+   },
+   "Export": {
+    "Name": "uat-VpcStack:ExportsOutputFnGetAttMoodleVpc895D09D1CidrBlock84532412"
+   }
+  },
+  "ExportsOutputRefMoodleVpc895D09D1476475ED": {
+   "Value": {
+    "Ref": "MoodleVpc895D09D1"
+   },
+   "Export": {
+    "Name": "uat-VpcStack:ExportsOutputRefMoodleVpc895D09D1476475ED"
+   }
+  },
+  "ExportsOutputRefMoodleVpcIsolatedSubnet1SubnetDE085280C1FC39E0": {
+   "Value": {
+    "Ref": "MoodleVpcIsolatedSubnet1SubnetDE085280"
+   },
+   "Export": {
+    "Name": "uat-VpcStack:ExportsOutputRefMoodleVpcIsolatedSubnet1SubnetDE085280C1FC39E0"
+   }
+  },
+  "ExportsOutputRefMoodleVpcIsolatedSubnet2SubnetE81DCE81577A1F79": {
+   "Value": {
+    "Ref": "MoodleVpcIsolatedSubnet2SubnetE81DCE81"
+   },
+   "Export": {
+    "Name": "uat-VpcStack:ExportsOutputRefMoodleVpcIsolatedSubnet2SubnetE81DCE81577A1F79"
+   }
+  },
+  "ExportsOutputRefMoodleVpcPublicSubnet1Subnet47E239D7FB7B6458": {
+   "Value": {
+    "Ref": "MoodleVpcPublicSubnet1Subnet47E239D7"
+   },
+   "Export": {
+    "Name": "uat-VpcStack:ExportsOutputRefMoodleVpcPublicSubnet1Subnet47E239D7FB7B6458"
+   }
+  },
+  "ExportsOutputRefMoodleVpcPublicSubnet2Subnet804EDB4A36FAF28A": {
+   "Value": {
+    "Ref": "MoodleVpcPublicSubnet2Subnet804EDB4A"
+   },
+   "Export": {
+    "Name": "uat-VpcStack:ExportsOutputRefMoodleVpcPublicSubnet2Subnet804EDB4A36FAF28A"
+   }
+  },
+  "ExportsOutputRefMoodleVpcPrivateSubnet1SubnetF81FBA56463754B2": {
+   "Value": {
+    "Ref": "MoodleVpcPrivateSubnet1SubnetF81FBA56"
+   },
+   "Export": {
+    "Name": "uat-VpcStack:ExportsOutputRefMoodleVpcPrivateSubnet1SubnetF81FBA56463754B2"
+   }
+  },
+  "ExportsOutputRefMoodleVpcPrivateSubnet2SubnetA94BEFA25FAE6EBF": {
+   "Value": {
+    "Ref": "MoodleVpcPrivateSubnet2SubnetA94BEFA2"
+   },
+   "Export": {
+    "Name": "uat-VpcStack:ExportsOutputRefMoodleVpcPrivateSubnet2SubnetA94BEFA25FAE6EBF"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

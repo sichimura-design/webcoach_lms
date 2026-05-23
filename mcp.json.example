@@ -1,0 +1,48 @@
+{
+    "mcpServers": {
+        "github": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-github"
+            ],
+            "env": {
+                "GITHUB_PERSONAL_ACCESS_TOKEN": "your_github_personal_access_token_here",
+                "GITHUB_USERNAME": "your_github_username"
+            }
+        },
+        "slack": {
+          "command": "npx",
+          "args": [
+            "-y",
+            "@modelcontextprotocol/server-slack"
+          ],
+          "env": {
+            "SLACK_BOT_TOKEN": "your_slack_bot_token_here",
+            "SLACK_TEAM_ID": "your_slack_team_id",
+            "SLACK_DEFAULT_CHANNEL": "your_default_channel_id"
+          }
+        },
+        "notion": {
+          "command": "npx",
+          "args": [
+            "@notionhq/notion-mcp-server",
+            "--transport",
+            "stdio"
+          ],
+          "env": {
+            "NOTION_TOKEN": "your_notion_integration_token_here"
+          }
+        },
+         "figma-api": {
+            "type": "stdio",
+            "command": "npx",
+            "args": ["@hapins/figma-mcp"],
+            "env": {
+                "FIGMA_ACCESS_TOKEN": "your_figma_access_token_here",
+                "FIGMA_FILE_ID": "your_figma_file_id",
+                "FIGMA_TEAM_ID": "your_figma_team_id"
+            }
+        }
+    }
+}

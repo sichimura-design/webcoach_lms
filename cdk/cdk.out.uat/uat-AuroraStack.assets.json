@@ -1,0 +1,21 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "3e2566f4dadedf123b55ff08f26d372fdba3b231293173f7b624d2e9dc13447a": {
+      "displayName": "uat-AuroraStack Template",
+      "source": {
+        "path": "uat-AuroraStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "822824391912-ap-northeast-1-289f62ed": {
+          "bucketName": "cdk-hnb659fds-assets-822824391912-ap-northeast-1",
+          "objectKey": "3e2566f4dadedf123b55ff08f26d372fdba3b231293173f7b624d2e9dc13447a.json",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::822824391912:role/cdk-hnb659fds-file-publishing-role-822824391912-ap-northeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

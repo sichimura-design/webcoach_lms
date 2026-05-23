@@ -1,0 +1,1530 @@
+{
+ "Resources": {
+  "MoodleCluster53EA7168": {
+   "Type": "AWS::ECS::Cluster",
+   "Properties": {
+    "ClusterName": "uat-moodle-cluster",
+    "ClusterSettings": [
+     {
+      "Name": "containerInsights",
+      "Value": "enabled"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/MoodleCluster/Resource"
+   }
+  },
+  "FrontendRepoF80FCC01": {
+   "Type": "AWS::ECR::Repository",
+   "Properties": {
+    "EmptyOnDelete": true,
+    "ImageScanningConfiguration": {
+     "ScanOnPush": true
+    },
+    "LifecyclePolicy": {
+     "LifecyclePolicyText": "{\"rules\":[{\"rulePriority\":1,\"description\":\"Keep last 10 images\",\"selection\":{\"tagStatus\":\"any\",\"countType\":\"imageCountMoreThan\",\"countNumber\":10},\"action\":{\"type\":\"expire\"}}]}"
+    },
+    "RepositoryName": "uat-moodle-frontend"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/FrontendRepo/Resource"
+   }
+  },
+  "BffRepoC0DD011B": {
+   "Type": "AWS::ECR::Repository",
+   "Properties": {
+    "EmptyOnDelete": true,
+    "ImageScanningConfiguration": {
+     "ScanOnPush": true
+    },
+    "LifecyclePolicy": {
+     "LifecyclePolicyText": "{\"rules\":[{\"rulePriority\":1,\"description\":\"Keep last 10 images\",\"selection\":{\"tagStatus\":\"any\",\"countType\":\"imageCountMoreThan\",\"countNumber\":10},\"action\":{\"type\":\"expire\"}}]}"
+    },
+    "RepositoryName": "uat-moodle-bff"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/BffRepo/Resource"
+   }
+  },
+  "ApiRepoEFA7BA97": {
+   "Type": "AWS::ECR::Repository",
+   "Properties": {
+    "EmptyOnDelete": true,
+    "ImageScanningConfiguration": {
+     "ScanOnPush": true
+    },
+    "LifecyclePolicy": {
+     "LifecyclePolicyText": "{\"rules\":[{\"rulePriority\":1,\"description\":\"Keep last 10 images\",\"selection\":{\"tagStatus\":\"any\",\"countType\":\"imageCountMoreThan\",\"countNumber\":10},\"action\":{\"type\":\"expire\"}}]}"
+    },
+    "RepositoryName": "uat-moodle-api"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/ApiRepo/Resource"
+   }
+  },
+  "AlbSecurityGroup86A59E99": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for Application Load Balancer",
+    "GroupName": "uat-moodle-alb-sg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow HTTP",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow HTTPS",
+      "FromPort": 443,
+      "IpProtocol": "tcp",
+      "ToPort": 443
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpc895D09D1476475ED"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/AlbSecurityGroup/Resource"
+   }
+  },
+  "EcsSecurityGroup44008BF1": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Security group for ECS Fargate services",
+    "GroupName": "uat-moodle-ecs-sg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpc895D09D1476475ED"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/EcsSecurityGroup/Resource"
+   }
+  },
+  "EcsSecurityGroupfromuatEcsStackAlbSecurityGroup4F826E1430006CA41039": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow Frontend from ALB",
+    "FromPort": 3000,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "EcsSecurityGroup44008BF1",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "AlbSecurityGroup86A59E99",
+      "GroupId"
+     ]
+    },
+    "ToPort": 3000
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/EcsSecurityGroup/from uatEcsStackAlbSecurityGroup4F826E14:3000"
+   }
+  },
+  "EcsSecurityGroupfromuatEcsStackAlbSecurityGroup4F826E143001683A3E0B": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow BFF from ALB",
+    "FromPort": 3001,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "EcsSecurityGroup44008BF1",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "AlbSecurityGroup86A59E99",
+      "GroupId"
+     ]
+    },
+    "ToPort": 3001
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/EcsSecurityGroup/from uatEcsStackAlbSecurityGroup4F826E14:3001"
+   }
+  },
+  "EcsSecurityGroupfromuatEcsStackAlbSecurityGroup4F826E148001F8890469": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "Description": "Allow API from ALB",
+    "FromPort": 8001,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "EcsSecurityGroup44008BF1",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "AlbSecurityGroup86A59E99",
+      "GroupId"
+     ]
+    },
+    "ToPort": 8001
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/EcsSecurityGroup/from uatEcsStackAlbSecurityGroup4F826E14:8001"
+   }
+  },
+  "MoodleAlb6AA528A0": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Name": "uat-moodle-alb",
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "AlbSecurityGroup86A59E99",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpcPublicSubnet1Subnet47E239D7FB7B6458"
+     },
+     {
+      "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpcPublicSubnet2Subnet804EDB4A36FAF28A"
+     }
+    ],
+    "Type": "application"
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/MoodleAlb/Resource"
+   }
+  },
+  "MoodleAlbHttpListener60A81ADA": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "FixedResponseConfig": {
+       "ContentType": "text/plain",
+       "MessageBody": "OK",
+       "StatusCode": "200"
+      },
+      "Type": "fixed-response"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "MoodleAlb6AA528A0"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/MoodleAlb/HttpListener/Resource"
+   }
+  },
+  "MoodleAlbHttpListenerFrontendRuleRule675E2BBF": {
+   "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+   "Properties": {
+    "Actions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "FrontendTargetGroupED7B3E5D"
+      },
+      "Type": "forward"
+     }
+    ],
+    "Conditions": [
+     {
+      "Field": "path-pattern",
+      "PathPatternConfig": {
+       "Values": [
+        "/*"
+       ]
+      }
+     }
+    ],
+    "ListenerArn": {
+     "Ref": "MoodleAlbHttpListener60A81ADA"
+    },
+    "Priority": 30
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/MoodleAlb/HttpListener/FrontendRuleRule/Resource"
+   }
+  },
+  "MoodleAlbHttpListenerBffRuleRule2117D375": {
+   "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+   "Properties": {
+    "Actions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "BffTargetGroupEB30103F"
+      },
+      "Type": "forward"
+     }
+    ],
+    "Conditions": [
+     {
+      "Field": "path-pattern",
+      "PathPatternConfig": {
+       "Values": [
+        "/api/*"
+       ]
+      }
+     }
+    ],
+    "ListenerArn": {
+     "Ref": "MoodleAlbHttpListener60A81ADA"
+    },
+    "Priority": 10
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/MoodleAlb/HttpListener/BffRuleRule/Resource"
+   }
+  },
+  "MoodleAlbHttpListenerApiRuleRuleFDB9C9F8": {
+   "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
+   "Properties": {
+    "Actions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "ApiTargetGroup5723F19D"
+      },
+      "Type": "forward"
+     }
+    ],
+    "Conditions": [
+     {
+      "Field": "path-pattern",
+      "PathPatternConfig": {
+       "Values": [
+        "/v1/*"
+       ]
+      }
+     }
+    ],
+    "ListenerArn": {
+     "Ref": "MoodleAlbHttpListener60A81ADA"
+    },
+    "Priority": 20
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/MoodleAlb/HttpListener/ApiRuleRule/Resource"
+   }
+  },
+  "TaskExecutionRole250D2532": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+       ]
+      ]
+     }
+    ],
+    "RoleName": "uat-moodle-task-execution-role"
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/TaskExecutionRole/Resource"
+   }
+  },
+  "TaskExecutionRoleDefaultPolicyA84DD1B0": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetSecretValue"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::ImportValue": "uat-AuroraStack:ExportsOutputRefAuroraClusterSecretAttachmentDB8032DAFDEEBE73"
+        },
+        {
+         "Fn::ImportValue": "uat-RdsStack:ExportsOutputRefMoodleRdsSecretAttachmentA98A29DD65F7FF3F"
+        }
+       ]
+      },
+      {
+       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetDownloadUrlForLayer"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ApiRepoEFA7BA97",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "BffRepoC0DD011B",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "FrontendRepoF80FCC01",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": "ecr:GetAuthorizationToken",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "ApiLogGroup1DEDFC07",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "BffLogGroup695C18F8",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::GetAtt": [
+          "FrontendLogGroupCE4F14E0",
+          "Arn"
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "TaskExecutionRoleDefaultPolicyA84DD1B0",
+    "Roles": [
+     {
+      "Ref": "TaskExecutionRole250D2532"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/TaskExecutionRole/DefaultPolicy/Resource"
+   }
+  },
+  "TaskRole30FC0FBB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "RoleName": "uat-moodle-task-role"
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/TaskRole/Resource"
+   }
+  },
+  "FrontendLogGroupCE4F14E0": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/ecs/uat/moodle-frontend",
+    "RetentionInDays": 30
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/FrontendLogGroup/Resource"
+   }
+  },
+  "BffLogGroup695C18F8": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/ecs/uat/moodle-bff",
+    "RetentionInDays": 30
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/BffLogGroup/Resource"
+   }
+  },
+  "ApiLogGroup1DEDFC07": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "LogGroupName": "/ecs/uat/moodle-api",
+    "RetentionInDays": 30
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/ApiLogGroup/Resource"
+   }
+  },
+  "FrontendTaskDef7D3FD156": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "NODE_ENV",
+        "Value": "development"
+       },
+       {
+        "Name": "VITE_BFF_URL",
+        "Value": "/api"
+       }
+      ],
+      "Essential": true,
+      "HealthCheck": {
+       "Command": [
+        "CMD-SHELL",
+        "curl -f http://localhost:3000/ || exit 1"
+       ],
+       "Interval": 30,
+       "Retries": 3,
+       "StartPeriod": 60,
+       "Timeout": 5
+      },
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Fn::Select": [
+           4,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "FrontendRepoF80FCC01",
+               "Arn"
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         ".dkr.ecr.",
+         {
+          "Fn::Select": [
+           3,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "FrontendRepoF80FCC01",
+               "Arn"
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/",
+         {
+          "Ref": "FrontendRepoF80FCC01"
+         },
+         ":latest"
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "FrontendLogGroupCE4F14E0"
+        },
+        "awslogs-stream-prefix": "frontend",
+        "awslogs-region": "ap-northeast-1"
+       }
+      },
+      "Name": "frontend",
+      "PortMappings": [
+       {
+        "ContainerPort": 3000,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "TaskExecutionRole250D2532",
+      "Arn"
+     ]
+    },
+    "Family": "uat-moodle-frontend",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "TaskRole30FC0FBB",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/FrontendTaskDef/Resource"
+   }
+  },
+  "BffTaskDef61C11016": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "NODE_ENV",
+        "Value": "development"
+       },
+       {
+        "Name": "PORT",
+        "Value": "3001"
+       }
+      ],
+      "Essential": true,
+      "HealthCheck": {
+       "Command": [
+        "CMD-SHELL",
+        "curl -f http://localhost:3001/health || exit 1"
+       ],
+       "Interval": 30,
+       "Retries": 3,
+       "StartPeriod": 60,
+       "Timeout": 5
+      },
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Fn::Select": [
+           4,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "BffRepoC0DD011B",
+               "Arn"
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         ".dkr.ecr.",
+         {
+          "Fn::Select": [
+           3,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "BffRepoC0DD011B",
+               "Arn"
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/",
+         {
+          "Ref": "BffRepoC0DD011B"
+         },
+         ":latest"
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "BffLogGroup695C18F8"
+        },
+        "awslogs-stream-prefix": "bff",
+        "awslogs-region": "ap-northeast-1"
+       }
+      },
+      "Name": "bff",
+      "PortMappings": [
+       {
+        "ContainerPort": 3001,
+        "Protocol": "tcp"
+       }
+      ]
+     }
+    ],
+    "Cpu": "256",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "TaskExecutionRole250D2532",
+      "Arn"
+     ]
+    },
+    "Family": "uat-moodle-bff",
+    "Memory": "512",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "TaskRole30FC0FBB",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/BffTaskDef/Resource"
+   }
+  },
+  "ApiTaskDef37DBDBD0": {
+   "Type": "AWS::ECS::TaskDefinition",
+   "Properties": {
+    "ContainerDefinitions": [
+     {
+      "Environment": [
+       {
+        "Name": "ENV",
+        "Value": "uat"
+       },
+       {
+        "Name": "PORT",
+        "Value": "8001"
+       }
+      ],
+      "Essential": true,
+      "HealthCheck": {
+       "Command": [
+        "CMD-SHELL",
+        "curl -f http://localhost:8001/health || exit 1"
+       ],
+       "Interval": 30,
+       "Retries": 3,
+       "StartPeriod": 60,
+       "Timeout": 5
+      },
+      "Image": {
+       "Fn::Join": [
+        "",
+        [
+         {
+          "Fn::Select": [
+           4,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "ApiRepoEFA7BA97",
+               "Arn"
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         ".dkr.ecr.",
+         {
+          "Fn::Select": [
+           3,
+           {
+            "Fn::Split": [
+             ":",
+             {
+              "Fn::GetAtt": [
+               "ApiRepoEFA7BA97",
+               "Arn"
+              ]
+             }
+            ]
+           }
+          ]
+         },
+         ".",
+         {
+          "Ref": "AWS::URLSuffix"
+         },
+         "/",
+         {
+          "Ref": "ApiRepoEFA7BA97"
+         },
+         ":latest"
+        ]
+       ]
+      },
+      "LogConfiguration": {
+       "LogDriver": "awslogs",
+       "Options": {
+        "awslogs-group": {
+         "Ref": "ApiLogGroup1DEDFC07"
+        },
+        "awslogs-stream-prefix": "api",
+        "awslogs-region": "ap-northeast-1"
+       }
+      },
+      "Name": "api",
+      "PortMappings": [
+       {
+        "ContainerPort": 8001,
+        "Protocol": "tcp"
+       }
+      ],
+      "Secrets": [
+       {
+        "Name": "DB_HOST",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "uat-RdsStack:ExportsOutputRefMoodleRdsSecretAttachmentA98A29DD65F7FF3F"
+           },
+           ":host::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "DB_PORT",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "uat-RdsStack:ExportsOutputRefMoodleRdsSecretAttachmentA98A29DD65F7FF3F"
+           },
+           ":port::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "DB_NAME",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "uat-RdsStack:ExportsOutputRefMoodleRdsSecretAttachmentA98A29DD65F7FF3F"
+           },
+           ":dbname::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "DB_USER",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "uat-RdsStack:ExportsOutputRefMoodleRdsSecretAttachmentA98A29DD65F7FF3F"
+           },
+           ":username::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "DB_PASSWORD",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "uat-RdsStack:ExportsOutputRefMoodleRdsSecretAttachmentA98A29DD65F7FF3F"
+           },
+           ":password::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "VECTOR_DB_HOST",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "uat-AuroraStack:ExportsOutputRefAuroraClusterSecretAttachmentDB8032DAFDEEBE73"
+           },
+           ":host::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "VECTOR_DB_PORT",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "uat-AuroraStack:ExportsOutputRefAuroraClusterSecretAttachmentDB8032DAFDEEBE73"
+           },
+           ":port::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "VECTOR_DB_NAME",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "uat-AuroraStack:ExportsOutputRefAuroraClusterSecretAttachmentDB8032DAFDEEBE73"
+           },
+           ":dbname::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "VECTOR_DB_USER",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "uat-AuroraStack:ExportsOutputRefAuroraClusterSecretAttachmentDB8032DAFDEEBE73"
+           },
+           ":username::"
+          ]
+         ]
+        }
+       },
+       {
+        "Name": "VECTOR_DB_PASSWORD",
+        "ValueFrom": {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::ImportValue": "uat-AuroraStack:ExportsOutputRefAuroraClusterSecretAttachmentDB8032DAFDEEBE73"
+           },
+           ":password::"
+          ]
+         ]
+        }
+       }
+      ]
+     }
+    ],
+    "Cpu": "512",
+    "ExecutionRoleArn": {
+     "Fn::GetAtt": [
+      "TaskExecutionRole250D2532",
+      "Arn"
+     ]
+    },
+    "Family": "uat-moodle-api",
+    "Memory": "1024",
+    "NetworkMode": "awsvpc",
+    "RequiresCompatibilities": [
+     "FARGATE"
+    ],
+    "TaskRoleArn": {
+     "Fn::GetAtt": [
+      "TaskRole30FC0FBB",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/ApiTaskDef/Resource"
+   }
+  },
+  "FrontendServiceBC94BA93": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "MoodleCluster53EA7168"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "frontend",
+      "ContainerPort": 3000,
+      "TargetGroupArn": {
+       "Ref": "FrontendTargetGroupED7B3E5D"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "EcsSecurityGroup44008BF1",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpcPrivateSubnet1SubnetF81FBA56463754B2"
+       },
+       {
+        "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpcPrivateSubnet2SubnetA94BEFA25FAE6EBF"
+       }
+      ]
+     }
+    },
+    "ServiceName": "uat-moodle-frontend",
+    "TaskDefinition": {
+     "Ref": "FrontendTaskDef7D3FD156"
+    }
+   },
+   "DependsOn": [
+    "MoodleAlbHttpListenerFrontendRuleRule675E2BBF",
+    "TaskRole30FC0FBB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/FrontendService/Service"
+   }
+  },
+  "BffService1F5A3D4E": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "MoodleCluster53EA7168"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "bff",
+      "ContainerPort": 3001,
+      "TargetGroupArn": {
+       "Ref": "BffTargetGroupEB30103F"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "EcsSecurityGroup44008BF1",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpcPrivateSubnet1SubnetF81FBA56463754B2"
+       },
+       {
+        "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpcPrivateSubnet2SubnetA94BEFA25FAE6EBF"
+       }
+      ]
+     }
+    },
+    "ServiceName": "uat-moodle-bff",
+    "TaskDefinition": {
+     "Ref": "BffTaskDef61C11016"
+    }
+   },
+   "DependsOn": [
+    "MoodleAlbHttpListenerBffRuleRule2117D375",
+    "TaskRole30FC0FBB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/BffService/Service"
+   }
+  },
+  "ApiServiceC9037CF0": {
+   "Type": "AWS::ECS::Service",
+   "Properties": {
+    "Cluster": {
+     "Ref": "MoodleCluster53EA7168"
+    },
+    "DeploymentConfiguration": {
+     "MaximumPercent": 200,
+     "MinimumHealthyPercent": 50
+    },
+    "DesiredCount": 1,
+    "EnableECSManagedTags": false,
+    "HealthCheckGracePeriodSeconds": 60,
+    "LaunchType": "FARGATE",
+    "LoadBalancers": [
+     {
+      "ContainerName": "api",
+      "ContainerPort": 8001,
+      "TargetGroupArn": {
+       "Ref": "ApiTargetGroup5723F19D"
+      }
+     }
+    ],
+    "NetworkConfiguration": {
+     "AwsvpcConfiguration": {
+      "AssignPublicIp": "DISABLED",
+      "SecurityGroups": [
+       {
+        "Fn::GetAtt": [
+         "EcsSecurityGroup44008BF1",
+         "GroupId"
+        ]
+       }
+      ],
+      "Subnets": [
+       {
+        "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpcPrivateSubnet1SubnetF81FBA56463754B2"
+       },
+       {
+        "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpcPrivateSubnet2SubnetA94BEFA25FAE6EBF"
+       }
+      ]
+     }
+    },
+    "ServiceName": "uat-moodle-api",
+    "TaskDefinition": {
+     "Ref": "ApiTaskDef37DBDBD0"
+    }
+   },
+   "DependsOn": [
+    "MoodleAlbHttpListenerApiRuleRuleFDB9C9F8",
+    "TaskRole30FC0FBB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/ApiService/Service"
+   }
+  },
+  "FrontendTargetGroupED7B3E5D": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckIntervalSeconds": 30,
+    "HealthCheckPath": "/",
+    "HealthCheckTimeoutSeconds": 5,
+    "Matcher": {
+     "HttpCode": "200"
+    },
+    "Name": "uat-frontend-tg",
+    "Port": 3000,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpc895D09D1476475ED"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/FrontendTargetGroup/Resource"
+   }
+  },
+  "BffTargetGroupEB30103F": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckIntervalSeconds": 30,
+    "HealthCheckPath": "/health",
+    "HealthCheckTimeoutSeconds": 5,
+    "Matcher": {
+     "HttpCode": "200"
+    },
+    "Name": "uat-bff-tg",
+    "Port": 3001,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpc895D09D1476475ED"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/BffTargetGroup/Resource"
+   }
+  },
+  "ApiTargetGroup5723F19D": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "HealthCheckIntervalSeconds": 30,
+    "HealthCheckPath": "/health",
+    "HealthCheckTimeoutSeconds": 5,
+    "Matcher": {
+     "HttpCode": "200"
+    },
+    "Name": "uat-api-tg",
+    "Port": 8001,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "ip",
+    "VpcId": {
+     "Fn::ImportValue": "uat-VpcStack:ExportsOutputRefMoodleVpc895D09D1476475ED"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/ApiTargetGroup/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/+1WbWvbMBD+LdXHoXpdygbLtzTdRqAsJck3U8ZVvrhqZcnTSzoj/N+HbdlR+sYY2UZHPoRI99w99+LTSaNkdPohOTmCe3PMsrtjwa8Tv7TA7ijcm28emUn8VDhjUaeesG71FQokY/KGULIpWVgxJS1wiXomDc9vrCFjqx3WV3S6loGCfgadg8UVmLtzXHPJLVcybe3/3q+NaDcEOu2jj2Qh2CXqDWeYPmQI8poi04lfYKkMt0pXqSd62ESl0lioDYhLJTiryJhkaKxWFaEEi9JWc3mOAi12ZaOEF5DjkoGcy0tnbnqx4GtkFRO4cAINGaeeFPBj1ihPlZM2OMvQMM3LJo9WUl/V1BPIsovY/tfNh8wbmkN6rza9tnO3vdo07yjxS2ROc1t90cqVqY9OtYmRqBwPXVACQqj7iRBzZ6+Vk1k4/l3cM5lrNGaImoGcScFlyKMrDlNSImsoTeB0kn93OMtCFr4evtEr4KRrEAZ75k8xcYMGpYZyrzp/+NttXT5ds/3hu/Xbj1YY3FFdHgkCRU1RgLGcCQXZNQiQjMt8M0r8pCwFZ9CU70JBdtZiqPv7oXURAzQ24Mai3Co/ez31ik8ZN9nFOu0+0luBztEO2UXbmnIoEr9QAptbSgmM2gKMcQVmZxUZe1JqLhkvQUwYiyZLp9PYT1g8XgqQkGPWTkc+DLatrJroB5NspS57F/1MTX1ArQV20527ARsa5kXwZd4DekB/C93bSQn3rxJIOx/djApdvVIN8qjZH4uzbGnBYoHSmp0cDuL/Qdw2SdcfNRUqN4m/UHn/OBNhufM4tSi7Ljs9ef6t2vj7Z9bhXuzs67rZzZ0tna2pVBkmt+btZnSSvPuYvD+6NZwfayctLzBZdP8/AbMvSBGrDgAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-EcsStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "ClusterName": {
+   "Description": "ECS Cluster Name",
+   "Value": {
+    "Ref": "MoodleCluster53EA7168"
+   },
+   "Export": {
+    "Name": "uat-EcsClusterName"
+   }
+  },
+  "ClusterArn": {
+   "Description": "ECS Cluster ARN",
+   "Value": {
+    "Fn::GetAtt": [
+     "MoodleCluster53EA7168",
+     "Arn"
+    ]
+   },
+   "Export": {
+    "Name": "uat-EcsClusterArn"
+   }
+  },
+  "AlbDnsName": {
+   "Description": "Application Load Balancer DNS Name",
+   "Value": {
+    "Fn::GetAtt": [
+     "MoodleAlb6AA528A0",
+     "DNSName"
+    ]
+   },
+   "Export": {
+    "Name": "uat-AlbDnsName"
+   }
+  },
+  "AlbArn": {
+   "Description": "Application Load Balancer ARN",
+   "Value": {
+    "Ref": "MoodleAlb6AA528A0"
+   },
+   "Export": {
+    "Name": "uat-AlbArn"
+   }
+  },
+  "FrontendRepoUri": {
+   "Description": "Frontend ECR Repository URI",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      {
+       "Fn::Select": [
+        4,
+        {
+         "Fn::Split": [
+          ":",
+          {
+           "Fn::GetAtt": [
+            "FrontendRepoF80FCC01",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      ".dkr.ecr.",
+      {
+       "Fn::Select": [
+        3,
+        {
+         "Fn::Split": [
+          ":",
+          {
+           "Fn::GetAtt": [
+            "FrontendRepoF80FCC01",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "FrontendRepoF80FCC01"
+      }
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "uat-FrontendRepoUri"
+   }
+  },
+  "BffRepoUri": {
+   "Description": "BFF ECR Repository URI",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      {
+       "Fn::Select": [
+        4,
+        {
+         "Fn::Split": [
+          ":",
+          {
+           "Fn::GetAtt": [
+            "BffRepoC0DD011B",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      ".dkr.ecr.",
+      {
+       "Fn::Select": [
+        3,
+        {
+         "Fn::Split": [
+          ":",
+          {
+           "Fn::GetAtt": [
+            "BffRepoC0DD011B",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "BffRepoC0DD011B"
+      }
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "uat-BffRepoUri"
+   }
+  },
+  "ApiRepoUri": {
+   "Description": "API ECR Repository URI",
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      {
+       "Fn::Select": [
+        4,
+        {
+         "Fn::Split": [
+          ":",
+          {
+           "Fn::GetAtt": [
+            "ApiRepoEFA7BA97",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      ".dkr.ecr.",
+      {
+       "Fn::Select": [
+        3,
+        {
+         "Fn::Split": [
+          ":",
+          {
+           "Fn::GetAtt": [
+            "ApiRepoEFA7BA97",
+            "Arn"
+           ]
+          }
+         ]
+        }
+       ]
+      },
+      ".",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "ApiRepoEFA7BA97"
+      }
+     ]
+    ]
+   },
+   "Export": {
+    "Name": "uat-ApiRepoUri"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

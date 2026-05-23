@@ -1,0 +1,21 @@
+{
+  "version": "52.0.0",
+  "files": {
+    "b3df78d51f64c84fd1e473f3309dacd11ad6c17eca945ec38575c9cd4e393a4a": {
+      "displayName": "uat-CognitoStack Template",
+      "source": {
+        "path": "uat-CognitoStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "822824391912-ap-northeast-1-463ebea8": {
+          "bucketName": "cdk-hnb659fds-assets-822824391912-ap-northeast-1",
+          "objectKey": "b3df78d51f64c84fd1e473f3309dacd11ad6c17eca945ec38575c9cd4e393a4a.json",
+          "region": "ap-northeast-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::822824391912:role/cdk-hnb659fds-file-publishing-role-822824391912-ap-northeast-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

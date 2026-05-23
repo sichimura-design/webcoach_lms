@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cognito認証 - トークン取得</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      width: 100%;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      background: #f5f5f5;
+      border-radius: 6px;
+      display: none;
+    }
+
+    .result.success {
+      background: #e8f5e9;
+      border: 2px solid #4caf50;
+    }
+
+    .result.error {
+      background: #ffebee;
+      border: 2px solid #f44336;
+    }
+
+    .result h3 {
+      margin-bottom: 15px;
+      color: #333;
+      font-size: 18px;
+    }
+
+    .token-display {
+      background: white;
+      padding: 15px;
+      border-radius: 4px;
+      word-break: break-all;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+    }
+
+    .user-info {
+      background: white;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+
+    .user-info-item {
+      display: flex;
+      margin-bottom: 8px;
+    }
+
+    .user-info-item strong {
+      min-width: 120px;
+      color: #555;
+    }
+
+    .copy-btn {
+      background: #4caf50;
+      padding: 8px 16px;
+      font-size: 14px;
+      width: auto;
+      margin-right: 10px;
+    }
+
+    .swagger-btn {
+      background: #2196F3;
+      padding: 8px 16px;
+      font-size: 14px;
+      width: auto;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-weight: 500;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .info-box {
+      background: #e3f2fd;
+      border: 2px solid #2196F3;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .info-box h4 {
+      color: #1976d2;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .info-box ul {
+      margin-left: 20px;
+      color: #555;
+      font-size: 13px;
+    }
+
+    .info-box li {
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔐 Cognito認証</h1>
+    <p class="subtitle">IDトークンを取得してSwagger UIでAPIをテストできます</p>
+
+    <div class="info-box">
+      <h4>📝 使い方</h4>
+      <ul>
+        <li>Cognitoアカウントでログイン</li>
+        <li>IDトークンをコピー</li>
+        <li>Swagger UIの「Authorize」ボタンで貼り付け</li>
+        <li>APIをテスト!</li>
+      </ul>
+    </div>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">メールアドレス</label>
+        <input type="email" id="username" name="username" required placeholder="user@example.com" autocomplete="username">
+      </div>
+
+      <div class="form-group">
+        <label for="password">パスワード</label>
+        <input type="password" id="password" name="password" required placeholder="パスワードを入力" autocomplete="current-password">
+      </div>
+
+      <button type="submit" id="loginBtn">
+        ログイン
+      </button>
+    </form>
+
+    <div id="result" class="result">
+      <h3 id="resultTitle"></h3>
+
+      <div id="userInfo" class="user-info" style="display: none;">
+        <div class="user-info-item">
+          <strong>Email:</strong>
+          <span id="userEmail"></span>
+        </div>
+        <div class="user-info-item">
+          <strong>Username:</strong>
+          <span id="userUsername"></span>
+        </div>
+        <div class="user-info-item">
+          <strong>Cognito Sub:</strong>
+          <span id="userSub"></span>
+        </div>
+        <div class="user-info-item">
+          <strong>有効期限:</strong>
+          <span id="userExp"></span>
+        </div>
+      </div>
+
+      <div id="tokenContainer" style="display: none;">
+        <strong>IDトークン:</strong>
+        <div class="token-display" id="tokenDisplay"></div>
+
+        <div class="button-group">
+          <button class="copy-btn" onclick="copyToken()">📋 トークンをコピー</button>
+          <button class="swagger-btn" onclick="openSwagger()">🔗 Swagger UIを開く</button>
+        </div>
+      </div>
+
+      <div id="errorMessage" class="error-message"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.3.6/dist/amazon-cognito-identity.min.js"></script>
+
+  <script>
+    const poolData = {
+      UserPoolId: 'ap-northeast-1_aAPBRNL7D',
+      ClientId: '23jacbr6nk4baiftjueddmr4kb'
+    };
+
+    const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    let currentIdToken = '';
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      const loginBtn = document.getElementById('loginBtn');
+      const result = document.getElementById('result');
+
+      // ボタンを無効化してローディング表示
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = 'ログイン中...<span class="loading"></span>';
+
+      // 前回の結果をクリア
+      result.style.display = 'none';
+      result.className = 'result';
+
+      const authenticationData = {
+        Username: username,
+        Password: password,
+      };
+
+      const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+
+      const userData = {
+        Username: username,
+        Pool: userPool
+      };
+
+      const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+      cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: (authResult) => {
+          const idToken = authResult.getIdToken().getJwtToken();
+          currentIdToken = idToken;
+
+          // トークンをデコード
+          const payload = parseJwt(idToken);
+
+          // 結果を表示
+          result.style.display = 'block';
+          result.className = 'result success';
+          document.getElementById('resultTitle').textContent = '✅ ログイン成功!';
+
+          // ユーザー情報を表示
+          document.getElementById('userInfo').style.display = 'block';
+          document.getElementById('userEmail').textContent = payload.email || 'N/A';
+          document.getElementById('userUsername').textContent = payload['cognito:username'] || 'N/A';
+          document.getElementById('userSub').textContent = payload.sub || 'N/A';
+          document.getElementById('userExp').textContent = new Date(payload.exp * 1000).toLocaleString('ja-JP');
+
+          // トークンを表示
+          document.getElementById('tokenContainer').style.display = 'block';
+          document.getElementById('tokenDisplay').textContent = idToken;
+          document.getElementById('errorMessage').textContent = '';
+
+          // ボタンを元に戻す
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = 'ログイン';
+
+          // ローカルストレージに保存（オプション）
+          localStorage.setItem('cognitoIdToken', idToken);
+        },
+
+        onFailure: (err) => {
+          console.error('Login error:', err);
+
+          result.style.display = 'block';
+          result.className = 'result error';
+          document.getElementById('resultTitle').textContent = '❌ ログイン失敗';
+          document.getElementById('userInfo').style.display = 'none';
+          document.getElementById('tokenContainer').style.display = 'none';
+
+          let errorMsg = err.message || 'ログインに失敗しました';
+
+          // エラーメッセージを日本語化
+          if (errorMsg.includes('Incorrect username or password')) {
+            errorMsg = 'ユーザー名またはパスワードが間違っています';
+          } else if (errorMsg.includes('User does not exist')) {
+            errorMsg = 'ユーザーが存在しません';
+          } else if (errorMsg.includes('User is not confirmed')) {
+            errorMsg = 'ユーザーが確認されていません';
+          }
+
+          document.getElementById('errorMessage').textContent = errorMsg;
+
+          // ボタンを元に戻す
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = 'ログイン';
+        }
+      });
+    });
+
+    function parseJwt(token) {
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+      } catch (e) {
+        console.error('Failed to parse JWT:', e);
+        return {};
+      }
+    }
+
+    function copyToken() {
+      const tokenText = currentIdToken;
+
+      // クリップボードにコピー
+      navigator.clipboard.writeText(tokenText).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = '✅ コピーしました!';
+        btn.style.background = '#66bb6a';
+
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = '#4caf50';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy:', err);
+        alert('コピーに失敗しました。手動でコピーしてください。');
+      });
+    }
+
+    function openSwagger() {
+      // Swagger UIを新しいタブで開く
+      window.open('/api-docs', '_blank');
+    }
+
+    // ページ読み込み時に保存されたトークンをチェック
+    window.addEventListener('load', () => {
+      const savedToken = localStorage.getItem('cognitoIdToken');
+      if (savedToken) {
+        try {
+          const payload = parseJwt(savedToken);
+          const exp = payload.exp * 1000;
+
+          if (exp > Date.now()) {
+            console.log('保存されたトークンが有効です');
+            // 必要に応じてトークンを表示
+          } else {
+            console.log('保存されたトークンの有効期限が切れています');
+            localStorage.removeItem('cognitoIdToken');
+          }
+        } catch (e) {
+          console.error('Failed to parse saved token:', e);
+          localStorage.removeItem('cognitoIdToken');
+        }
+      }
+    });
+  </script>
+</body>
+</html>

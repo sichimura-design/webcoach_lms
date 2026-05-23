@@ -1,0 +1,26 @@
+{
+  "name": "moodle-spa-bff-tests",
+  "version": "1.0.0",
+  "description": "BFF Integration Tests",
+  "private": true,
+  "scripts": {
+    "test": "jest --runInBand",
+    "test:verbose": "jest --runInBand --verbose",
+    "test:coverage": "jest --runInBand --coverage"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.2.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 10000,
+    "testMatch": [
+      "**/*.test.js"
+    ],
+    "modulePaths": [
+      "/home/kanegae100860/moodle-spa/bff-server/node_modules"
+    ],
+    "verbose": true
+  }
+}

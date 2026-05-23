@@ -1,0 +1,181 @@
+{
+  "/uat-SpaStack": [
+    {
+      "type": "aws:cdk:stack-tags",
+      "data": [
+        {
+          "key": "Environment",
+          "value": "uat"
+        },
+        {
+          "key": "ManagedBy",
+          "value": "cdk-uat"
+        },
+        {
+          "key": "Project",
+          "value": "moodle-spa"
+        }
+      ]
+    }
+  ],
+  "/uat-SpaStack/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/uat-SpaStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 2
+    }
+  ],
+  "/uat-SpaStack/CloudFrontDomain": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CloudFrontDomain"
+    }
+  ],
+  "/uat-SpaStack/BucketName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BucketName"
+    }
+  ],
+  "/uat-SpaStack/DistributionId": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DistributionId"
+    }
+  ],
+  "/uat-SpaStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/uat-SpaStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/uat-SpaStack/SpaBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpaBucket48E1059F"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/uat-SpaStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    }
+  ],
+  "/uat-SpaStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    }
+  ],
+  "/uat-SpaStack/Distribution/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Distribution830FAC52"
+    }
+  ],
+  "/uat-SpaStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536"
+    }
+  ],
+  "/uat-SpaStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    }
+  ],
+  "/uat-SpaStack/SpaBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpaBucketPolicy77D96634"
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/uat-SpaStack/SpaBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpaBucketAutoDeleteObjectsCustomResourceDCF3398A"
+    }
+  ],
+  "/uat-SpaStack/ContentAuthFunction/Fn/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ContentAuthFunctionFnEA7FE155"
+    }
+  ],
+  "/uat-SpaStack/SpaDeployment/AwsCliLayer/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpaDeploymentAwsCliLayer0A2A7D9B"
+    }
+  ],
+  "/uat-SpaStack/SpaDeployment/CustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SpaDeploymentCustomResourceB63B8AFC"
+    }
+  ],
+  "/uat-SpaStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+    }
+  ],
+  "/uat-SpaStack/ContentAuthFunction/Fn/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ContentAuthFunctionFnServiceRole99A03BDC"
+    }
+  ],
+  "/uat-SpaStack/ContentAuthFunction/Fn/CurrentVersion/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ContentAuthFunctionFnCurrentVersionA41A2291869b2a1c768ae7466d7488fdc98fd9fe"
+    }
+  ],
+  "/uat-SpaStack/Distribution/Origin1/S3OriginAccessControl/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DistributionOrigin1S3OriginAccessControlEB606076"
+    }
+  ],
+  "/uat-SpaStack/Distribution/Origin2/S3OriginAccessControl/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DistributionOrigin2S3OriginAccessControlDC470594"
+    }
+  ],
+  "/uat-SpaStack/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF"
+    }
+  ]
+}

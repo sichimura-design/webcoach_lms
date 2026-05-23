@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvaが動画・SNS・マーケティングの武器になる理由 | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    max-width: 800px; margin: 0 auto; padding: 0 20px 80px;
+    background: #FAFAFA; -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .lesson-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 24px 0; border-top: 1px solid #E8E8E8; margin-top: 24px;
+  }
+  .lesson-nav a { text-decoration: none; font-size: 15px; }
+  .lesson-nav .prev { color: #999; }
+  .lesson-nav .next {
+    display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A);
+    color: #fff; font-weight: 700; padding: 12px 28px; border-radius: 8px;
+  }
+  @media (max-width: 600px) {
+    body { padding: 0 16px 60px; }
+    .card-grid { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+  }
+  .toc-sidebar {
+    position: fixed; top: 80px; right: max(calc((100vw - 780px) / 2 - 220px), 16px);
+    width: 200px; max-height: calc(100vh - 120px); overflow-y: auto;
+    background: #fff; border: 1px solid #E8E8E8; border-radius: 12px;
+    padding: 16px 18px; font-size: 13px; line-height: 1.6;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .toc-sidebar .toc-title { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.12em; margin-bottom: 10px; }
+  .toc-sidebar a {
+    display: block; color: #999; text-decoration: none; padding: 4px 0;
+    border-left: 2px solid transparent; padding-left: 10px; transition: all 0.2s;
+  }
+  .toc-sidebar a.active { color: #E85D4A; font-weight: 700; border-left-color: #E85D4A; }
+  .toc-sidebar a:hover { color: #E85D4A; }
+  @media (max-width: 1100px) { .toc-sidebar { display: none; } }
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div id="progressBar" style="position: fixed; top: 0; left: 0; width: 0%; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); z-index: 9999; transition: width 0.1s;"></div>
+
+<nav class="toc-sidebar" id="tocSidebar">
+  <div class="toc-title">目次</div>
+  <a href="#sec1">1. なぜ今Canvaなのか</a>
+  <a href="#sec2">2. 動画・SNS・マーケで活きる機能</a>
+  <a href="#sec3">3. このコースの全体像</a>
+</nav>
+
+
+<!-- ============================================================
+  レッスンヘッダー
+============================================================ -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 0-1</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">Canvaが動画・SNS・マーケティングの武器になる理由</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">対象：動画編集・SNS運用・マーケティングに興味がある方 ／ 所要時間：約15分</p>
+</div>
+
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 4px;">このレッスンのゴール</div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">マーケター/SNS運用者がCanvaを最初に学ぶメリットとコースの流れを説明できる</p>
+</div>
+
+
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li>なぜ今Canvaなのか — 選ばれる3つの理由</li>
+    <li>動画・SNS・マーケティングで活きるCanvaの機能</li>
+    <li>このコースの全体像と進め方</li>
+  </ol>
+</div>
+
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    SNS運用の案件を受注したあなた。<br>
+    クライアントから「Instagram投稿画像を来週までに5枚お願いします」と連絡が来ました。<br><br>
+    「デザインツールなんて使ったことないのに…」「Photoshopは高いし難しそう…」<br><br>
+    そんなとき、<strong class="accent">ブラウザを開くだけで、プロ品質のデザインが作れるツール</strong>があるとしたら？<br>
+    それが<strong class="accent">Canva</strong>です。テンプレートを選んで文字と画像を変えるだけで、<strong class="accent">最短10分で投稿画像が完成</strong>します。
+  </p>
+</div>
+
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>「Canvaはプロが使うツールじゃないのでは？」→ <strong class="accent">月間2億人以上が利用するビジネスツール</strong>です</li>
+    <li>「無料版で足りるの？」→ このコースの内容は<strong class="accent">ほぼすべて無料版で実践可能</strong>です</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  セクション 1: なぜ今Canvaなのか
+============================================================ -->
+<h2 class="section-heading" id="sec1">1. なぜ今Canvaなのか — 選ばれる3つの理由</h2>
+
+<p class="text-body">
+  デザインツールはたくさんあります。Photoshop、Illustrator、Figma…。でも、動画編集やSNS運用、マーケティングの仕事を<strong class="accent">最速で始めたい人にとって、Canvaが最適な理由</strong>が3つあります。
+</p>
+
+<!-- カード3枚 -->
+<div style="display: grid; grid-template-columns: 1fr; gap: 16px; margin: 24px 0;">
+  <div class="card">
+    <h3>理由① ブラウザだけで完結する</h3>
+    <p>インストール不要。PCでもスマホでも、ブラウザを開けばすぐに作業開始。クライアントとの共有もリンク1つで完了します。重いソフトのダウンロードを待つ時間はゼロです。</p>
+  </div>
+  <div class="card">
+    <h3>理由② テンプレートが25万点以上</h3>
+    <p>SNS投稿、YouTubeサムネイル、広告バナー、チラシ…。プロのデザイナーが作ったテンプレートを選んで、テキストと画像を差し替えるだけ。「デザインセンスがない」という悩みを、テンプレートが解決してくれます。</p>
+  </div>
+  <div class="card">
+    <h3>理由③ 動画編集までカバーする</h3>
+    <p>静止画だけでなく、Instagram リールやTikTok用のショート動画まで作成可能。テキストアニメーション、BGM追加、トランジションも搭載。簡易的な動画なら、別の編集ソフトが不要になります。</p>
+  </div>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>Canvaは「デザイナーのためのツール」ではなく、<strong class="accent">「デザインが必要なすべての人のためのツール」</strong>です。マーケター、SNS運用者、動画クリエイター——デザイン以外が本業の人にこそ、大きな武器になります。</p>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">SNS運用の案件を受注しました。クライアントに「Instagram投稿画像を5枚作ってほしい」と言われたとき、Canvaを使う最大のメリットは？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. 他のツールより画質が高い</button>
+    <button class="quiz-opt" data-correct="true">B. テンプレートを使って短時間でプロ品質のデザインが作れる</button>
+    <button class="quiz-opt" data-correct="false">C. 完全無料ですべての機能が使える</button>
+    <button class="quiz-opt" data-correct="false">D. コードを書いてカスタマイズできる</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> Canvaの最大の強みは、25万点以上のテンプレートをベースに、テキストと画像を変更するだけでプロ品質のデザインが作れることです。「ゼロからデザインする力」がなくても、すぐに実務レベルのアウトプットが出せます。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>「デザインツール、何を使えばいい？」とクライアントや友人に聞かれたとき、「まずCanvaから始めるのがおすすめ」と自信を持って答えられるようになります。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 2: 動画・SNS・マーケティングで活きるCanvaの機能
+============================================================ -->
+<h2 class="section-heading" id="sec2">2. 動画・SNS・マーケティングで活きるCanvaの機能</h2>
+
+<p class="text-body">
+  Canvaには数え切れないほどの機能がありますが、動画編集・SNS運用・マーケティングの仕事で<strong class="accent">特に活きる機能</strong>を4つに絞って紹介します。
+</p>
+
+<!-- インフォグラフィック プレースホルダー -->
+<div style="margin: 24px 0;">
+  <img src="../../../../images/01_canva-video-sns/ch0/ig-01_canva-field-map.png" alt="Canvaが活きる4つの分野 — SNS投稿・動画編集・広告バナー・印刷物のすべてをCanva 1つで完結"
+       style="width: 100%; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+</div>
+
+<!-- テーブル: 分野×Canva機能 -->
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">分野</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">作れるもの</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">Canvaで活きる機能</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">SNS投稿</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">Instagram・X投稿画像</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">テンプレート、ブランドキット、リサイズ</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">動画編集</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">リール・TikTok・YouTube</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">動画エディタ、BGM、アニメーション</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">広告バナー</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">Google広告・SNS広告用</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">サイズプリセット、一括リサイズ</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; font-weight: 700;">印刷物</td>
+        <td style="padding: 12px 16px;">チラシ・フライヤー</td>
+        <td style="padding: 12px 16px;">PDF書き出し（トリムマーク対応）</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="text-body">
+  注目すべきは、これらが<strong class="accent">すべて1つのツール内で完結する</strong>こと。「SNS画像はCanvaで、動画はPremiere Proで、バナーはPhotoshopで…」と複数のツールを使い分ける必要がありません。
+</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>Canvaは「1つのツールでSNS・動画・マーケ素材すべてをカバーできる」のが最大の強み。<strong class="accent">ツールの使い分けに悩む時間をゼロにして、クリエイティブに集中</strong>できます。</p>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">マーケティング会社から「Instagram投稿画像とリール動画とチラシを作ってほしい」と依頼されました。Canvaを使う場合、いくつのツールが必要？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="true">A. Canva 1つで完結する</button>
+    <button class="quiz-opt" data-correct="false">B. Canva＋動画編集ソフトの2つ</button>
+    <button class="quiz-opt" data-correct="false">C. Canva＋動画編集ソフト＋印刷用ソフトの3つ</button>
+    <button class="quiz-opt" data-correct="false">D. Canvaでは印刷物は作れないので別ツールが必要</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> Canvaは静止画デザイン・動画編集・印刷物（PDF書き出し）まですべて対応しています。1つのツール内で「SNS投稿→リール動画→チラシ」をシームレスに制作できるのが、マーケター・SNS運用者にとっての大きなメリットです。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>フリーランスとしてSNS運用+広告バナー制作をセットで受注する場面。「画像も動画もバナーもCanvaで一貫して対応できます」と提案できれば、クライアントからの信頼度が上がります。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 3: このコースの全体像と進め方
+============================================================ -->
+<h2 class="section-heading" id="sec3">3. このコースの全体像と進め方</h2>
+
+<p class="text-body">
+  このCanva教材は<strong class="accent">全7チャプター・27レッスン</strong>で構成されています。基本操作から始まり、SNS画像→動画→マーケ素材→ブランドキット→ポートフォリオと、段階的にスキルを積み上げていきます。
+</p>
+
+<!-- フロー図: コース全体の流れ -->
+<div style="display: flex; align-items: center; justify-content: center; gap: 0; margin: 28px 0; flex-wrap: wrap;">
+  <div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); border-radius: 12px; padding: 14px 16px; text-align: center; min-width: 90px;">
+    <div style="font-size: 13px; font-weight: 700; color: #fff;">Ch.0-1</div>
+    <div style="font-size: 11px; color: rgba(255,255,255,0.85);">導入・基本</div>
+  </div>
+  <div style="color: #E85D4A; font-size: 20px; font-weight: 700; padding: 0 6px;">&raquo;</div>
+  <div style="background: #FAE8E0; border-radius: 12px; padding: 14px 16px; text-align: center; min-width: 90px;">
+    <div style="font-size: 13px; font-weight: 700; color: #3D3D3D;">Ch.2-3</div>
+    <div style="font-size: 11px; color: #999;">SNS・動画</div>
+  </div>
+  <div style="color: #E85D4A; font-size: 20px; font-weight: 700; padding: 0 6px;">&raquo;</div>
+  <div style="background: #FAE8E0; border-radius: 12px; padding: 14px 16px; text-align: center; min-width: 90px;">
+    <div style="font-size: 13px; font-weight: 700; color: #3D3D3D;">Ch.4</div>
+    <div style="font-size: 11px; color: #999;">マーケ素材</div>
+  </div>
+  <div style="color: #E85D4A; font-size: 20px; font-weight: 700; padding: 0 6px;">&raquo;</div>
+  <div style="background: #FAE8E0; border-radius: 12px; padding: 14px 16px; text-align: center; min-width: 90px;">
+    <div style="font-size: 13px; font-weight: 700; color: #3D3D3D;">Ch.5-6</div>
+    <div style="font-size: 11px; color: #999;">応用・実践</div>
+  </div>
+</div>
+
+<!-- テーブル: 全チャプター一覧 -->
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">チャプター</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">テーマ</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">作れるようになるもの</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">Ch.0 導入</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">なぜCanvaから始めるのか</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">—（全体像の理解）</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">Ch.1 基本操作</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">Canvaの基本操作をマスター</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">テンプレートを使った基本デザイン</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">Ch.2 SNS画像</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">SNS投稿画像を作る</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">Instagram・X用の投稿画像</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">Ch.3 動画</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">動画コンテンツを作る</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">ショート動画・YouTubeサムネイル</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">Ch.4 マーケ素材</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">マーケティング素材を作る</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">広告バナー・チラシ</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">Ch.5 応用</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">ブランドキット・AI・コラボ</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">ブランドキット設定・AI素材</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-weight: 700;">Ch.6 実践</td>
+        <td style="padding: 12px 16px;">ポートフォリオ制作</td>
+        <td style="padding: 12px 16px;">ポートフォリオ一式</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="text-body">
+  <strong class="accent">この教材を終えるころには、フリーランスとしてSNS運用・動画制作・マーケティング支援の仕事で使えるCanvaスキルが身についています。</strong>さらに、ポートフォリオも完成しているので、すぐに営業活動に移れます。
+</p>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>各レッスンには<strong class="accent">実際に手を動かすパート</strong>があります。「読むだけ」で終わらせず、必ずCanvaを開いて一緒に操作してください。手を動かした分だけスキルが定着します。</p>
+</div>
+
+<!-- 確認クイズ #3 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">この教材の最終チャプター（Ch.6）で完成させるものは？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. Canvaの使い方マニュアル</button>
+    <button class="quiz-opt" data-correct="false">B. SNS投稿100枚セット</button>
+    <button class="quiz-opt" data-correct="true">C. フリーランスとして見せるポートフォリオ一式</button>
+    <button class="quiz-opt" data-correct="false">D. Canva Proの有料プラン契約</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> この教材のゴールは「学んで終わり」ではなく、<strong>実際に仕事で使えるポートフォリオを完成させること</strong>です。Ch.2〜Ch.4で作った成果物をブラッシュアップし、Ch.6でポートフォリオとして整えます。教材を終えた瞬間から営業活動をスタートできる状態を目指します。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>「どこまでやれば仕事を受けられるレベルになる？」と不安に思ったとき、このコース全体の流れを見返してください。ゴールまでの道のりが明確にわかり、「あと何レッスンで到達できる」と見通しが立ちます。</p>
+</div>
+
+
+<!-- ============================================================
+  まとめ
+============================================================ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">Canvaが選ばれる理由</strong> — ブラウザ完結、25万点超のテンプレート、動画編集まで対応</li>
+    <li><strong style="color: #3D3D3D;">動画・SNS・マーケで活きる</strong> — SNS投稿・動画・バナー・印刷物をすべて1つのツールでカバー</li>
+    <li><strong style="color: #3D3D3D;">コースのゴール</strong> — 全7チャプターで基礎→実践→ポートフォリオまで。教材完了＝営業開始できる状態</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  理解度チェック（トグル式 — 2層構造）
+============================================================ -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">Canvaが動画・SNS・マーケ分野の人に向いている理由を3つ挙げられる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">①ブラウザだけで完結する（インストール不要）②25万点以上のテンプレートでデザイン経験不要 ③動画編集まで1つのツールで対応できる の3つです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">Canvaで作れるもの（SNS画像・動画・バナー・印刷物）を把握した</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">SNS投稿画像（Instagram・X）、ショート動画（リール・TikTok）、YouTubeサムネイル、広告バナー、チラシ・フライヤーなど。すべてCanva内で完結することがポイントです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">コースの全体構成（Ch.0〜6）を把握した</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">Ch.0 導入 → Ch.1 基本操作 → Ch.2 SNS画像 → Ch.3 動画 → Ch.4 マーケ素材 → Ch.5 応用（ブランドキット・AI） → Ch.6 ポートフォリオ の7チャプター構成。最終的にポートフォリオが完成する流れです。</div>
+    </details>
+
+  </div>
+</details>
+
+
+<!-- ============================================================
+  ナビゲーション
+============================================================ -->
+<div class="lesson-nav">
+  <span class="prev" style="color: #ccc;">（最初のレッスン）</span>
+  <a href="lesson-02.html" class="next">Canvaアカウントを作成する &rarr;</a>
+</div>
+
+
+<!-- ============================================================
+  JavaScript
+============================================================ -->
+<script>
+// Scroll Progress Bar
+window.addEventListener('scroll', function() {
+  var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  var scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  var progress = (scrollTop / scrollHeight) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+});
+
+// Inline Quiz
+document.querySelectorAll('.inline-quiz').forEach(function(quiz) {
+  var options = quiz.querySelectorAll('.quiz-opt');
+  var feedback = quiz.querySelector('.quiz-feedback');
+  var answered = false;
+  options.forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      if (answered) return;
+      answered = true;
+      var isCorrect = opt.dataset.correct === 'true';
+      options.forEach(function(o) {
+        o.style.pointerEvents = 'none';
+        o.style.opacity = '0.6';
+        o.classList.add('answered');
+        if (o.dataset.correct === 'true') {
+          o.style.borderColor = '#4CAF50';
+          o.style.background = '#E8F5E9';
+          o.style.opacity = '1';
+          o.style.color = '#2E7D32';
+        }
+      });
+      if (!isCorrect) {
+        opt.style.borderColor = '#E85D4A';
+        opt.style.background = '#FFF3F0';
+        opt.style.color = '#C62828';
+        opt.style.opacity = '1';
+      }
+      feedback.style.display = 'block';
+      feedback.style.background = isCorrect ? '#E8F5E9' : '#FFF3E0';
+      feedback.style.borderLeft = '4px solid ' + (isCorrect ? '#4CAF50' : '#E85D4A');
+    });
+  });
+});
+
+// TOC Sidebar Scroll Highlight
+(function() {
+  var secs = document.querySelectorAll('h2[id]');
+  var links = document.querySelectorAll('.toc-sidebar a');
+  if (!secs.length || !links.length) return;
+  window.addEventListener('scroll', function() {
+    var current = '';
+    secs.forEach(function(s) { if (s.getBoundingClientRect().top <= 120) current = s.id; });
+    links.forEach(function(a) {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

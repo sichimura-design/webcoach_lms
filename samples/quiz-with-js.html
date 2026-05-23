@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML/CSS基礎クイズ（JS あり）</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: #FAF8F4;
+      color: #4B3A33;
+      line-height: 1.8;
+      padding: 40px 20px;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    h1 {
+      font-size: 22px;
+      color: #E86D78;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #7E6E68;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #C2B9B3;
+    }
+
+    /* --- 問題カード --- */
+    .question {
+      background: #fff;
+      border: 1px solid #F0EAE6;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      transition: border-color 0.3s;
+    }
+    .question.answered-correct { border-color: #6BBF8A; }
+    .question.answered-wrong { border-color: #E86D78; }
+
+    .question h2 {
+      font-size: 16px;
+      color: #4B3A33;
+      margin-bottom: 16px;
+    }
+    .question h2 .q-number {
+      display: inline-block;
+      background: linear-gradient(135deg, #E86D78, #FA9262);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* 選択肢ボタン */
+    .choices { display: flex; flex-direction: column; gap: 8px; }
+    .choice-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border: 1px solid #F0EAE6;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      font-family: inherit;
+      color: #4B3A33;
+      text-align: left;
+      width: 100%;
+    }
+    .choice-btn:hover:not(:disabled) {
+      background: #FFF7F5;
+      border-color: #E86D78;
+    }
+    .choice-btn:disabled { cursor: default; opacity: 0.7; }
+    .choice-btn .choice-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid #C2B9B3;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .choice-btn.selected .choice-label {
+      background: #E86D78;
+      border-color: #E86D78;
+      color: #fff;
+    }
+    .choice-btn.correct {
+      background: #EAFBE7;
+      border-color: #6BBF8A;
+    }
+    .choice-btn.correct .choice-label {
+      background: #6BBF8A;
+      border-color: #6BBF8A;
+      color: #fff;
+    }
+    .choice-btn.wrong {
+      background: #FFEDED;
+      border-color: #E86D78;
+    }
+    .choice-btn.wrong .choice-label {
+      background: #E86D78;
+      border-color: #E86D78;
+      color: #fff;
+    }
+
+    /* フィードバック */
+    .feedback {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.7;
+      display: none;
+    }
+    .feedback.show { display: block; }
+    .feedback.correct-fb {
+      background: #EAFBE7;
+      border-left: 4px solid #6BBF8A;
+      color: #2D6A3F;
+    }
+    .feedback.wrong-fb {
+      background: #FFEDED;
+      border-left: 4px solid #E86D78;
+      color: #9B2C2C;
+    }
+    .feedback .fb-icon { font-size: 18px; margin-right: 6px; }
+
+    /* コードブロック */
+    .code-block {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+    .code-block .tag { color: #569cd6; }
+
+    /* --- スコアボード --- */
+    .scoreboard {
+      background: linear-gradient(135deg, #E86D78, #FA9262);
+      color: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      margin-bottom: 24px;
+      display: none;
+    }
+    .scoreboard.show { display: block; }
+    .scoreboard h2 { font-size: 20px; margin-bottom: 8px; }
+    .score-number {
+      font-size: 56px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+    .score-number span { font-size: 24px; font-weight: 400; }
+    .score-message {
+      font-size: 14px;
+      margin-top: 8px;
+      opacity: 0.9;
+    }
+
+    /* プログレスバー */
+    .progress-bar {
+      background: #F0EAE6;
+      border-radius: 20px;
+      height: 8px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: linear-gradient(90deg, #E86D78, #FA9262);
+      height: 100%;
+      border-radius: 20px;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+    .progress-text {
+      font-size: 12px;
+      color: #7E6E68;
+      text-align: right;
+      margin-bottom: 6px;
+    }
+
+    /* リトライボタン */
+    .retry-btn {
+      display: none;
+      margin: 24px auto 0;
+      padding: 12px 32px;
+      background: linear-gradient(135deg, #E86D78, #FA9262);
+      color: #fff;
+      border: none;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .retry-btn:hover { opacity: 0.85; }
+    .retry-btn.show { display: block; }
+
+    /* フッター */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #7E6E68;
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid #F0EAE6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>HTML/CSS 基礎クイズ</h1>
+    <p class="subtitle">選択肢をクリックすると即座に正誤がわかります（全5問）</p>
+
+    <!-- プログレス -->
+    <p class="progress-text" id="progressText">0 / 5 問回答</p>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+    <!-- スコアボード（全問回答後に表示） -->
+    <div class="scoreboard" id="scoreboard">
+      <h2>クイズ結果</h2>
+      <div class="score-number"><span id="scoreNum">0</span><span> / 5</span></div>
+      <p class="score-message" id="scoreMessage"></p>
+    </div>
+
+    <!-- Q1 -->
+    <div class="question" id="q1" data-answer="c">
+      <h2><span class="q-number">1</span>HTMLで段落を表すタグはどれ？</h2>
+      <div class="choices">
+        <button class="choice-btn" data-value="a"><span class="choice-label">A</span>&lt;div&gt;</button>
+        <button class="choice-btn" data-value="b"><span class="choice-label">B</span>&lt;span&gt;</button>
+        <button class="choice-btn" data-value="c"><span class="choice-label">C</span>&lt;p&gt;</button>
+        <button class="choice-btn" data-value="d"><span class="choice-label">D</span>&lt;br&gt;</button>
+      </div>
+      <div class="feedback correct-fb"><span class="fb-icon">&#x2705;</span>正解！ <code>&lt;p&gt;</code> は "paragraph" の略で、段落を表すブロックレベル要素です。</div>
+      <div class="feedback wrong-fb"><span class="fb-icon">&#x274C;</span>不正解。正解は <strong>C</strong> の <code>&lt;p&gt;</code> です。"paragraph"（段落）の略です。</div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question" id="q2" data-answer="c">
+      <h2><span class="q-number">2</span>CSSで文字色を赤にする正しい書き方は？</h2>
+      <div class="choices">
+        <button class="choice-btn" data-value="a"><span class="choice-label">A</span>font-color: red;</button>
+        <button class="choice-btn" data-value="b"><span class="choice-label">B</span>text-color: red;</button>
+        <button class="choice-btn" data-value="c"><span class="choice-label">C</span>color: red;</button>
+        <button class="choice-btn" data-value="d"><span class="choice-label">D</span>foreground: red;</button>
+      </div>
+      <div class="feedback correct-fb"><span class="fb-icon">&#x2705;</span>正解！ CSSで文字色を指定するプロパティは <code>color</code> です。</div>
+      <div class="feedback wrong-fb"><span class="fb-icon">&#x274C;</span>不正解。正解は <strong>C</strong> の <code>color: red;</code> です。<code>font-color</code> や <code>text-color</code> は存在しません。</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question" id="q3" data-answer="b">
+      <h2><span class="q-number">3</span>次のコードの表示結果は？</h2>
+      <div class="code-block">
+        <span class="tag">&lt;ul&gt;</span><br>
+        &nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>りんご<span class="tag">&lt;/li&gt;</span><br>
+        &nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>みかん<span class="tag">&lt;/li&gt;</span><br>
+        <span class="tag">&lt;/ul&gt;</span>
+      </div>
+      <div class="choices">
+        <button class="choice-btn" data-value="a"><span class="choice-label">A</span>1. りんご 2. みかん（番号付き）</button>
+        <button class="choice-btn" data-value="b"><span class="choice-label">B</span>・りんご ・みかん（箇条書き）</button>
+        <button class="choice-btn" data-value="c"><span class="choice-label">C</span>りんご みかん（横並び）</button>
+        <button class="choice-btn" data-value="d"><span class="choice-label">D</span>エラーになる</button>
+      </div>
+      <div class="feedback correct-fb"><span class="fb-icon">&#x2705;</span>正解！ <code>&lt;ul&gt;</code> は "unordered list"（順序なしリスト）で、黒丸の箇条書きになります。</div>
+      <div class="feedback wrong-fb"><span class="fb-icon">&#x274C;</span>不正解。正解は <strong>B</strong> です。<code>&lt;ul&gt;</code> は順序なしリスト（箇条書き）です。番号付きにしたい場合は <code>&lt;ol&gt;</code> を使います。</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question" id="q4" data-answer="b">
+      <h2><span class="q-number">4</span>CSSの <code>margin</code> と <code>padding</code> の違いは？</h2>
+      <div class="choices">
+        <button class="choice-btn" data-value="a"><span class="choice-label">A</span>margin は内側、padding は外側の余白</button>
+        <button class="choice-btn" data-value="b"><span class="choice-label">B</span>margin は外側、padding は内側の余白</button>
+        <button class="choice-btn" data-value="c"><span class="choice-label">C</span>どちらも同じ意味で使える</button>
+        <button class="choice-btn" data-value="d"><span class="choice-label">D</span>margin は横方向、padding は縦方向の余白</button>
+      </div>
+      <div class="feedback correct-fb"><span class="fb-icon">&#x2705;</span>正解！ <code>margin</code> は要素の外側、<code>padding</code> は要素の内側の余白です。</div>
+      <div class="feedback wrong-fb"><span class="fb-icon">&#x274C;</span>不正解。正解は <strong>B</strong> です。<code>margin</code> = 外側の余白、<code>padding</code> = 内側の余白です。</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question" id="q5" data-answer="b">
+      <h2><span class="q-number">5</span>画像を表示するHTMLタグの正しい書き方は？</h2>
+      <div class="choices">
+        <button class="choice-btn" data-value="a"><span class="choice-label">A</span>&lt;image src="photo.jpg"&gt;</button>
+        <button class="choice-btn" data-value="b"><span class="choice-label">B</span>&lt;img src="photo.jpg" alt="写真"&gt;</button>
+        <button class="choice-btn" data-value="c"><span class="choice-label">C</span>&lt;pic href="photo.jpg"&gt;</button>
+        <button class="choice-btn" data-value="d"><span class="choice-label">D</span>&lt;img href="photo.jpg"&gt;</button>
+      </div>
+      <div class="feedback correct-fb"><span class="fb-icon">&#x2705;</span>正解！ 画像は <code>&lt;img&gt;</code> タグ + <code>src</code> 属性で指定します。<code>alt</code> はアクセシビリティ上も必須です。</div>
+      <div class="feedback wrong-fb"><span class="fb-icon">&#x274C;</span>不正解。正解は <strong>B</strong> です。画像は <code>&lt;img src="..." alt="..."&gt;</code> で表示します。<code>href</code> ではなく <code>src</code> です。</div>
+    </div>
+
+    <!-- リトライ -->
+    <button class="retry-btn" id="retryBtn" onclick="resetQuiz()">もう一度チャレンジ</button>
+
+    <div class="footer">2024 &copy; WEBCOACH — HTML/CSS 基礎クイズ</div>
+  </div>
+
+  <script>
+    const totalQuestions = 5;
+    let answered = 0;
+    let correctCount = 0;
+
+    // 各問題のクリックイベント
+    document.querySelectorAll('.question').forEach(function(question) {
+      var buttons = question.querySelectorAll('.choice-btn');
+      var answer = question.dataset.answer;
+      var feedbacks = question.querySelectorAll('.feedback');
+      var correctFb = feedbacks[0];
+      var wrongFb = feedbacks[1];
+
+      buttons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          // 既に回答済みならスキップ
+          if (question.classList.contains('answered-correct') ||
+              question.classList.contains('answered-wrong')) return;
+
+          var selected = btn.dataset.value;
+          var isCorrect = selected === answer;
+
+          // 全ボタンを無効化
+          buttons.forEach(function(b) { b.disabled = true; });
+
+          // 選択したボタンにスタイル
+          btn.classList.add('selected');
+
+          // 正解ボタンをハイライト
+          buttons.forEach(function(b) {
+            if (b.dataset.value === answer) b.classList.add('correct');
+          });
+
+          if (isCorrect) {
+            question.classList.add('answered-correct');
+            correctFb.classList.add('show');
+            correctCount++;
+          } else {
+            btn.classList.add('wrong');
+            question.classList.add('answered-wrong');
+            wrongFb.classList.add('show');
+          }
+
+          answered++;
+          updateProgress();
+
+          if (answered === totalQuestions) showScore();
+        });
+      });
+    });
+
+    function updateProgress() {
+      var pct = (answered / totalQuestions) * 100;
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressText').textContent = answered + ' / ' + totalQuestions + ' 問回答';
+    }
+
+    function showScore() {
+      var scoreboard = document.getElementById('scoreboard');
+      var scoreNum = document.getElementById('scoreNum');
+      var scoreMessage = document.getElementById('scoreMessage');
+      var retryBtn = document.getElementById('retryBtn');
+
+      scoreNum.textContent = correctCount;
+
+      if (correctCount === totalQuestions) {
+        scoreMessage.textContent = 'パーフェクト！素晴らしい！';
+      } else if (correctCount >= 4) {
+        scoreMessage.textContent = '惜しい！もう少しで満点です！';
+      } else if (correctCount >= 3) {
+        scoreMessage.textContent = 'よくできました！復習して満点を目指しましょう。';
+      } else {
+        scoreMessage.textContent = 'もう一度教材を読んで再チャレンジしましょう！';
+      }
+
+      scoreboard.classList.add('show');
+      retryBtn.classList.add('show');
+
+      // スコアボードまでスクロール
+      scoreboard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function resetQuiz() {
+      answered = 0;
+      correctCount = 0;
+
+      document.querySelectorAll('.question').forEach(function(q) {
+        q.classList.remove('answered-correct', 'answered-wrong');
+        q.querySelectorAll('.choice-btn').forEach(function(btn) {
+          btn.disabled = false;
+          btn.classList.remove('selected', 'correct', 'wrong');
+        });
+        q.querySelectorAll('.feedback').forEach(function(fb) {
+          fb.classList.remove('show');
+        });
+      });
+
+      document.getElementById('scoreboard').classList.remove('show');
+      document.getElementById('retryBtn').classList.remove('show');
+      updateProgress();
+
+      // ページトップにスクロール
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

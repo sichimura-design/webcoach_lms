@@ -1,0 +1,69 @@
+{
+  "availability-zones:account=822824391912:region=ap-northeast-1": [
+    "ap-northeast-1a",
+    "ap-northeast-1c",
+    "ap-northeast-1d"
+  ],
+  "vpc-provider:account=822824391912:filter.vpc-id=vpc-078369fe5efc5e688:region=ap-northeast-1:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-078369fe5efc5e688",
+    "vpcCidrBlock": "10.0.0.0/16",
+    "ownerAccountId": "822824391912",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "Public",
+        "type": "Public",
+        "subnets": [
+          {
+            "subnetId": "subnet-0240b0fd06135309e",
+            "cidr": "10.0.0.0/24",
+            "availabilityZone": "ap-northeast-1a",
+            "routeTableId": "rtb-0c75170c752b109eb"
+          },
+          {
+            "subnetId": "subnet-00ba77e2f92fcc729",
+            "cidr": "10.0.1.0/24",
+            "availabilityZone": "ap-northeast-1c",
+            "routeTableId": "rtb-06541d07e1d3aae33"
+          }
+        ]
+      },
+      {
+        "name": "Isolated",
+        "type": "Isolated",
+        "subnets": [
+          {
+            "subnetId": "subnet-02113713afd7b20f1",
+            "cidr": "10.0.4.0/24",
+            "availabilityZone": "ap-northeast-1a",
+            "routeTableId": "rtb-0b6787a62f420790a"
+          },
+          {
+            "subnetId": "subnet-098c6bdec7cc35fc9",
+            "cidr": "10.0.5.0/24",
+            "availabilityZone": "ap-northeast-1c",
+            "routeTableId": "rtb-0e602e04a2bffbfb0"
+          }
+        ]
+      },
+      {
+        "name": "Private",
+        "type": "Private",
+        "subnets": [
+          {
+            "subnetId": "subnet-0e7f1fa0d21726744",
+            "cidr": "10.0.2.0/24",
+            "availabilityZone": "ap-northeast-1a",
+            "routeTableId": "rtb-09947a57547f2e658"
+          },
+          {
+            "subnetId": "subnet-05b02caacb269a381",
+            "cidr": "10.0.3.0/24",
+            "availabilityZone": "ap-northeast-1c",
+            "routeTableId": "rtb-00f0620592adc802f"
+          }
+        ]
+      }
+    ]
+  }
+}

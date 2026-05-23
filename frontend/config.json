@@ -1,0 +1,10 @@
+{
+  "ports": {
+    "frontend": 3000,
+    "directApi": 3004,
+    "mcpProxy": 3001
+  },
+  "notion": {
+    "apiVersion": "2022-06-28"
+  }
+}

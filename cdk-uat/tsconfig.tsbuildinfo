@@ -1,0 +1,1 @@
+{"root":["./bin/uat-app.ts","./lib/backend-stack.ts","./lib/ecr-stack.ts","./lib/spa-stack.ts","./lib/vpc-stack.ts","./test/rds-app.ts","./test/rds-stack.ts"],"version":"5.9.3"}

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML/CSS基礎クイズ（JS なし）</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', sans-serif;
+      background: #FAF8F4;
+      color: #4B3A33;
+      line-height: 1.8;
+      padding: 40px 20px;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    h1 {
+      font-size: 22px;
+      color: #E86D78;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 14px;
+      color: #7E6E68;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #C2B9B3;
+    }
+
+    /* --- 各問題 --- */
+    .question {
+      background: #fff;
+      border: 1px solid #F0EAE6;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .question h2 {
+      font-size: 16px;
+      color: #4B3A33;
+      margin-bottom: 16px;
+    }
+    .question h2 .q-number {
+      display: inline-block;
+      background: linear-gradient(135deg, #E86D78, #FA9262);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      width: 28px;
+      height: 28px;
+      line-height: 28px;
+      text-align: center;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* ラジオボタンを使った選択肢 */
+    .choices label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      margin-bottom: 8px;
+      border: 1px solid #F0EAE6;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-size: 14px;
+    }
+    .choices label:hover {
+      background: #FFF7F5;
+    }
+    .choices input[type="radio"] {
+      accent-color: #E86D78;
+      width: 18px;
+      height: 18px;
+    }
+
+    /* --- details/summary で正解を表示 --- */
+    .answer-reveal {
+      margin-top: 12px;
+    }
+    .answer-reveal summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #7E6E68;
+      cursor: pointer;
+      padding: 6px 16px;
+      border: 1px solid #C2B9B3;
+      border-radius: 20px;
+      background: #FAF8F4;
+      list-style: none;
+    }
+    .answer-reveal summary::-webkit-details-marker { display: none; }
+    .answer-reveal summary::before { content: "▶ "; font-size: 10px; }
+    .answer-reveal[open] summary::before { content: "▼ "; }
+
+    .answer-box {
+      margin-top: 12px;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .answer-box.correct {
+      background: #EAFBE7;
+      border-left: 4px solid #6BBF8A;
+    }
+    .answer-box .label {
+      font-weight: 700;
+      color: #3A8C5C;
+      margin-bottom: 4px;
+    }
+
+    /* --- コードブロック --- */
+    .code-block {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+    .code-block .tag { color: #569cd6; }
+    .code-block .attr { color: #9cdcfe; }
+    .code-block .val { color: #ce9178; }
+    .code-block .prop { color: #9cdcfe; }
+    .code-block .str { color: #ce9178; }
+
+    /* --- フッター --- */
+    .footer {
+      text-align: center;
+      font-size: 11px;
+      color: #7E6E68;
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid #F0EAE6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>HTML/CSS 基礎クイズ</h1>
+    <p class="subtitle">選択肢を選んだら「こたえを見る」で正解を確認しましょう（全5問）</p>
+
+    <!-- Q1 -->
+    <div class="question">
+      <h2><span class="q-number">1</span>HTMLで段落を表すタグはどれ？</h2>
+      <div class="choices">
+        <label><input type="radio" name="q1" value="a"> &lt;div&gt;</label>
+        <label><input type="radio" name="q1" value="b"> &lt;span&gt;</label>
+        <label><input type="radio" name="q1" value="c"> &lt;p&gt;</label>
+        <label><input type="radio" name="q1" value="d"> &lt;br&gt;</label>
+      </div>
+      <details class="answer-reveal">
+        <summary>こたえを見る</summary>
+        <div class="answer-box correct">
+          <div class="label">正解: C — &lt;p&gt;</div>
+          <code>&lt;p&gt;</code> は "paragraph" の略で、段落を表すブロックレベル要素です。
+        </div>
+      </details>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question">
+      <h2><span class="q-number">2</span>CSSで文字色を赤にする正しい書き方は？</h2>
+      <div class="choices">
+        <label><input type="radio" name="q2" value="a"> font-color: red;</label>
+        <label><input type="radio" name="q2" value="b"> text-color: red;</label>
+        <label><input type="radio" name="q2" value="c"> color: red;</label>
+        <label><input type="radio" name="q2" value="d"> foreground: red;</label>
+      </div>
+      <details class="answer-reveal">
+        <summary>こたえを見る</summary>
+        <div class="answer-box correct">
+          <div class="label">正解: C — color: red;</div>
+          CSSで文字色を指定するプロパティは <code>color</code> です。<code>font-color</code> や <code>text-color</code> は存在しません。
+        </div>
+      </details>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question">
+      <h2><span class="q-number">3</span>次のコードの表示結果は？</h2>
+      <div class="code-block">
+        <span class="tag">&lt;ul&gt;</span><br>
+        &nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>りんご<span class="tag">&lt;/li&gt;</span><br>
+        &nbsp;&nbsp;<span class="tag">&lt;li&gt;</span>みかん<span class="tag">&lt;/li&gt;</span><br>
+        <span class="tag">&lt;/ul&gt;</span>
+      </div>
+      <div class="choices">
+        <label><input type="radio" name="q3" value="a"> 1. りんご 2. みかん（番号付き）</label>
+        <label><input type="radio" name="q3" value="b"> ・りんご ・みかん（箇条書き）</label>
+        <label><input type="radio" name="q3" value="c"> りんご みかん（横並び）</label>
+        <label><input type="radio" name="q3" value="d"> エラーになる</label>
+      </div>
+      <details class="answer-reveal">
+        <summary>こたえを見る</summary>
+        <div class="answer-box correct">
+          <div class="label">正解: B — 箇条書き（黒丸付き）</div>
+          <code>&lt;ul&gt;</code> は "unordered list"（順序なしリスト）で、デフォルトでは黒丸（・）の箇条書きになります。番号付きにしたい場合は <code>&lt;ol&gt;</code> を使います。
+        </div>
+      </details>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question">
+      <h2><span class="q-number">4</span>CSSの <code>margin</code> と <code>padding</code> の違いは？</h2>
+      <div class="choices">
+        <label><input type="radio" name="q4" value="a"> margin は内側、padding は外側の余白</label>
+        <label><input type="radio" name="q4" value="b"> margin は外側、padding は内側の余白</label>
+        <label><input type="radio" name="q4" value="c"> どちらも同じ意味で使える</label>
+        <label><input type="radio" name="q4" value="d"> margin は横方向、padding は縦方向の余白</label>
+      </div>
+      <details class="answer-reveal">
+        <summary>こたえを見る</summary>
+        <div class="answer-box correct">
+          <div class="label">正解: B — margin は外側、padding は内側</div>
+          <code>margin</code> は要素の外側（他の要素との間）、<code>padding</code> は要素の内側（境界線とコンテンツの間）の余白です。
+        </div>
+      </details>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question">
+      <h2><span class="q-number">5</span>画像を表示するHTMLタグの正しい書き方は？</h2>
+      <div class="choices">
+        <label><input type="radio" name="q5" value="a"> &lt;image src="photo.jpg"&gt;</label>
+        <label><input type="radio" name="q5" value="b"> &lt;img src="photo.jpg" alt="写真"&gt;</label>
+        <label><input type="radio" name="q5" value="c"> &lt;pic href="photo.jpg"&gt;</label>
+        <label><input type="radio" name="q5" value="d"> &lt;img href="photo.jpg"&gt;</label>
+      </div>
+      <details class="answer-reveal">
+        <summary>こたえを見る</summary>
+        <div class="answer-box correct">
+          <div class="label">正解: B — &lt;img src="photo.jpg" alt="写真"&gt;</div>
+          画像は <code>&lt;img&gt;</code> タグで、<code>src</code> 属性に画像パスを指定します。<code>alt</code> 属性は画像が表示できない時の代替テキストで、アクセシビリティ上も必須です。
+        </div>
+      </details>
+    </div>
+
+    <div class="footer">2024 &copy; WEBCOACH — HTML/CSS 基礎クイズ</div>
+  </div>
+</body>
+</html>

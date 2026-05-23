@@ -1,0 +1,245 @@
+{
+ "Resources": {
+  "RdsSg7F9F43B6": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "RDS MySQL security group",
+    "GroupName": "uat-moodle-rds-sg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "255.255.255.255/32",
+      "Description": "Disallow all traffic",
+      "FromPort": 252,
+      "IpProtocol": "icmp",
+      "ToPort": 86
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "10.0.0.0/16",
+      "Description": "MySQL from VPC",
+      "FromPort": 3306,
+      "IpProtocol": "tcp",
+      "ToPort": 3306
+     }
+    ],
+    "VpcId": "vpc-078369fe5efc5e688"
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-RdsStack/RdsSg/Resource"
+   }
+  },
+  "DbSecret685A0FA5": {
+   "Type": "AWS::SecretsManager::Secret",
+   "Properties": {
+    "GenerateSecretString": {
+     "ExcludePunctuation": true,
+     "GenerateStringKey": "password",
+     "IncludeSpace": false,
+     "SecretStringTemplate": "{\"username\":\"moodleuser\"}"
+    },
+    "Name": "uat/moodle/db-credentials"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "uat-RdsStack/DbSecret/Resource"
+   }
+  },
+  "DbSecretAttachment0609CE05": {
+   "Type": "AWS::SecretsManager::SecretTargetAttachment",
+   "Properties": {
+    "SecretId": {
+     "Ref": "DbSecret685A0FA5"
+    },
+    "TargetId": {
+     "Ref": "DatabaseB269D8BB"
+    },
+    "TargetType": "AWS::RDS::DBInstance"
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-RdsStack/DbSecret/Attachment/Resource"
+   }
+  },
+  "MoodleParamGroup18ED190A": {
+   "Type": "AWS::RDS::DBParameterGroup",
+   "Properties": {
+    "Description": "Parameter group for mysql8.0",
+    "Family": "mysql8.0",
+    "Parameters": {
+     "character_set_server": "utf8mb4",
+     "collation_server": "utf8mb4_unicode_ci",
+     "max_connections": "200"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-RdsStack/MoodleParamGroup/Resource"
+   }
+  },
+  "DatabaseSubnetGroup7D60F180": {
+   "Type": "AWS::RDS::DBSubnetGroup",
+   "Properties": {
+    "DBSubnetGroupDescription": "Subnet group for Database database",
+    "SubnetIds": [
+     "subnet-02113713afd7b20f1",
+     "subnet-098c6bdec7cc35fc9"
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-RdsStack/Database/SubnetGroup/Default"
+   }
+  },
+  "DatabaseB269D8BB": {
+   "Type": "AWS::RDS::DBInstance",
+   "Properties": {
+    "AllocatedStorage": "20",
+    "BackupRetentionPeriod": 3,
+    "CopyTagsToSnapshot": true,
+    "DBInstanceClass": "db.t3.small",
+    "DBInstanceIdentifier": "uat-moodle-db",
+    "DBName": "moodle",
+    "DBParameterGroupName": {
+     "Ref": "MoodleParamGroup18ED190A"
+    },
+    "DBSubnetGroupName": {
+     "Ref": "DatabaseSubnetGroup7D60F180"
+    },
+    "DeletionProtection": false,
+    "Engine": "mysql",
+    "EngineVersion": "8.0",
+    "MasterUserPassword": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "DbSecret685A0FA5"
+       },
+       ":SecretString:password::}}"
+      ]
+     ]
+    },
+    "MasterUsername": {
+     "Fn::Join": [
+      "",
+      [
+       "{{resolve:secretsmanager:",
+       {
+        "Ref": "DbSecret685A0FA5"
+       },
+       ":SecretString:username::}}"
+      ]
+     ]
+    },
+    "MaxAllocatedStorage": 100,
+    "MultiAZ": false,
+    "PubliclyAccessible": false,
+    "StorageEncrypted": true,
+    "StorageType": "gp2",
+    "VPCSecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "RdsSg7F9F43B6",
+       "GroupId"
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Snapshot",
+   "DeletionPolicy": "Snapshot",
+   "Metadata": {
+    "aws:cdk:path": "uat-RdsStack/Database/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2WNwW7CQAxEv4X7xtAIDhxbkBCnVqR35GwGukA2yPaCqmj/HVHaitLT2M/PmpLK8ZhGAz5r4Zt9cQg19ZWx37sVtEvi4fis6x6+pL6CTxLscyFdOrrZJv4B2Sm8wLTlyFvIly+wb/E63eKdZQt7NmP/0SLeCY+X7KRR6t9YuIVBfovnLw9szsY1K5ZRjaOHq1IdYXcP/8CPmvN1f012TJZd7BrQToenckRPU5oMdhpCISlaaEGrW14APIIQjzcBAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "uat-RdsStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "DbEndpoint": {
+   "Description": "RDS MySQL endpoint",
+   "Value": {
+    "Fn::GetAtt": [
+     "DatabaseB269D8BB",
+     "Endpoint.Address"
+    ]
+   },
+   "Export": {
+    "Name": "uat-DbEndpoint"
+   }
+  },
+  "DbPort": {
+   "Description": "RDS MySQL port",
+   "Value": {
+    "Fn::GetAtt": [
+     "DatabaseB269D8BB",
+     "Endpoint.Port"
+    ]
+   },
+   "Export": {
+    "Name": "uat-DbPort"
+   }
+  },
+  "DbSecretArn": {
+   "Description": "Secrets Manager ARN for DB credentials",
+   "Value": {
+    "Ref": "DbSecret685A0FA5"
+   },
+   "Export": {
+    "Name": "uat-DbSecretArn"
+   }
+  },
+  "RdsSgId": {
+   "Description": "RDS security group ID",
+   "Value": {
+    "Fn::GetAtt": [
+     "RdsSg7F9F43B6",
+     "GroupId"
+    ]
+   },
+   "Export": {
+    "Name": "uat-RdsSgId"
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,12 @@
+username,course,role,group,enrolstatus
+yamada.taro,MATH101,student,,0
+yamada.taro,PROG301,student,,0
+tanaka.hanako,ENG201,student,グループA,0
+tanaka.hanako,MGT401,student,グループA,0
+suzuki.ichiro,MATH101,student,グループB,0
+suzuki.ichiro,DATA501,student,,0
+sato.yuki,PROG301,student,,0
+sato.yuki,DATA501,student,,0
+watanabe.kenji,ENG201,student,グループA,0
+watanabe.kenji,MGT401,student,グループA,0
+yamada.taro,MATH101,editingteacher,,0

@@ -1,0 +1,9 @@
+name,parent,idnumber,description,visible
+必修科目,0,CAT-REQUIRED,必修科目のカテゴリです,1
+選択科目,0,CAT-ELECTIVE,選択科目のカテゴリです,1
+基礎教養,1,CAT-REQUIRED-GENERAL,基礎教養科目,1
+専門基礎,1,CAT-REQUIRED-MAJOR,専門基礎科目,1
+ビジネス系,2,CAT-ELECTIVE-BIZ,ビジネス関連の選択科目,1
+IT系,2,CAT-ELECTIVE-IT,IT・プログラミング関連の選択科目,1
+語学系,2,CAT-ELECTIVE-LANG,語学関連の選択科目,1
+特別講座,0,CAT-SPECIAL,特別講座・セミナー,1
