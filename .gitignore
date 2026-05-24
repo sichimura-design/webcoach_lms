@@ -1,7 +1,8 @@
 # Environment variables
 .env
-.env.local
-.env.*.local
+.env.*
+!.env.example
+!.env.*.example
 
 # Node modules
 node_modules/
@@ -54,23 +55,8 @@ chromadb/
 !frontend/public/*.png
 
 # Documentation (non-essential)
-AI_IMPLEMENTATION.md
-API_ENDPOINTS_DESIGN.md
-ARCHITECTURE.md
-CLI_CATEGORY_UPLOAD.md
-DATABASE_DESIGN_DASHBOARD.md
-DATABASE_ER_DIAGRAM.md
-DEPLOYMENT.md
-DESIGN.md
-HIGH_DIFFICULTY_REQUIREMENTS.md
-MOODLE_*.md
-PROFILE_PAGE_IMPLEMENTATION.md
-QUICK_START_CATEGORY.md
-REQUIREMENTS.md
-USER_TRACKING_IMPLEMENTATION_GUIDE.md
-SECURITY.md
-SERVICE_CAPABILITIES.md
-SWAGGER.md
+*.md
+!**/README.md
 
 # Temporary files
 *.tmp
