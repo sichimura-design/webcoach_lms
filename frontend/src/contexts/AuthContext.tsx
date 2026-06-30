@@ -17,6 +17,7 @@ interface User {
   username: string;
   userid: number; // Moodle連携用（BFF JWT対応後に実値になる）
   isAdmin: boolean;
+  isCoach: boolean;
 }
 
 interface AuthContextType {
@@ -93,7 +94,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setNeedsNewPassword(false);
     setPendingCognitoUser(null);
 
-    const isAdmin = (result.groups || []).includes('admin');
+    const groups = result.groups || [];
+    const isAdmin = groups.includes('admin');
+    const isCoach = groups.includes('coach');
 
     // BFFからMoodleユーザー情報を取得
     let moodleUserId = 0;
@@ -106,6 +109,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         username: result.username,
         userid: moodleUserId,
         isAdmin,
+        isCoach,
       });
     } catch {
       // BFFが未対応の場合はCognito情報のみで設定
@@ -115,6 +119,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         username: result.username,
         userid: 0,
         isAdmin,
+        isCoach,
       });
     }
 

@@ -64,6 +64,10 @@ const CSV_TEMPLATES: Record<DataType, { filename: string; content: string }> = {
       '3,,0,1',
     ].join('\n'),
   },
+  'coach-mapping': {
+    filename: 'template_coach_mapping.csv',
+    content: '',
+  },
 };
 
 // ─── CSV カラム説明 ────────────────────────────────────────────────────────────
@@ -144,6 +148,7 @@ const CSV_FORMAT: Record<DataType, CsvColumn[]> = {
     { col: 'updateFlag', required: false, desc: '1 の場合、既存レコードを更新する（avatar_id必須）' },
     { col: 'deleteFlag', required: false, desc: '1 の場合、該当レコードを削除する（avatar_id必須）' },
   ],
+  'coach-mapping': [],
 };
 
 // ─── ページ設定 ───────────────────────────────────────────────────────────────
@@ -176,6 +181,10 @@ const dataTypeConfig: Record<DataType, { title: string; description: string }> =
   avatars: {
     title: 'アバター登録',
     description: 'ユーザーが選択できるアバター画像の一括登録・更新・削除を行います',
+  },
+  'coach-mapping': {
+    title: 'コーチ割り当て',
+    description: 'CSVからコーチと受講生のマッピングを一括登録します',
   },
 };
 

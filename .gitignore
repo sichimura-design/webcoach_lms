@@ -71,3 +71,13 @@ mcp.json
 
 # SSL certificates
 ssl/
+
+# Environment-specific CDK configs
+cdk-prod/
+cdk-uat/
+
+# GitHub Actions workflows
+.github/
+
+# Test suites
+tests/

@@ -11,12 +11,13 @@ import {
   AlignJustify,
   X,
   CheckCircle,
-  Menu,
-  Link,
+  RotateCcw,
   ExternalLink,
+  Menu,
   Bot,
   User,
 } from 'lucide-react';
+import Encoding from 'encoding-japanese';
 import MarkdownRenderer from './MarkdownRenderer';
 import { AppHeader } from './shared';
 
@@ -138,6 +139,30 @@ ${headStyles.join('\n')}
 <body>${cleanedBody}</body></html>`;
 }
 
+function buildSrcdocShiftJis(html: string): string {
+  const headStyles: string[] = [];
+  const bodyHtml = html.replace(
+    /(<style[^>]*>)([\s\S]*?)(<\/style>)/gi,
+    (_, open, css, close) => {
+      headStyles.push(`${open}${css}${close}`);
+      return '';
+    }
+  );
+  return `<!DOCTYPE html>
+<html lang="ja"><head><meta charset="shift-jis">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+${headStyles.join('\n')}
+<style>
+  div > br, nav > br, ul > br, ol > br, li > br { display: none !important; }
+  .toc-sidebar { display: none !important; }
+  #progressBar { display: none !important; }
+  .quiz-options { font-size: 0 !important; }
+  .quiz-options > * { font-size: revert !important; }
+</style>
+</head>
+<body>${bodyHtml}</body></html>`;
+}
+
 /** HTML文字列のh1〜h4に id を付与して返す */
 function addHeadingIds(html: string): string {
   let counter = 0;
@@ -186,7 +211,8 @@ type ContentAction =
   | { type: 'TOGGLE_SECTION'; sectionId: number }
   | { type: 'SET_PAGE_CONTENT'; html: string; toc: TocItem[] }
   | { type: 'SET_MARKDOWN'; content: string; loading: boolean }
-  | { type: 'CLEAR_CONTENT' };
+  | { type: 'CLEAR_CONTENT' }
+  | { type: 'SET_TOC'; toc: TocItem[] };
 
 const initialContentState: ContentState = {
   sections: [],
@@ -231,6 +257,8 @@ function contentReducer(state: ContentState, action: ContentAction): ContentStat
       return { ...state, markdownContent: action.content, loadingMarkdown: action.loading, processedHtml: '', pageToc: [] };
     case 'CLEAR_CONTENT':
       return { ...state, processedHtml: '', pageToc: [], markdownContent: '' };
+    case 'SET_TOC':
+      return { ...state, pageToc: action.toc };
     default:
       return state;
   }
@@ -262,12 +290,17 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   const [completing, setCompleting] = useState(false);
   const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
 
-  const handleComplete = async () => {
+  const handleToggleComplete = async (markAsComplete: boolean) => {
     if (!selectedModule || completing) return;
     setCompleting(true);
     try {
-      await bffClient.markActivityComplete(selectedModule.id);
-      const newCompletedIds = new Set(completedIds).add(selectedModule.id);
+      await bffClient.markActivityComplete(selectedModule.id, markAsComplete);
+      const newCompletedIds = new Set(completedIds);
+      if (markAsComplete) {
+        newCompletedIds.add(selectedModule.id);
+      } else {
+        newCompletedIds.delete(selectedModule.id);
+      }
       setCompletedIds(newCompletedIds);
 
       // resumeCourse を更新
@@ -281,18 +314,33 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
           progress_percent,
         }).catch(e => console.error('[ResumeCourse] Update failed:', e?.response?.data?.message ?? e));
 
-        // 次のモジュールへ遷移
-        const nextModule = allModules[allModules.findIndex(m => m.id === selectedModule.id) + 1];
-        if (nextModule) {
-          dispatch({ type: 'SELECT_MODULE', module: nextModule });
+        // 完了時のみ次のモジュールへ遷移
+        if (markAsComplete) {
+          const nextModule = allModules[allModules.findIndex(m => m.id === selectedModule.id) + 1];
+          if (nextModule) {
+            dispatch({ type: 'SELECT_MODULE', module: nextModule });
+          }
         }
       }
     } catch (e: any) {
       console.error('[Complete] Failed:', e?.response?.data?.message ?? e);
-      showToast('完了の記録に失敗しました。再度お試しください。', 'error');
+      showToast(markAsComplete ? '完了の記録に失敗しました。再度お試しください。' : '完了の取り消しに失敗しました。再度お試しください。', 'error');
     } finally {
       setCompleting(false);
     }
+  };
+
+  const openInNewTab = () => {
+    if (!selectedModule) return;
+    const html = processedHtml;
+    if (!html) return;
+    const fullHtml = buildSrcdocShiftJis(html);
+    const unicodeArray = Encoding.stringToCode(fullHtml);
+    const sjisArray = Encoding.convert(unicodeArray, { to: 'SJIS', from: 'UNICODE' });
+    const blob = new Blob([new Uint8Array(sjisArray)], { type: 'text/html; charset=shift-jis' });
+    const url = URL.createObjectURL(blob);
+    const win = window.open(url, '_blank');
+    if (win) win.addEventListener('load', () => URL.revokeObjectURL(url), { once: true });
   };
 
   // ─── URL コンテンツの事前チェック ─────────
@@ -392,49 +440,28 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     const iframe = iframeRef.current;
     if (!iframe) return;
     try {
-      const h = iframe.contentDocument?.documentElement?.scrollHeight;
+      const doc = iframe.contentDocument;
+      if (!doc) return;
+      const h = doc.documentElement?.scrollHeight;
       if (h) iframe.style.height = h + 'px';
+      // same-origin iframeからTOCを抽出（cross-originは catch で無視）
+      const headings = doc.querySelectorAll('h1, h2, h3, h4');
+      let counter = 0;
+      const toc: TocItem[] = Array.from(headings)
+        .map(el => {
+          if (!el.id) el.id = `toc-heading-${counter++}`;
+          return {
+            id: el.id,
+            text: el.textContent?.trim() ?? '',
+            level: parseInt(el.tagName[1], 10),
+          };
+        })
+        .filter(item => item.text.length > 0);
+      if (toc.length > 0) dispatch({ type: 'SET_TOC', toc });
     } catch { /* cross-origin の場合は何もしない */ }
   };
 
   const handleAiQuestion = () => sendAiMessage();
-
-  const handleOpenFullscreen = () => {
-    if (!selectedModule) return;
-    const contentType = getContentType(selectedModule);
-
-    if (contentType === 'page') {
-      const rawFallback = selectedModule.content ?? selectedModule.description ?? '';
-      const html = processedHtml || rawFallback;
-      const urlMatch = html.trim().match(/^(?:<[^>]+>\s*)*?(https?:\/\/[^\s<"']+?)(?:\s*<\/[^>]+>)*\s*$/i);
-      const extractedUrl = urlMatch?.[1];
-      if (extractedUrl) {
-        const src = contentToken
-          ? `${extractedUrl}${extractedUrl.includes('?') ? '&' : '?'}cf_token=${encodeURIComponent(contentToken)}`
-          : extractedUrl;
-        window.open(src, '_blank', 'noopener,noreferrer');
-      } else {
-        const srcdoc = buildSrcdoc(html);
-        const blob = new Blob([srcdoc], { type: 'text/html' });
-        const blobUrl = URL.createObjectURL(blob);
-        window.open(blobUrl, '_blank', 'noopener,noreferrer');
-      }
-      return;
-    }
-
-    if (contentType === 'url') {
-      const externalUrl = selectedModule.externalurl
-        ?? selectedModule.contents?.find(c => c.type === 'url')?.fileurl
-        ?? selectedModule.contents?.[0]?.fileurl;
-      if (externalUrl) window.open(externalUrl, '_blank', 'noopener,noreferrer');
-    }
-  };
-
-  const canOpenFullscreen = (() => {
-    if (!selectedModule) return false;
-    const ct = getContentType(selectedModule);
-    return ct === 'page' || ct === 'url';
-  })();
 
   // ─── コンテンツ描画 ───────────────────────
   const renderContent = () => {
@@ -476,7 +503,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
               onLoad={handleIframeLoad}
               title={selectedModule.name}
               className="w-full border-none"
-              style={{ minHeight: '200px', height: '75vh' }}
+              style={{ minHeight: '200px', height: '85vh' }}
             />
           );
         }
@@ -527,27 +554,13 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
           return <EmptyPlaceholder />;
         }
         return (
-          <div className="flex flex-col gap-2 w-full">
-            {/* fallback: 別タブで開くリンク */}
-            <div className="flex justify-end">
-              <a
-                href={externalUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-white text-xs font-medium bg-brand-gradient"
-              >
-                <Link className="w-3.5 h-3.5" />
-                別タブで開く
-              </a>
-            </div>
-            <iframe
-              src={externalUrl}
-              sandbox="allow-scripts allow-same-origin allow-forms"
-              title={selectedModule.name}
-              className="w-full border-none rounded-xl"
-              style={{ height: '75vh', minHeight: '400px' }}
-            />
-          </div>
+          <iframe
+            src={externalUrl}
+            sandbox="allow-scripts allow-same-origin allow-forms"
+            title={selectedModule.name}
+            className="w-full border-none rounded-xl"
+            style={{ height: '85vh', minHeight: '400px' }}
+          />
         );
       }
 
@@ -660,7 +673,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         className="sticky top-[60px] sm:top-[80px] z-30 h-20 bg-white border-b border-brand-border"
         style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
       >
-        <div className="max-w-[1100px] mx-auto h-full flex items-center justify-between px-4 sm:px-6">
+        <div className="max-w-[1400px] mx-auto h-full flex items-center justify-between px-4 sm:px-6">
           {/* 左: 戻るボタン + 赤区切り + チャプター情報 */}
           <div className="flex items-center gap-3 min-w-0">
             <button
@@ -690,22 +703,36 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
             >
               <Menu className="w-5 h-5 text-brand-text" />
             </button>
-            <button
-              onClick={handleComplete}
-              disabled={completing || (selectedModule ? completedIds.has(selectedModule.id) : false)}
-              className="flex items-center gap-2 px-5 py-2 rounded-full text-white font-bold text-sm transition-opacity hover:opacity-90 bg-brand-gradient disabled:opacity-60 disabled:cursor-default"
-            >
-              <CheckCircle className="w-4 h-4" />
-              <span className="hidden sm:inline">
-                {selectedModule && completedIds.has(selectedModule.id) ? '完了済み' : '完了にする'}
-              </span>
-            </button>
+            {selectedModule && completedIds.has(selectedModule.id) ? (
+              <button
+                onClick={() => handleToggleComplete(false)}
+                disabled={completing}
+                className="flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm transition-opacity hover:opacity-80 disabled:opacity-60 disabled:cursor-default"
+                style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
+              >
+                <RotateCcw className="w-4 h-4" />
+                <span className="hidden sm:inline">
+                  {completing ? '処理中...' : '完了を取り消す'}
+                </span>
+              </button>
+            ) : (
+              <button
+                onClick={() => handleToggleComplete(true)}
+                disabled={completing}
+                className="flex items-center gap-2 px-5 py-2 rounded-full text-white font-bold text-sm transition-opacity hover:opacity-90 bg-brand-gradient disabled:opacity-60 disabled:cursor-default"
+              >
+                <CheckCircle className="w-4 h-4" />
+                <span className="hidden sm:inline">
+                  {completing ? '送信中...' : '完了にする'}
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </header>
 
       {/* ─── ボディ ───────────────────────── */}
-      <div className="relative z-10 max-w-[1100px] mx-auto px-4 sm:px-6 py-8 flex gap-6 items-start">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 py-8 flex gap-6 items-start">
 
         {/* メインコンテンツ */}
         <div className="flex-1 min-w-0">
@@ -713,31 +740,22 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
             className="bg-white rounded-3xl flex flex-col overflow-hidden"
             style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6' }}
           >
-            {/* ─ チャプター見出し ─ */}
-            <div className="px-8 pt-8 pb-6 border-b border-brand-border">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4 min-w-0">
-                  <div className="w-1 self-stretch rounded-full flex-shrink-0 bg-brand" style={{ minHeight: '2rem' }} />
-                  <h2 className="text-2xl font-bold leading-snug text-brand-text">
-                    {selectedModule ? selectedModule.name : courseName}
-                  </h2>
-                </div>
-                {canOpenFullscreen && (
+            {/* ─ コンテンツエリア ─ */}
+            <div className="p-4 sm:p-6">
+              {processedHtml && selectedModule && getContentType(selectedModule) === 'page' && (
+                <div className="flex justify-end mb-2">
                   <button
-                    onClick={handleOpenFullscreen}
-                    className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-white text-xs font-medium bg-brand-gradient flex-shrink-0 hover:opacity-90 transition-opacity"
+                    onClick={openInNewTab}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-opacity hover:opacity-80"
+                    style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
-                    全画面表示
+                    新しいタブで開く
                   </button>
-                )}
-              </div>
-            </div>
-
-            {/* ─ コンテンツエリア ─ */}
-            <div className="p-6 sm:p-8">
+                </div>
+              )}
               <div
-                className="rounded-2xl p-6"
+                className="rounded-2xl p-4 sm:p-6"
                 style={{ background: '#fafafa', minHeight: '360px' }}
               >
                 {renderContent()}
@@ -746,14 +764,26 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
 
             {/* ─ 完了ボタン ─ */}
             <div className="flex justify-center pb-6 px-8">
-              <button
-                onClick={handleComplete}
-                disabled={completing || (selectedModule ? completedIds.has(selectedModule.id) : false)}
-                className="flex items-center gap-2 px-12 py-3 rounded-full text-white font-bold text-base transition-opacity hover:opacity-90 bg-brand-gradient disabled:opacity-60 disabled:cursor-default"
-              >
-                <CheckCircle className="w-5 h-5" />
-                {selectedModule && completedIds.has(selectedModule.id) ? '完了済み' : completing ? '送信中...' : '学習を完了する'}
-              </button>
+              {selectedModule && completedIds.has(selectedModule.id) ? (
+                <button
+                  onClick={() => handleToggleComplete(false)}
+                  disabled={completing}
+                  className="flex items-center gap-2 px-12 py-3 rounded-full font-bold text-base transition-opacity hover:opacity-80 disabled:opacity-60 disabled:cursor-default"
+                  style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
+                >
+                  <RotateCcw className="w-5 h-5" />
+                  {completing ? '処理中...' : '完了を取り消す'}
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleToggleComplete(true)}
+                  disabled={completing}
+                  className="flex items-center gap-2 px-12 py-3 rounded-full text-white font-bold text-base transition-opacity hover:opacity-90 bg-brand-gradient disabled:opacity-60 disabled:cursor-default"
+                >
+                  <CheckCircle className="w-5 h-5" />
+                  {completing ? '送信中...' : '学習を完了する'}
+                </button>
+              )}
             </div>
 
             {/* ─ 前後チャプター ナビゲーション ─ */}
@@ -783,7 +813,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         </div>
 
         {/* 右サイドバー（デスクトップ） */}
-        <div className="hidden lg:flex flex-col gap-0 w-96 flex-shrink-0 sticky top-[160px] rounded-3xl overflow-y-auto" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6', maxHeight: 'calc(100vh - 170px)' }}>
+        <div className="hidden lg:flex flex-col gap-0 w-80 flex-shrink-0 sticky top-[160px] rounded-3xl overflow-y-auto" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6', maxHeight: 'calc(100vh - 170px)' }}>
           <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} />
           <div className="border-t border-brand-border">
             <AiCoachPanel
@@ -901,13 +931,21 @@ interface AiCoachPanelProps {
   aiLoading: boolean;
   aiQuestion: string;
   setAiQuestion: (v: string) => void;
-  handleAiKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  handleAiKeyPress: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   onSend: () => void;
   chatEndRef: React.RefObject<HTMLDivElement>;
   mobile?: boolean;
 }
 
 function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, chatEndRef, mobile = false }: AiCoachPanelProps) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (!aiQuestion && textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+    }
+  }, [aiQuestion]);
+
   return (
     <div className={`bg-white ${mobile ? 'rounded-2xl shadow-sm' : ''} overflow-hidden`}>
       <div className="flex items-center justify-between px-6 py-4 bg-brand-bg border-b border-brand-border">
@@ -950,19 +988,25 @@ function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handle
         <div ref={chatEndRef} />
       </div>
       <div className="px-6 py-4 bg-white border-t border-brand-border">
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-brand-bg">
-          <input
-            type="text"
+        <div className="flex items-end gap-2 px-4 py-2 rounded-2xl bg-brand-bg">
+          <textarea
+            ref={textareaRef}
             placeholder="質問を入力..."
             value={aiQuestion}
-            onChange={e => setAiQuestion(e.target.value)}
+            rows={1}
+            onChange={e => {
+              setAiQuestion(e.target.value);
+              e.target.style.height = 'auto';
+              e.target.style.height = `${e.target.scrollHeight}px`;
+            }}
             onKeyDown={handleAiKeyPress}
-            className="flex-1 bg-transparent outline-none text-sm text-brand-text"
+            className="flex-1 bg-transparent outline-none text-sm text-brand-text resize-none overflow-hidden leading-5 py-1"
+            style={{ maxHeight: '120px', overflowY: 'auto' }}
           />
           <button
             onClick={onSend}
             disabled={!aiQuestion.trim() || aiLoading}
-            className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-colors ${aiQuestion.trim() && !aiLoading ? 'bg-brand' : 'bg-[#d0cac6]'}`}
+            className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mb-0.5 transition-colors ${aiQuestion.trim() && !aiLoading ? 'bg-brand' : 'bg-[#d0cac6]'}`}
           >
             <Send className="w-3 h-3 text-white" />
           </button>

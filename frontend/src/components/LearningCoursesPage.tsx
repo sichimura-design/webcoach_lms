@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen, ChevronRight } from 'lucide-react';
 import { bffClient } from '../services/bffClient';
 import { AppHeader } from './shared';
+import { CourseImage } from './shared/CourseImage';
 import { useAuth } from '../contexts/AuthContext';
 import { useAsyncData } from '../hooks/useAsyncData';
 
@@ -131,8 +132,14 @@ function LearningCoursesPage() {
                   style={{ borderRadius: '24px' }}
                 >
                   {/* Course Icon */}
-                  <div className="w-[52px] h-[52px] rounded-xl bg-[#FFF5D6] flex items-center justify-center flex-shrink-0">
-                    <BookOpen className="w-7 h-7 text-[#FA9161]" />
+                  <div className="w-[52px] h-[52px] rounded-xl overflow-hidden flex-shrink-0">
+                    <CourseImage
+                      imageUrl={course.overviewfiles?.[0]?.fileurl}
+                      alt={course.displayname || course.fullname}
+                      fallbackColor="#FFF5D6"
+                      hideFallbackText
+                      className="w-full h-full"
+                    />
                   </div>
 
                   {/* Course Info */}

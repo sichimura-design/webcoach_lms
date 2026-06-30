@@ -64,7 +64,7 @@ function WebCoachHeader({
     {
       id: '1',
       role: 'assistant',
-      content: 'こんにちは！WebCoach AI学習アシスタントです。学習に関する質問や、コースのおすすめ、キャリアパスについてなど、お気軽にご相談ください。',
+      content: 'こんにちは！WEBCOACH AI学習アシスタントです。学習に関する質問や、コースのおすすめ、キャリアパスについてなど、お気軽にご相談ください。',
       timestamp: new Date(),
     },
   ]);
@@ -123,7 +123,7 @@ function WebCoachHeader({
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: `申し訳ございません。エラーが発生しました: ${error.message || '不明なエラー'}`,
+        content: '申し訳ございません。一時的なエラーが発生しました。しばらく時間をおいてから、もう一度お試しください。',
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);

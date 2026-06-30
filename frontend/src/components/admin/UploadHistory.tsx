@@ -17,6 +17,7 @@ const dataTypeLabels: Record<string, string> = {
   courses: 'コース',
   enrollments: '受講登録',
   categories: 'カテゴリ',
+  'coach-mapping': 'コーチ割り当て',
 };
 
 export const UploadHistory: React.FC<UploadHistoryProps> = ({ history }) => {

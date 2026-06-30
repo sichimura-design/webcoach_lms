@@ -21,6 +21,9 @@ import { AdminCsvPage } from '../components/admin/AdminCsvPage';
 import { AdminCognitoUsersPage } from '../components/admin/AdminCognitoUsersPage';
 import { AdminImageUploadPage } from '../components/admin/AdminImageUploadPage';
 import { AdminVectorPage } from '../components/admin/AdminVectorPage';
+import { AdminStudentsPage } from '../components/admin/AdminStudentsPage';
+import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage';
+import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigationStore } from '../store/navigationStore';
 import { ErrorBoundary } from '../components/shared';
@@ -63,6 +66,28 @@ function AdminRoute({ children }: ProtectedRouteProps) {
   }
 
   if (!user.isAdmin) {
+    return <Navigate to="/mypage" replace />;
+  }
+
+  return <AnimatedPage>{children}</AnimatedPage>;
+}
+
+function CoachRoute({ children }: ProtectedRouteProps) {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
+        <span className="w-8 h-8 border-3 border-[#E86D78] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!user.isCoach && !user.isAdmin) {
     return <Navigate to="/mypage" replace />;
   }
 
@@ -309,11 +334,22 @@ function AppRoutes() {
         <Route path="enrollments" element={<AdminCsvPage key="enrollments" dataType="enrollments" />} />
         <Route path="image-upload" element={<AdminImageUploadPage />} />
         <Route path="cognito-users" element={<AdminCognitoUsersPage />} />
+        <Route path="students" element={<AdminStudentsPage />} />
         <Route path="create-course" element={<AdminCsvPage key="moodle-courses" dataType="moodle-courses" />} />
         <Route path="ai-applications" element={<AdminCsvPage key="ai-applications" dataType="ai-applications" />} />
         <Route path="avatars" element={<AdminCsvPage key="avatars" dataType="avatars" />} />
         <Route path="vector-data" element={<AdminVectorPage />} />
+        <Route path="coach-mapping" element={<AdminCoachMappingPage />} />
       </Route>
+
+      <Route
+        path="/coach/students"
+        element={
+          <CoachRoute>
+            <CoachStudentsPage />
+          </CoachRoute>
+        }
+      />
 
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />

@@ -5,6 +5,21 @@
 
 import { Profile } from './api';
 
+// 次回コーチングまでの目標 (APIレスポンス)
+export interface CoachingGoalApi {
+  mdl_user_id: number;
+  no: number;
+  display_order: number;
+  description: string;
+  is_completed: 0 | 1;
+}
+
+export interface CoachingGoalUpdateItem {
+  no: number;
+  description: string;
+  is_completed: 0 | 1;
+}
+
 // Career goal (なりたい姿)
 export interface CareerGoal {
   goal: string;

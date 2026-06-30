@@ -17,6 +17,7 @@ import {
   UpdateDBResponse,
   HealthResponse,
 } from '../types/api';
+import { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
 import { getIdToken } from './cognitoAuth';
 
 /**
@@ -178,8 +179,8 @@ class BFFClient {
    * アクティビティ完了マーク
    * POST /api/moodle/activities/{cmid}/completion
    */
-  async markActivityComplete(cmid: number): Promise<any> {
-    const response = await this.api.post(`/moodle/activities/${cmid}/completion`, { completed: true });
+  async markActivityComplete(cmid: number, completed: boolean = true): Promise<any> {
+    const response = await this.api.post(`/moodle/activities/${cmid}/completion`, { completed });
     return response.data;
   }
 
@@ -336,6 +337,36 @@ class BFFClient {
   }
 
   /**
+   * 次回コーチングまでの目標一覧取得
+   * GET /api/webcoach/next-coaching-goals/{userid}
+   */
+  async getNextCoachingGoals(userId: number): Promise<CoachingGoalApi[]> {
+    const response = await this.api.get(`/webcoach/next-coaching-goals/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 次回コーチングまでの目標全件取得（管理者用）
+   * GET /api/webcoach/next-coaching-goals
+   */
+  async getAllNextCoachingGoals(): Promise<CoachingGoalApi[]> {
+    const response = await this.api.get('/webcoach/next-coaching-goals');
+    return response.data;
+  }
+
+  /**
+   * 次回コーチングまでの目標一括更新（作成・更新・削除・並び替え）
+   * PUT /api/webcoach/next-coaching-goals/{userid}
+   */
+  async updateNextCoachingGoals(
+    userId: number,
+    goals: CoachingGoalUpdateItem[]
+  ): Promise<CoachingGoalApi[]> {
+    const response = await this.api.put(`/webcoach/next-coaching-goals/${userId}`, { goals });
+    return response.data;
+  }
+
+  /**
    * AIチャット
    * POST /api/webcoach/ai
    */
@@ -448,6 +479,53 @@ class BFFClient {
   }
 
   /**
+   * ロール別ユーザー一覧取得 (Cognito)
+   * GET /api/admin/users/by-role/:role
+   */
+  async getUsersByRole(role: string): Promise<{
+    role: string;
+    count: number;
+    users: Array<{
+      userId: string;
+      username: string;
+      email: string;
+      status: string;
+      enabled: boolean;
+      createdAt: string;
+      lastModified: string;
+      moodleUserId?: number;
+    }>;
+  }> {
+    const response = await this.api.get(`/admin/users/by-role/${role}`);
+    return response.data;
+  }
+
+  /**
+   * 受講生一覧取得
+   * GET /api/admin/students
+   */
+  async getStudents(): Promise<{
+    students: Array<{
+      id: number;
+      username: string;
+      email: string;
+      firstname: string;
+      lastname: string;
+      fullname: string;
+      lastaccess: number;
+      lastaccess_formatted: string;
+      firstaccess: number;
+      suspended: boolean;
+      auth: string;
+      inactive_over_month: boolean;
+      new_user: boolean;
+    }>;
+  }> {
+    const response = await this.api.get('/admin/students');
+    return response.data;
+  }
+
+  /**
    * Cognitoユーザー一覧取得
    * GET /api/admin/cognito-users
    */
@@ -468,6 +546,42 @@ class BFFClient {
     formData.append('s3Key', s3Key);
     const response = await this.api.post('/admin/s3-upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  }
+
+  /**
+   * 全コーチ・受講生マッピング取得
+   * GET /api/coaching/mappings
+   */
+  async getAllCoachingMappings(includeDeleted = false): Promise<Array<{
+    coach_user_id: number;
+    student_user_id: number;
+    logical_deleted: number;
+    created_at: string;
+    updated_at: string;
+  }>> {
+    const response = await this.api.get('/coaching/mappings', {
+      params: includeDeleted ? { include_deleted: true } : undefined,
+    });
+    return response.data;
+  }
+
+  /**
+   * コーチ・受講生マッピング登録
+   * POST /api/coaching/mappings
+   */
+  async createCoachingMapping(
+    coach_user_id: number,
+    student_user_id: number,
+    updateFlag = 0,
+    deleteFlag = 0,
+  ): Promise<any> {
+    const response = await this.api.post('/coaching/mappings', {
+      coach_user_id,
+      student_user_id,
+      updateFlag,
+      deleteFlag,
     });
     return response.data;
   }

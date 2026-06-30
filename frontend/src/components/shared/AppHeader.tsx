@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked } from 'lucide-react';
+import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -8,6 +8,7 @@ import { useNotificationStore } from '../../store/notificationStore';
 import { useNewContentNotification } from '../../hooks/useNewContentNotification';
 import { AccountSettingsDropdown } from './AccountSettingsDropdown';
 import { useAiChat } from '../../hooks/useAiChat';
+import { useChatStore } from '../../store/chatStore';
 
 interface AppHeaderProps {
   userName?: string;
@@ -18,23 +19,29 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, avatarUrl: ctxAvatarUrl, nickName: ctxNickName } = useAuth();
+  const isStudentsPage = location.pathname.startsWith('/coach/students');
 
   const resolvedUserName = userName ?? ctxNickName ?? user?.username ?? 'User';
   const resolvedAvatarUrl = avatarUrl ?? ctxAvatarUrl ?? undefined;
 
-  const [chatOpen, setChatOpen] = useState(false);
+  const { chatOpen, setChatOpen } = useChatStore();
   const { messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress } = useAiChat();
 
   const { items: notificationItems, markAllRead } = useNotificationStore();
   const [notifOpen, setNotifOpen] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const helpRef = useRef<HTMLDivElement>(null);
   useNewContentNotification();
 
-  // 通知ドロップダウン外クリックで閉じる
+  // ドロップダウン外クリックで閉じる
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
         setNotifOpen(false);
+      }
+      if (helpRef.current && !helpRef.current.contains(e.target as Node)) {
+        setHelpOpen(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -147,6 +154,82 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                   <span className="hidden sm:inline">管理</span>
                 </button>
               )}
+
+              {/* 受講生一覧（coach only） */}
+              {!user?.isAdmin && user?.isCoach && (
+                <button
+                  onClick={() => navigate('/coach/students')}
+                  className={`flex items-center gap-1.5 rounded-full text-sm font-bold transition-all px-2.5 sm:px-5 border-0 ${
+                    isStudentsPage
+                      ? 'text-white bg-brand-gradient'
+                      : 'text-brand-muted'
+                  }`}
+                  style={{
+                    height: '36px',
+                    fontSize: '14px',
+                  }}
+                >
+                  <BookOpen className="w-[18px] h-[18px]" />
+                  <span className="hidden sm:inline">受講生一覧</span>
+                </button>
+              )}
+
+              {/* ヘルプ ドロップダウン */}
+              <div className="relative" ref={helpRef}>
+                <button
+                  onClick={() => setHelpOpen(v => !v)}
+                  className="flex items-center gap-1.5 rounded-full text-sm font-bold transition-all px-2.5 sm:px-5 border-0 text-brand-muted"
+                  style={{ height: '36px', fontSize: '14px' }}
+                >
+                  <HelpCircle className="w-[18px] h-[18px]" />
+                  <span className="hidden sm:inline">ヘルプ</span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform hidden sm:block ${helpOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {helpOpen && (
+                  <div
+                    className="absolute left-0 mt-2 bg-white z-50 overflow-hidden"
+                    style={{
+                      top: '100%',
+                      minWidth: '200px',
+                      borderRadius: '12px',
+                      border: '1px solid #E0D8D4',
+                      boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
+                    }}
+                  >
+                    <a
+                      href="https://slime-gruyere-92d.notion.site/WEBCOACH-6-0-7a07e36455e848c4b4d262ef3a1c1cd4"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors"
+                      onClick={() => setHelpOpen(false)}
+                    >
+                      <FileText className="w-4 h-4 text-brand-muted flex-shrink-0" />
+                      利用マニュアル
+                    </a>
+                    <a
+                      href="https://slime-gruyere-92d.notion.site/1fddd266074f809e9f0cfdbdd8e60ffd"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors"
+                      onClick={() => setHelpOpen(false)}
+                    >
+                      <HelpCircle className="w-4 h-4 text-brand-muted flex-shrink-0" />
+                      よくある質問
+                    </a>
+                    <a
+                      href="https://o4dqp.channel.io/workflows/783132"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors"
+                      onClick={() => setHelpOpen(false)}
+                    >
+                      <Mail className="w-4 h-4 text-brand-muted flex-shrink-0" />
+                      運営へのお問い合わせ
+                    </a>
+                  </div>
+                )}
+              </div>
             </nav>
           </div>
 
@@ -278,6 +361,15 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
             >
               <Settings className="w-5 h-5" />
               <span className="text-[10px] font-bold">管理</span>
+            </button>
+          )}
+          {!user?.isAdmin && user?.isCoach && (
+            <button
+              onClick={() => navigate('/coach/students')}
+              className={`flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors ${isStudentsPage ? 'text-brand' : 'text-brand-muted'}`}
+            >
+              <BookOpen className="w-5 h-5" />
+              <span className="text-[10px] font-bold">受講生一覧</span>
             </button>
           )}
         </div>

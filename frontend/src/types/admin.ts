@@ -1,4 +1,4 @@
-export type DataType = 'courses' | 'enrollments' | 'categories' | 'moodle-courses' | 'users' | 'ai-applications' | 'avatars';
+export type DataType = 'courses' | 'enrollments' | 'categories' | 'moodle-courses' | 'users' | 'ai-applications' | 'avatars' | 'coach-mapping';
 
 export interface UploadHistory {
   id: string;

@@ -118,7 +118,7 @@ function AIContentChat({
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: `申し訳ございません。エラーが発生しました: ${error.message || '不明なエラー'}`,
+        content: '申し訳ございません。一時的なエラーが発生しました。しばらく時間をおいてから、もう一度お試しください。',
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);

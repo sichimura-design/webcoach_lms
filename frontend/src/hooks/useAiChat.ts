@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { bffClient } from '../services/bffClient';
+import { useChatStore } from '../store/chatStore';
 
 export interface ChatMessage {
   id: string;
@@ -15,15 +16,8 @@ export interface ChatMessage {
   }>;
 }
 
-const INITIAL_MESSAGE: ChatMessage = {
-  id: '1',
-  role: 'assistant',
-  content: 'こんにちは！WebCoach AI学習アシスタントです。学習に関する質問や、コースのおすすめ、キャリアパスについてなど、お気軽にご相談ください。',
-  timestamp: new Date(),
-};
-
 export function useAiChat() {
-  const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE]);
+  const { messages, addMessage } = useChatStore();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -42,7 +36,7 @@ export function useAiChat() {
       timestamp: new Date(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    addMessage(userMessage);
     const currentInput = input;
     setInput('');
     setLoading(true);
@@ -64,15 +58,14 @@ export function useAiChat() {
         })),
       };
 
-      setMessages(prev => [...prev, assistantMessage]);
+      addMessage(assistantMessage);
     } catch (error: any) {
-      const errorMessage: ChatMessage = {
+      addMessage({
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: `申し訳ございません。エラーが発生しました: ${error.message || '不明なエラー'}`,
+        content: '申し訳ございません。一時的なエラーが発生しました。しばらく時間をおいてから、もう一度お試しください。',
         timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      });
     } finally {
       setLoading(false);
     }
