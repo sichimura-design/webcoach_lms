@@ -139,8 +139,15 @@ function WebCoachHeader({
     }
   };
 
+  const isDevPreview = process.env.PUBLIC_URL?.startsWith('/branches/');
+
   return (
     <AppBar position="static" sx={{ bgcolor: '#C62828' }}>
+      {isDevPreview && (
+        <Box sx={{ bgcolor: '#F57F17', textAlign: 'center', py: 0.5, fontSize: '0.75rem', fontWeight: 'bold', letterSpacing: 1 }}>
+          ⚠️ DEV PREVIEW — {process.env.PUBLIC_URL}
+        </Box>
+      )}
       <Toolbar>
         <Typography
           variant="h6"
