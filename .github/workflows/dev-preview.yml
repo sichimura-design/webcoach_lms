@@ -1,0 +1,129 @@
+name: Dev Preview
+
+on:
+  push:
+    branches:
+      - 'dev/**'
+    paths:
+      - 'frontend/**'
+  delete:
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  # ── dev/** push → S3 にデプロイ ────────────────────────────────
+  deploy:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compute branch slug
+        id: slug
+        run: |
+          SLUG=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-\|-$//g')
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+          echo "preview_url=https://${{ secrets.CLOUDFRONT_DOMAIN_DEV }}/branches/$SLUG/" >> $GITHUB_OUTPUT
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build
+        working-directory: frontend
+        env:
+          REACT_APP_BFF_URL: ${{ secrets.REACT_APP_BFF_URL }}
+          REACT_APP_COGNITO_USER_POOL_ID: ${{ secrets.REACT_APP_COGNITO_USER_POOL_ID }}
+          REACT_APP_COGNITO_CLIENT_ID: ${{ secrets.REACT_APP_COGNITO_CLIENT_ID }}
+          PUBLIC_URL: /branches/${{ steps.slug.outputs.slug }}
+          GENERATE_SOURCEMAP: false
+        run: npm run build
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEV_PREVIEW_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Deploy to S3
+        run: |
+          aws s3 sync frontend/build \
+            s3://${{ secrets.S3_BUCKET_NAME_DEV }}/branches/${{ steps.slug.outputs.slug }}/ \
+            --delete
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID_DEV }} \
+            --paths "/branches/${{ steps.slug.outputs.slug }}/*"
+
+      - name: Find existing PR comment
+        id: find_comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            }).catch(() => ({ data: [] }));
+            const found = comments.data.find(c =>
+              c.user.login === 'github-actions[bot]' &&
+              c.body.includes('Dev Preview')
+            );
+            return found ? found.id : '';
+          result-encoding: string
+
+      - name: Post or update PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `## Dev Preview\n\n🔗 **${{ steps.slug.outputs.preview_url }}**\n\nブランチ: \`${{ github.ref_name }}\` | コミット: ${{ github.sha }}`;
+            const commentId = '${{ steps.find_comment.outputs.result }}';
+            if (commentId) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: Number(commentId),
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              }).catch(() => console.log('PR not found, skipping comment'));
+            }
+
+  # ── dev/** ブランチ削除 → S3 プレフィックスを削除 ─────────────────
+  cleanup:
+    if: github.event_name == 'delete' && github.event.ref_type == 'branch' && startsWith(github.event.ref, 'dev/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compute branch slug
+        id: slug
+        run: |
+          SLUG=$(echo "${{ github.event.ref }}" | sed 's/[^a-zA-Z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-\|-$//g')
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEV_PREVIEW_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Remove S3 prefix
+        run: |
+          aws s3 rm \
+            s3://${{ secrets.S3_BUCKET_NAME_DEV }}/branches/${{ steps.slug.outputs.slug }}/ \
+            --recursive
