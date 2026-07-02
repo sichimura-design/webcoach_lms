@@ -46,6 +46,7 @@ jobs:
           REACT_APP_COGNITO_CLIENT_ID: ${{ secrets.REACT_APP_COGNITO_CLIENT_ID }}
           PUBLIC_URL: /branches/${{ steps.slug.outputs.slug }}
           GENERATE_SOURCEMAP: false
+          CI: false
         run: npm run build
 
       - name: Configure AWS credentials (OIDC)
