@@ -14,7 +14,7 @@ import 'highlight.js/styles/github.css';
 
 function AppContent() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL || '/'}>
       <AnimatePresence mode="wait">
         <AppRoutes />
       </AnimatePresence>
