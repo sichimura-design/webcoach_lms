@@ -10,7 +10,6 @@ const amiId = app.node.tryGetContext('amiId');
 const keyPairName = app.node.tryGetContext('keyPairName');
 const awsRegion = app.node.tryGetContext('region') || process.env.CDK_DEFAULT_REGION || 'ap-northeast-1';
 const cognitoUserPoolId = app.node.tryGetContext('cognitoUserPoolId');
-const s3BucketName = app.node.tryGetContext('s3BucketName');
 
 if (!amiId) {
   throw new Error('amiId context is required. Use --context amiId=ami-xxxxx');
@@ -43,7 +42,6 @@ const ec2AmiStack = new Ec2AmiStack(app, `${envName}-Ec2AmiStack`, {
   amiId,
   keyPairName,
   cognitoUserPoolId,
-  s3BucketName,
 });
 ec2AmiStack.addDependency(vpcStack);
 

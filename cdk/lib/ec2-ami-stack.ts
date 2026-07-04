@@ -9,7 +9,6 @@ export interface Ec2AmiStackProps extends cdk.StackProps {
   readonly amiId: string;
   readonly keyPairName?: string;
   readonly cognitoUserPoolId?: string;
-  readonly s3BucketName?: string;
 }
 
 export class Ec2AmiStack extends cdk.Stack {
@@ -20,7 +19,7 @@ export class Ec2AmiStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: Ec2AmiStackProps) {
     super(scope, id, props);
 
-    const { envName, vpc, amiId, keyPairName, cognitoUserPoolId, s3BucketName } = props;
+    const { envName, vpc, amiId, keyPairName, cognitoUserPoolId } = props;
 
     // ========================================
     // Security Group
@@ -74,6 +73,8 @@ export class Ec2AmiStack extends cdk.Stack {
           'cognito-idp:ListGroups',
           'cognito-idp:ListUsersInGroup',
           'cognito-idp:AdminGetUser',
+          'cognito-idp:AdminRemoveUserFromGroup',
+          'cognito-idp:CreateGroup',
         ],
         resources: [
           `arn:aws:cognito-idp:${this.region}:${this.account}:userpool/${cognitoUserPoolId}`,
@@ -81,22 +82,32 @@ export class Ec2AmiStack extends cdk.Stack {
       }));
     }
 
-    // S3アップロード権限（BFFサーバー用）
-    if (s3BucketName) {
-      role.addToPolicy(new iam.PolicyStatement({
-        sid: 'S3UploadAccess',
-        actions: ['s3:PutObject', 's3:DeleteObject'],
-        resources: [
-          `arn:aws:s3:::${s3BucketName}/*`,
-        ],
-      }));
-    }
+    // SSM Parameter Store アクセス権限
+    role.addToPolicy(new iam.PolicyStatement({
+      sid: 'SsmParameterAccess',
+      actions: [
+        'ssm:PutParameter',
+        'ssm:GetParameter',
+        'ssm:GetParameters',
+        'ssm:GetParametersByPath',
+        'ssm:DeleteParameter',
+      ],
+      resources: [
+        `arn:aws:ssm:ap-northeast-1:${this.account}:parameter/moodle/*`,
+      ],
+    }));
 
-    // SPAフロントエンドバケットの読み取り権限（HTMLコンテンツ取得用）
+    role.addToPolicy(new iam.PolicyStatement({
+      sid: 'KmsDecryptAccess',
+      actions: ['kms:Decrypt'],
+      resources: ['*'],
+    }));
+
+    // SPAフロントエンドバケットのアクセス権限（HTMLコンテンツ取得・画像アップロード用）
     const spaBucketName = 'moodle-spa-frontend-spafrontendbucketa0c499f3-1q1oez2ib24b';
     role.addToPolicy(new iam.PolicyStatement({
       sid: 'SpaFrontendBucketReadAccess',
-      actions: ['s3:GetObject'],
+      actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject'],
       resources: [`arn:aws:s3:::${spaBucketName}/*`],
     }));
     role.addToPolicy(new iam.PolicyStatement({
