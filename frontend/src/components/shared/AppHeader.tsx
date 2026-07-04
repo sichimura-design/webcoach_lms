@@ -77,7 +77,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
               onClick={() => navigate('/mypage')}
             >
               <img
-                src="/logo_WEBCOACH.png"
+                src={`${process.env.PUBLIC_URL}/logo_WEBCOACH.png`}
                 alt="WEBCOACH"
                 className="h-[35px] sm:h-[45px] w-auto max-w-[100px] sm:max-w-[140px] lg:max-w-[159px] object-contain"
               />
@@ -241,7 +241,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
               className="flex items-center gap-1.5 bg-brand-bg hover:bg-[#F0EAE6] rounded-full text-brand-muted border border-brand-subtle transition-colors"
               style={{ height: '34px', padding: '0 10px', fontSize: '12px' }}
             >
-              <img src="/チャットアイコン.png" alt="AIコーチ" className="w-[22px] h-[21px] object-contain" />
+              <img src={`${process.env.PUBLIC_URL}/チャットアイコン.png`} alt="AIコーチ" className="w-[22px] h-[21px] object-contain" />
               <span className="hidden sm:inline">AIコーチに相談</span>
             </button>
 
@@ -383,7 +383,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
             {/* Header */}
             <div className="p-4 bg-gradient-to-r from-[#E86D78] to-[#FA9262] text-white flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <img src="/teleoperation-icon.png" alt="AIコーチ" className="w-5 h-5 object-contain" />
+                <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-5 h-5 object-contain" />
                 <span className="font-bold text-lg">AIコーチに相談</span>
               </div>
               <button
@@ -409,7 +409,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                     {message.role === 'user' ? (
                       <User className="w-4 h-4 text-white" />
                     ) : (
-                      <img src="/teleoperation-icon.png" alt="AIコーチ" className="w-4 h-4 object-contain" />
+                      <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-4 h-4 object-contain" />
                     )}
                   </div>
                   <div className="max-w-[85%] sm:max-w-[75%] flex flex-col gap-1">
@@ -479,7 +479,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
               {loading && (
                 <div className="flex gap-3">
                   <div className="w-8 h-8 rounded-full bg-brand flex items-center justify-center">
-                    <img src="/teleoperation-icon.png" alt="AIコーチ" className="w-4 h-4 object-contain" />
+                    <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-4 h-4 object-contain" />
                   </div>
                   <div className="p-3 bg-white rounded-lg shadow-sm">
                     <div className="flex items-center gap-2">

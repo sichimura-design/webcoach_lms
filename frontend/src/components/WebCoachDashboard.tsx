@@ -181,7 +181,7 @@ function WebCoachDashboard({
             <Grid size={{ xs: 12, md: 4 }}>
               <Box
                 component="img"
-                src="/images/instructor.jpg"
+                src={`${process.env.PUBLIC_URL}/images/instructor.jpg`}
                 alt="Instructor"
                 sx={{
                   width: '100%',

@@ -120,7 +120,7 @@ function LoginPage() {
           <div className="flex flex-col items-center mb-10">
             <div className="mb-4">
               <img
-                src="/logo_WEBCOACH.png"
+                src={`${process.env.PUBLIC_URL}/logo_WEBCOACH.png`}
                 alt="WEBCOACH"
                 className="h-12 sm:h-16 w-auto object-contain"
               />
