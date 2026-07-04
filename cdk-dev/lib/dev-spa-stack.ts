@@ -39,6 +39,11 @@ function handler(event) {
       `.trim()),
     });
 
+    const bffOrigin = new origins.HttpOrigin('ec2-52-194-117-196.ap-northeast-1.compute.amazonaws.com', {
+      httpPort: 3001,
+      protocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
+    });
+
     this.distribution = new cloudfront.Distribution(this, 'Distribution', {
       defaultBehavior: {
         origin: origins.S3BucketOrigin.withOriginAccessControl(this.bucket),
@@ -49,9 +54,17 @@ function handler(event) {
           eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
         }],
       },
+      additionalBehaviors: {
+        '/api/*': {
+          origin: bffOrigin,
+          allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
+          viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+          cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+          originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER_EXCEPT_HOST_HEADER,
+        },
+      },
       // dev 用: 北米・欧州のみ（最安値）。日本からは多少遅延するが許容範囲
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
-      // 存在しないブランチへのアクセスは 403/404 をそのまま返す（エラーページ不要）
     });
 
     new cdk.CfnOutput(this, 'CloudFrontDomain', {

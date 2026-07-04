@@ -41,7 +41,6 @@ jobs:
       - name: Build
         working-directory: frontend
         env:
-          REACT_APP_BFF_URL: ${{ secrets.REACT_APP_BFF_URL }}
           REACT_APP_COGNITO_USER_POOL_ID: ${{ secrets.REACT_APP_COGNITO_USER_POOL_ID }}
           REACT_APP_COGNITO_CLIENT_ID: ${{ secrets.REACT_APP_COGNITO_CLIENT_ID }}
           PUBLIC_URL: /branches/${{ steps.slug.outputs.slug }}
