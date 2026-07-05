@@ -156,15 +156,16 @@ class CourseService {
       return [];
     }
 
-    // core_enrol_get_users_courses only returns a numeric category id, not its name,
-    // so fetch categories once and map id -> name
-    let categoryNameById = {};
+    // core_enrol_get_users_courses doesn't include categoryname, but core_course_get_courses
+    // does (see getAllCourses/CourseCurriculumPage) — reuse it to look up each course's category name
+    let categoryNameByCourseId = {};
     try {
-      const categories = await moodleAdapter.getCategories();
-      const categoriesArray = Array.isArray(categories) ? categories : categories.categories || [];
-      categoryNameById = Object.fromEntries(categoriesArray.map((cat) => [cat.id, cat.name]));
+      const allCourses = await moodleAdapter.getCourses();
+      categoryNameByCourseId = Object.fromEntries(
+        (Array.isArray(allCourses) ? allCourses : []).map((c) => [c.id, c.categoryname])
+      );
     } catch (error) {
-      console.warn('[Get Enrolled Courses] Failed to fetch categories for name mapping:', error.message);
+      console.warn('[Get Enrolled Courses] Failed to fetch category names:', error.message);
     }
 
     // Add progress and category name to each course
@@ -174,7 +175,7 @@ class CourseService {
         return {
           ...course,
           progress,
-          categoryname: categoryNameById[course.category] || course.categoryname
+          categoryname: course.categoryname || categoryNameByCourseId[course.id]
         };
       })
     );
