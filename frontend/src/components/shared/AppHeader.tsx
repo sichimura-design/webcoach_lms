@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown } from 'lucide-react';
+import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown, Calendar } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -21,6 +21,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const location = useLocation();
   const { user, avatarUrl: ctxAvatarUrl, nickName: ctxNickName, contentToken } = useAuth();
   const isStudentsPage = location.pathname.startsWith('/coach/students');
+  const isSchedulePage = location.pathname.startsWith('/coach/schedule');
 
   const resolvedUserName = userName ?? ctxNickName ?? user?.username ?? 'User';
   // avatarUrl は呼び出し元が既にcf_token付与済みの前提。ctxAvatarUrlはcontextの生URLなのでここで付与する
@@ -173,6 +174,25 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                 >
                   <BookOpen className="w-[18px] h-[18px]" />
                   <span className="hidden sm:inline">受講生一覧</span>
+                </button>
+              )}
+
+              {/* 日程管理（coach only） */}
+              {!user?.isAdmin && user?.isCoach && (
+                <button
+                  onClick={() => navigate('/coach/schedule')}
+                  className={`flex items-center gap-1.5 rounded-full text-sm font-bold transition-all px-2.5 sm:px-5 border-0 ${
+                    isSchedulePage
+                      ? 'text-white bg-brand-gradient'
+                      : 'text-brand-muted'
+                  }`}
+                  style={{
+                    height: '36px',
+                    fontSize: '14px',
+                  }}
+                >
+                  <Calendar className="w-[18px] h-[18px]" />
+                  <span className="hidden sm:inline">日程管理</span>
                 </button>
               )}
 

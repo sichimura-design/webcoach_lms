@@ -24,6 +24,7 @@ import { AdminVectorPage } from '../components/admin/AdminVectorPage';
 import { AdminStudentsPage } from '../components/admin/AdminStudentsPage';
 import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
+import { CoachScheduleBlockPage } from '../components/coach/CoachScheduleBlockPage';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigationStore } from '../store/navigationStore';
 import { ErrorBoundary } from '../components/shared';
@@ -347,6 +348,15 @@ function AppRoutes() {
         element={
           <CoachRoute>
             <CoachStudentsPage />
+          </CoachRoute>
+        }
+      />
+
+      <Route
+        path="/coach/schedule"
+        element={
+          <CoachRoute>
+            <CoachScheduleBlockPage />
           </CoachRoute>
         }
       />
