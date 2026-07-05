@@ -953,11 +953,6 @@ function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handle
           <Bot className="w-5 h-5 text-brand" />
           <span className="font-bold text-brand-muted" style={{ fontSize: '15px' }}>AIコーチ</span>
         </div>
-        {!mobile && (
-          <button className="w-9 h-9 rounded-full border border-[#e0d8d4] flex items-center justify-center hover:bg-gray-100 transition-colors">
-            <X className="w-4 h-4 text-brand-muted" />
-          </button>
-        )}
       </div>
       <div className="px-6 py-5 space-y-3 overflow-y-auto" style={{ background: '#fafafa', maxHeight: '280px' }}>
         {aiMessages.map((msg) => (

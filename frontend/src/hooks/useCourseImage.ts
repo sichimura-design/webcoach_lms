@@ -27,14 +27,15 @@ export function useCourseImage(
   imageUrl: string | undefined | null,
   fallbackColor?: string
 ): UseCourseImageResult {
-  const { contentToken } = useAuth();
+  const { contentToken, loading: authLoading } = useAuth();
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!imageUrl) {
       setImageSrc(null);
+      setError(null);
       setLoading(false);
       return;
     }
@@ -42,19 +43,33 @@ export function useCourseImage(
     // pluginfile.php を含むURLはアクセスしない（認証が必要なため）
     if (imageUrl.includes('/pluginfile.php') || imageUrl.includes('/webservice/')) {
       setImageSrc(null);
+      setError(null);
       setLoading(false);
       return;
     }
 
     // Lambda@Edge 保護パスには cf_token を付与
     const isProtected = PROTECTED_PATHS.some(p => imageUrl.includes(p));
-    if (isProtected && contentToken) {
-      setImageSrc(addCfToken(imageUrl, contentToken));
-      setLoading(false);
+    if (isProtected) {
+      if (contentToken) {
+        setImageSrc(addCfToken(imageUrl, contentToken));
+        setError(null);
+        setLoading(false);
+      } else if (authLoading) {
+        // token 未取得の間はトークンなしURLをキャッシュ/表示しない（token取得後に再実行される）
+        setImageSrc(null);
+        setLoading(true);
+      } else {
+        // 認証処理は完了したがtokenが取得できなかった場合はフォールバック表示にする
+        setImageSrc(null);
+        setError('content token unavailable');
+        setLoading(false);
+      }
       return;
     }
 
     // その他の https URL はブラウザが直接取得（cookie が送られる）
+    setError(null);
     if (imageCache.has(imageUrl)) {
       setImageSrc(imageCache.get(imageUrl)!);
       setLoading(false);
@@ -63,7 +78,7 @@ export function useCourseImage(
     imageCache.set(imageUrl, imageUrl);
     setImageSrc(imageUrl);
     setLoading(false);
-  }, [imageUrl, contentToken]);
+  }, [imageUrl, contentToken, authLoading]);
 
   return { imageSrc, loading, error };
 }

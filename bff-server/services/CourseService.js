@@ -156,13 +156,25 @@ class CourseService {
       return [];
     }
 
-    // Add progress to each course
+    // core_enrol_get_users_courses only returns a numeric category id, not its name,
+    // so fetch categories once and map id -> name
+    let categoryNameById = {};
+    try {
+      const categories = await moodleAdapter.getCategories();
+      const categoriesArray = Array.isArray(categories) ? categories : categories.categories || [];
+      categoryNameById = Object.fromEntries(categoriesArray.map((cat) => [cat.id, cat.name]));
+    } catch (error) {
+      console.warn('[Get Enrolled Courses] Failed to fetch categories for name mapping:', error.message);
+    }
+
+    // Add progress and category name to each course
     const coursesWithProgress = await Promise.all(
       courses.map(async (course) => {
         const progress = await this.calculateCourseProgress(course.id, userIdInt);
         return {
           ...course,
-          progress
+          progress,
+          categoryname: categoryNameById[course.category] || course.categoryname
         };
       })
     );
