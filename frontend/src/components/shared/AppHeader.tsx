@@ -9,6 +9,7 @@ import { useNewContentNotification } from '../../hooks/useNewContentNotification
 import { AccountSettingsDropdown } from './AccountSettingsDropdown';
 import { useAiChat } from '../../hooks/useAiChat';
 import { useChatStore } from '../../store/chatStore';
+import { withCfToken } from '../profile/AvatarPicker';
 
 interface AppHeaderProps {
   userName?: string;
@@ -18,11 +19,12 @@ interface AppHeaderProps {
 export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, avatarUrl: ctxAvatarUrl, nickName: ctxNickName } = useAuth();
+  const { user, avatarUrl: ctxAvatarUrl, nickName: ctxNickName, contentToken } = useAuth();
   const isStudentsPage = location.pathname.startsWith('/coach/students');
 
   const resolvedUserName = userName ?? ctxNickName ?? user?.username ?? 'User';
-  const resolvedAvatarUrl = avatarUrl ?? ctxAvatarUrl ?? undefined;
+  // avatarUrl は呼び出し元が既にcf_token付与済みの前提。ctxAvatarUrlはcontextの生URLなのでここで付与する
+  const resolvedAvatarUrl = avatarUrl ?? (ctxAvatarUrl ? withCfToken(ctxAvatarUrl, contentToken) : undefined);
 
   const { chatOpen, setChatOpen } = useChatStore();
   const { messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress } = useAiChat();
