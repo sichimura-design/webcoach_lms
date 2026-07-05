@@ -66,12 +66,28 @@ export class SpaFrontendStack extends Stack {
             }
         );
 
+        // 他環境（dev プレビュー等）の SPA から fetch() でコンテンツ存在確認する際に
+        // ブラウザの CORS チェックをパスできるようにする（Lambda@Edge のトークン認証自体は別で効く）
+        const contentCorsPolicy = new cloudfront.ResponseHeadersPolicy(this, 'ContentCorsPolicy', {
+            corsBehavior: {
+                accessControlAllowOrigins: [
+                    'https://uat.webcoach.jp',
+                    'https://dmn2v7nl0g3fq.cloudfront.net', // dev プレビュー環境
+                ],
+                accessControlAllowMethods: ['GET', 'HEAD'],
+                accessControlAllowHeaders: ['*'],
+                accessControlAllowCredentials: false,
+                originOverride: true,
+            },
+        });
+
         const contentAuthBehavior: cloudfront.BehaviorOptions = {
             origin: origins.S3BucketOrigin.withOriginAccessControl(bucket),
             viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
             // 認証チェックが入るためキャッシュ無効（Cookie をキーに含めるとキャッシュ効率が下がるため無効化）
             cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
             originRequestPolicy: cloudfront.OriginRequestPolicy.CORS_S3_ORIGIN,
+            responseHeadersPolicy: contentCorsPolicy,
             edgeLambdas: [
                 {
                     functionVersion: authFunction.currentVersion,

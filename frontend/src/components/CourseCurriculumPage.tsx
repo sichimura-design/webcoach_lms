@@ -221,7 +221,7 @@ export default function CourseCurriculumPage() {
           className="font-bold text-white"
           style={{ fontSize: '11.4px', letterSpacing: '0.6px' }}
         >
-          2024 © WEBCOACH
+          2026 © WEBCOACH
         </span>
       </footer>
     </div>

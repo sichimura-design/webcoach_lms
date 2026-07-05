@@ -8,7 +8,7 @@ const ALLOWED_STYLES = ['lorelei', 'bottts-neutral'];
 /** 識別子または URL → 表示用 URL に変換 */
 export function resolveAvatarUrl(identifier: string | null | undefined, fallbackName: string): string {
   if (!identifier) {
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(fallbackName || 'User')}&background=F0EAE6&color=CDC6C6&size=90`;
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(fallbackName)}&background=F0EAE6&color=CDC6C6&size=90`;
   }
   // 実URL（APIアバター）
   if (identifier.startsWith('http')) {
@@ -24,7 +24,7 @@ export function resolveAvatarUrl(identifier: string | null | undefined, fallback
       }
     }
   }
-  return `https://ui-avatars.com/api/?name=${encodeURIComponent(fallbackName || 'User')}&background=F0EAE6&color=CDC6C6&size=90`;
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(fallbackName)}&background=F0EAE6&color=CDC6C6&size=90`;
 }
 
 /** CloudFront 認証トークンを URL に付与する */

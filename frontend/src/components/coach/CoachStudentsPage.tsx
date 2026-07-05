@@ -168,7 +168,7 @@ export function CoachStudentsPage() {
           </div>
         </div>
 
-        <p className="text-center text-xs mt-8" style={{ color: '#C3BAB4' }}>2024 © WEBCOACH</p>
+        <p className="text-center text-xs mt-8" style={{ color: '#C3BAB4' }}>2026 © WEBCOACH</p>
       </div>
     </div>
   );

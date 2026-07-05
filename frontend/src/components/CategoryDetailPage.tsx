@@ -379,7 +379,7 @@ function CategoryDetailPage() {
           className="text-brand-muted"
           style={{ fontSize: '11.4px', fontWeight: 500, letterSpacing: '0.6px' }}
         >
-          2024 &copy; WEBCOACH
+          2026 &copy; WEBCOACH
         </span>
       </footer>
 

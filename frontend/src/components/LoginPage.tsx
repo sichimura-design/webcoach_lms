@@ -317,7 +317,7 @@ function LoginPage() {
           className="text-[11.4px] font-bold text-white"
           style={{ letterSpacing: '0.6px' }}
         >
-          2024 &copy; WEBCOACH
+          2026 &copy; WEBCOACH
         </span>
       </footer>
     </div>

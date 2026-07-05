@@ -68,7 +68,7 @@ function MyPage() {
     );
   }
 
-  const avatarName = userProfile.nick_name || '未設定';
+  const avatarName = userProfile.nick_name || '';
   const avatarIdentifier = userProfile.avatar_url?.startsWith('http')
     ? userProfile.avatar_url
     : userProfile.avatar_id || userProfile.avatar_url;
@@ -317,7 +317,7 @@ function MyPage() {
       {/* Footer */}
       <footer className="bg-brand-footer h-10 flex items-center justify-center">
         <span className="text-[11.4px] font-bold text-white">
-          2024 &copy; WEBCOACH
+          2026 &copy; WEBCOACH
         </span>
       </footer>
     </div>

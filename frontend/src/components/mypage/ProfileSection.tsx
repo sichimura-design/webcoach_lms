@@ -32,8 +32,8 @@ export const ProfileSection: React.FC<ProfileSectionProps> = ({ user, badgeProgr
                 }}
               >
                 <img
-                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.nick_name || '未設定')}&background=F3A7A7&color=fff&size=128`}
-                  alt={user.nick_name || '未設定'}
+                  src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user.nick_name || '')}&background=F3A7A7&color=fff&size=128`}
+                  alt={user.nick_name || ''}
                   className="w-full h-full object-cover"
                 />
               </div>
