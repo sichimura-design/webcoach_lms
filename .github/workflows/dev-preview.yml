@@ -43,6 +43,9 @@ jobs:
         env:
           REACT_APP_COGNITO_USER_POOL_ID: ${{ secrets.REACT_APP_COGNITO_USER_POOL_ID }}
           REACT_APP_COGNITO_CLIENT_ID: ${{ secrets.REACT_APP_COGNITO_CLIENT_ID }}
+          # dev/** プレビューはモックを有効化し、実BFFに無い新機能もプレビューで動くようにする
+          # （本番 master 用の deploy-frontend.yml では設定しないので本番はモックOFF）
+          REACT_APP_ENABLE_MOCKS: 'true'
           PUBLIC_URL: /branches/${{ steps.slug.outputs.slug }}
           GENERATE_SOURCEMAP: false
           CI: false

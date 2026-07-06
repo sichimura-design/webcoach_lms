@@ -11,6 +11,7 @@ import LearningCoursesPage from '../components/LearningCoursesPage';
 import CategoryDetailPage from '../components/CategoryDetailPage';
 import AIAppsPage from '../components/AIAppsPage';
 import BadgesPage from '../components/BadgesPage';
+import AnnouncementsPage from '../components/AnnouncementsPage';
 import ContentListPage from '../components/ContentListPage';
 import CourseContentPage from '../components/CourseContentPage';
 import CourseCurriculumPage from '../components/CourseCurriculumPage';
@@ -316,6 +317,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <BadgesPageWrapper />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/announcements"
+        element={
+          <ProtectedRoute>
+            <AnnouncementsPage />
           </ProtectedRoute>
         }
       />

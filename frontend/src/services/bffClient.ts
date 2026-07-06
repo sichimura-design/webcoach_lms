@@ -18,7 +18,9 @@ import {
   HealthResponse,
 } from '../types/api';
 import { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
+import { Announcement } from '../types/announcement';
 import { getIdToken } from './cognitoAuth';
+import { MOCKS_ENABLED } from '../mocks/config';
 
 /**
  * BFF Client - 統合APIクライアント
@@ -54,7 +56,8 @@ class BFFClient {
     this.api.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response?.status === 401) {
+        // モック時は未モックの stray リクエストで /login へリダイレクトさせない
+        if (!MOCKS_ENABLED && error.response?.status === 401) {
           if (window.location.pathname !== '/login') {
             window.location.href = '/login';
           }
@@ -449,6 +452,16 @@ class BFFClient {
     const response = await this.api.get('/webcoach/ai-applications');
     const data = response.data;
     return Array.isArray(data) ? data : (data?.applications ?? []);
+  }
+
+  /**
+   * お知らせ一覧取得（サンプル機能・モック専用）
+   * GET /api/webcoach/announcements
+   * 実BFFには存在しないため、モック（handlers.ts）でのみ応答する。
+   */
+  async getAnnouncements(): Promise<Announcement[]> {
+    const response = await this.api.get('/webcoach/announcements');
+    return response.data;
   }
 
   /**
