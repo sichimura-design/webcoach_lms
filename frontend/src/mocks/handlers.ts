@@ -94,6 +94,68 @@ const userCourses = [
   },
 ];
 
+// ---- 学習コンテンツ（カテゴリ→コース→カリキュラム→教材）ダミー ----------------
+type MockCourse = {
+  id: number; fullname: string; shortname: string;
+  categoryid: number; categoryname: string; summary: string;
+  courseimage?: string; tags: { rawname: string }[];
+  difficulty: string; duration: string;
+};
+
+// コースカタログ（/moodle/courses と /moodle/getcoursebyfield の元データ）
+const catalog: MockCourse[] = [
+  // カテゴリ1: Webデザイン
+  { id: 101, fullname: 'はじめてのWebデザイン', shortname: 'design-101', categoryid: 1, categoryname: 'Webデザイン', summary: 'デザインの基本原則をやさしく学ぶ入門コース', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分' },
+  { id: 201, fullname: 'デザインの4大原則', shortname: 'design-201', categoryid: 1, categoryname: 'Webデザイン', summary: '近接・整列・反復・コントラストを理解する', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '20分' },
+  { id: 202, fullname: '配色の基本とツール', shortname: 'design-202', categoryid: 1, categoryname: 'Webデザイン', summary: '色の役割と配色ツールの使い方', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '25分' },
+  { id: 203, fullname: 'バナーを作ってみよう', shortname: 'design-203', categoryid: 1, categoryname: 'Webデザイン', summary: '実際に1枚のバナーを完成させる', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '45分' },
+  { id: 204, fullname: 'LPのワイヤーフレーム制作', shortname: 'design-204', categoryid: 1, categoryname: 'Webデザイン', summary: '構成から作るランディングページ設計', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '60分' },
+  { id: 205, fullname: '余白の使い方Tips', shortname: 'design-205', categoryid: 1, categoryname: 'Webデザイン', summary: '見やすさが変わる余白の小ワザ', tags: [{ rawname: 'Tips・小ネタ' }], difficulty: '基礎', duration: '10分' },
+  // カテゴリ2: コーディング
+  { id: 102, fullname: 'HTML/CSS基礎', shortname: 'coding-102', categoryid: 2, categoryname: 'コーディング', summary: 'Webページを作る第一歩', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '40分' },
+  { id: 211, fullname: 'よく使うHTMLタグ辞典', shortname: 'coding-211', categoryid: 2, categoryname: 'コーディング', summary: '実務で頻出のタグをまとめて習得', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分' },
+  { id: 212, fullname: 'Flexboxでレイアウト', shortname: 'coding-212', categoryid: 2, categoryname: 'コーディング', summary: '横並び・中央寄せを自在に', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '50分' },
+  // カテゴリ3: マーケティング
+  { id: 221, fullname: 'SNS集客の基本', shortname: 'mkt-221', categoryid: 3, categoryname: 'マーケティング', summary: '各SNSの特性と使い分け', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '25分' },
+  { id: 222, fullname: '刺さる広告文の書き方', shortname: 'mkt-222', categoryid: 3, categoryname: 'マーケティング', summary: 'クリックされるコピーの型', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '35分' },
+];
+
+// カリキュラム/教材（/moodle/courses/:id/contents）。どのコースでも汎用の章立てを返す。
+function buildSections(courseId: number) {
+  const page = (id: number, name: string, body: string) => ({
+    id, name, modname: 'page',
+    description: body,
+    completion: 1,
+    completiondata: { state: 0 },
+  });
+  const lead = courseId * 1000;
+  return [
+    {
+      id: lead + 1, name: 'セクション1: 基礎を理解する', visible: true, summary: '',
+      modules: [
+        page(lead + 11, 'イントロダクション', '<h2>このコースで学ぶこと</h2><p>このセクションでは全体像をつかみます。手を動かす前に、まず「なぜそれが必要なのか」を理解しましょう。</p><ul><li>学ぶゴールの確認</li><li>用語の整理</li><li>進め方のコツ</li></ul>'),
+        page(lead + 12, '基本の考え方', '<h2>基本の考え方</h2><p>ここが土台になります。焦らず、一つずつ確認していきましょう。</p><p>ポイントは<strong>「まず真似る」</strong>こと。型を覚えてから応用に進みます。</p>'),
+      ],
+    },
+    {
+      id: lead + 2, name: 'セクション2: 手を動かす', visible: true, summary: '',
+      modules: [
+        page(lead + 21, 'ハンズオン①', '<h2>やってみよう</h2><p>実際に手を動かすパートです。完成イメージを見ながら進めてください。</p><ol><li>お手本をなぞる</li><li>自分でアレンジ</li><li>見比べて改善</li></ol>'),
+        page(lead + 22, 'ハンズオン②', '<h2>もう一歩踏み込む</h2><p>応用に挑戦します。詰まったら前のレッスンに戻ってOKです。</p>'),
+        page(lead + 23, 'まとめと次のステップ', '<h2>まとめ</h2><p>お疲れさまでした。学んだことを振り返り、次のコースへ進みましょう。</p>'),
+      ],
+    },
+  ];
+}
+
+// AIアプリ（/webcoach/ai-applications）
+const aiApps = [
+  { id: 1, name: 'バナーAIジェネレーター', description: '文字を入れるだけでバナー画像を生成', url: 'https://example.com/banner', icon: '' },
+  { id: 2, name: 'キャッチコピー生成', description: '商品情報から刺さるコピーを提案', url: 'https://example.com/copy', icon: '' },
+  { id: 3, name: '配色パレット提案', description: 'イメージに合う配色を自動生成', url: 'https://example.com/color', icon: '' },
+  { id: 4, name: '文章校正アシスタント', description: '誤字・言い回しをAIがチェック', url: 'https://example.com/proof', icon: '' },
+];
+
 // ---- ハンドラ ---------------------------------------------------------------
 export const handlers = [
   // ==================== 認証後のブート経路 ====================
@@ -108,15 +170,34 @@ export const handlers = [
 
   // ==================== MyPage / ダッシュボード ====================
   http.get('*/api/webcoach/resumecourse/:userid', () => HttpResponse.json(resumeCourses)),
+
+  // ==================== 学習コンテンツ（カテゴリ→コース→カリキュラム→教材） ====================
+  // コース詳細（カリキュラム/教材ページが章立てを取得）
+  http.get('*/api/moodle/courses/:courseid/contents', ({ params }) =>
+    HttpResponse.json(buildSections(Number(params.courseid)))
+  ),
+  // アクティビティ完了状態（cmid が偶数なら完了済みとして見せる）
+  http.get('*/api/moodle/activities/:cmid/completion', ({ params }) =>
+    HttpResponse.json({ state: Number(params.cmid) % 2 === 0 ? 1 : 0 })
+  ),
+  // カテゴリ内のコース一覧（?field=category&value=<id>）
+  http.get('*/api/moodle/getcoursebyfield', ({ request }) => {
+    const value = new URL(request.url).searchParams.get('value');
+    const catId = Number(value);
+    const courses = catalog.filter((c) => c.categoryid === catId);
+    return HttpResponse.json({ courses: courses.length ? courses : catalog.slice(0, 3) });
+  }),
   http.get('*/api/moodle/courses/:userid', () => HttpResponse.json(userCourses)),
-  http.get('*/api/moodle/courses', () => HttpResponse.json(userCourses)),
+  http.get('*/api/moodle/courses', () => HttpResponse.json(catalog)),
   http.get('*/api/moodle/categories', () => HttpResponse.json(categories)),
   http.get('*/api/webcoach/recomendbadge/:userid', () => HttpResponse.json([])),
   http.get('*/api/webcoach/next-coaching-goals/:userid', () => HttpResponse.json([])),
   http.get('*/api/webcoach/roadmaps', () => HttpResponse.json([])),
   http.get('*/api/moodle/badges', () => HttpResponse.json([])),
   http.get('*/api/moodle/user-badges/:userid', () => HttpResponse.json([])),
-  http.get('*/api/webcoach/ai-applications', () => HttpResponse.json([])),
+  http.get('*/api/webcoach/ai-applications', () => HttpResponse.json(aiApps)),
+  // コース受講登録（クリック時）— 成功を返すだけ
+  http.post('*/api/moodle/enroll-course/:courseid', () => HttpResponse.json({ success: true })),
   http.get('*/api/moodle/notifications/new-content', () =>
     HttpResponse.json({ count: 0, items: [] })
   ),
