@@ -44,21 +44,21 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // ★ プロジェクト固有ブランドカラー
+        // ★ プロジェクト固有ブランドカラー（デザイン方向性: ポップ・クエスト）
         brand: {
-          DEFAULT:   '#E86D78',  // プライマリピンク
-          secondary: '#FA9262',  // セカンダリオレンジ
-          text:      '#4B3A33',  // ダークテキスト
-          muted:     '#7E6E68',  // ミュートテキスト
-          subtle:    '#C2B9B3',  // サブテキスト・アイコン
-          bg:        '#FDFCF8',  // ページ背景
-          border:    '#F0EAE6',  // ボーダー
-          footer:    '#7E6E68',  // フッター背景
+          DEFAULT:   '#FF5A7A',  // プライマリ（ビビッドピンク）
+          secondary: '#FFC24B',  // セカンダリ（サニーアンバー）
+          text:      '#2B2440',  // ダークテキスト（ディープネイビー）
+          muted:     '#7A7392',  // ミュートテキスト
+          subtle:    '#B7B0C4',  // サブテキスト・アイコン
+          bg:        '#FFFDF8',  // ページ背景（明るいクリーム）
+          border:    '#EFE7D6',  // ボーダー
+          footer:    '#2B2440',  // フッター背景
         },
       },
-      // ★ グラデーション
+      // ★ グラデーション（アンバー→ピンク）
       backgroundImage: {
-        'brand-gradient': 'linear-gradient(135deg, #E86D78, #FA9262)',
+        'brand-gradient': 'linear-gradient(135deg, #FFC24B, #FF5A7A)',
       },
       // ★ フォント
       fontFamily: {

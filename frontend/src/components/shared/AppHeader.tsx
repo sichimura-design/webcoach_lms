@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown, Calendar, MessageCircle, Briefcase, Lightbulb } from 'lucide-react';
+import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown, Calendar, MessageCircle, Briefcase, Lightbulb, ImagePlus } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -27,7 +27,17 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const resolvedAvatarUrl = avatarUrl ?? (ctxAvatarUrl ? withCfToken(ctxAvatarUrl, contentToken) : undefined);
 
   const { chatOpen, setChatOpen } = useChatStore();
-  const { messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress } = useAiChat();
+  const { messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress, attachedImage, setAttachedImage } = useAiChat();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImagePick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setAttachedImage(typeof reader.result === 'string' ? reader.result : null);
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
 
   const { items: notificationItems, markAllRead } = useNotificationStore();
   const [notifOpen, setNotifOpen] = useState(false);
@@ -570,7 +580,12 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                           }}
                         />
                       ) : (
-                        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                        <>
+                          {message.image && (
+                            <img src={message.image} alt="添付画像" className="rounded-lg mb-2 max-h-48 w-auto object-contain border border-gray-200" />
+                          )}
+                          {message.content && <p className="text-sm whitespace-pre-wrap">{message.content}</p>}
+                        </>
                       )}
                       <p className="text-xs text-gray-400 mt-2">
                         {message.timestamp.toLocaleTimeString('ja-JP', {
@@ -623,20 +638,43 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
             {/* Input Area */}
             <div className="p-4 bg-white border-t">
-              <div className="flex gap-2">
+              {/* 添付画像プレビュー */}
+              {attachedImage && (
+                <div className="relative inline-block mb-2">
+                  <img src={attachedImage} alt="添付プレビュー" className="h-20 w-auto rounded-lg border border-gray-200 object-contain" />
+                  <button
+                    onClick={() => setAttachedImage(null)}
+                    className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-brand-text text-white flex items-center justify-center shadow"
+                    aria-label="添付を削除"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
+              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImagePick} />
+              <div className="flex gap-2 items-end">
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={loading}
+                  className="p-2 rounded-lg border border-gray-300 text-brand-muted hover:bg-gray-50 disabled:opacity-50 transition-colors flex-shrink-0"
+                  aria-label="画像を添付"
+                  title="画像を添付"
+                >
+                  <ImagePlus className="w-5 h-5" />
+                </button>
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="質問を入力してください..."
+                  placeholder={attachedImage ? '画像について質問する…（任意）' : '質問を入力してください...'}
                   disabled={loading}
                   rows={1}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent disabled:bg-gray-100"
                 />
                 <button
                   onClick={sendMessage}
-                  disabled={!input.trim() || loading}
-                  className="p-2 bg-brand text-white rounded-lg hover:bg-brand/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                  disabled={(!input.trim() && !attachedImage) || loading}
+                  className="p-2 bg-brand text-white rounded-lg hover:bg-brand/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex-shrink-0"
                 >
                   <Send className="w-5 h-5" />
                 </button>

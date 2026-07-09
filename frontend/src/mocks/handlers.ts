@@ -293,11 +293,27 @@ export const handlers = [
   // POST /webcoach/ai — 質問内容に応じてダミー応答を返す
   http.post('*/api/webcoach/ai', async ({ request }) => {
     let message = '';
+    let hasImage = false;
     try {
-      const body = (await request.json()) as { message?: string };
+      const body = (await request.json()) as { message?: string; image?: string };
       message = body?.message || '';
+      hasImage = !!body?.image;
     } catch {
       /* ignore */
+    }
+
+    // 画像が添付されている場合は、画像を読み取った体で回答する（モック）
+    if (hasImage) {
+      return HttpResponse.json({
+        success: true,
+        message:
+          '画像を拝見しました。バナーのようですね。よく作り込まれています！さらに良くするなら、\n\n① **主役を1つに絞る**：いちばん伝えたい要素（キャッチ or 写真）を大きく、他は控えめに。\n② **余白を足す**：文字と端の間に少し余白を取ると一気に洗練されます。\n③ **色数を3色まで**：ベース・メイン・アクセントで統一感が出ます。\n\nどの点から直したいか教えてください。一緒に直していきましょう！',
+        sources: [
+          { chunk_index: 0, module_name: 'デザインの4大原則', filename: 'principles.md', section_name: '基礎知識', similarity: 0.79 },
+        ],
+        suggestions: ['余白の取り方を詳しく', '配色の直し方は？', 'この構成でOK？'],
+        timestamp: '2026-07-09T00:00:00Z',
+      });
     }
 
     const kb: { keys: string[]; reply: string }[] = [

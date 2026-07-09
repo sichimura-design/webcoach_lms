@@ -63,8 +63,8 @@ export function LearningJourney({ userId }: Props) {
 
       {/* ── 今日のクエスト ─────────────────────────────── */}
       <div
-        className="relative overflow-hidden rounded-[28px] p-6 sm:p-7 text-white shadow-md"
-        style={{ background: 'linear-gradient(135deg, #FA9262 0%, #E8657A 100%)' }}
+        className="relative overflow-hidden rounded-[28px] p-6 sm:p-7 text-white"
+        style={{ background: 'linear-gradient(135deg, #FFC24B 0%, #FF5A7A 100%)', boxShadow: '0 10px 0 rgba(43,36,64,0.05), 0 16px 34px rgba(255,90,122,0.28)' }}
       >
         <div className="absolute -top-10 -right-8 w-40 h-40 rounded-full bg-white/10" />
         <div className="absolute -bottom-12 -left-6 w-32 h-32 rounded-full bg-white/10" />
@@ -191,9 +191,9 @@ function PhaseColumn({
   onNodeClick: (n: JourneyNode) => void;
 }) {
   const statusStyle: Record<string, { badge: string; badgeBg: string; label: string }> = {
-    done: { badge: '#2F9E6E', badgeBg: '#E4F3EC', label: '完了' },
-    current: { badge: '#E8657A', badgeBg: '#FFEAEC', label: '進行中' },
-    locked: { badge: '#9C8F87', badgeBg: '#F0EAE6', label: 'これから' },
+    done: { badge: '#2E9E76', badgeBg: '#E3F5EC', label: '完了' },
+    current: { badge: '#FF5A7A', badgeBg: '#FFE4EA', label: '進行中' },
+    locked: { badge: '#9C8F87', badgeBg: '#EFE7D6', label: 'これから' },
   };
   const st = statusStyle[phase.status];
 
@@ -269,7 +269,7 @@ function NodeCircle({ node, onClick }: { node: JourneyNode; onClick: () => void 
     bg = '#F0EAE6';
   } else if (node.status === 'done') {
     icon = <Check className="w-6 h-6 text-white" strokeWidth={3} />;
-    bg = '#2FA372';
+    bg = '#3FC79A';
   } else {
     // current
     icon = node.type === 'boss'
@@ -294,7 +294,7 @@ function NodeCircle({ node, onClick }: { node: JourneyNode; onClick: () => void 
         aria-label={node.title}
         className="relative w-16 h-16 rounded-full flex items-center justify-center shadow-sm transition-transform"
         style={{
-          background: ring ? 'linear-gradient(135deg, #FA9262 0%, #E8657A 100%)' : bg,
+          background: ring ? 'linear-gradient(135deg, #FFC24B 0%, #FF5A7A 100%)' : bg,
           cursor: clickable ? 'pointer' : 'default',
           border: node.type === 'boss' && node.status !== 'locked' ? '3px solid #FFD454' : 'none',
         }}
