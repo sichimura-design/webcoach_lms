@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Edit2, PlayCircle, ChevronRight, Flag, Bookmark, Play } from 'lucide-react';
+import { Edit2, PlayCircle, ChevronRight, Flag, Play } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
 import { AppHeader } from './shared';
@@ -140,20 +140,6 @@ function MyPage() {
                   </p>
                 </div>
 
-                {/* 今日のスモールステップ */}
-                <div className="bg-white border border-[#F0EAE6] rounded-2xl px-4 py-3">
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <div className="w-[18px] h-[18px] rounded-full bg-brand flex items-center justify-center flex-shrink-0">
-                      <Bookmark className="w-2.5 h-2.5 text-white" />
-                    </div>
-                    <span className="text-xs font-bold text-brand-muted">今日のスモールステップ</span>
-                  </div>
-                  <div className="pl-3 border-l-2 border-[#FA9262]">
-                    <p className="text-sm text-brand-text">
-                      {userProfile.today_small_step || '未設定'}
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
 

@@ -268,17 +268,28 @@ export const handlers = [
     })
   ),
 
-  // 目標のAI細分化（POST /webcoach/goal-breakdown）— ゴール文字列→サブ目標配列
+  // 目標のAI細分化（POST /webcoach/goal-breakdown）— ゴール文字列/コーチング記録→サブ目標配列
   http.post('*/api/webcoach/goal-breakdown', async ({ request }) => {
     let goal = '';
+    let source = 'goal';
     try {
-      const body = (await request.json()) as { goal?: string };
+      const body = (await request.json()) as { goal?: string; source?: string };
       goal = body?.goal || '';
+      source = body?.source || 'goal';
     } catch {
       /* ignore */
     }
     let subgoals: string[];
-    if (/(バナー|デザイン|配色|design)/i.test(goal)) {
+    if (source === 'coaching') {
+      // 前回コーチングで話した内容から、コーチと決めたタスクとして分解
+      subgoals = [
+        'コーチと決めた「バナー3枚」に今週着手する',
+        '前回指摘された余白の取り方を意識して1枚作り直す',
+        'おすすめされた参考サイトを3つ分析する',
+        '配色パターンを2案つくって次回に備える',
+        '完成したバナーを次回コーチングに持参する',
+      ];
+    } else if (/(バナー|デザイン|配色|design)/i.test(goal)) {
       subgoals = [
         '「デザインの4大原則」を復習する',
         '好きなバナーを3つ集めて良い点を言語化する',

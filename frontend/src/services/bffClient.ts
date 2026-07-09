@@ -477,9 +477,10 @@ class BFFClient {
   /**
    * 目標をAIで細分化（モック専用）
    * POST /api/webcoach/goal-breakdown
+   * @param source 'goal'=達成したいこと / 'coaching'=前回コーチングの記録
    */
-  async breakdownGoal(goal: string): Promise<{ subgoals: string[] }> {
-    const response = await this.api.post('/webcoach/goal-breakdown', { goal });
+  async breakdownGoal(goal: string, source: 'goal' | 'coaching' = 'goal'): Promise<{ subgoals: string[] }> {
+    const response = await this.api.post('/webcoach/goal-breakdown', { goal, source });
     return response.data;
   }
 

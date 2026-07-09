@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Plus, X, RotateCcw, GripVertical, Check, Pencil, Sparkles, Loader2 } from 'lucide-react';
+import { Plus, X, RotateCcw, GripVertical, Check, Pencil, Sparkles, Loader2, Mic } from 'lucide-react';
 import { useCoachingGoals, Goal } from '../../hooks/useCoachingGoals';
 import { bffClient } from '../../services/bffClient';
 
@@ -17,6 +17,9 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
   const [aiInput, setAiInput] = useState('');
   const [aiLoading, setAiLoading] = useState(false);
+  const [aiMode, setAiMode] = useState<'goal' | 'coaching'>('goal');
+  const [coachingNotes, setCoachingNotes] = useState('');
+  const [recording, setRecording] = useState(false);
 
   const dragItem = useRef<number | null>(null);
   const lastDragOver = useRef<number | null>(null);
@@ -64,18 +67,31 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
     setNewGoalText('');
   };
 
-  const handleAiBreakdown = async () => {
-    if (!aiInput.trim() || aiLoading) return;
+  const handleAiBreakdown = async (text: string, source: 'goal' | 'coaching') => {
+    if (!text.trim() || aiLoading) return;
     setAiLoading(true);
     try {
-      const { subgoals } = await bffClient.breakdownGoal(aiInput.trim());
-      saveGoals(subgoals.map(text => ({ no: null, text, completed: false })));
+      const { subgoals } = await bffClient.breakdownGoal(text.trim(), source);
+      saveGoals(subgoals.map(t => ({ no: null, text: t, completed: false })));
       setAiInput('');
+      setCoachingNotes('');
     } catch {
       // 失敗時は何もしない（プロトタイプ）
     } finally {
       setAiLoading(false);
     }
+  };
+
+  // コーチング音声からの取り込み（デモ：録音をシミュレートしてサンプル文字起こしを入れる）
+  const handleDemoRecord = () => {
+    if (recording) return;
+    setRecording(true);
+    setTimeout(() => {
+      setCoachingNotes(
+        '今日のコーチングでは、ポートフォリオ用にバナーを3枚作ることを目標にしました。前回の余白の取り方が課題だったのでそこを意識すること。参考サイトを3つ見て分析するのと、配色は2パターン用意して次回持ってくるよう言われました。',
+      );
+      setRecording(false);
+    }, 1500);
   };
 
   // グリップハンドルからのドラッグ開始
@@ -191,35 +207,91 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
           </div>
         ) : displayGoals.length === 0 && !isEditing ? (
           <div className="rounded-2xl border border-dashed p-5 sm:p-6" style={{ borderColor: '#F0C9CE', background: '#FFF8F5' }}>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}>
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <p className="text-sm font-bold text-brand-text">AIが目標を細分化します</p>
             </div>
-            <p className="text-xs text-brand-muted mb-3">
-              達成したいことを一言で入れると、次回コーチングまでにやることに分解します。
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="text"
-                value={aiInput}
-                onChange={e => setAiInput(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleAiBreakdown()}
-                placeholder="例：3ヶ月でWebデザインの案件を1件獲得する"
-                className="flex-1 text-sm rounded-xl px-3 py-2.5 bg-white focus:outline-none"
-                style={{ border: '1px solid #E8D6D0' }}
-              />
-              <button
-                onClick={handleAiBreakdown}
-                disabled={!aiInput.trim() || aiLoading}
-                className="flex items-center justify-center gap-1.5 text-sm font-bold text-white rounded-xl px-4 py-2.5 transition-opacity disabled:opacity-40 flex-shrink-0"
-                style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
-              >
-                {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-                {aiLoading ? '分解中...' : 'AIで分解する'}
-              </button>
+
+            {/* モード切替 */}
+            <div className="inline-flex rounded-full bg-[#F3E4DE] p-1 mb-4">
+              {([['goal', '達成したいこと'], ['coaching', '前回のコーチングから']] as const).map(([m, label]) => (
+                <button
+                  key={m}
+                  onClick={() => setAiMode(m)}
+                  className="text-xs font-bold rounded-full px-3 py-1.5 transition-colors"
+                  style={aiMode === m
+                    ? { background: '#fff', color: '#E86D78', boxShadow: '0 1px 2px rgba(0,0,0,.06)' }
+                    : { background: 'transparent', color: '#9C8079' }}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
+
+            {aiMode === 'goal' ? (
+              <>
+                <p className="text-xs text-brand-muted mb-3">
+                  達成したいことを一言で入れると、次回コーチングまでにやることに分解します。
+                </p>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <input
+                    type="text"
+                    value={aiInput}
+                    onChange={e => setAiInput(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && handleAiBreakdown(aiInput, 'goal')}
+                    placeholder="例：3ヶ月でWebデザインの案件を1件獲得する"
+                    className="flex-1 text-sm rounded-xl px-3 py-2.5 bg-white focus:outline-none"
+                    style={{ border: '1px solid #E8D6D0' }}
+                  />
+                  <button
+                    onClick={() => handleAiBreakdown(aiInput, 'goal')}
+                    disabled={!aiInput.trim() || aiLoading}
+                    className="flex items-center justify-center gap-1.5 text-sm font-bold text-white rounded-xl px-4 py-2.5 transition-opacity disabled:opacity-40 flex-shrink-0"
+                    style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+                  >
+                    {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                    {aiLoading ? '分解中...' : 'AIで分解する'}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <p className="text-xs text-brand-muted">
+                    前回コーチングで話したことを入れると、コーチと決めたタスクに分解します。
+                  </p>
+                  <button
+                    onClick={handleDemoRecord}
+                    disabled={recording}
+                    className="flex items-center gap-1.5 text-xs font-bold rounded-full px-3 py-1.5 flex-shrink-0 transition-colors disabled:opacity-60"
+                    style={{ color: '#E86D78', border: '1px solid #E8B5BB', background: '#fff' }}
+                  >
+                    {recording ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mic className="w-3.5 h-3.5" />}
+                    {recording ? '文字起こし中...' : '録音から取り込む（デモ）'}
+                  </button>
+                </div>
+                <textarea
+                  value={coachingNotes}
+                  onChange={e => setCoachingNotes(e.target.value)}
+                  rows={4}
+                  placeholder="コーチングで話した内容を貼り付け、または「録音から取り込む」で自動入力"
+                  className="w-full text-sm rounded-xl px-3 py-2.5 bg-white focus:outline-none resize-none mb-2"
+                  style={{ border: '1px solid #E8D6D0' }}
+                />
+                <button
+                  onClick={() => handleAiBreakdown(coachingNotes, 'coaching')}
+                  disabled={!coachingNotes.trim() || aiLoading}
+                  className="w-full flex items-center justify-center gap-1.5 text-sm font-bold text-white rounded-xl px-4 py-2.5 transition-opacity disabled:opacity-40"
+                  style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+                >
+                  {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                  {aiLoading ? 'タスク化中...' : 'この記録からタスクを作る'}
+                </button>
+              </>
+            )}
+
             <button
               onClick={startEditing}
               className="mt-3 text-xs text-brand-muted underline hover:text-brand transition-colors"
