@@ -475,6 +475,15 @@ class BFFClient {
   }
 
   /**
+   * 目標をAIで細分化（モック専用）
+   * POST /api/webcoach/goal-breakdown
+   */
+  async breakdownGoal(goal: string): Promise<{ subgoals: string[] }> {
+    const response = await this.api.post('/webcoach/goal-breakdown', { goal });
+    return response.data;
+  }
+
+  /**
    * コース作成
    * POST /api/moodle/create-course
    */

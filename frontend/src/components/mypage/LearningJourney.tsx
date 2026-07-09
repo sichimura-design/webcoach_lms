@@ -80,22 +80,31 @@ export function LearningJourney({ userId }: Props) {
           <h2 className="text-lg font-bold text-brand-text">学習ロードマップ</h2>
         </div>
         <p className="text-sm text-brand-muted mb-6">
-          ゴールまでを{phases.length}つのフェーズに分解。いまここから、一歩ずつ。
+          ゴールまでを{phases.length}つのフェーズに分解。左から右へ、いまここから一歩ずつ。
         </p>
 
-        <div className="flex flex-col gap-8">
-          {phases.map((phase) => (
-            <PhaseBlock
-              key={phase.id}
-              phase={phase}
-              nodes={nodes.filter((n) => n.phaseId === phase.id)}
-              onNodeClick={(node) => {
-                if (node.status !== 'locked' && node.courseId) {
-                  navigate(`/course/${node.courseId}/curriculum`);
-                }
-              }}
-            />
-          ))}
+        {/* 横スクロールのゲーム風トラック（ページ本体は横スクロールさせない） */}
+        <div className="overflow-x-auto -mx-2 px-2 pb-2">
+          <div className="flex flex-row items-stretch gap-2 min-w-min">
+            {phases.map((phase, pi) => (
+              <React.Fragment key={phase.id}>
+                {pi > 0 && (
+                  <div className="flex items-center text-[#E0D5CC] flex-shrink-0 self-center">
+                    <ChevronRight className="w-7 h-7" />
+                  </div>
+                )}
+                <PhaseColumn
+                  phase={phase}
+                  nodes={nodes.filter((n) => n.phaseId === phase.id)}
+                  onNodeClick={(node) => {
+                    if (node.status !== 'locked' && node.courseId) {
+                      navigate(`/course/${node.courseId}/curriculum`);
+                    }
+                  }}
+                />
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -130,8 +139,8 @@ function StreakBadge({ streak }: { streak: Journey['streak'] }) {
   );
 }
 
-// ── フェーズブロック（見出し＋到達目標＋ノード列） ───────
-function PhaseBlock({
+// ── フェーズ列（横並び：見出し＋到達目標＋横方向のノード列） ───────
+function PhaseColumn({
   phase,
   nodes,
   onNodeClick,
@@ -148,11 +157,11 @@ function PhaseBlock({
   const st = statusStyle[phase.status];
 
   return (
-    <div className="relative">
+    <div className="flex-shrink-0 flex flex-col gap-3" style={{ minWidth: 220 }}>
       {/* フェーズ見出し */}
-      <div className="rounded-2xl border border-[#F0EAE6] p-4 mb-2 bg-[#FCF9F6]">
+      <div className="rounded-2xl border border-[#F0EAE6] p-4 bg-[#FCF9F6] h-full">
         <div className="flex items-center justify-between gap-2 mb-1.5">
-          <h3 className="font-bold text-brand-text text-[15px]">{phase.title}</h3>
+          <h3 className="font-bold text-brand-text text-[14px]">{phase.title}</h3>
           <span
             className="text-[11px] font-bold px-2.5 py-0.5 rounded-full flex-shrink-0"
             style={{ color: st.badge, background: st.badgeBg }}
@@ -160,7 +169,7 @@ function PhaseBlock({
             {st.label}
           </span>
         </div>
-        <div className="flex items-start gap-1.5 text-sm text-brand-muted">
+        <div className="flex items-start gap-1.5 text-[13px] text-brand-muted">
           <Flag className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style={{ color: st.badge }} />
           <span>到達目標：{phase.outcome}</span>
         </div>
@@ -177,31 +186,31 @@ function PhaseBlock({
         )}
       </div>
 
-      {/* ノード列（ゲーム風ジグザグ） */}
-      <div className="relative py-2">
-        {/* 中央の点線トレイル */}
+      {/* ノード列（横方向のゲーム風ジグザグ） */}
+      <div className="relative flex flex-row items-center gap-2 px-2 pt-9 pb-3">
+        {/* 横方向の点線トレイル */}
         <div
-          className="absolute top-6 bottom-6 left-1/2 -translate-x-1/2 w-0 border-l-2 border-dashed border-[#EFE4DB]"
+          className="absolute left-3 right-3 top-[52px] border-t-2 border-dashed border-[#EFE4DB]"
           aria-hidden
         />
-        <div className="relative flex flex-col gap-5">
-          {nodes.map((node, i) => {
-            const offset = [0, 56, 0, -56][i % 4];
-            return (
-              <div key={node.id} className="flex justify-center">
-                <div style={{ transform: `translateX(${offset}px)` }} className="flex flex-col items-center">
-                  <NodeCircle node={node} onClick={() => onNodeClick(node)} />
-                  <span
-                    className="mt-1.5 text-xs text-center max-w-[130px] leading-tight"
-                    style={{ color: node.status === 'locked' ? '#B4A89F' : '#5A4F49', fontWeight: node.status === 'current' ? 700 : 400 }}
-                  >
-                    {node.title}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        {nodes.map((node, i) => {
+          const offset = [0, -18, 0, 18][i % 4];
+          return (
+            <div
+              key={node.id}
+              className="relative flex flex-col items-center flex-shrink-0 w-[96px]"
+              style={{ transform: `translateY(${offset}px)` }}
+            >
+              <NodeCircle node={node} onClick={() => onNodeClick(node)} />
+              <span
+                className="mt-1.5 text-[11px] text-center leading-tight"
+                style={{ color: node.status === 'locked' ? '#B4A89F' : '#5A4F49', fontWeight: node.status === 'current' ? 700 : 400 }}
+              >
+                {node.title}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -268,6 +268,44 @@ export const handlers = [
     })
   ),
 
+  // 目標のAI細分化（POST /webcoach/goal-breakdown）— ゴール文字列→サブ目標配列
+  http.post('*/api/webcoach/goal-breakdown', async ({ request }) => {
+    let goal = '';
+    try {
+      const body = (await request.json()) as { goal?: string };
+      goal = body?.goal || '';
+    } catch {
+      /* ignore */
+    }
+    let subgoals: string[];
+    if (/(バナー|デザイン|配色|design)/i.test(goal)) {
+      subgoals = [
+        '「デザインの4大原則」を復習する',
+        '好きなバナーを3つ集めて良い点を言語化する',
+        '配色ツールで配色案を2パターン作る',
+        'バナーを1枚ラフまで作る',
+        'コーチにバナーのフィードバックをもらう',
+      ];
+    } else if (/(コーディング|html|css|coding)/i.test(goal)) {
+      subgoals = [
+        '「HTML/CSS基礎」を1コース進める',
+        'よく使うタグ・プロパティを5つメモする',
+        '簡単なプロフィールページを模写する',
+        'Flexboxで横並びレイアウトを作る',
+        'つまずいた点をAIコーチに質問する',
+      ];
+    } else {
+      subgoals = [
+        '今週の学習リズムを決める（週3回×30分など）',
+        '学んだことを1つメモにまとめる',
+        '教材を1コース分進める',
+        'わからない点をAIコーチに質問する',
+        '作ったもの・気づきをコーチに共有する',
+      ];
+    }
+    return HttpResponse.json({ subgoals });
+  }),
+
   // ==================== サンプル機能（新API＝モックの雛形） ====================
   // 実BFFには存在しない新エンドポイント。/announcements ページから利用する。
   // 新機能を足すときは、このブロックをコピーして中身を差し替える。

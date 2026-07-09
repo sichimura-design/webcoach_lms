@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { Plus, X, RotateCcw, GripVertical, Check, Pencil } from 'lucide-react';
+import { Plus, X, RotateCcw, GripVertical, Check, Pencil, Sparkles, Loader2 } from 'lucide-react';
 import { useCoachingGoals, Goal } from '../../hooks/useCoachingGoals';
+import { bffClient } from '../../services/bffClient';
 
 interface CoachingGoalsProps {
   userId: number | undefined;
@@ -14,6 +15,8 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
   const [editGoals, setEditGoals] = useState<Goal[]>([]);
   const [newGoalText, setNewGoalText] = useState('');
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+  const [aiInput, setAiInput] = useState('');
+  const [aiLoading, setAiLoading] = useState(false);
 
   const dragItem = useRef<number | null>(null);
   const lastDragOver = useRef<number | null>(null);
@@ -59,6 +62,20 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
     if (!newGoalText.trim()) return;
     setEditGoals(prev => [...prev, { no: null, text: newGoalText.trim(), completed: false }]);
     setNewGoalText('');
+  };
+
+  const handleAiBreakdown = async () => {
+    if (!aiInput.trim() || aiLoading) return;
+    setAiLoading(true);
+    try {
+      const { subgoals } = await bffClient.breakdownGoal(aiInput.trim());
+      saveGoals(subgoals.map(text => ({ no: null, text, completed: false })));
+      setAiInput('');
+    } catch {
+      // 失敗時は何もしない（プロトタイプ）
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   // グリップハンドルからのドラッグ開始
@@ -173,8 +190,42 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
             <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#E86D78', borderTopColor: 'transparent' }} />
           </div>
         ) : displayGoals.length === 0 && !isEditing ? (
-          <div className="py-6 text-center text-sm" style={{ color: '#7E6E68' }}>
-            目標がありません。「目標を編集」から追加してください。
+          <div className="rounded-2xl border border-dashed p-5 sm:p-6" style={{ borderColor: '#F0C9CE', background: '#FFF8F5' }}>
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}>
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+              <p className="text-sm font-bold text-brand-text">AIが目標を細分化します</p>
+            </div>
+            <p className="text-xs text-brand-muted mb-3">
+              達成したいことを一言で入れると、次回コーチングまでにやることに分解します。
+            </p>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="text"
+                value={aiInput}
+                onChange={e => setAiInput(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleAiBreakdown()}
+                placeholder="例：3ヶ月でWebデザインの案件を1件獲得する"
+                className="flex-1 text-sm rounded-xl px-3 py-2.5 bg-white focus:outline-none"
+                style={{ border: '1px solid #E8D6D0' }}
+              />
+              <button
+                onClick={handleAiBreakdown}
+                disabled={!aiInput.trim() || aiLoading}
+                className="flex items-center justify-center gap-1.5 text-sm font-bold text-white rounded-xl px-4 py-2.5 transition-opacity disabled:opacity-40 flex-shrink-0"
+                style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+              >
+                {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                {aiLoading ? '分解中...' : 'AIで分解する'}
+              </button>
+            </div>
+            <button
+              onClick={startEditing}
+              className="mt-3 text-xs text-brand-muted underline hover:text-brand transition-colors"
+            >
+              自分で入力する
+            </button>
           </div>
         ) : (
           <div className="border rounded-2xl overflow-hidden" style={{ borderColor: '#F0EAE6' }}>
