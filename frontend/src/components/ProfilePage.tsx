@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Flag } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from './ui/button';
 import { ProfileFormData } from '../types/profile';
 import bffClient from '../services/bffClient';
@@ -193,29 +193,28 @@ function ProfilePage() {
               />
             </div>
 
-            {/* 目標・ロードマップ（コーチング由来・編集不可） */}
+            {/* 理想のキャリア */}
+            <div className="mb-5">
+              <label className={labelClass}>理想のキャリア</label>
+              <textarea
+                value={formData.idealCareer}
+                onChange={(e) => setFormData(prev => ({ ...prev, idealCareer: e.target.value }))}
+                rows={3}
+                className={inputClass + ' resize-none'}
+                placeholder="理想のキャリアを入力"
+              />
+            </div>
+
+            {/* 今日のスモールステップ */}
             <div className="mb-8">
-              <label className={labelClass}>目標・ロードマップ</label>
-              <div className="rounded-xl border p-4" style={{ borderColor: '#F0EAE6', background: '#FCF9F6' }}>
-                <div className="flex items-start gap-2">
-                  <Flag className="w-4 h-4 mt-0.5 text-brand flex-shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-xs text-brand-muted mb-0.5">理想のキャリア</p>
-                    <p className="text-sm text-brand-text font-medium">{formData.idealCareer || '未設定'}</p>
-                  </div>
-                </div>
-                <p className="text-xs text-brand-muted mt-3 leading-relaxed">
-                  目標・フェーズ・今日のクエストは<span className="font-bold">コーチングで設定</span>され、
-                  <button
-                    type="button"
-                    onClick={() => navigate('/mypage')}
-                    className="text-brand underline hover:opacity-80"
-                  >
-                    マイページのロードマップ
-                  </button>
-                  に反映されます。ここでは編集できません。
-                </p>
-              </div>
+              <label className={labelClass}>今日のスモールステップ</label>
+              <textarea
+                value={formData.todaySmallStep}
+                onChange={(e) => setFormData(prev => ({ ...prev, todaySmallStep: e.target.value }))}
+                rows={3}
+                className={inputClass + ' resize-none'}
+                placeholder="今日の小さな一歩を入力"
+              />
             </div>
 
             {/* 変更するボタン */}

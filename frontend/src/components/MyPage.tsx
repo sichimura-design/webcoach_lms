@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Edit2, PlayCircle, ChevronRight, Flag, Play } from 'lucide-react';
+import { Edit2, PlayCircle, ChevronRight, Flag, Bookmark, Play } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
 import { AppHeader } from './shared';
@@ -8,7 +8,6 @@ import { CourseImage } from './shared/CourseImage';
 import { useMypageData } from '../hooks/useMypageData';
 import { resolveAvatarUrl, withCfToken } from './profile/AvatarPicker';
 import { CoachingGoals } from './mypage/CoachingGoals';
-import { LearningJourney } from './mypage/LearningJourney';
 
 function MyPage() {
   const navigate = useNavigate();
@@ -101,9 +100,6 @@ function MyPage() {
 
         {/* Main Content */}
         <main className="relative max-w-[1100px] mx-auto px-4 sm:px-6 py-8">
-          {/* 学習ジャーニー（主役：今日のクエスト＋ストリーク＋ロードマップ） */}
-          <LearningJourney userId={user?.userid} />
-
           {/* Profile Card - Full Width */}
           <div className="bg-white rounded-[32px] shadow-sm p-6 sm:p-8 mb-6 relative overflow-hidden">
             {/* Decorative circles */}
@@ -140,6 +136,20 @@ function MyPage() {
                   </p>
                 </div>
 
+                {/* 今日のスモールステップ */}
+                <div className="bg-white border border-[#F0EAE6] rounded-2xl px-4 py-3">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <div className="w-[18px] h-[18px] rounded-full bg-brand flex items-center justify-center flex-shrink-0">
+                      <Bookmark className="w-2.5 h-2.5 text-white" />
+                    </div>
+                    <span className="text-xs font-bold text-brand-muted">今日のスモールステップ</span>
+                  </div>
+                  <div className="pl-3 border-l-2 border-[#FA9262]">
+                    <p className="text-sm text-brand-text">
+                      {userProfile.today_small_step || '未設定'}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
 

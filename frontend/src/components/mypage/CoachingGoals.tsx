@@ -1,15 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Plus, X, RotateCcw, GripVertical, Check, Pencil, Sparkles, Loader2, Mic } from 'lucide-react';
+import { Plus, X, RotateCcw, GripVertical, Check, Pencil } from 'lucide-react';
 import { useCoachingGoals, Goal } from '../../hooks/useCoachingGoals';
-import { bffClient } from '../../services/bffClient';
 
 interface CoachingGoalsProps {
   userId: number | undefined;
 }
 
 export function CoachingGoals({ userId }: CoachingGoalsProps) {
-  const navigate = useNavigate();
   const { goals, loading, saving, saveGoals } = useCoachingGoals(userId);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -17,10 +14,6 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
   const [editGoals, setEditGoals] = useState<Goal[]>([]);
   const [newGoalText, setNewGoalText] = useState('');
   const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
-  const [aiInput, setAiInput] = useState('');
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiMode, setAiMode] = useState<'goal' | 'coaching'>('goal');
-  const [coachingNotes, setCoachingNotes] = useState('');
 
   const dragItem = useRef<number | null>(null);
   const lastDragOver = useRef<number | null>(null);
@@ -67,22 +60,6 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
     setEditGoals(prev => [...prev, { no: null, text: newGoalText.trim(), completed: false }]);
     setNewGoalText('');
   };
-
-  const handleAiBreakdown = async (text: string, source: 'goal' | 'coaching') => {
-    if (!text.trim() || aiLoading) return;
-    setAiLoading(true);
-    try {
-      const { subgoals } = await bffClient.breakdownGoal(text.trim(), source);
-      saveGoals(subgoals.map(t => ({ no: null, text: t, completed: false })));
-      setAiInput('');
-      setCoachingNotes('');
-    } catch {
-      // 失敗時は何もしない（プロトタイプ）
-    } finally {
-      setAiLoading(false);
-    }
-  };
-
 
   // グリップハンドルからのドラッグ開始
   const handleGripDragStart = (index: number, e: React.DragEvent<HTMLDivElement>) => {
@@ -196,99 +173,8 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
             <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#E86D78', borderTopColor: 'transparent' }} />
           </div>
         ) : displayGoals.length === 0 && !isEditing ? (
-          <div className="rounded-2xl border border-dashed p-5 sm:p-6" style={{ borderColor: '#F0C9CE', background: '#FFF8F5' }}>
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}>
-                <Sparkles className="w-4 h-4 text-white" />
-              </div>
-              <p className="text-sm font-bold text-brand-text">AIが目標を細分化します</p>
-            </div>
-
-            {/* モード切替 */}
-            <div className="inline-flex rounded-full bg-[#F3E4DE] p-1 mb-4">
-              {([['goal', '達成したいこと'], ['coaching', '前回のコーチングから']] as const).map(([m, label]) => (
-                <button
-                  key={m}
-                  onClick={() => setAiMode(m)}
-                  className="text-xs font-bold rounded-full px-3 py-1.5 transition-colors"
-                  style={aiMode === m
-                    ? { background: '#fff', color: '#E86D78', boxShadow: '0 1px 2px rgba(0,0,0,.06)' }
-                    : { background: 'transparent', color: '#9C8079' }}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            {aiMode === 'goal' ? (
-              <>
-                <p className="text-xs text-brand-muted mb-3">
-                  達成したいことを一言で入れると、次回コーチングまでにやることに分解します。
-                </p>
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <input
-                    type="text"
-                    value={aiInput}
-                    onChange={e => setAiInput(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && handleAiBreakdown(aiInput, 'goal')}
-                    placeholder="例：3ヶ月でWebデザインの案件を1件獲得する"
-                    className="flex-1 text-sm rounded-xl px-3 py-2.5 bg-white focus:outline-none"
-                    style={{ border: '1px solid #E8D6D0' }}
-                  />
-                  <button
-                    onClick={() => handleAiBreakdown(aiInput, 'goal')}
-                    disabled={!aiInput.trim() || aiLoading}
-                    className="flex items-center justify-center gap-1.5 text-sm font-bold text-white rounded-xl px-4 py-2.5 transition-opacity disabled:opacity-40 flex-shrink-0"
-                    style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
-                  >
-                    {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-                    {aiLoading ? '分解中...' : 'AIで分解する'}
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* コーチングページ導線（録音・要約はそちらで） */}
-                <button
-                  onClick={() => navigate('/coaching')}
-                  className="w-full flex items-center justify-between gap-2 rounded-xl px-3.5 py-3 mb-3 text-left transition-colors hover:opacity-90"
-                  style={{ background: '#FFF0EF', border: '1px solid #F3D3D7' }}
-                >
-                  <span className="flex items-center gap-2 min-w-0">
-                    <Mic className="w-4 h-4 text-brand flex-shrink-0" />
-                    <span className="text-sm font-bold text-brand-text truncate">コーチングページで録音・要約する</span>
-                  </span>
-                  <span className="text-xs font-bold text-brand flex-shrink-0">開く →</span>
-                </button>
-                <p className="text-xs text-brand-muted mb-2">
-                  または、話した内容を貼り付けてタスク化：
-                </p>
-                <textarea
-                  value={coachingNotes}
-                  onChange={e => setCoachingNotes(e.target.value)}
-                  rows={4}
-                  placeholder="コーチングで話した内容を貼り付け"
-                  className="w-full text-sm rounded-xl px-3 py-2.5 bg-white focus:outline-none resize-none mb-2"
-                  style={{ border: '1px solid #E8D6D0' }}
-                />
-                <button
-                  onClick={() => handleAiBreakdown(coachingNotes, 'coaching')}
-                  disabled={!coachingNotes.trim() || aiLoading}
-                  className="w-full flex items-center justify-center gap-1.5 text-sm font-bold text-white rounded-xl px-4 py-2.5 transition-opacity disabled:opacity-40"
-                  style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
-                >
-                  {aiLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
-                  {aiLoading ? 'タスク化中...' : 'この記録からタスクを作る'}
-                </button>
-              </>
-            )}
-
-            <button
-              onClick={startEditing}
-              className="mt-3 text-xs text-brand-muted underline hover:text-brand transition-colors"
-            >
-              自分で入力する
-            </button>
+          <div className="py-6 text-center text-sm" style={{ color: '#7E6E68' }}>
+            目標がありません。「目標を編集」から追加してください。
           </div>
         ) : (
           <div className="border rounded-2xl overflow-hidden" style={{ borderColor: '#F0EAE6' }}>

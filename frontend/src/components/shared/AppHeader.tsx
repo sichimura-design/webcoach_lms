@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown, Calendar, MessageCircle, Briefcase, Lightbulb, ImagePlus } from 'lucide-react';
+import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown, MessageCircle, Lightbulb, ImagePlus } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -125,10 +125,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const navItems = [
     { label: 'マイページ', icon: Home, path: '/mypage', active: isMyPage },
     { label: '学習する', icon: BookOpen, path: '/courses', active: isCoursesPage },
-    { label: '学習計画', icon: Calendar, path: '/study-plan', active: location.pathname === '/study-plan' },
-    { label: 'コーチング', icon: MessageCircle, path: '/coaching', active: location.pathname === '/coaching' },
     { label: 'AIアプリ', icon: Sparkles, path: '/ai-apps', active: isAIApps },
-    { label: '案件獲得', icon: Briefcase, path: '/career-dashboard', active: location.pathname === '/career-dashboard' },
     ...(user?.isAdmin
       ? [{ label: '管理', icon: Settings, path: '/admin', active: isAdmin }]
       : user?.isCoach
@@ -162,14 +159,14 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           })}
         </nav>
 
-        {/* ヘルプ（下部・LMS内ページ） */}
+        {/* ヘルプ（下部） */}
         <div className="mt-auto pt-4 flex flex-col gap-0.5" style={{ borderTop: '1px solid #F0EAE6' }}>
-          <button onClick={() => navigate('/help')} className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors text-left">
+          <a href="https://slime-gruyere-92d.notion.site/WEBCOACH-6-0-7a07e36455e848c4b4d262ef3a1c1cd4" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors">
             <FileText className="w-4 h-4 flex-shrink-0" /> 利用マニュアル
-          </button>
-          <button onClick={() => navigate('/faq')} className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors text-left">
+          </a>
+          <a href="https://slime-gruyere-92d.notion.site/1fddd266074f809e9f0cfdbdd8e60ffd" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors">
             <HelpCircle className="w-4 h-4 flex-shrink-0" /> よくある質問
-          </button>
+          </a>
           <a href="https://o4dqp.channel.io/workflows/783132" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors">
             <Mail className="w-4 h-4 flex-shrink-0" /> 運営へのお問い合わせ
           </a>
@@ -314,20 +311,26 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                       boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
                     }}
                   >
-                    <button
-                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors text-left"
-                      onClick={() => { setHelpOpen(false); navigate('/help'); }}
+                    <a
+                      href="https://slime-gruyere-92d.notion.site/WEBCOACH-6-0-7a07e36455e848c4b4d262ef3a1c1cd4"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors"
+                      onClick={() => setHelpOpen(false)}
                     >
                       <FileText className="w-4 h-4 text-brand-muted flex-shrink-0" />
                       利用マニュアル
-                    </button>
-                    <button
-                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors text-left"
-                      onClick={() => { setHelpOpen(false); navigate('/faq'); }}
+                    </a>
+                    <a
+                      href="https://slime-gruyere-92d.notion.site/1fddd266074f809e9f0cfdbdd8e60ffd"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors"
+                      onClick={() => setHelpOpen(false)}
                     >
                       <HelpCircle className="w-4 h-4 text-brand-muted flex-shrink-0" />
                       よくある質問
-                    </button>
+                    </a>
                     <a
                       href="https://o4dqp.channel.io/workflows/783132"
                       target="_blank"

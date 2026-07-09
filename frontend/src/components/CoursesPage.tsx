@@ -39,8 +39,6 @@ function CoursesPage() {
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [aiApps, setAiApps] = useState<AIApp[]>([]);
   const [aiAppsLoading, setAiAppsLoading] = useState(true);
-  const [recommend, setRecommend] = useState<any[]>([]);
-  const [allCourses, setAllCourses] = useState<any[]>([]);
 
   useEffect(() => {
     bffClient.getCategories()
@@ -57,17 +55,13 @@ function CoursesPage() {
         showToast('AIアプリ一覧の取得に失敗しました。', 'error');
       })
       .finally(() => setAiAppsLoading(false));
-    bffClient.getRecommendCourses().then(setRecommend).catch(() => {});
-    bffClient.getCourses().then(setAllCourses).catch(() => {});
   }, []);
 
-  const q = searchQuery.trim().toLowerCase();
-  const filteredCategories = q
-    ? categories.filter((cat) => cat.name.toLowerCase().includes(q))
+  const filteredCategories = searchQuery
+    ? categories.filter((cat) =>
+        cat.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
     : categories;
-  const courseResults = q
-    ? allCourses.filter((c) => (c.fullname || '').toLowerCase().includes(q) || (c.summary || '').toLowerCase().includes(q))
-    : [];
 
   return (
     <div className="min-h-screen bg-brand-bg flex flex-col">
@@ -138,42 +132,6 @@ function CoursesPage() {
               </div>
             </div>
           </section>
-
-          {/* 検索結果（コース） */}
-          {q && (
-            <section>
-              <SectionHeading icon={<Search className="w-6 h-6 text-brand-muted" />} title={`「${searchQuery}」の検索結果`} />
-              {courseResults.length === 0 ? (
-                <p className="text-sm text-brand-muted mt-4">該当するコースが見つかりません。カテゴリから探してみましょう。</p>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
-                  {courseResults.map((c) => (
-                    <button key={c.id} onClick={() => navigate(`/course/${c.id}/curriculum`)} className="bg-white rounded-2xl shadow-sm p-4 text-left hover:shadow-md transition-shadow flex flex-col gap-2">
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full self-start" style={{ background: '#FFF0EF', color: '#E8657A' }}>{c.categoryname}</span>
-                      <span className="text-sm font-bold text-brand-text">{c.fullname}</span>
-                      <span className="text-xs text-brand-muted line-clamp-2">{c.summary}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </section>
-          )}
-
-          {/* 今のあなたに合うコース（レコメンド） */}
-          {!q && recommend.length > 0 && (
-            <section>
-              <SectionHeading icon={<Sparkles className="w-6 h-6 text-brand-muted" />} title="今のあなたに合うコース" />
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
-                {recommend.map((c) => (
-                  <button key={c.id} onClick={() => navigate(`/courses/category/${c.categoryid}`)} className="bg-white rounded-2xl shadow-sm p-4 text-left hover:shadow-md transition-shadow flex flex-col gap-2">
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full self-start" style={{ background: '#F7F2FF', color: '#8B6FC0' }}>あなたのフェーズに最適</span>
-                    <span className="text-sm font-bold text-brand-text">{c.fullname}</span>
-                    <span className="text-xs text-brand-muted line-clamp-2">{c.summary}</span>
-                  </button>
-                ))}
-              </div>
-            </section>
-          )}
 
           {/* Section: カテゴリから選ぶ */}
           <section>

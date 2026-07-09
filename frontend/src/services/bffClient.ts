@@ -18,13 +18,7 @@ import {
   HealthResponse,
 } from '../types/api';
 import { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
-import { Announcement } from '../types/announcement';
-import { LearningJourney } from '../types/journey';
-import { CoachingSessions, CoachingNote } from '../types/coaching';
-import { StudyPlan } from '../types/studyPlan';
-import { CareerDashboard } from '../types/career';
 import { getIdToken } from './cognitoAuth';
-import { MOCKS_ENABLED } from '../mocks/config';
 
 /**
  * BFF Client - 統合APIクライアント
@@ -60,8 +54,7 @@ class BFFClient {
     this.api.interceptors.response.use(
       (response) => response,
       (error) => {
-        // モック時は未モックの stray リクエストで /login へリダイレクトさせない
-        if (!MOCKS_ENABLED && error.response?.status === 401) {
+        if (error.response?.status === 401) {
           if (window.location.pathname !== '/login') {
             window.location.href = '/login';
           }
@@ -456,83 +449,6 @@ class BFFClient {
     const response = await this.api.get('/webcoach/ai-applications');
     const data = response.data;
     return Array.isArray(data) ? data : (data?.applications ?? []);
-  }
-
-  /**
-   * お知らせ一覧取得（サンプル機能・モック専用）
-   * GET /api/webcoach/announcements
-   * 実BFFには存在しないため、モック（handlers.ts）でのみ応答する。
-   */
-  async getAnnouncements(): Promise<Announcement[]> {
-    const response = await this.api.get('/webcoach/announcements');
-    return response.data;
-  }
-
-  /**
-   * 学習ジャーニー取得（ゲーム風ロードマップ＋今日のクエスト＋ストリーク・モック専用）
-   * GET /api/webcoach/journey/{userid}
-   */
-  async getLearningJourney(userId: number): Promise<LearningJourney> {
-    const response = await this.api.get(`/webcoach/journey/${userId}`);
-    return response.data;
-  }
-
-  /**
-   * 目標をAIで細分化（モック専用）
-   * POST /api/webcoach/goal-breakdown
-   * @param source 'goal'=達成したいこと / 'coaching'=前回コーチングの記録
-   */
-  async breakdownGoal(goal: string, source: 'goal' | 'coaching' = 'goal'): Promise<{ subgoals: string[] }> {
-    const response = await this.api.post('/webcoach/goal-breakdown', { goal, source });
-    return response.data;
-  }
-
-  /**
-   * コーチングのセッション一覧（次回＋過去・モック専用）
-   * GET /api/webcoach/coaching-sessions/{userid}
-   */
-  async getCoachingSessions(userId: number): Promise<CoachingSessions> {
-    const response = await this.api.get(`/webcoach/coaching-sessions/${userId}`);
-    return response.data;
-  }
-
-  /**
-   * AIミーティングノートを生成（録音→要約→タスク候補・モック専用）
-   * POST /api/webcoach/coaching-note
-   */
-  async generateCoachingNote(): Promise<CoachingNote> {
-    const response = await this.api.post('/webcoach/coaching-note');
-    return response.data;
-  }
-
-  /**
-   * 学習計画（今週）取得（モック専用）
-   * GET /api/webcoach/study-plan/{userid}
-   */
-  async getStudyPlan(userId: number): Promise<StudyPlan> {
-    const response = await this.api.get(`/webcoach/study-plan/${userId}`);
-    return response.data;
-  }
-
-  /**
-   * 学習計画をAIで生成（モック専用）。mode='this'=今週 / 'next'=来週(振り返り付き)
-   * POST /api/webcoach/study-plan/generate
-   */
-  async generateStudyPlan(mode: 'this' | 'next'): Promise<StudyPlan> {
-    const response = await this.api.post('/webcoach/study-plan/generate', { mode });
-    return response.data;
-  }
-
-  /** おすすめコース（同じフェーズの人が学ぶコース・モック専用） */
-  async getRecommendCourses(): Promise<any[]> {
-    const response = await this.api.get('/webcoach/recommend-courses');
-    return response.data;
-  }
-
-  /** 案件獲得ダッシュボード（モック専用） */
-  async getCareerDashboard(userId: number): Promise<CareerDashboard> {
-    const response = await this.api.get(`/webcoach/career-dashboard/${userId}`);
-    return response.data;
   }
 
   /**
