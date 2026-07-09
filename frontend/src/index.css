@@ -16,11 +16,15 @@ body {
   }
 }
 
-/* PC版：左サイドバー（w-60 = 15rem）ぶんコンテンツを右へオフセット。
-   AppHeader が描画されるページだけ body.with-sidebar が付く（ログイン等は対象外）。 */
-@media (min-width: 1024px) {
+/* 左サイドバー（開閉式）ぶんコンテンツを右へオフセット。
+   通常は畳んで 72px、開くと 216px。AppHeader を描画するページのみ。 */
+@media (min-width: 640px) {
   body.with-sidebar {
-    padding-left: 15rem;
+    padding-left: 72px;
+    transition: padding-left .2s ease;
+  }
+  body.with-sidebar.sidebar-expanded {
+    padding-left: 216px;
   }
 }
 
