@@ -16,6 +16,14 @@ body {
   }
 }
 
+/* PC版：左サイドバー（w-60 = 15rem）ぶんコンテンツを右へオフセット。
+   AppHeader が描画されるページだけ body.with-sidebar が付く（ログイン等は対象外）。 */
+@media (min-width: 1024px) {
+  body.with-sidebar {
+    padding-left: 15rem;
+  }
+}
+
 /* ─── アニメーション ─────────────────────── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(8px); }

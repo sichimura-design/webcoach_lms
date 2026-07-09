@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown } from 'lucide-react';
+import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown, Calendar, MessageCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -58,9 +58,66 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const isAIApps = location.pathname === '/ai-apps';
   const isAdmin = location.pathname.startsWith('/admin');
 
+  // PC版サイドバーぶんの余白を body に付与（このヘッダーを描画するページのみ）
+  useEffect(() => {
+    document.body.classList.add('with-sidebar');
+    return () => document.body.classList.remove('with-sidebar');
+  }, []);
+
+  // ナビ項目（サイドバー・下部ナビ共通の定義）
+  const navItems = [
+    { label: 'マイページ', icon: Home, path: '/mypage', active: isMyPage },
+    { label: '学習する', icon: BookOpen, path: '/courses', active: isCoursesPage },
+    { label: '学習計画', icon: Calendar, path: '/study-plan', active: location.pathname === '/study-plan' },
+    { label: 'コーチング', icon: MessageCircle, path: '/coaching', active: location.pathname === '/coaching' },
+    { label: 'AIアプリ', icon: Sparkles, path: '/ai-apps', active: isAIApps },
+    ...(user?.isAdmin
+      ? [{ label: '管理', icon: Settings, path: '/admin', active: isAdmin }]
+      : user?.isCoach
+      ? [{ label: '受講生一覧', icon: BookOpen, path: '/coach/students', active: isStudentsPage }]
+      : []),
+  ];
+
 
   return (
     <>
+      {/* ── PC版 左サイドバー（lg以上） ───────────────────── */}
+      <aside className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-60 z-40 bg-white border-r border-[#F0EAE6] px-3 py-5">
+        <div className="flex items-center cursor-pointer px-2 mb-6 flex-shrink-0" onClick={() => navigate('/mypage')}>
+          <img src={`${process.env.PUBLIC_URL}/logo_WEBCOACH.png`} alt="WEBCOACH" className="h-[38px] w-auto object-contain" />
+        </div>
+        <nav className="flex flex-col gap-1">
+          {navItems.map(item => {
+            const Icon = item.icon;
+            return (
+              <button
+                key={item.path}
+                onClick={() => navigate(item.path)}
+                className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-bold transition-colors ${
+                  item.active ? 'text-white bg-brand-gradient' : 'text-brand-muted hover:bg-brand-bg'
+                }`}
+              >
+                <Icon className="w-5 h-5 flex-shrink-0" />
+                {item.label}
+              </button>
+            );
+          })}
+        </nav>
+
+        {/* ヘルプ（下部） */}
+        <div className="mt-auto pt-4 flex flex-col gap-0.5" style={{ borderTop: '1px solid #F0EAE6' }}>
+          <a href="https://slime-gruyere-92d.notion.site/WEBCOACH-6-0-7a07e36455e848c4b4d262ef3a1c1cd4" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors">
+            <FileText className="w-4 h-4 flex-shrink-0" /> 利用マニュアル
+          </a>
+          <a href="https://slime-gruyere-92d.notion.site/1fddd266074f809e9f0cfdbdd8e60ffd" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors">
+            <HelpCircle className="w-4 h-4 flex-shrink-0" /> よくある質問
+          </a>
+          <a href="https://o4dqp.channel.io/workflows/783132" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors">
+            <Mail className="w-4 h-4 flex-shrink-0" /> 運営へのお問い合わせ
+          </a>
+        </div>
+      </aside>
+
       <header
         className="sticky top-0 z-40 h-[60px] sm:h-[80px]"
         style={{
@@ -71,8 +128,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         }}
       >
         <div className="max-w-[1440px] mx-auto h-full flex items-center justify-between px-3 sm:px-6 lg:px-8">
-          {/* Left: Logo and Navigation */}
-          <div className="flex items-center gap-4 sm:gap-6 lg:gap-10">
+          {/* Left: Logo and Navigation（lg未満のみ。lg以上は左サイドバーに移動） */}
+          <div className="flex items-center gap-4 sm:gap-6 lg:gap-10 lg:hidden">
             {/* Logo */}
             <div
               className="flex items-center cursor-pointer flex-shrink-0"
