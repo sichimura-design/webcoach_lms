@@ -203,6 +203,41 @@ export const handlers = [
   ),
   http.get('*/health', () => HttpResponse.json({ status: 'ok' })),
 
+  // ==================== AIコーチ（チャット） ====================
+  // POST /webcoach/ai — 質問内容に応じてダミー応答を返す
+  http.post('*/api/webcoach/ai', async ({ request }) => {
+    let message = '';
+    try {
+      const body = (await request.json()) as { message?: string };
+      message = body?.message || '';
+    } catch {
+      /* ignore */
+    }
+
+    const kb: { keys: string[]; reply: string }[] = [
+      { keys: ['バナー', 'banner'], reply: 'バナー制作は「①目的とターゲットを決める → ②訴求（キャッチコピー）を1つに絞る → ③レイアウトと配色 → ④仕上げ」の順で進めるとブレません。まずは「誰に・何を・どうしてほしいか」を一言で書き出してみましょう。' },
+      { keys: ['配色', '色', 'カラー'], reply: '配色は「ベース70% / メイン25% / アクセント5%」の比率を意識すると整います。迷ったら、まずメインカラーを1つ決めて、その類似色でまとめるのが失敗しにくいです。' },
+      { keys: ['ポートフォリオ', '案件', '仕事', '就職', '転職'], reply: '未経験からの最初の一歩は、学んだことを「作品」にして見える形に残すことです。小さくても完成品を3つ作ると、案件応募のときに一気に説得力が出ます。今日はどれか1つ、手を動かしてみませんか？' },
+      { keys: ['モチベ', '続かない', '不安', 'つらい'], reply: '大丈夫、最初は誰でも手探りです。大きな目標より「今日の小さな一歩」を決めるのがコツ。例えば「15分だけ教材を見る」でも立派な前進です。一緒に続けていきましょう！' },
+    ];
+
+    const hit = kb.find((k) => k.keys.some((key) => message.includes(key)));
+    const reply = hit
+      ? hit.reply
+      : `「${message || 'ご質問'}」についてですね。ポイントを整理すると、①まず全体像をつかむ ②お手本を真似る ③小さく作って振り返る、の順で進めると理解が定着しやすいです。具体的に知りたい部分があれば教えてください！`;
+
+    return HttpResponse.json({
+      success: true,
+      message: reply,
+      sources: [
+        { chunk_index: 0, module_name: 'はじめてのWebデザイン', filename: 'intro.md', section_name: '基礎知識', similarity: 0.82 },
+        { chunk_index: 1, module_name: 'デザインの4大原則', filename: 'principles.md', section_name: '基礎知識', similarity: 0.71 },
+      ],
+      suggestions: ['具体例を教えて', '次に学ぶべきことは？', 'おすすめのコースは？'],
+      timestamp: '2026-07-09T00:00:00Z',
+    });
+  }),
+
   // ==================== サンプル機能（新API＝モックの雛形） ====================
   // 実BFFには存在しない新エンドポイント。/announcements ページから利用する。
   // 新機能を足すときは、このブロックをコピーして中身を差し替える。
