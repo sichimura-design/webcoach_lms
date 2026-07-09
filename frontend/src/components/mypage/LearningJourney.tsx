@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Flame, Play, Check, Lock, Trophy, Flag, ChevronRight, Sparkles } from 'lucide-react';
+import { Flame, Play, Check, Lock, Trophy, Flag, ChevronRight, Sparkles, Calendar, Mic } from 'lucide-react';
 import { bffClient } from '../../services/bffClient';
 import { useAsyncData } from '../../hooks/useAsyncData';
 import { LearningJourney as Journey, JourneyNode, JourneyPhase } from '../../types/journey';
@@ -45,6 +45,22 @@ export function LearningJourney({ userId }: Props) {
           </div>
         </div>
         <StreakBadge streak={streak} />
+      </div>
+
+      {/* ── クイックリンク（学習計画・コーチング） ─────────── */}
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => navigate('/study-plan')}
+          className="inline-flex items-center gap-1.5 text-sm font-bold rounded-full px-4 py-2 bg-white border border-brand-border text-brand-text hover:bg-[#FFF5F0] transition-colors"
+        >
+          <Calendar className="w-4 h-4 text-brand" /> 学習計画
+        </button>
+        <button
+          onClick={() => navigate('/coaching')}
+          className="inline-flex items-center gap-1.5 text-sm font-bold rounded-full px-4 py-2 bg-white border border-brand-border text-brand-text hover:bg-[#FFF5F0] transition-colors"
+        >
+          <Mic className="w-4 h-4 text-brand" /> コーチング
+        </button>
       </div>
 
       {/* ── 今日のクエスト ─────────────────────────────── */}

@@ -13,6 +13,7 @@ import AIAppsPage from '../components/AIAppsPage';
 import BadgesPage from '../components/BadgesPage';
 import AnnouncementsPage from '../components/AnnouncementsPage';
 import CoachingNotesPage from '../components/CoachingNotesPage';
+import StudyPlanPage from '../components/StudyPlanPage';
 import ContentListPage from '../components/ContentListPage';
 import CourseContentPage from '../components/CourseContentPage';
 import CourseCurriculumPage from '../components/CourseCurriculumPage';
@@ -336,6 +337,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <CoachingNotesPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/study-plan"
+        element={
+          <ProtectedRoute>
+            <StudyPlanPage />
           </ProtectedRoute>
         }
       />

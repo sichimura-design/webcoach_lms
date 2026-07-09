@@ -21,6 +21,7 @@ import { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
 import { Announcement } from '../types/announcement';
 import { LearningJourney } from '../types/journey';
 import { CoachingSessions, CoachingNote } from '../types/coaching';
+import { StudyPlan } from '../types/studyPlan';
 import { getIdToken } from './cognitoAuth';
 import { MOCKS_ENABLED } from '../mocks/config';
 
@@ -500,6 +501,24 @@ class BFFClient {
    */
   async generateCoachingNote(): Promise<CoachingNote> {
     const response = await this.api.post('/webcoach/coaching-note');
+    return response.data;
+  }
+
+  /**
+   * 学習計画（今週）取得（モック専用）
+   * GET /api/webcoach/study-plan/{userid}
+   */
+  async getStudyPlan(userId: number): Promise<StudyPlan> {
+    const response = await this.api.get(`/webcoach/study-plan/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 学習計画をAIで生成（モック専用）。mode='this'=今週 / 'next'=来週(振り返り付き)
+   * POST /api/webcoach/study-plan/generate
+   */
+  async generateStudyPlan(mode: 'this' | 'next'): Promise<StudyPlan> {
+    const response = await this.api.post('/webcoach/study-plan/generate', { mode });
     return response.data;
   }
 

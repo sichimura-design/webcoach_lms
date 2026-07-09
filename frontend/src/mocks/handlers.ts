@@ -160,6 +160,46 @@ const aiApps = [
 // マイページに反映させるため、GET/PUT で同じストアを読み書きする）
 let coachingGoalsStore: { no: number; description: string; is_completed: 0 | 1 }[] = [];
 
+// 学習計画（今週の予定・セッション内で保持）
+let studyPlanStore: { weekLabel: string; days: any[] } | null = null;
+
+// 月曜始まりの週の7日分（offsetWeeks=0で今週、1で来週）を返す
+function weekDays(offsetWeeks: number) {
+  const now = new Date();
+  const dow = now.getDay(); // 0=日
+  const mondayDiff = (dow === 0 ? -6 : 1 - dow) + offsetWeeks * 7;
+  const wd = ['月', '火', '水', '木', '金', '土', '日'];
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(now);
+    d.setDate(now.getDate() + mondayDiff + i);
+    days.push({
+      date: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`,
+      weekday: wd[i],
+      md: `${d.getMonth() + 1}/${d.getDate()}`,
+      sessions: [] as any[],
+    });
+  }
+  return days;
+}
+function weekLabelOf(days: any[]) {
+  return `${days[0].md}–${days[6].md}`;
+}
+// サンプルの週間予定（曜日index→セッション）
+function buildWeek(offsetWeeks: number) {
+  const days = weekDays(offsetWeeks);
+  const plan = [
+    { i: 0, title: 'バナーを作ってみよう', minutes: 45, courseId: 203 },
+    { i: 1, title: '配色の基本とツール', minutes: 30, courseId: 202 },
+    { i: 3, title: 'バナー制作のつづき', minutes: 60, courseId: 203 },
+    { i: 4, title: '参考サイトを3つ分析する', minutes: 30 },
+    { i: 5, title: '作品を仕上げる', minutes: 60, courseId: 204 },
+    { i: 6, title: '今週の振り返り', minutes: 15 },
+  ];
+  plan.forEach(s => days[s.i].sessions.push({ title: s.title, minutes: s.minutes, courseId: s.courseId, done: false }));
+  return { weekLabel: weekLabelOf(days), days };
+}
+
 // ---- ハンドラ ---------------------------------------------------------------
 export const handlers = [
   // ==================== 認証後のブート経路 ====================
@@ -328,6 +368,43 @@ export const handlers = [
       ];
     }
     return HttpResponse.json({ subgoals });
+  }),
+
+  // ==================== 学習計画（月間＞週間・カレンダー＋AI生成） ====================
+  http.get('*/api/webcoach/study-plan/:userid', () => {
+    if (studyPlanStore) {
+      return HttpResponse.json({ ...studyPlanStore, hasPlan: true, review: null });
+    }
+    const empty = weekDays(0);
+    return HttpResponse.json({ weekLabel: weekLabelOf(empty), days: empty, hasPlan: false, review: null });
+  }),
+  http.post('*/api/webcoach/study-plan/generate', async ({ request }) => {
+    let mode = 'this';
+    try {
+      const body = (await request.json()) as { mode?: string };
+      mode = body?.mode || 'this';
+    } catch {
+      /* ignore */
+    }
+    const next = mode === 'next';
+    const week = buildWeek(next ? 1 : 0);
+    studyPlanStore = week;
+    const review = next
+      ? {
+          lastWeekLabel: weekLabelOf(weekDays(-1)),
+          planned: 6,
+          completed: 4,
+          streak: 5,
+          comment:
+            '先週は6件中4件を達成できました。特にバナー制作が前に進んだのが大きいです。水曜が空いて後半に予定が詰まったので、今週は平日の負荷を分散しましょう。',
+          improvements: [
+            '水曜にも30分の枠を入れて平準化する',
+            '集中しやすい午前に作業を寄せる',
+            '詰まったら抱え込まず早めにAIコーチへ相談する',
+          ],
+        }
+      : null;
+    return HttpResponse.json({ ...week, hasPlan: true, review });
   }),
 
   // ==================== コーチング（AIミーティングノート） ====================
