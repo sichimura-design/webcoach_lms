@@ -31,9 +31,11 @@ function LoginPage() {
   const navigate = useNavigate();
   const { login, submitNewPassword, needsNewPassword, user } = useAuth();
 
-  // モック時は自動ログイン済みなので、ログイン画面に来たら /mypage へ送る
+  // モック時は自動ログイン済みなので、ログイン画面に来たら /mypage へ送る。
+  // ただし userid が未解決（0）のときはリダイレクトしない
+  // （SW取りこぼし等で userid=0 になった場合に /mypage⇄/login の無限ループを防ぐ）。
   useEffect(() => {
-    if (MOCKS_ENABLED && user) {
+    if (MOCKS_ENABLED && user?.userid) {
       navigate('/mypage', { replace: true });
     }
   }, [user, navigate]);
