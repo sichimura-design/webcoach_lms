@@ -19,9 +19,9 @@ import { bffClient } from '../services/bffClient';
 
 // カテゴリのテーマカラーパレット
 const categoryColorPalette = [
-  { color: '#E86D78', iconLightColor: '#FFEDEE' },
+  { color: '#FF5A7A', iconLightColor: '#FFEDEE' },
   { color: '#F0AF23', iconLightColor: '#FFFAEA' },
-  { color: '#FA9161', iconLightColor: '#FFF4EF' },
+  { color: '#FFC24B', iconLightColor: '#FFF4EF' },
   { color: '#A688D4', iconLightColor: '#F7F2FF' },
   { color: '#E6819D', iconLightColor: '#FFF1F5' },
   { color: '#5B9BD5', iconLightColor: '#EBF3FB' },
@@ -115,11 +115,11 @@ function groupByTag(courses: MoodleCourse[]): CourseSection[] {
 /** 難易度バッジのスタイル (Figma実測値) */
 function getDifficultyStyle(difficulty: string): { bg: string; text: string } {
   switch (difficulty) {
-    case '応用': return { bg: '#fa9161', text: '#ffffff' };
-    case '発展': return { bg: '#e86d78', text: '#ffffff' };
+    case '応用': return { bg: '#FFC24B', text: '#ffffff' };
+    case '発展': return { bg: '#FF5A7A', text: '#ffffff' };
     case '基礎':
     default:
-      return { bg: '#ffd454', text: '#7e6e68' };
+      return { bg: '#ffd454', text: '#7A7392' };
   }
 }
 
@@ -330,7 +330,7 @@ function CategoryDetailPage() {
                         style={
                           selectedTag === null
                             ? { backgroundColor: palette.color, color: '#fff' }
-                            : { backgroundColor: '#fff', color: '#7E6E68', border: '1px solid #C2B9B3' }
+                            : { backgroundColor: '#fff', color: '#7A7392', border: '1px solid #C2B9B3' }
                         }
                       >
                         すべて
@@ -343,7 +343,7 @@ function CategoryDetailPage() {
                           style={
                             selectedTag === section.tagName
                               ? { backgroundColor: palette.color, color: '#fff' }
-                              : { backgroundColor: '#fff', color: '#7E6E68', border: '1px solid #C2B9B3' }
+                              : { backgroundColor: '#fff', color: '#7A7392', border: '1px solid #C2B9B3' }
                           }
                         >
                           {section.tagName}

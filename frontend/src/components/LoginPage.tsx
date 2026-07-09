@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from './ui/button';
+import { MOCKS_ENABLED } from '../mocks/config';
 
 function EyeIcon({ open }: { open: boolean }) {
   return open ? (
@@ -28,7 +29,16 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { login, submitNewPassword, needsNewPassword } = useAuth();
+  const { login, submitNewPassword, needsNewPassword, user } = useAuth();
+
+  // モック時は自動ログイン済みなので、ログイン画面に来たら /mypage へ送る。
+  // ただし userid が未解決（0）のときはリダイレクトしない
+  // （SW取りこぼし等で userid=0 になった場合に /mypage⇄/login の無限ループを防ぐ）。
+  useEffect(() => {
+    if (MOCKS_ENABLED && user?.userid) {
+      navigate('/mypage', { replace: true });
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -256,7 +266,7 @@ function LoginPage() {
                   </label>
                   <span
                     onClick={() => navigate('/password-reset')}
-                    className="text-[10px] text-[#E86D78]/70 cursor-pointer"
+                    className="text-[10px] text-[#FF5A7A]/70 cursor-pointer"
                   >
                     パスワードお忘れですか？
                   </span>

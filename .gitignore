@@ -57,6 +57,9 @@ chromadb/
 # Documentation (non-essential)
 *.md
 !**/README.md
+# Claude 作業ルールとモック開発ガイドは追跡する
+!CLAUDE.md
+!frontend/docs/*.md
 
 # Temporary files
 *.tmp

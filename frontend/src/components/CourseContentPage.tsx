@@ -98,6 +98,23 @@ function getContentType(module: Module): ContentType {
 }
 
 /**
+ * iframe内でのテキスト選択を親に通知するスクリプト。
+ * 親（AppHeader）が「AIに解説」ボタンを正しい画面位置に表示するため、
+ * 選択テキストと iframe 内での矩形を postMessage する。
+ */
+const EXPLAIN_INJECT = `<script>(function(){
+  function report(){
+    var s=window.getSelection();var t=s&&s.toString().trim();
+    if(t&&t.length>=2&&t.length<=400&&s.rangeCount>0){
+      var r=s.getRangeAt(0).getBoundingClientRect();
+      parent.postMessage({__lmsExplain:true,text:t,top:r.top,left:r.left},'*');
+    }else{parent.postMessage({__lmsExplain:true,clear:true},'*');}
+  }
+  document.addEventListener('mouseup',function(){setTimeout(report,0);});
+  document.addEventListener('mousedown',function(){parent.postMessage({__lmsExplain:true,clear:true},'*');});
+})();<\/script>`;
+
+/**
  * Moodle コンテンツ HTML から srcdoc 用の完全な HTML を生成する。
  * CSS の正規化は BFF の normalizeMoodleContent で実施済みのため、
  * ここでは <style> を <head> に移動し iframe 表示用の補正 CSS を注入するのみ。
@@ -136,7 +153,7 @@ ${headStyles.join('\n')}
   .quiz-options > * { font-size: revert !important; }
 </style>
 </head>
-<body>${cleanedBody}</body></html>`;
+<body>${cleanedBody}${EXPLAIN_INJECT}</body></html>`;
 }
 
 function buildSrcdocShiftJis(html: string): string {
@@ -160,7 +177,7 @@ ${headStyles.join('\n')}
   .quiz-options > * { font-size: revert !important; }
 </style>
 </head>
-<body>${bodyHtml}</body></html>`;
+<body>${bodyHtml}${EXPLAIN_INJECT}</body></html>`;
 }
 
 /** HTML文字列のh1〜h4に id を付与して返す */
@@ -708,7 +725,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                 onClick={() => handleToggleComplete(false)}
                 disabled={completing}
                 className="flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm transition-opacity hover:opacity-80 disabled:opacity-60 disabled:cursor-default"
-                style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
+                style={{ background: '#F0EAE6', color: '#7A7392', border: '1px solid #D8CEC8' }}
               >
                 <RotateCcw className="w-4 h-4" />
                 <span className="hidden sm:inline">
@@ -747,7 +764,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                   <button
                     onClick={openInNewTab}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-opacity hover:opacity-80"
-                    style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
+                    style={{ background: '#F0EAE6', color: '#7A7392', border: '1px solid #D8CEC8' }}
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     新しいタブで開く
@@ -769,7 +786,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                   onClick={() => handleToggleComplete(false)}
                   disabled={completing}
                   className="flex items-center gap-2 px-12 py-3 rounded-full font-bold text-base transition-opacity hover:opacity-80 disabled:opacity-60 disabled:cursor-default"
-                  style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
+                  style={{ background: '#F0EAE6', color: '#7A7392', border: '1px solid #D8CEC8' }}
                 >
                   <RotateCcw className="w-5 h-5" />
                   {completing ? '処理中...' : '完了を取り消す'}
@@ -902,7 +919,7 @@ function TocPanel({ pageToc, onTocItemClick, mobile = false }: TocPanelProps) {
               >
                 <span
                   className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                  style={{ background: item.level === 1 ? '#e86d78' : item.level === 2 ? '#fa9262' : '#d0cac6' }}
+                  style={{ background: item.level === 1 ? '#FF5A7A' : item.level === 2 ? '#FFC24B' : '#d0cac6' }}
                 />
                 <span
                   className="text-xs truncate text-brand-text"

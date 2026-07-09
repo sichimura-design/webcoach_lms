@@ -84,7 +84,7 @@ function LearningCoursesPage() {
         </div>
 
         {/* Decorative blurred circles */}
-        <div className="absolute right-[5%] top-[30%] w-48 h-48 rounded-full bg-[#E8F5E9] blur-[60px] opacity-40 pointer-events-none" />
+        <div className="absolute right-[5%] top-[30%] w-48 h-48 rounded-full bg-[#FFF6E9] blur-[60px] opacity-40 pointer-events-none" />
         <div className="absolute left-[3%] bottom-[10%] w-64 h-64 rounded-full bg-brand blur-[80px] opacity-10 pointer-events-none" />
 
         {/* Main Content */}
@@ -171,12 +171,12 @@ function LearningCoursesPage() {
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <div className="h-2.5 flex-1 bg-[#EFEFEF] rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-[#FA9161] rounded-full transition-all"
+                            className="h-full bg-[#FFC24B] rounded-full transition-all"
                             style={{ width: `${course.progress ?? 0}%` }}
                           />
                         </div>
                         <span
-                          className="text-sm font-bold text-[#FA9161] min-w-[36px] text-right"
+                          className="text-sm font-bold text-[#FFC24B] min-w-[36px] text-right"
                         >
                           {Math.round(course.progress ?? 0)}%
                         </span>
@@ -185,7 +185,7 @@ function LearningCoursesPage() {
                       {/* Navigate Button */}
                       <button
                         onClick={() => navigate(`/course/${course.id}/curriculum`)}
-                        className="flex items-center gap-1.5 px-4 py-2 bg-[#FFF8F5] border border-[#FA9161] rounded-3xl text-sm text-[#FA9161] hover:bg-[#FFF0EA] transition-colors flex-shrink-0"
+                        className="flex items-center gap-1.5 px-4 py-2 bg-[#FFF8F5] border border-[#FFC24B] rounded-3xl text-sm text-[#FFC24B] hover:bg-[#FFF0EA] transition-colors flex-shrink-0"
                       >
                         <span className="text-xs font-medium">学習ページへ</span>
                         <ChevronRight className="w-3 h-3" />

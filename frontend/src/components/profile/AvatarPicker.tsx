@@ -84,7 +84,7 @@ export function AvatarPicker({ selectedAvatarId, onSelect }: AvatarPickerProps) 
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
           <div className="bg-white rounded-3xl shadow-xl w-full max-w-sm p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-bold text-[#4B3A33]">アバターを選ぶ</h3>
+              <h3 className="text-base font-bold text-[#2B2440]">アバターを選ぶ</h3>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
@@ -96,7 +96,7 @@ export function AvatarPicker({ selectedAvatarId, onSelect }: AvatarPickerProps) 
 
             {loading ? (
               <div className="flex justify-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#E86D78]" />
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FF5A7A]" />
               </div>
             ) : avatars.length === 0 ? (
               <p className="text-center text-sm text-gray-400 py-6">アバターが見つかりません</p>
@@ -111,8 +111,8 @@ export function AvatarPicker({ selectedAvatarId, onSelect }: AvatarPickerProps) 
                       onClick={() => handleSelect(avatar_id, url)}
                       className={`relative w-full aspect-square rounded-full overflow-hidden border-2 transition-all ${
                         isSelected
-                          ? 'border-[#E86D78] ring-2 ring-[#E86D78]/30 scale-105'
-                          : 'border-transparent hover:border-[#FA9262]/50 hover:scale-105'
+                          ? 'border-[#FF5A7A] ring-2 ring-[#FF5A7A]/30 scale-105'
+                          : 'border-transparent hover:border-brand-secondary/50 hover:scale-105'
                       }`}
                     >
                       <img
@@ -121,7 +121,7 @@ export function AvatarPicker({ selectedAvatarId, onSelect }: AvatarPickerProps) 
                         className="w-full h-full object-cover bg-[#FAF8F4]"
                       />
                       {isSelected && (
-                        <div className="absolute inset-0 bg-[#E86D78]/10 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-[#FF5A7A]/10 flex items-center justify-center">
                           <span className="text-white text-lg drop-shadow">✓</span>
                         </div>
                       )}

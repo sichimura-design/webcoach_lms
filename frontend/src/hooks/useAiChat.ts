@@ -7,6 +7,7 @@ export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+  image?: string; // 添付画像（data URL）
   sources?: Array<{
     chunk_index: number;
     module_name: string;
@@ -19,6 +20,7 @@ export interface ChatMessage {
 export function useAiChat() {
   const { messages, addMessage } = useChatStore();
   const [input, setInput] = useState('');
+  const [attachedImage, setAttachedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -27,22 +29,25 @@ export function useAiChat() {
   }, [messages]);
 
   const sendMessage = async () => {
-    if (!input.trim() || loading) return;
+    if ((!input.trim() && !attachedImage) || loading) return;
 
+    const currentImage = attachedImage;
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       role: 'user',
-      content: input,
+      content: input || (currentImage ? '（画像を添付しました）' : ''),
       timestamp: new Date(),
+      image: currentImage || undefined,
     };
 
     addMessage(userMessage);
     const currentInput = input;
     setInput('');
+    setAttachedImage(null);
     setLoading(true);
 
     try {
-      const result = await bffClient.sendAIMessage({ message: currentInput });
+      const result = await bffClient.sendAIMessage({ message: currentInput || '添付した画像について教えてください', image: currentImage || undefined });
 
       const assistantMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
@@ -78,5 +83,5 @@ export function useAiChat() {
     }
   };
 
-  return { messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress };
+  return { messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress, attachedImage, setAttachedImage };
 }

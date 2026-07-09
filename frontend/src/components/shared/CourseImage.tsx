@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { BookOpen } from 'lucide-react';
 import { useCourseImage } from '../../hooks/useCourseImage';
 
 interface CourseImageProps {
@@ -73,46 +74,43 @@ export const CourseImage: React.FC<CourseImageProps> = ({
   // 画像URLがない、または画像が取得できなかった場合はフォールバック表示
   const showFallback = !normalizedImageUrl || !imageSrc || error || imgLoadError;
 
-  // フォールバック表示用のレンダリング関数
+  // フォールバック表示用のレンダリング関数（ブランドのグラデ＋アイコン）
   const renderFallback = (isLoading: boolean = false) => {
     const displayText = fallbackText || alt || '';
-    const textColor = getContrastColor(fallbackColor);
+    // 明示的な色指定があればそれを1ストップに、無ければブランドの淡いグラデ
+    const hasCustom = fallbackColor && fallbackColor !== '#9CA3AF';
+    const bg = hasCustom
+      ? `linear-gradient(135deg, ${fallbackColor}, #FFD1D8)`
+      : 'linear-gradient(135deg, #FFE7C2, #FFC7D2)';
 
     return (
       <div
-        className={`flex items-center justify-center ${className}`}
-        style={{
-          backgroundColor: fallbackColor,
-          ...style,
-        }}
+        className={`relative flex items-center justify-center overflow-hidden ${className}`}
+        style={{ background: bg, ...style }}
       >
         {isLoading ? (
           <div
             className="animate-pulse rounded-full"
-            style={{
-              width: '40%',
-              height: '40%',
-              maxWidth: '48px',
-              maxHeight: '48px',
-              minWidth: '24px',
-              minHeight: '24px',
-              backgroundColor: 'rgba(255,255,255,0.3)'
-            }}
+            style={{ width: '36%', height: '36%', maxWidth: '48px', maxHeight: '48px', minWidth: '22px', minHeight: '22px', backgroundColor: 'rgba(255,255,255,0.4)' }}
           />
-        ) : !hideFallbackText ? (
-          <span
-            className={`font-bold text-center select-none px-2 line-clamp-2 ${textSizeClass}`}
-            style={{
-              fontFamily: 'Noto Sans JP, sans-serif',
-              textShadow: textColor === '#FFFFFF'
-                ? '0 1px 3px rgba(0,0,0,0.3)'
-                : '0 1px 2px rgba(255,255,255,0.3)',
-              color: textColor,
-            }}
-          >
-            {displayText}
-          </span>
-        ) : null}
+        ) : (
+          <>
+            {/* 背景の飾りアイコン */}
+            <BookOpen
+              className="absolute"
+              style={{ width: '34%', height: '34%', minWidth: 20, maxWidth: 56, color: 'rgba(255,255,255,0.55)' }}
+              strokeWidth={1.5}
+            />
+            {!hideFallbackText && displayText && (
+              <span
+                className={`relative z-[1] font-bold text-center select-none px-2 line-clamp-2 text-white ${textSizeClass}`}
+                style={{ fontFamily: '"Zen Maru Gothic", "Noto Sans JP", sans-serif', textShadow: '0 1px 4px rgba(43,36,64,0.35)' }}
+              >
+                {displayText}
+              </span>
+            )}
+          </>
+        )}
       </div>
     );
   };

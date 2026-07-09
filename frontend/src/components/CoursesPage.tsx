@@ -10,9 +10,9 @@ import type { Category } from '../types/api';
 
 // カテゴリ表示用のカラーパレット（循環利用）
 const categoryColorPalette = [
-  { color: '#E86D78', iconLightColor: '#FFEDEE', icon: Palette },
+  { color: '#FF5A7A', iconLightColor: '#FFEDEE', icon: Palette },
   { color: '#F0AF23', iconLightColor: '#FFFAEA', icon: TrendingUp },
-  { color: '#FA9161', iconLightColor: '#FFF4EF', icon: Code },
+  { color: '#FFC24B', iconLightColor: '#FFF4EF', icon: Code },
   { color: '#A688D4', iconLightColor: '#F7F2FF', icon: Sparkles },
   { color: '#E6819D', iconLightColor: '#FFF1F5', icon: Video },
   { color: '#5B9BD5', iconLightColor: '#EBF3FB', icon: BookOpen },

@@ -15,6 +15,8 @@ node_modules/
 .env.development.local
 .env.test.local
 .env.production.local
+# モック開発用フラグは追跡する（ルート .gitignore の .env.* 除外を打ち消す）
+!.env.development
 
 # IDE
 .vscode/

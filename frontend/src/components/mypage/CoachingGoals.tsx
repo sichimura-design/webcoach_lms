@@ -103,7 +103,7 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-3">
-            <div className="w-1 h-6 rounded-full" style={{ background: 'linear-gradient(180deg, #E86D78, #FA9262)' }} />
+            <div className="w-1 h-6 rounded-full" style={{ background: 'linear-gradient(180deg, #FF5A7A, #FFC24B)' }} />
             <h2 className="text-lg font-bold text-brand-text">次回コーチングまでの目標</h2>
           </div>
           <div className="flex items-center gap-2">
@@ -112,7 +112,7 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                 onClick={() => setShowResetConfirm(true)}
                 disabled={saving}
                 className="flex items-center gap-1.5 text-xs font-bold rounded-full px-3 py-1.5 transition-colors disabled:opacity-50"
-                style={{ background: '#FFFFFF', color: '#E86D78', border: '1px solid #E86D78' }}
+                style={{ background: '#FFFFFF', color: '#FF5A7A', border: '1px solid #FF5A7A' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#FFF5F0'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#FFFFFF'; }}
               >
@@ -125,7 +125,7 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                 <button
                   onClick={cancelEditing}
                   className="flex items-center gap-1.5 text-xs font-bold rounded-full px-3 py-1.5 transition-colors"
-                  style={{ color: '#7E6E68', border: '1px solid #E0D8D4' }}
+                  style={{ color: '#7A7392', border: '1px solid #E0D8D4' }}
                 >
                   キャンセル
                 </button>
@@ -133,7 +133,7 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                   onClick={saveEditing}
                   disabled={saving}
                   className="flex items-center gap-1.5 text-xs font-bold text-white rounded-full px-3 py-1.5 transition-colors disabled:opacity-50"
-                  style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+                  style={{ background: 'linear-gradient(135deg, #FF5A7A, #FFC24B)' }}
                 >
                   <Check className="w-3 h-3" />
                   保存する
@@ -144,7 +144,7 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                 onClick={startEditing}
                 disabled={saving}
                 className="flex items-center gap-1.5 text-xs font-bold text-white rounded-full px-3 py-1.5 transition-colors disabled:opacity-50"
-                style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+                style={{ background: 'linear-gradient(135deg, #FF5A7A, #FFC24B)' }}
               >
                 <Pencil className="w-3 h-3" />
                 目標を編集
@@ -156,13 +156,13 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
         {/* Progress */}
         <div className="mb-5">
           <p className="text-xs text-brand-muted mb-1">全体の進捗</p>
-          <p className="text-4xl font-extrabold mb-2" style={{ color: '#E86D78' }}>
+          <p className="text-4xl font-extrabold mb-2" style={{ color: '#FF5A7A' }}>
             {progressPercent}%
           </p>
           <div className="h-2.5 bg-[#EFEFEF] rounded-full overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-500"
-              style={{ width: `${progressPercent}%`, background: 'linear-gradient(90deg, #FA9161, #E86D78)' }}
+              style={{ width: `${progressPercent}%`, background: 'linear-gradient(90deg, #FFC24B, #FF5A7A)' }}
             />
           </div>
         </div>
@@ -170,10 +170,10 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
         {/* Goals List */}
         {loading ? (
           <div className="py-6 flex justify-center">
-            <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#E86D78', borderTopColor: 'transparent' }} />
+            <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#FF5A7A', borderTopColor: 'transparent' }} />
           </div>
         ) : displayGoals.length === 0 && !isEditing ? (
-          <div className="py-6 text-center text-sm" style={{ color: '#7E6E68' }}>
+          <div className="py-6 text-center text-sm" style={{ color: '#7A7392' }}>
             目標がありません。「目標を編集」から追加してください。
           </div>
         ) : (
@@ -209,8 +209,8 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                     isEditing ? 'cursor-default pointer-events-none' : 'cursor-pointer'
                   }`}
                   style={{
-                    borderColor: '#E86D78',
-                    background: goal.completed ? '#E86D78' : '#FFFFFF',
+                    borderColor: '#FF5A7A',
+                    background: goal.completed ? '#FF5A7A' : '#FFFFFF',
                   }}
                 >
                   {goal.completed && <Check className="w-4 h-4 text-white" strokeWidth={3} />}
@@ -223,16 +223,16 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                     onChange={e => setEditGoals(prev => prev.map((g, i) => i === index ? { ...g, text: e.target.value } : g))}
                     className="flex-1 text-sm bg-transparent focus:outline-none py-0.5"
                     style={{
-                      color: '#4B3A33',
+                      color: '#2B2440',
                       borderBottom: '1px solid #E0D8D4',
                     }}
-                    onFocus={e => { e.currentTarget.style.borderBottomColor = '#E86D78'; }}
+                    onFocus={e => { e.currentTarget.style.borderBottomColor = '#FF5A7A'; }}
                     onBlur={e => { e.currentTarget.style.borderBottomColor = '#E0D8D4'; }}
                   />
                 ) : (
                   <span
                     className="flex-1 text-sm"
-                    style={{ color: goal.completed ? '#7E6E68' : '#4B3A33' }}
+                    style={{ color: goal.completed ? '#7A7392' : '#2B2440' }}
                   >
                     {goal.text}
                   </span>
@@ -280,14 +280,14 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                   onKeyDown={e => e.key === 'Enter' && addEditGoal()}
                   placeholder="新しい目標を入力..."
                   className="flex-1 text-sm bg-transparent focus:outline-none"
-                  style={{ color: '#4B3A33' }}
+                  style={{ color: '#2B2440' }}
                   autoFocus={editGoals.length === 0}
                 />
                 <button
                   onClick={addEditGoal}
                   disabled={!newGoalText.trim()}
                   className="w-7 h-7 rounded-full flex items-center justify-center text-white disabled:opacity-30 transition-opacity flex-shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+                  style={{ background: 'linear-gradient(135deg, #FF5A7A, #FFC24B)' }}
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -305,12 +305,12 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
             <div className="text-center mb-6">
               <div
                 className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
-                style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+                style={{ background: 'linear-gradient(135deg, #FF5A7A, #FFC24B)' }}
               >
                 <RotateCcw className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-lg font-bold mb-2" style={{ color: '#4B3A33' }}>目標をリセット</h3>
-              <p className="text-sm leading-relaxed" style={{ color: '#7E6E68' }}>
+              <h3 className="text-lg font-bold mb-2" style={{ color: '#2B2440' }}>目標をリセット</h3>
+              <p className="text-sm leading-relaxed" style={{ color: '#7A7392' }}>
                 すべての目標とチェック状態が削除されます。<br />この操作は元に戻せません。
               </p>
             </div>
@@ -318,7 +318,7 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
               <button
                 onClick={() => setShowResetConfirm(false)}
                 className="flex-1 py-3 rounded-xl text-sm font-bold transition-colors"
-                style={{ border: '1px solid #E0D8D4', color: '#7E6E68' }}
+                style={{ border: '1px solid #E0D8D4', color: '#7A7392' }}
               >
                 キャンセル
               </button>
@@ -326,7 +326,7 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                 onClick={handleReset}
                 disabled={saving}
                 className="flex-1 py-3 rounded-xl text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-                style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+                style={{ background: 'linear-gradient(135deg, #FF5A7A, #FFC24B)' }}
               >
                 リセットする
               </button>

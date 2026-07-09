@@ -163,6 +163,7 @@ export interface AIRequest {
   context?: Record<string, any>;
   max_chunks?: number;
   use_tools?: boolean;
+  image?: string; // 添付画像（data URL）。AIが読み取って回答する。
 }
 
 export interface AISource {

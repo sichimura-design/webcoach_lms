@@ -36,9 +36,9 @@ export function DataRenderer<T>({
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="w-6 h-6 text-[#E86D78] animate-spin" />
+        <Loader2 className="w-6 h-6 text-[#FF5A7A] animate-spin" />
         <span
-          className="ml-2 text-sm text-[#7E6E68]"
+          className="ml-2 text-sm text-[#7A7392]"
         >
           読み込み中...
         </span>
@@ -50,7 +50,7 @@ export function DataRenderer<T>({
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-2">
         <p
-          className="text-sm text-[#7E6E68]"
+          className="text-sm text-[#7A7392]"
         >
           {error}
         </p>

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown } from 'lucide-react';
+import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown, MessageCircle, Lightbulb, ImagePlus, PanelLeft } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -27,7 +27,17 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const resolvedAvatarUrl = avatarUrl ?? (ctxAvatarUrl ? withCfToken(ctxAvatarUrl, contentToken) : undefined);
 
   const { chatOpen, setChatOpen } = useChatStore();
-  const { messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress } = useAiChat();
+  const { messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress, attachedImage, setAttachedImage } = useAiChat();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImagePick = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setAttachedImage(typeof reader.result === 'string' ? reader.result : null);
+    reader.readAsDataURL(file);
+    e.target.value = '';
+  };
 
   const { items: notificationItems, markAllRead } = useNotificationStore();
   const [notifOpen, setNotifOpen] = useState(false);
@@ -58,11 +68,209 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const isAIApps = location.pathname === '/ai-apps';
   const isAdmin = location.pathname.startsWith('/admin');
 
+  // サイドバーの開閉（通常は畳んで省スペース）
+  const [expanded, setExpanded] = useState(false);
+
+  // PC版サイドバーぶんの余白を body に付与（このヘッダーを描画するページのみ）
+  useEffect(() => {
+    document.body.classList.add('with-sidebar');
+    return () => { document.body.classList.remove('with-sidebar'); document.body.classList.remove('sidebar-expanded'); };
+  }, []);
+  useEffect(() => {
+    document.body.classList.toggle('sidebar-expanded', expanded);
+  }, [expanded]);
+
+  // なぞって解説：テキスト選択時に「AIに解説」ボタンを出す
+  const [sel, setSel] = useState<{ text: string; x: number; y: number } | null>(null);
+  useEffect(() => {
+    const onUp = (e: MouseEvent) => {
+      // 「AIに解説」ボタン上での mouseup では消さない（クリックを成立させる）
+      if ((e.target as HTMLElement)?.closest?.('[data-explain-btn]')) return;
+      const ae = document.activeElement as HTMLElement | null;
+      if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA')) { setSel(null); return; }
+      const s = window.getSelection();
+      const text = s?.toString().trim() || '';
+      if (s && s.rangeCount > 0 && text.length >= 2 && text.length <= 400) {
+        const r = s.getRangeAt(0).getBoundingClientRect();
+        if (r && r.width > 0) {
+          setSel({ text, x: Math.min(Math.max(r.left, 8), window.innerWidth - 160), y: Math.max(r.top - 8, 40) });
+          return;
+        }
+      }
+      setSel(null);
+    };
+    const onDown = (e: MouseEvent) => {
+      if ((e.target as HTMLElement)?.closest?.('[data-explain-btn]')) return;
+      setSel(null);
+    };
+    document.addEventListener('mouseup', onUp);
+    document.addEventListener('mousedown', onDown);
+    return () => { document.removeEventListener('mouseup', onUp); document.removeEventListener('mousedown', onDown); };
+  }, []);
+
+  // 教材はiframe内に描画されるため、iframeからの選択通知を受けてボタンを出す
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      const d: any = e.data;
+      if (!d || d.__lmsExplain !== true) return;
+      if (d.clear) { setSel(null); return; }
+      const frame = Array.from(document.querySelectorAll('iframe')).find(f => f.contentWindow === e.source);
+      if (!frame) return;
+      const fb = frame.getBoundingClientRect();
+      setSel({
+        text: String(d.text || ''),
+        x: Math.min(Math.max(fb.left + (d.left || 0), 8), window.innerWidth - 160),
+        y: Math.max(fb.top + (d.top || 0) - 8, 40),
+      });
+    };
+    window.addEventListener('message', onMsg);
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  // ナビ項目（サイドバー・下部ナビ共通の定義）
+  const navItems = [
+    { label: 'マイページ', icon: Home, path: '/mypage', active: isMyPage },
+    { label: '学習する', icon: BookOpen, path: '/courses', active: isCoursesPage },
+    { label: 'AIアプリ', icon: Sparkles, path: '/ai-apps', active: isAIApps },
+  ];
+  const learnItems = navItems;
+  const manageItems = user?.isAdmin
+    ? [{ label: '管理', icon: Settings, path: '/admin', active: isAdmin }]
+    : user?.isCoach
+    ? [{ label: '受講生一覧', icon: BookOpen, path: '/coach/students', active: isStudentsPage }]
+    : [];
+
+  const renderSideItem = (item: { label: string; icon: any; path: string; active: boolean }) => {
+    const Icon = item.icon;
+    return (
+      <button
+        key={item.path}
+        onClick={() => navigate(item.path)}
+        title={item.label}
+        className={`w-full rounded-xl flex flex-col items-center justify-center gap-1 py-2.5 transition-colors ${
+          item.active ? 'text-white' : 'text-[#ADA6C2] hover:bg-white/10'
+        }`}
+        style={item.active ? { background: 'linear-gradient(135deg, #FFC24B, #FF5A7A)' } : undefined}
+      >
+        <Icon className="w-[22px] h-[22px] flex-shrink-0" />
+        {expanded && <span className="text-[10px] font-bold text-center leading-tight">{item.label}</span>}
+      </button>
+    );
+  };
+
 
   return (
     <>
+      {/* ── PC版 左サイドバー（ダーク・開閉式・lg以上） ───────── */}
+      <aside
+        className="hidden sm:flex flex-col fixed left-0 top-0 bottom-0 z-40 py-3 transition-[width] duration-200"
+        style={{ width: expanded ? 216 : 72, background: '#221E33' }}
+      >
+        {/* 開閉トグル */}
+        <button
+          onClick={() => setExpanded(v => !v)}
+          className={`mb-2 h-9 rounded-lg flex items-center justify-center text-[#ADA6C2] hover:bg-white/10 transition-colors ${expanded ? 'mx-3 self-end' : 'mx-auto'}`}
+          aria-label={expanded ? 'サイドバーを閉じる' : 'サイドバーを開く'}
+          title={expanded ? '閉じる' : '開く'}
+        >
+          <PanelLeft className="w-5 h-5" />
+        </button>
+
+        {/* ホーム（ロゴ） */}
+        <button
+          onClick={() => navigate('/mypage')}
+          className="mx-3 mb-3 rounded-2xl flex flex-col items-center justify-center gap-1 py-3 text-white flex-shrink-0"
+          style={{ background: 'linear-gradient(135deg, #3A3552, #2A2440)' }}
+        >
+          <img src={`${process.env.PUBLIC_URL}/logo_WEBCOACH.png`} alt="WEBCOACH" className="h-6 w-auto object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
+          {expanded && <span className="text-[11px] font-bold">ホーム</span>}
+        </button>
+
+        {/* ナビ（グループ） */}
+        <nav className="flex-1 overflow-y-auto px-2 flex flex-col gap-1">
+          {expanded && <p className="text-[10px] font-bold text-[#6E6788] px-2 pt-2 pb-1 tracking-wider">学習</p>}
+          {learnItems.map(renderSideItem)}
+          {manageItems.length > 0 && (
+            <>
+              {expanded && <p className="text-[10px] font-bold text-[#6E6788] px-2 pt-3 pb-1 tracking-wider">管理</p>}
+              {manageItems.map(renderSideItem)}
+            </>
+          )}
+        </nav>
+
+        {/* 下部：ヘルプ・通知・アカウント */}
+        <div className="px-2 pt-2 flex flex-col gap-1 flex-shrink-0" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+          {expanded && (
+            <>
+              <a href="https://slime-gruyere-92d.notion.site/WEBCOACH-6-0-7a07e36455e848c4b4d262ef3a1c1cd4" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-[11px] text-[#9A93B0] hover:bg-white/10 transition-colors">
+                <FileText className="w-3.5 h-3.5 flex-shrink-0" /> 利用マニュアル
+              </a>
+              <a href="https://slime-gruyere-92d.notion.site/1fddd266074f809e9f0cfdbdd8e60ffd" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-[11px] text-[#9A93B0] hover:bg-white/10 transition-colors">
+                <HelpCircle className="w-3.5 h-3.5 flex-shrink-0" /> よくある質問
+              </a>
+            </>
+          )}
+
+          {/* 通知（アカウントの上） */}
+          <div className="relative" ref={notifRef}>
+            <button
+              onClick={() => setNotifOpen(v => !v)}
+              title="通知"
+              className="w-full rounded-xl flex flex-col items-center justify-center gap-1 py-2 text-[#ADA6C2] hover:bg-white/10 transition-colors"
+            >
+              <span className="relative">
+                <Bell className="w-[22px] h-[22px]" />
+                {notificationItems.length > 0 && (
+                  <span className="absolute -top-1 -right-1 flex items-center justify-center bg-[#FF5A7A] rounded-full text-white font-bold" style={{ minWidth: '15px', height: '15px', fontSize: '9px', padding: '0 3px' }}>
+                    {notificationItems.length > 9 ? '9+' : notificationItems.length}
+                  </span>
+                )}
+              </span>
+              {expanded && <span className="text-[10px] font-bold">通知</span>}
+            </button>
+
+            {notifOpen && (
+              <div
+                className="absolute left-full bottom-0 ml-2 bg-white overflow-hidden z-50"
+                style={{ width: '300px', borderRadius: '12px', border: '1px solid #C3BAB4', boxShadow: '0 12px 28px rgba(0,0,0,0.18)' }}
+              >
+                <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid #F0EAE6' }}>
+                  <span className="font-bold text-sm text-brand-text">新着通知</span>
+                  {notificationItems.length > 0 && (
+                    <button onClick={() => { markAllRead(); setNotifOpen(false); }} className="text-xs font-medium text-brand hover:opacity-70">すべて既読</button>
+                  )}
+                </div>
+                <div className="overflow-y-auto" style={{ maxHeight: '220px' }}>
+                  {notificationItems.length === 0 ? (
+                    <p className="text-xs text-center py-8 text-brand-muted">新着はありません</p>
+                  ) : (
+                    notificationItems.map(item => (
+                      <div key={`${item.type}-${item.id}`} className="flex items-start gap-3 px-4 py-3 hover:bg-brand-bg transition-colors" style={{ borderBottom: '1px solid #F5F0ED' }}>
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-brand-gradient">
+                          <BookMarked className="w-4 h-4 text-white" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-bold truncate text-brand-text">{item.name}</p>
+                          <p className="text-xs mt-0.5 text-brand-muted">新しいコースが追加されました・{new Date(item.timemodified).toLocaleDateString('ja-JP')}</p>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* アカウント */}
+          <div className={`flex items-center gap-2 py-1 ${expanded ? 'px-1' : 'justify-center'}`}>
+            <AccountSettingsDropdown userName={resolvedUserName} avatarSrc={avatarSrc} />
+            {expanded && <span className="text-[11px] font-bold text-[#ADA6C2] truncate">{resolvedUserName}</span>}
+          </div>
+        </div>
+      </aside>
+
       <header
-        className="sticky top-0 z-40 h-[60px] sm:h-[80px]"
+        className="hidden"
         style={{
           backgroundColor: 'rgba(255,255,255,0.9)',
           backdropFilter: 'blur(12px)',
@@ -71,8 +279,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         }}
       >
         <div className="max-w-[1440px] mx-auto h-full flex items-center justify-between px-3 sm:px-6 lg:px-8">
-          {/* Left: Logo and Navigation */}
-          <div className="flex items-center gap-4 sm:gap-6 lg:gap-10">
+          {/* Left: Logo and Navigation（lg未満のみ。lg以上は左サイドバーに移動） */}
+          <div className="flex items-center gap-4 sm:gap-6 lg:gap-10 lg:hidden">
             {/* Logo */}
             <div
               className="flex items-center cursor-pointer flex-shrink-0"
@@ -250,8 +458,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
             {/* Vertical Divider */}
             <div className="w-px bg-brand-subtle" style={{ height: '24px' }} />
 
-            {/* Notifications */}
-            <div className="relative" ref={notifRef}>
+            {/* Notifications（非表示ヘッダー内・refはサイドバー側に付与） */}
+            <div className="relative">
               <button
                 onClick={() => setNotifOpen(v => !v)}
                 className="relative flex items-center justify-center hover:bg-gray-50 rounded-full transition-colors border-0 bg-transparent"
@@ -377,6 +585,34 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         </div>
       </nav>
 
+      {/* なぞって解説ボタン（テキスト選択時） */}
+      {!chatOpen && sel && (
+        <button
+          data-explain-btn
+          onClick={() => {
+            setInput(`「${sel.text}」について、初心者にもわかるように解説してください`);
+            setChatOpen(true);
+            setSel(null);
+          }}
+          className="fixed z-50 inline-flex items-center gap-1 text-xs font-bold text-white rounded-full px-3 py-1.5 shadow-lg"
+          style={{ top: sel.y, left: sel.x, transform: 'translateY(-100%)', background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+        >
+          <Lightbulb className="w-3.5 h-3.5" /> AIに解説
+        </button>
+      )}
+
+      {/* 右下常駐のAIコーチ FAB */}
+      {!chatOpen && (
+        <button
+          onClick={() => setChatOpen(true)}
+          aria-label="AIコーチに相談"
+          className="fixed z-40 right-5 bottom-20 sm:bottom-6 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+          style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+        >
+          <MessageCircle className="w-6 h-6" />
+        </button>
+      )}
+
       {/* AI Chat Drawer */}
       {chatOpen && (
         <>
@@ -443,7 +679,12 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                           }}
                         />
                       ) : (
-                        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                        <>
+                          {message.image && (
+                            <img src={message.image} alt="添付画像" className="rounded-lg mb-2 max-h-48 w-auto object-contain border border-gray-200" />
+                          )}
+                          {message.content && <p className="text-sm whitespace-pre-wrap">{message.content}</p>}
+                        </>
                       )}
                       <p className="text-xs text-gray-400 mt-2">
                         {message.timestamp.toLocaleTimeString('ja-JP', {
@@ -496,20 +737,43 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
             {/* Input Area */}
             <div className="p-4 bg-white border-t">
-              <div className="flex gap-2">
+              {/* 添付画像プレビュー */}
+              {attachedImage && (
+                <div className="relative inline-block mb-2">
+                  <img src={attachedImage} alt="添付プレビュー" className="h-20 w-auto rounded-lg border border-gray-200 object-contain" />
+                  <button
+                    onClick={() => setAttachedImage(null)}
+                    className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-brand-text text-white flex items-center justify-center shadow"
+                    aria-label="添付を削除"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
+              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImagePick} />
+              <div className="flex gap-2 items-end">
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={loading}
+                  className="p-2 rounded-lg border border-gray-300 text-brand-muted hover:bg-gray-50 disabled:opacity-50 transition-colors flex-shrink-0"
+                  aria-label="画像を添付"
+                  title="画像を添付"
+                >
+                  <ImagePlus className="w-5 h-5" />
+                </button>
                 <textarea
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="質問を入力してください..."
+                  placeholder={attachedImage ? '画像について質問する…（任意）' : '質問を入力してください...'}
                   disabled={loading}
                   rows={1}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent disabled:bg-gray-100"
                 />
                 <button
                   onClick={sendMessage}
-                  disabled={!input.trim() || loading}
-                  className="p-2 bg-brand text-white rounded-lg hover:bg-brand/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+                  disabled={(!input.trim() && !attachedImage) || loading}
+                  className="p-2 bg-brand text-white rounded-lg hover:bg-brand/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex-shrink-0"
                 >
                   <Send className="w-5 h-5" />
                 </button>

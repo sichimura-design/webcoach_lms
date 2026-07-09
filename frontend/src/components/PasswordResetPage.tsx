@@ -81,7 +81,7 @@ function PasswordResetPage() {
   };
 
   const inputClass =
-    'w-full h-[46px] px-4 bg-[#FAF8F4] text-sm text-[#7E6E68] placeholder:text-[#C2B9B3] focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-colors';
+    'w-full h-[46px] px-4 bg-[#FAF8F4] text-sm text-[#7A7392] placeholder:text-[#C2B9B3] focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-colors';
   const inputStyle = { borderRadius: '12px' };
 
   return (
