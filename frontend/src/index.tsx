@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import { MOCKS_ENABLED } from './mocks/config';
 
-// trigger ci
+// trigger ci (dev preview URL comment)
 async function bootstrap() {
   // モック有効時のみ MSW を起動（本番バンドルには読み込まれない）
   if (MOCKS_ENABLED) {
