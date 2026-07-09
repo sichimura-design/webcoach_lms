@@ -67,7 +67,9 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   // なぞって解説：テキスト選択時に「AIに解説」ボタンを出す
   const [sel, setSel] = useState<{ text: string; x: number; y: number } | null>(null);
   useEffect(() => {
-    const onUp = () => {
+    const onUp = (e: MouseEvent) => {
+      // 「AIに解説」ボタン上での mouseup では消さない（クリックを成立させる）
+      if ((e.target as HTMLElement)?.closest?.('[data-explain-btn]')) return;
       const ae = document.activeElement as HTMLElement | null;
       if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA')) { setSel(null); return; }
       const s = window.getSelection();
