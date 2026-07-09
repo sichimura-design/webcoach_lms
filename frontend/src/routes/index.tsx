@@ -12,6 +12,7 @@ import CategoryDetailPage from '../components/CategoryDetailPage';
 import AIAppsPage from '../components/AIAppsPage';
 import BadgesPage from '../components/BadgesPage';
 import AnnouncementsPage from '../components/AnnouncementsPage';
+import CoachingNotesPage from '../components/CoachingNotesPage';
 import ContentListPage from '../components/ContentListPage';
 import CourseContentPage from '../components/CourseContentPage';
 import CourseCurriculumPage from '../components/CourseCurriculumPage';
@@ -326,6 +327,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <AnnouncementsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/coaching"
+        element={
+          <ProtectedRoute>
+            <CoachingNotesPage />
           </ProtectedRoute>
         }
       />

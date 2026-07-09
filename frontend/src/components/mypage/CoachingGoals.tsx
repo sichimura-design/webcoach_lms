@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Plus, X, RotateCcw, GripVertical, Check, Pencil, Sparkles, Loader2, Mic } from 'lucide-react';
 import { useCoachingGoals, Goal } from '../../hooks/useCoachingGoals';
 import { bffClient } from '../../services/bffClient';
@@ -8,6 +9,7 @@ interface CoachingGoalsProps {
 }
 
 export function CoachingGoals({ userId }: CoachingGoalsProps) {
+  const navigate = useNavigate();
   const { goals, loading, saving, saveGoals } = useCoachingGoals(userId);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -19,7 +21,6 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiMode, setAiMode] = useState<'goal' | 'coaching'>('goal');
   const [coachingNotes, setCoachingNotes] = useState('');
-  const [recording, setRecording] = useState(false);
 
   const dragItem = useRef<number | null>(null);
   const lastDragOver = useRef<number | null>(null);
@@ -82,17 +83,6 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
     }
   };
 
-  // コーチング音声からの取り込み（デモ：録音をシミュレートしてサンプル文字起こしを入れる）
-  const handleDemoRecord = () => {
-    if (recording) return;
-    setRecording(true);
-    setTimeout(() => {
-      setCoachingNotes(
-        '今日のコーチングでは、ポートフォリオ用にバナーを3枚作ることを目標にしました。前回の余白の取り方が課題だったのでそこを意識すること。参考サイトを3つ見て分析するのと、配色は2パターン用意して次回持ってくるよう言われました。',
-      );
-      setRecording(false);
-    }, 1500);
-  };
 
   // グリップハンドルからのドラッグ開始
   const handleGripDragStart = (index: number, e: React.DragEvent<HTMLDivElement>) => {
@@ -258,25 +248,26 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
               </>
             ) : (
               <>
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <p className="text-xs text-brand-muted">
-                    前回コーチングで話したことを入れると、コーチと決めたタスクに分解します。
-                  </p>
-                  <button
-                    onClick={handleDemoRecord}
-                    disabled={recording}
-                    className="flex items-center gap-1.5 text-xs font-bold rounded-full px-3 py-1.5 flex-shrink-0 transition-colors disabled:opacity-60"
-                    style={{ color: '#E86D78', border: '1px solid #E8B5BB', background: '#fff' }}
-                  >
-                    {recording ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Mic className="w-3.5 h-3.5" />}
-                    {recording ? '文字起こし中...' : '録音から取り込む（デモ）'}
-                  </button>
-                </div>
+                {/* コーチングページ導線（録音・要約はそちらで） */}
+                <button
+                  onClick={() => navigate('/coaching')}
+                  className="w-full flex items-center justify-between gap-2 rounded-xl px-3.5 py-3 mb-3 text-left transition-colors hover:opacity-90"
+                  style={{ background: '#FFF0EF', border: '1px solid #F3D3D7' }}
+                >
+                  <span className="flex items-center gap-2 min-w-0">
+                    <Mic className="w-4 h-4 text-brand flex-shrink-0" />
+                    <span className="text-sm font-bold text-brand-text truncate">コーチングページで録音・要約する</span>
+                  </span>
+                  <span className="text-xs font-bold text-brand flex-shrink-0">開く →</span>
+                </button>
+                <p className="text-xs text-brand-muted mb-2">
+                  または、話した内容を貼り付けてタスク化：
+                </p>
                 <textarea
                   value={coachingNotes}
                   onChange={e => setCoachingNotes(e.target.value)}
                   rows={4}
-                  placeholder="コーチングで話した内容を貼り付け、または「録音から取り込む」で自動入力"
+                  placeholder="コーチングで話した内容を貼り付け"
                   className="w-full text-sm rounded-xl px-3 py-2.5 bg-white focus:outline-none resize-none mb-2"
                   style={{ border: '1px solid #E8D6D0' }}
                 />

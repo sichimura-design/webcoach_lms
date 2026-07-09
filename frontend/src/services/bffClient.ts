@@ -20,6 +20,7 @@ import {
 import { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
 import { Announcement } from '../types/announcement';
 import { LearningJourney } from '../types/journey';
+import { CoachingSessions, CoachingNote } from '../types/coaching';
 import { getIdToken } from './cognitoAuth';
 import { MOCKS_ENABLED } from '../mocks/config';
 
@@ -481,6 +482,24 @@ class BFFClient {
    */
   async breakdownGoal(goal: string, source: 'goal' | 'coaching' = 'goal'): Promise<{ subgoals: string[] }> {
     const response = await this.api.post('/webcoach/goal-breakdown', { goal, source });
+    return response.data;
+  }
+
+  /**
+   * コーチングのセッション一覧（次回＋過去・モック専用）
+   * GET /api/webcoach/coaching-sessions/{userid}
+   */
+  async getCoachingSessions(userId: number): Promise<CoachingSessions> {
+    const response = await this.api.get(`/webcoach/coaching-sessions/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * AIミーティングノートを生成（録音→要約→タスク候補・モック専用）
+   * POST /api/webcoach/coaching-note
+   */
+  async generateCoachingNote(): Promise<CoachingNote> {
+    const response = await this.api.post('/webcoach/coaching-note');
     return response.data;
   }
 

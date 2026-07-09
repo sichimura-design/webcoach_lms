@@ -156,6 +156,10 @@ const aiApps = [
   { id: 4, name: '文章校正アシスタント', description: '誤字・言い回しをAIがチェック', url: 'https://example.com/proof', icon: '' },
 ];
 
+// 次回コーチングまでの目標（セッション内で保持：AI細分化やコーチングページからの生成を
+// マイページに反映させるため、GET/PUT で同じストアを読み書きする）
+let coachingGoalsStore: { no: number; description: string; is_completed: 0 | 1 }[] = [];
+
 // ---- ハンドラ ---------------------------------------------------------------
 export const handlers = [
   // ==================== 認証後のブート経路 ====================
@@ -191,7 +195,16 @@ export const handlers = [
   http.get('*/api/moodle/courses', () => HttpResponse.json(catalog)),
   http.get('*/api/moodle/categories', () => HttpResponse.json(categories)),
   http.get('*/api/webcoach/recomendbadge/:userid', () => HttpResponse.json([])),
-  http.get('*/api/webcoach/next-coaching-goals/:userid', () => HttpResponse.json([])),
+  http.get('*/api/webcoach/next-coaching-goals/:userid', () => HttpResponse.json(coachingGoalsStore)),
+  http.put('*/api/webcoach/next-coaching-goals/:userid', async ({ request }) => {
+    try {
+      const body = (await request.json()) as { goals?: typeof coachingGoalsStore };
+      coachingGoalsStore = Array.isArray(body?.goals) ? body.goals : [];
+    } catch {
+      /* ignore */
+    }
+    return HttpResponse.json(coachingGoalsStore);
+  }),
   http.get('*/api/webcoach/roadmaps', () => HttpResponse.json([])),
   http.get('*/api/moodle/badges', () => HttpResponse.json([])),
   http.get('*/api/moodle/user-badges/:userid', () => HttpResponse.json([])),
@@ -316,6 +329,40 @@ export const handlers = [
     }
     return HttpResponse.json({ subgoals });
   }),
+
+  // ==================== コーチング（AIミーティングノート） ====================
+  http.get('*/api/webcoach/coaching-sessions/:userid', () =>
+    HttpResponse.json({
+      next: { date: '7月16日(木) 20:00', coach: '田中コーチ' },
+      past: [
+        { id: 4, date: '2026-07-02', title: '第4回コーチング', summary: 'バナー制作の進め方と「余白の取り方」の課題を確認。次回までに参考分析と配色案。', tasksCreated: true },
+        { id: 3, date: '2026-06-25', title: '第3回コーチング', summary: '配色の基礎と参考サイトの見方を整理。デザインの型を増やす方針に。', tasksCreated: true },
+        { id: 2, date: '2026-06-18', title: '第2回コーチング', summary: '学習リズムの設計。週3回のペースで基礎コースを進めることで合意。', tasksCreated: true },
+      ],
+    })
+  ),
+  // 録音→要約→タスク候補の生成（本番は 録音→文字起こしAPI→要約 に置き換え）
+  http.post('*/api/webcoach/coaching-note', () =>
+    HttpResponse.json({
+      summary:
+        '今回はポートフォリオ用のバナー制作を最優先に設定。前回の課題「余白の取り方」を改善するため、参考サイトの分析と配色2案の準備を次回までに行うことで合意しました。',
+      transcript:
+        '今日のコーチングでは、ポートフォリオ用にバナーを3枚作ることを目標にしました。前回の余白の取り方が課題だったのでそこを意識すること。参考サイトを3つ見て分析するのと、配色は2パターン用意して次回持ってくるよう言われました。',
+      keyPoints: [
+        'ポートフォリオ用バナーを3枚作る',
+        '余白の取り方を改善する',
+        '参考サイトを3つ分析する',
+        '配色を2パターン用意する',
+      ],
+      suggestedTasks: [
+        'コーチと決めた「バナー3枚」に今週着手する',
+        '前回指摘された余白の取り方を意識して1枚作り直す',
+        'おすすめされた参考サイトを3つ分析する',
+        '配色パターンを2案つくって次回に備える',
+        '完成したバナーを次回コーチングに持参する',
+      ],
+    })
+  ),
 
   // ==================== サンプル機能（新API＝モックの雛形） ====================
   // 実BFFには存在しない新エンドポイント。/announcements ページから利用する。
