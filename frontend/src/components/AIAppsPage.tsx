@@ -88,7 +88,7 @@ function AIAppsPage() {
               <div className="flex flex-col" style={{ gap: '4px' }}>
                 <span
                   className="inline-block self-start px-2.5 py-0.5 text-xs font-bold"
-                  style={{ fontSize: '12px', color: '#E86D78', backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: '6px' }}
+                  style={{ fontSize: '12px', color: '#FF5A7A', backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: '6px' }}
                 >
                   MEMBER ONLY
                 </span>

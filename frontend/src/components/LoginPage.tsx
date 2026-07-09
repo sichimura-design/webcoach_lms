@@ -266,7 +266,7 @@ function LoginPage() {
                   </label>
                   <span
                     onClick={() => navigate('/password-reset')}
-                    className="text-[10px] text-[#E86D78]/70 cursor-pointer"
+                    className="text-[10px] text-[#FF5A7A]/70 cursor-pointer"
                   >
                     パスワードお忘れですか？
                   </span>

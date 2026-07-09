@@ -725,7 +725,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                 onClick={() => handleToggleComplete(false)}
                 disabled={completing}
                 className="flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm transition-opacity hover:opacity-80 disabled:opacity-60 disabled:cursor-default"
-                style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
+                style={{ background: '#F0EAE6', color: '#7A7392', border: '1px solid #D8CEC8' }}
               >
                 <RotateCcw className="w-4 h-4" />
                 <span className="hidden sm:inline">
@@ -764,7 +764,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                   <button
                     onClick={openInNewTab}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-opacity hover:opacity-80"
-                    style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
+                    style={{ background: '#F0EAE6', color: '#7A7392', border: '1px solid #D8CEC8' }}
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     新しいタブで開く
@@ -786,7 +786,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                   onClick={() => handleToggleComplete(false)}
                   disabled={completing}
                   className="flex items-center gap-2 px-12 py-3 rounded-full font-bold text-base transition-opacity hover:opacity-80 disabled:opacity-60 disabled:cursor-default"
-                  style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
+                  style={{ background: '#F0EAE6', color: '#7A7392', border: '1px solid #D8CEC8' }}
                 >
                   <RotateCcw className="w-5 h-5" />
                   {completing ? '処理中...' : '完了を取り消す'}
@@ -919,7 +919,7 @@ function TocPanel({ pageToc, onTocItemClick, mobile = false }: TocPanelProps) {
               >
                 <span
                   className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                  style={{ background: item.level === 1 ? '#e86d78' : item.level === 2 ? '#fa9262' : '#d0cac6' }}
+                  style={{ background: item.level === 1 ? '#FF5A7A' : item.level === 2 ? '#FFC24B' : '#d0cac6' }}
                 />
                 <span
                   className="text-xs truncate text-brand-text"

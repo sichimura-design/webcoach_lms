@@ -103,8 +103,8 @@ function MyPage() {
           {/* Profile Card - Full Width */}
           <div className="bg-white rounded-[32px] shadow-sm p-6 sm:p-8 mb-6 relative overflow-hidden">
             {/* Decorative circles */}
-            <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-[#FFF5F0] opacity-60" />
-            <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full bg-[#E8F5E9] opacity-60" />
+            <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-[#FFF0EF] opacity-60" />
+            <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full bg-[#FFF6E9] opacity-60" />
 
             <div className="relative flex gap-5 sm:gap-6">
               {/* Left: Avatar + Name */}
@@ -126,10 +126,10 @@ function MyPage() {
                 {/* 理想のキャリア */}
                 <div className="rounded-2xl px-4 py-3" style={{ background: '#FFF5EA' }}>
                   <div className="flex items-center gap-1.5 mb-1">
-                    <div className="w-[18px] h-[18px] rounded bg-[#FA9262] flex items-center justify-center flex-shrink-0">
+                    <div className="w-[18px] h-[18px] rounded bg-brand-secondary flex items-center justify-center flex-shrink-0">
                       <Flag className="w-2.5 h-2.5 text-white" />
                     </div>
-                    <span className="text-xs font-bold text-[#FA9262]">理想のキャリア</span>
+                    <span className="text-xs font-bold text-[#C8842A]">理想のキャリア</span>
                   </div>
                   <p className="text-sm font-bold text-brand-text">
                     {userProfile.ideal_career || '未設定'}
@@ -144,7 +144,7 @@ function MyPage() {
                     </div>
                     <span className="text-xs font-bold text-brand-muted">今日のスモールステップ</span>
                   </div>
-                  <div className="pl-3 border-l-2 border-[#FA9262]">
+                  <div className="pl-3 border-l-2 border-brand-secondary">
                     <p className="text-sm text-brand-text">
                       {userProfile.today_small_step || '未設定'}
                     </p>
@@ -176,7 +176,7 @@ function MyPage() {
                 <div className="flex flex-col sm:flex-row">
                   {/* Left Content */}
                   <div className="flex-1 p-6 sm:p-8">
-                    <div className="inline-block px-4 py-1.5 bg-[#FFEAE1] text-brand text-sm font-semibold rounded-full mb-4">
+                    <div className="inline-block px-4 py-1.5 bg-brand-tint text-brand text-sm font-semibold rounded-full mb-4">
                       前回のつづき
                     </div>
 
@@ -205,7 +205,7 @@ function MyPage() {
                           className="h-full rounded-full transition-all"
                           style={{
                             width: `${resumableCourse.progress || 0}%`,
-                            background: 'linear-gradient(90deg, #FA9161, #E86D78)',
+                            background: 'linear-gradient(90deg, #FFC24B, #FF5A7A)',
                           }}
                         />
                       </div>
@@ -289,17 +289,17 @@ function MyPage() {
                               className="h-full rounded-full transition-all"
                               style={{
                                 width: `${course.progress || 0}%`,
-                                background: 'linear-gradient(90deg, #FA9161, #E86D78)',
+                                background: 'linear-gradient(90deg, #FFC24B, #FF5A7A)',
                               }}
                             />
                           </div>
-                          <span className="text-xs font-bold text-[#FA9161] min-w-[32px] text-right">{course.progress || 0}%</span>
+                          <span className="text-xs font-bold text-[#FFC24B] min-w-[32px] text-right">{course.progress || 0}%</span>
                         </div>
 
                         <button
                           onClick={(e) => { e.stopPropagation(); navigate(`/course/${course.id}/curriculum`); }}
                           className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-white text-sm font-bold transition-opacity hover:opacity-90"
-                          style={{ background: 'linear-gradient(90deg, #FA9161, #E86D78)' }}
+                          style={{ background: 'linear-gradient(90deg, #FFC24B, #FF5A7A)' }}
                         >
                           続きから学習する
                           <Play className="w-3.5 h-3.5 fill-white" />

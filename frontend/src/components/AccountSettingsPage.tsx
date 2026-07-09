@@ -35,7 +35,7 @@ function AccountSettingsPage() {
   const inputStyle: React.CSSProperties = {
     background: '#FAF8F4',
     borderRadius: '12px',
-    color: '#7E6E68',
+    color: '#7A7392',
     fontSize: '14px',
     fontWeight: 400,
   };
