@@ -19,6 +19,7 @@ import {
 } from '../types/api';
 import { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
 import { Announcement } from '../types/announcement';
+import { LearningJourney } from '../types/journey';
 import { getIdToken } from './cognitoAuth';
 import { MOCKS_ENABLED } from '../mocks/config';
 
@@ -461,6 +462,15 @@ class BFFClient {
    */
   async getAnnouncements(): Promise<Announcement[]> {
     const response = await this.api.get('/webcoach/announcements');
+    return response.data;
+  }
+
+  /**
+   * 学習ジャーニー取得（ゲーム風ロードマップ＋今日のクエスト＋ストリーク・モック専用）
+   * GET /api/webcoach/journey/{userid}
+   */
+  async getLearningJourney(userId: number): Promise<LearningJourney> {
+    const response = await this.api.get(`/webcoach/journey/${userId}`);
     return response.data;
   }
 

@@ -8,6 +8,7 @@ import { CourseImage } from './shared/CourseImage';
 import { useMypageData } from '../hooks/useMypageData';
 import { resolveAvatarUrl, withCfToken } from './profile/AvatarPicker';
 import { CoachingGoals } from './mypage/CoachingGoals';
+import { LearningJourney } from './mypage/LearningJourney';
 
 function MyPage() {
   const navigate = useNavigate();
@@ -100,6 +101,9 @@ function MyPage() {
 
         {/* Main Content */}
         <main className="relative max-w-[1100px] mx-auto px-4 sm:px-6 py-8">
+          {/* 学習ジャーニー（主役：今日のクエスト＋ストリーク＋ロードマップ） */}
+          <LearningJourney userId={user?.userid} />
+
           {/* Profile Card - Full Width */}
           <div className="bg-white rounded-[32px] shadow-sm p-6 sm:p-8 mb-6 relative overflow-hidden">
             {/* Decorative circles */}

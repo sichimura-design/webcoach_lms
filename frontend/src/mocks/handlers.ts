@@ -238,6 +238,36 @@ export const handlers = [
     });
   }),
 
+  // ==================== 学習ジャーニー（ゲーム風ロードマップ＋今日のクエスト＋ストリーク） ====================
+  http.get('*/api/webcoach/journey/:userid', () =>
+    HttpResponse.json({
+      goal: 'Webデザイナーとして初案件を獲得する',
+      streak: { current: 5, best: 12, last7days: [true, true, false, true, true, true, true] },
+      todayQuest: {
+        title: '「バナーを作ってみよう」を進める',
+        subtitle: '今日はここから ・ 約45分',
+        courseId: 203,
+        cta: 'はじめる',
+      },
+      phases: [
+        { id: 1, title: 'フェーズ1: 基礎を固める', outcome: 'デザインの基本原則と配色を説明できる', status: 'done', progress: 100, recommendedCourseIds: [101, 201, 202] },
+        { id: 2, title: 'フェーズ2: 手を動かして作る', outcome: 'バナーとLPを自力で1つずつ完成できる', status: 'current', progress: 35, recommendedCourseIds: [203, 204] },
+        { id: 3, title: 'フェーズ3: 案件に挑戦する', outcome: 'ポートフォリオを作り、初案件に応募する', status: 'locked', progress: 0, recommendedCourseIds: [] },
+      ],
+      nodes: [
+        { id: 1, title: 'オリエンテーション', type: 'milestone', status: 'done', phaseId: 1 },
+        { id: 2, title: 'デザインの4大原則', type: 'lesson', status: 'done', courseId: 201, phaseId: 1 },
+        { id: 3, title: '配色の基本とツール', type: 'lesson', status: 'done', courseId: 202, phaseId: 1 },
+        { id: 4, title: '基礎チェック', type: 'boss', status: 'done', phaseId: 1 },
+        { id: 5, title: 'バナーを作ってみよう', type: 'lesson', status: 'current', courseId: 203, phaseId: 2 },
+        { id: 6, title: 'LPのワイヤーフレーム制作', type: 'lesson', status: 'locked', courseId: 204, phaseId: 2 },
+        { id: 7, title: '作品を仕上げる', type: 'boss', status: 'locked', phaseId: 2 },
+        { id: 8, title: 'ポートフォリオ作成', type: 'milestone', status: 'locked', phaseId: 3 },
+        { id: 9, title: '初案件に応募', type: 'boss', status: 'locked', phaseId: 3 },
+      ],
+    })
+  ),
+
   // ==================== サンプル機能（新API＝モックの雛形） ====================
   // 実BFFには存在しない新エンドポイント。/announcements ページから利用する。
   // 新機能を足すときは、このブロックをコピーして中身を差し替える。
