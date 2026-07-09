@@ -14,6 +14,9 @@ import BadgesPage from '../components/BadgesPage';
 import AnnouncementsPage from '../components/AnnouncementsPage';
 import CoachingNotesPage from '../components/CoachingNotesPage';
 import StudyPlanPage from '../components/StudyPlanPage';
+import CareerDashboardPage from '../components/CareerDashboardPage';
+import HelpPage from '../components/HelpPage';
+import FaqPage from '../components/FaqPage';
 import ContentListPage from '../components/ContentListPage';
 import CourseContentPage from '../components/CourseContentPage';
 import CourseCurriculumPage from '../components/CourseCurriculumPage';
@@ -346,6 +349,33 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <StudyPlanPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/career-dashboard"
+        element={
+          <ProtectedRoute>
+            <CareerDashboardPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/help"
+        element={
+          <ProtectedRoute>
+            <HelpPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/faq"
+        element={
+          <ProtectedRoute>
+            <FaqPage />
           </ProtectedRoute>
         }
       />

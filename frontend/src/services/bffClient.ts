@@ -22,6 +22,7 @@ import { Announcement } from '../types/announcement';
 import { LearningJourney } from '../types/journey';
 import { CoachingSessions, CoachingNote } from '../types/coaching';
 import { StudyPlan } from '../types/studyPlan';
+import { CareerDashboard } from '../types/career';
 import { getIdToken } from './cognitoAuth';
 import { MOCKS_ENABLED } from '../mocks/config';
 
@@ -519,6 +520,18 @@ class BFFClient {
    */
   async generateStudyPlan(mode: 'this' | 'next'): Promise<StudyPlan> {
     const response = await this.api.post('/webcoach/study-plan/generate', { mode });
+    return response.data;
+  }
+
+  /** おすすめコース（同じフェーズの人が学ぶコース・モック専用） */
+  async getRecommendCourses(): Promise<any[]> {
+    const response = await this.api.get('/webcoach/recommend-courses');
+    return response.data;
+  }
+
+  /** 案件獲得ダッシュボード（モック専用） */
+  async getCareerDashboard(userId: number): Promise<CareerDashboard> {
+    const response = await this.api.get(`/webcoach/career-dashboard/${userId}`);
     return response.data;
   }
 

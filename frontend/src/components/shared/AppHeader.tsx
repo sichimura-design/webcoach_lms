@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown, Calendar, MessageCircle } from 'lucide-react';
+import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, BookMarked, HelpCircle, FileText, Mail, ChevronDown, Calendar, MessageCircle, Briefcase, Lightbulb } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -64,6 +64,32 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     return () => document.body.classList.remove('with-sidebar');
   }, []);
 
+  // なぞって解説：テキスト選択時に「AIに解説」ボタンを出す
+  const [sel, setSel] = useState<{ text: string; x: number; y: number } | null>(null);
+  useEffect(() => {
+    const onUp = () => {
+      const ae = document.activeElement as HTMLElement | null;
+      if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA')) { setSel(null); return; }
+      const s = window.getSelection();
+      const text = s?.toString().trim() || '';
+      if (s && s.rangeCount > 0 && text.length >= 2 && text.length <= 400) {
+        const r = s.getRangeAt(0).getBoundingClientRect();
+        if (r && r.width > 0) {
+          setSel({ text, x: Math.min(Math.max(r.left, 8), window.innerWidth - 160), y: Math.max(r.top - 8, 40) });
+          return;
+        }
+      }
+      setSel(null);
+    };
+    const onDown = (e: MouseEvent) => {
+      if ((e.target as HTMLElement)?.closest?.('[data-explain-btn]')) return;
+      setSel(null);
+    };
+    document.addEventListener('mouseup', onUp);
+    document.addEventListener('mousedown', onDown);
+    return () => { document.removeEventListener('mouseup', onUp); document.removeEventListener('mousedown', onDown); };
+  }, []);
+
   // ナビ項目（サイドバー・下部ナビ共通の定義）
   const navItems = [
     { label: 'マイページ', icon: Home, path: '/mypage', active: isMyPage },
@@ -71,6 +97,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     { label: '学習計画', icon: Calendar, path: '/study-plan', active: location.pathname === '/study-plan' },
     { label: 'コーチング', icon: MessageCircle, path: '/coaching', active: location.pathname === '/coaching' },
     { label: 'AIアプリ', icon: Sparkles, path: '/ai-apps', active: isAIApps },
+    { label: '案件獲得', icon: Briefcase, path: '/career-dashboard', active: location.pathname === '/career-dashboard' },
     ...(user?.isAdmin
       ? [{ label: '管理', icon: Settings, path: '/admin', active: isAdmin }]
       : user?.isCoach
@@ -104,14 +131,14 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           })}
         </nav>
 
-        {/* ヘルプ（下部） */}
+        {/* ヘルプ（下部・LMS内ページ） */}
         <div className="mt-auto pt-4 flex flex-col gap-0.5" style={{ borderTop: '1px solid #F0EAE6' }}>
-          <a href="https://slime-gruyere-92d.notion.site/WEBCOACH-6-0-7a07e36455e848c4b4d262ef3a1c1cd4" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors">
+          <button onClick={() => navigate('/help')} className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors text-left">
             <FileText className="w-4 h-4 flex-shrink-0" /> 利用マニュアル
-          </a>
-          <a href="https://slime-gruyere-92d.notion.site/1fddd266074f809e9f0cfdbdd8e60ffd" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors">
+          </button>
+          <button onClick={() => navigate('/faq')} className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors text-left">
             <HelpCircle className="w-4 h-4 flex-shrink-0" /> よくある質問
-          </a>
+          </button>
           <a href="https://o4dqp.channel.io/workflows/783132" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs text-brand-muted hover:bg-brand-bg transition-colors">
             <Mail className="w-4 h-4 flex-shrink-0" /> 運営へのお問い合わせ
           </a>
@@ -256,26 +283,20 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                       boxShadow: '0 8px 24px rgba(0,0,0,0.10)',
                     }}
                   >
-                    <a
-                      href="https://slime-gruyere-92d.notion.site/WEBCOACH-6-0-7a07e36455e848c4b4d262ef3a1c1cd4"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors"
-                      onClick={() => setHelpOpen(false)}
+                    <button
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors text-left"
+                      onClick={() => { setHelpOpen(false); navigate('/help'); }}
                     >
                       <FileText className="w-4 h-4 text-brand-muted flex-shrink-0" />
                       利用マニュアル
-                    </a>
-                    <a
-                      href="https://slime-gruyere-92d.notion.site/1fddd266074f809e9f0cfdbdd8e60ffd"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors"
-                      onClick={() => setHelpOpen(false)}
+                    </button>
+                    <button
+                      className="w-full flex items-center gap-3 px-4 py-3 text-sm text-brand-muted hover:bg-brand-bg transition-colors text-left"
+                      onClick={() => { setHelpOpen(false); navigate('/faq'); }}
                     >
                       <HelpCircle className="w-4 h-4 text-brand-muted flex-shrink-0" />
                       よくある質問
-                    </a>
+                    </button>
                     <a
                       href="https://o4dqp.channel.io/workflows/783132"
                       target="_blank"
@@ -433,6 +454,34 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           )}
         </div>
       </nav>
+
+      {/* なぞって解説ボタン（テキスト選択時） */}
+      {!chatOpen && sel && (
+        <button
+          data-explain-btn
+          onClick={() => {
+            setInput(`「${sel.text}」について、初心者にもわかるように解説してください`);
+            setChatOpen(true);
+            setSel(null);
+          }}
+          className="fixed z-50 inline-flex items-center gap-1 text-xs font-bold text-white rounded-full px-3 py-1.5 shadow-lg"
+          style={{ top: sel.y, left: sel.x, transform: 'translateY(-100%)', background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+        >
+          <Lightbulb className="w-3.5 h-3.5" /> AIに解説
+        </button>
+      )}
+
+      {/* 右下常駐のAIコーチ FAB */}
+      {!chatOpen && (
+        <button
+          onClick={() => setChatOpen(true)}
+          aria-label="AIコーチに相談"
+          className="fixed z-40 right-5 bottom-20 sm:bottom-6 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+          style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
+        >
+          <MessageCircle className="w-6 h-6" />
+        </button>
+      )}
 
       {/* AI Chat Drawer */}
       {chatOpen && (

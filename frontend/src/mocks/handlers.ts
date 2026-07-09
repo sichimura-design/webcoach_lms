@@ -92,6 +92,14 @@ const userCourses = [
     progress: 10,
     categoryname: 'コーディング',
   },
+  {
+    id: 201,
+    fullname: 'デザインの4大原則',
+    displayname: 'デザインの4大原則',
+    summary: '近接・整列・反復・コントラストを理解する',
+    progress: 100,
+    categoryname: 'Webデザイン',
+  },
 ];
 
 // ---- 学習コンテンツ（カテゴリ→コース→カリキュラム→教材）ダミー ----------------
@@ -214,6 +222,31 @@ export const handlers = [
 
   // ==================== MyPage / ダッシュボード ====================
   http.get('*/api/webcoach/resumecourse/:userid', () => HttpResponse.json(resumeCourses)),
+
+  // おすすめコース（同じフェーズの人が学んでいるコース）
+  http.get('*/api/webcoach/recommend-courses', () =>
+    HttpResponse.json(catalog.filter(c => [211, 212, 221].includes(c.id)))
+  ),
+
+  // 案件獲得ダッシュボード
+  http.get('*/api/webcoach/career-dashboard/:userid', () =>
+    HttpResponse.json({
+      weeklyGoal: 3,
+      appliedThisWeek: 2,
+      totals: { applied: 12, inProgress: 3, won: 1, rejected: 5 },
+      weekly: [
+        { label: '3w前', applied: 1 },
+        { label: '2w前', applied: 3 },
+        { label: '先週', applied: 4 },
+        { label: '今週', applied: 2 },
+      ],
+      review: {
+        comment: '先週は4件応募でき、1件が一次面接に進みました。今週はペースが落ち気味なので、木曜までにあと1件出しましょう。',
+        improvements: ['応募文のテンプレを使い回して時短する', '実績（バナー3枚）をポートフォリオ冒頭に置く'],
+      },
+      nextAction: '求人Aの一次面接に向けて自己PRを1本用意する',
+    })
+  ),
 
   // ==================== 学習コンテンツ（カテゴリ→コース→カリキュラム→教材） ====================
   // コース詳細（カリキュラム/教材ページが章立てを取得）
