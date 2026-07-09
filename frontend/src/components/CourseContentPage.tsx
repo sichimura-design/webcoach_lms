@@ -98,6 +98,23 @@ function getContentType(module: Module): ContentType {
 }
 
 /**
+ * iframe内でのテキスト選択を親に通知するスクリプト。
+ * 親（AppHeader）が「AIに解説」ボタンを正しい画面位置に表示するため、
+ * 選択テキストと iframe 内での矩形を postMessage する。
+ */
+const EXPLAIN_INJECT = `<script>(function(){
+  function report(){
+    var s=window.getSelection();var t=s&&s.toString().trim();
+    if(t&&t.length>=2&&t.length<=400&&s.rangeCount>0){
+      var r=s.getRangeAt(0).getBoundingClientRect();
+      parent.postMessage({__lmsExplain:true,text:t,top:r.top,left:r.left},'*');
+    }else{parent.postMessage({__lmsExplain:true,clear:true},'*');}
+  }
+  document.addEventListener('mouseup',function(){setTimeout(report,0);});
+  document.addEventListener('mousedown',function(){parent.postMessage({__lmsExplain:true,clear:true},'*');});
+})();<\/script>`;
+
+/**
  * Moodle コンテンツ HTML から srcdoc 用の完全な HTML を生成する。
  * CSS の正規化は BFF の normalizeMoodleContent で実施済みのため、
  * ここでは <style> を <head> に移動し iframe 表示用の補正 CSS を注入するのみ。
@@ -136,7 +153,7 @@ ${headStyles.join('\n')}
   .quiz-options > * { font-size: revert !important; }
 </style>
 </head>
-<body>${cleanedBody}</body></html>`;
+<body>${cleanedBody}${EXPLAIN_INJECT}</body></html>`;
 }
 
 function buildSrcdocShiftJis(html: string): string {
@@ -160,7 +177,7 @@ ${headStyles.join('\n')}
   .quiz-options > * { font-size: revert !important; }
 </style>
 </head>
-<body>${bodyHtml}</body></html>`;
+<body>${bodyHtml}${EXPLAIN_INJECT}</body></html>`;
 }
 
 /** HTML文字列のh1〜h4に id を付与して返す */

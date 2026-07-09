@@ -90,6 +90,25 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     return () => { document.removeEventListener('mouseup', onUp); document.removeEventListener('mousedown', onDown); };
   }, []);
 
+  // 教材はiframe内に描画されるため、iframeからの選択通知を受けてボタンを出す
+  useEffect(() => {
+    const onMsg = (e: MessageEvent) => {
+      const d: any = e.data;
+      if (!d || d.__lmsExplain !== true) return;
+      if (d.clear) { setSel(null); return; }
+      const frame = Array.from(document.querySelectorAll('iframe')).find(f => f.contentWindow === e.source);
+      if (!frame) return;
+      const fb = frame.getBoundingClientRect();
+      setSel({
+        text: String(d.text || ''),
+        x: Math.min(Math.max(fb.left + (d.left || 0), 8), window.innerWidth - 160),
+        y: Math.max(fb.top + (d.top || 0) - 8, 40),
+      });
+    };
+    window.addEventListener('message', onMsg);
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
   // ナビ項目（サイドバー・下部ナビ共通の定義）
   const navItems = [
     { label: 'マイページ', icon: Home, path: '/mypage', active: isMyPage },
