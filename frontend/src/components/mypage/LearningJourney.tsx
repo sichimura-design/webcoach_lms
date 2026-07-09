@@ -5,8 +5,6 @@ import { bffClient } from '../../services/bffClient';
 import { useAsyncData } from '../../hooks/useAsyncData';
 import { LearningJourney as Journey, JourneyNode, JourneyPhase } from '../../types/journey';
 
-const DAY_LABELS = ['月', '火', '水', '木', '金', '土', '日'];
-
 interface Props {
   userId?: number;
 }
@@ -129,28 +127,55 @@ export function LearningJourney({ userId }: Props) {
 
 // ── ストリークバッジ ─────────────────────────────────
 function StreakBadge({ streak }: { streak: Journey['streak'] }) {
+  const WD = ['日', '月', '火', '水', '木', '金', '土'];
+  const today = new Date();
+  const n = streak.last7days.length;
+  const days = streak.last7days.map((done, i) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() - (n - 1 - i));
+    return { done, label: WD[d.getDay()], isToday: i === n - 1 };
+  });
+  const todayDone = streak.last7days[n - 1];
+  const toBest = Math.max(0, streak.best - streak.current);
+  const message = todayDone
+    ? '今日も達成！この調子で続けよう'
+    : `今日1レッスンで${streak.current + 1}日連続に！`;
+
   return (
-    <div className="flex items-center gap-3 bg-[#FFF5EA] rounded-2xl px-4 py-2.5 self-start">
-      <div className="flex items-center gap-1.5">
-        <Flame className="w-6 h-6 text-[#FA9262] fill-[#FDBA74]" />
-        <div className="leading-none">
-          <span className="text-2xl font-extrabold text-[#FA9262]">{streak.current}</span>
-          <span className="text-xs font-bold text-[#FA9262] ml-0.5">日連続</span>
+    <div className="bg-[#FFF5EA] rounded-2xl px-4 py-3 self-start w-full sm:w-auto">
+      {/* 連続日数＋自己ベスト */}
+      <div className="flex items-center gap-2.5 mb-2.5">
+        <Flame className="w-9 h-9 text-[#FA9262] fill-[#FDBA74] flex-shrink-0" />
+        <div className="leading-tight">
+          <div>
+            <span className="text-3xl font-extrabold text-[#F97D3C]">{streak.current}</span>
+            <span className="text-sm font-bold text-[#F97D3C] ml-1">日連続</span>
+          </div>
+          <div className="text-[11px] text-[#B4763A]">
+            自己ベスト {streak.best}日{toBest > 0 ? `（あと${toBest}日で更新）` : '・更新中！'}
+          </div>
         </div>
       </div>
-      <div className="flex items-center gap-1 pl-3 border-l border-[#F3D9C4]">
-        {streak.last7days.map((done, i) => (
+      {/* 直近7日（今日を明示） */}
+      <div className="flex items-end gap-1.5">
+        {days.map((d, i) => (
           <div key={i} className="flex flex-col items-center gap-1">
+            <span className="text-[9px] font-bold" style={{ color: d.isToday ? '#F97D3C' : '#B9A99B' }}>{d.label}</span>
             <span
-              className="w-5 h-5 rounded-full flex items-center justify-center"
-              style={{ background: done ? '#FA9262' : '#F0E4D8' }}
+              className="w-6 h-6 rounded-full flex items-center justify-center"
+              style={{
+                background: d.done ? 'linear-gradient(135deg, #FA9262, #F97D3C)' : '#F0E4D8',
+                boxShadow: d.isToday ? '0 0 0 2px #F97D3C' : 'none',
+              }}
             >
-              {done && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+              {d.done ? <Flame className="w-3.5 h-3.5 text-white fill-white" /> : null}
             </span>
-            <span className="text-[9px] text-brand-muted">{DAY_LABELS[i]}</span>
+            <span className="text-[8px] font-bold leading-none" style={{ color: d.isToday ? '#F97D3C' : 'transparent' }}>今日</span>
           </div>
         ))}
       </div>
+      {/* ひとこと */}
+      <p className="text-[11px] font-bold text-[#B4763A] mt-2">{message}</p>
     </div>
   );
 }
