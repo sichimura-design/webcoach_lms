@@ -20,6 +20,10 @@ from .common import (
     BulkUploadError,
     BulkUploadResponse,
     AvatarResponse,
+    NextCoachingGoalResponse,
+    CoachStudentMappingResponse,
+    StudentListResponse,
+    CoachResponse,
 )
 
 __all__ = [
@@ -46,4 +50,9 @@ __all__ = [
     "BulkUploadError",
     "BulkUploadResponse",
     "AvatarResponse",
+    "NextCoachingGoalResponse",
+    # Coaching
+    "CoachStudentMappingResponse",
+    "StudentListResponse",
+    "CoachResponse",
 ]

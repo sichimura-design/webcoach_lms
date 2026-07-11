@@ -29,6 +29,7 @@ const moodleRoutes = require('./routes/moodle');
 const webcoachRoutes = require('./routes/webcoach');
 const adminRoutes = require('./routes/admin');
 const faissRoutes = require('./routes/faiss');
+const coachingRoutes = require('./routes/coaching');
 
 // Initialize Express app
 const app = express();
@@ -168,6 +169,7 @@ app.use('/api/moodle', moodleRoutes);
 app.use('/api/webcoach', webcoachRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/faiss', faissRoutes);
+app.use('/api/coaching', coachingRoutes);
 
 // Backward compatibility - user info without /api prefix
 app.get('/user/info', authRoutes);

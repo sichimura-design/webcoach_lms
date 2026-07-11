@@ -359,6 +359,17 @@ class MoodleAdapter {
   }
 
   /**
+   * Update user's lastaccess timestamp using custom WebCoach Utils plugin
+   * @param {number} userid - Moodle user ID
+   * @returns {Promise<any>} API response
+   */
+  async updateUserLastAccess(userid) {
+    return this.callAPI('local_webcoach_utils_update_user_lastaccess', {
+      userid: parseInt(userid, 10)
+    });
+  }
+
+  /**
    * Delete users (bulk)
    */
   async deleteUsers(userIds) {
@@ -368,6 +379,32 @@ class MoodleAdapter {
     });
 
     return this.callAPI('core_user_delete_users', params);
+  }
+
+  /**
+   * Get all users
+   * @param {Array} criteria - Search criteria (optional)
+   * @returns {Promise<Array>} List of users with lastaccess information
+   */
+  async getAllUsers(criteria = []) {
+    const params = {
+      'criteria[0][key]': '',
+      'criteria[0][value]': ''
+    };
+
+    // Default criteria: get all users (empty criteria returns all)
+    if (criteria && criteria.length > 0) {
+      // Clear default empty criteria
+      delete params['criteria[0][key]'];
+      delete params['criteria[0][value]'];
+
+      criteria.forEach((criterion, index) => {
+        params[`criteria[${index}][key]`] = criterion.key;
+        params[`criteria[${index}][value]`] = criterion.value;
+      });
+    }
+
+    return this.callAPI('core_user_get_users', params);
   }
 
   /**

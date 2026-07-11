@@ -1,0 +1,140 @@
+# docker-compose.ecs.yml
+# ECS/Fargate用の構成ファイル
+# カスタムイメージを使用し、ボリュームマウントなし
+
+services:
+  moodle:
+    # カスタムMoodleイメージを使用（カスタマイズ含む）
+    image: 822824391912.dkr.ecr.ap-northeast-1.amazonaws.com/webcoach-lms:moodle-app-latest
+    container_name: moodle-app
+    networks:
+      - moodle-network
+    environment:
+      MOODLE_DATABASE_TYPE: mysqli
+      MOODLE_DATABASE_HOST: ${MOODLE_DB_HOST}
+      MOODLE_DATABASE_PORT_NUMBER: ${MOODLE_DB_PORT:-3306}
+      MOODLE_DATABASE_NAME: ${MOODLE_DB_NAME:-moodle}
+      MOODLE_DATABASE_USER: ${MOODLE_DB_USER}
+      MOODLE_DATABASE_PASSWORD: ${MOODLE_DB_PASSWORD}
+      MOODLE_USERNAME: ${MOODLE_ADMIN_USERNAME:-admin}
+      MOODLE_PASSWORD: ${MOODLE_ADMIN_PASSWORD}
+      MOODLE_EMAIL: ${MOODLE_ADMIN_EMAIL:-admin@example.com}
+      MOODLE_SITE_NAME: ${MOODLE_SITE_NAME:-My Moodle Site}
+      MOODLE_HOST: ${PUBLIC_IP:-localhost}
+      MOODLE_LANG: ${MOODLE_LANG:-ja}
+      BITNAMI_DEBUG: "false"
+    # ボリュームマウントなし（カスタマイズはイメージに含まれる）
+    # moodledataのみEFSマウントが必要な場合はECS Task Definitionで設定
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+
+  api-server:
+    image: 822824391912.dkr.ecr.ap-northeast-1.amazonaws.com/webcoach-lms:moodle-api-latest
+    container_name: moodle-api
+    networks:
+      - moodle-network
+    environment:
+      USE_PARAMETER_STORE: ${USE_PARAMETER_STORE:-true}
+      PARAMETER_STORE_PREFIX: ${PARAMETER_STORE_PREFIX:-/moodle/prod}
+      AWS_REGION: ${AWS_REGION:-ap-northeast-1}
+      PORT: 8001
+      MOODLE_DB_HOST: ${MOODLE_DB_HOST}
+      MOODLE_DB_PORT: ${MOODLE_DB_PORT:-3306}
+      MOODLE_DB_USER: ${MOODLE_DB_USER}
+      MOODLE_DB_PASSWORD: ${MOODLE_DB_PASSWORD}
+      MOODLE_DB_NAME: ${MOODLE_DB_NAME:-moodle}
+      CHROMADB_PATH: /app/chromadb
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+      ENABLE_DOCS: ${ENABLE_DOCS:-false}
+      VECTOR_DB_ENV: ${VECTOR_DB_ENV:-chromadb}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      FAISS_CACHE_DIR: ${FAISS_CACHE_DIR:-/tmp/faiss_cache}
+      BFF_SERVER_URL: http://bff-server:3001
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY}
+    command: ["bash", "/app/start-with-parameter-store.sh"]
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  bff-server:
+    image: 822824391912.dkr.ecr.ap-northeast-1.amazonaws.com/webcoach-lms:moodle-bff-latest
+    container_name: moodle-bff
+    networks:
+      - moodle-network
+    environment:
+      USE_PARAMETER_STORE: ${USE_PARAMETER_STORE:-true}
+      PARAMETER_STORE_PREFIX: ${PARAMETER_STORE_PREFIX:-/moodle/prod}
+      AWS_REGION: ${AWS_REGION:-ap-northeast-1}
+      MOODLE_URL: ${MOODLE_URL:-http://moodle-app:8080}
+      API_SERVER_URL: ${API_SERVER_URL:-http://api-server:8001}
+      PORT: 3001
+      NODE_ENV: ${NODE_ENV:-production}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+      SESSION_SECRET: ${SESSION_SECRET}
+      MOODLE_SERVICE_USERNAME: ${MOODLE_SERVICE_USERNAME:-admin}
+      MOODLE_SERVICE_PASSWORD: ${MOODLE_SERVICE_PASSWORD}
+      MOODLE_SERVICE_NAME: ${MOODLE_SERVICE_NAME:-moodle_mobile_app}
+      COGNITO_USER_POOL_ID: ${COGNITO_USER_POOL_ID}
+      COGNITO_CLIENT_ID: ${COGNITO_CLIENT_ID}
+      COGNITO_REGION: ${COGNITO_REGION:-ap-northeast-1}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      CLOUDFRONT_DOMAIN: ${CLOUDFRONT_DOMAIN}
+      CONTENT_TOKEN_SECRET: ${CONTENT_TOKEN_SECRET}
+    command: ["bash", "/app/start-with-parameter-store.sh"]
+    depends_on:
+      - moodle
+      - api-server
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  nginx:
+    image: 822824391912.dkr.ecr.ap-northeast-1.amazonaws.com/webcoach-lms:moodle-nginx-latest
+    container_name: moodle-nginx
+    networks:
+      - moodle-network
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - moodle
+      - bff-server
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  moodle-network:
+    name: moodle-network
+    driver: bridge

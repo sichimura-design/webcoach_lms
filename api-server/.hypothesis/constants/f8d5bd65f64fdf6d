@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/routers/webcoach.py
+# hypothesis_version: 6.141.1
+
+[0.0, '/api', '/profile/{userid}', 'CURRENT_TIMESTAMP', 'WebCoach', 'WebCoachプロフィール情報取得', 'WebCoachプロフィール情報更新', 'WebCoachユーザープロフィール取得', 'WebCoachユーザープロフィール更新', 'accesscount', 'course_fullname', 'course_shortname', 'course_summary', 'courseid', 'create_timestamp', 'fullname', 'last_access_time', 'lastaccess', 'mdl_user_id', 'message', 'progress', 'progress_percent', 'shortname', 'success', 'summary', 'userid', 'コース再開情報取得（エイリアス）', 'コース再開情報更新', '再開可能なコース取得']

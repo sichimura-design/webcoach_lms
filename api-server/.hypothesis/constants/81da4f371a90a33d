@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/main.py
+# hypothesis_version: 6.141.1
+
+['*', ',', '/docs', '/redoc', '0.0.0.0', '1.0.0', '8001', 'ALLOWED_ORIGINS', 'API_SERVER_HOST', 'API_SERVER_PORT', 'ENABLE_DOCS', '__main__', 'info', 'main:app', 'startup', 'true']

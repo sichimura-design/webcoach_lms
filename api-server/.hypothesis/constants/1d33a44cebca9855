@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/dto/response/__init__.py
+# hypothesis_version: 6.141.1
+
+['BadgeResponse', 'BulkUploadError', 'BulkUploadResponse', 'CourseAccessResponse', 'ErrorResponse', 'HealthResponse', 'LastAccessedCourse', 'ResumeCourseResponse', 'RoadmapListResponse', 'RoadmapResponse', 'UserBadgesResponse', 'UserProfileResponse']

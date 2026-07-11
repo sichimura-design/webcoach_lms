@@ -561,4 +561,172 @@ router.get('/avatar/:avatar_id', requireAuth, async (req, res) => {
   }
 });
 
+// Create next coaching goal
+router.post('/next-coaching-goal', requireAuth, async (req, res) => {
+  try {
+    const { mdl_user_id, no, description, is_completed } = req.body;
+
+    if (!mdl_user_id || no === undefined || !description) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        detail: 'mdl_user_id, no, and description are required'
+      });
+    }
+
+    const result = await webCoachService.createNextCoachingGoal(
+      mdl_user_id,
+      no,
+      description,
+      is_completed !== undefined ? is_completed : 0
+    );
+    res.status(201).json(result);
+  } catch (error) {
+    console.error('[WebCoach Create NextCoachingGoal] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to create next coaching goal',
+      detail: error.message
+    });
+  }
+});
+
+// Get all next coaching goals (all users)
+router.get('/next-coaching-goals', requireAuth, async (req, res) => {
+  try {
+    const result = await webCoachService.getAllNextCoachingGoals();
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Get All NextCoachingGoals] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to get all next coaching goals',
+      detail: error.message
+    });
+  }
+});
+
+// Get all next coaching goals for user
+router.get('/next-coaching-goals/:userid', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const result = await webCoachService.getNextCoachingGoals(userid);
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Get NextCoachingGoals] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to get next coaching goals',
+      detail: error.message
+    });
+  }
+});
+
+// Get next coaching goal
+router.get('/next-coaching-goal/:userid/:no', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid, no } = req.params;
+    const result = await webCoachService.getNextCoachingGoal(userid, parseInt(no));
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Get NextCoachingGoal] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to get next coaching goal',
+      detail: error.message
+    });
+  }
+});
+
+// Update next coaching goal
+router.put('/next-coaching-goal/:userid/:no', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid, no } = req.params;
+    const { description, is_completed } = req.body;
+
+    const result = await webCoachService.updateNextCoachingGoal(
+      userid,
+      parseInt(no),
+      description !== undefined ? description : null,
+      is_completed !== undefined ? is_completed : null
+    );
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Update NextCoachingGoal] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to update next coaching goal',
+      detail: error.message
+    });
+  }
+});
+
+// Delete next coaching goal
+router.delete('/next-coaching-goal/:userid/:no', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid, no } = req.params;
+    const result = await webCoachService.deleteNextCoachingGoal(userid, parseInt(no));
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Delete NextCoachingGoal] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to delete next coaching goal',
+      detail: error.message
+    });
+  }
+});
+
+// Bulk upsert next coaching goals (create, update, delete, and reorder)
+router.put('/next-coaching-goals/:userid', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const { goals } = req.body;
+
+    if (!goals || !Array.isArray(goals)) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        detail: 'goals array is required'
+      });
+    }
+
+    const result = await webCoachService.bulkUpsertNextCoachingGoals(userid, goals);
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Bulk Upsert NextCoachingGoals] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to bulk upsert next coaching goals',
+      detail: error.message
+    });
+  }
+});
+
 module.exports = router;

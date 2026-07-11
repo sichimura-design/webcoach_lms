@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/routers/ai.py
+# hypothesis_version: 6.141.1
+
+[0.3, 2048, '/ai', '/api', 'AI', 'AIチャット', 'ANTHROPIC_API_KEY', 'Unknown', 'arguments', 'distances', 'documents', 'error', 'filename', 'human', 'metadatas', 'module_name', 'name', 'question', 'result', 'section_name', 'success', 'system', '{question}']

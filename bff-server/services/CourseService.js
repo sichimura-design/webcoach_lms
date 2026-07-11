@@ -156,26 +156,13 @@ class CourseService {
       return [];
     }
 
-    // core_enrol_get_users_courses doesn't include categoryname, but core_course_get_courses
-    // does (see getAllCourses/CourseCurriculumPage) — reuse it to look up each course's category name
-    let categoryNameByCourseId = {};
-    try {
-      const allCourses = await moodleAdapter.getCourses();
-      categoryNameByCourseId = Object.fromEntries(
-        (Array.isArray(allCourses) ? allCourses : []).map((c) => [c.id, c.categoryname])
-      );
-    } catch (error) {
-      console.warn('[Get Enrolled Courses] Failed to fetch category names:', error.message);
-    }
-
-    // Add progress and category name to each course
+    // Add progress to each course
     const coursesWithProgress = await Promise.all(
       courses.map(async (course) => {
         const progress = await this.calculateCourseProgress(course.id, userIdInt);
         return {
           ...course,
-          progress,
-          categoryname: course.categoryname || categoryNameByCourseId[course.id]
+          progress
         };
       })
     );

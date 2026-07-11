@@ -14,11 +14,24 @@ function requireOwnership(req, res, next) {
   console.log('Requested userId:', requestedUserId);
   console.log('Authenticated Moodle userId:', authenticatedMoodleUserId);
   console.log('Cognito sub:', req.user?.sub);
+  console.log('Cognito groups:', req.user?.groups);
   console.log('Is internal service:', req.user?.isInternalService);
 
   // Internal service can access any user's data
   if (req.user?.isInternalService) {
     console.log('Authorization BYPASS - Internal Service');
+    return next();
+  }
+
+  // Admin users can access any user's data
+  const isAdmin = req.user?.groups && (
+    req.user.groups.includes('admin') ||
+    req.user.groups.includes('Admin') ||
+    req.user.groups.includes('administrators')
+  );
+
+  if (isAdmin) {
+    console.log('Authorization BYPASS - Admin User');
     return next();
   }
 

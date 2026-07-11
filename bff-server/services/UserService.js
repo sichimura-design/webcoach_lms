@@ -6,10 +6,10 @@
 const moodleAdapter = require('../adapters/MoodleAdapter');
 
 // Cognito group to Moodle role mapping
+// Supported groups: admin, coach
 const COGNITO_TO_MOODLE_ROLE_MAPPING = {
-  'Administrators': 'manager',
-  'CourseCreators': 'coursecreator',
-  'Teachers': 'editingteacher',
+  'admin': 'manager',           // System administrator
+  'coach': 'editingteacher',    // Coach/Teacher
 };
 
 class UserService {

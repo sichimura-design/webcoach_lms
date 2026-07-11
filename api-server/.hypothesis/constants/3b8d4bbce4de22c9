@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/routers/admin.py
+# hypothesis_version: 6.141.1
+
+['/api', '/updatedb', 'Bulk Update', 'WebCoach用DB一括更新', 'categories', 'category', 'courseid', 'courses', 'enrollments', 'icon_url', 'mdl_course_id', 'mdl_user_id', 'name', 'progress_percent', 'required_study_time', 'roadmap', 'roadmap_id', 'self_intro', 'step_number', 'target_job', 'user_profile', 'users']

@@ -1,5 +1,5 @@
 """
-AI chat endpoints
+WEBCOACH AI chat endpoints
 LangChain + Claude + RAG implementation
 """
 import os
@@ -148,14 +148,14 @@ ALLOWED_TOOLS = [
     "/ai",
     response_model=AIResponse,
     summary="AIチャット",
-    description="学習サポートAIとのチャット機能（RAG + Tool Calling対応）"
+    description="WEBCOACHとのチャット機能（RAG + Tool Calling対応）"
 )
 def ai_chat(
     request: AIRequest,
     db: Session = Depends(get_db)
 ):
     """
-    AIチャット機能を提供します。
+    WEBCOACHとのチャット機能を提供します。
 
     - ユーザーの質問に日本語で丁寧に回答
     - RAG（Retrieval Augmented Generation）でコース教材から関連情報を検索
@@ -205,13 +205,14 @@ def ai_chat(
                     context_parts = []
                     for i, (doc, meta, dist) in enumerate(zip(documents, metadatas, distances)):
                         context_parts.append(f"[チャンク {i+1}]\n{doc}\n")
-                        sources.append(AISource(
-                            chunk_index=i + 1,
-                            module_name=meta.get('module_name', 'Unknown'),
-                            filename=meta.get('filename', ''),
-                            section_name=meta.get('section_name', ''),
-                            similarity=1 - dist  # 距離を類似度に変換
-                        ))
+                        # sources情報は返さないためコメントアウト
+                        # sources.append(AISource(
+                        #     chunk_index=i + 1,
+                        #     module_name=meta.get('module_name', 'Unknown'),
+                        #     filename=meta.get('filename', ''),
+                        #     section_name=meta.get('section_name', ''),
+                        #     similarity=1 - dist  # 距離を類似度に変換
+                        # ))
 
                     context_text = "\n".join(context_parts)
                 else:
@@ -221,7 +222,7 @@ def ai_chat(
                 # RAG失敗時も処理を続行
 
         # 2. プロンプトテンプレートの構築
-        system_prompt = """あなたはLMSの学習サポートAIです。
+        system_prompt = """あなたはWEBCOACHです。
 学習者の質問に日本語で丁寧に答えてください。
 
 # 重要なルール:
@@ -310,7 +311,7 @@ def ai_chat(
         return AIResponse(
             success=True,
             message=ai_message,
-            sources=sources if sources else None,
+            sources=None,
             tool_calls=tool_results if tool_results else None,
             context=request.context,
             timestamp=datetime.now()

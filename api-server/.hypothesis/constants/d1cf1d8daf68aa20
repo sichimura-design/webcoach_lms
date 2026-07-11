@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/entities/course.py
+# hypothesis_version: 6.141.1
+
+['accesscount', 'courseid', 'idx_user_accesscount', 'idx_user_lastaccess', 'lastaccess', 'userid', 'userid_courseid']

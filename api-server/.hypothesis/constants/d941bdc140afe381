@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/dto/response/common.py
+# hypothesis_version: 6.141.1
+
+['recordsFailed', 'recordsProcessed', 'エラーが発生したデータ', 'エラーが発生した行番号', 'エラーメッセージ']

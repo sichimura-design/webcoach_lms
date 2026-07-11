@@ -1,0 +1,192 @@
+name: Deploy Infrastructure (CDK)
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'cdk-example/**'
+      - '.github/workflows/deploy-infra.yml'
+
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'cdk-example/**'
+
+  workflow_dispatch: # 手動トリガー
+    inputs:
+      action:
+        description: 'CDK Action'
+        required: true
+        default: 'deploy'
+        type: choice
+        options:
+          - diff
+          - deploy
+          - destroy
+
+env:
+  AWS_REGION: ap-northeast-1
+  NODE_VERSION: '18'
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write # PR用のコメント権限
+
+jobs:
+  # ========================================
+  # CDK Diff（変更内容の確認）
+  # ========================================
+  cdk-diff:
+    name: CDK Diff
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.event.inputs.action == 'diff'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: cdk-example/package.json
+
+      - name: Install CDK dependencies
+        working-directory: cdk-example
+        run: npm ci
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: CDK Synth
+        working-directory: cdk-example
+        run: npx cdk synth
+
+      - name: CDK Diff
+        id: cdk-diff
+        working-directory: cdk-example
+        run: |
+          npx cdk diff 2>&1 | tee diff-output.txt
+        continue-on-error: true
+
+      - name: Comment PR with diff
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const diffOutput = fs.readFileSync('cdk-example/diff-output.txt', 'utf8');
+
+            const body = `## CDK Diff Results\n\n\`\`\`\n${diffOutput}\n\`\`\``;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+  # ========================================
+  # CDK Deploy（インフラのデプロイ）
+  # ========================================
+  cdk-deploy:
+    name: CDK Deploy
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' ||
+      github.event.inputs.action == 'deploy'
+    environment:
+      name: production
+      url: ${{ steps.get-alb.outputs.alb_url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: cdk-example/package.json
+
+      - name: Install CDK dependencies
+        working-directory: cdk-example
+        run: npm ci
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: CDK Bootstrap (初回のみ)
+        working-directory: cdk-example
+        run: npx cdk bootstrap
+        continue-on-error: true
+
+      - name: CDK Deploy
+        working-directory: cdk-example
+        run: npx cdk deploy --require-approval never --all
+
+      - name: Get ALB URL
+        id: get-alb
+        run: |
+          ALB_URL=$(aws cloudformation describe-stacks \
+            --stack-name MoodleEcsStack \
+            --query 'Stacks[0].Outputs[?OutputKey==`LoadBalancerDNS`].OutputValue' \
+            --output text)
+          echo "alb_url=http://${ALB_URL}" >> $GITHUB_OUTPUT
+          echo "ALB URL: http://${ALB_URL}"
+
+      - name: Deployment summary
+        run: |
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Stack**: MoodleEcsStack" >> $GITHUB_STEP_SUMMARY
+          echo "- **Region**: ${{ env.AWS_REGION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **ALB URL**: ${{ steps.get-alb.outputs.alb_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+
+  # ========================================
+  # CDK Destroy（削除、手動のみ）
+  # ========================================
+  cdk-destroy:
+    name: CDK Destroy
+    runs-on: ubuntu-latest
+    if: github.event.inputs.action == 'destroy'
+    environment:
+      name: production-destroy # 削除は特別な承認が必要
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: cdk-example/package.json
+
+      - name: Install CDK dependencies
+        working-directory: cdk-example
+        run: npm ci
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: CDK Destroy
+        working-directory: cdk-example
+        run: npx cdk destroy --force --all
+
+      - name: Confirm destruction
+        run: echo "⚠️ Infrastructure has been destroyed!"

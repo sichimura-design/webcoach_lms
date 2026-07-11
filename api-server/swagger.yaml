@@ -1,0 +1,1944 @@
+openapi: 3.0.3
+info:
+  title: Moodle BFF API
+  description: Backend For Frontend API for Moodle integration
+  version: 1.0.0
+  contact:
+    name: Moodle BFF API Support
+
+servers:
+  - url: https://52.194.117.196
+    description: Production server (HTTPS via nginx)
+  - url: http://52.194.117.196
+    description: Development server (HTTP, redirects to HTTPS)
+  - url: http://localhost:3001
+    description: Local development (direct access)
+
+tags:
+  - name: Health
+    description: Health check endpoints
+  - name: Authentication
+    description: User authentication and session management
+  - name: Moodle Courses
+    description: Moodle course management
+  - name: Moodle Files
+    description: File upload and management
+  - name: Moodle Badges
+    description: Badge management
+  - name: WebCoach
+    description: WEBCOACH AI and learning assistance
+  - name: Admin
+    description: Admin-only endpoints for user and course management
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Cognito JWT認証を使用します。
+
+        1. Cognitoでログインして IDToken を取得
+        2. "Authorize" ボタンをクリック
+        3. IDToken を入力（"Bearer" プレフィックスは不要）
+
+        トークン取得方法:
+        ```bash
+        # AWS CLIで取得
+        aws cognito-idp initiate-auth \
+          --auth-flow USER_PASSWORD_AUTH \
+          --client-id 23jacbr6nk4baiftjueddmr4kb \
+          --auth-parameters USERNAME=your-email,PASSWORD=your-password \
+          --region ap-northeast-1
+
+        # またはスクリプトを使用
+        ./get-token.sh your-email your-password
+        node test-auth.js your-email your-password
+        ```
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        detail:
+          type: string
+
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: admin
+        password:
+          type: string
+          format: password
+          example: password123
+        service:
+          type: string
+          default: moodle_mobile_app
+
+    LoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        username:
+          type: string
+        userId:
+          type: integer
+        message:
+          type: string
+
+    UserInfo:
+      type: object
+      properties:
+        userid:
+          type: integer
+        username:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        fullname:
+          type: string
+        email:
+          type: string
+        userpictureurl:
+          type: string
+
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+        fullname:
+          type: string
+        shortname:
+          type: string
+        categoryid:
+          type: integer
+        summary:
+          type: string
+        startdate:
+          type: integer
+        enddate:
+          type: integer
+        visible:
+          type: boolean
+        progress:
+          type: integer
+          description: コースの進捗率（0-100%）。アクティビティの完了状況から計算されます。
+          example: 75
+          minimum: 0
+          maximum: 100
+
+    CreateCourseRequest:
+      type: object
+      required:
+        - fullname
+        - shortname
+        - categoryid
+      properties:
+        fullname:
+          type: string
+          example: Introduction to Programming
+        shortname:
+          type: string
+          example: PROG101
+        categoryid:
+          type: integer
+          example: 1
+        summary:
+          type: string
+          example: This course covers basic programming concepts
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        parent:
+          type: integer
+        coursecount:
+          type: integer
+
+    CourseContent:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        visible:
+          type: boolean
+        summary:
+          type: string
+        modules:
+          type: array
+          items:
+            type: object
+
+    CreateActivityRequest:
+      type: object
+      required:
+        - modulename
+        - name
+      properties:
+        modulename:
+          type: string
+          example: assignment
+        name:
+          type: string
+          example: Week 1 Assignment
+        section:
+          type: integer
+          default: 0
+        intro:
+          type: string
+          example: Submit your assignment here
+
+    Badge:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        imageurl:
+          type: string
+
+    UserBadge:
+      type: object
+      properties:
+        badgeid:
+          type: integer
+        userid:
+          type: integer
+        dateissued:
+          type: integer
+        uniquehash:
+          type: string
+
+    ProfileUpdate:
+      type: object
+      properties:
+        nick_name:
+          type: string
+          maxLength: 256
+          nullable: true
+          description: ニックネーム
+          example: "たろう"
+        self_intro:
+          type: string
+          nullable: true
+          description: 自己紹介文
+          example: "プログラミングを学んでいる学生です"
+        target_job:
+          type: string
+          maxLength: 256
+          nullable: true
+          description: なりたい職業・肩書き
+          example: "Webエンジニア"
+        ideal_career:
+          type: string
+          maxLength: 256
+          nullable: true
+          description: 理想のキャリア
+          example: "フルスタックエンジニア"
+        today_small_step:
+          type: string
+          maxLength: 256
+          nullable: true
+          description: 今日のスモールステップ
+          example: "JavaScriptの変数について学習する"
+        goal:
+          type: string
+          nullable: true
+          description: 目標
+          example: "フルスタックエンジニアになる"
+        badge_count:
+          type: integer
+          minimum: 0
+          nullable: true
+          description: 獲得バッジ数
+          example: 5
+
+    Profile:
+      type: object
+      required:
+        - mdl_user_id
+      properties:
+        mdl_user_id:
+          type: integer
+          description: Moodle User ID
+          example: 2
+        nick_name:
+          type: string
+          nullable: true
+          description: ニックネーム
+          example: "たろう"
+        self_intro:
+          type: string
+          nullable: true
+          description: 自己紹介文
+          example: "プログラミングを学んでいる学生です"
+        target_job:
+          type: string
+          nullable: true
+          description: なりたい職業・肩書き
+          example: "Webエンジニア"
+        ideal_career:
+          type: string
+          nullable: true
+          description: 理想のキャリア
+          example: "フルスタックエンジニア"
+        today_small_step:
+          type: string
+          nullable: true
+          description: 今日のスモールステップ
+          example: "JavaScriptの変数について学習する"
+        goal:
+          type: string
+          nullable: true
+          description: 目標
+          example: "フルスタックエンジニアになる"
+        badge_count:
+          type: integer
+          nullable: true
+          default: 0
+          description: 獲得バッジ数
+          example: 5
+
+    ResumeCourse:
+      type: object
+      properties:
+        courseid:
+          type: integer
+          description: コースID
+          example: 2
+        coursename:
+          type: string
+          description: コース名
+          example: "Introduction to Programming"
+        fullname:
+          type: string
+          description: コースのフルネーム
+          example: "Introduction to Programming"
+        shortname:
+          type: string
+          description: コースの短縮名
+          example: "PROG101"
+        summary:
+          type: string
+          description: コースの概要
+          example: "Learn the basics of programming"
+        progress:
+          type: integer
+          description: コースの進捗率（0-100%）。アクティビティの完了状況から計算されます。
+          example: 65
+          minimum: 0
+          maximum: 100
+        last_access_time:
+          type: string
+          format: date-time
+          description: 最終アクセス日時
+          example: "2024-01-28T10:30:00Z"
+
+    Roadmap:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        category:
+          type: string
+        difficulty:
+          type: string
+        description:
+          type: string
+
+    AIRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: ユーザーからのメッセージ
+          example: このコースの内容を教えてください
+        user_id:
+          type: integer
+          description: ユーザーID（コンテキスト取得用）
+          example: 123
+        course_id:
+          type: integer
+          description: コースID（RAG検索用）
+          example: 2
+        context:
+          type: object
+          description: 追加のコンテキスト情報
+        max_chunks:
+          type: integer
+          description: RAGで使用する最大チャンク数
+          default: 5
+          minimum: 1
+          maximum: 20
+        use_tools:
+          type: boolean
+          description: BFF APIツールの使用を許可するか
+          default: false
+
+    AIResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: 処理成功フラグ
+        message:
+          type: string
+          description: AIからの応答メッセージ
+        sources:
+          type: array
+          description: RAG検索で使用されたソース情報
+          items:
+            type: object
+            properties:
+              chunk_index:
+                type: integer
+              module_name:
+                type: string
+              filename:
+                type: string
+              section_name:
+                type: string
+              similarity:
+                type: number
+                format: float
+        tool_calls:
+          type: array
+          description: 実行されたツール呼び出し
+          items:
+            type: object
+            properties:
+              tool_name:
+                type: string
+              success:
+                type: boolean
+              result:
+                type: object
+              error:
+                type: string
+        context:
+          type: object
+          description: 追加のコンテキスト情報
+        timestamp:
+          type: string
+          format: date-time
+          description: レスポンスのタイムスタンプ
+        suggestions:
+          type: array
+          items:
+            type: string
+
+    UpdateDBRequest:
+      type: object
+      required:
+        - data_type
+        - records
+      properties:
+        data_type:
+          type: string
+          example: courses
+        records:
+          type: array
+          items:
+            type: object
+
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Check if the BFF server is running
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    format: date-time
+                  service:
+                    type: string
+                    example: Moodle BFF
+                  environment:
+                    type: string
+                    example: development
+
+  /api/health:
+    get:
+      tags:
+        - Health
+      summary: API health check
+      description: Check if the API is running
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  timestamp:
+                    type: string
+                  service:
+                    type: string
+                  environment:
+                    type: string
+
+  /api/login:
+    post:
+      tags:
+        - Authentication
+      summary: User login (DEPRECATED)
+      deprecated: true
+      description: |
+        **DEPRECATED**: このエンドポイントは非推奨です。
+
+        フロントエンドでCognito直接認証を使用してください。
+
+        Cognito認証では、このエンドポイントではなく、
+        amazon-cognito-identity-js または AWS Amplify を使用してください。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/logout:
+    post:
+      tags:
+        - Authentication
+      summary: User logout (DEPRECATED)
+      deprecated: true
+      description: |
+        **DEPRECATED**: このエンドポイントは非推奨です。
+
+        Cognito JWT認証ではステートレスのため、BFF側でのログアウト処理は不要です。
+
+        フロントエンド側でCognito signOutを実行してください。
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        '500':
+          description: Logout failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/user/info:
+    get:
+      tags:
+        - Authentication
+      summary: Get current user info
+      description: Get information about the currently authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User information retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/moodle/courses:
+    get:
+      tags:
+        - Moodle Courses
+      summary: Get all courses
+      description: Get all courses in the Moodle system
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of all courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/moodle/courses/{userid}:
+    get:
+      tags:
+        - Moodle Courses
+      summary: Get enrolled courses by user ID
+      description: Get all courses the specified user is enrolled in, including progress calculated from activity completion status
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      responses:
+        '200':
+          description: List of enrolled courses with progress
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/moodle/courses/search:
+    get:
+      tags:
+        - Moodle Courses
+      summary: Search courses
+      description: Search for courses by keyword
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+      responses:
+        '200':
+          description: List of matching courses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+
+  /api/moodle/categories:
+    get:
+      tags:
+        - Moodle Courses
+      summary: Get course categories
+      description: Get all course categories
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+
+  /api/moodle/create-category:
+    post:
+      tags:
+        - Moodle Admin
+      summary: Create course categories (Admin only)
+      description: Create one or more course categories. Requires admin privileges.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - categories
+              properties:
+                categories:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                    properties:
+                      name:
+                        type: string
+                        description: Category name
+                        example: "Programming"
+                      parent:
+                        type: integer
+                        description: Parent category ID (0 for top level)
+                        example: 0
+                      idnumber:
+                        type: string
+                        description: Category ID number
+                        example: "CAT001"
+                      description:
+                        type: string
+                        description: Category description
+                        example: "Programming courses"
+                      descriptionformat:
+                        type: integer
+                        description: Description format (1=HTML, 0=MOODLE, 2=PLAIN, 4=MARKDOWN)
+                        example: 1
+                      visible:
+                        type: boolean
+                        description: Category visibility
+                        example: true
+                      theme:
+                        type: string
+                        description: Category theme
+                        example: ""
+      responses:
+        '200':
+          description: Categories created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  created:
+                    type: integer
+                  categories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+        '400':
+          description: Bad request
+        '403':
+          description: Admin privileges required
+
+  /api/moodle/courses/{courseid}/contents:
+    get:
+      tags:
+        - Moodle Courses
+      summary: Get course contents with page details
+      description: |
+        Get the contents of a specific course including full page module details.
+
+        For page modules, this endpoint automatically enriches the response with:
+        - `description`: Page intro/description text (HTML)
+        - `content`: Full page HTML content
+        - `descriptionformat`: Format of description (1=HTML)
+        - `contentformat`: Format of content (1=HTML)
+        - `timemodified`: Last modified timestamp
+
+        Other module types (forum, quiz, etc.) return standard metadata only.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Course ID
+      responses:
+        '200':
+          description: Course contents with enriched page module data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CourseContent'
+
+  /api/moodle/courses/{courseid}/activities:
+    post:
+      tags:
+        - Moodle Courses
+      summary: Create activity
+      description: Create a new activity in a course
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseid
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateActivityRequest'
+      responses:
+        '200':
+          description: Activity created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/moodle/getcoursebyfield:
+    get:
+      tags:
+        - Moodle Courses
+      summary: Get courses by field
+      description: Get courses by a specific field value (e.g., category)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: field
+          in: query
+          required: true
+          schema:
+            type: string
+          example: category
+        - name: value
+          in: query
+          required: true
+          schema:
+            type: string
+          example: 1
+      responses:
+        '200':
+          description: List of courses matching the field
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/moodle/files/upload:
+    post:
+      tags:
+        - Moodle Files
+      summary: Upload file
+      description: Upload a file to Moodle
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                courseid:
+                  type: integer
+      responses:
+        '200':
+          description: File uploaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/moodle/api:
+    post:
+      tags:
+        - Moodle Courses
+      summary: Generic Moodle API call
+      description: Make a generic call to any Moodle web service function
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - wsfunction
+              properties:
+                wsfunction:
+                  type: string
+                  example: core_course_get_courses
+                params:
+                  type: object
+      responses:
+        '200':
+          description: API call successful
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /api/moodle/course-image:
+    get:
+      tags:
+        - Moodle Courses
+      summary: Get course image
+      description: Proxy endpoint to fetch course images from Moodle. Receives a Moodle image URL, fetches the image, and returns it as a Base64-encoded data URL for easy display in the frontend.
+      parameters:
+        - name: imageUrl
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The Moodle image URL (can be absolute or relative path)
+          example: "http://moodle-app:8080/pluginfile.php/23/course/overviewfiles/screenshot.png"
+      responses:
+        '200':
+          description: Image fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  imageUrl:
+                    type: string
+                    description: Base64-encoded data URL of the image
+                    example: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUA..."
+                  contentType:
+                    type: string
+                    description: MIME type of the image
+                    example: "image/png"
+                  size:
+                    type: integer
+                    description: Size of the image in bytes
+                    example: 12345
+        '400':
+          description: Bad request - imageUrl parameter is missing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Image not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to fetch image
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/moodle/tags:
+    get:
+      tags:
+        - Moodle Badges
+      summary: Get tags
+      description: Get list of all tags in Moodle
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: tagcollid
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Tag collection ID (0 for default)
+      responses:
+        '200':
+          description: List of tags
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to get tags
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/moodle/courses/by-tag/{tagid}:
+    get:
+      tags:
+        - Moodle Courses
+      summary: Get courses by tag
+      description: Get list of courses associated with a specific tag
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: tagid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Tag ID
+          example: 1
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Page number for pagination
+      responses:
+        '200':
+          description: List of courses with the specified tag
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to get courses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/moodle/badges:
+    get:
+      tags:
+        - Moodle Badges
+      summary: Get badges
+      description: Get list of all badges
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of badges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Badge'
+
+  /api/moodle/user-badges/{userid}:
+    get:
+      tags:
+        - Moodle Badges
+      summary: Get user badges
+      description: Get badges earned by a specific user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of user badges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserBadge'
+
+  /api/webcoach/profile/{userid}:
+    get:
+      tags:
+        - WebCoach
+      summary: Get user profile
+      description: Get WebCoach profile information for a user from the API server
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID
+      responses:
+        '200':
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden - can only access own profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to get profile from API server
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - WebCoach
+      summary: Update user profile
+      description: |
+        Update WebCoach profile information. This endpoint forwards the request to the API server.
+
+        All fields are optional. Only the fields you want to update need to be included in the request.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID (must match the authenticated user's ID)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdate'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden - can only update own profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to update profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/webcoach/updateprofile/{userid}:
+    post:
+      tags:
+        - WebCoach
+      summary: Update user profile (alias)
+      description: |
+        Update WebCoach profile information. This is an alias for POST /api/webcoach/profile/{userid}.
+
+        All fields are optional. Only the fields you want to update need to be included in the request.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID (must match the authenticated user's ID)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileUpdate'
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden - can only update own profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to update profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/webcoach/resumecourse/{userid}:
+    get:
+      tags:
+        - WebCoach
+      summary: Get resume courses
+      description: Get recommended courses to resume for a user with progress calculated from activity completion status
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 5
+      responses:
+        '200':
+          description: List of courses to resume with progress
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResumeCourse'
+    post:
+      tags:
+        - WebCoach
+      summary: Update resume course data
+      description: Update or create resume course information for a user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: User ID (must match the authenticated user's ID)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - courseid
+                - progress_percent
+              properties:
+                courseid:
+                  type: integer
+                  description: Moodle course ID
+                  example: 1
+                progress_percent:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: Course completion percentage (0-100)
+                  example: 0
+      responses:
+        '200':
+          description: Resume course data updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResumeCourse'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden - can only update own data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to update resume course data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/webcoach/recomendbadge/{userid}:
+    get:
+      tags:
+        - WebCoach
+      summary: Get recommended badges
+      description: Get recommended badges for a user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of recommended badges
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Badge'
+
+  /api/webcoach/tags/{categoryid}:
+    get:
+      tags:
+        - WebCoach
+      summary: Get tags by category
+      description: Get all tags associated with a specific category
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: categoryid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Category ID
+          example: 1
+      responses:
+        '200':
+          description: List of tags for the category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to get tags
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/webcoach/ai-applications:
+    get:
+      tags:
+        - WebCoach
+      summary: Get AI applications
+      description: Get a list of AI applications with optional filtering
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+          description: Filter by category
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+          description: Maximum number of results to return
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+          description: Number of results to skip (for pagination)
+      responses:
+        '200':
+          description: List of AI applications
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    category:
+                      type: string
+                    url:
+                      type: string
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to get AI applications
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/webcoach/roadmaps:
+    get:
+      tags:
+        - WebCoach
+      summary: Get roadmaps
+      description: Get list of learning roadmaps
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: difficulty
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of roadmaps
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Roadmap'
+
+  /api/webcoach/roadmap/{roadmapid}:
+    get:
+      tags:
+        - WebCoach
+      summary: Get roadmap details
+      description: Get detailed information about a specific roadmap
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: roadmapid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Roadmap details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Roadmap'
+
+  /api/webcoach/ai:
+    post:
+      tags:
+        - WebCoach
+      summary: AI chat
+      description: Interact with the WEBCOACH AI assistant
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AIRequest'
+      responses:
+        '200':
+          description: AI response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AIResponse'
+
+  /api/webcoach/updatedb:
+    post:
+      tags:
+        - WebCoach
+      summary: Update database
+      description: Bulk update WebCoach custom tables from CSV data
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDBRequest'
+      responses:
+        '200':
+          description: Database updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  recordsProcessed:
+                    type: integer
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/moodle/enroll-course/{courseid}:
+    post:
+      tags:
+        - Moodle Courses
+      summary: Enroll user in course
+      description: |
+        Enroll the authenticated user in a course using manual enrollment.
+
+        The authenticated user's Moodle user ID is automatically retrieved from their Cognito JWT token.
+        The user will be enrolled with the "Student" role (roleid=5).
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseid
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Course ID to enroll in
+          example: 2
+      responses:
+        '200':
+          description: User enrolled successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  courseid:
+                    type: integer
+                    example: 2
+                  userid:
+                    type: integer
+                    description: Moodle user ID of the enrolled user
+                    example: 3
+                  message:
+                    type: string
+                    example: "コースに登録されました"
+                  result:
+                    type: object
+                    description: Response from Moodle API
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden - Moodle user mapping required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Failed to enroll in course
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/moodle/create-course:
+    post:
+      tags:
+        - Moodle Courses
+      summary: Create courses (Admin only)
+      description: |
+        Bulk create courses in Moodle. This endpoint is restricted to users with the "admin" Cognito group.
+
+        **Required fields for each course:**
+        - fullname: Full name of the course
+        - shortname: Short name/code for the course (must be unique)
+        - categoryid: Category ID where the course will be created
+
+        **Optional fields:**
+        - summary: Course description
+        - summaryformat: Format of summary (0=MOODLE, 1=HTML, 2=PLAIN, 4=MARKDOWN)
+        - format: Course format (topics, weeks, social, etc.)
+        - visible: Whether the course is visible (1=visible, 0=hidden)
+        - startdate: Unix timestamp for course start date
+        - enddate: Unix timestamp for course end date
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - courses
+              properties:
+                courses:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - fullname
+                      - shortname
+                      - categoryid
+                    properties:
+                      fullname:
+                        type: string
+                        example: "Introduction to Machine Learning"
+                      shortname:
+                        type: string
+                        example: "ML101"
+                      categoryid:
+                        type: integer
+                        example: 1
+                      summary:
+                        type: string
+                        example: "Learn the basics of machine learning"
+                      summaryformat:
+                        type: integer
+                        default: 1
+                        example: 1
+                      format:
+                        type: string
+                        default: "topics"
+                        example: "topics"
+                      visible:
+                        type: integer
+                        default: 1
+                        example: 1
+                      startdate:
+                        type: integer
+                        description: Unix timestamp
+                        example: 1704067200
+                      enddate:
+                        type: integer
+                        description: Unix timestamp
+                        example: 1735689600
+      responses:
+        '200':
+          description: Courses created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  created:
+                    type: integer
+                    description: Number of courses created
+                    example: 5
+                  courses:
+                    type: array
+                    description: Array of created course objects
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        shortname:
+                          type: string
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden - admin privileges required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Forbidden"
+                  message:
+                    type: string
+                    example: "管理者権限が必要です。この操作は管理者のみ実行できます。"
+        '500':
+          description: Failed to create courses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/admin/cognito-users:
+    post:
+      tags:
+        - Admin
+      summary: Create Cognito users (Admin only)
+      description: |
+        Bulk create users in AWS Cognito. This endpoint is restricted to users with the "admin" Cognito group.
+
+        For each user:
+        - A Cognito account will be created
+        - A temporary password will be sent to the user's email
+        - Optionally, the user can be added to a Cognito group
+
+        **Required fields:**
+        - email: User's email address
+        - username: Unique username for the user
+
+        **Optional fields:**
+        - group: Cognito group name (e.g., "admin", "Teachers", "Students")
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - records
+              properties:
+                records:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - email
+                      - username
+                    properties:
+                      email:
+                        type: string
+                        format: email
+                        example: "user@example.com"
+                      username:
+                        type: string
+                        example: "testuser01"
+                      group:
+                        type: string
+                        example: "Students"
+                        description: "Optional Cognito group to add the user to"
+      responses:
+        '200':
+          description: Users created (may include partial failures)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    description: True if all users were created successfully
+                    example: true
+                  recordsProcessed:
+                    type: integer
+                    description: Number of users successfully created
+                    example: 8
+                  recordsFailed:
+                    type: integer
+                    description: Number of users that failed to create
+                    example: 2
+                  message:
+                    type: string
+                    example: "8件のユーザーを作成しました（2件失敗）"
+                  errors:
+                    type: array
+                    description: Details of any errors that occurred
+                    items:
+                      type: object
+                      properties:
+                        row:
+                          type: integer
+                          description: Row number in the input array (1-indexed)
+                        message:
+                          type: string
+                          description: Error message
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden - admin privileges required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Forbidden"
+                  message:
+                    type: string
+                    example: "管理者権限が必要です。この操作は管理者のみ実行できます。"
+        '500':
+          description: Failed to create users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - Admin
+      summary: List Cognito users (Admin only)
+      description: |
+        Get a list of all users in the Cognito User Pool. This endpoint is restricted to users with the "admin" Cognito group.
+
+        Returns up to 60 users per request.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        username:
+                          type: string
+                          example: "testuser01"
+                        email:
+                          type: string
+                          example: "user@example.com"
+                        status:
+                          type: string
+                          description: "User status (CONFIRMED, FORCE_CHANGE_PASSWORD, etc.)"
+                          example: "CONFIRMED"
+                        enabled:
+                          type: boolean
+                          example: true
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: "2024-01-15T10:30:00Z"
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden - admin privileges required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Forbidden"
+                  message:
+                    type: string
+                    example: "管理者権限が必要です。この操作は管理者のみ実行できます。"
+        '500':
+          description: Failed to list users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

@@ -18,6 +18,7 @@ const { getCognitoClient } = require('../config/clients');
 const { config } = require('../config/environment');
 const { isFlagTrue } = require('../utils/flagValidation');
 const { sanitizeError } = require('../utils/errorHandler');
+const moodleAdapter = require('./MoodleAdapter');
 
 class CognitoAdapter {
   constructor() {
@@ -148,6 +149,7 @@ class CognitoAdapter {
     let failCount = 0;
     let deletedCount = 0;
     let updatedCount = 0;
+    let skippedCount = 0;
 
     // Separate records by operation type
     // Strict validation: only true, 1, or "1" are considered delete requests
@@ -202,7 +204,7 @@ class CognitoAdapter {
         results.push({
           row: rowIndex,
           success: false,
-          message: userFriendlyMessage,
+          message: userFriendlyMessage.message,
           username: username || email,
           operation: 'delete'
         });
@@ -251,6 +253,25 @@ class CognitoAdapter {
               { Name: 'email_verified', Value: 'true' }
             ]);
             console.log(`[Cognito] Updated email for ${actualUsername}: ${currentEmail} -> ${email}`);
+
+            // Sync email to Moodle immediately
+            try {
+              // Find Moodle user by Cognito sub (stored in idnumber)
+              const cognitoSub = existingUser.Attributes.find(attr => attr.Name === 'sub')?.Value;
+              if (cognitoSub) {
+                const moodleUsers = await moodleAdapter.getUsersByField('idnumber', [cognitoSub]);
+                if (moodleUsers && moodleUsers.length > 0) {
+                  const moodleUser = moodleUsers[0];
+                  await moodleAdapter.updateUsers([{ id: moodleUser.id, email }]);
+                  console.log(`[Cognito->Moodle] Synced email for Moodle user ${moodleUser.id}: ${currentEmail} -> ${email}`);
+                } else {
+                  console.warn(`[Cognito->Moodle] Moodle user not found for Cognito sub: ${cognitoSub}`);
+                }
+              }
+            } catch (moodleError) {
+              console.error(`[Cognito->Moodle] Failed to sync email to Moodle:`, moodleError.message);
+              // Don't fail the Cognito update if Moodle sync fails
+            }
           }
         }
 
@@ -285,7 +306,7 @@ class CognitoAdapter {
         results.push({
           row: rowIndex,
           success: false,
-          message: userFriendlyMessage,
+          message: userFriendlyMessage.message,
           username: username || email,
           operation: 'update'
         });
@@ -314,7 +335,18 @@ class CognitoAdapter {
         const existingUser = await this.findUserByEmail(email);
 
         if (existingUser) {
-          throw new Error(`メールアドレス ${email} は既に登録されています`);
+          // User already exists - skip creation
+          console.log(`[Cognito] User ${username} (${email}) already exists - skipping creation`);
+          results.push({
+            row: rowIndex,
+            success: true,
+            username: existingUser.Username,
+            operation: 'skipped',
+            message: '既に登録済みのため、スキップしました'
+          });
+          skippedCount++;
+          successCount++;
+          continue;
         }
 
         // Create user
@@ -338,7 +370,7 @@ class CognitoAdapter {
         results.push({
           row: rowIndex,
           success: false,
-          message: userFriendlyMessage,
+          message: userFriendlyMessage.message,
           username,
           operation: 'create'
         });
@@ -351,6 +383,7 @@ class CognitoAdapter {
       recordsProcessed: successCount,
       recordsDeleted: deletedCount,
       recordsUpdated: updatedCount,
+      recordsSkipped: skippedCount,
       recordsFailed: failCount,
       results
     };
@@ -393,28 +426,35 @@ class CognitoAdapter {
     const allUsers = [];
     let nextToken = null;
 
-    do {
-      const params = {
-        UserPoolId: this.userPoolId,
-        GroupName: groupName,
-        Limit: limit,
-      };
+    try {
+      do {
+        const params = {
+          UserPoolId: this.userPoolId,
+          GroupName: groupName,
+          Limit: limit,
+        };
 
-      if (nextToken) {
-        params.NextToken = nextToken;
+        if (nextToken) {
+          params.NextToken = nextToken;
+        }
+
+        const command = new ListUsersInGroupCommand(params);
+        const result = await this.client.send(command);
+
+        if (result.Users) {
+          allUsers.push(...result.Users);
+        }
+
+        nextToken = result.NextToken;
+      } while (nextToken);
+
+      return allUsers;
+    } catch (error) {
+      if (error.name === 'ResourceNotFoundException') {
+        throw new Error(`存在しないCognito user groupです: ${groupName}`);
       }
-
-      const command = new ListUsersInGroupCommand(params);
-      const result = await this.client.send(command);
-
-      if (result.Users) {
-        allUsers.push(...result.Users);
-      }
-
-      nextToken = result.NextToken;
-    } while (nextToken);
-
-    return allUsers;
+      throw error;
+    }
   }
 
   /**

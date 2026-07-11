@@ -1,0 +1,34 @@
+# docker-compose.override.yml
+# 開発/テスト環境専用の設定
+# 本番環境にはこのファイルをデプロイしない
+
+version: '3.8'
+
+services:
+  # BFFサーバーのポートを開発環境でのみ公開
+  bff-server:
+    ports:
+      - "3001:3001"
+    environment:
+      ALLOWED_ORIGINS: "http://localhost:3000,https://dils5ct97pefc.cloudfront.net,https://d1zs9qsimyg41i.cloudfront.net,https://uat.webcoach.jp"
+    volumes:
+      - ./bff-server:/app  # Mount for development
+      - /app/node_modules  # Preserve container's node_modules
+
+  # API サーバーのポートも開発環境で公開（オプション）
+  api-server:
+    ports:
+      - "8001:8001"
+    environment:
+      # Claude API モデル名（本番運用時に環境変数で上書き可能）
+      ANTHROPIC_MODEL: "claude-haiku-4-5-20251001"
+    volumes:
+      - ./api-server:/app  # Mount for development
+      - /app/__pycache__  # Preserve Python cache
+
+  # Moodleも直接アクセス可能に（オプション）
+  moodle:
+    ports:
+      - "8080:8080"
+    # Skip upgrade script temporarily
+    command: /opt/bitnami/scripts/apache/run.sh

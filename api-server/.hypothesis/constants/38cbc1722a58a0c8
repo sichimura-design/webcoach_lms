@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/tools.py
+# hypothesis_version: 6.141.1
+
+['Authorization', 'BFF APIエンドポイント', 'BFF_SERVER_URL', 'GET', 'HTTPメソッド', 'POST', '\\{[^}]*"tool"[^}]*\\}', 'arguments', 'category', 'courseid', 'description', 'difficulty', 'error', 'get_course_contents', 'get_resume_courses', 'get_roadmap_detail', 'get_roadmaps', 'get_user_badges', 'get_user_courses', 'get_user_profile', 'integer', 'limit', 'name', 'required', 'result', 'roadmapid', 'string', 'success', 'tool', 'type', 'userid', 'カテゴリでフィルタ', 'コースID', 'ツールの説明', 'ツール名', 'パラメータ定義', 'ユーザーID', 'ユーザーが取得したバッジ一覧を取得します', 'ロードマップID', '任意', '取得件数', '学習ロードマップ一覧を取得します', '必須', '特定のコースのコンテンツ一覧を取得します', '難易度でフィルタ']

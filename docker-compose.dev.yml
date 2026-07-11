@@ -1,0 +1,137 @@
+# ========================================
+# 開発環境用 Docker Compose設定
+# Volumeマウントでファイル変更を即反映
+# ========================================
+version: '3.8'
+
+services:
+  moodle-app:
+    image: bitnami/moodle:4.1
+    container_name: moodle-app-dev
+    ports:
+      - "8080:8080"
+    environment:
+      - MOODLE_DATABASE_TYPE=mysqli
+      - MOODLE_DATABASE_HOST=moodle-mysql
+      - MOODLE_DATABASE_PORT_NUMBER=3306
+      - MOODLE_DATABASE_NAME=bitnami_moodle
+      - MOODLE_DATABASE_USER=moodleuser
+      - MOODLE_DATABASE_PASSWORD=moodlepass123
+      - MOODLE_LANG=ja
+      - MOODLE_ENV=development
+      - OAUTH2_DEBUG=true
+      # Cognito設定
+      - COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
+      - COGNITO_REGION=${COGNITO_REGION:-ap-northeast-1}
+      - COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
+      - COGNITO_CLIENT_SECRET=${COGNITO_CLIENT_SECRET}
+      - COGNITO_DOMAIN=${COGNITO_DOMAIN}
+    volumes:
+      # カスタマイズファイルをマウント（開発時の変更が即反映）
+      - ./moodle/customizations/auth/oauth2:/opt/bitnami/moodle/auth/oauth2:rw
+      - ./moodle/customizations/local:/opt/bitnami/moodle/local:rw
+      - ./moodle/customizations/theme:/opt/bitnami/moodle/theme/custom:rw
+
+      # スクリプトをマウント
+      - ./moodle/scripts/apply-customizations.sh:/opt/bitnami/scripts/apply-customizations.sh:ro
+
+      # 開発用: config.phpを直接編集可能に
+      # - ./moodle-data/config.php:/opt/bitnami/moodle/config.php:rw
+
+      # ログディレクトリ
+      - ./moodle-data/logs:/opt/bitnami/moodle/logs:rw
+
+      # データ永続化
+      - moodle_data_dev:/bitnami/moodle
+      - moodledata_data_dev:/bitnami/moodledata
+
+    depends_on:
+      - moodle-mysql
+    networks:
+      - moodle-network
+
+  moodle-mysql:
+    image: mysql:8.0
+    container_name: moodle-mysql-dev
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass123
+      - MYSQL_DATABASE=bitnami_moodle
+      - MYSQL_USER=moodleuser
+      - MYSQL_PASSWORD=moodlepass123
+    volumes:
+      - mysql_data_dev:/var/lib/mysql
+      # 初期化SQLスクリプト
+      - ./sql/init:/docker-entrypoint-initdb.d:ro
+    networks:
+      - moodle-network
+
+  # BFF Server (開発モード)
+  bff-server:
+    build:
+      context: ./bff-server
+      dockerfile: Dockerfile.dev  # 開発用Dockerfile
+    container_name: moodle-bff-dev
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+      - MOODLE_URL=http://moodle-app:8080
+      - API_SERVER_URL=http://api-server:8001
+      - COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
+      - COGNITO_REGION=${COGNITO_REGION}
+      - COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
+      - COGNITO_CLIENT_SECRET=${COGNITO_CLIENT_SECRET}
+    volumes:
+      # ホットリロード用
+      - ./bff-server:/app:rw
+      - /app/node_modules
+    command: npm run dev
+    networks:
+      - moodle-network
+
+  # API Server (開発モード)
+  api-server:
+    build:
+      context: ./api-server
+      dockerfile: Dockerfile.dev
+    container_name: moodle-api-dev
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_HOST=moodle-mysql
+      - DATABASE_PORT=3306
+      - DATABASE_NAME=bitnami_moodle
+      - DATABASE_USER=moodleuser
+      - DATABASE_PASSWORD=moodlepass123
+      - MOODLE_URL=http://moodle-app:8080
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      # ホットリロード用
+      - ./api-server:/app:rw
+    command: uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+    networks:
+      - moodle-network
+
+  # nginx (開発モード)
+  nginx:
+    image: nginx:alpine
+    container_name: moodle-nginx-dev
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/logs:/var/log/nginx:rw
+    depends_on:
+      - bff-server
+      - moodle-app
+    networks:
+      - moodle-network
+
+volumes:
+  moodle_data_dev:
+  moodledata_data_dev:
+  mysql_data_dev:
+
+networks:
+  moodle-network:
+    driver: bridge

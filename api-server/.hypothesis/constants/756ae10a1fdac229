@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/dto/request/ai.py
+# hypothesis_version: 6.141.1
+
+['BFF APIツールの使用を許可するか', 'RAGで使用する最大チャンク数', 'コースID（RAG検索用）', 'ツール名', 'ツール引数', 'ユーザーID（コンテキスト取得用）', 'ユーザーからのメッセージ', '追加のコンテキスト情報']

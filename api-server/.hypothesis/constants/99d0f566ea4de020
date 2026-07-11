@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/routers/profiles.py
+# hypothesis_version: 6.141.1
+
+['/api', '/profile-settings', 'Profile Settings', 'User Profile', 'settings', 'userid', 'プロフィール設定を作成', 'プロフィール設定を取得', 'プロフィール設定を更新', 'ユーザープロフィール取得', 'ユーザープロフィール更新']

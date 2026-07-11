@@ -6,6 +6,7 @@
 const { getCognitoJwtVerifier } = require('../config/clients');
 const userService = require('../services/UserService');
 const logger = require('../utils/logger');
+const moodleAdapter = require('../adapters/MoodleAdapter');
 
 /**
  * Require authentication - JWT Token Verification or Internal API Key
@@ -75,6 +76,12 @@ async function requireAuth(req, res, next) {
         logger.log('Moodle user found/created:', {
           moodleUserId: req.user.moodleUserId,
           moodleUsername: req.user.moodleUsername
+        });
+
+        // Update user's lastaccess timestamp in background (non-blocking)
+        moodleAdapter.updateUserLastAccess(moodleUser.id).catch(err => {
+          logger.error('Failed to update user lastaccess:', err.message);
+          // Don't block the request if lastaccess update fails
         });
       }
     } catch (error) {

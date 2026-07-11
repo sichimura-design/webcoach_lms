@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/dto/request/course.py
+# hypothesis_version: 6.141.1
+
+[100, 'Moodle Course ID', 'Moodle User ID', '進捗率 (0-100)']

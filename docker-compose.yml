@@ -1,24 +1,101 @@
-version: '3.8'
-
 services:
-  # フロントエンド（React SPA）
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: moodle-spa-frontend
-    ports:
-      - "3000:3000"
+  # Local MySQL - Disabled (using RDS instead)
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: moodle-mysql
+  #   networks:
+  #     - moodle-network
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: rootpassword123
+  #     MYSQL_DATABASE: bitnami_moodle
+  #     MYSQL_USER: moodleuser
+  #     MYSQL_PASSWORD: moodlepass123
+  #   volumes:
+  #     - ./mysql-data:/var/lib/mysql
+  #   command:
+  #     - --character-set-server=utf8mb4
+  #     - --collation-server=utf8mb4_unicode_ci
+  #     - --default-authentication-plugin=mysql_native_password
+  #     - --max_allowed_packet=256M
+  #     - --innodb_buffer_pool_size=512M
+  #   restart: unless-stopped
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 1G
+  #       reservations:
+  #         memory: 512M
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword123"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
+  #     start_period: 60s
+
+  moodle:
+    image: public.ecr.aws/bitnami/moodle:4.3.6
+    container_name: moodle-app
+    networks:
+      - moodle-network
     environment:
-      # EC2上のサービスに接続するための環境変数
-      REACT_APP_MOODLE_URL: ${MOODLE_URL:-http://localhost:80}
-      REACT_APP_API_SERVER_URL: ${API_SERVER_URL:-http://localhost:8001}
-      REACT_APP_BFF_URL: ${BFF_URL:-http://localhost:3001}
-      # ChromaDB経由でのセマンティック検索
-      REACT_APP_CHROMADB_ENABLED: ${CHROMADB_ENABLED:-true}
+      MOODLE_DATABASE_TYPE: mysqli
+      MOODLE_DATABASE_HOST: ${MOODLE_DB_HOST}
+      MOODLE_DATABASE_PORT_NUMBER: ${MOODLE_DB_PORT:-3306}
+      MOODLE_DATABASE_NAME: ${MOODLE_DB_NAME:-moodle}
+      MOODLE_DATABASE_USER: ${MOODLE_DB_USER}
+      MOODLE_DATABASE_PASSWORD: ${MOODLE_DB_PASSWORD}
+      MOODLE_USERNAME: ${MOODLE_ADMIN_USERNAME:-admin}
+      MOODLE_PASSWORD: ${MOODLE_ADMIN_PASSWORD}
+      MOODLE_EMAIL: ${MOODLE_ADMIN_EMAIL:-admin@example.com}
+      MOODLE_SITE_NAME: ${MOODLE_SITE_NAME:-My Moodle Site}
+      MOODLE_HOST: ${PUBLIC_IP:-localhost}
+      MOODLE_LANG: ${MOODLE_LANG:-ja}
+      BITNAMI_DEBUG: "true"
     volumes:
-      - ./frontend/src:/app/src
-      - ./frontend/public:/app/public
+      - ./moodle-data:/bitnami/moodledata
+      - ./moodle-html:/bitnami/moodle
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+
+  api-server:
+    build:
+      context: ./api-server
+      dockerfile: Dockerfile
+    image: moodle-api:latest
+    container_name: moodle-api
+    networks:
+      - moodle-network
+    environment:
+      # Parameter Store設定（USE_PARAMETER_STORE=true で有効化）
+      USE_PARAMETER_STORE: ${USE_PARAMETER_STORE:-false}
+      PARAMETER_STORE_PREFIX: ${PARAMETER_STORE_PREFIX:-/moodle/prod}
+      AWS_REGION: ${AWS_REGION:-ap-northeast-1}
+
+      # 以下は USE_PARAMETER_STORE=false の場合に使用される
+      PORT: 8001
+      MOODLE_DB_HOST: ${MOODLE_DB_HOST}
+      MOODLE_DB_PORT: ${MOODLE_DB_PORT:-3306}
+      MOODLE_DB_USER: ${MOODLE_DB_USER}
+      MOODLE_DB_PASSWORD: ${MOODLE_DB_PASSWORD}
+      MOODLE_DB_NAME: ${MOODLE_DB_NAME:-moodle}
+      CHROMADB_PATH: /app/chromadb
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+      ENABLE_DOCS: ${ENABLE_DOCS:-true}
+      # Vector DB configuration
+      VECTOR_DB_ENV: ${VECTOR_DB_ENV:-chromadb}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      FAISS_CACHE_DIR: ${FAISS_CACHE_DIR:-/tmp/faiss_cache}
+      BFF_SERVER_URL: http://bff-server:3001
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY}
+    command: ["bash", "/app/start-with-parameter-store.sh"]
+    volumes:
+      - ./api-server/chromadb:/app/chromadb
     restart: unless-stopped
     deploy:
       resources:
@@ -26,21 +103,48 @@ services:
           memory: 1G
         reservations:
           memory: 512M
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
-  # BFFサーバー（Backend for Frontend）
   bff-server:
     build:
       context: ./bff-server
       dockerfile: Dockerfile
-    container_name: moodle-spa-bff
-    ports:
-      - "3001:3001"
+    image: moodle-bff:latest
+    container_name: moodle-bff
+    networks:
+      - moodle-network
     environment:
-      # EC2上のMoodleとAPI ServerへのプロキシURL
-      MOODLE_URL: ${MOODLE_URL:-http://localhost:80}
-      API_SERVER_URL: ${API_SERVER_URL:-http://localhost:8001}
+      # Parameter Store設定（USE_PARAMETER_STORE=true で有効化）
+      USE_PARAMETER_STORE: ${USE_PARAMETER_STORE:-false}
+      PARAMETER_STORE_PREFIX: ${PARAMETER_STORE_PREFIX:-/moodle/prod}
+      AWS_REGION: ${AWS_REGION:-ap-northeast-1}
+
+      # 以下は USE_PARAMETER_STORE=false の場合に使用される
+      MOODLE_URL: ${MOODLE_URL:-http://moodle-app:8080}
+      API_SERVER_URL: ${API_SERVER_URL:-http://api-server:8001}
       PORT: 3001
       NODE_ENV: ${NODE_ENV:-production}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
+      SESSION_SECRET: ${SESSION_SECRET}
+      MOODLE_SERVICE_USERNAME: ${MOODLE_SERVICE_USERNAME:-admin}
+      MOODLE_SERVICE_PASSWORD: ${MOODLE_SERVICE_PASSWORD}
+      MOODLE_SERVICE_NAME: ${MOODLE_SERVICE_NAME:-moodle_mobile_app}
+      COGNITO_USER_POOL_ID: ${COGNITO_USER_POOL_ID}
+      COGNITO_CLIENT_ID: ${COGNITO_CLIENT_ID}
+      COGNITO_REGION: ${COGNITO_REGION:-ap-northeast-1}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY}
+      S3_BUCKET_NAME: ${S3_BUCKET_NAME}
+      CLOUDFRONT_DOMAIN: ${CLOUDFRONT_DOMAIN}
+      CONTENT_TOKEN_SECRET: ${CONTENT_TOKEN_SECRET}
+    command: ["bash", "/app/start-with-parameter-store.sh"]
+    depends_on:
+      - moodle
+      - api-server
     restart: unless-stopped
     deploy:
       resources:
@@ -54,3 +158,30 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
+
+  nginx:
+    image: nginx:alpine
+    container_name: moodle-nginx
+    networks:
+      - moodle-network
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - moodle
+      - bff-server
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  moodle-network:
+    name: moodle-network
+    external: true

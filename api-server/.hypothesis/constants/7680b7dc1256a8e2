@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/routers/roadmaps.py
+# hypothesis_version: 6.141.1
+
+['/api', '/roadmaps', '/roadmaps/search', '/rodmaps', '/rodmaps/{roadmapid}', 'Roadmaps', 'category', 'course_fullname', 'course_id', 'course_shortname', 'course_summary', 'icon_url', 'name', 'required_study_time', 'roadmap_id', 'roadmaps', 'step_number', 'steps', 'total', 'total_steps', 'カテゴリ別ロードマップ取得', 'ロードマップ一覧取得', 'ロードマップ一覧取得（エイリアス）', 'ロードマップ検索', '特定ロードマップ詳細取得']

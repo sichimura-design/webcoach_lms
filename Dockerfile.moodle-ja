@@ -1,0 +1,17 @@
+# Custom Moodle Image with Japanese Language Pre-configuration
+# Based on Bitnami Moodle image
+
+FROM public.ecr.aws/bitnami/moodle:4.3.6
+
+# Set default language to Japanese
+ENV MOODLE_LANG=ja
+
+# Copy language initialization script
+COPY scripts/init-japanese-lang.sh /opt/bitnami/scripts/moodle/init-japanese-lang.sh
+RUN chmod +x /opt/bitnami/scripts/moodle/init-japanese-lang.sh
+
+# Create a custom entrypoint wrapper
+COPY scripts/custom-entrypoint.sh /opt/bitnami/scripts/moodle/custom-entrypoint.sh
+RUN chmod +x /opt/bitnami/scripts/moodle/custom-entrypoint.sh
+
+USER 1001

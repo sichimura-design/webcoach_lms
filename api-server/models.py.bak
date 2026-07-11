@@ -1,0 +1,257 @@
+"""
+Pydantic models for request/response validation
+"""
+from typing import Optional, Dict, Any, List
+from pydantic import BaseModel, Field, ConfigDict
+
+
+# ==========================================
+# Last Course Access Models
+# ==========================================
+
+class CourseAccessCreate(BaseModel):
+    """コースアクセス記録作成"""
+    userid: int = Field(..., gt=0, description="Moodle User ID")
+    courseid: int = Field(..., gt=0, description="Moodle Course ID")
+
+
+class CourseAccessResponse(BaseModel):
+    """コースアクセス記録レスポンス"""
+    id: int
+    userid: int
+    courseid: int
+    lastaccess: int
+    accesscount: int
+    timemodified: int
+    timecreated: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class LastAccessedCourse(BaseModel):
+    """最終アクセスコース（コース情報付き）"""
+    id: int
+    userid: int
+    courseid: int
+    lastaccess: int
+    accesscount: int
+    course_fullname: Optional[str] = None
+    course_shortname: Optional[str] = None
+    course_summary: Optional[str] = None
+
+
+# ==========================================
+# Profile Settings Models
+# ==========================================
+
+class ProfileSettingsCreate(BaseModel):
+    """プロフィール設定作成"""
+    userid: int = Field(..., gt=0, description="Moodle User ID")
+    theme: Optional[str] = Field(default="light", pattern="^(light|dark)$")
+    language: Optional[str] = Field(default="ja", pattern="^(ja|en)$")
+    notifications_enabled: Optional[bool] = True
+    email_notifications: Optional[bool] = True
+    timezone: Optional[str] = "Asia/Tokyo"
+    items_per_page: Optional[int] = Field(default=20, ge=10, le=100)
+    avatar_url: Optional[str] = None
+    bio: Optional[str] = None
+    preferences: Optional[Dict[str, Any]] = None
+
+
+class ProfileSettingsUpdate(BaseModel):
+    """プロフィール設定更新（部分更新可能）"""
+    theme: Optional[str] = Field(default=None, pattern="^(light|dark)$")
+    language: Optional[str] = Field(default=None, pattern="^(ja|en)$")
+    notifications_enabled: Optional[bool] = None
+    email_notifications: Optional[bool] = None
+    timezone: Optional[str] = None
+    items_per_page: Optional[int] = Field(default=None, ge=10, le=100)
+    avatar_url: Optional[str] = None
+    bio: Optional[str] = None
+    preferences: Optional[Dict[str, Any]] = None
+
+
+class ProfileSettingsResponse(BaseModel):
+    """プロフィール設定レスポンス"""
+    id: int
+    userid: int
+    theme: str
+    language: str
+    notifications_enabled: bool
+    email_notifications: bool
+    timezone: str
+    items_per_page: int
+    avatar_url: Optional[str] = None
+    bio: Optional[str] = None
+    preferences: Optional[Dict[str, Any]] = None
+    timemodified: int
+    timecreated: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+    @classmethod
+    def from_orm_model(cls, db_model):
+        """Convert SQLAlchemy model to Pydantic model"""
+        return cls(
+            id=db_model.id,
+            userid=db_model.userid,
+            theme=db_model.theme,
+            language=db_model.language,
+            notifications_enabled=bool(db_model.notifications_enabled),
+            email_notifications=bool(db_model.email_notifications),
+            timezone=db_model.timezone,
+            items_per_page=db_model.items_per_page,
+            avatar_url=db_model.avatar_url,
+            bio=db_model.bio,
+            preferences=db_model.preferences,
+            timemodified=db_model.timemodified,
+            timecreated=db_model.timecreated
+        )
+
+
+# ==========================================
+# User Profile Models (統合プロフィール)
+# ==========================================
+
+class UserProfileResponse(BaseModel):
+    """ユーザープロフィール統合レスポンス"""
+    userid: int
+    username: Optional[str] = None
+    email: Optional[str] = None
+    firstname: Optional[str] = None
+    lastname: Optional[str] = None
+    fullname: Optional[str] = None
+    settings: Optional[ProfileSettingsResponse] = None
+
+
+# ==========================================
+# Resume Course Models
+# ==========================================
+
+class ResumeCourseUpdate(BaseModel):
+    """コース再開情報更新"""
+    courseid: int = Field(..., gt=0, description="Moodle Course ID")
+    progress_percent: int = Field(..., ge=0, le=100, description="進捗率 (0-100)")
+
+
+class ResumeCourseResponse(BaseModel):
+    """再開可能なコース"""
+    courseid: int
+    fullname: str
+    shortname: str
+    summary: Optional[str] = None
+    lastaccess: int
+    progress: Optional[float] = Field(default=0.0, description="進捗率 (0.0-100.0)")
+    accesscount: int
+
+
+# ==========================================
+# Badge Models
+# ==========================================
+
+class BadgeResponse(BaseModel):
+    """バッジ情報"""
+    id: int
+    name: str
+    description: Optional[str] = None
+    image_url: Optional[str] = None
+    date_issued: Optional[int] = None
+    issuer_name: Optional[str] = None
+
+
+class UserBadgesResponse(BaseModel):
+    """ユーザーバッジ一覧"""
+    userid: int
+    total_badges: int
+    badges: List[BadgeResponse]
+
+
+# ==========================================
+# Roadmap Models
+# ==========================================
+
+class RoadmapResponse(BaseModel):
+    """ロードマップ情報"""
+    id: int
+    title: str
+    description: Optional[str] = None
+    category: str
+    difficulty: Optional[str] = Field(default="beginner", pattern="^(beginner|intermediate|advanced)$")
+    estimated_hours: Optional[int] = None
+    courses: List[Dict[str, Any]] = []
+    created_at: Optional[int] = None
+
+
+class RoadmapListResponse(BaseModel):
+    """ロードマップ一覧"""
+    total: int
+    roadmaps: List[RoadmapResponse]
+
+
+# ==========================================
+# Common Models
+# ==========================================
+
+class HealthResponse(BaseModel):
+    """ヘルスチェックレスポンス"""
+    status: str
+    timestamp: str
+    service: str
+    database: str
+
+
+class ErrorResponse(BaseModel):
+    """エラーレスポンス"""
+    error: str
+    detail: Optional[str] = None
+
+
+# ==========================================
+# WebCoach User Profile Models
+# ==========================================
+
+class WebCoachUserProfileUpdate(BaseModel):
+    """WebCoachユーザープロフィール更新"""
+    self_intro: Optional[str] = Field(default=None, description="自己紹介文")
+    target_job: Optional[str] = Field(default=None, max_length=256, description="なりたい職業・肩書き")
+    ideal_work_style: Optional[str] = Field(default=None, max_length=256, description="理想の働き方")
+    badge_count: Optional[int] = Field(default=None, ge=0, description="獲得バッジ数")
+
+
+class WebCoachUserProfileResponse(BaseModel):
+    """WebCoachユーザープロフィールレスポンス"""
+    mdl_user_id: int
+    self_intro: Optional[str] = None
+    target_job: Optional[str] = None
+    ideal_work_style: Optional[str] = None
+    badge_count: Optional[int] = 0
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+# ==========================================
+# CSV Upload / Bulk Update Models
+# ==========================================
+
+class BulkUploadRequest(BaseModel):
+    """一括アップロードリクエスト"""
+    data_type: str = Field(..., pattern="^(users|courses|enrollments|categories)$", description="データタイプ")
+    records: List[Dict[str, Any]] = Field(..., description="アップロードするレコード一覧")
+
+
+class BulkUploadError(BaseModel):
+    """一括アップロードエラー"""
+    row: int = Field(..., description="エラーが発生した行番号")
+    message: str = Field(..., description="エラーメッセージ")
+    data: Optional[Dict[str, Any]] = Field(default=None, description="エラーが発生したデータ")
+
+
+class BulkUploadResponse(BaseModel):
+    """一括アップロードレスポンス"""
+    success: bool
+    records_processed: int = Field(..., alias="recordsProcessed")
+    records_failed: int = Field(..., alias="recordsFailed")
+    message: Optional[str] = None
+    errors: Optional[List[BulkUploadError]] = None
+
+    model_config = ConfigDict(populate_by_name=True)

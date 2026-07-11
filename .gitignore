@@ -1,82 +1,74 @@
-# Environment variables
+# Environment files
 .env
-.env.*
-!.env.example
-!.env.*.example
+mcp.json
+
+# Data directories
+moodle-data/
+moodle-html/
+mysql-data/
+
+# Temporary files
+*.log
+*.tmp
+cookies.txt
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
 
 # Node modules
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
 
-# Build outputs
-frontend/build/
-frontend/dist/
+# Test tokens (do not commit!)
+.id-token
+*.token
 
-# Logs
-*.log
-logs/
+# Documentation (exclude MD files)
+*.md
+!README.md
 
-# OS files
-.DS_Store
-Thumbs.db
-*:Zone.Identifier
+# Test scripts
+test-*.sh
+test-*.js
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# Build scripts
+build-*.sh
+load-*.sh
+exec-*.sh
+export-*.sh
+update-*.sh
+restore-*.sh
+check-*.sh
 
-# Docker
-docker-compose.override.yml
+# Backup files
+*.backup
+*.bak
 
-# Test coverage
-coverage/
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
 .coverage
 .hypothesis/
 
-# Python
-*.py.bak
-*.py.old
-__pycache__/
+# CDK directories
+cdk-*/
 
-# Dev containers
-.devcontainer/
+# Moodle source
+moodle/
 
-# ChromaDB local data
-chromadb/
+# SQL files
+sql/
 
-# Reference screenshots
-*.png
-!frontend/public/*.png
+# tar archives
+*.tar.gz
 
-# Documentation (non-essential)
-*.md
-!**/README.md
-
-# Temporary files
-*.tmp
-*.temp
-
-# MCP configuration with secrets
-mcp.json
-
-# SSH keys
-*.pem
-*.ppk
-
-# SSL certificates
-ssl/
-
-# Environment-specific CDK configs
-cdk-uat/
-
-# GitHub Actions workflows
-.github/
-
-# Test suites
-tests/
+# RDS migration
+rds-migration/

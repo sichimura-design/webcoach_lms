@@ -14,6 +14,7 @@ from entities import (
     WebCoachLearningRoadmapStep,
     WebCoachImageUrl,
     WebCoachAvatar,
+    WebCoachStudentCoachMapping,
 )
 from dto.request import (
     CourseAccessCreate,
@@ -1050,4 +1051,515 @@ def delete_avatar(db: Session, avatar_id: int) -> bool:
         db.flush()
         return True
     return False
+
+
+# ==========================================
+# Next Coaching Goal CRUD
+# ==========================================
+
+def create_next_coaching_goal(db: Session, mdl_user_id: int, no: int, description: str, is_completed: int = 0) -> "WebCoachNextCoachingGoal":
+    """
+    次回コーチングまでの目標を新規作成
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        no: 項目番号
+        description: 目標内容
+        is_completed: 完了フラグ（デフォルト: 0）
+
+    Returns:
+        WebCoachNextCoachingGoal: 作成された目標
+    """
+    from entities.webcoach import WebCoachNextCoachingGoal
+    from sqlalchemy import func
+
+    # 既存の目標の最大display_orderを取得
+    max_order = db.query(func.max(WebCoachNextCoachingGoal.display_order)).filter(
+        WebCoachNextCoachingGoal.mdl_user_id == mdl_user_id
+    ).scalar()
+
+    # 新しいdisplay_orderを設定（既存がない場合は1、ある場合は+1）
+    new_display_order = (max_order or 0) + 1
+
+    goal = WebCoachNextCoachingGoal(
+        mdl_user_id=mdl_user_id,
+        no=no,
+        display_order=new_display_order,
+        description=description,
+        is_completed=is_completed
+    )
+    db.add(goal)
+    db.flush()
+    return goal
+
+
+def get_next_coaching_goal(db: Session, mdl_user_id: int, no: int) -> Optional["WebCoachNextCoachingGoal"]:
+    """
+    次回コーチングまでの目標を取得
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        no: 項目番号
+
+    Returns:
+        WebCoachNextCoachingGoal or None
+    """
+    from entities.webcoach import WebCoachNextCoachingGoal
+
+    return db.query(WebCoachNextCoachingGoal).filter(
+        WebCoachNextCoachingGoal.mdl_user_id == mdl_user_id,
+        WebCoachNextCoachingGoal.no == no
+    ).first()
+
+
+def get_user_next_coaching_goals(db: Session, mdl_user_id: int) -> List["WebCoachNextCoachingGoal"]:
+    """
+    ユーザーの次回コーチングまでの目標一覧を取得
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+
+    Returns:
+        List[WebCoachNextCoachingGoal]: 目標一覧
+    """
+    from entities.webcoach import WebCoachNextCoachingGoal
+
+    return db.query(WebCoachNextCoachingGoal).filter(
+        WebCoachNextCoachingGoal.mdl_user_id == mdl_user_id
+    ).order_by(WebCoachNextCoachingGoal.display_order).all()
+
+
+def get_all_next_coaching_goals(db: Session) -> List["WebCoachNextCoachingGoal"]:
+    """
+    全ユーザーの次回コーチングまでの目標一覧を取得
+
+    Args:
+        db: Database session
+
+    Returns:
+        List[WebCoachNextCoachingGoal]: 全目標一覧
+    """
+    from entities.webcoach import WebCoachNextCoachingGoal
+
+    return db.query(WebCoachNextCoachingGoal).order_by(
+        WebCoachNextCoachingGoal.mdl_user_id,
+        WebCoachNextCoachingGoal.display_order
+    ).all()
+
+
+def update_next_coaching_goal(db: Session, mdl_user_id: int, no: int, description: str = None, is_completed: int = None) -> Optional["WebCoachNextCoachingGoal"]:
+    """
+    次回コーチングまでの目標を更新
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        no: 項目番号
+        description: 新しい目標内容（Noneの場合は更新しない）
+        is_completed: 新しい完了フラグ（Noneの場合は更新しない）
+
+    Returns:
+        WebCoachNextCoachingGoal or None
+    """
+    goal = get_next_coaching_goal(db, mdl_user_id, no)
+    if goal:
+        if description is not None:
+            goal.description = description
+        if is_completed is not None:
+            goal.is_completed = is_completed
+        db.flush()
+    return goal
+
+
+def delete_next_coaching_goal(db: Session, mdl_user_id: int, no: int) -> bool:
+    """
+    次回コーチングまでの目標を削除
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        no: 項目番号
+
+    Returns:
+        bool: 削除成功時True、失敗時False
+    """
+    goal = get_next_coaching_goal(db, mdl_user_id, no)
+    if goal:
+        db.delete(goal)
+        db.flush()
+        return True
+    return False
+
+
+def reorder_next_coaching_goals(db: Session, mdl_user_id: int, moved_item_no: int, target_position: int) -> List["WebCoachNextCoachingGoal"]:
+    """
+    次回コーチングまでの目標を並び替え
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        moved_item_no: ドラッグしたアイテムの現在のno
+        target_position: 新しい位置（1始まり）
+
+    Returns:
+        List[WebCoachNextCoachingGoal]: 並び替え後の目標一覧
+    """
+    from entities.webcoach import WebCoachNextCoachingGoal
+
+    # ユーザーの全ての目標を取得（display_orderでソート）
+    goals = db.query(WebCoachNextCoachingGoal).filter(
+        WebCoachNextCoachingGoal.mdl_user_id == mdl_user_id
+    ).order_by(WebCoachNextCoachingGoal.display_order).all()
+
+    if not goals:
+        return []
+
+    # 移動対象のアイテムを見つける
+    moved_goal = None
+    for goal in goals:
+        if goal.no == moved_item_no:
+            moved_goal = goal
+            break
+
+    if not moved_goal:
+        raise ValueError(f"Goal with no={moved_item_no} not found for user {mdl_user_id}")
+
+    # リストから移動対象を削除
+    goals.remove(moved_goal)
+
+    # target_position（1始まり）をインデックス（0始まり）に変換
+    target_index = target_position - 1
+
+    # 範囲チェック
+    if target_index < 0:
+        target_index = 0
+    elif target_index > len(goals):
+        target_index = len(goals)
+
+    # 新しい位置に挿入
+    goals.insert(target_index, moved_goal)
+
+    # display_orderを1, 2, 3...と再割り当て
+    for index, goal in enumerate(goals):
+        goal.display_order = index + 1
+
+    db.flush()
+
+    return goals
+
+
+def bulk_upsert_next_coaching_goals(db: Session, mdl_user_id: int, goals_data: List[Dict[str, Any]]) -> List["WebCoachNextCoachingGoal"]:
+    """
+    次回コーチングまでの目標を一括更新（作成・更新・削除・並び替え）
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        goals_data: 目標データのリスト（配列の順序が表示順）
+                    例: [{"no": 1, "description": "...", "is_completed": 0}, ...]
+
+    Returns:
+        List[WebCoachNextCoachingGoal]: 更新後の目標一覧
+
+    動作:
+        - リクエストに含まれるnoは作成/更新される
+        - リクエストに含まれないnoは削除される
+        - 配列の順序がdisplay_orderになる（0番目がdisplay_order=1）
+    """
+    from entities.webcoach import WebCoachNextCoachingGoal
+
+    # ユーザーの既存の全目標を取得
+    existing_goals = db.query(WebCoachNextCoachingGoal).filter(
+        WebCoachNextCoachingGoal.mdl_user_id == mdl_user_id
+    ).all()
+
+    # 既存の目標をnoでマッピング
+    existing_goals_map = {goal.no: goal for goal in existing_goals}
+
+    # リクエストに含まれるnoのセット
+    request_nos = {item['no'] for item in goals_data}
+
+    # リクエストに含まれないnoを削除
+    for existing_no, existing_goal in existing_goals_map.items():
+        if existing_no not in request_nos:
+            db.delete(existing_goal)
+
+    # リクエストの各アイテムを処理
+    result_goals = []
+    for index, goal_data in enumerate(goals_data):
+        no = goal_data['no']
+        description = goal_data.get('description')
+        is_completed = goal_data.get('is_completed', 0)
+        display_order = index + 1  # 配列の順序がdisplay_order
+
+        if no in existing_goals_map:
+            # 既存の目標を更新
+            existing_goal = existing_goals_map[no]
+            if description is not None:
+                existing_goal.description = description
+            existing_goal.is_completed = is_completed
+            existing_goal.display_order = display_order
+            result_goals.append(existing_goal)
+        else:
+            # 新しい目標を作成
+            new_goal = WebCoachNextCoachingGoal(
+                mdl_user_id=mdl_user_id,
+                no=no,
+                display_order=display_order,
+                description=description,
+                is_completed=is_completed
+            )
+            db.add(new_goal)
+            result_goals.append(new_goal)
+
+    db.flush()
+
+    return result_goals
+
+
+# ==========================================
+# Coach-Student Mapping CRUD
+# ==========================================
+
+def create_coach_student_mapping(
+    db: Session,
+    coach_user_id: int,
+    student_user_id: int
+) -> WebCoachStudentCoachMapping:
+    """
+    コーチと受講生のマッピングを作成
+
+    Args:
+        db: Database session
+        coach_user_id: コーチのMoodleユーザーID
+        student_user_id: 受講生のMoodleユーザーID
+
+    Returns:
+        WebCoachStudentCoachMapping: Created mapping
+
+    Raises:
+        ValueError: 既に有効なマッピングが存在する場合
+    """
+    # 既に有効なマッピングが存在するかチェック
+    existing = db.query(WebCoachStudentCoachMapping).filter(
+        WebCoachStudentCoachMapping.coach_user_id == coach_user_id,
+        WebCoachStudentCoachMapping.student_user_id == student_user_id,
+        WebCoachStudentCoachMapping.logical_deleted == 0
+    ).first()
+
+    if existing:
+        raise ValueError(
+            f"Active mapping already exists: coach={coach_user_id}, student={student_user_id}"
+        )
+
+    # 新規マッピングを作成
+    mapping = WebCoachStudentCoachMapping(
+        coach_user_id=coach_user_id,
+        student_user_id=student_user_id,
+        logical_deleted=0
+    )
+    db.add(mapping)
+    db.commit()
+    db.refresh(mapping)
+    return mapping
+
+
+def get_coach_student_mapping(
+    db: Session,
+    coach_user_id: int,
+    student_user_id: int,
+    include_deleted: bool = False
+) -> Optional[WebCoachStudentCoachMapping]:
+    """
+    特定のコーチと受講生のマッピングを取得
+
+    Args:
+        db: Database session
+        coach_user_id: コーチのMoodleユーザーID
+        student_user_id: 受講生のMoodleユーザーID
+        include_deleted: 削除済みも含めるか（デフォルト: False）
+
+    Returns:
+        Optional[WebCoachStudentCoachMapping]: マッピング（存在しない場合はNone）
+    """
+    query = db.query(WebCoachStudentCoachMapping).filter(
+        WebCoachStudentCoachMapping.coach_user_id == coach_user_id,
+        WebCoachStudentCoachMapping.student_user_id == student_user_id
+    )
+
+    if not include_deleted:
+        query = query.filter(WebCoachStudentCoachMapping.logical_deleted == 0)
+
+    return query.first()
+
+
+def get_all_coach_student_mappings(
+    db: Session,
+    include_deleted: bool = False
+) -> List[WebCoachStudentCoachMapping]:
+    """
+    全てのコーチと受講生のマッピングを取得
+
+    Args:
+        db: Database session
+        include_deleted: 削除済みも含めるか（デフォルト: False）
+
+    Returns:
+        List[WebCoachStudentCoachMapping]: マッピングリスト
+    """
+    query = db.query(WebCoachStudentCoachMapping)
+
+    if not include_deleted:
+        query = query.filter(WebCoachStudentCoachMapping.logical_deleted == 0)
+
+    return query.all()
+
+
+def get_students_by_coach(
+    db: Session,
+    coach_user_id: int,
+    include_deleted: bool = False
+) -> List[int]:
+    """
+    コーチが担当する受講生のIDリストを取得
+
+    Args:
+        db: Database session
+        coach_user_id: コーチのMoodleユーザーID
+        include_deleted: 削除済みも含めるか（デフォルト: False）
+
+    Returns:
+        List[int]: 受講生のユーザーIDリスト
+    """
+    query = db.query(WebCoachStudentCoachMapping.student_user_id).filter(
+        WebCoachStudentCoachMapping.coach_user_id == coach_user_id
+    )
+
+    if not include_deleted:
+        query = query.filter(WebCoachStudentCoachMapping.logical_deleted == 0)
+
+    results = query.all()
+    return [row[0] for row in results]
+
+
+def get_coach_by_student(
+    db: Session,
+    student_user_id: int,
+    include_deleted: bool = False
+) -> Optional[int]:
+    """
+    受講生に割り当てられたコーチのIDを取得
+
+    Args:
+        db: Database session
+        student_user_id: 受講生のMoodleユーザーID
+        include_deleted: 削除済みも含めるか（デフォルト: False）
+
+    Returns:
+        Optional[int]: コーチのユーザーID（存在しない場合はNone）
+
+    Note:
+        受講生は通常1人のコーチのみが割り当てられることを想定
+        複数存在する場合は最初の1件を返す
+    """
+    query = db.query(WebCoachStudentCoachMapping.coach_user_id).filter(
+        WebCoachStudentCoachMapping.student_user_id == student_user_id
+    )
+
+    if not include_deleted:
+        query = query.filter(WebCoachStudentCoachMapping.logical_deleted == 0)
+
+    result = query.first()
+    return result[0] if result else None
+
+
+def delete_coach_student_mapping(
+    db: Session,
+    coach_user_id: int,
+    student_user_id: int
+) -> bool:
+    """
+    コーチと受講生のマッピングを論理削除（DELETE + INSERT）
+
+    logical_deletedが主キーに含まれるため、UPDATEではなくDELETE+INSERTで実装
+
+    Args:
+        db: Database session
+        coach_user_id: コーチのMoodleユーザーID
+        student_user_id: 受講生のMoodleユーザーID
+
+    Returns:
+        bool: 削除成功の場合True、対象が存在しない場合False
+    """
+    # 有効なマッピングを検索
+    existing = db.query(WebCoachStudentCoachMapping).filter(
+        WebCoachStudentCoachMapping.coach_user_id == coach_user_id,
+        WebCoachStudentCoachMapping.student_user_id == student_user_id,
+        WebCoachStudentCoachMapping.logical_deleted == 0
+    ).first()
+
+    if not existing:
+        return False
+
+    # トランザクション内でDELETE + INSERT
+    # 1. 有効なレコードを削除
+    db.delete(existing)
+    db.flush()
+
+    # 2. 削除済みレコードを挿入
+    deleted_mapping = WebCoachStudentCoachMapping(
+        coach_user_id=coach_user_id,
+        student_user_id=student_user_id,
+        logical_deleted=1
+    )
+    db.add(deleted_mapping)
+    db.commit()
+
+    return True
+
+
+def restore_coach_student_mapping(
+    db: Session,
+    coach_user_id: int,
+    student_user_id: int
+) -> WebCoachStudentCoachMapping:
+    """
+    削除されたマッピングを復元（再登録）
+
+    Args:
+        db: Database session
+        coach_user_id: コーチのMoodleユーザーID
+        student_user_id: 受講生のMoodleユーザーID
+
+    Returns:
+        WebCoachStudentCoachMapping: 復元されたマッピング
+
+    Raises:
+        ValueError: 既に有効なマッピングが存在する場合
+    """
+    # 既に有効なマッピングが存在するかチェック
+    existing_active = db.query(WebCoachStudentCoachMapping).filter(
+        WebCoachStudentCoachMapping.coach_user_id == coach_user_id,
+        WebCoachStudentCoachMapping.student_user_id == student_user_id,
+        WebCoachStudentCoachMapping.logical_deleted == 0
+    ).first()
+
+    if existing_active:
+        raise ValueError(
+            f"Active mapping already exists: coach={coach_user_id}, student={student_user_id}"
+        )
+
+    # 新しい有効なマッピングを作成
+    restored_mapping = WebCoachStudentCoachMapping(
+        coach_user_id=coach_user_id,
+        student_user_id=student_user_id,
+        logical_deleted=0
+    )
+    db.add(restored_mapping)
+    db.commit()
+    db.refresh(restored_mapping)
+    return restored_mapping
 

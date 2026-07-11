@@ -1,0 +1,230 @@
+name: Deploy Application to ECS
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'bff-server/**'
+      - 'api-server/**'
+      - 'nginx/**'
+      - 'moodle/**'
+      - 'docker-compose.yml'
+      - '.github/workflows/deploy-app.yml'
+
+  workflow_dispatch: # 手動トリガー
+
+env:
+  AWS_REGION: ap-northeast-1
+  ECS_CLUSTER: moodle-cluster
+  ECS_SERVICE: MoodleService
+
+permissions:
+  id-token: write # OIDC認証用
+  contents: read
+
+jobs:
+  # ========================================
+  # 変更検知（どのサービスが変更されたか）
+  # ========================================
+  detect-changes:
+    name: Detect Changed Services
+    runs-on: ubuntu-latest
+    outputs:
+      nginx: ${{ steps.changes.outputs.nginx }}
+      bff: ${{ steps.changes.outputs.bff }}
+      api: ${{ steps.changes.outputs.api }}
+      moodle: ${{ steps.changes.outputs.moodle }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Check for changes
+        id: changes
+        run: |
+          echo "nginx=$(git diff --name-only HEAD~1 HEAD | grep -q '^nginx/' && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+          echo "bff=$(git diff --name-only HEAD~1 HEAD | grep -q '^bff-server/' && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+          echo "api=$(git diff --name-only HEAD~1 HEAD | grep -q '^api-server/' && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+          echo "moodle=$(git diff --name-only HEAD~1 HEAD | grep -q '^moodle/' && echo 'true' || echo 'false')" >> $GITHUB_OUTPUT
+
+  # ========================================
+  # ビルド＆プッシュ（変更されたサービスのみ）
+  # ========================================
+  build-and-push:
+    name: Build and Push to ECR
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: |
+      needs.detect-changes.outputs.nginx == 'true' ||
+      needs.detect-changes.outputs.bff == 'true' ||
+      needs.detect-changes.outputs.api == 'true' ||
+      needs.detect-changes.outputs.moodle == 'true'
+
+    strategy:
+      matrix:
+        include:
+          - service: nginx
+            path: nginx
+            repo: moodle-nginx
+            needs_change: ${{ needs.detect-changes.outputs.nginx }}
+          - service: bff-server
+            path: bff-server
+            repo: moodle-bff
+            needs_change: ${{ needs.detect-changes.outputs.bff }}
+          - service: api-server
+            path: api-server
+            repo: moodle-api
+            needs_change: ${{ needs.detect-changes.outputs.api }}
+          - service: moodle-app
+            path: moodle
+            repo: moodle-app
+            needs_change: ${{ needs.detect-changes.outputs.moodle }}
+
+    steps:
+      - name: Checkout code
+        if: matrix.needs_change == 'true'
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        if: matrix.needs_change == 'true'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        if: matrix.needs_change == 'true'
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Docker Buildx
+        if: matrix.needs_change == 'true'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata (tags, labels)
+        if: matrix.needs_change == 'true'
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.login-ecr.outputs.registry }}/${{ matrix.repo }}
+          tags: |
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+
+      - name: Build and push Docker image
+        if: matrix.needs_change == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ matrix.path }}
+          file: ./${{ matrix.path }}/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false # ECSの古いバージョンとの互換性
+
+  # ========================================
+  # ECSタスク定義の更新とデプロイ
+  # ========================================
+  deploy-to-ecs:
+    name: Deploy to ECS
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Get current task definition
+        id: get-task-def
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition moodle-task \
+            --query 'taskDefinition' \
+            --output json > task-definition.json
+
+      - name: Update task definition with new image tags
+        id: update-task-def
+        run: |
+          ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG=${{ github.sha }}
+
+          # jqで各コンテナのイメージを最新のSHAタグに更新
+          jq --arg registry "$ECR_REGISTRY" \
+             --arg tag "$IMAGE_TAG" \
+             '.containerDefinitions |= map(
+               if .name == "nginx" then
+                 .image = $registry + "/moodle-nginx:latest"
+               elif .name == "bff-server" then
+                 .image = $registry + "/moodle-bff:latest"
+               elif .name == "api-server" then
+                 .image = $registry + "/moodle-api:latest"
+               elif .name == "moodle-app" then
+                 .image = $registry + "/moodle-app:latest"
+               else . end
+             )' task-definition.json > updated-task-definition.json
+
+      - name: Deploy to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: updated-task-definition.json
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+          wait-for-minutes: 10
+
+      - name: Verify deployment
+        run: |
+          echo "Deployment completed successfully!"
+          echo "Cluster: ${{ env.ECS_CLUSTER }}"
+          echo "Service: ${{ env.ECS_SERVICE }}"
+
+          # サービスの状態を確認
+          aws ecs describe-services \
+            --cluster ${{ env.ECS_CLUSTER }} \
+            --services ${{ env.ECS_SERVICE }} \
+            --query 'services[0].{Status:status,Running:runningCount,Desired:desiredCount}' \
+            --output table
+
+  # ========================================
+  # デプロイ通知（Slack/Teams等）
+  # ========================================
+  notify:
+    name: Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: deploy-to-ecs
+    if: always()
+
+    steps:
+      - name: Send Slack notification
+        if: env.SLACK_WEBHOOK_URL != ''
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "ECS Deployment ${{ needs.deploy-to-ecs.result }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*ECS Deployment Status*: ${{ needs.deploy-to-ecs.result }}\n*Cluster*: ${{ env.ECS_CLUSTER }}\n*Service*: ${{ env.ECS_SERVICE }}\n*Commit*: ${{ github.sha }}\n*Author*: ${{ github.actor }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

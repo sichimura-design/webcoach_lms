@@ -2,6 +2,7 @@
 Common response DTOs
 """
 from typing import Optional, List, Dict, Any
+from datetime import datetime
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -45,3 +46,37 @@ class AvatarResponse(BaseModel):
     updated_at: str
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class NextCoachingGoalResponse(BaseModel):
+    """次回コーチングまでの目標レスポンス"""
+    mdl_user_id: int
+    no: int
+    display_order: int
+    description: Optional[str] = None
+    is_completed: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CoachStudentMappingResponse(BaseModel):
+    """コーチと受講生のマッピングレスポンス"""
+    coach_user_id: int
+    student_user_id: int
+    logical_deleted: int
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class StudentListResponse(BaseModel):
+    """受講生一覧レスポンス"""
+    coach_user_id: int
+    student_user_ids: List[int] = Field(..., description="担当受講生のユーザーIDリスト")
+
+
+class CoachResponse(BaseModel):
+    """コーチ情報レスポンス"""
+    student_user_id: int
+    coach_user_id: Optional[int] = Field(None, description="コーチのユーザーID（未割り当ての場合None）")

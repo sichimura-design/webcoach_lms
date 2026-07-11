@@ -288,6 +288,62 @@ class WebCoachService {
     console.log(`[WebCoach Avatar] Getting avatars (limit: ${limit}, offset: ${offset})`);
     return await apiServerAdapter.getAllAvatars(limit, offset);
   }
+
+  /**
+   * Create next coaching goal
+   */
+  async createNextCoachingGoal(mdlUserId, no, description, isCompleted = 0) {
+    console.log(`[WebCoach NextCoachingGoal] Creating goal for user ${mdlUserId}, no ${no}`);
+    return await apiServerAdapter.createNextCoachingGoal(mdlUserId, no, description, isCompleted);
+  }
+
+  /**
+   * Get next coaching goal
+   */
+  async getNextCoachingGoal(userid, no) {
+    console.log(`[WebCoach NextCoachingGoal] Getting goal for user ${userid}, no ${no}`);
+    return await apiServerAdapter.getNextCoachingGoal(userid, no);
+  }
+
+  /**
+   * Get all next coaching goals (all users)
+   */
+  async getAllNextCoachingGoals() {
+    console.log(`[WebCoach NextCoachingGoal] Getting all coaching goals for all users`);
+    return await apiServerAdapter.getAllNextCoachingGoals();
+  }
+
+  /**
+   * Get all next coaching goals for user
+   */
+  async getNextCoachingGoals(userid) {
+    console.log(`[WebCoach NextCoachingGoal] Getting all goals for user ${userid}`);
+    return await apiServerAdapter.getNextCoachingGoals(userid);
+  }
+
+  /**
+   * Update next coaching goal
+   */
+  async updateNextCoachingGoal(userid, no, description = null, isCompleted = null) {
+    console.log(`[WebCoach NextCoachingGoal] Updating goal for user ${userid}, no ${no}`);
+    return await apiServerAdapter.updateNextCoachingGoal(userid, no, description, isCompleted);
+  }
+
+  /**
+   * Delete next coaching goal
+   */
+  async deleteNextCoachingGoal(userid, no) {
+    console.log(`[WebCoach NextCoachingGoal] Deleting goal for user ${userid}, no ${no}`);
+    return await apiServerAdapter.deleteNextCoachingGoal(userid, no);
+  }
+
+  /**
+   * Bulk upsert next coaching goals (create, update, delete, and reorder)
+   */
+  async bulkUpsertNextCoachingGoals(userid, goals) {
+    console.log(`[WebCoach NextCoachingGoal] Bulk upserting ${goals.length} goals for user ${userid}`);
+    return await apiServerAdapter.bulkUpsertNextCoachingGoals(userid, goals);
+  }
 }
 
 // Create singleton instance

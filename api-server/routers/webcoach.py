@@ -9,8 +9,8 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text, func
 
 from database import get_db
-from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate
-from dto.response import WebCoachUserProfileResponse, AvatarResponse
+from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest
+from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse
 import crud
 from crud import (
     get_webcoach_user_profile,
@@ -27,6 +27,14 @@ from crud import (
     get_all_avatars,
     update_avatar,
     delete_avatar,
+    create_next_coaching_goal,
+    get_next_coaching_goal,
+    get_user_next_coaching_goals,
+    get_all_next_coaching_goals,
+    update_next_coaching_goal,
+    delete_next_coaching_goal,
+    reorder_next_coaching_goals,
+    bulk_upsert_next_coaching_goals,
 )
 from entities.webcoach import WebCoachAIApplication
 
@@ -901,4 +909,378 @@ def delete_avatar_endpoint(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to delete avatar: {str(e)}"
+        )
+
+
+# ==========================================
+# Next Coaching Goal Endpoints
+# ==========================================
+
+@router.post(
+    "/next-coaching-goal",
+    response_model=NextCoachingGoalResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="次回コーチングまでの目標登録"
+)
+def create_next_coaching_goal_endpoint(
+    data: NextCoachingGoalCreate,
+    db: Session = Depends(get_db)
+):
+    """
+    次回コーチングまでの目標を登録します。
+
+    Args:
+        data: 目標作成データ
+
+    Returns:
+        作成された目標情報
+    """
+    try:
+        goal = create_next_coaching_goal(
+            db,
+            mdl_user_id=data.mdl_user_id,
+            no=data.no,
+            description=data.description,
+            is_completed=data.is_completed
+        )
+        db.commit()
+        db.refresh(goal)
+
+        return NextCoachingGoalResponse(
+            mdl_user_id=goal.mdl_user_id,
+            no=goal.no,
+            display_order=goal.display_order,
+            description=goal.description,
+            is_completed=goal.is_completed
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create next coaching goal: {str(e)}"
+        )
+
+
+@router.get(
+    "/next-coaching-goals",
+    response_model=List[NextCoachingGoalResponse],
+    summary="次回コーチングまでの目標全件取得"
+)
+def get_all_next_coaching_goals_endpoint(
+    db: Session = Depends(get_db)
+):
+    """
+    全ユーザーの次回コーチングまでの目標一覧を取得します。
+
+    Returns:
+        全ユーザーの目標一覧
+    """
+    try:
+        goals = get_all_next_coaching_goals(db)
+
+        return [
+            NextCoachingGoalResponse(
+                mdl_user_id=goal.mdl_user_id,
+                no=goal.no,
+                display_order=goal.display_order,
+                description=goal.description,
+                is_completed=goal.is_completed
+            )
+            for goal in goals
+        ]
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get all next coaching goals: {str(e)}"
+        )
+
+
+@router.get(
+    "/next-coaching-goals/{userid}",
+    response_model=List[NextCoachingGoalResponse],
+    summary="次回コーチングまでの目標一覧取得"
+)
+def get_next_coaching_goals_endpoint(
+    userid: int,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーの次回コーチングまでの目標一覧を取得します。
+
+    Args:
+        userid: ユーザーID
+
+    Returns:
+        目標一覧
+    """
+    try:
+        goals = get_user_next_coaching_goals(db, userid)
+
+        return [
+            NextCoachingGoalResponse(
+                mdl_user_id=goal.mdl_user_id,
+                no=goal.no,
+                display_order=goal.display_order,
+                description=goal.description,
+                is_completed=goal.is_completed
+            )
+            for goal in goals
+        ]
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get next coaching goals: {str(e)}"
+        )
+
+
+@router.get(
+    "/next-coaching-goal/{userid}/{no}",
+    response_model=NextCoachingGoalResponse,
+    summary="次回コーチングまでの目標取得"
+)
+def get_next_coaching_goal_endpoint(
+    userid: int,
+    no: int,
+    db: Session = Depends(get_db)
+):
+    """
+    次回コーチングまでの目標を取得します。
+
+    Args:
+        userid: ユーザーID
+        no: 項目番号
+
+    Returns:
+        目標情報
+    """
+    try:
+        goal = get_next_coaching_goal(db, userid, no)
+
+        if not goal:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Next coaching goal not found: userid={userid}, no={no}"
+            )
+
+        return NextCoachingGoalResponse(
+            mdl_user_id=goal.mdl_user_id,
+            no=goal.no,
+            display_order=goal.display_order,
+            description=goal.description,
+            is_completed=goal.is_completed
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get next coaching goal: {str(e)}"
+        )
+
+
+@router.put(
+    "/next-coaching-goal/{userid}/{no}",
+    response_model=NextCoachingGoalResponse,
+    summary="次回コーチングまでの目標更新"
+)
+def update_next_coaching_goal_endpoint(
+    userid: int,
+    no: int,
+    data: NextCoachingGoalUpdate,
+    db: Session = Depends(get_db)
+):
+    """
+    次回コーチングまでの目標を更新します。
+
+    Args:
+        userid: ユーザーID
+        no: 項目番号
+        data: 更新する目標データ
+
+    Returns:
+        更新された目標情報
+    """
+    try:
+        goal = update_next_coaching_goal(
+            db,
+            mdl_user_id=userid,
+            no=no,
+            description=data.description,
+            is_completed=data.is_completed
+        )
+
+        if not goal:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Next coaching goal not found: userid={userid}, no={no}"
+            )
+
+        db.commit()
+        db.refresh(goal)
+
+        return NextCoachingGoalResponse(
+            mdl_user_id=goal.mdl_user_id,
+            no=goal.no,
+            display_order=goal.display_order,
+            description=goal.description,
+            is_completed=goal.is_completed
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update next coaching goal: {str(e)}"
+        )
+
+
+@router.delete(
+    "/next-coaching-goal/{userid}/{no}",
+    response_model=dict,
+    summary="次回コーチングまでの目標削除"
+)
+def delete_next_coaching_goal_endpoint(
+    userid: int,
+    no: int,
+    db: Session = Depends(get_db)
+):
+    """
+    次回コーチングまでの目標を削除します。
+
+    Args:
+        userid: ユーザーID
+        no: 項目番号
+
+    Returns:
+        削除結果
+    """
+    try:
+        success = delete_next_coaching_goal(db, userid, no)
+
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Next coaching goal not found: userid={userid}, no={no}"
+            )
+
+        db.commit()
+
+        return {
+            "success": True,
+            "message": "Next coaching goal deleted successfully"
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete next coaching goal: {str(e)}"
+        )
+
+
+@router.put(
+    "/next-coaching-goals/{userid}/reorder",
+    response_model=List[NextCoachingGoalResponse],
+    summary="次回コーチングまでの目標並び替え"
+)
+def reorder_next_coaching_goals_endpoint(
+    userid: int,
+    data: NextCoachingGoalReorderRequest,
+    db: Session = Depends(get_db)
+):
+    """
+    次回コーチングまでの目標を並び替えます。
+
+    Args:
+        userid: ユーザーID
+        data: 並び替えリクエスト（moved_item_no, target_position）
+
+    Returns:
+        並び替え後の目標一覧
+    """
+    try:
+        goals = reorder_next_coaching_goals(
+            db,
+            mdl_user_id=userid,
+            moved_item_no=data.moved_item_no,
+            target_position=data.target_position
+        )
+
+        db.commit()
+
+        return [
+            NextCoachingGoalResponse(
+                mdl_user_id=goal.mdl_user_id,
+                no=goal.no,
+                display_order=goal.display_order,
+                description=goal.description,
+                is_completed=goal.is_completed
+            )
+            for goal in goals
+        ]
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e)
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to reorder next coaching goals: {str(e)}"
+        )
+
+
+@router.put(
+    "/next-coaching-goals/{userid}",
+    response_model=List[NextCoachingGoalResponse],
+    summary="次回コーチングまでの目標一括更新"
+)
+def bulk_upsert_next_coaching_goals_endpoint(
+    userid: int,
+    data: NextCoachingGoalsBulkUpsertRequest,
+    db: Session = Depends(get_db)
+):
+    """
+    次回コーチングまでの目標を一括更新します（作成・更新・削除・並び替え）。
+
+    配列の順序が表示順になります。
+    リクエストに含まれないnoは削除されます。
+
+    Args:
+        userid: ユーザーID
+        data: 目標一覧（配列の順序が表示順）
+
+    Returns:
+        更新後の目標一覧
+    """
+    try:
+        # DTOをdictに変換
+        goals_data = [item.model_dump() for item in data.goals]
+
+        goals = bulk_upsert_next_coaching_goals(
+            db,
+            mdl_user_id=userid,
+            goals_data=goals_data
+        )
+
+        db.commit()
+
+        return [
+            NextCoachingGoalResponse(
+                mdl_user_id=goal.mdl_user_id,
+                no=goal.no,
+                display_order=goal.display_order,
+                description=goal.description,
+                is_completed=goal.is_completed
+            )
+            for goal in goals
+        ]
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to bulk upsert next coaching goals: {str(e)}"
         )

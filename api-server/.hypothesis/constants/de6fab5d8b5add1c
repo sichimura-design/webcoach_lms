@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/dto/request/profile.py
+# hypothesis_version: 6.141.1
+
+[100, 256, 'Asia/Tokyo', 'Moodle User ID', '^(ja|en)$', '^(light|dark)$', 'ja', 'light', 'なりたい職業・肩書き', '獲得バッジ数', '理想の働き方', '自己紹介文']

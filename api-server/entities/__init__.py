@@ -10,6 +10,7 @@ from .webcoach import (
     WebCoachLearningRoadmapStep,
     WebCoachImageUrl,  # Legacy - 後方互換性のため残す
     WebCoachAvatar,
+    WebCoachStudentCoachMapping,
 )
 from .webcoach_normalized import (
     WebCoachImage,
@@ -31,6 +32,7 @@ __all__ = [
     "WebCoachImageUrl",  # Legacy
     "WebCoachImage",
     "WebCoachAvatar",
+    "WebCoachStudentCoachMapping",
     "MoodleTag",
     "MoodleTagInstance",
     "MoodleCourse",

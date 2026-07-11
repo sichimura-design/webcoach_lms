@@ -1,348 +1,264 @@
-# Moodle SPA (Single Page Application)
+# Moodle + MySQL Docker環境（EC2用）
 
-Moodle LMS向けのモダンなReact SPAフロントエンドとBFF (Backend for Frontend)サーバーです。
+この環境では、DockerでMySQLとMoodleを動かします。外部からのアクセスにも対応しています。
 
-## 概要
+## 構成
 
-このプロジェクトは以下の構成で動作します：
+- **MySQL 8.0**: データベースサーバー
+- **Bitnami Moodle**: Moodle LMS（最新版）
+- データの永続化: ホストにマウント
+- 外部アクセス: EC2の公開IPアドレスで自動設定
 
-- **Frontend (React SPA)**: ユーザー向けのモダンなWebアプリケーション
-- **BFF Server (Node.js/Express)**: フロントエンドとMoodle/APIサーバー間のプロキシサーバー
-- **EC2上のサービス**: Moodle LMS、MySQL、ChromaDB、FastAPI (別途デプロイ)
+## ディレクトリ構造
 
-## 前提条件
+```
+moodle-docker/
+├── start-moodle.sh           # 起動スクリプト
+├── stop-moodle.sh            # 停止スクリプト
+├── check-security-group.sh   # セキュリティグループ確認スクリプト
+├── README.md                 # このファイル
+├── mysql-data/               # MySQLのデータ（自動作成）
+├── moodle-data/              # Moodleのデータ（自動作成）
+└── moodle-html/              # Moodleのファイル（自動作成）
+```
 
-- Docker & Docker Compose
-- Node.js 18以上 (ローカル開発の場合)
-- EC2上で以下が稼働していること：
-  - Moodle LMS (Web Service有効化)
-  - MySQL/MariaDB
-  - ChromaDB (オプション)
-  - FastAPI Server (オプション)
+## 初回セットアップ
 
-## セットアップ手順
+### 1. セキュリティグループの確認
 
-### 1. リポジトリのクローンまたはコピー
+外部からアクセスするには、ポート8080が開いている必要があります：
 
 ```bash
-cd /home/kanegae100860/moodle-spa
+cd /home/ec2-user/moodle-docker
+./check-security-group.sh
 ```
 
-### 2. 環境変数の設定
+ポートが開いていない場合は、表示されるコマンドを実行してポートを開いてください。
 
-`.env.example`をコピーして`.env`ファイルを作成します：
+または、AWSコンソールから手動で設定：
+1. EC2コンソールを開く
+2. インスタンスを選択
+3. セキュリティタブ → セキュリティグループをクリック
+4. インバウンドルールを編集
+5. ルールを追加:
+   - タイプ: カスタムTCP
+   - ポート: 8080
+   - ソース: 0.0.0.0/0（または特定のIPアドレス）
+
+### 2. Moodleを起動
 
 ```bash
-cp .env.example .env
+./start-moodle.sh
 ```
 
-`.env`ファイルを編集して、EC2上のサービスエンドポイントを設定します：
+初回起動時は以下の処理が行われます：
+1. EC2の公開IPアドレスを自動検出
+2. Dockerネットワークの作成
+3. 必要なディレクトリの作成
+4. MySQLコンテナの起動とデータベース初期化
+5. Moodleコンテナの起動とセットアップ
+
+初回セットアップには5〜10分程度かかります。
+
+### 3. APIユーザーのセットアップ（BFF使用時）
+
+BFFサーバーからMoodle APIを使用する場合は、専用のサービスアカウント（apiuser）を設定します：
 
 ```bash
-# EC2上のMoodle LMS URL
-MOODLE_URL=http://ec2-xx-xx-xx-xx.compute.amazonaws.com
-
-# EC2上のFastAPI Server URL (ChromaDB統合)
-API_SERVER_URL=http://ec2-xx-xx-xx-xx.compute.amazonaws.com:8001
-
-# BFF Server URL (通常はローカル)
-BFF_URL=http://localhost:3001
-
-# Moodle Web Service Token
-MOODLE_TOKEN=your_moodle_webservice_token_here
+./setup-apiuser.sh
 ```
 
-### 3. Moodle Web Serviceトークンの取得
+このスクリプトは以下を実行します：
+1. **apiuser**アカウントの作成
+2. 必要なロール（webserviceuser, manager）の割り当て
+3. **moodle-api-service**の設定
+4. APIトークンの確認
 
-1. MoodleにAdmin権限でログイン
-2. `サイト管理 > プラグイン > Web services > 外部サービス`にアクセス
-3. 新しいサービスを作成 (例: `moodle_mobile_app`)
-4. 必要な関数を有効化：
-   - `core_webservice_get_site_info`
-   - `core_course_get_courses`
-   - `core_course_get_contents`
-   - `core_enrol_get_enrolled_users`
-   - その他必要な関数
-5. `サイト管理 > プラグイン > Web services > トークンの管理`
-6. 新しいトークンを作成し、`.env`ファイルに設定
+**重要:**
+- `core_user_get_users_by_field`などの一部のAPI関数は管理者レベルの権限が必要です
+- apiuserには`manager`ロールが自動的に付与されます
+- トークンが存在しない場合は、Moodle管理画面から手動で生成してください
 
-### 4. Dockerコンテナの起動
+手動でトークンを生成する手順：
+1. Moodleに管理者でログイン
+2. サイト管理 > サーバ > Webサービス > トークンを管理する
+3. 新しいトークンを作成：
+   - ユーザー: apiuser
+   - サービス: moodle-api-service
+4. 生成されたトークンを`.env`ファイルに設定
+
+## アクセス方法
+
+起動スクリプトが表示するURLにアクセスしてください：
+```
+http://<EC2の公開IP>:8080
+```
+
+### デフォルトログイン情報
+
+- **ユーザー名**: admin
+- **パスワード**: Admin123!
+
+## ログの確認
+
+Moodleのセットアップ状況を確認するには：
+```bash
+sudo docker logs -f moodle-app
+```
+
+MySQLのログを確認するには：
+```bash
+sudo docker logs -f moodle-mysql
+```
+
+`Ctrl + C` でログ表示を終了できます。
+
+## 停止方法
 
 ```bash
-docker-compose up -d
+./stop-moodle.sh
 ```
 
-サービスが起動します：
-- Frontend: http://localhost:3000
-- BFF Server: http://localhost:3001
+データは保持されます。再度 `./start-moodle.sh` で起動すると以前の状態から継続できます。
 
-### 5. 動作確認
+## コンテナの状態確認
 
-#### BFFサーバーのヘルスチェック
+実行中のコンテナを確認：
 ```bash
-curl http://localhost:3001/health
+sudo docker ps
 ```
 
-期待されるレスポンス：
-```json
-{
-  "status": "ok",
-  "timestamp": "2025-11-09T20:00:00.000Z",
-  "service": "Moodle BFF",
-  "environment": "production"
-}
-```
-
-#### フロントエンドの確認
-ブラウザで http://localhost:3000 にアクセス
-
-## 開発環境での起動
-
-### Frontend
-
+すべてのコンテナを確認（停止中も含む）：
 ```bash
-cd frontend
-npm install
-npm start
+sudo docker ps -a
 ```
 
-### BFF Server
+## データベース接続情報
 
-```bash
-cd bff-server
-npm install
-npm start
-```
+Moodleは以下の設定でMySQLに接続しています：
 
-## ディレクトリ構成
-
-```
-moodle-spa/
-├── frontend/               # React SPA
-│   ├── src/
-│   │   ├── components/     # Reactコンポーネント
-│   │   ├── services/       # API通信
-│   │   ├── routes/         # ルーティング
-│   │   └── utils/          # ユーティリティ
-│   ├── public/
-│   ├── Dockerfile
-│   └── package.json
-├── bff-server/             # BFF Server (Node.js/Express)
-│   ├── index.js            # メインサーバー
-│   ├── Dockerfile
-│   └── package.json
-├── api-server/             # FastAPI Server (Python)
-│   ├── main.py             # FastAPIアプリケーション
-│   ├── database.py         # データベース接続
-│   ├── models.py           # Pydanticモデル
-│   ├── schemas.py          # SQLAlchemyモデル
-│   ├── crud.py             # CRUD操作
-│   ├── requirements.txt    # Python依存パッケージ
-│   └── sql/                # SQLスクリプト
-│       └── create_tables.sql
-├── docker-compose.yml      # Docker設定
-├── .env.example            # 環境変数サンプル
-└── README.md               # このファイル
-```
-
-## 主な機能
-
-- 学習ダッシュボード
-- コース一覧・コンテンツ表示
-- AIコンテンツチャット (ChromaDB統合)
-- コンテンツ登録・管理
-- **CSV一括登録** (カテゴリ、コース、ユーザー)
-- **ユーザートラッキング** (最終アクセスコース、アクセス履歴)
-- **プロフィール設定管理** (テーマ、言語、通知設定など)
-- キャリアパス機能
-- Markdown & 動画表示
-- 数式表示 (KaTeX)
-- シンタックスハイライト
-
-## CSV一括登録機能
-
-Moodleの管理画面からCSVを使用してカテゴリ、コース、ユーザーを一括登録できます。
-
-### 提供されているテンプレート
-
-| テンプレートファイル | 用途 | ガイドドキュメント | クイックスタート |
-|------------------|------|------------------|-----------------|
-| `moodle-category-upload-template.csv` | カテゴリ一括作成 | `MOODLE_CATEGORY_UPLOAD_GUIDE.md` | `QUICK_START_CATEGORY.md` |
-| `moodle-course-upload-template.csv` | コース一括作成 | `MOODLE_CSV_GUIDE.md` | - |
-| `moodle-user-upload-template.csv` | ユーザー一括作成 | `MOODLE_USER_ENROLLMENT_GUIDE.md` | - |
-| `moodle-course-enrollment-template.csv` | コース登録一括実行 | `MOODLE_USER_ENROLLMENT_GUIDE.md` | - |
-
-### ドキュメント一覧
-
-| ドキュメント | 内容 | 対象者 |
-|------------|------|--------|
-| `CLI_CATEGORY_UPLOAD.md` | **CLIでカテゴリアップロード** | **GUIが使えない場合** |
-| `QUICK_START_CATEGORY.md` | カテゴリアップロード5分ガイド（GUI） | 初めての方 |
-| `MOODLE_CATEGORY_UPLOAD_STEPS.md` | カテゴリアップロード詳細手順（GUI） | 詳しく知りたい方 |
-| `MOODLE_CATEGORY_UPLOAD_GUIDE.md` | カテゴリCSVフォーマット完全ガイド | 管理者 |
-| `MOODLE_CSV_GUIDE.md` | コースCSVフォーマット完全ガイド | 管理者 |
-| `MOODLE_USER_ENROLLMENT_GUIDE.md` | ユーザー・登録CSVガイド | 管理者 |
-
-### CSV登録の順序
-
-**重要**: 以下の順序で登録してください：
-
-1. **カテゴリ作成** → `moodle-category-upload-template.csv`
-   - コースを作成する前に必須
-   - カテゴリIDを確認してメモ
-
-2. **コース作成** → `moodle-course-upload-template.csv`
-   - カテゴリIDを使用してコースを作成
-   - コースIDを確認してメモ
-
-3. **ユーザー作成** → `moodle-user-upload-template.csv`
-   - システムにユーザーを追加
-
-4. **コース登録** → `moodle-course-enrollment-template.csv`
-   - ユーザーをコースに登録
-
-### カテゴリアップロード方法
-
-#### 方法1: CLI（コマンドライン）- GUIが使えない場合
-
-```bash
-# BFFサーバーを起動
-cd bff-server
-npm start
-
-# 別のターミナルでカテゴリをアップロード
-cd /home/kanegae100860/moodle-spa
-node upload-categories.js moodle-category-upload-template.csv admin adminpassword
-```
-
-詳しくは `CLI_CATEGORY_UPLOAD.md` を参照してください。
-
-#### 方法2: GUI（Moodle管理画面）
-
-Moodleバージョン3.7以上の場合:
-1. Moodle管理画面にログイン
-2. **サイト管理 > コース > カテゴリをアップロード**
-3. CSVファイルをアップロード
-
-詳しくは `QUICK_START_CATEGORY.md` または `MOODLE_CATEGORY_UPLOAD_STEPS.md` を参照してください。
-
-### よくあるエラー
-
-#### "カテゴリIDでカテゴリを解決できませんでした"
-
-**原因**: コースCSVで指定したカテゴリIDが存在しない
-
-**解決方法**:
-1. 先に `MOODLE_CATEGORY_UPLOAD_GUIDE.md` または `CLI_CATEGORY_UPLOAD.md` を参照してカテゴリを作成
-2. Moodle管理画面またはCLI実行結果でカテゴリIDを確認
-3. コースCSVの `category` フィールドを正しいIDに更新
-
-詳しくは各ガイドドキュメントを参照してください。
+- **ホスト**: moodle-mysql（コンテナ名）
+- **ポート**: 3306
+- **データベース名**: moodle
+- **ユーザー名**: moodleuser
+- **パスワード**: moodlepass123
 
 ## トラブルシューティング
 
-### BFFサーバーが起動しない
+### 外部からアクセスできない（ERR_CONNECTION_TIMED_OUT）
 
-1. `.env`ファイルが正しく設定されているか確認
-2. EC2上のMoodleにアクセスできるか確認
+1. セキュリティグループでポート8080が開いているか確認：
    ```bash
-   curl -I ${MOODLE_URL}
-   ```
-3. ログを確認
-   ```bash
-   docker-compose logs bff-server
+   ./check-security-group.sh
    ```
 
-### フロントエンドがBFFに接続できない
-
-1. BFFサーバーが起動しているか確認
+2. コンテナが起動しているか確認：
    ```bash
-   docker-compose ps
+   sudo docker ps
    ```
-2. `REACT_APP_BFF_URL`が正しく設定されているか確認
-3. CORSエラーの場合は、BFFサーバーの`ALLOWED_ORIGINS`を確認
 
-### Moodle APIエラー
+3. ポートがリッスンしているか確認：
+   ```bash
+   sudo netstat -tlnp | grep 8080
+   ```
 
-1. Moodle Web Serviceが有効化されているか確認
-2. トークンが有効か確認
-3. 必要な関数が有効化されているか確認
+### ポート8080が既に使用されている場合
 
-## ユーザートラッキング機能
+`start-moodle.sh` の以下の行を編集して別のポートに変更：
+```bash
+-p 0.0.0.0:8080:8080 \
+```
+例: `-p 0.0.0.0:9090:8080 \` に変更すると、http://<IP>:9090 でアクセス可能
 
-ユーザーの学習行動を追跡し、パーソナライズされた学習体験を提供します。
+セキュリティグループでも新しいポートを開く必要があります。
 
-### 機能概要
-
-1. **最終アクセスコース追跡**
-   - ユーザーごとの最後にアクセスしたコースを記録
-   - アクセス回数を自動カウント
-   - 最近アクセスしたコース一覧を表示
-
-2. **プロフィール設定管理**
-   - テーマ設定（ライト/ダーク）
-   - 言語設定（日本語/英語）
-   - 通知設定
-   - タイムゾーン設定
-   - カスタム設定（JSON形式で拡張可能）
-
-### セットアップ
-
-詳細なセットアップ手順は `USER_TRACKING_IMPLEMENTATION_GUIDE.md` を参照してください。
-
-#### 1. データベーステーブルの作成
+### コンテナを完全にリセットしたい場合
 
 ```bash
-mysql -h <MOODLE_DB_HOST> -u <MOODLE_DB_USER> -p <MOODLE_DB_NAME> < api-server/sql/create_tables.sql
+# コンテナを停止
+./stop-moodle.sh
+
+# コンテナを削除
+sudo docker rm moodle-app moodle-mysql
+
+# データを削除（注意：すべてのデータが失われます）
+rm -rf mysql-data/ moodle-data/ moodle-html/
+
+# 再起動
+./start-moodle.sh
 ```
 
-#### 2. FastAPIサーバーのセットアップ
+### MySQLに直接接続したい場合
 
 ```bash
-cd api-server
-cp .env.example .env
-# .envファイルを編集してMoodleデータベースの接続情報を設定
-
-pip install -r requirements.txt
-python main.py
+sudo docker exec -it moodle-mysql mysql -u moodleuser -pmoodlepass123 moodle
 ```
 
-#### 3. API利用例
+### Dockerの権限エラーが出る場合
 
-**コースアクセスを記録:**
+現在のセッションを再起動するか、sudoを使用してください：
 ```bash
-curl -X POST http://localhost:3001/api/user-tracking/course-access \
-  -H "Content-Type: application/json" \
-  -d '{"courseid": 123}' \
-  --cookie "sessionId=your_session_id"
+# ログアウト/ログイン、または
+newgrp docker
 ```
 
-**最終アクセスコース一覧を取得:**
+## カスタマイズ
+
+パスワードやデータベース名を変更したい場合は、`start-moodle.sh` の以下の変数を編集してください：
+
 ```bash
-curl http://localhost:3001/api/user-tracking/last-courses?limit=10 \
-  --cookie "sessionId=your_session_id"
+MYSQL_ROOT_PASSWORD="rootpassword123"
+MYSQL_DATABASE="moodle"
+MYSQL_USER="moodleuser"
+MYSQL_PASSWORD="moodlepass123"
 ```
 
-**プロフィール設定を取得:**
+変更後は、一度環境を完全にリセットしてから再起動してください。
+
+## セキュリティに関する注意
+
+- **本番環境**:
+  - デフォルトのパスワードを必ず変更してください
+  - セキュリティグループで信頼できるIPアドレスのみを許可してください
+  - HTTPSを設定することを推奨します（nginxやCloudFrontなどのリバースプロキシ経由）
+
+- **テスト環境**:
+  - 不要になったらインスタンスを停止または削除してください
+  - セキュリティグループでポートを閉じてください
+
+## BFF（Backend for Frontend）の設定
+
+### サービスアカウントの設定
+
+BFFは全てのMoodle API呼び出しにサービスアカウントを使用します。`.env`ファイルで以下の環境変数を設定してください：
+
 ```bash
-curl http://localhost:3001/api/profile-settings?auto_create=true \
-  --cookie "sessionId=your_session_id"
+# .env ファイル
+MOODLE_SERVICE_USERNAME=your_service_account_username
+MOODLE_SERVICE_PASSWORD=your_service_account_password
+MOODLE_SERVICE_NAME=moodle_mobile_app
 ```
 
-### データベーステーブル
+### 重要な注意点
 
-- `mdl_user_last_course_access` - ユーザーの最終アクセスコース履歴
-- `mdl_user_profile_settings` - ユーザープロフィール設定
+1. **認証の仕組み**：
+   - エンドユーザーのログイン認証はBFFで管理
+   - Moodle APIへのアクセスは全てサービスアカウントのトークンで実行
+   - サービスアカウントのトークンは12時間ごとに自動更新
 
-詳細なテーブル定義は `api-server/sql/create_tables.sql` を参照してください。
+2. **セキュリティ**：
+   - サービスアカウントには必要最小限の権限のみを付与
+   - `webservice/rest:use` capabilityが必要
+   - エンドユーザーには`webservice/rest:use`を付与する必要はありません
 
-## ライセンス
+3. **BFFの起動**：
+   - サービスアカウントの認証情報が設定されていない場合、BFFは起動に失敗します
+   - 起動時にサービスアカウントでログインしてトークンを取得します
 
-MIT
+## システム要件
 
-## 注意事項
-
-- **Notion MCP機能は含まれていません** (要件により削除済み)
-- **Moodle本体は含まれていません** (EC2上で別途デプロイ)
-- セッションは現在メモリベース (再起動すると失われます)
-- 本番環境ではRedis等の永続化ストレージの使用を推奨
+- Docker 20.10以降
+- AWS EC2インスタンス（Amazon Linux 2023推奨）
+- 空きディスク容量: 最低5GB
+- メモリ: 最低2GB推奨
+- AWS CLI（セキュリティグループ確認用、オプション）

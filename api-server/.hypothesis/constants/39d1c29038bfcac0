@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/routers/courses.py
+# hypothesis_version: 6.141.1
+
+['/api', '/course-access', 'Course Access', 'コースアクセスを記録', '最もアクセスの多いコース一覧を取得', '最終アクセスコース一覧を取得']

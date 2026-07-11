@@ -128,3 +128,40 @@ class WebCoachAvatar(Base):
     __table_args__ = (
         Index('idx_avatar_id', 'avatar_id'),
     )
+
+
+class WebCoachNextCoachingGoal(Base):
+    """
+    WebCoach: 次回コーチングまでの目標
+    """
+    __tablename__ = "webcoach_next_coaching_goal"
+
+    mdl_user_id = Column(BigInteger, primary_key=True, nullable=False, index=True, comment='MoodleユーザーID')
+    no = Column(BigInteger, primary_key=True, nullable=False, index=True, comment='項目番号')
+    display_order = Column(BigInteger, nullable=False, default=0, comment='表示順序')
+    is_completed = Column(SmallInteger, nullable=False, default=0, comment='完了フラグ')
+    description = Column(String(256), nullable=True, comment='内容')
+
+    __table_args__ = (
+        Index('idx_webcoach_next_goal_user', 'mdl_user_id', 'no'),
+    )
+
+
+class WebCoachStudentCoachMapping(Base):
+    """
+    WebCoach: コーチと受講生のマッピング
+    logical_deletedを主キーに含めることで削除後の再登録を可能にする
+    """
+    __tablename__ = "webcoach_student_coach_mapping"
+
+    coach_user_id = Column(BigInteger, primary_key=True, nullable=False, index=True, comment='コーチのMoodleユーザーID')
+    student_user_id = Column(BigInteger, primary_key=True, nullable=False, index=True, comment='受講生のMoodleユーザーID')
+    logical_deleted = Column(SmallInteger, primary_key=True, nullable=False, default=0, comment='論理削除フラグ (0=有効, 1=削除済み)')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), comment='レコード作成時刻')
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp(), comment='レコード更新時刻')
+
+    __table_args__ = (
+        Index('idx_coach_active', 'coach_user_id', 'logical_deleted'),
+        Index('idx_student_active', 'student_user_id', 'logical_deleted'),
+        Index('idx_deleted', 'logical_deleted'),
+    )

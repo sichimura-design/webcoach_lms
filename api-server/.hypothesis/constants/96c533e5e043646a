@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/routers/health.py
+# hypothesis_version: 6.141.1
+
+['/', '/api/course-access', '/api/roadmaps', '/api/roadmaps/search', '/docs', '/health', '1.0.0', 'Health', 'SELECT 1', 'connected', 'course_access', 'database', 'docs', 'endpoints', 'health', 'last_courses', 'name', 'ok', 'profile_settings', 'resume_courses', 'roadmaps', 'roadmaps_category', 'roadmaps_search', 'running', 'service', 'status', 'timestamp', 'user_badges', 'user_profile', 'version']

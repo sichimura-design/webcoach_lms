@@ -1,0 +1,4 @@
+# file: /home/ec2-user/moodle-docker/api-server/crud.py
+# hypothesis_version: 6.141.1
+
+['CURRENT_TIMESTAMP', 'accesscount', 'badge_count', 'badge_description', 'badge_id', 'badge_name', 'badge_type', 'category', 'course_fullname', 'course_shortname', 'course_summary', 'courseid', 'create_timestamp', 'date_expire', 'date_issued', 'icon_url', 'id', 'ideal_work_style', 'issued_id', 'lastaccess', 'limit', 'mdl_course_id', 'mdl_user_id', 'name', 'progress_percent', 'required_study_time', 'roadmap_id', 'self_intro', 'step_number', 'target_job', 'timecreated', 'timemodified', 'userid', 'visible']

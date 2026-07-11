@@ -1,0 +1,1169 @@
+"""
+FastAPI Application for Moodle User Tracking
+"""
+import os
+from datetime import datetime
+from typing import List, Optional
+from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+from sqlalchemy import text
+from dotenv import load_dotenv
+
+from database import get_db, engine, Base
+from dto.request import (
+    CourseAccessCreate,
+    ProfileSettingsCreate,
+    ProfileSettingsUpdate,
+    BulkUploadRequest,
+    WebCoachUserProfileUpdate,
+    ResumeCourseUpdate,
+)
+from dto.response import (
+    CourseAccessResponse,
+    LastAccessedCourse,
+    ProfileSettingsResponse,
+    HealthResponse,
+    ErrorResponse,
+    BulkUploadResponse,
+    BulkUploadError,
+    WebCoachUserProfileResponse,
+)
+import crud
+from crud import (
+    upsert_webcoach_user_course_lastaccess,
+    upsert_webcoach_user_profile,
+    get_webcoach_user_profile,
+    upsert_webcoach_learning_roadmap,
+    upsert_webcoach_learning_roadmap_step,
+    get_webcoach_resume_courses,
+)
+
+# Load environment variables
+load_dotenv()
+
+# Initialize FastAPI app
+app = FastAPI(
+    title="Moodle User Tracking API",
+    description="API for tracking user course access and managing profile settings",
+    version="1.0.0",
+    docs_url="/docs" if os.getenv("ENABLE_DOCS", "true").lower() == "true" else None,
+    redoc_url="/redoc" if os.getenv("ENABLE_DOCS", "true").lower() == "true" else None,
+)
+
+# CORS configuration
+ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Create database tables on startup
+@app.on_event("startup")
+def startup_event():
+    """Create database tables if they don't exist"""
+    Base.metadata.create_all(bind=engine)
+    print("Database tables created/verified successfully")
+
+
+# ==========================================
+# Health Check Endpoints
+# ==========================================
+
+@app.get("/health", response_model=HealthResponse)
+def health_check(db: Session = Depends(get_db)):
+    """
+    ヘルスチェックエンドポイント
+
+    Returns:
+        Health status and database connectivity
+    """
+    try:
+        # Test database connection
+        db.execute(text("SELECT 1"))
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"error: {str(e)}"
+
+    return {
+        "status": "ok",
+        "timestamp": datetime.now().isoformat(),
+        "service": "Moodle User Tracking API",
+        "database": db_status,
+    }
+
+
+# ==========================================
+# Course Access Endpoints
+# ==========================================
+
+@app.post(
+    "/api/course-access",
+    response_model=CourseAccessResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="コースアクセスを記録",
+    tags=["Course Access"]
+)
+def record_course_access(
+    data: CourseAccessCreate,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーのコースアクセスを記録します。
+    既存のレコードがある場合は、アクセス回数と最終アクセス時刻を更新します。
+
+    Args:
+        data: ユーザーIDとコースID
+
+    Returns:
+        作成または更新されたアクセス記録
+    """
+    try:
+        result = crud.record_course_access(db, data)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to record course access: {str(e)}"
+        )
+
+
+@app.get(
+    "/api/users/{userid}/last-courses",
+    response_model=List[LastAccessedCourse],
+    summary="最終アクセスコース一覧を取得",
+    tags=["Course Access"]
+)
+def get_last_accessed_courses(
+    userid: int,
+    limit: int = 10,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーの最終アクセスコース一覧を取得します（新しい順）。
+
+    Args:
+        userid: ユーザーID
+        limit: 取得件数（デフォルト: 10）
+
+    Returns:
+        最終アクセスコース一覧（コース情報付き）
+    """
+    try:
+        courses = crud.get_user_last_accessed_courses(db, userid, limit)
+        return courses
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get last accessed courses: {str(e)}"
+        )
+
+
+@app.get(
+    "/api/users/{userid}/most-accessed-courses",
+    response_model=List[dict],
+    summary="最もアクセスの多いコース一覧を取得",
+    tags=["Course Access"]
+)
+def get_most_accessed_courses(
+    userid: int,
+    limit: int = 5,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーの最もアクセスの多いコース一覧を取得します。
+
+    Args:
+        userid: ユーザーID
+        limit: 取得件数（デフォルト: 5）
+
+    Returns:
+        アクセス回数の多い順のコース一覧
+    """
+    try:
+        courses = crud.get_most_accessed_courses(db, userid, limit)
+        return courses
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get most accessed courses: {str(e)}"
+        )
+
+
+# ==========================================
+# Profile Settings Endpoints
+# ==========================================
+
+@app.post(
+    "/api/profile-settings",
+    response_model=ProfileSettingsResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="プロフィール設定を作成",
+    tags=["Profile Settings"]
+)
+def create_profile_settings(
+    data: ProfileSettingsCreate,
+    db: Session = Depends(get_db)
+):
+    """
+    新しいプロフィール設定を作成します。
+
+    Args:
+        data: プロフィール設定データ
+
+    Returns:
+        作成されたプロフィール設定
+    """
+    try:
+        # Check if settings already exist
+        existing = crud.get_profile_settings(db, data.userid)
+        if existing:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT,
+                detail=f"Profile settings already exist for user {data.userid}"
+            )
+
+        result = crud.create_profile_settings(db, data)
+        return ProfileSettingsResponse.from_orm_model(result)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create profile settings: {str(e)}"
+        )
+
+
+@app.get(
+    "/api/users/{userid}/profile-settings",
+    response_model=ProfileSettingsResponse,
+    summary="プロフィール設定を取得",
+    tags=["Profile Settings"]
+)
+def get_profile_settings(
+    userid: int,
+    auto_create: bool = False,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーのプロフィール設定を取得します。
+
+    Args:
+        userid: ユーザーID
+        auto_create: 設定が存在しない場合に自動作成するか（デフォルト: False）
+
+    Returns:
+        プロフィール設定
+    """
+    try:
+        if auto_create:
+            settings = crud.get_or_create_profile_settings(db, userid)
+        else:
+            settings = crud.get_profile_settings(db, userid)
+
+        if not settings:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Profile settings not found for user {userid}"
+            )
+
+        return ProfileSettingsResponse.from_orm_model(settings)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get profile settings: {str(e)}"
+        )
+
+
+@app.put(
+    "/api/users/{userid}/profile-settings",
+    response_model=ProfileSettingsResponse,
+    summary="プロフィール設定を更新",
+    tags=["Profile Settings"]
+)
+def update_profile_settings(
+    userid: int,
+    data: ProfileSettingsUpdate,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーのプロフィール設定を更新します（部分更新対応）。
+
+    Args:
+        userid: ユーザーID
+        data: 更新するプロフィール設定（変更する項目のみ指定）
+
+    Returns:
+        更新されたプロフィール設定
+    """
+    try:
+        settings = crud.update_profile_settings(db, userid, data)
+
+        if not settings:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Profile settings not found for user {userid}"
+            )
+
+        return ProfileSettingsResponse.from_orm_model(settings)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update profile settings: {str(e)}"
+        )
+
+
+# ==========================================
+# User Profile Endpoints (統合プロフィール)
+# ==========================================
+
+@app.get(
+    "/api/users/{userid}/profile",
+    response_model=dict,
+    summary="ユーザープロフィール取得",
+    tags=["User Profile"]
+)
+def get_user_profile(
+    userid: int,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーの統合プロフィール情報を取得します。
+
+    プロフィール設定が存在しない場合は、基本情報のみ返します。
+    実際のMoodleユーザー情報は、BFF経由でMoodle APIから取得する必要があります。
+
+    Args:
+        userid: ユーザーID
+
+    Returns:
+        統合プロフィール情報
+    """
+    try:
+        # Get profile settings from DB
+        settings = crud.get_profile_settings(db, userid)
+
+        response = {
+            "userid": userid,
+            "settings": ProfileSettingsResponse.from_orm_model(settings) if settings else None
+        }
+
+        return response
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get user profile: {str(e)}"
+        )
+
+
+@app.post(
+    "/api/users/{userid}/profile",
+    response_model=dict,
+    summary="ユーザープロフィール更新",
+    tags=["User Profile"]
+)
+def update_user_profile(
+    userid: int,
+    data: ProfileSettingsUpdate,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザープロフィールを更新します。
+
+    設定が存在しない場合は自動作成します。
+
+    Args:
+        userid: ユーザーID
+        data: 更新するプロフィール設定
+
+    Returns:
+        更新されたプロフィール情報
+    """
+    try:
+        # Get or create settings
+        settings = crud.get_or_create_profile_settings(db, userid)
+
+        # Update settings
+        settings = crud.update_profile_settings(db, userid, data)
+
+        return {
+            "userid": userid,
+            "settings": ProfileSettingsResponse.from_orm_model(settings)
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update user profile: {str(e)}"
+        )
+
+
+# ==========================================
+# Resume Course Endpoints
+# ==========================================
+
+@app.get(
+    "/api/users/{userid}/resume-courses",
+    response_model=List[dict],
+    summary="再開可能なコース取得",
+    tags=["Resume Course"]
+)
+def get_resume_courses(
+    userid: int,
+    limit: int = 5,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーの再開可能なコース一覧を取得します。
+
+    最後にアクセスしたコースで、まだ完了していないものを返します。
+
+    Args:
+        userid: ユーザーID
+        limit: 取得件数（デフォルト: 5）
+
+    Returns:
+        再開可能なコース一覧
+    """
+    try:
+        courses = crud.get_user_last_accessed_courses(db, userid, limit)
+
+        # Transform to resume course format
+        resume_courses = []
+        for course in courses:
+            resume_courses.append({
+                "courseid": course.courseid,
+                "fullname": course.course_fullname or f"Course {course.courseid}",
+                "shortname": course.course_shortname or "",
+                "summary": course.course_summary,
+                "lastaccess": course.lastaccess,
+                "progress": 0.0,  # TODO: Calculate actual progress from Moodle
+                "accesscount": course.accesscount
+            })
+
+        return resume_courses
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get resume courses: {str(e)}"
+        )
+
+
+# ==========================================
+# Badge Endpoints
+# ==========================================
+
+@app.get(
+    "/api/users/{userid}/badges",
+    response_model=dict,
+    summary="ユーザーバッジ取得",
+    tags=["Badges"]
+)
+def get_user_badges(
+    userid: int,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーのバッジ情報を取得します。
+
+    実際のバッジデータはMoodleから取得する必要があります。
+    このエンドポイントは、BFF経由でMoodle APIを呼び出す想定です。
+
+    Args:
+        userid: ユーザーID
+
+    Returns:
+        バッジ一覧
+    """
+    # TODO: Implement Moodle badge fetching logic
+    # For now, return empty response
+    return {
+        "userid": userid,
+        "total_badges": 0,
+        "badges": []
+    }
+
+
+# ==========================================
+# Roadmap Endpoints
+# ==========================================
+
+@app.get(
+    "/api/roadmaps",
+    response_model=dict,
+    summary="ロードマップ一覧取得",
+    tags=["Roadmaps"]
+)
+def get_roadmaps(
+    category: Optional[str] = None,
+    difficulty: Optional[str] = None,
+    limit: int = 20,
+    offset: int = 0,
+    db: Session = Depends(get_db)
+):
+    """
+    ロードマップ一覧を取得します。
+
+    Args:
+        category: カテゴリでフィルタ（オプション）
+        difficulty: 難易度でフィルタ（オプション）
+        limit: 取得件数
+        offset: オフセット
+
+    Returns:
+        ロードマップ一覧
+    """
+    # TODO: Implement roadmap database table and CRUD operations
+    # For now, return mock data
+    mock_roadmaps = []
+
+    return {
+        "total": 0,
+        "roadmaps": mock_roadmaps
+    }
+
+
+@app.get(
+    "/api/roadmaps/search",
+    response_model=dict,
+    summary="ロードマップ検索",
+    tags=["Roadmaps"]
+)
+def search_roadmaps(
+    keyword: str,
+    limit: int = 20,
+    offset: int = 0,
+    db: Session = Depends(get_db)
+):
+    """
+    キーワードでロードマップを検索します。
+
+    Args:
+        keyword: 検索キーワード
+        limit: 取得件数
+        offset: オフセット
+
+    Returns:
+        検索結果
+    """
+    # TODO: Implement roadmap search logic
+    return {
+        "total": 0,
+        "roadmaps": []
+    }
+
+
+@app.get(
+    "/api/roadmaps/category/{category}",
+    response_model=dict,
+    summary="カテゴリ別ロードマップ取得",
+    tags=["Roadmaps"]
+)
+def get_roadmaps_by_category(
+    category: str,
+    limit: int = 20,
+    offset: int = 0,
+    db: Session = Depends(get_db)
+):
+    """
+    特定のカテゴリのロードマップを取得します。
+
+    Args:
+        category: カテゴリ名
+        limit: 取得件数
+        offset: オフセット
+
+    Returns:
+        カテゴリ別ロードマップ一覧
+    """
+    # TODO: Implement category filtering
+    return {
+        "category": category,
+        "total": 0,
+        "roadmaps": []
+    }
+
+
+@app.get(
+    "/api/rodmaps/{roadmapid}",
+    response_model=dict,
+    summary="特定ロードマップ詳細取得",
+    tags=["Roadmaps"]
+)
+def get_roadmap_detail(
+    roadmapid: int,
+    db: Session = Depends(get_db)
+):
+    """
+    特定のロードマップの詳細情報を取得します。
+
+    Args:
+        roadmapid: ロードマップID
+
+    Returns:
+        ロードマップ詳細情報（ステップ含む）
+    """
+    try:
+        from schemas import WebCoachLearningRoadmap, WebCoachLearningRoadmapStep
+        from sqlalchemy import text
+
+        # Get roadmap details
+        roadmap = db.query(WebCoachLearningRoadmap).filter(
+            WebCoachLearningRoadmap.roadmap_id == roadmapid
+        ).first()
+
+        if not roadmap:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Roadmap {roadmapid} not found"
+            )
+
+        # Get roadmap steps with course information
+        query = text("""
+            SELECT
+                s.step_number,
+                s.mdl_course_id,
+                c.fullname as course_fullname,
+                c.shortname as course_shortname,
+                c.summary as course_summary
+            FROM webcoach_learning_roadmap_step s
+            LEFT JOIN mdl_course c ON s.mdl_course_id = c.id
+            WHERE s.roadmap_id = :roadmap_id
+            ORDER BY s.step_number ASC
+        """)
+
+        result = db.execute(query, {"roadmap_id": roadmapid})
+        rows = result.fetchall()
+
+        steps = [
+            {
+                "step_number": row[0],
+                "course_id": row[1],
+                "course_fullname": row[2],
+                "course_shortname": row[3],
+                "course_summary": row[4]
+            }
+            for row in rows
+        ]
+
+        return {
+            "roadmap_id": roadmap.roadmap_id,
+            "name": roadmap.name,
+            "category": roadmap.category,
+            "required_study_time": roadmap.required_study_time,
+            "icon_url": roadmap.icon_url,
+            "steps": steps,
+            "total_steps": len(steps)
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get roadmap detail: {str(e)}"
+        )
+
+
+# ==========================================
+# WebCoach User Profile Endpoints
+# ==========================================
+
+@app.get(
+    "/api/webcoach/profile/{userid}",
+    response_model=WebCoachUserProfileResponse,
+    summary="WebCoachユーザープロフィール取得",
+    tags=["WebCoach"]
+)
+def get_webcoach_profile_endpoint(
+    userid: int,
+    db: Session = Depends(get_db)
+):
+    """
+    WebCoachユーザープロフィールを取得します。
+
+    Args:
+        userid: ユーザーID (Moodle User ID)
+
+    Returns:
+        WebCoachUserProfile: プロフィール情報
+    """
+    try:
+        profile = get_webcoach_user_profile(db, userid)
+
+        if not profile:
+            # プロフィールが存在しない場合は、空のプロフィールを返す
+            return WebCoachUserProfileResponse(
+                mdl_user_id=userid,
+                self_intro=None,
+                target_job=None,
+                ideal_work_style=None,
+                badge_count=0
+            )
+
+        return WebCoachUserProfileResponse.model_validate(profile)
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get WebCoach profile: {str(e)}"
+        )
+
+
+@app.post(
+    "/api/webcoach/profile/{userid}",
+    response_model=WebCoachUserProfileResponse,
+    summary="WebCoachユーザープロフィール更新",
+    tags=["WebCoach"]
+)
+def update_webcoach_profile_endpoint(
+    userid: int,
+    data: WebCoachUserProfileUpdate,
+    db: Session = Depends(get_db)
+):
+    """
+    WebCoachユーザープロフィールを更新します。
+    プロフィールが存在しない場合は新規作成します。
+
+    Args:
+        userid: ユーザーID (Moodle User ID)
+        data: 更新するプロフィール情報
+
+    Returns:
+        WebCoachUserProfile: 更新されたプロフィール情報
+    """
+    try:
+        # 更新データを辞書に変換
+        update_dict = data.model_dump(exclude_unset=True)
+        update_dict['mdl_user_id'] = userid
+
+        # upsert実行
+        profile = upsert_webcoach_user_profile(db, update_dict)
+        db.commit()
+        db.refresh(profile)
+
+        return WebCoachUserProfileResponse.model_validate(profile)
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update WebCoach profile: {str(e)}"
+        )
+
+
+# ==========================================
+# AI Chat Endpoints
+# ==========================================
+
+@app.post(
+    "/api/ai",
+    response_model=dict,
+    summary="AIチャット",
+    tags=["AI"]
+)
+def ai_chat(
+    request: dict,
+    db: Session = Depends(get_db)
+):
+    """
+    AIチャット機能を提供します。
+
+    Args:
+        request: チャットリクエスト（message, context等）
+
+    Returns:
+        AIレスポンス
+    """
+    try:
+        message = request.get("message", "")
+        context = request.get("context", {})
+
+        if not message:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Message is required"
+            )
+
+        # TODO: Implement actual AI integration (OpenAI, Claude, etc.)
+        # For now, return a mock response
+        response = {
+            "success": True,
+            "message": f"AI response to: {message}",
+            "context": context,
+            "timestamp": datetime.now().isoformat()
+        }
+
+        return response
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"AI chat failed: {str(e)}"
+        )
+
+
+# ==========================================
+# Alias Endpoints (for compatibility with Notion API spec)
+# ==========================================
+
+@app.get(
+    "/api/profile/{userid}",
+    response_model=WebCoachUserProfileResponse,
+    summary="WebCoachプロフィール情報取得",
+    tags=["WebCoach"]
+)
+def get_profile_alias(userid: int, db: Session = Depends(get_db)):
+    """
+    WebCoachプロフィール情報取得
+    BFF /api/webcoach/profile からの呼び出し用
+    """
+    profile = get_webcoach_user_profile(db, userid)
+
+    if not profile:
+        # プロフィールが存在しない場合は、空のプロフィールを返す
+        return WebCoachUserProfileResponse(
+            mdl_user_id=userid,
+            self_intro=None,
+            target_job=None,
+            ideal_work_style=None,
+            badge_count=0
+        )
+
+    return WebCoachUserProfileResponse.model_validate(profile)
+
+
+@app.post(
+    "/api/updateprofile/{userid}",
+    response_model=WebCoachUserProfileResponse,
+    summary="WebCoachプロフィール情報更新",
+    tags=["WebCoach"]
+)
+def update_profile_alias(userid: int, data: WebCoachUserProfileUpdate, db: Session = Depends(get_db)):
+    """
+    WebCoachプロフィール情報更新
+    BFF /api/webcoach/updateprofile からの呼び出し用
+    """
+    try:
+        # Convert data to dict and add mdl_user_id
+        record = data.model_dump(exclude_unset=True)
+        record['mdl_user_id'] = userid
+        profile = upsert_webcoach_user_profile(db, record)
+        return WebCoachUserProfileResponse.model_validate(profile)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update WebCoach profile: {str(e)}"
+        )
+
+
+@app.get(
+    "/api/resumecourse/{userid}",
+    response_model=List[dict],
+    summary="コース再開情報取得（エイリアス）",
+    tags=["Resume Course"]
+)
+def get_resume_course_alias(userid: int, limit: int = 5, db: Session = Depends(get_db)):
+    """
+    コース再開情報取得のエイリアスエンドポイント
+    webcoach_user_course_lastaccess テーブルから取得
+    """
+    try:
+        courses = get_webcoach_resume_courses(db, userid, limit)
+
+        # Transform to resume course format
+        resume_courses = []
+        for course in courses:
+            resume_courses.append({
+                "courseid": course["courseid"],
+                "fullname": course["course_fullname"] or f"Course {course['courseid']}",
+                "shortname": course["course_shortname"] or "",
+                "summary": course["course_summary"],
+                "progress": course["progress_percent"],
+                "last_access_time": str(course["create_timestamp"]) if course["create_timestamp"] else None
+            })
+
+        return resume_courses
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get resume courses: {str(e)}"
+        )
+
+
+@app.post(
+    "/api/resumecourse/{userid}",
+    response_model=dict,
+    summary="コース再開情報更新",
+    tags=["Resume Course"]
+)
+def update_resume_course(
+    userid: int,
+    data: ResumeCourseUpdate,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーの最終アクセスコースと進捗率を更新します。
+
+    webcoach_user_course_lastaccess テーブルに、1ユーザー1レコードで保存します。
+    既存レコードがある場合は上書き、ない場合は新規作成します。
+
+    Args:
+        userid: ユーザーID (Moodle User ID)
+        data: 更新するコースIDと進捗率
+
+    Returns:
+        更新結果
+    """
+    try:
+        # 更新データを作成
+        record = {
+            'mdl_user_id': userid,
+            'courseid': data.courseid,
+            'progress_percent': data.progress_percent
+        }
+
+        # upsert実行
+        result = upsert_webcoach_user_course_lastaccess(db, record)
+        db.commit()
+        db.refresh(result)
+
+        return {
+            "success": True,
+            "userid": userid,
+            "courseid": result.courseid,
+            "progress_percent": result.progress_percent,
+            "message": "コース再開情報を更新しました"
+        }
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update resume course: {str(e)}"
+        )
+
+
+@app.get(
+    "/api/recomendbadge/{userid}",
+    response_model=dict,
+    summary="おすすめバッジ取得",
+    tags=["Badges"]
+)
+def get_recommend_badges(userid: int, db: Session = Depends(get_db)):
+    """
+    ユーザーにおすすめのバッジを取得します。
+
+    Args:
+        userid: ユーザーID
+
+    Returns:
+        おすすめバッジ一覧
+    """
+    try:
+        # TODO: Implement badge recommendation logic based on user profile and course progress
+        # For now, return empty recommendations
+        return {
+            "userid": userid,
+            "recommended_badges": [],
+            "total": 0
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get recommended badges: {str(e)}"
+        )
+
+
+@app.get(
+    "/api/rodmaps",
+    response_model=dict,
+    summary="ロードマップ一覧取得（エイリアス）",
+    tags=["Roadmaps"]
+)
+def get_roadmaps_alias(
+    category: Optional[str] = None,
+    difficulty: Optional[str] = None,
+    limit: int = 20,
+    offset: int = 0,
+    db: Session = Depends(get_db)
+):
+    """
+    ロードマップ一覧取得のエイリアスエンドポイント
+    /api/roadmaps と同じ
+    """
+    return get_roadmaps(category, difficulty, limit, offset, db)
+
+
+# ==========================================
+# Bulk Update Endpoints (WebCoach)
+# ==========================================
+
+@app.post(
+    "/api/updatedb",
+    response_model=BulkUploadResponse,
+    summary="WebCoach用DB一括更新",
+    tags=["Bulk Update"]
+)
+def update_database(
+    request: BulkUploadRequest,
+    db: Session = Depends(get_db)
+):
+    """
+    WebCoach用のカスタムテーブルを一括更新します。
+
+    対応しているデータタイプ:
+    - users: ユーザー情報
+    - courses: コース情報
+    - enrollments: 受講登録情報
+    - categories: カテゴリ情報
+
+    Args:
+        request: アップロードデータ（data_type と records）
+
+    Returns:
+        処理結果（成功/失敗件数、エラー詳細）
+    """
+    errors = []
+    processed_count = 0
+    failed_count = 0
+
+    try:
+        for idx, record in enumerate(request.records, start=1):
+            try:
+                # データタイプに応じた処理
+                if request.data_type == "users":
+                    # ユーザープロフィール情報の処理
+                    if 'user_profile' in str(record).lower() or 'self_intro' in record or 'target_job' in record:
+                        # webcoach_user_profile テーブル
+                        if not record.get("mdl_user_id"):
+                            raise ValueError("mdl_user_id is required for user profile")
+                        upsert_webcoach_user_profile(db, record)
+                        processed_count += 1
+                    elif 'courseid' in record or 'progress_percent' in record:
+                        # webcoach_user_course_lastaccess テーブル
+                        if not record.get("mdl_user_id"):
+                            raise ValueError("mdl_user_id is required for user course access")
+                        upsert_webcoach_user_course_lastaccess(db, record)
+                        processed_count += 1
+                    else:
+                        raise ValueError("Unknown user data type")
+
+                elif request.data_type == "courses":
+                    # ロードマップ情報の処理
+                    if 'roadmap' in str(record).lower() or 'name' in record:
+                        # webcoach_learning_roadmap テーブル
+                        if not record.get("name"):
+                            raise ValueError("name is required for roadmap")
+                        if not record.get("category"):
+                            raise ValueError("category is required for roadmap")
+                        if not record.get("required_study_time"):
+                            raise ValueError("required_study_time is required for roadmap")
+                        if not record.get("icon_url"):
+                            raise ValueError("icon_url is required for roadmap")
+                        upsert_webcoach_learning_roadmap(db, record)
+                        processed_count += 1
+                    else:
+                        raise ValueError("Unknown course data type")
+
+                elif request.data_type == "enrollments":
+                    # ロードマップステップ情報の処理
+                    if not record.get("roadmap_id"):
+                        raise ValueError("roadmap_id is required for roadmap step")
+                    if not record.get("step_number"):
+                        raise ValueError("step_number is required for roadmap step")
+                    if not record.get("mdl_course_id"):
+                        raise ValueError("mdl_course_id is required for roadmap step")
+                    upsert_webcoach_learning_roadmap_step(db, record)
+                    processed_count += 1
+
+                elif request.data_type == "categories":
+                    # カテゴリ情報は現在未使用
+                    raise ValueError("Categories data type is not yet implemented")
+
+            except Exception as e:
+                failed_count += 1
+                errors.append(BulkUploadError(
+                    row=idx,
+                    message=str(e),
+                    data=record
+                ))
+
+        # コミット
+        db.commit()
+
+        success = failed_count == 0
+        message = f"処理完了: {processed_count}件成功"
+        if failed_count > 0:
+            message += f", {failed_count}件失敗"
+
+        return BulkUploadResponse(
+            success=success,
+            recordsProcessed=processed_count,
+            recordsFailed=failed_count,
+            message=message,
+            errors=errors if errors else None
+        )
+
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Database update failed: {str(e)}"
+        )
+
+
+# ==========================================
+# Root endpoint
+# ==========================================
+
+@app.get("/")
+def root():
+    """API情報"""
+    return {
+        "name": "Moodle User Tracking API",
+        "version": "1.0.0",
+        "status": "running",
+        "endpoints": {
+            "health": "/health",
+            "docs": "/docs",
+            "user_profile": "/api/users/{userid}/profile",
+            "resume_courses": "/api/users/{userid}/resume-courses",
+            "user_badges": "/api/users/{userid}/badges",
+            "roadmaps": "/api/roadmaps",
+            "roadmaps_search": "/api/roadmaps/search",
+            "roadmaps_category": "/api/roadmaps/category/{category}",
+            "course_access": "/api/course-access",
+            "last_courses": "/api/users/{userid}/last-courses",
+            "most_accessed_courses": "/api/users/{userid}/most-accessed-courses",
+            "profile_settings": "/api/users/{userid}/profile-settings",
+        }
+    }
+
+
+# ==========================================
+# Run server
+# ==========================================
+
+if __name__ == "__main__":
+    import uvicorn
+
+    HOST = os.getenv("API_SERVER_HOST", "0.0.0.0")
+    PORT = int(os.getenv("API_SERVER_PORT", "8001"))
+
+    uvicorn.run(
+        "main:app",
+        host=HOST,
+        port=PORT,
+        reload=True,  # Set to False in production
+        log_level="info"
+    )

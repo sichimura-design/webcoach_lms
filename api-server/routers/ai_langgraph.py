@@ -179,19 +179,19 @@ def ai_chat_langgraph(
         # レスポンスを構築
         response_message = final_state.get("final_response", "回答を生成できませんでした。")
 
-        # RAGソースを変換
-        sources = None
-        if final_state.get("rag_sources"):
-            sources = [
-                AISource(
-                    chunk_index=src["chunk_index"],
-                    module_name=src["module_name"],
-                    filename=src["filename"],
-                    section_name=src["section_name"],
-                    similarity=src["similarity"]
-                )
-                for src in final_state["rag_sources"]
-            ]
+        # RAGソースは返さない（ユーザーに参照元を表示しない）
+        # sources = None
+        # if final_state.get("rag_sources"):
+        #     sources = [
+        #         AISource(
+        #             chunk_index=src["chunk_index"],
+        #             module_name=src["module_name"],
+        #             filename=src["filename"],
+        #             section_name=src["section_name"],
+        #             similarity=src["similarity"]
+        #         )
+        #         for src in final_state["rag_sources"]
+        #     ]
 
         # ツール呼び出し情報
         tool_calls = final_state.get("tool_results") if final_state.get("tool_results") else None
@@ -201,7 +201,7 @@ def ai_chat_langgraph(
         return ChatResponse(
             success=True,
             message=response_message,
-            sources=sources,
+            sources=None,  # 参照元は常にNoneを返す
             tool_calls=tool_calls,
             iteration_count=final_state["iteration_count"]
         )
