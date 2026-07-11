@@ -1,0 +1,1 @@
+{"root":["./bin/cognito-app.ts","./bin/prod-app.ts","./bin/prod-infra-app.ts","./lib/alb-stack.ts","./lib/backend-stack.ts","./lib/cognito-stack.ts","./lib/ecr-stack.ts","./lib/github-actions-stack.ts","./lib/spa-stack.ts","./lib/vpc-stack.ts"],"version":"5.9.3"}

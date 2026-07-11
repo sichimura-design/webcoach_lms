@@ -73,7 +73,6 @@ mcp.json
 ssl/
 
 # Environment-specific CDK configs
-cdk-prod/
 cdk-uat/
 
 # GitHub Actions workflows
