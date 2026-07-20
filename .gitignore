@@ -46,6 +46,10 @@ update-*.sh
 restore-*.sh
 check-*.sh
 
+# Exception for special tables migration scripts
+!scripts/db/export-special-tables.sh
+!scripts/db/import-special-tables.sh
+
 # Backup files
 *.backup
 *.bak
