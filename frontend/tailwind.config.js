@@ -62,10 +62,24 @@ module.exports = {
           danger:    '#EF6B6B',  // エラー
           ink:       '#221E33',  // サイドバー等のダーク面
         },
+        // ★ ダッシュボード/サイドバー改修用トークン（既存 brand.* とは別系統。
+        //   既存28ファイルのピンク系表示への影響を避けるため、brand.* は変更せず追加のみ）
+        dash: {
+          primary:        '#E0242B',  // プライマリ（レッド、差し色）
+          'primary-dark': '#D30F1A',  // プライマリ濃色（グラデーション/hover用）
+          soft:           '#FFF1F2',  // 淡いレッド（hover/アクティブ面）
+          bg:          '#FAF8F7',  // ページ背景（暖かいオフホワイト）
+          sidebar:     '#FCF8F7',  // サイドバー面（ごく薄いグレージュ/ピンク）
+          surface:     '#FFFFFF',  // カード面
+          text:        '#171D2A',  // メインテキスト
+          muted:       '#68707C',  // サブテキスト
+          border:      '#EBE7E5',  // ボーダー
+        },
       },
       // ★ グラデーション（アンバー→ピンク）
       backgroundImage: {
         'brand-gradient': 'linear-gradient(135deg, #FFC24B, #FF5A7A)',
+        'dash-gradient': 'linear-gradient(135deg, #E0242B, #D30F1A)',
       },
       // ★ フォント（見出し=丸ゴシック、本文=Noto Sans JP）
       fontFamily: {

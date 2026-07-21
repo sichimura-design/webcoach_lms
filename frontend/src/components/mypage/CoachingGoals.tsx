@@ -99,24 +99,27 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
 
   return (
     <>
-      <div className="bg-white rounded-[32px] shadow-sm p-6 sm:p-8 mb-6">
+      <div className="bg-dash-surface border border-dash-border rounded-[28px] shadow-[0_16px_38px_rgba(96,70,65,0.08)] p-5 sm:p-7 lg:p-7 mb-6">
         {/* Header */}
-        <div className="flex items-center justify-between mb-5">
-          <div className="flex items-center gap-3">
-            <div className="w-1 h-6 rounded-full" style={{ background: 'linear-gradient(180deg, #FF5A7A, #FFC24B)' }} />
-            <h2 className="text-lg font-bold text-brand-text">次回コーチングまでの目標</h2>
+        <div className="flex flex-wrap items-start justify-between gap-4 mb-2">
+          <div>
+            <h2 className="flex items-center gap-2.5 m-0 font-bold text-dash-text" style={{ fontSize: 'clamp(16px, 1.6vw, 20px)' }}>
+              <span className="w-1 rounded flex-shrink-0" style={{ height: 26, background: 'linear-gradient(180deg, #E0242B, #ff7d82)' }} />
+              次回コーチングまでの目標
+            </h2>
+            <p className="mt-3 text-sm font-semibold text-dash-muted">全体の進捗</p>
           </div>
           <div className="flex items-center gap-2">
             {!isEditing && (
               <button
                 onClick={() => setShowResetConfirm(true)}
                 disabled={saving}
-                className="flex items-center gap-1.5 text-xs font-bold rounded-full px-3 py-1.5 transition-colors disabled:opacity-50"
-                style={{ background: '#FFFFFF', color: '#FF5A7A', border: '1px solid #FF5A7A' }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#FFF5F0'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#FFFFFF'; }}
+                className="inline-flex items-center gap-1.5 text-xs font-bold rounded-lg px-3 py-2 transition-all disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{ border: '1px solid rgba(224,36,43,0.62)', color: '#E0242B', background: 'rgba(255,255,255,0.74)' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#FFF1F2'; (e.currentTarget as HTMLButtonElement).style.transform = 'translateY(-1px)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.74)'; (e.currentTarget as HTMLButtonElement).style.transform = 'none'; }}
               >
-                <RotateCcw className="w-3 h-3" />
+                <RotateCcw className="w-3.5 h-3.5" />
                 目標をリセット
               </button>
             )}
@@ -124,18 +127,18 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
               <>
                 <button
                   onClick={cancelEditing}
-                  className="flex items-center gap-1.5 text-xs font-bold rounded-full px-3 py-1.5 transition-colors"
-                  style={{ color: '#7A7392', border: '1px solid #E0D8D4' }}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold rounded-lg px-3 py-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={{ color: '#68707C', border: '1px solid #EBE7E5' }}
                 >
                   キャンセル
                 </button>
                 <button
                   onClick={saveEditing}
                   disabled={saving}
-                  className="flex items-center gap-1.5 text-xs font-bold text-white rounded-full px-3 py-1.5 transition-colors disabled:opacity-50"
-                  style={{ background: 'linear-gradient(135deg, #FF5A7A, #FFC24B)' }}
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-white rounded-lg px-3 py-2 transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={{ border: '1px solid #E0242B', background: 'linear-gradient(145deg, #ef4249, #D30F1A)', boxShadow: '0 9px 18px rgba(216,15,26,0.18)' }}
                 >
-                  <Check className="w-3 h-3" />
+                  <Check className="w-3.5 h-3.5" />
                   保存する
                 </button>
               </>
@@ -143,10 +146,10 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
               <button
                 onClick={startEditing}
                 disabled={saving}
-                className="flex items-center gap-1.5 text-xs font-bold text-white rounded-full px-3 py-1.5 transition-colors disabled:opacity-50"
-                style={{ background: 'linear-gradient(135deg, #FF5A7A, #FFC24B)' }}
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white rounded-lg px-3 py-2 transition-colors disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{ border: '1px solid #E0242B', background: 'linear-gradient(145deg, #ef4249, #D30F1A)', boxShadow: '0 9px 18px rgba(216,15,26,0.18)' }}
               >
-                <Pencil className="w-3 h-3" />
+                <Pencil className="w-3.5 h-3.5" />
                 目標を編集
               </button>
             )}
@@ -155,37 +158,45 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
 
         {/* Progress */}
         <div className="mb-5">
-          <p className="text-xs text-brand-muted mb-1">全体の進捗</p>
-          <p className="text-4xl font-extrabold mb-2" style={{ color: '#FF5A7A' }}>
+          <p className="font-extrabold leading-none text-dash-primary" style={{ fontSize: 'clamp(30px, 3.6vw, 40px)' }}>
             {progressPercent}%
           </p>
-          <div className="h-2.5 bg-[#EFEFEF] rounded-full overflow-hidden">
-            <div
-              className="h-full rounded-full transition-all duration-500"
-              style={{ width: `${progressPercent}%`, background: 'linear-gradient(90deg, #FFC24B, #FF5A7A)' }}
-            />
+          <div className="flex items-center gap-3 mt-3">
+            <div className="flex-1 rounded-full overflow-hidden" style={{ height: 10, background: '#eef0f2' }}>
+              <div
+                className="h-full rounded-full transition-all duration-500"
+                style={{ width: `${progressPercent}%`, background: 'linear-gradient(90deg, #E0242B, #D30F1A)' }}
+              />
+            </div>
+            <span
+              className="text-center font-extrabold flex-shrink-0"
+              style={{ minWidth: 38, padding: '6px 8px', borderRadius: 999, background: '#f2f3f4', color: '#5b626d', fontSize: 11 }}
+            >
+              {progressPercent}%
+            </span>
           </div>
         </div>
 
         {/* Goals List */}
         {loading ? (
           <div className="py-6 flex justify-center">
-            <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#FF5A7A', borderTopColor: 'transparent' }} />
+            <div className="w-6 h-6 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: '#E0242B', borderTopColor: 'transparent' }} />
           </div>
         ) : displayGoals.length === 0 && !isEditing ? (
-          <div className="py-6 text-center text-sm" style={{ color: '#7A7392' }}>
-            目標がありません。「目標を編集」から追加してください。
+          <div className="mt-6 pt-6 text-center" style={{ borderTop: '1px dashed #E3DFDD', color: '#5E6570' }}>
+            <p className="text-sm">目標がありません。「目標を編集」から追加してください。</p>
+            <div className="mt-3" style={{ color: '#F39A9E', fontSize: 20, letterSpacing: '-6px' }}>⌁⌁⌁</div>
           </div>
         ) : (
-          <div className="border rounded-2xl overflow-hidden" style={{ borderColor: '#F0EAE6' }}>
+          <div className="border rounded-2xl overflow-hidden" style={{ borderColor: '#EBE7E5' }}>
             {displayGoals.map((goal, index) => (
               <div
                 key={isEditing ? index : (goal.no ?? index)}
                 data-goal-row
                 className="flex items-center gap-3 px-4 py-3.5 transition-all"
                 style={{
-                  borderTop: index > 0 ? '1px solid #F0EAE6' : undefined,
-                  background: draggingIndex === index ? '#F5F0ED' : goal.completed ? '#FFF9F6' : '#FFFFFF',
+                  borderTop: index > 0 ? '1px solid #EBE7E5' : undefined,
+                  background: draggingIndex === index ? '#F3EFEE' : goal.completed ? '#FFF1F2' : '#FFFFFF',
                   opacity: draggingIndex === index ? 0.5 : 1,
                 }}
                 onDragOver={isEditing ? (e) => handleRowDragOver(index, e) : undefined}
@@ -197,7 +208,7 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                     onDragStart={(e) => handleGripDragStart(index, e)}
                     onDragEnd={handleDragEnd}
                     className="cursor-grab active:cursor-grabbing flex-shrink-0 select-none"
-                    style={{ color: '#C3BAB4', touchAction: 'none' }}
+                    style={{ color: '#C7C2BF', touchAction: 'none' }}
                   >
                     <GripVertical className="w-5 h-5" />
                   </div>
@@ -205,12 +216,12 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
 
                 <button
                   onClick={() => !isEditing && toggleGoal(index)}
-                  className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                  className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD] ${
                     isEditing ? 'cursor-default pointer-events-none' : 'cursor-pointer'
                   }`}
                   style={{
-                    borderColor: '#FF5A7A',
-                    background: goal.completed ? '#FF5A7A' : '#FFFFFF',
+                    borderColor: '#E0242B',
+                    background: goal.completed ? '#E0242B' : '#FFFFFF',
                   }}
                 >
                   {goal.completed && <Check className="w-4 h-4 text-white" strokeWidth={3} />}
@@ -223,16 +234,16 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                     onChange={e => setEditGoals(prev => prev.map((g, i) => i === index ? { ...g, text: e.target.value } : g))}
                     className="flex-1 text-sm bg-transparent focus:outline-none py-0.5"
                     style={{
-                      color: '#2B2440',
-                      borderBottom: '1px solid #E0D8D4',
+                      color: '#171D2A',
+                      borderBottom: '1px solid #EBE7E5',
                     }}
-                    onFocus={e => { e.currentTarget.style.borderBottomColor = '#FF5A7A'; }}
-                    onBlur={e => { e.currentTarget.style.borderBottomColor = '#E0D8D4'; }}
+                    onFocus={e => { e.currentTarget.style.borderBottomColor = '#E0242B'; }}
+                    onBlur={e => { e.currentTarget.style.borderBottomColor = '#EBE7E5'; }}
                   />
                 ) : (
                   <span
                     className="flex-1 text-sm"
-                    style={{ color: goal.completed ? '#7A7392' : '#2B2440' }}
+                    style={{ color: goal.completed ? '#68707C' : '#171D2A' }}
                   >
                     {goal.text}
                   </span>
@@ -241,16 +252,16 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                 {isEditing && (
                   <button
                     onClick={() => deleteEditGoal(index)}
-                    className="w-7 h-7 rounded-full flex items-center justify-center transition-colors flex-shrink-0"
-                    style={{ color: '#C3BAB4' }}
+                    className="w-7 h-7 rounded-full flex items-center justify-center transition-colors flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                    style={{ color: '#C7C2BF' }}
                     onMouseEnter={e => {
                       const el = e.currentTarget as HTMLButtonElement;
-                      el.style.color = '#F87171';
-                      el.style.background = '#FEF2F2';
+                      el.style.color = '#D30F1A';
+                      el.style.background = '#FFF1F2';
                     }}
                     onMouseLeave={e => {
                       const el = e.currentTarget as HTMLButtonElement;
-                      el.style.color = '#C3BAB4';
+                      el.style.color = '#C7C2BF';
                       el.style.background = 'transparent';
                     }}
                   >
@@ -264,14 +275,14 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
               <div
                 className="flex items-center gap-3 px-4 py-3.5"
                 style={{
-                  background: '#FAFAF9',
-                  borderTop: displayGoals.length > 0 ? '1px dashed #D8D0CC' : undefined,
+                  background: '#FAF8F7',
+                  borderTop: displayGoals.length > 0 ? '1px dashed #EBE7E5' : undefined,
                 }}
               >
                 <div className="w-5 flex-shrink-0" />
                 <div
                   className="w-5 h-5 rounded flex-shrink-0"
-                  style={{ border: '2px dashed #C3BAB4' }}
+                  style={{ border: '2px dashed #C7C2BF' }}
                 />
                 <input
                   type="text"
@@ -280,14 +291,14 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
                   onKeyDown={e => e.key === 'Enter' && addEditGoal()}
                   placeholder="新しい目標を入力..."
                   className="flex-1 text-sm bg-transparent focus:outline-none"
-                  style={{ color: '#2B2440' }}
+                  style={{ color: '#171D2A' }}
                   autoFocus={editGoals.length === 0}
                 />
                 <button
                   onClick={addEditGoal}
                   disabled={!newGoalText.trim()}
-                  className="w-7 h-7 rounded-full flex items-center justify-center text-white disabled:opacity-30 transition-opacity flex-shrink-0"
-                  style={{ background: 'linear-gradient(135deg, #FF5A7A, #FFC24B)' }}
+                  className="w-7 h-7 rounded-full flex items-center justify-center text-white disabled:opacity-30 transition-opacity flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={{ background: 'linear-gradient(135deg, #E0242B, #D30F1A)' }}
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -305,28 +316,28 @@ export function CoachingGoals({ userId }: CoachingGoalsProps) {
             <div className="text-center mb-6">
               <div
                 className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4"
-                style={{ background: 'linear-gradient(135deg, #FF5A7A, #FFC24B)' }}
+                style={{ background: 'linear-gradient(135deg, #E0242B, #D30F1A)' }}
               >
                 <RotateCcw className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-lg font-bold mb-2" style={{ color: '#2B2440' }}>目標をリセット</h3>
-              <p className="text-sm leading-relaxed" style={{ color: '#7A7392' }}>
+              <h3 className="text-lg font-bold mb-2" style={{ color: '#171D2A' }}>目標をリセット</h3>
+              <p className="text-sm leading-relaxed" style={{ color: '#68707C' }}>
                 すべての目標とチェック状態が削除されます。<br />この操作は元に戻せません。
               </p>
             </div>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowResetConfirm(false)}
-                className="flex-1 py-3 rounded-xl text-sm font-bold transition-colors"
-                style={{ border: '1px solid #E0D8D4', color: '#7A7392' }}
+                className="flex-1 py-3 rounded-xl text-sm font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{ border: '1px solid #EBE7E5', color: '#68707C' }}
               >
                 キャンセル
               </button>
               <button
                 onClick={handleReset}
                 disabled={saving}
-                className="flex-1 py-3 rounded-xl text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
-                style={{ background: 'linear-gradient(135deg, #FF5A7A, #FFC24B)' }}
+                className="flex-1 py-3 rounded-xl text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{ background: 'linear-gradient(135deg, #E0242B, #D30F1A)' }}
               >
                 リセットする
               </button>
