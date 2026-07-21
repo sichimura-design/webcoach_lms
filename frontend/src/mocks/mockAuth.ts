@@ -5,14 +5,9 @@
  * 実 Cognito に一切アクセスせず、固定の擬似ユーザーでログイン状態を作る。
  *
  * ログイン/ログアウトの状態は localStorage に保存する（リロードしても保持）。
- *   - キーが無い初期状態 = ログイン済み（＝開発ではそのままアプリに入れる）
- *   - ログアウトすると /login にとどまり、ログイン画面を試せる
- *   - 任意のメール/パスワードでログイン成功（擬似）
- *
- * ログイン画面を試したいとき（手動でログアウト状態にする方法）:
- *   1) /webcoach のヘッダーの「ログアウト」を押す、または
- *   2) DevTools のコンソールで: localStorage.setItem('webcoach-mock-logged-out','1') → リロード
- *   元に戻す（自動ログイン）: localStorage.removeItem('webcoach-mock-logged-out') → リロード
+ *   - キーが無い初期状態 = 未ログイン（＝まず /login が表示される）
+ *   - ログイン画面で任意のメール/パスワードを送信するとログイン成功（擬似）→ /mypage へ
+ *   - ログアウトすると再び未ログイン状態に戻る
  *
  * 擬似ユーザーは admin + coach グループ所属（全画面に到達可能）。
  * 学生視点で見たい場合は MOCK_GROUPS を [] にする。
@@ -20,7 +15,7 @@
 import type { CognitoAuthResult } from '../services/cognitoAuth';
 
 const MOCK_GROUPS = ['admin', 'coach'];
-const LOGGED_OUT_KEY = 'webcoach-mock-logged-out';
+const LOGGED_IN_KEY = 'webcoach-mock-logged-in';
 
 const mockAuthResult: CognitoAuthResult = {
   idToken: 'mock-id-token',
@@ -32,36 +27,36 @@ const mockAuthResult: CognitoAuthResult = {
   groups: MOCK_GROUPS,
 };
 
-function isLoggedOut(): boolean {
+function isLoggedIn(): boolean {
   try {
-    return localStorage.getItem(LOGGED_OUT_KEY) === '1';
+    return localStorage.getItem(LOGGED_IN_KEY) === '1';
   } catch {
     return false;
   }
 }
 
-function setLoggedOut(value: boolean): void {
+function setLoggedIn(value: boolean): void {
   try {
-    if (value) localStorage.setItem(LOGGED_OUT_KEY, '1');
-    else localStorage.removeItem(LOGGED_OUT_KEY);
+    if (value) localStorage.setItem(LOGGED_IN_KEY, '1');
+    else localStorage.removeItem(LOGGED_IN_KEY);
   } catch {
     /* localStorage 不可の環境では無視 */
   }
 }
 
 export function mockSignIn(): Promise<CognitoAuthResult> {
-  setLoggedOut(false);
+  setLoggedIn(true);
   return Promise.resolve(mockAuthResult);
 }
 
 export function mockGetCurrentSession(): Promise<CognitoAuthResult | null> {
-  return Promise.resolve(isLoggedOut() ? null : mockAuthResult);
+  return Promise.resolve(isLoggedIn() ? mockAuthResult : null);
 }
 
 export function mockGetIdToken(): Promise<string | null> {
-  return Promise.resolve(isLoggedOut() ? null : mockAuthResult.idToken);
+  return Promise.resolve(isLoggedIn() ? mockAuthResult.idToken : null);
 }
 
 export function mockSignOut(): void {
-  setLoggedOut(true);
+  setLoggedIn(false);
 }

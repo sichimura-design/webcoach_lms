@@ -1,8 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Button } from './ui/button';
 import { MOCKS_ENABLED } from '../mocks/config';
+
+function MailIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+      <rect x="2" y="4" width="20" height="16" rx="2" />
+      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
+  );
+}
 
 function EyeIcon({ open }: { open: boolean }) {
   return open ? (
@@ -103,50 +120,87 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-brand-bg flex flex-col">
-      {/* Background with gradient circles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+    <div
+      className="min-h-screen flex flex-col relative overflow-hidden pt-6 px-[18px] pb-16 sm:pt-8 sm:px-6"
+      style={{
+        backgroundImage:
+          'radial-gradient(ellipse 34% 28% at 4% 3%, rgba(151,132,120,0.125) 0%, rgba(172,151,138,0.065) 34%, rgba(255,255,255,0) 72%), linear-gradient(118deg, #fffefd 0%, #fdfaf7 44%, #f9f2ec 100%)',
+        fontFamily: '"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
+        color: '#3c3333',
+      }}
+    >
+      {/* 斜光の背景: 繰り返しの斜めストライプ + 中央スポットライト + 1本の強い光の帯 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
-          className="absolute w-[500px] h-[500px] sm:w-[800px] sm:h-[800px] lg:w-[1152px] lg:h-[1152px] rounded-full blur-[200px] sm:blur-[300px] lg:blur-[400px]"
-          style={{ background: '#E17079', top: '-288px', left: '-288px' }}
+          className="absolute"
+          style={{
+            inset: '-25%',
+            background:
+              'repeating-linear-gradient(77deg, transparent 0 9%, rgba(173,151,137,0.115) 11%, rgba(255,255,255,0.72) 14%, rgba(185,163,149,0.156) 18%, transparent 23%, transparent 34%)',
+            filter: 'blur(24px)',
+            transform: 'rotate(-4deg) scale(1.12)',
+            opacity: 0.93,
+          }}
         />
         <div
-          className="absolute w-[500px] h-[500px] sm:w-[800px] sm:h-[800px] lg:w-[1152px] lg:h-[1152px] rounded-full blur-[200px] sm:blur-[300px] lg:blur-[400px]"
-          style={{ background: '#FDEAE2', top: '-288px', right: '-288px' }}
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(ellipse at 52% 50%, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.54) 28%, transparent 64%)',
+          }}
         />
         <div
-          className="absolute w-[500px] h-[500px] sm:w-[800px] sm:h-[800px] lg:w-[1152px] lg:h-[1152px] rounded-full blur-[200px] sm:blur-[300px] lg:blur-[400px]"
-          style={{ background: '#F29367', top: '160px', left: '144px' }}
+          className="absolute"
+          style={{
+            top: '-35%',
+            right: '8%',
+            width: '18vw',
+            minWidth: '150px',
+            height: '170%',
+            background:
+              'linear-gradient(90deg, transparent, rgba(255,255,255,0.82), rgba(162,142,130,0.065), transparent)',
+            filter: 'blur(32px)',
+            transform: 'rotate(-17deg)',
+            opacity: 0.96,
+          }}
         />
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center px-4 relative">
+      <div className="flex-1 flex items-center justify-center relative">
         <div
-          className="w-full max-w-[448px] bg-white/95 backdrop-blur-[10px] rounded-3xl shadow-sm px-5 py-8 sm:px-8 sm:py-12 lg:px-10 lg:py-[60px]"
-          style={{ borderRadius: '24px' }}
+          className="w-full max-w-[470px] rounded-[20px] sm:rounded-[24px] backdrop-blur-[18px] px-6 py-7 sm:px-11 sm:py-8"
+          style={{
+            border: '1px solid rgba(255,255,255,0.86)',
+            background: 'rgba(255,255,255,0.84)',
+            boxShadow: '0 28px 80px rgba(91,55,54,0.1), 0 5px 20px rgba(91,55,54,0.05)',
+          }}
         >
-          {/* Logo & Title */}
-          <div className="flex flex-col items-center mb-10">
-            <div className="mb-4">
-              <img
-                src={`${process.env.PUBLIC_URL}/logo_WEBCOACH.png`}
-                alt="WEBCOACH"
-                className="h-12 sm:h-16 w-auto object-contain"
-              />
-            </div>
-            <div className="text-center">
-              <p
-                className="text-xl sm:text-2xl lg:text-[28px] font-bold text-brand-muted mb-3.5"
-              >
-                学習システム
-              </p>
-              <p
-                className="text-sm font-medium text-brand-muted"
-              >
-                未来の自分を、いま作る。
-              </p>
-            </div>
+          {/* Logo（PNG下部の「キャリアチェンジまでの全てを学ぶ」タグラインをCSSでクロップして非表示） */}
+          <div className="h-11 sm:h-14 overflow-hidden flex items-start justify-center" style={{ marginBottom: 20 }}>
+            <img
+              src={`${process.env.PUBLIC_URL}/logo_WEBCOACH.png`}
+              alt="WEBCOACH"
+              className="w-auto object-contain"
+              style={{ filter: 'hue-rotate(-25deg) saturate(1.4)', height: '118%' }}
+            />
+          </div>
+
+          <h1
+            className="text-center text-[21px] sm:text-[24px] leading-[1.4] tracking-[0.02em]"
+            style={{
+              margin: 0,
+              fontFamily: '"Noto Sans JP", sans-serif',
+              fontWeight: 600,
+              color: '#3c3333',
+            }}
+          >
+            学習システム
+          </h1>
+
+          {/* 「未来の自分を、いま作る。」のテキストは削除。区切りの赤いバーのみ残す */}
+          <div style={{ margin: '8px 0 58px', textAlign: 'center' }}>
+            <div style={{ width: 42, height: 2, margin: '10px auto 0', background: '#d40032', borderRadius: 999 }} />
           </div>
 
           {needsNewPassword ? (
@@ -156,12 +210,12 @@ function LoginPage() {
                 初回ログインのためパスワードの変更が必要です
               </div>
 
-              <div>
-                <label
-                  className="block text-[13px] font-bold text-[#5D5555] mb-1.5"
-                >
-                  新しいパスワード
-                </label>
+              <div style={{ marginBottom: 14 }}>
+                <div className="flex items-center justify-between gap-4" style={{ marginBottom: 6 }}>
+                  <label className="text-sm font-bold" style={{ color: '#3c3333' }}>
+                    新しいパスワード
+                  </label>
+                </div>
                 <div className="relative">
                   <input
                     type={showNewPassword ? 'text' : 'password'}
@@ -171,12 +225,12 @@ function LoginPage() {
                     autoFocus
                     required
                     placeholder="8文字以上（大文字・小文字・数字を含む）"
-                    className="w-full h-12 px-4 pr-12 bg-brand-bg border border-[#CEC3BB] rounded-xl text-sm text-brand-muted placeholder:text-brand-muted/40 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-colors"
+                    className="w-full h-12 px-[17px] pr-12 rounded-xl text-[15px] border border-[#ddd7d5] bg-[rgba(255,255,255,0.72)] text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 focus:border-[rgba(212,0,50,0.65)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(212,0,50,0.08)]"
                   />
                   <button
                     type="button"
                     onClick={() => setShowNewPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-0 bg-transparent border-0 cursor-pointer text-brand-muted/50 hover:text-brand-muted transition-colors flex items-center"
+                    className="absolute inset-y-0 right-3 p-0 bg-transparent border-0 cursor-pointer text-brand-muted/50 hover:text-brand-muted transition-colors flex items-center"
                     tabIndex={-1}
                   >
                     <EyeIcon open={showNewPassword} />
@@ -184,12 +238,12 @@ function LoginPage() {
                 </div>
               </div>
 
-              <div>
-                <label
-                  className="block text-[13px] font-bold text-[#5D5555] mb-1.5"
-                >
-                  パスワード確認
-                </label>
+              <div style={{ marginBottom: 14 }}>
+                <div className="flex items-center justify-between gap-4" style={{ marginBottom: 6 }}>
+                  <label className="text-sm font-bold" style={{ color: '#3c3333' }}>
+                    パスワード確認
+                  </label>
+                </div>
                 <div className="relative">
                   <input
                     type={showConfirmPassword ? 'text' : 'password'}
@@ -198,12 +252,12 @@ function LoginPage() {
                     autoComplete="new-password"
                     required
                     placeholder="もう一度入力してください"
-                    className="w-full h-12 px-4 pr-12 bg-brand-bg border border-[#CEC3BB] rounded-xl text-sm text-brand-muted placeholder:text-brand-muted/40 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-colors"
+                    className="w-full h-12 px-[17px] pr-12 rounded-xl text-[15px] border border-[#ddd7d5] bg-[rgba(255,255,255,0.72)] text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 focus:border-[rgba(212,0,50,0.65)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(212,0,50,0.08)]"
                   />
                   <button
                     type="button"
                     onClick={() => setShowConfirmPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-0 bg-transparent border-0 cursor-pointer text-brand-muted/50 hover:text-brand-muted transition-colors flex items-center"
+                    className="absolute inset-y-0 right-3 p-0 bg-transparent border-0 cursor-pointer text-brand-muted/50 hover:text-brand-muted transition-colors flex items-center"
                     tabIndex={-1}
                   >
                     <EyeIcon open={showConfirmPassword} />
@@ -212,19 +266,16 @@ function LoginPage() {
               </div>
 
               {error && (
-                <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
+                <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600" style={{ marginBottom: 14 }}>
                   {error}
                 </div>
               )}
 
-              <Button
+              <button
                 type="submit"
                 disabled={loading}
-                variant="brand"
-                className="w-full h-11 sm:h-[52px] rounded-xl text-base"
-                style={{
-                  boxShadow: '0 4px 6px -4px rgba(232,109,120,0.3), 0 10px 15px -3px rgba(232,109,120,0.3)',
-                }}
+                className="w-full h-[52px] rounded-xl border-0 outline-none text-white text-base font-bold tracking-[0.04em] cursor-pointer transition-all duration-150 bg-[linear-gradient(135deg,#e00039,#d40032_58%,#b9002b)] shadow-[0_14px_26px_rgba(212,0,50,0.2),inset_0_1px_0_rgba(255,255,255,0.24)] hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_18px_30px_rgba(212,0,50,0.28),inset_0_1px_0_rgba(255,255,255,0.24)] active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed"
+                style={{ marginTop: 4 }}
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -234,44 +285,51 @@ function LoginPage() {
                 ) : (
                   'パスワードを変更してログイン'
                 )}
-              </Button>
+              </button>
             </form>
           ) : (
             /* Login Form */
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div>
-                <label
-                  className="block text-[13px] font-bold text-[#5D5555] mb-1.5"
-                >
-                  メールアドレス
-                </label>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  autoComplete="username"
-                  autoFocus
-                  required
-                  placeholder="user@example.com"
-                  className="w-full h-12 px-4 bg-brand-bg border border-[#CEC3BB] rounded-xl text-sm text-brand-muted placeholder:text-brand-muted/40 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-colors"
-                />
+            <form onSubmit={handleLogin}>
+              <div style={{ marginBottom: 20 }}>
+                <div className="flex items-center justify-between gap-4" style={{ marginBottom: 6 }}>
+                  <label className="text-sm font-bold" style={{ color: '#3c3333' }}>
+                    メールアドレス
+                  </label>
+                </div>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-4 text-brand-muted/50 pointer-events-none flex items-center">
+                    <MailIcon />
+                  </span>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    autoComplete="username"
+                    autoFocus
+                    required
+                    placeholder="user@example.com"
+                    className="w-full h-12 pl-11 pr-[17px] rounded-xl text-[15px] border border-[#ddd7d5] bg-[rgba(255,255,255,0.72)] text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 focus:border-[rgba(212,0,50,0.65)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(212,0,50,0.08)]"
+                  />
+                </div>
               </div>
 
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label
-                    className="text-[13px] font-bold text-[#5D5555]"
-                  >
+              <div style={{ marginBottom: 44 }}>
+                <div className="flex items-center justify-between gap-4" style={{ marginBottom: 6 }}>
+                  <label className="text-sm font-bold" style={{ color: '#3c3333' }}>
                     パスワード
                   </label>
                   <span
                     onClick={() => navigate('/password-reset')}
-                    className="text-[10px] text-[#FF5A7A]/70 cursor-pointer"
+                    className="text-xs cursor-pointer"
+                    style={{ color: '#d40032' }}
                   >
                     パスワードお忘れですか？
                   </span>
                 </div>
                 <div className="relative">
+                  <span className="absolute inset-y-0 left-4 text-brand-muted/50 pointer-events-none flex items-center">
+                    <LockIcon />
+                  </span>
                   <input
                     type={showPassword ? 'text' : 'password'}
                     value={password}
@@ -279,12 +337,12 @@ function LoginPage() {
                     autoComplete="current-password"
                     required
                     placeholder="パスワードを入力"
-                    className="w-full h-12 px-4 pr-12 bg-brand-bg border border-[#CEC3BB] rounded-xl text-sm text-brand-muted placeholder:text-brand-muted/40 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition-colors"
+                    className="w-full h-12 pl-11 pr-12 rounded-xl text-[15px] border border-[#ddd7d5] bg-[rgba(255,255,255,0.72)] text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 focus:border-[rgba(212,0,50,0.65)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(212,0,50,0.08)]"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((v) => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-0 bg-transparent border-0 cursor-pointer text-brand-muted/50 hover:text-brand-muted transition-colors flex items-center"
+                    className="absolute inset-y-0 right-3 p-0 bg-transparent border-0 cursor-pointer text-brand-muted/50 hover:text-brand-muted transition-colors flex items-center"
                     tabIndex={-1}
                   >
                     <EyeIcon open={showPassword} />
@@ -293,19 +351,16 @@ function LoginPage() {
               </div>
 
               {error && (
-                <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
+                <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600" style={{ marginBottom: 14 }}>
                   {error}
                 </div>
               )}
 
-              <Button
+              <button
                 type="submit"
                 disabled={loading}
-                variant="brand"
-                className="w-full h-11 sm:h-[52px] rounded-xl text-base"
-                style={{
-                  boxShadow: '0 4px 6px -4px rgba(232,109,120,0.3), 0 10px 15px -3px rgba(232,109,120,0.3)',
-                }}
+                className="w-full h-[52px] rounded-xl border-0 outline-none text-white text-base font-bold tracking-[0.04em] cursor-pointer transition-all duration-150 bg-[linear-gradient(135deg,#e00039,#d40032_58%,#b9002b)] shadow-[0_14px_26px_rgba(212,0,50,0.2),inset_0_1px_0_rgba(255,255,255,0.24)] hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_18px_30px_rgba(212,0,50,0.28),inset_0_1px_0_rgba(255,255,255,0.24)] active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed"
+                style={{ marginTop: 18 }}
               >
                 {loading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -313,22 +368,27 @@ function LoginPage() {
                     ログイン中...
                   </span>
                 ) : (
-                  'ログイン'
+                  'ログイン　›'
                 )}
-              </Button>
+              </button>
             </form>
           )}
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="relative bg-brand-footer h-10 flex items-center justify-center">
-        <span
-          className="text-[11.4px] font-bold text-white"
-          style={{ letterSpacing: '0.6px' }}
-        >
-          2026 &copy; WEBCOACH
-        </span>
+      <footer
+        className="absolute bottom-0 left-0 right-0 text-center"
+        style={{
+          padding: '19px 24px',
+          color: '#8e817e',
+          background: 'rgba(247,232,228,0.5)',
+          borderTop: '1px solid rgba(255,255,255,0.7)',
+          fontSize: '12px',
+          letterSpacing: '0.06em',
+        }}
+      >
+        2026 &copy; WEBCOACH
       </footer>
     </div>
   );
