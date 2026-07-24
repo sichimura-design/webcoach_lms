@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, ChevronDown, ChevronRight, ChevronsLeft, ChevronsRight, MessageCircle, Lightbulb, ImagePlus } from 'lucide-react';
+import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, ChevronDown, ChevronRight, ChevronsLeft, ChevronsRight, MessageCircle, Lightbulb, ImagePlus, Headphones } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -65,6 +65,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
   const isMyPage = location.pathname === '/mypage' || location.pathname === '/';
   const isCoursesPage = location.pathname === '/courses' || location.pathname.startsWith('/courses/') || location.pathname === '/learning-courses';
+  const isFocusBooth = location.pathname === '/focus-booth';
   const isAIApps = location.pathname === '/ai-apps';
   const isAdmin = location.pathname.startsWith('/admin');
 
@@ -139,6 +140,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const navItems = [
     { label: 'マイページ', icon: Home, path: '/mypage', active: isMyPage },
     { label: '学習コンテンツ', icon: BookOpen, path: '/courses', active: isCoursesPage },
+    { label: '集中ブース', icon: Headphones, path: '/focus-booth', active: isFocusBooth },
     { label: 'AIサポート', icon: Sparkles, path: '/ai-apps', active: isAIApps },
   ];
   const learnItems = navItems;
