@@ -29,13 +29,27 @@ if [ -z "$MOODLE_DB_HOST" ] || [ -z "$MOODLE_DB_USER" ] || [ -z "$MOODLE_DB_PASS
     exit 1
 fi
 
-# Special tables to export
+# Special tables to export (full data)
 TABLES=(
     "mdl_role"
     "mdl_capabilities"
     "mdl_config"
     "mdl_external_services"
     "mdl_oauth2_issuer"
+    "mdl_role_capabilities"
+    "mdl_role_context_levels"
+    "mdl_external_services_functions"
+    "mdl_external_functions"
+    "mdl_oauth2_endpoint"
+    "mdl_oauth2_user_field_mapping"
+)
+
+# Tables with WHERE clause filtering
+# Format: "table_name:WHERE_clause"
+FILTERED_TABLES=(
+    "mdl_context:contextlevel = 10"
+    "mdl_user:id <= 2"
+    "mdl_course:id = 1"
 )
 
 # Output file
@@ -53,9 +67,16 @@ echo "  Host: $MOODLE_DB_HOST"
 echo "  Database: $MOODLE_DB_NAME"
 echo "  User: $MOODLE_DB_USER"
 echo ""
-echo "Tables to export:"
+echo "Tables to export (full data):"
 for table in "${TABLES[@]}"; do
     echo "  - $table"
+done
+echo ""
+echo "Tables to export (filtered):"
+for entry in "${FILTERED_TABLES[@]}"; do
+    table="${entry%%:*}"
+    condition="${entry#*:}"
+    echo "  - $table (WHERE $condition)"
 done
 echo ""
 echo "Output file: $OUTPUT_FILE"
@@ -74,8 +95,11 @@ cat > "$TEMP_FILE" <<EOF
 -- Exported: $(date)
 -- Source: $MOODLE_DB_HOST/$MOODLE_DB_NAME
 --
--- Tables included:
+-- Tables included (full data):
 $(for table in "${TABLES[@]}"; do echo "--   - $table"; done)
+--
+-- Tables included (filtered):
+$(for entry in "${FILTERED_TABLES[@]}"; do table="${entry%%:*}"; condition="${entry#*:}"; echo "--   - $table (WHERE $condition)"; done)
 --
 -- IMPORTANT: These tables contain critical system configuration
 --            Review and modify as needed before importing to production
@@ -115,6 +139,40 @@ for table in "${TABLES[@]}"; do
         echo -e "  ${GREEN}✓${NC} Exported $ROW_COUNT rows"
     else
         echo -e "  ${YELLOW}!${NC} Table is empty, skipping"
+    fi
+done
+
+# Export filtered tables
+for entry in "${FILTERED_TABLES[@]}"; do
+    table="${entry%%:*}"
+    condition="${entry#*:}"
+    echo -e "Exporting ${GREEN}$table${NC} (filtered: WHERE $condition)..."
+
+    # Get row count with filter
+    ROW_COUNT=$(mysql -h "$MOODLE_DB_HOST" -u "$MOODLE_DB_USER" -p"$MOODLE_DB_PASSWORD" "$MOODLE_DB_NAME" -N -e "SELECT COUNT(*) FROM $table WHERE $condition")
+
+    if [ "$ROW_COUNT" -gt 0 ]; then
+        echo "-- " >> "$TEMP_FILE"
+        echo "-- Table: $table (${ROW_COUNT} rows, filtered: WHERE $condition)" >> "$TEMP_FILE"
+        echo "-- " >> "$TEMP_FILE"
+        echo "DELETE FROM $table WHERE $condition;" >> "$TEMP_FILE"
+
+        mysqldump \
+            --no-create-info \
+            --skip-lock-tables \
+            --complete-insert \
+            --skip-extended-insert \
+            --where="$condition" \
+            -h "$MOODLE_DB_HOST" \
+            -u "$MOODLE_DB_USER" \
+            -p"$MOODLE_DB_PASSWORD" \
+            "$MOODLE_DB_NAME" \
+            "$table" >> "$TEMP_FILE"
+
+        echo "" >> "$TEMP_FILE"
+        echo -e "  ${GREEN}✓${NC} Exported $ROW_COUNT rows"
+    else
+        echo -e "  ${YELLOW}!${NC} No rows match filter, skipping"
     fi
 done
 
