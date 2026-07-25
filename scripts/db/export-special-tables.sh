@@ -42,6 +42,9 @@ TABLES=(
     "mdl_external_functions"
     "mdl_oauth2_endpoint"
     "mdl_oauth2_user_field_mapping"
+    "mdl_modules"
+    "mdl_block"
+    "mdl_config_plugins"
 )
 
 # Tables with WHERE clause filtering
