@@ -68,8 +68,9 @@ cdk-prod/cdk.out*/
 cdk-dev/cdk.out*/
 cdk-uat/cdk.out*/
 
-# Moodle source
-moodle/
+# Moodle source (ignore everything except customizations)
+moodle/*
+!moodle/customizations/
 
 # SQL files
 sql/
