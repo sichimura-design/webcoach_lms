@@ -1,11 +1,13 @@
 import { Profile } from '../types/api';
-import { Course, MonthlyGoal, CareerGoal } from '../types/mypage';
+import { Course, MonthlyGoal, CareerGoal, StreakInfo } from '../types/mypage';
 import {
   fetchUserProfile,
   fetchResumeCourse,
   fetchUserCourses,
   fetchMonthlyGoal,
   fetchCareerGoal,
+  fetchStreak,
+  fetchRecommendedCourses,
 } from '../services/mypageApi';
 import { useAsyncData } from './useAsyncData';
 
@@ -15,6 +17,9 @@ interface MypageData {
   careerGoal: CareerGoal;
   resumableCourse: Course | null;
   activeCourses: Course[];
+  streak: StreakInfo;
+  practiceRecommendations: Course[];
+  reviewRecommendations: Course[];
 }
 
 export function useMypageData(userId: number | undefined) {
@@ -26,12 +31,17 @@ export function useMypageData(userId: number | undefined) {
           fetchCareerGoal(userId),
           fetchResumeCourse(userId),
           fetchUserCourses(userId),
-        ]).then(([userProfile, monthlyGoal, careerGoal, resumableCourse, activeCourses]) => ({
+          fetchStreak(userId),
+          fetchRecommendedCourses(userId),
+        ]).then(([userProfile, monthlyGoal, careerGoal, resumableCourse, activeCourses, streak, recommendations]) => ({
           userProfile,
           monthlyGoal,
           careerGoal,
           resumableCourse,
           activeCourses,
+          streak,
+          practiceRecommendations: recommendations.practiceRecommendations,
+          reviewRecommendations: recommendations.reviewRecommendations,
         }))
       : Promise.resolve(null),
     [userId],
@@ -43,6 +53,9 @@ export function useMypageData(userId: number | undefined) {
     careerGoal: data?.careerGoal ?? null,
     resumableCourse: data?.resumableCourse ?? null,
     activeCourses: data?.activeCourses ?? [],
+    streak: data?.streak ?? null,
+    practiceRecommendations: data?.practiceRecommendations ?? [],
+    reviewRecommendations: data?.reviewRecommendations ?? [],
     loading,
     error,
     refetch,

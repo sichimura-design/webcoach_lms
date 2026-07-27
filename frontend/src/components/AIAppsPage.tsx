@@ -1,26 +1,35 @@
-import React from 'react';
-import { Sparkles, ChevronRight, ChevronLeft, Loader2 } from 'lucide-react';
-import { AppHeader, AppIcon } from './shared';
-import { Card } from './shared/Card';
+import { Sparkles, Loader2 } from 'lucide-react';
+import { AppHeader, MascotSvg } from './shared';
 import { useAuth } from '../contexts/AuthContext';
+import { useMypageData } from '../hooks/useMypageData';
 import { bffClient } from '../services/bffClient';
 import { useAsyncData } from '../hooks/useAsyncData';
-import { useNavigate } from 'react-router-dom';
+import { useChatStore } from '../store/chatStore';
 
 interface AIApp {
   id: number | string;
   name: string;
   description: string;
   category?: string;
+  hook?: string;
+  example?: string;
   icon?: string;
-  icon_url?: string;
+  iconBg?: string;
+  accent?: string;
   url?: string;
   [key: string]: any;
 }
 
+const CATEGORY_EMOJI: Record<string, string> = {
+  '学習中に': '📖',
+  '制作・課題に': '🎨',
+  'キャリア・コーチングに': '🚀',
+};
+
 function AIAppsPage() {
   const { user } = useAuth();
-  const navigate = useNavigate();
+  const setChatOpen = useChatStore((s) => s.setChatOpen);
+  const { userProfile, resumableCourse } = useMypageData(user?.userid);
 
   const { data, loading, error } = useAsyncData(
     () => bffClient.getAIApplications(),
@@ -40,152 +49,76 @@ function AIAppsPage() {
     seen.get(cat)!.push(app);
   }
 
+  const displayName = userProfile?.nick_name || user?.username || 'あなた';
+  const recommendAppName = apps[0]?.name;
+
   return (
     <div className="min-h-screen bg-brand-bg flex flex-col">
       <AppHeader userName={user?.username || 'User'} />
 
-      <div className="relative flex-1">
-        {/* 背景装飾 */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
-          <div
-            className="absolute w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] lg:w-[1152px] lg:h-[1152px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(225,112,121,0.3) 0%, transparent 70%)', top: '-200px', left: '-300px', filter: 'blur(40px)' }}
-          />
-          <div
-            className="absolute w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] lg:w-[1152px] lg:h-[1152px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(253,234,226,0.5) 0%, transparent 70%)', top: '-100px', right: '-400px', filter: 'blur(40px)' }}
-          />
-          <div
-            className="absolute w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] lg:w-[1152px] lg:h-[1152px] rounded-full"
-            style={{ background: 'radial-gradient(circle, rgba(242,147,103,0.3) 0%, transparent 70%)', bottom: '-300px', left: '30%', filter: 'blur(40px)' }}
-          />
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 py-8 w-full flex-1" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        <div>
+          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 900 }}>✦ AIサポート</h1>
+          <p style={{ margin: '6px 0 0', fontSize: 13, color: '#B78F98' }}>困りごとから選べば、ぴったりのAIツールが見つかるよ。</p>
         </div>
 
-        {/* ページヘッダーバー */}
-        <div
-          className="relative border-b py-6 sm:py-8 lg:py-[40px]"
-          style={{ backgroundColor: 'rgba(255,255,255,0.5)', borderColor: '#FEFAF8' }}
-        >
-          <div className="max-w-[1100px] mx-auto px-4 sm:px-6 flex flex-col" style={{ gap: '24px' }}>
-            {/* 戻るボタン */}
-            <button
-              onClick={() => navigate('/mypage')}
-              className="flex items-center gap-1 bg-white border border-brand-border rounded-[30px] text-brand-muted hover:bg-gray-50 transition-colors self-start"
-              style={{ fontSize: '12px', fontWeight: 500, padding: '6px 22px 6px 16px' }}
-            >
-              <ChevronLeft className="w-3 h-3" />
-              <span>TOPに戻る</span>
-            </button>
-
-            {/* タイトル */}
-            <div className="flex items-center" style={{ gap: '24px' }}>
-              <div
-                className="w-14 h-14 sm:w-[79px] sm:h-[79px] flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: '#A688D4', borderRadius: '24px' }}
-              >
-                <Sparkles className="w-8 h-8 text-white" />
-              </div>
-              <div className="flex flex-col" style={{ gap: '4px' }}>
-                <span
-                  className="inline-block self-start px-2.5 py-0.5 text-xs font-bold"
-                  style={{ fontSize: '12px', color: '#FF5A7A', backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: '6px' }}
-                >
-                  MEMBER ONLY
-                </span>
-                <h1
-                  className="font-bold text-brand-text text-2xl sm:text-3xl lg:text-[32px]"
-                  style={{ lineHeight: '1.2' }}
-                >
-                  会員限定AIアプリ
-                </h1>
-                <p
-                  className="text-brand-muted"
-                  style={{ fontSize: '14px', lineHeight: '20px', fontWeight: 400 }}
-                >
-                  学習や業務を加速させる、専用のAIツール群です。
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* メインコンテンツ */}
-        <div
-          className="relative max-w-[1100px] mx-auto px-4 sm:px-6"
-          style={{ paddingTop: '40px', paddingBottom: '40px' }}
-        >
-          {loading && (
-            <div className="flex items-center justify-center py-20">
-              <Loader2 className="w-8 h-8 text-brand animate-spin" />
-            </div>
-          )}
-
-          {error && (
-            <div className="flex flex-col items-center justify-center py-20 gap-2">
-              <Sparkles className="w-12 h-12 text-brand-subtle" />
-              <p className="text-sm text-brand-muted">{error}</p>
-            </div>
-          )}
-
-          {!loading && !error && (
-            <div className="flex flex-col" style={{ gap: '48px' }}>
-              {grouped.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 gap-2">
-                  <Sparkles className="w-10 h-10 text-brand-subtle" />
-                  <p className="text-sm text-brand-muted">AIアプリが見つかりませんでした</p>
-                </div>
+        <div style={{ background: 'linear-gradient(120deg,#FBDCE2,#F9CDD6)', borderRadius: 22, padding: '22px 28px', display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+          <MascotSvg size={70} />
+          <div style={{ flex: 1, minWidth: 220 }}>
+            <div style={{ fontSize: 11, fontWeight: 900, color: '#C24358' }}>いまの{displayName}さんへのおすすめ</div>
+            <div style={{ fontSize: 17, fontWeight: 900, marginTop: 4 }}>
+              {resumableCourse ? (
+                <>{resumableCourse.title}を学習中だね。分からない言葉は{recommendAppName ? <span style={{ color: '#E0213A' }}>{recommendAppName}</span> : 'AIアシスタント'}が便利だよ！</>
               ) : (
-                grouped.map(({ category, apps: catApps }) => (
-                  <section key={category} className="flex flex-col" style={{ gap: '24px' }}>
-                    {/* セクションヘッダー */}
-                    <div
-                      className="flex items-center justify-between"
-                      style={{ borderBottom: '1px solid #c2b9b3', paddingBottom: '12px' }}
-                    >
-                      <div className="flex items-center" style={{ gap: '8px' }}>
-                        <Sparkles className="w-5 h-5" style={{ color: '#A688D4' }} />
-                        <h2
-                          className="font-bold text-brand-muted"
-                          style={{ fontSize: '18px', lineHeight: '28px' }}
-                        >
-                          {category}
-                        </h2>
-                      </div>
-                      <button
-                        className="flex items-center gap-1 bg-white border border-brand-border rounded-full text-brand-muted hover:bg-gray-50 transition-colors"
-                        style={{ fontSize: '12px', fontWeight: 500, padding: '4px 12px' }}
-                      >
-                        <span>すべて見る</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-
-                    {/* アプリグリッド */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: '20px' }}>
-                      {catApps.map((app) => (
-                        <AIAppCard
-                          key={app.id}
-                          app={app}
-                          onClick={() => {
-                            if (app.url) window.open(app.url, '_blank', 'noopener,noreferrer');
-                          }}
-                        />
-                      ))}
-                    </div>
-                  </section>
-                ))
+                <>気になることがあったら、下のAIツールに何でも聞いてみてね！</>
               )}
             </div>
-          )}
+            <div style={{ fontSize: 12, color: '#A05A6B', marginTop: 5 }}>教材の本文で引っかかったら、右下の ✦ からドラッグ引用質問もできるよ。</div>
+          </div>
+          <button
+            onClick={() => setChatOpen(true)}
+            style={{ background: 'linear-gradient(120deg,#F0546A,#E0213A)', color: '#fff', border: 'none', borderRadius: 999, padding: '13px 24px', fontWeight: 700, fontSize: 13, cursor: 'pointer', boxShadow: '0 10px 24px rgba(224,33,58,.35)', flexShrink: 0 }}
+          >
+            ✦ 質問してみる
+          </button>
         </div>
+
+        {loading && (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-8 h-8 text-brand animate-spin" />
+          </div>
+        )}
+
+        {error && (
+          <div className="flex flex-col items-center justify-center py-20 gap-2">
+            <Sparkles className="w-12 h-12 text-brand-subtle" />
+            <p className="text-sm text-brand-muted">{error}</p>
+          </div>
+        )}
+
+        {!loading && !error && (
+          grouped.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 gap-2">
+              <Sparkles className="w-10 h-10 text-brand-subtle" />
+              <p className="text-sm text-brand-muted">AIアプリが見つかりませんでした</p>
+            </div>
+          ) : (
+            grouped.map(({ category, apps: catApps }) => (
+              <section key={category} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div style={{ fontSize: 15, fontWeight: 900 }}>{CATEGORY_EMOJI[category] || '✦'} {category}</div>
+                <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: 16 }}>
+                  {catApps.map((app) => (
+                    <AIAppCard key={app.id} app={app} />
+                  ))}
+                </div>
+              </section>
+            ))
+          )
+        )}
       </div>
 
-      {/* フッター */}
       <footer className="flex items-center justify-center" style={{ height: '48px' }}>
-        <span
-          className="text-brand-muted"
-          style={{ fontSize: '11.4px', fontWeight: 500, letterSpacing: '0.6px' }}
-        >
+        <span className="text-brand-muted" style={{ fontSize: '11.4px', fontWeight: 500, letterSpacing: '0.6px' }}>
           2026 &copy; WEBCOACH
         </span>
       </footer>
@@ -193,32 +126,33 @@ function AIAppsPage() {
   );
 }
 
-function AIAppCard({ app, onClick }: { app: AIApp; onClick: () => void }) {
+function AIAppCard({ app }: { app: AIApp }) {
   return (
-    <Card onClick={onClick} minHeight="200px" className="justify-start">
-      <div className="flex flex-col gap-3">
-        <div
-          className="w-full flex items-center justify-center"
-          style={{ backgroundColor: '#F7F2FF', borderRadius: '12px', height: '100px' }}
-        >
-          <AppIcon iconUrl={app.icon_url} url={app.url} icon={app.icon} alt={app.name} size={48} />
-        </div>
-        <div className="flex flex-col gap-2">
-          <h3
-            className="font-bold text-brand-text"
-            style={{ fontSize: '16px', lineHeight: '20px' }}
-          >
-            {app.name}
-          </h3>
-          <p
-            className="font-bold text-brand-muted"
-            style={{ fontSize: '11px', lineHeight: '20px' }}
-          >
-            {app.description}
-          </p>
+    <div style={{ background: '#fff', borderRadius: 20, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: 22, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <span style={{ width: 44, height: 44, borderRadius: 14, background: app.iconBg || '#FDF0F2', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 19, flexShrink: 0 }}>
+          {app.icon || '✦'}
+        </span>
+        <div>
+          {app.hook && <div style={{ fontSize: 11, fontWeight: 700, color: app.accent || '#C24358' }}>{app.hook}</div>}
+          <div style={{ fontSize: 15, fontWeight: 900 }}>{app.name}</div>
         </div>
       </div>
-    </Card>
+      <div style={{ fontSize: 12, color: '#8A767D', lineHeight: 1.8 }}>{app.description}</div>
+      {app.example && (
+        <div style={{ background: '#FBF4F5', borderRadius: 10, padding: '9px 13px', fontSize: 11, color: '#A05A6B' }}>💡 使用例：{app.example}</div>
+      )}
+      {app.url && (
+        <a
+          href={app.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ alignSelf: 'flex-start', fontSize: 12, fontWeight: 700, color: '#E0213A', textDecoration: 'none' }}
+        >
+          アプリを開く ↗
+        </a>
+      )}
+    </div>
   );
 }
 

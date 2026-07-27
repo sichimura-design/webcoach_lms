@@ -17,7 +17,9 @@ import {
   UpdateDBResponse,
   HealthResponse,
 } from '../types/api';
-import { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
+import { CoachingGoalApi, CoachingGoalUpdateItem, DailyTodo, StreakInfo, CommunityPulse, Journey } from '../types/mypage';
+import { StudySessionInput, StudySessionRecord } from '../types/studyRoom';
+import { FocusBoothMember, RankingEntry, RankingType, FocusBoothPulse } from '../types/focusBooth';
 import { getIdToken } from './cognitoAuth';
 
 /**
@@ -363,6 +365,102 @@ class BFFClient {
     goals: CoachingGoalUpdateItem[]
   ): Promise<CoachingGoalApi[]> {
     const response = await this.api.put(`/webcoach/next-coaching-goals/${userId}`, { goals });
+    return response.data;
+  }
+
+  /**
+   * 今日のTODO取得
+   */
+  async getDailyTodos(userId: number): Promise<DailyTodo[]> {
+    const response = await this.api.get(`/webcoach/daily-todos/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 今日のTODO更新（完了状態の切り替え）
+   */
+  async updateDailyTodos(userId: number, todos: DailyTodo[]): Promise<DailyTodo[]> {
+    const response = await this.api.put(`/webcoach/daily-todos/${userId}`, { todos });
+    return response.data;
+  }
+
+  /**
+   * 学習ストリーク（連続学習日数・週間の学習有無）取得
+   */
+  async getStreak(userId: number): Promise<StreakInfo> {
+    const response = await this.api.get(`/webcoach/streak/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * おすすめコース取得（実践課題／復習教材の2バケット）
+   */
+  async getRecommendedCourses(userId: number): Promise<{ practice: any[]; review: any[] }> {
+    const response = await this.api.get('/webcoach/recommend-courses', { params: { userid: userId } });
+    return response.data;
+  }
+
+  /**
+   * コミュニティの盛り上がり（カテゴリ別の直近学習人数。ユーザー単位ではない集計値）
+   */
+  async getCommunityPulse(): Promise<CommunityPulse> {
+    const response = await this.api.get('/webcoach/community-pulse');
+    return response.data;
+  }
+
+  /**
+   * 自習室: 学習セッションの記録
+   */
+  async recordStudySession(userId: number, session: StudySessionInput): Promise<StudySessionRecord> {
+    const response = await this.api.post(`/webcoach/study-sessions/${userId}`, session);
+    return response.data;
+  }
+
+  /**
+   * 学習ジャーニー（ロードマップ＋今日のクエスト＋ストリーク）
+   */
+  async getJourney(userId: number): Promise<Journey> {
+    const response = await this.api.get(`/webcoach/journey/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * コーチングセッション（次回予約・過去の記録）
+   */
+  async getCoachingSessions(userId: number): Promise<{ next: { date: string; coach: string }; past: any[] }> {
+    const response = await this.api.get(`/webcoach/coaching-sessions/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 集中ブース: 雰囲気（集中中人数・応援フィード件数等）
+   */
+  async getFocusBoothPulse(): Promise<FocusBoothPulse> {
+    const response = await this.api.get('/webcoach/focus-booth/pulse');
+    return response.data;
+  }
+
+  /**
+   * 集中ブース: 在室メンバー
+   */
+  async getFocusBoothMembers(): Promise<FocusBoothMember[]> {
+    const response = await this.api.get('/webcoach/focus-booth/members');
+    return response.data;
+  }
+
+  /**
+   * 集中ブース: メンバーを応援する
+   */
+  async cheerFocusBoothMember(memberId: string): Promise<FocusBoothMember> {
+    const response = await this.api.post(`/webcoach/focus-booth/members/${memberId}/cheer`);
+    return response.data;
+  }
+
+  /**
+   * 集中ブース: ランキング
+   */
+  async getFocusBoothRanking(type: RankingType): Promise<RankingEntry[]> {
+    const response = await this.api.get('/webcoach/focus-booth/ranking', { params: { type } });
     return response.data;
   }
 

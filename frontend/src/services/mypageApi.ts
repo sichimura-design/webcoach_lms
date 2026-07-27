@@ -10,6 +10,8 @@ import {
   BadgeProgress,
   MonthlyGoal,
   CareerGoal,
+  DailyTodo,
+  StreakInfo,
 } from '../types/mypage';
 
 // アバター一覧のモジュールレベルキャッシュ（セッション中は保持）
@@ -57,6 +59,8 @@ export const fetchResumeCourse = async (userId: number): Promise<Course | null> 
       categoryColor: '#F3A7A7',
       currentLesson: undefined,
       lastAccessDate: course.lastaccess ? new Date(course.lastaccess * 1000).toISOString() : undefined,
+      durationMinutes: course.durationminutes,
+      totalLessons: course.totallessons,
     };
   }
 
@@ -104,6 +108,8 @@ export const fetchUserCourses = async (userId: number): Promise<Course[]> => {
       categoryName: course.categoryname || 'カテゴリ',
       categoryColor: '#60A5FA',
       lastAccessDate: course.lastaccess ? new Date(course.lastaccess * 1000).toISOString() : undefined,
+      durationMinutes: course.durationminutes,
+      totalLessons: course.totallessons,
     }));
     console.log('fetchUserCourses mapped courses:', courses);
     return courses;
@@ -172,5 +178,43 @@ export const fetchCareerGoal = async (userId: number): Promise<CareerGoal> => {
 
   return {
     goal: response.goal || '目標を設定しましょう'
+  };
+};
+
+/**
+ * 今日のTODO取得
+ */
+export const fetchDailyTodos = async (userId: number): Promise<DailyTodo[]> => {
+  return bffClient.getDailyTodos(userId);
+};
+
+/**
+ * 学習ストリーク（連続学習日数・週間の学習有無）取得
+ */
+export const fetchStreak = async (userId: number): Promise<StreakInfo> => {
+  return bffClient.getStreak(userId);
+};
+
+const mapRecommendedCourse = (course: any): Course => ({
+  id: course.id || course.courseid,
+  title: course.fullname || course.displayname || '',
+  description: course.summary || '',
+  categoryName: course.categoryname || 'カテゴリ',
+  thumbnailUrl: course.courseimage,
+  difficulty: course.difficulty,
+  duration: course.duration,
+});
+
+/**
+ * おすすめコース取得（実践課題／復習教材の2バケット）
+ */
+export const fetchRecommendedCourses = async (
+  userId: number
+): Promise<{ practiceRecommendations: Course[]; reviewRecommendations: Course[] }> => {
+  const response = await bffClient.getRecommendedCourses(userId);
+
+  return {
+    practiceRecommendations: Array.isArray(response?.practice) ? response.practice.map(mapRecommendedCourse) : [],
+    reviewRecommendations: Array.isArray(response?.review) ? response.review.map(mapRecommendedCourse) : [],
   };
 };

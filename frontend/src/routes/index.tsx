@@ -3,17 +3,18 @@ import { Routes, Route, Navigate, useNavigate, useParams, useSearchParams } from
 import LoginPage from '../components/LoginPage';
 import PasswordResetPage from '../components/PasswordResetPage';
 import MyPage from '../components/MyPage';
+import FocusBoothPage from '../components/FocusBoothPage';
 import ProfilePage from '../components/ProfilePage';
 import WebCoachDashboard from '../components/WebCoachDashboard';
 import CareerPathPage from '../components/CareerPathPage';
-import CoursesPage from '../components/CoursesPage';
+import MaterialsTopPage from '../components/MaterialsTopPage';
 import LearningCoursesPage from '../components/LearningCoursesPage';
 import CategoryDetailPage from '../components/CategoryDetailPage';
 import AIAppsPage from '../components/AIAppsPage';
 import BadgesPage from '../components/BadgesPage';
 import ContentListPage from '../components/ContentListPage';
 import CourseContentPage from '../components/CourseContentPage';
-import CourseCurriculumPage from '../components/CourseCurriculumPage';
+import CourseTopPage from '../components/CourseTopPage';
 import AccountSettingsPage from '../components/AccountSettingsPage';
 import AnimatedPage from '../components/AnimatedPage';
 import { AdminLayout } from '../components/admin/AdminLayout';
@@ -130,7 +131,7 @@ function CareerPathWrapper() {
 }
 
 function CoursesWrapper() {
-  return <CoursesPage />;
+  return <MaterialsTopPage />;
 }
 
 function LearningCoursesWrapper() {
@@ -159,7 +160,7 @@ function ProfilePageWrapper() {
 }
 
 function CourseCurriculumWrapper() {
-  return <CourseCurriculumPage />;
+  return <CourseTopPage />;
 }
 
 function CourseContentWrapper() {
@@ -208,6 +209,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <MyPageWrapper />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/focus-booth"
+        element={
+          <ProtectedRoute>
+            <FocusBoothPage />
           </ProtectedRoute>
         }
       />

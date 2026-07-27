@@ -23,6 +23,8 @@ import type {
   Category,
   ResumeCourse,
 } from '../types/api';
+import type { StudySessionInput, StudySessionRecord } from '../types/studyRoom';
+import type { FocusBoothMember, RankingEntry, RankingType } from '../types/focusBooth';
 
 // ---- 固定モックデータ（型に沿った最小限） ----------------------------------
 const MOCK_USER_ID = 2;
@@ -55,6 +57,7 @@ const profile: Profile = {
   goal: '3ヶ月で案件を1件獲得する',
   avatar_url: '',
   avatar_id: '',
+  weekly_target_minutes: 600,
 };
 
 const categories: Category[] = [
@@ -72,6 +75,9 @@ const resumeCourses: ResumeCourse[] = [
     progress: 45,
     lastaccess: Math.floor(Date.now() / 1000) - 3600,
     accesscount: 12,
+    // 学習サマリー（総学習時間・完了レッスン数）の簡易推定に使う目安値
+    durationminutes: 30,
+    totallessons: 5,
   },
 ];
 
@@ -83,6 +89,8 @@ const userCourses = [
     summary: 'デザインの基本原則を学ぶ入門コース',
     progress: 45,
     categoryname: 'Webデザイン',
+    durationminutes: 30,
+    totallessons: 5,
   },
   {
     id: 102,
@@ -91,6 +99,8 @@ const userCourses = [
     summary: 'Webページを作る第一歩',
     progress: 10,
     categoryname: 'コーディング',
+    durationminutes: 40,
+    totallessons: 6,
   },
   {
     id: 201,
@@ -99,6 +109,8 @@ const userCourses = [
     summary: '近接・整列・反復・コントラストを理解する',
     progress: 100,
     categoryname: 'Webデザイン',
+    durationminutes: 20,
+    totallessons: 3,
   },
 ];
 
@@ -158,15 +170,101 @@ function buildSections(courseId: number) {
 
 // AIアプリ（/webcoach/ai-applications）
 const aiApps = [
-  { id: 1, name: 'バナーAIジェネレーター', description: '文字を入れるだけでバナー画像を生成', url: 'https://example.com/banner', icon: '' },
-  { id: 2, name: 'キャッチコピー生成', description: '商品情報から刺さるコピーを提案', url: 'https://example.com/copy', icon: '' },
-  { id: 3, name: '配色パレット提案', description: 'イメージに合う配色を自動生成', url: 'https://example.com/color', icon: '' },
-  { id: 4, name: '文章校正アシスタント', description: '誤字・言い回しをAIがチェック', url: 'https://example.com/proof', icon: '' },
+  { id: 1, name: '教材Q&Aチャット', category: '学習中に', hook: '教材を読んでいて「？」となったら', description: '本文を引用して質問すると、どこでつまずいているかを一緒に整理して、あなたに合わせた説明をしてくれる。', example: '「"余白を活かす"ってどういうこと？具体例がほしい」', icon: '💬', iconBg: '#FDF0F2', accent: '#C24358', url: 'https://example.com/qa-chat' },
+  { id: 2, name: '学習プランナーAI', category: '学習中に', hook: '今週なにをやるか迷ったら', description: 'ロードマップと使える時間を伝えると、1週間分の学習計画を提案。忙しい週のリスケも相談できる。', example: '「今週は3時間しか取れない。何を優先すべき？」', icon: '🗓', iconBg: '#FDF0F2', accent: '#C24358', url: 'https://example.com/planner' },
+  { id: 3, name: 'デザイン添削AI', category: '制作・課題に', hook: '作ったものに自信がないとき', description: 'バナーやLPの画像をアップすると、レイアウト・配色・文字組の観点で講評。提出前のセルフチェックに。', example: '「課題のバナーです。視線誘導の観点でアドバイスして」', icon: '🖼', iconBg: '#FBEACD', accent: '#B98A16', url: 'https://example.com/design-review' },
+  { id: 4, name: '文章ブラッシュアップAI', category: '制作・課題に', hook: '言葉づかいに迷ったら', description: 'ポートフォリオの自己紹介文やバナーコピーを、目的と読み手に合わせて磨いてくれる。', example: '「ポートフォリオの自己PRを300字で自然にして」', icon: '✎', iconBg: '#FBEACD', accent: '#B98A16', url: 'https://example.com/writing' },
+  { id: 5, name: 'キャリア相談AI', category: 'キャリア・コーチングに', hook: '将来がモヤモヤしてきたら', description: '働き方や案件の獲り方の悩みを整理。コーチングの前に考えをまとめておくのにも使える。', example: '「副業から始めたい。最初の一歩は何がいい？」', icon: '🧭', iconBg: '#EAF6ED', accent: '#2FA35C', url: 'https://example.com/career' },
+  { id: 6, name: 'コーチング準備・ふりかえりAI', category: 'キャリア・コーチングに', hook: 'コーチングの前後に', description: '話したいことの整理と、ミーティングノートの要約・ネクストアクション抽出。ロードマップ更新の下書きにも。', example: '「今日のノートを要約して、来週やることを3つに絞って」', icon: '📋', iconBg: '#EAF6ED', accent: '#2FA35C', url: 'https://example.com/coaching-prep' },
 ];
 
 // 次回コーチングまでの目標（セッション内で保持：AI細分化やコーチングページからの生成を
 // マイページに反映させるため、GET/PUT で同じストアを読み書きする）
-let coachingGoalsStore: { no: number; description: string; is_completed: 0 | 1 }[] = [];
+let coachingGoalsStore: { no: number; description: string; is_completed: 0 | 1; progress: number }[] = [];
+
+// 今日のTODO（セッション内で保持）
+let dailyTodosStore: { id: number; text: string; done: boolean }[] = [
+  { id: 1, text: 'バナーを1つ作る', done: false },
+  { id: 2, text: '配色の基本を復習する', done: false },
+  { id: 3, text: '前回の課題を提出する', done: true },
+];
+
+// 学習ストリーク（連続学習日数・週間の学習有無。固定モック）
+const streakMock = {
+  days: 12,
+  best: 12,
+  week: [
+    { label: '月', studied: true },
+    { label: '火', studied: true },
+    { label: '水', studied: true },
+    { label: '木', studied: true },
+    { label: '金', studied: false },
+    { label: '土', studied: false },
+    { label: '日', studied: false },
+  ],
+};
+
+// コミュニティの盛り上がり（取り組んでいる活動別の直近人数。固定モック・1〜2時間おきにフロントで取得する想定）
+const communityPulseMock = {
+  totalToday: 91,
+  updatedAt: new Date().toISOString(),
+  rooms: [
+    { id: 'lecture', activityLabel: '座学勉強中', count: 34, recentInitials: ['さ', 'ゆ', 'こ'] },
+    { id: 'practice', activityLabel: '実践課題に取り組み中', count: 22, recentInitials: ['た', 'み'] },
+    { id: 'projects', activityLabel: '案件に挑戦中', count: 8, recentInitials: ['あ'] },
+    { id: 'focus-booth', activityLabel: '集中ブースで黙々作業', count: 27, recentInitials: ['り', 'は'] },
+  ],
+  // 「他の人の様子」用の匿名活動フィード（仮名＋匿名アイコン。実名・実写真は使わない）
+  activityFeed: [
+    { id: 'a1', nickname: 'うさぎ58', avatarEmoji: '🐰', activityLabel: 'バナー制作を学習中', tag: 'バナー制作' },
+    { id: 'a2', nickname: 'こあら12', avatarEmoji: '🐨', activityLabel: 'HTML/CSSを復習中', tag: '復習中' },
+    { id: 'a3', nickname: 'ぱんだ7', avatarEmoji: '🐼', activityLabel: '休憩から再開', tag: 'Lesson4' },
+    { id: 'a4', nickname: 'ひつじ33', avatarEmoji: '🐑', activityLabel: '課題に取り組み中', tag: '課題提出' },
+  ],
+};
+
+// 自習室の学習セッション記録（セッション内で保持）
+let studySessionsStore: StudySessionRecord[] = [];
+
+// ==================== 集中ブース（応援・ランキング付き） ====================
+// 在室メンバー（仮名＋匿名アイコン。応援するとheartsが増える・セッション内で保持）
+let focusBoothMembersStore: FocusBoothMember[] = [
+  { id: 'm1', nickname: 'うさぎ58', avatarEmoji: '🐰', activityLabel: 'Webデザイン・バナー制作', elapsedMinutes: 184, hearts: 23, cheeredByMe: false },
+  { id: 'm2', nickname: 'こあら12', avatarEmoji: '🐨', activityLabel: 'コーディング・HTML/CSS基礎', elapsedMinutes: 212, hearts: 18, cheeredByMe: false },
+  { id: 'm3', nickname: 'ぱんだ7', avatarEmoji: '🐼', activityLabel: 'コーディング・JavaScript入門', elapsedMinutes: 167, hearts: 12, cheeredByMe: false },
+  { id: 'm4', nickname: 'ひつじ33', avatarEmoji: '🐑', activityLabel: 'Webデザイン・Figma実践', elapsedMinutes: 143, hearts: 10, cheeredByMe: false },
+  { id: 'm5', nickname: 'きつね21', avatarEmoji: '🦊', activityLabel: 'マーケティング・Web集客基礎', elapsedMinutes: 98, hearts: 8, cheeredByMe: false },
+  { id: 'm6', nickname: 'ねこ9', avatarEmoji: '🐱', activityLabel: '配色理論', elapsedMinutes: 76, hearts: 6, cheeredByMe: false },
+];
+
+let myCheerCountToday = 3;
+
+const focusBoothRankings: Record<RankingType, RankingEntry[]> = {
+  studyTime: [
+    { rank: 1, nickname: 'こあら12', avatarEmoji: '🐨', value: 522 },
+    { rank: 2, nickname: 'たぬき44', avatarEmoji: '🦝', value: 448 },
+    { rank: 3, nickname: 'ぱんだ7', avatarEmoji: '🐼', value: 375 },
+    { rank: 4, nickname: 'ひつじ33', avatarEmoji: '🐑', value: 348 },
+    { rank: 5, nickname: 'ねこ9', avatarEmoji: '🐱', value: 272 },
+    { rank: 12, nickname: 'あなた', avatarEmoji: '🦊', value: 201, isMe: true },
+  ],
+  cheersGiven: [
+    { rank: 1, nickname: 'うさぎ58', avatarEmoji: '🐰', value: 34 },
+    { rank: 2, nickname: 'こあら12', avatarEmoji: '🐨', value: 29 },
+    { rank: 3, nickname: 'ぱんだ7', avatarEmoji: '🐼', value: 21 },
+    { rank: 4, nickname: 'ひつじ33', avatarEmoji: '🐑', value: 17 },
+    { rank: 5, nickname: 'ねこ9', avatarEmoji: '🐱', value: 14 },
+    { rank: 8, nickname: 'あなた', avatarEmoji: '🦊', value: 9, isMe: true },
+  ],
+  cheersReceived: [
+    { rank: 1, nickname: 'こあら12', avatarEmoji: '🐨', value: 41 },
+    { rank: 2, nickname: 'うさぎ58', avatarEmoji: '🐰', value: 33 },
+    { rank: 3, nickname: 'ぱんだ7', avatarEmoji: '🐼', value: 25 },
+    { rank: 4, nickname: 'ひつじ33', avatarEmoji: '🐑', value: 19 },
+    { rank: 5, nickname: 'ねこ9', avatarEmoji: '🐱', value: 15 },
+    { rank: 15, nickname: 'あなた', avatarEmoji: '🦊', value: 6, isMe: true },
+  ],
+};
 
 // 学習計画（今週の予定・セッション内で保持）
 let studyPlanStore: { weekLabel: string; days: any[] } | null = null;
@@ -218,15 +316,71 @@ export const handlers = [
   ),
 
   http.get('*/api/webcoach/profile/:userid', () => HttpResponse.json(profile)),
+  http.post('*/api/webcoach/profile/:userid', async ({ request }) => {
+    try {
+      const body = (await request.json()) as Partial<Profile>;
+      Object.assign(profile, body);
+    } catch {
+      /* ignore */
+    }
+    return HttpResponse.json(profile);
+  }),
   http.get('*/api/webcoach/avatars', () => HttpResponse.json([])),
 
   // ==================== MyPage / ダッシュボード ====================
   http.get('*/api/webcoach/resumecourse/:userid', () => HttpResponse.json(resumeCourses)),
 
-  // おすすめコース（同じフェーズの人が学んでいるコース）
-  http.get('*/api/webcoach/recommend-courses', () =>
-    HttpResponse.json(catalog.filter(c => [211, 212, 221].includes(c.id)))
+  // おすすめコース（タグベース：実践課題／復習教材の2バケットで返す。受講中のコースは復習教材から除外）
+  http.get('*/api/webcoach/recommend-courses', () => {
+    const activeCourseIds = userCourses.map((c) => c.id);
+    const practice = catalog.filter((c) => c.tags.some((t) => t.rawname === '実践課題'));
+    const review = catalog.filter(
+      (c) => c.tags.some((t) => t.rawname === '基礎知識') && !activeCourseIds.includes(c.id)
+    );
+    return HttpResponse.json({ practice, review });
+  }),
+
+  http.get('*/api/webcoach/community-pulse', () => HttpResponse.json(communityPulseMock)),
+
+  // 自習室: 学習セッションの記録（タイマー終了時に1件POSTされる）
+  http.post('*/api/webcoach/study-sessions/:userid', async ({ request }) => {
+    try {
+      const body = (await request.json()) as StudySessionInput;
+      const record: StudySessionRecord = { id: studySessionsStore.length + 1, ...body };
+      studySessionsStore.push(record);
+      return HttpResponse.json(record);
+    } catch {
+      return HttpResponse.json({ error: 'invalid body' }, { status: 400 });
+    }
+  }),
+  http.get('*/api/webcoach/study-sessions/:userid', () => HttpResponse.json(studySessionsStore)),
+
+  // 集中ブース: 雰囲気（集中中の人数・応援フィード件数・自分の本日の応援回数）
+  http.get('*/api/webcoach/focus-booth/pulse', () =>
+    HttpResponse.json({
+      concentratingCount: 128,
+      cheerFeedCount: 24,
+      myCheerCountToday,
+    })
   ),
+  // 集中ブース: 在室メンバー
+  http.get('*/api/webcoach/focus-booth/members', () => HttpResponse.json(focusBoothMembersStore)),
+  // 集中ブース: 応援する
+  http.post('*/api/webcoach/focus-booth/members/:id/cheer', ({ params }) => {
+    const member = focusBoothMembersStore.find((m) => m.id === params.id);
+    if (!member) return HttpResponse.json({ error: 'not found' }, { status: 404 });
+    if (!member.cheeredByMe) {
+      member.hearts += 1;
+      member.cheeredByMe = true;
+      myCheerCountToday += 1;
+    }
+    return HttpResponse.json(member);
+  }),
+  // 集中ブース: ランキング（学習時間／応援した／応援された）
+  http.get('*/api/webcoach/focus-booth/ranking', ({ request }) => {
+    const type = (new URL(request.url).searchParams.get('type') as RankingType) || 'studyTime';
+    return HttpResponse.json(focusBoothRankings[type] ?? []);
+  }),
 
   // 案件獲得ダッシュボード
   http.get('*/api/webcoach/career-dashboard/:userid', () =>
@@ -278,9 +432,37 @@ export const handlers = [
     }
     return HttpResponse.json(coachingGoalsStore);
   }),
+  http.get('*/api/webcoach/daily-todos/:userid', () => HttpResponse.json(dailyTodosStore)),
+  http.put('*/api/webcoach/daily-todos/:userid', async ({ request }) => {
+    try {
+      const body = (await request.json()) as { todos?: typeof dailyTodosStore };
+      dailyTodosStore = Array.isArray(body?.todos) ? body.todos : dailyTodosStore;
+    } catch {
+      /* ignore */
+    }
+    return HttpResponse.json(dailyTodosStore);
+  }),
+  http.get('*/api/webcoach/streak/:userid', () => HttpResponse.json(streakMock)),
   http.get('*/api/webcoach/roadmaps', () => HttpResponse.json([])),
-  http.get('*/api/moodle/badges', () => HttpResponse.json([])),
-  http.get('*/api/moodle/user-badges/:userid', () => HttpResponse.json([])),
+  http.get('*/api/moodle/badges', () =>
+    HttpResponse.json([
+      { id: 1, name: '学習スタートダッシュ', description: '初めてレッスンを完了した' },
+      { id: 2, name: '3日連続ログイン', description: '3日連続で学習した' },
+      { id: 3, name: '初回コーチング完了', description: '初回のコーチングセッションを完了した' },
+      { id: 4, name: 'バナー制作マスター', description: 'バナー制作の教材を完了した' },
+      { id: 5, name: '配色レア発見', description: '配色の基礎教材を完了した' },
+      { id: 6, name: '週間チャレンジャー', description: '週の目標学習時間を達成した' },
+      { id: 7, name: '案件挑戦者', description: '案件に応募した' },
+      { id: 8, name: 'エピック学習者', description: '100時間学習した' },
+    ])
+  ),
+  http.get('*/api/moodle/user-badges/:userid', () =>
+    HttpResponse.json([
+      { id: 1, badgeid: 1, userid: MOCK_USER_ID, dateissued: Math.floor(Date.now() / 1000) - 28 * 86400, uniquehash: 'mockhash1' },
+      { id: 2, badgeid: 2, userid: MOCK_USER_ID, dateissued: Math.floor(Date.now() / 1000) - 14 * 86400, uniquehash: 'mockhash2' },
+      { id: 3, badgeid: 3, userid: MOCK_USER_ID, dateissued: Math.floor(Date.now() / 1000) - 3 * 86400, uniquehash: 'mockhash3' },
+    ])
+  ),
   http.get('*/api/webcoach/ai-applications', () => HttpResponse.json(aiApps)),
   // コース受講登録（クリック時）— 成功を返すだけ
   http.post('*/api/moodle/enroll-course/:courseid', () => HttpResponse.json({ success: true })),
@@ -344,7 +526,12 @@ export const handlers = [
   http.get('*/api/webcoach/journey/:userid', () =>
     HttpResponse.json({
       goal: 'Webデザイナーとして初案件を獲得する',
-      streak: { current: 5, best: 12, last7days: [true, true, false, true, true, true, true] },
+      // streakMockを単一の正とし、ここでは導出のみ行う（別々にハードコードして乖離させない）
+      streak: {
+        current: streakMock.days,
+        best: streakMock.best,
+        last7days: streakMock.week.map((d) => d.studied),
+      },
       todayQuest: {
         title: '「バナーを作ってみよう」を進める',
         subtitle: '今日はここから ・ 約45分',
@@ -459,7 +646,7 @@ export const handlers = [
   // ==================== コーチング（AIミーティングノート） ====================
   http.get('*/api/webcoach/coaching-sessions/:userid', () =>
     HttpResponse.json({
-      next: { date: '7月16日(木) 20:00', coach: '田中コーチ' },
+      next: { date: '7月29日(火) 20:00', coach: '田中コーチ' },
       past: [
         { id: 4, date: '2026-07-02', title: '第4回コーチング', summary: 'バナー制作の進め方と「余白の取り方」の課題を確認。次回までに参考分析と配色案。', tasksCreated: true },
         { id: 3, date: '2026-06-25', title: '第3回コーチング', summary: '配色の基礎と参考サイトの見方を整理。デザインの型を増やす方針に。', tasksCreated: true },

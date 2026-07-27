@@ -12,12 +12,14 @@ export interface CoachingGoalApi {
   display_order: number;
   description: string;
   is_completed: 0 | 1;
+  progress: number; // 0-100。is_completedはprogress>=100から導出する派生値
 }
 
 export interface CoachingGoalUpdateItem {
   no: number;
   description: string;
   is_completed: 0 | 1;
+  progress: number;
 }
 
 // Career goal (なりたい姿)
@@ -51,6 +53,12 @@ export interface Course {
   categoryColor?: string;
   currentLesson?: string;
   lastAccessDate?: string | Date;
+  // 学習サマリー（総学習時間・完了レッスン数）の簡易推定に使う目安値
+  durationMinutes?: number;
+  totalLessons?: number;
+  // おすすめレッスン表示用（バックエンドが返す場合のみ使う任意項目。未設定なら該当バッジを非表示にする）
+  difficulty?: string;
+  duration?: string;
 }
 
 // Current course (受講中のコース)
@@ -148,6 +156,83 @@ export interface UpcomingTask {
   type: 'assignment' | 'quiz' | 'activity';
   priority: 'high' | 'medium' | 'low';
   estimatedTime?: number; // in minutes
+}
+
+// コミュニティの盛り上がり（ギルドロビー的UI用。取り組んでいる活動別の「直近学習した人数」の集計）
+export interface CommunityRoom {
+  id: string; // 安定した識別子（表示ラベルは変わりうるのでこちらで検索する）
+  activityLabel: string; // 表示用の活動ラベル（例: '実践課題に取り組み中'）
+  count: number;
+  recentInitials: string[]; // 直近学習した数名のイニシャル（アバター代わり）
+}
+
+// 「他の人の様子」用の匿名化された活動フィード（仮名＋匿名アイコン。実名・実写真は使わない）
+export interface PseudonymousActivity {
+  id: string;
+  nickname: string;
+  avatarEmoji: string;
+  activityLabel: string;
+  tag: string;
+}
+
+export interface CommunityPulse {
+  totalToday: number;
+  rooms: CommunityRoom[]; // 自習室（黙々作業）もこの中の1つのroomとして含まれる
+  activityFeed: PseudonymousActivity[];
+  updatedAt: string; // ISO文字列
+}
+
+// 今日のTODO（コーチング目標とは別の、その日単位の小さなタスク）
+export interface DailyTodo {
+  id: number;
+  text: string;
+  done: boolean;
+}
+
+// 週間の学習ストリーク（曜日ごとの学習有無）
+export interface WeekActivity {
+  label: string; // '月' '火' ...
+  studied: boolean;
+}
+
+export interface StreakInfo {
+  days: number;
+  week: WeekActivity[];
+  best?: number; // 自己ベスト連続日数
+}
+
+// 学習ジャーニー（ロードマップ＋今日のクエスト）。GET /api/webcoach/journey/:userid
+export interface JourneyTodayQuest {
+  title: string;
+  subtitle: string;
+  courseId?: number;
+  cta: string;
+}
+
+export interface JourneyPhase {
+  id: number;
+  title: string;
+  outcome: string;
+  status: 'done' | 'current' | 'locked';
+  progress: number;
+  recommendedCourseIds: number[];
+}
+
+export interface JourneyNode {
+  id: number;
+  title: string;
+  type: 'milestone' | 'lesson' | 'boss';
+  status: 'done' | 'current' | 'locked';
+  courseId?: number;
+  phaseId: number;
+}
+
+export interface Journey {
+  goal: string;
+  streak: { current: number; best: number; last7days: boolean[] };
+  todayQuest: JourneyTodayQuest;
+  phases: JourneyPhase[];
+  nodes: JourneyNode[];
 }
 
 // Recommendation

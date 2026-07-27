@@ -4,22 +4,12 @@ import { bffClient } from '../services/bffClient';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { useAiChat, ChatMessage } from '../hooks/useAiChat';
-import {
-  FileText,
-  Send,
-  ArrowLeft,
-  AlignJustify,
-  X,
-  CheckCircle,
-  RotateCcw,
-  ExternalLink,
-  Menu,
-  Bot,
-  User,
-} from 'lucide-react';
+import { FileText, ExternalLink, Menu, X, User } from 'lucide-react';
 import Encoding from 'encoding-japanese';
 import MarkdownRenderer from './MarkdownRenderer';
-import { AppHeader } from './shared';
+import { AppHeader, CharacterAvatar } from './shared';
+import { useProgressionStore } from '../store/progressionStore';
+import { EXP_RULES } from '../utils/progression';
 
 interface CourseContentPageProps {
   courseId: number;
@@ -53,12 +43,6 @@ interface ModuleContent {
   filename: string;
   fileurl: string;
   content?: string;
-}
-
-interface TocItem {
-  id: string;
-  text: string;
-  level: number; // 1〜4
 }
 
 // モジュールのコンテンツ種別（modname + ファイル種別）
@@ -180,29 +164,6 @@ ${headStyles.join('\n')}
 <body>${bodyHtml}${EXPLAIN_INJECT}</body></html>`;
 }
 
-/** HTML文字列のh1〜h4に id を付与して返す */
-function addHeadingIds(html: string): string {
-  let counter = 0;
-  return html.replace(/<(h[1-4])([^>]*)>/gi, (match, tag, attrs) => {
-    if (/\bid\s*=/i.test(attrs)) return match; // 既存IDは保持
-    return `<${tag}${attrs} id="toc-heading-${counter++}">`;
-  });
-}
-
-/** HTML文字列からTOCアイテムを抽出（DOMParser使用） */
-function extractTocFromHtml(html: string): TocItem[] {
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  const headings = doc.querySelectorAll('h1, h2, h3, h4');
-  let counter = 0;
-  return Array.from(headings)
-    .map(el => ({
-      id: el.id || `toc-heading-${counter++}`,
-      text: el.textContent?.trim() ?? '',
-      level: parseInt(el.tagName[1], 10),
-    }))
-    .filter(item => item.text.length > 0);
-}
-
 // ─────────────────────────────────────────
 // Reducer
 // ─────────────────────────────────────────
@@ -216,7 +177,6 @@ interface ContentState {
   courseName: string;
   markdownContent: string;
   loadingMarkdown: boolean;
-  pageToc: TocItem[];
   processedHtml: string;
 }
 
@@ -226,10 +186,9 @@ type ContentAction =
   | { type: 'FETCH_ERROR'; error: string }
   | { type: 'SELECT_MODULE'; module: Module }
   | { type: 'TOGGLE_SECTION'; sectionId: number }
-  | { type: 'SET_PAGE_CONTENT'; html: string; toc: TocItem[] }
+  | { type: 'SET_PAGE_CONTENT'; html: string }
   | { type: 'SET_MARKDOWN'; content: string; loading: boolean }
-  | { type: 'CLEAR_CONTENT' }
-  | { type: 'SET_TOC'; toc: TocItem[] };
+  | { type: 'CLEAR_CONTENT' };
 
 const initialContentState: ContentState = {
   sections: [],
@@ -240,7 +199,6 @@ const initialContentState: ContentState = {
   courseName: '',
   markdownContent: '',
   loadingMarkdown: false,
-  pageToc: [],
   processedHtml: '',
 };
 
@@ -260,7 +218,7 @@ function contentReducer(state: ContentState, action: ContentAction): ContentStat
     case 'FETCH_ERROR':
       return { ...state, loading: false, error: action.error };
     case 'SELECT_MODULE':
-      return { ...state, selectedModule: action.module, processedHtml: '', pageToc: [], markdownContent: '' };
+      return { ...state, selectedModule: action.module, processedHtml: '', markdownContent: '' };
     case 'TOGGLE_SECTION':
       return {
         ...state,
@@ -269,13 +227,11 @@ function contentReducer(state: ContentState, action: ContentAction): ContentStat
           : [...state.expandedSections, action.sectionId],
       };
     case 'SET_PAGE_CONTENT':
-      return { ...state, processedHtml: action.html, pageToc: action.toc, markdownContent: '' };
+      return { ...state, processedHtml: action.html, markdownContent: '' };
     case 'SET_MARKDOWN':
-      return { ...state, markdownContent: action.content, loadingMarkdown: action.loading, processedHtml: '', pageToc: [] };
+      return { ...state, markdownContent: action.content, loadingMarkdown: action.loading, processedHtml: '' };
     case 'CLEAR_CONTENT':
-      return { ...state, processedHtml: '', pageToc: [], markdownContent: '' };
-    case 'SET_TOC':
-      return { ...state, pageToc: action.toc };
+      return { ...state, processedHtml: '', markdownContent: '' };
     default:
       return state;
   }
@@ -290,7 +246,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   const [state, dispatch] = useReducer(contentReducer, initialContentState);
   const {
     sections, loading, error, selectedModule, courseName,
-    markdownContent, loadingMarkdown, pageToc, processedHtml,
+    markdownContent, loadingMarkdown, processedHtml,
   } = state;
   const { showToast } = useToast();
 
@@ -306,6 +262,54 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   // アクティビティ完了
   const [completing, setCompleting] = useState(false);
   const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
+  const awardExp = useProgressionStore((s) => s.awardExp);
+
+  // 動画／テキスト表示モード（design_handoffのレッスン画面トグルに対応）
+  const contentType = selectedModule ? getContentType(selectedModule) : null;
+  const hasVideo = contentType === 'resource-video';
+  const videoFile = selectedModule?.contents?.find(c => isVideoFile(c.filename));
+  const [lessonMode, setLessonMode] = useState<'video' | 'text'>('video');
+  useEffect(() => {
+    setLessonMode(hasVideo ? 'video' : 'text');
+  }, [selectedModule?.id, hasVideo]);
+  const isTextMode = !hasVideo || lessonMode === 'text';
+
+  // 記事本文をドラッグ選択して「AIに質問」できるようにするフローティングボタン
+  const articleRef = useRef<HTMLDivElement>(null);
+  const aiPanelAnchorRef = useRef<HTMLDivElement>(null);
+  const [quoteBtn, setQuoteBtn] = useState<{ top: number; left: number; text: string } | null>(null);
+
+  const handleArticleMouseUp = () => {
+    const sel = window.getSelection();
+    const text = sel?.toString().trim() ?? '';
+    if (text.length >= 2 && text.length <= 300 && sel && sel.rangeCount > 0) {
+      const rect = sel.getRangeAt(0).getBoundingClientRect();
+      setQuoteBtn({ top: rect.top - 42, left: rect.left, text });
+    } else {
+      setQuoteBtn(null);
+    }
+  };
+
+  useEffect(() => {
+    if (!quoteBtn) return;
+    const clear = (e: MouseEvent) => {
+      if ((e.target as HTMLElement)?.closest('[data-quote-btn]')) return;
+      setQuoteBtn(null);
+    };
+    window.addEventListener('mousedown', clear);
+    return () => window.removeEventListener('mousedown', clear);
+  }, [quoteBtn]);
+
+  const handleQuoteAsk = () => {
+    if (!quoteBtn) return;
+    setAiQuestion(`「${quoteBtn.text}」について教えてください`);
+    setQuoteBtn(null);
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(true);
+    } else {
+      requestAnimationFrame(() => aiPanelAnchorRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }));
+    }
+  };
 
   const handleToggleComplete = async (markAsComplete: boolean) => {
     if (!selectedModule || completing) return;
@@ -315,6 +319,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       const newCompletedIds = new Set(completedIds);
       if (markAsComplete) {
         newCompletedIds.add(selectedModule.id);
+        awardExp(`lesson:${selectedModule.id}`, EXP_RULES.LESSON_COMPLETE);
       } else {
         newCompletedIds.delete(selectedModule.id);
       }
@@ -426,9 +431,8 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     const contentType = getContentType(selectedModule);
 
     if (contentType === 'page') {
-      const rawHtml = selectedModule.content ?? selectedModule.description ?? '';
-      const html = addHeadingIds(rawHtml);
-      dispatch({ type: 'SET_PAGE_CONTENT', html, toc: extractTocFromHtml(html) });
+      const html = selectedModule.content ?? selectedModule.description ?? '';
+      dispatch({ type: 'SET_PAGE_CONTENT', html });
       return;
     }
 
@@ -446,13 +450,6 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     setSidebarOpen(false);
   };
 
-  const handleTocItemClick = (id: string) => {
-    // page は iframe 内の DOM を参照
-    const el = iframeRef.current?.contentDocument?.getElementById(id)
-      ?? document.getElementById(id);
-    el?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const handleIframeLoad = () => {
     const iframe = iframeRef.current;
     if (!iframe) return;
@@ -461,30 +458,14 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       if (!doc) return;
       const h = doc.documentElement?.scrollHeight;
       if (h) iframe.style.height = h + 'px';
-      // same-origin iframeからTOCを抽出（cross-originは catch で無視）
-      const headings = doc.querySelectorAll('h1, h2, h3, h4');
-      let counter = 0;
-      const toc: TocItem[] = Array.from(headings)
-        .map(el => {
-          if (!el.id) el.id = `toc-heading-${counter++}`;
-          return {
-            id: el.id,
-            text: el.textContent?.trim() ?? '',
-            level: parseInt(el.tagName[1], 10),
-          };
-        })
-        .filter(item => item.text.length > 0);
-      if (toc.length > 0) dispatch({ type: 'SET_TOC', toc });
     } catch { /* cross-origin の場合は何もしない */ }
   };
 
   const handleAiQuestion = () => sendAiMessage();
 
-  // ─── コンテンツ描画 ───────────────────────
-  const renderContent = () => {
+  // ─── 記事本文の描画（動画ブロックは呼び出し側で別途描画） ──
+  const renderArticleContent = () => {
     if (!selectedModule) return <EmptyPlaceholder />;
-
-    const contentType = getContentType(selectedModule);
 
     switch (contentType) {
       // ── mod/page ────────────────────────────
@@ -581,18 +562,16 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         );
       }
 
-      // ── mod/resource（動画）─────────────────
-      case 'resource-video': {
-        const videoFile = selectedModule.contents?.find(c => isVideoFile(c.filename));
-        if (!videoFile) return <EmptyPlaceholder />;
-        return (
-          <video controls className="w-full rounded-2xl">
-            <source src={videoFile.fileurl} type="video/mp4" />
-            <source src={videoFile.fileurl} type="video/webm" />
-            お使いのブラウザは動画タグをサポートしていません。
-          </video>
-        );
-      }
+      // ── mod/resource（動画）─── 補足テキストのみ（動画本体は上のブロックで描画）
+      case 'resource-video':
+        return selectedModule.description
+          ? (
+            <div
+              className="moodle-content"
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedModule.description) }}
+            />
+          )
+          : null;
 
       // ── mod/resource（Markdown）─────────────
       case 'resource-markdown':
@@ -662,14 +641,14 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     );
   }
 
-
-  
   // ─── Chapter ナビゲーション用 ───────────────
   const allModules = sections.flatMap(s => s.modules);
   const currentIdx = allModules.findIndex(m => m.id === selectedModule?.id);
-  const chapterLabel = currentIdx >= 0 ? `Chapter ${currentIdx + 1}` : '';
+  const chapterLabel = currentIdx >= 0 ? `Lesson ${currentIdx + 1}` : '';
   const prevModule  = currentIdx > 0                    ? allModules[currentIdx - 1] : null;
   const nextModule  = currentIdx < allModules.length - 1 ? allModules[currentIdx + 1] : null;
+  const isCompleted = !!selectedModule && completedIds.has(selectedModule.id);
+  const ctaLabel = hasVideo && lessonMode === 'video' ? 'このレッスンを完了' : '読み終えて次へ';
 
   // ─── メインレンダリング ───────────────────
   return (
@@ -685,82 +664,80 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       {/* ─── WebCoach グローバルヘッダー ──── */}
       <AppHeader userName={user?.username || 'User'} />
 
-      {/* ─── ヘッダー ─────────────────────── */}
-      <header
-        className="sticky top-[60px] sm:top-[80px] z-30 h-20 bg-white border-b border-brand-border"
-        style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
-      >
-        <div className="max-w-[1400px] mx-auto h-full flex items-center justify-between px-4 sm:px-6">
-          {/* 左: 戻るボタン + 赤区切り + チャプター情報 */}
-          <div className="flex items-center gap-3 min-w-0">
-            <button
-              onClick={onBack}
-              className="w-10 h-10 rounded-full border flex items-center justify-center flex-shrink-0 hover:bg-gray-50 transition-colors"
-              style={{ borderColor: '#e0d8d4' }}
-            >
-              <ArrowLeft className="w-5 h-5 text-brand-text" />
-            </button>
-            <div className="w-0.5 h-10 rounded-full flex-shrink-0 bg-brand" />
-            <div className="min-w-0">
-              <p className="text-xs font-medium truncate text-brand">
-                {chapterLabel || courseName}
-              </p>
-              <p className="text-base font-bold truncate text-brand-text">
-                {selectedModule ? selectedModule.name : courseName}
-              </p>
-            </div>
-          </div>
+      <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
 
-          {/* 右: モバイルメニュー + 完了ボタン */}
-          <div className="flex items-center gap-2 flex-shrink-0">
+        {/* ─── ブレッドクラム＋タイトル＋モード切替 ─ */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ fontSize: 12, color: '#B78F98' }}>
+              <span onClick={onBack} style={{ color: '#E0213A', fontWeight: 700, cursor: 'pointer' }}>{courseName}</span>
+              {chapterLabel && <> ／ {chapterLabel}</>}
+            </div>
+            <h1 style={{ margin: '6px 0 0', fontSize: 23, fontWeight: 900, color: '#20141A' }}>
+              {chapterLabel ? `${chapterLabel}：` : ''}{selectedModule ? selectedModule.name : courseName}
+            </h1>
+          </div>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexShrink: 0 }}>
+            {hasVideo && (
+              <span
+                onClick={() => setLessonMode(m => (m === 'video' ? 'text' : 'video'))}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: '#fff', border: '1px solid #EDD8DB', borderRadius: 999, padding: '9px 16px', fontSize: 12, fontWeight: 700, cursor: 'pointer', boxShadow: '0 4px 12px rgba(200,90,110,.08)' }}
+              >
+                {lessonMode === 'video' ? '🎥 動画＋テキスト' : '🗎 テキスト教材'} ⇄
+              </span>
+            )}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="lg:hidden w-10 h-10 rounded-full border flex items-center justify-center hover:bg-gray-50 transition-colors"
-              style={{ borderColor: '#e0d8d4' }}
+              className="lg:hidden"
+              style={{ width: 40, height: 40, borderRadius: '50%', border: '1px solid #EDD8DB', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
-              <Menu className="w-5 h-5 text-brand-text" />
+              <Menu className="w-5 h-5" style={{ color: '#20141A' }} />
             </button>
-            {selectedModule && completedIds.has(selectedModule.id) ? (
-              <button
-                onClick={() => handleToggleComplete(false)}
-                disabled={completing}
-                className="flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm transition-opacity hover:opacity-80 disabled:opacity-60 disabled:cursor-default"
-                style={{ background: '#F0EAE6', color: '#7A7392', border: '1px solid #D8CEC8' }}
-              >
-                <RotateCcw className="w-4 h-4" />
-                <span className="hidden sm:inline">
-                  {completing ? '処理中...' : '完了を取り消す'}
-                </span>
-              </button>
-            ) : (
-              <button
-                onClick={() => handleToggleComplete(true)}
-                disabled={completing}
-                className="flex items-center gap-2 px-5 py-2 rounded-full text-white font-bold text-sm transition-opacity hover:opacity-90 bg-brand-gradient disabled:opacity-60 disabled:cursor-default"
-              >
-                <CheckCircle className="w-4 h-4" />
-                <span className="hidden sm:inline">
-                  {completing ? '送信中...' : '完了にする'}
-                </span>
-              </button>
-            )}
+            <button
+              onClick={onBack}
+              style={{ background: '#fff', color: '#E0213A', border: '1.5px solid #EEC0C4', borderRadius: 999, padding: '9px 18px', fontWeight: 700, fontSize: 12, cursor: 'pointer' }}
+            >
+              コースに戻る
+            </button>
           </div>
         </div>
-      </header>
 
-      {/* ─── ボディ ───────────────────────── */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 py-8 flex gap-6 items-start">
+        {/* ─── ボディ ───────────────────────── */}
+        <div className="grid" style={{ gridTemplateColumns: '1fr 330px', gap: 22, alignItems: 'start', marginTop: 18 }}>
 
-        {/* メインコンテンツ */}
-        <div className="flex-1 min-w-0">
-          <div
-            className="bg-white rounded-3xl flex flex-col overflow-hidden"
-            style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6' }}
-          >
-            {/* ─ コンテンツエリア ─ */}
-            <div className="p-4 sm:p-6">
-              {processedHtml && selectedModule && getContentType(selectedModule) === 'page' && (
-                <div className="flex justify-end mb-2">
+          {/* メインコンテンツ */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 18, minWidth: 0 }}>
+
+            {hasVideo && lessonMode === 'video' && videoFile && (
+              <div style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', background: 'radial-gradient(circle at 50% 40%,#6E2536,#3A1220 75%)', boxShadow: '0 16px 40px rgba(90,20,35,.3)' }}>
+                <video controls style={{ width: '100%', display: 'block', aspectRatio: '16/9' }}>
+                  <source src={videoFile.fileurl} type="video/mp4" />
+                  <source src={videoFile.fileurl} type="video/webm" />
+                  お使いのブラウザは動画タグをサポートしていません。
+                </video>
+              </div>
+            )}
+
+            {isTextMode && (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, background: '#FDF0F2', borderRadius: 14, padding: '12px 18px', fontSize: 12 }}>
+                <span style={{ color: '#C24358', fontWeight: 700 }}>
+                  🗎 {hasVideo ? 'このレッスンには動画があります（🎥動画＋テキストに切り替えるとご覧いただけます）' : 'このレッスンはテキスト教材です（動画がある場合はここに表示されます）'}
+                </span>
+                <span style={{ color: '#B78F98' }}>動画：{hasVideo ? 'あり' : 'なし'}</span>
+              </div>
+            )}
+
+            <div
+              ref={articleRef}
+              onMouseUp={handleArticleMouseUp}
+              className="px-5 py-6 sm:px-[34px] sm:py-[28px]"
+              style={{ background: '#fff', borderRadius: 20, boxShadow: '0 10px 30px rgba(190,60,70,.08)' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#FBF4F5', borderRadius: 10, padding: '8px 13px', fontSize: 11, color: '#A05A6B', marginBottom: 16 }}>
+                ✦ 分からない文があったら、<b>ドラッグで選択</b>して「AIに質問」を押してね
+              </div>
+              {contentType === 'page' && processedHtml && (
+                <div className="flex justify-end mb-3">
                   <button
                     onClick={openInNewTab}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-opacity hover:opacity-80"
@@ -771,68 +748,59 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                   </button>
                 </div>
               )}
-              <div
-                className="rounded-2xl p-4 sm:p-6"
-                style={{ background: '#fafafa', minHeight: '360px' }}
+              {hasVideo && lessonMode === 'video' && (
+                <div style={{ fontSize: 12, fontWeight: 700, color: '#E0213A', marginBottom: 14 }}>🗎 動画の補足テキスト</div>
+              )}
+              {renderArticleContent()}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12, flexWrap: 'wrap' }}>
+              <button
+                onClick={() => (prevModule ? handleModuleSelect(prevModule) : onBack())}
+                style={{ background: '#fff', color: '#E0213A', border: '1.5px solid #EEC0C4', borderRadius: 999, padding: '12px 22px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}
               >
-                {renderContent()}
+                ← 前のレッスン
+              </button>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
+                {isCompleted ? (
+                  <>
+                    <button
+                      onClick={() => (nextModule ? handleModuleSelect(nextModule) : onBack())}
+                      style={{ background: '#F0EAE6', color: '#7A7392', border: '1px solid #D8CEC8', borderRadius: 999, padding: '13px 26px', fontWeight: 700, fontSize: 14, cursor: 'pointer' }}
+                    >
+                      ✓ 完了済み・{nextModule ? '次のレッスンへ' : 'コースに戻る'}
+                    </button>
+                    <span onClick={() => handleToggleComplete(false)} style={{ fontSize: 11, color: '#B78F98', cursor: 'pointer', textDecoration: 'underline' }}>
+                      完了を取り消す
+                    </span>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => handleToggleComplete(true)}
+                    disabled={completing}
+                    className="disabled:opacity-60 disabled:cursor-default"
+                    style={{ background: 'linear-gradient(120deg,#F0546A,#E0213A)', color: '#fff', border: 'none', borderRadius: 999, padding: '13px 26px', fontWeight: 700, fontSize: 14, cursor: 'pointer', boxShadow: '0 10px 26px rgba(224,33,58,.4)' }}
+                  >
+                    {completing ? '送信中...' : ctaLabel} →
+                  </button>
+                )}
               </div>
             </div>
-
-            {/* ─ 完了ボタン ─ */}
-            <div className="flex justify-center pb-6 px-8">
-              {selectedModule && completedIds.has(selectedModule.id) ? (
-                <button
-                  onClick={() => handleToggleComplete(false)}
-                  disabled={completing}
-                  className="flex items-center gap-2 px-12 py-3 rounded-full font-bold text-base transition-opacity hover:opacity-80 disabled:opacity-60 disabled:cursor-default"
-                  style={{ background: '#F0EAE6', color: '#7A7392', border: '1px solid #D8CEC8' }}
-                >
-                  <RotateCcw className="w-5 h-5" />
-                  {completing ? '処理中...' : '完了を取り消す'}
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleToggleComplete(true)}
-                  disabled={completing}
-                  className="flex items-center gap-2 px-12 py-3 rounded-full text-white font-bold text-base transition-opacity hover:opacity-90 bg-brand-gradient disabled:opacity-60 disabled:cursor-default"
-                >
-                  <CheckCircle className="w-5 h-5" />
-                  {completing ? '送信中...' : '学習を完了する'}
-                </button>
-              )}
-            </div>
-
-            {/* ─ 前後チャプター ナビゲーション ─ */}
-            <div className="flex items-center justify-between border-t border-brand-border px-8 py-5">
-              {prevModule ? (
-                <span
-                  onClick={() => handleModuleSelect(prevModule)}
-                  className="text-sm text-brand-muted hover:text-brand-text cursor-pointer transition-colors"
-                >
-                  ← 前のチャプターに戻る
-                </span>
-              ) : (
-                <span />
-              )}
-              {nextModule ? (
-                <span
-                  onClick={() => handleModuleSelect(nextModule)}
-                  className="text-sm text-brand-muted hover:text-brand-text cursor-pointer transition-colors"
-                >
-                  次のチャプターに進む →
-                </span>
-              ) : (
-                <span />
-              )}
-            </div>
           </div>
-        </div>
 
-        {/* 右サイドバー（デスクトップ） */}
-        <div className="hidden lg:flex flex-col gap-0 w-80 flex-shrink-0 sticky top-[160px] rounded-3xl overflow-y-auto" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6', maxHeight: 'calc(100vh - 170px)' }}>
-          <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} />
-          <div className="border-t border-brand-border">
+          {/* 右サイドバー（デスクトップ） */}
+          <div ref={aiPanelAnchorRef} className="hidden lg:flex flex-col" style={{ gap: 16 }}>
+            {isTextMode && (
+              <div style={{ background: '#fff', borderRadius: 18, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: 18 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 13, fontWeight: 900 }}>
+                  <span>このレッスンの進捗</span><span style={{ color: '#E0213A' }}>{isCompleted ? 100 : 0}%</span>
+                </div>
+                <div style={{ height: 8, borderRadius: 999, background: '#F5E4E6', overflow: 'hidden', marginTop: 10 }}>
+                  <div style={{ width: `${isCompleted ? 100 : 0}%`, height: '100%', background: 'linear-gradient(90deg,#F0546A,#E0213A)', borderRadius: 999 }} />
+                </div>
+              </div>
+            )}
+            <ChaptersPanel modules={allModules} currentId={selectedModule?.id} completedIds={completedIds} onSelect={handleModuleSelect} />
             <AiCoachPanel
               aiMessages={aiMessages}
               aiLoading={aiLoading}
@@ -865,7 +833,17 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                 <X className="w-4 h-4 text-brand-text" />
               </button>
             </div>
-            <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} mobile />
+            {isTextMode && (
+              <div style={{ background: '#fff', borderRadius: 18, boxShadow: '0 4px 14px rgba(0,0,0,.06)', padding: 18 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 13, fontWeight: 900 }}>
+                  <span>このレッスンの進捗</span><span style={{ color: '#E0213A' }}>{isCompleted ? 100 : 0}%</span>
+                </div>
+                <div style={{ height: 8, borderRadius: 999, background: '#F5E4E6', overflow: 'hidden', marginTop: 10 }}>
+                  <div style={{ width: `${isCompleted ? 100 : 0}%`, height: '100%', background: 'linear-gradient(90deg,#F0546A,#E0213A)', borderRadius: 999 }} />
+                </div>
+              </div>
+            )}
+            <ChaptersPanel modules={allModules} currentId={selectedModule?.id} completedIds={completedIds} onSelect={handleModuleSelect} mobile />
             <AiCoachPanel
               aiMessages={aiMessages}
               aiLoading={aiLoading}
@@ -878,6 +856,17 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
             />
           </div>
         </div>
+      )}
+
+      {/* 選択テキストから直接AIに質問できるフローティングボタン */}
+      {quoteBtn && (
+        <button
+          data-quote-btn
+          onClick={handleQuoteAsk}
+          style={{ position: 'fixed', top: quoteBtn.top, left: quoteBtn.left, zIndex: 60, background: '#E0213A', color: '#fff', border: 'none', borderRadius: 999, padding: '6px 14px', fontSize: 12, fontWeight: 700, cursor: 'pointer', boxShadow: '0 8px 20px rgba(224,33,58,.35)' }}
+        >
+          ✦ AIに質問
+        </button>
       )}
     </div>
   );
@@ -894,51 +883,53 @@ function EmptyPlaceholder() {
   );
 }
 
-interface TocPanelProps {
-  pageToc: TocItem[];
-  onTocItemClick: (id: string) => void;
+interface ChaptersPanelProps {
+  modules: Module[];
+  currentId?: number;
+  completedIds: Set<number>;
+  onSelect: (m: Module) => void;
   mobile?: boolean;
 }
 
-function TocPanel({ pageToc, onTocItemClick, mobile = false }: TocPanelProps) {
+function ChaptersPanel({ modules, currentId, completedIds, onSelect, mobile = false }: ChaptersPanelProps) {
+  const completedCount = modules.filter(m => completedIds.has(m.id)).length;
   return (
-    <div className={`bg-white ${mobile ? 'rounded-2xl shadow-sm' : ''} overflow-hidden`}>
-      <div className="flex items-center gap-2 px-6 py-4 bg-brand-bg border-b border-brand-border">
-        <AlignJustify className="w-4 h-4 text-brand" />
-        <span className="font-bold text-brand-muted" style={{ fontSize: '15px' }}>目次</span>
+    <div className={mobile ? 'rounded-2xl' : ''} style={{ background: '#fff', borderRadius: 18, boxShadow: mobile ? '0 4px 14px rgba(0,0,0,.06)' : '0 10px 30px rgba(190,60,70,.08)', padding: 18, display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+        <span style={{ fontSize: 14, fontWeight: 900 }}>チャプター</span>
+        <span style={{ fontSize: 11, color: '#B78F98' }}>{completedCount}/{modules.length} 完了</span>
       </div>
-      <div className="overflow-y-auto p-3" style={{ maxHeight: '320px' }}>
-        {pageToc.length > 0 ? (
-          <div className="space-y-0.5">
-            {pageToc.map(item => (
-              <div
-                key={item.id}
-                onClick={() => onTocItemClick(item.id)}
-                className="w-full flex items-center gap-2 px-3 py-1.5 rounded-xl text-left hover:bg-orange-50 transition-colors cursor-pointer select-none"
-                style={{ paddingLeft: `${(item.level - 1) * 14 + 12}px` }}
-              >
-                <span
-                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                  style={{ background: item.level === 1 ? '#FF5A7A' : item.level === 2 ? '#FFC24B' : '#d0cac6' }}
-                />
-                <span
-                  className="text-xs truncate text-brand-text"
-                  style={{ fontWeight: item.level <= 2 ? 600 : 400 }}
-                >
-                  {item.text}
-                </span>
-              </div>
-            ))}
+      {modules.map((m, i) => {
+        const isDone = completedIds.has(m.id);
+        const isActive = m.id === currentId;
+        return (
+          <div
+            key={m.id}
+            onClick={() => onSelect(m)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 11, padding: '11px 12px', borderRadius: 12, cursor: 'pointer',
+              background: isActive ? '#FDF0F2' : undefined,
+            }}
+          >
+            <span
+              style={{
+                width: 26, height: 26, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 12, fontWeight: 700, flexShrink: 0,
+                background: isDone ? '#E0213A' : '#F3E7EA',
+                color: isDone ? '#fff' : isActive ? '#E0213A' : '#B7A0A7',
+                border: isActive && !isDone ? '2px solid #E0213A' : undefined,
+              }}
+            >
+              {isDone ? '✓' : i + 1}
+            </span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: '#20141A' }}>{m.name}</div>
+              <div style={{ fontSize: 10, color: '#B7A0A7', marginTop: 2 }}>{isDone ? '完了' : isActive ? '学習中' : ''}</div>
+            </div>
+            <span style={{ fontSize: 12 }}>{isDone ? '✅' : isActive ? '▶' : ''}</span>
           </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-8 gap-2">
-            <AlignJustify className="w-8 h-8 opacity-20 text-brand-muted" />
-            <p className="text-xs text-center text-brand-subtle">
-              このコンテンツに<br />目次はありません
-            </p>
-          </div>
-        )}
-      </div>
+        );
+      })}
     </div>
   );
 }
@@ -963,66 +954,61 @@ function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handle
     }
   }, [aiQuestion]);
 
+  const canSend = !!aiQuestion.trim() && !aiLoading;
+
   return (
-    <div className={`bg-white ${mobile ? 'rounded-2xl shadow-sm' : ''} overflow-hidden`}>
-      <div className="flex items-center justify-between px-6 py-4 bg-brand-bg border-b border-brand-border">
-        <div className="flex items-center gap-2">
-          <Bot className="w-5 h-5 text-brand" />
-          <span className="font-bold text-brand-muted" style={{ fontSize: '15px' }}>AIコーチ</span>
-        </div>
-      </div>
-      <div className="px-6 py-5 space-y-3 overflow-y-auto" style={{ background: '#fafafa', maxHeight: '280px' }}>
-        {aiMessages.map((msg) => (
-          <div key={msg.id} className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white ${msg.role === 'user' ? 'bg-[#1976d2]' : 'bg-brand'}`}>
-              {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
-            </div>
-            <div className={`rounded-2xl px-4 py-3 shadow-sm max-w-xs text-sm ${msg.role === 'user' ? 'bg-brand text-white' : 'bg-white text-brand-muted'}`}>
-              {msg.role === 'assistant' ? (
-                <MarkdownRenderer content={msg.content} compact />
+    <div className={mobile ? 'rounded-2xl' : ''} style={{ background: '#fff', borderRadius: 18, boxShadow: mobile ? '0 4px 14px rgba(0,0,0,.06)' : '0 10px 30px rgba(190,60,70,.08)', padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ fontSize: 13, fontWeight: 900 }}><span style={{ color: '#E0213A' }}>✦</span> つまずいたらAIに質問</div>
+      {aiMessages.length > 0 && (
+        <div className="space-y-3 overflow-y-auto" style={{ maxHeight: 240 }}>
+          {aiMessages.map((msg) => (
+            <div key={msg.id} className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+              {msg.role === 'user' ? (
+                <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-white" style={{ background: '#1976d2' }}>
+                  <User className="w-3.5 h-3.5" />
+                </div>
               ) : (
-                <span className="whitespace-pre-wrap">{msg.content}</span>
+                <CharacterAvatar state="idle" size={28} />
               )}
-            </div>
-          </div>
-        ))}
-        {aiLoading && (
-          <div className="flex gap-2">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white bg-brand"><Bot className="w-4 h-4" /></div>
-            <div className="rounded-2xl px-4 py-3 shadow-sm bg-white">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 border-2 border-brand border-t-transparent rounded-full animate-spin" />
-                <span className="text-xs text-brand-muted">考え中...</span>
+              <div className="rounded-2xl px-3 py-2 text-xs max-w-[200px]" style={{ background: msg.role === 'user' ? '#E0213A' : '#FBF2F4', color: msg.role === 'user' ? '#fff' : '#4A3B42' }}>
+                {msg.role === 'assistant' ? (
+                  <MarkdownRenderer content={msg.content} compact />
+                ) : (
+                  <span className="whitespace-pre-wrap">{msg.content}</span>
+                )}
               </div>
             </div>
-          </div>
-        )}
-        <div ref={chatEndRef} />
-      </div>
-      <div className="px-6 py-4 bg-white border-t border-brand-border">
-        <div className="flex items-end gap-2 px-4 py-2 rounded-2xl bg-brand-bg">
-          <textarea
-            ref={textareaRef}
-            placeholder="質問を入力..."
-            value={aiQuestion}
-            rows={1}
-            onChange={e => {
-              setAiQuestion(e.target.value);
-              e.target.style.height = 'auto';
-              e.target.style.height = `${e.target.scrollHeight}px`;
-            }}
-            onKeyDown={handleAiKeyPress}
-            className="flex-1 bg-transparent outline-none text-sm text-brand-text resize-none overflow-hidden leading-5 py-1"
-            style={{ maxHeight: '120px', overflowY: 'auto' }}
-          />
-          <button
-            onClick={onSend}
-            disabled={!aiQuestion.trim() || aiLoading}
-            className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mb-0.5 transition-colors ${aiQuestion.trim() && !aiLoading ? 'bg-brand' : 'bg-[#d0cac6]'}`}
-          >
-            <Send className="w-3 h-3 text-white" />
-          </button>
+          ))}
+          {aiLoading && (
+            <div className="flex gap-2">
+              <CharacterAvatar state="thinking" size={28} />
+              <div className="rounded-2xl px-3 py-2 text-xs" style={{ background: '#FBF2F4', color: '#A05A6B' }}>考え中...</div>
+            </div>
+          )}
+          <div ref={chatEndRef} />
         </div>
+      )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#FBF2F4', borderRadius: 999, padding: '6px 6px 6px 16px' }}>
+        <textarea
+          ref={textareaRef}
+          placeholder="このレッスンについて質問…"
+          value={aiQuestion}
+          rows={1}
+          onChange={e => {
+            setAiQuestion(e.target.value);
+            e.target.style.height = 'auto';
+            e.target.style.height = `${e.target.scrollHeight}px`;
+          }}
+          onKeyDown={handleAiKeyPress}
+          className="flex-1 bg-transparent outline-none resize-none overflow-hidden"
+          style={{ fontSize: 12, color: '#20141A', lineHeight: '1.5', maxHeight: 120, overflowY: 'auto' }}
+        />
+        <span
+          onClick={canSend ? onSend : undefined}
+          style={{ width: 30, height: 30, borderRadius: '50%', background: canSend ? '#E0213A' : '#d0cac6', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, flexShrink: 0, cursor: canSend ? 'pointer' : 'default' }}
+        >
+          ➤
+        </span>
       </div>
     </div>
   );

@@ -47,6 +47,37 @@ h1, h2, h3, .font-display {
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* おすすめレッスンホイールの回転リング演出 */
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.glw-spin-slow {
+  animation: spinSlow 26s linear infinite;
+}
+
+/* ギルドロビーの部屋アイコンのゆらぎ演出 */
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+.glw-float {
+  animation: floatSoft 3.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glw-spin-slow,
+  .glw-float {
+    animation: none;
+  }
+}
+
+/* design_handoff_lms_app のマスコット/現在地ドットのパルス演出 */
+@keyframes wcPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+
 /* Moodle page コンテンツ用HTMLスタイル */
 .moodle-content {
   color: #4b3a33;

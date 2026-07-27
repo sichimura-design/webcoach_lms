@@ -118,6 +118,7 @@ export interface Profile {
   goal?: string | null;
   avatar_url?: string | null;
   avatar_id?: string | null;
+  weekly_target_minutes?: number | null; // 週間の学習時間目標（デフォルト600分=10時間）
 }
 
 // WebCoach ResumeCourse
@@ -132,6 +133,9 @@ export interface ResumeCourse {
   image_url?: string;
   courseimage?: string;
   overviewfiles?: { fileurl: string }[];
+  // 学習サマリー（総学習時間・完了レッスン数）の簡易推定に使う目安値
+  durationminutes?: number;
+  totallessons?: number;
 }
 
 export interface UpdateResumeCourseRequest {

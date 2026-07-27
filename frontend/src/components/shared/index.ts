@@ -11,3 +11,8 @@ export { CourseImage } from './CourseImage';
 export { ErrorBoundary } from './ErrorBoundary';
 export { DataRenderer } from './DataRenderer';
 export { AppIcon } from './AppIcon';
+export { default as CharacterAvatar } from './CharacterAvatar';
+export { default as FloatingStudyTimer } from './FloatingStudyTimer';
+export { default as MascotSvg } from './MascotSvg';
+export { default as RoadmapPath } from './RoadmapPath';
+export type { RoadmapStep } from './RoadmapPath';

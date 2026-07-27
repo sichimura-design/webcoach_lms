@@ -7,6 +7,7 @@ import AppRoutes from './routes';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import { theme } from './theme';
+import { FloatingStudyTimer } from './components/shared';
 
 // Markdown rendering styles
 import 'katex/dist/katex.min.css';
@@ -18,6 +19,7 @@ function AppContent() {
       <AnimatePresence mode="wait">
         <AppRoutes />
       </AnimatePresence>
+      <FloatingStudyTimer />
     </BrowserRouter>
   );
 }
