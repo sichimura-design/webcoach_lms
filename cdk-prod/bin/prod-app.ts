@@ -34,6 +34,19 @@
  *     --context moodleSiteUrl=https://webcoach.jp \
  *     --require-approval never
  *
+ * ─── config のデフォルト値について ───────────────────────────────
+ *   allowedOrigins / moodleServiceName / moodleServiceUsername / moodleLang /
+ *   vectorDbEnv / cognitoUserPoolId / cognitoClientId は、822824391912 アカウントの
+ *   Parameter Store (/moodle/prod/config/*) で確認した値をデフォルトにしている
+ *   (2026-07-12 時点、実体は uat.webcoach.jp 環境の設定値)。
+ *   本番用の正式な値が決まったら --context で上書きすること。
+ *   secrets 系 (contentTokenSecret / internalApiKey / sessionSecret /
+ *   moodleServicePassword / cognitoClientSecret / anthropicApiKey) はデフォルト値を
+ *   設定していない。未指定の場合 'REPLACE_ME' で Secrets Manager に作成されるため、
+ *   デプロイ後に必ず手動更新すること:
+ *     aws secretsmanager put-secret-value --secret-id prod/lms/app-secrets \
+ *       --secret-string '{"contentTokenSecret":"...","internalApiKey":"...","sessionSecret":"...","moodleServicePassword":"..."}'
+ *
  * ─── カスタムドメイン付き SPA デプロイ（証明書取得後）────────────
  *   ./node_modules/.bin/cdk deploy prod-SpaStack \
  *     --context contentTokenSecret=<secret> \
@@ -50,7 +63,12 @@
  *   prod-VpcStack       VPC (Multi-AZ, NAT×2)
  *   prod-EcrStack       ECR リポジトリ (RETAIN)
  *   prod-AlbStack       ALB + 空のターゲットグループ (ECS未接続)
- *   prod-BackendStack   RDS(Multi-AZ) + EFS + ECS EC2 (ALBのTGへアタッチ)
+ *   prod-RdsStack       RDS (bin/rds-app.ts で別途デプロイ済み。ここでは新規作成しない)
+ *   prod-BackendStack   データ層: EFS + Secrets Manager (Cognito/Anthropic/App)
+ *   prod-EcsStack       ECS Cluster + EC2キャパシティ + Service (ALBのTGへアタッチ)
+ *                       backend-stack が公開する EFS/Secrets と、
+ *                       prod-RdsStack の Export (cdk.Fn.importValue) を参照する。
+ *                       コンテナ更新だけならこのスタックの再デプロイのみでよい。
  *   prod-SpaStack       S3 + CloudFront + Lambda@Edge (us-east-1)
  *
  * VpcStack / AlbStack は bin/prod-infra-app.ts でも同じ lib
@@ -69,12 +87,13 @@
  *        --profile PowerUserAccess-840513866884 \
  *        | docker login --username AWS --password-stdin \
  *          840513866884.dkr.ecr.ap-northeast-1.amazonaws.com
- *   3. cdk deploy prod-BackendStack --context desiredCount=0
- *   4. docker push 後に desiredCount=2 で再デプロイ
- *   5. Route53 / DNS で ALB (prod-AlbStack の AlbDnsName 出力) に独自ドメインを向ける
- *   6. cdk deploy prod-BackendStack --context moodleSiteUrl=https://webcoach.jp
- *   7. cd frontend && npm run build
- *   8. cdk deploy prod-SpaStack
+ *   3. cdk deploy prod-BackendStack   (RDS/EFS/Secrets を先に作成)
+ *   4. cdk deploy prod-EcsStack --context desiredCount=0
+ *   5. docker push 後に desiredCount=2 で再デプロイ (prod-EcsStack のみ)
+ *   6. Route53 / DNS で ALB (prod-AlbStack の AlbDnsName 出力) に独自ドメインを向ける
+ *   7. cdk deploy prod-EcsStack --context moodleSiteUrl=https://webcoach.jp
+ *   8. cd frontend && npm run build
+ *   9. cdk deploy prod-SpaStack
  *
  * ─── 注意 ───────────────────────────────────────────────────────
  *   - RDS は deletionProtection=true / RemovalPolicy.RETAIN のため
@@ -92,6 +111,7 @@ import { ProdVpcStack } from '../lib/vpc-stack';
 import { ProdEcrStack } from '../lib/ecr-stack';
 import { ProdAlbStack } from '../lib/alb-stack';
 import { ProdBackendStack } from '../lib/backend-stack';
+import { ProdEcsStack } from '../lib/ecs-stack';
 import { ProdSpaStack } from '../lib/spa-stack';
 import { ProdCognitoStack } from '../lib/cognito-stack';
 import { ProdGithubActionsStack } from '../lib/github-actions-stack';
@@ -105,7 +125,7 @@ const awsRegion = process.env.CDK_DEFAULT_REGION ?? 'ap-northeast-1';
 if (!awsAccount) {
   throw new Error(
     'CDK_DEFAULT_ACCOUNT が未設定です。\n' +
-    '  export AWS_PROFILE=PowerUserAccess-822824391912 を設定してください。'
+    '  export AWS_PROFILE=PowerUserAccess-840513866884 を設定してください。'
   );
 }
 
@@ -156,24 +176,77 @@ const albStack = new ProdAlbStack(app, `${envName}-AlbStack`, {
 albStack.addDependency(vpcStack);
 
 // ============================================================
-// Stack 5: バックエンド (RDS Multi-AZ + EFS + ECS)
-// ECS サービスは albStack が用意したターゲットグループにアタッチされる
+// Stack 5: バックエンド データ層 (RDS Multi-AZ + EFS + Secrets)
 // ============================================================
 const backendStack = new ProdBackendStack(app, `${envName}-BackendStack`, {
   env, tags, envName,
   vpc: vpcStack.vpc,
-  repository: ecrStack.repository,
   albSecurityGroup: albStack.albSecurityGroup,
-  targetGroupArn: albStack.targetGroup.targetGroupArn,
-  cognitoUserPoolId: app.node.tryGetContext('cognitoUserPoolId'),
-  cognitoClientId: app.node.tryGetContext('cognitoClientId'),
+  // 既存 Cognito User Pool (822824391912 の /moodle/prod/config/* で確認した値) を既定値に使う。
+  // 別プールを使う場合は --context cognitoUserPoolId=... 等で上書きする。
+  cognitoUserPoolId: app.node.tryGetContext('cognitoUserPoolId') ?? 'ap-northeast-1_aAPBRNL7D',
+  cognitoClientId: app.node.tryGetContext('cognitoClientId') ?? '23jacbr6nk4baiftjueddmr4kb',
   cognitoClientSecret: app.node.tryGetContext('cognitoClientSecret'),
   anthropicApiKey: app.node.tryGetContext('anthropicApiKey'),
+  // secrets は空 ('REPLACE_ME') のまま作成し、デプロイ後に手動で
+  // aws secretsmanager put-secret-value --secret-id prod/lms/app-secrets ... を実行する。
+  contentTokenSecret: app.node.tryGetContext('contentTokenSecret'),
+  internalApiKey: app.node.tryGetContext('internalApiKey'),
+  sessionSecret: app.node.tryGetContext('sessionSecret'),
+  moodleServicePassword: app.node.tryGetContext('moodleServicePassword'),
+});
+backendStack.addDependency(albStack);
+
+// ============================================================
+// Stack 5.5: ECS (Cluster + EC2キャパシティ + Service)
+// backend-stack (データ層) が用意した RDS/EFS/Secrets を参照し、
+// albStack が用意したターゲットグループにサービスをアタッチする。
+// アプリ側の再デプロイ (コンテナ更新) はこのスタックだけを更新すればよい。
+// ============================================================
+const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
+  env, tags, envName,
+  vpc: vpcStack.vpc,
+  repository: ecrStack.repository,
+  targetGroupArn: albStack.targetGroup.targetGroupArn,
+  ec2SecurityGroup: backendStack.ec2SecurityGroup,
+  // 2026-07-25: prod-moodle-db は不完全な移行データ(context/user/course等のブートストラップ
+  // データ欠落)だったため、スナップショット復元で prod-lms-db を新規作成し、UATから
+  // エクスポートした正規シードデータを投入して置き換えた(prod-RdsStack の CDK 管理下には
+  // まだ入っていない — instanceIdentifier は prod-moodle-db のまま)。
+  // マスター認証情報(ユーザー名/パスワード)はスナップショット復元のため prod-moodle-db と同一で、
+  // prod-DbSecretArn は引き続き有効。エンドポイントのみ暫定的にハードコードする。
+  // TODO: rds-stack.ts の instanceIdentifier を prod-lms-db に合わせて CDK 管理下に戻す
+  // (または旧 prod-moodle-db を削除し、prod-lms-db を正式にインポート/adopt する)。
+  databaseEndpointAddress: app.node.tryGetContext('databaseEndpointAddress')
+    ?? 'prod-lms-db.c3uc0k4wiwug.ap-northeast-1.rds.amazonaws.com',
+  databaseEndpointPort: cdk.Fn.importValue(`${envName}-DbPort`),
+  dbSecretArn: cdk.Fn.importValue(`${envName}-DbSecretArn`),
+  fileSystem: backendStack.fileSystem,
+  moodledataAccessPoint: backendStack.moodledataAccessPoint,
+  moodleAppAccessPoint: backendStack.moodleAppAccessPoint,
+  cognitoSecret: backendStack.cognitoSecret,
+  anthropicSecret: backendStack.anthropicSecret,
+  appSecrets: backendStack.appSecrets,
+  cognitoUserPoolId: app.node.tryGetContext('cognitoUserPoolId') ?? 'ap-northeast-1_aAPBRNL7D',
+  cognitoClientId: app.node.tryGetContext('cognitoClientId') ?? '23jacbr6nk4baiftjueddmr4kb',
   moodleSiteUrl: app.node.tryGetContext('moodleSiteUrl'),
   // 初回デプロイ: ECR にイメージがない場合は 0 にする
   desiredCount: Number(app.node.tryGetContext('desiredCount') ?? '2'),
+  // 以下、822824391912 の Parameter Store (/moodle/prod/config/*) の値を既定値として使用。
+  // ※ 元の値は UAT (uat.webcoach.jp) のものだったため、config 値のみ流用し、
+  //   S3/CloudFront/DBホストなど cdk-prod 自身が新規作成するリソースの識別子は流用していない。
+  allowedOrigins: app.node.tryGetContext('allowedOrigins')
+    ?? 'https://52.194.117.196,https://15.152.220.38,http://localhost:3000,https://localhost:3000,https://d3ljs7ii9tnofg.cloudfront.net,https://d1zs9qsimyg41i.cloudfront.net,https://uat.webcoach.jp',
+  moodleServiceName: app.node.tryGetContext('moodleServiceName') ?? 'moodle-api-service',
+  moodleServiceUsername: app.node.tryGetContext('moodleServiceUsername') ?? 'admin',
+  moodleLang: app.node.tryGetContext('moodleLang') ?? 'ja',
+  vectorDbEnv: app.node.tryGetContext('vectorDbEnv') ?? 'faiss',
+  // prod-SpaStack デプロイ後に出力される値を渡す (未指定なら未設定のまま)
+  cloudfrontDomain: app.node.tryGetContext('cloudfrontDomain'),
+  s3BucketName: app.node.tryGetContext('s3BucketName'),
 });
-backendStack.addDependency(albStack);
+ecsStack.addDependency(backendStack);
+ecsStack.addDependency(albStack);
 
 // ============================================================
 // Stack 6: SPA (S3 + CloudFront + Lambda@Edge)
@@ -199,7 +272,9 @@ new ProdSpaStack(app, `${envName}-SpaStack`, {
 //      ./node_modules/.bin/cdk deploy prod-GithubActionsStack \
 //        --context githubRepo=YOUR_ORG/moodle-spa \
 //        --context spaBucketName=<prod-SpaBucketName の値> \
-//        --context distributionId=<prod-DistributionId の値>
+//        --context distributionId=<prod-DistributionId の値> \
+//        --context taskExecutionRoleArn=<prod-lms-task の executionRoleArn> \
+//        --context taskRoleArn=<prod-lms-task の taskRoleArn>
 //   3. Outputs の RoleArn を GitHub Secrets に登録
 // ============================================================
 const githubActionsStack = new ProdGithubActionsStack(app, `${envName}-GithubActionsStack`, {
@@ -208,11 +283,15 @@ const githubActionsStack = new ProdGithubActionsStack(app, `${envName}-GithubAct
   repository: ecrStack.repository,
   spaBucketName: app.node.tryGetContext('spaBucketName') ?? 'REPLACE_ME',
   distributionId: app.node.tryGetContext('distributionId') ?? 'REPLACE_ME',
+  // prod-EcsStack が自動生成するロール（固定名ではないためconstruct直参照ではなくcontextで渡す）
+  taskExecutionRoleArn: app.node.tryGetContext('taskExecutionRoleArn') ?? 'REPLACE_ME',
+  taskRoleArn: app.node.tryGetContext('taskRoleArn') ?? 'REPLACE_ME',
 });
 githubActionsStack.addDependency(ecrStack);
 
 // 依存関係の明示
 backendStack.addDependency(vpcStack);
-backendStack.addDependency(ecrStack);
+ecsStack.addDependency(vpcStack);
+ecsStack.addDependency(ecrStack);
 
 app.synth();

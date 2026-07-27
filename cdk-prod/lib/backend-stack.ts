@@ -1,66 +1,77 @@
 import * as cdk from 'aws-cdk-lib';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
-import * as ecs from 'aws-cdk-lib/aws-ecs';
-import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as efs from 'aws-cdk-lib/aws-efs';
-import * as rds from 'aws-cdk-lib/aws-rds';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
-import * as ecr from 'aws-cdk-lib/aws-ecr';
-import * as logs from 'aws-cdk-lib/aws-logs';
-import * as iam from 'aws-cdk-lib/aws-iam';
-import * as autoscaling from 'aws-cdk-lib/aws-autoscaling';
 import { Construct } from 'constructs';
 
 export interface ProdBackendStackProps extends cdk.StackProps {
   readonly envName: string;
   readonly vpc: ec2.Vpc;
-  /** webcoach-lms リポジトリ (タグでコンテナを区別) */
-  readonly repository: ecr.Repository;
-  /** alb-stack で作成した ALB の SG。EC2 SG のインバウンド許可元として使う。 */
+  /** alb-stack で作成した ALB の SG。ECS EC2 SG のインバウンド許可元として使う。 */
   readonly albSecurityGroup: ec2.ISecurityGroup;
-  /** alb-stack で作成した空のターゲットグループの ARN。ECS サービス作成後にアタッチする。 */
-  readonly targetGroupArn: string;
   readonly cognitoUserPoolId?: string;
   readonly cognitoClientId?: string;
   readonly cognitoClientSecret?: string;
   readonly anthropicApiKey?: string;
-  /** Moodle の wwwroot URL。ALB DNS 名または独自ドメイン。*/
-  readonly moodleSiteUrl?: string;
-  /** 初回デプロイ: ECR にイメージがない場合は 0 を指定 */
-  readonly desiredCount?: number;
+  /** BFF の署名付きコンテンツURL用シークレット (SpaStack の contentTokenSecret と同じ値を使う) */
+  readonly contentTokenSecret?: string;
+  /** api-server ⇔ bff-server 間の内部API認証キー */
+  readonly internalApiKey?: string;
+  /** BFF セッション用シークレット */
+  readonly sessionSecret?: string;
+  /** Moodle Web Service アカウントのパスワード */
+  readonly moodleServicePassword?: string;
 }
 
 /**
- * 本番バックエンドスタック: RDS + EFS + ECS EC2
+ * 本番データ層スタック: EFS + Secrets Manager (Cognito/Anthropic/App)
  *
- * ALB / ターゲットグループは alb-stack で先行作成し、ここでは
- * ECS サービスをそのターゲットグループにアタッチするのみ。
+ * RDS は含まない。既存の prod-RdsStack (bin/rds-app.ts、CREATE_COMPLETE 済み) を
+ * そのまま使う。prod-RdsStack は `prod-DbEndpoint` / `prod-DbSecretArn` /
+ * `prod-RdsSgId` という CloudFormation Export 名を既に使用しているため、
+ * このスタックで同名の RDS を作ると Export 名衝突でデプロイに失敗する。
+ * ecs-stack 側で `cdk.Fn.importValue(...)` により prod-RdsStack の Export を
+ * 直接参照する。
  *
- * ECR: webcoach-lms リポジトリのタグでコンテナを区別
- *   moodle-nginx-latest  / moodle-bff-latest
- *   moodle-api-latest    / moodle-custom-latest
+ * ECS (Cluster/Service/TaskDefinition) は ecs-stack.ts に分離されている。
+ * アプリ側の再デプロイ (コンテナ更新など) がこのスタックに影響しないようにするため。
+ *
+ * ec2SecurityGroup はここで作成し ecs-stack へ渡す (ecs-stack のEC2キャパシティに
+ * アタッチされる)。EFS の Ingress 許可元をこのスタック側で定義する都合上、
+ * ecs-stack → backend-stack への一方向の依存関係のみに保つため、SG自体はここで
+ * 作成する (循環依存を避けるため、逆方向の参照は持たせない)。
+ * なお RDS 側 (prod-RdsStack の rdsSg) は VPC CIDR 全体からの 3306 を許可済みのため、
+ * ec2SecurityGroup からの個別 Ingress 追加は不要。
  *
  * UAT との主な差異:
- *   - RDS: Multi-AZ / t3.medium / 削除保護 ON / RemovalPolicy.RETAIN / バックアップ 7 日
- *   - ECS: Private サブネット配置 / desiredCount=2 / EC2 最小 2 台
- *   - CloudWatch: 1 ヶ月保持
  *   - EFS / Secrets: RemovalPolicy.RETAIN
  */
 export class ProdBackendStack extends cdk.Stack {
+  public readonly ec2SecurityGroup: ec2.SecurityGroup;
+  public readonly fileSystem: efs.FileSystem;
+  public readonly moodledataAccessPoint: efs.AccessPoint;
+  public readonly moodleAppAccessPoint: efs.AccessPoint;
+  public readonly cognitoSecret: secretsmanager.ISecret;
+  public readonly anthropicSecret: secretsmanager.ISecret;
+  public readonly appSecrets: secretsmanager.ISecret;
+
   constructor(scope: Construct, id: string, props: ProdBackendStackProps) {
     super(scope, id, props);
 
     const {
-      envName, vpc, repository,
-      albSecurityGroup, targetGroupArn,
+      envName, vpc,
+      albSecurityGroup,
       cognitoUserPoolId, cognitoClientId, cognitoClientSecret, anthropicApiKey,
-      moodleSiteUrl,
-      desiredCount = 2,
+      contentTokenSecret,
+      internalApiKey,
+      sessionSecret,
+      moodleServicePassword,
     } = props;
 
     // ========================================
     // Security Groups
     // ========================================
+    // ECS EC2 インスタンス用 SG。ecs-stack のASGにアタッチされる。
     // HOST ネットワークモードでは EC2 インスタンスの SG がコンテナに適用される
     const ec2Sg = new ec2.SecurityGroup(this, 'Ec2Sg', {
       vpc,
@@ -69,14 +80,7 @@ export class ProdBackendStack extends cdk.Stack {
       allowAllOutbound: true,
     });
     ec2Sg.addIngressRule(albSecurityGroup, ec2.Port.tcp(80), 'HTTP from ALB');
-
-    const rdsSg = new ec2.SecurityGroup(this, 'RdsSg', {
-      vpc,
-      securityGroupName: `${envName}-lms-rds-sg`,
-      description: 'RDS MySQL security group',
-      allowAllOutbound: false,
-    });
-    rdsSg.addIngressRule(ec2Sg, ec2.Port.tcp(3306), 'MySQL from ECS EC2');
+    this.ec2SecurityGroup = ec2Sg;
 
     const efsSg = new ec2.SecurityGroup(this, 'EfsSg', {
       vpc,
@@ -89,17 +93,6 @@ export class ProdBackendStack extends cdk.Stack {
     // ========================================
     // Secrets Manager
     // ========================================
-    const dbSecret = new secretsmanager.Secret(this, 'DbSecret', {
-      secretName: `${envName}/lms/db-credentials`,
-      generateSecretString: {
-        secretStringTemplate: JSON.stringify({ username: 'moodleuser' }),
-        generateStringKey: 'password',
-        excludePunctuation: true,
-        includeSpace: false,
-      },
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
-    });
-
     const cognitoSecret = new secretsmanager.Secret(this, 'CognitoSecret', {
       secretName: `${envName}/lms/cognito-credentials`,
       secretObjectValue: {
@@ -109,50 +102,28 @@ export class ProdBackendStack extends cdk.Stack {
       },
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
+    this.cognitoSecret = cognitoSecret;
 
     const anthropicSecret = new secretsmanager.Secret(this, 'AnthropicSecret', {
       secretName: `${envName}/lms/anthropic-api-key`,
       secretStringValue: cdk.SecretValue.unsafePlainText(anthropicApiKey ?? 'REPLACE_ME'),
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
+    this.anthropicSecret = anthropicSecret;
 
-    // ========================================
-    // RDS MySQL (本番設定)
-    // ========================================
-    const database = new rds.DatabaseInstance(this, 'Database', {
-      engine: rds.DatabaseInstanceEngine.mysql({
-        version: rds.MysqlEngineVersion.VER_8_0,
-      }),
-      instanceIdentifier: `${envName}-lms-db`,
-      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.MEDIUM),
-      vpc,
-      vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_ISOLATED },
-      securityGroups: [rdsSg],
-      databaseName: 'moodle',
-      credentials: rds.Credentials.fromSecret(dbSecret),
-      allocatedStorage: 50,
-      storageType: rds.StorageType.GP3,
-      maxAllocatedStorage: 500,
-      multiAz: true,
-      backupRetention: cdk.Duration.days(7),
-      preferredBackupWindow: '17:00-18:00',      // JST 02:00-03:00
-      preferredMaintenanceWindow: 'Mon:18:00-Mon:19:00', // JST 月曜 03:00-04:00
-      deletionProtection: true,
+    // アプリ側シークレット (content-token / internal-api-key / session / moodle-service-password)
+    // すべて未指定時は 'REPLACE_ME' で作成し、デプロイ後に手動で put-secret-value する。
+    const appSecrets = new secretsmanager.Secret(this, 'AppSecrets', {
+      secretName: `${envName}/lms/app-secrets`,
+      secretObjectValue: {
+        contentTokenSecret: cdk.SecretValue.unsafePlainText(contentTokenSecret ?? 'REPLACE_ME'),
+        internalApiKey: cdk.SecretValue.unsafePlainText(internalApiKey ?? 'REPLACE_ME'),
+        sessionSecret: cdk.SecretValue.unsafePlainText(sessionSecret ?? 'REPLACE_ME'),
+        moodleServicePassword: cdk.SecretValue.unsafePlainText(moodleServicePassword ?? 'REPLACE_ME'),
+      },
       removalPolicy: cdk.RemovalPolicy.RETAIN,
-      storageEncrypted: true,
-      enablePerformanceInsights: true,
-      performanceInsightRetention: rds.PerformanceInsightRetention.DEFAULT,
-      parameterGroup: new rds.ParameterGroup(this, 'MoodleParameterGroup', {
-        engine: rds.DatabaseInstanceEngine.mysql({
-          version: rds.MysqlEngineVersion.VER_8_0,
-        }),
-        parameters: {
-          character_set_server: 'utf8mb4',
-          collation_server: 'utf8mb4_unicode_ci',
-          max_connections: '300',
-        },
-      }),
     });
+    this.appSecrets = appSecrets;
 
     // ========================================
     // EFS (moodledata 永続化)
@@ -166,235 +137,27 @@ export class ProdBackendStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
       lifecyclePolicy: efs.LifecyclePolicy.AFTER_30_DAYS,
     });
+    this.fileSystem = fileSystem;
 
-    const moodledataAP = fileSystem.addAccessPoint('MoodledataAP', {
+    this.moodledataAccessPoint = fileSystem.addAccessPoint('MoodledataAP', {
       path: '/moodledata',
       createAcl: { ownerUid: '1', ownerGid: '1', permissions: '755' },
       posixUser: { uid: '1', gid: '1' },
     });
 
-    // ========================================
-    // CloudWatch Logs
-    // ========================================
-    const logGroup = new logs.LogGroup(this, 'LogGroup', {
-      logGroupName: `/ecs/${envName}/lms`,
-      retention: logs.RetentionDays.ONE_MONTH,
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    // Bitnami Moodle イメージの is_app_initialized は BITNAMI_VOLUME_DIR/moodle
+    // (= /bitnami/moodle) の中身が空かどうかで「初回起動」を判定する。
+    // ここを永続化していないと、コンテナ再作成のたびに「持続化済み」と誤認識され
+    // config.php が存在しないまま復元処理に入りクラッシュする。
+    this.moodleAppAccessPoint = fileSystem.addAccessPoint('MoodleAppAP', {
+      path: '/moodleapp',
+      createAcl: { ownerUid: '1', ownerGid: '1', permissions: '755' },
+      posixUser: { uid: '1', gid: '1' },
     });
-
-    // ========================================
-    // ECS Cluster + EC2 キャパシティ
-    // ========================================
-    const cluster = new ecs.Cluster(this, 'Cluster', {
-      vpc,
-      clusterName: `${envName}-lms-cluster`,
-      containerInsights: true,
-    });
-
-    // 本番: Private サブネット配置 (NAT 経由でアウトバウンド通信)
-    const asg = cluster.addCapacity('Ec2Capacity', {
-      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T3, ec2.InstanceSize.XLARGE),
-      minCapacity: 2,
-      maxCapacity: 4,
-      desiredCapacity: 2,
-      vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
-      blockDevices: [
-        {
-          deviceName: '/dev/xvda',
-          volume: autoscaling.BlockDeviceVolume.ebs(50, {
-            volumeType: autoscaling.EbsDeviceVolumeType.GP3,
-            encrypted: true,
-          }),
-        },
-      ],
-    });
-
-    asg.addSecurityGroup(ec2Sg);
-    asg.role.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
-    );
-    asg.role.addManagedPolicy(
-      iam.ManagedPolicy.fromAwsManagedPolicyName('CloudWatchAgentServerPolicy'),
-    );
-    asg.addToRolePolicy(new iam.PolicyStatement({
-      actions: [
-        'elasticfilesystem:ClientMount',
-        'elasticfilesystem:ClientWrite',
-        'elasticfilesystem:ClientRootAccess',
-      ],
-      resources: [fileSystem.fileSystemArn],
-    }));
-    asg.addToRolePolicy(new iam.PolicyStatement({
-      actions: ['secretsmanager:GetSecretValue', 'kms:Decrypt'],
-      resources: [
-        dbSecret.secretArn,
-        cognitoSecret.secretArn,
-        anthropicSecret.secretArn,
-      ],
-    }));
-
-    // ========================================
-    // ECS Task Definition (EC2 / HOST ネットワーク)
-    // ========================================
-    const taskDef = new ecs.Ec2TaskDefinition(this, 'TaskDef', {
-      family: `${envName}-lms-task`,
-      networkMode: ecs.NetworkMode.HOST,
-      volumes: [
-        {
-          name: 'moodledata',
-          efsVolumeConfiguration: {
-            fileSystemId: fileSystem.fileSystemId,
-            transitEncryption: 'ENABLED',
-            authorizationConfig: {
-              accessPointId: moodledataAP.accessPointId,
-              iam: 'ENABLED',
-            },
-          },
-        },
-      ],
-    });
-
-    taskDef.addToExecutionRolePolicy(new iam.PolicyStatement({
-      actions: ['secretsmanager:GetSecretValue', 'kms:Decrypt'],
-      resources: [
-        dbSecret.secretArn,
-        cognitoSecret.secretArn,
-        anthropicSecret.secretArn,
-      ],
-    }));
-
-    // ----------------------------------------
-    // 各コンテナイメージ: webcoach-lms リポジトリのタグで区別
-    // ----------------------------------------
-    const nginxContainer = taskDef.addContainer('nginx', {
-      image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-nginx-latest'),
-      memoryLimitMiB: 256,
-      cpu: 256,
-      logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'nginx', logGroup }),
-      portMappings: [{ containerPort: 80, protocol: ecs.Protocol.TCP }],
-      essential: true,
-      environment: {
-        BFF_HOST: 'localhost:3001',
-        API_HOST: 'localhost:8001',
-        MOODLE_HOST: 'localhost:8080',
-      },
-    });
-
-    const bffContainer = taskDef.addContainer('bff-server', {
-      image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-bff-latest'),
-      memoryLimitMiB: 512,
-      cpu: 512,
-      logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'bff', logGroup }),
-      portMappings: [{ containerPort: 3001, protocol: ecs.Protocol.TCP }],
-      essential: true,
-      environment: {
-        NODE_ENV: 'production',
-        MOODLE_URL: 'http://localhost:8080',
-        API_SERVER_URL: 'http://localhost:8001',
-        MOODLE_SERVICE_NAME: 'moodle_mobile_app',
-      },
-      secrets: {
-        COGNITO_USER_POOL_ID: ecs.Secret.fromSecretsManager(cognitoSecret, 'userPoolId'),
-        COGNITO_CLIENT_ID: ecs.Secret.fromSecretsManager(cognitoSecret, 'clientId'),
-        COGNITO_CLIENT_SECRET: ecs.Secret.fromSecretsManager(cognitoSecret, 'clientSecret'),
-      },
-    });
-
-    const apiContainer = taskDef.addContainer('api-server', {
-      image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-api-latest'),
-      memoryLimitMiB: 1024,
-      cpu: 1024,
-      logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'api', logGroup }),
-      portMappings: [{ containerPort: 8001, protocol: ecs.Protocol.TCP }],
-      essential: true,
-      environment: {
-        DATABASE_HOST: database.dbInstanceEndpointAddress,
-        DATABASE_PORT: database.dbInstanceEndpointPort,
-        DATABASE_NAME: 'moodle',
-        MOODLE_URL: 'http://localhost:8080',
-      },
-      secrets: {
-        DATABASE_USER: ecs.Secret.fromSecretsManager(dbSecret, 'username'),
-        DATABASE_PASSWORD: ecs.Secret.fromSecretsManager(dbSecret, 'password'),
-        ANTHROPIC_API_KEY: ecs.Secret.fromSecretsManager(anthropicSecret),
-      },
-    });
-
-    const moodleContainer = taskDef.addContainer('moodle-app', {
-      image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-custom-latest'),
-      memoryLimitMiB: 2048,
-      cpu: 2048,
-      logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'lms', logGroup }),
-      portMappings: [{ containerPort: 8080, protocol: ecs.Protocol.TCP }],
-      essential: true,
-      environment: {
-        MOODLE_DATABASE_HOST: database.dbInstanceEndpointAddress,
-        MOODLE_DATABASE_NAME: 'moodle',
-        MOODLE_DATABASE_TYPE: 'mysqli',
-        MOODLE_DATAROOT: '/moodledata',
-        MOODLE_SITE_URL: moodleSiteUrl ?? 'REPLACE_ME',
-        MOODLE_SESSION_HANDLER: 'database',
-      },
-      secrets: {
-        MOODLE_DATABASE_USER: ecs.Secret.fromSecretsManager(dbSecret, 'username'),
-        MOODLE_DATABASE_PASSWORD: ecs.Secret.fromSecretsManager(dbSecret, 'password'),
-      },
-    });
-
-    moodleContainer.addMountPoints({
-      sourceVolume: 'moodledata',
-      containerPath: '/moodledata',
-      readOnly: false,
-    });
-
-    nginxContainer.addContainerDependencies(
-      { container: bffContainer, condition: ecs.ContainerDependencyCondition.START },
-      { container: apiContainer, condition: ecs.ContainerDependencyCondition.START },
-      { container: moodleContainer, condition: ecs.ContainerDependencyCondition.START },
-    );
-
-    // ========================================
-    // ECS Service
-    // ========================================
-    const service = new ecs.Ec2Service(this, 'Service', {
-      cluster,
-      taskDefinition: taskDef,
-      serviceName: `${envName}-lms-service`,
-      desiredCount,
-      minHealthyPercent: 50,
-      maxHealthyPercent: 100,
-      healthCheckGracePeriod: cdk.Duration.seconds(120),
-      enableExecuteCommand: true,
-      circuitBreaker: { rollback: true },
-    });
-
-    // ========================================
-    // ALB ターゲットグループへアタッチ (ALB自体は alb-stack で作成済み)
-    // ========================================
-    const targetGroup = elbv2.ApplicationTargetGroup.fromTargetGroupAttributes(this, 'TargetGroup', {
-      targetGroupArn,
-    });
-    targetGroup.addTarget(service);
 
     // ========================================
     // Outputs
     // ========================================
-    new cdk.CfnOutput(this, 'ClusterName', {
-      value: cluster.clusterName,
-      exportName: `${envName}-ClusterName`,
-    });
-
-    new cdk.CfnOutput(this, 'DbEndpoint', {
-      value: database.dbInstanceEndpointAddress,
-      description: 'RDS MySQL endpoint',
-      exportName: `${envName}-DbEndpoint`,
-    });
-
-    new cdk.CfnOutput(this, 'DbSecretArn', {
-      value: dbSecret.secretArn,
-      exportName: `${envName}-DbSecretArn`,
-    });
-
     new cdk.CfnOutput(this, 'CognitoSecretArn', {
       value: cognitoSecret.secretArn,
       description: 'デプロイ後に手動更新: aws secretsmanager put-secret-value ...',
@@ -404,11 +167,6 @@ export class ProdBackendStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'EfsId', {
       value: fileSystem.fileSystemId,
       exportName: `${envName}-EfsId`,
-    });
-
-    new cdk.CfnOutput(this, 'RdsSgId', {
-      value: rdsSg.securityGroupId,
-      exportName: `${envName}-RdsSgId`,
     });
   }
 }

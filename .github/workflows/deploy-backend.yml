@@ -1,0 +1,99 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'bff-server/**'
+      - 'api-server/**'
+
+permissions:
+  id-token: write  # OIDC トークン発行に必要
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-1
+  ECR_REGISTRY: 840513866884.dkr.ecr.ap-northeast-1.amazonaws.com
+  ECR_REPOSITORY: webcoach-lms
+  ECS_CLUSTER: prod-lms-cluster
+  ECS_SERVICE: prod-lms-service
+  ECS_TASK_FAMILY: prod-lms-task
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_BACKEND_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # イメージタグは git SHA で固定（:latest だと、ECSのEC2ホストに同名タグの
+      # 古いイメージが既にキャッシュされている場合に再pullされず新コードが反映されない
+      # ことがあるため。過去にmoodle-appで実際に発生した障害と同じ原因を回避する）
+      - name: Build and push BFF image
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:moodle-bff-$GITHUB_SHA ./bff-server
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:moodle-bff-$GITHUB_SHA
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:moodle-bff-$GITHUB_SHA $ECR_REGISTRY/$ECR_REPOSITORY:moodle-bff-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:moodle-bff-latest
+
+      - name: Build and push API image
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:moodle-api-$GITHUB_SHA ./api-server
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:moodle-api-$GITHUB_SHA
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:moodle-api-$GITHUB_SHA $ECR_REGISTRY/$ECR_REPOSITORY:moodle-api-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:moodle-api-latest
+
+      # 現行タスク定義を取得し、bff-server / api-server のイメージだけを
+      # 今回ビルドしたSHA固定タグに差し替えて新リビジョンとして登録する
+      - name: Render new task definition
+        id: render-task-def
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition $ECS_TASK_FAMILY \
+            --query 'taskDefinition' \
+            --output json > task-definition.json
+
+          jq --arg registry "$ECR_REGISTRY" \
+             --arg repo "$ECR_REPOSITORY" \
+             --arg sha "$GITHUB_SHA" \
+             '.containerDefinitions |= map(
+                if .name == "bff-server" then
+                  .image = ($registry + "/" + $repo + ":moodle-bff-" + $sha)
+                elif .name == "api-server" then
+                  .image = ($registry + "/" + $repo + ":moodle-api-" + $sha)
+                else . end
+              )
+              | del(.taskDefinitionArn, .revision, .status, .requiresAttributes,
+                    .compatibilities, .registeredAt, .registeredBy, .deregisteredAt)' \
+            task-definition.json > new-task-definition.json
+
+          NEW_TASK_DEF_ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://new-task-definition.json \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+          echo "task_def_arn=$NEW_TASK_DEF_ARN" >> $GITHUB_OUTPUT
+
+      - name: Deploy new task definition to ECS
+        run: |
+          aws ecs update-service \
+            --cluster $ECS_CLUSTER \
+            --service $ECS_SERVICE \
+            --task-definition ${{ steps.render-task-def.outputs.task_def_arn }} \
+            --region $AWS_REGION
+
+      - name: Wait for ECS service to stabilize
+        run: |
+          aws ecs wait services-stable \
+            --cluster $ECS_CLUSTER \
+            --services $ECS_SERVICE \
+            --region $AWS_REGION

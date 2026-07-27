@@ -22,13 +22,23 @@ export interface ProdGithubActionsStackProps extends cdk.StackProps {
    * --context distributionId=EXXXXXXXXXXXX で渡す
    */
   readonly distributionId: string;
+  /**
+   * ECS タスク定義の実行ロール ARN (prod-EcsStack が自動生成したロール)
+   * --context taskExecutionRoleArn=arn:aws:iam::... で渡す
+   */
+  readonly taskExecutionRoleArn: string;
+  /**
+   * ECS タスク定義のタスクロール ARN (prod-EcsStack が自動生成したロール)
+   * --context taskRoleArn=arn:aws:iam::... で渡す
+   */
+  readonly taskRoleArn: string;
 }
 
 export class ProdGithubActionsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: ProdGithubActionsStackProps) {
     super(scope, id, props);
 
-    const { envName, githubRepo, repository, spaBucketName, distributionId } = props;
+    const { envName, githubRepo, repository, spaBucketName, distributionId, taskExecutionRoleArn, taskRoleArn } = props;
 
     // GitHub OIDC プロバイダー (アカウントに 1 つだけ作成)
     const provider = new iam.OpenIdConnectProvider(this, 'GithubOidcProvider', {
@@ -111,7 +121,7 @@ export class ProdGithubActionsStack extends cdk.Stack {
       resources: [repository.repositoryArn],
     }));
 
-    // ECS: force new deployment で新イメージを反映
+    // ECS: 新しいタスク定義リビジョンを登録してサービスを更新
     backendRole.addToPolicy(new iam.PolicyStatement({
       actions: [
         'ecs:DescribeServices',
@@ -120,6 +130,24 @@ export class ProdGithubActionsStack extends cdk.Stack {
       resources: [
         `arn:aws:ecs:${this.region}:${this.account}:service/${envName}-lms-cluster/${envName}-lms-service`,
       ],
+    }));
+
+    // ECS: タスク定義の参照・新規登録（:latest タグの再pullキャッシュ問題を避けるため、
+    // イメージタグを都度SHA固定にして新リビジョンを登録する方式。RegisterTaskDefinition /
+    // DescribeTaskDefinition はECS側の仕様上リソースレベル権限をサポートしないため resource: * が必須）
+    backendRole.addToPolicy(new iam.PolicyStatement({
+      actions: [
+        'ecs:DescribeTaskDefinition',
+        'ecs:RegisterTaskDefinition',
+      ],
+      resources: ['*'],
+    }));
+
+    // iam:PassRole: 新リビジョン登録時にECSへ渡すロールを prod-EcsStack が作成した
+    // 実行ロール／タスクロールの2つだけに限定（他ロールへのPassRoleは不可）
+    backendRole.addToPolicy(new iam.PolicyStatement({
+      actions: ['iam:PassRole'],
+      resources: [taskExecutionRoleArn, taskRoleArn],
     }));
 
     // ============================================================
