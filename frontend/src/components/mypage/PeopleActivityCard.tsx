@@ -16,7 +16,7 @@ function PeopleActivityCard({ pulse }: PeopleActivityCardProps) {
       <div style={{ fontWeight: 700, color: '#2A2230', fontSize: 16 }}>他の人の様子</div>
 
       <div className="relative overflow-hidden" style={{ borderRadius: 14, height: 96 }}>
-        <img src="/guild-lobby-bg.png" alt="ギルドロビー" className="w-full h-full object-cover" style={{ display: 'block' }} />
+        <img src={`${process.env.PUBLIC_URL}/guild-lobby-bg.png`} alt="ギルドロビー" className="w-full h-full object-cover" style={{ display: 'block' }} />
         <span
           className="absolute"
           style={{ top: 8, right: 8, background: 'rgba(255,255,255,.94)', color: '#E0213A', fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 999 }}

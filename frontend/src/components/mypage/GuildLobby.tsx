@@ -27,7 +27,7 @@ function GuildLobby({ pulse }: GuildLobbyProps) {
     <div className="relative overflow-hidden" style={{ borderRadius: 20, boxShadow: '0 8px 26px rgba(190,60,70,.08)' }}>
       <div className="relative w-full" style={{ aspectRatio: '16 / 9' }}>
         <motion.img
-          src="/guild-lobby-bg.png"
+          src={`${process.env.PUBLIC_URL}/guild-lobby-bg.png`}
           alt="ギルドロビー"
           className="w-full h-full object-cover"
           style={{ display: 'block' }}
