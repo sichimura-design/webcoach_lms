@@ -1,287 +1,343 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search } from 'lucide-react';
-import { AppHeader, MascotSvg, RoadmapPath } from './shared';
+import { AppHeader } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { useMypageData } from '../hooks/useMypageData';
-import { useLearningSummary } from '../hooks/useLearningSummary';
-import { useRoadmapSteps } from '../hooks/useRoadmapSteps';
-import { useCommunityPulse } from '../hooks/useCommunityPulse';
-import { useChatStore } from '../store/chatStore';
-import { Course } from '../types/mypage';
+import { bffClient } from '../services/bffClient';
+import { useScaleToFit } from '../hooks/useScaleToFit';
+import { t } from '../theme/tokens';
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Webデザイン: '#E0213A',
-  コーディング: '#D9930D',
-  マーケティング: '#8B5CD6',
-  キャリア: '#2FA35C',
-};
+const DESIGN_WIDTH = 1440;
+
+interface CatalogCourse {
+  id: number;
+  title: string;
+  description: string;
+  categoryName: string;
+  progress: number;
+  totalLessons?: number;
+  isCurrent: boolean;
+}
+
+interface LessonRow {
+  id: number;
+  name: string;
+  done: boolean;
+  current: boolean;
+  minutes?: number;
+}
+
+const STATUS_LABELS = ['受講中', '未受講', '修了'] as const;
+type StatusLabel = typeof STATUS_LABELS[number];
+
+function statusOf(progress: number): StatusLabel {
+  if (progress >= 100) return '修了';
+  if (progress > 0) return '受講中';
+  return '未受講';
+}
 
 function categoryColor(name?: string): string {
-  return (name && CATEGORY_COLORS[name]) || '#8B5CD6';
+  switch (name) {
+    case 'Webデザイン': return t.color.category.design;
+    case 'コーディング': return t.color.category.coding;
+    case 'マーケティング': return t.color.category.marketing;
+    case 'キャリア': return t.color.category.career;
+    default: return t.color.text.subtle;
+  }
 }
 
-function courseBadge(course: Course): { label: string; bg: string; color: string } | null {
-  const progress = course.progress ?? 0;
-  if (progress >= 100) return { label: '修了！', bg: '#EAF6ED', color: '#2FA35C' };
-  if (progress > 0) return { label: 'がんばり中！', bg: '#FBEACD', color: '#B98A16' };
-  return null;
-}
-
-function formatMinutesHM(min: number): string {
-  const h = Math.floor(min / 60);
-  const m = min % 60;
-  return h > 0 ? `${h}時間${m}分` : `${m}分`;
+function chipStyle(active: boolean) {
+  return active
+    ? { background: t.color.primary, color: '#fff', border: `1px solid ${t.color.primary}`, borderRadius: t.radius.pill, padding: '9px 20px', fontSize: 12.5, fontWeight: t.font.weight.bold, cursor: 'pointer', whiteSpace: 'nowrap' as const }
+    : { background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, color: t.color.text.body, borderRadius: t.radius.pill, padding: '9px 20px', fontSize: 12.5, fontWeight: t.font.weight.bold, cursor: 'pointer', whiteSpace: 'nowrap' as const };
 }
 
 function MaterialsTopPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const setChatOpen = useChatStore((s) => s.setChatOpen);
-  const { userProfile, resumableCourse, activeCourses, streak } = useMypageData(user?.userid);
-  const { steps: roadmapSteps } = useRoadmapSteps(user?.userid);
-  const { pulse } = useCommunityPulse();
+  const { resumableCourse, activeCourses } = useMypageData(user?.userid);
+  const { outerRef, innerRef, scale, innerHeight } = useScaleToFit(DESIGN_WIDTH);
 
-  const [search, setSearch] = useState('');
-  const [filter, setFilter] = useState('すべて');
+  const [catalog, setCatalog] = useState<CatalogCourse[]>([]);
+  const [remainingLessons, setRemainingLessons] = useState<LessonRow[]>([]);
+  const [currentModuleId, setCurrentModuleId] = useState<number | undefined>();
 
-  const learningCourses: Course[] = resumableCourse
-    ? [resumableCourse, ...activeCourses.filter((c) => c.id !== resumableCourse.id)]
-    : activeCourses;
-  const learningSummary = useLearningSummary(learningCourses);
+  const [category, setCategory] = useState('すべて');
+  const [status, setStatus] = useState<StatusLabel | null>(null);
+  const [query, setQuery] = useState('');
+  const [visible, setVisible] = useState(9);
 
-  const categories = useMemo(() => {
-    const names = Array.from(new Set(learningCourses.map((c) => c.categoryName).filter(Boolean))) as string[];
+  // 教材カタログ（全コース）を取得し、自分の受講進捗をマージする
+  useEffect(() => {
+    let alive = true;
+    bffClient.getCourses().then((raw: any[]) => {
+      if (!alive) return;
+      const list = Array.isArray(raw) ? raw : [];
+      setCatalog(list.map((c) => {
+        const enrolled = activeCourses.find((ac) => ac.id === c.id) || (resumableCourse?.id === c.id ? resumableCourse : undefined);
+        return {
+          id: c.id,
+          title: c.fullname || c.displayname || '',
+          description: c.summary || '',
+          categoryName: c.categoryname || 'カテゴリ',
+          totalLessons: enrolled?.totalLessons,
+          progress: enrolled?.progress ?? 0,
+          isCurrent: resumableCourse?.id === c.id,
+        };
+      }));
+    }).catch(() => setCatalog([]));
+    return () => { alive = false; };
+  }, [activeCourses, resumableCourse]);
+
+  // 続きから学習中のコースの、残りレッスン一覧（実モジュール＋実完了状態）
+  useEffect(() => {
+    if (!resumableCourse) {
+      setRemainingLessons([]);
+      setCurrentModuleId(undefined);
+      return;
+    }
+    let alive = true;
+    bffClient.getCourseContent(resumableCourse.id).then(async (sections: any) => {
+      const modules = (Array.isArray(sections) ? sections : []).flatMap((s: any) => s.modules ?? []);
+      const results = await Promise.all(
+        modules.map((m: any) =>
+          bffClient.getActivityCompletion(m.id, resumableCourse.id)
+            .then((d: any) => ({ id: m.id, done: d.state >= 1 }))
+            .catch(() => ({ id: m.id, done: false }))
+        )
+      );
+      if (!alive) return;
+      const doneMap = new Map(results.map((r) => [r.id, r.done]));
+      const firstIncompleteIdx = modules.findIndex((m: any) => !doneMap.get(m.id));
+      setCurrentModuleId(modules[firstIncompleteIdx]?.id);
+      setRemainingLessons(
+        modules.map((m: any, i: number) => ({
+          id: m.id,
+          name: m.name,
+          done: doneMap.get(m.id) ?? false,
+          current: i === firstIncompleteIdx,
+        }))
+      );
+    }).catch(() => setRemainingLessons([]));
+    return () => { alive = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resumableCourse?.id]);
+
+  const categoryOptions = useMemo(() => {
+    const names = Array.from(new Set(catalog.map((c) => c.categoryName).filter(Boolean)));
     return ['すべて', ...names];
-  }, [learningCourses]);
+  }, [catalog]);
 
-  const filteredCourses = learningCourses.filter((c) => {
-    if (filter !== 'すべて' && c.categoryName !== filter) return false;
-    if (search && !c.title.toLowerCase().includes(search.toLowerCase())) return false;
+  const filtered = catalog.filter((c) => {
+    if (category !== 'すべて' && c.categoryName !== category) return false;
+    if (status && statusOf(c.progress) !== status) return false;
+    if (query && !(c.title + c.description + c.categoryName).toLowerCase().includes(query.toLowerCase())) return false;
     return true;
   });
+  const shown = filtered.slice(0, visible);
+  const hasMore = filtered.length > shown.length;
+  const moreCount = Math.min(9, filtered.length - shown.length);
+  const completedCount = remainingLessons.filter((l) => l.done).length;
 
-  const nextRecommendedStep = roadmapSteps.find((s) => s.status !== 'done');
+  const resetPaging = () => setVisible(9);
+  const goToContinue = () => resumableCourse && navigate(currentModuleId ? `/course/${resumableCourse.id}?module=${currentModuleId}` : `/course/${resumableCourse.id}/curriculum`);
+  const goToCurriculum = () => resumableCourse && navigate(`/course/${resumableCourse.id}/curriculum`);
 
   return (
-    <div className="min-h-screen bg-dash-bg flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ background: t.color.bg.page }}>
       <AppHeader userName={user?.username || 'User'} />
 
-      <main className="relative mx-auto grid" style={{ maxWidth: 1440, paddingTop: 32, paddingBottom: 40, paddingLeft: 24, paddingRight: 24, gridTemplateColumns: '1fr 300px', gap: 22, alignItems: 'start' }}>
-        <div className="flex flex-col" style={{ gap: 20 }}>
-          <div className="grid" style={{ gridTemplateColumns: '1fr 190px 190px', gap: 16 }}>
-            <div className="flex items-center" style={{ gap: 18, background: 'linear-gradient(120deg,#FBDCE2,#F9CDD6)', borderRadius: 20, padding: '18px 22px' }}>
-              <MascotSvg size={64} cheeks />
-              <div>
-                <div style={{ fontSize: 17, fontWeight: 900 }}>こんにちは、{userProfile?.nick_name || ''}さん！ 👋</div>
-                <div style={{ fontSize: 12, color: '#A05A6B', marginTop: 4 }}>一緒に続けていこう！あなたならできるよ〜！</div>
+      <div
+        ref={outerRef}
+        style={{ width: '100%', maxWidth: DESIGN_WIDTH, margin: '0 auto', position: 'relative', height: innerHeight ? innerHeight * scale : undefined }}
+      >
+      <main
+        ref={innerRef}
+        className="flex flex-col"
+        style={{ position: 'absolute', top: 0, left: 0, width: DESIGN_WIDTH, paddingTop: t.space.pageTop, paddingLeft: t.space.pageX, paddingRight: t.space.pageX, paddingBottom: t.space.pageBottom, gap: t.space.stack, fontFamily: t.font.family, color: t.color.text.primary, boxSizing: 'border-box', transform: `scale(${scale})`, transformOrigin: 'top left' }}
+      >
+        <div style={{ fontSize: 12, color: t.color.text.subtle }}>
+          学習　›　<span style={{ color: t.color.text.body }}>学習コンテンツ</span>
+        </div>
+
+        <div>
+          <h1 style={{ margin: 0, fontSize: t.font.size.pageTitle, fontWeight: t.font.weight.black }}>学習コンテンツ</h1>
+          <p style={{ margin: '9px 0 0', fontSize: 13, color: t.color.text.muted }}>続きから進めて、必要な教材はいつでも探せます。</p>
+        </div>
+
+        {/* ① いま取り組むステップ / このコースの残りレッスン */}
+        {resumableCourse && (
+          <div className="grid" style={{ gridTemplateColumns: '1.55fr 1fr', gap: t.space.grid, alignItems: 'stretch' }}>
+            <div style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.card, overflow: 'hidden', boxShadow: t.shadow.card, display: 'flex' }}>
+              <img src={`${process.env.PUBLIC_URL}/images/materials/hero-art.png`} alt="" style={{ width: 200, objectFit: 'cover', display: 'block' }} />
+              <div style={{ flex: 1, padding: '28px 32px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <div style={{ fontSize: 11.5, fontWeight: t.font.weight.black, color: t.color.primary, letterSpacing: t.font.letterSpacingWide }}>いま取り組むステップ</div>
+                <div style={{ fontSize: 23, fontWeight: t.font.weight.black }}>{resumableCourse.title}</div>
+                <div style={{ fontSize: 12.5, color: t.color.text.muted }}>
+                  {[resumableCourse.currentLesson, resumableCourse.currentChapter && `${resumableCourse.currentChapter}から再開`, resumableCourse.remainingMinutes && `残り約${resumableCourse.remainingMinutes}分`]
+                    .filter(Boolean)
+                    .join('・')}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <div style={{ flex: 1, height: 7, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}>
+                    <div style={{ width: `${resumableCourse.progress ?? 0}%`, height: '100%', background: t.color.primary, borderRadius: t.radius.pill }} />
+                  </div>
+                  <span style={{ fontSize: 12.5, fontWeight: t.font.weight.bold, color: t.color.primary }}>{resumableCourse.progress ?? 0}%</span>
+                </div>
+                <div style={{ display: 'flex', gap: 12, marginTop: 2 }}>
+                  <button
+                    onClick={goToContinue}
+                    className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                    style={{ background: t.color.primary, color: '#fff', borderRadius: t.radius.button, padding: '16px 34px', fontSize: 14.5, fontWeight: t.font.weight.black, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
+                  >
+                    続きからはじめる　→
+                  </button>
+                  <button
+                    onClick={goToCurriculum}
+                    className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                    style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.line}`, color: t.color.text.body, borderRadius: t.radius.button, padding: '16px 26px', fontSize: 13.5, fontWeight: t.font.weight.bold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
+                  >
+                    レッスン一覧
+                  </button>
+                </div>
               </div>
             </div>
-            <div className="bg-white" style={{ borderRadius: 20, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: 16 }}>
-              <div style={{ fontSize: 11, color: '#8A767D' }}>今週の学習時間</div>
-              <div style={{ fontSize: 21, fontWeight: 900, marginTop: 3 }}>{formatMinutesHM(learningSummary.thisWeekMinutes)}</div>
-              <div style={{ height: 6, borderRadius: 999, background: '#F5E4E6', overflow: 'hidden', marginTop: 9 }}>
-                <div style={{ width: `${Math.min(100, Math.round((learningSummary.thisWeekMinutes / (userProfile?.weekly_target_minutes ?? 600)) * 100))}%`, height: '100%', background: 'linear-gradient(90deg,#F0546A,#E0213A)', borderRadius: 999 }} />
+
+            <div style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.card, padding: '24px 26px', boxShadow: t.shadow.card, display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: 14.5, fontWeight: t.font.weight.black }}>このコースの残りレッスン</span>
+                <span style={{ fontSize: 11.5, color: t.color.text.muted }}>{completedCount} / {remainingLessons.length} 完了</span>
               </div>
-              <div style={{ fontSize: 10, color: '#B78F98', marginTop: 5 }}>目標：{formatMinutesHM(userProfile?.weekly_target_minutes ?? 600)}</div>
-            </div>
-            <div className="bg-white" style={{ borderRadius: 20, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: 16 }}>
-              <div style={{ fontSize: 11, color: '#8A767D' }}>連続学習日数</div>
-              <div style={{ fontSize: 21, fontWeight: 900, color: '#E0213A', marginTop: 3 }}>{streak?.days ?? 0}日</div>
-              <div style={{ fontSize: 10, color: '#B78F98', marginTop: 14 }}>
-                {streak && (streak.best === undefined || streak.days >= streak.best) ? '自己ベスト更新中！ 🔥' : `自己ベスト ${streak?.best}日`}
-              </div>
+              {remainingLessons.map((l, i) => (
+                <div
+                  key={l.id}
+                  onClick={() => navigate(`/course/${resumableCourse.id}?module=${l.id}`)}
+                  className="cursor-pointer"
+                  style={{ display: 'flex', alignItems: 'center', gap: 12 }}
+                >
+                  {l.done ? (
+                    <span style={{ width: 24, height: 24, borderRadius: '50%', background: t.color.primary, color: '#fff', fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>✓</span>
+                  ) : l.current ? (
+                    <span style={{ width: 24, height: 24, borderRadius: '50%', background: t.color.bg.card, border: `2.5px solid ${t.color.text.strong}`, flexShrink: 0 }} />
+                  ) : (
+                    <span style={{ width: 24, height: 24, borderRadius: '50%', background: t.color.bg.card, border: `2px solid ${t.color.border.muted}`, color: t.color.text.subtle, fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', flexShrink: 0 }}>{i + 1}</span>
+                  )}
+                  <span style={{ flex: 1, fontSize: 13, fontWeight: l.current ? t.font.weight.bold : undefined, color: l.done ? t.color.text.done : l.current ? t.color.text.primary : t.color.text.subtle }}>
+                    {l.name}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
+        )}
 
-          {roadmapSteps.length > 0 && (
-            <div className="bg-white" style={{ borderRadius: 20, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: '18px 24px' }}>
-              <div className="flex items-center justify-between flex-wrap gap-2" style={{ marginBottom: 14 }}>
-                <div className="flex items-center gap-2" style={{ fontSize: 14, fontWeight: 900 }}>
-                  <span style={{ background: '#FBEACD', borderRadius: 8, padding: '3px 7px' }}>🛡</span>
-                  コーチと決めたロードマップ
-                </div>
-                <span style={{ fontSize: 11, color: '#B78F98' }}>
-                  目標：3ヶ月でLP公開 <span onClick={() => navigate('/profile')} style={{ color: '#E0213A', fontWeight: 700, cursor: 'pointer' }}>変更 ›</span>
-                </span>
-              </div>
-              <RoadmapPath steps={roadmapSteps} />
-            </div>
-          )}
+        <div style={{ height: 1, background: t.color.divider, marginTop: 8 }} />
 
-          <div className="grid" style={{ gridTemplateColumns: '1.3fr 1fr', gap: 16 }}>
-            {primaryCourseCard(resumableCourse, navigate)}
-            {nextRecommendedStep && (
-              <div
-                onClick={nextRecommendedStep.onClick}
-                className="bg-white flex items-center cursor-pointer"
-                style={{ borderRadius: 20, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: '18px 22px', gap: 14 }}
-              >
-                <span className="flex items-center justify-center flex-shrink-0" style={{ width: 40, height: 40, borderRadius: 12, background: '#FBEACD', fontSize: 17 }}>⭐</span>
-                <div className="flex-1">
-                  <div style={{ fontSize: 11, fontWeight: 700, color: '#B98A16' }}>あなたへのおすすめ</div>
-                  <div style={{ fontSize: 14, fontWeight: 900 }}>次は「{nextRecommendedStep.label}」がおすすめ</div>
-                  <div style={{ fontSize: 11, color: '#A9909A', marginTop: 3 }}>ロードマップの次のステップです</div>
-                </div>
-                <span style={{ color: '#C99' }}>›</span>
-              </div>
-            )}
+        {/* ② 教材をさがす */}
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+          <div>
+            <div style={{ fontSize: 19, fontWeight: t.font.weight.black }}>教材をさがす</div>
+            <div style={{ fontSize: 12.5, color: t.color.text.muted, marginTop: 6 }}>全 {catalog.length} コース ・ 目標以外の教材も自由に受講できます</div>
           </div>
-
-          <div
-            className="flex items-center"
-            style={{ border: '1px solid rgba(255,255,255,.9)', background: 'rgba(255,255,255,.85)', borderRadius: 999, padding: '15px 24px', boxShadow: '0 8px 20px rgba(200,90,110,.08)' }}
-          >
-            <Search className="w-4 h-4 flex-shrink-0" style={{ color: '#B7A0A7' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.button, padding: '12px 18px', width: 380, boxShadow: t.shadow.card, boxSizing: 'border-box' }}>
+            <span style={{ color: t.color.text.subtle, fontSize: 14 }}>⌕</span>
             <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="コース名・キーワードで検索（例：バナー、JavaScript、SEO）"
-              className="flex-1 bg-transparent outline-none"
-              style={{ border: 'none', fontSize: 13, marginLeft: 10 }}
+              value={query}
+              onChange={(e) => { setQuery(e.target.value); resetPaging(); }}
+              placeholder="コース名・キーワードで検索（例：バナー、SEO）"
+              style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: t.color.text.primary, fontFamily: 'inherit' }}
             />
           </div>
+        </div>
 
-          <div className="flex items-center justify-between">
-            <h2 style={{ margin: 0, fontSize: 19, fontWeight: 900 }}>マイコース</h2>
-            <span style={{ fontSize: 12, color: '#8A767D' }}>
-              並び替え <span style={{ background: '#fff', borderRadius: 999, padding: '6px 14px', fontWeight: 700, boxShadow: '0 4px 12px rgba(200,90,110,.08)', cursor: 'pointer' }}>進捗が高い順 ▾</span>
-            </span>
-          </div>
-
-          <div className="flex flex-wrap" style={{ gap: 9 }}>
-            {categories.map((f) => (
-              <span
-                key={f}
-                onClick={() => setFilter(f)}
-                style={{
-                  borderRadius: 999, padding: '8px 18px', fontSize: 12, fontWeight: 700, cursor: 'pointer',
-                  background: filter === f ? '#E0213A' : '#fff',
-                  color: filter === f ? '#fff' : '#6B575E',
-                  border: filter === f ? 'none' : '1px solid #EDD8DB',
-                }}
-              >
-                {f}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          {categoryOptions.map((label) => {
+            const active = category === label;
+            const count = label === 'すべて' ? catalog.length : catalog.filter((c) => c.categoryName === label).length;
+            return (
+              <span key={label} onClick={() => { setCategory(label); resetPaging(); }} style={chipStyle(active)}>
+                {label}
+                <span style={{ marginLeft: 6, ...(active ? { opacity: 0.7 } : { color: t.color.text.subtle }) }}>{count}</span>
               </span>
-            ))}
-          </div>
+            );
+          })}
+          <span style={{ width: 1, height: 22, background: t.color.divider, margin: '0 4px' }} />
+          {STATUS_LABELS.map((label) => (
+            <span
+              key={label}
+              onClick={() => { setStatus((cur) => (cur === label ? null : label)); resetPaging(); }}
+              style={chipStyle(status === label)}
+            >
+              {label}
+            </span>
+          ))}
+          <span style={{ flex: 1 }} />
+          <span style={{ fontSize: 12.5, color: t.color.text.muted }}>{shown.length} / {filtered.length} 件を表示中</span>
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: 18 }}>
-            {filteredCourses.map((c) => {
-              const badge = courseBadge(c);
-              const progress = c.progress ?? 0;
-              const totalLessons = c.totalLessons ?? 6;
-              const currentLessonN = Math.max(1, Math.round((progress / 100) * totalLessons));
+        {shown.length === 0 ? (
+          <div className="flex flex-col items-center justify-center" style={{ padding: '60px 0', gap: 8 }}>
+            <span style={{ fontSize: 28 }}>🔍</span>
+            <p style={{ fontSize: 13, color: t.color.text.muted, margin: 0 }}>条件に合う教材が見つかりませんでした。検索語や絞り込みを変えてみてください。</p>
+          </div>
+        ) : (
+          <div className="grid" style={{ gridTemplateColumns: 'repeat(3,1fr)', gap: t.space.grid }}>
+            {shown.map((c) => {
+              const st = statusOf(c.progress);
+              const tagStyle = c.isCurrent
+                ? { background: t.color.primarySoft, color: t.color.primary, fontSize: 10.5, fontWeight: t.font.weight.black, borderRadius: t.radius.pill, padding: '3px 10px' }
+                : st === '修了'
+                  ? { background: t.color.successSoft, color: t.color.success, fontSize: 11, fontWeight: t.font.weight.bold, borderRadius: t.radius.pill, padding: '2px 10px' }
+                  : { fontSize: 11.5, color: st === '受講中' ? t.color.text.muted : t.color.text.subtle };
+              const tagLabel = c.isCurrent ? 'いま取り組み中' : st === '未受講' ? '未受講' : `Lesson ${Math.max(1, Math.round((c.progress / 100) * (c.totalLessons ?? 6)))} / ${c.totalLessons ?? 6}`;
+              const ctaLabel = c.progress >= 100 ? 'もう一度見る' : c.progress > 0 ? '続きから' : 'はじめる';
               return (
                 <div
                   key={c.id}
                   onClick={() => navigate(`/course/${c.id}/curriculum`)}
-                  className="bg-white flex flex-col cursor-pointer"
-                  style={{ borderRadius: 20, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: 18, gap: 10 }}
+                  className="cursor-pointer"
+                  style={{
+                    background: t.color.bg.card,
+                    border: c.isCurrent ? `1.5px solid ${t.color.primaryBorder}` : `1px solid ${t.color.border.card}`,
+                    borderRadius: t.radius.card, padding: '22px 24px', boxShadow: t.shadow.card,
+                    display: 'flex', flexDirection: 'column', gap: 12, minHeight: 186,
+                  }}
                 >
-                  <div className="flex items-center justify-between">
-                    <span style={{ background: categoryColor(c.categoryName), color: '#fff', fontSize: 10, fontWeight: 700, borderRadius: 999, padding: '3px 11px' }}>
-                      {c.categoryName || 'カテゴリ'}
-                    </span>
-                    {badge && (
-                      <span style={{ background: badge.bg, color: badge.color, fontSize: 10, fontWeight: 700, borderRadius: 999, padding: '3px 10px' }}>{badge.label}</span>
-                    )}
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontSize: 11.5, fontWeight: t.font.weight.bold, color: categoryColor(c.categoryName) }}>{c.categoryName}</span>
+                    <span style={tagStyle}>{tagLabel}</span>
                   </div>
-                  <div style={{ fontSize: 15, fontWeight: 900, lineHeight: 1.4 }}>{c.title}</div>
-                  <div className="flex-1" style={{ fontSize: 11, color: '#A9909A' }}>{c.description}</div>
-                  <div className="flex items-end justify-between">
-                    <div className="flex-1">
-                      <div style={{ fontSize: 11, color: '#8A767D', marginBottom: 6 }}>Lesson {currentLessonN} / {totalLessons}</div>
-                      <div style={{ height: 7, borderRadius: 999, background: '#F5E4E6', overflow: 'hidden', marginRight: 14 }}>
-                        <div style={{ width: `${progress}%`, height: '100%', background: 'linear-gradient(90deg,#F0546A,#E0213A)', borderRadius: 999 }} />
-                      </div>
+                  <div style={{ fontSize: 16, fontWeight: t.font.weight.black }}>{c.title}</div>
+                  <div style={{ fontSize: 12, color: t.color.text.muted, lineHeight: 1.7 }}>{c.description}</div>
+                  <div style={{ flex: 1 }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ flex: 1, height: 6, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}>
+                      <div style={{ width: `${c.progress}%`, height: '100%', borderRadius: t.radius.pill, background: c.progress >= 100 ? t.color.success : t.color.primary }} />
                     </div>
-                    <MascotSvg size={44} />
+                    <span style={{ fontSize: 12, fontWeight: t.font.weight.bold, color: c.progress >= 100 ? t.color.success : c.progress > 0 ? t.color.primary : t.color.text.subtle }}>{c.progress}%</span>
                   </div>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); navigate(`/course/${c.id}/curriculum`); }}
-                    className="appearance-none border-0 outline-none text-white font-bold focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    style={{ background: 'linear-gradient(120deg,#F0546A,#E0213A)', borderRadius: 999, padding: 11, fontSize: 13 }}
-                  >
-                    {progress >= 100 ? 'もう一度' : progress > 0 ? '続きから' : 'はじめる'} ▸
-                  </button>
+                  <span style={{ fontSize: 12.5, fontWeight: t.font.weight.bold, color: t.color.primary }}>
+                    {ctaLabel}　→
+                  </span>
                 </div>
               );
             })}
           </div>
-        </div>
+        )}
 
-        <div className="flex flex-col" style={{ gap: 18 }}>
-          <div className="bg-white flex flex-col" style={{ borderRadius: 20, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: 20, gap: 13 }}>
-            <div className="flex items-center gap-2" style={{ fontSize: 14, fontWeight: 900 }}>
-              <span style={{ color: '#E0213A' }}>👥</span> いま一緒に学んでいる人たち
-            </div>
-            {pulse && <div style={{ fontSize: 11, fontWeight: 700, color: '#E0213A' }}>{pulse.totalToday}人が学習中！</div>}
-            {pulse?.activityFeed.slice(0, 5).map((m) => (
-              <div key={m.id} className="flex items-center" style={{ gap: 10 }}>
-                <span className="flex items-center justify-center rounded-full flex-shrink-0" style={{ width: 34, height: 34, background: '#F6D2D2', fontSize: 15 }}>{m.avatarEmoji}</span>
-                <div className="flex-1 min-w-0">
-                  <div style={{ fontSize: 12, fontWeight: 700 }}>{m.nickname}</div>
-                  <div style={{ fontSize: 10, color: '#A9909A' }}>{m.activityLabel}</div>
-                </div>
-                <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#2FA35C', flexShrink: 0 }} />
-              </div>
-            ))}
+        {hasMore && (
+          <div className="flex justify-center">
             <button
-              onClick={() => navigate('/focus-booth')}
-              className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{ background: '#fff', color: '#E0213A', border: '1.5px solid #EEC0C4', borderRadius: 999, padding: 11, fontWeight: 700, fontSize: 12 }}
+              onClick={() => setVisible((v) => v + 9)}
+              className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+              style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.line}`, color: t.color.text.body, borderRadius: t.radius.button, padding: '14px 34px', fontSize: 13.5, fontWeight: t.font.weight.bold, fontFamily: 'inherit', cursor: 'pointer' }}
             >
-              👥 みんなの学習部屋に入る
+              さらに{moreCount}コースを表示　⌄
             </button>
           </div>
-
-          <div className="bg-white flex flex-col" style={{ borderRadius: 20, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: 20, gap: 13 }}>
-            <div className="flex items-start" style={{ gap: 12 }}>
-              <MascotSvg size={46} />
-              <div style={{ background: '#FDF0F2', borderRadius: '4px 14px 14px 14px', padding: '12px 14px', fontSize: 12, lineHeight: 1.7, color: '#5A4A50' }}>
-                {userProfile?.nick_name || ''}さん、すごいよ〜！コツコツ続けてえらい！この調子で一緒にゴールしようね ✨
-              </div>
-            </div>
-            <button
-              onClick={() => setChatOpen(true)}
-              className="appearance-none border-0 outline-none text-white font-bold focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{ background: 'linear-gradient(120deg,#F0546A,#E0213A)', borderRadius: 999, padding: 12, fontSize: 12, boxShadow: '0 8px 20px rgba(224,33,58,.3)' }}
-            >
-              💬 コーチに質問してみる
-            </button>
-          </div>
-        </div>
+        )}
       </main>
-    </div>
-  );
-}
-
-function primaryCourseCard(resumableCourse: Course | null, navigate: (path: string) => void) {
-  if (!resumableCourse) return <div />;
-  return (
-    <div
-      onClick={() => navigate(`/course/${resumableCourse.id}/curriculum`)}
-      className="bg-white flex items-center cursor-pointer"
-      style={{ borderRadius: 20, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: '18px 22px', gap: 16 }}
-    >
-      <div className="flex items-center justify-center flex-shrink-0" style={{ width: 50, height: 50, borderRadius: 14, background: 'linear-gradient(120deg,#F0546A,#E0213A)', color: '#fff', fontSize: 19 }}>▶</div>
-      <div className="flex-1">
-        <div style={{ fontSize: 11, fontWeight: 700, color: '#E0213A' }}>続きから始める ・ {resumableCourse.currentLesson || 'Lesson 4'}</div>
-        <div style={{ fontSize: 15, fontWeight: 900 }}>{resumableCourse.title}</div>
-        <div className="flex items-center gap-2.5" style={{ marginTop: 7 }}>
-          <div className="flex-1" style={{ height: 7, borderRadius: 999, background: '#F5E4E6', overflow: 'hidden' }}>
-            <div style={{ width: `${resumableCourse.progress ?? 0}%`, height: '100%', background: 'linear-gradient(90deg,#F0546A,#E0213A)', borderRadius: 999 }} />
-          </div>
-          <span style={{ fontSize: 11, fontWeight: 700, color: '#E0213A' }}>{resumableCourse.progress ?? 0}%</span>
-        </div>
       </div>
-      <button
-        className="appearance-none border-0 outline-none text-white font-bold focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-        style={{ background: 'linear-gradient(120deg,#F0546A,#E0213A)', borderRadius: 999, padding: '11px 20px', fontSize: 13, boxShadow: '0 8px 20px rgba(224,33,58,.3)' }}
-      >
-        続きから ▸
-      </button>
     </div>
   );
 }

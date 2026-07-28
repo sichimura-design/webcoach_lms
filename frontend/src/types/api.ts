@@ -136,6 +136,10 @@ export interface ResumeCourse {
   // 学習サマリー（総学習時間・完了レッスン数）の簡易推定に使う目安値
   durationminutes?: number;
   totallessons?: number;
+  // マイページの「続きから学習」ヒーロー表示用
+  currentlesson?: string;
+  currentchapter?: string;
+  remainingminutes?: number;
 }
 
 export interface UpdateResumeCourseRequest {

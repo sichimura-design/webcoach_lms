@@ -1,21 +1,29 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
 import { AppHeader } from './shared';
 import { useMypageData } from '../hooks/useMypageData';
-import { useDailyTodos } from '../hooks/useDailyTodos';
-import { useCommunityPulse } from '../hooks/useCommunityPulse';
 import { useLearningSummary } from '../hooks/useLearningSummary';
-import { useJourney } from '../hooks/useJourney';
-import { useRecentBadges } from '../hooks/useRecentBadges';
+import { useFocusBoothMembers } from '../hooks/useFocusBoothMembers';
 import { useProgressionStore } from '../store/progressionStore';
+import { useScaleToFit } from '../hooks/useScaleToFit';
 import { EXP_RULES } from '../utils/progression';
-import { CoachingGoals } from './mypage/CoachingGoals';
-import TodayMission from './mypage/TodayMission';
+import ContinueLearningHero from './mypage/ContinueLearningHero';
 import PeopleActivityCard from './mypage/PeopleActivityCard';
-import LearningSummaryCard from './mypage/LearningSummaryCard';
+import GuildLobbyCard from './mypage/GuildLobbyCard';
+import NextCoachingPlan from './mypage/NextCoachingPlan';
+import RoadmapSection from './mypage/RoadmapSection';
+import StatsStrip from './mypage/StatsStrip';
 import { Course } from '../types/mypage';
+import { color, font, space } from '../theme/webcoachTheme';
+
+const DESIGN_WIDTH = 1440;
+const WEEKDAY_KANJI = ['日', '月', '火', '水', '木', '金', '土'];
+
+function formatTodayLabel(date: Date): string {
+  return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日（${WEEKDAY_KANJI[date.getDay()]}）`;
+}
 
 function MyPage() {
   const navigate = useNavigate();
@@ -28,14 +36,11 @@ function MyPage() {
     streak,
     loading: isLoading,
     error,
-    refetch: refetchMypageData,
   } = useMypageData(user?.userid);
 
-  const { todos, toggleTodo, reload: reloadTodos } = useDailyTodos(user?.userid);
-  const { pulse } = useCommunityPulse();
-  const { journey } = useJourney(user?.userid);
-  const { badges } = useRecentBadges(user?.userid);
+  const { members } = useFocusBoothMembers();
   const noteStreakDays = useProgressionStore((s) => s.noteStreakDays);
+  const { outerRef, innerRef, scale, innerHeight } = useScaleToFit(DESIGN_WIDTH);
 
   // 「学習中のコース」= 続きから(resumableCourse) + 受講中一覧。id重複は除外
   const learningCourses: Course[] = resumableCourse
@@ -43,17 +48,8 @@ function MyPage() {
     : activeCourses;
 
   const learningSummary = useLearningSummary(learningCourses);
-
-  const questCourse = learningCourses.find(c => c.id === journey?.todayQuest?.courseId);
   const primaryCourse = learningCourses[0];
-  const secondaryCourse = learningCourses[1];
-
-  // コーチング目標の保存に連動して「今日のスモールステップ」「今日のTODO」が
-  // 更新されるため、両方のデータを再取得して画面に反映する
-  const handleGoalsLinkedUpdate = () => {
-    refetchMypageData();
-    reloadTodos();
-  };
+  const completedCourses = learningCourses.filter(c => (c.progress ?? 0) >= 100).length;
 
   // ストリークが新たに伸びたタイミングでEXPボーナスを1度だけ付与
   useEffect(() => {
@@ -114,130 +110,71 @@ function MyPage() {
   }
 
   const avatarName = userProfile.nick_name || '';
+  const handleContinue = () => primaryCourse && navigate(`/course/${primaryCourse.id}/curriculum`);
 
   return (
-    <div className="min-h-screen bg-dash-bg flex flex-col">
+    <div className="min-h-screen flex flex-col" style={{ background: color.pageBg }}>
       <AppHeader userName={avatarName} />
 
       <div className="relative flex-1">
-        <main
-          className="relative mx-auto flex flex-col"
-          style={{ maxWidth: 1440, paddingTop: 32, paddingBottom: 40, paddingLeft: 24, paddingRight: 24, gap: 22 }}
+        <div
+          ref={outerRef}
+          style={{ width: '100%', maxWidth: DESIGN_WIDTH, margin: '0 auto', position: 'relative', height: innerHeight ? innerHeight * scale : undefined }}
         >
-          {/* ヘッダ */}
-          <div className="flex items-start justify-between flex-wrap gap-3">
+        <main
+          ref={innerRef}
+          className="home-main flex flex-col"
+          style={{ position: 'absolute', top: 0, left: 0, width: DESIGN_WIDTH, boxSizing: 'border-box', gap: space.sectionGap, fontFamily: font.family, color: color.text, transform: `scale(${scale})`, transformOrigin: 'top left' }}
+        >
+          {/* ヘッダ: 日付＋挨拶＋赤アンダーライン / ストリーク＋週間ドット */}
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, paddingBottom: 2 }}>
             <div>
-              <h1 style={{ margin: 0, fontSize: 26, fontWeight: 900, color: '#20141A' }}>
-                おかえりなさい、{avatarName || 'さん'}
-              </h1>
-              <p style={{ margin: '6px 0 0', fontSize: 13, color: '#B78F98' }}>今日も一歩、理想の未来へ進みましょう。</p>
+              <div style={{ fontSize: 13, fontWeight: 500, color: color.textSubtle, letterSpacing: '.2px' }}>{formatTodayLabel(new Date())}</div>
+              <div style={{ ...font.pageTitle, color: color.text, marginTop: 10 }}>おかえりなさい、{avatarName || 'さん'}！</div>
+              <div style={{ width: 96, height: 3, borderRadius: 2, background: color.primary, marginTop: 9 }} />
             </div>
-            <span
-              className="inline-flex items-center gap-1.5"
-              style={{ background: 'rgba(255,255,255,.85)', border: '1px solid rgba(255,255,255,.9)', borderRadius: 999, padding: '9px 16px', fontSize: 13, fontWeight: 700, boxShadow: '0 6px 16px rgba(200,90,110,.1)' }}
-            >
-              <span style={{ color: '#E0213A' }}>🔥</span> {streak?.days ?? 0} 日連続
-            </span>
-          </div>
-
-          {/* 上段: 目標カード + 学習中のコース */}
-          <div className="grid" style={{ gridTemplateColumns: '1fr 380px', gap: 22, alignItems: 'stretch' }}>
-            <CoachingGoals userId={user?.userid} onLinkedUpdate={handleGoalsLinkedUpdate} />
-
-            <div
-              className="bg-white flex flex-col"
-              style={{ borderRadius: 22, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: 24, gap: 16 }}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2" style={{ fontSize: 16, fontWeight: 900 }}>
-                  <span style={{ color: '#E0213A' }}>▤</span> 学習中のコース
-                </div>
-                <button
-                  onClick={() => navigate('/courses')}
-                  className="appearance-none border-0 outline-none bg-transparent focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                  style={{ fontSize: 12, fontWeight: 700, color: '#E0213A' }}
-                >
-                  すべて ›
-                </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, paddingBottom: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <span style={{ fontSize: 17, lineHeight: 1 }}>🔥</span>
+                <span style={{ ...font.streakNumber, color: color.primary }}>{streak?.days ?? 0}</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: color.primary }}>日連続</span>
               </div>
-
-              {primaryCourse && (
-                <div
-                  className="flex items-center gap-3 cursor-pointer"
-                  onClick={() => navigate(`/course/${primaryCourse.id}/curriculum`)}
-                >
-                  <div
-                    className="flex items-center justify-center flex-shrink-0"
-                    style={{ width: 52, height: 52, borderRadius: 14, background: 'linear-gradient(120deg,#F0546A,#E0213A)', color: '#fff', fontSize: 20 }}
-                  >
-                    ▣
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div style={{ fontSize: 11, fontWeight: 700, color: '#E0213A' }}>続きから・{primaryCourse.currentLesson || 'Lesson 4'}</div>
-                    <div style={{ fontSize: 15, fontWeight: 900 }}>{primaryCourse.title}</div>
-                  </div>
-                </div>
-              )}
-              {primaryCourse && (
-                <div className="flex items-center gap-2.5">
-                  <div className="flex-1" style={{ height: 8, borderRadius: 999, background: '#F5E4E6', overflow: 'hidden' }}>
-                    <div style={{ width: `${primaryCourse.progress ?? 0}%`, height: '100%', background: 'linear-gradient(90deg,#F0546A,#E0213A)', borderRadius: 999 }} />
-                  </div>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#E0213A' }}>{primaryCourse.progress ?? 0}%</span>
-                </div>
-              )}
-              {secondaryCourse && (
-                <div className="flex items-center gap-2.5" style={{ fontSize: 13, color: '#6B575E' }}>
-                  <span className="flex-1 min-w-0 truncate">{secondaryCourse.title}</span>
-                  <div style={{ width: 90, height: 6, borderRadius: 999, background: '#F5E4E6', overflow: 'hidden' }}>
-                    <div style={{ width: `${secondaryCourse.progress ?? 0}%`, height: '100%', background: '#E0213A', borderRadius: 999 }} />
-                  </div>
-                  <span style={{ fontSize: 12, fontWeight: 700, color: '#E0213A' }}>{secondaryCourse.progress ?? 0}%</span>
-                </div>
-              )}
-
-              <div className="flex-1" />
-
-              {primaryCourse && (
-                <button
-                  onClick={() => navigate(`/course/${primaryCourse.id}/curriculum`)}
-                  className="appearance-none border-0 outline-none text-white font-bold focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                  style={{ background: 'linear-gradient(120deg,#F0546A,#E0213A)', borderRadius: 999, padding: 14, fontSize: 14, boxShadow: '0 10px 24px rgba(224,33,58,.35)' }}
-                >
-                  続きから学習 ▸
-                </button>
-              )}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                {(streak?.week ?? []).map((d, i) => (
+                  <span key={i} style={{ width: 11, height: 11, borderRadius: '50%', background: d.studied ? color.primary : color.streakOff }} />
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* 下段: 今日のミッション / 他の人の様子 / 学習サマリー・実績 */}
-          <div className="grid" style={{ gridTemplateColumns: '1fr 1fr 1fr', gap: 22, alignItems: 'start' }}>
-            <TodayMission
-              quest={journey?.todayQuest ?? null}
-              questCourse={questCourse}
-              todos={todos}
-              onToggleTodo={toggleTodo}
-              onOpenQuest={() => {
-                if (journey?.todayQuest?.courseId) navigate(`/course/${journey.todayQuest.courseId}/curriculum`);
-              }}
-            />
-            {pulse && <PeopleActivityCard pulse={pulse} />}
-            <LearningSummaryCard
-              studyMinutes={learningSummary.studyMinutes}
-              completedLessons={learningSummary.completedLessons}
-              thisWeekMinutes={learningSummary.thisWeekMinutes}
-              weeklyTargetMinutes={userProfile.weekly_target_minutes ?? 600}
-              streakDays={streak?.days ?? 0}
-              streakBest={streak?.best}
-              weekActivity={streak?.week ?? []}
-              badges={badges}
-            />
+          {/* 一番見たい: 続きから学習 */}
+          {primaryCourse && <ContinueLearningHero course={primaryCourse} onOpen={handleContinue} />}
+
+          {/* 次に見たい: 目標 / ギルドロビー / ギルドメンバー */}
+          <div className="home-3col" style={{ alignItems: 'stretch' }}>
+            <NextCoachingPlan userId={user?.userid} onContinue={handleContinue} />
+            <GuildLobbyCard onlineCount={members.length} />
+            <PeopleActivityCard />
           </div>
+
+          {/* 次に見たい: 累計・今週の学習量 */}
+          <StatsStrip
+            thisWeekMinutes={learningSummary.thisWeekMinutes}
+            weekDeltaMinutes={learningSummary.studyMinutes.weekDelta}
+            weeklyTargetMinutes={userProfile.weekly_target_minutes ?? 600}
+            totalStudyMinutes={learningSummary.studyMinutes.total}
+            completedLessons={learningSummary.completedLessons.total}
+            completedCourses={completedCourses}
+          />
+
+          {/* 今後の学習計画（ロードマップ） */}
+          <RoadmapSection userId={user?.userid} />
         </main>
+        </div>
       </div>
 
       {/* Footer */}
-      <footer className="bg-brand-footer h-10 flex items-center justify-center">
+      <footer className="h-10 flex items-center justify-center" style={{ background: '#2B2629' }}>
         <span className="text-[11.4px] font-bold text-white">
           2026 &copy; WEBCOACH
         </span>

@@ -172,6 +172,37 @@ h1, h2, h3, .font-display {
   margin: 1.5em 0;
 }
 
+/* ─── マイページ（ホーム）レイアウト ───────────── */
+/* WebCoach Home.dc.html の構図（グリッド列数・flex方向・要素の配置）は
+   画面幅が変わっても一切変えない。狭い画面では .home-scale-outer/.home-scale-inner
+   （MyPage.tsx側）が transform:scale で全体を均等に縮小して収める。
+   ここではその「縮小前の基準レイアウト」を固定値のまま定義するのみ。 */
+.home-main {
+  padding: 28px 60px 40px;
+}
+
+.home-hero {
+  display: flex;
+  align-items: stretch;
+}
+
+.home-3col {
+  display: grid;
+  grid-template-columns: 384px 554px 1fr;
+  gap: 18px;
+}
+
+.home-stats {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.home-roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+
 :root {
   --background: 0 0% 100%;
   --foreground: 258 30% 18%;        /* ディープネイビー */

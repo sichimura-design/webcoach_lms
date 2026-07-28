@@ -78,6 +78,10 @@ const resumeCourses: ResumeCourse[] = [
     // 学習サマリー（総学習時間・完了レッスン数）の簡易推定に使う目安値
     durationminutes: 30,
     totallessons: 5,
+    // マイページの「続きから学習」ヒーロー表示用
+    currentlesson: 'Lesson 4 バナー制作の基礎',
+    currentchapter: 'チャプター2',
+    remainingminutes: 18,
   },
 ];
 
@@ -180,7 +184,13 @@ const aiApps = [
 
 // 次回コーチングまでの目標（セッション内で保持：AI細分化やコーチングページからの生成を
 // マイページに反映させるため、GET/PUT で同じストアを読み書きする）
-let coachingGoalsStore: { no: number; description: string; is_completed: 0 | 1; progress: number }[] = [];
+// マイページ側は読み取り専用表示のため、コーチが前回のコーチングで設定した内容として初期値を持たせる
+// （journeyの現在地=「バナーを作ってみよう」と揃えてある）
+let coachingGoalsStore: { no: number; description: string; is_completed: 0 | 1; progress: number }[] = [
+  { no: 1, description: '配色の基礎を修了する', is_completed: 1, progress: 100 },
+  { no: 2, description: 'バナーを1つ完成させる', is_completed: 0, progress: 40 },
+  { no: 3, description: 'レイアウト実践に着手する', is_completed: 0, progress: 0 },
+];
 
 // 今日のTODO（セッション内で保持）
 let dailyTodosStore: { id: number; text: string; done: boolean }[] = [

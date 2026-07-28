@@ -52,6 +52,8 @@ export interface Course {
   categoryName?: string;
   categoryColor?: string;
   currentLesson?: string;
+  currentChapter?: string;
+  remainingMinutes?: number;
   lastAccessDate?: string | Date;
   // 学習サマリー（総学習時間・完了レッスン数）の簡易推定に使う目安値
   durationMinutes?: number;

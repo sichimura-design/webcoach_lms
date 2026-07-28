@@ -11,6 +11,11 @@ import {
 } from '../services/mypageApi';
 import { useAsyncData } from './useAsyncData';
 
+// data未確定時のフォールバック用に固定参照を使う。`?? []`をレンダーごとに書くと
+// 毎回新しい配列参照になり、これを依存配列に使っている呼び出し元のuseEffectが
+// ロード完了まで無限に再実行されてしまう（ネットワーク呼び出しの重複発生）。
+const EMPTY_COURSES: Course[] = [];
+
 interface MypageData {
   userProfile: Profile;
   monthlyGoal: MonthlyGoal;
@@ -52,10 +57,10 @@ export function useMypageData(userId: number | undefined) {
     monthlyGoal: data?.monthlyGoal ?? null,
     careerGoal: data?.careerGoal ?? null,
     resumableCourse: data?.resumableCourse ?? null,
-    activeCourses: data?.activeCourses ?? [],
+    activeCourses: data?.activeCourses ?? EMPTY_COURSES,
     streak: data?.streak ?? null,
-    practiceRecommendations: data?.practiceRecommendations ?? [],
-    reviewRecommendations: data?.reviewRecommendations ?? [],
+    practiceRecommendations: data?.practiceRecommendations ?? EMPTY_COURSES,
+    reviewRecommendations: data?.reviewRecommendations ?? EMPTY_COURSES,
     loading,
     error,
     refetch,
