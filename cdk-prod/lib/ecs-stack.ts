@@ -286,7 +286,16 @@ export class ProdEcsStack extends cdk.Stack {
     });
 
     const moodleContainer = taskDef.addContainer('moodle-app', {
-      image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-app-latest'),
+      // 2026-08-01: 'moodle-app-latest' タグを使い回すと、再pushしてもECSホストが古い
+      // digestをそのまま使い続ける事象を確認(docker rmiで削除しても再pull時に同じ古い
+      // レイヤーが復元される謎のキャッシュ不整合)。曖昧さを排除するため、DB接続修正版は
+      // 専用タグを直接指定する。
+      // 2026-08-02: 生mysqlコマンドに差し替えても症状不変のため、実際のmysqlエラー内容を
+      // ログに出す debug タグに一時切り替え(原因特定のため)。
+      // 2026-08-02: 根本原因(config.phpのdbpassがgetenv()式でmoodle_conf_get()に
+      // 誤読されていた問題)を特定・修正済み。デバッグ用の平文パスワードログを
+      // 削除したクリーン版タグに戻す。
+      image: ecs.ContainerImage.fromEcrRepository(repository, 'moodle-app-dbfix-20260802-clean'),
       memoryLimitMiB: 2048,
       cpu: 2048,
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'lms', logGroup }),
@@ -305,17 +314,42 @@ export class ProdEcsStack extends cdk.Stack {
       // 「本物の永続化インストールかどうか(version.phpの有無)」を実行時に判定し、
       // 偽物(イメージ由来のゴミ)であれば起動前にクリアしてから本来のentrypointへ渡す。
       entryPoint: ['sh', '-c'],
+      // 2026-07-30: 新規タスク起動時、moodle-appが「DB接続後60秒でタイムアウト」して
+      // 毎回失敗する問題を確認(本番のRDS/SG/認証情報は全て正常。手動でECS Exec経由から
+      // 全く同じ接続チェック関数を同じ環境変数・同じuid:gidで実行すると常に一瞬で成功するため、
+      // 実際のブートチェーン固有の一過性の要因と推測されるが、ECS Exec経由の外部観測では
+      // 根本原因を特定できなかった)。2回目以降の呼び出しは必ず成功する、という経験則から
+      // entrypoint.shの呼び出し自体を最大3回までリトライする対応を入れたが、2026-08-01の
+      // 本番障害では3回とも失敗するケースを確認。ネットワーク(ENI/awsvpc)確立の遅延が
+      // 3回×60秒(=約3分)の範囲を超えて長引く場合があると推測されるため、各試行の前に
+      // 5秒の待機を挟んで初回接続の成功率を上げる。リトライ上限はECSヘルスチェックの
+      // startPeriod上限(300秒)以内に収める必要があるため4回(約4分)とする。
+      // entrypoint.shが成功すると内部でexecしてApache/PHP-FPMがそのまま動き続けるため、
+      // このループは通常時は初回の1回で内側のプロセスをブロックしたまま返ってこない。
       command: [
         [
-          'if [ ! -f /bitnami/moodle/version.php ]; then',
-          '  echo "[webcoach-fix] /bitnami/moodle has no real persisted install (version.php missing) - clearing stale content before entrypoint";',
-          '  find /bitnami/moodle -mindepth 1 -delete;',
-          'fi;',
-          'exec /opt/bitnami/scripts/moodle/entrypoint.sh /opt/bitnami/scripts/moodle/run.sh',
+          'i=0;',
+          'while [ "$i" -lt 4 ]; do',
+          '  i=$((i+1));',
+          '  if [ ! -f /bitnami/moodle/version.php ]; then',
+          '    echo "[webcoach-fix] /bitnami/moodle has no real persisted install (version.php missing) - clearing stale content before entrypoint";',
+          '    find /bitnami/moodle -mindepth 1 -delete;',
+          '  fi;',
+          '  sleep 5;',
+          '  /opt/bitnami/scripts/moodle/entrypoint.sh /opt/bitnami/scripts/moodle/run.sh;',
+          '  rc=$?;',
+          '  if [ "$rc" -eq 0 ]; then exit 0; fi;',
+          '  echo "[webcoach-fix] entrypoint attempt $i failed (exit $rc), retrying...";',
+          'done;',
+          'echo "[webcoach-fix] entrypoint failed after $i attempts, giving up";',
+          'exit "$rc"',
         ].join(' '),
       ],
       environment: {
         MOODLE_DATABASE_HOST: databaseEndpointAddress,
+        // 2026-08-02: Bitnamiが実際に読む変数名はMOODLE_DATABASE_PORT_NUMBER。
+        // これまで未設定でBitnami側のデフォルト(3306)に依存していたため明示的に設定。
+        MOODLE_DATABASE_PORT_NUMBER: databaseEndpointPort,
         MOODLE_DATABASE_NAME: 'moodle',
         MOODLE_DATABASE_TYPE: 'mysqli',
         // Bitnami イメージが実際に読むのは MOODLE_DATA_DIR (MOODLE_DATAROOT ではない)。
@@ -351,8 +385,11 @@ export class ProdEcsStack extends cdk.Stack {
         command: ['CMD-SHELL', 'bash -c "echo > /dev/tcp/127.0.0.1/8080" || exit 1'],
         interval: cdk.Duration.seconds(30),
         timeout: cdk.Duration.seconds(10),
-        // Moodle の初回起動はインストール処理が走るため、Bitnami イメージ既定の60秒より長めに確保
-        startPeriod: cdk.Duration.seconds(180),
+        // Moodle の初回起動はインストール処理が走るため、Bitnami イメージ既定の60秒より長めに確保。
+        // 2026-08-01: entrypoint再試行を最大4回(各試行 約60秒+5秒待機、最悪ケースで約260秒)に
+        // 拡大したため、ヘルスチェックがそれより先にUNHEALTHY判定してタスクを殺してしまわない
+        // よう、ECSの上限値(300秒)まで延長。
+        startPeriod: cdk.Duration.seconds(300),
         retries: 3,
       },
       // 2026-07-26: このタスクが使う EFS アクセスポイント (backend-stack.ts の
@@ -403,7 +440,9 @@ export class ProdEcsStack extends cdk.Stack {
       maxHealthyPercent: 100,
       healthCheckGracePeriod: cdk.Duration.seconds(120),
       enableExecuteCommand: true,
-      circuitBreaker: { rollback: true },
+      // 2026-08-01: 一時的にサーキットブレーカーを無効化していたが、2026-08-02に
+      // config.phpのdbpass誤読が根本原因と判明・修正し、安定稼働を確認したため再度有効化。
+      circuitBreaker: { enable: true, rollback: true },
     });
 
     // ========================================
