@@ -129,6 +129,7 @@ export class ProdCognitoStack extends cdk.Stack {
     this.moodleClient = this.userPool.addClient('MoodleClient', {
       userPoolClientName: `${envName}-lms-oauth-client`,
       generateSecret: true,
+      authFlows: { userSrp: true, userPassword: true },
       oAuth: {
         flows: { authorizationCodeGrant: true, implicitCodeGrant: false },
         scopes: [cognito.OAuthScope.OPENID, cognito.OAuthScope.EMAIL, cognito.OAuthScope.PROFILE],
