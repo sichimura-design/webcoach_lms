@@ -1,0 +1,213 @@
+# dev/miyabe モック実装 → バックエンド要件整理
+
+`dev/miyabe`ブランチではフロントエンド（`frontend/`）に多数の新機能をMSW（Mock Service Worker）でモック実装している。実バックエンド（`api-server`=FastAPI、`bff-server`=Express.js）は変更されていないため、実データ化には別途バックエンド対応が必要。本ドキュメントはその洗い出し。
+
+**優先度の目安**
+- **S**：実データが既にあり、フロントの向き先を変えるだけで済む
+- **A**：実データの土台はあるが、bff/api側に小さな追加（既存カラムの露出、集計エンドポイント追加など）が必要
+- **B**：概念自体が存在せず、テーブル設計・運用フロー設計を含む新規開発が必要
+
+**現状の実バックエンド構成**
+- `api-server`(FastAPI): `ai.py`/`ai_langgraph.py`（Claude+LangChain+RAGの単発チャット）、`webcoach.py`（プロフィール/続きから学習/ロードマップ/アバター）、`courses.py`/`roadmaps.py`/`badges.py`
+- `bff-server`(Express.js): `webcoach.js`/`moodle.js`/`admin.js`/`auth.js`/`faiss.js`の5ルートのみ
+- コーチング・学習プラン・フォーカスブース・ノート系のテーブル/ルートは一切存在しない
+
+参照元: `origin/dev/miyabe`の`frontend/docs/mypage-real-data-requirements.md`、`frontend/docs/student-outcomes-tracking-requirements.md`、`frontend/docs/{ai-coach-skill-modes-design,ai-coaching-notes-design,learning-workspace-design}.md`、および`frontend/src/mocks/*`・`frontend/src/types/*`の実装調査。
+
+---
+
+## A. マイページ
+
+| 項目 | 現状 | 判定 | 対応 |
+|---|---|---|---|
+| 挨拶名 | `GET /api/webcoach/profile/:userid` → `nick_name`。実データ済み | S | 対応不要 |
+| ストリーク（🔥日数・週間ドット） | `timecompleted`/`lastaccess`は既存データ。フロントは`getStreak(userId)`で`GET /webcoach/streak/:userid`を既に呼んでいる（404中） | A | 日別バケット集計の新規エンドポイント1本 |
+| 続きから学習：コース名・進捗% | `GET /api/webcoach/resumecourse/:userid`で実データ済み | S | 対応不要 |
+| 続きから学習：現在チャプター | `webcoach_user_course_lastaccess.current_section`列は既存だがAPIレスポンス未露出 | A | レスポンスに1列追加するだけ |
+| 続きから学習：レッスン名・残り分数 | 教材ごとの想定時間メタデータが存在しない | B | 新規メタデータテーブル要（後述） |
+| 次回コーチング目標 | コーチング関連テーブル・API・Moodle webservice機能が皆無 | B | E章のコーチングノート機能と統合実装 |
+| ギルドロビー・在室メンバー | プレゼンス基盤が皆無 | B | 優先度最低。G章と統合 |
+| 統計バー：完了数・修了コース数 | 既存の完了状況集計で算出可能 | S | 対応不要 |
+| 統計バー：先週比 | 現状localStorage代替。`timecompleted`で集計可能 | A | 直近7日/前7日集計エンドポイント新設 |
+| 統計バー：学習時間 | 分単位の実測ログが皆無 | B | H章の学習アクティビティ記録で解決 |
+| ロードマップ：詳細 | `GET /api/webcoach/roadmap/:id`は実装済み | A | 対応小 |
+| ロードマップ：一覧 | `GET /api/webcoach/roadmaps`は実装済みだが常に空配列のTODOスタブ | A | スタブ実装＋ユーザー紐付け方針決定 |
+
+## B. 受講生実績トラッキング
+
+| 項目 | 現状 | 判定 | 対応 |
+|---|---|---|---|
+| 案件獲得率・初案件日数 | 「案件」相当のテーブル・フィールドが皆無。`target_job`は願望であり実績ではない | B | 新規テーブル`job_acquisitions` |
+| 収益化率・平均月商 | 完全にABSENT | B | 新規テーブル`revenue_records` |
+| 受講継続率 | `webcoach_user_course_lastaccess`・`mdl_user_last_course_access`は既存。「継続/離脱」ステータス列は無し。Moodle標準`enrolstatus`はコード上未参照の休眠フィールド | A | しきい値合意の上、既存データの集計エンドポイント新設のみ（テーブル変更不要） |
+| 制作物（ポートフォリオ） | `mod_assign`系はMoodleAdapter.jsから一度も呼ばれていない。提出物テーブルが皆無 | B | 新規テーブル`portfolio_submissions`（`core_files_upload`/`s3-upload`は流用可） |
+| 運営向け受講生リスト | `AdminStudentsPage.tsx`等3画面が呼ぶAPIはbff/api/MSWのどこにも実装が無く**既に404**。複数ユーザー分をまとめて返すロスターAPIも皆無。Moodleサービストークンの`core_enrol_get_enrolled_users`権限は付与済みだが未使用 | B | ロスター集計エンドポイント新設＋3画面の実接続。`CoachStudentsPage.tsx`のデッドリンク（`/coach/students/:id`）解消 |
+
+## C. AIコーチ
+
+- モック: `POST /api/webcoach/lesson-ai`（教材根拠付き構造化回答）、`POST /api/webcoach/ai-skill`（添削等の専門モード）。会話は`sessionStorage`のみでサーバー永続化なし。
+- 実装済み: `POST /api/webcoach/ai`（単発チャット、Claude+RAG）は疎通済み。ただし教材ブロック単位の根拠付け・専門モード分岐・会話履歴保存は無い。
+- 判定: **B**。専門モードは「BFFがDifyアプリを代理呼び出しする境界」として設計済み（`ai-coach-skill-modes-design.md`）。既存の`webcoach_ai_application.tags`列に`skill:xxx`を入れる運用で、この部分は新規テーブル不要。
+- 次アクション: (a) `lesson-ai`は既存RAGの教材検索・根拠付け拡張、(b) `ai-skill`はBFFにDify資格情報解決層を追加、(c) 会話永続化テーブル新設（後述）。
+
+## D. 学習ワークスペース（教材＋AIコーチ併用画面）
+
+- モック: `GET /courses/:id/outline`・`/lessons/:id`（ブロック化教材）、`POST /lesson-ai`、`GET/PUT /lesson-notes/:lessonId`、`GET/POST/DELETE /notes`。
+- 実バックエンド: 該当機能なし。教材は現状Moodleのiframe描画のみで、ブロック単位ID・完了状態統合もない。
+- 判定: **B**。最大の設計判断点はPhase2「教材のブロック化」（Moodle `mod/page`分解 or 別CMS導入）— これが決まるまでテーブル設計も確定できない。
+- 引き渡し事項（`learning-workspace-design.md`）: `blocks[].id`の永続ID化、教材検索の優先順位遵守、画像保存先、completion APIとの統合要否、outlineを唯一の情報源にすること。
+
+## E. コーチングノート・セッションレビュー（最大規模）
+
+- モック: Zoom/Google Meet連携 → 自動録画取得 → 文字起こし → AI要約 → 目標確定の一連フロー。`coachingHandlers.ts`に17エンドポイント。ConnectCoachPage（コーチ招待URL連携）もこの一部。
+- 実バックエンド: OAuth連携、Webhook、非同期ジョブ基盤、presigned URLアップロードすべて未着手。
+- 判定: **B**（規模最大だが設計文書が最も充実）。`ai-coaching-notes-design.md`に本番用テーブル11本の設計と引き渡し事項10項目が既にある。要約生成プロンプトのPoCも実施済み（`poc/ai-coaching-notes/`）。
+- 次アクション: `MeetingProvider`抽象層（`bff-server/adapters/`規約に従う）の実装が起点。
+
+## F. 学習プラン
+
+- モック: 初回ヒアリング(intake) → AI生成プラン(フェーズ/マイルストーン) → 週次チェックイン → AI差分提案(revision)。
+- 実バックエンド: 概念自体が存在しない。既存`webcoach_user_learning_roadmap`は「コース順序の静的テンプレート」で別物。
+- 判定: **B**。ロジックは`utils/learningPlanTemplate.ts`の純関数に集約されておりサーバー移植しやすい。機能自体の必要性再確認を推奨。
+
+## G. フォーカスブース
+
+- モック: 学習タイマー本体（自分の記録）＋他ユーザーの在室状況＋応援ボタン。他ユーザー分は固定モックのみで実データ連携ゼロ。
+- 判定: **B**。「他人の在室状況」はリアルタイム性が要る。まず自分専用のタイマー記録（H章と統合）を先行し、社会的機能は後回し推奨。
+
+## H. 学習ログ・マイノート
+
+- モック: `study-activities`（タイマー記録CRUD、現状localStorage）、`study-stats`（日次集計・ストリーク）、`notes`（マイノート）。
+- 判定: **A〜B**。ストリークはA-2の集計で対応可能だが、**タイマーで能動的に記録した学習時間そのもの**は既存ログに無い新規データ。A-2（ストリーク改修）とセットで一本化するのが効率的。
+
+## I. その他
+
+- コーチ紹介/マッチング（ConnectCoachPage）はE章の一部。
+- MaterialsTopPage / CourseTopPageは既存の実bffエンドポイントのみ使用。追加対応ほぼ不要（**S**）。
+
+---
+
+# テーブル定義の変更が必要な点
+
+## 1. 既存テーブルの変更（ALTER・カラム追加）
+
+| テーブル | 変更内容 | 理由 |
+|---|---|---|
+| `webcoach_user_course_lastaccess` | **変更不要**（`current_section`列は既存）。APIレスポンス側で露出させるだけ | A-3 |
+| `webcoach_ai_application` | **変更不要**（既存`tags`列を`skill:xxx`形式で利用する運用のみ） | C |
+| Moodle標準の`enrolstatus`関連 | **変更不要**（既存の休眠フィールドを参照するだけ） | B-受講継続率 |
+
+→ 上記3件は「テーブル定義の変更は不要」で、API実装のみで対応できる点として明記しておく（誤って新規カラム追加をしないよう）。
+
+## 2. 新規テーブルが必要なもの
+
+### 2-1. コーチング（A-4簡易版はE章に統合。E章の設計を正とする）
+
+`ai-coaching-notes-design.md`で設計済みの11テーブル。下記はフロントの型定義（`types/coaching.ts`）から具体化したカラム案。
+
+- **`coaching_sessions`** — コーチング1回分
+  `id, mdl_user_id, coach_id, meeting_link_id(FK), scheduled_at, status(draft/recording/uploading/transcribing/summarizing/review_required/published/failed), created_at, updated_at`
+
+- **`meeting_links`** — 登録された会議リンクと会議ID（Webhook照合キー）
+  `id, session_id(FK), provider(zoom/google_meet), url, meeting_id, passcode(nullable), registered_at`
+
+- **`meeting_connections`** — コーチのOAuth連携状態とトークン
+  `id, coach_id, provider(zoom/google_meet), oauth_account_email, refresh_token_encrypted, token_expires_at, connected_at, status(active/revoked/expired)`
+
+- **`connection_invites`** — 認証URLのトークン・有効期限・使用状況
+  `id, token(乱数), coach_id, expires_at, used_at(nullable), created_by`
+
+- **`recordings`** — 音声ファイルと取得状態
+  `id, session_id(FK), source(auto_recording/provider_transcript/uploaded_audio/pasted_text), imported_from(auto/manual), file_url, duration_seconds, fetch_status(pending/success/failed), deleted_at`（90日自動削除）
+
+- **`recording_consents`** — 録音・AI利用への同意
+  `id, session_id(FK) or user_id, consented_at, consent_version`
+
+- **`transcripts`** — 文字起こし全体
+  `id, session_id(FK), full_text, language, created_at`
+
+- **`transcript_segments`** — 発言単位の文字起こし
+  `id, transcript_id(FK), segment_id, speaker_id, speaker_role(coach/student/unknown), start_ms, end_ms, text, confidence`
+
+- **`ai_summaries`** — AI要約（バージョン保持。上書きせず追加）
+  `id, session_id(FK), version, session_summary, progress_since_last(JSON), coach_feedback(JSON), decisions(JSON), next_session_agenda(JSON), referenced_context(JSON), generated_at, generated_by(ai/student_edit/coach_edit)`
+
+- **`goal_candidates`** — AIが抽出した候補
+  `id, session_id(FK), title, success_criteria(nullable), due_date(nullable), estimated_minutes(nullable), priority(high/normal/low), source_segment_ids(JSON), needs_review(bool), state(ai_suggested/student_confirmed/shared_with_coach/coach_confirmed/completed), selected(bool)`
+
+- **`goals`** — 確定された目標
+  `id, candidate_id(FK, nullable), user_id, title, success_criteria, due_date, status, completed_at`
+
+- **`processing_jobs`** — AI処理の状態・エラー（非同期処理基盤）
+  `id, session_id(FK), job_type(transcribe/summarize/…), status, error_message, started_at, finished_at`
+
+- **`audit_logs`** — 閲覧・編集・削除履歴
+  `id, actor_id, actor_role, action, target_session_id, occurred_at, ip_address`
+
+  ※A-4「次回コーチングまでの目標」は`coaching_sessions`/`goals`をそのまま参照すれば別テーブル不要。
+
+### 2-2. 学習プラン（F章）
+
+- **`learning_plans`**
+  `id, user_id, status(lms_generated/student_reviewed/confirmed_with_coach/archived), created_at, updated_at`
+
+- **`plan_phases`**
+  `id, plan_id(FK), phase_key(foundation/tools/practice/mock_project/portfolio/job_hunting/client_work/custom), start_date, end_date, priority, display_order`
+
+- **`plan_milestones`**
+  `id, phase_id(FK), title, skill_keys(JSON), status(todo/in_progress/done/missed), target_date, source(template/custom)`
+  ※`artifact_count`等の自動判定指標はB-4`portfolio_submissions`実装後でないと算出不可（依存関係あり）
+
+- **`plan_checkins`**
+  `id, plan_id(FK), checkin_date, notes, created_by`
+
+- **`plan_revisions`**
+  `id, plan_id(FK), revised_at, diff(JSON), proposed_by(ai/student), accepted(bool)`
+
+### 2-3. 学習アクティビティ記録（H章・G章・A-6共通の受け皿）
+
+- **`webcoach_study_activity`**
+  `id(varchar, クライアント生成の冪等キー), user_id, kind(study_session固定・将来拡張), occurred_at, started_at, ended_at, local_date(YYYY-MM-DD),`
+  `course_id, course_title, lesson_id(nullable), lesson_title(nullable), progress_percent_at_start(nullable), progress_percent_at_end(nullable),`
+  `mode, target_minutes(nullable), duration_minutes, measured_seconds, adjusted(bool), paused_count, paused_seconds, completed_target(bool),`
+  `goal_text(nullable), content_note(nullable), memo(nullable), achievement(low/mid/high, nullable)`
+  ※ソーシャル系（リアクション・コメント）は今回未実装のため`visibility`列のみ持たせ、他は将来拡張時に別テーブル切り出しでよい
+
+### 2-4. AIコーチ会話永続化（C章）
+
+- **`ai_coach_conversations`**
+  `id, user_id, course_id(nullable), lesson_id(nullable), created_at, updated_at`
+
+- **`ai_coach_messages`**
+  `id, conversation_id(FK), role(user/assistant/proposal/system), content, quote(nullable), answer_json(nullable), skill_result_json(nullable), suggestion_json(nullable), proposal_json(nullable), resolution(nullable), created_at`
+
+### 2-5. 教材メタデータ（A-3レッスン名・A-6学習時間の前提）
+
+- **`webcoach_lesson_metadata`**（案。既存のMoodleコンテンツテーブルへのカラム追加でも可）
+  `course_id, cmid, estimated_minutes, lesson_title`
+  ※運用側でのメタデータ入力が前提。または実測セッション時間計測（2-3のテーブル）に一本化する案も検討可
+
+### 2-6. ユーザー↔ロードマップ紐付け（A-7）
+
+- **`webcoach_user_roadmap`**（既存で同等のテーブルが無い場合のみ新設）
+  `user_id, roadmap_id, assigned_at`
+  ※着手前に既存スキーマに同等の紐付けが無いか要確認
+
+### 2-7. 受講生実績（B章、既出のため要点のみ再掲）
+
+- **`job_acquisitions`**: `user_id, program_id(nullable), acquired_at, is_first_job, notes, entered_by`
+- **`revenue_records`**: `user_id, program_id(nullable), period(月), amount, entered_at, entered_by`
+- **`portfolio_submissions`**: `user_id, moodle_course_id, activity_label, submission_url, submitted_at, review_status, reviewed_by`
+
+### 2-8. プレゼンス基盤（A-5・G章、優先度最低）
+
+- **`presence_heartbeats`**: `user_id, room, last_seen_at`
+  ※RDBではなくRedis等の短TTLストアが適切。テーブル化するなら定期パージのバッチが必須
+
+---
+
+## テーブル変更サマリ（件数）
+
+- **変更不要（API実装のみ）**: 3件（`webcoach_user_course_lastaccess`の列露出、`webcoach_ai_application.tags`運用、`enrolstatus`集計）
+- **新規テーブル**: 約24テーブル（コーチング11 + 学習プラン4 + 学習アクティビティ1 + AIコーチ会話2 + 教材メタデータ1 + ロードマップ紐付け1 + 受講生実績3 + プレゼンス1）
+- 優先実装順は本ドキュメント冒頭の機能別TODOに準拠。特にコーチング11テーブルは設計文書が最も充実しているため着手しやすい一方、教材ブロック化（D章）の方針決定が他の複数機能（C・H）の前提になっている点に留意。
