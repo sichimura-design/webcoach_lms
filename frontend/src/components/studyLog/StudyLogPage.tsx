@@ -1,6 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { AppHeader } from '../shared';
 import { useStudyStats } from '../../hooks/useStudyStats';
@@ -8,6 +6,7 @@ import { useStudyActivities } from '../../hooks/useStudyActivities';
 import { useScaleToFit } from '../../hooks/useScaleToFit';
 import { color, font, radius, shadow, space } from '../../theme/webcoachTheme';
 import { toLocalDateKey } from '../../utils/studyStats';
+import StudyRoomHeader from '../studyRoom/StudyRoomHeader';
 import DailyStudyChart from './DailyStudyChart';
 import StudyLogList from './StudyLogList';
 import TotalsCard from './TotalsCard';
@@ -26,11 +25,10 @@ const RANGES: { key: RangeKey; label: string; days: number }[] = [
 ];
 
 /**
- * 学習記録の詳細。集中ブースの「学習履歴をすべて見る」から来る。
+ * 学習記録の詳細（自習室タブの2つ目）。集中ブースの「学習履歴をすべて見る」からも来る。
  * 集中ブース側を「今日・今週の要約」に保つため、累計・グラフ・全履歴はここに置く。
  */
 function StudyLogPage() {
-  const navigate = useNavigate();
   const { user } = useAuth();
   const { outerRef, innerRef, scale, innerHeight } = useScaleToFit(DESIGN_WIDTH);
 
@@ -96,65 +94,37 @@ function StudyLogPage() {
               transformOrigin: 'top left',
             }}
           >
-            <div>
-              <button
-                type="button"
-                onClick={() => navigate('/focus-booth')}
-                className="inline-flex items-center gap-1.5 appearance-none border-0 bg-transparent focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={{ ...font.link, color: color.textSubtle, cursor: 'pointer', padding: 0 }}
-              >
-                <ArrowLeft size={14} />
-                集中ブースへ戻る
-              </button>
-            </div>
-
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'flex-end',
-                justifyContent: 'space-between',
-                gap: 16,
-              }}
-            >
-              <div>
-                <div style={{ ...font.pageTitle, color: color.text }}>学習記録</div>
-                <div
-                  style={{
-                    width: 96,
-                    height: 3,
-                    borderRadius: 2,
-                    background: color.primary,
-                    marginTop: 9,
-                  }}
-                />
-              </div>
-              <div style={{ display: 'flex', gap: 8, paddingBottom: 4 }}>
-                {RANGES.map((r) => {
-                  const active = r.key === range;
-                  return (
-                    <button
-                      key={r.key}
-                      type="button"
-                      onClick={() => setRange(r.key)}
-                      aria-pressed={active}
-                      className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                      style={{
-                        borderRadius: radius.pill,
-                        padding: '9px 20px',
-                        border: `1px solid ${active ? color.primary : color.border}`,
-                        background: active ? color.primary : color.surface,
-                        color: active ? color.textOnPrimary : color.textBody,
-                        fontFamily: 'inherit',
-                        ...font.buttonSm,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {r.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+            <StudyRoomHeader
+              active="log"
+              right={
+                <div style={{ display: 'flex', gap: 8 }}>
+                  {RANGES.map((r) => {
+                    const active = r.key === range;
+                    return (
+                      <button
+                        key={r.key}
+                        type="button"
+                        onClick={() => setRange(r.key)}
+                        aria-pressed={active}
+                        className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                        style={{
+                          borderRadius: radius.pill,
+                          padding: '9px 20px',
+                          border: `1px solid ${active ? color.primary : color.border}`,
+                          background: active ? color.primary : color.surface,
+                          color: active ? color.textOnPrimary : color.textBody,
+                          fontFamily: 'inherit',
+                          ...font.buttonSm,
+                          cursor: 'pointer',
+                        }}
+                      >
+                        {r.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              }
+            />
 
             {unavailable ? (
               <div style={{ ...cardStyle, ...font.meta, color: color.textMuted, lineHeight: 1.9 }}>

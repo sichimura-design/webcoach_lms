@@ -30,7 +30,12 @@ import {
   PlanDiffPatch,
   PlanPhase,
   PlanRevision,
+  PlanStage,
   ProgressSignals,
+  STAGE_LABEL,
+  STAGE_NOTE,
+  STAGE_OF_PHASE,
+  STAGE_ORDER,
   STANDARD_PHASE_ORDER,
   SKILL_LABEL,
   SkillKey,
@@ -644,6 +649,55 @@ export function derivePhaseStatus(plan: LearningPlan, today: Date): PhaseProgres
 }
 
 /**
+ * 表示用に7フェーズを4ステージへ束ねる。フェーズが1つも無いステージは返さない
+ * （「案件獲得まで進まない」受講生に空の『挑戦』を見せない）。
+ */
+export function deriveStages(plan: LearningPlan, today: Date): PlanStage[] {
+  const statuses = derivePhaseStatus(plan, today);
+  const currentIdx = currentPhaseIndex(plan, today);
+  const currentStageKey = STAGE_OF_PHASE[plan.phases[currentIdx]?.key ?? 'foundation'];
+
+  const present = STAGE_ORDER.filter((key) => plan.phases.some((p) => STAGE_OF_PHASE[p.key] === key));
+  const currentPos = present.indexOf(currentStageKey);
+
+  return present.map((key, pos) => {
+    const phases = plan.phases.filter((p) => STAGE_OF_PHASE[p.key] === key);
+    const phaseStatuses = plan.phases
+      .map((p, i) => ({ p, s: statuses[i] }))
+      .filter(({ p }) => STAGE_OF_PHASE[p.key] === key)
+      .map(({ s }) => s);
+
+    return {
+      key,
+      title: STAGE_LABEL[key],
+      note: STAGE_NOTE[key],
+      startDate: phases[0].startDate,
+      endDate: phases[phases.length - 1].endDate,
+      status: pos < currentPos ? 'done' : pos === currentPos ? 'current' : 'todo',
+      phases,
+      phaseStatuses,
+    };
+  });
+}
+
+/**
+ * ロードマップ全体の進捗 0-1。
+ * 完了フェーズを1、現在フェーズをマイルストーン平均で数える。
+ * フェーズ単位の「4/14件」ではなく全体1本の割合にすることで、
+ * 個々の遅れが実態以上に大きく見えるのを避ける。
+ */
+export function planProgress(plan: LearningPlan, today: Date): number {
+  const n = plan.phases.length;
+  if (n === 0) return 0;
+  const current = currentPhaseIndex(plan, today);
+  const phase = plan.phases[current];
+  const inPhase = phase && phase.milestones.length
+    ? phase.milestones.reduce((s, m) => s + milestoneProgress(m), 0) / phase.milestones.length
+    : 0;
+  return clamp((current + inPhase) / n, 0, 1);
+}
+
+/**
  * 今月が期限のマイルストーン。該当が無ければ直近の未完了マイルストーンを最大 limit 件返す
  * （「今月のマイルストーン」が空欄になって必須項目が欠けるのを避ける）。
  */
@@ -730,6 +784,10 @@ function minIso(a: string, b: string): string {
   return diffDays(a, b) >= 0 ? a : b;
 }
 
+function maxIso(a: string, b: string): string {
+  return diffDays(a, b) >= 0 ? b : a;
+}
+
 /** 日付入力で開始・終了を直接指定する。以降のフェーズは終了日の変化分だけ連動シフトする。 */
 export function setPhaseDates(
   plan: LearningPlan,
@@ -753,6 +811,115 @@ export function setPhaseDates(
     );
   });
   return withUpdated(plan, phases, today);
+}
+
+// ============================================================
+// 編集（目標期限を動かしてペースを変える）
+// ============================================================
+
+/**
+ * 残りの全フェーズを比例で伸縮できる下限。
+ * 「案件獲得まで1週間」のような無意味な計画を作らせないための床。
+ */
+export function minGoalDeadline(plan: LearningPlan, today: Date): string {
+  const anchor = rescaleAnchor(plan, today);
+  const remaining = plan.phases.filter((p) => diffDays(anchor, p.endDate) > 0).length;
+  return addDays(anchor, Math.max(MIN_PHASE_DAYS, remaining * MIN_PHASE_DAYS));
+}
+
+/** 伸縮の起点。まだ始まっていない計画は開始日を、進行中の計画は今日を基準にする。 */
+function rescaleAnchor(plan: LearningPlan, today: Date): string {
+  const iso = toIso(today);
+  const first = plan.phases[0]?.startDate;
+  if (first && diffDays(iso, first) > 0) return first;
+  return iso;
+}
+
+/**
+ * 目標期限を動かし、**残りのフェーズだけ**を比例で伸縮する。
+ *
+ * 学ぶ内容（フェーズ構成もマイルストーンも）は一切変えず、カレンダー上の長さだけを変える。
+ * 「ペースを調整する」という操作をそのまま表すのが狙い。
+ * 済んだ期間まで動かすと履歴が書き換わってしまうので、起点より前のフェーズは触らない。
+ */
+export function setGoalDeadline(plan: LearningPlan, goalDeadline: string, today: Date): LearningPlan {
+  const anchor = rescaleAnchor(plan, today);
+  const lastEnd = plan.phases[plan.phases.length - 1]?.endDate;
+  if (!lastEnd) return plan;
+
+  const floor = minGoalDeadline(plan, today);
+  const target = diffDays(goalDeadline, floor) > 0 ? floor : goalDeadline;
+
+  const oldSpan = diffDays(anchor, lastEnd);
+  const newSpan = diffDays(anchor, target);
+  if (oldSpan <= 0 || newSpan <= 0) return plan;
+
+  const scale = (iso: string): string => {
+    const offset = diffDays(anchor, iso);
+    if (offset <= 0) return iso; // 起点より前＝済んだ日付は動かさない
+    return addDays(anchor, Math.round((offset * newSpan) / oldSpan));
+  };
+
+  // 順に確定させる。比例縮小で 7 日を割り込んだフェーズだけ床まで押し戻し、
+  // その分を後続の開始日にも反映させることで、期間の逆転と重なりを防ぐ。
+  let prevEnd: string | null = null;
+  const phases = plan.phases.map((p) => {
+    if (diffDays(anchor, p.endDate) <= 0) {
+      prevEnd = p.endDate;
+      return p;
+    }
+    let startDate = scale(p.startDate);
+    if (prevEnd && diffDays(prevEnd, startDate) < 0) startDate = prevEnd;
+    let endDate = scale(p.endDate);
+    if (diffDays(startDate, endDate) < MIN_PHASE_DAYS) endDate = addDays(startDate, MIN_PHASE_DAYS);
+    prevEnd = endDate;
+
+    return {
+      ...p,
+      startDate,
+      endDate,
+      // 期限だけ取り残されないよう、マイルストーンも同じ比率で動かしてフェーズ内に丸める
+      milestones: p.milestones.map((m) => {
+        const due = scale(m.dueDate);
+        if (diffDays(due, startDate) > 0) return { ...m, dueDate: startDate };
+        return { ...m, dueDate: minIso(due, endDate) };
+      }),
+    };
+  });
+
+  const next: LearningPlan = {
+    ...plan,
+    phases,
+    goalDeadline: maxIso(target, phases[phases.length - 1].endDate),
+    updatedAt: new Date().toISOString(),
+  };
+  next.currentPhaseKey = phases[currentPhaseIndex(next, today)]?.key ?? next.currentPhaseKey;
+  return next;
+}
+
+/**
+ * 残り期間から逆算した「週あたりの目安時間」。
+ * 期限を延ばすと週の負担が減る、という交換条件を数字で見せるために使う。
+ * BASE_HOURS は目安なので 0.5 時間単位に丸める。
+ */
+export function estimateWeeklyHours(plan: LearningPlan, today: Date): number {
+  const iso = toIso(today);
+  const currentIdx = currentPhaseIndex(plan, today);
+  const mult = EXPERIENCE_MULTIPLIER[plan.intake.experience];
+
+  const remainingHours = plan.phases.reduce((sum, p, i) => {
+    if (i < currentIdx) return sum;
+    const hours = BASE_HOURS[p.key] * (mult[p.key] ?? 1);
+    if (i > currentIdx) return sum + hours;
+    // 現在フェーズは未達成のマイルストーン割合ぶんだけ残っているとみなす
+    const done = p.milestones.length
+      ? p.milestones.reduce((s, m) => s + milestoneProgress(m), 0) / p.milestones.length
+      : 0;
+    return sum + hours * (1 - done);
+  }, 0);
+
+  const weeks = Math.max(1, diffDays(iso, plan.goalDeadline) / 7);
+  return Math.max(0.5, Math.round((remainingHours / weeks) * 2) / 2);
 }
 
 /** 候補テンプレートからマイルストーンを追加する。 */

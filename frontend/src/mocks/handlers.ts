@@ -25,7 +25,7 @@ import type {
 } from '../types/api';
 import type { FocusBoothMember } from '../types/focusBooth';
 import { coachingHandlers } from './coachingHandlers';
-import { buildCourseStructure, lessonHandlers } from './lessonHandlers';
+import { buildCourseStructure, courseLessonCount, lessonHandlers } from './lessonHandlers';
 import { learningPlanHandlers } from './learningPlanHandlers';
 import { aiSkillHandlers } from './aiSkillHandlers';
 import { currentStreakInfo, studyActivityHandlers } from './studyActivityHandlers';
@@ -66,9 +66,10 @@ const profile: Profile = {
 };
 
 const categories: Category[] = [
-  { id: 1, name: 'Webデザイン', description: 'デザインの基礎から実践まで', coursecount: 8 },
-  { id: 2, name: 'コーディング', description: 'HTML/CSS/JavaScript', coursecount: 12 },
+  { id: 1, name: 'Webデザイン', description: 'デザインの基礎から実践まで', coursecount: 9 },
+  { id: 2, name: 'コーディング', description: 'HTML/CSS/JavaScript', coursecount: 8 },
   { id: 3, name: 'マーケティング', description: 'Web集客の基礎', coursecount: 5 },
+  { id: 4, name: 'キャリア', description: '副業・案件獲得の進め方', coursecount: 5 },
 ];
 
 const resumeCourses: ResumeCourse[] = [
@@ -129,25 +130,49 @@ type MockCourse = {
   categoryid: number; categoryname: string; summary: string;
   courseimage?: string; tags: { rawname: string }[];
   difficulty: string; duration: string;
+  /** 総レッスン数。buildCourseStructure から導出するので、コーストップの単元表示と必ず一致する */
+  lessoncount: number;
+  /** カード表示用の「どんな人向けか」タグ。tags（学習タイプ）とは別で、絞り込みには使わない */
+  purposes: string[];
 };
 
-// コースカタログ（/moodle/courses と /moodle/getcoursebyfield の元データ）
-const catalog: MockCourse[] = [
+// コースカタログ（/moodle/courses と /moodle/getcoursebyfield の元データ）。
+// 学習コンテンツ一覧をギャラリーとして見せるため、各学習領域に一定数のコースを置く。
+const rawCatalog: Omit<MockCourse, 'lessoncount'>[] = [
   // カテゴリ1: Webデザイン
-  { id: 101, fullname: 'はじめてのWebデザイン', shortname: 'design-101', categoryid: 1, categoryname: 'Webデザイン', summary: 'デザインの基本原則をやさしく学ぶ入門コース', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分' },
-  { id: 201, fullname: 'デザインの4大原則', shortname: 'design-201', categoryid: 1, categoryname: 'Webデザイン', summary: '近接・整列・反復・コントラストを理解する', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '20分' },
-  { id: 202, fullname: '配色の基本とツール', shortname: 'design-202', categoryid: 1, categoryname: 'Webデザイン', summary: '色の役割と配色ツールの使い方', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '25分' },
-  { id: 203, fullname: 'バナーを作ってみよう', shortname: 'design-203', categoryid: 1, categoryname: 'Webデザイン', summary: '実際に1枚のバナーを完成させる', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '45分' },
-  { id: 204, fullname: 'LPのワイヤーフレーム制作', shortname: 'design-204', categoryid: 1, categoryname: 'Webデザイン', summary: '構成から作るランディングページ設計', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '60分' },
-  { id: 205, fullname: '余白の使い方Tips', shortname: 'design-205', categoryid: 1, categoryname: 'Webデザイン', summary: '見やすさが変わる余白の小ワザ', tags: [{ rawname: 'Tips・小ネタ' }], difficulty: '基礎', duration: '10分' },
+  { id: 101, fullname: 'はじめてのWebデザイン', shortname: 'design-101', categoryid: 1, categoryname: 'Webデザイン', summary: 'デザインの基本原則をやさしく学ぶ入門コース', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分', purposes: ['未経験向け', '最初におすすめ'] },
+  { id: 201, fullname: 'デザインの4大原則', shortname: 'design-201', categoryid: 1, categoryname: 'Webデザイン', summary: '近接・整列・反復・コントラストを事例で理解する', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '20分', purposes: ['基礎から', 'デザイン力UP'] },
+  { id: 202, fullname: '配色の基本とツール', shortname: 'design-202', categoryid: 1, categoryname: 'Webデザイン', summary: '色の役割と配色ツールの使い方をわかりやすく解説', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '25分', purposes: ['基礎から', 'デザイン力UP'] },
+  { id: 206, fullname: 'Figmaの基本操作', shortname: 'design-206', categoryid: 1, categoryname: 'Webデザイン', summary: '制作の現場で使うFigmaを、触りながら覚える', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '35分', purposes: ['未経験向け', '基礎から'] },
+  { id: 203, fullname: 'バナーを作ってみよう', shortname: 'design-203', categoryid: 1, categoryname: 'Webデザイン', summary: 'バナー制作の基本を実践で学び、作品を1つ完成させる', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '45分', purposes: ['実践で学ぶ', '作品を作る'] },
+  { id: 207, fullname: 'デザイン模写のすすめ', shortname: 'design-207', categoryid: 1, categoryname: 'Webデザイン', summary: 'うまい人の意図を読み解きながら手を動かして盗む', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '40分', purposes: ['実践で学ぶ', 'デザイン力UP'] },
+  { id: 204, fullname: 'LPのワイヤーフレーム制作', shortname: 'design-204', categoryid: 1, categoryname: 'Webデザイン', summary: '伝わるレイアウトの設計方法を学びます', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '60分', purposes: ['基礎から', '実践で学ぶ'] },
+  { id: 208, fullname: 'ポートフォリオサイトを作る', shortname: 'design-208', categoryid: 1, categoryname: 'Webデザイン', summary: '案件応募で見せられる自分の作品集を仕上げる', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '90分', purposes: ['作品を作る', '副業準備'] },
+  { id: 205, fullname: '余白の使い方Tips', shortname: 'design-205', categoryid: 1, categoryname: 'Webデザイン', summary: '見やすさが変わる余白の小ワザ', tags: [{ rawname: 'Tips・小ネタ' }], difficulty: '基礎', duration: '10分', purposes: ['デザイン力UP'] },
   // カテゴリ2: コーディング
-  { id: 102, fullname: 'HTML/CSS基礎', shortname: 'coding-102', categoryid: 2, categoryname: 'コーディング', summary: 'Webページを作る第一歩', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '40分' },
-  { id: 211, fullname: 'よく使うHTMLタグ辞典', shortname: 'coding-211', categoryid: 2, categoryname: 'コーディング', summary: '実務で頻出のタグをまとめて習得', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分' },
-  { id: 212, fullname: 'Flexboxでレイアウト', shortname: 'coding-212', categoryid: 2, categoryname: 'コーディング', summary: '横並び・中央寄せを自在に', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '50分' },
+  { id: 102, fullname: 'HTML & CSSのきほん', shortname: 'coding-102', categoryid: 2, categoryname: 'コーディング', summary: 'Web制作に必要なHTMLとCSSをやさしく学びます', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '40分', purposes: ['未経験向け', '基礎から'] },
+  { id: 211, fullname: 'よく使うHTMLタグ辞典', shortname: 'coding-211', categoryid: 2, categoryname: 'コーディング', summary: '実務で頻出のタグをまとめて習得', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分', purposes: ['基礎から'] },
+  { id: 212, fullname: 'Flexboxでレイアウト', shortname: 'coding-212', categoryid: 2, categoryname: 'コーディング', summary: '横並び・中央寄せを自在に組めるようになる', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '50分', purposes: ['実践で学ぶ'] },
+  { id: 213, fullname: 'レスポンシブ対応の基本', shortname: 'coding-213', categoryid: 2, categoryname: 'コーディング', summary: 'スマホでも崩れないページの作り方', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '45分', purposes: ['実践で学ぶ'] },
+  { id: 214, fullname: 'JavaScript入門', shortname: 'coding-214', categoryid: 2, categoryname: 'コーディング', summary: 'ページに動きをつけるための第一歩', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '55分', purposes: ['基礎から'] },
+  { id: 215, fullname: 'フォームと入力チェック', shortname: 'coding-215', categoryid: 2, categoryname: 'コーディング', summary: 'お問い合わせフォームを実装できるようになる', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '40分', purposes: ['実践で学ぶ', '作品を作る'] },
+  { id: 216, fullname: 'WordPressでサイトを作る', shortname: 'coding-216', categoryid: 2, categoryname: 'コーディング', summary: '案件で一番よく使うCMSを一通り触る', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '80分', purposes: ['作品を作る', '副業準備'] },
+  { id: 217, fullname: 'Git / GitHubのきほん', shortname: 'coding-217', categoryid: 2, categoryname: 'コーディング', summary: '変更履歴の残し方と、共同作業の進め方', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '35分', purposes: ['基礎から', '副業準備'] },
   // カテゴリ3: マーケティング
-  { id: 221, fullname: 'SNS集客の基本', shortname: 'mkt-221', categoryid: 3, categoryname: 'マーケティング', summary: '各SNSの特性と使い分け', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '25分' },
-  { id: 222, fullname: '刺さる広告文の書き方', shortname: 'mkt-222', categoryid: 3, categoryname: 'マーケティング', summary: 'クリックされるコピーの型', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '35分' },
+  { id: 221, fullname: 'Webマーケティング入門', shortname: 'mkt-221', categoryid: 3, categoryname: 'マーケティング', summary: '集客の基本と施策の考え方をやさしく解説', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '25分', purposes: ['基礎から', '副業準備'] },
+  { id: 223, fullname: 'SNS集客の基本', shortname: 'mkt-223', categoryid: 3, categoryname: 'マーケティング', summary: '各SNSの特性と使い分けを知る', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '25分', purposes: ['基礎から'] },
+  { id: 222, fullname: '刺さる広告文の書き方', shortname: 'mkt-222', categoryid: 3, categoryname: 'マーケティング', summary: 'クリックされるコピーの型を身につける', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '35分', purposes: ['実践で学ぶ'] },
+  { id: 224, fullname: 'SEOライティング入門', shortname: 'mkt-224', categoryid: 3, categoryname: 'マーケティング', summary: '検索から人が来る記事の組み立て方', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '40分', purposes: ['基礎から', '副業準備'] },
+  { id: 225, fullname: 'アクセス解析でふりかえる', shortname: 'mkt-225', categoryid: 3, categoryname: 'マーケティング', summary: '数字を見て次の一手を決められるようになる', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '45分', purposes: ['実践で学ぶ'] },
+  // カテゴリ4: キャリア・案件獲得
+  { id: 231, fullname: '案件獲得の基礎', shortname: 'career-231', categoryid: 4, categoryname: 'キャリア', summary: '営業の考え方や提案のコツを基礎から学びます', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分', purposes: ['副業準備', '案件獲得'] },
+  { id: 232, fullname: '提案文・見積もりの作り方', shortname: 'career-232', categoryid: 4, categoryname: 'キャリア', summary: '選ばれる提案と、適正な値付けの考え方', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '40分', purposes: ['案件獲得'] },
+  { id: 233, fullname: 'クラウドソーシングの歩き方', shortname: 'career-233', categoryid: 4, categoryname: 'キャリア', summary: '最初の1件を取るための現実的な進め方', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分', purposes: ['未経験向け', '案件獲得'] },
+  { id: 234, fullname: 'クライアントワークの進め方', shortname: 'career-234', categoryid: 4, categoryname: 'キャリア', summary: 'ヒアリングから納品までのやりとりを一通り', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '50分', purposes: ['実践で学ぶ', '案件獲得'] },
+  { id: 235, fullname: '副業のはじめ方と続け方', shortname: 'career-235', categoryid: 4, categoryname: 'キャリア', summary: '時間の作り方、お金まわり、無理のない続け方', tags: [{ rawname: 'Tips・小ネタ' }], difficulty: '基礎', duration: '20分', purposes: ['副業準備'] },
 ];
+
+const catalog: MockCourse[] = rawCatalog.map((c) => ({ ...c, lessoncount: courseLessonCount(c.id) }));
 
 // コースの構成（/moodle/courses/:id/contents）。
 // 単元とレッスンは lessonHandlers.ts の buildCourseStructure を
@@ -157,6 +182,10 @@ const MODULE_DESCRIPTIONS: Record<string, string> = {
   '基本の考え方': '<h2>基本の考え方</h2><p>ここが土台になります。焦らず、一つずつ確認していきましょう。</p><p>ポイントは<strong>「まず真似る」</strong>こと。型を覚えてから応用に進みます。</p>',
   'ハンズオン①': '<h2>やってみよう</h2><p>実際に手を動かすパートです。完成イメージを見ながら進めてください。</p><ol><li>お手本をなぞる</li><li>自分でアレンジ</li><li>見比べて改善</li></ol>',
   'ハンズオン②': '<h2>もう一歩踏み込む</h2><p>応用に挑戦します。詰まったら前のレッスンに戻ってOKです。</p>',
+  'ケーススタディ': '<h2>実例で考える</h2><p>実際の案件に近い題材で、判断の分かれ目を見ていきます。</p>',
+  '応用ワーク': '<h2>応用ワーク</h2><p>条件を変えた課題に取り組み、応用が利く状態を目指します。</p>',
+  '確認テスト': '<h2>確認テスト</h2><p>ここまでの理解を確認します。間違えた箇所は該当レッスンに戻りましょう。</p>',
+  '制作課題': '<h2>制作課題</h2><p>提出できる形の制作物を仕上げます。コーチのフィードバックを受けられます。</p>',
   'まとめと次にやること': '<h2>まとめ</h2><p>お疲れさまでした。学んだことを振り返り、次のコースへ進みましょう。</p>',
 };
 
@@ -165,11 +194,13 @@ function buildSections(courseId: number) {
     id: section.id,
     name: section.name,
     visible: true,
-    summary: '',
+    summary: section.summary,
     modules: section.lessons.map((lesson) => ({
       id: lesson.lessonId,
       name: lesson.title,
       modname: 'page',
+      // 学習タイプ（階層ではなく分類）。コーストップの単元カードでチップとして出す
+      learningtype: lesson.learningType,
       description: MODULE_DESCRIPTIONS[lesson.title] ?? `<h2>${lesson.title}</h2><p>このレッスンの本文です。</p>`,
       completion: 1,
       completiondata: { state: 0 },

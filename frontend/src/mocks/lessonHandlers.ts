@@ -95,19 +95,27 @@ export interface CourseLessonSeed {
 export interface CourseSectionSeed {
   id: number;
   name: string;
+  /** 単元の概要。コーストップの単元カードにそのまま出す */
+  summary: string;
   lessons: CourseLessonSeed[];
 }
 
 /**
- * どのコースでも共通の単元構成を返す。レッスンIDは courseId*1000 + nn で採番し、
+ * コースの単元構成を返す。レッスンIDは courseId*1000 + nn で採番し、
  * 既存の `?module=` ディープリンクと互換を保つ。
+ *
+ * 単元数は courseId から決まる 2〜4（+ふりかえり）で、コースごとに変える。
+ * 全コースが同じ構成だと、一覧に出す「全Nレッスン」がどのコースも同じ数になり
+ * カタログとして嘘になるため。単元1・単元2のIDとレッスンIDは従来のまま固定。
  */
 export function buildCourseStructure(courseId: number): CourseSectionSeed[] {
   const lead = courseId * 1000;
-  return [
+  const depth = courseId % 3; // 0:5レッスン / 1:7レッスン / 2:9レッスン
+  const sections: CourseSectionSeed[] = [
     {
       id: lead + 1,
       name: '基礎を理解する',
+      summary: 'このコースで扱う考え方の土台をつかみます。手を動かす前に、なぜそれが必要なのかを理解します。',
       lessons: [
         { lessonId: lead + 11, title: 'イントロダクション', minutes: 8, learningType: 'intro' },
         { lessonId: lead + 12, title: '基本の考え方', minutes: 12, learningType: 'knowledge' },
@@ -116,13 +124,49 @@ export function buildCourseStructure(courseId: number): CourseSectionSeed[] {
     {
       id: lead + 2,
       name: '手を動かす',
+      summary: 'お手本をなぞりながら、学んだ考え方を実際の作業に落とし込みます。',
       lessons: [
         { lessonId: lead + 21, title: 'ハンズオン①', minutes: 14, learningType: 'drill' },
         { lessonId: lead + 22, title: 'ハンズオン②', minutes: 12, learningType: 'assignment' },
-        { lessonId: lead + 23, title: 'まとめと次にやること', minutes: 7, learningType: 'review' },
       ],
     },
   ];
+  if (depth >= 1) {
+    sections.push({
+      id: lead + 3,
+      name: '実践に近づける',
+      summary: '実際の案件に近い題材で、判断に迷う場面の考え方を身につけます。',
+      lessons: [
+        { lessonId: lead + 31, title: 'ケーススタディ', minutes: 15, learningType: 'knowledge' },
+        { lessonId: lead + 32, title: '応用ワーク', minutes: 18, learningType: 'drill' },
+      ],
+    });
+  }
+  if (depth >= 2) {
+    sections.push({
+      id: lead + 4,
+      name: '仕上げる',
+      summary: '理解の確認と、提出できる形の制作物づくりまで進めます。',
+      lessons: [
+        { lessonId: lead + 41, title: '確認テスト', minutes: 10, learningType: 'test' },
+        { lessonId: lead + 42, title: '制作課題', minutes: 25, learningType: 'assignment' },
+      ],
+    });
+  }
+  sections.push({
+    id: lead + 9,
+    name: 'ふりかえり',
+    summary: '学んだことを整理して、次にやることを決めます。',
+    lessons: [
+      { lessonId: lead + 91, title: 'まとめと次にやること', minutes: 7, learningType: 'review' },
+    ],
+  });
+  return sections;
+}
+
+/** コースの総レッスン数。コース一覧の「全Nレッスン」を構造と一致させるために使う。 */
+export function courseLessonCount(courseId: number): number {
+  return buildCourseStructure(courseId).reduce((n, s) => n + s.lessons.length, 0);
 }
 
 /** コース名。catalog を持たないのでIDから引ける最低限のテーブルを持つ。 */

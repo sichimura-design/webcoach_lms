@@ -60,6 +60,61 @@ export const STANDARD_PHASE_ORDER: PhaseKey[] = [
 /** 「案件獲得まで進みたいか」が false のとき落とすフェーズ。 */
 export const CLIENT_WORK_PHASES: PhaseKey[] = ['job_hunting', 'client_work'];
 
+// ---- ステージ（フェーズをまとめた表示単位） ---------------------------------
+
+/**
+ * 画面に出す粒度。**表示専用でありデータは7フェーズのまま**である点が要点。
+ *
+ * 7フェーズをそのまま並べると1つ遅れただけで「6つ先まで押している」ように見え、
+ * 実際には計画どおりでも遅れている印象を与えてしまう。ステージ単位なら
+ * 「いま2つ目」で済み、内訳は現在ステージの中だけ開く。
+ * 保存形式を変えないので、期間調整・差分適用のロジックは一切影響を受けない。
+ */
+export type StageKey = 'basics' | 'practice' | 'prepare' | 'challenge';
+
+export const STAGE_ORDER: StageKey[] = ['basics', 'practice', 'prepare', 'challenge'];
+
+export const STAGE_LABEL: Record<StageKey, string> = {
+  basics: '基礎',
+  practice: '実践',
+  prepare: '準備',
+  challenge: '挑戦',
+};
+
+/** レール上でステージ名に添える一言。中身が分からないまま丸められるのを防ぐ。 */
+export const STAGE_NOTE: Record<StageKey, string> = {
+  basics: '座学・ツール学習',
+  practice: '実践課題・模擬案件',
+  prepare: 'ポートフォリオ作成',
+  challenge: '案件獲得',
+};
+
+export const STAGE_OF_PHASE: Record<PhaseKey, StageKey> = {
+  foundation: 'basics',
+  tools: 'basics',
+  practice: 'practice',
+  mock_project: 'practice',
+  portfolio: 'prepare',
+  job_hunting: 'challenge',
+  client_work: 'challenge',
+  // 自由追加フェーズは手を動かす段に置く（挑戦に混ざると「案件獲得」の意味が濁るため）
+  custom: 'practice',
+};
+
+/** deriveStages() が返す表示用のまとまり。保存はしない。 */
+export interface PlanStage {
+  key: StageKey;
+  title: string;
+  note: string;
+  startDate: string; // YYYY-MM-DD
+  endDate: string; // YYYY-MM-DD
+  status: PhaseProgressStatus;
+  /** このステージに属するフェーズ（plan.phases の並び順を保つ） */
+  phases: PlanPhase[];
+  /** phases と同じ並びの状態 */
+  phaseStatuses: PhaseProgressStatus[];
+}
+
 // ---- スキル -----------------------------------------------------------------
 
 export type SkillKey =

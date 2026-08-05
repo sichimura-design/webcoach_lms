@@ -17,6 +17,12 @@ import {
 interface SkillResultViewProps {
   result: AiSkillResponse;
   onJumpToBlock: (blockId: string) => void;
+  /**
+   * この会話に教材の文脈があるか。
+   * AI専用ページで教材と関係なく始めた相談では、そもそも参照する教材が無い。
+   * そこで「教材に記述がありませんでした」を出すと、約束していないことを謝る形になる。
+   */
+  hasMaterialContext?: boolean;
 }
 
 /** 判定の色。既存の意味色（成功／注意）に合わせる */
@@ -29,9 +35,11 @@ const VERDICT_STYLE: Record<AiSkillVerdict, { bg: string; border: string; text: 
 function FindingRow({
   finding,
   onJumpToBlock,
+  hasMaterialContext,
 }: {
   finding: AiSkillFinding;
   onJumpToBlock: (blockId: string) => void;
+  hasMaterialContext: boolean;
 }) {
   const tone = VERDICT_STYLE[finding.verdict];
   return (
@@ -92,18 +100,24 @@ function FindingRow({
           )}
         </div>
       ) : (
-        <div style={{ marginTop: 5, fontSize: 9.5, color: color.textFaint }}>
-          この観点は教材に直接の記述がないため、一般的な見方として扱ってください。
-        </div>
+        hasMaterialContext && (
+          <div style={{ marginTop: 5, fontSize: 9.5, color: color.textFaint }}>
+            この観点は教材に直接の記述がないため、一般的な見方として扱ってください。
+          </div>
+        )
       )}
     </div>
   );
 }
 
-export function SkillResultView({ result, onJumpToBlock }: SkillResultViewProps) {
+export function SkillResultView({
+  result,
+  onJumpToBlock,
+  hasMaterialContext = true,
+}: SkillResultViewProps) {
   return (
     <>
-      {!result.groundedInMaterial && (
+      {!result.groundedInMaterial && hasMaterialContext && (
         <div
           className="flex items-start"
           style={{
@@ -138,7 +152,12 @@ export function SkillResultView({ result, onJumpToBlock }: SkillResultViewProps)
             項目別
           </strong>
           {result.findings.map((finding) => (
-            <FindingRow key={finding.label} finding={finding} onJumpToBlock={onJumpToBlock} />
+            <FindingRow
+              key={finding.label}
+              finding={finding}
+              onJumpToBlock={onJumpToBlock}
+              hasMaterialContext={hasMaterialContext}
+            />
           ))}
         </div>
       )}

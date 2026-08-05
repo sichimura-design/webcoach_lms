@@ -79,9 +79,15 @@ function buildFindings(skillId: ConcreteAiSkillId, hits: ScoredBlock[]): AiSkill
   });
 }
 
-/** 文章改善モードの修正案。入力文をそのまま返さず、教材の観点で並べ替えた体で示す */
+/**
+ * 修正案。入力文をそのまま返さず、教材の観点で並べ替えた体で示す。
+ * スキルによって出す形が違う（文章改善は組み替え、コピー作成は案の並列）ので、
+ * 書式は aiSkillCatalog.ts の revisionTemplate に寄せ、無い場合だけこの既定形を使う。
+ */
 function buildRevision(req: AiSkillRequest, topHeading: string | null): string {
   const source = (req.quote ?? req.question).trim();
+  const template = AI_SKILL_MOCK[req.skillId].revisionTemplate;
+  if (template) return template(source, topHeading);
   const head = source.length > 60 ? `${source.slice(0, 60)}…` : source;
   return [
     `【結論を先に】${head}`,

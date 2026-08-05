@@ -269,6 +269,15 @@ export const learningPlanHandlers = [
     // 受講生が自分で調整した時点でLMSの生成物そのものではなくなる。
     // ただしコーチと確認済みのプランは、その事実まで巻き戻さない。
     if (next.status === 'lms_generated') next.status = 'student_reviewed';
+
+    // 期間を自分で動かしたら、それ以前に作られた更新案は前提が変わって古くなる。
+    // 各差分は「適用後の日付」を直接持つ（applyDiffs のコメント参照）ため、
+    // 残したまま適用されると受講生が今やった調整を黙って巻き戻してしまう。
+    if (patch.phases !== undefined || patch.goalDeadline !== undefined) {
+      (revisionsStore[userId] ?? []).forEach((r) => {
+        if (r.status === 'pending') r.status = 'superseded';
+      });
+    }
     next.currentPhaseKey = next.phases[currentPhaseIndex(next, new Date())]?.key ?? next.currentPhaseKey;
     plansStore[userId] = next;
     return HttpResponse.json(next);

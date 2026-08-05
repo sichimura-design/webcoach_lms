@@ -11,7 +11,7 @@ import { useLearningPlan } from '../../hooks/useLearningPlan';
 import { PLAN_STATUS_LABEL } from '../../types/learningPlan';
 import { diffDays, formatJpDate, toIso } from '../../utils/learningPlanTemplate';
 import { color, radius, shadow, font, t } from '../../theme/webcoachTheme';
-import PhaseTimeline from '../learningPlan/PhaseTimeline';
+import StageRail from '../learningPlan/StageRail';
 import MilestoneRow from '../learningPlan/MilestoneRow';
 import { ArrowRightIcon } from './ContinueLearningHero';
 
@@ -37,7 +37,7 @@ const CARD_STYLE = {
 
 function RoadmapSection({ userId }: RoadmapSectionProps) {
   const navigate = useNavigate();
-  const { plan, phaseStatuses, currentPhase, monthMilestones, checkinDue, pendingRevisionCount, loading } =
+  const { plan, stages, currentStage, currentPhase, monthMilestones, checkinDue, pendingRevisionCount, loading } =
     useLearningPlan(userId);
 
   if (loading) return null;
@@ -121,12 +121,14 @@ function RoadmapSection({ userId }: RoadmapSectionProps) {
         </div>
       </div>
 
-      <PhaseTimeline
-        phases={plan.phases}
-        statuses={phaseStatuses}
-        mode="rail"
-        avatarSrc={`${process.env.PUBLIC_URL}/images/home/avatar-user.png`}
-      />
+      {/*
+        /learning-plan と同じ4ステージ表示に揃える。
+        ここだけ7フェーズの点を並べると、ロードマップ画面で粒度を粗くした意味が薄れるため。
+        内訳は本編（/learning-plan）側にだけ置く。
+      */}
+      <div style={{ marginTop: 32 }}>
+        <StageRail stages={stages} currentStage={currentStage} showBreakdown={false} />
+      </div>
 
       {/* 今月のマイルストーンと次回見直し日。必須項目なので常に何かを出す。 */}
       <div style={{ marginTop: 30, paddingTop: 22, borderTop: `1px solid ${color.border}` }}>

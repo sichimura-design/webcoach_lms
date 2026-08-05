@@ -54,10 +54,19 @@ function DiffRow({ diff, checked, onToggle }: { diff: PlanDiff; checked: boolean
   );
 }
 
+/**
+ * 既定で見せる差分の数。
+ * 1つのフェーズが遅れると後続フェーズぶんの「後ろ倒し」が連鎖して生成されるため、
+ * 全部並べると6行の赤い『遅れ』が画面上部を占める。実質1つの遅れなので、
+ * 先頭だけ見せて残りは畳む（チェック状態は畳んだままでも保持される）。
+ */
+const VISIBLE_DIFFS = 2;
+
 function RevisionCard({ revision, pendingCount, busy, onResolve, onOpenEditor }: RevisionCardProps) {
   const [selected, setSelected] = useState<Set<string>>(
     () => new Set(revision.diffs.filter((d) => d.selected).map((d) => d.id)),
   );
+  const [showAllDiffs, setShowAllDiffs] = useState(false);
 
   const toggle = (id: string) => {
     setSelected((prev) => {
@@ -101,9 +110,24 @@ function RevisionCard({ revision, pendingCount, busy, onResolve, onOpenEditor }:
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 18 }}>
-        {revision.diffs.map((d) => (
+        {(showAllDiffs ? revision.diffs : revision.diffs.slice(0, VISIBLE_DIFFS)).map((d) => (
           <DiffRow key={d.id} diff={d} checked={selected.has(d.id)} onToggle={() => toggle(d.id)} />
         ))}
+
+        {revision.diffs.length > VISIBLE_DIFFS && (
+          <button
+            type="button"
+            onClick={() => setShowAllDiffs((v) => !v)}
+            style={{
+              alignSelf: 'flex-start', background: 'none', border: 'none', fontFamily: 'inherit',
+              ...font.link, color: color.primary, cursor: 'pointer', padding: '4px 2px',
+            }}
+          >
+            {showAllDiffs
+              ? '変更内容を畳む'
+              : `以降のフェーズへの影響 ${revision.diffs.length - VISIBLE_DIFFS}件をみる`}
+          </button>
+        )}
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 20, flexWrap: 'wrap' }}>

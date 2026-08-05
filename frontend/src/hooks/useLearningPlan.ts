@@ -14,8 +14,15 @@ import {
   PhaseProgressStatus,
   PlanPhase,
   PlanRevision,
+  PlanStage,
 } from '../types/learningPlan';
-import { currentMonthMilestones, currentPhaseIndex, derivePhaseStatus } from '../utils/learningPlanTemplate';
+import {
+  currentMonthMilestones,
+  currentPhaseIndex,
+  derivePhaseStatus,
+  deriveStages,
+  planProgress,
+} from '../utils/learningPlanTemplate';
 
 export interface UseLearningPlanResult {
   plan: LearningPlan | null;
@@ -30,6 +37,13 @@ export interface UseLearningPlanResult {
   /** plan.phases と同じ並び */
   phaseStatuses: PhaseProgressStatus[];
   monthMilestones: Milestone[];
+
+  /** 7フェーズを表示用に束ねた4ステージ。中身が空のステージは含まない。 */
+  stages: PlanStage[];
+  /** 現在ステージ。plan が無ければ null */
+  currentStage: PlanStage | null;
+  /** ロードマップ全体の進捗 0-1 */
+  progress: number;
 
   revisions: PlanRevision[];
   /** 最新の未確認の更新案。無ければ null */
@@ -90,6 +104,8 @@ export function useLearningPlan(userId: number | undefined): UseLearningPlanResu
   const currentIndex = useMemo(() => (plan ? currentPhaseIndex(plan, today) : -1), [plan, today]);
   const phaseStatuses = useMemo(() => (plan ? derivePhaseStatus(plan, today) : []), [plan, today]);
   const monthMilestones = useMemo(() => (plan ? currentMonthMilestones(plan, today) : []), [plan, today]);
+  const stages = useMemo(() => (plan ? deriveStages(plan, today) : []), [plan, today]);
+  const progress = useMemo(() => (plan ? planProgress(plan, today) : 0), [plan, today]);
 
   const pending = useMemo(() => revisions.filter((r) => r.status === 'pending'), [revisions]);
 
@@ -103,6 +119,9 @@ export function useLearningPlan(userId: number | undefined): UseLearningPlanResu
     currentIndex,
     phaseStatuses,
     monthMilestones,
+    stages,
+    currentStage: stages.find((s) => s.status === 'current') ?? null,
+    progress,
     revisions,
     pendingRevision: pending[0] ?? null,
     pendingRevisionCount: pending.length,

@@ -7,7 +7,7 @@ import {
   AiCoachSession,
   EMPTY_AI_COACH_CONTEXT,
 } from '../types/aiCoach';
-import { AiSkillId } from '../types/aiSkill';
+import { AiSkillId, AI_SKILL_SHORT_LABEL, ConcreteAiSkillId } from '../types/aiSkill';
 
 /**
  * AIコーチの会話をセッション単位で保持する。
@@ -47,6 +47,7 @@ function newSession(id: string, context?: Partial<AiCoachContext>): AiCoachSessi
   const now = new Date().toISOString();
   return {
     id,
+    parentId: null,
     title: '新しい相談',
     skillId: 'auto',
     messages: [],
@@ -85,7 +86,26 @@ interface AiCoachState {
   resetSession: (id: string) => void;
   /** AI専用ページで新しい相談を始める。作ったセッションIDを返す */
   createPageSession: () => string;
+  /**
+   * 専門モードのセッションを始める。作ったセッションIDを返す。
+   * 親会話から起動した場合は parentId を持たせ、必要な文脈だけをコピーする。
+   */
+  createSkillSession: (args: CreateSkillSessionArgs) => string;
   deleteSession: (id: string) => void;
+}
+
+export interface CreateSkillSessionArgs {
+  skillId: ConcreteAiSkillId;
+  /** 親会話。ホームから直接選んだ場合は null */
+  parentId?: string | null;
+  /** 引き継ぐ文脈（教材・課題の評価基準） */
+  context?: Partial<AiCoachContext>;
+  /** 入力欄へ流し込む下書き */
+  input?: string;
+  /** 引き継ぐ添付画像（dataURL） */
+  image?: string | null;
+  /** 引き継ぐ引用中の教材本文 */
+  quote?: AiCoachQuote | null;
 }
 
 /** order の先頭へ移す（最近使った会話を上に出す） */
@@ -213,10 +233,49 @@ export const useAiCoachStore = create<AiCoachState>()(
         return id;
       },
 
+      createSkillSession: ({ skillId, parentId = null, context, input, image, quote }) => {
+        const seq = get().pageSeq + 1;
+        const id = `page:${seq}`;
+        set((state) => {
+          const base = newSession(id, context);
+          return {
+            pageSeq: seq,
+            sessions: {
+              ...state.sessions,
+              [id]: {
+                ...base,
+                parentId,
+                skillId,
+                // 一覧では子を「└ 制作物添削」と見せたいので、既定名を機能名にしておく。
+                // 発言があれば deriveTitle が相談内容に置き換える。
+                title: AI_SKILL_SHORT_LABEL[skillId],
+                input: input ?? '',
+                image: image ?? null,
+                quote: quote ?? null,
+              },
+            },
+            order: touch(state.order, id),
+          };
+        });
+        return id;
+      },
+
       deleteSession: (id) =>
         set((state) => {
-          const { [id]: _removed, ...rest } = state.sessions;
-          return { sessions: rest, order: state.order.filter((x) => x !== id) };
+          // 専門セッションは親の文脈を引いて始まっているので、親だけ消して
+          // 子を宙に浮かせない。一覧に親のない「└ 制作物添削」が残るのを避ける。
+          const removing = new Set([
+            id,
+            ...Object.values(state.sessions)
+              .filter((s) => s.parentId === id)
+              .map((s) => s.id),
+          ]);
+          return {
+            sessions: Object.fromEntries(
+              Object.entries(state.sessions).filter(([key]) => !removing.has(key))
+            ),
+            order: state.order.filter((x) => !removing.has(x)),
+          };
         }),
     }),
     {

@@ -262,10 +262,11 @@ body.learning-workspace {
  * かつての .home-roadmap-grid（repeat(6, 1fr) 固定）はここで廃止。
  */
 
-/* ─── 集中ブース（/focus-booth）と学習記録（/study-log） ───────────── */
+/* ─── 自習室: 集中ブース(/focus-booth)・学習記録(/study-log)・ノート(/notes) ─── */
 /* .home-* と同じ思想。列数は画面幅で変えず、ページ側の transform:scale で収める。
    1440 - 60 - 60 = 1320 が中身の幅。集中ブースは 左660 / gap18 / 右642。
-   学習記録の右カラム 384 は .home-3col の第1列と同値にして、他ページと目が揃うようにしている。 */
+   学習記録の右カラム 384 は .home-3col の第1列と同値にして、他ページと目が揃うようにしている。
+   3面ともタブで行き来するので、padding は同値にしてヘッダ位置を揃える。 */
 .focus-main {
   padding: 28px 60px 40px;
 }
@@ -286,6 +287,10 @@ body.learning-workspace {
   grid-template-columns: 1fr 384px;
   gap: 18px;
   align-items: start;
+}
+
+.notes-main {
+  padding: 28px 60px 40px;
 }
 
 :root {

@@ -3,7 +3,12 @@ import { AlertTriangle, Copy, ImagePlus, Maximize2, Send, Star, StickyNote, X } 
 import { color, font } from '../../theme/webcoachTheme';
 import { LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
 import { LessonAiResponse } from '../../types/lesson';
-import { AI_SKILL_PREFER_WIDE, isSpecialistSkill } from '../../types/aiSkill';
+import {
+  AiSkillId,
+  AI_SKILL_META,
+  AI_SKILL_PREFER_WIDE,
+  isSpecialistSkill,
+} from '../../types/aiSkill';
 import MarkdownRenderer from '../MarkdownRenderer';
 import SkillSelector from './SkillSelector';
 import SkillProposalCard from './SkillProposalCard';
@@ -34,6 +39,23 @@ interface AiCoachPaneProps {
   variant?: 'panel' | 'page';
   /** 「広い画面で続ける」導線。AI専用ページ側では渡さない */
   onExpand?: () => void;
+  /**
+   * ヘッダーの中身を差し替える。
+   * AI専用ページは状態（メインチャット／専門モード）ごとにヘッダーが変わるので、
+   * ここに外から差し込む。渡さなければ従来のヘッダー（AIコーチ＋モードセレクタ）。
+   */
+  headerSlot?: React.ReactNode;
+  /** 入力欄の上（きっかけチップの上）に差し込む領域。機能一覧や必要な入力を出す */
+  footerSlot?: React.ReactNode;
+  /** きっかけチップの差し替え。専門モードではその機能のクイックアクションを出す */
+  quickPrompts?: string[];
+  /** 入力欄のプレースホルダの差し替え */
+  placeholder?: string;
+  /**
+   * 提案を「広い画面で開く」導線。教材ページの右パネルだけで使う。
+   * 押すとモードだけ切り替えてAI専用ページへ渡し、実行はそちらで行う。
+   */
+  onOpenWide?: (skillId: AiSkillId) => void;
 }
 
 /** 画像添付後に出す、質問のきっかけ（要件§7） */
@@ -104,6 +126,11 @@ export function AiCoachPane({
   disabled,
   variant = 'panel',
   onExpand,
+  headerSlot,
+  footerSlot,
+  quickPrompts,
+  placeholder,
+  onOpenWide,
 }: AiCoachPaneProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -124,6 +151,8 @@ export function AiCoachPane({
 
   const wide = variant === 'page';
   const contentWidth = wide ? 760 : undefined;
+  // 専門モードに入っているときだけ、その機能の説明・入力の案内を使う
+  const specialistMeta = isSpecialistSkill(ai.skillId) ? AI_SKILL_META[ai.skillId] : null;
   // 専門モードで作業が続くときだけ拡大を勧める（要件§6の使い分け）
   const highlightExpand = AI_SKILL_PREFER_WIDE[ai.skillId];
 
@@ -138,6 +167,10 @@ export function AiCoachPane({
           flexShrink: 0,
         }}
       >
+        {headerSlot ? (
+          <div style={{ maxWidth: contentWidth, margin: wide ? '0 auto' : undefined }}>{headerSlot}</div>
+        ) : (
+        <>
         <div className="flex items-center" style={{ gap: 8 }}>
           <strong style={{ ...font.label, fontWeight: 800, color: color.text, flexShrink: 0 }}>
             AIコーチ
@@ -195,6 +228,8 @@ export function AiCoachPane({
             ))}
           </div>
         )}
+        </>
+        )}
       </div>
 
       {/* ── 会話 ── */}
@@ -220,16 +255,24 @@ export function AiCoachPane({
                 }}
               >
                 <strong style={{ ...font.label, fontWeight: 800, color: color.text, display: 'block', marginBottom: 6 }}>
-                  {ai.context.lessonTitle ? 'このレッスンを前提に回答します' : '学習のことなら何でも相談できます'}
+                  {/* 専門モードで会話が空のとき（一覧から機能を選んで開いた直後）は、
+                      「モードを提案します」と案内しない。もうそのモードに入っている。 */}
+                  {specialistMeta
+                    ? specialistMeta.label
+                    : ai.context.lessonTitle
+                      ? 'このレッスンを前提に回答します'
+                      : '学習のことなら何でも相談できます'}
                 </strong>
                 <p style={{ margin: 0, fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
-                  {!ai.context.lessonTitle
-                    ? // 教材の文脈が無い相談（常駐ドロワー・新規の相談）。
-                      // ここで「外部コンテンツのため」と出すと、開いていないレッスンの話になってしまう。
-                      '困っていることをそのまま書いてください。内容に応じて、添削や文章改善などの専門モードを提案します。'
-                    : disabled
-                      ? 'このレッスンは外部コンテンツのため、教材単位の根拠提示はできません。一般的な質問にはお答えできます。'
-                      : '本文をドラッグして選択すると、その箇所を引用して質問できます。制作物の画像を添付して添削を頼むこともできます。'}
+                  {specialistMeta
+                    ? `${specialistMeta.description}${specialistMeta.inputHint}を渡すと始められます。`
+                    : !ai.context.lessonTitle
+                      ? // 教材の文脈が無い相談（常駐ドロワー・新規の相談）。
+                        // ここで「外部コンテンツのため」と出すと、開いていないレッスンの話になってしまう。
+                        '困っていることをそのまま書いてください。内容に応じて、添削や文章改善などの専門モードを提案します。'
+                      : disabled
+                        ? 'このレッスンは外部コンテンツのため、教材単位の根拠提示はできません。一般的な質問にはお答えできます。'
+                        : '本文をドラッグして選択すると、その箇所を引用して質問できます。制作物の画像を添付して添削を頼むこともできます。'}
                 </p>
               </div>
             </div>
@@ -286,6 +329,7 @@ export function AiCoachPane({
                       onAccept={() => void ai.acceptProposal(message.id)}
                       onDismiss={() => void ai.dismissProposal(message.id)}
                       onRequestImage={() => fileInputRef.current?.click()}
+                      onOpenWide={onOpenWide}
                     />
                   </div>
                 </div>
@@ -353,7 +397,11 @@ export function AiCoachPane({
                   }}
                 >
                   {message.skillResult && (
-                    <SkillResultView result={message.skillResult} onJumpToBlock={onJumpToBlock} />
+                    <SkillResultView
+                      result={message.skillResult}
+                      onJumpToBlock={onJumpToBlock}
+                      hasMaterialContext={!!ai.context.lessonTitle}
+                    />
                   )}
 
                   {message.answer && (
@@ -448,6 +496,7 @@ export function AiCoachPane({
                       onAccept={() => void ai.acceptProposal(message.id)}
                       onDismiss={() => void ai.dismissProposal(message.id)}
                       onRequestImage={() => fileInputRef.current?.click()}
+                      onOpenWide={onOpenWide}
                     />
                   )}
 
@@ -497,8 +546,8 @@ export function AiCoachPane({
                   color: color.textMuted,
                 }}
               >
-                {isSpecialistSkill(ai.skillId)
-                  ? '教材の基準に照らして項目ごとに確認しています…'
+                {specialistMeta
+                  ? `${specialistMeta.shortLabel}を進めています…`
                   : '教材の該当箇所と照合しています…'}
               </div>
             </div>
@@ -507,34 +556,54 @@ export function AiCoachPane({
         </div>
       </div>
 
+      {/* ── 機能一覧・必要な入力（AI専用ページの状態ごとの領域）── */}
+      {footerSlot && (
+        <div
+          style={{
+            padding: wide ? '10px 20px 0' : '8px 12px 0',
+            background: color.surface,
+            flexShrink: 0,
+          }}
+        >
+          <div style={{ maxWidth: contentWidth, margin: wide ? '0 auto' : undefined }}>{footerSlot}</div>
+        </div>
+      )}
+
       {/* ── きっかけチップ ── */}
-      <div
-        className="flex"
-        style={{ gap: 6, overflowX: 'auto', padding: '8px 12px 4px', background: color.surface, flexShrink: 0 }}
-      >
-        {(ai.image ? IMAGE_PROMPTS : QUICK_PROMPTS).map((prompt) => (
-          <button
-            key={prompt}
-            type="button"
-            disabled={ai.loading || !!ai.pendingProposal}
-            onClick={() => void ai.send(prompt)}
-            className="disabled:opacity-50"
-            style={{
-              flex: '0 0 auto',
-              height: 28,
-              padding: '0 10px',
-              border: `1px solid ${color.border}`,
-              borderRadius: 999,
-              background: color.surface,
-              color: color.textMuted,
-              fontSize: 10,
-              cursor: 'pointer',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {prompt}
-          </button>
-        ))}
+      <div style={{ padding: wide ? '8px 20px 4px' : '8px 12px 4px', background: color.surface, flexShrink: 0 }}>
+        <div
+          className="flex"
+          style={{
+            gap: 6,
+            overflowX: 'auto',
+            maxWidth: contentWidth,
+            margin: wide ? '0 auto' : undefined,
+          }}
+        >
+          {(quickPrompts ?? (ai.image ? IMAGE_PROMPTS : QUICK_PROMPTS)).map((prompt) => (
+            <button
+              key={prompt}
+              type="button"
+              disabled={ai.loading || !!ai.pendingProposal}
+              onClick={() => void ai.send(prompt)}
+              className="disabled:opacity-50"
+              style={{
+                flex: '0 0 auto',
+                height: 28,
+                padding: '0 10px',
+                border: `1px solid ${color.border}`,
+                borderRadius: 999,
+                background: color.surface,
+                color: color.textMuted,
+                fontSize: 10,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {prompt}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* ── 引用中の教材文 ── */}
@@ -654,11 +723,12 @@ export function AiCoachPane({
                 }
               }}
               placeholder={
-                ai.quote
+                placeholder ??
+                (ai.quote
                   ? '選択した文章について質問する…'
                   : ai.context.lessonTitle
                     ? 'このレッスンについて質問する…'
-                    : '相談したいことを書いてください…'
+                    : '相談したいことを書いてください…')
               }
               style={{
                 width: '100%',

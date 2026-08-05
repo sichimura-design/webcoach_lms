@@ -1,9 +1,13 @@
-import { Sparkles, ImagePlus } from 'lucide-react';
+import { Sparkles, ImagePlus, Maximize2 } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import {
+  AiSkillId,
   AI_SKILL_CTA,
+  AI_SKILL_META,
   AI_SKILL_NEEDS_IMAGE,
+  AI_SKILL_PREFER_WIDE,
   AI_SKILL_SHORT_LABEL,
+  isConcreteSkill,
   SkillSuggestion,
 } from '../../types/aiSkill';
 import type { ProposalResolution } from '../../types/aiCoach';
@@ -29,6 +33,12 @@ interface SkillProposalCardProps {
   onAccept: () => void;
   onDismiss: () => void;
   onRequestImage: () => void;
+  /**
+   * 「広い画面で開く」（要件§「教材学習画面との接続」）。
+   * 教材ページの右パネルは手狭なので、添削のように作業が続くモードは
+   * AI専用ページで開けるようにする。渡されたときだけボタンを出す。
+   */
+  onOpenWide?: (skillId: AiSkillId) => void;
 }
 
 export function SkillProposalCard({
@@ -40,9 +50,11 @@ export function SkillProposalCard({
   onAccept,
   onDismiss,
   onRequestImage,
+  onOpenWide,
 }: SkillProposalCardProps) {
   const name = AI_SKILL_SHORT_LABEL[suggestion.skillId];
   const needsImage = AI_SKILL_NEEDS_IMAGE[suggestion.skillId] && !hasImage;
+  const canOpenWide = !!onOpenWide && AI_SKILL_PREFER_WIDE[suggestion.skillId] && !needsImage;
 
   // 決着済みの提案は、経過として1行だけ残す。カードのまま残すと会話が読みにくい。
   if (resolution) {
@@ -81,7 +93,7 @@ export function SkillProposalCard({
       <p style={{ margin: 0, fontSize: 11, lineHeight: 1.75, color: color.textBody }}>
         {needsImage
           ? '制作物の画像を添付すると、いまの教材と課題基準に照らして項目別に確認できます。'
-          : DESCRIPTION[suggestion.skillId] ?? '教材の内容に沿って、もう一段詳しく見ていきます。'}
+          : descriptionOf(suggestion.skillId) || '教材の内容に沿って、もう一段詳しく見ていきます。'}
       </p>
 
       {suggestion.references.length > 0 && !needsImage && (
@@ -126,6 +138,18 @@ export function SkillProposalCard({
             {variant === 'confirm' ? `${name}を開始` : AI_SKILL_CTA[suggestion.skillId]}
           </button>
         )}
+        {canOpenWide && (
+          <button
+            type="button"
+            onClick={() => onOpenWide?.(suggestion.skillId)}
+            disabled={disabled}
+            title="いまの教材・課題基準・添付画像・会話を引き継いで、広い画面で開きます"
+            className="inline-flex items-center disabled:opacity-50"
+            style={{ ...ghostStyle, gap: 4, borderColor: color.primaryBorder, color: color.primary }}
+          >
+            <Maximize2 size={11} /> 広い画面で開く
+          </button>
+        )}
         <button
           type="button"
           onClick={onDismiss}
@@ -139,14 +163,13 @@ export function SkillProposalCard({
   );
 }
 
-/** スキルごとの説明。「何を根拠に、何をするか」だけを書く */
-const DESCRIPTION: Partial<Record<SkillSuggestion['skillId'], string>> = {
-  'design-review':
-    '現在の教材と課題基準を使って、デザインを項目別に添削できます。',
-  writing: '教材の考え方に沿って、読み手が判断しやすい順序に文章を組み替えます。',
-  idea: 'いま決めることと後回しにできることを分けて、次の一歩まで落とします。',
-  tooling: '教材の内容ではなく、再現条件から順に原因を切り分けます。',
-};
+/**
+ * スキルごとの説明。「何を根拠に、何をするか」だけを書く。
+ * 文言は AI_SKILL_META（カードと同じ情報源）から取る。
+ * ここに別の説明文を持つと、一覧のカードと提案カードで説明が食い違う。
+ */
+const descriptionOf = (skillId: SkillSuggestion['skillId']): string =>
+  isConcreteSkill(skillId) ? AI_SKILL_META[skillId].description : '';
 
 const primaryStyle: React.CSSProperties = {
   gap: 5,

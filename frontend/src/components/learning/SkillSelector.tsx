@@ -3,9 +3,11 @@ import { ChevronDown, Check } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import {
   AiSkillId,
+  AI_SKILL_CATEGORY_LABEL,
+  AI_SKILL_CATEGORY_ORDER,
   AI_SKILL_LABEL,
   AI_SKILL_MODE_LABEL,
-  AI_SKILL_ORDER,
+  skillsInCategory,
 } from '../../types/aiSkill';
 
 /**
@@ -45,6 +47,36 @@ export function SkillSelector({ value, onChange, disabled = false }: SkillSelect
 
   const active = value !== 'auto';
 
+  const renderOption = (id: AiSkillId) => (
+    <button
+      key={id}
+      type="button"
+      role="option"
+      aria-selected={value === id}
+      onClick={() => {
+        onChange(id);
+        setOpen(false);
+      }}
+      className="flex items-center"
+      style={{
+        gap: 7,
+        width: '100%',
+        padding: '7px 8px',
+        border: 0,
+        borderRadius: 8,
+        background: value === id ? color.primaryTint : 'transparent',
+        color: value === id ? color.primary : color.textBody,
+        fontSize: 11.5,
+        fontWeight: value === id ? 700 : 500,
+        textAlign: 'left',
+        cursor: 'pointer',
+      }}
+    >
+      <span style={{ width: 12, flexShrink: 0 }}>{value === id && <Check size={12} />}</span>
+      {AI_SKILL_LABEL[id]}
+    </button>
+  );
+
   return (
     <div ref={rootRef} style={{ position: 'relative', flexShrink: 0 }}>
       <button
@@ -81,7 +113,9 @@ export function SkillSelector({ value, onChange, disabled = false }: SkillSelect
             top: 30,
             left: 0,
             zIndex: 60,
-            minWidth: 208,
+            minWidth: 224,
+            maxHeight: 340,
+            overflowY: 'auto',
             padding: 5,
             border: `1px solid ${color.borderStrong}`,
             borderRadius: 11,
@@ -89,36 +123,24 @@ export function SkillSelector({ value, onChange, disabled = false }: SkillSelect
             boxShadow: '0 16px 44px rgba(33,42,57,.18)',
           }}
         >
-          {AI_SKILL_ORDER.map((id) => (
-            <button
-              key={id}
-              type="button"
-              role="option"
-              aria-selected={value === id}
-              onClick={() => {
-                onChange(id);
-                setOpen(false);
-              }}
-              className="flex items-center"
-              style={{
-                gap: 7,
-                width: '100%',
-                padding: '7px 8px',
-                border: 0,
-                borderRadius: 8,
-                background: value === id ? color.primaryTint : 'transparent',
-                color: value === id ? color.primary : color.textBody,
-                fontSize: 11.5,
-                fontWeight: value === id ? 700 : 500,
-                textAlign: 'left',
-                cursor: 'pointer',
-              }}
-            >
-              <span style={{ width: 12, flexShrink: 0 }}>
-                {value === id && <Check size={12} />}
-              </span>
-              {AI_SKILL_LABEL[id]}
-            </button>
+          {/* 'auto' を先頭に固定し、実スキルは目的（学習／制作／キャリア）で束ねる。
+              機能が増えたのでフラットに並べると探せなくなる。 */}
+          {renderOption('auto')}
+          {AI_SKILL_CATEGORY_ORDER.map((category) => (
+            <div key={category}>
+              <p
+                style={{
+                  margin: '5px 8px 2px',
+                  fontSize: 9,
+                  fontWeight: 800,
+                  letterSpacing: '.06em',
+                  color: color.textFaint,
+                }}
+              >
+                {AI_SKILL_CATEGORY_LABEL[category]}
+              </p>
+              {skillsInCategory(category).map(renderOption)}
+            </div>
           ))}
           <p
             style={{

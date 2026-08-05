@@ -11,6 +11,7 @@ import { useNotes } from '../../hooks/useNotes';
 import { useTextSelection } from '../../hooks/useTextSelection';
 import { NAV_WIDTH, useLearningWorkspaceStore } from '../../store/learningWorkspaceStore';
 import { NoteItem } from '../../types/notes';
+import { AiSkillId } from '../../types/aiSkill';
 import { ClipAnchor } from './clipHighlight';
 import LessonTopBar from './LessonTopBar';
 import LessonNavDrawer from './LessonNavDrawer';
@@ -333,6 +334,20 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     navigate(`/ai-coach?session=${encodeURIComponent(ai.sessionId)}`);
   }, [navigate, ai.sessionId]);
 
+  /**
+   * 提案カードの「広い画面で開く」（要件§「教材学習画面との接続」）。
+   * ここでは実行せず、モードだけ切り替えてAI専用ページへ渡す。
+   * 教材・課題の評価基準・添付画像・直前の会話はセッションに載っているので、
+   * 向こう側は「制作物添削を選択済み・参照済み」の状態で開く。
+   */
+  const handleOpenWideWithSkill = useCallback(
+    (skillId: AiSkillId) => {
+      ai.selectSkill(skillId);
+      navigate(`/ai-coach?session=${encodeURIComponent(ai.sessionId)}`);
+    },
+    [ai, navigate]
+  );
+
   const handleJumpToClip = useCallback(
     (note: NoteItem) => {
       if (note.blockId) jumpToBlock(note.blockId);
@@ -411,6 +426,7 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
           onJumpToBlock={jumpToBlock}
           disabled={!selectionEnabled}
           onExpand={handleExpandToAiPage}
+          onOpenWide={handleOpenWideWithSkill}
         />
       }
       memoPane={

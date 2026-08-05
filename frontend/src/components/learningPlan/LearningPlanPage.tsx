@@ -24,19 +24,15 @@ import {
   RevisionAction,
   SKILL_LABEL,
 } from '../../types/learningPlan';
-import {
-  derivePhaseStatus,
-  diffDays,
-  formatJpDate,
-  formatJpDateFull,
-  toIso,
-} from '../../utils/learningPlanTemplate';
+import { derivePhaseStatus, formatJpDate } from '../../utils/learningPlanTemplate';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
-import PhaseTimeline, { PhaseRangeChip } from './PhaseTimeline';
-import MilestoneRow from './MilestoneRow';
 import RevisionCard from './RevisionCard';
 import MonthlyCheckin from './MonthlyCheckin';
 import PlanEditor from './PlanEditor';
+import PlanSummaryStrip from './PlanSummaryStrip';
+import StageRail from './StageRail';
+import ThisMonthCard from './ThisMonthCard';
+import PaceAdjustCard from './PaceAdjustCard';
 
 type Mode =
   | { kind: 'view' }
@@ -55,29 +51,16 @@ function cardStyle(): React.CSSProperties {
   };
 }
 
-/** 「全ロードマップで必須の7項目」を一覧で見せるブロック。 */
-function RequiredSummary({ plan }: { plan: LearningPlan }) {
-  const currentPhase = plan.phases[Math.max(0, plan.phases.findIndex((p) => p.key === plan.currentPhaseKey))];
-  const remaining = diffDays(toIso(TODAY), plan.goalDeadline);
-
-  const rows: { label: string; value: string }[] = [
-    { label: '最終ゴール', value: plan.goal },
-    {
-      label: '目標期限',
-      value: `${formatJpDateFull(plan.goalDeadline)}（${remaining > 0 ? `残り${remaining}日` : '期限を過ぎています'}）`,
-    },
-    { label: '現在のフェーズ', value: currentPhase?.title ?? '—' },
-    {
-      label: '優先スキル',
-      value: plan.prioritySkills.length ? plan.prioritySkills.map((s) => SKILL_LABEL[s]).join('・') : '—',
-    },
-    { label: '次回見直し日', value: formatJpDateFull(plan.nextReviewDate) },
-  ];
-
+/**
+ * 「全ロードマップで必須の7項目」のうち、上部のサマリー4タイルに出ないものを補う帯。
+ * ゴール・期限・現在フェーズ・見直し日は PlanSummaryStrip 側で見えているので、
+ * ここは優先スキル・状態・実現可能性の注記だけに絞る。
+ */
+function PlanConditions({ plan }: { plan: LearningPlan }) {
   return (
     <div style={cardStyle()}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-        <span style={{ ...font.cardTitle, color: color.text }}>このロードマップの約束</span>
+        <span style={{ ...font.cardTitle, color: color.text }}>このロードマップの前提</span>
         <span
           style={{
             ...t.chip,
@@ -89,19 +72,32 @@ function RequiredSummary({ plan }: { plan: LearningPlan }) {
         </span>
       </div>
 
-      <dl style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '12px 20px', margin: '18px 0 0' }}>
-        {rows.map((r) => (
-          <div key={r.label} style={{ display: 'contents' }}>
-            <dt style={{ ...font.caption, color: color.textSubtle, whiteSpace: 'nowrap' }}>{r.label}</dt>
-            <dd style={{ margin: 0, fontSize: 13.5, fontWeight: 500, color: color.textStrong }}>{r.value}</dd>
-          </div>
-        ))}
-      </dl>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginTop: 16 }}>
+        <span style={{ ...font.caption, color: color.textSubtle, flex: '0 0 auto' }}>優先スキル</span>
+        {plan.prioritySkills.length === 0 ? (
+          <span style={{ fontSize: 13, color: color.textSubtle }}>—</span>
+        ) : (
+          plan.prioritySkills.map((s) => (
+            <span
+              key={s}
+              style={{
+                ...font.caption, color: color.textStrong, background: color.hoverBg,
+                borderRadius: radius.pill, padding: '5px 12px',
+              }}
+            >
+              {SKILL_LABEL[s]}
+            </span>
+          ))
+        )}
+        <span style={{ ...font.caption, color: color.textSubtle, marginLeft: 12 }}>
+          週の学習時間の想定 約{plan.intake.weeklyHours}時間
+        </span>
+      </div>
 
       {plan.feasibilityNote && (
         <p
           style={{
-            ...font.caption, color: color.textBody, lineHeight: 1.8, margin: '18px 0 0',
+            ...font.caption, color: color.textBody, lineHeight: 1.8, margin: '16px 0 0',
             background: color.hoverBgTint, border: `1px solid ${color.borderSoft}`,
             borderRadius: radius.md, padding: '11px 14px',
           }}
@@ -125,8 +121,11 @@ export default function LearningPlanPage() {
   const navigate = useNavigate();
   const userId = user?.userid;
 
-  const { plan, loading, error, reload, setPlan, phaseStatuses, pendingRevision, pendingRevisionCount, checkin, checkinDue } =
-    useLearningPlan(userId);
+  const {
+    plan, loading, error, reload, setPlan,
+    stages, currentStage, currentPhase, progress, monthMilestones,
+    pendingRevision, pendingRevisionCount, checkin, checkinDue,
+  } = useLearningPlan(userId);
 
   const [mode, setMode] = useState<Mode>({ kind: 'view' });
   const [draft, setDraft] = useState<LearningPlan | null>(null);
@@ -151,6 +150,14 @@ export default function LearningPlanPage() {
 
   const draftStatuses = useMemo(() => (draft ? derivePhaseStatus(draft, TODAY) : []), [draft]);
 
+  // 「今月やること」に出していない、現在フェーズの残りのマイルストーン。
+  // 全フェーズぶんを並べると再び「やることが多すぎる」画面に戻るので、現在フェーズ内に留める。
+  const restMilestones = useMemo(() => {
+    if (!currentPhase) return [];
+    const shown = new Set(monthMilestones.map((m) => m.id));
+    return currentPhase.milestones.filter((m) => !shown.has(m.id));
+  }, [currentPhase, monthMilestones]);
+
   const openEditor = useCallback(() => {
     if (!plan) return;
     setDraft(plan);
@@ -169,7 +176,48 @@ export default function LearningPlanPage() {
       });
       setPlan(saved);
       setDraft(saved);
+      reload();
       showToast('ロードマップを保存しました', 'success');
+    } catch {
+      showToast('保存に失敗しました', 'error');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  /**
+   * ペース調整（目標期限の変更）の保存。
+   * 期間の再計算は PaceAdjustCard 内の純関数で済んでいるので、ここは結果を送るだけ。
+   */
+  const saveDeadline = async (next: LearningPlan) => {
+    if (!userId) return;
+    setBusy(true);
+    try {
+      const saved = await bffClient.updateLearningPlan(userId, {
+        phases: next.phases,
+        goalDeadline: next.goalDeadline,
+      });
+      setPlan(saved);
+      // 期間を動かすと古い更新案は前提が変わるのでサーバー側で superseded になる。
+      // 画面から消えるように取り直す。
+      reload();
+      showToast('ペースを変更しました', 'success');
+    } catch {
+      showToast('保存に失敗しました', 'error');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  /** コーチとの見直し日の予約。日付が動くとふりかえりの表示タイミングも変わるので再取得する。 */
+  const saveReviewDate = async (nextReviewDate: string) => {
+    if (!userId) return;
+    setBusy(true);
+    try {
+      const saved = await bffClient.updateLearningPlan(userId, { nextReviewDate });
+      setPlan(saved);
+      reload();
+      showToast('見直し日を予約しました', 'success');
     } catch {
       showToast('保存に失敗しました', 'error');
     } finally {
@@ -257,8 +305,8 @@ export default function LearningPlanPage() {
       <AppHeader userName={user?.username} />
       <main
         style={{
-          flex: 1, width: '100%', maxWidth: 880, margin: '0 auto',
-          padding: '32px 20px 80px', display: 'flex', flexDirection: 'column', gap: 18,
+          flex: 1, width: '100%', maxWidth: 1080, margin: '0 auto',
+          padding: '32px 24px 80px', display: 'flex', flexDirection: 'column', gap: 18,
           fontFamily: font.family,
         }}
       >
@@ -345,7 +393,7 @@ export default function LearningPlanPage() {
       <div>
         <h1 style={{ ...font.pageTitle, color: color.text, margin: 0 }}>学習ロードマップ</h1>
         <p style={{ ...font.meta, color: color.textMuted, margin: '6px 0 0', lineHeight: 1.8 }}>
-          目標から逆算した長期の学習計画です。コーチングのたびに、この画面を一緒に見ながら調整していきます。
+          長期の学習計画をもとに、今やることを分かりやすくお届けします。定期的に見直して、目標達成を一緒に目指しましょう。
         </p>
       </div>
 
@@ -362,93 +410,71 @@ export default function LearningPlanPage() {
         />
       )}
 
-      {checkinDue && (
-        <div
-          style={{
-            display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap',
-            background: color.primarySoft, borderRadius: radius.md, padding: '14px 18px',
-          }}
-        >
-          <span style={{ fontSize: 13, fontWeight: 700, color: color.primary }}>
-            次回コーチングの前に、今月のふりかえりに答えましょう（約1分）
-          </span>
-          <button
-            type="button"
-            onClick={() => setMode({ kind: 'checkin' })}
-            style={{ ...t.outlineButton, marginLeft: 'auto', padding: '10px 18px' }}
-          >
-            答える
-          </button>
-        </div>
-      )}
-
-      <RequiredSummary plan={plan} />
+      <PlanSummaryStrip
+        plan={plan}
+        stages={stages}
+        currentStage={currentStage}
+        currentPhaseTitle={currentPhase?.title ?? null}
+        progress={progress}
+      />
 
       <div style={cardStyle()}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
-          <span style={{ ...font.cardTitle, color: color.text }}>全体の流れ</span>
-          <button type="button" onClick={openEditor} style={{ ...t.outlineButton, padding: '10px 18px' }}>
-            期間・マイルストーンを調整する
-          </button>
+          <span style={{ ...font.cardTitle, color: color.text }}>全体のロードマップ</span>
+          <span style={{ ...font.caption, color: color.textFaint }}>
+            全{plan.phases.length}フェーズを{stages.length}つのステージにまとめて表示しています
+          </span>
         </div>
-        <div style={{ marginTop: 22 }}>
-          <PhaseTimeline phases={plan.phases} statuses={phaseStatuses} mode="gantt" />
+        <div style={{ marginTop: 26 }}>
+          <StageRail stages={stages} currentStage={currentStage} />
         </div>
       </div>
 
-      {plan.phases.map((phase, i) => {
-        const status = phaseStatuses[i] ?? 'todo';
-        return (
-          <section
-            key={phase.key + phase.startDate}
-            style={{
-              ...cardStyle(),
-              borderColor: status === 'current' ? color.primaryBorder : color.border,
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-              <span style={{ ...font.rowTitle, fontSize: 15, color: status === 'current' ? color.primary : color.text }}>
-                {i + 1}. {phase.title}
-              </span>
-              {status === 'current' && <span style={{ ...t.chip }}>いまここ</span>}
-              {status === 'done' && (
-                <span style={{ ...font.caption, color: color.textSubtle }}>完了</span>
-              )}
-              <span style={{ marginLeft: 'auto' }}>
-                <PhaseRangeChip phase={phase} />
-              </span>
-            </div>
+      <ThisMonthCard milestones={monthMilestones} phase={currentPhase} restMilestones={restMilestones} />
 
-            {phase.skills.length > 0 && (
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 12 }}>
-                {phase.skills.map((s) => (
-                  <span
-                    key={s}
-                    style={{
-                      ...font.caption, color: color.textMuted, background: color.hoverBg,
-                      borderRadius: radius.pill, padding: '4px 10px',
-                    }}
-                  >
-                    {SKILL_LABEL[s]}
-                  </span>
-                ))}
-              </div>
-            )}
+      {/*
+        「質問に答えて見直す」導線。中身は既存の月次ふりかえり4問をそのまま使う。
+        見直し日が近いときだけ配色と文言を強めて、それ以外は常設の案内として置いておく。
+      */}
+      <div
+        style={{
+          display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap',
+          background: checkinDue ? color.primarySoft : color.hoverBgTint,
+          border: `1px solid ${checkinDue ? color.primaryBorder : color.borderSoft}`,
+          borderRadius: radius.card, padding: '20px 24px',
+        }}
+      >
+        <div style={{ flex: '1 1 320px', minWidth: 260 }}>
+          <div style={{ ...font.rowTitle, fontSize: 15, color: checkinDue ? color.primary : color.text }}>
+            {checkinDue
+              ? `${formatJpDate(plan.nextReviewDate)}の見直しが近づいています`
+              : '学習計画は、いつでもあなたに合わせて調整できます'}
+          </div>
+          <p style={{ ...font.meta, color: color.textMuted, margin: '8px 0 0', lineHeight: 1.8 }}>
+            4つの質問（今月の達成度・学習時間の変化・つまずき・目標の変化）に答えると、
+            回答をもとにLMSがペースの調整案を作ります。採用するかどうかはあなたが選べます。
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setMode({ kind: 'checkin' })}
+          disabled={!checkin}
+          style={{ ...t.primaryButton, padding: '15px 26px', fontSize: 14, opacity: checkin ? 1 : 0.5 }}
+        >
+          質問に答えて見直す
+        </button>
+        <span style={{ ...font.caption, color: color.textFaint, flex: '0 0 auto' }}>所要時間：約1分</span>
+      </div>
 
-            {phase.milestones.length === 0 ? (
-              <p style={{ ...font.caption, color: color.textSubtle, margin: '14px 0 0' }}>
-                このフェーズのマイルストーンは未設定です。
-              </p>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 18, marginTop: 18 }}>
-                {phase.milestones.map((m) => (
-                  <MilestoneRow key={m.id} milestone={m} />
-                ))}
-              </div>
-            )}
-          </section>
-        );
-      })}
+      <PaceAdjustCard
+        plan={plan}
+        busy={busy}
+        onSaveDeadline={saveDeadline}
+        onSaveReviewDate={saveReviewDate}
+        onOpenEditor={openEditor}
+      />
+
+      <PlanConditions plan={plan} />
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', paddingTop: 4 }}>
         <span style={{ ...font.caption, color: color.textFaint }}>

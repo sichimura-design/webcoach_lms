@@ -18,11 +18,12 @@ import RecentSessionsCard from './focus/RecentSessionsCard';
 import MaterialPickerModal from './focus/MaterialPickerModal';
 import EnvironmentSettingsPanel from './focus/EnvironmentSettingsPanel';
 import { formatTodayLabel } from './focus/focusFormat';
+import StudyRoomHeader from './studyRoom/StudyRoomHeader';
 
 const DESIGN_WIDTH = 1440;
 
 /**
- * 集中ブース。
+ * 集中ブース（自習室タブの1つ目。学習記録 /study-log・ノート /notes と上部タブで並ぶ）。
  *   左  : タイマー（通常／ポモドーロ）＋今回の学習目標＋開始・一時停止・終了
  *   右上: 現在の学習教材
  *   右中: 今日/今週/今月の学習時間・セッション数・ストリーク・最長集中
@@ -157,54 +158,28 @@ function FocusBoothPage() {
               transformOrigin: 'top left',
             }}
           >
-            {/* ヘッダ: 日付＋タイトル＋赤アンダーライン / 環境設定（MyPage.tsx と同型） */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'flex-end',
-                justifyContent: 'space-between',
-                gap: 16,
-                paddingBottom: 2,
-              }}
-            >
-              <div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 500,
-                    color: color.textSubtle,
-                    letterSpacing: '.2px',
+            {/* ヘッダ: 自習室の共通タイトル＋タブ。日付と環境設定はこのページ固有 */}
+            <StudyRoomHeader
+              active="booth"
+              eyebrow={formatTodayLabel(new Date())}
+              right={
+                <button
+                  type="button"
+                  onClick={() => setEnvOpen(true)}
+                  className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={{ ...t.outlineButton, cursor: 'pointer' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = color.hoverBgTint;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = color.surface;
                   }}
                 >
-                  {formatTodayLabel(new Date())}
-                </div>
-                <div style={{ ...font.pageTitle, color: color.text, marginTop: 10 }}>集中ブース</div>
-                <div
-                  style={{
-                    width: 96,
-                    height: 3,
-                    borderRadius: 2,
-                    background: color.primary,
-                    marginTop: 9,
-                  }}
-                />
-              </div>
-              <button
-                type="button"
-                onClick={() => setEnvOpen(true)}
-                className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={{ ...t.outlineButton, cursor: 'pointer', marginBottom: 6 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = color.hoverBgTint;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = color.surface;
-                }}
-              >
-                <SlidersHorizontal size={15} />
-                環境設定
-              </button>
-            </div>
+                  <SlidersHorizontal size={15} />
+                  環境設定
+                </button>
+              }
+            />
 
             <div className="focus-2col">
               <FocusTimerCard

@@ -29,6 +29,18 @@ export function GlobalAiCoachDrawer() {
     navigate(`/ai-coach?session=${encodeURIComponent(DRAWER_SESSION_ID)}`);
   }, [navigate, setDrawerOpen]);
 
+  /**
+   * 提案カードの「広い画面で開く」。ここでは実行せず、モードだけ切り替えて
+   * AI専用ページへ渡す（会話は同じセッションなのでそのまま引き継がれる）。
+   */
+  const handleOpenWide = useCallback(
+    (skillId: Parameters<typeof ai.selectSkill>[0]) => {
+      ai.selectSkill(skillId);
+      handleExpand();
+    },
+    [ai, handleExpand]
+  );
+
   // 教材の文脈が無いので、保存・メモ追加は教材ページ側に任せる。
   // ここで無言に失敗させるより、拡大ページへ促す方が分かりやすい。
   const notSupported = useCallback(() => handleExpand(), [handleExpand]);
@@ -93,6 +105,7 @@ export function GlobalAiCoachDrawer() {
           ai={ai}
           variant="panel"
           onExpand={handleExpand}
+          onOpenWide={handleOpenWide}
           onSaveAnswer={notSupported}
           onAppendToMemo={notSupported}
           onJumpToBlock={notSupported}

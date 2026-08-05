@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, ChevronDown, ChevronRight, ChevronsLeft, ChevronsRight, Headphones, MessagesSquare, Map, NotebookPen } from 'lucide-react';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, ChevronDown, ChevronRight, ChevronsLeft, ChevronsRight, DoorOpen, MessagesSquare, Map } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotificationStore } from '../../store/notificationStore';
 import { useNewContentNotification } from '../../hooks/useNewContentNotification';
@@ -54,10 +54,12 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   // 教材ページは /course/:id（単数形）。ここを含めないと学習中にナビがどこも点灯しない。
   const isCoursesPage = location.pathname === '/courses' || location.pathname.startsWith('/courses/')
     || location.pathname.startsWith('/course/') || location.pathname === '/learning-courses';
-  const isNotes = location.pathname.startsWith('/notes');
-  // /study-log は集中ブースの掘り下げ。ナビ項目は増やさず、ここを点灯させ続ける
-  // （isCoursesPage が /course/* を含めているのと同じ考え方）。
-  const isFocusBooth = location.pathname === '/focus-booth' || location.pathname === '/study-log';
+  // 自習室 = 集中ブース（/focus-booth）＋学習記録（/study-log）＋ノート（/notes）。
+  // 3面ともページ内の共通タブ（StudyRoomHeader）で行き来するので、ナビ項目は1つにまとめ、
+  // どの面にいてもここを点灯させる（isCoursesPage が /course/* を含めているのと同じ考え方）。
+  const isStudyRoom = location.pathname === '/focus-booth'
+    || location.pathname === '/study-log'
+    || location.pathname.startsWith('/notes');
   const isCoaching = location.pathname === '/coaching';
   const isLearningPlan = location.pathname.startsWith('/learning-plan');
   const isAiCoach = location.pathname === '/ai-coach';
@@ -97,8 +99,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const navItems = [
     { label: 'マイページ', icon: Home, path: '/mypage', active: isMyPage },
     { label: '学習コンテンツ', icon: BookOpen, path: '/courses', active: isCoursesPage },
-    { label: 'マイノート', icon: NotebookPen, path: '/notes', active: isNotes },
-    { label: '集中ブース', icon: Headphones, path: '/focus-booth', active: isFocusBooth },
+    { label: '自習室', icon: DoorOpen, path: '/focus-booth', active: isStudyRoom },
     { label: 'コーチング', icon: MessagesSquare, path: '/coaching', active: isCoaching },
     { label: '学習ロードマップ', icon: Map, path: '/learning-plan', active: isLearningPlan },
     { label: 'AIコーチ', icon: Sparkles, path: '/ai-coach', active: isAiCoach },

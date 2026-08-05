@@ -2,15 +2,22 @@ import { useState, useEffect } from 'react';
 import { useAsyncData } from '../hooks/useAsyncData';
 import { useNavigate, useParams } from 'react-router-dom';
 import { bffClient } from '../services/bffClient';
-import { AppHeader, LearningBreadcrumb, MascotSvg } from './shared';
+import { AppHeader, LearningBreadcrumb } from './shared';
 import { useAuth } from '../contexts/AuthContext';
-import { LEARNING_HIERARCHY, lessonLabel, unitLabel } from '../constants/learningTaxonomy';
+import { t } from '../theme/tokens';
+import {
+  LEARNING_HIERARCHY,
+  LEARNING_TYPE_LABEL,
+  LearningType,
+  lessonLabel,
+} from '../constants/learningTaxonomy';
 
 interface Module {
   id: number;
   name: string;
   modname: string;
   description?: string;
+  learningtype?: LearningType;
   completion?: number;
   completiondata?: { state: number };
 }
@@ -32,10 +39,7 @@ interface Course {
   summary?: string;
 }
 
-type ModuleKind = 'done' | 'active' | 'locked';
-
-// design_handoff_lms_app の冒険マップ内の6ノード配置（%座標）
-const MAP_COORDS = [[56, 86], [34, 74], [54, 62], [32, 48], [56, 36], [58, 24]];
+const stripTags = (html?: string) => (html ?? '').replace(/<[^>]*>/g, '').trim();
 
 export default function CourseTopPage() {
   const navigate = useNavigate();
@@ -44,6 +48,8 @@ export default function CourseTopPage() {
   const courseIdNum = parseInt(courseId || '0', 10);
 
   const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
+  // 単元カードの開閉。未設定の単元は「いま進めている単元だけ開く」を既定にする
+  const [openOverrides, setOpenOverrides] = useState<Record<number, boolean>>({});
 
   const { data, loading, error } = useAsyncData(
     () => Promise.all([
@@ -75,7 +81,7 @@ export default function CourseTopPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dash-bg">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: t.color.bg.page }}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto" />
           <p className="mt-4 text-sm text-brand-muted">読み込み中...</p>
@@ -86,32 +92,35 @@ export default function CourseTopPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dash-bg">
+      <div className="min-h-screen flex items-center justify-center" style={{ background: t.color.bg.page }}>
         <div className="text-center">
-          <p className="text-brand">{error}</p>
-          <button onClick={() => navigate(-1)} className="mt-4 px-6 py-2 rounded-full text-white font-medium text-sm bg-brand">戻る</button>
+          <p style={{ color: t.color.primary }}>{error}</p>
+          <button onClick={() => navigate(-1)} className="mt-4 px-6 py-2 rounded-full text-white font-medium text-sm" style={{ background: t.color.primary }}>戻る</button>
         </div>
       </div>
     );
   }
 
-  const kindOf = (moduleId: number, index: number): ModuleKind => {
-    if (completedIds.has(moduleId)) return 'done';
-    const firstIncompleteIndex = modules.findIndex(m => !completedIds.has(m.id));
-    return index === firstIncompleteIndex ? 'active' : 'locked';
-  };
-
   const progressPercent = modules.length > 0 ? Math.round((completedIds.size / modules.length) * 100) : 0;
-  const mapModules = modules.slice(0, MAP_COORDS.length);
-  const currentModule = modules.find((m, i) => kindOf(m.id, i) === 'active');
+  // 次にやるレッスン。ロックはかけず、どのレッスンからでも開ける
+  const nextModule = modules.find(m => !completedIds.has(m.id));
+  const currentSection = sections.find(s => s.modules.some(m => m.id === nextModule?.id));
+
+  const isOpen = (section: Section) => openOverrides[section.id] ?? (section.id === currentSection?.id);
+  const toggle = (section: Section) =>
+    setOpenOverrides(prev => ({ ...prev, [section.id]: !isOpen(section) }));
+
+  const openLesson = (moduleId: number) => navigate(`/course/${courseIdNum}?module=${moduleId}`);
 
   return (
-    <div className="min-h-screen flex flex-col bg-dash-bg">
+    <div className="min-h-screen flex flex-col" style={{ background: t.color.bg.page }}>
       <AppHeader userName={user?.username || 'User'} />
 
-      <main className="relative mx-auto flex flex-col" style={{ maxWidth: 1440, paddingTop: 32, paddingBottom: 40, paddingLeft: 24, paddingRight: 24, gap: 20 }}>
-        {/* パンくずは常に表示。学習領域からコースまでを辿れるようにする
-            （以前の「← コース一覧に戻る」は戻り先が1つだけで、いまどこにいるか分からなかった） */}
+      <main
+        className="mx-auto flex flex-col w-full"
+        style={{ maxWidth: 1000, paddingTop: 30, paddingBottom: 56, paddingLeft: 24, paddingRight: 24, gap: 20, fontFamily: t.font.family, color: t.color.text.primary }}
+      >
+        {/* パンくずは常に表示。学習領域からコースまでを辿れるようにする */}
         <LearningBreadcrumb
           items={[
             { label: '学習コンテンツ', to: '/courses' },
@@ -122,185 +131,180 @@ export default function CourseTopPage() {
           ]}
         />
 
-        <div className="flex items-center" style={{ gap: 18 }}>
-          <div className="flex-shrink-0" style={{ width: 64, height: 64, borderRadius: 18, background: 'linear-gradient(120deg,#F6B4BE,#EE8296)' }} />
-          <div className="flex-1 min-w-0">
-            <span style={{ background: '#E0213A', color: '#fff', fontSize: 11, fontWeight: 700, borderRadius: 999, padding: '3px 12px' }}>
+        {/* コースの見出し。アイコン・装飾は置かず、名前と進み具合だけにする */}
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 20 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 11.5, fontWeight: t.font.weight.black, color: t.color.primary }}>
               {course?.categoryname || LEARNING_HIERARCHY.area}
-            </span>
-            <h1 style={{ margin: '6px 0 0', fontSize: 24, fontWeight: 900 }}>{course?.fullname ?? LEARNING_HIERARCHY.course}</h1>
-            <div style={{ fontSize: 12, color: '#B78F98', marginTop: 4 }}>
-              全{sections.length}単元・{modules.length}レッスン{course?.summary ? ` ・ ${course.summary.replace(/<[^>]*>/g, '')}` : ''}
+            </div>
+            <h1 style={{ margin: '6px 0 0', fontSize: 26, fontWeight: t.font.weight.black }}>
+              {course?.fullname ?? LEARNING_HIERARCHY.course}
+            </h1>
+            {stripTags(course?.summary) && (
+              <p style={{ margin: '8px 0 0', fontSize: 13, color: t.color.text.muted, lineHeight: 1.7 }}>
+                {stripTags(course?.summary)}
+              </p>
+            )}
+            <div style={{ fontSize: 12, color: t.color.text.subtle, marginTop: 8 }}>
+              全{sections.length}{LEARNING_HIERARCHY.unit}・{modules.length}{LEARNING_HIERARCHY.lesson}
             </div>
           </div>
-          <div className="text-right flex-shrink-0">
-            <div style={{ fontSize: 11, color: '#8A767D' }}>コース進捗</div>
-            <div style={{ fontSize: 26, fontWeight: 900, color: '#E0213A' }}>{progressPercent}%</div>
+          <div style={{ textAlign: 'right', flexShrink: 0 }}>
+            <div style={{ fontSize: 11, color: t.color.text.muted }}>コース進捗</div>
+            <div style={{ fontSize: 26, fontWeight: t.font.weight.black, color: t.color.primary }}>{progressPercent}%</div>
+            <div style={{ width: 140, height: 6, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden', marginTop: 6 }}>
+              <div style={{ width: `${progressPercent}%`, height: '100%', borderRadius: t.radius.pill, background: t.color.primary }} />
+            </div>
           </div>
-          <button
-            className="appearance-none flex-shrink-0"
-            style={{ background: '#fff', color: '#6B575E', border: '1px solid #EDD8DB', borderRadius: 999, padding: '11px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}
-          >
-            🗎 コース詳細
-          </button>
         </div>
 
-        <div className="grid" style={{ gridTemplateColumns: '1fr 1fr', gap: 22, alignItems: 'stretch' }}>
-          {/* 冒険マップ */}
-          <div className="relative overflow-hidden" style={{ borderRadius: 22, background: 'linear-gradient(175deg,#FBF2DE,#F6E7CD 55%,#F2DFC2)', minHeight: 560 }}>
-            <div className="absolute" style={{ left: '8%', top: '6%', width: 130, height: 90, borderRadius: '50%', background: 'radial-gradient(closest-side,#CDE3B4,rgba(205,227,180,0))' }} />
-            <div className="absolute" style={{ right: '4%', top: '38%', width: 150, height: 100, borderRadius: '50%', background: 'radial-gradient(closest-side,#D8E8C2,rgba(216,232,194,0))' }} />
-            <div className="absolute" style={{ left: '2%', bottom: '8%', width: 170, height: 110, borderRadius: '50%', background: 'radial-gradient(closest-side,#D3E5BC,rgba(211,229,188,0))' }} />
+        {nextModule && (
+          <button
+            onClick={() => openLesson(nextModule.id)}
+            className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+            style={{ alignSelf: 'flex-start', background: t.color.primary, color: '#fff', borderRadius: t.radius.button, padding: '15px 30px', fontSize: 14, fontWeight: t.font.weight.black, fontFamily: 'inherit', cursor: 'pointer' }}
+          >
+            {completedIds.size > 0 ? '続きから' : 'はじめる'}：{nextModule.name}　→
+          </button>
+        )}
 
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <path d="M 60 97 C 38 93 26 86 34 78 C 40 72 62 68 58 60 C 54 52 28 54 32 46 C 36 38 62 42 60 34 C 58 26 48 26 50 17" fill="none" stroke="#E4D2B2" strokeWidth="8.5" strokeLinecap="round" />
-              <path d="M 60 97 C 38 93 26 86 34 78 C 40 72 62 68 58 60 C 54 52 28 54 32 46 C 36 38 62 42 60 34 C 58 26 48 26 50 17" fill="none" stroke="#FBF6EA" strokeWidth="7" strokeLinecap="round" />
-              <path d="M 60 97 C 38 93 26 86 34 78 C 40 72 62 68 58 60 C 54 52 28 54 32 46 C 36 38 62 42 60 34 C 58 26 48 26 50 17" fill="none" stroke="#E8D9C2" strokeWidth="0.7" strokeDasharray="2 2.4" />
-            </svg>
+        {/* 単元カード。1単元＝1カードで、概要とレッスン一覧をその場で開いて読める。
+            以前は冒険マップと一覧の2カラムで、マップは飾りなのに面積の半分を使っていた。 */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 4 }}>
+          {sections.map((section, sectionIndex) => {
+            const done = section.modules.filter(m => completedIds.has(m.id)).length;
+            const allDone = done === section.modules.length;
+            const isCurrent = section.id === currentSection?.id;
+            const open = isOpen(section);
+            const types = Array.from(
+              new Set(section.modules.map(m => m.learningtype).filter((x): x is LearningType => !!x))
+            );
+            const firstIncomplete = section.modules.find(m => !completedIds.has(m.id));
+            const stepCta = allDone ? '復習する' : done > 0 ? '続きから' : 'はじめる';
 
-            <svg className="absolute" style={{ left: '50%', top: '2%', transform: 'translateX(-50%)' }} width="150" height="112" viewBox="0 0 150 112">
-              <ellipse cx="75" cy="102" rx="62" ry="12" fill="#BFDCA4" />
-              <rect x="30" y="52" width="22" height="48" rx="3" fill="#F3EDF5" stroke="#DCC9E0" />
-              <polygon points="27,54 41,30 55,54" fill="#B394CC" />
-              <rect x="98" y="52" width="22" height="48" rx="3" fill="#F3EDF5" stroke="#DCC9E0" />
-              <polygon points="95,54 109,30 123,54" fill="#B394CC" />
-              <rect x="52" y="42" width="46" height="58" rx="4" fill="#F8F3F9" stroke="#DCC9E0" />
-              <polygon points="49,44 75,12 101,44" fill="#9F7CC4" />
-              <line x1="75" y1="12" x2="75" y2="2" stroke="#8A6A55" strokeWidth="2" />
-              <path d="M75 2 l14 4 -14 4 z" fill="#E0213A" />
-              <path d="M66 100 v-16 a9 9 0 0 1 18 0 v16 z" fill="#C9A8D8" />
-              <rect x="60" y="58" width="7" height="10" rx="3" fill="#C9A8D8" />
-              <rect x="83" y="58" width="7" height="10" rx="3" fill="#C9A8D8" />
-              <text x="34" y="26" fontSize="11" fill="#E9C46A">✦</text>
-              <text x="112" y="20" fontSize="9" fill="#E9C46A">✦</text>
-            </svg>
-
-            <svg className="absolute" style={{ left: '7%', top: '56%' }} width="40" height="52" viewBox="0 0 40 52"><rect x="17" y="30" width="6" height="18" rx="2" fill="#A97C55" /><circle cx="20" cy="20" r="14" fill="#8FBF75" /><circle cx="12" cy="27" r="8" fill="#A2CB88" /></svg>
-            <svg className="absolute" style={{ right: '8%', top: '64%' }} width="34" height="46" viewBox="0 0 40 52"><rect x="17" y="30" width="6" height="18" rx="2" fill="#A97C55" /><circle cx="20" cy="20" r="14" fill="#9CC782" /></svg>
-            <svg className="absolute" style={{ right: '6%', top: '26%' }} width="30" height="40" viewBox="0 0 40 52"><rect x="17" y="30" width="6" height="18" rx="2" fill="#A97C55" /><circle cx="20" cy="20" r="14" fill="#8FBF75" /></svg>
-            <svg className="absolute" style={{ left: '14%', top: '28%' }} width="26" height="36" viewBox="0 0 40 52"><rect x="17" y="30" width="6" height="18" rx="2" fill="#A97C55" /><circle cx="20" cy="20" r="14" fill="#A2CB88" /></svg>
-            <svg className="absolute" style={{ right: '18%', bottom: '6%' }} width="38" height="50" viewBox="0 0 40 52"><rect x="17" y="30" width="6" height="18" rx="2" fill="#A97C55" /><circle cx="20" cy="20" r="14" fill="#8FBF75" /><circle cx="28" cy="26" r="8" fill="#A2CB88" /></svg>
-
-            <span
-              className="absolute"
-              style={{ left: '78%', bottom: '2.5%', transform: 'translateX(-50%) rotate(-4deg)', background: 'linear-gradient(120deg,#F0546A,#E0213A)', color: '#fff', fontSize: 12, fontWeight: 900, letterSpacing: '.14em', borderRadius: 8, padding: '7px 20px', boxShadow: '0 8px 18px rgba(224,33,58,.3)' }}
-            >
-              START
-            </span>
-
-            {mapModules.map((m, i) => {
-              const [x, y] = MAP_COORDS[i];
-              const kind = kindOf(m.id, i);
-              const locked = kind === 'locked';
-              return (
-                <div
-                  key={m.id}
-                  onClick={locked ? undefined : () => navigate(`/course/${courseIdNum}?module=${m.id}`)}
-                  className="absolute flex items-center"
-                  style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%,-50%)', gap: 8, zIndex: 2, cursor: locked ? undefined : 'pointer' }}
-                >
-                  <span
-                    className="flex items-center justify-center flex-shrink-0"
-                    style={
-                      kind === 'done'
-                        ? { width: 30, height: 30, borderRadius: '50%', background: 'linear-gradient(140deg,#F0546A,#E0213A)', color: '#fff', fontSize: 13, fontWeight: 900, border: '2.5px solid #fff', boxShadow: '0 5px 12px rgba(224,33,58,.3)' }
-                        : kind === 'active'
-                          ? { width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(140deg,#F0546A,#E0213A)', color: '#fff', fontSize: 17, fontWeight: 900, border: '3px solid #fff', boxShadow: '0 8px 18px rgba(224,33,58,.4)', animation: 'wcPulse 3s ease-in-out infinite' }
-                          : { width: 28, height: 28, borderRadius: '50%', background: '#fff', color: '#B7A0A7', fontSize: 12, fontWeight: 900, border: '2px solid #E8DCCB' }
-                    }
-                  >
-                    {kind === 'done' ? '✓' : String(i + 1)}
+            return (
+              <div
+                key={section.id}
+                style={{
+                  background: t.color.bg.card,
+                  border: `1px solid ${isCurrent ? t.color.primaryBorder : t.color.border.card}`,
+                  borderRadius: t.radius.card,
+                  boxShadow: t.shadow.card,
+                  padding: '22px 26px 20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 16,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                  <span style={{ width: 4, height: 22, borderRadius: 2, background: isCurrent ? t.color.primary : t.color.border.muted }} />
+                  <span style={{ fontSize: 12.5, fontWeight: t.font.weight.black, color: t.color.text.subtle, letterSpacing: t.font.letterSpacingWide }}>
+                    STEP {sectionIndex + 1}
                   </span>
-                  <span
-                    className="whitespace-nowrap"
+                  <span style={{ fontSize: 17, fontWeight: t.font.weight.black, flex: 1, minWidth: 0 }}>{section.name}</span>
+                  <span style={{ fontSize: 11.5, color: allDone ? t.color.success : t.color.text.subtle, whiteSpace: 'nowrap' }}>
+                    {allDone ? '✓ 完了' : `${done} / ${section.modules.length} 完了`}
+                  </span>
+                </div>
+
+                <div style={{ height: 1, background: t.color.border.card }} />
+
+                {stripTags(section.summary) && (
+                  <p style={{ margin: 0, fontSize: 13, color: t.color.text.body, lineHeight: 1.8 }}>
+                    {stripTags(section.summary)}
+                  </p>
+                )}
+
+                {/* レッスン一覧。開くとそのまま各レッスンへ飛べる */}
+                <div style={{ border: `1px solid ${t.color.border.line}`, borderRadius: t.radius.inner, overflow: 'hidden' }}>
+                  <div
+                    onClick={() => toggle(section)}
+                    className="cursor-pointer"
+                    style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 18px', background: open ? t.color.bg.hover : t.color.bg.card }}
+                  >
+                    <span style={{ fontSize: 13, fontWeight: t.font.weight.bold }}>{LEARNING_HIERARCHY.lesson}一覧</span>
+                    <span style={{ fontSize: 11.5, color: t.color.text.subtle }}>{section.modules.length}個の{LEARNING_HIERARCHY.lesson}</span>
+                    <span style={{ flex: 1 }} />
+                    <span style={{ fontSize: 12, color: t.color.text.subtle, transform: open ? 'rotate(180deg)' : undefined, transition: 'transform .15s' }}>⌄</span>
+                  </div>
+
+                  {open && (
+                    <div style={{ borderTop: `1px solid ${t.color.border.line}` }}>
+                      {section.modules.map((m) => {
+                        const i = modules.findIndex(x => x.id === m.id);
+                        const isDone = completedIds.has(m.id);
+                        const isNext = m.id === nextModule?.id;
+                        return (
+                          <div
+                            key={m.id}
+                            onClick={() => openLesson(m.id)}
+                            className="cursor-pointer"
+                            style={{
+                              display: 'flex', alignItems: 'center', gap: 14, padding: '13px 18px',
+                              borderTop: `1px solid ${t.color.border.line}`,
+                              background: isNext ? t.color.primarySoft : undefined,
+                            }}
+                          >
+                            <span
+                              className="flex items-center justify-center flex-shrink-0"
+                              style={{
+                                width: 26, height: 26, borderRadius: '50%', fontSize: 11, fontWeight: t.font.weight.bold, boxSizing: 'border-box',
+                                ...(isDone
+                                  ? { background: t.color.success, color: '#fff' }
+                                  : isNext
+                                    ? { background: t.color.primary, color: '#fff' }
+                                    : { background: t.color.bg.card, border: `1.5px solid ${t.color.border.muted}`, color: t.color.text.subtle }),
+                              }}
+                            >
+                              {isDone ? '✓' : i + 1}
+                            </span>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ fontSize: 10.5, color: t.color.text.subtle }}>{lessonLabel(i + 1)}</div>
+                              <div style={{ fontSize: 14, fontWeight: t.font.weight.bold, color: isDone ? t.color.text.done : t.color.text.primary }}>
+                                {m.name}
+                              </div>
+                            </div>
+                            {m.learningtype && (
+                              <span style={{ fontSize: 10.5, color: t.color.text.subtle, background: t.color.bg.hover, borderRadius: 6, padding: '3px 8px', whiteSpace: 'nowrap' }}>
+                                {LEARNING_TYPE_LABEL[m.learningtype]}
+                              </span>
+                            )}
+                            <span style={{ fontSize: 12, color: t.color.text.subtle }}>›</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                  {types.length > 0 && (
+                    <>
+                      <span style={{ fontSize: 11.5, color: t.color.text.subtle }}>このステップの内容</span>
+                      {types.map((type) => (
+                        <span key={type} style={{ fontSize: 11, fontWeight: t.font.weight.bold, color: t.color.text.body, background: t.color.bg.hover, border: `1px solid ${t.color.border.line}`, borderRadius: 6, padding: '5px 10px' }}>
+                          {LEARNING_TYPE_LABEL[type]}
+                        </span>
+                      ))}
+                    </>
+                  )}
+                  <span style={{ flex: 1 }} />
+                  <button
+                    onClick={() => openLesson((firstIncomplete ?? section.modules[0]).id)}
+                    className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                     style={{
-                      background: 'rgba(255,255,255,.95)', borderRadius: 999, padding: '6px 13px', fontSize: 11.5, fontWeight: 900,
-                      boxShadow: '0 5px 14px rgba(120,80,40,.12)',
-                      color: kind === 'active' ? '#E0213A' : kind === 'locked' ? '#B7A0A7' : '#3A2F35',
+                      borderRadius: t.radius.button, padding: '11px 30px', fontSize: 13, fontWeight: t.font.weight.bold, fontFamily: 'inherit', cursor: 'pointer',
+                      ...(isCurrent
+                        ? { background: t.color.primary, color: '#fff', border: 'none' }
+                        : { background: t.color.bg.card, color: t.color.primary, border: `1px solid ${t.color.primaryBorder}` }),
                     }}
                   >
-                    {m.name}
-                    <span style={{ marginLeft: 6 }}>{kind === 'done' ? '✔' : kind === 'locked' ? '🔒' : '▶'}</span>
-                  </span>
+                    {stepCta}
+                  </button>
                 </div>
-              );
-            })}
-
-            <div className="absolute" style={{ top: 16, left: 16, background: 'rgba(255,255,255,.95)', borderRadius: 14, padding: '10px 16px', boxShadow: '0 6px 16px rgba(120,60,90,.14)' }}>
-              <div style={{ fontSize: 11, fontWeight: 900, color: '#8A767D' }}>GOAL</div>
-              <div style={{ fontSize: 13, fontWeight: 900 }}>課題デザインに挑戦！</div>
-            </div>
-            <div className="absolute" style={{ top: '20%', left: 16, background: 'rgba(255,255,255,.95)', borderRadius: 14, padding: '10px 16px', boxShadow: '0 6px 16px rgba(120,60,90,.12)' }}>
-              <div style={{ fontSize: 12, fontWeight: 900, color: '#E0213A' }}>クエストクリアで<br />バッジ&EXP獲得！</div>
-              <div style={{ fontSize: 15, marginTop: 6 }}>🪙 <span style={{ fontSize: 11, fontWeight: 700, color: '#B98A16' }}>+100</span>　🏅</div>
-            </div>
-            <div className="absolute flex items-end" style={{ bottom: 18, left: 18, gap: 10 }}>
-              <MascotSvg size={62} pulse />
-              <div style={{ background: '#fff', borderRadius: '4px 16px 16px 16px', padding: '12px 16px', fontSize: 13, fontWeight: 700, lineHeight: 1.6, boxShadow: '0 8px 20px rgba(120,60,90,.14)' }}>
-                {currentModule ? <>あと{Math.max(1, modules.length - completedIds.size)}レッスンで<br />このクエストをクリアできるよ！</> : 'このコースをクリアしたよ！お疲れさま！'}
               </div>
-            </div>
-          </div>
-
-          {/* 単元ごとのレッスンリスト。
-              以前は単元を無視して全レッスンを平らに並べていたため、コースの中の
-              テーマの区切り（単元）が受講生に見えていなかった。 */}
-          <div className="bg-white flex flex-col" style={{ borderRadius: 22, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: 14, gap: 8 }}>
-            {sections.map((section, sectionIndex) => (
-              <div key={section.id} className="flex flex-col" style={{ gap: 8 }}>
-                <div style={{ padding: '8px 18px 0' }}>
-                  <div style={{ fontSize: 10, fontWeight: 900, color: '#C08A96', letterSpacing: '.08em' }}>
-                    {unitLabel(sectionIndex + 1)}
-                  </div>
-                  <div style={{ fontSize: 13.5, fontWeight: 900, color: '#3A2F35' }}>{section.name}</div>
-                </div>
-                {section.modules.map((m) => {
-              // ロック判定と番号はコース全体の並び（modules）を基準にする。
-              // 単元ごとに1から振り直すと、進行順とレッスン番号がずれてしまう。
-              const i = modules.findIndex((x) => x.id === m.id);
-              const kind = kindOf(m.id, i);
-              const locked = kind === 'locked';
-              return (
-                <div
-                  key={m.id}
-                  onClick={locked ? undefined : () => navigate(`/course/${courseIdNum}?module=${m.id}`)}
-                  className="flex items-center"
-                  style={{
-                    gap: 14, padding: '16px 18px', borderRadius: 16,
-                    border: kind === 'active' ? '1.5px solid #E0213A' : undefined,
-                    background: kind === 'active' ? '#FFF7F8' : undefined,
-                    opacity: locked ? 0.55 : 1,
-                    cursor: locked ? undefined : 'pointer',
-                  }}
-                >
-                  <span
-                    className="flex items-center justify-center flex-shrink-0"
-                    style={
-                      kind === 'done'
-                        ? { width: 34, height: 34, borderRadius: '50%', background: '#2FA35C', color: '#fff', fontSize: 14 }
-                        : kind === 'active'
-                          ? { width: 34, height: 34, borderRadius: '50%', background: '#E0213A', color: '#fff', fontSize: 12 }
-                          : { width: 34, height: 34, borderRadius: '50%', background: '#F3E7EA', color: '#B7A0A7', fontSize: 13 }
-                    }
-                  >
-                    {kind === 'done' ? '✓' : kind === 'active' ? '▶' : '🔒'}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div style={{ fontSize: 10, fontWeight: 700, color: '#C08A96' }}>{lessonLabel(i + 1)}</div>
-                    <div style={{ fontSize: 14.5, fontWeight: 900, color: kind === 'locked' ? '#B7A0A7' : '#20141A' }}>{m.name}</div>
-                    <div style={{ fontSize: 11, color: '#B7A0A7', marginTop: 2 }}>
-                      {kind === 'done' ? '完了' : kind === 'active' ? '学習中' : 'ロック中'}
-                    </div>
-                  </div>
-                  <span style={{ fontSize: 14, color: kind === 'done' ? '#2FA35C' : kind === 'active' ? '#E0213A' : '#C9B4BB' }}>
-                    {kind === 'done' ? '✓' : kind === 'active' ? '▶' : '🔒'}
-                  </span>
-                </div>
-              );
-                })}
-              </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </main>
 

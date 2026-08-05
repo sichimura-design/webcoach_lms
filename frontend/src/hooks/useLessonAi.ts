@@ -207,9 +207,22 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     [context, messages, skillId]
   );
 
-  /** 通常のAIコーチとして回答する（教材準拠の構造化回答） */
+  /**
+   * 通常のAIコーチとして回答する（教材準拠の構造化回答）。
+   *
+   * @param localSuggestion 教材の文脈が無い会話で、回答の下に出す提案。
+   *   教材準拠APIは `suggestion` を返すが、汎用AIエンドポイントは返さない。
+   *   AI専用ページで始めた相談（教材の文脈なし）でも
+   *   「画像を添付 → まず普通に答えて、その下で制作物添削を勧める」を成立させるため、
+   *   呼び出し側が detectSkill の結果をここへ渡す。
+   */
   const runLessonAi = useCallback(
-    async (question: string, q: AiCoachQuote | null, img: string | null) => {
+    async (
+      question: string,
+      q: AiCoachQuote | null,
+      img: string | null,
+      localSuggestion?: SkillSuggestion | null
+    ) => {
       const request = buildRequest(question, 'chat', q, img);
 
       // 教材の文脈が無い会話（常駐ドロワー・集中ブース・AI専用ページの新規相談）は
@@ -232,6 +245,8 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
               groundedInMaterial: false,
               generalNote: null,
             },
+            suggestion:
+              localSuggestion && localSuggestion.strength !== 'none' ? localSuggestion : null,
             createdAt: new Date().toISOString(),
           });
         } catch {
@@ -387,7 +402,9 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         if (isSpecialistSkill(skillId)) {
           await runSkill(skillId, question, currentQuote, currentImage);
         } else {
-          await runLessonAi(question, currentQuote, currentImage);
+          // 教材の文脈が無い会話ではサーバ側が提案を返さないので、
+          // ここで判定した結果を渡して回答の下に出させる（仕様§4-2）。
+          await runLessonAi(question, currentQuote, currentImage, suggestion);
         }
       } finally {
         setLoading(false);

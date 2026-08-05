@@ -73,12 +73,10 @@ const DESIGN_WORDS = [
   '提出',
 ];
 
-/** 文章そのものが対象であることを示す語 */
+/** 文章そのものが対象であることを示す語（「コピー」「キャッチ」はコピー作成側で拾う） */
 const WRITING_TARGET_WORDS = [
   '文章',
   '文言',
-  'コピー',
-  'キャッチ',
   '自己PR',
   '自己紹介',
   'プロフィール',
@@ -104,6 +102,49 @@ const WRITING_ACTION_WORDS = [
   '直して',
   '改善',
 ];
+
+/** コピー・見出しを作りたいことを示す語 */
+const COPY_WORDS = ['キャッチコピー', 'キャッチ', 'コピー', '見出し', 'タイトル', '惹句', 'キャッチフレーズ'];
+
+/** コピーを「作ってほしい」という動作の語 */
+const COPY_ACTION_WORDS = ['考えて', '作って', 'つくって', '案を', 'アイデア', '出して', '提案して'];
+
+/** 面接・面談の練習を示す語 */
+const INTERVIEW_WORDS = ['面接', '面談', '商談', '顧客との打ち合わせ', '自己紹介の練習'];
+
+/** 応募・提案の文書を作りたいことを示す語 */
+const APPLICATION_WORDS = ['応募', '提案文', '営業文', 'エントリー', '職務経歴', '履歴書'];
+
+/** 案件そのものを探していることを示す語 */
+const JOB_WORDS = [
+  '案件',
+  '仕事を探',
+  '受注',
+  'クラウドソーシング',
+  'ランサーズ',
+  'クラウドワークス',
+  'ココナラ',
+  '副業',
+  '単価',
+];
+
+/** 言葉の意味が分からないことを示す語 */
+const GLOSSARY_WORDS = [
+  '用語',
+  'どういう意味',
+  'どんな意味',
+  '意味がわから',
+  '意味を教えて',
+  'かみ砕いて',
+  'わかりやすく',
+  '噛み砕いて',
+  '初心者向けに',
+  '言い換え',
+  '専門用語',
+];
+
+/** 理解できたか確かめたいことを示す語 */
+const QUIZ_WORDS = ['理解度', '確認テスト', '問題を出', 'クイズ', '覚えられた', '身についた', 'テストして', '復習したい'];
 
 /** ツール・環境のトラブルを示す語 */
 const TOOLING_WORDS = [
@@ -157,8 +198,14 @@ function buildReferences(
     if (input.taskHeading) refs.push(`${input.taskHeading}の評価基準`);
     if (input.hasImage) refs.push('添付画像');
   }
-  if (skillId === 'writing') {
+  if (skillId === 'writing' || skillId === 'glossary') {
     refs.push(input.quote ? '選択した教材本文' : '入力した文章');
+  }
+  if (skillId === 'copy' || skillId === 'application') {
+    refs.push('入力した内容');
+  }
+  if (skillId === 'quiz' && input.contextHeading === null) {
+    refs.push('これまでの学習範囲');
   }
   if (skillId === 'idea' && input.taskHeading) {
     refs.push(input.taskHeading);
@@ -222,6 +269,20 @@ function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
     };
   }
 
+  // ── コピー作成 ──
+  // 文章改善より先に見る。「キャッチコピーを短くして」は文章の推敲ではなく
+  // 案を作り直す作業で、出す形（案を並べる）が違うため。
+  const copyWord = hit(text, COPY_WORDS);
+  if (copyWord) {
+    const copyAction = hit(text, COPY_ACTION_WORDS);
+    return {
+      skillId: 'copy',
+      strength: copyAction ? 'explicit' : 'suggest',
+      reason: copyAction ? `「${copyWord}」＋「${copyAction}」` : `「${copyWord}」`,
+      references: buildReferences('copy', input),
+    };
+  }
+
   // ── 文章改善 ──
   // 長い文章を貼り付けている＝直してほしい対象が本文そのもの、という前提で拾う。
   const pasted = input.question.length >= PASTED_TEXT_MIN;
@@ -244,6 +305,63 @@ function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
       references: buildReferences('writing', input),
     };
   }
+  // ── キャリア（面接練習・応募文・案件さがし）──
+  // 「長い文章の貼り付け」だけで文章改善に流すより先に見る。募集要項を貼っただけの
+  // 相談を「文章を整えますか」と返してしまうと、聞かれていないことに答えることになる。
+  const interviewWord = hit(text, INTERVIEW_WORDS);
+  if (interviewWord) {
+    const practice = hit(text, ['練習', 'シミュレーション', '模擬', '想定質問']);
+    return {
+      skillId: 'interview',
+      strength: practice ? 'explicit' : 'suggest',
+      reason: practice ? `「${interviewWord}」＋「${practice}」` : `「${interviewWord}」`,
+      references: buildReferences('interview', input),
+    };
+  }
+
+  const applicationWord = hit(text, APPLICATION_WORDS);
+  if (applicationWord) {
+    return {
+      skillId: 'application',
+      strength: pasted ? 'explicit' : 'suggest',
+      reason: pasted ? `募集内容の貼り付け ＋「${applicationWord}」` : `「${applicationWord}」`,
+      references: buildReferences('application', input),
+    };
+  }
+
+  const jobWord = hit(text, JOB_WORDS);
+  if (jobWord) {
+    return {
+      skillId: 'job-search',
+      strength: 'suggest',
+      reason: `「${jobWord}」`,
+      references: buildReferences('job-search', input),
+    };
+  }
+
+  // ── 用語解説 ──
+  // 「わかりやすく」だけでは文章改善とも読めるので、対象が言葉であることを示す語を必要とする。
+  const glossaryWord = hit(text, GLOSSARY_WORDS);
+  if (glossaryWord) {
+    return {
+      skillId: 'glossary',
+      strength: 'suggest',
+      reason: `「${glossaryWord}」`,
+      references: buildReferences('glossary', input),
+    };
+  }
+
+  // ── 理解度チェック ──
+  const quizWord = hit(text, QUIZ_WORDS);
+  if (quizWord) {
+    return {
+      skillId: 'quiz',
+      strength: 'suggest',
+      reason: `「${quizWord}」`,
+      references: buildReferences('quiz', input),
+    };
+  }
+
   if (pasted) {
     return {
       skillId: 'writing',

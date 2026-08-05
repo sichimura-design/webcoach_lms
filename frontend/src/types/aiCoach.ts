@@ -93,6 +93,16 @@ export const EMPTY_AI_COACH_CONTEXT: AiCoachContext = {
 export interface AiCoachSession {
   /** 'lesson:123'（教材由来）または 'page:1'（AI専用ページで単独に開始） */
   id: string;
+  /**
+   * 親会話のID。専門モードのセッションだけが持つ。
+   *
+   * メインチャットと専門モードの会話を完全に分けると文脈が切れ、
+   * 全部を同じ会話に混ぜると履歴が読めなくなる。そこで
+   *   AIコーチとの会話（親）
+   *   └ 制作物添削セッション（子）
+   * の2階層にし、起動時に必要な文脈だけを親からコピーする。
+   */
+  parentId: string | null;
   /** 会話履歴の一覧に出す名前。最初のユーザー発言から導出する */
   title: string;
   /** 現在の専門モード */
