@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { useAsyncData } from '../hooks/useAsyncData';
 import { useNavigate, useParams } from 'react-router-dom';
 import { bffClient } from '../services/bffClient';
-import { AppHeader, MascotSvg } from './shared';
+import { AppHeader, LearningBreadcrumb, MascotSvg } from './shared';
 import { useAuth } from '../contexts/AuthContext';
+import { LEARNING_HIERARCHY, lessonLabel, unitLabel } from '../constants/learningTaxonomy';
 
 interface Module {
   id: number;
@@ -109,17 +110,27 @@ export default function CourseTopPage() {
       <AppHeader userName={user?.username || 'User'} />
 
       <main className="relative mx-auto flex flex-col" style={{ maxWidth: 1440, paddingTop: 32, paddingBottom: 40, paddingLeft: 24, paddingRight: 24, gap: 20 }}>
-        <span onClick={() => navigate('/courses')} style={{ fontSize: 13, fontWeight: 700, color: '#E0213A', cursor: 'pointer' }}>← コース一覧に戻る</span>
+        {/* パンくずは常に表示。学習領域からコースまでを辿れるようにする
+            （以前の「← コース一覧に戻る」は戻り先が1つだけで、いまどこにいるか分からなかった） */}
+        <LearningBreadcrumb
+          items={[
+            { label: '学習コンテンツ', to: '/courses' },
+            course?.categoryname
+              ? { label: course.categoryname, to: `/courses/category/${course.categoryid}` }
+              : { label: '' },
+            { label: course?.fullname ?? LEARNING_HIERARCHY.course },
+          ]}
+        />
 
         <div className="flex items-center" style={{ gap: 18 }}>
           <div className="flex-shrink-0" style={{ width: 64, height: 64, borderRadius: 18, background: 'linear-gradient(120deg,#F6B4BE,#EE8296)' }} />
           <div className="flex-1 min-w-0">
             <span style={{ background: '#E0213A', color: '#fff', fontSize: 11, fontWeight: 700, borderRadius: 999, padding: '3px 12px' }}>
-              {course?.categoryname || 'カテゴリ'}
+              {course?.categoryname || LEARNING_HIERARCHY.area}
             </span>
-            <h1 style={{ margin: '6px 0 0', fontSize: 24, fontWeight: 900 }}>{course?.fullname ?? 'コース'}</h1>
+            <h1 style={{ margin: '6px 0 0', fontSize: 24, fontWeight: 900 }}>{course?.fullname ?? LEARNING_HIERARCHY.course}</h1>
             <div style={{ fontSize: 12, color: '#B78F98', marginTop: 4 }}>
-              全{modules.length}レッスン{course?.summary ? ` ・ ${course.summary.replace(/<[^>]*>/g, '')}` : ''}
+              全{sections.length}単元・{modules.length}レッスン{course?.summary ? ` ・ ${course.summary.replace(/<[^>]*>/g, '')}` : ''}
             </div>
           </div>
           <div className="text-right flex-shrink-0">
@@ -231,9 +242,22 @@ export default function CourseTopPage() {
             </div>
           </div>
 
-          {/* レッスンリスト */}
+          {/* 単元ごとのレッスンリスト。
+              以前は単元を無視して全レッスンを平らに並べていたため、コースの中の
+              テーマの区切り（単元）が受講生に見えていなかった。 */}
           <div className="bg-white flex flex-col" style={{ borderRadius: 22, boxShadow: '0 10px 30px rgba(190,60,70,.08)', padding: 14, gap: 8 }}>
-            {modules.map((m, i) => {
+            {sections.map((section, sectionIndex) => (
+              <div key={section.id} className="flex flex-col" style={{ gap: 8 }}>
+                <div style={{ padding: '8px 18px 0' }}>
+                  <div style={{ fontSize: 10, fontWeight: 900, color: '#C08A96', letterSpacing: '.08em' }}>
+                    {unitLabel(sectionIndex + 1)}
+                  </div>
+                  <div style={{ fontSize: 13.5, fontWeight: 900, color: '#3A2F35' }}>{section.name}</div>
+                </div>
+                {section.modules.map((m) => {
+              // ロック判定と番号はコース全体の並び（modules）を基準にする。
+              // 単元ごとに1から振り直すと、進行順とレッスン番号がずれてしまう。
+              const i = modules.findIndex((x) => x.id === m.id);
               const kind = kindOf(m.id, i);
               const locked = kind === 'locked';
               return (
@@ -262,7 +286,7 @@ export default function CourseTopPage() {
                     {kind === 'done' ? '✓' : kind === 'active' ? '▶' : '🔒'}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <div style={{ fontSize: 10, fontWeight: 700, color: '#C08A96' }}>Lesson {i + 1}</div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: '#C08A96' }}>{lessonLabel(i + 1)}</div>
                     <div style={{ fontSize: 14.5, fontWeight: 900, color: kind === 'locked' ? '#B7A0A7' : '#20141A' }}>{m.name}</div>
                     <div style={{ fontSize: 11, color: '#B7A0A7', marginTop: 2 }}>
                       {kind === 'done' ? '完了' : kind === 'active' ? '学習中' : 'ロック中'}
@@ -273,7 +297,9 @@ export default function CourseTopPage() {
                   </span>
                 </div>
               );
-            })}
+                })}
+              </div>
+            ))}
           </div>
         </div>
       </main>

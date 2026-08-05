@@ -41,6 +41,52 @@ h1, h2, h3, .font-display {
   }
 }
 
+/* ─── 教材学習ワークスペース（/course/:courseId）───────────
+   教材・目次・AI/メモをビューポート内で並列表示する画面。
+   ページ全体はスクロールさせず、本文カラムだけをスクロールさせる。
+   LearningWorkspacePage が body に .learning-workspace を付け外しする。 */
+body.learning-workspace {
+  overflow: hidden;
+}
+
+.wc-learning-shell {
+  height: 100dvh;
+}
+
+/* SPは下部ナビ（h-16 = 64px）ぶんを差し引く */
+@media (max-width: 639px) {
+  .wc-learning-shell {
+    height: calc(100dvh - 64px);
+  }
+}
+
+/* 教材本文のタイポグラフィ。既存の .moodle-content とは別系統にして衝突を避ける。 */
+.wc-lesson-prose h2 {
+  margin: 0 0 14px;
+  font-size: 21px;
+  line-height: 1.5;
+  color: #1F1D1E;
+}
+.wc-lesson-prose h2:not(:first-child) { margin-top: 34px; }
+.wc-lesson-prose h3 {
+  margin: 26px 0 10px;
+  font-size: 16.5px;
+  color: #1F1D1E;
+}
+.wc-lesson-prose p,
+.wc-lesson-prose li {
+  color: #4A4245;
+  font-size: 14.5px;
+  line-height: 2;
+}
+.wc-lesson-prose p { margin: 0 0 16px; }
+.wc-lesson-prose p:last-child { margin-bottom: 0; }
+.wc-lesson-prose ul,
+.wc-lesson-prose ol { margin: 0 0 16px; padding-left: 22px; }
+.wc-lesson-prose li { margin-bottom: 4px; }
+.wc-lesson-prose strong { color: #2B2629; font-weight: 700; }
+.wc-lesson-prose b { font-weight: 700; }
+
 /* ─── アニメーション ─────────────────────── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(8px); }
@@ -198,9 +244,48 @@ h1, h2, h3, .font-display {
   flex-wrap: nowrap;
 }
 
-.home-roadmap-grid {
+/* マイページの「広いメイン列＋狭い右レール」。1440 - 60*2 = 1320 を固定値で割る
+   （960 + 20 + 340）。.home-3col と同じ思想で、画面幅が変わっても列数は変えない。
+
+   🔴 align-items: start は必須。付けないと右レールのカードがメイン列の高さ
+   （帯＋続き＋目標で 800px 前後）まで引き伸ばされて間延びする。 */
+.home-rail {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 960px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/*
+ * ロードマップ帯の列数は固定できなくなったため（フェーズ数が受講生の回答で変わる）、
+ * components/learningPlan/PhaseTimeline.tsx がインラインの gridTemplateColumns で指定する。
+ * かつての .home-roadmap-grid（repeat(6, 1fr) 固定）はここで廃止。
+ */
+
+/* ─── 集中ブース（/focus-booth）と学習記録（/study-log） ───────────── */
+/* .home-* と同じ思想。列数は画面幅で変えず、ページ側の transform:scale で収める。
+   1440 - 60 - 60 = 1320 が中身の幅。集中ブースは 左660 / gap18 / 右642。
+   学習記録の右カラム 384 は .home-3col の第1列と同値にして、他ページと目が揃うようにしている。 */
+.focus-main {
+  padding: 28px 60px 40px;
+}
+
+.focus-2col {
+  display: grid;
+  grid-template-columns: 660px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.studylog-main {
+  padding: 28px 60px 40px;
+}
+
+.studylog-2col {
+  display: grid;
+  grid-template-columns: 1fr 384px;
+  gap: 18px;
+  align-items: start;
 }
 
 :root {

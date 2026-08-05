@@ -55,7 +55,8 @@ function PeopleActivityCard() {
         onMouseEnter={(e) => { e.currentTarget.style.background = color.hoverBgTint; e.currentTarget.style.borderColor = color.primaryBorderSoft; }}
         onMouseLeave={(e) => { e.currentTarget.style.background = color.surface; e.currentTarget.style.borderColor = color.borderSoft; }}
       >
-        <span>メンバーをもっと見る</span>
+        {/* 集中ブースからメンバー一覧を外したので、遷移先に合わせた文言にする */}
+        <span>集中ブースへ</span>
         <ArrowRightIcon size={15} stroke={color.textMuted} />
       </button>
     </section>

@@ -102,8 +102,9 @@ function StatsStrip({ thisWeekMinutes, weekDeltaMinutes, weeklyTargetMinutes, to
           <div style={{ fontSize: 22, fontWeight: 900, color: color.text, marginTop: 4 }}>{completedCourses}</div>
         </div>
       </div>
+      {/* ラベルどおり学習ログへ飛ばす（以前は /badges に飛んでいて、表示と挙動が食い違っていた） */}
       <button
-        onClick={() => navigate('/badges')}
+        onClick={() => navigate('/study-log')}
         style={{ display: 'flex', alignItems: 'center', gap: 10, background: color.surface, border: `1px solid ${color.primaryBorder}`, borderRadius: radius.pill, padding: '13px 22px', fontFamily: 'inherit', fontSize: 13.5, fontWeight: 700, color: color.primary, cursor: 'pointer', whiteSpace: 'nowrap' }}
         onMouseEnter={(e) => { e.currentTarget.style.background = '#FFF3F4'; }}
         onMouseLeave={(e) => { e.currentTarget.style.background = color.surface; }}

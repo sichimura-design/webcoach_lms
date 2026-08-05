@@ -1,5 +1,10 @@
-// 集中ブース（自習室の発展版：応援・ランキング・AIコーチ付き）
-// 在室メンバー・ランキングは仮名＋匿名アイコンで表示する（実名・実写真は使わない）
+// 集中ブースの在室メンバー（マイページの「他の人の様子」カードが使う）。
+// 仮名＋匿名アイコンで表示する（実名・実写真は使わない）。
+//
+// ランキング（RankingType / RankingEntry）は初期実装から外したので削除した。
+// 復活させるときは他ユーザーを含む横断集計＝サーバ側の仕事になる。クライアント側で
+// 必要なのは1件が localDate/durationMinutes/courseId/userId を持つことだけで、
+// それは types/studyActivity.ts の StudyActivity が満たしている。
 
 export interface FocusBoothMember {
   id: string;
@@ -9,16 +14,6 @@ export interface FocusBoothMember {
   elapsedMinutes: number;
   hearts: number;
   cheeredByMe: boolean;
-}
-
-export type RankingType = 'studyTime' | 'cheersGiven' | 'cheersReceived';
-
-export interface RankingEntry {
-  rank: number;
-  nickname: string;
-  avatarEmoji: string;
-  value: number; // studyTime=分、cheersGiven/Received=回数
-  isMe?: boolean;
 }
 
 export interface FocusBoothPulse {

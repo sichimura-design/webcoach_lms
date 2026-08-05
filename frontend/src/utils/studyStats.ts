@@ -1,0 +1,445 @@
+/**
+ * 学習アクティビティ → 表示用の集計値。すべて副作用のない純関数。
+ * ============================================================
+ * ここに集約している理由:
+ *   1. MSWモックハンドラと画面の両方が同じ関数を呼ぶため
+ *      （「集中ブースのストリークとマイページのストリークが違う」を構造的に防ぐ）。
+ *      utils/learningPlanTemplate.ts が同じ理由で共有されているのと同じ作法。
+ *   2. 実BFFに移すとき、そのままサーバ側に持っていけるため。
+ *
+ * 集計値を保存せず毎回導出しているのは、終了時の時間修正や記録の削除があると
+ * サマリーの書き手が2つになって必ずズレるため。数千件のreduceはUIの予算に対して無視できる。
+ *
+ * 日付の扱い（ここを間違えると全指標が1日ずれる）:
+ *   - 日の単位は「端末ローカル日」。toISOString().slice(0,10) は UTC 日付になり
+ *     JSTの 00:00〜08:59 が前日に落ちるので絶対に使わない（date-fns の format を使う）。
+ *   - 週は月曜始まり（hooks/useLearningSummary.ts と揃える）。
+ *   - 1日の境界は 0 時。生活時間に合わせて 4 時始まりにしたくなったら
+ *     DAY_BOUNDARY_HOUR だけ変えれば全指標が追随する。
+ * ============================================================
+ */
+import {
+  addDays,
+  differenceInCalendarDays,
+  format,
+  startOfMonth,
+  startOfWeek,
+  subDays,
+} from 'date-fns';
+import {
+  ActiveStudySession,
+  Achievement,
+  CourseStudyTotal,
+  StudyActivity,
+  StudyActivityInput,
+  StudyDayTotal,
+  StudyFinishDraft,
+  StudyPeriodTotal,
+  StudyStatsSummary,
+  StudyStreak,
+} from '../types/studyActivity';
+import { StreakInfo, WeekActivity } from '../types/mypage';
+
+/** 1日の合計がこの分数以上なら「学習した日」。ストリーク・カレンダーの唯一の閾値 */
+export const STUDY_DAY_MIN_MINUTES = 10;
+
+/** これ未満は記録しない。誤操作の数秒が1分として積むと「学習した日」が成立してしまう */
+export const MIN_RECORDABLE_SECONDS = 60;
+
+/** 1日の境界（0 = 0時始まり）。ここだけ変えれば全指標が追随する */
+export const DAY_BOUNDARY_HOUR = 0;
+
+/** 一時停止したまま／動かしたまま放置されたと見なす時間。黙って記録すると累計が壊れる */
+export const STALE_SESSION_MS = 12 * 60 * 60 * 1000;
+
+/** 終了時に修正できる上限（実測 + この分数）。桁の打ち間違いを弾く */
+export const MAX_ADJUST_EXTRA_MINUTES = 240;
+
+/** フリーテキストの保存上限（localStorage 容量対策） */
+export const TEXT_MAX_LENGTH = 500;
+
+const WEEKDAY_LABELS = ['月', '火', '水', '木', '金', '土', '日'];
+
+// ---- 日付キー --------------------------------------------------------------
+
+/** 端末ローカル日のキー（YYYY-MM-DD）。集計の基準はすべてこれ */
+export function toLocalDateKey(d: Date | number | string): string {
+  const base = typeof d === 'string' ? new Date(d) : new Date(d);
+  if (DAY_BOUNDARY_HOUR > 0 && base.getHours() < DAY_BOUNDARY_HOUR) {
+    return format(subDays(base, 1), 'yyyy-MM-dd');
+  }
+  return format(base, 'yyyy-MM-dd');
+}
+
+/** 月曜始まりの週初め */
+export function weekStartOf(d: Date): Date {
+  return startOfWeek(d, { weekStartsOn: 1 });
+}
+
+export function monthStartOf(d: Date): Date {
+  return startOfMonth(d);
+}
+
+// ---- 実行中セッションの経過（3つの画面が同じ値を出すために共有する）--------
+
+/**
+ * 経過秒。ポモドーロでも打ち切らない（超過分を「+M:SS 超過」として見せるため）。
+ * 放置による水増しは「目標到達で自動一時停止する」ことで防ぐ（hooks/useStudySession.ts）。
+ */
+export function sessionElapsedSeconds(s: ActiveStudySession, now: number = Date.now()): number {
+  const end = s.pausedAt ?? now;
+  return Math.max(0, Math.floor((end - s.startedAt) / 1000));
+}
+
+/** 残り秒。ポモドーロのみ。通常タイマーは数え上げなので残りの概念が無く null を返す */
+export function sessionRemainingSeconds(
+  s: ActiveStudySession,
+  now: number = Date.now()
+): number | null {
+  if (s.mode !== 'pomodoro' || !s.targetMinutes) return null;
+  return Math.max(0, s.targetMinutes * 60 - sessionElapsedSeconds(s, now));
+}
+
+export function hasReachedTarget(s: ActiveStudySession, now: number = Date.now()): boolean {
+  if (s.mode !== 'pomodoro' || !s.targetMinutes) return false;
+  return sessionElapsedSeconds(s, now) >= s.targetMinutes * 60;
+}
+
+/** 一時停止したまま／動かしたまま長時間放置されたセッションか（＝タイマーの消し忘れ） */
+export function isStaleSession(s: ActiveStudySession, now: number = Date.now()): boolean {
+  return now - (s.pausedAt ?? s.startedAt) > STALE_SESSION_MS;
+}
+
+/** 円形ダイヤルの塗り割合（0..1）。通常タイマーは分母が無いので 60秒周期の秒針にする */
+export function dialRatio(s: ActiveStudySession | null, elapsedSeconds: number): number {
+  if (!s) return 0;
+  if (s.mode === 'pomodoro' && s.targetMinutes) {
+    const total = s.targetMinutes * 60;
+    return Math.max(0, Math.min(1, (total - elapsedSeconds) / total));
+  }
+  return (elapsedSeconds % 60) / 60;
+}
+
+// ---- 日別 ------------------------------------------------------------------
+
+export function dayTotalMap(activities: StudyActivity[]): Record<string, StudyDayTotal> {
+  const map: Record<string, StudyDayTotal> = {};
+  for (const a of activities) {
+    const key = a.localDate;
+    const minutes = a.session.durationMinutes;
+    const cur = map[key];
+    if (cur) {
+      cur.minutes += minutes;
+      cur.sessionCount += 1;
+      cur.longestMinutes = Math.max(cur.longestMinutes, minutes);
+      cur.isStudyDay = cur.minutes >= STUDY_DAY_MIN_MINUTES;
+    } else {
+      map[key] = {
+        date: key,
+        minutes,
+        sessionCount: 1,
+        longestMinutes: minutes,
+        isStudyDay: minutes >= STUDY_DAY_MIN_MINUTES,
+      };
+    }
+  }
+  return map;
+}
+
+/** from..to の欠損日を 0 で埋めた連続配列。バーグラフとカレンダーが両方これを使う */
+export function dailyTotals(activities: StudyActivity[], from: Date, to: Date): StudyDayTotal[] {
+  const map = dayTotalMap(activities);
+  const out: StudyDayTotal[] = [];
+  let cursor = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+  const last = toLocalDateKey(to);
+  // 日数で回すのではなくキー比較で止める（DSTのある地域でも1日ずれない）
+  for (let guard = 0; guard < 3650; guard += 1) {
+    const key = format(cursor, 'yyyy-MM-dd');
+    out.push(
+      map[key] ?? { date: key, minutes: 0, sessionCount: 0, longestMinutes: 0, isStudyDay: false }
+    );
+    if (key >= last) break;
+    cursor = addDays(cursor, 1);
+  }
+  return out;
+}
+
+/** 閾値を満たす「学習した日」のキーを昇順で返す */
+export function studyDayKeys(activities: StudyActivity[]): string[] {
+  const map = dayTotalMap(activities);
+  return Object.values(map)
+    .filter((d) => d.isStudyDay)
+    .map((d) => d.date)
+    .sort();
+}
+
+// ---- 期間合計 --------------------------------------------------------------
+
+export function periodTotal(
+  activities: StudyActivity[],
+  fromKey: string,
+  toKey: string
+): StudyPeriodTotal {
+  let minutes = 0;
+  let sessionCount = 0;
+  let longestMinutes = 0;
+  for (const a of activities) {
+    if (a.localDate < fromKey || a.localDate > toKey) continue;
+    minutes += a.session.durationMinutes;
+    sessionCount += 1;
+    longestMinutes = Math.max(longestMinutes, a.session.durationMinutes);
+  }
+  return { minutes, sessionCount, longestMinutes };
+}
+
+// ---- ストリーク ------------------------------------------------------------
+
+export function computeStreak(activities: StudyActivity[], today: Date = new Date()): StudyStreak {
+  const keys = studyDayKeys(activities);
+  const keySet = new Set(keys);
+  const todayKey = toLocalDateKey(today);
+  const yesterdayKey = toLocalDateKey(subDays(today, 1));
+
+  // 今日ぶんが未成立でも、昨日が成立していれば連続は「生きている」。
+  // today 起点だけにすると毎朝0時にストリークが0に見えて、受講生の信頼を失う。
+  let cursor: Date | null = keySet.has(todayKey)
+    ? today
+    : keySet.has(yesterdayKey)
+      ? subDays(today, 1)
+      : null;
+  let currentDays = 0;
+  while (cursor && keySet.has(toLocalDateKey(cursor))) {
+    currentDays += 1;
+    cursor = subDays(cursor, 1);
+  }
+
+  // 過去最長は昇順キーを走査して、差が1日を超えたところで切る
+  let best = 0;
+  let run = 0;
+  keys.forEach((k, i) => {
+    run =
+      i > 0 && differenceInCalendarDays(new Date(k), new Date(keys[i - 1])) === 1 ? run + 1 : 1;
+    best = Math.max(best, run);
+  });
+
+  const map = dayTotalMap(activities);
+  const monthPrefix = format(today, 'yyyy-MM');
+
+  return {
+    currentDays,
+    bestDays: Math.max(best, currentDays),
+    monthStudyDays: keys.filter((k) => k.startsWith(monthPrefix)).length,
+    todayAchieved: keySet.has(todayKey),
+    todayMinutes: map[todayKey]?.minutes ?? 0,
+    thresholdMinutes: STUDY_DAY_MIN_MINUTES,
+  };
+}
+
+/**
+ * 既存 StreakInfo（マイページの契約）へ写す。週の月〜日ラベルを作るのはここだけ。
+ * これがあることで、マイページと集中ブースが同じ計算結果を見る。
+ */
+export function toStreakInfo(activities: StudyActivity[], today: Date = new Date()): StreakInfo {
+  const streak = computeStreak(activities, today);
+  const map = dayTotalMap(activities);
+  const monday = weekStartOf(today);
+  const week: WeekActivity[] = WEEKDAY_LABELS.map((label, i) => {
+    const key = format(addDays(monday, i), 'yyyy-MM-dd');
+    return { label, studied: !!map[key]?.isStudyDay };
+  });
+  return { days: streak.currentDays, best: streak.bestDays, week };
+}
+
+// ---- 教材別 ----------------------------------------------------------------
+
+export function courseTotals(activities: StudyActivity[]): CourseStudyTotal[] {
+  const map = new Map<string, CourseStudyTotal>();
+  for (const a of activities) {
+    const courseId = a.course?.courseId ?? null;
+    const key = String(courseId);
+    const cur = map.get(key);
+    if (cur) {
+      cur.minutes += a.session.durationMinutes;
+      cur.sessionCount += 1;
+      if (a.endedAt > cur.lastStudiedAt) cur.lastStudiedAt = a.endedAt;
+    } else {
+      map.set(key, {
+        courseId,
+        courseTitle: a.course?.courseTitle ?? '教材を指定しない',
+        minutes: a.session.durationMinutes,
+        sessionCount: 1,
+        lastStudiedAt: a.endedAt,
+      });
+    }
+  }
+  // tsconfig の target が ES5 なので Map のイテレータは Array.from で受ける
+  return Array.from(map.values()).sort((x, y) => y.minutes - x.minutes);
+}
+
+// ---- まとめ ----------------------------------------------------------------
+
+const RECENT_LIMIT = 5;
+
+/** 新しい順（occurredAt 降順） */
+export function sortByOccurredDesc(activities: StudyActivity[]): StudyActivity[] {
+  return [...activities].sort((a, b) => b.occurredAt.localeCompare(a.occurredAt));
+}
+
+export function summarize(
+  activities: StudyActivity[],
+  today: Date = new Date(),
+  days: number = 35
+): StudyStatsSummary {
+  const todayKey = toLocalDateKey(today);
+  const weekStartKey = format(weekStartOf(today), 'yyyy-MM-dd');
+  const lastWeekStart = subDays(weekStartOf(today), 7);
+  const lastWeekEndKey = format(subDays(weekStartOf(today), 1), 'yyyy-MM-dd');
+  const monthStartKey = format(monthStartOf(today), 'yyyy-MM-dd');
+  const allKeys = activities.map((a) => a.localDate).sort();
+
+  return {
+    today: periodTotal(activities, todayKey, todayKey),
+    week: periodTotal(activities, weekStartKey, todayKey),
+    lastWeek: periodTotal(activities, format(lastWeekStart, 'yyyy-MM-dd'), lastWeekEndKey),
+    month: periodTotal(activities, monthStartKey, todayKey),
+    allTime: periodTotal(activities, allKeys[0] ?? todayKey, todayKey),
+    streak: computeStreak(activities, today),
+    dailyTotals: dailyTotals(activities, subDays(today, Math.max(0, days - 1)), today),
+    byCourse: courseTotals(activities),
+    recent: sortByOccurredDesc(activities).slice(0, RECENT_LIMIT),
+    generatedAt: new Date().toISOString(),
+  };
+}
+
+// ---- 記録の組み立て --------------------------------------------------------
+
+let idCounter = 0;
+
+/** `sa-<startedAtMs>-<base36>`。同一msで連続生成しても衝突しないようカウンタを混ぜる */
+export function newActivityId(startedAtMs: number): string {
+  idCounter = (idCounter + 1) % 1296; // 36^2
+  return `sa-${startedAtMs}-${idCounter.toString(36).padStart(2, '0')}`;
+}
+
+export function clampText(v: string | null | undefined): string | null {
+  const trimmed = (v ?? '').trim();
+  if (!trimmed) return null;
+  return trimmed.slice(0, TEXT_MAX_LENGTH);
+}
+
+/** 下書き → POST body。hook とモックのシードが同じ組み立てを使う */
+export function buildActivityInput(
+  draft: StudyFinishDraft,
+  overrides: { progressPercentAtEnd?: number } = {}
+): StudyActivityInput {
+  const { snapshot } = draft;
+  const measuredMinutes = Math.round(draft.measuredSeconds / 60);
+  const course = snapshot.course
+    ? {
+        ...snapshot.course,
+        progressPercentAtEnd:
+          overrides.progressPercentAtEnd ?? snapshot.course.progressPercentAtEnd,
+      }
+    : null;
+
+  return {
+    id: draft.activityId,
+    kind: 'study_session',
+    occurredAt: snapshot.endedAt,
+    startedAt: snapshot.startedAt,
+    endedAt: snapshot.endedAt,
+    localDate: snapshot.localDate,
+    endLocalDate: snapshot.endLocalDate,
+    timezoneOffsetMinutes: snapshot.timezoneOffsetMinutes,
+    course,
+    session: {
+      mode: snapshot.mode,
+      targetMinutes: snapshot.targetMinutes,
+      durationMinutes: Math.max(1, draft.actualMinutes),
+      measuredSeconds: draft.measuredSeconds,
+      adjusted: draft.actualMinutes !== measuredMinutes,
+      pausedCount: snapshot.pausedCount,
+      pausedSeconds: snapshot.pausedSeconds,
+      completedTarget: snapshot.completedTarget,
+      goalText: clampText(draft.goalText),
+      contentNote: clampText(draft.contentNote),
+      memo: clampText(draft.memo),
+      achievement: draft.achievement,
+    },
+    visibility: 'private',
+  };
+}
+
+/** 稼働中セッション → 終了カードの下書き。prepareFinish と「放置セッションの後始末」が共有する */
+export function buildFinishDraft(
+  session: ActiveStudySession,
+  endAtMs: number = Date.now()
+): StudyFinishDraft {
+  const end = session.pausedAt ?? endAtMs;
+  const measuredSeconds = Math.max(0, Math.floor((end - session.startedAt) / 1000));
+  const startedAtIso = new Date(session.startedAt).toISOString();
+  const endedAtIso = new Date(end).toISOString();
+
+  return {
+    activityId: session.activityId,
+    measuredSeconds,
+    actualMinutes: Math.max(1, Math.round(measuredSeconds / 60)),
+    goalText: session.goalText ?? '',
+    contentNote: '',
+    memo: '',
+    achievement: null,
+    snapshot: {
+      startedAt: startedAtIso,
+      endedAt: endedAtIso,
+      localDate: toLocalDateKey(session.startedAt),
+      endLocalDate: toLocalDateKey(end),
+      timezoneOffsetMinutes: -new Date().getTimezoneOffset(),
+      course: session.courseId
+        ? {
+            courseId: session.courseId,
+            courseTitle: session.courseTitle ?? '',
+            lessonId: session.lessonId,
+            lessonTitle: session.lessonTitle,
+            progressPercentAtStart: session.progressPercentAtStart,
+          }
+        : null,
+      mode: session.mode,
+      targetMinutes: session.targetMinutes,
+      pausedCount: session.pausedCount,
+      pausedSeconds: Math.round(session.pausedTotalMs / 1000),
+      completedTarget: session.targetReachedAt !== null,
+    },
+  };
+}
+
+// ---- 表示用の書式（画面とモックのシードが共有する）------------------------
+
+export function formatMinutesHM(min: number): string {
+  const safe = Math.max(0, Math.round(min));
+  const h = Math.floor(safe / 60);
+  const m = safe % 60;
+  if (h > 0) return m > 0 ? `${h}時間${m}分` : `${h}時間`;
+  return `${m}分`;
+}
+
+/** M:SS。ポモドーロの残り時間 */
+export function formatMMSS(totalSeconds: number): string {
+  const safe = Math.max(0, totalSeconds);
+  const m = Math.floor(safe / 60);
+  const s = safe % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+/** H:MM:SS。通常タイマーの経過時間（1時間を超えても読める） */
+export function formatHMS(totalSeconds: number): string {
+  const safe = Math.max(0, totalSeconds);
+  const h = Math.floor(safe / 3600);
+  const m = Math.floor((safe % 3600) / 60);
+  const s = safe % 60;
+  if (h > 0) return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+export function achievementOf(v: string | null | undefined): Achievement | null {
+  return v === 'low' || v === 'mid' || v === 'high' ? v : null;
+}

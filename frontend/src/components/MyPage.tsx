@@ -5,25 +5,20 @@ import { useAuth } from '../contexts/AuthContext';
 import { AppHeader } from './shared';
 import { useMypageData } from '../hooks/useMypageData';
 import { useLearningSummary } from '../hooks/useLearningSummary';
-import { useFocusBoothMembers } from '../hooks/useFocusBoothMembers';
+import { useStudyStats } from '../hooks/useStudyStats';
 import { useProgressionStore } from '../store/progressionStore';
 import { useScaleToFit } from '../hooks/useScaleToFit';
 import { EXP_RULES } from '../utils/progression';
 import ContinueLearningHero from './mypage/ContinueLearningHero';
-import PeopleActivityCard from './mypage/PeopleActivityCard';
-import GuildLobbyCard from './mypage/GuildLobbyCard';
 import NextCoachingPlan from './mypage/NextCoachingPlan';
+import NextCoachingCardContainer from './mypage/NextCoachingCardContainer';
 import RoadmapSection from './mypage/RoadmapSection';
-import StatsStrip from './mypage/StatsStrip';
+import ProfileSummaryStrip from './mypage/ProfileSummaryStrip';
+import StreakMiniCard from './mypage/StreakMiniCard';
 import { Course } from '../types/mypage';
 import { color, font, space } from '../theme/webcoachTheme';
 
 const DESIGN_WIDTH = 1440;
-const WEEKDAY_KANJI = ['日', '月', '火', '水', '木', '金', '土'];
-
-function formatTodayLabel(date: Date): string {
-  return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日（${WEEKDAY_KANJI[date.getDay()]}）`;
-}
 
 function MyPage() {
   const navigate = useNavigate();
@@ -38,7 +33,6 @@ function MyPage() {
     error,
   } = useMypageData(user?.userid);
 
-  const { members } = useFocusBoothMembers();
   const noteStreakDays = useProgressionStore((s) => s.noteStreakDays);
   const { outerRef, innerRef, scale, innerHeight } = useScaleToFit(DESIGN_WIDTH);
 
@@ -47,9 +41,12 @@ function MyPage() {
     ? [resumableCourse, ...activeCourses.filter(c => c.id !== resumableCourse.id)]
     : activeCourses;
 
-  const learningSummary = useLearningSummary(learningCourses);
+  // 学習時間は集中ブースの実測を正にする（取れなければ進捗率からの推定に落ちる）。
+  // useMypageData の Promise.all には足さない（ブートをブロックしないため）。
+  const { stats: studyStats, loading: studyStatsLoading } = useStudyStats(user?.userid);
+  const learningSummary = useLearningSummary(learningCourses, studyStats);
   const primaryCourse = learningCourses[0];
-  const completedCourses = learningCourses.filter(c => (c.progress ?? 0) >= 100).length;
+  const totalLessons = learningCourses.reduce((sum, c) => sum + (c.totalLessons ?? 0), 0);
 
   // ストリークが新たに伸びたタイミングでEXPボーナスを1度だけ付与
   useEffect(() => {
@@ -126,48 +123,40 @@ function MyPage() {
           className="home-main flex flex-col"
           style={{ position: 'absolute', top: 0, left: 0, width: DESIGN_WIDTH, boxSizing: 'border-box', gap: space.sectionGap, fontFamily: font.family, color: color.text, transform: `scale(${scale})`, transformOrigin: 'top left' }}
         >
-          {/* ヘッダ: 日付＋挨拶＋赤アンダーライン / ストリーク＋週間ドット */}
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, paddingBottom: 2 }}>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 500, color: color.textSubtle, letterSpacing: '.2px' }}>{formatTodayLabel(new Date())}</div>
-              <div style={{ ...font.pageTitle, color: color.text, marginTop: 10 }}>おかえりなさい、{avatarName || 'さん'}！</div>
-              <div style={{ width: 96, height: 3, borderRadius: 2, background: color.primary, marginTop: 9 }} />
+          {/*
+            構成は「広いメイン列＋狭い右レール」。主アクションは『続きからはじめる』の1つだけ。
+            以前はカード9枚・データ点70個まで膨らみ、今週の学習時間やストリークが
+            複数のカードに重複して出ていた。数字の置き場を1箇所に決め、
+            詳しい内訳は /study-log・/learning-plan・/coaching に任せている。
+
+            セクション見出しは各カードが内包する（NextCoachingCard と RoadmapSection は
+            既に内部に見出しを持っているため、外に出すと二重になる）。
+          */}
+          <div className="home-rail">
+            {/* メイン列: 誰か → いま再開できるもの → コーチングで決めた目標 */}
+            <div className="flex flex-col" style={{ gap: space.sectionGap }}>
+              <ProfileSummaryStrip
+                name={avatarName}
+                stats={studyStats}
+                loading={studyStatsLoading}
+                completedLessons={learningSummary.completedLessons.total}
+                totalLessons={totalLessons}
+              />
+              {primaryCourse && (
+                <ContinueLearningHero course={primaryCourse} onOpen={handleContinue} />
+              )}
+              <NextCoachingPlan userId={user?.userid} onContinue={handleContinue} />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14, paddingBottom: 6 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                <span style={{ fontSize: 17, lineHeight: 1 }}>🔥</span>
-                <span style={{ ...font.streakNumber, color: color.primary }}>{streak?.days ?? 0}</span>
-                <span style={{ fontSize: 13, fontWeight: 700, color: color.primary }}>日連続</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                {(streak?.week ?? []).map((d, i) => (
-                  <span key={i} style={{ width: 11, height: 11, borderRadius: '50%', background: d.studied ? color.primary : color.streakOff }} />
-                ))}
-              </div>
+
+            {/* 右レール: 続けるための小さな指標と、次回の予定 */}
+            <div className="flex flex-col" style={{ gap: space.columnGap }}>
+              <StreakMiniCard stats={studyStats} loading={studyStatsLoading} />
+              <NextCoachingCardContainer userId={user?.userid} />
             </div>
           </div>
 
-          {/* 一番見たい: 続きから学習 */}
-          {primaryCourse && <ContinueLearningHero course={primaryCourse} onOpen={handleContinue} />}
-
-          {/* 次に見たい: 目標 / ギルドロビー / ギルドメンバー */}
-          <div className="home-3col" style={{ alignItems: 'stretch' }}>
-            <NextCoachingPlan userId={user?.userid} onContinue={handleContinue} />
-            <GuildLobbyCard onlineCount={members.length} />
-            <PeopleActivityCard />
-          </div>
-
-          {/* 次に見たい: 累計・今週の学習量 */}
-          <StatsStrip
-            thisWeekMinutes={learningSummary.thisWeekMinutes}
-            weekDeltaMinutes={learningSummary.studyMinutes.weekDelta}
-            weeklyTargetMinutes={userProfile.weekly_target_minutes ?? 600}
-            totalStudyMinutes={learningSummary.studyMinutes.total}
-            completedLessons={learningSummary.completedLessons.total}
-            completedCourses={completedCourses}
-          />
-
-          {/* 今後の学習計画（ロードマップ） */}
+          {/* ロードマップは横幅があるほうが読めるので、2カラムの外に全幅で置く
+              （PhaseTimeline がフェーズ数ぶんの列を組むため、狭いレールでは潰れる） */}
           <RoadmapSection userId={user?.userid} />
         </main>
         </div>

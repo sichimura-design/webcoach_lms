@@ -4,16 +4,22 @@ import LoginPage from '../components/LoginPage';
 import PasswordResetPage from '../components/PasswordResetPage';
 import MyPage from '../components/MyPage';
 import FocusBoothPage from '../components/FocusBoothPage';
+import StudyLogPage from '../components/studyLog/StudyLogPage';
+import CoachingNotesPage from '../components/CoachingNotesPage';
+import LearningPlanPage from '../components/learningPlan/LearningPlanPage';
+import LearningPlanSetupPage from '../components/learningPlan/LearningPlanSetupPage';
+import ConnectCoachPage from '../components/ConnectCoachPage';
 import ProfilePage from '../components/ProfilePage';
 import WebCoachDashboard from '../components/WebCoachDashboard';
 import CareerPathPage from '../components/CareerPathPage';
 import MaterialsTopPage from '../components/MaterialsTopPage';
 import LearningCoursesPage from '../components/LearningCoursesPage';
 import CategoryDetailPage from '../components/CategoryDetailPage';
-import AIAppsPage from '../components/AIAppsPage';
+import AiCoachPage from '../components/aicoach/AiCoachPage';
 import BadgesPage from '../components/BadgesPage';
 import ContentListPage from '../components/ContentListPage';
-import CourseContentPage from '../components/CourseContentPage';
+import LearningWorkspacePage from '../components/learning/LearningWorkspacePage';
+import MyNotesPage from '../components/notes/MyNotesPage';
 import CourseTopPage from '../components/CourseTopPage';
 import AccountSettingsPage from '../components/AccountSettingsPage';
 import AnimatedPage from '../components/AnimatedPage';
@@ -24,6 +30,7 @@ import { AdminImageUploadPage } from '../components/admin/AdminImageUploadPage';
 import { AdminVectorPage } from '../components/admin/AdminVectorPage';
 import { AdminStudentsPage } from '../components/admin/AdminStudentsPage';
 import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage';
+import { AdminCoachIntegrationsPage } from '../components/admin/AdminCoachIntegrationsPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigationStore } from '../store/navigationStore';
@@ -142,8 +149,8 @@ function CategoryDetailWrapper() {
   return <CategoryDetailPage />;
 }
 
-function AIAppsWrapper() {
-  return <AIAppsPage />;
+function AiCoachWrapper() {
+  return <AiCoachPage />;
 }
 
 function ContentListWrapper() {
@@ -170,7 +177,10 @@ function CourseContentWrapper() {
   const moduleId = searchParams.get('module');
 
   return (
-    <CourseContentPage
+    <LearningWorkspacePage
+      // レッスンを切り替えると ?module= が置き換わる。key で再マウントすると
+      // パネル状態と会話が毎回リセットされてしまうため、key は courseId のみに紐づける。
+      key={courseId}
       courseId={parseInt(courseId || '0', 10)}
       initialModuleId={moduleId ? parseInt(moduleId, 10) : undefined}
       onBack={() => navigate(`/course/${courseId}/curriculum`)}
@@ -204,6 +214,19 @@ function AppRoutes() {
         }
       />
 
+      {/*
+        コーチ向けの録画連携ページ。コーチはLMSのアカウントを持たないため、
+        ここだけは意図的に ProtectedRoute の外に置く（未ログインで到達できる必要がある）。
+      */}
+      <Route
+        path="/connect/:token"
+        element={
+          <AnimatedPage>
+            <ConnectCoachPage />
+          </AnimatedPage>
+        }
+      />
+
       <Route
         path="/mypage"
         element={
@@ -218,6 +241,47 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <FocusBoothPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* 学習記録の詳細（累計・日別グラフ・全履歴）。集中ブースからの掘り下げ。 */}
+      <Route
+        path="/study-log"
+        element={
+          <ProtectedRoute>
+            <StudyLogPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/coaching"
+        element={
+          <ProtectedRoute>
+            <CoachingNotesPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/*
+        長期学習ロードマップ。閲覧・編集・確定をすべて受講生側で行う（コーチはLMSを操作しない運用）。
+        より具体的な /learning-plan/setup を先に置く。
+      */}
+      <Route
+        path="/learning-plan/setup"
+        element={
+          <ProtectedRoute>
+            <LearningPlanSetupPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/learning-plan"
+        element={
+          <ProtectedRoute>
+            <LearningPlanPage />
           </ProtectedRoute>
         }
       />
@@ -268,13 +332,17 @@ function AppRoutes() {
       />
 
       <Route
-        path="/ai-apps"
+        path="/ai-coach"
         element={
           <ProtectedRoute>
-            <AIAppsWrapper />
+            <AiCoachWrapper />
           </ProtectedRoute>
         }
       />
+
+      {/* 旧「AIアプリ一覧」。AIコーチに内包したので転送する。
+          既存のブックマークや社内共有リンクを壊さないために残している。 */}
+      <Route path="/ai-apps" element={<Navigate to="/ai-coach" replace />} />
 
       <Route
         path="/courses/category/:categoryId"
@@ -321,6 +389,16 @@ function AppRoutes() {
         }
       />
 
+      {/* マイノート：メモ・クリップ・保存したAI回答の横断管理 */}
+      <Route
+        path="/notes"
+        element={
+          <ProtectedRoute>
+            <MyNotesPage />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/badges"
         element={
@@ -350,6 +428,7 @@ function AppRoutes() {
         <Route path="avatars" element={<AdminCsvPage key="avatars" dataType="avatars" />} />
         <Route path="vector-data" element={<AdminVectorPage />} />
         <Route path="coach-mapping" element={<AdminCoachMappingPage />} />
+        <Route path="coach-integrations" element={<AdminCoachIntegrationsPage />} />
       </Route>
 
       <Route

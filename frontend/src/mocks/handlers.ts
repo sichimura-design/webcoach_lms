@@ -23,8 +23,13 @@ import type {
   Category,
   ResumeCourse,
 } from '../types/api';
-import type { StudySessionInput, StudySessionRecord } from '../types/studyRoom';
-import type { FocusBoothMember, RankingEntry, RankingType } from '../types/focusBooth';
+import type { FocusBoothMember } from '../types/focusBooth';
+import { coachingHandlers } from './coachingHandlers';
+import { buildCourseStructure, lessonHandlers } from './lessonHandlers';
+import { learningPlanHandlers } from './learningPlanHandlers';
+import { aiSkillHandlers } from './aiSkillHandlers';
+import { currentStreakInfo, studyActivityHandlers } from './studyActivityHandlers';
+import { listGoals, replaceGoals } from './coachingGoalsStore';
 
 // ---- 固定モックデータ（型に沿った最小限） ----------------------------------
 const MOCK_USER_ID = 2;
@@ -118,7 +123,7 @@ const userCourses = [
   },
 ];
 
-// ---- 学習コンテンツ（カテゴリ→コース→カリキュラム→教材）ダミー ----------------
+// ---- 学習コンテンツ（学習領域→コース→単元→レッスン）ダミー --------------------
 type MockCourse = {
   id: number; fullname: string; shortname: string;
   categoryid: number; categoryname: string; summary: string;
@@ -144,32 +149,32 @@ const catalog: MockCourse[] = [
   { id: 222, fullname: '刺さる広告文の書き方', shortname: 'mkt-222', categoryid: 3, categoryname: 'マーケティング', summary: 'クリックされるコピーの型', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '35分' },
 ];
 
-// カリキュラム/教材（/moodle/courses/:id/contents）。どのコースでも汎用の章立てを返す。
+// コースの構成（/moodle/courses/:id/contents）。
+// 単元とレッスンは lessonHandlers.ts の buildCourseStructure を
+// 単一の情報源にする。レッスンページの目次とコーストップの表示がズレないようにするため。
+const MODULE_DESCRIPTIONS: Record<string, string> = {
+  'イントロダクション': '<h2>このコースで学ぶこと</h2><p>この単元では全体像をつかみます。手を動かす前に、まず「なぜそれが必要なのか」を理解しましょう。</p><ul><li>学ぶゴールの確認</li><li>用語の整理</li><li>進め方のコツ</li></ul>',
+  '基本の考え方': '<h2>基本の考え方</h2><p>ここが土台になります。焦らず、一つずつ確認していきましょう。</p><p>ポイントは<strong>「まず真似る」</strong>こと。型を覚えてから応用に進みます。</p>',
+  'ハンズオン①': '<h2>やってみよう</h2><p>実際に手を動かすパートです。完成イメージを見ながら進めてください。</p><ol><li>お手本をなぞる</li><li>自分でアレンジ</li><li>見比べて改善</li></ol>',
+  'ハンズオン②': '<h2>もう一歩踏み込む</h2><p>応用に挑戦します。詰まったら前のレッスンに戻ってOKです。</p>',
+  'まとめと次にやること': '<h2>まとめ</h2><p>お疲れさまでした。学んだことを振り返り、次のコースへ進みましょう。</p>',
+};
+
 function buildSections(courseId: number) {
-  const page = (id: number, name: string, body: string) => ({
-    id, name, modname: 'page',
-    description: body,
-    completion: 1,
-    completiondata: { state: 0 },
-  });
-  const lead = courseId * 1000;
-  return [
-    {
-      id: lead + 1, name: 'セクション1: 基礎を理解する', visible: true, summary: '',
-      modules: [
-        page(lead + 11, 'イントロダクション', '<h2>このコースで学ぶこと</h2><p>このセクションでは全体像をつかみます。手を動かす前に、まず「なぜそれが必要なのか」を理解しましょう。</p><ul><li>学ぶゴールの確認</li><li>用語の整理</li><li>進め方のコツ</li></ul>'),
-        page(lead + 12, '基本の考え方', '<h2>基本の考え方</h2><p>ここが土台になります。焦らず、一つずつ確認していきましょう。</p><p>ポイントは<strong>「まず真似る」</strong>こと。型を覚えてから応用に進みます。</p>'),
-      ],
-    },
-    {
-      id: lead + 2, name: 'セクション2: 手を動かす', visible: true, summary: '',
-      modules: [
-        page(lead + 21, 'ハンズオン①', '<h2>やってみよう</h2><p>実際に手を動かすパートです。完成イメージを見ながら進めてください。</p><ol><li>お手本をなぞる</li><li>自分でアレンジ</li><li>見比べて改善</li></ol>'),
-        page(lead + 22, 'ハンズオン②', '<h2>もう一歩踏み込む</h2><p>応用に挑戦します。詰まったら前のレッスンに戻ってOKです。</p>'),
-        page(lead + 23, 'まとめと次のステップ', '<h2>まとめ</h2><p>お疲れさまでした。学んだことを振り返り、次のコースへ進みましょう。</p>'),
-      ],
-    },
-  ];
+  return buildCourseStructure(courseId).map((section) => ({
+    id: section.id,
+    name: section.name,
+    visible: true,
+    summary: '',
+    modules: section.lessons.map((lesson) => ({
+      id: lesson.lessonId,
+      name: lesson.title,
+      modname: 'page',
+      description: MODULE_DESCRIPTIONS[lesson.title] ?? `<h2>${lesson.title}</h2><p>このレッスンの本文です。</p>`,
+      completion: 1,
+      completiondata: { state: 0 },
+    })),
+  }));
 }
 
 // AIアプリ（/webcoach/ai-applications）
@@ -182,15 +187,27 @@ const aiApps = [
   { id: 6, name: 'コーチング準備・ふりかえりAI', category: 'キャリア・コーチングに', hook: 'コーチングの前後に', description: '話したいことの整理と、ミーティングノートの要約・ネクストアクション抽出。ロードマップ更新の下書きにも。', example: '「今日のノートを要約して、来週やることを3つに絞って」', icon: '📋', iconBg: '#EAF6ED', accent: '#2FA35C', url: 'https://example.com/coaching-prep' },
 ];
 
+// コーチ/運営向けの受講生一覧（GET /api/admin/students。実BFFには未実装のため全項目モック）
+function formatLastAccess(unixSec: number): string {
+  if (!unixSec) return '未ログイン';
+  const d = new Date(unixSec * 1000);
+  return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+}
+const now = Math.floor(Date.now() / 1000);
+const studentsStore = [
+  { id: 501, username: 'sato_hanako', email: 'sato@example.com', firstname: '花子', lastname: '佐藤', fullname: '佐藤 花子', lastaccess: now - 3600, firstaccess: now - 60 * 86400, suspended: false, auth: 'manual', inactive_over_month: false, new_user: false },
+  { id: 502, username: 'tanaka_ichiro', email: 'tanaka@example.com', firstname: '一郎', lastname: '田中', fullname: '田中 一郎', lastaccess: now - 40 * 86400, firstaccess: now - 90 * 86400, suspended: false, auth: 'manual', inactive_over_month: true, new_user: false },
+  { id: 503, username: 'suzuki_misaki', email: 'suzuki@example.com', firstname: '美咲', lastname: '鈴木', fullname: '鈴木 美咲', lastaccess: now - 2 * 86400, firstaccess: now - 12 * 86400, suspended: false, auth: 'manual', inactive_over_month: false, new_user: true },
+  { id: 504, username: 'yamamoto_kenta', email: 'yamamoto@example.com', firstname: '健太', lastname: '山本', fullname: '山本 健太', lastaccess: 0, firstaccess: now - 5 * 86400, suspended: false, auth: 'manual', inactive_over_month: false, new_user: true },
+  { id: 505, username: 'ito_ayumi', email: 'ito@example.com', firstname: '歩美', lastname: '伊藤', fullname: '伊藤 歩美', lastaccess: now - 5 * 3600, firstaccess: now - 130 * 86400, suspended: false, auth: 'manual', inactive_over_month: false, new_user: false },
+].map((s) => ({ ...s, lastaccess_formatted: formatLastAccess(s.lastaccess) }));
+
 // 次回コーチングまでの目標（セッション内で保持：AI細分化やコーチングページからの生成を
 // マイページに反映させるため、GET/PUT で同じストアを読み書きする）
 // マイページ側は読み取り専用表示のため、コーチが前回のコーチングで設定した内容として初期値を持たせる
 // （journeyの現在地=「バナーを作ってみよう」と揃えてある）
-let coachingGoalsStore: { no: number; description: string; is_completed: 0 | 1; progress: number }[] = [
-  { no: 1, description: '配色の基礎を修了する', is_completed: 1, progress: 100 },
-  { no: 2, description: 'バナーを1つ完成させる', is_completed: 0, progress: 40 },
-  { no: 3, description: 'レイアウト実践に着手する', is_completed: 0, progress: 0 },
-];
+// ストアの実体は mocks/coachingGoalsStore.ts（coachingHandlers.ts の confirm-goals からも
+// 追記するため独立モジュールにしてある。詳細はそちらのヘッダコメント）。
 
 // 今日のTODO（セッション内で保持）
 let dailyTodosStore: { id: number; text: string; done: boolean }[] = [
@@ -199,20 +216,9 @@ let dailyTodosStore: { id: number; text: string; done: boolean }[] = [
   { id: 3, text: '前回の課題を提出する', done: true },
 ];
 
-// 学習ストリーク（連続学習日数・週間の学習有無。固定モック）
-const streakMock = {
-  days: 12,
-  best: 12,
-  week: [
-    { label: '月', studied: true },
-    { label: '火', studied: true },
-    { label: '水', studied: true },
-    { label: '木', studied: true },
-    { label: '金', studied: false },
-    { label: '土', studied: false },
-    { label: '日', studied: false },
-  ],
-};
+// 学習ストリークは studyActivityHandlers.ts が学習アクティビティから算出する。
+// ここに固定値を置くと「マイページは12日・集中ブースは5日」のような乖離が生まれるため、
+// GET /webcoach/streak/:userid のハンドラも journey の streak も currentStreakInfo() を通す。
 
 // コミュニティの盛り上がり（取り組んでいる活動別の直近人数。固定モック・1〜2時間おきにフロントで取得する想定）
 const communityPulseMock = {
@@ -233,9 +239,6 @@ const communityPulseMock = {
   ],
 };
 
-// 自習室の学習セッション記録（セッション内で保持）
-let studySessionsStore: StudySessionRecord[] = [];
-
 // ==================== 集中ブース（応援・ランキング付き） ====================
 // 在室メンバー（仮名＋匿名アイコン。応援するとheartsが増える・セッション内で保持）
 let focusBoothMembersStore: FocusBoothMember[] = [
@@ -249,32 +252,10 @@ let focusBoothMembersStore: FocusBoothMember[] = [
 
 let myCheerCountToday = 3;
 
-const focusBoothRankings: Record<RankingType, RankingEntry[]> = {
-  studyTime: [
-    { rank: 1, nickname: 'こあら12', avatarEmoji: '🐨', value: 522 },
-    { rank: 2, nickname: 'たぬき44', avatarEmoji: '🦝', value: 448 },
-    { rank: 3, nickname: 'ぱんだ7', avatarEmoji: '🐼', value: 375 },
-    { rank: 4, nickname: 'ひつじ33', avatarEmoji: '🐑', value: 348 },
-    { rank: 5, nickname: 'ねこ9', avatarEmoji: '🐱', value: 272 },
-    { rank: 12, nickname: 'あなた', avatarEmoji: '🦊', value: 201, isMe: true },
-  ],
-  cheersGiven: [
-    { rank: 1, nickname: 'うさぎ58', avatarEmoji: '🐰', value: 34 },
-    { rank: 2, nickname: 'こあら12', avatarEmoji: '🐨', value: 29 },
-    { rank: 3, nickname: 'ぱんだ7', avatarEmoji: '🐼', value: 21 },
-    { rank: 4, nickname: 'ひつじ33', avatarEmoji: '🐑', value: 17 },
-    { rank: 5, nickname: 'ねこ9', avatarEmoji: '🐱', value: 14 },
-    { rank: 8, nickname: 'あなた', avatarEmoji: '🦊', value: 9, isMe: true },
-  ],
-  cheersReceived: [
-    { rank: 1, nickname: 'こあら12', avatarEmoji: '🐨', value: 41 },
-    { rank: 2, nickname: 'うさぎ58', avatarEmoji: '🐰', value: 33 },
-    { rank: 3, nickname: 'ぱんだ7', avatarEmoji: '🐼', value: 25 },
-    { rank: 4, nickname: 'ひつじ33', avatarEmoji: '🐑', value: 19 },
-    { rank: 5, nickname: 'ねこ9', avatarEmoji: '🐱', value: 15 },
-    { rank: 15, nickname: 'あなた', avatarEmoji: '🦊', value: 6, isMe: true },
-  ],
-};
+// ランキングは初期実装から外した（学習時間の集計は studyActivityHandlers.ts が持つ）。
+// 復活させるときは、他ユーザーを含む横断集計になるため実BFF側の仕事になる。
+// クライアント側で必要なのは1件が localDate/durationMinutes/courseId/userId を持つことだけで、
+// それは types/studyActivity.ts の StudyActivity が満たしている。
 
 // 学習計画（今週の予定・セッション内で保持）
 let studyPlanStore: { weekLabel: string; days: any[] } | null = null;
@@ -352,18 +333,8 @@ export const handlers = [
 
   http.get('*/api/webcoach/community-pulse', () => HttpResponse.json(communityPulseMock)),
 
-  // 自習室: 学習セッションの記録（タイマー終了時に1件POSTされる）
-  http.post('*/api/webcoach/study-sessions/:userid', async ({ request }) => {
-    try {
-      const body = (await request.json()) as StudySessionInput;
-      const record: StudySessionRecord = { id: studySessionsStore.length + 1, ...body };
-      studySessionsStore.push(record);
-      return HttpResponse.json(record);
-    } catch {
-      return HttpResponse.json({ error: 'invalid body' }, { status: 400 });
-    }
-  }),
-  http.get('*/api/webcoach/study-sessions/:userid', () => HttpResponse.json(studySessionsStore)),
+  // 学習セッションの記録は /webcoach/study-activities/:userid（studyActivityHandlers.ts）に移した。
+  // 旧 /study-sessions はメモリ保持でリロードすると消え、統計・履歴・ストリークを検証できなかった。
 
   // 集中ブース: 雰囲気（集中中の人数・応援フィード件数・自分の本日の応援回数）
   http.get('*/api/webcoach/focus-booth/pulse', () =>
@@ -386,12 +357,6 @@ export const handlers = [
     }
     return HttpResponse.json(member);
   }),
-  // 集中ブース: ランキング（学習時間／応援した／応援された）
-  http.get('*/api/webcoach/focus-booth/ranking', ({ request }) => {
-    const type = (new URL(request.url).searchParams.get('type') as RankingType) || 'studyTime';
-    return HttpResponse.json(focusBoothRankings[type] ?? []);
-  }),
-
   // 案件獲得ダッシュボード
   http.get('*/api/webcoach/career-dashboard/:userid', () =>
     HttpResponse.json({
@@ -412,7 +377,7 @@ export const handlers = [
     })
   ),
 
-  // ==================== 学習コンテンツ（カテゴリ→コース→カリキュラム→教材） ====================
+  // ==================== 学習コンテンツ（学習領域→コース→単元→レッスン） ====================
   // コース詳細（カリキュラム/教材ページが章立てを取得）
   http.get('*/api/moodle/courses/:courseid/contents', ({ params }) =>
     HttpResponse.json(buildSections(Number(params.courseid)))
@@ -432,15 +397,17 @@ export const handlers = [
   http.get('*/api/moodle/courses', () => HttpResponse.json(catalog)),
   http.get('*/api/moodle/categories', () => HttpResponse.json(categories)),
   http.get('*/api/webcoach/recomendbadge/:userid', () => HttpResponse.json([])),
-  http.get('*/api/webcoach/next-coaching-goals/:userid', () => HttpResponse.json(coachingGoalsStore)),
+  // 次回コーチングまでの目標。コーチングノートで確定した目標もここに載る
+  // （反映は coachingHandlers.ts の confirm-goals → coachingGoalsStore.reflectCandidates）。
+  http.get('*/api/webcoach/next-coaching-goals/:userid', () => HttpResponse.json(listGoals())),
   http.put('*/api/webcoach/next-coaching-goals/:userid', async ({ request }) => {
     try {
-      const body = (await request.json()) as { goals?: typeof coachingGoalsStore };
-      coachingGoalsStore = Array.isArray(body?.goals) ? body.goals : [];
+      const body = (await request.json()) as { goals?: Parameters<typeof replaceGoals>[0] };
+      if (Array.isArray(body?.goals)) return HttpResponse.json(replaceGoals(body.goals));
     } catch {
       /* ignore */
     }
-    return HttpResponse.json(coachingGoalsStore);
+    return HttpResponse.json(listGoals());
   }),
   http.get('*/api/webcoach/daily-todos/:userid', () => HttpResponse.json(dailyTodosStore)),
   http.put('*/api/webcoach/daily-todos/:userid', async ({ request }) => {
@@ -452,7 +419,7 @@ export const handlers = [
     }
     return HttpResponse.json(dailyTodosStore);
   }),
-  http.get('*/api/webcoach/streak/:userid', () => HttpResponse.json(streakMock)),
+  // GET /webcoach/streak/:userid は studyActivityHandlers.ts が持つ（学習日ベース）
   http.get('*/api/webcoach/roadmaps', () => HttpResponse.json([])),
   http.get('*/api/moodle/badges', () =>
     HttpResponse.json([
@@ -533,14 +500,15 @@ export const handlers = [
   }),
 
   // ==================== 学習ジャーニー（ゲーム風ロードマップ＋今日のクエスト＋ストリーク） ====================
-  http.get('*/api/webcoach/journey/:userid', () =>
-    HttpResponse.json({
+  http.get('*/api/webcoach/journey/:userid', () => {
+    // 学習アクティビティを単一の正とし、ここでは導出のみ行う（別々に持って乖離させない）
+    const streak = currentStreakInfo(MOCK_USER_ID);
+    return HttpResponse.json({
       goal: 'Webデザイナーとして初案件を獲得する',
-      // streakMockを単一の正とし、ここでは導出のみ行う（別々にハードコードして乖離させない）
       streak: {
-        current: streakMock.days,
-        best: streakMock.best,
-        last7days: streakMock.week.map((d) => d.studied),
+        current: streak.days,
+        best: streak.best ?? streak.days,
+        last7days: streak.week.map((d) => d.studied),
       },
       todayQuest: {
         title: '「バナーを作ってみよう」を進める',
@@ -564,8 +532,8 @@ export const handlers = [
         { id: 8, title: 'ポートフォリオ作成', type: 'milestone', status: 'locked', phaseId: 3 },
         { id: 9, title: '初案件に応募', type: 'boss', status: 'locked', phaseId: 3 },
       ],
-    })
-  ),
+    });
+  }),
 
   // 目標のAI細分化（POST /webcoach/goal-breakdown）— ゴール文字列/コーチング記録→サブ目標配列
   http.post('*/api/webcoach/goal-breakdown', async ({ request }) => {
@@ -653,39 +621,33 @@ export const handlers = [
     return HttpResponse.json({ ...week, hasPlan: true, review });
   }),
 
-  // ==================== コーチング（AIミーティングノート） ====================
-  http.get('*/api/webcoach/coaching-sessions/:userid', () =>
-    HttpResponse.json({
-      next: { date: '7月29日(火) 20:00', coach: '田中コーチ' },
-      past: [
-        { id: 4, date: '2026-07-02', title: '第4回コーチング', summary: 'バナー制作の進め方と「余白の取り方」の課題を確認。次回までに参考分析と配色案。', tasksCreated: true },
-        { id: 3, date: '2026-06-25', title: '第3回コーチング', summary: '配色の基礎と参考サイトの見方を整理。デザインの型を増やす方針に。', tasksCreated: true },
-        { id: 2, date: '2026-06-18', title: '第2回コーチング', summary: '学習リズムの設計。週3回のペースで基礎コースを進めることで合意。', tasksCreated: true },
-      ],
-    })
-  ),
-  // 録音→要約→タスク候補の生成（本番は 録音→文字起こしAPI→要約 に置き換え）
-  http.post('*/api/webcoach/coaching-note', () =>
-    HttpResponse.json({
-      summary:
-        '今回はポートフォリオ用のバナー制作を最優先に設定。前回の課題「余白の取り方」を改善するため、参考サイトの分析と配色2案の準備を次回までに行うことで合意しました。',
-      transcript:
-        '今日のコーチングでは、ポートフォリオ用にバナーを3枚作ることを目標にしました。前回の余白の取り方が課題だったのでそこを意識すること。参考サイトを3つ見て分析するのと、配色は2パターン用意して次回持ってくるよう言われました。',
-      keyPoints: [
-        'ポートフォリオ用バナーを3枚作る',
-        '余白の取り方を改善する',
-        '参考サイトを3つ分析する',
-        '配色を2パターン用意する',
-      ],
-      suggestedTasks: [
-        'コーチと決めた「バナー3枚」に今週着手する',
-        '前回指摘された余白の取り方を意識して1枚作り直す',
-        'おすすめされた参考サイトを3つ分析する',
-        '配色パターンを2案つくって次回に備える',
-        '完成したバナーを次回コーチングに持参する',
-      ],
-    })
-  ),
+  // ==================== コーチ/運営: 受講生一覧 ====================
+  // 実BFFには /api/admin/students が存在しないため、コーチ側の受講生一覧・詳細ページ用にモックする
+  http.get('*/api/admin/students', () => HttpResponse.json({ students: studentsStore })),
+
+  // ==================== AIコーチングノート ====================
+  // 取り込み・非同期処理・要約・目標確定。量が多いので coachingHandlers.ts に分離している。
+  ...coachingHandlers,
+
+  // ==================== 教材学習ワークスペース ====================
+  // 教材目次・構造化教材・教材準拠のAI回答・メモ/クリップ/保存回答。
+  // 量が多いので lessonHandlers.ts に分離している。
+  ...lessonHandlers,
+
+  // ==================== AIコーチの専門モード ====================
+  // 従来「AIアプリ」として別タブで開いていたものを、AIコーチの専門モードとして内包する。
+  // 本番ではこのエンドポイントがDify呼び出しの境界になる。aiSkillHandlers.ts に分離している。
+  ...aiSkillHandlers,
+
+  // ==================== 学習ロードマップ（LearningPlan） ====================
+  // 初回質問→自動生成→受講生による調整→月次更新案。
+  // 量が多いので learningPlanHandlers.ts に分離している。
+  ...learningPlanHandlers,
+
+  // ==================== 集中ブース: 学習アクティビティ ====================
+  // タイマー記録・統計・ストリーク。localStorage永続化のため studyActivityHandlers.ts に分離している。
+  // 🔴 GET /webcoach/streak/:userid もこちらが持つ（上の固定モックは削除済み）。
+  ...studyActivityHandlers,
 
   // ==================== サンプル機能（新API＝モックの雛形） ====================
   // 実BFFには存在しない新エンドポイント。/announcements ページから利用する。

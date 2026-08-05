@@ -18,8 +18,46 @@ import {
   HealthResponse,
 } from '../types/api';
 import { CoachingGoalApi, CoachingGoalUpdateItem, DailyTodo, StreakInfo, CommunityPulse, Journey } from '../types/mypage';
-import { StudySessionInput, StudySessionRecord } from '../types/studyRoom';
-import { FocusBoothMember, RankingEntry, RankingType, FocusBoothPulse } from '../types/focusBooth';
+import {
+  StudyActivity,
+  StudyActivityInput,
+  StudyActivityPage,
+  StudyActivityQuery,
+  StudyStatsSummary,
+} from '../types/studyActivity';
+import { FocusBoothMember, FocusBoothPulse } from '../types/focusBooth';
+import {
+  AutoImportReadiness,
+  CoachingSessions,
+  CoachingSessionDetail,
+  CoachingSessionPatch,
+  ConnectionInvite,
+  ImportRecordPayload,
+  MeetingConnection,
+  MeetingLink,
+  MeetingProviderId,
+  NextCoaching,
+  RecordingConsent,
+} from '../types/coaching';
+import {
+  LessonAiRequest,
+  LessonAiResponse,
+  LessonDoc,
+  LessonOutline,
+} from '../types/lesson';
+import { AiSkillRequest, AiSkillResponse } from '../types/aiSkill';
+import { NoteCreateInput, NoteItem, NoteListQuery } from '../types/notes';
+import {
+  CheckinAnswers,
+  CheckinPrompt,
+  ChoiceQuestion,
+  IntakeAnswers,
+  LearningPlan,
+  LearningPlanPatch,
+  MilestoneTemplate,
+  PlanRevision,
+  RevisionAction,
+} from '../types/learningPlan';
 import { getIdToken } from './cognitoAuth';
 
 /**
@@ -408,11 +446,63 @@ class BFFClient {
     return response.data;
   }
 
+  // ==================== 集中ブース: 学習アクティビティ ====================
+  // 実BFFには存在しない新機能。すべて mocks/studyActivityHandlers.ts の MSW モックが応答する。
+  // 🔴 モックOFF（本番）では 404 になる。呼び出し側は「取得できない＝統計を出さない」に縮退させる
+  //    （タイマー自体は動く。hooks/useStudyStats.ts の unavailable を参照）。
+
   /**
-   * 自習室: 学習セッションの記録
+   * 学習アクティビティを記録する
+   * POST /api/webcoach/study-activities/{userId}
+   * id はクライアント生成で、同じ id の再送は既存を返す（冪等）。
    */
-  async recordStudySession(userId: number, session: StudySessionInput): Promise<StudySessionRecord> {
-    const response = await this.api.post(`/webcoach/study-sessions/${userId}`, session);
+  async recordStudyActivity(userId: number, input: StudyActivityInput): Promise<StudyActivity> {
+    const response = await this.api.post(`/webcoach/study-activities/${userId}`, input);
+    return response.data;
+  }
+
+  /**
+   * 学習履歴（新しい順・ページング）
+   * GET /api/webcoach/study-activities/{userId}?from&to&courseId&limit&offset
+   */
+  async getStudyActivities(
+    userId: number,
+    query: StudyActivityQuery = {}
+  ): Promise<StudyActivityPage> {
+    const response = await this.api.get(`/webcoach/study-activities/${userId}`, { params: query });
+    return response.data;
+  }
+
+  /**
+   * 今日/今週/今月・ストリーク・日別・教材別・最近の履歴をまとめて取得する
+   * GET /api/webcoach/study-stats/{userId}?days=35
+   * 画面はこれ1本で描けるようにしてある（リクエストを増やさない）。
+   */
+  async getStudyStats(userId: number, days = 35): Promise<StudyStatsSummary> {
+    const response = await this.api.get(`/webcoach/study-stats/${userId}`, { params: { days } });
+    return response.data;
+  }
+
+  /**
+   * 学習アクティビティを1件削除する
+   * DELETE /api/webcoach/study-activities/{userId}/{activityId}
+   */
+  async deleteStudyActivity(userId: number, activityId: string): Promise<{ ok: boolean }> {
+    const response = await this.api.delete(`/webcoach/study-activities/${userId}/${activityId}`);
+    return response.data;
+  }
+
+  /**
+   * 【モック確認用】学習アクティビティを消して、今日起点の過去数週間ぶんを再シードする。
+   * ストリーク・カレンダー・グラフの見た目を作り直したいときに DevTools から叩く。
+   * 実BFF実装時に持っていく想定ではない。
+   */
+  async resetStudyActivities(userId: number, seed = true): Promise<{ ok: boolean; count: number }> {
+    const response = await this.api.post(
+      `/webcoach/study-activities/${userId}/reset`,
+      null,
+      { params: { seed } }
+    );
     return response.data;
   }
 
@@ -424,11 +514,243 @@ class BFFClient {
     return response.data;
   }
 
+  // ==================== AIコーチングノート ====================
+  // 実BFFには存在しない新機能。すべて MSW モックで応答する。
+
   /**
-   * コーチングセッション（次回予約・過去の記録）
+   * コーチングセッション一覧（次回予約・過去の記録）
+   * GET /api/webcoach/coaching-sessions/{userid}
    */
-  async getCoachingSessions(userId: number): Promise<{ next: { date: string; coach: string }; past: any[] }> {
+  async getCoachingSessions(userId: number): Promise<CoachingSessions> {
     const response = await this.api.get(`/webcoach/coaching-sessions/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 会議リンクを次回コーチングに登録する
+   * PUT /api/webcoach/coaching-sessions/{userid}/meeting-link
+   *
+   * 受講生はコーチから届いたメッセージを貼り付けるだけ。URLの抽出とサービス判定は
+   * クライアント側（utils/parseMeetingLink.ts）で済ませてから送る。
+   */
+  async registerMeetingLink(userId: number, link: MeetingLink): Promise<NextCoaching> {
+    const response = await this.api.put(`/webcoach/coaching-sessions/${userId}/meeting-link`, link);
+    return response.data;
+  }
+
+  /**
+   * 録音・文字起こし・AI要約への同意を記録する（初回のみ）
+   * PUT /api/webcoach/coaching-sessions/{userid}/consent
+   */
+  async setCoachingConsent(userId: number): Promise<RecordingConsent> {
+    const response = await this.api.put(`/webcoach/coaching-sessions/${userId}/consent`, {
+      agreed: true,
+      agreedAt: new Date().toISOString(),
+    });
+    return response.data;
+  }
+
+  /**
+   * AIノートを開始してコーチングに参加する
+   * POST /api/webcoach/coaching-sessions/{userid}/start
+   *
+   * 受講生の端末で録音を始めるものではない。コーチの認証済み権限を使って
+   * 会議側の記録機能を有効化し、セッションを recording 状態にする。
+   */
+  async startCoachingSession(userId: number): Promise<CoachingSessionDetail> {
+    const response = await this.api.post(`/webcoach/coaching-sessions/${userId}/start`);
+    return response.data;
+  }
+
+  /**
+   * 【モック専用】コーチング終了 → 録画・文字起こしの取得とAI生成を開始する
+   * POST /api/webcoach/coaching-sessions/{sessionId}/finish
+   *
+   * 実運用ではプロバイダーの Webhook（recording.transcript_completed 等）が起点になるため、
+   * このエンドポイントは本番に存在しない。
+   */
+  async finishCoachingSession(sessionId: number): Promise<CoachingSessionDetail> {
+    const response = await this.api.post(`/webcoach/coaching-sessions/${sessionId}/finish`);
+    return response.data;
+  }
+
+  /**
+   * セッション詳細（文字起こし・AI要約・処理状況）
+   * GET /api/webcoach/coaching-sessions/detail/{sessionId}
+   * 処理中はこのエンドポイントをポーリングして status の遷移を見る。
+   */
+  async getCoachingSession(sessionId: number): Promise<CoachingSessionDetail> {
+    const response = await this.api.get(`/webcoach/coaching-sessions/detail/${sessionId}`);
+    return response.data;
+  }
+
+  /**
+   * 【フォールバック】記録を手動で取り込んでAI処理を開始する
+   * POST /api/webcoach/coaching-sessions/{sessionId}/import
+   *
+   * 通常は自動取得で完結する。この経路はコーチが未連携・プラン非対応・
+   * 自動取得に失敗したときだけ使う。
+   *
+   * 音声/動画の実体はこのAPIには通さない。1時間規模の音声・動画をAPIサーバーの
+   * メモリと帯域に通すのは無理があるため、本番では presigned URL でブラウザから
+   * ストレージへ直接アップロードし、ここにはそのメタデータだけを送る設計にする
+   * （frontend/docs/ai-coaching-notes-design.md「6. 音声ファイルの保存」）。
+   */
+  async importCoachingRecord(
+    sessionId: number,
+    payload: ImportRecordPayload,
+  ): Promise<CoachingSessionDetail> {
+    const response = await this.api.post(`/webcoach/coaching-sessions/${sessionId}/import`, {
+      source: payload.source,
+      segments: payload.segments,
+      text: payload.text,
+      audioRetention: payload.audioRetention,
+      fileName: payload.fileName,
+      // 音声そのものではなくサイズだけ。本番ではアップロード済みオブジェクトのキーになる
+      audioSizeBytes: payload.audio?.size,
+    });
+    return response.data;
+  }
+
+  /**
+   * セッションの部分更新（メモ・公開範囲・保存期間・話者ラベル・目標/タスクの編集）
+   * PATCH /api/webcoach/coaching-sessions/detail/{sessionId}
+   */
+  async updateCoachingSession(
+    sessionId: number,
+    patch: CoachingSessionPatch,
+  ): Promise<CoachingSessionDetail> {
+    const response = await this.api.patch(`/webcoach/coaching-sessions/detail/${sessionId}`, patch);
+    return response.data;
+  }
+
+  /**
+   * 選んだ目標候補を確定する（ai_suggested → student_confirmed）
+   * POST /api/webcoach/coaching-sessions/{sessionId}/confirm-goals
+   */
+  async confirmCoachingGoals(
+    sessionId: number,
+    goalIds: string[],
+  ): Promise<CoachingSessionDetail> {
+    const response = await this.api.post(
+      `/webcoach/coaching-sessions/${sessionId}/confirm-goals`,
+      { goalIds },
+    );
+    return response.data;
+  }
+
+  /**
+   * コーチング記録を削除する（音声・文字起こしを含む）
+   * DELETE /api/webcoach/coaching-sessions/detail/{sessionId}
+   */
+  async deleteCoachingSession(sessionId: number): Promise<void> {
+    await this.api.delete(`/webcoach/coaching-sessions/detail/${sessionId}`);
+  }
+
+  /**
+   * 次回コーチング予定の更新
+   * PUT /api/webcoach/coaching-sessions/{userid}/next
+   */
+  async updateNextCoaching(userId: number, next: Partial<NextCoaching>): Promise<NextCoaching> {
+    const response = await this.api.put(`/webcoach/coaching-sessions/${userId}/next`, next);
+    return response.data;
+  }
+
+  // ==================== Zoom / Meet 連携（自動取り込み） ====================
+  // 録画・文字起こしの持ち主は会議の主催者（コーチ）なので、認可はコーチ側から取る。
+  // ただしコーチにLMSアカウントは無い前提。運営が初回セットアップで接続リンクを発行し、
+  // コーチはそのリンクを1回開いて認可するだけで済ませる。
+
+  /**
+   * コーチごとの接続状態一覧（運営画面用）
+   * GET /api/webcoach/meeting-connections
+   */
+  async getMeetingConnections(): Promise<{ connections: MeetingConnection[] }> {
+    const response = await this.api.get('/webcoach/meeting-connections');
+    return response.data;
+  }
+
+  /**
+   * 接続リンクを一括発行する（コーチの初回セットアップで使う）
+   * POST /api/webcoach/meeting-connections/invites
+   *
+   * baseUrl は呼び出し側で組み立てて渡す。dev-preview はサブパス配信のため、
+   * origin だけでなく PUBLIC_URL も含めないとコーチが開けないリンクになる。
+   */
+  async createConnectionInvites(
+    coachIds: number[],
+    baseUrl: string,
+  ): Promise<{ invites: ConnectionInvite[] }> {
+    const response = await this.api.post('/webcoach/meeting-connections/invites', { coachIds, baseUrl });
+    return response.data;
+  }
+
+  /**
+   * 接続リンクの内容を取得する
+   * GET /api/webcoach/meeting-connections/invites/{token}
+   *
+   * 【認証不要】コーチはLMSアカウントを持たないため、このエンドポイントだけは
+   * 未ログインで到達できる必要がある。本番実装でも Authorization を必須にしないこと。
+   */
+  async getConnectionInvite(token: string): Promise<{
+    invite: ConnectionInvite;
+    connection: MeetingConnection | null;
+    expired: boolean;
+  }> {
+    const response = await this.api.get(`/webcoach/meeting-connections/invites/${token}`);
+    return response.data;
+  }
+
+  /**
+   * 接続を完了する（本番は OAuth コールバック後の処理に相当）
+   * POST /api/webcoach/meeting-connections/invites/{token}/complete
+   *
+   * 【認証不要】上記と同じ理由。
+   * simulateFreePlan / simulateFailure はモック専用で、
+   * プラン非対応・認証失敗時の見え方を確認するためのもの。
+   */
+  async completeConnectionInvite(
+    token: string,
+    provider: MeetingProviderId,
+    simulateFreePlan = false,
+    simulateFailure = false,
+  ): Promise<MeetingConnection> {
+    const response = await this.api.post(
+      `/webcoach/meeting-connections/invites/${token}/complete`,
+      { provider, simulateFreePlan, simulateFailure },
+    );
+    return response.data;
+  }
+
+  /**
+   * 接続を解除する
+   * DELETE /api/webcoach/meeting-connections/{id}
+   */
+  async disconnectMeetingConnection(connectionId: string): Promise<MeetingConnection> {
+    const response = await this.api.delete(`/webcoach/meeting-connections/${connectionId}`);
+    return response.data;
+  }
+
+  /**
+   * 自動取り込みの事前チェック
+   * GET /api/webcoach/coaching-auto-import/readiness/{userid}
+   *
+   * 「自動で届きます」と表示しておいて実は届かない、を防ぐために使う。
+   */
+  async getAutoImportReadiness(userId: number): Promise<AutoImportReadiness> {
+    const response = await this.api.get(`/webcoach/coaching-auto-import/readiness/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 認証URLを再送する（運営画面から。既存トークンを無効化して新しく発行し直す）
+   * POST /api/webcoach/meeting-connections/{coachId}/resend
+   */
+  async resendConnectionInvite(coachId: number, baseUrl: string): Promise<ConnectionInvite> {
+    const response = await this.api.post(
+      `/webcoach/meeting-connections/${coachId}/resend`,
+      { baseUrl },
+    );
     return response.data;
   }
 
@@ -453,14 +775,6 @@ class BFFClient {
    */
   async cheerFocusBoothMember(memberId: string): Promise<FocusBoothMember> {
     const response = await this.api.post(`/webcoach/focus-booth/members/${memberId}/cheer`);
-    return response.data;
-  }
-
-  /**
-   * 集中ブース: ランキング
-   */
-  async getFocusBoothRanking(type: RankingType): Promise<RankingEntry[]> {
-    const response = await this.api.get('/webcoach/focus-booth/ranking', { params: { type } });
     return response.data;
   }
 
@@ -719,6 +1033,211 @@ class BFFClient {
       params: { path: param }
     });
     return response.data;
+  }
+
+  // ==================== 教材学習ワークスペース（モック） ====================
+  //
+  // 実BFFには存在しないエンドポイント群。frontend/src/mocks/lessonHandlers.ts が
+  // MSW で応答する。モックOFF（本番）では 404 になるため、呼び出し側
+  // （hooks/useLessonDoc.ts）が実Moodle教材へフォールバックする。
+  // 仕様は frontend/docs/learning-workspace-design.md を参照。
+
+  /**
+   * 教材目次（コース内のセクション＋レッスン一覧）
+   * GET /api/webcoach/courses/{courseId}/outline
+   */
+  async getLessonOutline(courseId: number): Promise<LessonOutline> {
+    const response = await this.api.get(`/webcoach/courses/${courseId}/outline`);
+    return response.data;
+  }
+
+  /**
+   * 教材本文（ブロック配列）
+   * GET /api/webcoach/courses/{courseId}/lessons/{lessonId}
+   */
+  async getLessonDoc(courseId: number, lessonId: number): Promise<LessonDoc> {
+    const response = await this.api.get(`/webcoach/courses/${courseId}/lessons/${lessonId}`);
+    return response.data;
+  }
+
+  /**
+   * 教材に準拠したAI回答（結論／根拠／当てはめ／次にやること／参照箇所）
+   * POST /api/webcoach/lesson-ai
+   */
+  async askLessonAi(request: LessonAiRequest): Promise<LessonAiResponse> {
+    const response = await this.api.post('/webcoach/lesson-ai', request);
+    return response.data;
+  }
+
+  /**
+   * AIコーチの専門モードを実行する（項目別添削・文章改善など）
+   * POST /api/webcoach/ai-skill
+   *
+   * 実BFFには未実装。すべて mocks/aiSkillHandlers.ts のMSWモックが応答する。
+   * 本番ではこのエンドポイントが Dify 呼び出しの唯一の境界になり、
+   * BFF が skillId を Difyアプリの資格情報へ解決して代理呼び出しする。
+   * フロントはアプリIDやURLを一切持たない（ユーザーにも見せない）。
+   */
+  async runAiSkill(request: AiSkillRequest): Promise<AiSkillResponse> {
+    const response = await this.api.post('/webcoach/ai-skill', request);
+    return response.data;
+  }
+
+  /**
+   * 教材単位のメモ下書き取得
+   * GET /api/webcoach/lesson-notes/{lessonId}
+   */
+  async getLessonMemo(lessonId: number): Promise<{ text: string; updatedAt: string | null }> {
+    const response = await this.api.get(`/webcoach/lesson-notes/${lessonId}`);
+    return response.data;
+  }
+
+  /**
+   * 教材単位のメモ下書き保存（自動保存）
+   * PUT /api/webcoach/lesson-notes/{lessonId}
+   */
+  async putLessonMemo(lessonId: number, text: string): Promise<{ text: string; updatedAt: string }> {
+    const response = await this.api.put(`/webcoach/lesson-notes/${lessonId}`, { text });
+    return response.data;
+  }
+
+  /**
+   * マイノート横断取得（メモ・クリップ・保存したAI回答）
+   * GET /api/webcoach/notes?kind={kind}&q={q}&courseId={courseId}&lessonId={lessonId}
+   */
+  async listNotes(query: NoteListQuery = {}): Promise<NoteItem[]> {
+    const response = await this.api.get('/webcoach/notes', { params: query });
+    return response.data;
+  }
+
+  /**
+   * ノート作成（メモカード／クリップ／⭐保存したAI回答）
+   * POST /api/webcoach/notes
+   */
+  async createNote(body: NoteCreateInput): Promise<NoteItem> {
+    const response = await this.api.post('/webcoach/notes', body);
+    return response.data;
+  }
+
+  /**
+   * ノート削除
+   * DELETE /api/webcoach/notes/{id}
+   */
+  async deleteNote(id: string): Promise<void> {
+    await this.api.delete(`/webcoach/notes/${id}`);
+  }
+
+  // ==================== 学習ロードマップ（LearningPlan） ====================
+  // 実BFFには未実装。すべて mocks/learningPlanHandlers.ts のMSWモックが応答する。
+
+  /**
+   * 学習ロードマップの取得（未作成なら null）
+   * GET /api/webcoach/learning-plan/{userId}
+   */
+  async getLearningPlan(userId: number): Promise<LearningPlan | null> {
+    const response = await this.api.get(`/webcoach/learning-plan/${userId}`);
+    return response.data ?? null;
+  }
+
+  /**
+   * 初回質問の定義取得（質問文を画面にベタ書きしないため）
+   * GET /api/webcoach/learning-plan/intake-questions
+   */
+  async getIntakeQuestions(): Promise<ChoiceQuestion[]> {
+    const response = await this.api.get('/webcoach/learning-plan/intake-questions');
+    return response.data;
+  }
+
+  /**
+   * マイルストーン候補テンプレートの取得
+   * GET /api/webcoach/learning-plan/milestone-templates
+   */
+  async getMilestoneTemplates(phaseKey?: string): Promise<MilestoneTemplate[]> {
+    const response = await this.api.get('/webcoach/learning-plan/milestone-templates', {
+      params: phaseKey ? { phaseKey } : undefined,
+    });
+    return response.data;
+  }
+
+  /**
+   * 初回質問への回答を送り、標準ロードマップを自動生成する
+   * POST /api/webcoach/learning-plan/{userId}/intake
+   */
+  async submitIntake(userId: number, answers: IntakeAnswers): Promise<LearningPlan> {
+    const response = await this.api.post(`/webcoach/learning-plan/${userId}/intake`, answers);
+    return response.data;
+  }
+
+  /**
+   * 期間・マイルストーンの調整を保存する
+   * PATCH /api/webcoach/learning-plan/{userId}
+   */
+  async updateLearningPlan(userId: number, patch: LearningPlanPatch): Promise<LearningPlan> {
+    const response = await this.api.patch(`/webcoach/learning-plan/${userId}`, patch);
+    return response.data;
+  }
+
+  /**
+   * 「コーチと確認しました」を記録する
+   * POST /api/webcoach/learning-plan/{userId}/confirm
+   * コーチはLMSを操作しない運用のため、押すのは受講生本人（コーチングの場で一緒に確認する）。
+   */
+  async confirmLearningPlan(userId: number, coachName: string | null): Promise<LearningPlan> {
+    const response = await this.api.post(`/webcoach/learning-plan/${userId}/confirm`, { coachName });
+    return response.data;
+  }
+
+  /**
+   * 月次チェックインの質問と回答状況
+   * GET /api/webcoach/learning-plan/{userId}/checkin
+   */
+  async getPlanCheckin(userId: number): Promise<CheckinPrompt> {
+    const response = await this.api.get(`/webcoach/learning-plan/${userId}/checkin`);
+    return response.data;
+  }
+
+  /**
+   * 月次チェックインに回答する。更新すべき点があれば更新案が返る（無ければ null）
+   * POST /api/webcoach/learning-plan/{userId}/checkin
+   */
+  async submitPlanCheckin(userId: number, answers: CheckinAnswers): Promise<PlanRevision | null> {
+    const response = await this.api.post(`/webcoach/learning-plan/${userId}/checkin`, answers);
+    return response.data ?? null;
+  }
+
+  /**
+   * 更新案の一覧（未操作で溜まった分も含む）
+   * GET /api/webcoach/learning-plan/{userId}/revisions
+   */
+  async getPlanRevisions(userId: number): Promise<PlanRevision[]> {
+    const response = await this.api.get(`/webcoach/learning-plan/${userId}/revisions`);
+    return response.data;
+  }
+
+  /**
+   * 更新案への回答（提案どおり / 期間だけ / 現状を維持 / 選んだ項目だけ）
+   * POST /api/webcoach/learning-plan/{userId}/revisions/{revisionId}/resolve
+   */
+  async resolvePlanRevision(
+    userId: number,
+    revisionId: string,
+    action: RevisionAction,
+    selectedDiffIds?: string[],
+  ): Promise<{ plan: LearningPlan; revision: PlanRevision }> {
+    const response = await this.api.post(
+      `/webcoach/learning-plan/${userId}/revisions/${revisionId}/resolve`,
+      { action, selectedDiffIds },
+    );
+    return response.data;
+  }
+
+  /**
+   * ロードマップを削除して初回設定からやり直す
+   * POST /api/webcoach/learning-plan/{userId}/reset
+   * **モック確認用**のエンドポイント。実BFF実装時に持っていく想定ではない。
+   */
+  async resetLearningPlan(userId: number): Promise<void> {
+    await this.api.post(`/webcoach/learning-plan/${userId}/reset`);
   }
 }
 

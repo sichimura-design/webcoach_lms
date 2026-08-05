@@ -1,14 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, ChevronDown, ChevronRight, ChevronsLeft, ChevronsRight, MessageCircle, Lightbulb, ImagePlus, Headphones } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, ChevronDown, ChevronRight, ChevronsLeft, ChevronsRight, Headphones, MessagesSquare, Map, NotebookPen } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotificationStore } from '../../store/notificationStore';
 import { useNewContentNotification } from '../../hooks/useNewContentNotification';
 import { AccountSettingsDropdown } from './AccountSettingsDropdown';
-import { useAiChat } from '../../hooks/useAiChat';
-import { useChatStore } from '../../store/chatStore';
+import GlobalAiCoachDrawer from '../aicoach/GlobalAiCoachDrawer';
 import { withCfToken } from '../profile/AvatarPicker';
 
 interface AppHeaderProps {
@@ -26,18 +23,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   // avatarUrl は呼び出し元が既にcf_token付与済みの前提。ctxAvatarUrlはcontextの生URLなのでここで付与する
   const resolvedAvatarUrl = avatarUrl ?? (ctxAvatarUrl ? withCfToken(ctxAvatarUrl, contentToken) : undefined);
 
-  const { chatOpen, setChatOpen } = useChatStore();
-  const { messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress, attachedImage, setAttachedImage } = useAiChat();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleImagePick = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => setAttachedImage(typeof reader.result === 'string' ? reader.result : null);
-    reader.readAsDataURL(file);
-    e.target.value = '';
-  };
+  // AIコーチ本体とその開閉は GlobalAiCoachDrawer が持つ。
+  // （なぞって解説の撤去に伴い、AppHeader からドロワーを開く経路は無くなった）
 
   const { items: notificationItems, markAllRead } = useNotificationStore();
   const [notifOpen, setNotifOpen] = useState(false);
@@ -64,10 +51,20 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     `https://ui-avatars.com/api/?name=${encodeURIComponent(resolvedUserName)}&background=F0EAE6&color=CDC6C6`;
 
   const isMyPage = location.pathname === '/mypage' || location.pathname === '/';
-  const isCoursesPage = location.pathname === '/courses' || location.pathname.startsWith('/courses/') || location.pathname === '/learning-courses';
-  const isFocusBooth = location.pathname === '/focus-booth';
-  const isAIApps = location.pathname === '/ai-apps';
+  // 教材ページは /course/:id（単数形）。ここを含めないと学習中にナビがどこも点灯しない。
+  const isCoursesPage = location.pathname === '/courses' || location.pathname.startsWith('/courses/')
+    || location.pathname.startsWith('/course/') || location.pathname === '/learning-courses';
+  const isNotes = location.pathname.startsWith('/notes');
+  // /study-log は集中ブースの掘り下げ。ナビ項目は増やさず、ここを点灯させ続ける
+  // （isCoursesPage が /course/* を含めているのと同じ考え方）。
+  const isFocusBooth = location.pathname === '/focus-booth' || location.pathname === '/study-log';
+  const isCoaching = location.pathname === '/coaching';
+  const isLearningPlan = location.pathname.startsWith('/learning-plan');
+  const isAiCoach = location.pathname === '/ai-coach';
   const isAdmin = location.pathname.startsWith('/admin');
+  // 教材学習ワークスペースとAI専用ページには、それぞれ専用のAIコーチUIがある。
+  // ここで常駐ドロワーとFABも出すと入口が二重になり、要件が避けたい「競合」になる。
+  const hasOwnAiSurface = location.pathname.startsWith('/course/') || isAiCoach;
 
   // サイドバーの開閉（初期状態は展開。クリックで折りたたみ、その状態を保持する）
   const [expanded, setExpanded] = useState(() => {
@@ -89,59 +86,22 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     try { localStorage.setItem('webcoach-sidebar-expanded', expanded ? '1' : '0'); } catch { /* noop */ }
   }, [expanded]);
 
-  // なぞって解説：テキスト選択時に「AIに解説」ボタンを出す
-  const [sel, setSel] = useState<{ text: string; x: number; y: number } | null>(null);
-  useEffect(() => {
-    const onUp = (e: MouseEvent) => {
-      // 「AIに解説」ボタン上での mouseup では消さない（クリックを成立させる）
-      if ((e.target as HTMLElement)?.closest?.('[data-explain-btn]')) return;
-      const ae = document.activeElement as HTMLElement | null;
-      if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA')) { setSel(null); return; }
-      const s = window.getSelection();
-      const text = s?.toString().trim() || '';
-      if (s && s.rangeCount > 0 && text.length >= 2 && text.length <= 400) {
-        const r = s.getRangeAt(0).getBoundingClientRect();
-        if (r && r.width > 0) {
-          setSel({ text, x: Math.min(Math.max(r.left, 8), window.innerWidth - 160), y: Math.max(r.top - 8, 40) });
-          return;
-        }
-      }
-      setSel(null);
-    };
-    const onDown = (e: MouseEvent) => {
-      if ((e.target as HTMLElement)?.closest?.('[data-explain-btn]')) return;
-      setSel(null);
-    };
-    document.addEventListener('mouseup', onUp);
-    document.addEventListener('mousedown', onDown);
-    return () => { document.removeEventListener('mouseup', onUp); document.removeEventListener('mousedown', onDown); };
-  }, []);
-
-  // 教材はiframe内に描画されるため、iframeからの選択通知を受けてボタンを出す
-  useEffect(() => {
-    const onMsg = (e: MessageEvent) => {
-      const d: any = e.data;
-      if (!d || d.__lmsExplain !== true) return;
-      if (d.clear) { setSel(null); return; }
-      const frame = Array.from(document.querySelectorAll('iframe')).find(f => f.contentWindow === e.source);
-      if (!frame) return;
-      const fb = frame.getBoundingClientRect();
-      setSel({
-        text: String(d.text || ''),
-        x: Math.min(Math.max(fb.left + (d.left || 0), 8), window.innerWidth - 160),
-        y: Math.max(fb.top + (d.top || 0) - 8, 40),
-      });
-    };
-    window.addEventListener('message', onMsg);
-    return () => window.removeEventListener('message', onMsg);
-  }, []);
+  // 【一旦停止】全画面共通の「なぞって解説」（テキスト選択で「AIに解説」ボタンを出す機能）は撤去した。
+  // AppHeader は全ページに出るため、文章をなぞる・コピーするなどの通常操作のたびに
+  // ポップアップが割り込んでしまうのが理由。
+  // 教材ページ本文の選択ツールバー（解説／AIに質問／クリップ）は別実装なので残っている:
+  //   components/learning/SelectionToolbar.tsx + hooks/useTextSelection.ts
+  // 復活させるときは、出す画面を絞ってから戻すこと（全画面で出すと同じ問題が再発する）。
 
   // ナビ項目（サイドバー・下部ナビ共通の定義。既存ルートのみを使用）
   const navItems = [
     { label: 'マイページ', icon: Home, path: '/mypage', active: isMyPage },
     { label: '学習コンテンツ', icon: BookOpen, path: '/courses', active: isCoursesPage },
+    { label: 'マイノート', icon: NotebookPen, path: '/notes', active: isNotes },
     { label: '集中ブース', icon: Headphones, path: '/focus-booth', active: isFocusBooth },
-    { label: 'AIサポート', icon: Sparkles, path: '/ai-apps', active: isAIApps },
+    { label: 'コーチング', icon: MessagesSquare, path: '/coaching', active: isCoaching },
+    { label: '学習ロードマップ', icon: Map, path: '/learning-plan', active: isLearningPlan },
+    { label: 'AIコーチ', icon: Sparkles, path: '/ai-coach', active: isAiCoach },
   ];
   const learnItems = navItems;
   const manageItems = user?.isAdmin
@@ -499,11 +459,11 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                 <span className="hidden sm:inline">学習する</span>
               </button>
 
-              {/* AIアプリ */}
+              {/* AIコーチ */}
               <button
-                onClick={() => navigate('/ai-apps')}
+                onClick={() => navigate('/ai-coach')}
                 className={`flex items-center gap-1.5 rounded-full text-sm font-bold transition-all px-2.5 sm:px-5 border-0 ${
-                  isAIApps
+                  isAiCoach
                     ? 'text-white bg-brand-gradient'
                     : 'text-brand-muted'
                 }`}
@@ -513,7 +473,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                 }}
               >
                 <Sparkles className="w-[18px] h-[18px]" />
-                <span className="hidden sm:inline">AIアプリ</span>
+                <span className="hidden sm:inline">AIコーチ</span>
               </button>
 
               {/* 管理（admin only） */}
@@ -617,7 +577,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           <div className="flex items-center gap-2 sm:gap-5">
             {/* AI Coach Button */}
             <button
-              onClick={() => setChatOpen(true)}
+              onClick={() => navigate('/ai-coach')}
               className="flex items-center gap-1.5 bg-brand-bg hover:bg-[#F0EAE6] rounded-full text-brand-muted border border-brand-subtle transition-colors"
               style={{ height: '34px', padding: '0 10px', fontSize: '12px' }}
             >
@@ -728,11 +688,11 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
             <span className="text-[10px] font-bold">学習する</span>
           </button>
           <button
-            onClick={() => navigate('/ai-apps')}
-            className={`flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors ${isAIApps ? 'text-brand' : 'text-brand-muted'}`}
+            onClick={() => navigate('/ai-coach')}
+            className={`flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors ${isAiCoach ? 'text-brand' : 'text-brand-muted'}`}
           >
             <Sparkles className="w-5 h-5" />
-            <span className="text-[10px] font-bold">AIアプリ</span>
+            <span className="text-[10px] font-bold">AIコーチ</span>
           </button>
           {user?.isAdmin && (
             <button
@@ -755,207 +715,10 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         </div>
       </nav>
 
-      {/* なぞって解説ボタン（テキスト選択時） */}
-      {!chatOpen && sel && (
-        <button
-          data-explain-btn
-          onClick={() => {
-            setInput(`「${sel.text}」について、初心者にもわかるように解説してください`);
-            setChatOpen(true);
-            setSel(null);
-          }}
-          className="fixed z-50 inline-flex items-center gap-1 text-xs font-bold text-white rounded-full px-3 py-1.5 shadow-lg"
-          style={{ top: sel.y, left: sel.x, transform: 'translateY(-100%)', background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}
-        >
-          <Lightbulb className="w-3.5 h-3.5" /> AIに解説
-        </button>
-      )}
-
-      {/* 右下常駐のAIコーチ FAB */}
-      {!chatOpen && (
-        <button
-          onClick={() => setChatOpen(true)}
-          aria-label="AIコーチに相談"
-          className="fixed z-40 right-6 bottom-20 sm:bottom-6 w-16 h-16 rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity"
-          style={{
-            background: 'linear-gradient(145deg, #f0444b, #D30F1A)',
-            border: '4px solid rgba(255,255,255,0.7)',
-            boxShadow: '0 14px 28px rgba(216,15,26,0.24)',
-          }}
-        >
-          <MessageCircle className="w-6 h-6" />
-        </button>
-      )}
-
-      {/* AI Chat Drawer */}
-      {chatOpen && (
-        <>
-          {/* Drawer */}
-          <div className="fixed right-0 top-0 h-full w-full sm:w-[400px] bg-white z-50 flex flex-col shadow-xl">
-            {/* Header */}
-            <div className="p-4 bg-gradient-to-r from-[#E86D78] to-[#FA9262] text-white flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-5 h-5 object-contain" />
-                <span className="font-bold text-lg">AIコーチに相談</span>
-              </div>
-              <button
-                onClick={() => setChatOpen(false)}
-                className="p-1 hover:bg-white/20 rounded"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4">
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
-                >
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      message.role === 'user' ? 'bg-blue-500' : 'bg-brand'
-                    }`}
-                  >
-                    {message.role === 'user' ? (
-                      <User className="w-4 h-4 text-white" />
-                    ) : (
-                      <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-4 h-4 object-contain" />
-                    )}
-                  </div>
-                  <div className="max-w-[85%] sm:max-w-[75%] flex flex-col gap-1">
-                    <div
-                      className={`p-3 rounded-lg ${
-                        message.role === 'user' ? 'bg-blue-100' : 'bg-white'
-                      } shadow-sm`}
-                    >
-                      {message.role === 'assistant' ? (
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          children={message.content.replace(/^(✅[^\n-]*?) - (.+)$/gm, '$1\n$2')}
-                          components={{
-                            h1: ({ children }) => <p className="text-base font-bold text-brand-text mt-3 mb-2">{children}</p>,
-                            h2: ({ children }) => <p className="text-sm font-bold text-brand-text mt-3 mb-2">{children}</p>,
-                            h3: ({ children }) => <p className="text-sm font-semibold text-brand-text mt-2 mb-1">{children}</p>,
-                            p: ({ children }) => <p className="text-sm leading-relaxed mb-2 last:mb-0" style={{ whiteSpace: 'pre-line' }}>{children}</p>,
-                            strong: ({ children }) => <strong className="font-bold text-brand-text">{children}</strong>,
-                            em: ({ children }) => <em className="italic">{children}</em>,
-                            ul: ({ children }) => <ul style={{ listStyleType: 'disc', paddingLeft: '1.25rem', margin: '0.25rem 0' }} className="text-sm">{children}</ul>,
-                            ol: ({ children }) => <ol style={{ listStyleType: 'decimal', paddingLeft: '1.25rem', margin: '0.25rem 0' }} className="text-sm">{children}</ol>,
-                            li: ({ children }) => <li style={{ listStyleType: 'inherit' }} className="text-sm leading-relaxed mb-0.5">{children}</li>,
-                            code: ({ children, className }) => className ? (
-                              <code className="block bg-gray-100 rounded p-2 text-xs font-mono my-1 overflow-x-auto">{children}</code>
-                            ) : (
-                              <code className="bg-gray-100 rounded px-1 text-xs font-mono">{children}</code>
-                            ),
-                            hr: () => <hr className="my-2 border-gray-200" />,
-                          }}
-                        />
-                      ) : (
-                        <>
-                          {message.image && (
-                            <img src={message.image} alt="添付画像" className="rounded-lg mb-2 max-h-48 w-auto object-contain border border-gray-200" />
-                          )}
-                          {message.content && <p className="text-sm whitespace-pre-wrap">{message.content}</p>}
-                        </>
-                      )}
-                      <p className="text-xs text-gray-400 mt-2">
-                        {message.timestamp.toLocaleTimeString('ja-JP', {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </p>
-                    </div>
-
-                    {/* 参照元情報 */}
-                    {message.sources && message.sources.length > 0 && (
-                      <div className="pl-1">
-                        <p className="text-xs text-gray-500 font-bold mb-1">参照元</p>
-                        <div className="space-y-1">
-                          {message.sources.map((source, index) => (
-                            <div
-                              key={index}
-                              className="p-2 bg-gray-100 border border-gray-200 rounded text-xs"
-                            >
-                              <p className="font-bold">
-                                {source.module_name}
-                                {source.filename && ` - ${source.filename}`}
-                              </p>
-                              <p className="text-gray-500">
-                                {source.section_name} | 類似度: {(source.similarity * 100).toFixed(1)}%
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-              {loading && (
-                <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-brand flex items-center justify-center">
-                    <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-4 h-4 object-contain" />
-                  </div>
-                  <div className="p-3 bg-white rounded-lg shadow-sm">
-                    <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 border-2 border-brand border-t-transparent rounded-full animate-spin" />
-                      <span className="text-sm text-gray-500">考え中...</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Input Area */}
-            <div className="p-4 bg-white border-t">
-              {/* 添付画像プレビュー */}
-              {attachedImage && (
-                <div className="relative inline-block mb-2">
-                  <img src={attachedImage} alt="添付プレビュー" className="h-20 w-auto rounded-lg border border-gray-200 object-contain" />
-                  <button
-                    onClick={() => setAttachedImage(null)}
-                    className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-brand-text text-white flex items-center justify-center shadow"
-                    aria-label="添付を削除"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              )}
-              <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImagePick} />
-              <div className="flex gap-2 items-end">
-                <button
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={loading}
-                  className="p-2 rounded-lg border border-gray-300 text-brand-muted hover:bg-gray-50 disabled:opacity-50 transition-colors flex-shrink-0"
-                  aria-label="画像を添付"
-                  title="画像を添付"
-                >
-                  <ImagePlus className="w-5 h-5" />
-                </button>
-                <textarea
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder={attachedImage ? '画像について質問する…（任意）' : '質問を入力してください...'}
-                  disabled={loading}
-                  rows={1}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent disabled:bg-gray-100"
-                />
-                <button
-                  onClick={sendMessage}
-                  disabled={(!input.trim() && !attachedImage) || loading}
-                  className="p-2 bg-brand text-white rounded-lg hover:bg-brand/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex-shrink-0"
-                >
-                  <Send className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+      {/* 常駐AIコーチ（FAB＋ドロワー）。
+          教材ページとAI専用ページには専用のAIコーチ面があるので出さない。
+          両方出すと入口が二重になり、どちらで話したか分からなくなる。 */}
+      {!hasOwnAiSurface && <GlobalAiCoachDrawer />}
     </>
   );
 }

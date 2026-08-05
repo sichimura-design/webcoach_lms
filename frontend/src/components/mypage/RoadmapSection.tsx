@@ -1,77 +1,162 @@
-import { useHomeRoadmap } from '../../hooks/useHomeRoadmap';
-import { color, radius, shadow, font } from '../../theme/webcoachTheme';
+/**
+ * frontend/src/components/mypage/RoadmapSection.tsx
+ * マイページ最下部の帯。長期学習ロードマップ（LearningPlan）の要約を出す。
+ *
+ * 以前はモック専用の journey（コース6ステップ固定）を表示していたが、
+ * 期間・期限・達成条件・見直し日を持つ LearningPlan に置き換えた。
+ * 横一本道のレール表現は PhaseTimeline に切り出して踏襲している。
+ */
+import { useNavigate } from 'react-router-dom';
+import { useLearningPlan } from '../../hooks/useLearningPlan';
+import { PLAN_STATUS_LABEL } from '../../types/learningPlan';
+import { diffDays, formatJpDate, toIso } from '../../utils/learningPlanTemplate';
+import { color, radius, shadow, font, t } from '../../theme/webcoachTheme';
+import PhaseTimeline from '../learningPlan/PhaseTimeline';
+import MilestoneRow from '../learningPlan/MilestoneRow';
 import { ArrowRightIcon } from './ContinueLearningHero';
 
 interface RoadmapSectionProps {
   userId: number | undefined;
 }
 
-function CheckIcon() {
+function SparkIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 12.5l4.5 4.5L19 7" />
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color.primary} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z" />
     </svg>
   );
 }
 
+const CARD_STYLE = {
+  background: color.surface,
+  border: `1px solid ${color.border}`,
+  borderRadius: radius.card,
+  boxShadow: shadow.card,
+  padding: '24px 28px 30px',
+} as const;
+
 function RoadmapSection({ userId }: RoadmapSectionProps) {
-  const { journey, steps, currentIndex, doneCount, progressFraction } = useHomeRoadmap(userId);
+  const navigate = useNavigate();
+  const { plan, phaseStatuses, currentPhase, monthMilestones, checkinDue, pendingRevisionCount, loading } =
+    useLearningPlan(userId);
 
-  if (!journey || steps.length === 0) return null;
+  if (loading) return null;
 
-  const spanPercent = 100 - 2 * 8.33;
-  const currentLabel = currentIndex >= 0 ? steps[currentIndex].label : steps[steps.length - 1].label;
+  // ---- 未作成: 初回設定への導線だけを出す ----
+  if (!plan) {
+    return (
+      <section style={CARD_STYLE}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ ...font.sectionTitle, color: color.text }}>学習ロードマップ</div>
+            <div style={{ fontSize: 12.5, color: color.textSubtle, marginTop: 7, lineHeight: 1.7 }}>
+              8つの質問に答えると、目標から逆算した半年〜1年の学習計画をLMSが作成します。
+              <br />
+              作成した内容は、次回のコーチングでコーチと一緒に調整できます。
+            </div>
+          </div>
+          <button type="button" onClick={() => navigate('/learning-plan/setup')} style={{ ...t.primaryButton }}>
+            <span>ロードマップをつくる（約3分）</span>
+            <ArrowRightIcon />
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  const remainingDays = diffDays(toIso(new Date()), plan.goalDeadline);
+  const remainingLabel =
+    remainingDays <= 0
+      ? '目標期限を過ぎています'
+      : remainingDays < 45
+        ? `残り${remainingDays}日`
+        : `残り約${Math.round(remainingDays / 30)}ヶ月`;
 
   return (
-    <div style={{ background: color.surface, border: `1px solid ${color.border}`, borderRadius: radius.card, boxShadow: shadow.card, padding: '24px 28px 30px' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+    <section style={CARD_STYLE}>
+      {/* 月次チェックイン・更新候補の帯。無視しても下の内容は普通に読める。 */}
+      {(checkinDue || pendingRevisionCount > 0) && (
+        <div
+          onClick={() => navigate('/learning-plan')}
+          role="button"
+          tabIndex={0}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, cursor: 'pointer',
+            background: color.primarySoft, borderRadius: radius.md, padding: '11px 16px',
+          }}
+        >
+          <SparkIcon />
+          <span style={{ fontSize: 12.5, fontWeight: 700, color: color.primary }}>
+            {checkinDue
+              ? '次回コーチングの前に（約1分）— 今月のふりかえりに答える'
+              : `予定と実績に差があります・${pendingRevisionCount}件の更新候補があります`}
+          </span>
+          <span style={{ marginLeft: 'auto', display: 'flex' }}>
+            <ArrowRightIcon size={14} stroke={color.primary} />
+          </span>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 20 }}>
         <div>
-          <div style={{ ...font.sectionTitle, color: color.text }}>目標に向けたロードマップ</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ ...font.sectionTitle, color: color.text }}>学習ロードマップ</span>
+            {plan.status !== 'confirmed_with_coach' && (
+              <span style={{ ...t.chip }}>{PLAN_STATUS_LABEL[plan.status]}</span>
+            )}
+          </div>
           <div style={{ fontSize: 12.5, color: color.textSubtle, marginTop: 7 }}>
-            {steps.length} ステップ中 {doneCount} つ完了・いまは「{currentLabel}」
+            {plan.goal}・{formatJpDateFullShort(plan.goalDeadline)}まで（{remainingLabel}）
+            {currentPhase ? `・いまは「${currentPhase.title}」` : ''}
           </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, fontWeight: 700, color: color.primary, cursor: 'pointer', paddingTop: 4 }}>
+        <div
+          onClick={() => navigate('/learning-plan')}
+          role="button"
+          tabIndex={0}
+          style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, fontWeight: 700, color: color.primary, cursor: 'pointer', paddingTop: 4, whiteSpace: 'nowrap' }}
+        >
           <span>全体をみる</span>
           <ArrowRightIcon size={14} stroke={color.primary} />
         </div>
       </div>
 
-      <div className="home-roadmap-grid" style={{ position: 'relative', alignItems: 'start', marginTop: 34 }}>
-        <div style={{ position: 'absolute', left: '8.33%', right: '8.33%', top: 13, height: 3, background: color.trackBg, borderRadius: 2 }} />
-        <div style={{ position: 'absolute', left: '8.33%', width: `${spanPercent * progressFraction}%`, top: 13, height: 3, background: color.primary, borderRadius: 2 }} />
+      <PhaseTimeline
+        phases={plan.phases}
+        statuses={phaseStatuses}
+        mode="rail"
+        avatarSrc={`${process.env.PUBLIC_URL}/images/home/avatar-user.png`}
+      />
 
-        {steps.map((step, i) => {
-          const isCurrent = i === currentIndex;
-          return (
-            <div key={step.label} style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, cursor: step.onClick ? 'pointer' : undefined }} onClick={step.onClick}>
-              {isCurrent && (
-                <div style={{ position: 'absolute', top: -40, left: 'calc(50% + 22px)', display: 'flex', alignItems: 'center' }}>
-                  <span style={{ fontSize: 11.5, fontWeight: 700, color: color.primary, background: color.primarySoft, borderRadius: 999, padding: '5px 12px', whiteSpace: 'nowrap' }}>いまここ</span>
-                </div>
-              )}
-              {step.status === 'done' ? (
-                <span style={{ width: 29, height: 29, borderRadius: '50%', background: color.primary, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: shadow.stepRing }}>
-                  <CheckIcon />
-                </span>
-              ) : isCurrent ? (
-                <span style={{ width: 33, height: 33, borderRadius: '50%', background: color.surface, border: `3px solid ${color.primary}`, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', boxShadow: shadow.currentStep, marginTop: -2 }}>
-                  <img src={`${process.env.PUBLIC_URL}/images/home/avatar-user.png`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                </span>
-              ) : (
-                <span style={{ width: 29, height: 29, borderRadius: '50%', background: color.surface, border: `2px solid ${color.borderNeutral}`, boxSizing: 'border-box', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12.5, fontWeight: 700, color: color.textSubtle, boxShadow: shadow.stepRing }}>
-                  {i + 1}
-                </span>
-              )}
-              <span style={{ fontSize: 12.5, fontWeight: isCurrent ? 700 : 500, color: isCurrent ? color.primary : step.status === 'done' ? color.textSecondary : color.textSubtle }}>
-                {step.label}
-              </span>
-            </div>
-          );
-        })}
+      {/* 今月のマイルストーンと次回見直し日。必須項目なので常に何かを出す。 */}
+      <div style={{ marginTop: 30, paddingTop: 22, borderTop: `1px solid ${color.border}` }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+          <span style={{ ...font.rowTitle, color: color.textStrong }}>今月のマイルストーン</span>
+          <span style={{ fontSize: 12, fontWeight: 500, color: color.textSubtle }}>
+            次回見直し予定 {formatJpDate(plan.nextReviewDate)}
+          </span>
+        </div>
+
+        {monthMilestones.length === 0 ? (
+          <p style={{ fontSize: 13, color: color.textSubtle, marginTop: 14 }}>
+            今月のマイルストーンはまだ設定されていません。次回のコーチングで一緒に決めましょう。
+          </p>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 16 }}>
+            {monthMilestones.slice(0, 2).map((m) => (
+              <MilestoneRow key={m.id} milestone={m} />
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </section>
   );
+}
+
+/** '2026-12-31' → '2026年12月' （帯では日まで出すと情報過多になる） */
+function formatJpDateFullShort(iso: string): string {
+  const [y, m] = iso.split('-');
+  return `${Number(y)}年${Number(m)}月`;
 }
 
 export default RoadmapSection;

@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppHeader } from './shared';
+import { AppHeader, LearningBreadcrumb } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { useMypageData } from '../hooks/useMypageData';
 import { bffClient } from '../services/bffClient';
 import { useScaleToFit } from '../hooks/useScaleToFit';
 import { t } from '../theme/tokens';
+import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
 
 const DESIGN_WIDTH = 1440;
 
@@ -67,7 +68,7 @@ function MaterialsTopPage() {
   const [query, setQuery] = useState('');
   const [visible, setVisible] = useState(9);
 
-  // 教材カタログ（全コース）を取得し、自分の受講進捗をマージする
+  // コースカタログ（全コース）を取得し、自分の受講進捗をマージする
   useEffect(() => {
     let alive = true;
     bffClient.getCourses().then((raw: any[]) => {
@@ -79,7 +80,7 @@ function MaterialsTopPage() {
           id: c.id,
           title: c.fullname || c.displayname || '',
           description: c.summary || '',
-          categoryName: c.categoryname || 'カテゴリ',
+          categoryName: c.categoryname || LEARNING_HIERARCHY.area,
           totalLessons: enrolled?.totalLessons,
           progress: enrolled?.progress ?? 0,
           isCurrent: resumableCourse?.id === c.id,
@@ -156,22 +157,22 @@ function MaterialsTopPage() {
         className="flex flex-col"
         style={{ position: 'absolute', top: 0, left: 0, width: DESIGN_WIDTH, paddingTop: t.space.pageTop, paddingLeft: t.space.pageX, paddingRight: t.space.pageX, paddingBottom: t.space.pageBottom, gap: t.space.stack, fontFamily: t.font.family, color: t.color.text.primary, boxSizing: 'border-box', transform: `scale(${scale})`, transformOrigin: 'top left' }}
       >
-        <div style={{ fontSize: 12, color: t.color.text.subtle }}>
-          学習　›　<span style={{ color: t.color.text.body }}>学習コンテンツ</span>
-        </div>
+        {/* パンくずは常に出す。階層は「学習コンテンツ ＞ 学習領域 ＞ コース ＞ 単元 ＞ レッスン」で、
+            以前先頭に付いていたサイドバーのグループ名「学習」は階層ではないので出さない。 */}
+        <LearningBreadcrumb items={[{ label: '学習コンテンツ' }]} />
 
         <div>
           <h1 style={{ margin: 0, fontSize: t.font.size.pageTitle, fontWeight: t.font.weight.black }}>学習コンテンツ</h1>
-          <p style={{ margin: '9px 0 0', fontSize: 13, color: t.color.text.muted }}>続きから進めて、必要な教材はいつでも探せます。</p>
+          <p style={{ margin: '9px 0 0', fontSize: 13, color: t.color.text.muted }}>続きから進めて、必要なコースはいつでも探せます。</p>
         </div>
 
-        {/* ① いま取り組むステップ / このコースの残りレッスン */}
+        {/* ① いま取り組むレッスン / このコースの残りレッスン */}
         {resumableCourse && (
           <div className="grid" style={{ gridTemplateColumns: '1.55fr 1fr', gap: t.space.grid, alignItems: 'stretch' }}>
             <div style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.card, overflow: 'hidden', boxShadow: t.shadow.card, display: 'flex' }}>
               <img src={`${process.env.PUBLIC_URL}/images/materials/hero-art.png`} alt="" style={{ width: 200, objectFit: 'cover', display: 'block' }} />
               <div style={{ flex: 1, padding: '28px 32px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <div style={{ fontSize: 11.5, fontWeight: t.font.weight.black, color: t.color.primary, letterSpacing: t.font.letterSpacingWide }}>いま取り組むステップ</div>
+                <div style={{ fontSize: 11.5, fontWeight: t.font.weight.black, color: t.color.primary, letterSpacing: t.font.letterSpacingWide }}>いま取り組むレッスン</div>
                 <div style={{ fontSize: 23, fontWeight: t.font.weight.black }}>{resumableCourse.title}</div>
                 <div style={{ fontSize: 12.5, color: t.color.text.muted }}>
                   {[resumableCourse.currentLesson, resumableCourse.currentChapter && `${resumableCourse.currentChapter}から再開`, resumableCourse.remainingMinutes && `残り約${resumableCourse.remainingMinutes}分`]
@@ -197,7 +198,7 @@ function MaterialsTopPage() {
                     className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                     style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.line}`, color: t.color.text.body, borderRadius: t.radius.button, padding: '16px 26px', fontSize: 13.5, fontWeight: t.font.weight.bold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
                   >
-                    レッスン一覧
+                    コースの目次
                   </button>
                 </div>
               </div>
@@ -233,11 +234,11 @@ function MaterialsTopPage() {
 
         <div style={{ height: 1, background: t.color.divider, marginTop: 8 }} />
 
-        {/* ② 教材をさがす */}
+        {/* ② コースをさがす */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
           <div>
-            <div style={{ fontSize: 19, fontWeight: t.font.weight.black }}>教材をさがす</div>
-            <div style={{ fontSize: 12.5, color: t.color.text.muted, marginTop: 6 }}>全 {catalog.length} コース ・ 目標以外の教材も自由に受講できます</div>
+            <div style={{ fontSize: 19, fontWeight: t.font.weight.black }}>コースをさがす</div>
+            <div style={{ fontSize: 12.5, color: t.color.text.muted, marginTop: 6 }}>全 {catalog.length} コース ・ 目標以外のコースも自由に受講できます</div>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.button, padding: '12px 18px', width: 380, boxShadow: t.shadow.card, boxSizing: 'border-box' }}>
             <span style={{ color: t.color.text.subtle, fontSize: 14 }}>⌕</span>
@@ -251,6 +252,10 @@ function MaterialsTopPage() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+          {/* コースの大分類は「学習領域」。旧「カテゴリ」表記をここで統一する。 */}
+          <span style={{ fontSize: 11.5, fontWeight: t.font.weight.bold, color: t.color.text.subtle }}>
+            {LEARNING_HIERARCHY.area}
+          </span>
           {categoryOptions.map((label) => {
             const active = category === label;
             const count = label === 'すべて' ? catalog.length : catalog.filter((c) => c.categoryName === label).length;
@@ -262,6 +267,7 @@ function MaterialsTopPage() {
             );
           })}
           <span style={{ width: 1, height: 22, background: t.color.divider, margin: '0 4px' }} />
+          <span style={{ fontSize: 11.5, fontWeight: t.font.weight.bold, color: t.color.text.subtle }}>受講状況</span>
           {STATUS_LABELS.map((label) => (
             <span
               key={label}
@@ -278,7 +284,7 @@ function MaterialsTopPage() {
         {shown.length === 0 ? (
           <div className="flex flex-col items-center justify-center" style={{ padding: '60px 0', gap: 8 }}>
             <span style={{ fontSize: 28 }}>🔍</span>
-            <p style={{ fontSize: 13, color: t.color.text.muted, margin: 0 }}>条件に合う教材が見つかりませんでした。検索語や絞り込みを変えてみてください。</p>
+            <p style={{ fontSize: 13, color: t.color.text.muted, margin: 0 }}>条件に合うコースが見つかりませんでした。検索語や絞り込みを変えてみてください。</p>
           </div>
         ) : (
           <div className="grid" style={{ gridTemplateColumns: 'repeat(3,1fr)', gap: t.space.grid }}>
@@ -289,7 +295,7 @@ function MaterialsTopPage() {
                 : st === '修了'
                   ? { background: t.color.successSoft, color: t.color.success, fontSize: 11, fontWeight: t.font.weight.bold, borderRadius: t.radius.pill, padding: '2px 10px' }
                   : { fontSize: 11.5, color: st === '受講中' ? t.color.text.muted : t.color.text.subtle };
-              const tagLabel = c.isCurrent ? 'いま取り組み中' : st === '未受講' ? '未受講' : `Lesson ${Math.max(1, Math.round((c.progress / 100) * (c.totalLessons ?? 6)))} / ${c.totalLessons ?? 6}`;
+              const tagLabel = c.isCurrent ? 'いま取り組み中' : st === '未受講' ? '未受講' : `レッスン ${Math.max(1, Math.round((c.progress / 100) * (c.totalLessons ?? 6)))} / ${c.totalLessons ?? 6}`;
               const ctaLabel = c.progress >= 100 ? 'もう一度見る' : c.progress > 0 ? '続きから' : 'はじめる';
               return (
                 <div
