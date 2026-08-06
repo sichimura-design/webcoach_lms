@@ -284,7 +284,6 @@ def upsert_webcoach_user_course_lastaccess(
     courseid = record.get('courseid')
     progress_percent = record.get('progress_percent', 0)
     current_section = record.get('current_section', 0)
-    create_timestamp = record.get('create_timestamp', text('CURRENT_TIMESTAMP'))
 
     # Check if record exists
     existing = db.query(WebCoachUserCourseLastAccess).filter(
@@ -296,15 +295,15 @@ def upsert_webcoach_user_course_lastaccess(
         existing.courseid = courseid
         existing.progress_percent = progress_percent
         existing.current_section = current_section
-        existing.create_timestamp = create_timestamp
+        # created_at is not updated, updated_at is handled automatically
     else:
         # Create new record
         existing = WebCoachUserCourseLastAccess(
             mdl_user_id=mdl_user_id,
             courseid=courseid,
             progress_percent=progress_percent,
-            current_section=current_section,
-            create_timestamp=create_timestamp
+            current_section=current_section
+            # created_at and updated_at are set automatically
         )
         db.add(existing)
 
@@ -513,7 +512,7 @@ def get_webcoach_resume_courses(
     # Build WHERE clause with optional date filter
     where_clause = "WHERE w.mdl_user_id = :mdl_user_id"
     if days is not None:
-        where_clause += " AND w.create_timestamp >= DATE_SUB(NOW(), INTERVAL :days DAY)"
+        where_clause += " AND w.created_at >= DATE_SUB(NOW(), INTERVAL :days DAY)"
 
     # Join with mdl_course table to get course details
     query = text(f"""
@@ -522,14 +521,14 @@ def get_webcoach_resume_courses(
             w.courseid,
             w.progress_percent,
             w.current_section,
-            w.create_timestamp,
+            w.created_at,
             c.fullname as course_fullname,
             c.shortname as course_shortname,
             c.summary as course_summary
         FROM webcoach_user_course_lastaccess w
         LEFT JOIN mdl_course c ON w.courseid = c.id
         {where_clause}
-        ORDER BY w.create_timestamp DESC
+        ORDER BY w.created_at DESC
         LIMIT :limit
     """)
 
@@ -547,7 +546,7 @@ def get_webcoach_resume_courses(
             "courseid": row[1],
             "progress_percent": row[2],
             "current_section": row[3],
-            "create_timestamp": row[4],
+            "created_at": row[4],
             "course_fullname": row[5],
             "course_shortname": row[6],
             "course_summary": row[7]

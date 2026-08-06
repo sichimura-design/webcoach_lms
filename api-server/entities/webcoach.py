@@ -14,8 +14,9 @@ class WebCoachUserCourseLastAccess(Base):
     mdl_user_id = Column(BigInteger, primary_key=True, nullable=False, index=True)
     courseid = Column(BigInteger, nullable=False)
     progress_percent = Column(BigInteger, nullable=False, default=0)
-    create_timestamp = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
     current_section = Column(BigInteger, nullable=True, default=0)
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
 
     __table_args__ = (
         Index('idx_webcoach_user_course', 'mdl_user_id', 'courseid'),
