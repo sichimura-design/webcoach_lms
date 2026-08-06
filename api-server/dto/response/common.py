@@ -80,3 +80,20 @@ class CoachResponse(BaseModel):
     """コーチ情報レスポンス"""
     student_user_id: int
     coach_user_id: Optional[int] = Field(None, description="コーチのユーザーID（未割り当ての場合None）")
+
+
+class CoachMeetingIntegrationResponse(BaseModel):
+    """コーチのミーティング連携状態レスポンス（トークン本体は含まない）"""
+    coach_user_id: int
+    provider: str
+    provider_account_email: Optional[str] = None
+    connected_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CoachMeetingIntegrationStatusResponse(BaseModel):
+    """コーチの連携状態一覧レスポンス"""
+    coach_user_id: int
+    integrations: List[CoachMeetingIntegrationResponse]

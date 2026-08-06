@@ -2,6 +2,7 @@
 Common request DTOs
 """
 from typing import List, Dict, Any, Optional
+from datetime import datetime
 from pydantic import BaseModel, Field
 
 
@@ -64,3 +65,13 @@ class CoachStudentMappingCreate(BaseModel):
     """コーチと受講生のマッピング作成リクエスト"""
     coach_user_id: int = Field(..., description="コーチのMoodleユーザーID")
     student_user_id: int = Field(..., description="受講生のMoodleユーザーID")
+
+
+class CoachMeetingIntegrationUpsert(BaseModel):
+    """コーチのミーティング連携トークン保存リクエスト（トークンはbff-server側で暗号化済み）"""
+    provider: str = Field(..., pattern="^(zoom|google)$", description="連携先プロバイダ")
+    access_token: str = Field(..., description="暗号化済みアクセストークン")
+    refresh_token: str = Field(..., description="暗号化済みリフレッシュトークン")
+    expires_at: datetime = Field(..., description="アクセストークン有効期限")
+    scope: Optional[str] = Field(None, description="付与されたスコープ")
+    provider_account_email: Optional[str] = Field(None, description="連携先アカウントのメールアドレス")

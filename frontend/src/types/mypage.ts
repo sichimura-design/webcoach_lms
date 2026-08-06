@@ -50,7 +50,15 @@ export interface Course {
   categoryName?: string;
   categoryColor?: string;
   currentLesson?: string;
+  currentChapter?: string;
+  remainingMinutes?: number;
   lastAccessDate?: string | Date;
+  // 学習サマリー（総学習時間・完了レッスン数）の簡易推定に使う目安値
+  durationMinutes?: number;
+  totalLessons?: number;
+  // おすすめレッスン表示用（バックエンドが返す場合のみ使う任意項目。未設定なら該当バッジを非表示にする）
+  difficulty?: string;
+  duration?: string;
 }
 
 // Current course (受講中のコース)

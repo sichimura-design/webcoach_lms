@@ -7,6 +7,13 @@
    各コンポーネントの fontFamily インライン style を不要にする。  */
 body {
   font-family: 'Noto Sans JP', sans-serif;
+  color: #2B2440;
+}
+
+/* 見出しは丸ゴシック（Zen Maru Gothic）。本文は Noto Sans JP。 */
+h1, h2, h3, .font-display {
+  font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
+  letter-spacing: 0.01em;
 }
 
 /* SP版ボトムナビゲーション（h-16 = 64px）がコンテンツを隠さないよう余白を確保 */
@@ -16,10 +23,105 @@ body {
   }
 }
 
+/* 左サイドバー（開閉式）ぶんコンテンツを右へオフセット。
+   通常は畳んで 68px、開くと 216px。AppHeader を描画するページのみ。 */
+@media (min-width: 640px) {
+  body.with-sidebar {
+    padding-left: 68px;
+    transition: padding-left .2s ease;
+  }
+  body.with-sidebar.sidebar-expanded {
+    padding-left: 216px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.with-sidebar {
+    transition: none;
+  }
+}
+
+/* ─── 教材学習ワークスペース（/course/:courseId）───────────
+   教材・目次・AI/メモをビューポート内で並列表示する画面。
+   ページ全体はスクロールさせず、本文カラムだけをスクロールさせる。
+   LearningWorkspacePage が body に .learning-workspace を付け外しする。 */
+body.learning-workspace {
+  overflow: hidden;
+}
+
+.wc-learning-shell {
+  height: 100dvh;
+}
+
+/* SPは下部ナビ（h-16 = 64px）ぶんを差し引く */
+@media (max-width: 639px) {
+  .wc-learning-shell {
+    height: calc(100dvh - 64px);
+  }
+}
+
+/* 教材本文のタイポグラフィ。既存の .moodle-content とは別系統にして衝突を避ける。 */
+.wc-lesson-prose h2 {
+  margin: 0 0 14px;
+  font-size: 21px;
+  line-height: 1.5;
+  color: #1F1D1E;
+}
+.wc-lesson-prose h2:not(:first-child) { margin-top: 34px; }
+.wc-lesson-prose h3 {
+  margin: 26px 0 10px;
+  font-size: 16.5px;
+  color: #1F1D1E;
+}
+.wc-lesson-prose p,
+.wc-lesson-prose li {
+  color: #4A4245;
+  font-size: 14.5px;
+  line-height: 2;
+}
+.wc-lesson-prose p { margin: 0 0 16px; }
+.wc-lesson-prose p:last-child { margin-bottom: 0; }
+.wc-lesson-prose ul,
+.wc-lesson-prose ol { margin: 0 0 16px; padding-left: 22px; }
+.wc-lesson-prose li { margin-bottom: 4px; }
+.wc-lesson-prose strong { color: #2B2629; font-weight: 700; }
+.wc-lesson-prose b { font-weight: 700; }
+
 /* ─── アニメーション ─────────────────────── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* おすすめレッスンホイールの回転リング演出 */
+@keyframes spinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.glw-spin-slow {
+  animation: spinSlow 26s linear infinite;
+}
+
+/* ギルドロビーの部屋アイコンのゆらぎ演出 */
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+.glw-float {
+  animation: floatSoft 3.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glw-spin-slow,
+  .glw-float {
+    animation: none;
+  }
+}
+
+/* design_handoff_lms_app のマスコット/現在地ドットのパルス演出 */
+@keyframes wcPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
 }
 
 /* Moodle page コンテンツ用HTMLスタイル */
@@ -116,27 +218,102 @@ body {
   margin: 1.5em 0;
 }
 
+/* ─── マイページ（ホーム）レイアウト ───────────── */
+/* WebCoach Home.dc.html の構図（グリッド列数・flex方向・要素の配置）は
+   画面幅が変わっても一切変えない。狭い画面では .home-scale-outer/.home-scale-inner
+   （MyPage.tsx側）が transform:scale で全体を均等に縮小して収める。
+   ここではその「縮小前の基準レイアウト」を固定値のまま定義するのみ。 */
+.home-main {
+  padding: 28px 60px 40px;
+}
+
+.home-hero {
+  display: flex;
+  align-items: stretch;
+}
+
+.home-3col {
+  display: grid;
+  grid-template-columns: 384px 554px 1fr;
+  gap: 18px;
+}
+
+.home-stats {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+/* マイページの「広いメイン列＋狭い右レール」。1440 - 60*2 = 1320 を固定値で割る
+   （960 + 20 + 340）。.home-3col と同じ思想で、画面幅が変わっても列数は変えない。
+
+   🔴 align-items: start は必須。付けないと右レールのカードがメイン列の高さ
+   （帯＋続き＋目標で 800px 前後）まで引き伸ばされて間延びする。 */
+.home-rail {
+  display: grid;
+  grid-template-columns: 960px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/*
+ * ロードマップ帯の列数は固定できなくなったため（フェーズ数が受講生の回答で変わる）、
+ * components/learningPlan/PhaseTimeline.tsx がインラインの gridTemplateColumns で指定する。
+ * かつての .home-roadmap-grid（repeat(6, 1fr) 固定）はここで廃止。
+ */
+
+/* ─── 自習室: 集中ブース(/focus-booth)・学習記録(/study-log)・ノート(/notes) ─── */
+/* .home-* と同じ思想。列数は画面幅で変えず、ページ側の transform:scale で収める。
+   1440 - 60 - 60 = 1320 が中身の幅。集中ブースは 左660 / gap18 / 右642。
+   学習記録の右カラム 384 は .home-3col の第1列と同値にして、他ページと目が揃うようにしている。
+   3面ともタブで行き来するので、padding は同値にしてヘッダ位置を揃える。 */
+.focus-main {
+  padding: 28px 60px 40px;
+}
+
+.focus-2col {
+  display: grid;
+  grid-template-columns: 660px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.studylog-main {
+  padding: 28px 60px 40px;
+}
+
+.studylog-2col {
+  display: grid;
+  grid-template-columns: 1fr 384px;
+  gap: 18px;
+  align-items: start;
+}
+
+.notes-main {
+  padding: 28px 60px 40px;
+}
+
 :root {
   --background: 0 0% 100%;
-  --foreground: 0 0% 3.9%;
+  --foreground: 258 30% 18%;        /* ディープネイビー */
   --card: 0 0% 100%;
-  --card-foreground: 0 0% 3.9%;
+  --card-foreground: 258 30% 18%;
   --popover: 0 0% 100%;
-  --popover-foreground: 0 0% 3.9%;
-  --primary: 0 0% 9%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 96.1%;
-  --secondary-foreground: 0 0% 9%;
-  --muted: 0 0% 96.1%;
-  --muted-foreground: 0 0% 45.1%;
-  --accent: 0 0% 96.1%;
-  --accent-foreground: 0 0% 9%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 89.8%;
-  --input: 0 0% 89.8%;
-  --ring: 0 0% 3.9%;
-  --radius: 0.5rem;
+  --popover-foreground: 258 30% 18%;
+  --primary: 348 100% 68%;          /* ブランドピンク */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 40 100% 65%;         /* アンバー */
+  --secondary-foreground: 258 30% 18%;
+  --muted: 40 33% 96%;              /* 淡いクリーム */
+  --muted-foreground: 258 12% 52%;
+  --accent: 40 33% 94%;
+  --accent-foreground: 258 30% 18%;
+  --destructive: 0 82% 67%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 40 30% 88%;
+  --input: 40 30% 88%;
+  --ring: 348 100% 68%;
+  --radius: 0.85rem;                /* 第3系: やや大きめ角丸 */
 }
 
 .dark {

@@ -34,6 +34,25 @@ const config = {
   // Content Token
   contentTokenSecret: process.env.CONTENT_TOKEN_SECRET,
 
+  // Frontend (used to build OAuth callback redirect URLs)
+  frontendBaseUrl: process.env.FRONTEND_BASE_URL || 'http://localhost:3000',
+
+  // Zoom OAuth (individual coach connect flow)
+  zoomClientId: process.env.ZOOM_CLIENT_ID,
+  zoomClientSecret: process.env.ZOOM_CLIENT_SECRET,
+  zoomRedirectUri: process.env.ZOOM_REDIRECT_URI,
+  zoomOAuthScopes: process.env.ZOOM_OAUTH_SCOPES || 'user:read',
+
+  // Google OAuth (individual coach connect flow)
+  googleClientId: process.env.GOOGLE_CLIENT_ID,
+  googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  googleRedirectUri: process.env.GOOGLE_REDIRECT_URI,
+  googleOAuthScopes: process.env.GOOGLE_OAUTH_SCOPES || 'https://www.googleapis.com/auth/userinfo.email',
+
+  // OAuth state signing (CSRF protection) and token encryption at rest
+  integrationStateSecret: process.env.INTEGRATION_STATE_SECRET,
+  integrationTokenEncKey: process.env.INTEGRATION_TOKEN_ENC_KEY,
+
   // CORS
   allowedOrigins: process.env.ALLOWED_ORIGINS?.split(',') || [
     'http://localhost:3000',

@@ -610,6 +610,35 @@ class ApiServerAdapter {
     );
     return response.data;
   }
+
+  /**
+   * Save (upsert) a coach's meeting integration tokens (already encrypted)
+   */
+  async upsertCoachMeetingIntegration(coachUserId, payload) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/coaching/integrations/${coachUserId}`,
+      payload,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get a coach's meeting integration status (no tokens included)
+   */
+  async getCoachMeetingIntegrationStatus(coachUserId) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/coaching/integrations/${coachUserId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
 }
 
 // Create singleton instance

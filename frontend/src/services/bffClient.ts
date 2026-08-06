@@ -586,6 +586,35 @@ class BFFClient {
     return response.data;
   }
 
+  // ==================== ミーティング連携 (Zoom / Google Meet) ====================
+
+  /**
+   * 自分（コーチ）のミーティング連携状態取得
+   * GET /api/integrations/status
+   */
+  async getMeetingIntegrationStatus(): Promise<{
+    coach_user_id: number;
+    integrations: Array<{
+      coach_user_id: number;
+      provider: string;
+      provider_account_email: string | null;
+      connected_at: string;
+      updated_at: string;
+    }>;
+  }> {
+    const response = await this.api.get('/integrations/status');
+    return response.data;
+  }
+
+  /**
+   * Zoom/Google Meet連携の認可URL取得
+   * GET /api/integrations/{provider}/authorize
+   */
+  async getMeetingIntegrationAuthorizeUrl(provider: 'zoom' | 'google'): Promise<{ authorizeUrl: string }> {
+    const response = await this.api.get(`/integrations/${provider}/authorize`);
+    return response.data;
+  }
+
   /**
    * コース画像取得（Base64）
    * GET /api/moodle/course-image?path={relativePath}

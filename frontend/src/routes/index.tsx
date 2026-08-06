@@ -6,14 +6,14 @@ import MyPage from '../components/MyPage';
 import ProfilePage from '../components/ProfilePage';
 import WebCoachDashboard from '../components/WebCoachDashboard';
 import CareerPathPage from '../components/CareerPathPage';
-import CoursesPage from '../components/CoursesPage';
+import MaterialsTopPage from '../components/MaterialsTopPage';
 import LearningCoursesPage from '../components/LearningCoursesPage';
 import CategoryDetailPage from '../components/CategoryDetailPage';
 import AIAppsPage from '../components/AIAppsPage';
 import BadgesPage from '../components/BadgesPage';
 import ContentListPage from '../components/ContentListPage';
 import CourseContentPage from '../components/CourseContentPage';
-import CourseCurriculumPage from '../components/CourseCurriculumPage';
+import CourseTopPage from '../components/CourseTopPage';
 import AccountSettingsPage from '../components/AccountSettingsPage';
 import AnimatedPage from '../components/AnimatedPage';
 import { AdminLayout } from '../components/admin/AdminLayout';
@@ -24,6 +24,7 @@ import { AdminVectorPage } from '../components/admin/AdminVectorPage';
 import { AdminStudentsPage } from '../components/admin/AdminStudentsPage';
 import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
+import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigationStore } from '../store/navigationStore';
 import { ErrorBoundary } from '../components/shared';
@@ -130,7 +131,7 @@ function CareerPathWrapper() {
 }
 
 function CoursesWrapper() {
-  return <CoursesPage />;
+  return <MaterialsTopPage />;
 }
 
 function LearningCoursesWrapper() {
@@ -159,7 +160,7 @@ function ProfilePageWrapper() {
 }
 
 function CourseCurriculumWrapper() {
-  return <CourseCurriculumPage />;
+  return <CourseTopPage />;
 }
 
 function CourseContentWrapper() {
@@ -347,6 +348,15 @@ function AppRoutes() {
         element={
           <CoachRoute>
             <CoachStudentsPage />
+          </CoachRoute>
+        }
+      />
+
+      <Route
+        path="/coach/settings"
+        element={
+          <CoachRoute>
+            <CoachSettingsPage />
           </CoachRoute>
         }
       />

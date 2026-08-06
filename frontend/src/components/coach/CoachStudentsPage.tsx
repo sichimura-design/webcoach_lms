@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, ChevronRight, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Search, User } from 'lucide-react';
 import { AppHeader } from '../shared/AppHeader';
 import { Button } from '../ui/button';
 import { useAuth } from '../../contexts/AuthContext';
@@ -25,7 +24,6 @@ function isAlert(s: Student): boolean {
 
 export function CoachStudentsPage() {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -113,7 +111,6 @@ export function CoachStudentsPage() {
           >
             <span className="flex-1 text-sm font-bold text-white">受講生</span>
             <span className="w-28 text-sm font-bold text-white text-center">最終ログイン</span>
-            <span className="w-32" />
           </div>
 
           {/* Rows */}
@@ -151,17 +148,6 @@ export function CoachStudentsPage() {
                     {student.lastaccess === 0 ? '未ログイン' : student.lastaccess_formatted}
                   </span>
 
-                  {/* Detail button */}
-                  <div className="w-32 flex justify-end">
-                    <Button
-                      variant="brand-ghost"
-                      size="pill-sm"
-                      onClick={() => navigate(`/coach/students/${student.id}`)}
-                    >
-                      詳しく見る
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
                 </div>
               ))
             )}
