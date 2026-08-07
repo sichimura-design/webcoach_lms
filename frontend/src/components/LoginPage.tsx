@@ -35,6 +35,16 @@ function EyeIcon({ open }: { open: boolean }) {
   );
 }
 
+/**
+ * 入力欄の共通クラス。
+ * 🔴 以前は border 1px の淡色 + 半透明の背景（rgba(255,255,255,0.72)）だったため、
+ *    枠が細くて頼りない上に、カード背後のグラデーションが透けて
+ *    枠の上辺と下辺で濃さが違って見えていた（レビュー指摘）。
+ *    背景を不透明の白にして透けを止め、枠を 1.5px の均一色にしている。
+ */
+const INPUT_BASE =
+  'w-full h-12 rounded-xl text-[15px] border-[1.5px] border-[#d6cecb] bg-white text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 hover:border-[#c6bcb8] focus:border-[rgba(212,0,50,0.7)] focus:shadow-[0_0_0_4px_rgba(212,0,50,0.09)]';
+
 function LoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -123,45 +133,52 @@ function LoginPage() {
     <div
       className="min-h-screen flex flex-col relative overflow-hidden pt-6 px-[18px] pb-16 sm:pt-8 sm:px-6"
       style={{
+        // 下地のグラデーションは、上の光の帯を薄くしたぶん少し強めて「引き」でも色の流れが分かるようにする
         backgroundImage:
-          'radial-gradient(ellipse 34% 28% at 4% 3%, rgba(151,132,120,0.125) 0%, rgba(172,151,138,0.065) 34%, rgba(255,255,255,0) 72%), linear-gradient(118deg, #fffefd 0%, #fdfaf7 44%, #f9f2ec 100%)',
+          'radial-gradient(ellipse 52% 44% at 2% 0%, rgba(151,132,120,0.16) 0%, rgba(172,151,138,0.08) 40%, rgba(255,255,255,0) 76%), linear-gradient(118deg, #fffefd 0%, #fcf8f4 40%, #f6ece3 100%)',
         fontFamily: '"Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
         color: '#3c3333',
       }}
     >
-      {/* 斜光の背景: 繰り返しの斜めストライプ + 中央スポットライト + 1本の強い光の帯 */}
+      {/*
+        斜光の背景。
+        🔴 以前は光の帯が細かく・中央のスポットライトが濃すぎて、
+           せっかくのグラデーションが白飛びして見えなかった（レビュー指摘）。
+           帯のピッチを倍以上に広げて「引き」の絵にし、中央の白も薄くして、
+           下地のグラデーション（左上のくすみ → 右下のベージュ）が読めるようにしている。
+      */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
           className="absolute"
           style={{
-            inset: '-25%',
+            inset: '-40%',
             background:
-              'repeating-linear-gradient(77deg, transparent 0 9%, rgba(173,151,137,0.115) 11%, rgba(255,255,255,0.72) 14%, rgba(185,163,149,0.156) 18%, transparent 23%, transparent 34%)',
-            filter: 'blur(24px)',
-            transform: 'rotate(-4deg) scale(1.12)',
-            opacity: 0.93,
+              'repeating-linear-gradient(77deg, transparent 0 20%, rgba(173,151,137,0.09) 24%, rgba(255,255,255,0.5) 30%, rgba(185,163,149,0.11) 38%, transparent 48%, transparent 72%)',
+            filter: 'blur(46px)',
+            transform: 'rotate(-4deg) scale(1.2)',
+            opacity: 0.8,
           }}
         />
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse at 52% 50%, rgba(255,255,255,0.82) 0%, rgba(255,255,255,0.54) 28%, transparent 64%)',
+              'radial-gradient(ellipse 62% 58% at 50% 46%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.26) 40%, transparent 78%)',
           }}
         />
         <div
           className="absolute"
           style={{
             top: '-35%',
-            right: '8%',
-            width: '18vw',
-            minWidth: '150px',
+            right: '4%',
+            width: '30vw',
+            minWidth: '260px',
             height: '170%',
             background:
-              'linear-gradient(90deg, transparent, rgba(255,255,255,0.82), rgba(162,142,130,0.065), transparent)',
-            filter: 'blur(32px)',
+              'linear-gradient(90deg, transparent, rgba(255,255,255,0.6), rgba(162,142,130,0.05), transparent)',
+            filter: 'blur(60px)',
             transform: 'rotate(-17deg)',
-            opacity: 0.96,
+            opacity: 0.85,
           }}
         />
       </div>
@@ -176,14 +193,31 @@ function LoginPage() {
             boxShadow: '0 28px 80px rgba(91,55,54,0.1), 0 5px 20px rgba(91,55,54,0.05)',
           }}
         >
-          {/* Logo（PNG下部の「キャリアチェンジまでの全てを学ぶ」タグラインをCSSでクロップして非表示） */}
-          <div className="h-11 sm:h-14 overflow-hidden flex items-start justify-center" style={{ marginBottom: 20 }}>
-            <img
-              src={`${process.env.PUBLIC_URL}/logo_WEBCOACH.png`}
-              alt="WEBCOACH"
-              className="w-auto object-contain"
-              style={{ filter: 'hue-rotate(-25deg) saturate(1.4)', height: '118%' }}
-            />
+          {/*
+            ブランド表記。
+            🔴 以前は logo_WEBCOACH.png（256x73）を56px高まで拡大＋下部タグラインをCSSクロップ
+               していたため、高DPIディスプレイで明確に粗く見えていた（レビュー指摘）。
+               同じ素材の高解像度版が無いので、サイドバー（AppHeader）と同じ
+               テキストのワードマークに統一した。どの倍率でも輪郭が崩れない。
+          */}
+          <div className="flex flex-col items-center" style={{ marginBottom: 18 }}>
+            <span
+              className="text-[26px] sm:text-[30px] leading-none"
+              style={{
+                fontWeight: 800,
+                letterSpacing: '0.055em',
+                color: '#d40032',
+                fontFamily: '"Noto Sans JP", sans-serif',
+              }}
+            >
+              WEBCOACH
+            </span>
+            <span
+              className="text-[10px] sm:text-[11px]"
+              style={{ marginTop: 7, fontWeight: 700, letterSpacing: '0.08em', color: '#8e817e' }}
+            >
+              キャリアを、もっと自由に。
+            </span>
           </div>
 
           <h1
@@ -225,7 +259,7 @@ function LoginPage() {
                     autoFocus
                     required
                     placeholder="8文字以上（大文字・小文字・数字を含む）"
-                    className="w-full h-12 px-[17px] pr-12 rounded-xl text-[15px] border border-[#ddd7d5] bg-[rgba(255,255,255,0.72)] text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 focus:border-[rgba(212,0,50,0.65)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(212,0,50,0.08)]"
+                    className={`${INPUT_BASE} px-[17px] pr-12`}
                   />
                   <button
                     type="button"
@@ -252,7 +286,7 @@ function LoginPage() {
                     autoComplete="new-password"
                     required
                     placeholder="もう一度入力してください"
-                    className="w-full h-12 px-[17px] pr-12 rounded-xl text-[15px] border border-[#ddd7d5] bg-[rgba(255,255,255,0.72)] text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 focus:border-[rgba(212,0,50,0.65)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(212,0,50,0.08)]"
+                    className={`${INPUT_BASE} px-[17px] pr-12`}
                   />
                   <button
                     type="button"
@@ -308,7 +342,7 @@ function LoginPage() {
                     autoFocus
                     required
                     placeholder="user@example.com"
-                    className="w-full h-12 pl-11 pr-[17px] rounded-xl text-[15px] border border-[#ddd7d5] bg-[rgba(255,255,255,0.72)] text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 focus:border-[rgba(212,0,50,0.65)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(212,0,50,0.08)]"
+                    className={`${INPUT_BASE} pl-11 pr-[17px]`}
                   />
                 </div>
               </div>
@@ -337,7 +371,7 @@ function LoginPage() {
                     autoComplete="current-password"
                     required
                     placeholder="パスワードを入力"
-                    className="w-full h-12 pl-11 pr-12 rounded-xl text-[15px] border border-[#ddd7d5] bg-[rgba(255,255,255,0.72)] text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 focus:border-[rgba(212,0,50,0.65)] focus:bg-white focus:shadow-[0_0_0_4px_rgba(212,0,50,0.08)]"
+                    className={`${INPUT_BASE} pl-11 pr-12`}
                   />
                   <button
                     type="button"

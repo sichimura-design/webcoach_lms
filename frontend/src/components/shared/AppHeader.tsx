@@ -96,13 +96,15 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   // 復活させるときは、出す画面を絞ってから戻すこと（全画面で出すと同じ問題が再発する）。
 
   // ナビ項目（サイドバー・下部ナビ共通の定義。既存ルートのみを使用）
+  // 並び順は「毎日開くもの → 相談するもの → たまに見る長期のもの」。
+  // 🔴 順序はレビューで指定されたもの。勝手に入れ替えないこと。
   const navItems = [
     { label: 'マイページ', icon: Home, path: '/mypage', active: isMyPage },
     { label: '学習コンテンツ', icon: BookOpen, path: '/courses', active: isCoursesPage },
     { label: '自習室', icon: DoorOpen, path: '/focus-booth', active: isStudyRoom },
+    { label: 'AIコーチ', icon: Sparkles, path: '/ai-coach', active: isAiCoach },
     { label: 'コーチング', icon: MessagesSquare, path: '/coaching', active: isCoaching },
     { label: '学習ロードマップ', icon: Map, path: '/learning-plan', active: isLearningPlan },
-    { label: 'AIコーチ', icon: Sparkles, path: '/ai-coach', active: isAiCoach },
   ];
   const learnItems = navItems;
   const manageItems = user?.isAdmin
@@ -254,7 +256,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
         {/* ナビ（グループ） */}
         <nav className="relative z-[1] flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-1.5">
-          {expanded && <p className="text-[9px] font-bold text-[#68707C] px-2 pb-0.5 tracking-wider">学習</p>}
+          {/* 🔴 「学習」の見出しは出さない。上の6項目は全部が学習の導線で、
+                 グループ名が付いていても選ぶ助けにならないためレビューで削除された。 */}
           {learnItems.map(renderSideItem)}
           {manageItems.length > 0 && (
             <>
@@ -269,11 +272,13 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           className="relative z-[1] pt-3.5 flex flex-col gap-3 flex-shrink-0"
           style={{ borderTop: '1px solid rgba(210,201,197,0.58)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.7)' }}
         >
-          <a
-            href="https://slime-gruyere-92d.notion.site/WEBCOACH-6-0-7a07e36455e848c4b4d262ef3a1c1cd4"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`group relative flex items-center gap-2 rounded-lg text-[10px] font-bold no-underline text-[#303845] hover:text-[#E0242B] hover:bg-white/[0.76] transition-colors ${focusRing} ${
+          {/*
+            🔴 以前は外部Notionを別タブで開いていたが、学習中にLMSの外へ出てしまうため
+               LMS内の /help に置き換えた（レビュー指摘）。本文は components/help/HelpPage.tsx。
+          */}
+          <button
+            onClick={() => navigate('/help/manual')}
+            className={`group relative flex items-center gap-2 w-full appearance-none border-0 bg-transparent cursor-pointer rounded-lg text-[10px] font-bold no-underline text-[#303845] hover:text-[#E0242B] hover:bg-white/[0.76] transition-colors ${focusRing} ${
               expanded ? 'px-2.5 py-1' : 'justify-center px-1.5 py-1.5'
             }`}
           >
@@ -288,12 +293,10 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                 利用マニュアル
               </span>
             )}
-          </a>
-          <a
-            href="https://slime-gruyere-92d.notion.site/1fddd266074f809e9f0cfdbdd8e60ffd"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`group relative flex items-center gap-2 rounded-lg text-[10px] font-bold no-underline text-[#303845] hover:text-[#E0242B] hover:bg-white/[0.76] transition-colors ${focusRing} ${
+          </button>
+          <button
+            onClick={() => navigate('/help/faq')}
+            className={`group relative flex items-center gap-2 w-full appearance-none border-0 bg-transparent cursor-pointer rounded-lg text-[10px] font-bold no-underline text-[#303845] hover:text-[#E0242B] hover:bg-white/[0.76] transition-colors ${focusRing} ${
               expanded ? 'px-2.5 py-1' : 'justify-center px-1.5 py-1.5'
             }`}
           >
@@ -308,7 +311,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                 よくある質問
               </span>
             )}
-          </a>
+          </button>
 
           {/* 通知（アカウントの上） */}
           <div className="relative" ref={notifRef}>
@@ -387,15 +390,18 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
             </span>
             {expanded && <span className="truncate text-[12.5px] font-bold text-left">{resolvedUserName}</span>}
             {expanded && <ChevronRight className="w-[14px] h-[14px] justify-self-end" />}
-            {!expanded && (
-              <span
-                role="tooltip"
-                aria-hidden="true"
-                className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#262C35] px-2 py-1.5 text-[11px] font-bold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-              >
-                {resolvedUserName}
-              </span>
-            )}
+            {/*
+              🔴 展開時も含めて常に「個人設定を開く」を出す。
+                 名前とアイコンだけでは押した先が分からない、というレビュー指摘への対応。
+                 折りたたみ時は誰のアカウントかも分からないので名前を添える。
+            */}
+            <span
+              role="tooltip"
+              aria-hidden="true"
+              className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#262C35] px-2 py-1.5 text-[11px] font-bold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
+            >
+              {expanded ? '個人設定を開く' : `${resolvedUserName}（個人設定を開く）`}
+            </span>
           </button>
         </div>
       </aside>

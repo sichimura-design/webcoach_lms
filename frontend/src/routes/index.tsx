@@ -22,6 +22,7 @@ import LearningWorkspacePage from '../components/learning/LearningWorkspacePage'
 import MyNotesPage from '../components/notes/MyNotesPage';
 import CourseTopPage from '../components/CourseTopPage';
 import AccountSettingsPage from '../components/AccountSettingsPage';
+import HelpPage from '../components/help/HelpPage';
 import AnimatedPage from '../components/AnimatedPage';
 import { AdminLayout } from '../components/admin/AdminLayout';
 import { AdminCsvPage } from '../components/admin/AdminCsvPage';
@@ -294,6 +295,25 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* 利用マニュアル・よくある質問。以前はサイドバーから外部Notionを別タブで開いていた */}
+      <Route
+        path="/help/manual"
+        element={
+          <ProtectedRoute>
+            <HelpPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/help/faq"
+        element={
+          <ProtectedRoute>
+            <HelpPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/help" element={<Navigate to="/help/manual" replace />} />
 
       <Route
         path="/account-settings"

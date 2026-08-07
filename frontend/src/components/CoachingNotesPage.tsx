@@ -29,7 +29,7 @@ import type {
   ImportRecordPayload,
   MeetingLink,
 } from '../types/coaching';
-import type { CoachingGoalApi } from '../types/mypage';
+import type { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
 
 type Mode =
   | { kind: 'list' }
@@ -82,6 +82,76 @@ export default function CoachingNotesPage() {
   }, [userId, reload]);
 
   const completedCount = useMemo(() => goals.filter((g) => g.is_completed === 1).length, [goals]);
+
+  // --- 目標の編集 -------------------------------------------------------------
+  //
+  // 🔴 この編集UIはもともとマイページの「次回コーチングまでの目標」カードにあった。
+  //    マイページ側に「編集」「続ける」「コーチング記録を取り込む」と入口が散らばっていて
+  //    どれが何をするのか分からない、というレビュー指摘を受け、
+  //    目標に対する操作はこのコーチングページに集約した。
+  //    マイページのカードは表示専用で、「編集」「詳しく」ともにここへ飛ばす。
+  //
+  // 編集は「編集モードに入って、まとめて保存」。1文字ごとに保存すると
+  // 打っている途中の文言が正になってしまうため。
+  const [editingGoals, setEditingGoals] = useState(false);
+  const [goalDraft, setGoalDraft] = useState<CoachingGoalUpdateItem[]>([]);
+  const [savingGoals, setSavingGoals] = useState(false);
+
+  const startGoalEdit = () => {
+    setGoalDraft(
+      goals.map((g) => ({
+        no: g.no,
+        description: g.description,
+        is_completed: g.is_completed,
+        progress: g.progress,
+      }))
+    );
+    setEditingGoals(true);
+  };
+
+  const cancelGoalEdit = () => {
+    setEditingGoals(false);
+    setGoalDraft([]);
+  };
+
+  const patchGoal = (index: number, next: Partial<CoachingGoalUpdateItem>) =>
+    setGoalDraft((prev) => prev.map((g, i) => (i === index ? { ...g, ...next } : g)));
+
+  /** 完了チェックは progress と連動させる（is_completed は progress>=100 の派生値） */
+  const toggleGoalDone = (index: number, done: boolean) =>
+    patchGoal(index, {
+      is_completed: done ? 1 : 0,
+      progress: done ? 100 : Math.min(99, goalDraft[index]?.progress ?? 0),
+    });
+
+  const removeGoal = (index: number) => setGoalDraft((prev) => prev.filter((_, i) => i !== index));
+
+  const addGoal = () =>
+    setGoalDraft((prev) => [
+      ...prev,
+      { no: prev.length + 1, description: '', is_completed: 0, progress: 0 },
+    ]);
+
+  const commitGoals = async () => {
+    if (!userId) return;
+    // 空行は保存しない（消したいときに空にする操作を許すため）
+    const cleaned = goalDraft
+      .map((g) => ({ ...g, description: g.description.trim() }))
+      .filter((g) => g.description.length > 0)
+      // no は表示順そのもの。削除で歯抜けにならないよう毎回振り直す
+      .map((g, i) => ({ ...g, no: i + 1 }));
+    setSavingGoals(true);
+    try {
+      const saved = await bffClient.updateNextCoachingGoals(userId, cleaned);
+      setGoals(saved);
+      setEditingGoals(false);
+      setGoalDraft([]);
+    } catch {
+      showToast('目標を保存できませんでした', 'error');
+    } finally {
+      setSavingGoals(false);
+    }
+  };
 
   // --- 会議リンク -----------------------------------------------------------
 
@@ -178,16 +248,138 @@ export default function CoachingNotesPage() {
   // --- 描画 -----------------------------------------------------------------
 
   const renderCurrentGoals = () => (
-    <section style={{ ...t.card, padding: 24 }}>
-      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12 }}>
+    <section id="goals" style={{ ...t.card, padding: 24, scrollMarginTop: 20 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
         <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>次回までの目標</h2>
-        {goals.length > 0 && (
-          <span style={{ ...font.link, color: color.primary }}>
-            {completedCount} / {goals.length} 完了
-          </span>
-        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {goals.length > 0 && !editingGoals && (
+            <span style={{ ...font.link, color: color.primary }}>
+              {completedCount} / {goals.length} 完了
+            </span>
+          )}
+          {editingGoals ? (
+            <>
+              <button
+                type="button"
+                onClick={cancelGoalEdit}
+                style={{ ...t.chip, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+              >
+                やめる
+              </button>
+              <button
+                type="button"
+                onClick={commitGoals}
+                disabled={savingGoals}
+                style={{
+                  ...t.chip,
+                  border: 'none',
+                  background: color.primary,
+                  color: color.textOnPrimary,
+                  padding: '7px 14px',
+                  fontFamily: 'inherit',
+                  cursor: savingGoals ? 'default' : 'pointer',
+                  opacity: savingGoals ? 0.6 : 1,
+                }}
+              >
+                {savingGoals ? '保存中…' : '保存する'}
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={startGoalEdit}
+              style={{ ...t.chip, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+            >
+              編集
+            </button>
+          )}
+        </div>
       </div>
-      {goals.length === 0 ? (
+
+      {editingGoals ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
+          {goalDraft.map((g, i) => (
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '9px 12px',
+                border: `1px solid ${color.border}`,
+                borderRadius: 14,
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={g.is_completed === 1}
+                onChange={(e) => toggleGoalDone(i, e.target.checked)}
+                aria-label="達成した"
+                style={{ accentColor: color.primary, flexShrink: 0, width: 17, height: 17 }}
+              />
+              <input
+                value={g.description}
+                onChange={(e) => patchGoal(i, { description: e.target.value })}
+                placeholder="例）バナーを1つ完成させる"
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  border: 'none',
+                  outline: 'none',
+                  fontFamily: 'inherit',
+                  fontSize: 14.5,
+                  color: color.textStrong,
+                  background: 'transparent',
+                  textDecoration: g.is_completed === 1 ? 'line-through' : 'none',
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => removeGoal(i)}
+                aria-label="この目標を削除する"
+                title="削除する"
+                style={{
+                  width: 30,
+                  height: 30,
+                  display: 'grid',
+                  placeItems: 'center',
+                  border: `1px solid ${color.borderSoft}`,
+                  borderRadius: 9,
+                  background: color.surface,
+                  color: color.textMuted,
+                  cursor: 'pointer',
+                  flexShrink: 0,
+                  fontFamily: 'inherit',
+                }}
+              >
+                ×
+              </button>
+            </div>
+          ))}
+
+          <button
+            type="button"
+            onClick={addGoal}
+            style={{
+              border: `1px dashed ${color.primaryDashed}`,
+              borderRadius: 14,
+              padding: '11px 14px',
+              background: color.surface,
+              color: color.primary,
+              fontFamily: 'inherit',
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: 'pointer',
+            }}
+          >
+            ＋ 目標を追加する
+          </button>
+
+          <p style={{ ...font.meta, color: color.textMuted, margin: '2px 0 0', lineHeight: 1.8 }}>
+            コーチングで決めた目標は、コーチング記録を確定すると自動でここに入ります。
+          </p>
+        </div>
+      ) : goals.length === 0 ? (
         <p style={{ ...font.meta, color: color.textSubtle, margin: '14px 0 0', lineHeight: 1.8 }}>
           まだ目標がありません。コーチングが終わると、AIが目標とタスクを整理します。
         </p>

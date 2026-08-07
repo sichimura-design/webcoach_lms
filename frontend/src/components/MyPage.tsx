@@ -46,7 +46,6 @@ function MyPage() {
   const { stats: studyStats, loading: studyStatsLoading } = useStudyStats(user?.userid);
   const learningSummary = useLearningSummary(learningCourses, studyStats);
   const primaryCourse = learningCourses[0];
-  const totalLessons = learningCourses.reduce((sum, c) => sum + (c.totalLessons ?? 0), 0);
 
   // ストリークが新たに伸びたタイミングでEXPボーナスを1度だけ付与
   useEffect(() => {
@@ -140,12 +139,11 @@ function MyPage() {
                 stats={studyStats}
                 loading={studyStatsLoading}
                 completedLessons={learningSummary.completedLessons.total}
-                totalLessons={totalLessons}
               />
               {primaryCourse && (
                 <ContinueLearningHero course={primaryCourse} onOpen={handleContinue} />
               )}
-              <NextCoachingPlan userId={user?.userid} onContinue={handleContinue} />
+              <NextCoachingPlan userId={user?.userid} />
             </div>
 
             {/* 右レール: 続けるための小さな指標と、次回の予定 */}

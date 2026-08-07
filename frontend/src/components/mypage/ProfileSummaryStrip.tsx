@@ -1,5 +1,6 @@
+import { useNavigate } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { useProgression } from '../../hooks/useProgression';
 import { color, font, radius, shadow } from '../../theme/webcoachTheme';
 import { StudyStatsSummary } from '../../types/studyActivity';
 import { formatMinutesHM } from '../../utils/studyStats';
@@ -19,33 +20,30 @@ interface ProfileSummaryStripProps {
   loading: boolean;
   /** 完了レッスン数（コースの進捗率からの推定値） */
   completedLessons: number;
-  totalLessons: number;
 }
 
-function Cell({
-  label,
-  value,
-  sub,
-}: {
-  label: string;
-  value: string;
-  sub?: string;
-}) {
+/**
+ * 数値セル。
+ * 🔴 flex:1 で等分する。以前は `flex: 0 0 auto` で右端に寄っていて、
+ *    3つの数字が右に固まって見えるとレビューで指摘された。
+ * 🔴 補足行（「全Nレッスン中」）は持たせない。セルごとに高さが変わって
+ *    数字のベースラインが揃わなくなるため。
+ */
+function Cell({ label, value }: { label: string; value: string }) {
   return (
-    <div style={{ flex: '0 0 auto', minWidth: 0, paddingLeft: 26 }}>
+    <div style={{ flex: 1, minWidth: 0, paddingLeft: 26 }}>
       <div style={{ ...font.label, color: color.textSubtle }}>{label}</div>
       <div
         style={{
           ...font.statValue,
           color: color.text,
-          marginTop: 4,
+          marginTop: 6,
           fontVariantNumeric: 'tabular-nums',
           whiteSpace: 'nowrap',
         }}
       >
         {value}
       </div>
-      {sub && <div style={{ ...font.caption, color: color.textFaint, marginTop: 3 }}>{sub}</div>}
     </div>
   );
 }
@@ -55,10 +53,11 @@ function Divider() {
     <div
       style={{
         width: 1,
-        height: 56,
+        height: 52,
         background: color.divider,
         marginLeft: 26,
         flexShrink: 0,
+        alignSelf: 'center',
       }}
     />
   );
@@ -69,10 +68,9 @@ export function ProfileSummaryStrip({
   stats,
   loading,
   completedLessons,
-  totalLessons,
 }: ProfileSummaryStripProps) {
+  const navigate = useNavigate();
   const { avatarUrl, contentToken } = useAuth();
-  const { level } = useProgression();
 
   // AppHeader と同じ解決順。contextの生URLにはここで cf_token を付ける
   const resolvedAvatar = avatarUrl ? withCfToken(avatarUrl, contentToken) : undefined;
@@ -96,7 +94,7 @@ export function ProfileSummaryStrip({
       }}
     >
       {/* 誰か */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: 1, minWidth: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, flex: '0 1 auto', minWidth: 0, paddingRight: 8 }}>
         <img
           src={avatarSrc}
           alt=""
@@ -122,23 +120,37 @@ export function ProfileSummaryStrip({
           >
             {name || 'ゲスト'}
           </div>
-          <span
+          {/*
+            🔴 ここは以前 Lv.N のバッジだった。
+               レベルの算出ロジックが決まっていない（何をすると上がるのか説明できない）ため
+               レビューで廃止された。代わりに、この帯の数字の内訳が読める学習記録への導線を置く。
+          */}
+          <button
+            type="button"
+            onClick={() => navigate('/study-log')}
+            className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={{
-              display: 'inline-block',
-              marginTop: 5,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 5,
+              marginTop: 6,
               ...font.chip,
               color: color.primary,
               background: color.primarySoft,
+              border: 'none',
               borderRadius: radius.pill,
-              padding: '4px 12px',
+              padding: '5px 13px',
+              fontFamily: 'inherit',
+              cursor: 'pointer',
             }}
           >
-            Lv.{level}
-          </span>
+            学習記録を見る
+            <ChevronRight size={13} strokeWidth={2.5} />
+          </button>
         </div>
       </div>
 
-      {/* どれだけ積み上げたか。3つに絞る */}
+      {/* どれだけ積み上げたか。3つに絞り、等幅で並べる */}
       <Divider />
       <Cell
         label="今週の学習時間"
@@ -150,11 +162,7 @@ export function ProfileSummaryStrip({
         value={loading ? dash : formatMinutesHM(stats?.allTime.minutes ?? 0)}
       />
       <Divider />
-      <Cell
-        label="修了レッスン数"
-        value={`${completedLessons}`}
-        sub={totalLessons > 0 ? `全${totalLessons}レッスン中` : undefined}
-      />
+      <Cell label="修了レッスン数" value={`${completedLessons}`} />
     </section>
   );
 }

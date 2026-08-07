@@ -1,25 +1,31 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Check, Pencil, Plus, Trash2, X } from 'lucide-react';
-import { PlanItem, useNextCoachingPlan } from '../../hooks/useNextCoachingPlan';
+import { useNavigate } from 'react-router-dom';
+import { Check, Target } from 'lucide-react';
+import { useNextCoachingPlan } from '../../hooks/useNextCoachingPlan';
 import { color, radius, shadow, font, t } from '../../theme/webcoachTheme';
 import { ArrowRightIcon } from './ContinueLearningHero';
 
 /**
- * 次回コーチングまでの目標。
+ * 次回コーチングまでの目標（マイページ）。
  *
  * 目標の出どころはコーチング記録。コーチングノートで「確定」した目標が
  * そのままここに載る（モックでは mocks/coachingGoalsStore.ts が両者をつないでいる）。
- * その上で、受講生がこのカードで文言の修正・完了チェック・追加・削除ができる。
  *
- * 🔴 編集は「編集モードに入って、まとめて保存」にしている。
- *    1文字ごとに保存すると、打っている途中の文言が保存され、
- *    別タブや次の取得で中途半端な状態が正になってしまう。
+ * 🔴 このカードは表示専用。
+ *    以前はここに編集モードがあり、さらに「コーチング記録を取り込む」「続ける」「編集」と
+ *    行き先の違う入口が3つ並んでいて、どれを押せば何ができるのか分からなかった（レビュー指摘）。
+ *    いまは操作を「編集」と「詳しく」の2つに統一し、どちらもコーチングページへ送る。
+ *    実際の編集UIは components/CoachingNotesPage.tsx の「次回までの目標」にある。
+ *
+ * 🔴 表示は最大 VISIBLE_LIMIT 件まで。
+ *    目標が増えるたびに縦に伸びてマイページ全体のバランスが崩れるため、
+ *    件数に上限を決めて、残りはコーチングページで見せる。
  */
 interface NextCoachingPlanProps {
   userId: number | undefined;
-  onContinue: () => void;
 }
+
+/** マイページに並べる目標の上限。これを超えたぶんは件数だけ知らせる。 */
+const VISIBLE_LIMIT = 3;
 
 function CalendarIcon() {
   return (
@@ -30,102 +36,108 @@ function CalendarIcon() {
   );
 }
 
-/** 3状態のマーカー（完了 / いま / 未着手）。表示モードで使う */
-function Marker({ state }: { state: 'done' | 'current' | 'later' }) {
-  if (state === 'done') {
-    return (
-      <span
-        style={{
-          width: 27,
-          height: 27,
-          flex: '0 0 27px',
-          borderRadius: '50%',
-          background: color.primary,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Check size={14} strokeWidth={3} color="#FFFFFF" />
-      </span>
-    );
-  }
+/** 達成状況のリング。数字だけより「あと1つ」が直感的に分かる */
+function ProgressRing({ done, total }: { done: number; total: number }) {
+  const size = 46;
+  const stroke = 5;
+  const r = (size - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  const ratio = total > 0 ? done / total : 0;
+
   return (
-    <span
-      style={{
-        width: 27,
-        height: 27,
-        flex: '0 0 27px',
-        borderRadius: '50%',
-        border:
-          state === 'current'
-            ? `2px solid ${color.textStrong}`
-            : `2px dashed ${color.primaryDashed}`,
-        boxSizing: 'border-box',
-      }}
-    />
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)', flexShrink: 0 }} aria-hidden>
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color.trackBg} strokeWidth={stroke} />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke={color.primary}
+          strokeWidth={stroke}
+          strokeLinecap="round"
+          strokeDasharray={c}
+          strokeDashoffset={c * (1 - ratio)}
+          style={{ transition: 'stroke-dashoffset 400ms ease' }}
+        />
+      </svg>
+      <div style={{ lineHeight: 1.25 }}>
+        <div style={{ fontSize: 15, fontWeight: 900, color: color.text, fontVariantNumeric: 'tabular-nums' }}>
+          {done}/{total} <span style={{ fontSize: 12, fontWeight: 700 }}>達成</span>
+        </div>
+        <div style={{ ...font.caption, color: color.textFaint }}>いまの進捗</div>
+      </div>
+    </div>
   );
 }
 
-const iconButton: React.CSSProperties = {
-  width: 30,
-  height: 30,
-  display: 'grid',
-  placeItems: 'center',
-  border: `1px solid ${color.borderSoft}`,
-  borderRadius: 9,
-  background: color.surface,
-  color: color.textMuted,
-  cursor: 'pointer',
-  flexShrink: 0,
-};
+/** 目標1件。横に並べるので、丈が揃うようカード型にする */
+function GoalCard({ text, done, isNext }: { text: string; done: boolean; isNext: boolean }) {
+  return (
+    <div
+      style={{
+        flex: '1 1 0',
+        minWidth: 0,
+        display: 'flex',
+        alignItems: 'flex-start',
+        gap: 11,
+        padding: '14px 15px',
+        borderRadius: radius.md,
+        border: `1px solid ${isNext ? color.primaryBorder : color.border}`,
+        background: isNext ? color.hoverBgTint : color.surface,
+      }}
+    >
+      <span
+        style={{
+          width: 24,
+          height: 24,
+          flex: '0 0 24px',
+          borderRadius: '50%',
+          boxSizing: 'border-box',
+          display: 'grid',
+          placeItems: 'center',
+          background: done ? color.primary : 'transparent',
+          border: done
+            ? 'none'
+            : isNext
+              ? `2px solid ${color.primary}`
+              : `2px dashed ${color.primaryDashed}`,
+        }}
+      >
+        {done && <Check size={13} strokeWidth={3} color={color.textOnPrimary} />}
+      </span>
+      <div style={{ minWidth: 0 }}>
+        <div
+          style={{
+            fontSize: 13.5,
+            fontWeight: 700,
+            lineHeight: 1.6,
+            color: done ? color.textSubtle : color.textStrong,
+            textDecoration: done ? 'line-through' : 'none',
+          }}
+        >
+          {text}
+        </div>
+        <div style={{ ...font.caption, color: color.textFaint, marginTop: 5 }}>
+          {done ? '達成ずみ' : isNext ? 'いま取り組むもの' : 'このあと'}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-function NextCoachingPlan({ userId, onContinue }: NextCoachingPlanProps) {
-  const { items, nextSession, loading, saving, error, save } = useNextCoachingPlan(userId);
-
-  const [editing, setEditing] = useState(false);
-  const [draft, setDraft] = useState<PlanItem[]>([]);
-
-  // 編集を始めた時点の内容を下書きに写す。
-  // 表示中に取得が走っても、編集中の入力が上書きされないようにする。
-  useEffect(() => {
-    if (!editing) setDraft(items);
-  }, [items, editing]);
+function NextCoachingPlan({ userId }: NextCoachingPlanProps) {
+  const navigate = useNavigate();
+  const { items, nextSession, loading, error } = useNextCoachingPlan(userId);
 
   if (loading) return null;
 
   const completedCount = items.filter((g) => g.completed).length;
   const currentIndex = items.findIndex((g) => !g.completed);
+  const visible = items.slice(0, VISIBLE_LIMIT);
+  const hiddenCount = items.length - visible.length;
 
-  const startEdit = () => {
-    setDraft(items.map((i) => ({ ...i })));
-    setEditing(true);
-  };
-
-  const cancelEdit = () => {
-    setDraft(items);
-    setEditing(false);
-  };
-
-  const commit = async () => {
-    // 空行は保存しない（削除したいときに空にする操作を許すため）
-    const cleaned = draft
-      .map((d) => ({ ...d, text: d.text.trim() }))
-      .filter((d) => d.text.length > 0);
-    const ok = await save(cleaned);
-    if (ok) setEditing(false);
-  };
-
-  const patch = (index: number, next: Partial<PlanItem>) =>
-    setDraft((prev) => prev.map((d, i) => (i === index ? { ...d, ...next } : d)));
-
-  const remove = (index: number) => setDraft((prev) => prev.filter((_, i) => i !== index));
-
-  const add = () =>
-    setDraft((prev) => [
-      ...prev,
-      { no: prev.length + 1, text: '', completed: false, progress: 0 },
-    ]);
+  const goCoaching = () => navigate('/coaching');
 
   return (
     <section
@@ -139,55 +151,40 @@ function NextCoachingPlan({ userId, onContinue }: NextCoachingPlanProps) {
         flexDirection: 'column',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <div style={{ ...font.cardTitle, color: color.text }}>次回コーチングまでの目標</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          {items.length > 0 && !editing && (
-            <div style={{ fontSize: 12.5, fontWeight: 700, color: color.primary }}>
-              {completedCount}/{items.length} 完了
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, minWidth: 0 }}>
+          <span
+            style={{
+              width: 38,
+              height: 38,
+              flex: '0 0 38px',
+              borderRadius: '50%',
+              display: 'grid',
+              placeItems: 'center',
+              background: color.primarySoft,
+            }}
+          >
+            <Target size={19} color={color.primary} />
+          </span>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ ...font.cardTitle, color: color.text }}>次回コーチングまでの目標</div>
+            <div style={{ ...font.caption, color: color.textSubtle, marginTop: 5, lineHeight: 1.7 }}>
+              小さな一歩の積み重ねが、大きな未来をつくります。
             </div>
-          )}
-          {editing ? (
-            <>
-              <button
-                type="button"
-                onClick={cancelEdit}
-                aria-label="編集をやめる"
-                title="編集をやめる"
-                className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={iconButton}
-              >
-                <X size={14} />
-              </button>
-              <button
-                type="button"
-                onClick={commit}
-                disabled={saving}
-                className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={{
-                  ...t.chip,
-                  border: 'none',
-                  background: color.primary,
-                  color: color.textOnPrimary,
-                  padding: '7px 14px',
-                  cursor: saving ? 'default' : 'pointer',
-                  opacity: saving ? 0.6 : 1,
-                }}
-              >
-                {saving ? '保存中…' : '保存する'}
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              onClick={startEdit}
-              className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{ ...t.chip, border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }}
-            >
-              <Pencil size={12} />
-              編集
-            </button>
-          )}
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
+          {items.length > 0 && <ProgressRing done={completedCount} total={items.length} />}
+          {/* 🔴 編集の実体はコーチングページ。ここは入口だけ。 */}
+          <button
+            type="button"
+            onClick={goCoaching}
+            className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+            style={{ ...t.chip, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
+          >
+            編集
+          </button>
         </div>
       </div>
 
@@ -200,137 +197,46 @@ function NextCoachingPlan({ userId, onContinue }: NextCoachingPlanProps) {
         </div>
       )}
 
-      {error && (
-        <div style={{ ...font.caption, color: color.primary, marginTop: 12 }}>{error}</div>
-      )}
+      {error && <div style={{ ...font.caption, color: color.primary, marginTop: 12 }}>{error}</div>}
 
-      {/* ---- 編集モード ---- */}
-      {editing ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 18 }}>
-          {draft.map((item, i) => (
-            <div
-              key={i}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                padding: '9px 12px',
-                border: `1px solid ${color.border}`,
-                borderRadius: radius.md,
-              }}
-            >
-              <input
-                type="checkbox"
-                checked={item.completed}
-                onChange={(e) => patch(i, { completed: e.target.checked })}
-                aria-label="達成した"
-                style={{ accentColor: color.primary, flexShrink: 0, width: 17, height: 17 }}
-              />
-              <input
-                value={item.text}
-                onChange={(e) => patch(i, { text: e.target.value })}
-                placeholder="例）バナーを1つ完成させる"
-                style={{
-                  flex: 1,
-                  minWidth: 0,
-                  border: 'none',
-                  outline: 'none',
-                  fontFamily: 'inherit',
-                  fontSize: 14.5,
-                  color: color.textStrong,
-                  background: 'transparent',
-                  textDecoration: item.completed ? 'line-through' : 'none',
-                }}
-              />
-              <button
-                type="button"
-                onClick={() => remove(i)}
-                aria-label="この目標を削除する"
-                title="削除する"
-                className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={iconButton}
-              >
-                <Trash2 size={13} />
-              </button>
-            </div>
-          ))}
-
-          <button
-            type="button"
-            onClick={add}
-            className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 7,
-              border: `1px dashed ${color.primaryDashed}`,
-              borderRadius: radius.md,
-              padding: '11px 14px',
-              background: color.surface,
-              color: color.primary,
-              fontFamily: 'inherit',
-              ...font.buttonSm,
-              cursor: 'pointer',
-            }}
-          >
-            <Plus size={14} />
-            目標を追加する
-          </button>
-
-          <p style={{ ...font.caption, color: color.textMuted, margin: '2px 0 0', lineHeight: 1.8 }}>
-            コーチングで決めた目標は、コーチング記録を確定すると自動でここに入ります。
-          </p>
-        </div>
-      ) : items.length === 0 ? (
+      {items.length === 0 ? (
         <p style={{ fontSize: 13, color: color.textSubtle, marginTop: 16, lineHeight: 1.9 }}>
           次回のコーチングで、コーチと一緒にここまでの目標を決めましょう。
           <br />
-          コーチング記録を取り込むと、決まった目標がここに入ります。
+          コーチング記録を確定すると、決まった目標がここに入ります。
         </p>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 22, marginTop: 24 }}>
-          {items.map((item, i) => {
-            const isNext = i === currentIndex;
-            const state = item.completed ? 'done' : isNext ? 'current' : 'later';
-            return (
-              <div key={item.no} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-                <Marker state={state} />
-                <span
-                  style={{
-                    fontSize: 14.5,
-                    fontWeight: 500,
-                    color: state === 'later' ? color.textSubtle : color.textStrong,
-                    textDecoration: item.completed ? 'line-through' : 'none',
-                  }}
-                >
-                  {item.text}
-                </span>
-              </div>
-            );
-          })}
+        <div style={{ display: 'flex', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
+          {visible.map((item, i) => (
+            <GoalCard key={item.no} text={item.text} done={item.completed} isNext={i === currentIndex} />
+          ))}
         </div>
       )}
 
-      <div style={{ flex: 1, minHeight: 22 }} />
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-        <Link
-          to="/coaching"
-          style={{ fontSize: 12.5, fontWeight: 700, color: color.primary, textDecoration: 'none' }}
+      <div style={{ flex: 1, minHeight: 18 }} />
+      {/* 🔴 フッターの導線は1つだけ。行き先は上の「編集」と同じコーチングページ。 */}
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <button
+          type="button"
+          onClick={goCoaching}
+          className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            background: 'transparent',
+            border: 'none',
+            padding: '6px 8px',
+            fontFamily: 'inherit',
+            fontSize: 13,
+            fontWeight: 700,
+            color: color.primary,
+            cursor: 'pointer',
+          }}
         >
-          コーチング記録を取り込む
-        </Link>
-        <div
-          onClick={onContinue}
-          role="button"
-          tabIndex={0}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8, fontSize: 13, fontWeight: 700, color: color.textMuted, cursor: 'pointer' }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = color.primary; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = color.textMuted; }}
-        >
-          <span>続ける</span>
+          {hiddenCount > 0 ? `すべての目標を見る（ほか${hiddenCount}件）` : '詳しく'}
           <ArrowRightIcon size={15} stroke="currentColor" />
-        </div>
+        </button>
       </div>
     </section>
   );

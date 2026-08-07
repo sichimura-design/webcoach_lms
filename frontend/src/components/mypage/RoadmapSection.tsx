@@ -9,10 +9,8 @@
 import { useNavigate } from 'react-router-dom';
 import { useLearningPlan } from '../../hooks/useLearningPlan';
 import { PLAN_STATUS_LABEL } from '../../types/learningPlan';
-import { diffDays, formatJpDate, toIso } from '../../utils/learningPlanTemplate';
 import { color, radius, shadow, font, t } from '../../theme/webcoachTheme';
 import StageRail from '../learningPlan/StageRail';
-import MilestoneRow from '../learningPlan/MilestoneRow';
 import { ArrowRightIcon } from './ContinueLearningHero';
 
 interface RoadmapSectionProps {
@@ -37,7 +35,7 @@ const CARD_STYLE = {
 
 function RoadmapSection({ userId }: RoadmapSectionProps) {
   const navigate = useNavigate();
-  const { plan, stages, currentStage, currentPhase, monthMilestones, checkinDue, pendingRevisionCount, loading } =
+  const { plan, stages, currentStage, currentPhase, checkinDue, pendingRevisionCount, loading } =
     useLearningPlan(userId);
 
   if (loading) return null;
@@ -64,17 +62,18 @@ function RoadmapSection({ userId }: RoadmapSectionProps) {
     );
   }
 
-  const remainingDays = diffDays(toIso(new Date()), plan.goalDeadline);
-  const remainingLabel =
-    remainingDays <= 0
-      ? '目標期限を過ぎています'
-      : remainingDays < 45
-        ? `残り${remainingDays}日`
-        : `残り約${Math.round(remainingDays / 30)}ヶ月`;
+  // いま何をしていて、この後どこへ向かうか。ここだけ言えれば帯としては十分。
+  const currentStageIndex = stages.findIndex((s) => s.status === 'current');
+  const nextStage = currentStageIndex >= 0 ? stages[currentStageIndex + 1] : stages[0];
 
   return (
     <section style={CARD_STYLE}>
-      {/* 月次チェックイン・更新候補の帯。無視しても下の内容は普通に読める。 */}
+      {/*
+        月次チェックインの案内。無視しても下の内容は普通に読める。
+        🔴 更新候補の帯にあった「予定と実績に差があります」は出さない。
+           遅れを突きつけられて焦る、というレビュー指摘への対応。
+           数を伝えるだけにして、判断はロードマップ画面でしてもらう。
+      */}
       {(checkinDue || pendingRevisionCount > 0) && (
         <div
           onClick={() => navigate('/learning-plan')}
@@ -89,7 +88,7 @@ function RoadmapSection({ userId }: RoadmapSectionProps) {
           <span style={{ fontSize: 12.5, fontWeight: 700, color: color.primary }}>
             {checkinDue
               ? '次回コーチングの前に（約1分）— 今月のふりかえりに答える'
-              : `予定と実績に差があります・${pendingRevisionCount}件の更新候補があります`}
+              : `ロードマップの更新案が${pendingRevisionCount}件あります`}
           </span>
           <span style={{ marginLeft: 'auto', display: 'flex' }}>
             <ArrowRightIcon size={14} stroke={color.primary} />
@@ -100,14 +99,20 @@ function RoadmapSection({ userId }: RoadmapSectionProps) {
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 20 }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ ...font.sectionTitle, color: color.text }}>学習ロードマップ</span>
+            <span style={{ ...font.sectionTitle, color: color.text }}>
+              {plan.goal}のための学習ロードマップ
+            </span>
             {plan.status !== 'confirmed_with_coach' && (
               <span style={{ ...t.chip }}>{PLAN_STATUS_LABEL[plan.status]}</span>
             )}
           </div>
+          {/*
+            🔴 「残り◯日」「目標期限を過ぎています」は出さない。
+               ロードマップは締切ではなく道順を示すもの、というレビュー指摘。
+               期限そのものは /learning-plan で確認できる。
+          */}
           <div style={{ fontSize: 12.5, color: color.textSubtle, marginTop: 7 }}>
-            {plan.goal}・{formatJpDateFullShort(plan.goalDeadline)}まで（{remainingLabel}）
-            {currentPhase ? `・いまは「${currentPhase.title}」` : ''}
+            一歩ずつ進めば、必ず目標につながります。今日の積み重ねが、未来の実績に。
           </div>
         </div>
         <div
@@ -130,35 +135,45 @@ function RoadmapSection({ userId }: RoadmapSectionProps) {
         <StageRail stages={stages} currentStage={currentStage} showBreakdown={false} />
       </div>
 
-      {/* 今月のマイルストーンと次回見直し日。必須項目なので常に何かを出す。 */}
-      <div style={{ marginTop: 30, paddingTop: 22, borderTop: `1px solid ${color.border}` }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
-          <span style={{ ...font.rowTitle, color: color.textStrong }}>今月のマイルストーン</span>
-          <span style={{ fontSize: 12, fontWeight: 500, color: color.textSubtle }}>
-            次回見直し予定 {formatJpDate(plan.nextReviewDate)}
-          </span>
-        </div>
-
-        {monthMilestones.length === 0 ? (
-          <p style={{ fontSize: 13, color: color.textSubtle, marginTop: 14 }}>
-            今月のマイルストーンはまだ設定されていません。次回のコーチングで一緒に決めましょう。
-          </p>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginTop: 16 }}>
-            {monthMilestones.slice(0, 2).map((m) => (
-              <MilestoneRow key={m.id} milestone={m} />
-            ))}
-          </div>
-        )}
+      {/*
+        🔴 ここは以前「今月のマイルストーン＋次回見直し予定」だった。
+           帯の情報量が多すぎる／マイルストーンは要らない、というレビュー指摘で差し替え。
+           代わりに、レールを見て次に知りたい2点だけを置く。
+      */}
+      <div style={{ display: 'flex', gap: 14, marginTop: 28, flexWrap: 'wrap' }}>
+        <FocusCard
+          label="いまやっていること"
+          title={currentPhase?.title ?? currentStage?.title ?? 'これから始めます'}
+          note={currentStage?.note ?? '小さな改善の積み重ねが、大きな自信になります。'}
+        />
+        <FocusCard
+          label="この後のステップ"
+          title={nextStage?.title ?? '目標の達成'}
+          note={nextStage?.note ?? 'ここまで来たら、次の目標をコーチと決めましょう。'}
+        />
       </div>
     </section>
   );
 }
 
-/** '2026-12-31' → '2026年12月' （帯では日まで出すと情報過多になる） */
-function formatJpDateFullShort(iso: string): string {
-  const [y, m] = iso.split('-');
-  return `${Number(y)}年${Number(m)}月`;
+/** 「いまやっていること」「この後のステップ」の2枚組 */
+function FocusCard({ label, title, note }: { label: string; title: string; note: string }) {
+  return (
+    <div
+      style={{
+        flex: '1 1 280px',
+        minWidth: 0,
+        background: color.hoverBgTint,
+        border: `1px solid ${color.primaryBorderSoft}`,
+        borderRadius: radius.md,
+        padding: '16px 18px',
+      }}
+    >
+      <div style={{ ...font.caption, color: color.primary, fontWeight: 900 }}>{label}</div>
+      <div style={{ ...font.rowTitle, color: color.textStrong, marginTop: 7, lineHeight: 1.5 }}>{title}</div>
+      <div style={{ ...font.caption, color: color.textSubtle, marginTop: 6, lineHeight: 1.7 }}>{note}</div>
+    </div>
+  );
 }
 
 export default RoadmapSection;
