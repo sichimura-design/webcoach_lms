@@ -10,7 +10,9 @@ WEBCOACH LMS のフロントに新機能を追加するための手順。**バ�
   - **本番（master）**: フラグ未設定 = OFF。挙動は従来どおり、モックコードは読み込まれない。
 - 実装は `MOCKS_ENABLED`（`frontend/src/mocks/config.ts`）で分岐。
 - 認証も `frontend/src/mocks/mockAuth.ts` の擬似セッションでモック（admin + coach 権限）。
-- MSW は `onUnhandledRequest: 'bypass'` なので、**モックしていない API は素通し**（ローカルでは実BFFが無いのでエラーになるだけ・画面は落ちない）。
+- **モックしていない `/api/*` は素通しさせない**。`handlers.ts` の末尾にキャッチオール ハンドラを置き、`501 Not mocked` を返してコンソールに `[mock] 未実装のモックAPIです: <METHOD> <path>` と出す。この警告が出たら、そのエンドポイントのハンドラを足すこと。
+  - 理由: dev プレビューの CloudFront は `/api/*` を**実 BFF に転送している**。素通しすると擬似トークンが弾かれて 401 → ログイン画面へ強制遷移 → プレビューのサブパス（`/branches/<slug>/`）の外に出て CloudFront の **AccessDenied 画面**になってしまう。
+  - モック時は 401 を受けてもログイン画面へリダイレクトしない（`bffClient.ts` の response interceptor）。本番のリダイレクトは `PUBLIC_URL` 込みのパスで行う。
 
 ## 新機能を追加する手順
 

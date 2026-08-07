@@ -10,7 +10,9 @@ async function bootstrap() {
   if (MOCKS_ENABLED) {
     const { worker } = await import('./mocks/browser');
     await worker.start({
-      onUnhandledRequest: 'bypass',
+      // モック漏れに気づけるよう警告する（/api/* は handlers.ts の最後のフタが
+      // 受け止めるので、ここに来るのは静的アセットや外部URLのみ）
+      onUnhandledRequest: 'warn',
       // サブパス配信（/branches/<slug>/）でも worker を正しく解決するため PUBLIC_URL 起点で指定
       serviceWorker: { url: `${process.env.PUBLIC_URL || ''}/mockServiceWorker.js` },
     });

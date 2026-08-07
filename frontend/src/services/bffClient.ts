@@ -59,6 +59,7 @@ import {
   RevisionAction,
 } from '../types/learningPlan';
 import { getIdToken } from './cognitoAuth';
+import { MOCKS_ENABLED } from '../mocks/config';
 
 /**
  * BFF Client - 統合APIクライアント
@@ -69,6 +70,11 @@ import { getIdToken } from './cognitoAuth';
 const BFF_BASE_URL = process.env.REACT_APP_BFF_URL
   ? `${process.env.REACT_APP_BFF_URL}/api`
   : '/api';
+
+// ログイン画面のパス。BrowserRouter の basename（= PUBLIC_URL）を含める。
+// 本番は PUBLIC_URL が空なので従来どおり '/login'、dev プレビューでは
+// '/branches/<slug>/login' になる。
+const LOGIN_PATH = `${process.env.PUBLIC_URL || ''}/login`;
 
 class BFFClient {
   private api: AxiosInstance;
@@ -95,8 +101,19 @@ class BFFClient {
       (response) => response,
       (error) => {
         if (error.response?.status === 401) {
-          if (window.location.pathname !== '/login') {
-            window.location.href = '/login';
+          // モック環境（ローカル / dev プレビュー）の 401 は「モック漏れのリクエストが
+          // 実BFFに抜けた」ことを意味する。擬似トークンが弾かれただけなのでログイン画面へ
+          // 飛ばす意味が無く、飛ばすと作業が中断されるだけなので警告に留める。
+          if (MOCKS_ENABLED) {
+            console.warn(
+              '[mock] 401 from real BFF — このエンドポイントのモックが不足しています:',
+              error.config?.method?.toUpperCase(),
+              error.config?.url
+            );
+          } else if (window.location.pathname !== LOGIN_PATH) {
+            // 🔴 basename 込みで飛ばすこと。'/login' 直書きだとサブパス配信
+            //    （/branches/<slug>/）でSPAの外に出てしまい AccessDenied になる。
+            window.location.href = LOGIN_PATH;
           }
         }
         return Promise.reject(error);

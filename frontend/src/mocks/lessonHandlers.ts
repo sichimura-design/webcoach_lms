@@ -444,12 +444,27 @@ export function buildLessonDoc(courseId: number, lessonId: number): LessonDoc | 
   };
 }
 
+/**
+ * レッスン完了状態のセッション内オーバーライド。
+ * POST /moodle/activities/:cmid/completion（handlers.ts）が書き込み、
+ * 完了状態API・目次の両方がこれを参照するので、完了トグルの結果が両方に反映される。
+ */
+const completionOverrides = new Map<number, boolean>();
+
+export function setLessonDone(lessonId: number, done: boolean): void {
+  completionOverrides.set(lessonId, done);
+}
+
+/** 既定は「偶数IDは完了扱い」。トグル済みのレッスンはその結果を優先する。 */
+export function isLessonDone(lessonId: number): boolean {
+  const override = completionOverrides.get(lessonId);
+  return override !== undefined ? override : lessonId % 2 === 0;
+}
+
 function buildOutline(courseId: number): LessonOutline {
   const sections = buildCourseStructure(courseId);
   const flat = sections.flatMap((s) => s.lessons);
-  // 既存の /moodle/activities/:cmid/completion モックと同じ規則（偶数IDは完了扱い）に
-  // 合わせて、目次の完了表示が完了状態APIと矛盾しないようにする。
-  const isDone = (lessonId: number) => lessonId % 2 === 0;
+  const isDone = isLessonDone;
   const doneCount = flat.filter((l) => isDone(l.lessonId)).length;
 
   return {

@@ -12,11 +12,12 @@
  * 注意:
  *   - パスは baseURL が /api のため実際のリクエストは `${origin}/api/...`。
  *     どのオリジン/サブパスでも一致するよう `*​/api/...` のワイルドカードで書く。
- *   - ここに無いエンドポイントは onUnhandledRequest: 'bypass' で素通し
- *     （ローカルでは実BFFが無いのでネットワークエラーになるだけ）。
+ *   - ここに無い /api/* は、末尾のキャッチオール ハンドラが 501 を返して止める。
+ *     実BFFへ抜けて 401 → ログイン画面へ強制遷移、という事故を防ぐため。
+ *     コンソールに「未実装のモックAPIです」と出たらここにハンドラを足すこと。
  * ============================================================
  */
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, passthrough } from 'msw';
 import type {
   UserInfo,
   Profile,
@@ -25,7 +26,7 @@ import type {
 } from '../types/api';
 import type { FocusBoothMember } from '../types/focusBooth';
 import { coachingHandlers } from './coachingHandlers';
-import { buildCourseStructure, courseLessonCount, lessonHandlers } from './lessonHandlers';
+import { buildCourseStructure, courseLessonCount, isLessonDone, lessonHandlers, setLessonDone } from './lessonHandlers';
 import { learningPlanHandlers } from './learningPlanHandlers';
 import { aiSkillHandlers } from './aiSkillHandlers';
 import { currentStreakInfo, studyActivityHandlers } from './studyActivityHandlers';
@@ -413,10 +414,22 @@ export const handlers = [
   http.get('*/api/moodle/courses/:courseid/contents', ({ params }) =>
     HttpResponse.json(buildSections(Number(params.courseid)))
   ),
-  // アクティビティ完了状態（cmid が偶数なら完了済みとして見せる）
+  // アクティビティ完了状態（既定は cmid が偶数なら完了済み。トグル結果はそれを上書きする）
   http.get('*/api/moodle/activities/:cmid/completion', ({ params }) =>
-    HttpResponse.json({ state: Number(params.cmid) % 2 === 0 ? 1 : 0 })
+    HttpResponse.json({ state: isLessonDone(Number(params.cmid)) ? 1 : 0 })
   ),
+  // 完了トグル。これが無いと実BFFへ抜けて401→ログイン画面へ飛ばされる
+  http.post('*/api/moodle/activities/:cmid/completion', async ({ params, request }) => {
+    let completed = true;
+    try {
+      const body = (await request.json()) as { completed?: boolean };
+      if (typeof body?.completed === 'boolean') completed = body.completed;
+    } catch {
+      /* ボディ無しは完了扱い（bffClient の既定値と揃える） */
+    }
+    setLessonDone(Number(params.cmid), completed);
+    return HttpResponse.json({ status: true, state: completed ? 1 : 0 });
+  }),
   // カテゴリ内のコース一覧（?field=category&value=<id>）
   http.get('*/api/moodle/getcoursebyfield', ({ request }) => {
     const value = new URL(request.url).searchParams.get('value');
@@ -699,4 +712,26 @@ export const handlers = [
       },
     ])
   ),
+
+  // ==================== 🔴 最後に置くこと: BFF宛の取りこぼしを止めるフタ ====================
+  // dev プレビューの CloudFront は /api/* を実BFFに転送している。モックが無いAPIを
+  // 素通しすると、擬似トークンが弾かれて 401 → ログイン画面へ強制遷移 → プレビューの
+  // サブパス外に出て AccessDenied、という事故になる。ここで止めて 501 を返し、
+  // 「モックが足りない」ことがコンソールで分かるようにする。
+  http.all('*/api/*', ({ request }) => {
+    const url = new URL(request.url);
+    // BFF以外（例: ui-avatars.com/api/...）は素通し
+    const bffOrigin = process.env.REACT_APP_BFF_URL;
+    const isBff = bffOrigin ? url.href.startsWith(bffOrigin) : url.origin === window.location.origin;
+    if (!isBff) return passthrough();
+
+    console.error(
+      `[mock] 未実装のモックAPIです: ${request.method} ${url.pathname}\n` +
+        '  → frontend/src/mocks/handlers.ts にハンドラを追加してください。'
+    );
+    return HttpResponse.json(
+      { error: 'Not mocked', method: request.method, path: url.pathname },
+      { status: 501 }
+    );
+  }),
 ];
