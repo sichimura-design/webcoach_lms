@@ -268,3 +268,423 @@ Moodle標準の通知は「配信チャネル」と「送信トリガー判定�
 - 前提条件: SES本番アクセス（現状サンドボックスのまま、`memory/ses-sandbox-release.md`参照）、送信ドメイン/アドレスの検証（`webcoach.jp`は実際には未検証）、MoodleのECSタスクからSES SMTPエンドポイントへの到達性（NAT Gateway経由 or `com.amazonaws.<region>.email-smtp`のVPCエンドポイント）
 - SES以外の代替: SendGrid/Mailgun/Postmark等の外部SMTPリレー（SESの本番アクセス審査を待たずに導入できる可能性）、Google Workspace SMTPリレー（送信量制限が厳しく本番向きではない）。自前Postfix構築はポート25解除申請＋SPF/DKIM/DMARC/IPレピュテーション管理が必要で運用負荷が高く非推奨
 - CognitoのメールとMoodleのメールは別系統。将来SES本番アクセスが下りれば同じ検証済みドメインを両方で使い回せる
+
+---
+
+## 追加テーブル設計（DDL案）
+
+「2. 新規テーブルが必要なもの」の列挙を実装可能なレベルまで具体化したもの。命名は既存テーブル（`webcoach_avatar`等）に合わせ**単数形+`webcoach_`接頭辞**で統一。型・制約は`scripts/db/prod-moodle-schema.sql`内の既存`webcoach_*`テーブルの慣習（`ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`、`created_at`/`updated_at`は`timestamp DEFAULT CURRENT_TIMESTAMP`、真偽値は`smallint`、日本語コメント付与）に揃えている。
+
+**設計時の確認事項**（実装着手前に反映済み）
+- `api-server/entities/webcoach.py`に**`WebCoachCoachMeetingIntegration`（`webcoach_coach_meeting_integration`）が既にエンティティ定義済み**（ただし`prod-moodle-schema.sql`・`special-tables-data.sql`のどちらにもCREATE TABLE文がなく、実DBには未作成＝コードはあるがテーブル未作成の状態）。列構成が2-1の`meeting_connections`案と一致するため、**新規テーブルとしては設計しない**（既存エンティティをそのままDB作成すればよい）
+- `webcoach_student_coach_mapping`は実装済み（`api-server/routers/coaching.py`でCRUD API稼働中）のため対象外
+- 2-6「ユーザー↔ロードマップ紐付け」は、既存の`webcoach_learning_roadmap`/`webcoach_learning_roadmap_step`を確認した結果、ユーザー紐付け列は無く新規テーブルが必要と確定
+- SQLAlchemyの`ForeignKey`はこのプロジェクトの既存エンティティ（`entities/*.py`）で一貫して未使用のため、本設計でも外部キー制約は張らず、コメントで参照関係のみ明示する方針とした
+
+### 2-1. コーチング（12テーブル。`meeting_connections`は既存流用のため対象外）
+
+```sql
+-- コーチング1回分のセッション
+CREATE TABLE `webcoach_coaching_session` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `student_user_id` bigint NOT NULL COMMENT '受講生のMoodleユーザーID',
+  `coach_user_id` bigint NOT NULL COMMENT 'コーチのMoodleユーザーID',
+  `meeting_link_id` bigint DEFAULT NULL COMMENT 'webcoach_meeting_link.id（登録前はNULL）',
+  `scheduled_at` timestamp NULL DEFAULT NULL COMMENT '予定日時',
+  `status` enum('draft','recording','uploading','transcribing','summarizing','review_required','published','failed') NOT NULL DEFAULT 'draft',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_coaching_session_student` (`student_user_id`),
+  KEY `idx_coaching_session_coach` (`coach_user_id`),
+  KEY `idx_coaching_session_status` (`status`),
+  KEY `idx_coaching_session_scheduled` (`scheduled_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='コーチング1回分のセッション';
+
+-- 会議リンク（Webhook照合キー）
+CREATE TABLE `webcoach_meeting_link` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `session_id` bigint NOT NULL COMMENT 'webcoach_coaching_session.id（1セッション1リンク）',
+  `provider` enum('zoom','google_meet') NOT NULL,
+  `url` varchar(1024) NOT NULL,
+  `meeting_id` varchar(256) NOT NULL COMMENT 'プロバイダー側の会議ID。Webhook受信時の照合キー',
+  `passcode` varchar(64) DEFAULT NULL,
+  `registered_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_meeting_link_session` (`session_id`),
+  KEY `idx_meeting_link_meeting_id` (`provider`,`meeting_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='登録された会議リンク';
+
+-- ConnectCoach招待URLトークン
+CREATE TABLE `webcoach_connection_invite` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `token` varchar(128) NOT NULL COMMENT '招待URLに埋め込む乱数トークン',
+  `coach_user_id` bigint NOT NULL COMMENT '招待元コーチのMoodleユーザーID',
+  `expires_at` timestamp NOT NULL,
+  `used_at` timestamp NULL DEFAULT NULL,
+  `created_by` bigint NOT NULL COMMENT '発行者のMoodleユーザーID（通常はcoach_user_idと同一）',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_connection_invite_token` (`token`),
+  KEY `idx_connection_invite_coach` (`coach_user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ConnectCoach招待URLのトークン管理';
+
+-- 録音ファイルと取得状態
+CREATE TABLE `webcoach_recording` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `session_id` bigint NOT NULL,
+  `source` enum('auto_recording','provider_transcript','uploaded_audio','pasted_text') NOT NULL,
+  `imported_from` enum('auto','manual') NOT NULL,
+  `file_url` varchar(1024) DEFAULT NULL,
+  `duration_seconds` int DEFAULT NULL,
+  `fetch_status` enum('pending','success','failed') NOT NULL DEFAULT 'pending',
+  `deleted_at` timestamp NULL DEFAULT NULL COMMENT '90日自動削除バッチがセット',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_recording_session` (`session_id`),
+  KEY `idx_recording_fetch_status` (`fetch_status`),
+  KEY `idx_recording_deleted_at` (`deleted_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='録音ファイルと取得状態（90日で自動削除）';
+
+-- 録音・AI利用への同意
+CREATE TABLE `webcoach_recording_consent` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `session_id` bigint NOT NULL,
+  `user_id` bigint NOT NULL COMMENT '同意者のMoodleユーザーID（コーチ or 受講生）',
+  `consented_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `consent_version` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_recording_consent_session` (`session_id`),
+  UNIQUE KEY `uq_recording_consent_user_version` (`session_id`,`user_id`,`consent_version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='録音・AI利用への同意';
+
+-- 文字起こし全体（1セッション1件）
+CREATE TABLE `webcoach_transcript` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `session_id` bigint NOT NULL,
+  `full_text` longtext NOT NULL,
+  `language` varchar(16) DEFAULT NULL COMMENT '例: ja',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_transcript_session` (`session_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文字起こし全体';
+
+-- 発言単位の文字起こし
+CREATE TABLE `webcoach_transcript_segment` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `transcript_id` bigint NOT NULL,
+  `segment_no` int NOT NULL COMMENT 'transcript内の発言順序',
+  `speaker_id` bigint DEFAULT NULL COMMENT '話者のMoodleユーザーID（特定できた場合）',
+  `speaker_role` enum('coach','student','unknown') NOT NULL DEFAULT 'unknown',
+  `start_ms` int NOT NULL,
+  `end_ms` int NOT NULL,
+  `text` text NOT NULL,
+  `confidence` float DEFAULT NULL COMMENT 'ASR信頼度スコア(0.0-1.0)',
+  PRIMARY KEY (`id`),
+  KEY `idx_transcript_segment_transcript` (`transcript_id`,`segment_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='発言単位の文字起こし';
+
+-- AI要約（バージョン保持。上書きせず追加）
+CREATE TABLE `webcoach_ai_summary` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `session_id` bigint NOT NULL,
+  `version` int NOT NULL,
+  `session_summary` text,
+  `progress_since_last` json DEFAULT NULL,
+  `coach_feedback` json DEFAULT NULL,
+  `decisions` json DEFAULT NULL,
+  `next_session_agenda` json DEFAULT NULL,
+  `referenced_context` json DEFAULT NULL,
+  `generated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `generated_by` enum('ai','student_edit','coach_edit') NOT NULL DEFAULT 'ai',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_ai_summary_session_version` (`session_id`,`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='AI要約（バージョン保持）';
+
+-- AIが抽出した目標候補
+CREATE TABLE `webcoach_goal_candidate` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `session_id` bigint NOT NULL,
+  `title` varchar(512) NOT NULL,
+  `success_criteria` text,
+  `due_date` date DEFAULT NULL,
+  `estimated_minutes` int DEFAULT NULL,
+  `priority` enum('high','normal','low') NOT NULL DEFAULT 'normal',
+  `source_segment_ids` json DEFAULT NULL COMMENT '根拠となったwebcoach_transcript_segment.idの配列',
+  `needs_review` smallint NOT NULL DEFAULT '1',
+  `state` enum('ai_suggested','student_confirmed','shared_with_coach','coach_confirmed','completed') NOT NULL DEFAULT 'ai_suggested',
+  `selected` smallint NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_goal_candidate_session` (`session_id`),
+  KEY `idx_goal_candidate_state` (`state`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='AIが抽出した目標候補';
+
+-- 確定された目標（将来的にwebcoach_next_coaching_goalの後継候補）
+CREATE TABLE `webcoach_goal` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `candidate_id` bigint DEFAULT NULL COMMENT 'webcoach_goal_candidate.id（手動作成の場合はNULL）',
+  `user_id` bigint NOT NULL,
+  `title` varchar(512) NOT NULL,
+  `success_criteria` text,
+  `due_date` date DEFAULT NULL,
+  `status` enum('todo','in_progress','done','missed') NOT NULL DEFAULT 'todo',
+  `completed_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_goal_user` (`user_id`),
+  KEY `idx_goal_status` (`status`),
+  KEY `idx_goal_candidate` (`candidate_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='確定された目標。マイページ「次回コーチング目標」はここを参照';
+
+-- AI処理の非同期ジョブ状態
+CREATE TABLE `webcoach_processing_job` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `session_id` bigint NOT NULL,
+  `job_type` varchar(64) NOT NULL COMMENT 'transcribe/summarize/fetch_recording/extract_goals等。拡張前提でENUMにしない',
+  `status` enum('queued','running','succeeded','failed') NOT NULL DEFAULT 'queued',
+  `error_message` text,
+  `started_at` timestamp NULL DEFAULT NULL,
+  `finished_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_processing_job_session` (`session_id`),
+  KEY `idx_processing_job_queue` (`status`,`job_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='AI処理の非同期ジョブ状態';
+
+-- 閲覧・編集・削除の監査ログ
+CREATE TABLE `webcoach_audit_log` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `actor_id` bigint NOT NULL,
+  `actor_role` enum('student','coach','admin','system') NOT NULL,
+  `action` varchar(64) NOT NULL COMMENT 'view/edit/delete/download等。拡張前提でENUMにしない',
+  `target_session_id` bigint NOT NULL,
+  `occurred_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ip_address` varchar(45) DEFAULT NULL COMMENT 'IPv6も考慮し45文字',
+  PRIMARY KEY (`id`),
+  KEY `idx_audit_log_session` (`target_session_id`),
+  KEY `idx_audit_log_actor` (`actor_id`),
+  KEY `idx_audit_log_occurred` (`occurred_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='閲覧・編集・削除の監査ログ';
+```
+
+### 2-2. 学習プラン（5テーブル）
+
+```sql
+CREATE TABLE `webcoach_learning_plan` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL,
+  `status` enum('lms_generated','student_reviewed','confirmed_with_coach','archived') NOT NULL DEFAULT 'lms_generated',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_learning_plan_user` (`user_id`),
+  KEY `idx_learning_plan_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='AI生成の個別学習プラン本体';
+
+CREATE TABLE `webcoach_plan_phase` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `plan_id` bigint NOT NULL,
+  `phase_key` enum('foundation','tools','practice','mock_project','portfolio','job_hunting','client_work','custom') NOT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `priority` smallint NOT NULL DEFAULT '0',
+  `display_order` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_plan_phase_plan` (`plan_id`,`display_order`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='プランのフェーズ';
+
+CREATE TABLE `webcoach_plan_milestone` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `phase_id` bigint NOT NULL,
+  `title` varchar(512) NOT NULL,
+  `skill_keys` json DEFAULT NULL,
+  `status` enum('todo','in_progress','done','missed') NOT NULL DEFAULT 'todo',
+  `target_date` date DEFAULT NULL,
+  `source` enum('template','custom') NOT NULL DEFAULT 'custom',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_plan_milestone_phase` (`phase_id`),
+  KEY `idx_plan_milestone_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='フェーズ内のマイルストーン（artifact_count等の自動判定はwebcoach_portfolio_submission実装後）';
+
+CREATE TABLE `webcoach_plan_checkin` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `plan_id` bigint NOT NULL,
+  `checkin_date` date NOT NULL,
+  `notes` text,
+  `created_by` bigint NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_plan_checkin_plan_date` (`plan_id`,`checkin_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='週次チェックイン';
+
+CREATE TABLE `webcoach_plan_revision` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `plan_id` bigint NOT NULL,
+  `revised_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `diff` json NOT NULL,
+  `proposed_by` enum('ai','student') NOT NULL,
+  `accepted` smallint NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_plan_revision_plan` (`plan_id`,`revised_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='AI差分提案の履歴';
+```
+
+### 2-3, 2-5, 2-6, 2-8. 学習アクティビティ・教材メタデータ・ロードマップ紐付け・プレゼンス（4テーブル）
+
+```sql
+-- 学習タイマー記録（ストリーク・学習時間統計の元データ）
+CREATE TABLE `webcoach_study_activity` (
+  `id` varchar(64) NOT NULL COMMENT 'クライアント生成の冪等キー(UUID等)。オフライン時の重複送信対策',
+  `user_id` bigint NOT NULL,
+  `kind` varchar(32) NOT NULL DEFAULT 'study_session' COMMENT '現状固定値。将来のアクティビティ種別拡張用',
+  `occurred_at` timestamp NOT NULL COMMENT '記録がサーバーに届いた基準時刻',
+  `started_at` timestamp NOT NULL,
+  `ended_at` timestamp NULL DEFAULT NULL,
+  `local_date` date NOT NULL COMMENT 'ユーザーのローカル日付。ストリーク集計のバケットキー',
+  `course_id` bigint NOT NULL,
+  `course_title` varchar(256) DEFAULT NULL COMMENT '記録時点のコース名スナップショット',
+  `lesson_id` bigint DEFAULT NULL,
+  `lesson_title` varchar(256) DEFAULT NULL,
+  `progress_percent_at_start` int DEFAULT NULL,
+  `progress_percent_at_end` int DEFAULT NULL,
+  `mode` varchar(32) NOT NULL,
+  `target_minutes` int DEFAULT NULL,
+  `duration_minutes` int NOT NULL,
+  `measured_seconds` int NOT NULL,
+  `adjusted` smallint NOT NULL DEFAULT '0' COMMENT '手動で時間を調整したか',
+  `paused_count` int NOT NULL DEFAULT '0',
+  `paused_seconds` int NOT NULL DEFAULT '0',
+  `completed_target` smallint NOT NULL DEFAULT '0',
+  `goal_text` varchar(256) DEFAULT NULL,
+  `content_note` text,
+  `memo` text,
+  `achievement` enum('low','mid','high') DEFAULT NULL,
+  `visibility` enum('private','public') NOT NULL DEFAULT 'private' COMMENT 'ソーシャル機能(リアクション等)は未実装。列のみ確保',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_study_activity_user_date` (`user_id`,`local_date`),
+  KEY `idx_study_activity_user_occurred` (`user_id`,`occurred_at`),
+  KEY `idx_study_activity_course` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='学習タイマー記録';
+
+-- 教材メタデータ（レッスン名・想定時間）
+CREATE TABLE `webcoach_lesson_metadata` (
+  `course_id` bigint NOT NULL,
+  `cmid` bigint NOT NULL COMMENT 'Moodleコースモジュールid',
+  `estimated_minutes` int DEFAULT NULL,
+  `lesson_title` varchar(256) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`course_id`,`cmid`),
+  KEY `idx_lesson_metadata_course` (`course_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='運営入力の教材メタデータ（案）';
+
+-- ユーザー↔ロードマップ紐付け
+CREATE TABLE `webcoach_user_roadmap` (
+  `user_id` bigint NOT NULL,
+  `roadmap_id` bigint NOT NULL,
+  `assigned_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`,`roadmap_id`),
+  KEY `idx_user_roadmap_roadmap` (`roadmap_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='ユーザー↔ロードマップの紐付け';
+
+-- フォーカスブース在室状況（優先度最低。本来はRedis等のTTLストア推奨）
+CREATE TABLE `webcoach_presence_heartbeat` (
+  `user_id` bigint NOT NULL,
+  `room` varchar(64) NOT NULL,
+  `last_seen_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`user_id`,`room`),
+  KEY `idx_presence_room_lastseen` (`room`,`last_seen_at`),
+  KEY `idx_presence_lastseen` (`last_seen_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='フォーカスブース在室状況（RDBで運用する場合last_seen_atの定期パージ必須）';
+```
+
+### 2-4. AIコーチ会話永続化（2テーブル）
+
+```sql
+CREATE TABLE `webcoach_ai_coach_conversation` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL,
+  `course_id` bigint DEFAULT NULL,
+  `lesson_id` bigint DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_ai_coach_conversation_user` (`user_id`),
+  KEY `idx_ai_coach_conversation_course_lesson` (`course_id`,`lesson_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='AIコーチとの会話セッション';
+
+CREATE TABLE `webcoach_ai_coach_message` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `conversation_id` bigint NOT NULL,
+  `role` enum('user','assistant','proposal','system') NOT NULL,
+  `content` longtext NOT NULL,
+  `quote` longtext COMMENT '教材からの引用（根拠付け用）',
+  `answer_json` json DEFAULT NULL COMMENT '教材ブロック単位の根拠付け構造化回答',
+  `skill_result_json` json DEFAULT NULL COMMENT '添削等の専門モードの結果',
+  `suggestion_json` json DEFAULT NULL,
+  `proposal_json` json DEFAULT NULL,
+  `resolution` varchar(64) DEFAULT NULL COMMENT '提案系メッセージの対応結果（accepted/rejected等）',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_ai_coach_message_conversation` (`conversation_id`,`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='AIコーチ会話内の個別メッセージ';
+```
+
+### 2-7. 受講生実績（3テーブル）
+
+```sql
+CREATE TABLE `webcoach_job_acquisition` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL,
+  `program_id` bigint DEFAULT NULL COMMENT 'ロードマップ/プログラム単位で分析する場合に使用',
+  `acquired_at` date NOT NULL COMMENT '案件獲得日',
+  `is_first_job` smallint NOT NULL DEFAULT '0' COMMENT '初案件かどうか（初案件日数の算出に使用）',
+  `notes` text,
+  `entered_by` bigint NOT NULL COMMENT '入力した運営/コーチのMoodleユーザーID',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_job_acquisition_user` (`user_id`),
+  KEY `idx_job_acquisition_first` (`user_id`,`is_first_job`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='案件獲得実績';
+
+CREATE TABLE `webcoach_revenue_record` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL,
+  `program_id` bigint DEFAULT NULL,
+  `period` date NOT NULL COMMENT '対象月の月初日で表現(例: 2026-08-01 = 2026年8月分)',
+  `amount` int NOT NULL COMMENT '円単位',
+  `entered_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `entered_by` bigint NOT NULL COMMENT '入力した運営/コーチのMoodleユーザーID',
+  PRIMARY KEY (`id`),
+  KEY `idx_revenue_record_user_period` (`user_id`,`period`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='月次収益記録（収益化率・平均月商の算出元）';
+
+CREATE TABLE `webcoach_portfolio_submission` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `user_id` bigint NOT NULL,
+  `moodle_course_id` bigint NOT NULL,
+  `activity_label` varchar(256) NOT NULL COMMENT 'どの課題/演習に対する提出かを表す表示名',
+  `submission_url` varchar(1024) NOT NULL,
+  `submitted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `review_status` enum('pending','approved','rejected') NOT NULL DEFAULT 'pending',
+  `reviewed_by` bigint DEFAULT NULL COMMENT 'レビューしたコーチ/運営のMoodleユーザーID',
+  PRIMARY KEY (`id`),
+  KEY `idx_portfolio_submission_user` (`user_id`),
+  KEY `idx_portfolio_submission_course` (`moodle_course_id`),
+  KEY `idx_portfolio_submission_status` (`review_status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='制作物（ポートフォリオ）提出';
+```
+
+### テーブル設計サマリ
+
+- **新規設計: 27テーブル**（コーチング12 + 学習プラン5 + 学習アクティビティ系4 + AIコーチ会話2 + 受講生実績3 + 既存流用の`webcoach_coach_meeting_integration`と`webcoach_student_coach_mapping`はコード実装済みのため対象外）
+- 実装時はこのDDLをそのままSQLAlchemyエンティティ化する（`api-server/entities/`配下、既存の`webcoach.py`と同じ規約: `ForeignKey`不使用・コメントで参照関係明示・`Base.metadata.create_all()`でDB反映）想定
+- `webcoach_goal`実装後、既存`webcoach_next_coaching_goal`の移行/廃止を検討（重複しうるため）
