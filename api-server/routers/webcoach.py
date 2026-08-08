@@ -321,7 +321,7 @@ def get_resume_course_alias(
                 "summary": course["course_summary"],
                 "progress": course["progress_percent"],
                 "current_section": course["current_section"],
-                "last_access_time": str(course["create_timestamp"]) if course["create_timestamp"] else None,
+                "last_access_time": str(course["created_at"]) if course["created_at"] else None,
                 "image_url": image_url  # 画像URL追加
             })
 
@@ -362,8 +362,8 @@ def update_resume_course(
             'mdl_user_id': userid,
             'courseid': data.courseid,
             'progress_percent': data.progress_percent,
-            'current_section': data.current_section,
-            'create_timestamp': func.now()
+            'current_section': data.current_section
+            # created_at and updated_at are set automatically by the database
         }
 
         # Upsert resume course record

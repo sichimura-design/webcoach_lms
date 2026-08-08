@@ -533,7 +533,7 @@ class MoodleAdapter {
    * Set course tags using custom web service
    */
   async setCourseTag(courseid, tags) {
-    return this.callAPI('local_webcoach_tags_set_course_tags', {
+    return this.callAPI('local_webcoach_utils_set_course_tags', {
       courseid: parseInt(courseid, 10),
       tags: Array.isArray(tags) ? tags : [tags]
     });
@@ -543,7 +543,7 @@ class MoodleAdapter {
    * Get course tags using custom web service
    */
   async getCourseTags(courseid) {
-    return this.callAPI('local_webcoach_tags_get_course_tags', {
+    return this.callAPI('local_webcoach_utils_get_course_tags', {
       courseid: parseInt(courseid, 10)
     });
   }
