@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, ShieldCheck, BookMarked, HelpCircle, FileText, ChevronRight, ChevronsLeft, ChevronsRight, Video } from 'lucide-react';
+import { Bell, Send, X, User, Home, BookOpen, Sparkles, ShieldCheck, BookMarked, HelpCircle, FileText, ChevronRight, ChevronsLeft, ChevronsRight, Video, Paperclip, ImageOff } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -27,7 +27,11 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const resolvedAvatarUrl = avatarUrl ?? (ctxAvatarUrl ? withCfToken(ctxAvatarUrl, contentToken) : undefined);
 
   const { chatOpen, setChatOpen } = useChatStore();
-  const { messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress } = useAiChat();
+  const {
+    messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress,
+    pendingImage, imageError, handleImageSelect, clearPendingImage,
+  } = useAiChat();
+  const chatImageInputRef = useRef<HTMLInputElement>(null);
 
   const { items: notificationItems, markAllRead } = useNotificationStore();
   const [notifOpen, setNotifOpen] = useState(false);
@@ -502,6 +506,13 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                       message.role === 'user' ? 'bg-blue-100' : 'bg-white'
                     } shadow-sm`}
                   >
+                    {message.imageDataUrl && (
+                      <img
+                        src={message.imageDataUrl}
+                        alt="添付画像"
+                        className="max-w-full max-h-48 rounded-lg mb-2 object-contain"
+                      />
+                    )}
                     {message.role === 'assistant' ? (
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
@@ -578,7 +589,41 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
           {/* Input Area */}
           <div className="p-4 bg-white border-t">
+            {pendingImage && (
+              <div className="mb-2 flex items-center gap-2">
+                <img src={pendingImage.dataUrl} alt="添付予定の画像" className="w-14 h-14 rounded-lg object-cover border border-gray-200" />
+                <button
+                  onClick={clearPendingImage}
+                  className="p-1 text-gray-400 hover:text-gray-600"
+                  title="画像を取り消す"
+                >
+                  <ImageOff className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+            {imageError && (
+              <p className="text-xs text-red-500 mb-2">{imageError}</p>
+            )}
             <div className="flex gap-2">
+              <input
+                ref={chatImageInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleImageSelect(file);
+                  e.target.value = '';
+                }}
+              />
+              <button
+                onClick={() => chatImageInputRef.current?.click()}
+                disabled={loading}
+                className="p-2 text-gray-500 hover:text-brand hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-shrink-0"
+                title="画像を添付"
+              >
+                <Paperclip className="w-5 h-5" />
+              </button>
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -590,7 +635,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
               />
               <button
                 onClick={sendMessage}
-                disabled={!input.trim() || loading}
+                disabled={(!input.trim() && !pendingImage) || loading}
                 className="p-2 bg-brand text-white rounded-lg hover:bg-brand/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               >
                 <Send className="w-5 h-5" />

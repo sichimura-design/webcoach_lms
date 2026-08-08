@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 import { bffClient } from '../services/bffClient';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
-import { useAiChat, ChatMessage } from '../hooks/useAiChat';
+import { useAiChat, ChatMessage, PendingImage } from '../hooks/useAiChat';
 import {
   FileText,
   Send,
@@ -16,6 +16,8 @@ import {
   Menu,
   Bot,
   User,
+  Paperclip,
+  ImageOff,
 } from 'lucide-react';
 import Encoding from 'encoding-japanese';
 import MarkdownRenderer from './MarkdownRenderer';
@@ -281,7 +283,12 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // AI コーチ
-  const { messages: aiMessages, input: aiQuestion, setInput: setAiQuestion, loading: aiLoading, messagesEndRef: chatEndRef, sendMessage: sendAiMessage, handleKeyPress: handleAiKeyPress } = useAiChat();
+  const {
+    messages: aiMessages, input: aiQuestion, setInput: setAiQuestion, loading: aiLoading,
+    messagesEndRef: chatEndRef, sendMessage: sendAiMessage, handleKeyPress: handleAiKeyPress,
+    pendingImage: aiPendingImage, imageError: aiImageError, handleImageSelect: handleAiImageSelect,
+    clearPendingImage: clearAiPendingImage,
+  } = useAiChat();
 
   // モバイルサイドバー
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -824,6 +831,10 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
               handleAiKeyPress={handleAiKeyPress}
               onSend={handleAiQuestion}
               chatEndRef={chatEndRef}
+              pendingImage={aiPendingImage}
+              imageError={aiImageError}
+              onImageSelect={handleAiImageSelect}
+              onClearImage={clearAiPendingImage}
             />
           </div>
         </div>
@@ -857,6 +868,10 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
               handleAiKeyPress={handleAiKeyPress}
               onSend={handleAiQuestion}
               chatEndRef={chatEndRef}
+              pendingImage={aiPendingImage}
+              imageError={aiImageError}
+              onImageSelect={handleAiImageSelect}
+              onClearImage={clearAiPendingImage}
               mobile
             />
           </div>
@@ -934,11 +949,19 @@ interface AiCoachPanelProps {
   handleAiKeyPress: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   onSend: () => void;
   chatEndRef: React.RefObject<HTMLDivElement>;
+  pendingImage: PendingImage | null;
+  imageError: string | null;
+  onImageSelect: (file: File) => void;
+  onClearImage: () => void;
   mobile?: boolean;
 }
 
-function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, chatEndRef, mobile = false }: AiCoachPanelProps) {
+function AiCoachPanel({
+  aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, chatEndRef,
+  pendingImage, imageError, onImageSelect, onClearImage, mobile = false,
+}: AiCoachPanelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!aiQuestion && textareaRef.current) {
@@ -961,6 +984,9 @@ function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handle
               {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
             </div>
             <div className={`rounded-2xl px-4 py-3 shadow-sm max-w-xs text-sm ${msg.role === 'user' ? 'bg-brand text-white' : 'bg-white text-brand-muted'}`}>
+              {msg.imageDataUrl && (
+                <img src={msg.imageDataUrl} alt="添付画像" className="max-w-full max-h-40 rounded-lg mb-2 object-contain" />
+              )}
               {msg.role === 'assistant' ? (
                 <MarkdownRenderer content={msg.content} compact />
               ) : (
@@ -983,7 +1009,35 @@ function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handle
         <div ref={chatEndRef} />
       </div>
       <div className="px-6 py-4 bg-white border-t border-brand-border">
+        {pendingImage && (
+          <div className="mb-2 flex items-center gap-2">
+            <img src={pendingImage.dataUrl} alt="添付予定の画像" className="w-12 h-12 rounded-lg object-cover border border-brand-border" />
+            <button onClick={onClearImage} className="p-1 text-brand-muted hover:text-brand-text" title="画像を取り消す">
+              <ImageOff className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+        {imageError && <p className="text-xs text-red-500 mb-2">{imageError}</p>}
         <div className="flex items-end gap-2 px-4 py-2 rounded-2xl bg-brand-bg">
+          <input
+            ref={imageInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={e => {
+              const file = e.target.files?.[0];
+              if (file) onImageSelect(file);
+              e.target.value = '';
+            }}
+          />
+          <button
+            onClick={() => imageInputRef.current?.click()}
+            disabled={aiLoading}
+            className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-brand-muted hover:text-brand disabled:opacity-50 transition-colors"
+            title="画像を添付"
+          >
+            <Paperclip className="w-4 h-4" />
+          </button>
           <textarea
             ref={textareaRef}
             placeholder="質問を入力..."
@@ -1000,8 +1054,8 @@ function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handle
           />
           <button
             onClick={onSend}
-            disabled={!aiQuestion.trim() || aiLoading}
-            className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mb-0.5 transition-colors ${aiQuestion.trim() && !aiLoading ? 'bg-brand' : 'bg-[#d0cac6]'}`}
+            disabled={(!aiQuestion.trim() && !pendingImage) || aiLoading}
+            className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mb-0.5 transition-colors ${(aiQuestion.trim() || pendingImage) && !aiLoading ? 'bg-brand' : 'bg-[#d0cac6]'}`}
           >
             <Send className="w-3 h-3 text-white" />
           </button>

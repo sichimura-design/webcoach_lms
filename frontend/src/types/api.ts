@@ -156,6 +156,11 @@ export interface RoadmapQueryParams {
 }
 
 // WebCoach AI
+export interface AIImageAttachment {
+  media_type: string;
+  data: string; // Base64エンコード済み（data:URIプレフィックスなし）
+}
+
 export interface AIRequest {
   message: string;
   user_id?: number;
@@ -163,6 +168,7 @@ export interface AIRequest {
   context?: Record<string, any>;
   max_chunks?: number;
   use_tools?: boolean;
+  image?: AIImageAttachment;
 }
 
 export interface AISource {

@@ -8,7 +8,7 @@ from datetime import datetime
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.orm import Session
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from langchain_core.messages import HumanMessage
 from slowapi import Limiter
 from slowapi.util import get_remote_address
@@ -27,6 +27,30 @@ limiter = Limiter(key_func=get_remote_address)
 
 router = APIRouter(prefix="/api/ai", tags=["AI - LangGraph"])
 
+# 画像添付の制約（このセッション限りの表示用途のためサーバー側には永続化しない）
+ALLOWED_IMAGE_MEDIA_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+MAX_IMAGE_BASE64_CHARS = 7_000_000  # 概算デコード後 ~5MB
+
+
+class ImageAttachment(BaseModel):
+    """チャットに添付する画像（Base64、サーバー側には保存しない）"""
+    media_type: str = Field(..., description="画像のMIMEタイプ（image/jpeg, image/png, image/webp, image/gif）")
+    data: str = Field(..., description="Base64エンコードされた画像データ（data:URIプレフィックスなし）")
+
+    @field_validator("media_type")
+    @classmethod
+    def validate_media_type(cls, v: str) -> str:
+        if v not in ALLOWED_IMAGE_MEDIA_TYPES:
+            raise ValueError(f"サポートされていない画像形式です: {v}")
+        return v
+
+    @field_validator("data")
+    @classmethod
+    def validate_data_size(cls, v: str) -> str:
+        if len(v) > MAX_IMAGE_BASE64_CHARS:
+            raise ValueError("画像サイズが大きすぎます（上限: 約5MB）")
+        return v
+
 
 # リクエスト/レスポンス定義
 class ChatRequest(BaseModel):
@@ -40,6 +64,7 @@ class ChatRequest(BaseModel):
         max_length=10
     )
     max_iterations: Optional[int] = Field(None, description="最大推論回数（Noneの場合は文字数で自動調整）", ge=1, le=5)
+    image: Optional[ImageAttachment] = Field(None, description="添付画像（Base64、任意）")
 
 
 class ChatResponse(BaseModel):
@@ -144,9 +169,26 @@ def ai_chat_langgraph(
         # グラフを取得
         graph = get_learning_coach_graph()
 
+        # 画像添付がある場合はマルチモーダルのcontent blocksを構築
+        # （画像はこのターンのみ送信し、DBやS3への保存は行わない）
+        if request.image:
+            user_content = [
+                {
+                    "type": "image",
+                    "source": {
+                        "type": "base64",
+                        "media_type": request.image.media_type,
+                        "data": request.image.data
+                    }
+                },
+                {"type": "text", "text": request.message}
+            ]
+        else:
+            user_content = request.message
+
         # 初期ステートを構築
         initial_state: LearningCoachState = {
-            "messages": [HumanMessage(content=request.message)],
+            "messages": [HumanMessage(content=user_content)],
             "user_id": request.user_id,
             "course_id": request.course_id,
             "rag_sources": [],

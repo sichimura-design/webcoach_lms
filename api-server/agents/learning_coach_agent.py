@@ -16,6 +16,22 @@ from vector_db import get_vector_db_retriever, VectorDBRetriever
 
 logger = logging.getLogger(__name__)
 
+
+def _extract_text(content) -> str:
+    """メッセージのcontentからテキスト部分のみを抽出（画像添付時はlist形式になるため）"""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        text_parts = []
+        for block in content:
+            if isinstance(block, dict) and block.get('type') == 'text':
+                text_parts.append(block.get('text', ''))
+            elif isinstance(block, str):
+                text_parts.append(block)
+        return ''.join(text_parts)
+    return ''
+
+
 # グローバル変数
 llm: ChatAnthropic = None
 vector_db: VectorDBRetriever = None
@@ -65,11 +81,11 @@ def retrieve_node(state: LearningCoachState) -> LearningCoachState:
     for i, msg in enumerate(state["messages"]):
         logger.info(f"  [{i}] {type(msg).__name__}")
 
-    # 最新のユーザーメッセージを取得
+    # 最新のユーザーメッセージを取得（画像添付時はcontentがlistになるためテキストのみ抽出）
     user_message = None
     for msg in reversed(state["messages"]):
         if isinstance(msg, HumanMessage):
-            user_message = msg.content
+            user_message = _extract_text(msg.content)
             break
 
     if not user_message:
@@ -303,19 +319,7 @@ def respond_node(state: LearningCoachState) -> LearningCoachState:
     final_response = None
     for msg in reversed(state["messages"]):
         if isinstance(msg, AIMessage):
-            # contentが文字列の場合
-            if isinstance(msg.content, str):
-                final_response = msg.content
-            # contentがリスト（ブロック形式）の場合
-            elif isinstance(msg.content, list):
-                # テキストブロックを抽出
-                text_parts = []
-                for block in msg.content:
-                    if isinstance(block, dict) and block.get('type') == 'text':
-                        text_parts.append(block.get('text', ''))
-                    elif isinstance(block, str):
-                        text_parts.append(block)
-                final_response = ''.join(text_parts)
+            final_response = _extract_text(msg.content)
             break
 
     if not final_response:
