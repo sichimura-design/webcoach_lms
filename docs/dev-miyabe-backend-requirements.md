@@ -211,3 +211,60 @@
 - **変更不要（API実装のみ）**: 3件（`webcoach_user_course_lastaccess`の列露出、`webcoach_ai_application.tags`運用、`enrolstatus`集計）
 - **新規テーブル**: 約24テーブル（コーチング11 + 学習プラン4 + 学習アクティビティ1 + AIコーチ会話2 + 教材メタデータ1 + ロードマップ紐付け1 + 受講生実績3 + プレゼンス1）
 - 優先実装順は本ドキュメント冒頭の機能別TODOに準拠。特にコーチング11テーブルは設計文書が最も充実しているため着手しやすい一方、教材ブロック化（D章）の方針決定が他の複数機能（C・H）の前提になっている点に留意。
+
+---
+
+## Moodle標準API・機能の活用調査
+
+新規テーブル/独自実装の前に、Moodle標準機能で代替・削減できる箇所がないかを調査した結果。調査対象: `bff-server/adapters/MoodleAdapter.js`, `bff-server/init-service-db.sql`（Web Service権限一覧）, `moodle-app/customizations/local/`（既存カスタムプラグイン）。本番/開発ともBitnami Moodle（本番`4.3.6`、開発`4.1`）。
+
+### 1. 権限は付与済みだが未使用のWeb Service関数
+
+`init-service-db.sql`で有効化済み、かつMoodleコアに標準搭載（追加インストール不要）だが、`bff-server`のどのroute/serviceからも呼ばれていないもの。
+
+| 関数 | 活用候補 |
+|---|---|
+| `core_calendar_get_calendar_events` / `create_calendar_events` | コーチングセッション予定のMoodleカレンダー登録・表示。マイページ「Next Coaching Plan」カードのデータソース |
+| `core_message_get_messages` / `send_instant_messages` | Connect Coachのコーチ⇔生徒メッセージ、AIコーチ・セッションリマインドなど一方向通知の配信チャネル |
+| `core_grades_get_grades`, `gradereport_user_get_grade_items` | 受講生実績トラッキングのスキル習熟度表示、AIコーチの文脈情報 |
+| `mod_forum_get_forum_discussions`, `get_forums_by_courses` | コースQ&A・ディスカッション（フォーラム活動が設定されている場合） |
+| `mod_quiz_get_quizzes_by_courses` | 学習プランのマイルストーン達成判定シグナル |
+| `core_enrol_get_enrolled_users` | コーチ担当生徒一覧（既知・要検討） |
+
+### 2. 未リストだがMoodleコア標準で追加可能な関数
+
+外部サービス定義に関数を追加するだけで使える（プラグイン追加不要）。
+
+| 関数 | 活用候補 |
+|---|---|
+| `core_group_get_course_groups`, `get_group_members`, `create_groups`, `add_group_members` | マイページ「Guild Lobby」、コーチ担当生徒のグルーピング |
+| `core_cohort_get_cohorts`, `add_cohort_members` | コーチ⇔生徒の恒久的な紐付け（コーチングマッピングの代替候補） |
+
+### 3. 存在するが採用に注意が必要なもの
+
+- **Competency / Learning Plans**（`core_competency_list_plans`, `create_plan`, `tool_lp_data_for_plans_page`等）: コア標準機能として存在するが、事前にコンピテンシーフレームワークを管理画面で設計する必要があり、LLM生成の柔軟な学習プラン（`learning_plans`等の新規テーブル案）とはUX面で相性が悪い可能性が高い。「呼べるが採用非推奨」
+- **Notes機能**（`core_notes_create_notes`, `get_course_notes`）: コア標準機能として存在するが、近年のMoodle UIでは非推奨・レガシー扱い。将来的な縮小/廃止リスクがあり新機能の土台には非推奨
+
+### 4. 標準APIでは呼べないもの（誤りの訂正）
+
+- **`mod_scheduler`（面談予約）**: Moodleコアではなくサードパーティ製の追加プラグイン。`local_webcoach_*`と同様に別途インストール・カスタマイズが必要で「標準API」ではない
+- **ログストア（`mdl_logstore_standard_log`）**: これを読む標準Web Service関数はMoodleコアに存在しない。取得するにはDB直接参照か、`local_webcoach_utils`のようなカスタムプラグインでのラップが必要
+
+### 5. 通知・リマインダーの仕組み
+
+Moodle標準の通知は「配信チャネル」と「送信トリガー判定」が分離した構造になっている。
+
+- **配信チャネル（`core_message`／Message Provider基盤）**: 各プラグインが`db/messages.php`でメッセージプロバイダーを宣言し、ユーザーは「通知設定」画面でプロバイダーごとに配信チャネル（アプリ内ポップアップ/メール/モバイルPush）をON/OFFできる。送信側は`message_send()`（Web Service経由なら`core_message_send_instant_messages`）を呼ぶだけ
+- **送信トリガー判定**: 上記の配信基盤には「いつ送るか」は含まれない。`mod_assign`の締切リマインドなど、各プラグインが自前のスケジュールタスク（cron）で判定している
+- **訂正: 汎用カレンダーイベントの自動リマインダーは存在しない**。`core_calendar_create_calendar_events`で作った任意のイベント（コーチングセッション等）に対し、Googleカレンダーのような「◯分前に自動通知」機能はMoodleコアにはない。表示されるだけで自動リマインドは飛ばない
+- **WebCoachでの実装方針**: 「いつ送るか」の判定ロジックは自前で持つ必要がある。選択肢は (a) `local_webcoach_utils`にスケジュールタスクを追加してMoodle cronで判定、(b) `bff-server`/`api-server`側に定期実行ジョブを追加し`core_message_send_instant_messages`で配信のみMoodleに任せる、の2択。(b)の方が既存の`webcoach_*`テーブルやAI要約結果と組み合わせた条件分岐がしやすく、自チームのデプロイサイクルで変更できるため現実的
+
+### 6. メール送信基盤（SES関連）
+
+- 現状`docker-compose.yml`/`docker-compose.ecs.yml`にはMoodleのSMTP設定が入っておらず（`MOODLE_EMAIL`のみ）、**Moodleからのメール送信は現状機能していない**
+- Moodleのメール送信（Server > Email > Outgoing mail configuration）はPHPの`mail()`かSMTP直接設定のいずれかで、「メールサーバー/リレー無しで送る」という選択肢はない
+- **SESはMoodleから利用可能**: SESはSMTPインターフェース（`email-smtp.<region>.amazonaws.com`、ポート587/465、SES専用SMTP認証情報）を提供しており、Moodleの標準SMTP設定にそのまま差し込める。Moodle側にAWS SDK等は不要
+- ポート587/465を使うため、EC2/Fargateのデフォルトのポート25アウトバウンドブロック（自前MTA構築時の課題）とは無関係
+- 前提条件: SES本番アクセス（現状サンドボックスのまま、`memory/ses-sandbox-release.md`参照）、送信ドメイン/アドレスの検証（`webcoach.jp`は実際には未検証）、MoodleのECSタスクからSES SMTPエンドポイントへの到達性（NAT Gateway経由 or `com.amazonaws.<region>.email-smtp`のVPCエンドポイント）
+- SES以外の代替: SendGrid/Mailgun/Postmark等の外部SMTPリレー（SESの本番アクセス審査を待たずに導入できる可能性）、Google Workspace SMTPリレー（送信量制限が厳しく本番向きではない）。自前Postfix構築はポート25解除申請＋SPF/DKIM/DMARC/IPレピュテーション管理が必要で運用負荷が高く非推奨
+- CognitoのメールとMoodleのメールは別系統。将来SES本番アクセスが下りれば同じ検証済みドメインを両方で使い回せる
