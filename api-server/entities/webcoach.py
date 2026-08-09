@@ -168,28 +168,6 @@ class WebCoachStudentCoachMapping(Base):
     )
 
 
-class WebCoachCoachMeetingIntegration(Base):
-    """
-    WebCoach: コーチのZoom/Google Meet連携情報（OAuthトークン）
-    トークンはbff-server側で暗号化済みの文字列として保存される
-    """
-    __tablename__ = "webcoach_coach_meeting_integration"
-
-    coach_user_id = Column(BigInteger, primary_key=True, nullable=False, index=True, comment='コーチのMoodleユーザーID')
-    provider = Column(String(32), primary_key=True, nullable=False, comment='連携先 (zoom, google)')
-    access_token_enc = Column(Text, nullable=False, comment='暗号化済みアクセストークン')
-    refresh_token_enc = Column(Text, nullable=False, comment='暗号化済みリフレッシュトークン')
-    token_expires_at = Column(TIMESTAMP, nullable=False, comment='アクセストークン有効期限')
-    scope = Column(String(512), nullable=True, comment='付与されたスコープ')
-    provider_account_email = Column(String(256), nullable=True, comment='連携先アカウントのメールアドレス（表示用）')
-    connected_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), comment='初回連携日時')
-    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp(), comment='更新日時')
-
-    __table_args__ = (
-        Index('idx_coach_meeting_integration_coach', 'coach_user_id'),
-    )
-
-
 class WebCoachStudyNote(Base):
     """
     WebCoach: 教材ごとの学習メモ（1ユーザー1教材につき1件）

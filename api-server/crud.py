@@ -15,7 +15,6 @@ from entities import (
     WebCoachImageUrl,
     WebCoachAvatar,
     WebCoachStudentCoachMapping,
-    WebCoachCoachMeetingIntegration,
     WebCoachStudyNote,
 )
 from dto.request import (
@@ -1625,83 +1624,4 @@ def restore_coach_student_mapping(
     db.commit()
     db.refresh(restored_mapping)
     return restored_mapping
-
-
-# ==========================================
-# Coach Meeting Integration CRUD (Zoom / Google Meet OAuth)
-# ==========================================
-
-def upsert_coach_meeting_integration(
-    db: Session,
-    coach_user_id: int,
-    provider: str,
-    access_token_enc: str,
-    refresh_token_enc: str,
-    token_expires_at,
-    scope: Optional[str] = None,
-    provider_account_email: Optional[str] = None,
-) -> WebCoachCoachMeetingIntegration:
-    """
-    コーチのミーティング連携トークンを保存（既存があれば更新）
-
-    Args:
-        db: Database session
-        coach_user_id: コーチのMoodleユーザーID
-        provider: 連携先プロバイダ (zoom, google)
-        access_token_enc: 暗号化済みアクセストークン
-        refresh_token_enc: 暗号化済みリフレッシュトークン
-        token_expires_at: アクセストークン有効期限
-        scope: 付与されたスコープ
-        provider_account_email: 連携先アカウントのメールアドレス
-
-    Returns:
-        WebCoachCoachMeetingIntegration: 保存された連携情報
-    """
-    existing = db.query(WebCoachCoachMeetingIntegration).filter(
-        WebCoachCoachMeetingIntegration.coach_user_id == coach_user_id,
-        WebCoachCoachMeetingIntegration.provider == provider,
-    ).first()
-
-    if existing:
-        existing.access_token_enc = access_token_enc
-        existing.refresh_token_enc = refresh_token_enc
-        existing.token_expires_at = token_expires_at
-        existing.scope = scope
-        existing.provider_account_email = provider_account_email
-        db.commit()
-        db.refresh(existing)
-        return existing
-
-    integration = WebCoachCoachMeetingIntegration(
-        coach_user_id=coach_user_id,
-        provider=provider,
-        access_token_enc=access_token_enc,
-        refresh_token_enc=refresh_token_enc,
-        token_expires_at=token_expires_at,
-        scope=scope,
-        provider_account_email=provider_account_email,
-    )
-    db.add(integration)
-    db.commit()
-    db.refresh(integration)
-    return integration
-
-
-def get_coach_meeting_integrations(
-    db: Session,
-    coach_user_id: int,
-) -> List[WebCoachCoachMeetingIntegration]:
-    """
-    コーチのミーティング連携状態を全プロバイダ分取得
-
-    Args:
-        db: Database session
-        coach_user_id: コーチのMoodleユーザーID
-
-    Returns:
-        List[WebCoachCoachMeetingIntegration]: 連携情報一覧
-    """
-    return db.query(WebCoachCoachMeetingIntegration).filter(
-        WebCoachCoachMeetingIntegration.coach_user_id == coach_user_id
-    ).all()
 
