@@ -25,6 +25,8 @@ import { AdminStudentsPage } from '../components/admin/AdminStudentsPage';
 import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
 import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
+import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
+import { MyCoachingPage } from '../components/MyCoachingPage';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigationStore } from '../store/navigationStore';
 import { ErrorBoundary } from '../components/shared';
@@ -182,6 +184,11 @@ function BadgesPageWrapper() {
   return <BadgesPage />;
 }
 
+function CoachingScheduleWrapper() {
+  const { studentId } = useParams<{ studentId: string }>();
+  return <CoachingSchedulePage studentId={parseInt(studentId || '0', 10)} />;
+}
+
 function AppRoutes() {
   return (
     <ErrorBoundary>
@@ -218,6 +225,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ProfilePageWrapper />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/coaching"
+        element={
+          <ProtectedRoute>
+            <MyCoachingPage />
           </ProtectedRoute>
         }
       />
@@ -348,6 +364,15 @@ function AppRoutes() {
         element={
           <CoachRoute>
             <CoachStudentsPage />
+          </CoachRoute>
+        }
+      />
+
+      <Route
+        path="/coach/schedule/:studentId"
+        element={
+          <CoachRoute>
+            <CoachingScheduleWrapper />
           </CoachRoute>
         }
       />

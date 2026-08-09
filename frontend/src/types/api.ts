@@ -149,6 +149,35 @@ export interface UpdateStudyNoteRequest {
   content: string;
 }
 
+// WebCoach CoachingSchedule
+export interface CoachingSchedule {
+  id: number;
+  mdl_user_id: number;
+  coach_user_id: number;
+  coaching_no: number;
+  coaching_date: string;
+  meeting_url: string;
+  coaching_summary: string | null;
+  todo: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateCoachingScheduleRequest {
+  coach_user_id: number;
+  coaching_date: string;
+  meeting_url: string;
+  coaching_summary?: string | null;
+  todo?: string | null;
+}
+
+export interface UpdateCoachingScheduleRequest {
+  coaching_date?: string;
+  meeting_url?: string;
+  coaching_summary?: string | null;
+  todo?: string | null;
+}
+
 // WebCoach Roadmap
 export interface Roadmap {
   id: number;

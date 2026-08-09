@@ -2,7 +2,7 @@
 Common request DTOs
 """
 from typing import List, Dict, Any, Optional
-from datetime import datetime
+from datetime import datetime, date
 from pydantic import BaseModel, Field
 
 
@@ -64,6 +64,23 @@ class NextCoachingGoalsBulkUpsertRequest(BaseModel):
 class StudyNoteUpdate(BaseModel):
     """学習メモ更新リクエスト"""
     content: str = Field(..., description="メモの内容")
+
+
+class CoachingScheduleCreate(BaseModel):
+    """コーチングスケジュール作成リクエスト"""
+    coach_user_id: int = Field(..., description="コーチのMoodleユーザーID")
+    coaching_date: date = Field(..., description="実施日")
+    meeting_url: str = Field(..., max_length=1024, description="ミーティングURL")
+    coaching_summary: Optional[str] = Field(None, description="コーチング内容の要約")
+    todo: Optional[str] = Field(None, description="次回までのTODO")
+
+
+class CoachingScheduleUpdate(BaseModel):
+    """コーチングスケジュール更新リクエスト"""
+    coaching_date: Optional[date] = Field(None, description="実施日")
+    meeting_url: Optional[str] = Field(None, max_length=1024, description="ミーティングURL")
+    coaching_summary: Optional[str] = Field(None, description="コーチング内容の要約")
+    todo: Optional[str] = Field(None, description="次回までのTODO")
 
 
 class CoachStudentMappingCreate(BaseModel):

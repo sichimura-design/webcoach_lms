@@ -1,7 +1,7 @@
 """
 WebCoach specific entity models
 """
-from sqlalchemy import Column, BigInteger, SmallInteger, String, Text, TIMESTAMP, Index, func
+from sqlalchemy import Column, BigInteger, SmallInteger, String, Text, TIMESTAMP, Date, Index, func
 from database import Base
 
 
@@ -183,4 +183,27 @@ class WebCoachStudyNote(Base):
 
     __table_args__ = (
         Index('idx_study_note_course', 'courseid'),
+    )
+
+
+class WebCoachCoachingSchedule(Base):
+    """
+    WebCoach: コーチングスケジュール・実施記録
+    """
+    __tablename__ = "webcoach_coaching_schedule"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    mdl_user_id = Column(BigInteger, nullable=False, comment='受講生のMoodleユーザーID')
+    coach_user_id = Column(BigInteger, nullable=False, comment='コーチのMoodleユーザーID')
+    coaching_no = Column(BigInteger, nullable=False, comment='コーチング回数（表示用連番。student-coachペア内で採番）')
+    coaching_date = Column(Date, nullable=False, comment='実施日')
+    meeting_url = Column(String(1024), nullable=False)
+    coaching_summary = Column(Text, nullable=True, comment='コーチング内容の要約')
+    todo = Column(Text, nullable=True, comment='次回までのTODO')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+    __table_args__ = (
+        Index('uq_coaching_schedule_pair_no', 'mdl_user_id', 'coach_user_id', 'coaching_no', unique=True),
+        Index('idx_coaching_schedule_coach_date', 'coach_user_id', 'coaching_date'),
     )

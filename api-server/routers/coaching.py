@@ -7,8 +7,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from database import get_db
-from dto.request import CoachStudentMappingCreate
-from dto.response import CoachStudentMappingResponse, StudentListResponse, CoachResponse
+from dto.request import CoachStudentMappingCreate, CoachingScheduleCreate, CoachingScheduleUpdate
+from dto.response import CoachStudentMappingResponse, StudentListResponse, CoachResponse, CoachingScheduleResponse
 from crud import (
     create_coach_student_mapping,
     get_coach_student_mapping,
@@ -17,6 +17,10 @@ from crud import (
     get_coach_by_student,
     delete_coach_student_mapping,
     restore_coach_student_mapping,
+    create_coaching_schedule,
+    get_coaching_schedules,
+    update_coaching_schedule,
+    delete_coaching_schedule,
 )
 
 logger = logging.getLogger(__name__)
@@ -283,4 +287,176 @@ def restore_mapping(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to restore mapping"
+        )
+
+
+# ==========================================
+# Coaching Schedule Endpoints
+# ==========================================
+
+@router.get(
+    "/schedule/{userid}",
+    response_model=List[CoachingScheduleResponse],
+    summary="コーチングスケジュール一覧取得"
+)
+def get_coaching_schedule_list(
+    userid: int,
+    db: Session = Depends(get_db)
+):
+    """
+    受講生のコーチングスケジュール一覧を取得します。
+
+    Args:
+        userid: 受講生のMoodleユーザーID
+
+    Returns:
+        コーチングスケジュール一覧（実施日・回数の降順）
+    """
+    try:
+        return get_coaching_schedules(db, userid)
+    except Exception as e:
+        logger.error(f"Failed to get coaching schedules: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get coaching schedules"
+        )
+
+
+@router.post(
+    "/schedule/{userid}",
+    response_model=CoachingScheduleResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="コーチングスケジュール作成"
+)
+def create_coaching_schedule_endpoint(
+    userid: int,
+    data: CoachingScheduleCreate,
+    db: Session = Depends(get_db)
+):
+    """
+    コーチングスケジュールを新規作成します。coaching_noは自動採番されます。
+
+    Args:
+        userid: 受講生のMoodleユーザーID
+        data: 作成するスケジュール内容
+
+    Returns:
+        作成されたコーチングスケジュール
+    """
+    try:
+        schedule = create_coaching_schedule(
+            db=db,
+            mdl_user_id=userid,
+            coach_user_id=data.coach_user_id,
+            coaching_date=data.coaching_date,
+            meeting_url=data.meeting_url,
+            coaching_summary=data.coaching_summary,
+            todo=data.todo,
+        )
+        db.commit()
+        db.refresh(schedule)
+        return schedule
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Failed to create coaching schedule: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to create coaching schedule"
+        )
+
+
+@router.put(
+    "/schedule/{userid}/{schedule_id}",
+    response_model=CoachingScheduleResponse,
+    summary="コーチングスケジュール更新"
+)
+def update_coaching_schedule_endpoint(
+    userid: int,
+    schedule_id: int,
+    data: CoachingScheduleUpdate,
+    db: Session = Depends(get_db)
+):
+    """
+    コーチングスケジュールを更新します。
+
+    Args:
+        userid: 受講生のMoodleユーザーID
+        schedule_id: 更新対象のid
+        data: 更新するスケジュール内容
+
+    Returns:
+        更新後のコーチングスケジュール
+
+    Raises:
+        HTTPException: 対象が見つからない場合（404）
+    """
+    try:
+        schedule = update_coaching_schedule(
+            db=db,
+            mdl_user_id=userid,
+            schedule_id=schedule_id,
+            coaching_date=data.coaching_date,
+            meeting_url=data.meeting_url,
+            coaching_summary=data.coaching_summary,
+            todo=data.todo,
+        )
+
+        if not schedule:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Coaching schedule not found: userid={userid}, id={schedule_id}"
+            )
+
+        db.commit()
+        db.refresh(schedule)
+        return schedule
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Failed to update coaching schedule: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to update coaching schedule"
+        )
+
+
+@router.delete(
+    "/schedule/{userid}/{schedule_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="コーチングスケジュール削除"
+)
+def delete_coaching_schedule_endpoint(
+    userid: int,
+    schedule_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    コーチングスケジュールを削除します。
+
+    Args:
+        userid: 受講生のMoodleユーザーID
+        schedule_id: 削除対象のid
+
+    Raises:
+        HTTPException: 対象が見つからない場合（404）
+    """
+    try:
+        success = delete_coaching_schedule(db, userid, schedule_id)
+
+        if not success:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"Coaching schedule not found: userid={userid}, id={schedule_id}"
+            )
+
+        db.commit()
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Failed to delete coaching schedule: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to delete coaching schedule"
         )

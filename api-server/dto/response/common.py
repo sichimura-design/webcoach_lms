@@ -2,7 +2,7 @@
 Common response DTOs
 """
 from typing import Optional, List, Dict, Any
-from datetime import datetime
+from datetime import datetime, date
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -66,6 +66,22 @@ class StudyNoteResponse(BaseModel):
     cmid: int
     content: str
     updated_at: Optional[datetime] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CoachingScheduleResponse(BaseModel):
+    """コーチングスケジュールレスポンス"""
+    id: int
+    mdl_user_id: int
+    coach_user_id: int
+    coaching_no: int
+    coaching_date: date
+    meeting_url: str
+    coaching_summary: Optional[str] = None
+    todo: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
 

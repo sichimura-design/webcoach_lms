@@ -3,7 +3,7 @@ Request DTOs for API endpoints
 """
 from .profile import ProfileSettingsCreate, ProfileSettingsUpdate, WebCoachUserProfileUpdate
 from .course import CourseAccessCreate, ResumeCourseUpdate
-from .common import BulkUploadRequest, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalItem, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate, CoachStudentMappingCreate, CoachMeetingIntegrationUpsert
+from .common import BulkUploadRequest, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalItem, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate, CoachingScheduleCreate, CoachingScheduleUpdate, CoachStudentMappingCreate, CoachMeetingIntegrationUpsert
 
 __all__ = [
     "ProfileSettingsCreate",
@@ -21,6 +21,8 @@ __all__ = [
     "NextCoachingGoalItem",
     "NextCoachingGoalsBulkUpsertRequest",
     "StudyNoteUpdate",
+    "CoachingScheduleCreate",
+    "CoachingScheduleUpdate",
     "CoachStudentMappingCreate",
     "CoachMeetingIntegrationUpsert",
 ]

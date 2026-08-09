@@ -4,7 +4,7 @@ CRUD operations for user course access and profile settings
 import time
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, text
+from sqlalchemy import desc, text, func
 from entities import (
     UserLastCourseAccess,
     UserProfileSettings,
@@ -16,6 +16,7 @@ from entities import (
     WebCoachAvatar,
     WebCoachStudentCoachMapping,
     WebCoachStudyNote,
+    WebCoachCoachingSchedule,
 )
 from dto.request import (
     CourseAccessCreate,
@@ -1624,4 +1625,144 @@ def restore_coach_student_mapping(
     db.commit()
     db.refresh(restored_mapping)
     return restored_mapping
+
+
+# ==========================================
+# Coaching Schedule CRUD
+# ==========================================
+
+def create_coaching_schedule(
+    db: Session,
+    mdl_user_id: int,
+    coach_user_id: int,
+    coaching_date,
+    meeting_url: str,
+    coaching_summary: Optional[str] = None,
+    todo: Optional[str] = None,
+) -> WebCoachCoachingSchedule:
+    """
+    コーチングスケジュールを作成します。coaching_noは該当ペアのMAX+1で自動採番します。
+
+    Args:
+        db: Database session
+        mdl_user_id: 受講生のMoodleユーザーID
+        coach_user_id: コーチのMoodleユーザーID
+        coaching_date: 実施日
+        meeting_url: ミーティングURL
+        coaching_summary: コーチング内容の要約
+        todo: 次回までのTODO
+
+    Returns:
+        WebCoachCoachingSchedule: 作成されたレコード
+    """
+    max_no = db.query(func.max(WebCoachCoachingSchedule.coaching_no)).filter(
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id,
+        WebCoachCoachingSchedule.coach_user_id == coach_user_id,
+    ).scalar()
+    next_no = (max_no or 0) + 1
+
+    schedule = WebCoachCoachingSchedule(
+        mdl_user_id=mdl_user_id,
+        coach_user_id=coach_user_id,
+        coaching_no=next_no,
+        coaching_date=coaching_date,
+        meeting_url=meeting_url,
+        coaching_summary=coaching_summary,
+        todo=todo,
+    )
+    db.add(schedule)
+    db.flush()
+    return schedule
+
+
+def get_coaching_schedules(
+    db: Session,
+    mdl_user_id: int,
+) -> List[WebCoachCoachingSchedule]:
+    """
+    受講生のコーチングスケジュール一覧を取得します（実施日・回数の降順）。
+
+    Args:
+        db: Database session
+        mdl_user_id: 受講生のMoodleユーザーID
+
+    Returns:
+        List[WebCoachCoachingSchedule]
+    """
+    return db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id
+    ).order_by(
+        desc(WebCoachCoachingSchedule.coaching_date),
+        desc(WebCoachCoachingSchedule.coaching_no),
+    ).all()
+
+
+def update_coaching_schedule(
+    db: Session,
+    mdl_user_id: int,
+    schedule_id: int,
+    coaching_date=None,
+    meeting_url: Optional[str] = None,
+    coaching_summary: Optional[str] = None,
+    todo: Optional[str] = None,
+) -> Optional[WebCoachCoachingSchedule]:
+    """
+    コーチングスケジュールを更新します。mdl_user_idも一致するレコードのみ対象。
+
+    Args:
+        db: Database session
+        mdl_user_id: 受講生のMoodleユーザーID（所有者チェック）
+        schedule_id: 更新対象のid
+
+    Returns:
+        WebCoachCoachingSchedule: 更新後のレコード。見つからない場合はNone
+    """
+    schedule = db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.id == schedule_id,
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id,
+    ).first()
+
+    if not schedule:
+        return None
+
+    if coaching_date is not None:
+        schedule.coaching_date = coaching_date
+    if meeting_url is not None:
+        schedule.meeting_url = meeting_url
+    if coaching_summary is not None:
+        schedule.coaching_summary = coaching_summary
+    if todo is not None:
+        schedule.todo = todo
+
+    db.flush()
+    return schedule
+
+
+def delete_coaching_schedule(
+    db: Session,
+    mdl_user_id: int,
+    schedule_id: int,
+) -> bool:
+    """
+    コーチングスケジュールを削除します。mdl_user_idも一致するレコードのみ対象。
+
+    Args:
+        db: Database session
+        mdl_user_id: 受講生のMoodleユーザーID（所有者チェック）
+        schedule_id: 削除対象のid
+
+    Returns:
+        bool: 削除できた場合True
+    """
+    schedule = db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.id == schedule_id,
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id,
+    ).first()
+
+    if not schedule:
+        return False
+
+    db.delete(schedule)
+    db.flush()
+    return True
 

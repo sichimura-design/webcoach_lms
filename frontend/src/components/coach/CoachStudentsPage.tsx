@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, User } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Search, User, Calendar } from 'lucide-react';
 import { AppHeader } from '../shared/AppHeader';
 import { Button } from '../ui/button';
 import { useAuth } from '../../contexts/AuthContext';
@@ -111,6 +112,7 @@ export function CoachStudentsPage() {
           >
             <span className="flex-1 text-sm font-bold text-white">受講生</span>
             <span className="w-28 text-sm font-bold text-white text-center">最終ログイン</span>
+            <span className="w-36 flex-shrink-0 text-sm font-bold text-white text-center">コーチング</span>
           </div>
 
           {/* Rows */}
@@ -147,6 +149,16 @@ export function CoachStudentsPage() {
                   >
                     {student.lastaccess === 0 ? '未ログイン' : student.lastaccess_formatted}
                   </span>
+
+                  {/* コーチング記録 */}
+                  <Link
+                    to={`/coach/schedule/${student.id}`}
+                    className="flex items-center gap-1 ml-4 px-3 py-1.5 rounded-full text-xs font-bold flex-shrink-0 transition-colors hover:opacity-80"
+                    style={{ background: '#FDEAE6', color: '#E86D78' }}
+                  >
+                    <Calendar className="w-3.5 h-3.5" />
+                    コーチング記録
+                  </Link>
 
                 </div>
               ))

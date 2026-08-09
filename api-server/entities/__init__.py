@@ -12,6 +12,7 @@ from .webcoach import (
     WebCoachAvatar,
     WebCoachStudentCoachMapping,
     WebCoachStudyNote,
+    WebCoachCoachingSchedule,
 )
 from .webcoach_normalized import (
     WebCoachImage,
@@ -35,6 +36,7 @@ __all__ = [
     "WebCoachAvatar",
     "WebCoachStudentCoachMapping",
     "WebCoachStudyNote",
+    "WebCoachCoachingSchedule",
     "MoodleTag",
     "MoodleTagInstance",
     "MoodleCourse",

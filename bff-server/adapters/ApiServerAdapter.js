@@ -579,6 +579,64 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get coaching schedules for a student
+   */
+  async getCoachingSchedules(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/coaching/schedule/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Create coaching schedule
+   */
+  async createCoachingSchedule(userid, data) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/coaching/schedule/${userid}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update coaching schedule
+   */
+  async updateCoachingSchedule(userid, id, data) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/coaching/schedule/${userid}/${id}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Delete coaching schedule
+   */
+  async deleteCoachingSchedule(userid, id) {
+    const response = await axios.delete(
+      `${this.apiServerUrl}/api/coaching/schedule/${userid}/${id}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Create coach-student mapping
    */
   async createCoachStudentMapping(coachUserId, studentUserId) {

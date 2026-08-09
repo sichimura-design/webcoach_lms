@@ -11,6 +11,9 @@ import {
   UpdateResumeCourseRequest,
   StudyNote,
   UpdateStudyNoteRequest,
+  CoachingSchedule,
+  CreateCoachingScheduleRequest,
+  UpdateCoachingScheduleRequest,
   Roadmap,
   RoadmapQueryParams,
   AIRequest,
@@ -337,6 +340,48 @@ class BFFClient {
       data
     );
     return response.data;
+  }
+
+  /**
+   * コーチングスケジュール一覧取得
+   * GET /api/coaching/schedule/{userid}
+   */
+  async getCoachingSchedules(userId: number): Promise<CoachingSchedule[]> {
+    const response = await this.api.get(`/coaching/schedule/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール作成
+   * POST /api/coaching/schedule/{userid}
+   */
+  async createCoachingSchedule(
+    userId: number,
+    data: CreateCoachingScheduleRequest
+  ): Promise<CoachingSchedule> {
+    const response = await this.api.post(`/coaching/schedule/${userId}`, data);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール更新
+   * PUT /api/coaching/schedule/{userid}/{id}
+   */
+  async updateCoachingSchedule(
+    userId: number,
+    id: number,
+    data: UpdateCoachingScheduleRequest
+  ): Promise<CoachingSchedule> {
+    const response = await this.api.put(`/coaching/schedule/${userId}/${id}`, data);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール削除
+   * DELETE /api/coaching/schedule/{userid}/{id}
+   */
+  async deleteCoachingSchedule(userId: number, id: number): Promise<void> {
+    await this.api.delete(`/coaching/schedule/${userId}/${id}`);
   }
 
   /**
