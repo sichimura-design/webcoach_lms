@@ -411,6 +411,35 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get study note
+   */
+  async getStudyNote(userid, courseid, cmid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study-note/${userid}/${courseid}/${cmid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update study note
+   */
+  async updateStudyNote(userid, courseid, cmid, content) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/study-note/${userid}/${courseid}/${cmid}`,
+      { content },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Get next coaching goal
    */
   async getNextCoachingGoal(userid, no) {

@@ -9,14 +9,16 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text, func
 
 from database import get_db
-from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest
-from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse
+from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate
+from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse, StudyNoteResponse
 import crud
 from crud import (
     get_webcoach_user_profile,
     upsert_webcoach_user_profile,
     get_webcoach_resume_courses,
     upsert_webcoach_user_course_lastaccess,
+    get_study_note,
+    upsert_study_note,
     get_moodle_user_info,
     get_image_url,
     upsert_image_url,
@@ -384,6 +386,105 @@ def update_resume_course(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to update resume course: {str(e)}"
+        )
+
+
+# ==========================================
+# Study Note Endpoints
+# ==========================================
+
+@router.get(
+    "/study-note/{userid}/{courseid}/{cmid}",
+    response_model=StudyNoteResponse,
+    summary="学習メモ取得"
+)
+def get_study_note_endpoint(
+    userid: int,
+    courseid: int,
+    cmid: int,
+    db: Session = Depends(get_db)
+):
+    """
+    教材ごとの学習メモを取得します。
+
+    レコードが存在しない場合も404にせず、空メモとして返します
+    （フロント側は常に編集可能な空の状態から始められる）。
+
+    Args:
+        userid: MoodleユーザーID
+        courseid: MoodleコースID
+        cmid: Moodleコースモジュール(教材)ID
+
+    Returns:
+        学習メモ情報
+    """
+    try:
+        note = get_study_note(db, userid, courseid, cmid)
+
+        if not note:
+            return StudyNoteResponse(
+                mdl_user_id=userid,
+                courseid=courseid,
+                cmid=cmid,
+                content="",
+                updated_at=None
+            )
+
+        return StudyNoteResponse(
+            mdl_user_id=note.mdl_user_id,
+            courseid=note.courseid,
+            cmid=note.cmid,
+            content=note.content,
+            updated_at=note.updated_at
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get study note: {str(e)}"
+        )
+
+
+@router.put(
+    "/study-note/{userid}/{courseid}/{cmid}",
+    response_model=StudyNoteResponse,
+    summary="学習メモ更新"
+)
+def update_study_note_endpoint(
+    userid: int,
+    courseid: int,
+    cmid: int,
+    data: StudyNoteUpdate,
+    db: Session = Depends(get_db)
+):
+    """
+    教材ごとの学習メモを更新（無ければ作成）します。
+
+    Args:
+        userid: MoodleユーザーID
+        courseid: MoodleコースID
+        cmid: Moodleコースモジュール(教材)ID
+        data: 更新するメモ内容
+
+    Returns:
+        更新された学習メモ情報
+    """
+    try:
+        note = upsert_study_note(db, userid, courseid, cmid, data.content)
+        db.commit()
+        db.refresh(note)
+
+        return StudyNoteResponse(
+            mdl_user_id=note.mdl_user_id,
+            courseid=note.courseid,
+            cmid=note.cmid,
+            content=note.content,
+            updated_at=note.updated_at
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update study note: {str(e)}"
         )
 
 

@@ -59,6 +59,17 @@ class NextCoachingGoalResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class StudyNoteResponse(BaseModel):
+    """学習メモレスポンス"""
+    mdl_user_id: int
+    courseid: int
+    cmid: int
+    content: str
+    updated_at: Optional[datetime] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class CoachStudentMappingResponse(BaseModel):
     """コーチと受講生のマッピングレスポンス"""
     coach_user_id: int

@@ -21,6 +21,7 @@ from .common import (
     BulkUploadResponse,
     AvatarResponse,
     NextCoachingGoalResponse,
+    StudyNoteResponse,
     CoachStudentMappingResponse,
     StudentListResponse,
     CoachResponse,
@@ -53,6 +54,7 @@ __all__ = [
     "BulkUploadResponse",
     "AvatarResponse",
     "NextCoachingGoalResponse",
+    "StudyNoteResponse",
     # Coaching
     "CoachStudentMappingResponse",
     "StudentListResponse",

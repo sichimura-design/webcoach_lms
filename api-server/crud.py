@@ -16,6 +16,7 @@ from entities import (
     WebCoachAvatar,
     WebCoachStudentCoachMapping,
     WebCoachCoachMeetingIntegration,
+    WebCoachStudyNote,
 )
 from dto.request import (
     CourseAccessCreate,
@@ -305,6 +306,68 @@ def upsert_webcoach_user_course_lastaccess(
             progress_percent=progress_percent,
             current_section=current_section
             # created_at and updated_at are set automatically
+        )
+        db.add(existing)
+
+    db.flush()
+    return existing
+
+
+def get_study_note(
+    db: Session,
+    mdl_user_id: int,
+    courseid: int,
+    cmid: int
+) -> Optional[WebCoachStudyNote]:
+    """
+    WebCoach: 学習メモを取得
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        courseid: MoodleコースID
+        cmid: Moodleコースモジュール(教材)ID
+
+    Returns:
+        WebCoachStudyNote: レコードが無い場合はNone
+    """
+    return db.query(WebCoachStudyNote).filter(
+        WebCoachStudyNote.mdl_user_id == mdl_user_id,
+        WebCoachStudyNote.courseid == courseid,
+        WebCoachStudyNote.cmid == cmid,
+    ).first()
+
+
+def upsert_study_note(
+    db: Session,
+    mdl_user_id: int,
+    courseid: int,
+    cmid: int,
+    content: str
+) -> WebCoachStudyNote:
+    """
+    WebCoach: 学習メモを登録/更新
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        courseid: MoodleコースID
+        cmid: Moodleコースモジュール(教材)ID
+        content: メモの内容
+
+    Returns:
+        WebCoachStudyNote: Created or updated record
+    """
+    existing = get_study_note(db, mdl_user_id, courseid, cmid)
+
+    if existing:
+        existing.content = content
+    else:
+        existing = WebCoachStudyNote(
+            mdl_user_id=mdl_user_id,
+            courseid=courseid,
+            cmid=cmid,
+            content=content,
         )
         db.add(existing)
 

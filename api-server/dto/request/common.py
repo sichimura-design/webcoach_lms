@@ -61,6 +61,11 @@ class NextCoachingGoalsBulkUpsertRequest(BaseModel):
     goals: List[NextCoachingGoalItem] = Field(..., description="目標一覧（配列の順序が表示順）")
 
 
+class StudyNoteUpdate(BaseModel):
+    """学習メモ更新リクエスト"""
+    content: str = Field(..., description="メモの内容")
+
+
 class CoachStudentMappingCreate(BaseModel):
     """コーチと受講生のマッピング作成リクエスト"""
     coach_user_id: int = Field(..., description="コーチのMoodleユーザーID")

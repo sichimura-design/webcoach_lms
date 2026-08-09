@@ -18,6 +18,7 @@ import {
   User,
   Paperclip,
   ImageOff,
+  StickyNote,
 } from 'lucide-react';
 import Encoding from 'encoding-japanese';
 import MarkdownRenderer from './MarkdownRenderer';
@@ -292,6 +293,48 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
 
   // モバイルサイドバー
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // 右サイドバー タブ（AIコーチ／メモ）
+  const [sidebarTab, setSidebarTab] = useState<'ai' | 'memo'>('ai');
+
+  // 学習メモ
+  const [memoContent, setMemoContent] = useState('');
+  const [memoStatus, setMemoStatus] = useState<'idle' | 'loading' | 'saving' | 'saved'>('idle');
+  const memoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const memoLoadedKeyRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!selectedModule || !user) return;
+    const key = `${courseId}:${selectedModule.id}`;
+    memoLoadedKeyRef.current = key;
+    setMemoStatus('loading');
+    bffClient.getStudyNote(user.userid, courseId, selectedModule.id)
+      .then(note => {
+        if (memoLoadedKeyRef.current === key) {
+          setMemoContent(note.content);
+          setMemoStatus('idle');
+        }
+      })
+      .catch(() => {
+        if (memoLoadedKeyRef.current === key) {
+          setMemoStatus('idle');
+        }
+      });
+  }, [selectedModule?.id, courseId, user]);
+
+  const handleMemoChange = (value: string) => {
+    setMemoContent(value);
+    if (!selectedModule || !user) return;
+    const targetCourseId = courseId;
+    const targetCmid = selectedModule.id;
+    if (memoSaveTimer.current) clearTimeout(memoSaveTimer.current);
+    memoSaveTimer.current = setTimeout(() => {
+      setMemoStatus('saving');
+      bffClient.updateStudyNote(user.userid, targetCourseId, targetCmid, { content: value })
+        .then(() => setMemoStatus('saved'))
+        .catch(() => setMemoStatus('idle'));
+    }, 500);
+  };
 
   // アクティビティ完了
   const [completing, setCompleting] = useState(false);
@@ -624,6 +667,56 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     }
   };
 
+  // ─── 右サイドバー（AIコーチ／メモ タブ） ─────
+  const renderSupportPanel = (mobile: boolean) => (
+    <div className={mobile ? 'bg-white rounded-2xl shadow-sm overflow-hidden' : ''}>
+      <div className="flex items-center gap-1.5 px-4 pt-3 pb-2 bg-brand-bg">
+        <button
+          onClick={() => setSidebarTab('ai')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
+            sidebarTab === 'ai' ? 'bg-brand-gradient text-white' : 'text-brand-muted hover:bg-white'
+          }`}
+        >
+          <Bot className="w-3.5 h-3.5" />
+          AIコーチ
+        </button>
+        <button
+          onClick={() => setSidebarTab('memo')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
+            sidebarTab === 'memo' ? 'bg-brand-gradient text-white' : 'text-brand-muted hover:bg-white'
+          }`}
+        >
+          <StickyNote className="w-3.5 h-3.5" />
+          メモ
+        </button>
+      </div>
+      {sidebarTab === 'ai' ? (
+        <AiCoachPanel
+          aiMessages={aiMessages}
+          aiLoading={aiLoading}
+          aiQuestion={aiQuestion}
+          setAiQuestion={setAiQuestion}
+          handleAiKeyPress={handleAiKeyPress}
+          onSend={handleAiQuestion}
+          chatEndRef={chatEndRef}
+          pendingImage={aiPendingImage}
+          imageError={aiImageError}
+          onImageSelect={handleAiImageSelect}
+          onClearImage={clearAiPendingImage}
+          mobile={mobile}
+        />
+      ) : (
+        <MemoPanel
+          content={memoContent}
+          status={memoStatus}
+          onChange={handleMemoChange}
+          lessonTitle={selectedModule?.name}
+          mobile={mobile}
+        />
+      )}
+    </div>
+  );
+
   // ─── ローディング / エラー ────────────────
   if (loading) {
     return (
@@ -823,19 +916,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         <div className="hidden lg:flex flex-col gap-0 w-80 flex-shrink-0 sticky top-[160px] rounded-3xl overflow-y-auto" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6', maxHeight: 'calc(100vh - 170px)' }}>
           <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} />
           <div className="border-t border-brand-border">
-            <AiCoachPanel
-              aiMessages={aiMessages}
-              aiLoading={aiLoading}
-              aiQuestion={aiQuestion}
-              setAiQuestion={setAiQuestion}
-              handleAiKeyPress={handleAiKeyPress}
-              onSend={handleAiQuestion}
-              chatEndRef={chatEndRef}
-              pendingImage={aiPendingImage}
-              imageError={aiImageError}
-              onImageSelect={handleAiImageSelect}
-              onClearImage={clearAiPendingImage}
-            />
+            {renderSupportPanel(false)}
           </div>
         </div>
       </div>
@@ -860,20 +941,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
               </button>
             </div>
             <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} mobile />
-            <AiCoachPanel
-              aiMessages={aiMessages}
-              aiLoading={aiLoading}
-              aiQuestion={aiQuestion}
-              setAiQuestion={setAiQuestion}
-              handleAiKeyPress={handleAiKeyPress}
-              onSend={handleAiQuestion}
-              chatEndRef={chatEndRef}
-              pendingImage={aiPendingImage}
-              imageError={aiImageError}
-              onImageSelect={handleAiImageSelect}
-              onClearImage={clearAiPendingImage}
-              mobile
-            />
+            {renderSupportPanel(true)}
           </div>
         </div>
       )}
@@ -1060,6 +1128,43 @@ function AiCoachPanel({
             <Send className="w-3 h-3 text-white" />
           </button>
         </div>
+      </div>
+    </div>
+  );
+}
+
+interface MemoPanelProps {
+  content: string;
+  status: 'idle' | 'loading' | 'saving' | 'saved';
+  onChange: (value: string) => void;
+  lessonTitle?: string;
+  mobile?: boolean;
+}
+
+function MemoPanel({ content, status, onChange, lessonTitle, mobile = false }: MemoPanelProps) {
+  const statusLabel =
+    status === 'saving' ? '保存中…' : status === 'saved' ? '自動保存済み' : '自動保存';
+
+  return (
+    <div className={`bg-white ${mobile ? 'rounded-2xl shadow-sm' : ''} overflow-hidden`}>
+      <div className="flex items-center justify-between px-6 py-4 bg-brand-bg border-b border-brand-border">
+        <div className="flex items-center gap-2">
+          <StickyNote className="w-5 h-5 text-brand" />
+          <span className="font-bold text-brand-muted" style={{ fontSize: '15px' }}>メモ</span>
+        </div>
+        <span className="text-xs text-brand-subtle">{statusLabel}</span>
+      </div>
+      <div className="px-6 py-5" style={{ background: '#fafafa' }}>
+        <textarea
+          value={content}
+          onChange={e => onChange(e.target.value)}
+          placeholder="教材を見ながら、気づいたこと・試したいことを書く…"
+          className="w-full bg-white rounded-2xl px-4 py-3 text-sm text-brand-text outline-none border border-brand-border resize-none"
+          style={{ minHeight: '220px' }}
+        />
+        {lessonTitle && (
+          <p className="mt-2 text-xs text-brand-subtle">「{lessonTitle}」に保存</p>
+        )}
       </div>
     </div>
   );

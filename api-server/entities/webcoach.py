@@ -188,3 +188,21 @@ class WebCoachCoachMeetingIntegration(Base):
     __table_args__ = (
         Index('idx_coach_meeting_integration_coach', 'coach_user_id'),
     )
+
+
+class WebCoachStudyNote(Base):
+    """
+    WebCoach: 教材ごとの学習メモ（1ユーザー1教材につき1件）
+    """
+    __tablename__ = "webcoach_study_note"
+
+    mdl_user_id = Column(BigInteger, primary_key=True, nullable=False, comment='MoodleユーザーID')
+    courseid = Column(BigInteger, primary_key=True, nullable=False, comment='MoodleコースID')
+    cmid = Column(BigInteger, primary_key=True, nullable=False, comment='Moodleコースモジュール(教材)ID')
+    content = Column(Text, nullable=False, comment='メモの内容')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+    __table_args__ = (
+        Index('idx_study_note_course', 'courseid'),
+    )

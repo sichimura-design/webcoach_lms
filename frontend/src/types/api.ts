@@ -139,6 +139,16 @@ export interface UpdateResumeCourseRequest {
   progress_percent: number;
 }
 
+// WebCoach StudyNote
+export interface StudyNote {
+  content: string;
+  updated_at: string | null;
+}
+
+export interface UpdateStudyNoteRequest {
+  content: string;
+}
+
 // WebCoach Roadmap
 export interface Roadmap {
   id: number;

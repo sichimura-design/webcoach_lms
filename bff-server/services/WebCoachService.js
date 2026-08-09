@@ -290,6 +290,22 @@ class WebCoachService {
   }
 
   /**
+   * Get study note
+   */
+  async getStudyNote(userid, courseid, cmid) {
+    console.log(`[WebCoach StudyNote] Getting note for user ${userid}, course ${courseid}, cmid ${cmid}`);
+    return await apiServerAdapter.getStudyNote(userid, courseid, cmid);
+  }
+
+  /**
+   * Update study note
+   */
+  async updateStudyNote(userid, courseid, cmid, content) {
+    console.log(`[WebCoach StudyNote] Updating note for user ${userid}, course ${courseid}, cmid ${cmid}`);
+    return await apiServerAdapter.updateStudyNote(userid, courseid, cmid, content);
+  }
+
+  /**
    * Create next coaching goal
    */
   async createNextCoachingGoal(mdlUserId, no, description, isCompleted = 0) {

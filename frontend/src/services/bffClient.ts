@@ -9,6 +9,8 @@ import {
   ProfileUpdate,
   ResumeCourse,
   UpdateResumeCourseRequest,
+  StudyNote,
+  UpdateStudyNoteRequest,
   Roadmap,
   RoadmapQueryParams,
   AIRequest,
@@ -304,6 +306,34 @@ class BFFClient {
   ): Promise<ResumeCourse> {
     const response = await this.api.post(
       `/webcoach/resumecourse/${userId}`,
+      data
+    );
+    return response.data;
+  }
+
+  /**
+   * 学習メモ取得
+   * GET /api/webcoach/study-note/{userid}/{courseid}/{cmid}
+   */
+  async getStudyNote(userId: number, courseId: number, cmid: number): Promise<StudyNote> {
+    const response = await this.api.get(
+      `/webcoach/study-note/${userId}/${courseId}/${cmid}`
+    );
+    return response.data;
+  }
+
+  /**
+   * 学習メモ更新
+   * PUT /api/webcoach/study-note/{userid}/{courseid}/{cmid}
+   */
+  async updateStudyNote(
+    userId: number,
+    courseId: number,
+    cmid: number,
+    data: UpdateStudyNoteRequest
+  ): Promise<StudyNote> {
+    const response = await this.api.put(
+      `/webcoach/study-note/${userId}/${courseId}/${cmid}`,
       data
     );
     return response.data;

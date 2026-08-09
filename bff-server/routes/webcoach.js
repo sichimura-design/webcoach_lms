@@ -634,6 +634,48 @@ router.get('/next-coaching-goals/:userid', requireAuth, requireOwnership, async 
 });
 
 // Get next coaching goal
+// Get study note
+router.get('/study-note/:userid/:courseid/:cmid', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid, courseid, cmid } = req.params;
+    const result = await webCoachService.getStudyNote(userid, parseInt(courseid), parseInt(cmid));
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Get StudyNote] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to get study note',
+      detail: error.message
+    });
+  }
+});
+
+// Update study note
+router.put('/study-note/:userid/:courseid/:cmid', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid, courseid, cmid } = req.params;
+    const { content } = req.body;
+
+    const result = await webCoachService.updateStudyNote(userid, parseInt(courseid), parseInt(cmid), content);
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Update StudyNote] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to update study note',
+      detail: error.message
+    });
+  }
+});
+
 router.get('/next-coaching-goal/:userid/:no', requireAuth, requireOwnership, async (req, res) => {
   try {
     const { userid, no } = req.params;
