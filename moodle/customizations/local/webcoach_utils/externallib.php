@@ -142,6 +142,10 @@ class local_webcoach_utils_external extends external_api {
     /**
      * Update user's lastaccess timestamp
      *
+     * この関数はAPIリクエストのたびに呼ばれるため、\core\event\user_loggedin は
+     * 「その日まだ記録が無い場合のみ」発火させる（継続日数集計用の日次アクティビティ記録）。
+     * 毎回発火させるとmdl_logstore_standard_logが同一ユーザーのログインイベントで埋まってしまう。
+     *
      * @param int $userid User ID
      * @return array Result status
      */
@@ -163,6 +167,28 @@ class local_webcoach_utils_external extends external_api {
         // Update lastaccess
         $currenttime = time();
         $DB->set_field('user', 'lastaccess', $currenttime, ['id' => $params['userid']]);
+
+        // 今日まだこのユーザーのログインイベントが無ければ、標準ログストアに1件だけ記録する
+        $todaystart = usergetmidnight($currenttime);
+        $alreadyloggedtoday = $DB->record_exists_select(
+            'logstore_standard_log',
+            'userid = :userid AND eventname = :eventname AND timecreated >= :todaystart',
+            [
+                'userid' => $params['userid'],
+                'eventname' => '\\core\\event\\user_loggedin',
+                'todaystart' => $todaystart,
+            ]
+        );
+
+        if (!$alreadyloggedtoday) {
+            $event = \core\event\user_loggedin::create([
+                'userid' => $params['userid'],
+                'objectid' => $params['userid'],
+                'other' => ['username' => $user->username],
+            ]);
+            $event->add_record_snapshot('user', $user);
+            $event->trigger();
+        }
 
         return [
             'success' => true,
