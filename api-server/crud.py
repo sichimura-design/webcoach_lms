@@ -16,8 +16,10 @@ from entities import (
     WebCoachImageUrl,
     WebCoachAvatar,
     WebCoachStudentCoachMapping,
+    WebCoachCoachMeetingIntegration,
     WebCoachStudyNote,
     WebCoachCoachingSchedule,
+    WebCoachCoachingRecording,
 )
 from dto.request import (
     CourseAccessCreate,
@@ -1819,4 +1821,191 @@ def get_user_login_streak(db: Session, userid: int) -> Dict[str, Any]:
             break
 
     return {"userid": userid, "current_streak": streak, "last_active_date": last_active_date}
+
+
+# ==========================================
+# Coach Meeting Integration CRUD (Zoom / Google Meet OAuth)
+# ==========================================
+
+def upsert_coach_meeting_integration(
+    db: Session,
+    coach_user_id: int,
+    provider: str,
+    access_token_enc: str,
+    refresh_token_enc: str,
+    token_expires_at,
+    scope: Optional[str] = None,
+    provider_account_email: Optional[str] = None,
+) -> WebCoachCoachMeetingIntegration:
+    """
+    コーチのミーティング連携トークンを保存（既存があれば更新）
+
+    Args:
+        db: Database session
+        coach_user_id: コーチのMoodleユーザーID
+        provider: 連携先プロバイダ (zoom, google)
+        access_token_enc: 暗号化済みアクセストークン
+        refresh_token_enc: 暗号化済みリフレッシュトークン
+        token_expires_at: アクセストークン有効期限
+        scope: 付与されたスコープ
+        provider_account_email: 連携先アカウントのメールアドレス
+
+    Returns:
+        WebCoachCoachMeetingIntegration: 保存された連携情報
+    """
+    existing = db.query(WebCoachCoachMeetingIntegration).filter(
+        WebCoachCoachMeetingIntegration.coach_user_id == coach_user_id,
+        WebCoachCoachMeetingIntegration.provider == provider,
+    ).first()
+
+    if existing:
+        existing.access_token_enc = access_token_enc
+        existing.refresh_token_enc = refresh_token_enc
+        existing.token_expires_at = token_expires_at
+        existing.scope = scope
+        existing.provider_account_email = provider_account_email
+        db.commit()
+        db.refresh(existing)
+        return existing
+
+    integration = WebCoachCoachMeetingIntegration(
+        coach_user_id=coach_user_id,
+        provider=provider,
+        access_token_enc=access_token_enc,
+        refresh_token_enc=refresh_token_enc,
+        token_expires_at=token_expires_at,
+        scope=scope,
+        provider_account_email=provider_account_email,
+    )
+    db.add(integration)
+    db.commit()
+    db.refresh(integration)
+    return integration
+
+
+def get_coach_meeting_integrations(
+    db: Session,
+    coach_user_id: int,
+) -> List[WebCoachCoachMeetingIntegration]:
+    """
+    コーチのミーティング連携状態を全プロバイダ分取得
+
+    Args:
+        db: Database session
+        coach_user_id: コーチのMoodleユーザーID
+
+    Returns:
+        List[WebCoachCoachMeetingIntegration]: 連携情報一覧
+    """
+    return db.query(WebCoachCoachMeetingIntegration).filter(
+        WebCoachCoachMeetingIntegration.coach_user_id == coach_user_id
+    ).all()
+
+
+# ==========================================
+# Coaching Recording CRUD (録画メタデータ管理、実データはS3)
+# ==========================================
+
+def upsert_coaching_recording(
+    db: Session,
+    coaching_schedule_id: int,
+    recording_type: str,
+    source: str,
+    s3_bucket: str,
+    s3_key: str,
+    external_recording_id: Optional[str] = None,
+    status: str = "pending",
+) -> WebCoachCoachingRecording:
+    """
+    コーチング録画のメタデータを保存（同一schedule×typeが既にあれば更新）
+
+    Args:
+        db: Database session
+        coaching_schedule_id: 対象のコーチング回（webcoach_coaching_schedule.id）
+        recording_type: 録画ファイルの種別 (video, audio, transcript, chat)
+        source: 取得元サービス (zoom, google_meet)
+        s3_bucket: 保存先S3バケット名
+        s3_key: 保存先S3オブジェクトキー
+        external_recording_id: 取得元サービス側の録画ID
+        status: 取得処理の状態
+
+    Returns:
+        WebCoachCoachingRecording: 保存されたレコード
+    """
+    existing = db.query(WebCoachCoachingRecording).filter(
+        WebCoachCoachingRecording.coaching_schedule_id == coaching_schedule_id,
+        WebCoachCoachingRecording.recording_type == recording_type,
+    ).first()
+
+    if existing:
+        existing.source = source
+        existing.s3_bucket = s3_bucket
+        existing.s3_key = s3_key
+        existing.external_recording_id = external_recording_id
+        existing.status = status
+        db.commit()
+        db.refresh(existing)
+        return existing
+
+    recording = WebCoachCoachingRecording(
+        coaching_schedule_id=coaching_schedule_id,
+        recording_type=recording_type,
+        source=source,
+        s3_bucket=s3_bucket,
+        s3_key=s3_key,
+        external_recording_id=external_recording_id,
+        status=status,
+    )
+    db.add(recording)
+    db.commit()
+    db.refresh(recording)
+    return recording
+
+
+def get_coaching_recordings(
+    db: Session,
+    coaching_schedule_id: int,
+) -> List[WebCoachCoachingRecording]:
+    """
+    コーチング回に紐づく録画一覧を取得
+
+    Args:
+        db: Database session
+        coaching_schedule_id: 対象のコーチング回（webcoach_coaching_schedule.id）
+
+    Returns:
+        List[WebCoachCoachingRecording]
+    """
+    return db.query(WebCoachCoachingRecording).filter(
+        WebCoachCoachingRecording.coaching_schedule_id == coaching_schedule_id
+    ).all()
+
+
+def update_coaching_recording_status(
+    db: Session,
+    recording_id: int,
+    status: str,
+) -> Optional[WebCoachCoachingRecording]:
+    """
+    録画の取得処理状態を更新
+
+    Args:
+        db: Database session
+        recording_id: 対象のwebcoach_coaching_recording.id
+        status: 更新後の状態 (pending, downloading, completed, failed)
+
+    Returns:
+        WebCoachCoachingRecording: 更新後のレコード。見つからない場合はNone
+    """
+    recording = db.query(WebCoachCoachingRecording).filter(
+        WebCoachCoachingRecording.id == recording_id
+    ).first()
+
+    if not recording:
+        return None
+
+    recording.status = status
+    db.commit()
+    db.refresh(recording)
+    return recording
 

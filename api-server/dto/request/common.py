@@ -97,3 +97,12 @@ class CoachMeetingIntegrationUpsert(BaseModel):
     expires_at: datetime = Field(..., description="アクセストークン有効期限")
     scope: Optional[str] = Field(None, description="付与されたスコープ")
     provider_account_email: Optional[str] = Field(None, description="連携先アカウントのメールアドレス")
+
+
+class CoachingRecordingUpsert(BaseModel):
+    """コーチング録画メタデータ保存リクエスト（S3保存済みのファイルについて呼び出す想定）"""
+    source: str = Field(..., pattern="^(zoom|google_meet)$", description="取得元サービス")
+    s3_bucket: str = Field(..., description="保存先S3バケット名")
+    s3_key: str = Field(..., description="保存先S3オブジェクトキー")
+    external_recording_id: Optional[str] = Field(None, description="取得元サービス側の録画ID")
+    status: str = Field("completed", pattern="^(pending|downloading|completed|failed)$", description="取得処理の状態")

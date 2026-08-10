@@ -168,6 +168,28 @@ class WebCoachStudentCoachMapping(Base):
     )
 
 
+class WebCoachCoachMeetingIntegration(Base):
+    """
+    WebCoach: コーチのZoom/Google Meet連携情報（OAuthトークン）
+    トークンはbff-server側で暗号化済みの文字列として保存される
+    """
+    __tablename__ = "webcoach_coach_meeting_integration"
+
+    coach_user_id = Column(BigInteger, primary_key=True, nullable=False, index=True, comment='コーチのMoodleユーザーID')
+    provider = Column(String(32), primary_key=True, nullable=False, comment='連携先 (zoom, google)')
+    access_token_enc = Column(Text, nullable=False, comment='暗号化済みアクセストークン')
+    refresh_token_enc = Column(Text, nullable=False, comment='暗号化済みリフレッシュトークン')
+    token_expires_at = Column(TIMESTAMP, nullable=False, comment='アクセストークン有効期限')
+    scope = Column(String(512), nullable=True, comment='付与されたスコープ')
+    provider_account_email = Column(String(256), nullable=True, comment='連携先アカウントのメールアドレス（表示用）')
+    connected_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), comment='初回連携日時')
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp(), comment='更新日時')
+
+    __table_args__ = (
+        Index('idx_coach_meeting_integration_coach', 'coach_user_id'),
+    )
+
+
 class WebCoachStudyNote(Base):
     """
     WebCoach: 教材ごとの学習メモ（1ユーザー1教材につき1件）
@@ -183,6 +205,28 @@ class WebCoachStudyNote(Base):
 
     __table_args__ = (
         Index('idx_study_note_course', 'courseid'),
+    )
+
+
+class WebCoachCoachingRecording(Base):
+    """
+    WebCoach: コーチング録画ファイルのメタデータ管理（実データはS3）
+    """
+    __tablename__ = "webcoach_coaching_recording"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    coaching_schedule_id = Column(BigInteger, nullable=False, comment='対象のコーチング回（webcoach_coaching_schedule.id）')
+    recording_type = Column(String(32), nullable=False, comment='録画ファイルの種別 (video, audio, transcript, chat)')
+    source = Column(String(32), nullable=False, comment='取得元サービス (zoom, google_meet)')
+    external_recording_id = Column(String(255), nullable=True, comment='取得元サービス側の録画ID（重複取得防止用）')
+    s3_bucket = Column(String(255), nullable=False, comment='保存先S3バケット名')
+    s3_key = Column(String(1024), nullable=False, comment='保存先S3オブジェクトキー')
+    status = Column(String(32), nullable=False, default='pending', comment='取得処理の状態 (pending, downloading, completed, failed)')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+    __table_args__ = (
+        Index('idx_recording_schedule', 'coaching_schedule_id'),
     )
 
 

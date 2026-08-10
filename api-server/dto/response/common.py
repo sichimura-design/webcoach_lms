@@ -126,6 +126,22 @@ class CoachMeetingIntegrationStatusResponse(BaseModel):
     integrations: List[CoachMeetingIntegrationResponse]
 
 
+class CoachingRecordingResponse(BaseModel):
+    """コーチング録画メタデータレスポンス"""
+    id: int
+    coaching_schedule_id: int
+    recording_type: str
+    source: str
+    external_recording_id: Optional[str] = None
+    s3_bucket: str
+    s3_key: str
+    status: str
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class LoginStreakResponse(BaseModel):
     """継続ログイン日数レスポンス"""
     userid: int
