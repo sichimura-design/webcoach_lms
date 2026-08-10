@@ -6,6 +6,7 @@ import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 
 export interface EcsStackProps extends cdk.StackProps {
@@ -13,6 +14,7 @@ export interface EcsStackProps extends cdk.StackProps {
   readonly vpc: ec2.Vpc;
   readonly rdsSecret: secretsmanager.ISecret;
   readonly auroraSecret: secretsmanager.ISecret;
+  readonly recordingsBucket: s3.Bucket;
 }
 
 export class EcsStack extends cdk.Stack {
@@ -25,7 +27,7 @@ export class EcsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: EcsStackProps) {
     super(scope, id, props);
 
-    const { envName, vpc, rdsSecret, auroraSecret } = props;
+    const { envName, vpc, rdsSecret, auroraSecret, recordingsBucket } = props;
 
     // ECS Cluster
     this.cluster = new ecs.Cluster(this, 'MoodleCluster', {
@@ -162,6 +164,9 @@ export class EcsStack extends cdk.Stack {
       roleName: `${envName}-moodle-task-role`,
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
     });
+
+    // Grant S3 access for coaching recordings (used by the api service)
+    recordingsBucket.grantReadWrite(taskRole);
 
     // CloudWatch Log Groups
     const frontendLogGroup = new logs.LogGroup(this, 'FrontendLogGroup', {

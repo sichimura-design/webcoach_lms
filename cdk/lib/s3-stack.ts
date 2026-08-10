@@ -10,6 +10,7 @@ export interface S3StackProps extends cdk.StackProps {
 export class S3Stack extends cdk.Stack {
   public readonly frontendBucket: s3.Bucket;
   public readonly moodleStorageBucket: s3.Bucket;
+  public readonly recordingsBucket: s3.Bucket;
 
   constructor(scope: Construct, id: string, props: S3StackProps) {
     super(scope, id, props);
@@ -60,6 +61,24 @@ export class S3Stack extends cdk.Stack {
       ],
     });
 
+    // Coaching recording storage bucket (Zoom/Google Meet recordings)
+    this.recordingsBucket = new s3.Bucket(this, 'RecordingsBucket', {
+      bucketName: `${envName}-moodle-recordings-${this.account}`,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      versioned: false,
+      removalPolicy: envName === 'prod'
+        ? cdk.RemovalPolicy.RETAIN
+        : cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: envName !== 'prod',
+      lifecycleRules: [
+        {
+          id: 'DeleteIncompleteMultipartUploads',
+          abortIncompleteMultipartUploadAfter: cdk.Duration.days(7),
+        },
+      ],
+    });
+
     // Outputs
     new cdk.CfnOutput(this, 'FrontendBucketName', {
       value: this.frontendBucket.bucketName,
@@ -83,6 +102,18 @@ export class S3Stack extends cdk.Stack {
       value: this.moodleStorageBucket.bucketArn,
       description: 'Moodle Storage S3 Bucket ARN',
       exportName: `${envName}-MoodleStorageBucketArn`,
+    });
+
+    new cdk.CfnOutput(this, 'RecordingsBucketName', {
+      value: this.recordingsBucket.bucketName,
+      description: 'Coaching Recordings S3 Bucket Name',
+      exportName: `${envName}-RecordingsBucketName`,
+    });
+
+    new cdk.CfnOutput(this, 'RecordingsBucketArn', {
+      value: this.recordingsBucket.bucketArn,
+      description: 'Coaching Recordings S3 Bucket ARN',
+      exportName: `${envName}-RecordingsBucketArn`,
     });
   }
 }

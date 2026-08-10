@@ -8,6 +8,7 @@ export interface Ec2StackProps extends cdk.StackProps {
   readonly envName: string;
   readonly vpc: ec2.Vpc;
   readonly moodleStorageBucket: s3.Bucket;
+  readonly recordingsBucket: s3.Bucket;
   readonly frontendBucketName?: string;
   readonly keyPairName?: string;
   readonly cognitoUserPoolArn?: string;
@@ -21,7 +22,7 @@ export class Ec2Stack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: Ec2StackProps) {
     super(scope, id, props);
 
-    const { envName, vpc, moodleStorageBucket, frontendBucketName, keyPairName, cognitoUserPoolArn } = props;
+    const { envName, vpc, moodleStorageBucket, recordingsBucket, frontendBucketName, keyPairName, cognitoUserPoolArn } = props;
 
     // Security Group for Moodle EC2
     this.securityGroup = new ec2.SecurityGroup(this, 'MoodleEc2SecurityGroup', {
@@ -61,6 +62,9 @@ export class Ec2Stack extends cdk.Stack {
 
     // Grant S3 access for Moodle storage
     moodleStorageBucket.grantReadWrite(role);
+
+    // Grant S3 access for coaching recordings
+    recordingsBucket.grantReadWrite(role);
 
     // Grant S3 read access to SPA frontend bucket (for HTML content reading)
     if (frontendBucketName) {

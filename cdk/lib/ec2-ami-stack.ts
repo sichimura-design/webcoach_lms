@@ -116,6 +116,19 @@ export class Ec2AmiStack extends cdk.Stack {
       resources: [`arn:aws:s3:::${spaBucketName}`],
     }));
 
+    // コーチング録画バケットのアクセス権限
+    const recordingsBucketName = `${envName}-moodle-recordings-${this.account}`;
+    role.addToPolicy(new iam.PolicyStatement({
+      sid: 'RecordingsBucketReadWriteAccess',
+      actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject'],
+      resources: [`arn:aws:s3:::${recordingsBucketName}/*`],
+    }));
+    role.addToPolicy(new iam.PolicyStatement({
+      sid: 'RecordingsBucketListAccess',
+      actions: ['s3:ListBucket'],
+      resources: [`arn:aws:s3:::${recordingsBucketName}`],
+    }));
+
     // ========================================
     // User Data (Docker起動のみ)
     // ========================================
