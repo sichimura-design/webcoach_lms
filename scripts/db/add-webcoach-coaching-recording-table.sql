@@ -1,6 +1,6 @@
 -- webcoach_coaching_recording の新規作成
 -- コーチングセッションの録画（Zoom/Google Meet）をS3に保存し、そのメタデータを管理する
--- 適用済み環境: (未適用)
+-- 適用済み環境: UAT/dev (uat-moodle-db) 2026-08-10
 
 CREATE TABLE `webcoach_coaching_recording` (
   `id` bigint NOT NULL AUTO_INCREMENT,
