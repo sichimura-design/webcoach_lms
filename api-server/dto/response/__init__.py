@@ -28,6 +28,7 @@ from .common import (
     CoachResponse,
     CoachMeetingIntegrationResponse,
     CoachMeetingIntegrationStatusResponse,
+    LoginStreakResponse,
 )
 
 __all__ = [
@@ -63,4 +64,5 @@ __all__ = [
     "CoachResponse",
     "CoachMeetingIntegrationResponse",
     "CoachMeetingIntegrationStatusResponse",
+    "LoginStreakResponse",
 ]

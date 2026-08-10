@@ -10,7 +10,7 @@ from sqlalchemy import text, func
 
 from database import get_db
 from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate
-from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse, StudyNoteResponse
+from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse, StudyNoteResponse, LoginStreakResponse
 import crud
 from crud import (
     get_webcoach_user_profile,
@@ -37,6 +37,7 @@ from crud import (
     delete_next_coaching_goal,
     reorder_next_coaching_goals,
     bulk_upsert_next_coaching_goals,
+    get_user_login_streak,
 )
 from entities.webcoach import WebCoachAIApplication
 
@@ -1384,4 +1385,40 @@ def bulk_upsert_next_coaching_goals_endpoint(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to bulk upsert next coaching goals: {str(e)}"
+        )
+
+
+# ==========================================
+# Login Streak Endpoint
+# ==========================================
+
+@router.get(
+    "/users/{userid}/login-streak",
+    response_model=LoginStreakResponse,
+    summary="連続ログイン日数を取得"
+)
+def get_login_streak(
+    userid: int,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーの連続ログイン日数（ストリーク）を取得します。
+
+    mdl_logstore_standard_logに記録された\\core\\event\\user_loggedinイベントを
+    日単位（JST）で集計し、最新の記録日から連続している日数を返します。
+    最終ログインが今日・昨日のいずれでもない場合はストリークが途切れているとみなし0を返します。
+
+    Args:
+        userid: ユーザーID
+
+    Returns:
+        連続ログイン日数と最終ログイン日
+    """
+    try:
+        streak = get_user_login_streak(db, userid)
+        return LoginStreakResponse(**streak)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get login streak: {str(e)}"
         )

@@ -124,3 +124,10 @@ class CoachMeetingIntegrationStatusResponse(BaseModel):
     """コーチの連携状態一覧レスポンス"""
     coach_user_id: int
     integrations: List[CoachMeetingIntegrationResponse]
+
+
+class LoginStreakResponse(BaseModel):
+    """継続ログイン日数レスポンス"""
+    userid: int
+    current_streak: int = Field(..., description="連続ログイン日数（今日または昨日が最終ログインの場合のみカウント）")
+    last_active_date: Optional[date] = Field(None, description="mdl_logstore_standard_logに記録された最終ログイン日（JST）")

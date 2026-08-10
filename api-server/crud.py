@@ -2,6 +2,7 @@
 CRUD operations for user course access and profile settings
 """
 import time
+from datetime import datetime, timedelta, timezone
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, text, func
@@ -1765,4 +1766,57 @@ def delete_coaching_schedule(
     db.delete(schedule)
     db.flush()
     return True
+
+
+# ==========================================
+# Login Streak (mdl_logstore_standard_log)
+# ==========================================
+
+JST = timezone(timedelta(hours=9))
+
+
+def get_user_login_streak(db: Session, userid: int) -> Dict[str, Any]:
+    """
+    ユーザーの連続ログイン日数を算出する
+
+    local_webcoach_utils_update_user_lastaccess がその日最初のAPIアクセス時に
+    1回だけ記録する \\core\\event\\user_loggedin イベントを日単位（JST）で集計し、
+    最新の記録日から連続している日数を数える。
+    最終ログインが今日でも昨日でもない場合はストリークが途切れているとみなし0を返す。
+
+    Args:
+        db: Database session
+        userid: MoodleユーザーID
+
+    Returns:
+        Dict[str, Any]: {"userid", "current_streak", "last_active_date"}
+    """
+    query = text("""
+        SELECT DISTINCT DATE(FROM_UNIXTIME(timecreated + 9 * 3600)) AS activity_date
+        FROM mdl_logstore_standard_log
+        WHERE userid = :userid
+          AND eventname = :eventname
+        ORDER BY activity_date DESC
+    """)
+    result = db.execute(query, {"userid": userid, "eventname": "\\core\\event\\user_loggedin"})
+    activity_dates = [row[0] for row in result.fetchall()]
+
+    if not activity_dates:
+        return {"userid": userid, "current_streak": 0, "last_active_date": None}
+
+    today_jst = datetime.now(JST).date()
+    yesterday_jst = today_jst - timedelta(days=1)
+
+    last_active_date = activity_dates[0]
+    if last_active_date not in (today_jst, yesterday_jst):
+        return {"userid": userid, "current_streak": 0, "last_active_date": last_active_date}
+
+    streak = 1
+    for i in range(1, len(activity_dates)):
+        if activity_dates[i - 1] - activity_dates[i] == timedelta(days=1):
+            streak += 1
+        else:
+            break
+
+    return {"userid": userid, "current_streak": streak, "last_active_date": last_active_date}
 
