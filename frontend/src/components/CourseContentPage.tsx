@@ -1117,6 +1117,20 @@ function AiCoachPanel({
               e.target.style.height = `${e.target.scrollHeight}px`;
             }}
             onKeyDown={handleAiKeyPress}
+            onPaste={e => {
+              const items = e.clipboardData?.items;
+              if (!items) return;
+              for (let i = 0; i < items.length; i++) {
+                if (items[i].type.startsWith('image/')) {
+                  const file = items[i].getAsFile();
+                  if (file) {
+                    e.preventDefault();
+                    onImageSelect(file);
+                  }
+                  break;
+                }
+              }
+            }}
             className="flex-1 bg-transparent outline-none text-sm text-brand-text resize-none overflow-hidden leading-5 py-1"
             style={{ maxHeight: '120px', overflowY: 'auto' }}
           />

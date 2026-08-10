@@ -4,6 +4,7 @@ import { AppHeader } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import bffClient from '../services/bffClient';
 import { CoachingSchedule } from '../types/api';
+import { color, font, t } from '../theme/webcoachTheme';
 
 export function MyCoachingPage() {
   const { user } = useAuth();
@@ -21,98 +22,103 @@ export function MyCoachingPage() {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-brand-bg flex flex-col">
+    <div style={{ minHeight: '100vh', background: color.pageBg, display: 'flex', flexDirection: 'column' }}>
       <AppHeader userName={user?.username} />
 
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20" style={{ zIndex: 0 }}>
-        <div className="absolute w-[900px] h-[900px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(225,112,121,0.3) 0%, transparent 70%)', top: '-200px', left: '-300px', filter: 'blur(40px)' }} />
-        <div className="absolute w-[900px] h-[900px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(253,234,226,0.5) 0%, transparent 70%)', top: '-100px', right: '-400px', filter: 'blur(40px)' }} />
-      </div>
-
-      <div className="relative flex-1 max-w-[860px] w-full mx-auto px-4 sm:px-6 py-8 pb-24 sm:pb-8" style={{ zIndex: 1 }}>
-        <h1 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#4B3A33' }}>これまでのコーチング</h1>
+      <main
+        style={{
+          flex: 1,
+          width: '100%',
+          maxWidth: 860,
+          margin: '0 auto',
+          padding: '32px 20px 80px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 18,
+          fontFamily: font.family,
+        }}
+      >
+        <h1 style={{ ...font.pageTitle, color: color.text, margin: 0 }}>これまでのコーチング</h1>
 
         {error && (
-          <div className="mb-4 px-4 py-3 rounded-xl text-sm" style={{ background: '#FDEAE6', color: '#E86D78' }}>
+          <div style={{ ...t.chip, background: '#FDEAE6', color: color.primary, padding: '10px 14px', borderRadius: 12 }}>
             {error}
           </div>
         )}
 
-        <div className="flex flex-col gap-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {loading ? (
-            <div className="py-12 text-center text-sm" style={{ color: '#7E6E68' }}>読み込み中...</div>
+            <p style={{ ...font.meta, color: color.textMuted, textAlign: 'center', padding: '48px 0' }}>読み込み中…</p>
           ) : schedules.length === 0 ? (
-            <div className="py-12 text-center text-sm" style={{ color: '#7E6E68' }}>
-              まだ記録がありません
-            </div>
+            <p style={{ ...font.meta, color: color.textSubtle, textAlign: 'center', padding: '48px 0' }}>
+              まだ記録がありません。
+            </p>
           ) : (
             schedules.map(schedule => {
               const isOpen = openId === schedule.id;
               return (
-                <div
-                  key={schedule.id}
-                  className="bg-white rounded-2xl p-5"
-                  style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6' }}
-                >
+                <div key={schedule.id} style={{ ...t.card, padding: '16px 18px' }}>
                   <button
                     type="button"
                     onClick={() => setOpenId(isOpen ? null : schedule.id)}
-                    className="text-left w-full flex items-start justify-between gap-3"
+                    style={{
+                      textAlign: 'left', width: '100%', background: 'none', border: 'none', padding: 0,
+                      cursor: 'pointer', fontFamily: 'inherit', display: 'flex',
+                      alignItems: 'flex-start', justifyContent: 'space-between', gap: 12,
+                    }}
                   >
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap mb-2">
-                        <span className="font-bold text-sm" style={{ color: '#4B3A33' }}>
-                          第{schedule.coaching_no}回
-                        </span>
-                        <span className="text-xs flex items-center gap-1" style={{ color: '#7E6E68' }}>
+                    <span style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 6 }}>
+                        <span style={{ ...font.rowTitle, color: color.text }}>第{schedule.coaching_no}回</span>
+                        <span style={{ ...font.caption, color: color.textSubtle, display: 'flex', alignItems: 'center', gap: 4 }}>
                           <Calendar className="w-3.5 h-3.5" />
                           {schedule.coaching_date}
                         </span>
                         {schedule.todo && (
-                          <span
-                            className="text-xs font-bold px-2.5 py-0.5 rounded-full"
-                            style={{ background: '#FFF6E5', color: '#B26A00' }}
-                          >
-                            TODOあり
-                          </span>
+                          <span style={{ ...t.chip, background: '#FFF6E5', color: '#B26A00' }}>TODOあり</span>
                         )}
-                      </div>
+                      </span>
                       {!isOpen && schedule.coaching_summary && (
-                        <p className="text-sm line-clamp-2" style={{ color: '#7E6E68' }}>
+                        <span
+                          style={{
+                            ...font.meta, color: color.textMuted,
+                            display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden', lineHeight: 1.8,
+                          }}
+                        >
                           {schedule.coaching_summary}
-                        </p>
+                        </span>
                       )}
-                    </div>
+                    </span>
                     {isOpen ? (
-                      <ChevronUp className="w-4 h-4 flex-shrink-0" style={{ color: '#C3BAB4' }} />
+                      <ChevronUp className="w-4 h-4 flex-shrink-0" style={{ color: color.textFaint }} />
                     ) : (
-                      <ChevronDown className="w-4 h-4 flex-shrink-0" style={{ color: '#C3BAB4' }} />
+                      <ChevronDown className="w-4 h-4 flex-shrink-0" style={{ color: color.textFaint }} />
                     )}
                   </button>
 
                   {isOpen && (
-                    <div className="mt-4 pt-4 space-y-3" style={{ borderTop: '1px solid #F5F0ED' }}>
+                    <div style={{ marginTop: 14, paddingTop: 14, borderTop: `1px solid ${color.divider}`, display: 'flex', flexDirection: 'column', gap: 12 }}>
                       {schedule.meeting_url && (
                         <a
                           href={schedule.meeting_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-xs flex items-center gap-1 hover:underline"
-                          style={{ color: '#3A5C8F' }}
+                          style={{ ...font.link, color: '#3A5C8F', display: 'flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}
                         >
                           <ExternalLink className="w-3 h-3" />
                           {schedule.meeting_url}
                         </a>
                       )}
                       <div>
-                        <p className="text-xs font-bold mb-1" style={{ color: '#7E6E68' }}>コーチング内容の要約</p>
-                        <p className="text-sm whitespace-pre-wrap" style={{ color: '#4B3A33' }}>
+                        <p style={{ ...font.label, color: color.textSubtle, margin: '0 0 4px' }}>コーチング内容の要約</p>
+                        <p style={{ ...font.meta, color: color.textBody, margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.8 }}>
                           {schedule.coaching_summary || '—'}
                         </p>
                       </div>
                       <div>
-                        <p className="text-xs font-bold mb-1" style={{ color: '#7E6E68' }}>次回までのTODO</p>
-                        <p className="text-sm whitespace-pre-wrap" style={{ color: '#4B3A33' }}>
+                        <p style={{ ...font.label, color: color.textSubtle, margin: '0 0 4px' }}>次回までのTODO</p>
+                        <p style={{ ...font.meta, color: color.textBody, margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.8 }}>
                           {schedule.todo || '—'}
                         </p>
                       </div>
@@ -123,7 +129,7 @@ export function MyCoachingPage() {
             })
           )}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

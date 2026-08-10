@@ -5,6 +5,7 @@ import { AppHeader } from '../shared/AppHeader';
 import { Button } from '../ui/button';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
+import { color as themeColor } from '../../theme/webcoachTheme';
 
 interface Student {
   id: number;
@@ -154,7 +155,7 @@ export function CoachStudentsPage() {
                   <Link
                     to={`/coach/schedule/${student.id}`}
                     className="flex items-center gap-1 ml-4 px-3 py-1.5 rounded-full text-xs font-bold flex-shrink-0 transition-colors hover:opacity-80"
-                    style={{ background: '#FDEAE6', color: '#E86D78' }}
+                    style={{ background: themeColor.primarySoft, color: themeColor.primary }}
                   >
                     <Calendar className="w-3.5 h-3.5" />
                     コーチング記録

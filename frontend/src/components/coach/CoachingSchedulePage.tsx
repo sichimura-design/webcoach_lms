@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Calendar, Plus, ExternalLink, Trash2 } from 'lucide-react';
-import { AppHeader } from '../shared/AppHeader';
-import { Button } from '../ui/button';
+import { Calendar, Plus, ExternalLink, Trash2 } from 'lucide-react';
+import { AppHeader } from '../shared';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
 import { CoachingSchedule } from '../../types/api';
+import { color, font, t } from '../../theme/webcoachTheme';
 
 interface Student {
   id: number;
@@ -25,6 +25,43 @@ const emptyForm: ScheduleFormState = {
   meeting_url: '',
   coaching_summary: '',
   todo: '',
+};
+
+const smallPrimaryButton: React.CSSProperties = {
+  display: 'flex', alignItems: 'center', gap: 8,
+  background: color.primary,
+  color: color.textOnPrimary,
+  border: 'none',
+  borderRadius: t.chip.borderRadius,
+  padding: '10px 18px',
+  fontFamily: 'inherit',
+  ...font.buttonSm,
+  cursor: 'pointer', whiteSpace: 'nowrap',
+};
+
+const ghostSmallButton: React.CSSProperties = {
+  display: 'flex', alignItems: 'center', gap: 8,
+  background: color.surface,
+  border: `1px solid ${color.borderSoft}`,
+  borderRadius: t.chip.borderRadius,
+  padding: '10px 18px',
+  fontFamily: 'inherit',
+  ...font.buttonSm,
+  color: color.textStrong,
+  cursor: 'pointer', whiteSpace: 'nowrap',
+};
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  boxSizing: 'border-box',
+  border: `1px solid ${color.border}`,
+  borderRadius: 12,
+  padding: '9px 12px',
+  fontFamily: 'inherit',
+  ...font.listItem,
+  color: color.textBody,
+  outline: 'none',
+  background: color.surface,
 };
 
 interface CoachingSchedulePageProps {
@@ -129,83 +166,88 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-brand-bg flex flex-col">
+    <div style={{ minHeight: '100vh', background: color.pageBg, display: 'flex', flexDirection: 'column' }}>
       <AppHeader userName={user?.username} />
 
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20" style={{ zIndex: 0 }}>
-        <div className="absolute w-[900px] h-[900px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(225,112,121,0.3) 0%, transparent 70%)', top: '-200px', left: '-300px', filter: 'blur(40px)' }} />
-        <div className="absolute w-[900px] h-[900px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(253,234,226,0.5) 0%, transparent 70%)', top: '-100px', right: '-400px', filter: 'blur(40px)' }} />
-      </div>
-
-      <div className="relative flex-1 max-w-[860px] w-full mx-auto px-4 sm:px-6 py-8 pb-24 sm:pb-8" style={{ zIndex: 1 }}>
-        <Link to="/coach/students" className="inline-flex items-center gap-1 text-sm mb-4" style={{ color: '#7E6E68' }}>
-          <ArrowLeft className="w-4 h-4" />
-          受講生一覧に戻る
+      <main
+        style={{
+          flex: 1,
+          width: '100%',
+          maxWidth: 860,
+          margin: '0 auto',
+          padding: '32px 20px 80px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 18,
+          fontFamily: font.family,
+        }}
+      >
+        <Link
+          to="/coach/students"
+          style={{ ...font.link, color: color.textMuted, alignSelf: 'flex-start', textDecoration: 'none' }}
+        >
+          ← 受講生一覧に戻る
         </Link>
 
-        <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-          <h1 className="text-xl sm:text-2xl font-bold" style={{ color: '#4B3A33' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+          <h1 style={{ ...font.pageTitle, color: color.text, margin: 0 }}>
             コーチング記録{studentName ? `：${studentName}` : ''}
           </h1>
-          <Button
-            onClick={() => setShowAddForm(v => !v)}
-            variant="brand-gradient"
-            size="pill-sm"
-          >
+          <button type="button" style={smallPrimaryButton} onClick={() => setShowAddForm(v => !v)}>
             <Plus className="w-4 h-4" />
             新しいセッションを記録
-          </Button>
+          </button>
         </div>
 
         {error && (
-          <div className="mb-4 px-4 py-3 rounded-xl text-sm" style={{ background: '#FDEAE6', color: '#E86D78' }}>
+          <div style={{ ...t.chip, background: '#FDEAE6', color: color.primary, padding: '10px 14px', borderRadius: 12 }}>
             {error}
           </div>
         )}
 
         {showAddForm && (
-          <div className="bg-white rounded-2xl p-5 mb-4" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6' }}>
+          <div style={{ ...t.card, padding: 20 }}>
             <ScheduleForm form={addForm} onChange={setAddForm} />
-            <div className="flex items-center gap-2 mt-4">
-              <Button onClick={handleCreate} variant="brand-gradient" size="pill-sm">
+            <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
+              <button type="button" style={smallPrimaryButton} onClick={handleCreate} disabled={saving}>
                 {saving ? '保存中...' : '記録する'}
-              </Button>
-              <Button onClick={() => setShowAddForm(false)} variant="brand-ghost" size="pill-sm">
+              </button>
+              <button type="button" style={ghostSmallButton} onClick={() => setShowAddForm(false)}>
                 キャンセル
-              </Button>
+              </button>
             </div>
           </div>
         )}
 
-        <div className="flex flex-col gap-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {loading ? (
-            <div className="py-12 text-center text-sm" style={{ color: '#7E6E68' }}>読み込み中...</div>
+            <p style={{ ...font.meta, color: color.textMuted, textAlign: 'center', padding: '48px 0' }}>読み込み中…</p>
           ) : schedules.length === 0 ? (
-            <div className="py-12 text-center text-sm" style={{ color: '#7E6E68' }}>
-              まだコーチング記録がありません
-            </div>
+            <p style={{ ...font.meta, color: color.textSubtle, textAlign: 'center', padding: '48px 0' }}>
+              まだコーチング記録がありません。
+            </p>
           ) : (
             schedules.map(schedule => (
-              <div
-                key={schedule.id}
-                className="bg-white rounded-2xl p-5"
-                style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6' }}
-              >
+              <div key={schedule.id} style={{ ...t.card, padding: '16px 18px' }}>
                 {editingId === schedule.id ? (
                   <>
                     <ScheduleForm form={editForm} onChange={setEditForm} />
-                    <div className="flex items-center gap-2 mt-4">
-                      <Button onClick={() => handleUpdate(schedule.id)} variant="brand-gradient" size="pill-sm">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16 }}>
+                      <button type="button" style={smallPrimaryButton} onClick={() => handleUpdate(schedule.id)} disabled={saving}>
                         {saving ? '保存中...' : '保存'}
-                      </Button>
-                      <Button onClick={() => setEditingId(null)} variant="brand-ghost" size="pill-sm">
+                      </button>
+                      <button type="button" style={ghostSmallButton} onClick={() => setEditingId(null)}>
                         キャンセル
-                      </Button>
+                      </button>
                       <button
+                        type="button"
                         onClick={() => handleDelete(schedule.id)}
                         disabled={saving}
-                        className="flex items-center gap-1 ml-auto text-xs font-bold px-3 py-1.5 rounded-full hover:opacity-80 disabled:opacity-50"
-                        style={{ color: '#E86D78', background: '#FDEAE6' }}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 6, marginLeft: 'auto',
+                          ...font.buttonSm, color: color.primary, background: color.primarySoft,
+                          border: 'none', borderRadius: t.chip.borderRadius, padding: '10px 16px', cursor: 'pointer',
+                        }}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                         削除
@@ -216,42 +258,40 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                   <button
                     type="button"
                     onClick={() => startEdit(schedule)}
-                    className="text-left w-full"
+                    style={{ textAlign: 'left', width: '100%', background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit', display: 'block' }}
                   >
-                    <div className="flex items-center gap-2 flex-wrap mb-2">
-                      <span className="font-bold text-sm" style={{ color: '#4B3A33' }}>
-                        第{schedule.coaching_no}回
-                      </span>
-                      <span className="text-xs flex items-center gap-1" style={{ color: '#7E6E68' }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 6 }}>
+                      <span style={{ ...font.rowTitle, color: color.text }}>第{schedule.coaching_no}回</span>
+                      <span style={{ ...font.caption, color: color.textSubtle, display: 'flex', alignItems: 'center', gap: 4 }}>
                         <Calendar className="w-3.5 h-3.5" />
                         {schedule.coaching_date}
                       </span>
                       {schedule.todo && (
-                        <span
-                          className="text-xs font-bold px-2.5 py-0.5 rounded-full"
-                          style={{ background: '#FFF6E5', color: '#B26A00' }}
-                        >
-                          TODOあり
-                        </span>
+                        <span style={{ ...t.chip, background: '#FFF6E5', color: '#B26A00' }}>TODOあり</span>
                       )}
-                    </div>
+                    </span>
                     {schedule.meeting_url && (
                       <a
                         href={schedule.meeting_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={e => e.stopPropagation()}
-                        className="text-xs flex items-center gap-1 mb-2 hover:underline"
-                        style={{ color: '#3A5C8F' }}
+                        style={{ ...font.link, color: '#3A5C8F', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6, textDecoration: 'none' }}
                       >
                         <ExternalLink className="w-3 h-3" />
                         {schedule.meeting_url}
                       </a>
                     )}
                     {schedule.coaching_summary && (
-                      <p className="text-sm line-clamp-2" style={{ color: '#7E6E68' }}>
+                      <span
+                        style={{
+                          ...font.meta, color: color.textMuted,
+                          display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+                          overflow: 'hidden', lineHeight: 1.8,
+                        }}
+                      >
                         {schedule.coaching_summary}
-                      </p>
+                      </span>
                     )}
                   </button>
                 )}
@@ -259,7 +299,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
             ))
           )}
         </div>
-      </div>
+      </main>
     </div>
   );
 }
@@ -272,48 +312,44 @@ function ScheduleForm({
   onChange: (form: ScheduleFormState) => void;
 }) {
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex gap-3 flex-wrap">
-        <div className="flex-1 min-w-[160px]">
-          <label className="block text-xs font-bold mb-1" style={{ color: '#7E6E68' }}>実施日</label>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <div style={{ flex: 1, minWidth: 160 }}>
+          <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>実施日</label>
           <input
             type="date"
             value={form.coaching_date}
             onChange={e => onChange({ ...form, coaching_date: e.target.value })}
-            className="w-full px-3 py-2 rounded-xl text-sm outline-none"
-            style={{ background: '#FAF8F4', color: '#4B3A33', border: '1px solid #EDE8E3' }}
+            style={inputStyle}
           />
         </div>
-        <div className="flex-[2] min-w-[220px]">
-          <label className="block text-xs font-bold mb-1" style={{ color: '#7E6E68' }}>ミーティングURL</label>
+        <div style={{ flex: 2, minWidth: 220 }}>
+          <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>ミーティングURL</label>
           <input
             type="url"
             value={form.meeting_url}
             onChange={e => onChange({ ...form, meeting_url: e.target.value })}
             placeholder="https://..."
-            className="w-full px-3 py-2 rounded-xl text-sm outline-none"
-            style={{ background: '#FAF8F4', color: '#4B3A33', border: '1px solid #EDE8E3' }}
+            style={inputStyle}
           />
         </div>
       </div>
       <div>
-        <label className="block text-xs font-bold mb-1" style={{ color: '#7E6E68' }}>コーチング内容の要約</label>
+        <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>コーチング内容の要約</label>
         <textarea
           value={form.coaching_summary}
           onChange={e => onChange({ ...form, coaching_summary: e.target.value })}
           rows={3}
-          className="w-full px-3 py-2 rounded-xl text-sm outline-none resize-none"
-          style={{ background: '#FAF8F4', color: '#4B3A33', border: '1px solid #EDE8E3' }}
+          style={{ ...inputStyle, resize: 'none' }}
         />
       </div>
       <div>
-        <label className="block text-xs font-bold mb-1" style={{ color: '#7E6E68' }}>次回までのTODO</label>
+        <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>次回までのTODO</label>
         <textarea
           value={form.todo}
           onChange={e => onChange({ ...form, todo: e.target.value })}
           rows={2}
-          className="w-full px-3 py-2 rounded-xl text-sm outline-none resize-none"
-          style={{ background: '#FAF8F4', color: '#4B3A33', border: '1px solid #EDE8E3' }}
+          style={{ ...inputStyle, resize: 'none' }}
         />
       </div>
     </div>
