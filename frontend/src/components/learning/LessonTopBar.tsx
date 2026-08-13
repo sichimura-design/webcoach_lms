@@ -1,176 +1,139 @@
-import { Menu, PanelRight, Check } from 'lucide-react';
-import { color, font, radius } from '../../theme/webcoachTheme';
-import { LEARNING_HIERARCHY } from '../../constants/learningTaxonomy';
-import { LearningBreadcrumb } from '../shared';
+import { ArrowLeft } from 'lucide-react';
+import { color, font } from '../../theme/webcoachTheme';
 import LessonMiniTimer from './LessonMiniTimer';
 
 /**
- * レッスンページ専用のトップバー。
- * AppHeader（左レール）とは別に、この画面だけの操作を1行にまとめる。
- *   ≡ コースの目次 ／ パンくず ／ ミニタイマー ／ 進捗 ／ AI・メモ ／ 完了して次へ
+ * 教材画面の上部バー。
  *
- * パンくずは「コース ＞ 単元 ＞ レッスン」の3階層だけ出す。学習領域は一覧側でしか
- * 使わず、本文内の見出しは階層ではないのでここには含めない（要件の階層定義に合わせる）。
+ * 以前は 目次トグル / パンくず / 進捗 / 完了ボタン / サポートトグル が
+ * 1本に詰まっていて、ここだけで押せるものが5種類あった。
+ * 「色々表示あると集中途切れる」というレビュー指摘に沿って、
+ * 出口（コースに戻る）と現在地（レッスン N / 総数）だけに絞っている。
+ *
+ * 完了操作は本文末尾のボタンに一本化した。長いスクロールの自然な終点に置くほうが、
+ * 読み終わる前に押させないという意味でも正しい。
  */
 interface LessonTopBarProps {
   courseName: string;
-  unitName: string;
-  lessonTitle: string;
-  progressPercent: number;
-  doneCount: number;
-  totalCount: number;
-  navOpen: boolean;
-  supportOpen: boolean;
-  isCompleted: boolean;
-  completing: boolean;
-  /** ミニタイマーが「この教材で開始する」ために必要な識別子 */
-  courseId?: number;
-  lessonId?: number | null;
-  onToggleNav: () => void;
-  onToggleSupport: () => void;
-  onComplete: () => void;
+  /** 何番目のレッスンか（1始まり）。目次が取れないときは null */
+  lessonIndex: number | null;
+  lessonTotal: number;
+  courseId: number;
+  lessonId: number | null;
   onBackToCourse: () => void;
 }
 
-const iconButton: React.CSSProperties = {
-  flex: '0 0 auto',
-  width: 38,
-  height: 38,
-  display: 'grid',
-  placeItems: 'center',
-  border: `1px solid ${color.borderStrong}`,
-  borderRadius: radius.nav,
-  background: color.surface,
-  color: color.iconMuted,
-  cursor: 'pointer',
-};
-
 export function LessonTopBar({
   courseName,
-  unitName,
-  lessonTitle,
-  progressPercent,
-  doneCount,
-  totalCount,
-  navOpen,
-  supportOpen,
-  isCompleted,
-  completing,
+  lessonIndex,
+  lessonTotal,
   courseId,
   lessonId,
-  onToggleNav,
-  onToggleSupport,
-  onComplete,
   onBackToCourse,
 }: LessonTopBarProps) {
+  // 進捗バーは「完了率」ではなく「いま何本目か」。数字と長さが食い違わないようにする
+  const positionPercent =
+    lessonIndex && lessonTotal > 0 ? Math.round((lessonIndex / lessonTotal) * 100) : 0;
+
   return (
     <header
       className="flex items-center"
       style={{
-        gap: 14,
-        padding: '0 16px',
-        background: 'rgba(255,255,255,.96)',
-        backdropFilter: 'blur(14px)',
+        position: 'relative',
+        gap: 12,
+        padding: '0 18px',
         borderBottom: `1px solid ${color.border}`,
+        background: color.surface,
       }}
     >
-      <button
-        type="button"
-        onClick={onToggleNav}
-        aria-label={navOpen ? 'コースの目次を閉じる' : 'コースの目次を開く'}
-        aria-expanded={navOpen}
-        title="コースの目次（単元・レッスン）"
-        className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-        style={{ ...iconButton, ...(navOpen ? { background: color.primaryTint, color: color.primary } : null) }}
+      <span
+        className="wc-lesson-wordmark"
+        style={{ ...font.logo, color: color.primary, flexShrink: 0 }}
       >
-        <Menu size={18} />
-      </button>
-
-      {/* パンくずは長いレッスン名で伸びるので、必ず省略記号で切る
-          （切らないとトップバーが横に押し広がり、右のボタンがはみ出す） */}
-      <div className="min-w-0 hidden md:block">
-        <LearningBreadcrumb
-          items={[
-            { label: courseName || LEARNING_HIERARCHY.course, onClick: onBackToCourse },
-            { label: unitName },
-            { label: lessonTitle },
-          ]}
-        />
-      </div>
-
-      <div style={{ flex: 1 }} />
-
-      {/* ミニタイマー。SPは下部ナビ64px＋トップバー56pxで余白が無いので sm 以上で出す。
-          このページでは FloatingStudyTimer を隠しているので、ここが唯一のタイマー表示になる。 */}
-      <div className="hidden sm:flex items-center">
-        <LessonMiniTimer
-          courseId={courseId}
-          courseName={courseName}
-          lessonId={lessonId}
-          lessonTitle={lessonTitle}
-          progressPercent={progressPercent}
-        />
-      </div>
-
-      <div className="hidden lg:flex items-center" style={{ gap: 10 }}>
-        <span style={{ ...font.caption, color: color.textSubtle }}>
-          {doneCount} / {totalCount} レッスン
-        </span>
-        <div style={{ width: 108, height: 7, borderRadius: 999, background: color.trackBg, overflow: 'hidden' }}>
-          <div style={{ width: `${progressPercent}%`, height: '100%', borderRadius: 999, background: color.primary }} />
-        </div>
-      </div>
+        WEBCOACH
+      </span>
 
       <button
         type="button"
-        onClick={onToggleSupport}
-        aria-expanded={supportOpen}
-        title="学習サポート（AI・メモ）の表示切替"
-        className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        onClick={onBackToCourse}
+        className="inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
           gap: 7,
-          minHeight: 38,
-          padding: '0 13px',
-          border: `1px solid ${supportOpen ? color.primaryBorder : color.borderStrong}`,
-          borderRadius: radius.nav,
-          background: supportOpen ? color.primaryTint : color.surface,
-          color: supportOpen ? color.primary : color.textStrong,
-          ...font.buttonSm,
+          border: 0,
+          background: 'transparent',
+          padding: '6px 4px',
+          color: color.textBody,
+          fontFamily: 'inherit',
+          fontSize: 13,
+          fontWeight: 700,
           cursor: 'pointer',
+          flexShrink: 0,
         }}
       >
-        <PanelRight size={15} />
-        <span className="hidden sm:inline">AI・メモ</span>
+        <ArrowLeft size={16} />
+        <span className="wc-lesson-backlabel">コースに戻る</span>
       </button>
 
-      <button
-        type="button"
-        onClick={onComplete}
-        disabled={completing}
-        className="disabled:opacity-60 focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      {/* コース名は中央。単元名・レッスン名まで出すと、本文の見出しと二重になる */}
+      <span
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 7,
-          minHeight: 38,
-          padding: '0 15px',
-          border: 'none',
-          borderRadius: radius.nav,
-          background: isCompleted ? color.hoverBg : color.primary,
-          color: isCompleted ? color.textMuted : color.textOnPrimary,
-          ...font.buttonSm,
-          cursor: completing ? 'default' : 'pointer',
+          flex: 1,
+          minWidth: 0,
+          textAlign: 'center',
+          ...font.rowTitle,
+          fontSize: 14,
+          color: color.text,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
         }}
       >
-        {isCompleted ? <Check size={15} /> : null}
-        <span className="hidden sm:inline">
-          {completing ? '送信中…' : isCompleted ? '完了済み・次へ' : '完了して次へ'}
+        {courseName}
+      </span>
+
+      <div className="flex items-center" style={{ gap: 12, flexShrink: 0 }}>
+        {lessonIndex && lessonTotal > 0 && (
+          <>
+            <span style={{ ...font.caption, color: color.textMuted, whiteSpace: 'nowrap' }}>
+              <span className="wc-lesson-progress-label">レッスン </span>
+              {lessonIndex} / {lessonTotal}
+            </span>
+            <span
+              aria-hidden
+              className="wc-lesson-progress-bar"
+              style={{ width: 120, height: 5, borderRadius: 999, background: color.trackBg, overflow: 'hidden' }}
+            >
+              <span
+                style={{
+                  display: 'block',
+                  width: `${positionPercent}%`,
+                  height: '100%',
+                  borderRadius: 999,
+                  background: color.primary,
+                }}
+              />
+            </span>
+          </>
+        )}
+
+        {/* 稼働中のセッションがあるときだけ出す。この画面は FloatingStudyTimer が
+            自分を隠すので、ここを消すとタイマー面が一切なくなってしまう。
+            待機中の「集中して学習する」CTAは注意を奪うので出さない。 */}
+        <LessonMiniTimer courseId={courseId} lessonId={lessonId} hideWhenIdle />
+      </div>
+
+      {/* SPではバー内に収まらないので、下端の帯として全幅で出す */}
+      {lessonIndex && lessonTotal > 0 && (
+        <span
+          aria-hidden
+          className="wc-lesson-progress-strip"
+          style={{ position: 'absolute', left: 0, right: 0, bottom: -1, height: 3, background: color.trackBg }}
+        >
+          <span
+            style={{ display: 'block', width: `${positionPercent}%`, height: '100%', background: color.primary }}
+          />
         </span>
-        <span className="sm:hidden">{isCompleted ? '次へ' : '完了'}</span>
-      </button>
+      )}
     </header>
   );
 }

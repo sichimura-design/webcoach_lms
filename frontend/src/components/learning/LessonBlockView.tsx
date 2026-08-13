@@ -90,12 +90,16 @@ export function LessonBlockView({ block, flashing }: LessonBlockViewProps) {
   // 図解・課題は本文より広く見せてよい（要件§4）
   const wide = block.kind === 'figure' || isTask;
 
+  /**
+   * callout は「ポイント」の囲み。
+   * 参照デザインに合わせて左の太線をやめ、淡いピンクの面＋💡ラベルにした。
+   * 本文の流れの中で「ここだけ持ち帰ればいい」と読める形を優先している。
+   */
   const decorated: React.CSSProperties | null = isCallout
     ? {
-        padding: '17px 19px',
+        padding: '18px 22px',
         border: `1px solid ${color.primaryBorderSoft}`,
-        borderLeft: `4px solid ${color.primary}`,
-        borderRadius: radius.nav,
+        borderRadius: radius.md,
         background: color.hoverBgTint,
       }
     : isExample
@@ -128,7 +132,9 @@ export function LessonBlockView({ block, flashing }: LessonBlockViewProps) {
       data-heading={block.heading}
       style={{
         position: 'relative',
-        scrollMarginTop: 20,
+        // トップバーが固定になったので、その下に潜らない位置で止める。
+        // /notes からの ?block= 深リンクの着地点でもある。
+        scrollMarginTop: 72,
         marginBottom: 28,
         width: wide ? '100%' : undefined,
         borderRadius: 8,
@@ -137,6 +143,16 @@ export function LessonBlockView({ block, flashing }: LessonBlockViewProps) {
       }}
     >
       <div style={decorated ?? undefined}>
+        {/* 囲みが何のためのものかを、本文を読む前に1語で示す */}
+        {(isCallout || isTask || isSummary) && (
+          <div
+            className="flex items-center"
+            style={{ gap: 7, ...font.chip, color: color.primary, marginBottom: 10 }}
+          >
+            <span aria-hidden>{isCallout ? '💡' : isTask ? '✓' : '📝'}</span>
+            {isCallout ? 'ポイント' : isTask ? 'チェックしてみよう' : 'まとめ'}
+          </div>
+        )}
         {block.media && (
           <figure style={{ margin: '0 0 12px' }}>
             <img
@@ -153,7 +169,7 @@ export function LessonBlockView({ block, flashing }: LessonBlockViewProps) {
         )}
         {block.html && (
           <div
-            className={proseClass}
+            className={isTask ? `${proseClass} wc-lesson-checklist` : proseClass}
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(block.html) }}
           />
         )}

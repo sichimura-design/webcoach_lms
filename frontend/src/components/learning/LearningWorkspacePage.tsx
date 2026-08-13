@@ -1,22 +1,19 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { color, font } from '../../theme/webcoachTheme';
-import { AppHeader } from '../shared';
-import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import { useLessonDoc } from '../../hooks/useLessonDoc';
 import { useLessonCompletion } from '../../hooks/useLessonCompletion';
 import { useLessonAi, LessonAiMessage, LessonAiQuote } from '../../hooks/useLessonAi';
 import { useNotes } from '../../hooks/useNotes';
 import { useTextSelection } from '../../hooks/useTextSelection';
-import { NAV_WIDTH, useLearningWorkspaceStore } from '../../store/learningWorkspaceStore';
 import { NoteItem } from '../../types/notes';
 import { AiSkillId } from '../../types/aiSkill';
 import { ClipAnchor } from './clipHighlight';
 import LessonTopBar from './LessonTopBar';
-import LessonNavDrawer from './LessonNavDrawer';
 import LessonArticle from './LessonArticle';
-import SupportPanel from './SupportPanel';
+import LessonFloatingActions from './LessonFloatingActions';
+import SupportPanel, { SupportTab } from './SupportPanel';
 import AiCoachPane from './AiCoachPane';
 import MemoPane from './MemoPane';
 import SelectionToolbar from './SelectionToolbar';
@@ -27,10 +24,13 @@ import ExplainPopover from './ExplainPopover';
  * 階層上は「コース ＞ 単元 ＞ レッスン」のレッスンを開く画面で、
  * レッスン本文を構成するコンテンツが教材（LessonBlock）にあたる。
  *
- * 旧 CourseContentPage の置き換え。「レッスン本文を主役にしながら、左の目次と
- * 右のAI・メモを必要なときだけ並列表示する」ことがこの画面の設計意図。
- * 左右のパネルは本文に重ねず、グリッドの列として開閉することで
- * 本文領域が自動的に伸縮する（要件§12の4状態）。
+ * 【この画面が「ごちゃごちゃしている」と言われた理由と、その解き方】
+ * 以前は「LMS全体のサイドバー」「開閉できるコース目次」「開閉できるAI/メモ」の
+ * 3つが同時に本文と場所を取り合っていた。やれることが多いほど集中は切れるので、
+ * 本文以外の常設要素をすべて外した:
+ *   ・LMSのサイドバー（AppHeader）を描かない
+ *   ・目次のドロワーを廃止し、「コースに戻る」1本にする
+ *   ・AI/メモは右下のフローティングから必要なときだけオーバーレイで開く
  *
  * このファイル自体は状態の集約に徹し、描画は learning/ 配下の各ペインへ委譲する。
  */
@@ -40,32 +40,22 @@ interface LearningWorkspacePageProps {
   onBack: () => void;
 }
 
-/** PCの並列表示に切り替える幅。これ未満はオーバーレイドロワー。 */
-const DESKTOP_MIN_WIDTH = 1024;
-
-function useIsDesktop(): boolean {
-  const [isDesktop, setIsDesktop] = useState(
-    () => typeof window !== 'undefined' && window.innerWidth >= DESKTOP_MIN_WIDTH
-  );
-  useEffect(() => {
-    const onResize = () => setIsDesktop(window.innerWidth >= DESKTOP_MIN_WIDTH);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-  return isDesktop;
-}
-
 export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: LearningWorkspacePageProps) {
-  const { user } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const isDesktop = useIsDesktop();
 
   const [lessonId, setLessonId] = useState<number | null>(initialModuleId ?? null);
-  // SPの目次はオーバーレイなので、PCの「開いたまま」の好み（store の navOpen）とは別に持つ。
-  // 共有すると、SPでは初期表示から本文がドロワーで覆われてしまう。
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  /**
+   * AI／メモのオーバーレイ。
+   * 🔴 永続化しない。以前は store（localStorage）に開閉状態を持っていたが、
+   *    開いたまま離脱すると次に来たとき教材がパネルで覆われた状態から始まる。
+   *    それがまさに「ごちゃごちゃしている」の正体だった。毎回閉じた状態で始める。
+   */
+  const [support, setSupport] = useState<{ open: boolean; tab: SupportTab }>({
+    open: false,
+    tab: 'ai',
+  });
   const [flashBlockId, setFlashBlockId] = useState<string | null>(null);
   const [explainState, setExplainState] = useState<
     { anchor: { top: number; left: number }; quote: LessonAiQuote; text: string | null } | null
@@ -74,29 +64,11 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
   const scrollRef = useRef<HTMLElement>(null);
   const articleRef = useRef<HTMLDivElement>(null);
 
-  const navOpen = useLearningWorkspaceStore((s) => s.navOpen);
-  const supportOpen = useLearningWorkspaceStore((s) => s.supportOpen);
-  const supportWidth = useLearningWorkspaceStore((s) => s.supportWidth);
-  const toggleNav = useLearningWorkspaceStore((s) => s.toggleNav);
-  const setNavOpen = useLearningWorkspaceStore((s) => s.setNavOpen);
-  const toggleSupport = useLearningWorkspaceStore((s) => s.toggleSupport);
-  const setSupportOpen = useLearningWorkspaceStore((s) => s.setSupportOpen);
-  const openSupport = useLearningWorkspaceStore((s) => s.openSupport);
-
   const { outline, doc, allLessonIds, loading, error, videoUrl } = useLessonDoc(courseId, lessonId);
   const ai = useLessonAi(doc);
 
-  // 目次はPCでは常時表示（列として並ぶ）、SPではオーバーレイ。開閉の入口は
-  // トップバーのボタン1つに集約する。
-  const navShown = isDesktop ? navOpen : mobileNavOpen;
-  const handleToggleNav = useCallback(() => {
-    if (isDesktop) toggleNav();
-    else setMobileNavOpen((v) => !v);
-  }, [isDesktop, toggleNav]);
-  const closeNav = useCallback(() => {
-    if (isDesktop) setNavOpen(false);
-    else setMobileNavOpen(false);
-  }, [isDesktop, setNavOpen]);
+  const openSupport = useCallback((tab: SupportTab) => setSupport({ open: true, tab }), []);
+  const closeSupport = useCallback(() => setSupport((s) => ({ ...s, open: false })), []);
 
   const notes = useNotes({
     lessonId: doc?.lessonId ?? null,
@@ -125,19 +97,23 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
       next.set('module', String(nextLessonId));
       next.delete('block');
       setSearchParams(next, { replace: true });
-      // SPのオーバーレイは選んだら閉じる。PCの目次は列なので開いたままでよい。
-      if (!isDesktop) setMobileNavOpen(false);
       scrollRef.current?.scrollTo({ top: 0 });
     },
-    [searchParams, setSearchParams, isDesktop]
+    [searchParams, setSearchParams]
   );
 
   const completion = useLessonCompletion(courseId, doc?.lessonId ?? null, allLessonIds, navigateToLesson);
 
-  // ── この画面はビューポート高に固定するのでページスクロールを止める ──
+  /**
+   * ページスクロールを止め、LMSのシェル（サイドバー・SP下部ナビ）ぶんの余白も消す。
+   *
+   * 🔴 learning-immersive は AppHeader を描かないことの後始末。
+   *    index.css の body 余白（SP下部ナビ用の 64px）と .wc-learning-shell の
+   *    height 計算はナビがある前提で書かれているので、この画面だけ打ち消す。
+   */
   useEffect(() => {
-    document.body.classList.add('learning-workspace');
-    return () => document.body.classList.remove('learning-workspace');
+    document.body.classList.add('learning-workspace', 'learning-immersive');
+    return () => document.body.classList.remove('learning-workspace', 'learning-immersive');
   }, []);
 
   // ── スクロールに追従して「いま読んでいる見出し」を更新する ──
@@ -319,7 +295,7 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     (message: LessonAiMessage) => {
       const { question } = questionFor(message);
       notes.appendToMemo(question, answerToText(message));
-      openSupport('split');
+      openSupport('notes');
       showToast('AI回答をメモへ追加しました', 'success');
     },
     [questionFor, notes, answerToText, openSupport, showToast]
@@ -365,20 +341,17 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     void completion.toggleComplete(true);
   }, [completion, doc?.next, navigateToLesson, onBack]);
 
-  // ── Esc でオーバーレイを閉じる ──
+  // ── Esc でオーバーレイを閉じる（PC/SPで挙動を分けない）──
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
       setExplainState(null);
       clearSelection();
-      if (!isDesktop) {
-        setMobileNavOpen(false);
-        setSupportOpen(false);
-      }
+      closeSupport();
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
-  }, [clearSelection, isDesktop, setSupportOpen]);
+  }, [clearSelection, closeSupport]);
 
   const clipAnchors: ClipAnchor[] = useMemo(
     () =>
@@ -389,143 +362,105 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
   );
 
   const flatLessons = outline?.sections.flatMap((s) => s.lessons) ?? [];
-  const doneCount = flatLessons.filter(
-    (l) => completion.completedIds.has(l.lessonId) || l.state === 'done'
-  ).length;
-  const progressPercent = flatLessons.length ? Math.round((doneCount / flatLessons.length) * 100) : 0;
-
-  // パンくずに出す単元名。いま開いているレッスンが属する単元を目次から引く。
-  const currentUnitName =
-    outline?.sections.find((s) => s.lessons.some((l) => l.lessonId === doc?.lessonId))?.name ?? '';
-
-  // 要件§12の4状態は、この1行のグリッド定義がすべて担う。
-  const gridTemplateColumns = isDesktop
-    ? `${navShown ? NAV_WIDTH : 0}px minmax(0, 1fr) ${supportOpen ? supportWidth : 0}px`
-    : 'minmax(0, 1fr)';
-
-  const navDrawer = (
-    <LessonNavDrawer
-      outline={outline}
-      currentLessonId={doc?.lessonId ?? null}
-      completedIds={completion.completedIds}
-      onSelect={navigateToLesson}
-      onClose={closeNav}
-      mobile={!isDesktop}
-    />
-  );
-
-  const supportPanel = (
-    <SupportPanel
-      mobile={!isDesktop}
-      onClose={() => setSupportOpen(false)}
-      aiPane={
-        <AiCoachPane
-          ai={ai}
-          onSaveAnswer={handleSaveAnswer}
-          onAppendToMemo={handleAppendToMemo}
-          onJumpToBlock={jumpToBlock}
-          disabled={!selectionEnabled}
-          onExpand={handleExpandToAiPage}
-          onOpenWide={handleOpenWideWithSkill}
-        />
-      }
-      memoPane={
-        <MemoPane notes={notes} lessonTitle={doc?.title ?? ''} onJumpToClip={handleJumpToClip} />
-      }
-    />
-  );
+  /**
+   * トップバーの「レッスン 5 / 9」。
+   * 🔴 完了数ではなく“位置”で数える。以前は完了数だったので、
+   *    5番目を開いていても完了が2件なら「2 / 9」と出て数字と現在地が食い違っていた。
+   *    完了率はコーストップ側だけで見せる。
+   */
+  const lessonIndex = flatLessons.findIndex((l) => l.lessonId === doc?.lessonId) + 1;
 
   return (
     <div style={{ background: color.pageBg }}>
-      <AppHeader userName={user?.username || 'User'} />
-
+      {/* 🔴 AppHeader（LMSのサイドバー）はここでは描かない。
+          教材に入ったらLMSの外枠は不要、というレビュー方針。
+          サイドバーの余白は AppHeader 自身の effect が付けているので、
+          描かなければ自動的に消える。 */}
       <div className="wc-learning-shell" style={{ display: 'grid', gridTemplateRows: '56px minmax(0, 1fr)' }}>
         <LessonTopBar
           courseName={outline?.courseName ?? doc?.courseName ?? ''}
-          unitName={currentUnitName}
-          lessonTitle={doc?.title ?? ''}
-          progressPercent={progressPercent}
-          doneCount={doneCount}
-          totalCount={flatLessons.length}
-          navOpen={navShown}
-          supportOpen={supportOpen}
-          isCompleted={completion.isCompleted}
-          completing={completion.completing}
+          lessonIndex={lessonIndex > 0 ? lessonIndex : null}
+          lessonTotal={flatLessons.length}
           courseId={courseId}
           lessonId={doc?.lessonId ?? null}
-          onToggleNav={handleToggleNav}
-          onToggleSupport={toggleSupport}
-          onComplete={handleComplete}
           onBackToCourse={onBack}
         />
 
-        <div style={{ display: 'grid', gridTemplateColumns, minHeight: 0, transition: 'grid-template-columns .24s ease' }}>
-          {isDesktop && <div style={{ overflow: 'hidden', minWidth: 0 }}>{navShown && navDrawer}</div>}
-
-          <main ref={scrollRef} style={{ overflowY: 'auto', minWidth: 0, scrollBehavior: 'smooth' }}>
-            {loading && (
-              <div className="flex items-center justify-center" style={{ height: '100%' }}>
-                <span
-                  className="animate-spin rounded-full"
-                  style={{ width: 34, height: 34, borderBottom: `2px solid ${color.primary}` }}
-                />
-              </div>
-            )}
-
-            {!loading && error && (
-              <div className="flex flex-col items-center justify-center" style={{ height: '100%', gap: 14 }}>
-                <p style={{ ...font.label, color: color.primary, margin: 0 }}>{error}</p>
-                <button
-                  type="button"
-                  onClick={onBack}
-                  style={{
-                    padding: '10px 22px', borderRadius: 999, border: 'none',
-                    background: color.primary, color: '#fff', ...font.buttonSm, cursor: 'pointer',
-                  }}
-                >
-                  コースに戻る
-                </button>
-              </div>
-            )}
-
-            {!loading && !error && doc && (
-              <LessonArticle
-                doc={doc}
-                articleRef={articleRef}
-                clips={clipAnchors}
-                flashBlockId={flashBlockId}
-                videoUrl={videoUrl}
-                isCompleted={completion.isCompleted}
-                completing={completion.completing}
-                onComplete={handleComplete}
-                onUndoComplete={() => void completion.toggleComplete(false)}
-                onNavigate={navigateToLesson}
-                onBackToCourse={onBack}
+        {/* 目次の列もサポートの列も無くなったので、本文が唯一のスクロールコンテナ */}
+        <main ref={scrollRef} style={{ overflowY: 'auto', minWidth: 0, scrollBehavior: 'smooth' }}>
+          {loading && (
+            <div className="flex items-center justify-center" style={{ height: '100%' }}>
+              <span
+                className="animate-spin rounded-full"
+                style={{ width: 34, height: 34, borderBottom: `2px solid ${color.primary}` }}
               />
-            )}
-          </main>
+            </div>
+          )}
 
-          {isDesktop && <div style={{ overflow: 'hidden', minWidth: 0 }}>{supportOpen && supportPanel}</div>}
-        </div>
+          {!loading && error && (
+            <div className="flex flex-col items-center justify-center" style={{ height: '100%', gap: 14 }}>
+              <p style={{ ...font.label, color: color.primary, margin: 0 }}>{error}</p>
+              <button
+                type="button"
+                onClick={onBack}
+                style={{
+                  padding: '10px 22px', borderRadius: 999, border: 'none',
+                  background: color.primary, color: '#fff', ...font.buttonSm, cursor: 'pointer',
+                }}
+              >
+                コースに戻る
+              </button>
+            </div>
+          )}
+
+          {!loading && !error && doc && (
+            <LessonArticle
+              doc={doc}
+              articleRef={articleRef}
+              clips={clipAnchors}
+              flashBlockId={flashBlockId}
+              videoUrl={videoUrl}
+              isCompleted={completion.isCompleted}
+              completing={completion.completing}
+              onComplete={handleComplete}
+              onUndoComplete={() => void completion.toggleComplete(false)}
+              onNavigate={navigateToLesson}
+              onBackToCourse={onBack}
+            />
+          )}
+        </main>
       </div>
 
-      {/* ── SP: 左右ともオーバーレイドロワー ── */}
-      {!isDesktop && (mobileNavOpen || supportOpen) && (
-        <div
-          role="presentation"
-          onClick={() => { setMobileNavOpen(false); setSupportOpen(false); }}
-          style={{ position: 'fixed', inset: 0, zIndex: 44, background: 'rgba(28,34,44,.22)' }}
+      {/* ── 右下の常設アクション。教材を読みながらAI・メモへ入る唯一の入口 ── */}
+      {!loading && !error && doc && (
+        <LessonFloatingActions
+          hidden={support.open || !!selection || !!explainState}
+          onOpenAi={() => openSupport('ai')}
+          onOpenMemo={() => openSupport('notes')}
         />
       )}
-      {!isDesktop && mobileNavOpen && (
-        <div style={{ position: 'fixed', left: 0, top: 0, bottom: 0, zIndex: 45, width: 'min(330px, 88vw)' }}>
-          {navDrawer}
-        </div>
-      )}
-      {!isDesktop && supportOpen && (
-        <div style={{ position: 'fixed', right: 0, top: 0, bottom: 0, zIndex: 45, width: 'min(430px, 100vw)' }}>
-          {supportPanel}
-        </div>
+
+      {/* ── AI／メモのオーバーレイ。PCは右からのドロワー、SPはボトムシート ── */}
+      {support.open && (
+        <SupportPanel
+          tab={support.tab}
+          onTabChange={(tab) => setSupport({ open: true, tab })}
+          onClose={closeSupport}
+          aiPane={
+            <AiCoachPane
+              ai={ai}
+              onSaveAnswer={handleSaveAnswer}
+              onAppendToMemo={handleAppendToMemo}
+              onJumpToBlock={jumpToBlock}
+              disabled={!selectionEnabled}
+              onExpand={handleExpandToAiPage}
+              onOpenWide={handleOpenWideWithSkill}
+            />
+          }
+          memoPane={
+            <MemoPane notes={notes} lessonTitle={doc?.title ?? ''} onJumpToClip={handleJumpToClip} />
+          }
+        />
       )}
 
       {/* ── 選択ツールバーと解説ポップオーバー ── */}

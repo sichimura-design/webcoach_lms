@@ -60,14 +60,92 @@ body.learning-workspace {
   }
 }
 
-/* 教材本文のタイポグラフィ。既存の .moodle-content とは別系統にして衝突を避ける。 */
+/* 教材画面は AppHeader を描かない＝サイドバーも下部ナビも無い。
+   ナビがある前提で入っている余白と高さの引き算を、この画面だけ打ち消す。
+   LearningWorkspacePage が body に .learning-immersive を付け外しする。 */
+body.learning-immersive {
+  padding-bottom: 0;
+}
+
+@media (max-width: 639px) {
+  body.learning-immersive .wc-learning-shell {
+    height: 100dvh;
+  }
+}
+
+/* 右下の常設ピル（AIに聞く／メモする） */
+.wc-lesson-fab {
+  right: 24px;
+  bottom: 24px;
+}
+
+/* AI／メモのオーバーレイ。PCは右からのドロワー、SPはボトムシート。
+   JSの幅判定をやめてここで分けている（1024pxちょうどで跳ねる問題も消える）。 */
+.wc-lesson-support {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(420px, 100vw);
+  border-left: 1px solid #F3EDED;
+  box-shadow: -10px 0 30px rgba(190, 60, 70, .08);
+}
+
+@media (max-width: 767px) {
+  .wc-lesson-fab {
+    right: 16px;
+    bottom: 16px;
+  }
+  .wc-lesson-support {
+    top: auto;
+    left: 0;
+    right: 0;
+    height: 88dvh;
+    width: auto;
+    border-left: 0;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    box-shadow: 0 -10px 30px rgba(190, 60, 70, .10);
+  }
+}
+
+/* トップバーは狭い画面で1行に収める。
+   ワードマークと「コースに戻る」の文字、インラインの進捗バーを順に落とし、
+   進捗は下端の帯（.wc-lesson-progress-strip）へ逃がす。 */
+.wc-lesson-progress-strip {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .wc-lesson-wordmark { display: none; }
+  .wc-lesson-progress-bar { display: none; }
+  .wc-lesson-progress-strip { display: block; }
+}
+
+@media (max-width: 600px) {
+  .wc-lesson-backlabel { display: none; }
+  .wc-lesson-progress-label { display: none; }
+}
+
+/* 教材本文のタイポグラフィ。既存の .moodle-content とは別系統にして衝突を避ける。
+   本文だけが画面に残る構成になったので、行の高さと文字を少し上げて読みやすくした。 */
 .wc-lesson-prose h2 {
   margin: 0 0 14px;
-  font-size: 21px;
-  line-height: 1.5;
+  font-size: 19px;
+  line-height: 1.55;
   color: #1F1D1E;
 }
-.wc-lesson-prose h2:not(:first-child) { margin-top: 34px; }
+.wc-lesson-prose h2:not(:first-child) { margin-top: 30px; }
+/* 章見出し（01/02のバッジ付き）を JSX 側で出すようになったので、
+   ブロック先頭の h2 は上マージンを詰めて二重の見出しに見えないようにする。 */
+.wc-lesson-prose > h2:first-child { margin-top: 0; }
+/* 「チェックしてみよう」の箇条書きは2列に開く。狭い画面では自然に1列へ落ちる。 */
+.wc-lesson-checklist ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 4px 22px;
+  list-style: none;
+  padding-left: 0;
+}
 .wc-lesson-prose h3 {
   margin: 26px 0 10px;
   font-size: 16.5px;
@@ -76,8 +154,8 @@ body.learning-workspace {
 .wc-lesson-prose p,
 .wc-lesson-prose li {
   color: #4A4245;
-  font-size: 14.5px;
-  line-height: 2;
+  font-size: 15px;
+  line-height: 2.05;
 }
 .wc-lesson-prose p { margin: 0 0 16px; }
 .wc-lesson-prose p:last-child { margin-bottom: 0; }

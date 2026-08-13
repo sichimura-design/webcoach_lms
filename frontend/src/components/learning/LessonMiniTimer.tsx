@@ -25,6 +25,14 @@ interface LessonMiniTimerProps {
   lessonTitle?: string;
   /** レッスンの進捗（記録に残す） */
   progressPercent?: number;
+  /**
+   * 未開始のときは何も描かない。
+   * 教材画面のトップバーは「出口と現在地だけ」に絞ったので、
+   * 待機中の「集中して学習する」CTAがそこに常駐すると注意を奪ってしまう。
+   * 稼働中は残す。この画面では FloatingStudyTimer が自分を隠すため、
+   * ここを消すと計測中であることがどこにも出なくなる。
+   */
+  hideWhenIdle?: boolean;
 }
 
 const miniIconButton: React.CSSProperties = {
@@ -46,6 +54,7 @@ export function LessonMiniTimer({
   lessonId,
   lessonTitle,
   progressPercent,
+  hideWhenIdle,
 }: LessonMiniTimerProps) {
   const { user } = useAuth();
   const session = useStudyTimerStore((s) => s.session);
@@ -54,6 +63,7 @@ export function LessonMiniTimer({
 
   // ---- 未開始: このレッスンでそのまま開始する（モーダルは挟まない）----
   if (!session) {
+    if (hideWhenIdle) return null;
     return (
       <button
         type="button"

@@ -52,35 +52,65 @@ master（本番）ではモックが読み込まれず新APIは404になる。`u
 
 ## 全体アーキテクチャ
 
-### レイアウト
+### レイアウト（2026-08 改訂・SCREEN-004）
 
-要件§12の4状態（左右とも閉／左のみ／右のみ／左右とも開）は、**グリッドの列定義1行**が担う。
+**旧構成**: 目次・本文・サポートの3ペインをグリッドの列として開閉し、4状態（左右とも閉／左のみ／右のみ／左右とも開）を作っていた。上下分割（split）モードもあった。
 
-```tsx
-gridTemplateColumns = `${navOpen ? 300 : 0}px minmax(0, 1fr) ${supportOpen ? supportWidth : 0}px`
-```
+**廃止した理由**: UI/UXレビューで「ごちゃごちゃしている」と指摘された。要因は
+「LMS全体のサイドバー」「開閉できるコース目次」「開閉できるAI/メモ」が
+同時に本文と場所を取り合っていたこと。やれることが多いほど集中が切れる。
 
-左右のパネルは教材に重ねず、グリッドの列として幅0まで畳む。教材領域は `minmax(0, 1fr)` なので自動で伸縮する。`transition: grid-template-columns .24s ease` でアニメーションする。
+**現構成**: 常設は本文だけ。
 
-1024px 未満では `minmax(0, 1fr)` の1列に切り替え、左右とも `position: fixed` のオーバーレイドロワーになる。
+- **LMSのサイドバーを描かない** — `LearningWorkspacePage` は `AppHeader` をレンダリングしない。
+  `body.with-sidebar` の余白は AppHeader 自身の effect が付けているので、描かなければ消える。
+  SP下部ナビも AppHeader 内のマークアップなので一緒に消える。
+- **目次のドロワーを廃止** — `LessonNavDrawer.tsx` は削除。トップバーの「← コースに戻る」1本にした。
+  レッスン間の移動は本文フッターの prev/next で行う。目次データ（outline）は
+  「レッスン N / 総数」の表示に使うので取得は続けている。
+- **AI／メモはオーバーレイ** — 右下の常設ピル `LessonFloatingActions.tsx` から開く。
+  `SupportPanel.tsx` は列ではなく `position: fixed` の器になった（PC=右ドロワー420px、SP=88dvhのボトムシート）。
+  `PanelResizer.tsx` は削除。`AiCoachPane` / `MemoPane` の中身は変更していない。
+- **PC/SPの分岐をCSSへ** — `useIsDesktop`（`window.innerWidth >= 1024`）を削除。
+  ドロワーとボトムシートの差は `index.css` の `.wc-lesson-support` のメディアクエリで表現する。
+
+z-index: フローティングピル 60 / オーバーレイ 70-71 / 選択ツールバー 80（選択UXが最前面）。
 
 ### 既存シェルとの噛み合わせ
 
-`AppHeader` は固定左レールで `body.with-sidebar { padding-left: 68px/216px }` を当てている（[index.css](../src/index.css)）。ワークスペースはその内側でビューポート高に固定する。
+- `body.learning-workspace { overflow: hidden }` を `useEffect` で付け外し（アンマウント時に必ず除去）
+- `body.learning-immersive` を同時に付ける。AppHeader を描かないことの後始末で、
+  `index.css` にある「SP下部ナビ64px」前提の `body { padding-bottom }` と
+  `.wc-learning-shell { height: calc(100dvh - 64px) }` を打ち消す
+- `.wc-learning-shell { height: 100dvh }`
 
-- `body.learning-workspace { overflow: hidden }` を `LearningWorkspacePage` の `useEffect` で付け外し（アンマウント時に必ず除去）
-- `.wc-learning-shell { height: 100dvh }`、SPは下部ナビ64px分を差し引く
-
-**AppHeader との衝突**: AppHeader は document 全体の `mouseup` を見て「AIに解説」ボタンを出すため、新しい選択ツールバーと二重表示になる。本文コンテナの `data-lesson-article` を見て AppHeader 側で早期リターンさせた（AppHeader の変更はこの1箇所と、マイノートのナビ項目追加のみ）。
+**AppHeader との衝突**: AppHeader は document 全体の `mouseup` を見て「AIに解説」ボタンを出すため、選択ツールバーと二重表示になり得る。本文コンテナの `data-lesson-article` を見て AppHeader 側で早期リターンさせてある。この画面では AppHeader 自体を描かないので現状は発火しないが、他画面のために残している。
 
 ### 状態の置き場所
 
 | 種類 | 置き場所 | 理由 |
 |---|---|---|
-| パネル状態（開閉・幅・比率・モード） | `store/learningWorkspaceStore.ts`（zustand + persist、`webcoach-learning-workspace`） | 端末ごとの好み。サーバへ送る意味がない |
+| AI/メモのオーバーレイ（開閉・タブ） | `LearningWorkspacePage` の `useState` | **永続しない**。開いたまま離脱すると次回教材がパネルで覆われた状態から始まり、それが「ごちゃごちゃ」の正体だった |
 | 教材本文・目次 | モックAPI（`useLessonDoc`） | 将来サーバ管理 |
 | メモ・クリップ・保存回答 | モックAPI（`useNotes`）→ ハンドラ内で localStorage | 実API化がハンドラ削除だけで済む |
 | AI会話 | フック内のローカル状態（レッスン単位） | 教材ごとの文脈を混ぜない |
+
+`store/learningWorkspaceStore.ts`（`navOpen` / `supportOpen` / `supportWidth` / `splitPercent` / `supportMode`）は削除した。
+既存端末に残る localStorage キー `webcoach-learning-workspace` は読み手がいないので無害。
+
+### 本文の組み方（2026-08 改訂）
+
+- 中央1カラム（`CONTENT_MAX_WIDTH` = 900px）。白カードの枠は外して全面化した
+- ヘッダーは 学習タイプ（赤の小見出し）→ 中央寄せH1＋短い赤線 → リード文 → 読了目安
+- 本文は `lessonSections.groupByHeading()` で章にまとめ、`01` `02` の赤丸バッジ＋章見出しを出す。
+  **APIにフィールドは足していない** — `LessonBlock.heading` が連続一致するブロックを1章として数えている
+- `callout` / `task` / `summary` の囲みには `💡 ポイント` `✓ チェックしてみよう` `📝 まとめ` のラベルを付けた
+- 章立ては `doc.source === 'structured'` のときだけ。`moodle-fallback` は従来どおり
+
+🔴 `LessonBlockView` の `<section>` が持つ `id` / `data-block-id` / `data-heading` / `scrollMarginTop` は
+不変条件。`useTextSelection` / `clipHighlight` / `jumpToBlock` / 読書位置の IntersectionObserver が
+すべてこれを辿る。章のラッパーには `data-block-id` を付けないこと。
+`scrollMarginTop` は固定トップバーができたため 20 → 72 に上げた。
 
 ---
 
@@ -163,17 +193,17 @@ gridTemplateColumns = `${navOpen ? 300 : 0}px minmax(0, 1fr) ${supportOpen ? sup
 | ファイル | 役割 |
 |---|---|
 | `components/learning/LearningWorkspacePage.tsx` | シェル。状態の集約のみ |
-| `components/learning/LessonTopBar.tsx` | ≡目次 / パンくず / 進捗 / AI・メモ / 完了して次へ |
-| `components/learning/LessonNavDrawer.tsx` | 左：セクション＋レッスン、完了/学習中/未学習、検索 |
-| `components/learning/LessonArticle.tsx` | 中央：タイトル・ゴール・ブロック列・次にやること・前後導線 |
+| `components/learning/LessonTopBar.tsx` | WEBCOACH / ←コースに戻る / コース名 / レッスンN／総数＋位置バー |
+| `components/learning/LessonFloatingActions.tsx` | 右下の常設ピル [✨AIに聞く][📝メモする] |
+| `components/learning/LessonArticle.tsx` | 中央：見出し・ゴール・章立てしたブロック列・次にやること・前後導線 |
+| `components/learning/lessonSections.ts` | heading の連続を章にまとめる純関数（01/02 の番号を作る） |
 | `components/learning/LessonBlockView.tsx` | 1ブロック描画。`data-block-id` 付与、確認問題の採点 |
 | `components/learning/MoodleFallbackBlock.tsx` | 縮退モードの iframe 描画 |
 | `components/learning/SelectionToolbar.tsx` | [💡解説][AIに質問][クリップ] |
 | `components/learning/ExplainPopover.tsx` | かんたん解説（`mode: 'brief'`）＋「さらに詳しく質問」 |
-| `components/learning/SupportPanel.tsx` | 右：分割/AI/メモ切替＋上下分割 |
+| `components/learning/SupportPanel.tsx` | AI/メモのオーバーレイ（PC=右ドロワー / SP=ボトムシート） |
 | `components/learning/AiCoachPane.tsx` | 引用・画像添付・構造化回答・[コピー][⭐保存][メモに追加] |
 | `components/learning/MemoPane.tsx` | 自動保存エディタ＋保存物一覧＋検索 |
-| `components/learning/PanelResizer.tsx` | 縦横共通のドラッグリサイザ（pointer capture の自前実装） |
 | `components/learning/clipHighlight.ts` | クリップの `<mark>` 復元 |
 | `components/learning/moodleContent.ts` | 旧 CourseContentPage から移設した Moodle 描画ヘルパ |
 | `components/notes/MyNotesPage.tsx` | `/notes`。横断検索・コース/教材で絞り込み・元教材へ復帰 |
@@ -235,18 +265,24 @@ npm start           # 既定でモックON（REACT_APP_ENABLE_MOCKS=true）
 
 `/courses` → コース → レッスン と進み、以下を確認する。ショーケース教材は **コース「配色の基本とツール」の「基本の考え方」**（`/course/202?module=202012`）。
 
-- [ ] 左右とも閉／左のみ／右のみ／左右とも開の4状態で本文幅が追従する
-- [ ] 右パネル幅のドラッグ、AI/メモの上下比率ドラッグ、リロード後も状態が復元される
+- [ ] LMSのサイドバーもSP下部ナビも出ない。左に68px/216pxの余白が残っていない
+- [ ] トップバーは ←コースに戻る / コース名 / レッスンN／総数 だけ。押すとコース目次へ戻る
+- [ ] 右下のピルから AI／メモ が開く。オーバーレイを閉じるとピルが戻る
+- [ ] **リロードするとオーバーレイは必ず閉じた状態で始まる**（開閉を永続しないことの確認）
+- [ ] 本文に 01/02 の章バッジが出て、番号が本文の見出しと二重になっていない
+- [ ] 💡ポイント／✓チェックしてみよう／📝まとめ の囲みにラベルが付く
 - [ ] 本文をドラッグ選択 → ツールバー → 💡解説／AIに質問（引用付き）／クリップ
-- [ ] AppHeader の「AIに解説」が本文選択時に二重表示されない
 - [ ] AI回答が 結論／教材の根拠／当てはめ／次にやること／参照箇所 の構造で出る
 - [ ] 参照チップをクリックすると該当ブロックへスクロール＋ハイライト
 - [ ] 教材にない質問（例:「Reactのuseeffectとは」）で警告バナー＋一般補足の区別表示になる
 - [ ] 画像添付／スクショ貼り付け → きっかけチップが出て添削回答が返る
 - [ ] メモ自動保存、⭐保存、メモに追加、クリップ「元の場所」ジャンプ
 - [ ] `/notes` でタブ・検索・コース/教材絞り込み・元教材へ戻る
-- [ ] 完了して次へ で `markActivityComplete` が飛び、EXPが付き、次レッスンへ進む
-- [ ] 1023px以下で左右がオーバーレイドロワーになり、SP下部ナビと重ならない
+- [ ] 本文末尾の「完了して次へ」で `markActivityComplete` が飛び、EXPが付き、次レッスンへ進む
+      （トップバーからは外した。長いスクロールの終点に置くほうが読み切ってから押させられる）
+- [ ] `/notes` から `?block=` 付きで戻ったとき、着地点がトップバーの下に潜らない
+- [ ] 767px以下でオーバーレイがボトムシートになる。1024px 前後でレイアウトが跳ねない
+- [ ] 375px でトップバーが1行に収まり、進捗がバー下端の帯として出る
 
 モックOFF（縮退モード）の確認:
 
