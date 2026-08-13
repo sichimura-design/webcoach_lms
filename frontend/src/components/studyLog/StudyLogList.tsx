@@ -101,7 +101,7 @@ export function StudyLogList({
             opacity: loadingMore ? 0.6 : 1,
           }}
         >
-          {loadingMore ? '読み込んでいます…' : 'もっと見る'}
+          {loadingMore ? '読み込んでいます…' : 'さらに古い記録を見る ⌄'}
         </button>
       )}
     </div>

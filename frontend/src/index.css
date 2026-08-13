@@ -282,11 +282,13 @@ body.learning-workspace {
   padding: 28px 60px 40px;
 }
 
-.studylog-2col {
+/* 学習記録のサマリー行。主役（期間の学習時間）を広く取り、残り3つは等幅。
+   以前の .studylog-2col（左に本文・右に累計/内訳）は、内容を4つの数字に絞ったのでやめた。 */
+.studylog-summary-row {
   display: grid;
-  grid-template-columns: 1fr 384px;
-  gap: 18px;
-  align-items: start;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  align-items: center;
+  gap: 20px;
 }
 
 .notes-main {

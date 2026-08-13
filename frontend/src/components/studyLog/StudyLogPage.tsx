@@ -7,14 +7,10 @@ import { useScaleToFit } from '../../hooks/useScaleToFit';
 import { color, font, radius, shadow, space } from '../../theme/webcoachTheme';
 import { toLocalDateKey } from '../../utils/studyStats';
 import StudyRoomHeader from '../studyRoom/StudyRoomHeader';
-import DailyStudyChart from './DailyStudyChart';
 import StudyLogList from './StudyLogList';
-import TotalsCard from './TotalsCard';
-import CourseBreakdownCard from './CourseBreakdownCard';
+import StudySummaryCard from './StudySummaryCard';
 
 const DESIGN_WIDTH = 1440;
-/** .studylog-2col の左カラム幅（1440 - 60*2 - 384 - 18）からカードの内側 padding を引いた値 */
-const CHART_WIDTH = 870;
 
 type RangeKey = '30d' | '3m' | 'all';
 
@@ -25,8 +21,12 @@ const RANGES: { key: RangeKey; label: string; days: number }[] = [
 ];
 
 /**
- * 学習記録の詳細（自習室タブの2つ目）。集中ブースの「学習履歴をすべて見る」からも来る。
- * 集中ブース側を「今日・今週の要約」に保つため、累計・グラフ・全履歴はここに置く。
+ * 学習記録（自習室タブの2つ目）。集中ブースの「学習履歴をすべて見る」からも来る。
+ *
+ * 以前は「日別の棒グラフ ＋ 累計カード（5行）＋ 教材別の内訳 ＋ 全履歴」の4面構成で、
+ * 「色々書いてありすぎる」という指摘を受けた。
+ * 数字は4つ（期間の学習時間・学習した日数・今週・連続日数）だけに絞り、
+ * グラフと教材別内訳は落として、サマリーと履歴の2カードにした。
  */
 function StudyLogPage() {
   const { user } = useAuth();
@@ -52,7 +52,6 @@ function StudyLogPage() {
 
   const daily = stats?.dailyTotals ?? [];
   const rangeMinutes = daily.reduce((sum, d) => sum + d.minutes, 0);
-  const rangeSessions = daily.reduce((sum, d) => sum + d.sessionCount, 0);
   const studiedDays = daily.filter((d) => d.isStudyDay).length;
 
   const cardStyle: React.CSSProperties = {
@@ -131,45 +130,30 @@ function StudyLogPage() {
                 学習記録を表示できませんでした。この機能はモック環境でのみ利用できます。
               </div>
             ) : (
-              <div className="studylog-2col">
-                <div className="flex flex-col" style={{ gap: space.columnGap }}>
-                  <div style={cardStyle}>
-                    <h2 style={{ ...font.cardTitle, color: color.text, margin: '0 0 14px' }}>
-                      日別の学習時間
-                    </h2>
-                    <DailyStudyChart daily={daily} width={CHART_WIDTH} />
-                  </div>
+              <div className="flex flex-col" style={{ gap: space.columnGap }}>
+                <StudySummaryCard
+                  stats={stats}
+                  loading={statsLoading}
+                  rangeLabel={activeRange.label}
+                  rangeMinutes={rangeMinutes}
+                  studiedDays={studiedDays}
+                />
 
-                  <div style={cardStyle}>
-                    <h2 style={{ ...font.cardTitle, color: color.text, margin: 0 }}>
-                      すべての学習記録
-                      <span
-                        style={{ ...font.caption, color: color.textSubtle, marginLeft: 10 }}
-                      >
-                        {list.total}件
-                      </span>
-                    </h2>
-                    <StudyLogList
-                      activities={list.items}
-                      loading={list.loading}
-                      loadingMore={list.loadingMore}
-                      hasMore={list.hasMore}
-                      error={list.error}
-                      onLoadMore={list.loadMore}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex flex-col" style={{ gap: space.columnGap }}>
-                  <TotalsCard
-                    stats={stats}
-                    loading={statsLoading}
-                    rangeLabel={activeRange.label}
-                    rangeMinutes={rangeMinutes}
-                    rangeSessions={rangeSessions}
-                    studiedDays={studiedDays}
+                <div style={cardStyle}>
+                  <h2 style={{ ...font.cardTitle, color: color.text, margin: 0 }}>
+                    学習履歴
+                    <span style={{ ...font.caption, color: color.textSubtle, marginLeft: 10 }}>
+                      {list.total}件
+                    </span>
+                  </h2>
+                  <StudyLogList
+                    activities={list.items}
+                    loading={list.loading}
+                    loadingMore={list.loadingMore}
+                    hasMore={list.hasMore}
+                    error={list.error}
+                    onLoadMore={list.loadMore}
                   />
-                  <CourseBreakdownCard byCourse={stats?.byCourse ?? []} loading={statsLoading} />
                 </div>
               </div>
             )}
