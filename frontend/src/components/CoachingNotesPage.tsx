@@ -13,7 +13,9 @@ import { AppHeader } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import bffClient from '../services/bffClient';
-import { color, font, t } from '../theme/webcoachTheme';
+import { color, font, radius, t } from '../theme/webcoachTheme';
+import CoachingAgendaCard from './coaching/CoachingAgendaCard';
+import CoachingSummaryStrip from './coaching/CoachingSummaryStrip';
 import ConsentModal from './coaching/ConsentModal';
 import ImportRecordCard from './coaching/ImportRecordCard';
 import MeetingLinkModal from './coaching/MeetingLinkModal';
@@ -24,6 +26,7 @@ import SessionReview from './coaching/SessionReview';
 import { RECORDING_SOURCE_LABEL } from '../types/coaching';
 import type {
   AutoImportReadiness,
+  CoachingAgenda,
   CoachingSessionDetail,
   CoachingSessions,
   ImportRecordPayload,
@@ -46,6 +49,8 @@ export default function CoachingNotesPage() {
   const [sessions, setSessions] = useState<CoachingSessions | null>(null);
   const [goals, setGoals] = useState<CoachingGoalApi[]>([]);
   const [readiness, setReadiness] = useState<AutoImportReadiness | null>(null);
+  const [agenda, setAgenda] = useState<CoachingAgenda | null>(null);
+  const [savingAgenda, setSavingAgenda] = useState(false);
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<Mode>({ kind: 'list' });
 
@@ -58,14 +63,16 @@ export default function CoachingNotesPage() {
   const reload = useCallback(async () => {
     if (!userId) return;
     try {
-      const [list, goalList, ready] = await Promise.all([
+      const [list, goalList, ready, agendaData] = await Promise.all([
         bffClient.getCoachingSessions(userId),
         bffClient.getNextCoachingGoals(userId),
         bffClient.getAutoImportReadiness(userId),
+        bffClient.getCoachingAgenda(userId),
       ]);
       setSessions(list);
       setGoals(goalList);
       setReadiness(ready);
+      setAgenda(agendaData);
     } catch {
       showToast('コーチング情報を取得できませんでした', 'error');
     } finally {
@@ -245,12 +252,25 @@ export default function CoachingNotesPage() {
     void reload();
   };
 
+  const saveAgenda = async (text: string) => {
+    if (!userId) return;
+    setSavingAgenda(true);
+    try {
+      setAgenda(await bffClient.saveCoachingAgenda(userId, text));
+      showToast('相談したいことを保存しました', 'success');
+    } catch {
+      showToast('保存できませんでした', 'error');
+    } finally {
+      setSavingAgenda(false);
+    }
+  };
+
   // --- 描画 -----------------------------------------------------------------
 
   const renderCurrentGoals = () => (
-    <section id="goals" style={{ ...t.card, padding: 24, scrollMarginTop: 20 }}>
+    <section id="goals" style={{ ...t.card, padding: 24, scrollMarginTop: 20, height: '100%', boxSizing: 'border-box' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>次回までの目標</h2>
+        <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>次回までのアクション</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           {goals.length > 0 && !editingGoals && (
             <span style={{ ...font.link, color: color.primary }}>
@@ -381,57 +401,95 @@ export default function CoachingNotesPage() {
         </div>
       ) : goals.length === 0 ? (
         <p style={{ ...font.meta, color: color.textSubtle, margin: '14px 0 0', lineHeight: 1.8 }}>
-          まだ目標がありません。コーチングが終わると、AIが目標とタスクを整理します。
+          まだアクションがありません。コーチングが終わると、AIが目標とタスクを整理します。
+          いま決めたいことがあれば「編集」から自分でも書けます。
         </p>
       ) : (
-        <ul style={{ listStyle: 'none', margin: '16px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {goals.map((goal) => (
-            <li key={goal.no} style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
-              <span
-                aria-hidden
+        /* 1行1アクション。行そのものをカード状にして、達成済みが一目で分かるようにする。
+           以前は素のリストで、達成/未達成の差がチェック丸の塗りだけだった。 */
+        <ul style={{ listStyle: 'none', margin: '16px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+          {goals.map((goal) => {
+            const done = goal.is_completed === 1;
+            return (
+              <li
+                key={goal.no}
                 style={{
-                  width: 20,
-                  height: 20,
-                  flex: '0 0 20px',
-                  marginTop: 1,
-                  borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 12,
-                  fontWeight: 900,
-                  color: '#fff',
-                  background: goal.is_completed === 1 ? color.primary : 'transparent',
-                  border: goal.is_completed === 1 ? 'none' : `2px solid ${color.borderNeutral}`,
-                  boxSizing: 'border-box',
+                  gap: 13,
+                  padding: '14px 16px',
+                  border: `1px solid ${color.border}`,
+                  borderRadius: radius.md,
+                  background: done ? color.pageBg : color.surface,
                 }}
               >
-                {goal.is_completed === 1 ? '✓' : ''}
-              </span>
-              <span
-                style={{
-                  ...font.listItem,
-                  color: goal.is_completed === 1 ? color.textSubtle : color.textStrong,
-                  textDecoration: goal.is_completed === 1 ? 'line-through' : 'none',
-                  lineHeight: 1.6,
-                }}
-              >
-                {goal.description}
-              </span>
-            </li>
-          ))}
+                <span
+                  aria-hidden
+                  style={{
+                    width: 22,
+                    height: 22,
+                    flex: '0 0 22px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 12,
+                    fontWeight: 900,
+                    color: '#fff',
+                    background: done ? color.primary : 'transparent',
+                    border: done ? 'none' : `2px solid ${color.borderNeutral}`,
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  {done ? '✓' : ''}
+                </span>
+                <span
+                  style={{
+                    ...font.listItem,
+                    flex: 1,
+                    minWidth: 0,
+                    color: done ? color.textSubtle : color.textStrong,
+                    textDecoration: done ? 'line-through' : 'none',
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {goal.description}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       )}
     </section>
   );
 
+  /**
+   * これまでのコーチング。
+   *
+   * 見出しを「成長の記録」に変えたのは言い換えではなく役割の変更。
+   * 「このページって何をするためにあるのか伝わらない」という指摘の芯は、
+   * 過去のコーチングが“ログ”として並んでいるだけで、
+   * 自分が何を積み上げてきたかが読み取れないことだった。
+   * 空のときも「まだ記録がありません」で終わらせず、次の行動を書く。
+   */
   const renderHistory = () => {
     const past = (sessions?.past ?? []).filter((s) => s.id !== sessions?.next?.activeSessionId);
     return (
-      <section>
-        <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 12px' }}>これまでのコーチング</h2>
+      <section style={{ ...t.card, padding: 24 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, marginBottom: 14 }}>
+          <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>成長の記録</h2>
+          {past.length > 0 && (
+            <span style={{ ...font.caption, color: color.textSubtle }}>{past.length}回のコーチング</span>
+          )}
+        </div>
+
         {past.length === 0 ? (
-          <p style={{ ...font.meta, color: color.textSubtle, margin: 0 }}>まだ記録がありません。</p>
+          <p style={{ ...font.meta, color: color.textMuted, margin: 0, lineHeight: 1.9 }}>
+            まだ記録がありません。
+            <br />
+            初回のコーチングが終わると、話した内容と決めたことがここに残り、
+            回を重ねるほど自分の変化を辿れるようになります。
+          </p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {past.map((s) => (
@@ -439,36 +497,50 @@ export default function CoachingNotesPage() {
                 key={s.id}
                 type="button"
                 onClick={() => openSession(s.id)}
+                className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                 style={{
-                  ...t.card,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 18,
                   padding: '16px 18px',
+                  border: `1px solid ${color.border}`,
+                  borderRadius: radius.md,
+                  background: color.surface,
                   textAlign: 'left',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  display: 'block',
                   width: '100%',
                 }}
               >
-                <span style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 6 }}>
-                  <span style={{ ...font.rowTitle, color: color.text }}>{s.title}</span>
-                  <span style={{ ...font.caption, color: color.textSubtle }}>{s.date}</span>
+                {/* 回数と日付を左に固定。何回目かが縦に揃うと積み上げが見える */}
+                <span style={{ flex: '0 0 96px', minWidth: 0 }}>
+                  <span style={{ display: 'block', ...font.rowTitle, color: color.text }}>{s.title}</span>
+                  <span style={{ display: 'block', ...font.caption, color: color.textSubtle, marginTop: 3 }}>
+                    {s.date}
+                  </span>
+                </span>
+
+                <span style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: '0 0 auto' }}>
                   {s.importedFrom === 'auto' && (
-                    <span style={{ ...t.chip, background: '#EEF3FB', color: '#3A5C8F' }}>自動取得</span>
+                    <span style={{ ...t.chip, background: '#EEF3FB', color: '#3A5C8F', textAlign: 'center' }}>自動取得</span>
                   )}
                   {s.importedFrom === 'manual' && s.source && (
-                    <span style={{ ...t.chip, background: color.pageBg, color: color.textMuted }}>
+                    <span style={{ ...t.chip, background: color.pageBg, color: color.textMuted, textAlign: 'center' }}>
                       {RECORDING_SOURCE_LABEL[s.source]}
                     </span>
                   )}
                   {s.tasksCreated ? (
-                    <span style={{ ...t.chip, background: '#E4F3EC', color: '#2F7F5B' }}>確定済み</span>
+                    <span style={{ ...t.chip, background: '#E4F3EC', color: '#2F7F5B', textAlign: 'center' }}>確定済み</span>
                   ) : s.status === 'review_required' ? (
-                    <span style={t.chip}>確認待ち</span>
+                    <span style={{ ...t.chip, textAlign: 'center' }}>確認待ち</span>
                   ) : null}
                 </span>
+
                 <span
                   style={{
                     ...font.meta,
+                    flex: 1,
+                    minWidth: 0,
                     color: color.textMuted,
                     display: '-webkit-box',
                     WebkitLineClamp: 2,
@@ -478,6 +550,10 @@ export default function CoachingNotesPage() {
                   }}
                 >
                   {s.summary}
+                </span>
+
+                <span style={{ ...font.link, color: color.primary, whiteSpace: 'nowrap', flexShrink: 0 }}>
+                  詳細を表示 ›
                 </span>
               </button>
             ))}
@@ -513,7 +589,7 @@ export default function CoachingNotesPage() {
         style={{
           flex: 1,
           width: '100%',
-          maxWidth: 860,
+          maxWidth: mode.kind === 'list' ? 1080 : 860,
           margin: '0 auto',
           padding: '32px 20px 80px',
           display: 'flex',
@@ -525,7 +601,7 @@ export default function CoachingNotesPage() {
         <div>
           <h1 style={{ ...font.pageTitle, color: color.text, margin: 0 }}>コーチング</h1>
           <p style={{ ...font.meta, color: color.textMuted, margin: '6px 0 0', lineHeight: 1.8 }}>
-            コーチから届いた会議リンクを登録すると、LMSから参加できます。終了後はAIが内容を整理します。
+            コーチと決めたことを実行に移し、積み上がった変化をふりかえる場所です。
           </p>
         </div>
 
@@ -533,18 +609,32 @@ export default function CoachingNotesPage() {
           <p style={{ ...font.meta, color: color.textMuted, textAlign: 'center', padding: '48px 0' }}>読み込み中…</p>
         ) : mode.kind === 'list' ? (
           <>
-            {sessions?.next && (
-              <NextCoachingCard
-                next={sessions.next}
-                readiness={readiness}
-                onRegisterLink={() => setLinkModalOpen(true)}
-                onChangeLink={() => setLinkModalOpen(true)}
-                onStart={handleStart}
-                onOpenSession={openSession}
-                starting={starting}
-              />
-            )}
-            {renderCurrentGoals()}
+            {/* 先頭で「次はいつ・あと何日・いまどこまで」に答える。
+                このページに来た人が最初に知りたいのは操作方法ではなく自分の現在地。 */}
+            <CoachingSummaryStrip
+              next={sessions?.next ?? null}
+              doneCount={completedCount}
+              totalCount={goals.length}
+            />
+
+            {/* 左＝やること、右＝当日の入口。以前は縦一列で、
+                「次に何をすればいいか」と「参加の準備」が離れて見えていた。 */}
+            <div className="coaching-2col">
+              {renderCurrentGoals()}
+              {sessions?.next && (
+                <NextCoachingCard
+                  next={sessions.next}
+                  readiness={readiness}
+                  onRegisterLink={() => setLinkModalOpen(true)}
+                  onChangeLink={() => setLinkModalOpen(true)}
+                  onStart={handleStart}
+                  onOpenSession={openSession}
+                  starting={starting}
+                />
+              )}
+            </div>
+
+            <CoachingAgendaCard agenda={agenda} saving={savingAgenda} onSave={saveAgenda} />
             {renderHistory()}
           </>
         ) : mode.kind === 'recording' ? (

@@ -33,6 +33,7 @@ import {
 } from '../types/focusBooth';
 import {
   AutoImportReadiness,
+  CoachingAgenda,
   CoachingSessions,
   CoachingSessionDetail,
   CoachingSessionPatch,
@@ -776,6 +777,21 @@ class BFFClient {
    */
   async getAutoImportReadiness(userId: number): Promise<AutoImportReadiness> {
     const response = await this.api.get(`/webcoach/coaching-auto-import/readiness/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 次回コーチングで相談したいこと
+   * GET/PUT /api/webcoach/coaching-agenda/{userId}
+   * 🔴 実BFFには無い。モックで提供している。
+   */
+  async getCoachingAgenda(userId: number): Promise<CoachingAgenda> {
+    const response = await this.api.get(`/webcoach/coaching-agenda/${userId}`);
+    return response.data;
+  }
+
+  async saveCoachingAgenda(userId: number, text: string): Promise<CoachingAgenda> {
+    const response = await this.api.put(`/webcoach/coaching-agenda/${userId}`, { text });
     return response.data;
   }
 

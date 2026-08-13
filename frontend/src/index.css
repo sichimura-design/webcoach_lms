@@ -295,6 +295,23 @@ body.learning-workspace {
   padding: 28px 60px 40px;
 }
 
+/* ─── コーチング(/coaching) ───────────────────
+   左＝次回までのアクション（広い）、右＝当日の入口（会議リンク・参加）。
+   このページは transform:scale 方式ではなく max-width + 通常フローなので、
+   狭い画面では素直に1カラムへ折り返す。 */
+.coaching-2col {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .coaching-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
 :root {
   --background: 0 0% 100%;
   --foreground: 258 30% 18%;        /* ディープネイビー */

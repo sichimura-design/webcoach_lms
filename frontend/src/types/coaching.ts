@@ -206,6 +206,12 @@ export interface CoachingSessionSummary {
 /** 次回コーチングの予定。受講生ダッシュボードのカードはこれを描画する */
 export interface NextCoaching {
   date: string;          // 表示用日時（「8月10日(月) 10:00〜11:00」）
+  /**
+   * 開始日時（ISO8601）。「次回まであと何日」を出すために必要。
+   * date は表示用の文字列で機械的に読めないため、日数計算をそこから起こさない。
+   * 取れない場合は null にして、カウントダウンごと出さない。
+   */
+  startsAt: string | null;
   coach: string;
   coachId: number;
   meetingLink: MeetingLink | null;
@@ -213,6 +219,18 @@ export interface NextCoaching {
   activeSessionId: number | null;
   activeStatus: SessionStatus | null;
 }
+
+/**
+ * 次回コーチングでコーチに相談したいこと。
+ * コーチング当日に「何を話すんだっけ」から始まらないよう、思いついたときに置いておく場所。
+ */
+export interface CoachingAgenda {
+  text: string;
+  updatedAt: string | null;
+}
+
+/** 相談したいことの文字数上限。長文はコーチングの場で話すべきなのでここでは受けない */
+export const COACHING_AGENDA_MAX = 500;
 
 export interface CoachingSessions {
   next: NextCoaching | null;

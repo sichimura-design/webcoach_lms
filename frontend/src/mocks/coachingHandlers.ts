@@ -33,6 +33,8 @@ import type {
   SessionStatus,
   TranscriptSegment,
 } from '../types/coaching';
+import { COACHING_AGENDA_MAX } from '../types/coaching';
+import type { CoachingAgenda } from '../types/coaching';
 // 確定した目標を「次回コーチングまでの目標」へ反映するため（詳細はそちらのヘッダコメント）
 import { reflectCandidates } from './coachingGoalsStore';
 
@@ -305,9 +307,26 @@ function seedAll(): void {
 }
 seedAll();
 
+/**
+ * 次回コーチングの予定日時。
+ * 🔴 固定文字列にしない。「次回まであと何日」を出すようになったので、
+ *    日付を決め打ちにすると常に過去になり、カウントダウンが負の値になる。
+ *    今日から5日後の10:00〜11:00として、表示文字列もそこから起こす。
+ */
+function buildNextSchedule(): { date: string; startsAt: string } {
+  const d = new Date();
+  d.setDate(d.getDate() + 5);
+  d.setHours(10, 0, 0, 0);
+  const wd = ['日', '月', '火', '水', '木', '金', '土'][d.getDay()];
+  return {
+    date: `${d.getMonth() + 1}月${d.getDate()}日(${wd}) 10:00〜11:00`,
+    startsAt: d.toISOString(),
+  };
+}
+
 /** 初期状態は「会議リンク未登録」。仕様§18の1番目の画面から触れるようにする */
 let nextCoaching: NextCoaching = {
-  date: '8月10日(月) 10:00〜11:00',
+  ...buildNextSchedule(),
   coach: '山田コーチ',
   coachId: 901,
   meetingLink: null,
@@ -317,6 +336,9 @@ let nextCoaching: NextCoaching = {
 
 let consent: RecordingConsent | null = null;
 let nextSessionId = 1003;
+
+/** 次回コーチングで相談したいこと。コーチングが終わるまで持ち越す */
+let coachingAgenda: CoachingAgenda = { text: '', updatedAt: null };
 
 /** AI生成の開始時刻。GET detail のたびに経過から status を導出する */
 const generationStartedAt: Record<number, number> = {};
@@ -761,6 +783,26 @@ export const coachingHandlers = [
       nextCoaching.activeStatus = null;
     }
     return new HttpResponse(null, { status: 204 });
+  }),
+
+  // --- 次回コーチングで相談したいこと ---
+  // 🔴 実BFFには無い。コーチング当日に「何を話すんだっけ」から始まらないよう、
+  //    思いついたときに書き置ける場所として新設した。
+  http.get('*/api/webcoach/coaching-agenda/:userid', () => HttpResponse.json(coachingAgenda)),
+
+  http.put('*/api/webcoach/coaching-agenda/:userid', async ({ request }) => {
+    let text = '';
+    try {
+      const body = (await request.json()) as { text?: string };
+      text = typeof body?.text === 'string' ? body.text : '';
+    } catch {
+      return HttpResponse.json({ error: 'invalid body' }, { status: 400 });
+    }
+    coachingAgenda = {
+      text: text.slice(0, COACHING_AGENDA_MAX),
+      updatedAt: new Date().toISOString(),
+    };
+    return HttpResponse.json(coachingAgenda);
   }),
 
   // --- 一覧（次回予定 + 履歴 + 同意状況） ---
