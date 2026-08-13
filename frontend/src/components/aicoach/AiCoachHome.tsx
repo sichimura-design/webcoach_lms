@@ -1,20 +1,15 @@
-import { useMemo, useRef, useState } from 'react';
-import { ArrowRight, ArrowUp, ImagePlus, MessageSquare, Sparkles, X } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { ChevronRight, ArrowUp, Info, Plus, MessageSquare, Sparkles, X } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import {
   AiSkillId,
-  AiSkillCategory,
-  AI_SKILL_CATEGORY_LABEL,
-  AI_SKILL_CATEGORY_ORDER,
   AI_SKILL_META,
   ConcreteAiSkillId,
   FEATURED_AI_SKILLS,
-  skillsInCategory,
 } from '../../types/aiSkill';
 import { AiCoachSession } from '../../types/aiCoach';
 import { AiSkillRecommendation } from '../../utils/aiSkillRecommend';
 import SkillSelector from '../learning/SkillSelector';
-import AiSkillCard from './AiSkillCard';
 import { AI_SKILL_ICON } from './aiSkillIcons';
 
 /**
@@ -47,8 +42,6 @@ interface AiCoachHomeProps {
   onOpenSession: (id: string) => void;
 }
 
-type CategoryFilter = AiSkillCategory | 'all';
-
 export function AiCoachHome({
   onSubmit,
   onSelectSkill,
@@ -60,7 +53,6 @@ export function AiCoachHome({
   const [text, setText] = useState('');
   const [image, setImage] = useState<string | null>(null);
   const [skillId, setSkillId] = useState<AiSkillId>('auto');
-  const [filter, setFilter] = useState<CategoryFilter>('all');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const attachImage = (file: File) => {
@@ -77,11 +69,6 @@ export function AiCoachHome({
     setText('');
     setImage(null);
   };
-
-  const categories = useMemo(
-    () => (filter === 'all' ? AI_SKILL_CATEGORY_ORDER : [filter]),
-    [filter]
-  );
 
   return (
     <div style={{ height: '100%', overflowY: 'auto', background: color.pageBg }}>
@@ -102,11 +89,11 @@ export function AiCoachHome({
           >
             <Sparkles size={24} />
           </span>
-          <h1 style={{ ...font.pageTitle, margin: 0, color: color.text }}>
-            今日は何をサポートしましょうか？
+          <h1 style={{ ...font.pageTitle, fontSize: 32, margin: 0, color: color.text }}>
+            今日は何をお手伝いしましょうか？
           </h1>
           <p style={{ margin: 0, fontSize: 13, color: color.textMuted }}>
-            AIコーチが、学習・制作・キャリアの困りごとを一緒に片付けます。
+            AIコーチが、学習・制作・キャリアに関するお悩みをサポートします。
           </p>
         </div>
 
@@ -212,27 +199,26 @@ export function AiCoachHome({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center"
+              aria-label="画像を添付する"
+              title="画像を添付する"
+              className="grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
               style={{
-                gap: 5,
-                height: 32,
-                padding: '0 11px',
+                width: 34,
+                height: 34,
                 border: `1px solid ${color.border}`,
-                borderRadius: 9,
+                borderRadius: 10,
                 background: color.surface,
                 color: color.textMuted,
-                fontSize: 11.5,
-                fontWeight: 700,
                 cursor: 'pointer',
+                flexShrink: 0,
               }}
             >
-              <ImagePlus size={14} /> 画像
+              <Plus size={16} />
             </button>
-            <span style={{ fontSize: 10, color: color.textFaint }}>
-              画像の貼り付けにも対応 / Ctrl+Enter で送信
-            </span>
-            <div style={{ flex: 1 }} />
+            {/* 「AI選択できる？」への答え。既定は自動で、ここから明示的に選べる */}
             <SkillSelector value={skillId} onChange={setSkillId} />
+            <span style={{ fontSize: 10, color: color.textFaint }}>Ctrl+Enter で送信</span>
+            <div style={{ flex: 1 }} />
             <button
               type="button"
               onClick={submit}
@@ -255,9 +241,18 @@ export function AiCoachHome({
           </div>
         </div>
 
+        {/* 「AI選択できる？」の答えを、選ばなかった人にも見えるところに置く */}
+        <div
+          className="flex items-center justify-center"
+          style={{ gap: 6, marginTop: 12, fontSize: 11.5, color: color.textFaint }}
+        >
+          <Info size={13} />
+          相談内容に応じて、最適なAIが自動で選ばれます
+        </div>
+
         {/* ── 続きから ── */}
         {recentSessions.length > 0 && (
-          <div className="flex flex-wrap items-center" style={{ gap: 7, marginTop: 14 }}>
+          <div className="flex flex-wrap items-center" style={{ gap: 7, marginTop: 18 }}>
             <span style={{ fontSize: 10.5, fontWeight: 700, color: color.textFaint }}>続きから</span>
             {recentSessions.map((session) => (
               <button
@@ -295,187 +290,115 @@ export function AiCoachHome({
           </div>
         )}
 
-        {/* ── よく使うAI ── */}
-        <SectionTitle
-          title="よく使うAI"
-          lead="迷ったらここから。押すと、この画面のままそのモードに切り替わります。"
-          style={{ marginTop: 34 }}
-        />
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
-          {featuredOrder(recentSkills).map((id) => (
-            <AiSkillCard key={id} skillId={id} variant="compact" onSelect={onSelectSkill} />
-          ))}
+        {/* ── よく使う機能へのショートカット ──
+            以前はここから下に「よく使う → おすすめ → すべて（カテゴリ別）」の
+            3段のカードギャラリーが続き、「ただアプリが並んでいるだけ」になっていた。
+            探す行為は「AIサポート機能一覧」に分けて、ホームは相談を書くことに専念させる。
+            ここに残すのは、名前を見れば分かる数件の近道だけ。 */}
+        <div className="ai-home-quicklinks">
+          {featuredOrder(recentSkills)
+            .slice(0, 5)
+            .map((id) => {
+              const meta = AI_SKILL_META[id];
+              const Icon = AI_SKILL_ICON[meta.icon];
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => onSelectSkill(id)}
+                  className="inline-flex items-center justify-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={{
+                    gap: 8,
+                    minWidth: 0,
+                    padding: '10px 6px',
+                    border: 0,
+                    background: 'transparent',
+                    color: color.textBody,
+                    fontFamily: 'inherit',
+                    fontSize: 12.5,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Icon size={15} style={{ color: color.primary, flexShrink: 0 }} />
+                  <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {meta.shortLabel}
+                  </span>
+                  <ChevronRight size={13} style={{ color: color.textFaint, flexShrink: 0 }} />
+                </button>
+              );
+            })}
         </div>
 
-        {/* ── あなたにおすすめ ── */}
+        {/* ── いま学んでいる教材からそのまま聞く ──
+            おすすめカードを3枚並べる代わりに、根拠が一番強い1本だけを帯にした。
+            「なぜ自分に出たか」が「いま学習中だから」で説明しきれる形にしている。 */}
         {recommendations.length > 0 && (
-          <>
-            <SectionTitle
-              title="あなたにおすすめ"
-              lead="いま取り組んでいるコースと進捗から選びました。"
-              style={{ marginTop: 34 }}
-            />
-            <div
-              className="grid"
-              style={{ gridTemplateColumns: `repeat(${recommendations.length}, minmax(0, 1fr))`, gap: 12 }}
+          <div
+            className="flex items-center"
+            style={{
+              gap: 16,
+              flexWrap: 'wrap',
+              marginTop: 22,
+              padding: '14px 18px',
+              border: `1px solid ${color.border}`,
+              borderRadius: 14,
+              background: color.surface,
+            }}
+          >
+            <span
+              aria-hidden
+              className="grid place-items-center flex-shrink-0"
+              style={{ width: 34, height: 34, borderRadius: '50%', background: color.primarySoft, color: color.primary }}
             >
-              {recommendations.map((rec) => (
-                <RecommendationCard
-                  key={`${rec.skillId}-${rec.title}`}
-                  recommendation={rec}
-                  onSelect={onSelectSkill}
-                />
-              ))}
-            </div>
-          </>
+              <MonitorIcon />
+            </span>
+            <span style={{ flex: '1 1 240px', minWidth: 0, fontSize: 13, fontWeight: 700, color: color.text }}>
+              {recommendations[0].title}
+            </span>
+            <span aria-hidden style={{ width: 1, height: 24, background: color.divider }} />
+            <button
+              type="button"
+              onClick={() => onSelectSkill(recommendations[0].skillId, recommendations[0].seedInput)}
+              className="inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+              style={{
+                gap: 6,
+                border: 0,
+                background: 'transparent',
+                color: color.primary,
+                fontFamily: 'inherit',
+                fontSize: 12.5,
+                fontWeight: 800,
+                cursor: 'pointer',
+                flexShrink: 0,
+              }}
+            >
+              {recommendations[0].reason}
+              <ChevronRight size={14} />
+            </button>
+          </div>
         )}
-
-        {/* ── すべてのAI機能 ── */}
-        <SectionTitle
-          title="すべてのAI機能"
-          lead="目的で分けています。名前ではなく「何ができるか」で選んでください。"
-          style={{ marginTop: 34 }}
-        />
-        <div className="flex flex-wrap" style={{ gap: 7, marginBottom: 16 }}>
-          {(['all', ...AI_SKILL_CATEGORY_ORDER] as CategoryFilter[]).map((key) => {
-            const active = filter === key;
-            return (
-              <button
-                key={key}
-                type="button"
-                onClick={() => setFilter(key)}
-                aria-pressed={active}
-                style={{
-                  height: 30,
-                  padding: '0 14px',
-                  border: `1px solid ${active ? color.primaryBorder : color.border}`,
-                  borderRadius: 999,
-                  background: active ? color.primarySoft : color.surface,
-                  color: active ? color.primary : color.textMuted,
-                  fontSize: 11.5,
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                }}
-              >
-                {key === 'all' ? 'すべて' : AI_SKILL_CATEGORY_LABEL[key]}
-              </button>
-            );
-          })}
-        </div>
-
-        <div className="flex flex-col" style={{ gap: 22 }}>
-          {categories.map((category) => (
-            <section key={category}>
-              <div className="flex items-center" style={{ gap: 9, marginBottom: 10 }}>
-                <span
-                  aria-hidden
-                  style={{ width: 4, height: 16, borderRadius: 2, background: color.primary }}
-                />
-                <h3 style={{ margin: 0, fontSize: 13.5, fontWeight: 900, color: color.text }}>
-                  {AI_SKILL_CATEGORY_LABEL[category]}
-                </h3>
-                <span style={{ fontSize: 10.5, color: color.textFaint }}>
-                  {skillsInCategory(category).length} 件
-                </span>
-              </div>
-              <div
-                className="grid"
-                style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}
-              >
-                {skillsInCategory(category).map((id) => (
-                  <AiSkillCard key={id} skillId={id} onSelect={onSelectSkill} />
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
       </div>
     </div>
   );
 }
 
-/** 最近使った機能を「よく使うAI」の先頭へ寄せる（並びは6件のまま） */
+/** 教材を指すアイコン。lucide の Monitor 相当を最小構成で置く */
+function MonitorIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2.5" y="4" width="19" height="13" rx="2.5" />
+      <path d="M8.5 20.5h7M12 17v3.5" />
+    </svg>
+  );
+}
+
+/** 最近使った機能をショートカットの先頭へ寄せる */
 function featuredOrder(recentSkills: ConcreteAiSkillId[]): ConcreteAiSkillId[] {
   const recent = recentSkills.filter((id) => FEATURED_AI_SKILLS.includes(id));
   return [...recent, ...FEATURED_AI_SKILLS.filter((id) => !recent.includes(id))].slice(
     0,
     FEATURED_AI_SKILLS.length
-  );
-}
-
-function SectionTitle({
-  title,
-  lead,
-  style,
-}: {
-  title: string;
-  lead: string;
-  style?: React.CSSProperties;
-}) {
-  return (
-    <div style={{ marginBottom: 12, ...style }}>
-      <h2 style={{ margin: 0, fontSize: 15.5, fontWeight: 900, color: color.text }}>{title}</h2>
-      <p style={{ margin: '4px 0 0', fontSize: 11.5, color: color.textMuted }}>{lead}</p>
-    </div>
-  );
-}
-
-function RecommendationCard({
-  recommendation,
-  onSelect,
-}: {
-  recommendation: AiSkillRecommendation;
-  onSelect: (skillId: ConcreteAiSkillId, seedInput?: string) => void;
-}) {
-  const meta = AI_SKILL_META[recommendation.skillId];
-  const Icon = AI_SKILL_ICON[meta.icon];
-  return (
-    <button
-      type="button"
-      onClick={() => onSelect(recommendation.skillId, recommendation.seedInput)}
-      className="group flex flex-col text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-      style={{
-        gap: 8,
-        height: '100%',
-        padding: '16px 17px',
-        border: `1px solid ${color.primaryBorderSoft}`,
-        borderRadius: 16,
-        background: color.hoverBgTint,
-        cursor: 'pointer',
-      }}
-    >
-      <div className="flex items-center" style={{ gap: 9, width: '100%' }}>
-        <span
-          aria-hidden
-          className="grid place-items-center flex-shrink-0"
-          style={{
-            width: 32,
-            height: 32,
-            borderRadius: 10,
-            background: color.surface,
-            color: color.primary,
-            border: `1px solid ${color.primaryBorder}`,
-          }}
-        >
-          <Icon size={16} />
-        </span>
-        <span
-          style={{ flex: 1, minWidth: 0, fontSize: 12.5, fontWeight: 800, color: color.text, lineHeight: 1.45 }}
-        >
-          {recommendation.title}
-        </span>
-      </div>
-      <p style={{ margin: 0, fontSize: 11, lineHeight: 1.75, color: color.textSecondary }}>
-        {recommendation.reason}
-      </p>
-      <div
-        className="flex items-center"
-        style={{ gap: 5, marginTop: 'auto', paddingTop: 6, fontSize: 10.5, fontWeight: 800, color: color.primary }}
-      >
-        {meta.shortLabel}で開く
-        <ArrowRight size={12} className="transition-transform group-hover:translate-x-0.5" />
-      </div>
-    </button>
   );
 }
 

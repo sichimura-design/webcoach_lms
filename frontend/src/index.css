@@ -327,6 +327,38 @@ body.learning-workspace {
   }
 }
 
+/* ─── AIコーチ(/ai-coach) ─────────────────── */
+/* 機能一覧の3列カード。狭い画面では2列→1列に落とす。 */
+.ai-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .ai-catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .ai-catalog-grid { grid-template-columns: 1fr; }
+}
+
+/* ホームのショートカット行。縦罫で区切って並べ、狭い画面では折り返す。 */
+.ai-home-quicklinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 30px;
+}
+
+.ai-home-quicklinks > button + button {
+  border-left: 1px solid #F3EFEF;
+  padding-left: 18px;
+  margin-left: 14px;
+}
+
 :root {
   --background: 0 0% 100%;
   --foreground: 258 30% 18%;        /* ディープネイビー */

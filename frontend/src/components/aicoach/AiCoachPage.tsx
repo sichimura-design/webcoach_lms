@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { History, LayoutGrid, Sparkles, X } from 'lucide-react';
+import { History, Home, LayoutGrid, Sparkles, X } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import { AppHeader } from '../shared';
 import { useAuth } from '../../contexts/AuthContext';
@@ -10,6 +10,7 @@ import { AiSkillId, ConcreteAiSkillId, isSpecialistSkill } from '../../types/aiS
 import { buildRecommendations } from '../../utils/aiSkillRecommend';
 import AiCoachHome from './AiCoachHome';
 import AiCoachSessionView from './AiCoachSessionView';
+import AiSkillCatalogView from './AiSkillCatalogView';
 import ConversationList from './ConversationList';
 
 /**
@@ -68,6 +69,24 @@ export function AiCoachPage() {
   const requestedSession = searchParams.get('session');
   const activeId = requestedSession && sessions[requestedSession] ? requestedSession : null;
 
+  // ?view=catalog で「AIサポート機能一覧」。
+  // 以前は一覧がホームの下半分に常設されていて、相談を書きに来た人にも
+  // カードの壁が押し付けられていた（「ただアプリが並んでいるだけ」）。
+  // URLに状態を持たせるのはセッションと同じ流儀で、戻るボタンでも行き来できる。
+  const catalogOpen = !activeId && searchParams.get('view') === 'catalog';
+
+  const setView = useCallback(
+    (view: 'home' | 'catalog') => {
+      const next = new URLSearchParams(searchParams);
+      next.delete('session');
+      if (view === 'catalog') next.set('view', 'catalog');
+      else next.delete('view');
+      setSearchParams(next, { replace: false });
+      setHistoryOpen(false);
+    },
+    [searchParams, setSearchParams]
+  );
+
   // この画面もビューポート高に固定するのでページスクロールを止める
   // （.wc-learning-shell の高さ指定は body.learning-workspace と対で効く）
   useEffect(() => {
@@ -88,6 +107,7 @@ export function AiCoachPage() {
   const goHome = useCallback(() => {
     const next = new URLSearchParams(searchParams);
     next.delete('session');
+    next.delete('view');
     setSearchParams(next, { replace: false });
     setHistoryOpen(false);
   }, [searchParams, setSearchParams]);
@@ -206,14 +226,24 @@ export function AiCoachPage() {
 
           <div style={{ flex: 1 }} />
 
-          {activeId && (
+          {/* ホームからは一覧へ、それ以外からはホームへ。行き先が常に1つに決まる */}
+          {catalogOpen || activeId ? (
             <button
               type="button"
               onClick={goHome}
               className="inline-flex items-center"
               style={topBarButtonStyle(false)}
             >
-              <LayoutGrid size={13} /> AI機能一覧
+              <Home size={13} /> ホーム
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setView('catalog')}
+              className="inline-flex items-center"
+              style={topBarButtonStyle(false)}
+            >
+              <LayoutGrid size={13} /> AIサポート機能一覧
             </button>
           )}
           <button
@@ -259,6 +289,8 @@ export function AiCoachPage() {
                 onAutoSendDone={() => setAutoSendFor(null)}
                 isDesktop={isDesktop}
               />
+            ) : catalogOpen ? (
+              <AiSkillCatalogView onSelectSkill={handleSelectSkill} onAskFreely={goHome} />
             ) : (
               <AiCoachHome
                 onSubmit={handleSubmit}

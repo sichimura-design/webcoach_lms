@@ -20,7 +20,10 @@ import { AiSkillIconKey } from '../../types/aiSkill';
  * ここで解決する。型定義を描画ライブラリに依存させると、MSWのハンドラ（mocks/）が
  * types 経由で lucide を引き込んでしまうため。
  */
-export const AI_SKILL_ICON: Record<AiSkillIconKey, React.ComponentType<{ size?: number | string }>> = {
+export const AI_SKILL_ICON: Record<
+  AiSkillIconKey,
+  React.ComponentType<{ size?: number | string; style?: React.CSSProperties }>
+> = {
   book: BookOpen,
   glossary: BookMarked,
   quiz: ListChecks,
