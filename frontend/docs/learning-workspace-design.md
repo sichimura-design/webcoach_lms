@@ -92,7 +92,9 @@ z-index: フローティングピル 60 / オーバーレイ 70-71 / 選択ツ�
 |---|---|---|
 | AI/メモのオーバーレイ（開閉・タブ） | `LearningWorkspacePage` の `useState` | **永続しない**。開いたまま離脱すると次回教材がパネルで覆われた状態から始まり、それが「ごちゃごちゃ」の正体だった |
 | 教材本文・目次 | モックAPI（`useLessonDoc`） | 将来サーバ管理 |
-| メモ・クリップ・保存回答 | モックAPI（`useNotes`）→ ハンドラ内で localStorage | 実API化がハンドラ削除だけで済む |
+| メモ下書き（レッスン単位） | モックAPI（`useNotes`）→ ハンドラ内で localStorage | 実API化がハンドラ削除だけで済む |
+| ノート（器＋ブロック） | モックAPI（`useNote` / `useNoteList`）→ `noteHandlers.ts` で localStorage | 同上 |
+| 取り込み先ノート（レッスン→ノート） | `store/noteTargetStore.ts`（zustand + persist） | 端末ごとの好み。サーバへ送る意味がない |
 | AI会話 | フック内のローカル状態（レッスン単位） | 教材ごとの文脈を混ぜない |
 
 `store/learningWorkspaceStore.ts`（`navOpen` / `supportOpen` / `supportWidth` / `splitPercent` / `supportMode`）は削除した。
@@ -171,16 +173,43 @@ z-index: フローティングピル 60 / オーバーレイ 70-71 / 選択ツ�
 
 **教材に答えがない場合**、AIが教材の内容であるかのように回答してはならない。`groundedInMaterial: false` を返し、UIは警告バナー付きで「この教材だけでは判断できません。以下は教材外の一般的な補足です。」と明示する。
 
-### ノート系
+### ノート系（2026-08 改訂・SCREEN-008）
+
+**旧**: `NoteItem` 1種類（`kind: 'memo' | 'clip' | 'answer'`）を時系列に並べる平坦な履歴。
+
+**現**: 器（`Note`）＋中身（`NoteBlock`）。「ユーザーが自分でノートを作成し、その中に文章・
+クリップ・AI回答を自由に追加して育てていける自由帳」というレビュー要件に合わせた。
+実装は `mocks/noteHandlers.ts`（`lessonHandlers.ts` から分離）、型は `types/notes.ts`。
 
 | メソッド | パス | 用途 |
 |---|---|---|
-| GET / PUT | `/api/webcoach/lesson-notes/{lessonId}` | 教材単位のメモ下書き（500msデバウンスで自動保存） |
-| GET | `/api/webcoach/notes?kind=&q=&courseId=&lessonId=` | マイノート横断 |
-| POST | `/api/webcoach/notes` | メモカード／クリップ／⭐保存したAI回答 |
+| GET / PUT | `/api/webcoach/lesson-notes/{lessonId}` | 教材単位のメモ**下書き**（500msデバウンスで自動保存）。ノートとは別物 |
+| GET | `/api/webcoach/notes?q=&sort=&favorite=&lessonId=` | ノート一覧（`NoteSummary[]`＝ブロックを持たない軽量表現） |
+| POST | `/api/webcoach/notes` | ノート作成 |
+| GET | `/api/webcoach/notes/{id}` | 1件（ブロック込み） |
+| PATCH | `/api/webcoach/notes/{id}` | タイトル・お気に入り |
 | DELETE | `/api/webcoach/notes/{id}` | 削除 |
+| POST | `/api/webcoach/notes/{id}/blocks` | ブロック追加（text / clip / answer） |
+| PATCH | `/api/webcoach/notes/{id}/blocks/{blockId}` | ブロック編集 |
+| DELETE | `/api/webcoach/notes/{id}/blocks/{blockId}` | ブロック削除 |
+| GET | `/api/webcoach/note-clips?lessonId=` | 教材ハイライト復元用の軽量一覧 |
 
-`NoteItem` は3種を1つの型で扱う（`kind: 'memo' | 'clip' | 'answer'`）。クリップは `blockId` と `offset`（ブロック内テキストでの開始位置）を保持し、これで元の位置へ復元する。
+`note-clips` を分けてあるのは、本文に `<mark>` を当てるためだけに全ノートの全ブロックを
+取りに行くのを避けるため。
+
+クリップは `source.blockId` と `source.offset`（ブロック内テキストでの開始位置）を保持し、
+これで元の位置へ復元する（この仕組み自体は旧実装から変えていない）。
+
+**保存形式の移行**: localStorage キーは `webcoach-lesson-notes` のまま `schemaVersion: 2` へ。
+旧レコードは `mocks/noteMigration.ts` が**レッスン単位で1ノートに畳んで**引き継ぐ。
+全部を1つの「未整理」に入れると、新画面を開いた瞬間ノートの中に旧画面（平坦な履歴）が
+そのまま入ることになるため。レッスンが解決できないものだけ「未整理」へ。
+ストアが空のときはデモノートを3件シードする（真っ白だとレイアウトが確認できない）。
+
+**取り込み先の決め方**: 教材やAIコーチからクリップ／AI回答を入れるとき、
+どのノートに入るかは `store/noteTargetStore.ts` が覚える（レッスンID → ノートID）。
+未定のときだけ `NoteTargetPicker` を出し、選んだら以後は聞かない。
+判断は `hooks/useNoteCapture.ts` の1箇所に集約してある。
 
 ### 章立ての単一情報源
 
@@ -206,7 +235,10 @@ z-index: フローティングピル 60 / オーバーレイ 70-71 / 選択ツ�
 | `components/learning/MemoPane.tsx` | 自動保存エディタ＋保存物一覧＋検索 |
 | `components/learning/clipHighlight.ts` | クリップの `<mark>` 復元 |
 | `components/learning/moodleContent.ts` | 旧 CourseContentPage から移設した Moodle 描画ヘルパ |
-| `components/notes/MyNotesPage.tsx` | `/notes`。横断検索・コース/教材で絞り込み・元教材へ復帰 |
+| `components/notes/MyNotesPage.tsx` | `/notes`。左＝ノート一覧／右＝ノート面の2カラム |
+| `components/notes/NoteEditor.tsx` | ノート面（紙の質感・タイトル編集・3種の追加ボタン） |
+| `components/notes/NoteBlockView.tsx` | 本文／クリップ／AI回答の3ブロック描画 |
+| `components/notes/NoteTargetPicker.tsx` | 取り込み先ノートを1度だけ聞く |
 
 フック: `useLessonDoc` / `useLessonCompletion` / `useLessonAi` / `useNotes` / `useTextSelection`
 
@@ -277,7 +309,10 @@ npm start           # 既定でモックON（REACT_APP_ENABLE_MOCKS=true）
 - [ ] 教材にない質問（例:「Reactのuseeffectとは」）で警告バナー＋一般補足の区別表示になる
 - [ ] 画像添付／スクショ貼り付け → きっかけチップが出て添削回答が返る
 - [ ] メモ自動保存、⭐保存、メモに追加、クリップ「元の場所」ジャンプ
-- [ ] `/notes` でタブ・検索・コース/教材絞り込み・元教材へ戻る
+- [ ] `/notes` でノート作成・タイトル編集・本文追記・検索・並び替え・お気に入り
+- [ ] 教材でクリップ → 初回はピッカーが出る。2回目以降は同じノートへ黙って入る
+- [ ] クリップ／AI回答から「元のレッスンへ」で該当箇所に戻る
+- [ ] 旧データがある状態で開くと、レッスンごとに1ノートへ畳まれている
 - [ ] 本文末尾の「完了して次へ」で `markActivityComplete` が飛び、EXPが付き、次レッスンへ進む
       （トップバーからは外した。長いスクロールの終点に置くほうが読み切ってから押させられる）
 - [ ] `/notes` から `?block=` 付きで戻ったとき、着地点がトップバーの下に潜らない

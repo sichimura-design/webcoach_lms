@@ -5,12 +5,15 @@ import { color, font } from '../../theme/webcoachTheme';
 import { useToast } from '../../contexts/ToastContext';
 import { useLessonAi, LessonAiMessage } from '../../hooks/useLessonAi';
 import { useNotes } from '../../hooks/useNotes';
+import { useNoteCapture } from '../../hooks/useNoteCapture';
 import { useAiCoachStore } from '../../store/aiCoachStore';
 import { bffClient } from '../../services/bffClient';
 import { LessonBlock } from '../../types/lesson';
+import { NoteSourceRef } from '../../types/notes';
 import { AI_SKILL_META, ConcreteAiSkillId, isSpecialistSkill } from '../../types/aiSkill';
 import AiCoachPane from '../learning/AiCoachPane';
 import SkillSelector from '../learning/SkillSelector';
+import NoteTargetPicker from '../notes/NoteTargetPicker';
 import ReferencePanel from './ReferencePanel';
 import SkillModeHeader from './SkillModeHeader';
 import AiSkillDock from './AiSkillDock';
@@ -107,24 +110,13 @@ export function AiCoachSessionView({
     };
   }, [courseId, lessonId]);
 
-  // ノートは教材と同じ仕組みを使う（保存・メモ追加の行き先を分けない）。
-  // withMemoDraft は教材に紐づく相談のときだけ true。false のままだと
-  // appendToMemo がローカル state を書くだけで保存されず、成功したように見えてしまう。
-  const notes = useNotes({
-    lessonId: lessonId ?? null,
-    query: useMemo(() => ({ lessonId: lessonId ?? undefined }), [lessonId]),
-    withMemoDraft: !!lessonId,
-    context:
-      courseId && lessonId
-        ? {
-            courseId,
-            courseName: ai.context.courseName ?? '',
-            lessonId,
-            lessonTitle: ai.context.lessonTitle ?? '',
-            heading: ai.context.heading,
-          }
-        : undefined,
-  });
+  // 下書き（自動保存）は教材に紐づく相談のときだけ動く。
+  // lessonId が無いと appendToMemo がローカル state を書くだけで保存されず、
+  // 成功したように見えてしまう。
+  const notes = useNotes({ lessonId: lessonId ?? null });
+
+  // ノートへの取り込みは教材ページと同じ入口を使う（保存先の判断を2箇所に置かない）
+  const capture = useNoteCapture();
 
   /**
    * 教材へ戻る。ブロックIDを渡すと該当箇所まで飛ぶ（?block= は
@@ -182,31 +174,44 @@ export function AiCoachSessionView({
     [ai.messages]
   );
 
+  /**
+   * AI回答をノートへ。
+   * 🔴 教材に紐づかない相談（AIコーチ単体で始めた会話）も保存できる。
+   *    ノートが器になり、出どころが無くても入れ物があるため。
+   *    以前は「教材に紐づく相談だけ保存できます」と断っていた。
+   */
   const handleSaveAnswer = useCallback(
     async (message: LessonAiMessage) => {
-      if (!courseId || !lessonId) {
-        showToast('教材に紐づく相談だけ保存できます', 'error');
-        return;
-      }
       const { question, quote, image } = questionFor(message);
       const sources = message.answer?.sources ?? message.skillResult?.sources ?? [];
-      const created = await notes.createNote({
-        kind: 'answer',
-        courseId,
-        courseName: ai.context.courseName ?? '',
-        lessonId,
-        lessonTitle: ai.context.lessonTitle ?? '',
-        blockId: sources[0]?.blockId ?? null,
-        heading: sources[0]?.heading ?? ai.context.heading,
-        text: answerToText(message),
-        question,
-        selectedText: quote,
-        image,
-        offset: null,
+      const source: NoteSourceRef | null =
+        courseId && lessonId
+          ? {
+              courseId,
+              courseName: ai.context.courseName ?? '',
+              lessonId,
+              lessonTitle: ai.context.lessonTitle ?? '',
+              heading: sources[0]?.heading ?? ai.context.heading,
+              blockId: sources[0]?.blockId ?? null,
+              offset: null,
+            }
+          : null;
+
+      await capture.capture({
+        block: {
+          kind: 'answer',
+          question,
+          answer: answerToText(message),
+          selectedText: quote,
+          image,
+          source,
+        },
+        suggestedTitle: ai.context.lessonTitle || 'AIコーチとの相談',
+        source,
+        lessonId: lessonId ?? null,
       });
-      showToast(created ? '質問と回答を保存しました' : '保存に失敗しました', created ? 'success' : 'error');
     },
-    [answerToText, ai.context, courseId, lessonId, notes, questionFor, showToast]
+    [answerToText, ai.context, capture, courseId, lessonId, questionFor]
   );
 
   const handleAppendToMemo = useCallback(
@@ -406,6 +411,16 @@ export function AiCoachSessionView({
             />
           )}
         </div>
+      )}
+
+      {/* 追加先ノートが未定のときだけ出る */}
+      {capture.pending && (
+        <NoteTargetPicker
+          suggestedTitle={capture.pending.suggestedTitle}
+          onPickNote={(noteId) => void capture.resolvePendingWithNote(noteId)}
+          onCreateNew={() => void capture.resolvePendingWithNewNote()}
+          onCancel={capture.cancelPending}
+        />
       )}
     </div>
   );

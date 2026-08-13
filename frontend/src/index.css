@@ -373,6 +373,22 @@ body.learning-immersive {
   padding: 28px 60px 40px;
 }
 
+/* ノートは「左＝マイノート一覧 / 右＝ノート面」の2カラム。
+   .focus-2col と同じ思想で、列数は画面幅で変えずページ側の transform:scale で収める。 */
+.notes-2col {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+/* ノート本文の記法（noteText.tsx が描く）。
+   マーカー引きは背景ではなく下側だけの帯にする。文字が沈まず、手書きの線に近い。 */
+.wc-note-mark {
+  background: linear-gradient(transparent 62%, #FFD9E0 62%);
+  padding-bottom: 1px;
+}
+
 /* ─── コーチング(/coaching) ───────────────────
    左＝次回までのアクション（広い）、右＝当日の入口（会議リンク・参加）。
    このページは transform:scale 方式ではなく max-width + 通常フローなので、

@@ -59,6 +59,20 @@ export const color = {
 
   // status
   online: '#34C759',
+
+  /**
+   * マイノート（自由帳）。
+   * 「自分のノートを作っていく楽しさ」を出すために、他の画面の白いカードとは
+   * 別の“紙”の質感を与える。以前は MyNotesPage / MemoPane が種別バッジの色を
+   * 直書きしていたので、ここに集約した。
+   */
+  notePaper: '#FFFDFA',        // ノート面の地。白より少し温かい
+  noteRule: '#EFE4E4',         // 左端の綴じ代（点線）
+  noteHighlight: '#FFD9E0',    // 手書き風のマーカー・下線
+  noteClipBg: '#FFF4F5',       // クリップブロックの地
+  noteClipAccent: '#E0213A',   // クリップの左罫（教材＝ブランド色）
+  noteAnswerBg: '#F3FAF6',     // AI回答ブロックの地
+  noteAnswerAccent: '#3E9E70', // AI回答の左罫（AI＝緑。教材と出どころを区別する）
 } as const;
 
 export const gradient = {

@@ -52,7 +52,17 @@ import {
   LessonOutline,
 } from '../types/lesson';
 import { AiSkillRequest, AiSkillResponse } from '../types/aiSkill';
-import { NoteCreateInput, NoteItem, NoteListQuery } from '../types/notes';
+import {
+  Note,
+  NoteBlock,
+  NoteBlockInput,
+  NoteBlockPatch,
+  NoteClipRef,
+  NoteCreateInput,
+  NoteListQuery,
+  NoteSummary,
+  NoteUpdateInput,
+} from '../types/notes';
 import {
   CheckinAnswers,
   CheckinPrompt,
@@ -1154,30 +1164,64 @@ class BFFClient {
     return response.data;
   }
 
-  /**
-   * マイノート横断取得（メモ・クリップ・保存したAI回答）
-   * GET /api/webcoach/notes?kind={kind}&q={q}&courseId={courseId}&lessonId={lessonId}
-   */
-  async listNotes(query: NoteListQuery = {}): Promise<NoteItem[]> {
+  // ==================== マイノート（自由帳） ====================
+  // 実BFFには未実装。すべて mocks/noteHandlers.ts のMSWモックが応答する。
+  // 器（Note）と中身（NoteBlock）に分かれているので、一覧は軽量な NoteSummary を返す。
+
+  /** GET /api/webcoach/notes?q=&sort=&favorite=&lessonId= */
+  async listNotes(query: NoteListQuery = {}): Promise<NoteSummary[]> {
     const response = await this.api.get('/webcoach/notes', { params: query });
     return response.data;
   }
 
-  /**
-   * ノート作成（メモカード／クリップ／⭐保存したAI回答）
-   * POST /api/webcoach/notes
-   */
-  async createNote(body: NoteCreateInput): Promise<NoteItem> {
+  /** GET /api/webcoach/notes/{id} — ブロック込みの1件 */
+  async getNote(id: string): Promise<Note> {
+    const response = await this.api.get(`/webcoach/notes/${id}`);
+    return response.data;
+  }
+
+  /** POST /api/webcoach/notes */
+  async createNote(body: NoteCreateInput = {}): Promise<Note> {
     const response = await this.api.post('/webcoach/notes', body);
     return response.data;
   }
 
-  /**
-   * ノート削除
-   * DELETE /api/webcoach/notes/{id}
-   */
+  /** PATCH /api/webcoach/notes/{id} — タイトル・お気に入り */
+  async updateNote(id: string, body: NoteUpdateInput): Promise<Note> {
+    const response = await this.api.patch(`/webcoach/notes/${id}`, body);
+    return response.data;
+  }
+
+  /** DELETE /api/webcoach/notes/{id} */
   async deleteNote(id: string): Promise<void> {
     await this.api.delete(`/webcoach/notes/${id}`);
+  }
+
+  /** POST /api/webcoach/notes/{id}/blocks — 本文・クリップ・AI回答の追加 */
+  async appendNoteBlock(noteId: string, input: NoteBlockInput): Promise<NoteBlock> {
+    const response = await this.api.post(`/webcoach/notes/${noteId}/blocks`, input);
+    return response.data;
+  }
+
+  /** PATCH /api/webcoach/notes/{id}/blocks/{blockId} */
+  async updateNoteBlock(noteId: string, blockId: string, patch: NoteBlockPatch): Promise<NoteBlock> {
+    const response = await this.api.patch(`/webcoach/notes/${noteId}/blocks/${blockId}`, patch);
+    return response.data;
+  }
+
+  /** DELETE /api/webcoach/notes/{id}/blocks/{blockId} */
+  async deleteNoteBlock(noteId: string, blockId: string): Promise<void> {
+    await this.api.delete(`/webcoach/notes/${noteId}/blocks/${blockId}`);
+  }
+
+  /**
+   * GET /api/webcoach/note-clips?lessonId=
+   * 教材本文のハイライト復元用。これが無いと、<mark> を当てるためだけに
+   * 全ノートの全ブロックを取りに行くことになる。
+   */
+  async listNoteClips(lessonId: number): Promise<NoteClipRef[]> {
+    const response = await this.api.get('/webcoach/note-clips', { params: { lessonId } });
+    return response.data;
   }
 
   // ==================== 学習ロードマップ（LearningPlan） ====================

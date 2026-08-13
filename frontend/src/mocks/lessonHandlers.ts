@@ -38,7 +38,7 @@ import {
   LessonDoc,
   LessonOutline,
 } from '../types/lesson';
-import { NoteCreateInput, NoteItem, NoteKind } from '../types/notes';
+import { readNoteStore, writeNoteStore } from './noteMigration';
 import { LearningType } from '../constants/learningTaxonomy';
 import { SkillSuggestion } from '../types/aiSkill';
 import { detectSkill } from '../utils/aiSkillRouting';
@@ -660,41 +660,9 @@ function buildBriefAnswer(req: LessonAiRequest): LessonAiResponse {
   };
 }
 
-// ---- ノート永続化（localStorage）------------------------------------------
-
-const NOTES_KEY = 'webcoach-lesson-notes';
-
-interface NotesStore {
-  notes: NoteItem[];
-  memos: Record<string, { text: string; updatedAt: string }>;
-}
-
-function readStore(): NotesStore {
-  try {
-    const raw = localStorage.getItem(NOTES_KEY);
-    if (!raw) return { notes: [], memos: {} };
-    const parsed = JSON.parse(raw) as Partial<NotesStore>;
-    return { notes: Array.isArray(parsed.notes) ? parsed.notes : [], memos: parsed.memos ?? {} };
-  } catch {
-    return { notes: [], memos: {} };
-  }
-}
-
-function writeStore(store: NotesStore): void {
-  try {
-    localStorage.setItem(NOTES_KEY, JSON.stringify(store));
-  } catch {
-    /* 容量超過などは黙って諦める（モックのため） */
-  }
-}
-
-let noteSeq = 0;
-function nextNoteId(kind: NoteKind): string {
-  noteSeq += 1;
-  return `${kind}-${Date.now()}-${noteSeq}`;
-}
-
 // ---- ハンドラ --------------------------------------------------------------
+// レッスン単位の下書き（memos）は noteMigration.ts のストアに同居している。
+// ノート本体と同じ localStorage キーなので、読み書きの入口も共有する。
 
 export const lessonHandlers = [
   // コースの目次（単元＞レッスン）
@@ -735,7 +703,7 @@ export const lessonHandlers = [
 
   // レッスン単位のメモ（自動保存）
   http.get('*/api/webcoach/lesson-notes/:lessonId', ({ params }) => {
-    const store = readStore();
+    const store = readNoteStore();
     const entry = store.memos[String(params.lessonId)];
     return HttpResponse.json({ text: entry?.text ?? '', updatedAt: entry?.updatedAt ?? null });
   }),
@@ -748,64 +716,14 @@ export const lessonHandlers = [
     } catch {
       /* ignore */
     }
-    const store = readStore();
+    const store = readNoteStore();
     const updatedAt = new Date().toISOString();
     store.memos[String(params.lessonId)] = { text, updatedAt };
-    writeStore(store);
+    writeNoteStore(store);
     return HttpResponse.json({ text, updatedAt });
   }),
 
-  // マイノート横断（メモ・クリップ・保存したAI回答）
-  http.get('*/api/webcoach/notes', ({ request }) => {
-    const url = new URL(request.url);
-    const kind = url.searchParams.get('kind');
-    const q = (url.searchParams.get('q') ?? '').trim().toLowerCase();
-    const courseId = url.searchParams.get('courseId');
-    const lessonId = url.searchParams.get('lessonId');
-
-    let items = readStore().notes;
-    if (kind && kind !== 'all') items = items.filter((n) => n.kind === kind);
-    if (courseId) items = items.filter((n) => n.courseId === Number(courseId));
-    if (lessonId) items = items.filter((n) => n.lessonId === Number(lessonId));
-    if (q) {
-      items = items.filter((n) =>
-        [n.text, n.question ?? '', n.selectedText ?? '', n.lessonTitle, n.courseName, n.heading ?? '']
-          .join(' ')
-          .toLowerCase()
-          .includes(q)
-      );
-    }
-    items = [...items].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    return HttpResponse.json(items);
-  }),
-
-  http.post('*/api/webcoach/notes', async ({ request }) => {
-    let body: NoteCreateInput | null = null;
-    try {
-      body = (await request.json()) as NoteCreateInput;
-    } catch {
-      /* ignore */
-    }
-    if (!body || !body.kind) return new HttpResponse(null, { status: 400 });
-
-    const item: NoteItem = {
-      ...body,
-      id: nextNoteId(body.kind),
-      createdAt: new Date().toISOString(),
-    };
-    const store = readStore();
-    store.notes.unshift(item);
-    writeStore(store);
-    return HttpResponse.json(item, { status: 201 });
-  }),
-
-  http.delete('*/api/webcoach/notes/:id', ({ params }) => {
-    const store = readStore();
-    const before = store.notes.length;
-    store.notes = store.notes.filter((n) => n.id !== String(params.id));
-    writeStore(store);
-    if (store.notes.length === before) return new HttpResponse(null, { status: 404 });
-    writeStore(store);
-    return new HttpResponse(null, { status: 204 });
-  }),
+  // マイノート（/webcoach/notes 系）は mocks/noteHandlers.ts に分離した。
+  // このファイルは既に36KBあり、ノートは器＋ブロックのCRUDで独立した関心事のため。
+  // レッスン単位の下書き（lesson-notes）は教材本文と対なのでここに残す。
 ];

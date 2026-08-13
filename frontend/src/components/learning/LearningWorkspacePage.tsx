@@ -6,9 +6,13 @@ import { useLessonDoc } from '../../hooks/useLessonDoc';
 import { useLessonCompletion } from '../../hooks/useLessonCompletion';
 import { useLessonAi, LessonAiMessage, LessonAiQuote } from '../../hooks/useLessonAi';
 import { useNotes } from '../../hooks/useNotes';
+import { useNoteCapture } from '../../hooks/useNoteCapture';
+import { useNoteList } from '../../hooks/useNoteList';
 import { useTextSelection } from '../../hooks/useTextSelection';
-import { NoteItem } from '../../types/notes';
+import bffClient from '../../services/bffClient';
+import { NoteSourceRef } from '../../types/notes';
 import { AiSkillId } from '../../types/aiSkill';
+import NoteTargetPicker from '../notes/NoteTargetPicker';
 import { ClipAnchor } from './clipHighlight';
 import LessonTopBar from './LessonTopBar';
 import LessonArticle from './LessonArticle';
@@ -70,20 +74,32 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
   const openSupport = useCallback((tab: SupportTab) => setSupport({ open: true, tab }), []);
   const closeSupport = useCallback(() => setSupport((s) => ({ ...s, open: false })), []);
 
-  const notes = useNotes({
-    lessonId: doc?.lessonId ?? null,
-    query: useMemo(() => ({ lessonId: doc?.lessonId }), [doc?.lessonId]),
-    withMemoDraft: true,
-    context: doc
-      ? {
-          courseId: doc.courseId,
-          courseName: doc.courseName,
-          lessonId: doc.lessonId,
-          lessonTitle: doc.title,
-          heading: ai.contextHeading,
-        }
-      : undefined,
-  });
+  /** レッスンの下書き（自動保存）。ノート本体とは別物 */
+  const notes = useNotes({ lessonId: doc?.lessonId ?? null });
+
+  /** 取り込み（クリップ / AI回答 / 下書き）の共通入口。追加先の判断はここが持つ */
+  const capture = useNoteCapture();
+
+  /** このレッスンから触ったノート。メモ欄の入口として出す */
+  const relatedNotes = useNoteList({ lessonId: doc?.lessonId });
+
+  /** 取り込んだ内容にいつも付ける出どころ */
+  const sourceOf = useCallback(
+    (over?: Partial<NoteSourceRef>): NoteSourceRef | null =>
+      doc
+        ? {
+            courseId: doc.courseId,
+            courseName: doc.courseName,
+            lessonId: doc.lessonId,
+            lessonTitle: doc.title,
+            heading: ai.contextHeading,
+            blockId: null,
+            offset: null,
+            ...over,
+          }
+        : null,
+    [doc, ai.contextHeading]
+  );
 
   // 縮退モード（Moodleフォールバック）では本文が iframe の中にあり、
   // 選択範囲もブロックIDも取れないので選択操作そのものを無効にする。
@@ -203,24 +219,23 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
 
   const handleClip = useCallback(async () => {
     if (!selection || !doc) return;
-    const created = await notes.createNote({
-      kind: 'clip',
-      courseId: doc.courseId,
-      courseName: doc.courseName,
-      lessonId: doc.lessonId,
-      lessonTitle: doc.title,
+    const source = sourceOf({
       blockId: selection.blockId,
       heading: selection.heading,
-      text: selection.text,
-      question: null,
-      selectedText: null,
-      image: null,
       offset: selection.offset,
     });
+    if (!source) return;
     clearSelection();
     window.getSelection()?.removeAllRanges();
-    showToast(created ? '教材をクリップしました' : 'クリップに失敗しました', created ? 'success' : 'error');
-  }, [selection, doc, notes, clearSelection, showToast]);
+    // 追加先が未定なら capture.pending が立ち、下でピッカーが出る
+    await capture.capture({
+      block: { kind: 'clip', text: selection.text, source },
+      suggestedTitle: doc.title,
+      source,
+      lessonId: doc.lessonId,
+    });
+    void relatedNotes.reload();
+  }, [selection, doc, sourceOf, capture, clearSelection, relatedNotes]);
 
   // ── AI回答の保存／メモ追加 ──
   const questionFor = useCallback(
@@ -272,24 +287,43 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
       if (!doc || (!message.answer && !message.skillResult)) return;
       const { question, quote, image } = questionFor(message);
       const sources = message.answer?.sources ?? message.skillResult?.sources ?? [];
-      const created = await notes.createNote({
-        kind: 'answer',
-        courseId: doc.courseId,
-        courseName: doc.courseName,
-        lessonId: doc.lessonId,
-        lessonTitle: doc.title,
+      const source = sourceOf({
         blockId: sources[0]?.blockId ?? null,
         heading: sources[0]?.heading ?? ai.contextHeading,
-        text: answerToText(message),
-        question,
-        selectedText: quote,
-        image,
-        offset: null,
       });
-      showToast(created ? '質問と回答を保存しました' : '保存に失敗しました', created ? 'success' : 'error');
+      await capture.capture({
+        block: {
+          kind: 'answer',
+          question,
+          answer: answerToText(message),
+          selectedText: quote,
+          image,
+          source,
+        },
+        suggestedTitle: doc.title,
+        source,
+        lessonId: doc.lessonId,
+      });
+      void relatedNotes.reload();
     },
-    [doc, questionFor, notes, ai.contextHeading, answerToText, showToast]
+    [doc, questionFor, sourceOf, ai.contextHeading, answerToText, capture, relatedNotes]
   );
+
+  /** 下書きをノートの本文として残す。編集してから取り込みたい人の経路 */
+  const handleKeepDraft = useCallback(async () => {
+    const text = notes.memoDraft.trim();
+    if (!text || !doc) return;
+    const source = sourceOf();
+    const ok = await capture.capture({
+      block: { kind: 'text', text },
+      suggestedTitle: doc.title,
+      source,
+      lessonId: doc.lessonId,
+    });
+    // ピッカーが出ている間は下書きを消さない。選び終えるまで内容を失わせない
+    if (ok) notes.setMemoDraft('');
+    void relatedNotes.reload();
+  }, [notes, doc, sourceOf, capture, relatedNotes]);
 
   const handleAppendToMemo = useCallback(
     (message: LessonAiMessage) => {
@@ -324,13 +358,6 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     [ai, navigate]
   );
 
-  const handleJumpToClip = useCallback(
-    (note: NoteItem) => {
-      if (note.blockId) jumpToBlock(note.blockId);
-    },
-    [jumpToBlock]
-  );
-
   // ── 完了ボタン。完了済みなら次へ進むだけにする（旧実装と同じ挙動）──
   const handleComplete = useCallback(() => {
     if (completion.isCompleted) {
@@ -353,13 +380,33 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [clearSelection, closeSupport]);
 
-  const clipAnchors: ClipAnchor[] = useMemo(
-    () =>
-      notes.items
-        .filter((n) => n.kind === 'clip' && n.blockId && n.lessonId === doc?.lessonId)
-        .map((n) => ({ id: n.id, blockId: n.blockId as string, text: n.text, offset: n.offset })),
-    [notes.items, doc?.lessonId]
-  );
+  /**
+   * 本文に <mark> を当て直すためのクリップ位置。
+   * 🔴 専用の軽量エンドポイントから取る。ノートが器＋ブロックになったので、
+   *    ハイライトを描くためだけに全ノートの全ブロックを引くのは無駄が大きい。
+   */
+  const [clipAnchors, setClipAnchors] = useState<ClipAnchor[]>([]);
+  useEffect(() => {
+    const lessonId = doc?.lessonId;
+    if (!lessonId) {
+      setClipAnchors([]);
+      return;
+    }
+    let alive = true;
+    bffClient
+      .listNoteClips(lessonId)
+      .then((refs) => {
+        if (!alive) return;
+        setClipAnchors(
+          refs.map((r) => ({ id: r.blockId, blockId: r.sourceBlockId, text: r.text, offset: r.offset }))
+        );
+      })
+      .catch(() => alive && setClipAnchors([]));
+    return () => {
+      alive = false;
+    };
+    // relatedNotes.items が変わる＝このレッスンのノートが増減したとき取り直す
+  }, [doc?.lessonId, relatedNotes.items]);
 
   const flatLessons = outline?.sections.flatMap((s) => s.lessons) ?? [];
   /**
@@ -458,8 +505,28 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
             />
           }
           memoPane={
-            <MemoPane notes={notes} lessonTitle={doc?.title ?? ''} onJumpToClip={handleJumpToClip} />
+            <MemoPane
+              notes={notes}
+              lessonTitle={doc?.title ?? ''}
+              relatedNotes={relatedNotes.items}
+              onKeepDraft={() => void handleKeepDraft()}
+              onOpenNote={(noteId) => navigate(`/notes?note=${encodeURIComponent(noteId)}`)}
+            />
           }
+        />
+      )}
+
+      {/* 追加先ノートが未定のときだけ出る。一度選べば以後このレッスンでは聞かない */}
+      {capture.pending && (
+        <NoteTargetPicker
+          suggestedTitle={capture.pending.suggestedTitle}
+          onPickNote={(noteId) => {
+            void capture.resolvePendingWithNote(noteId).then(() => relatedNotes.reload());
+          }}
+          onCreateNew={() => {
+            void capture.resolvePendingWithNewNote().then(() => relatedNotes.reload());
+          }}
+          onCancel={capture.cancelPending}
         />
       )}
 
