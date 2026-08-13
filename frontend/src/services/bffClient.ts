@@ -450,7 +450,12 @@ class BFFClient {
   /**
    * おすすめコース取得（実践課題／復習教材の2バケット）
    */
-  async getRecommendedCourses(userId: number): Promise<{ practice: any[]; review: any[] }> {
+  /**
+   * 「次におすすめ」3枠（実践／関連／1歩先）。
+   * 実BFFには存在しない新機能。mocks/handlers.ts の MSW モックが応答する。
+   * 🔴 モックOFF（本番）では 501 になる。呼び出し側は「取得できない＝セクションを出さない」に縮退させる
+   */
+  async getNextCourses(userId: number): Promise<any[]> {
     const response = await this.api.get('/webcoach/recommend-courses', { params: { userid: userId } });
     return response.data;
   }

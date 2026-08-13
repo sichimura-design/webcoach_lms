@@ -83,6 +83,16 @@ export const t = {
       marketing: '#8B5CD6',
       career: '#2FA35C',
     },
+
+    /**
+     * 「次におすすめ」3枠のバッジ色。枠の意味を色でも区別する。
+     * カテゴリ色と同じ色相を使うが、意味は別（枠の種類 ≠ 学習領域）なので独立したトークンにする。
+     */
+    recommendSlot: {
+      practice: { fg: '#2FA35C', bg: '#EAF6ED' },
+      related: { fg: '#D9930D', bg: '#FBF1DC' },
+      ahead: { fg: '#8B5CD6', bg: '#F2ECFC' },
+    },
   },
 
   radius: {

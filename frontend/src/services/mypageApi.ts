@@ -13,6 +13,7 @@ import {
   DailyTodo,
   StreakInfo,
 } from '../types/mypage';
+import type { NextRecommendation } from '../utils/nextCourseRecommend';
 
 // アバター一覧のモジュールレベルキャッシュ（セッション中は保持）
 let cachedAvatars: Array<{ avatar_id: number; url: string }> | null = null;
@@ -205,18 +206,22 @@ const mapRecommendedCourse = (course: any): Course => ({
   thumbnailUrl: course.courseimage,
   difficulty: course.difficulty,
   duration: course.duration,
+  totalLessons: course.lessoncount ?? course.totallessons,
 });
 
 /**
- * おすすめコース取得（実践課題／復習教材の2バケット）
+ * 「次におすすめ」取得（実践／関連／1歩先の最大3枠）。
+ * 枠が埋まらなければ件数が減る。3件に満たないことを異常として扱わないこと。
  */
-export const fetchRecommendedCourses = async (
-  userId: number
-): Promise<{ practiceRecommendations: Course[]; reviewRecommendations: Course[] }> => {
-  const response = await bffClient.getRecommendedCourses(userId);
+export const fetchNextCourses = async (userId: number): Promise<NextRecommendation<Course>[]> => {
+  const response = await bffClient.getNextCourses(userId);
+  if (!Array.isArray(response)) return [];
 
-  return {
-    practiceRecommendations: Array.isArray(response?.practice) ? response.practice.map(mapRecommendedCourse) : [],
-    reviewRecommendations: Array.isArray(response?.review) ? response.review.map(mapRecommendedCourse) : [],
-  };
+  return response
+    .filter((r: any) => r?.course)
+    .map((r: any) => ({
+      slot: r.slot,
+      label: r.label,
+      course: mapRecommendedCourse(r.course),
+    }));
 };

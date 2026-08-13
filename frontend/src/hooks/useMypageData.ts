@@ -7,14 +7,16 @@ import {
   fetchMonthlyGoal,
   fetchCareerGoal,
   fetchStreak,
-  fetchRecommendedCourses,
+  fetchNextCourses,
 } from '../services/mypageApi';
+import type { NextRecommendation } from '../utils/nextCourseRecommend';
 import { useAsyncData } from './useAsyncData';
 
 // data未確定時のフォールバック用に固定参照を使う。`?? []`をレンダーごとに書くと
 // 毎回新しい配列参照になり、これを依存配列に使っている呼び出し元のuseEffectが
 // ロード完了まで無限に再実行されてしまう（ネットワーク呼び出しの重複発生）。
 const EMPTY_COURSES: Course[] = [];
+const EMPTY_RECOMMENDATIONS: NextRecommendation<Course>[] = [];
 
 interface MypageData {
   userProfile: Profile;
@@ -23,8 +25,7 @@ interface MypageData {
   resumableCourse: Course | null;
   activeCourses: Course[];
   streak: StreakInfo;
-  practiceRecommendations: Course[];
-  reviewRecommendations: Course[];
+  nextRecommendations: NextRecommendation<Course>[];
 }
 
 export function useMypageData(userId: number | undefined) {
@@ -37,16 +38,17 @@ export function useMypageData(userId: number | undefined) {
           fetchResumeCourse(userId),
           fetchUserCourses(userId),
           fetchStreak(userId),
-          fetchRecommendedCourses(userId),
-        ]).then(([userProfile, monthlyGoal, careerGoal, resumableCourse, activeCourses, streak, recommendations]) => ({
+          // 「次におすすめ」はモック専用APIで、本番(モックOFF)では501になる。
+          // ここで握りつぶさないとPromise.all全体が落ち、マイページごと表示できなくなる。
+          fetchNextCourses(userId).catch(() => EMPTY_RECOMMENDATIONS),
+        ]).then(([userProfile, monthlyGoal, careerGoal, resumableCourse, activeCourses, streak, nextRecommendations]) => ({
           userProfile,
           monthlyGoal,
           careerGoal,
           resumableCourse,
           activeCourses,
           streak,
-          practiceRecommendations: recommendations.practiceRecommendations,
-          reviewRecommendations: recommendations.reviewRecommendations,
+          nextRecommendations,
         }))
       : Promise.resolve(null),
     [userId],
@@ -59,8 +61,7 @@ export function useMypageData(userId: number | undefined) {
     resumableCourse: data?.resumableCourse ?? null,
     activeCourses: data?.activeCourses ?? EMPTY_COURSES,
     streak: data?.streak ?? null,
-    practiceRecommendations: data?.practiceRecommendations ?? EMPTY_COURSES,
-    reviewRecommendations: data?.reviewRecommendations ?? EMPTY_COURSES,
+    nextRecommendations: data?.nextRecommendations ?? EMPTY_RECOMMENDATIONS,
     loading,
     error,
     refetch,

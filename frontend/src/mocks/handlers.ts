@@ -31,6 +31,7 @@ import { learningPlanHandlers } from './learningPlanHandlers';
 import { aiSkillHandlers } from './aiSkillHandlers';
 import { currentStreakInfo, studyActivityHandlers } from './studyActivityHandlers';
 import { listGoals, replaceGoals } from './coachingGoalsStore';
+import { buildNextCourses } from '../utils/nextCourseRecommend';
 
 // ---- 固定モックデータ（型に沿った最小限） ----------------------------------
 const MOCK_USER_ID = 2;
@@ -353,14 +354,14 @@ export const handlers = [
   // ==================== MyPage / ダッシュボード ====================
   http.get('*/api/webcoach/resumecourse/:userid', () => HttpResponse.json(resumeCourses)),
 
-  // おすすめコース（タグベース：実践課題／復習教材の2バケットで返す。受講中のコースは復習教材から除外）
+  // 「次におすすめ」3枠（実践／関連／1歩先）。
+  // 続きから学ぶコースのカテゴリと難易度だけを根拠にする。判定は buildNextCourses に置いてあり、
+  // 実BFFが同じ形を返すようになったらこのハンドラだけ落とせばよい。
   http.get('*/api/webcoach/recommend-courses', () => {
-    const activeCourseIds = userCourses.map((c) => c.id);
-    const practice = catalog.filter((c) => c.tags.some((t) => t.rawname === '実践課題'));
-    const review = catalog.filter(
-      (c) => c.tags.some((t) => t.rawname === '基礎知識') && !activeCourseIds.includes(c.id)
-    );
-    return HttpResponse.json({ practice, review });
+    const resumeId = resumeCourses[0]?.courseid;
+    const base = catalog.find((c) => c.id === resumeId);
+    const enrolledIds = userCourses.map((c) => c.id);
+    return HttpResponse.json(buildNextCourses(base, catalog, enrolledIds));
   }),
 
   http.get('*/api/webcoach/community-pulse', () => HttpResponse.json(communityPulseMock)),

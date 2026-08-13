@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppHeader, LearningBreadcrumb } from './shared';
+import { AppHeader } from './shared';
 import { CourseCard, GalleryCourse, categoryColor } from './materials/CourseCard';
+import { NextCourseCard } from './materials/NextCourseCard';
 import { useAuth } from '../contexts/AuthContext';
 import { useMypageData } from '../hooks/useMypageData';
 import { bffClient } from '../services/bffClient';
@@ -13,14 +14,6 @@ const DESIGN_WIDTH = 1440;
 
 interface CatalogCourse extends GalleryCourse {
   difficulty?: string;
-}
-
-interface LessonRow {
-  id: number;
-  name: string;
-  done: boolean;
-  current: boolean;
-  minutes?: number;
 }
 
 /**
@@ -54,11 +47,10 @@ interface TierGroup {
 function MaterialsTopPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { resumableCourse, activeCourses } = useMypageData(user?.userid);
+  const { resumableCourse, activeCourses, nextRecommendations } = useMypageData(user?.userid);
   const { outerRef, innerRef, scale, innerHeight } = useScaleToFit(DESIGN_WIDTH);
 
   const [catalog, setCatalog] = useState<CatalogCourse[]>([]);
-  const [remainingLessons, setRemainingLessons] = useState<LessonRow[]>([]);
   const [currentModuleId, setCurrentModuleId] = useState<number | undefined>();
   const [query, setQuery] = useState('');
 
@@ -89,10 +81,14 @@ function MaterialsTopPage() {
     return () => { alive = false; };
   }, [activeCourses, resumableCourse]);
 
-  // 続きから学習中のコースの、残りレッスン一覧（実モジュール＋実完了状態）
+  /**
+   * 「続きからはじめる」の飛び先だけを決める。
+   * 以前はここで取った全レッスンを「このコースの残りレッスン」として右に並べていたが、
+   * コーストップを開けば同じものが構造付きで見られるため一覧はやめた（レビュー指摘）。
+   * 完了状態の取得自体は、最初の未完了レッスンを特定するためになお必要。
+   */
   useEffect(() => {
     if (!resumableCourse) {
-      setRemainingLessons([]);
       setCurrentModuleId(undefined);
       return;
     }
@@ -108,17 +104,8 @@ function MaterialsTopPage() {
       );
       if (!alive) return;
       const doneMap = new Map(results.map((r) => [r.id, r.done]));
-      const firstIncompleteIdx = modules.findIndex((m: any) => !doneMap.get(m.id));
-      setCurrentModuleId(modules[firstIncompleteIdx]?.id);
-      setRemainingLessons(
-        modules.map((m: any, i: number) => ({
-          id: m.id,
-          name: m.name,
-          done: doneMap.get(m.id) ?? false,
-          current: i === firstIncompleteIdx,
-        }))
-      );
-    }).catch(() => setRemainingLessons([]));
+      setCurrentModuleId(modules.find((m: any) => !doneMap.get(m.id))?.id);
+    }).catch(() => setCurrentModuleId(undefined));
     return () => { alive = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resumableCourse?.id]);
@@ -157,10 +144,7 @@ function MaterialsTopPage() {
     });
   }, [filtered]);
 
-  const completedCount = remainingLessons.filter((l) => l.done).length;
-
   const goToContinue = () => resumableCourse && navigate(currentModuleId ? `/course/${resumableCourse.id}?module=${currentModuleId}` : `/course/${resumableCourse.id}/curriculum`);
-  const goToCurriculum = () => resumableCourse && navigate(`/course/${resumableCourse.id}/curriculum`);
   const jumpToArea = (name: string) => areaRefs.current[name]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   return (
@@ -176,84 +160,97 @@ function MaterialsTopPage() {
         className="flex flex-col"
         style={{ position: 'absolute', top: 0, left: 0, width: DESIGN_WIDTH, paddingTop: t.space.pageTop, paddingLeft: t.space.pageX, paddingRight: t.space.pageX, paddingBottom: t.space.pageBottom, gap: t.space.stack, fontFamily: t.font.family, color: t.color.text.primary, boxSizing: 'border-box', transform: `scale(${scale})`, transformOrigin: 'top left' }}
       >
-        {/* パンくずは常に出す。階層は「学習コンテンツ ＞ 学習領域 ＞ コース ＞ 単元 ＞ レッスン」で、
-            以前先頭に付いていたサイドバーのグループ名「学習」は階層ではないので出さない。 */}
-        <LearningBreadcrumb items={[{ label: '学習コンテンツ' }]} />
+        {/* ① 見出しと「続きから学ぶ」を1行に置く。
+            以前はこの上にパンくず「学習コンテンツ」とリード文があり、見出しと合わせて同じ言葉が3回出ていた。
+            さらに続きのカードが縦に大きく、ファーストビューがほぼ1コースで埋まっていたため、
+            見出しの高さに収まる横長カードに畳んだ（レビュー指摘）。 */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+          <h1 style={{ margin: 0, fontSize: t.font.size.pageTitle, fontWeight: t.font.weight.black, whiteSpace: 'nowrap' }}>学習コンテンツ</h1>
 
-        <div>
-          <h1 style={{ margin: 0, fontSize: t.font.size.pageTitle, fontWeight: t.font.weight.black }}>学習コンテンツ</h1>
-          <p style={{ margin: '9px 0 0', fontSize: 13, color: t.color.text.muted }}>続きから進めて、必要なコースはいつでも探せます。</p>
-        </div>
+          {resumableCourse && (
+            <div
+              style={{
+                flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', gap: 20,
+                background: t.color.bg.card, border: `1px solid ${t.color.border.card}`,
+                borderRadius: t.radius.card, boxShadow: t.shadow.card, padding: 14, paddingRight: 20,
+              }}
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/images/materials/hero-art.png`}
+                alt=""
+                style={{ width: 132, height: 84, objectFit: 'cover', borderRadius: t.radius.inner, display: 'block', flexShrink: 0 }}
+              />
 
-        {/* ① いま取り組むレッスン / このコースの残りレッスン */}
-        {resumableCourse && (
-          <div className="grid" style={{ gridTemplateColumns: '1.55fr 1fr', gap: t.space.grid, alignItems: 'stretch' }}>
-            <div style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.card, overflow: 'hidden', boxShadow: t.shadow.card, display: 'flex' }}>
-              <img src={`${process.env.PUBLIC_URL}/images/materials/hero-art.png`} alt="" style={{ width: 200, objectFit: 'cover', display: 'block' }} />
-              <div style={{ flex: 1, padding: '28px 32px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-                <div style={{ fontSize: 11.5, fontWeight: t.font.weight.black, color: t.color.primary, letterSpacing: t.font.letterSpacingWide }}>いま取り組むレッスン</div>
-                <div style={{ fontSize: 23, fontWeight: t.font.weight.black }}>{resumableCourse.title}</div>
-                <div style={{ fontSize: 12.5, color: t.color.text.muted }}>
-                  {[resumableCourse.currentLesson, resumableCourse.currentChapter && `${resumableCourse.currentChapter}から再開`, resumableCourse.remainingMinutes && `残り約${resumableCourse.remainingMinutes}分`]
+              <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
+                <div style={{ fontSize: 11, fontWeight: t.font.weight.black, color: t.color.primary, letterSpacing: t.font.letterSpacingWide }}>
+                  続きから学ぶ
+                </div>
+                <div style={{ fontSize: 17, fontWeight: t.font.weight.black, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {resumableCourse.title}
+                </div>
+                <div style={{ fontSize: 11.5, color: t.color.text.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {[resumableCourse.currentLesson, resumableCourse.currentChapter && `${resumableCourse.currentChapter}から再開`]
                     .filter(Boolean)
                     .join('・')}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ flex: 1, height: 7, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <div style={{ flex: 1, height: 6, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}>
                     <div style={{ width: `${resumableCourse.progress ?? 0}%`, height: '100%', background: t.color.primary, borderRadius: t.radius.pill }} />
                   </div>
-                  <span style={{ fontSize: 12.5, fontWeight: t.font.weight.bold, color: t.color.primary }}>{resumableCourse.progress ?? 0}%</span>
+                  <span style={{ fontSize: 11.5, fontWeight: t.font.weight.bold, color: t.color.primary }}>{resumableCourse.progress ?? 0}%</span>
                 </div>
-                <div style={{ display: 'flex', gap: 12, marginTop: 2 }}>
-                  <button
-                    onClick={goToContinue}
-                    className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    style={{ background: t.color.primary, color: '#fff', borderRadius: t.radius.button, padding: '16px 34px', fontSize: 14.5, fontWeight: t.font.weight.black, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
-                  >
-                    続きからはじめる　→
-                  </button>
-                  <button
-                    onClick={goToCurriculum}
-                    className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.line}`, color: t.color.text.body, borderRadius: t.radius.button, padding: '16px 26px', fontSize: 13.5, fontWeight: t.font.weight.bold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
-                  >
-                    コースの目次
-                  </button>
-                </div>
+              </div>
+
+              {resumableCourse.remainingMinutes && (
+                <span style={{ fontSize: 11.5, color: t.color.text.muted, whiteSpace: 'nowrap', flexShrink: 0 }}>
+                  残り 約{resumableCourse.remainingMinutes}分
+                </span>
+              )}
+
+              <button
+                onClick={goToContinue}
+                className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{ background: t.color.primary, color: '#fff', borderRadius: t.radius.button, padding: '13px 24px', fontSize: 13.5, fontWeight: t.font.weight.black, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer', flexShrink: 0 }}
+              >
+                続きから学ぶ　→
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* ② 次におすすめ。
+            ①（続きから）と③（全コース一覧）の間には「①を終えた人が次にどこへ行くか」が無かった。
+            意味の違う3枠（実践／関連／1歩先）だけを出し、バッジのラベルを推薦理由そのものにする。
+            根拠は「続きから学ぶコースのカテゴリと難易度」だけなので、
+            それが取れない人（続きが無い／モックOFF）には枠が0件になり、この節ごと消える。 */}
+        {nextRecommendations.length > 0 && (
+          <section style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <div>
+              <div style={{ fontSize: 19, fontWeight: t.font.weight.black }}>次におすすめ</div>
+              <div style={{ fontSize: 12.5, color: t.color.text.muted, marginTop: 6 }}>
+                {resumableCourse ? `「${resumableCourse.title}」の続きとして選びました。` : '学習状況から選びました。'}
               </div>
             </div>
-
-            <div style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.card, padding: '24px 26px', boxShadow: t.shadow.card, display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 14.5, fontWeight: t.font.weight.black }}>このコースの残りレッスン</span>
-                <span style={{ fontSize: 11.5, color: t.color.text.muted }}>{completedCount} / {remainingLessons.length} 完了</span>
-              </div>
-              {remainingLessons.map((l, i) => (
-                <div
-                  key={l.id}
-                  onClick={() => navigate(`/course/${resumableCourse.id}?module=${l.id}`)}
-                  className="cursor-pointer"
-                  style={{ display: 'flex', alignItems: 'center', gap: 12 }}
-                >
-                  {l.done ? (
-                    <span style={{ width: 24, height: 24, borderRadius: '50%', background: t.color.primary, color: '#fff', fontSize: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>✓</span>
-                  ) : l.current ? (
-                    <span style={{ width: 24, height: 24, borderRadius: '50%', background: t.color.bg.card, border: `2.5px solid ${t.color.text.strong}`, flexShrink: 0 }} />
-                  ) : (
-                    <span style={{ width: 24, height: 24, borderRadius: '50%', background: t.color.bg.card, border: `2px solid ${t.color.border.muted}`, color: t.color.text.subtle, fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box', flexShrink: 0 }}>{i + 1}</span>
-                  )}
-                  <span style={{ flex: 1, fontSize: 13, fontWeight: l.current ? t.font.weight.bold : undefined, color: l.done ? t.color.text.done : l.current ? t.color.text.primary : t.color.text.subtle }}>
-                    {l.name}
-                  </span>
-                </div>
+            <div
+              className="grid"
+              style={{ gridTemplateColumns: `repeat(${nextRecommendations.length}, minmax(0, 1fr))`, gap: t.space.grid }}
+            >
+              {nextRecommendations.map((rec) => (
+                <NextCourseCard
+                  key={rec.slot}
+                  slot={rec.slot}
+                  label={rec.label}
+                  course={rec.course}
+                  onClick={() => navigate(`/course/${rec.course.id}/curriculum`)}
+                />
               ))}
             </div>
-          </div>
+          </section>
         )}
 
         <div style={{ height: 1, background: t.color.divider, marginTop: 8 }} />
 
-        {/* ② コースをさがす。
+        {/* ③ コースをさがす。
             以前はカテゴリ／受講状況のチップで絞り込ませ、9件ずつ「さらに表示」していた。
             探しに来ていない人には絞り込みが使われず、下に何があるかも分からなかったため、
             見出しで区切ったギャラリーを全件そのまま縦に並べる方式に変えた。 */}
