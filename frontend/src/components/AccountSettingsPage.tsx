@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { changePassword, updateEmail, verifyEmailChange } from '../services/cognitoAuth';
 import { AppHeader } from './shared';
+import AccountOverviewCard from './profile/AccountOverviewCard';
 import { Button } from './ui/button';
 
 type Mode = 'main' | 'emailVerify' | 'success';
@@ -22,6 +23,11 @@ function AccountSettingsPage() {
   const [verifyCode, setVerifyCode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // 一覧の「メールアドレスとパスワード」から下のフォームへ送る
+  const loginFormRef = useRef<HTMLDivElement>(null);
+  const focusLoginForm = () =>
+    loginFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   const passwordRules = [
     { label: '8文字以上', test: (p: string) => p.length >= 8 },
@@ -179,9 +185,17 @@ function AccountSettingsPage() {
                   アカウント設定
                 </h2>
 
-                <div className="mb-5">
-                  <p className="font-bold mb-3 text-brand-muted" style={{ fontSize: '14px' }}>
+                {/* いきなり入力欄を出すと「何を変えると何が起きるのか」が分からない、
+                    という指摘への対応。まず現状と行き先の一覧を挟む。 */}
+                <AccountOverviewCard onFocusPassword={focusLoginForm} />
+
+                <div className="mb-5" ref={loginFormRef} style={{ scrollMarginTop: 20 }}>
+                  <p className="font-bold mb-1 text-brand-muted" style={{ fontSize: '14px' }}>
                     ログイン情報
+                  </p>
+                  <p className="mb-3 text-brand-muted" style={{ fontSize: '12px', lineHeight: 1.8 }}>
+                    ここを変更すると、次回のログインから新しいメールアドレス・パスワードが必要になります。
+                    学習記録・ノート・コーチングの記録には影響しません。
                   </p>
                   <div className="space-y-3">
                     <div>
@@ -196,6 +210,9 @@ function AccountSettingsPage() {
                         style={inputStyle}
                         placeholder="user@example.com"
                       />
+                      <p className="mt-1 text-brand-muted" style={{ fontSize: '11.5px', lineHeight: 1.7 }}>
+                        変更すると新しいアドレスに確認コードが届きます。入力するまで切り替わりません。
+                      </p>
                     </div>
                     <div>
                       <p className="mb-1 text-brand-muted" style={{ fontSize: '13px', fontWeight: 700 }}>

@@ -352,7 +352,23 @@ export const handlers = [
     }
     return HttpResponse.json(profile);
   }),
-  http.get('*/api/webcoach/avatars', () => HttpResponse.json([])),
+  /**
+   * 選べるアイコン。
+   * 🔴 以前は空配列を返していて、AvatarPicker を開いても何も並ばなかった。
+   *    「アイコンを変えられるようになりたい」というレビュー指摘の実体はこれ。
+   *    実運用では管理画面（/admin/avatars）が登録した画像が返る。モックでは
+   *    外部画像に依存しない DiceBear の動物アイコンを並べる。
+   */
+  http.get('*/api/webcoach/avatars', () =>
+    HttpResponse.json(
+      ['cat', 'dog', 'rabbit', 'bear', 'panda', 'fox', 'penguin', 'koala', 'sheep', 'lion', 'frog', 'owl'].map(
+        (seed, i) => ({
+          avatar_id: i + 1,
+          url: `https://api.dicebear.com/7.x/thumbs/svg?seed=${seed}&backgroundColor=FFECEE`,
+        })
+      )
+    )
+  ),
 
   // ==================== MyPage / ダッシュボード ====================
   http.get('*/api/webcoach/resumecourse/:userid', () => HttpResponse.json(resumeCourses)),
