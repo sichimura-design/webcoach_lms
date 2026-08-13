@@ -22,17 +22,17 @@ import {
   PLAN_STATUS_LABEL,
   PlanRevision,
   RevisionAction,
-  SKILL_LABEL,
 } from '../../types/learningPlan';
-import { derivePhaseStatus, formatJpDate } from '../../utils/learningPlanTemplate';
+import { derivePhaseStatus } from '../../utils/learningPlanTemplate';
+import { MOCKS_ENABLED } from '../../mocks/config';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
 import RevisionCard from './RevisionCard';
 import MonthlyCheckin from './MonthlyCheckin';
+import PhaseFocusCards from './PhaseFocusCards';
+import PhaseJourney from './PhaseJourney';
 import PlanEditor from './PlanEditor';
 import PlanSummaryStrip from './PlanSummaryStrip';
-import StageRail from './StageRail';
-import ThisMonthCard from './ThisMonthCard';
-import PaceAdjustCard from './PaceAdjustCard';
+import ReviewDuePrompt from './ReviewDuePrompt';
 
 type Mode =
   | { kind: 'view' }
@@ -51,69 +51,10 @@ function cardStyle(): React.CSSProperties {
   };
 }
 
-/**
- * 「全ロードマップで必須の7項目」のうち、上部のサマリー4タイルに出ないものを補う帯。
- * ゴール・期限・現在フェーズ・見直し日は PlanSummaryStrip 側で見えているので、
- * ここは優先スキル・状態・実現可能性の注記だけに絞る。
- */
-function PlanConditions({ plan }: { plan: LearningPlan }) {
-  return (
-    <div style={cardStyle()}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-        <span style={{ ...font.cardTitle, color: color.text }}>このロードマップの前提</span>
-        <span
-          style={{
-            ...t.chip,
-            background: plan.status === 'confirmed_with_coach' ? color.primarySoft : color.hoverBg,
-            color: plan.status === 'confirmed_with_coach' ? color.primary : color.textMuted,
-          }}
-        >
-          {PLAN_STATUS_LABEL[plan.status]}
-        </span>
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginTop: 16 }}>
-        <span style={{ ...font.caption, color: color.textSubtle, flex: '0 0 auto' }}>優先スキル</span>
-        {plan.prioritySkills.length === 0 ? (
-          <span style={{ fontSize: 13, color: color.textSubtle }}>—</span>
-        ) : (
-          plan.prioritySkills.map((s) => (
-            <span
-              key={s}
-              style={{
-                ...font.caption, color: color.textStrong, background: color.hoverBg,
-                borderRadius: radius.pill, padding: '5px 12px',
-              }}
-            >
-              {SKILL_LABEL[s]}
-            </span>
-          ))
-        )}
-        <span style={{ ...font.caption, color: color.textSubtle, marginLeft: 12 }}>
-          週の学習時間の想定 約{plan.intake.weeklyHours}時間
-        </span>
-      </div>
-
-      {plan.feasibilityNote && (
-        <p
-          style={{
-            ...font.caption, color: color.textBody, lineHeight: 1.8, margin: '16px 0 0',
-            background: color.hoverBgTint, border: `1px solid ${color.borderSoft}`,
-            borderRadius: radius.md, padding: '11px 14px',
-          }}
-        >
-          {plan.feasibilityNote}
-        </p>
-      )}
-
-      {plan.status !== 'confirmed_with_coach' && (
-        <p style={{ ...font.caption, color: color.textMuted, lineHeight: 1.8, margin: '14px 0 0' }}>
-          これはLMSが自動で作成した案です。次回のコーチングでこの画面を一緒に見ながら確認しましょう。
-        </p>
-      )}
-    </div>
-  );
-}
+// 「このロードマップの前提」（優先スキル・週の想定学習時間・実現可能性の注記）の帯は外した。
+// この画面は「最終ゴール → 道筋 → 今ここ → 今の目的 → 次のステップ」に絞る方針で、
+// 前提の確認は初回設定と編集モードで足りる。データ（prioritySkills / feasibilityNote）は
+// LearningPlan にそのまま残っていて、PlanEditor では今も編集できる。
 
 export default function LearningPlanPage() {
   const { user } = useAuth();
@@ -123,7 +64,7 @@ export default function LearningPlanPage() {
 
   const {
     plan, loading, error, reload, setPlan,
-    stages, currentStage, currentPhase, progress, monthMilestones,
+    stages, currentStage,
     pendingRevision, pendingRevisionCount, checkin, checkinDue,
   } = useLearningPlan(userId);
 
@@ -131,6 +72,22 @@ export default function LearningPlanPage() {
   const [draft, setDraft] = useState<LearningPlan | null>(null);
   const [busy, setBusy] = useState(false);
   const [coachName, setCoachName] = useState<string | null>(null);
+
+  /**
+   * 見直し案内のモーダル。見直し時期になったら1度だけ出す。
+   * 「あとで」で閉じたあとも告知バンドは残るので、導線は失われない。
+   * 毎回モーダルが出ると「見直しを促されて煩わしい」に戻るため、
+   * 閉じたら同じセッション中は二度と出さない。
+   */
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [reviewModalShown, setReviewModalShown] = useState(false);
+
+  useEffect(() => {
+    if (checkinDue && checkin && !reviewModalShown) {
+      setReviewModalOpen(true);
+      setReviewModalShown(true);
+    }
+  }, [checkinDue, checkin, reviewModalShown]);
 
   // 「コーチと確認しました」に添える既定のコーチ名を次回コーチング予定から取る。
   // 読み取りのみ。コーチング機能側のデータには書き込まない。
@@ -150,13 +107,10 @@ export default function LearningPlanPage() {
 
   const draftStatuses = useMemo(() => (draft ? derivePhaseStatus(draft, TODAY) : []), [draft]);
 
-  // 「今月やること」に出していない、現在フェーズの残りのマイルストーン。
-  // 全フェーズぶんを並べると再び「やることが多すぎる」画面に戻るので、現在フェーズ内に留める。
-  const restMilestones = useMemo(() => {
-    if (!currentPhase) return [];
-    const shown = new Set(monthMilestones.map((m) => m.id));
-    return currentPhase.milestones.filter((m) => !shown.has(m.id));
-  }, [currentPhase, monthMilestones]);
+  // マイルストーンの取り回し（今月やること／残りのマイルストーン）はこの画面から外した。
+  // ロードマップは中長期の地図に特化し、細かな行動は /coaching の
+  // 「次回までのアクション」が持つ、という役割分担にしたため。
+  // plan.phases[].milestones はデータとしては残っていて、編集モードでは今も使う。
 
   const openEditor = useCallback(() => {
     if (!plan) return;
@@ -185,45 +139,10 @@ export default function LearningPlanPage() {
     }
   };
 
-  /**
-   * ペース調整（目標期限の変更）の保存。
-   * 期間の再計算は PaceAdjustCard 内の純関数で済んでいるので、ここは結果を送るだけ。
-   */
-  const saveDeadline = async (next: LearningPlan) => {
-    if (!userId) return;
-    setBusy(true);
-    try {
-      const saved = await bffClient.updateLearningPlan(userId, {
-        phases: next.phases,
-        goalDeadline: next.goalDeadline,
-      });
-      setPlan(saved);
-      // 期間を動かすと古い更新案は前提が変わるのでサーバー側で superseded になる。
-      // 画面から消えるように取り直す。
-      reload();
-      showToast('ペースを変更しました', 'success');
-    } catch {
-      showToast('保存に失敗しました', 'error');
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  /** コーチとの見直し日の予約。日付が動くとふりかえりの表示タイミングも変わるので再取得する。 */
-  const saveReviewDate = async (nextReviewDate: string) => {
-    if (!userId) return;
-    setBusy(true);
-    try {
-      const saved = await bffClient.updateLearningPlan(userId, { nextReviewDate });
-      setPlan(saved);
-      reload();
-      showToast('見直し日を予約しました', 'success');
-    } catch {
-      showToast('保存に失敗しました', 'error');
-    } finally {
-      setBusy(false);
-    }
-  };
+  // ペース調整カード（目標期限・見直し日を日付ピッカーで直接動かすUI）はこの画面から外した。
+  // 「日単位・週単位で期限を設定すると、実際のコーチングによって進め方が変わるため、
+  // 予定から少しズレただけで遅れている感が出やすい」というレビュー指摘への対応。
+  // 期間の調整は「質問に答えて見直す」→ 更新案の採否、という流れに一本化してある。
 
   const confirmWithCoach = async () => {
     if (!userId || !draft) return;
@@ -388,16 +307,48 @@ export default function LearningPlanPage() {
   }
 
   // ---- 通常表示 ----
+  //
+  // この画面が答えるのは次の5つだけに絞ってある:
+  //   最終ゴール → 全体の道筋 → 今ここ → 今のフェーズの目的 → 次のステップ
+  // 具体的な行動・短期目標は /coaching の「次回までのアクション」が持つ。
+  // 役割を混ぜると運用が複雑になる、というレビュー指摘に沿った分担。
   return shell(
     <>
       <div>
         <h1 style={{ ...font.pageTitle, color: color.text, margin: 0 }}>学習ロードマップ</h1>
         <p style={{ ...font.meta, color: color.textMuted, margin: '6px 0 0', lineHeight: 1.8 }}>
-          長期の学習計画をもとに、今やることを分かりやすくお届けします。定期的に見直して、目標達成を一緒に目指しましょう。
+          長期的な学習の道筋です。具体的な短期目標は
+          <button
+            type="button"
+            onClick={() => navigate('/coaching')}
+            style={{
+              background: 'none', border: 'none', padding: 0, margin: '0 2px',
+              fontFamily: 'inherit', fontSize: 'inherit', fontWeight: 700,
+              color: color.primary, cursor: 'pointer', textDecoration: 'underline',
+            }}
+          >
+            「次回コーチングまでの目標」
+          </button>
+          で管理します。
         </p>
       </div>
 
-      {/* 未操作でも溜まっていく更新候補。ここで初めてまとめて見えるようにする。 */}
+      <PlanSummaryStrip plan={plan} stages={stages} currentStage={currentStage} />
+
+      {/* 見直し時期のときだけ出す。常設すると煩わしい、という指摘への対応。
+          モーダルは初回表示の1回だけで、閉じたあとはバンドだけが残る。 */}
+      <ReviewDuePrompt
+        due={checkinDue}
+        ready={!!checkin}
+        modalOpen={reviewModalOpen}
+        onStart={() => {
+          setReviewModalOpen(false);
+          setMode({ kind: 'checkin' });
+        }}
+        onDismissModal={() => setReviewModalOpen(false)}
+      />
+
+      {/* 未操作でも溜まっていく更新候補。見直しに答えた結果はここに出る。 */}
       {pendingRevision && (
         <RevisionCard
           /* 差分の選択状態はマウント時に初期化されるので、別の更新案に変わったら作り直す */
@@ -410,86 +361,26 @@ export default function LearningPlanPage() {
         />
       )}
 
-      <PlanSummaryStrip
-        plan={plan}
-        stages={stages}
-        currentStage={currentStage}
-        currentPhaseTitle={currentPhase?.title ?? null}
-        progress={progress}
-      />
+      <PhaseJourney stages={stages} />
 
-      <div style={cardStyle()}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
-          <span style={{ ...font.cardTitle, color: color.text }}>全体のロードマップ</span>
+      <PhaseFocusCards stages={stages} />
+
+      {/* モック確認用の導線。本番では出さない（開発者向け文言を本番文言に混ぜない）。 */}
+      {MOCKS_ENABLED && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', paddingTop: 4 }}>
           <span style={{ ...font.caption, color: color.textFaint }}>
-            全{plan.phases.length}フェーズを{stages.length}つのステージにまとめて表示しています
+            バージョン {plan.version}・{PLAN_STATUS_LABEL[plan.status]}
           </span>
+          <button
+            type="button"
+            disabled={busy}
+            onClick={resetPlan}
+            style={{ background: 'none', border: 'none', fontFamily: 'inherit', ...font.caption, color: color.textFaint, cursor: 'pointer', textDecoration: 'underline' }}
+          >
+            初回設定をやり直す（モック確認用）
+          </button>
         </div>
-        <div style={{ marginTop: 26 }}>
-          <StageRail stages={stages} currentStage={currentStage} />
-        </div>
-      </div>
-
-      <ThisMonthCard milestones={monthMilestones} phase={currentPhase} restMilestones={restMilestones} />
-
-      {/*
-        「質問に答えて見直す」導線。中身は既存の月次ふりかえり4問をそのまま使う。
-        見直し日が近いときだけ配色と文言を強めて、それ以外は常設の案内として置いておく。
-      */}
-      <div
-        style={{
-          display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap',
-          background: checkinDue ? color.primarySoft : color.hoverBgTint,
-          border: `1px solid ${checkinDue ? color.primaryBorder : color.borderSoft}`,
-          borderRadius: radius.card, padding: '20px 24px',
-        }}
-      >
-        <div style={{ flex: '1 1 320px', minWidth: 260 }}>
-          <div style={{ ...font.rowTitle, fontSize: 15, color: checkinDue ? color.primary : color.text }}>
-            {checkinDue
-              ? `${formatJpDate(plan.nextReviewDate)}の見直しが近づいています`
-              : '学習計画は、いつでもあなたに合わせて調整できます'}
-          </div>
-          <p style={{ ...font.meta, color: color.textMuted, margin: '8px 0 0', lineHeight: 1.8 }}>
-            4つの質問（今月の達成度・学習時間の変化・つまずき・目標の変化）に答えると、
-            回答をもとにLMSがペースの調整案を作ります。採用するかどうかはあなたが選べます。
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={() => setMode({ kind: 'checkin' })}
-          disabled={!checkin}
-          style={{ ...t.primaryButton, padding: '15px 26px', fontSize: 14, opacity: checkin ? 1 : 0.5 }}
-        >
-          質問に答えて見直す
-        </button>
-        <span style={{ ...font.caption, color: color.textFaint, flex: '0 0 auto' }}>所要時間：約1分</span>
-      </div>
-
-      <PaceAdjustCard
-        plan={plan}
-        busy={busy}
-        onSaveDeadline={saveDeadline}
-        onSaveReviewDate={saveReviewDate}
-        onOpenEditor={openEditor}
-      />
-
-      <PlanConditions plan={plan} />
-
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', paddingTop: 4 }}>
-        <span style={{ ...font.caption, color: color.textFaint }}>
-          次回見直し予定 {formatJpDate(plan.nextReviewDate)}・バージョン {plan.version}
-        </span>
-        {/* モック確認用。実運用では管理者操作にする想定。 */}
-        <button
-          type="button"
-          disabled={busy}
-          onClick={resetPlan}
-          style={{ background: 'none', border: 'none', fontFamily: 'inherit', ...font.caption, color: color.textFaint, cursor: 'pointer', textDecoration: 'underline' }}
-        >
-          初回設定をやり直す
-        </button>
-      </div>
+      )}
     </>,
   );
 }

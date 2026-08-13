@@ -312,6 +312,21 @@ body.learning-workspace {
   }
 }
 
+/* ─── 学習ロードマップ(/learning-plan) ─────────
+   「いまやっていること」と「この後のステップ」の2枚。丈を揃えるため等幅。 */
+.plan-focus-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: stretch;
+}
+
+@media (max-width: 820px) {
+  .plan-focus-2col {
+    grid-template-columns: 1fr;
+  }
+}
+
 :root {
   --background: 0 0% 100%;
   --foreground: 258 30% 18%;        /* ディープネイビー */
