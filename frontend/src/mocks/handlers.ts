@@ -204,6 +204,9 @@ function buildSections(courseId: number) {
       modname: 'page',
       // 学習タイプ（階層ではなく分類）。コーストップの単元カードでチップとして出す
       learningtype: lesson.learningType,
+      // 所要時間の目安。コーストップの「目安 40分」「15分」はこれを積み上げて出す。
+      // シード（CourseLessonSeed.minutes）と同じ値なので、教材ページの表示ともズレない。
+      durationminutes: lesson.minutes,
       description: MODULE_DESCRIPTIONS[lesson.title] ?? `<h2>${lesson.title}</h2><p>このレッスンの本文です。</p>`,
       completion: 1,
       completiondata: { state: 0 },
