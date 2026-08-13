@@ -35,6 +35,16 @@ export const color = {
   trackBg: '#EFE9E9',          // ロードマップの未通過ライン
   hoverBg: '#FAF7F7',
   hoverBgTint: '#FFF6F7',
+  progressTrack: '#FBE2E6',    // 進捗バーの下地。trackBg(#EFE9E9)は暖色グレーで別用途
+  borderPink: 'rgba(224,33,58,.12)',       // 淡いピンク枠（マイページのダッシュボードカード）
+  borderPinkStrong: 'rgba(224,33,58,.16)', // 区切り線・アウトラインCTA枠
+
+  // ロードマップのノード（マイページ下部の帯）
+  goalBg: '#FEF6E7',           // ゴールノードの地。ここだけブランド外のアンバーを使う
+  goalBorder: '#F0C97A',
+  goalText: '#C9860F',
+  stepFutureBg: '#F7F5F5',     // 未到達ノードの地
+  stepFutureIcon: '#B9B2B4',
 
   // text
   text: '#1F1D1E',
@@ -53,6 +63,10 @@ export const color = {
 
 export const gradient = {
   heroThumb: 'linear-gradient(135deg,#FF5A4E 0%,#E0213A 55%,#C90D22 100%)',
+  /** 「続きからはじめる」カードの地。ごく淡いピンクの斜めグラデ（強いグラデにしない） */
+  continueCard: 'linear-gradient(135deg,#FFFFFF 0%,#FFF8F9 46%,#FFF0F2 100%)',
+  /** 線形の進捗バーの塗り。バーを増やすときは必ずこれを使う */
+  progressFill: 'linear-gradient(90deg,#F0546A 0%,#E0213A 100%)',
 } as const;
 
 export const radius = {
@@ -73,6 +87,8 @@ export const shadow = {
   overlayButton: '0 6px 18px rgba(190,60,70,.18)',
   currentStep: '0 0 0 5px #FFFFFF,0 4px 12px rgba(224,33,58,.22)',
   stepRing: '0 0 0 5px #FFFFFF',
+  cardWide: '0 14px 40px rgba(190,60,70,.07)',  // マイページ 2×2 グリッドのカード
+  continue: '0 18px 46px rgba(224,33,58,.08)',  // 続きからカード（最も広く柔らかい）
 } as const;
 
 export const space = {
@@ -86,6 +102,11 @@ export const space = {
   roadmapPad: '24px 28px 30px',
   listGap: 10,
   goalGap: 22,
+  // マイページのダッシュボード
+  dashGap: 20,
+  summaryPad: '24px 32px',
+  dashCardPad: '26px 30px',
+  roadmapPadWide: '40px 46px 44px',
 } as const;
 
 /** 3カラム行（合計 1326px 幅の本文領域内） */
@@ -93,6 +114,9 @@ export const grid = {
   contentWidth: 1326,
   columns: '384px 554px 1fr',
   gap: 18,
+  /** マイページ 2×2 ダッシュボード。1440 - 60*2 = 1320 = 860 + 20 + 440 */
+  dashColumns: '860px 440px',
+  dashRows: 'minmax(396px, auto) minmax(284px, auto)',
 } as const;
 
 export const font = {
@@ -101,6 +125,16 @@ export const font = {
   pageTitle:     { fontSize: 28,   fontWeight: 900, letterSpacing: '.2px' },
   heroTitle:     { fontSize: 25,   fontWeight: 900, letterSpacing: '.2px' },
   statValue:     { fontSize: 22,   fontWeight: 900, letterSpacing: '.2px' },
+  // ---- マイページ（ダッシュボード）----
+  displayTitle:  { fontSize: 30,   fontWeight: 900, letterSpacing: '.2px' }, // 続きから: コース名
+  statValueLg:   { fontSize: 30,   fontWeight: 900, letterSpacing: '.2px' }, // サマリー帯: 数字部
+  statUnit:      { fontSize: 20,   fontWeight: 900 },                        // サマリー帯: 時間/分
+  userName:      { fontSize: 22,   fontWeight: 900 },
+  streakBig:     { fontSize: 56,   fontWeight: 900, letterSpacing: '-.02em' },
+  cardTitleLg:   { fontSize: 19,   fontWeight: 900 }, // Lesson N / 次回コーチング日付 / ロードマップのステップ名
+  cardHeading:   { fontSize: 15,   fontWeight: 900 }, // 続きからはじめる / 学習ストリーク
+  encourage:     { fontSize: 13.5, fontWeight: 500 },
+  statLabel:     { fontSize: 13,   fontWeight: 500 },
   sectionTitle:  { fontSize: 17.5, fontWeight: 900 },
   cardTitle:     { fontSize: 16.5, fontWeight: 900 },
   logo:          { fontSize: 16,   fontWeight: 900, letterSpacing: '1.2px' },
@@ -133,6 +167,21 @@ export const t = {
     borderRadius: radius.hero,
     boxShadow: shadow.hero,
     overflow: 'hidden',
+  },
+  /**
+   * マイページ 2×2 グリッドのカード共通。
+   * 🔴 height:100% と flex column が要点。グリッドアイテムは箱が伸びても
+   *    中身は伸びないので、これが無いと行内でカードの丈が揃わない。
+   */
+  softCard: {
+    background: color.surface,
+    border: `1px solid ${color.borderPink}`,
+    borderRadius: radius.hero,
+    boxShadow: shadow.cardWide,
+    boxSizing: 'border-box' as const,
+    height: '100%',
+    display: 'flex' as const,
+    flexDirection: 'column' as const,
   },
   primaryButton: {
     display: 'flex', alignItems: 'center', gap: 12,

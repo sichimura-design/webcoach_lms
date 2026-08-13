@@ -30,6 +30,7 @@ import { buildCourseStructure, courseLessonCount, isLessonDone, lessonHandlers, 
 import { learningPlanHandlers } from './learningPlanHandlers';
 import { aiSkillHandlers } from './aiSkillHandlers';
 import { currentStreakInfo, studyActivityHandlers } from './studyActivityHandlers';
+import { STUDY_PEERS } from './studyPeers';
 import { listGoals, replaceGoals } from './coachingGoalsStore';
 import { buildNextCourses } from '../utils/nextCourseRecommend';
 
@@ -272,23 +273,22 @@ const communityPulseMock = {
   ],
 };
 
-// ==================== 集中ブース（応援・ランキング付き） ====================
-// 在室メンバー（仮名＋匿名アイコン。応援するとheartsが増える・セッション内で保持）
-let focusBoothMembersStore: FocusBoothMember[] = [
-  { id: 'm1', nickname: 'うさぎ58', avatarEmoji: '🐰', activityLabel: 'Webデザイン・バナー制作', elapsedMinutes: 184, hearts: 23, cheeredByMe: false },
-  { id: 'm2', nickname: 'こあら12', avatarEmoji: '🐨', activityLabel: 'コーディング・HTML/CSS基礎', elapsedMinutes: 212, hearts: 18, cheeredByMe: false },
-  { id: 'm3', nickname: 'ぱんだ7', avatarEmoji: '🐼', activityLabel: 'コーディング・JavaScript入門', elapsedMinutes: 167, hearts: 12, cheeredByMe: false },
-  { id: 'm4', nickname: 'ひつじ33', avatarEmoji: '🐑', activityLabel: 'Webデザイン・Figma実践', elapsedMinutes: 143, hearts: 10, cheeredByMe: false },
-  { id: 'm5', nickname: 'きつね21', avatarEmoji: '🦊', activityLabel: 'マーケティング・Web集客基礎', elapsedMinutes: 98, hearts: 8, cheeredByMe: false },
-  { id: 'm6', nickname: 'ねこ9', avatarEmoji: '🐱', activityLabel: '配色理論', elapsedMinutes: 76, hearts: 6, cheeredByMe: false },
-];
+// ==================== 集中ブース ====================
+// 在室メンバー（仮名＋匿名アイコン。応援するとheartsが増える・セッション内で保持）。
+// 🔴 人物の定義は studyPeers.ts が単一の正。ここで別名簿を持つと、
+//    学習時間ランキング（studyActivityHandlers.ts）と顔ぶれが食い違う。
+let focusBoothMembersStore: FocusBoothMember[] = STUDY_PEERS.slice(0, 6).map((p, i) => ({
+  id: p.id,
+  nickname: p.nickname,
+  avatarEmoji: p.avatarEmoji,
+  activityLabel: p.activityLabel,
+  // 在室時間は週の学習時間そのものではないので、名簿の値から今日ぶんの目安に落とす
+  elapsedMinutes: Math.round(p.weeklyMinutes / 3),
+  hearts: 23 - i * 3,
+  cheeredByMe: false,
+}));
 
 let myCheerCountToday = 3;
-
-// ランキングは初期実装から外した（学習時間の集計は studyActivityHandlers.ts が持つ）。
-// 復活させるときは、他ユーザーを含む横断集計になるため実BFF側の仕事になる。
-// クライアント側で必要なのは1件が localDate/durationMinutes/courseId/userId を持つことだけで、
-// それは types/studyActivity.ts の StudyActivity が満たしている。
 
 // 学習計画（今週の予定・セッション内で保持）
 let studyPlanStore: { weekLabel: string; days: any[] } | null = null;

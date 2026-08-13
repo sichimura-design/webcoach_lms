@@ -25,7 +25,12 @@ import {
   StudyActivityQuery,
   StudyStatsSummary,
 } from '../types/studyActivity';
-import { FocusBoothMember, FocusBoothPulse } from '../types/focusBooth';
+import {
+  FocusBoothMember,
+  FocusBoothPulse,
+  StudyRanking,
+  StudyRankingPeriod,
+} from '../types/focusBooth';
 import {
   AutoImportReadiness,
   CoachingSessions,
@@ -502,6 +507,16 @@ class BFFClient {
    */
   async getStudyStats(userId: number, days = 35): Promise<StudyStatsSummary> {
     const response = await this.api.get(`/webcoach/study-stats/${userId}`, { params: { days } });
+    return response.data;
+  }
+
+  /**
+   * 学習時間ランキング（今週／今月）
+   * GET /api/webcoach/study-ranking/{userId}?period=week|month
+   * 🔴 実BFFには無い。他ユーザー横断の集計はサーバの仕事なので、モックで提供している。
+   */
+  async getStudyRanking(userId: number, period: StudyRankingPeriod): Promise<StudyRanking> {
+    const response = await this.api.get(`/webcoach/study-ranking/${userId}`, { params: { period } });
     return response.data;
   }
 

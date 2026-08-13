@@ -4,7 +4,6 @@ import { SlidersHorizontal } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { AppHeader } from './shared';
 import { useStudySession } from '../hooks/useStudySession';
-import { useStudyStats } from '../hooks/useStudyStats';
 import { useCourseChoices } from '../hooks/useCourseChoices';
 import { useScaleToFit } from '../hooks/useScaleToFit';
 import { StudySessionMode } from '../types/studyRoom';
@@ -12,9 +11,7 @@ import { CourseChoice, defaultCourseChoice } from '../utils/courseSelection';
 import { color, font, space, t } from '../theme/webcoachTheme';
 import FocusTimerCard from './focus/FocusTimerCard';
 import CurrentMaterialCard, { FocusMaterialView } from './focus/CurrentMaterialCard';
-import StudyStatsCard from './focus/StudyStatsCard';
-import StreakCalendarCard from './focus/StreakCalendarCard';
-import RecentSessionsCard from './focus/RecentSessionsCard';
+import StudyRankingCard from './focus/StudyRankingCard';
 import MaterialPickerModal from './focus/MaterialPickerModal';
 import EnvironmentSettingsPanel from './focus/EnvironmentSettingsPanel';
 import { formatTodayLabel } from './focus/focusFormat';
@@ -26,8 +23,11 @@ const DESIGN_WIDTH = 1440;
  * 集中ブース（自習室タブの1つ目。学習記録 /study-log・ノート /notes と上部タブで並ぶ）。
  *   左  : タイマー（通常／ポモドーロ）＋今回の学習目標＋開始・一時停止・終了
  *   右上: 現在の学習教材
- *   右中: 今日/今週/今月の学習時間・セッション数・ストリーク・最長集中
- *   右下: 学習の継続（カレンダー）／最近の学習記録
+ *   右下: 学習時間ランキング（今週／今月）
+ *
+ * 以前は右カラムに統計カード・継続カレンダー・最近の学習記録も並べていたが、
+ * 「いろいろ表示されすぎている ⇒ タイマーとランキングでいい」という指摘を受けて外した。
+ * 数字の振り返りは自習室タブの「学習記録」に集約してある。
  *
  * レイアウトは MyPage.tsx と同じ「固定1440pxで組んで transform:scale で縮小する」方式
  * （index.css の .home-* 節のコメントに書かれている全画面共通の方針）。
@@ -57,7 +57,6 @@ function FocusBoothPage() {
     updateGoal,
     prepareFinish,
   } = useStudySession(user?.userid);
-  const { stats, loading: statsLoading } = useStudyStats(user?.userid);
   const { groups: courseGroups, loading: coursesLoading } = useCourseChoices(user?.userid);
 
   // 開始前の設定。開始したら session 側が正になる
@@ -216,13 +215,7 @@ function FocusBoothPage() {
                   onOpen={openMaterial}
                   onChange={() => setPickerOpen(true)}
                 />
-                <StudyStatsCard stats={stats} loading={statsLoading} />
-                <StreakCalendarCard stats={stats} loading={statsLoading} />
-                <RecentSessionsCard
-                  activities={stats?.recent ?? []}
-                  loading={statsLoading}
-                  onSeeAll={() => navigate('/study-log')}
-                />
+                <StudyRankingCard userId={user?.userid} />
               </div>
             </div>
           </main>

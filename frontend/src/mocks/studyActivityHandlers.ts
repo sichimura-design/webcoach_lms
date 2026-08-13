@@ -30,7 +30,13 @@ import {
 } from '../types/studyActivity';
 import { StreakInfo } from '../types/mypage';
 import {
+  StudyRanking,
+  StudyRankingEntry,
+  StudyRankingPeriod,
+} from '../types/focusBooth';
+import {
   clampText,
+  monthStartOf,
   periodTotal,
   sortByOccurredDesc,
   summarize,
@@ -39,6 +45,7 @@ import {
   weekStartOf,
 } from '../utils/studyStats';
 import { SEED_ID_PREFIX, buildSeedActivities, describeSeed } from './studyActivitySeed';
+import { MY_RANKING_EMOJI, STUDY_PEERS } from './studyPeers';
 
 const STORE_KEY = 'webcoach-study-activities';
 
@@ -138,6 +145,60 @@ const delay = (ms = 300) => new Promise((resolve) => setTimeout(resolve, ms));
  */
 export function currentStreakInfo(userId: number = DEFAULT_USER_ID): StreakInfo {
   return toStreakInfo(activitiesOf(userId), new Date());
+}
+
+// ---- 学習時間ランキング ----------------------------------------------------
+// 実BFFには存在しない（他ユーザー横断の集計はサーバの仕事）。
+// モックでは「自分の値だけ実データ、他の人は studyPeers.ts の固定名簿」で作る。
+//
+// 🔴 自分の分は必ず periodTotal で実データから出す。
+//    固定値にすると、集中ブースでタイマーを回しても自分の行だけ動かず、
+//    「記録が反映されている」という体験そのものが確認できなくなる。
+// 🔴 順位はここ（＝サーバ役）で確定させ、画面側では並べ替えない。
+//    2箇所で並べ替えると、同着のときに表示がぶれる。
+
+const MONTH_FACTOR = 4.3;
+
+function periodRangeOf(period: StudyRankingPeriod, now: Date) {
+  const start = period === 'week' ? weekStartOf(now) : monthStartOf(now);
+  return { fromKey: toLocalDateKey(start), toKey: toLocalDateKey(now), start };
+}
+
+function peerMinutes(weeklyMinutes: number, period: StudyRankingPeriod, seed: string): number {
+  if (period === 'week') return weeklyMinutes;
+  // 月次は週の約4.3倍。全員が同じ倍率だと順位が週とまったく同じになるので、
+  // id の文字コードで ±12% の範囲だけ散らして「月で見ると順位が違う」を作る。
+  const jitter = ((seed.charCodeAt(seed.length - 1) % 25) - 12) / 100;
+  return Math.round(weeklyMinutes * MONTH_FACTOR * (1 + jitter));
+}
+
+function buildRanking(userId: number, period: StudyRankingPeriod): StudyRanking {
+  const now = new Date();
+  const { fromKey, toKey, start } = periodRangeOf(period, now);
+  const myMinutes = periodTotal(activitiesOf(userId), fromKey, toKey).minutes;
+
+  const rows = [
+    ...STUDY_PEERS.map((p) => ({
+      nickname: p.nickname,
+      avatarEmoji: p.avatarEmoji,
+      minutes: peerMinutes(p.weeklyMinutes, period, p.id),
+      isMe: false,
+    })),
+    { nickname: 'あなた', avatarEmoji: MY_RANKING_EMOJI, minutes: myMinutes, isMe: true },
+  ];
+
+  // 同着は自分を上に置く。自分の行が下に沈んで見つけにくいのを避ける。
+  rows.sort((a, b) => b.minutes - a.minutes || (a.isMe ? -1 : b.isMe ? 1 : 0));
+
+  const entries: StudyRankingEntry[] = rows.map((r, i) => ({ ...r, rank: i + 1 }));
+  const me = entries.find((e) => e.isMe)!;
+
+  const label =
+    period === 'week'
+      ? `今週（${start.getMonth() + 1}/${start.getDate()}〜）`
+      : `${start.getMonth() + 1}月`;
+
+  return { period, periodLabel: label, entries, me, participantCount: entries.length };
 }
 
 export const studyActivityHandlers = [
@@ -261,6 +322,14 @@ export const studyActivityHandlers = [
     }
     writeStore(store);
     return HttpResponse.json({ ok: true });
+  }),
+
+  // 学習時間ランキング（今週／今月）。集中ブースの右カラムが使う。
+  http.get('*/api/webcoach/study-ranking/:userid', async ({ params, request }) => {
+    await delay();
+    const raw = new URL(request.url).searchParams.get('period');
+    const period: StudyRankingPeriod = raw === 'month' ? 'month' : 'week';
+    return HttpResponse.json(buildRanking(userIdOf(params), period));
   }),
 
   // ★既存パスの実装差し替え。handlers.ts 側の固定モック（12日）は削除済み。

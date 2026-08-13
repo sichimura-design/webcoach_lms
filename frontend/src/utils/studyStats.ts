@@ -422,6 +422,24 @@ export function formatMinutesHM(min: number): string {
   return `${m}分`;
 }
 
+/**
+ * formatMinutesHM と同じ値を、数字と単位に割って返す。
+ * マイページのサマリー帯だけが使う。あそこは「3」「23」を30px、「時間」「分」を20pxで組むため、
+ * 1本の文字列だと単位まで大きくなって数字が読み取りにくくなる。
+ * 表示内容そのものは formatMinutesHM と一致させること（丸めもここに揃えてある）。
+ */
+export function splitMinutesHM(min: number): { value: string; unit: string }[] {
+  const safe = Math.max(0, Math.round(min));
+  const h = Math.floor(safe / 60);
+  const m = safe % 60;
+  if (h > 0) {
+    return m > 0
+      ? [{ value: String(h), unit: '時間' }, { value: String(m), unit: '分' }]
+      : [{ value: String(h), unit: '時間' }];
+  }
+  return [{ value: String(m), unit: '分' }];
+}
+
 /** M:SS。ポモドーロの残り時間 */
 export function formatMMSS(totalSeconds: number): string {
   const safe = Math.max(0, totalSeconds);
