@@ -148,7 +148,7 @@ function AIContentChat({
       <Box
         sx={{
           p: 2,
-          bgcolor: '#C62828',
+          bgcolor: '#D60934',
           color: 'white',
           display: 'flex',
           alignItems: 'center',
@@ -188,7 +188,7 @@ function AIContentChat({
           >
             <Avatar
               sx={{
-                bgcolor: message.role === 'user' ? '#1976d2' : '#C62828',
+                bgcolor: message.role === 'user' ? '#1976d2' : '#D60934',
               }}
             >
               {message.role === 'user' ? <Person /> : <SmartToy />}
@@ -252,7 +252,7 @@ function AIContentChat({
         ))}
         {loading && (
           <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-            <Avatar sx={{ bgcolor: '#C62828' }}>
+            <Avatar sx={{ bgcolor: '#D60934' }}>
               <SmartToy />
             </Avatar>
             <Paper elevation={1} sx={{ p: 2 }}>
@@ -286,7 +286,7 @@ function AIContentChat({
             onClick={handleSend}
             disabled={!input.trim() || loading}
             sx={{
-              bgcolor: '#C62828',
+              bgcolor: '#D60934',
               color: 'white',
               '&:hover': { bgcolor: '#8B1A1A' },
               '&:disabled': { bgcolor: '#ccc' },

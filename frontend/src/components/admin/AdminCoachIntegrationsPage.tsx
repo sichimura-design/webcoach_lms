@@ -26,7 +26,7 @@ const STATUS_STYLE: Record<ConnectionStatus, { bg: string; color: string }> = {
   not_connected: { bg: '#F1ECEC', color: '#6B6467' },
   reauth_required: { bg: '#FFF6E5', color: '#B26A00' },
   expired: { bg: '#FFF6E5', color: '#B26A00' },
-  plan_unsupported: { bg: '#FDECEE', color: '#C4102A' },
+  plan_unsupported: { bg: '#FDECEE', color: '#B50829' },
   revoked: { bg: '#F1ECEC', color: '#6B6467' },
 };
 
@@ -168,7 +168,7 @@ export function AdminCoachIntegrationsPage() {
   return (
     <div className="p-6 sm:p-8 max-w-[1100px]">
       <div className="flex items-center gap-2 mb-1">
-        <Video className="w-5 h-5" style={{ color: '#E0213A' }} />
+        <Video className="w-5 h-5" style={{ color: '#D60934' }} />
         <h1 className="text-xl font-bold" style={{ color: '#1F1D1E' }}>録画連携</h1>
       </div>
       <p className="text-sm mb-6" style={{ color: '#6B6467', lineHeight: 1.8 }}>
@@ -182,7 +182,7 @@ export function AdminCoachIntegrationsPage() {
           className="flex items-start gap-3 rounded-xl px-4 py-3 mb-5"
           style={{ background: '#FDECEE', border: '1px solid #F3C3C9' }}
         >
-          <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#C4102A' }} />
+          <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#B50829' }} />
           <p className="text-xs" style={{ color: '#4A4245', lineHeight: 1.8 }}>
             {unsupportedCount}名のコーチは、アカウントのプラン上そもそも自動取得ができません
             （Zoom無料プランにはクラウド録画が無く、個人GoogleアカウントではMeetの文字起こしが使えません）。
@@ -201,7 +201,7 @@ export function AdminCoachIntegrationsPage() {
               setOnlyUnconnected(e.target.checked);
               setSelected(new Set());
             }}
-            style={{ accentColor: '#E0213A' }}
+            style={{ accentColor: '#D60934' }}
           />
           未接続のみ表示
         </label>
@@ -212,7 +212,7 @@ export function AdminCoachIntegrationsPage() {
             setSelected((prev) => (prev.size === selectableIds.length ? new Set() : new Set(selectableIds)))
           }
           className="text-sm font-bold px-3 py-1.5 rounded-full"
-          style={{ color: '#E0213A', border: '1px solid #F3C3C9', background: '#fff' }}
+          style={{ color: '#D60934', border: '1px solid #F3C3C9', background: '#fff' }}
         >
           {selected.size === selectableIds.length && selectableIds.length > 0 ? '選択を解除' : 'すべて選択'}
         </button>
@@ -222,7 +222,7 @@ export function AdminCoachIntegrationsPage() {
           onClick={issueInvites}
           disabled={selected.size === 0 || issuing}
           className="inline-flex items-center gap-2 text-sm font-bold text-white px-4 py-2 rounded-xl disabled:opacity-50"
-          style={{ background: '#E0213A' }}
+          style={{ background: '#D60934' }}
         >
           <LinkIcon className="w-4 h-4" />
           {issuing ? '発行しています…' : `接続リンクを一括発行（${selected.size}名）`}
@@ -255,7 +255,7 @@ export function AdminCoachIntegrationsPage() {
       <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid #F3EDED' }}>
         <div
           className="grid items-center px-4 py-3 text-xs font-bold text-white"
-          style={{ gridTemplateColumns: '36px 1.6fr 1fr 1fr 1.1fr 1fr', background: '#E0213A' }}
+          style={{ gridTemplateColumns: '36px 1.6fr 1fr 1fr 1.1fr 1fr', background: '#D60934' }}
         >
           <span />
           <span>コーチ</span>
@@ -287,7 +287,7 @@ export function AdminCoachIntegrationsPage() {
                       disabled={!invitable}
                       onChange={() => toggle(c.coachId)}
                       aria-label={`${c.coachName}を選択`}
-                      style={{ accentColor: '#E0213A' }}
+                      style={{ accentColor: '#D60934' }}
                     />
                     <span className="min-w-0">
                       <span className="block text-sm font-bold truncate" style={{ color: '#1F1D1E' }}>
@@ -316,7 +316,7 @@ export function AdminCoachIntegrationsPage() {
                           type="button"
                           onClick={() => resend(c)}
                           className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full flex-shrink-0"
-                          style={{ color: '#E0213A', border: '1px solid #F3C3C9', background: '#fff' }}
+                          style={{ color: '#D60934', border: '1px solid #F3C3C9', background: '#fff' }}
                         >
                           <Send className="w-3 h-3" />
                           認証URLを再送
@@ -338,7 +338,7 @@ export function AdminCoachIntegrationsPage() {
                   {/* プラン非対応の理由 */}
                   {c.status === 'plan_unsupported' && c.reason && (
                     <div className="px-4 pb-3.5 pl-[52px]">
-                      <p className="text-xs" style={{ color: '#C4102A', lineHeight: 1.8 }}>
+                      <p className="text-xs" style={{ color: '#B50829', lineHeight: 1.8 }}>
                         {c.reason} このコーチの面談は手動取り込みのみになります。
                       </p>
                     </div>
@@ -359,7 +359,7 @@ export function AdminCoachIntegrationsPage() {
                         {invite.usedAt ? (
                           <Check className="w-4 h-4 flex-shrink-0" style={{ color: '#2F7F5B' }} />
                         ) : (
-                          <LinkIcon className="w-4 h-4 flex-shrink-0" style={{ color: '#E0213A' }} />
+                          <LinkIcon className="w-4 h-4 flex-shrink-0" style={{ color: '#D60934' }} />
                         )}
                         <code className="text-xs flex-1 min-w-0 truncate" style={{ color: '#4A4245' }}>
                           {invite.url}
@@ -371,7 +371,7 @@ export function AdminCoachIntegrationsPage() {
                           type="button"
                           onClick={() => copy(invite.url, `${invite.coachName}のリンクをコピーしました`)}
                           className="inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full flex-shrink-0"
-                          style={{ color: '#E0213A', border: '1px solid #F3C3C9', background: '#fff' }}
+                          style={{ color: '#D60934', border: '1px solid #F3C3C9', background: '#fff' }}
                         >
                           <Copy className="w-3 h-3" />
                           コピー

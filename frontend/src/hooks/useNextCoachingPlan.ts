@@ -7,6 +7,11 @@ export interface PlanItem {
   text: string;
   completed: boolean;
   progress: number;
+  /**
+   * 達成した日時（ISO8601）。実BFFはこの項目を返さないため本番では常に null。
+   * 表示側は null を前提にフォールバックすること。
+   */
+  completedAt: string | null;
 }
 
 interface NextSession {
@@ -16,7 +21,13 @@ interface NextSession {
 
 function fromApi(raw: CoachingGoalApi): PlanItem {
   const progress = raw.progress ?? (raw.is_completed === 1 ? 100 : 0);
-  return { no: raw.no, text: raw.description, completed: progress >= 100, progress };
+  return {
+    no: raw.no,
+    text: raw.description,
+    completed: progress >= 100,
+    progress,
+    completedAt: raw.completed_at ?? null,
+  };
 }
 
 function toApi(item: PlanItem, index: number) {

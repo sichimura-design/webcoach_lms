@@ -7,7 +7,7 @@ interface UploadHistoryProps {
 
 const statusColors = {
   success: { bg: '#e8f5e9', text: '#2e7d32', icon: '✅' },
-  failed: { bg: '#ffebee', text: '#c62828', icon: '❌' },
+  failed: { bg: '#ffebee', text: '#D60934', icon: '❌' },
   processing: { bg: '#fff3e0', text: '#e65100', icon: '⏳' }
 };
 

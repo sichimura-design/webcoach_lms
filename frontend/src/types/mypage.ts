@@ -13,6 +13,12 @@ export interface CoachingGoalApi {
   description: string;
   is_completed: 0 | 1;
   progress: number; // 0-100。is_completedはprogress>=100から導出する派生値
+  /**
+   * 達成した日時（ISO8601）。**モック専用の任意フィールド**。
+   * 実BFFの next-coaching-goals はこの項目を返さない（バックエンドは変更禁止）。
+   * 値が無い場合を必ず考慮すること。本番では未定義になる。
+   */
+  completed_at?: string | null;
 }
 
 export interface CoachingGoalUpdateItem {

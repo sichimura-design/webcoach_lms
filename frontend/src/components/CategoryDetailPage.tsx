@@ -237,7 +237,7 @@ function CategoryDetailPage() {
           className="relative border-b py-6 sm:py-8 lg:py-[40px]"
           style={{ backgroundColor: 'rgba(255,255,255,0.5)', borderColor: '#FEFAF8' }}
         >
-          <div className="max-w-[1100px] mx-auto px-4 sm:px-6 flex flex-col" style={{ gap: '24px' }}>
+          <div className="wc-page flex flex-col" style={{ '--wc-page-max': '1100px', '--wc-page-top': '0px', '--wc-page-bottom': '0px', gap: '24px' } as React.CSSProperties}>
             {/* パンくず（常に表示）。学習領域はコース一覧の大分類にあたる階層。 */}
             <LearningBreadcrumb
               items={[
@@ -294,8 +294,8 @@ function CategoryDetailPage() {
 
         {/* メインコンテンツ */}
         <div
-          className="relative max-w-[1100px] mx-auto px-4 sm:px-6"
-          style={{ paddingTop: '40px', paddingBottom: '40px' }}
+          className="wc-page relative"
+          style={{ '--wc-page-max': '1100px', '--wc-page-top': '40px', '--wc-page-bottom': '40px' } as React.CSSProperties}
         >
           <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-10">
 
@@ -518,7 +518,7 @@ function AiCoachSidebar({ categoryName, onOpen }: { categoryName: string; onOpen
       style={{ borderRadius: '24px', padding: '24px' }}
     >
       <div className="flex items-center gap-2 mb-3">
-        <Sparkles className="w-5 h-5 text-[#E0213A]" />
+        <Sparkles className="w-5 h-5 text-[#D60934]" />
         <h3 className="font-bold text-brand-muted" style={{ fontSize: '16px' }}>
           AIコーチに相談
         </h3>
@@ -553,7 +553,7 @@ function AiCoachSidebar({ categoryName, onOpen }: { categoryName: string; onOpen
           borderRadius: '999px',
           padding: '11px 18px',
           border: 'none',
-          background: 'linear-gradient(120deg,#F0546A,#E0213A)',
+          background: 'linear-gradient(120deg,#E5103C,#D60934)',
           fontSize: '12.5px',
           fontWeight: 700,
           cursor: 'pointer',

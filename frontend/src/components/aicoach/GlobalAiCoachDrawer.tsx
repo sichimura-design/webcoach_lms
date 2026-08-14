@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MessageCircle, X } from 'lucide-react';
+import { Sparkles, X } from 'lucide-react';
 import { color } from '../../theme/webcoachTheme';
 import { useLessonAi, LessonAiMessage } from '../../hooks/useLessonAi';
 import { useNoteCapture } from '../../hooks/useNoteCapture';
@@ -84,18 +84,43 @@ export function GlobalAiCoachDrawer() {
 
   if (!drawerOpen) {
     return (
+      /*
+       * 常駐FAB。claude.ai/design『マイページ 3d.dc.html』準拠のピル。
+       * 🔴 赤ベタの円にしない。DESIGN.md §2-6 の「赤ベタの面は1画面に2〜3箇所まで」に対して、
+       *    この FAB は全ページに出るので、どの画面でも赤の枠を1つ食い潰してしまう。
+       *    白地 + コーラルピンク（AI Accent）のアイコンにして、
+       *    学習アクションの Primary と役割を色で描き分ける（DESIGN.md §15-8）。
+       * 🔴 SPはボトムナビ（h-16）を避けて bottom を上げる。
+       */
       <button
         type="button"
         onClick={() => setDrawerOpen(true)}
         aria-label="AIコーチに相談"
-        className="fixed z-40 right-6 bottom-20 sm:bottom-6 w-16 h-16 rounded-full flex items-center justify-center text-white hover:opacity-90 transition-opacity"
+        className="group fixed z-40 right-6 bottom-20 sm:bottom-6 inline-flex items-center rounded-full transition-all duration-200 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
         style={{
-          background: 'linear-gradient(145deg, #f0444b, #D30F1A)',
-          border: '4px solid rgba(255,255,255,0.7)',
-          boxShadow: '0 14px 28px rgba(216,15,26,0.24)',
+          height: 52,
+          gap: 8,
+          padding: '0 20px',
+          background: '#FFFFFF',
+          border: '1px solid #EFE9E0',
+          fontFamily: 'inherit',
+          fontSize: 14,
+          fontWeight: 700,
+          color: '#141414',
+          cursor: 'pointer',
+          boxShadow: '0 8px 24px -8px rgba(60,48,32,.14)',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'translateY(-1px)';
+          e.currentTarget.style.boxShadow = '0 8px 32px -12px rgba(236,112,138,.45)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'translateY(0)';
+          e.currentTarget.style.boxShadow = '0 8px 24px -8px rgba(60,48,32,.14)';
         }}
       >
-        <MessageCircle className="w-6 h-6" />
+        <Sparkles size={20} strokeWidth={1.75} color="#EC708A" />
+        AIコーチに相談
       </button>
     );
   }

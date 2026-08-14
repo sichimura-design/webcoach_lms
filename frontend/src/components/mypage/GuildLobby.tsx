@@ -121,7 +121,7 @@ function GuildLobby({ pulse }: GuildLobbyProps) {
           >
             ギルドロビー
           </div>
-          <div style={{ background: 'rgba(255,255,255,.92)', borderRadius: 999, padding: '8px 16px', fontWeight: 700, color: '#E0213A', fontSize: 13 }}>
+          <div style={{ background: 'rgba(255,255,255,.92)', borderRadius: 999, padding: '8px 16px', fontWeight: 700, color: '#D60934', fontSize: 13 }}>
             {totalTodayMessage(pulse.totalToday)}
           </div>
         </div>
@@ -130,7 +130,7 @@ function GuildLobby({ pulse }: GuildLobbyProps) {
           <button
             onClick={() => navigate('/focus-booth')}
             className="inline-flex items-center gap-2 text-white font-bold appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-            style={{ background: '#E0213A', borderRadius: 999, padding: '11px 24px', fontSize: 14, border: 'none' }}
+            style={{ background: '#D60934', borderRadius: 999, padding: '11px 24px', fontSize: 14, border: 'none' }}
           >
             集中ブースに入室する
           </button>

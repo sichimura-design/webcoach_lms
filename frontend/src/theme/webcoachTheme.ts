@@ -6,14 +6,26 @@
  * 使い方: 新規/改修コンポーネントの style オブジェクトは必ずここを参照する。
  *   import { t } from '../theme/webcoachTheme';
  *   <div style={{ ...t.card, padding: t.space.cardPad }} />
- * 既存の theme/colors.ts（#C62828 系）は旧デザイン用。新画面では使わない。
+ * 既存の theme/colors.ts は旧デザイン用。新画面では使わない
+ * （ブランド赤だけは統一済みで、どちらも #D60934 を指す）。
  */
 
 export const color = {
-  // brand
-  primary: '#E0213A',
-  primaryHover: '#C4102A',
-  primaryPressed: '#A80B21',
+  /*
+   * brand
+   * ============================================================
+   * 🔴 基準色は #D60934。サイドバー（AppHeader.tsx の SB.brand）と同値。
+   *    かつては画面ごとに 5系統の赤（webcoachTheme / tokens / colors /
+   *    tailwind dash / マイページ）が混在し、ページを移動するたびに
+   *    赤の印象が変わっていた。
+   *    ここを唯一の基準にして全系統をこの値へ寄せた。変えるならここだけを変える。
+   * 🔴 Hover / Pressed も #D60934 から導いた値。基準色だけ差し替えると
+   *    濃色側の色相がずれるので、必ずセットで扱うこと。
+   * ============================================================
+   */
+  primary: '#D60934',
+  primaryHover: '#B50829',
+  primaryPressed: '#94061F',
   primarySoft: '#FFECEE',      // チップ・「いまここ」ピル背景
   primarySoftAlt: '#FFE9EB',   // 画像上のボタン背景
   primarySoftHover: '#FFDCE0',
@@ -36,8 +48,8 @@ export const color = {
   hoverBg: '#FAF7F7',
   hoverBgTint: '#FFF6F7',
   progressTrack: '#FBE2E6',    // 進捗バーの下地。trackBg(#EFE9E9)は暖色グレーで別用途
-  borderPink: 'rgba(224,33,58,.12)',       // 淡いピンク枠（マイページのダッシュボードカード）
-  borderPinkStrong: 'rgba(224,33,58,.16)', // 区切り線・アウトラインCTA枠
+  borderPink: 'rgba(214,9,52,.12)',       // 淡いピンク枠（マイページのダッシュボードカード）
+  borderPinkStrong: 'rgba(214,9,52,.16)', // 区切り線・アウトラインCTA枠
 
   // ロードマップのノード（マイページ下部の帯）
   goalBg: '#FEF6E7',           // ゴールノードの地。ここだけブランド外のアンバーを使う
@@ -70,17 +82,17 @@ export const color = {
   noteRule: '#EFE4E4',         // 左端の綴じ代（点線）
   noteHighlight: '#FFD9E0',    // 手書き風のマーカー・下線
   noteClipBg: '#FFF4F5',       // クリップブロックの地
-  noteClipAccent: '#E0213A',   // クリップの左罫（教材＝ブランド色）
+  noteClipAccent: '#D60934',   // クリップの左罫（教材＝ブランド色）
   noteAnswerBg: '#F3FAF6',     // AI回答ブロックの地
   noteAnswerAccent: '#3E9E70', // AI回答の左罫（AI＝緑。教材と出どころを区別する）
 } as const;
 
 export const gradient = {
-  heroThumb: 'linear-gradient(135deg,#FF5A4E 0%,#E0213A 55%,#C90D22 100%)',
+  heroThumb: 'linear-gradient(135deg,#FF5A4E 0%,#D60934 55%,#B50829 100%)',
   /** 「続きからはじめる」カードの地。ごく淡いピンクの斜めグラデ（強いグラデにしない） */
   continueCard: 'linear-gradient(135deg,#FFFFFF 0%,#FFF8F9 46%,#FFF0F2 100%)',
   /** 線形の進捗バーの塗り。バーを増やすときは必ずこれを使う */
-  progressFill: 'linear-gradient(90deg,#F0546A 0%,#E0213A 100%)',
+  progressFill: 'linear-gradient(90deg,#E5103C 0%,#D60934 100%)',
 } as const;
 
 export const radius = {
@@ -97,12 +109,12 @@ export const shadow = {
   hero: '0 10px 30px rgba(190,60,70,.08)',
   card: '0 8px 26px rgba(190,60,70,.06)',
   soft: '0 4px 14px rgba(190,60,70,.05)',
-  primaryButton: '0 8px 20px rgba(224,33,58,.28)',
+  primaryButton: '0 8px 20px rgba(214,9,52,.28)',
   overlayButton: '0 6px 18px rgba(190,60,70,.18)',
-  currentStep: '0 0 0 5px #FFFFFF,0 4px 12px rgba(224,33,58,.22)',
+  currentStep: '0 0 0 5px #FFFFFF,0 4px 12px rgba(214,9,52,.22)',
   stepRing: '0 0 0 5px #FFFFFF',
   cardWide: '0 14px 40px rgba(190,60,70,.07)',  // マイページ 2×2 グリッドのカード
-  continue: '0 18px 46px rgba(224,33,58,.08)',  // 続きからカード（最も広く柔らかい）
+  continue: '0 18px 46px rgba(214,9,52,.08)',  // 続きからカード（最も広く柔らかい）
 } as const;
 
 export const space = {
@@ -144,7 +156,6 @@ export const font = {
   statValueLg:   { fontSize: 30,   fontWeight: 900, letterSpacing: '.2px' }, // サマリー帯: 数字部
   statUnit:      { fontSize: 20,   fontWeight: 900 },                        // サマリー帯: 時間/分
   userName:      { fontSize: 22,   fontWeight: 900 },
-  streakBig:     { fontSize: 56,   fontWeight: 900, letterSpacing: '-.02em' },
   cardTitleLg:   { fontSize: 19,   fontWeight: 900 }, // Lesson N / 次回コーチング日付 / ロードマップのステップ名
   cardHeading:   { fontSize: 15,   fontWeight: 900 }, // 続きからはじめる / 学習ストリーク
   encourage:     { fontSize: 13.5, fontWeight: 500 },

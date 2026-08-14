@@ -223,11 +223,12 @@ export default function LearningPlanPage() {
     <div style={{ minHeight: '100vh', background: color.pageBg, display: 'flex', flexDirection: 'column' }}>
       <AppHeader userName={user?.username} />
       <main
+        className="wc-page"
         style={{
-          flex: 1, width: '100%', maxWidth: 1080, margin: '0 auto',
-          padding: '32px 24px 80px', display: 'flex', flexDirection: 'column', gap: 18,
+          '--wc-page-max': '1080px',
+          flex: 1, display: 'flex', flexDirection: 'column', gap: 18,
           fontFamily: font.family,
-        }}
+        } as React.CSSProperties}
       >
         {children}
       </main>

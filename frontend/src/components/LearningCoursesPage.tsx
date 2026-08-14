@@ -88,7 +88,7 @@ function LearningCoursesPage() {
         <div className="absolute left-[3%] bottom-[10%] w-64 h-64 rounded-full bg-brand blur-[80px] opacity-10 pointer-events-none" />
 
         {/* Main Content */}
-        <main className="relative max-w-[850px] mx-auto px-4 sm:px-6 py-8">
+        <main className="wc-page relative" style={{ '--wc-page-max': '850px', '--wc-page-top': '32px', '--wc-page-bottom': '32px' } as React.CSSProperties}>
           {/* Back Button */}
           <button
             onClick={() => navigate('/mypage')}

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, type CSSProperties } from 'react';
 import { ChevronRight, Search, Send, Sparkles } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import {
@@ -52,7 +52,7 @@ export function AiSkillCatalogView({ onSelectSkill, onAskFreely }: AiSkillCatalo
 
   return (
     <div style={{ height: '100%', overflowY: 'auto', background: color.pageBg }}>
-      <div style={{ maxWidth: 980, margin: '0 auto', padding: '40px 24px 56px' }}>
+      <div className="wc-page" style={{ '--wc-page-max': '980px', '--wc-page-top': '40px', '--wc-page-bottom': '56px' } as CSSProperties}>
         <div className="flex flex-col items-center" style={{ gap: 10, textAlign: 'center' }}>
           <span
             aria-hidden

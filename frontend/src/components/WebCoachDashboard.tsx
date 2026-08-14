@@ -162,7 +162,7 @@ function WebCoachDashboard({
       {/* ヒーローセクション */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #C62828 0%, #EF5350 100%)',
+          background: 'linear-gradient(135deg, #D60934 0%, #EF5350 100%)',
           color: 'white',
           py: 6,
           position: 'relative',
@@ -204,7 +204,7 @@ function WebCoachDashboard({
               fontWeight: 'bold',
               mb: 3,
               pb: 1,
-              borderBottom: '3px solid #C62828',
+              borderBottom: '3px solid #D60934',
             }}
           >
             NEWS
@@ -264,7 +264,7 @@ function WebCoachDashboard({
               fontWeight: 'bold',
               mb: 3,
               pb: 1,
-              borderBottom: '3px solid #C62828',
+              borderBottom: '3px solid #D60934',
             }}
           >
             目標オリエンテーションで学ぶ
@@ -286,7 +286,7 @@ function WebCoachDashboard({
               fontWeight: 'bold',
               mb: 3,
               pb: 1,
-              borderBottom: '3px solid #C62828',
+              borderBottom: '3px solid #D60934',
             }}
           >
             スキル別で学ぶ
@@ -354,7 +354,7 @@ function WebCoachDashboard({
       {/* フッター */}
       <Box
         sx={{
-          bgcolor: '#C62828',
+          bgcolor: '#D60934',
           color: 'white',
           py: 4,
           mt: 6,

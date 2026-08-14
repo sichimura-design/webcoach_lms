@@ -26,8 +26,8 @@ function MarkdownRenderer({ content, className, compact = false }: MarkdownRende
           fontWeight: 'bold',
           marginTop: compact ? '0.75rem' : '1.5rem',
           marginBottom: compact ? '0.5rem' : '1rem',
-          color: '#C62828',
-          borderBottom: '2px solid #C62828',
+          color: '#D60934',
+          borderBottom: '2px solid #D60934',
           paddingBottom: '0.5rem',
         }}
         {...props}
@@ -41,7 +41,7 @@ function MarkdownRenderer({ content, className, compact = false }: MarkdownRende
           fontWeight: 'bold',
           marginTop: compact ? '0.75rem' : '1.25rem',
           marginBottom: compact ? '0.375rem' : '0.875rem',
-          color: '#C62828',
+          color: '#D60934',
           borderBottom: '1px solid #E0E0E0',
           paddingBottom: '0.375rem',
         }}
@@ -56,7 +56,7 @@ function MarkdownRenderer({ content, className, compact = false }: MarkdownRende
           fontWeight: '600',
           marginTop: compact ? '0.5rem' : '1rem',
           marginBottom: compact ? '0.25rem' : '0.75rem',
-          color: '#C62828',
+          color: '#D60934',
         }}
         {...props}
       />
@@ -116,18 +116,18 @@ function MarkdownRenderer({ content, className, compact = false }: MarkdownRende
       // eslint-disable-next-line jsx-a11y/anchor-has-content
       <a
         style={{
-          color: '#C62828',
+          color: '#D60934',
           textDecoration: 'none',
           borderBottom: '1px solid transparent',
           transition: 'all 0.2s',
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.borderBottomColor = '#C62828';
+          e.currentTarget.style.borderBottomColor = '#D60934';
           e.currentTarget.style.color = '#8B1A1A';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.borderBottomColor = 'transparent';
-          e.currentTarget.style.color = '#C62828';
+          e.currentTarget.style.color = '#D60934';
         }}
         target="_blank"
         rel="noopener noreferrer"
@@ -168,7 +168,7 @@ function MarkdownRenderer({ content, className, compact = false }: MarkdownRende
             borderRadius: '0.25rem',
             fontSize: '0.875em',
             fontFamily: 'Monaco, Consolas, "Courier New", monospace',
-            color: '#C62828',
+            color: '#D60934',
           }}
           {...props}
         >
@@ -194,7 +194,7 @@ function MarkdownRenderer({ content, className, compact = false }: MarkdownRende
     blockquote: ({ node, ...props }) => (
       <blockquote
         style={{
-          borderLeft: '4px solid #C62828',
+          borderLeft: '4px solid #D60934',
           paddingLeft: '1rem',
           marginLeft: 0,
           marginRight: 0,
@@ -268,8 +268,8 @@ function MarkdownRenderer({ content, className, compact = false }: MarkdownRende
           padding: '0.75rem',
           textAlign: 'left',
           fontWeight: 'bold',
-          color: '#C62828',
-          borderBottom: '2px solid #C62828',
+          color: '#D60934',
+          borderBottom: '2px solid #D60934',
         }}
         {...props}
       />
@@ -295,7 +295,7 @@ function MarkdownRenderer({ content, className, compact = false }: MarkdownRende
       />
     ),
     strong: ({ node, ...props }) => (
-      <strong style={{ fontWeight: 'bold', color: '#C62828' }} {...props} />
+      <strong style={{ fontWeight: 'bold', color: '#D60934' }} {...props} />
     ),
     em: ({ node, ...props }) => (
       <em style={{ fontStyle: 'italic', color: '#555' }} {...props} />

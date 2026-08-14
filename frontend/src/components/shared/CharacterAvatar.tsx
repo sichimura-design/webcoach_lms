@@ -60,7 +60,7 @@ function CharacterAvatar({ state, size = 40 }: CharacterAvatarProps) {
           animate={{ opacity: [0.4, 1, 0.4] }}
           transition={{ duration: 1, repeat: Infinity }}
         >
-          <span style={{ fontSize: size * 0.2, color: '#E0213A', lineHeight: 1 }}>…</span>
+          <span style={{ fontSize: size * 0.2, color: '#D60934', lineHeight: 1 }}>…</span>
         </motion.div>
       )}
     </div>

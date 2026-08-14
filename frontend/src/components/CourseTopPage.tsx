@@ -143,8 +143,8 @@ export default function CourseTopPage() {
       <AppHeader userName={user?.username || 'User'} />
 
       <main
-        className="mx-auto flex flex-col w-full"
-        style={{ maxWidth: 1000, paddingTop: 30, paddingBottom: 56, paddingLeft: 24, paddingRight: 24, gap: 20, fontFamily: t.font.family, color: t.color.text.primary }}
+        className="wc-page flex flex-col"
+        style={{ '--wc-page-max': '1000px', '--wc-page-top': '30px', '--wc-page-bottom': '56px', gap: 20, fontFamily: t.font.family, color: t.color.text.primary } as React.CSSProperties}
       >
         {/* パンくずは常に表示。学習領域からコースまでを辿れるようにする */}
         <LearningBreadcrumb

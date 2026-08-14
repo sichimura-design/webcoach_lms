@@ -7,6 +7,7 @@ import { useNewContentNotification } from '../../hooks/useNewContentNotification
 import { AccountSettingsDropdown } from './AccountSettingsDropdown';
 import GlobalAiCoachDrawer from '../aicoach/GlobalAiCoachDrawer';
 import { withCfToken } from '../profile/AvatarPicker';
+import { color } from '../../theme/webcoachTheme';
 
 interface AppHeaderProps {
   userName?: string;
@@ -68,24 +69,30 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   // ここで常駐ドロワーとFABも出すと入口が二重になり、要件が避けたい「競合」になる。
   const hasOwnAiSurface = location.pathname.startsWith('/course/') || isAiCoach;
 
-  // サイドバーの開閉（初期状態は展開。クリックで折りたたみ、その状態を保持する）
-  const [expanded, setExpanded] = useState(() => {
-    try {
-      const saved = localStorage.getItem('webcoach-sidebar-expanded');
-      return saved === null ? true : saved === '1';
-    } catch {
-      return true;
-    }
-  });
+  /*
+   * ナビパネルの開閉。
+   * 🔴 初期値は「閉」で、localStorage にも保存しない。
+   *    以前はサイドバーが本文を押し widen/narrow する作り（＝レイアウトの好み）だったので
+   *    展開状態を復元するのが正しかった。いまはレールに重なる暗幕付きオーバーレイなので、
+   *    復元すると毎回のページ読み込みで暗幕が出たまま始まってしまう。
+   *    行き先を選ぶための一時的な面として、開くのは常に明示操作から。
+   */
+  const [expanded, setExpanded] = useState(false);
 
-  // PC版サイドバーぶんの余白を body に付与（このヘッダーを描画するページのみ）
+  // PC版レールぶんの余白を body に付与（このヘッダーを描画するページのみ）。
+  // パネルは本文を押さないので、開閉に連動して変える余白は無い。
   useEffect(() => {
     document.body.classList.add('with-sidebar');
-    return () => { document.body.classList.remove('with-sidebar'); document.body.classList.remove('sidebar-expanded'); };
+    return () => { document.body.classList.remove('with-sidebar'); };
   }, []);
+
+  // ナビパネルはレールに重なるオーバーレイなので、Escでも閉じられるようにする
+  // （背面クリックは overlay 側の onClick が受ける）
   useEffect(() => {
-    document.body.classList.toggle('sidebar-expanded', expanded);
-    try { localStorage.setItem('webcoach-sidebar-expanded', expanded ? '1' : '0'); } catch { /* noop */ }
+    if (!expanded) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setExpanded(false); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
   }, [expanded]);
 
   // 【一旦停止】全画面共通の「なぞって解説」（テキスト選択で「AIに解説」ボタンを出す機能）は撤去した。
@@ -116,20 +123,63 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   // キーボードフォーカス時の共通フィードバック（色だけに依存しないよう ring + 背景色の両方を使う）
   const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD] focus-visible:ring-offset-0';
 
-  // アイコンチップ（白〜オフホワイトの立体的な面。アクティブ時のみ赤グラデーション）
-  const iconChipStyle = (active: boolean): React.CSSProperties => ({
-    width: 32,
-    height: 32,
-    background: active
-      ? 'linear-gradient(150deg, #ff7d82, #D30F1A)'
-      : 'linear-gradient(145deg, rgba(255,255,255,0.94), rgba(248,244,243,0.92))',
-    boxShadow: active
-      ? '0 8px 17px rgba(216,15,26,0.24)'
-      : 'inset 0 1px 0 rgba(255,255,255,0.9), 0 4px 12px rgba(102,78,73,0.035)',
-    color: active ? '#FFFFFF' : '#27303D',
-  });
+  /*
+   * サイドバーの配色。claude.ai/design『マイページ 3d.dc.html』準拠。
+   * 🔴 サイドバーは全ページ共通なので、マイページ限定の CSS 変数（--dc-*）は使えない。
+   * 🔴 ブランド赤は theme/webcoachTheme.ts の color.primary を参照する。
+   *    この赤が全画面の基準になっているので、直書きして二重管理にしないこと
+   *    （かつてサイドバーだけ別の値を持っていて、他ページと色が食い違っていた）。
+   */
+  const SB = {
+    railBg: '#FDF7F3',
+    railBorder: '#E2DBD0',
+    railDivider: '#EFE9E0',
+    brand: color.primary,
+    softPink: '#FDF2F2',
+    iconIdle: '#6B6B6B',
+    panelBg: color.primary,
+    panelInk: '#FDF7F3',
+    /** 白い面に乗るアクティブ文字。primary そのままだと白地でやや浮くので一段暗く */
+    panelActiveInk: color.primaryHover,
+  };
 
-  const renderSideItem = (item: { label: string; icon: any; path: string; active: boolean }) => {
+  /*
+   * サイドバーの寸法。
+   * ============================================================
+   * 🔴 デザイン（マイページ 3d.dc.html）の実寸より一段小さくしている。
+   *    デザインは行高52px・ロゴ23pxで組まれているが、その値だと
+   *    パネルの中身が約748px必要になり、実効ビューポート高が
+   *    700px を下回る環境（表示スケール150%のノートPCなど）で
+   *    最下部のアカウント行が見切れる。詰めた結果は約612px。
+   * 🔴 それでも足りない画面はありうるので、ナビ帯には overflow-y:auto を
+   *    持たせてある（下の scrollArea）。寸法だけで担保しないこと。
+   * ============================================================
+   */
+  const SZ = {
+    /** パネルのナビ行 */
+    rowH: 44,
+    rowFont: 14,
+    rowIcon: 19,
+    rowGap: 12,
+    rowPadX: 15,
+    /** レールの丸アイコン */
+    railBtn: 40,
+    railIcon: 18,
+    railGap: 6,
+    /** パネル下部の補助リンク */
+    subH: 34,
+    subFont: 13,
+    subIcon: 16,
+    /** アカウント行のアバター */
+    avatarPanel: 36,
+    avatarRail: 36,
+  };
+
+  const tooltipClass =
+    'pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#262C35] px-2 py-1.5 text-[11px] font-bold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none';
+
+  /** 常時見えている72pxレールの丸アイコン1つ */
+  const renderRailItem = (item: { label: string; icon: any; path: string; active: boolean }) => {
     const Icon = item.icon;
     return (
       <button
@@ -137,274 +187,281 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         onClick={() => navigate(item.path)}
         aria-label={item.label}
         aria-current={item.active ? 'page' : undefined}
-        className={`group relative w-full appearance-none outline-none rounded-xl border transition-all duration-200 motion-reduce:transition-none ${focusRing} ${
-          expanded ? 'grid grid-cols-[32px_minmax(0,1fr)] items-center gap-2.5 px-2.5' : 'flex items-center justify-center px-1.5'
-        } min-h-[42px] ${
-          item.active
-            ? 'text-[#E0242B]'
-            : 'bg-transparent text-[#303845] border-transparent hover:text-[#E0242B] hover:bg-white/[0.76] hover:border-[rgba(224,36,43,0.09)]'
+        className={`group relative grid place-items-center rounded-full appearance-none border-0 cursor-pointer transition-colors duration-200 motion-reduce:transition-none ${focusRing} ${
+          item.active ? '' : 'hover:bg-[#FDF2F2]'
         }`}
-        style={
-          item.active
-            ? {
-                borderColor: 'rgba(224,36,43,0.2)',
-                background: 'linear-gradient(145deg, rgba(255,255,255,0.98), rgba(255,241,242,0.9))',
-                boxShadow: '0 10px 24px rgba(151,103,96,0.08), inset 0 1px 0 rgba(255,255,255,0.9)',
-              }
-            : undefined
-        }
+        style={{
+          width: SZ.railBtn,
+          height: SZ.railBtn,
+          flex: 'none',
+          background: item.active ? SB.brand : 'transparent',
+          boxShadow: item.active ? '0 2px 10px -2px rgba(214,9,52,.4)' : undefined,
+        }}
       >
-        <span className="grid place-items-center rounded-lg flex-shrink-0" style={iconChipStyle(item.active)}>
-          <Icon className="w-[16px] h-[16px]" />
+        <Icon size={SZ.railIcon} strokeWidth={1.75} color={item.active ? SB.panelInk : SB.iconIdle} />
+        {/* レールはアイコンのみなので、ホバー/フォーカスでラベルを添える（title属性はキーボードで読めない） */}
+        <span role="tooltip" aria-hidden="true" className={tooltipClass}>
+          {item.label}
         </span>
-        {expanded && (
-          <span className="truncate text-[12.5px] font-bold text-left">{item.label}</span>
-        )}
-        {/* 折りたたみ時: アイコンのみになるためホバー/フォーカスでラベルをツールチップ表示 */}
-        {!expanded && (
-          <span
-            role="tooltip"
-            aria-hidden="true"
-            className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#262C35] px-2 py-1.5 text-[11px] font-bold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-          >
-            {item.label}
-          </span>
-        )}
       </button>
     );
   };
 
+  /** スライドオーバーパネル（224px・赤）の行1つ */
+  const renderPanelItem = (item: { label: string; icon: any; path: string; active: boolean }) => {
+    const Icon = item.icon;
+    return (
+      <button
+        key={item.path}
+        onClick={() => { navigate(item.path); setExpanded(false); }}
+        aria-current={item.active ? 'page' : undefined}
+        className={`relative flex items-center w-full appearance-none border-0 cursor-pointer text-left rounded-full transition-colors duration-200 motion-reduce:transition-none ${focusRing} ${
+          item.active ? '' : 'hover:bg-white/[0.12]'
+        }`}
+        style={{
+          height: SZ.rowH,
+          padding: `0 ${SZ.rowPadX}px`,
+          gap: SZ.rowGap,
+          fontSize: SZ.rowFont,
+          background: item.active ? SB.panelInk : 'transparent',
+          color: item.active ? SB.panelActiveInk : SB.panelInk,
+          fontWeight: item.active ? 700 : 500,
+          boxShadow: item.active ? '0 2px 10px -2px rgba(90,0,14,.35)' : undefined,
+        }}
+      >
+        <Icon size={SZ.rowIcon} strokeWidth={1.75} color={item.active ? SB.brand : SB.panelInk} style={{ flex: 'none' }} />
+        <span className="truncate">{item.label}</span>
+      </button>
+    );
+  };
+
+  /** パネル下部の補助リンク（利用マニュアル・よくある質問） */
+  const renderPanelSubLink = (label: string, Icon: any, onClick: () => void) => (
+    <button
+      key={label}
+      onClick={onClick}
+      className={`flex items-center w-full appearance-none border-0 bg-transparent cursor-pointer text-left rounded-lg transition-opacity hover:opacity-75 motion-reduce:transition-none ${focusRing}`}
+      style={{ height: SZ.subH, gap: 12, fontSize: SZ.subFont, color: 'rgba(253,247,243,.95)' }}
+    >
+      <Icon size={SZ.subIcon} strokeWidth={1.75} style={{ flex: 'none' }} />
+      <span className="truncate">{label}</span>
+    </button>
+  );
+
 
   return (
     <>
-      {/* ── PC版 左サイドバー（ライト・開閉式・sm以上） ───────── */}
+      {/* ──────────────────────────────────────────────────────────
+          PC版 左ナビ（sm以上）。claude.ai/design『マイページ 3d.dc.html』準拠。
+          2層構造:
+            ① レール（72px・常時表示）… アイコンのみ。ここが本文のオフセット幅
+            ② パネル（224px・赤）    … レールの上に重なるオーバーレイ
+
+          🔴 パネルは本文を押さない。だから body の padding-left は常に 72px で、
+             開閉で本文の幅が変わらない（以前は展開すると本文が 190px 削られていた）。
+         ────────────────────────────────────────────────────────── */}
       <aside
-        id="app-sidebar"
-        className="hidden sm:flex flex-col fixed left-0 top-0 bottom-0 z-40 transition-[width,padding] duration-200 motion-reduce:transition-none"
+        id="app-sidebar-rail"
+        className="hidden sm:flex flex-col items-center fixed left-0 top-0 bottom-0 z-40"
         style={{
-          width: expanded ? 216 : 68,
-          padding: expanded ? '20px 16px 26px' : '20px 10px 26px',
-          background:
-            'radial-gradient(ellipse at 48% 42%, rgba(248,226,227,0.46) 0%, rgba(250,235,234,0.2) 38%, transparent 67%), linear-gradient(180deg, #fff9f8 0%, #fdf3f2 24%, #fbeeed 52%, #fcf2f1 76%, #fff7f5 100%)',
-          borderRight: '1px solid rgba(218,207,203,0.72)',
-          boxShadow:
-            'inset 1px 0 0 rgba(255,255,255,0.74), inset -12px 0 28px rgba(202,181,176,0.055), inset 0 22px 38px rgba(255,255,255,0.26), 7px 0 25px rgba(87,63,58,0.045)',
+          width: 'var(--wc-sidebar-w)',
+          padding: '18px 0 16px',
+          background: SB.railBg,
+          borderRight: `1px solid ${SB.railBorder}`,
+          boxShadow: '3px 0 10px -4px rgba(60,48,32,.18)',
         }}
       >
-        {/* 極薄の斜めハッチングテクスチャ（真っ白にしない質感） */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'repeating-linear-gradient(135deg, rgba(171,141,135,0.018) 0 1px, transparent 1px 7px), linear-gradient(90deg, rgba(255,255,255,0.22), transparent 30%, rgba(190,164,158,0.018))',
-            opacity: 0.72,
-          }}
-        />
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            left: -84, bottom: '8%', width: 280, height: 320, borderRadius: '50%',
-            background: 'radial-gradient(ellipse, rgba(255,255,255,0.28) 0%, rgba(255,244,243,0.15) 42%, transparent 72%)',
-            filter: 'blur(3px)',
-          }}
-        />
-
-        {/* ブランド + 開閉トグル（一体化。ホバー/フォーカスでロゴがトグル矢印に切り替わる） */}
-        <button
-          onClick={() => setExpanded(v => !v)}
-          aria-expanded={expanded}
-          aria-controls="app-sidebar"
-          aria-label={expanded ? 'サイドバーを折りたたむ' : 'サイドバーを展開する'}
-          className={`group relative z-[1] mx-auto appearance-none outline-none border-0 rounded-2xl grid place-items-center cursor-pointer overflow-visible transition-all duration-200 motion-reduce:transition-none ${focusRing} ${
-            expanded ? 'w-[150px] min-h-[52px] mt-2.5 mb-4 bg-transparent' : 'w-10 h-10 mt-2.5 mb-3'
-          }`}
-          style={!expanded ? { background: 'linear-gradient(145deg, #ef454c, #D30F1A)', boxShadow: '0 8px 17px rgba(216,15,26,0.22)' } : undefined}
+        <span
+          aria-hidden="true"
+          style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800, fontSize: 18, color: SB.brand, marginBottom: 12, flex: 'none' }}
         >
-          <span
-            className={`flex flex-col items-center gap-0.5 transition-all duration-150 group-hover:opacity-0 group-hover:scale-95 group-focus-visible:opacity-0 group-focus-visible:scale-95 ${
-              expanded ? '' : 'text-white text-[15px] font-extrabold'
-            }`}
-          >
-            {expanded ? (
-              <>
-                <b className="text-[17px] font-bold tracking-[0.03em]" style={{ color: '#E0242B' }}>WEBCOACH</b>
-                <small className="text-[9px] font-bold" style={{ color: '#343B46' }}>キャリアを、もっと自由に。</small>
-              </>
-            ) : (
-              'W'
-            )}
-          </span>
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 grid place-items-center rounded-2xl opacity-0 scale-90 transition-all duration-150 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100 group-focus-visible:scale-100"
-            style={
-              expanded
-                ? { color: '#E0242B', border: '1px solid rgba(224,36,43,0.16)', background: '#FFF0F1', boxShadow: '0 8px 20px rgba(224,36,43,0.08)' }
-                : { color: '#FFFFFF', background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.28)' }
-            }
-          >
-            {expanded ? <ChevronsLeft className="w-[18px] h-[18px]" /> : <ChevronsRight className="w-[18px] h-[18px]" />}
-          </span>
-          <span
-            role="tooltip"
-            aria-hidden="true"
-            className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#262C35] px-2 py-1.5 text-[11px] font-bold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-          >
-            {expanded ? 'サイドバーを折りたたむ' : 'サイドバーを展開する'}
-          </span>
+          W
+        </span>
+
+        <button
+          onClick={() => setExpanded(true)}
+          aria-expanded={expanded}
+          aria-controls="app-sidebar-panel"
+          aria-label="サイドバーをひらく"
+          className={`group relative grid place-items-center appearance-none border-0 cursor-pointer transition-colors duration-200 hover:bg-[#FBE3E6] motion-reduce:transition-none ${focusRing}`}
+          style={{ width: 34, height: 34, borderRadius: 10, background: SB.softPink, color: SB.brand, marginBottom: 18, flex: 'none' }}
+        >
+          <ChevronsRight size={16} strokeWidth={2.25} />
+          <span role="tooltip" aria-hidden="true" className={tooltipClass}>サイドバーをひらく</span>
         </button>
 
-        {/* ナビ（グループ） */}
-        <nav className="relative z-[1] flex-1 min-h-0 overflow-y-auto overflow-x-hidden flex flex-col gap-1.5">
-          {/* 🔴 「学習」の見出しは出さない。上の6項目は全部が学習の導線で、
-                 グループ名が付いていても選ぶ助けにならないためレビューで削除された。 */}
-          {learnItems.map(renderSideItem)}
+        {/*
+          🔴 ナビ帯だけを伸縮・スクロールさせる（minHeight:0 が無いと flex 内で縮まない）。
+             下のお知らせ・アカウントは常に見えている必要があるので、
+             画面が低いときに削られるのはここ。
+        */}
+        <div className="flex flex-col items-center" style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden', width: '100%' }}>
+          <nav aria-label="メインナビゲーション" className="flex flex-col items-center" style={{ gap: SZ.railGap }}>
+            {learnItems.map(renderRailItem)}
+          </nav>
+
           {manageItems.length > 0 && (
             <>
-              {expanded && <p className="text-[9px] font-bold text-[#68707C] px-2 pt-1.5 pb-0.5 tracking-wider">管理</p>}
-              {manageItems.map(renderSideItem)}
+              <div aria-hidden="true" style={{ width: 32, height: 1, background: SB.railDivider, margin: '12px 0', flex: 'none' }} />
+              {manageItems.map(renderRailItem)}
             </>
           )}
-        </nav>
-
-        {/* 下部：ヘルプ・通知・アカウント */}
-        <div
-          className="relative z-[1] pt-3.5 flex flex-col gap-3 flex-shrink-0"
-          style={{ borderTop: '1px solid rgba(210,201,197,0.58)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.7)' }}
-        >
-          {/*
-            🔴 以前は外部Notionを別タブで開いていたが、学習中にLMSの外へ出てしまうため
-               LMS内の /help に置き換えた（レビュー指摘）。本文は components/help/HelpPage.tsx。
-          */}
-          <button
-            onClick={() => navigate('/help/manual')}
-            className={`group relative flex items-center gap-2 w-full appearance-none border-0 bg-transparent cursor-pointer rounded-lg text-[10px] font-bold no-underline text-[#303845] hover:text-[#E0242B] hover:bg-white/[0.76] transition-colors ${focusRing} ${
-              expanded ? 'px-2.5 py-1' : 'justify-center px-1.5 py-1.5'
-            }`}
-          >
-            <FileText className="w-3 h-3 flex-shrink-0" />
-            {expanded && <span className="truncate">利用マニュアル</span>}
-            {!expanded && (
-              <span
-                role="tooltip"
-                aria-hidden="true"
-                className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#262C35] px-2 py-1.5 text-[11px] font-bold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-              >
-                利用マニュアル
-              </span>
-            )}
-          </button>
-          <button
-            onClick={() => navigate('/help/faq')}
-            className={`group relative flex items-center gap-2 w-full appearance-none border-0 bg-transparent cursor-pointer rounded-lg text-[10px] font-bold no-underline text-[#303845] hover:text-[#E0242B] hover:bg-white/[0.76] transition-colors ${focusRing} ${
-              expanded ? 'px-2.5 py-1' : 'justify-center px-1.5 py-1.5'
-            }`}
-          >
-            <HelpCircle className="w-3 h-3 flex-shrink-0" />
-            {expanded && <span className="truncate">よくある質問</span>}
-            {!expanded && (
-              <span
-                role="tooltip"
-                aria-hidden="true"
-                className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#262C35] px-2 py-1.5 text-[11px] font-bold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-              >
-                よくある質問
-              </span>
-            )}
-          </button>
-
-          {/* 通知（アカウントの上） */}
-          <div className="relative" ref={notifRef}>
-            <button
-              onClick={() => setNotifOpen(v => !v)}
-              aria-label="通知"
-              className={`group relative flex items-center gap-2 w-full appearance-none border-0 outline-none bg-transparent cursor-pointer rounded-lg text-[10px] font-bold no-underline text-[#303845] hover:text-[#E0242B] hover:bg-white/[0.76] transition-colors ${focusRing} ${
-                expanded ? 'px-2.5 py-1' : 'justify-center px-1.5 py-1.5'
-              }`}
-            >
-              <span className="relative flex-shrink-0">
-                <Bell className="w-3.5 h-3.5" />
-                {notificationItems.length > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 flex items-center justify-center bg-[#E0242B] rounded-full text-white font-extrabold" style={{ minWidth: '12px', height: '12px', fontSize: '7px', padding: '0 1px' }}>
-                    {notificationItems.length > 9 ? '9+' : notificationItems.length}
-                  </span>
-                )}
-              </span>
-              {expanded && <span className="truncate">お知らせ</span>}
-              {!expanded && (
-                <span
-                  role="tooltip"
-                  aria-hidden="true"
-                  className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#262C35] px-2 py-1.5 text-[11px] font-bold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-                >
-                  お知らせ
-                </span>
-              )}
-            </button>
-
-            {notifOpen && (
-              <div
-                className="absolute left-full bottom-0 ml-2 bg-white overflow-hidden z-50"
-                style={{ width: '300px', borderRadius: '16px', border: '1px solid #EBE7E5', boxShadow: '0 16px 38px rgba(96,70,65,0.14)' }}
-              >
-                <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid #EBE7E5' }}>
-                  <span className="font-bold text-sm text-dash-text">新着通知</span>
-                  {notificationItems.length > 0 && (
-                    <button onClick={() => { markAllRead(); setNotifOpen(false); }} className="text-xs font-medium text-dash-primary hover:opacity-70">すべて既読</button>
-                  )}
-                </div>
-                <div className="overflow-y-auto" style={{ maxHeight: '220px' }}>
-                  {notificationItems.length === 0 ? (
-                    <p className="text-xs text-center py-8 text-dash-muted">新着はありません</p>
-                  ) : (
-                    notificationItems.map(item => (
-                      <div key={`${item.type}-${item.id}`} className="flex items-start gap-3 px-4 py-3 hover:bg-dash-soft transition-colors" style={{ borderBottom: '1px solid #F3EFEE' }}>
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-dash-gradient">
-                          <BookMarked className="w-4 h-4 text-white" />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-xs font-bold truncate text-dash-text">{item.name}</p>
-                          <p className="text-xs mt-0.5 text-dash-muted">新しいコースが追加されました・{new Date(item.timemodified).toLocaleDateString('ja-JP')}</p>
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* アカウント（行全体をクリック可能にするため AccountSettingsDropdown の遷移先へ直接ナビゲート） */}
-          <button
-            onClick={() => navigate('/account-settings')}
-            aria-label={`アカウント設定: ${resolvedUserName}`}
-            className={`group relative w-full appearance-none outline-none bg-transparent border border-transparent rounded-xl min-h-[42px] text-[#303845] hover:text-[#E0242B] hover:bg-white/[0.76] hover:border-[rgba(224,36,43,0.09)] transition-all duration-200 motion-reduce:transition-none ${focusRing} ${
-              expanded ? 'grid grid-cols-[32px_minmax(0,1fr)_16px] items-center gap-2.5 px-2.5' : 'flex items-center justify-center px-1.5'
-            }`}
-          >
-            <span
-              className="grid place-items-center rounded-full flex-shrink-0 overflow-hidden"
-              style={{ width: 32, height: 32, background: 'linear-gradient(145deg, #fff, #ffe7e9)', border: '1px solid rgba(224,36,43,0.14)' }}
-            >
-              <img src={avatarSrc} alt="" className="w-full h-full object-cover" />
-            </span>
-            {expanded && <span className="truncate text-[12.5px] font-bold text-left">{resolvedUserName}</span>}
-            {expanded && <ChevronRight className="w-[14px] h-[14px] justify-self-end" />}
-            {/*
-              🔴 展開時も含めて常に「個人設定を開く」を出す。
-                 名前とアイコンだけでは押した先が分からない、というレビュー指摘への対応。
-                 折りたたみ時は誰のアカウントかも分からないので名前を添える。
-            */}
-            <span
-              role="tooltip"
-              aria-hidden="true"
-              className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#262C35] px-2 py-1.5 text-[11px] font-bold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none"
-            >
-              {expanded ? '個人設定を開く' : `${resolvedUserName}（個人設定を開く）`}
-            </span>
-          </button>
         </div>
+
+        {/* お知らせ（ベル + 件数バッジ + ドロップダウン） */}
+        <div className="relative" ref={notifRef} style={{ flex: 'none' }}>
+          <button
+            onClick={() => setNotifOpen(v => !v)}
+            aria-label="お知らせ"
+            aria-expanded={notifOpen}
+            className={`group relative grid place-items-center rounded-full appearance-none border-0 bg-transparent cursor-pointer transition-colors duration-200 hover:bg-[#FDF2F2] motion-reduce:transition-none ${focusRing}`}
+            style={{ width: SZ.railBtn, height: SZ.railBtn }}
+          >
+            <Bell size={SZ.railIcon} strokeWidth={1.75} color={SB.iconIdle} />
+            {notificationItems.length > 0 && (
+              <span
+                className="absolute flex items-center justify-center rounded-full font-extrabold text-white"
+                style={{ top: 4, right: 4, minWidth: 16, height: 16, fontSize: 9, padding: '0 3px', background: SB.brand }}
+              >
+                {notificationItems.length > 9 ? '9+' : notificationItems.length}
+              </span>
+            )}
+            <span role="tooltip" aria-hidden="true" className={tooltipClass}>お知らせ</span>
+          </button>
+
+          {notifOpen && (
+            <div
+              className="absolute left-full bottom-0 ml-2 bg-white overflow-hidden z-50"
+              style={{ width: 300, borderRadius: 16, border: '1px solid #EBE7E5', boxShadow: '0 16px 38px rgba(96,70,65,0.14)' }}
+            >
+              <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid #EBE7E5' }}>
+                <span className="font-bold text-sm text-dash-text">新着通知</span>
+                {notificationItems.length > 0 && (
+                  <button onClick={() => { markAllRead(); setNotifOpen(false); }} className="text-xs font-medium text-dash-primary hover:opacity-70">すべて既読</button>
+                )}
+              </div>
+              <div className="overflow-y-auto" style={{ maxHeight: 220 }}>
+                {notificationItems.length === 0 ? (
+                  <p className="text-xs text-center py-8 text-dash-muted">新着はありません</p>
+                ) : (
+                  notificationItems.map(item => (
+                    <div key={`${item.type}-${item.id}`} className="flex items-start gap-3 px-4 py-3 hover:bg-dash-soft transition-colors" style={{ borderBottom: '1px solid #F3EFEE' }}>
+                      <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-dash-gradient">
+                        <BookMarked className="w-4 h-4 text-white" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold truncate text-dash-text">{item.name}</p>
+                        <p className="text-xs mt-0.5 text-dash-muted">新しいコースが追加されました・{new Date(item.timemodified).toLocaleDateString('ja-JP')}</p>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* アカウント */}
+        <button
+          onClick={() => navigate('/account-settings')}
+          aria-label={`アカウント設定: ${resolvedUserName}`}
+          className={`group relative grid place-items-center rounded-full overflow-hidden appearance-none cursor-pointer ${focusRing}`}
+          style={{ width: SZ.avatarRail, height: SZ.avatarRail, marginTop: 8, flex: 'none', background: SB.softPink, border: '1px solid #F5D8DB', boxSizing: 'border-box' }}
+        >
+          <img src={avatarSrc} alt="" className="w-full h-full object-cover" />
+          <span role="tooltip" aria-hidden="true" className={tooltipClass}>
+            {`${resolvedUserName}（個人設定を開く）`}
+          </span>
+        </button>
       </aside>
+
+      {/* パネルを開いているときの背面。クリックで閉じる（デザインの « 以外の逃げ道） */}
+      <div
+        aria-hidden="true"
+        onClick={() => setExpanded(false)}
+        className="hidden sm:block fixed inset-0 z-40 transition-opacity duration-[280ms] motion-reduce:transition-none"
+        style={{
+          background: 'rgba(20,20,20,.28)',
+          opacity: expanded ? 1 : 0,
+          pointerEvents: expanded ? 'auto' : 'none',
+        }}
+      />
+
+      <div
+        id="app-sidebar-panel"
+        aria-hidden={!expanded}
+        className="hidden sm:flex flex-col fixed left-0 top-0 bottom-0 motion-reduce:transition-none"
+        style={{
+          width: 224,
+          zIndex: 45,
+          background: SB.panelBg,
+          padding: '38px 12px 16px',
+          boxSizing: 'border-box',
+          transform: expanded ? 'translateX(0)' : 'translateX(-105%)',
+          transition: 'transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1)',
+          boxShadow: expanded ? '8px 0 32px -8px rgba(90,0,14,.45)' : 'none',
+          pointerEvents: expanded ? 'auto' : 'none',
+        }}
+      >
+        <button
+          onClick={() => setExpanded(false)}
+          aria-label="サイドバーを閉じる"
+          className={`absolute appearance-none border-0 bg-transparent cursor-pointer transition-opacity hover:opacity-75 motion-reduce:transition-none ${focusRing}`}
+          style={{ top: 14, right: 14, padding: '4px 8px', color: SB.panelInk }}
+        >
+          <ChevronsLeft size={18} strokeWidth={2.25} />
+        </button>
+
+        <div style={{ padding: '0 8px 22px', textAlign: 'center', flex: 'none' }}>
+          <div style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800, fontSize: 19, color: SB.panelInk, letterSpacing: '.03em' }}>
+            WEBCOACH
+          </div>
+          <div style={{ fontSize: 11, fontWeight: 500, color: 'rgba(253,247,243,.9)', letterSpacing: '.12em', marginTop: 4 }}>
+            学習システム
+          </div>
+        </div>
+
+        {/*
+          🔴 ナビ帯だけを伸縮・スクロールさせる（minHeight:0 が無いと flex 内で縮まない）。
+             補助リンクとアカウント行は常に見えている必要があるので、
+             画面が低いときに削られるのはここ。ユーザー報告の「下まで入りきってない」の対処。
+        */}
+        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden' }}>
+          <nav aria-label="メインナビゲーション" className="flex flex-col" style={{ gap: 4 }}>
+            {learnItems.map(renderPanelItem)}
+          </nav>
+
+          {manageItems.length > 0 && (
+            <>
+              <div aria-hidden="true" style={{ height: 1, background: 'rgba(253,247,243,.3)', margin: '14px 8px' }} />
+              {manageItems.map(renderPanelItem)}
+            </>
+          )}
+        </div>
+
+        <div style={{ padding: '12px 8px', display: 'flex', flexDirection: 'column', gap: 2, flex: 'none' }}>
+          {renderPanelSubLink('利用マニュアル', FileText, () => { navigate('/help/manual'); setExpanded(false); })}
+          {renderPanelSubLink('よくある質問', HelpCircle, () => { navigate('/help/faq'); setExpanded(false); })}
+        </div>
+
+        <button
+          onClick={() => { navigate('/account-settings'); setExpanded(false); }}
+          aria-label={`アカウント設定: ${resolvedUserName}`}
+          className={`flex items-center w-full appearance-none border-0 bg-transparent cursor-pointer text-left transition-opacity hover:opacity-90 motion-reduce:transition-none ${focusRing}`}
+          style={{ borderTop: '1px solid rgba(253,247,243,.3)', padding: '12px 8px 2px', gap: 10, flex: 'none' }}
+        >
+          <span
+            className="grid place-items-center rounded-full overflow-hidden"
+            style={{ width: SZ.avatarPanel, height: SZ.avatarPanel, flex: 'none', background: '#F2E8E1' }}
+          >
+            <img src={avatarSrc} alt="" className="w-full h-full object-cover" />
+          </span>
+          <span className="truncate" style={{ flex: 1, minWidth: 0, fontSize: 14, fontWeight: 700, color: SB.panelInk }}>
+            {resolvedUserName}
+          </span>
+          <ChevronRight size={15} strokeWidth={2} color={SB.panelInk} style={{ flex: 'none' }} />
+        </button>
+      </div>
 
       <header
         className="hidden"

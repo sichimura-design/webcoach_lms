@@ -53,6 +53,10 @@ chromadb/
 # Reference screenshots
 *.png
 !frontend/public/*.png
+# public/images 配下はアプリが実際に配信する素材なので追跡する。
+# 上の !frontend/public/*.png は直下1階層しか拾わず、images/home/... が
+# 巻き込まれてビルドから抜け落ちる（プレビュー・本番で画像が壊れる）。
+!frontend/public/images/**/*.png
 
 # Documentation (non-essential)
 *.md

@@ -202,7 +202,10 @@ export function AiCoachPage() {
           className="flex items-center"
           style={{
             gap: 10,
-            padding: '0 16px',
+            // 帯は全幅のまま、中の要素だけ本文と同じガターに乗せる。
+            // 16px 固定だと本文が中央で細く見えるのに対して上部バーだけ両端に張り付き、
+            // それが「詰まっている」印象の主因になっていた。
+            padding: '0 var(--wc-page-x)',
             borderBottom: `1px solid ${color.border}`,
             background: color.surface,
           }}

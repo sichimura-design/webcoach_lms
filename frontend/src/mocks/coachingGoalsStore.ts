@@ -19,14 +19,18 @@ const STORE_KEY = 'webcoach-coaching-goals';
 
 export type StoredGoal = Pick<
   CoachingGoalApi,
-  'no' | 'description' | 'is_completed' | 'progress'
+  'no' | 'description' | 'is_completed' | 'progress' | 'completed_at'
 >;
 
-/** 初期値。コーチが前回のコーチングで設定した内容という想定 */
+/**
+ * 初期値。コーチが前回のコーチングで設定した内容という想定。
+ * completed_at はモック専用（実BFFは返さない）。達成した目標に「いつ終えたか」が付くと、
+ * 積み上がっている感じが出るのでマイページの目標カードで出している。
+ */
 const SEED: StoredGoal[] = [
-  { no: 1, description: '配色の基礎を修了する', is_completed: 1, progress: 100 },
-  { no: 2, description: 'バナーを1つ完成させる', is_completed: 0, progress: 40 },
-  { no: 3, description: 'レイアウト実践に着手する', is_completed: 0, progress: 0 },
+  { no: 1, description: '配色の基礎を修了する', is_completed: 1, progress: 100, completed_at: '2026-08-10T10:00:00+09:00' },
+  { no: 2, description: 'バナーを1つ完成させる', is_completed: 1, progress: 100, completed_at: '2026-08-12T15:30:00+09:00' },
+  { no: 3, description: 'レイアウト実践に着手する', is_completed: 0, progress: 0, completed_at: null },
 ];
 
 interface GoalsStore {
@@ -72,13 +76,23 @@ export function listGoals(): StoredGoal[] {
 /** マイページからの編集を丸ごと反映する（PUT） */
 export function replaceGoals(goals: StoredGoal[]): StoredGoal[] {
   const store = read();
+  // 打刻の引き継ぎ用。no は振り直すので、文言で前の状態を引く
+  const before = new Map(store.goals.map((g) => [g.description.trim(), g]));
+  const now = new Date().toISOString();
+
   // no を1から振り直す。表示順＝no なので、削除で歯抜けになると並びが崩れる
-  store.goals = goals.map((g, i) => ({
-    no: i + 1,
-    description: g.description,
-    is_completed: g.progress >= 100 ? 1 : g.is_completed,
-    progress: g.progress,
-  }));
+  store.goals = goals.map((g, i) => {
+    const completed = g.progress >= 100 ? 1 : g.is_completed;
+    const prev = before.get(g.description.trim());
+    return {
+      no: i + 1,
+      description: g.description,
+      is_completed: completed as 0 | 1,
+      progress: g.progress,
+      // 未達→達成で打刻し、達成→未達で消す。達成のままなら最初の打刻を保つ
+      completed_at: completed ? (prev?.completed_at ?? now) : null,
+    };
+  });
   write(store);
   return store.goals;
 }
@@ -104,7 +118,7 @@ export function reflectCandidates(
     if (!text || existing.has(text)) return;
     existing.add(text);
     no += 1;
-    added.push({ no, description: text, is_completed: 0, progress: 0 });
+    added.push({ no, description: text, is_completed: 0, progress: 0, completed_at: null });
   });
 
   store.goals = [...store.goals, ...added];

@@ -196,7 +196,7 @@ export const S3ImageUploader: React.FC = () => {
           backgroundColor: '#fdecea',
           border: '1px solid #f5c6cb',
           borderRadius: '6px',
-          color: '#c62828',
+          color: '#D60934',
           fontSize: '13px',
           marginBottom: '16px',
           whiteSpace: 'pre-line',
@@ -255,7 +255,7 @@ export const S3ImageUploader: React.FC = () => {
                   }}
                 />
                 {pf.keyError && (
-                  <div style={{ fontSize: '12px', color: '#c62828', marginTop: '4px' }}>{pf.keyError}</div>
+                  <div style={{ fontSize: '12px', color: '#D60934', marginTop: '4px' }}>{pf.keyError}</div>
                 )}
               </div>
             ))}

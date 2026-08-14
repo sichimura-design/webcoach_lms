@@ -7,15 +7,15 @@
  *
  * ルール:
  *   1. 新しい色・角丸・影・サイズをコンポーネント内に直書きしない。必ずここに追加してから参照する。
- *   2. 既存の frontend/src/theme/colors.ts (#C62828 系) は旧デザイン。新規画面ではこのファイルを使う。
+ *   2. 既存の frontend/src/theme/colors.ts (#D60934 系) は旧デザイン。新規画面ではこのファイルを使う。
  *   3. 値はデザインモック WebcoachHomeLayered.dc.html のインライン style から 1:1 で写経したもの。推測値なし。
  */
 
 export const t = {
   color: {
     /** ブランド赤。CTA・アクティブ状態・アクセントすべてこの1色 */
-    primary: '#E60012',
-    primaryHover: '#B3000E',
+    primary: '#D60934',
+    primaryHover: '#B50829',
     /** 赤の淡い背景（アクティブなナビ、バッジ地） */
     primarySoft: '#FDEEEF',
     /** 赤の枠線（セカンダリボタン） */
@@ -67,7 +67,7 @@ export const t = {
     successSoft: '#EAF6ED',
 
     streak: {
-      on: '#E60012',
+      on: '#D60934',
       off: '#F7DADC',
     },
 
@@ -78,7 +78,7 @@ export const t = {
 
     /** コースのカテゴリ色（design_handoff_materialsのREADME「カテゴリ色」表に準拠。design/careerは既存トークンを再利用） */
     category: {
-      design: '#E60012',
+      design: '#D60934',
       coding: '#D9930D',
       marketing: '#8B5CD6',
       career: '#2FA35C',
@@ -113,7 +113,7 @@ export const t = {
     /** 全カード共通。非常に浅い */
     card: '0 2px 10px rgba(120,90,95,.04)',
     /** イラストに重ねる赤ボタン */
-    buttonPrimary: '0 8px 20px rgba(230,0,18,.28)',
+    buttonPrimary: '0 8px 20px rgba(214,9,52,.28)',
   },
 
   space: {

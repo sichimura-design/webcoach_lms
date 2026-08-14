@@ -680,6 +680,78 @@ export function deriveStages(plan: LearningPlan, today: Date): PlanStage[] {
   });
 }
 
+// ---- マイページの帯用: 5ステップ表示 ---------------------------------------
+
+/**
+ * マイページのロードマップ帯に出す1ステップ。
+ * 保存はしない表示専用の型で、PlanStage とは別物。
+ */
+export interface RoadmapStepView {
+  key: string;
+  title: string;
+  description: string;
+  status: PhaseProgressStatus;
+  /** 最後のステップ（ゴール）か。バッジと色が変わる */
+  isGoal: boolean;
+}
+
+/**
+ * マイページの帯が使う5ステップの定義。
+ * ============================================================
+ * 【なぜ deriveStages（4ステージ）と別に持つのか】
+ * /learning-plan の StageRail は「基礎・実践・準備・挑戦」の4つに束ね、
+ * 内訳を現在ステージの中だけ開く（types/learningPlan.ts の設計理由を参照）。
+ * マイページの帯は内訳を開かない代わりに、ゴールまでの道のりが一目で分かるよう
+ * 7フェーズを1:1で割った5つを並べる。粒度が違うのは意図的で、
+ * STAGE_LABEL / STAGE_ORDER には手を入れない（あちらの表示を変えないため）。
+ *
+ * 文言はJSXにベタ書きせず、ここを唯一の出どころにする。
+ * ============================================================
+ */
+const ROADMAP_STEPS: { key: string; title: string; description: string; phases: PhaseKey[] }[] = [
+  { key: 'basic',       title: '基礎',           description: 'ツールとデザインの基本を学ぶ',       phases: ['foundation', 'tools'] },
+  { key: 'creation',    title: '制作',           description: '制作に慣れ、クオリティを上げる',     phases: ['practice', 'mock_project', 'custom'] },
+  { key: 'portfolio',   title: 'ポートフォリオ', description: '自信を持って見せられる作品を増やす', phases: ['portfolio'] },
+  { key: 'preparation', title: '応募準備',       description: 'ポートフォリオを整えて提案の準備をする', phases: ['job_hunting'] },
+  { key: 'first-job',   title: '初案件獲得',     description: '実案件に挑戦して最初の実績へ',       phases: ['client_work'] },
+];
+
+/**
+ * マイページのロードマップ帯に並べる5ステップを組む。
+ * フェーズが1つも無いステップは落とす（案件獲得まで進まない受講生に空の枠を見せない）。
+ * そのため返る件数は 5 とは限らない。描画側は件数可変で組むこと。
+ */
+export function deriveRoadmapSteps(plan: LearningPlan, today: Date): RoadmapStepView[] {
+  const statuses = derivePhaseStatus(plan, today);
+  const byKey = new Map<PhaseKey, PhaseProgressStatus[]>();
+  plan.phases.forEach((p, i) => {
+    const list = byKey.get(p.key) ?? [];
+    list.push(statuses[i]);
+    byKey.set(p.key, list);
+  });
+
+  const present = ROADMAP_STEPS.filter((s) => s.phases.some((k) => byKey.has(k)));
+  // current は1つだけ。現在フェーズを含むステップより手前を done、後ろを todo にする
+  const currentPos = present.findIndex((s) =>
+    s.phases.some((k) => (byKey.get(k) ?? []).includes('current'))
+  );
+
+  return present.map((s, pos) => ({
+    key: s.key,
+    title: s.title,
+    description: s.description,
+    status:
+      currentPos < 0
+        ? 'todo'
+        : pos < currentPos
+          ? 'done'
+          : pos === currentPos
+            ? 'current'
+            : 'todo',
+    isGoal: pos === present.length - 1,
+  }));
+}
+
 /**
  * ロードマップ全体の進捗 0-1。
  * 完了フェーズを1、現在フェーズをマイルストーン平均で数える。

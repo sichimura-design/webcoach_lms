@@ -12,6 +12,13 @@ import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
 
 const DESIGN_WIDTH = 1440;
 
+/**
+ * この画面だけ上端の余白を共通トークンより広く取る。
+ * ヘッダーのすぐ下に見出しと「続きから学ぶ」の横長カードが来るため、
+ * pageTop(34) のままだとページが上に詰まって見えた（レビュー指摘）。
+ */
+const PAGE_TOP = t.space.pageTop + 20;
+
 interface CatalogCourse extends GalleryCourse {
   difficulty?: string;
 }
@@ -158,7 +165,7 @@ function MaterialsTopPage() {
       <main
         ref={innerRef}
         className="flex flex-col"
-        style={{ position: 'absolute', top: 0, left: 0, width: DESIGN_WIDTH, paddingTop: t.space.pageTop, paddingLeft: t.space.pageX, paddingRight: t.space.pageX, paddingBottom: t.space.pageBottom, gap: t.space.stack, fontFamily: t.font.family, color: t.color.text.primary, boxSizing: 'border-box', transform: `scale(${scale})`, transformOrigin: 'top left' }}
+        style={{ position: 'absolute', top: 0, left: 0, width: DESIGN_WIDTH, paddingTop: PAGE_TOP, paddingLeft: t.space.pageX, paddingRight: t.space.pageX, paddingBottom: t.space.pageBottom, gap: t.space.stack, fontFamily: t.font.family, color: t.color.text.primary, boxSizing: 'border-box', transform: `scale(${scale})`, transformOrigin: 'top left' }}
       >
         {/* ① 見出しと「続きから学ぶ」を1行に置く。
             以前はこの上にパンくず「学習コンテンツ」とリード文があり、見出しと合わせて同じ言葉が3回出ていた。
@@ -222,18 +229,19 @@ function MaterialsTopPage() {
             ①（続きから）と③（全コース一覧）の間には「①を終えた人が次にどこへ行くか」が無かった。
             意味の違う3枠（実践／関連／1歩先）だけを出し、バッジのラベルを推薦理由そのものにする。
             根拠は「続きから学ぶコースのカテゴリと難易度」だけなので、
-            それが取れない人（続きが無い／モックOFF）には枠が0件になり、この節ごと消える。 */}
+            それが取れない人（続きが無い／モックOFF）には枠が0件になり、この節ごと消える。
+            主役は③のコース一覧なので、見出しもカードも一覧より一段小さく出す（レビュー指摘）。 */}
         {nextRecommendations.length > 0 && (
-          <section style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <div>
-              <div style={{ fontSize: 19, fontWeight: t.font.weight.black }}>次におすすめ</div>
-              <div style={{ fontSize: 12.5, color: t.color.text.muted, marginTop: 6 }}>
+          <section style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
+              <div style={{ fontSize: 16, fontWeight: t.font.weight.black }}>次におすすめ</div>
+              <div style={{ fontSize: 11.5, color: t.color.text.muted }}>
                 {resumableCourse ? `「${resumableCourse.title}」の続きとして選びました。` : '学習状況から選びました。'}
               </div>
             </div>
             <div
               className="grid"
-              style={{ gridTemplateColumns: `repeat(${nextRecommendations.length}, minmax(0, 1fr))`, gap: t.space.grid }}
+              style={{ gridTemplateColumns: `repeat(${nextRecommendations.length}, minmax(0, 1fr))`, gap: 16 }}
             >
               {nextRecommendations.map((rec) => (
                 <NextCourseCard

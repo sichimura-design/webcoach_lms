@@ -37,7 +37,7 @@ export const UploadResult: React.FC<UploadResultProps> = ({ result, onClose }) =
               style={{
                 fontSize: '18px',
                 fontWeight: '600',
-                color: result.success ? '#2e7d32' : '#c62828',
+                color: result.success ? '#2e7d32' : '#D60934',
                 marginBottom: '12px',
                 display: 'flex',
                 alignItems: 'center',

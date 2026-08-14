@@ -7,18 +7,42 @@ import { useMypageData } from '../hooks/useMypageData';
 import { useLearningSummary } from '../hooks/useLearningSummary';
 import { useStudyStats } from '../hooks/useStudyStats';
 import { useProgressionStore } from '../store/progressionStore';
-import { useScaleToFit } from '../hooks/useScaleToFit';
 import { EXP_RULES } from '../utils/progression';
+import MypageGreeting from './mypage/MypageGreeting';
+import RoadmapStrip from './mypage/RoadmapStrip';
 import ContinueLearningHero from './mypage/ContinueLearningHero';
+import LearningStreakCard from './mypage/LearningStreakCard';
 import NextCoachingPlan from './mypage/NextCoachingPlan';
 import NextCoachingCardContainer from './mypage/NextCoachingCardContainer';
-import RoadmapSection from './mypage/RoadmapSection';
-import ProfileSummaryStrip from './mypage/ProfileSummaryStrip';
-import StreakMiniCard from './mypage/StreakMiniCard';
 import { Course } from '../types/mypage';
-import { color, font, space } from '../theme/webcoachTheme';
 
-const DESIGN_WIDTH = 1440;
+/**
+ * マイページ（ダッシュボード）。claude.ai/design『マイページ 3d.dc.html』準拠。
+ *
+ * 【レイアウト方式】
+ * 🔴 useScaleToFit（1440px の固定キャンバスを transform:scale で縮小）は使わない。
+ *    デザインが fr ベースの流動レイアウトになったため。scale 方式は狭い画面で
+ *    文字まで一緒に縮んで読めなくなるのが難点で、こちらは素直に折り返す。
+ *    自習室・学習コンテンツは今も scale 方式なので、あちらと作りが違う点に注意。
+ *
+ * 【構成】
+ *   ① 挨拶 + 統計（カードなし・地色に直置き）
+ *   ② 学習ロードマップの横型帯
+ *   ③ 2カラム: 左＝続きを学ぶ / 継続記録、右＝次回コーチング / 目標
+ *   ④ フッター
+ *
+ * 主アクション（塗りつぶしの赤ボタン）は『続きから学習する』の1つだけ。
+ * 他のカードのCTAはアウトラインかテキストリンクに留めること（DESIGN.md §15-5）。
+ */
+
+/** セクションの小見出し（Eyebrow）。DESIGN.md §3 の 13px/700/letter-spacing .08em */
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--dc-text-muted)', letterSpacing: '.08em', paddingLeft: 4 }}>
+      {children}
+    </div>
+  );
+}
 
 function MyPage() {
   const navigate = useNavigate();
@@ -34,7 +58,6 @@ function MyPage() {
   } = useMypageData(user?.userid);
 
   const noteStreakDays = useProgressionStore((s) => s.noteStreakDays);
-  const { outerRef, innerRef, scale, innerHeight } = useScaleToFit(DESIGN_WIDTH);
 
   // 「学習中のコース」= 続きから(resumableCourse) + 受講中一覧。id重複は除外
   const learningCourses: Course[] = resumableCourse
@@ -57,10 +80,10 @@ function MyPage() {
   // Loading state
   if (authLoading || isLoading) {
     return (
-      <div className="min-h-screen bg-dash-bg flex items-center justify-center">
+      <div className="mypage-3d min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-dash-primary mx-auto mb-4"></div>
-          <p className="text-dash-muted">読み込み中...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4" style={{ borderColor: 'var(--dc-primary)' }}></div>
+          <p style={{ color: 'var(--dc-text-muted)' }}>読み込み中...</p>
         </div>
       </div>
     );
@@ -69,16 +92,16 @@ function MyPage() {
   // Moodle account not linked
   if (!user?.userid) {
     return (
-      <div className="min-h-screen bg-dash-bg flex items-center justify-center">
+      <div className="mypage-3d min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
         <div className="text-center px-6">
-          <p className="text-dash-muted font-bold mb-2">セッションが切れました</p>
-          <p className="text-sm text-dash-muted mb-4">
+          <p className="font-bold mb-2" style={{ color: 'var(--dc-text)' }}>セッションが切れました</p>
+          <p className="text-sm mb-4" style={{ color: 'var(--dc-text-muted)' }}>
             再度ログインしてください。
           </p>
           <Button
             onClick={() => navigate('/login')}
             className="mt-2 rounded-xl px-6 py-2 border-0 text-white"
-            style={{ background: 'linear-gradient(135deg, #E0213A, #B81026)' }}
+            style={{ background: 'var(--dc-primary)' }}
           >
             ログイン画面へ
           </Button>
@@ -90,13 +113,13 @@ function MyPage() {
   // Error state
   if (error || !userProfile) {
     return (
-      <div className="min-h-screen bg-dash-bg flex items-center justify-center">
+      <div className="mypage-3d min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
         <div className="text-center">
-          <p className="text-dash-muted">{error || 'データの読み込みに失敗しました'}</p>
+          <p style={{ color: 'var(--dc-text-muted)' }}>{error || 'データの読み込みに失敗しました'}</p>
           <Button
             onClick={() => window.location.reload()}
             className="mt-4 rounded-xl px-6 py-2 border-0 text-white"
-            style={{ background: 'linear-gradient(135deg, #E0213A, #B81026)' }}
+            style={{ background: 'var(--dc-primary)' }}
           >
             再読み込み
           </Button>
@@ -106,66 +129,58 @@ function MyPage() {
   }
 
   const avatarName = userProfile.nick_name || '';
-  const handleContinue = () => primaryCourse && navigate(`/course/${primaryCourse.id}/curriculum`);
+  // 「続きから学習する」は没入型レッスンへ直行、「レッスン全体を見る」はコース目次へ
+  const openLesson = () => primaryCourse && navigate(`/course/${primaryCourse.id}`);
+  const openCurriculum = () => primaryCourse && navigate(`/course/${primaryCourse.id}/curriculum`);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: color.pageBg }}>
+    <div className="mypage-3d min-h-screen flex flex-col" style={{ background: 'var(--dc-bg)' }}>
       <AppHeader userName={avatarName} />
 
-      <div className="relative flex-1">
-        <div
-          ref={outerRef}
-          style={{ width: '100%', maxWidth: DESIGN_WIDTH, margin: '0 auto', position: 'relative', height: innerHeight ? innerHeight * scale : undefined }}
-        >
-        <main
-          ref={innerRef}
-          className="home-main flex flex-col"
-          style={{ position: 'absolute', top: 0, left: 0, width: DESIGN_WIDTH, boxSizing: 'border-box', gap: space.sectionGap, fontFamily: font.family, color: color.text, transform: `scale(${scale})`, transformOrigin: 'top left' }}
-        >
-          {/*
-            構成は「広いメイン列＋狭い右レール」。主アクションは『続きからはじめる』の1つだけ。
-            以前はカード9枚・データ点70個まで膨らみ、今週の学習時間やストリークが
-            複数のカードに重複して出ていた。数字の置き場を1箇所に決め、
-            詳しい内訳は /study-log・/learning-plan・/coaching に任せている。
+      <main
+        className="flex flex-col"
+        style={{ flex: 1, padding: '32px 28px 20px', color: 'var(--dc-text)' }}
+      >
+        <MypageGreeting
+          name={avatarName}
+          stats={studyStats}
+          loading={studyStatsLoading}
+          completedLessons={learningSummary.completedLessons.total}
+        />
 
-            セクション見出しは各カードが内包する（NextCoachingCard と RoadmapSection は
-            既に内部に見出しを持っているため、外に出すと二重になる）。
-          */}
-          <div className="home-rail">
-            {/* メイン列: 誰か → いま再開できるもの → コーチングで決めた目標 */}
-            <div className="flex flex-col" style={{ gap: space.sectionGap }}>
-              <ProfileSummaryStrip
-                name={avatarName}
-                stats={studyStats}
-                loading={studyStatsLoading}
-                completedLessons={learningSummary.completedLessons.total}
+        <RoadmapStrip userId={user?.userid} />
+
+        <div className="mypage-3d-grid">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <Eyebrow>続きを学ぶ</Eyebrow>
+            {primaryCourse && (
+              <ContinueLearningHero
+                course={primaryCourse}
+                onOpen={openLesson}
+                onOpenCurriculum={openCurriculum}
               />
-              {primaryCourse && (
-                <ContinueLearningHero course={primaryCourse} onOpen={handleContinue} />
-              )}
-              <NextCoachingPlan userId={user?.userid} />
-            </div>
+            )}
 
-            {/* 右レール: 続けるための小さな指標と、次回の予定 */}
-            <div className="flex flex-col" style={{ gap: space.columnGap }}>
-              <StreakMiniCard stats={studyStats} loading={studyStatsLoading} />
-              <NextCoachingCardContainer userId={user?.userid} />
-            </div>
+            <Eyebrow>継続記録</Eyebrow>
+            <LearningStreakCard stats={studyStats} loading={studyStatsLoading} />
           </div>
 
-          {/* ロードマップは横幅があるほうが読めるので、2カラムの外に全幅で置く
-              （PhaseTimeline がフェーズ数ぶんの列を組むため、狭いレールでは潰れる） */}
-          <RoadmapSection userId={user?.userid} />
-        </main>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <Eyebrow>コーチと学ぶ</Eyebrow>
+            {/* 読み込み中と「次回の予定なし」のときは null を返す。
+                縦積みなので、消えても下のカードが繰り上がるだけで崩れない
+                （2×2グリッド時代はセルの位置を明示する必要があった） */}
+            <NextCoachingCardContainer userId={user?.userid} />
+            <NextCoachingPlan userId={user?.userid} />
+          </div>
         </div>
-      </div>
 
-      {/* Footer */}
-      <footer className="h-10 flex items-center justify-center" style={{ background: '#2B2629' }}>
-        <span className="text-[11.4px] font-bold text-white">
+        <footer
+          style={{ textAlign: 'center', fontSize: 12, color: 'var(--dc-text-subtle)', padding: '32px 0 0', marginTop: 'auto' }}
+        >
           2026 &copy; WEBCOACH
-        </span>
-      </footer>
+        </footer>
+      </main>
     </div>
   );
 }

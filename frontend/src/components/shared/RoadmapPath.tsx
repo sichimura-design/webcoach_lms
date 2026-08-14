@@ -34,7 +34,7 @@ function RoadmapPath({ steps }: RoadmapPathProps) {
               <div
                 style={
                   prevDone
-                    ? { position: 'absolute', top: 16, left: '-50%', width: '100%', height: 6, borderRadius: 999, background: 'linear-gradient(90deg,#F0546A,#E0213A)', boxShadow: '0 3px 8px rgba(224,33,58,.18)' }
+                    ? { position: 'absolute', top: 16, left: '-50%', width: '100%', height: 6, borderRadius: 999, background: 'linear-gradient(90deg,#E5103C,#D60934)', boxShadow: '0 3px 8px rgba(214,9,52,.18)' }
                     : { position: 'absolute', top: 18, left: '-50%', width: '100%', height: 0, borderTop: '3px dashed #EAD0D5' }
                 }
               />
@@ -44,11 +44,11 @@ function RoadmapPath({ steps }: RoadmapPathProps) {
                 🏁
               </div>
             ) : step.status === 'done' ? (
-              <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(120deg,#F0546A,#E0213A)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, fontWeight: 900, boxShadow: '0 6px 14px rgba(224,33,58,.3)', position: 'relative', zIndex: 1 }}>
+              <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(120deg,#E5103C,#D60934)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, fontWeight: 900, boxShadow: '0 6px 14px rgba(214,9,52,.3)', position: 'relative', zIndex: 1 }}>
                 ✓
               </div>
             ) : step.status === 'current' ? (
-              <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#fff', border: '3px solid #E0213A', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 6px 16px rgba(224,33,58,.25)', position: 'relative', zIndex: 1, animation: 'wcPulse 3s ease-in-out infinite' }} />
+              <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#fff', border: '3px solid #D60934', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 6px 16px rgba(214,9,52,.25)', position: 'relative', zIndex: 1, animation: 'wcPulse 3s ease-in-out infinite' }} />
             ) : (
               <div style={{ width: 34, height: 34, borderRadius: '50%', background: '#fff', border: '2px dashed #E4C7CC', boxSizing: 'border-box', position: 'relative', zIndex: 1 }} />
             )}
@@ -57,7 +57,7 @@ function RoadmapPath({ steps }: RoadmapPathProps) {
                 isGoal
                   ? { fontSize: 11, fontWeight: 900, color: '#B98A16', textAlign: 'center' }
                   : step.status === 'current'
-                    ? { fontSize: 11, fontWeight: 900, color: '#E0213A', textAlign: 'center' }
+                    ? { fontSize: 11, fontWeight: 900, color: '#D60934', textAlign: 'center' }
                     : step.status === 'done'
                       ? { fontSize: 11, fontWeight: 700, color: '#3A2F35', textAlign: 'center' }
                       : { fontSize: 11, color: '#C4ACB3', textAlign: 'center' }
@@ -65,7 +65,7 @@ function RoadmapPath({ steps }: RoadmapPathProps) {
             >
               {step.label}
             </div>
-            <div style={{ fontSize: 10, fontWeight: 700, color: step.status === 'current' ? '#E0213A' : '#B7A0A7', minHeight: 13 }}>{step.hint}</div>
+            <div style={{ fontSize: 10, fontWeight: 700, color: step.status === 'current' ? '#D60934' : '#B7A0A7', minHeight: 13 }}>{step.hint}</div>
           </div>
         );
       })}

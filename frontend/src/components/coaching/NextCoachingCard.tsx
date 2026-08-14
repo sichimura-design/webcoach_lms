@@ -9,11 +9,75 @@
  * 「録音を開始」だと何が起きているかを取り違えさせる。
  */
 import React from 'react';
-import { AlertTriangle, CheckCircle2, Link as LinkIcon, Loader2, Sparkles, Video } from 'lucide-react';
+import { AlertTriangle, CalendarDays, CheckCircle2, Link as LinkIcon, Loader2, Sparkles, Video } from 'lucide-react';
+import { differenceInCalendarDays } from 'date-fns';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
 import { displayMeetingUrl } from '../../utils/parseMeetingLink';
 import { PROVIDER_LABEL } from '../../types/coaching';
 import type { AutoImportReadiness, NextCoaching } from '../../types/coaching';
+
+/**
+ * compact（マイページ）専用のスタイル。
+ * ============================================================
+ * 🔴 --dc-* は .mypage-3d 配下でしか定義されていない CSS 変数。
+ *    このカードは /coaching（full）と共有しているので、compact のときだけ使う。
+ *    full 側は従来の theme/webcoachTheme.ts の色を保つ（配色変更はマイページ限定）。
+ * ============================================================
+ */
+const DC_CARD: React.CSSProperties = {
+  background: 'var(--dc-surface)',
+  border: '1px solid var(--dc-border)',
+  borderRadius: 'var(--dc-radius-lg)',
+  boxShadow: 'var(--dc-shadow-card)',
+  padding: 20,
+};
+
+const DC_SECONDARY_BUTTON: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 8,
+  width: '100%',
+  background: 'var(--dc-surface)',
+  color: 'var(--dc-primary)',
+  border: '1px solid var(--dc-primary)',
+  borderRadius: 'var(--dc-radius-md)',
+  padding: '9px 15px',
+  fontSize: 13,
+  fontWeight: 700,
+  fontFamily: 'inherit',
+  cursor: 'pointer',
+};
+
+/** compact の注意書き（会議リンク未登録など）。DESIGN.md の Warning 面 */
+function DcWarnBox({ children }: { children: React.ReactNode }) {
+  return (
+    <div
+      style={{
+        background: 'var(--dc-gold-surface)',
+        borderRadius: 'var(--dc-radius-md)',
+        padding: '12px 14px',
+        display: 'flex',
+        gap: 8,
+        alignItems: 'flex-start',
+        marginBottom: 14,
+      }}
+    >
+      <AlertTriangle size={16} strokeWidth={1.75} color="var(--dc-gold-text)" style={{ flex: 'none', marginTop: 2 }} />
+      <span style={{ fontSize: 12, color: 'var(--dc-gold-text)', lineHeight: 1.6 }}>{children}</span>
+    </div>
+  );
+}
+
+/** 「あと5日」。startsAt が無い（機械的に読めない）ときは出さない */
+function untilLabel(startsAt: string | null): string | null {
+  if (!startsAt) return null;
+  const d = differenceInCalendarDays(new Date(startsAt), new Date());
+  if (Number.isNaN(d) || d < 0) return null;
+  if (d === 0) return '今日';
+  if (d === 1) return '明日';
+  return `あと${d}日`;
+}
 
 interface NextCoachingCardProps {
   next: NextCoaching;
@@ -42,12 +106,53 @@ export function NextCoachingCard({
   /** 会議リンク未登録以外の問題（コーチ未連携・プラン非対応・サービス不一致など） */
   const coachIssue = readiness?.issues.find((i) => i.code !== 'no_meeting_link') ?? null;
 
-  const heading = (
+  /**
+   * カードの外枠。compact（マイページの 2×2 グリッド）だけ t.softCard にして
+   * セルの高さいっぱいに伸ばす。full（/coaching）は従来の t.card のまま変えない。
+   */
+  const shell = compact ? DC_CARD : { ...t.card, padding: 24 };
+
+  /** compact のときだけ CTA を全幅にする */
+  const ctaFit = compact ? { width: '100%' } : {};
+  /** compact の主ボタンは塗りつぶしにしない（赤ベタは「続きから学習する」に集約） */
+  const ctaStyle = compact
+    ? DC_SECONDARY_BUTTON
+    : { ...t.primaryButton, justifyContent: 'center' as const };
+
+  const heading = compact ? (
     <>
-      <p style={{ ...font.caption, color: color.textSubtle, margin: '0 0 6px' }}>次回コーチング</p>
-      <p style={{ ...(compact ? font.cardTitle : font.heroTitle), color: color.text, margin: '0 0 6px' }}>
-        {next.date}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+        <span
+          style={{ width: 38, height: 38, flex: 'none', borderRadius: 9999, background: 'var(--dc-soft-100)', display: 'grid', placeItems: 'center' }}
+        >
+          <CalendarDays size={18} strokeWidth={1.75} color="var(--dc-primary)" />
+        </span>
+        <span>
+          <span style={{ display: 'block', fontSize: 14, fontWeight: 700, color: 'var(--dc-text)' }}>次回コーチング</span>
+          {untilLabel(next.startsAt) && (
+            <span style={{ display: 'block', fontSize: 11, color: 'var(--dc-text-muted)' }}>{untilLabel(next.startsAt)}</span>
+          )}
+        </span>
+      </div>
+      <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--dc-text)', marginBottom: 2 }}>{next.date}</div>
+      <div style={{ fontSize: 13, color: 'var(--dc-text-muted)', marginBottom: 14 }}>担当：{next.coach}</div>
+    </>
+  ) : (
+    <>
+      <p
+        style={{
+          ...font.caption,
+          color: color.textSubtle,
+          margin: '0 0 8px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 6,
+        }}
+      >
+        <CalendarDays size={13} color={color.textSubtle} />
+        次回コーチング
       </p>
+      <p style={{ ...font.heroTitle, color: color.text, margin: '0 0 6px' }}>{next.date}</p>
       <p style={{ ...font.meta, color: color.textMuted, margin: 0 }}>{next.coach}</p>
     </>
   );
@@ -59,7 +164,7 @@ export function NextCoachingCard({
 
     if (s === 'recording') {
       return (
-        <section style={{ ...t.card, padding: compact ? 20 : 24 }}>
+        <section style={shell}>
           {heading}
           <div
             style={{
@@ -92,7 +197,7 @@ export function NextCoachingCard({
               </p>
             </div>
           </div>
-          <button type="button" onClick={open} style={{ ...t.ghostButton, marginTop: 14 }}>
+          <button type="button" onClick={open} style={{ ...t.ghostButton, marginTop: 14, ...ctaFit }}>
             記録中の画面を開く
           </button>
           <style>{'@keyframes coaching-blink{0%,100%{opacity:1}50%{opacity:.25}}'}</style>
@@ -102,7 +207,7 @@ export function NextCoachingCard({
 
     if (s === 'review_required') {
       return (
-        <section style={{ ...t.card, padding: compact ? 20 : 24 }}>
+        <section style={shell}>
           {heading}
           <div
             style={{
@@ -126,7 +231,7 @@ export function NextCoachingCard({
               </p>
             </div>
           </div>
-          <button type="button" onClick={open} style={{ ...t.primaryButton, marginTop: 14, justifyContent: 'center' }}>
+          <button type="button" onClick={open} style={{ ...ctaStyle, marginTop: 14, ...ctaFit }}>
             ノートを確認する
           </button>
         </section>
@@ -135,7 +240,7 @@ export function NextCoachingCard({
 
     if (s === 'failed') {
       return (
-        <section style={{ ...t.card, padding: compact ? 20 : 24 }}>
+        <section style={shell}>
           {heading}
           <div
             style={{
@@ -159,7 +264,7 @@ export function NextCoachingCard({
               </p>
             </div>
           </div>
-          <button type="button" onClick={open} style={{ ...t.primaryButton, marginTop: 14, justifyContent: 'center' }}>
+          <button type="button" onClick={open} style={{ ...ctaStyle, marginTop: 14, ...ctaFit }}>
             記録を取り込む
           </button>
         </section>
@@ -168,7 +273,7 @@ export function NextCoachingCard({
 
     // uploading / transcribing / summarizing
     return (
-      <section style={{ ...t.card, padding: compact ? 20 : 24 }}>
+      <section style={shell}>
         {heading}
         <div
           style={{
@@ -192,7 +297,7 @@ export function NextCoachingCard({
             </p>
           </div>
         </div>
-        <button type="button" onClick={open} style={{ ...t.ghostButton, marginTop: 14 }}>
+        <button type="button" onClick={open} style={{ ...t.ghostButton, marginTop: 14, ...ctaFit }}>
           進捗を見る
         </button>
       </section>
@@ -202,14 +307,18 @@ export function NextCoachingCard({
   // ---- 会議リンク未登録 ----
   if (!link) {
     return (
-      <section style={{ ...t.card, padding: compact ? 20 : 24 }}>
+      <section style={shell}>
         {heading}
-        <p style={{ ...font.meta, color: color.textMuted, margin: '16px 0 12px', lineHeight: 1.8 }}>
-          会議リンクがまだ登録されていません。
-        </p>
-        <button type="button" onClick={onRegisterLink} style={{ ...t.primaryButton, justifyContent: 'center' }}>
+        {compact ? (
+          <DcWarnBox>会議リンクがまだ登録されていません。</DcWarnBox>
+        ) : (
+          <p style={{ ...font.meta, color: color.textMuted, margin: '16px 0 12px', lineHeight: 1.8 }}>
+            会議リンクがまだ登録されていません。
+          </p>
+        )}
+        <button type="button" onClick={onRegisterLink} style={{ ...ctaStyle, ...ctaFit }}>
           <LinkIcon className="w-4 h-4" />
-          送られてきたリンクを登録
+          {compact ? '会議リンクを登録する' : '送られてきたリンクを登録'}
         </button>
       </section>
     );
@@ -217,7 +326,7 @@ export function NextCoachingCard({
 
   // ---- 会議リンク登録済み ----
   return (
-    <section style={{ ...t.card, padding: compact ? 20 : 24 }}>
+    <section style={shell}>
       {heading}
 
       <div
@@ -298,7 +407,7 @@ export function NextCoachingCard({
         type="button"
         onClick={onStart}
         disabled={starting}
-        style={{ ...t.primaryButton, justifyContent: 'center', marginTop: 16, opacity: starting ? 0.6 : 1 }}
+        style={{ ...ctaStyle, marginTop: 16, opacity: starting ? 0.6 : 1, ...ctaFit }}
       >
         <Sparkles className="w-4 h-4" />
         {starting ? '準備しています…' : 'AIノートを開始して参加'}

@@ -43,7 +43,7 @@ function EyeIcon({ open }: { open: boolean }) {
  *    背景を不透明の白にして透けを止め、枠を 1.5px の均一色にしている。
  */
 const INPUT_BASE =
-  'w-full h-12 rounded-xl text-[15px] border-[1.5px] border-[#d6cecb] bg-white text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 hover:border-[#c6bcb8] focus:border-[rgba(212,0,50,0.7)] focus:shadow-[0_0_0_4px_rgba(212,0,50,0.09)]';
+  'w-full h-12 rounded-xl text-[15px] border-[1.5px] border-[#d6cecb] bg-white text-[#3c3333] placeholder:text-[#b6aeac] outline-none transition-all duration-150 hover:border-[#c6bcb8] focus:border-[rgba(214,9,52,0.7)] focus:shadow-[0_0_0_4px_rgba(214,9,52,0.09)]';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -206,7 +206,7 @@ function LoginPage() {
               style={{
                 fontWeight: 800,
                 letterSpacing: '0.055em',
-                color: '#d40032',
+                color: '#D60934',
                 fontFamily: '"Noto Sans JP", sans-serif',
               }}
             >
@@ -234,7 +234,7 @@ function LoginPage() {
 
           {/* 「未来の自分を、いま作る。」のテキストは削除。区切りの赤いバーのみ残す */}
           <div style={{ margin: '8px 0 58px', textAlign: 'center' }}>
-            <div style={{ width: 42, height: 2, margin: '10px auto 0', background: '#d40032', borderRadius: 999 }} />
+            <div style={{ width: 42, height: 2, margin: '10px auto 0', background: '#D60934', borderRadius: 999 }} />
           </div>
 
           {needsNewPassword ? (
@@ -308,7 +308,7 @@ function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-[52px] rounded-xl border-0 outline-none text-white text-base font-bold tracking-[0.04em] cursor-pointer transition-all duration-150 bg-[linear-gradient(135deg,#e00039,#d40032_58%,#b9002b)] shadow-[0_14px_26px_rgba(212,0,50,0.2),inset_0_1px_0_rgba(255,255,255,0.24)] hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_18px_30px_rgba(212,0,50,0.28),inset_0_1px_0_rgba(255,255,255,0.24)] active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full h-[52px] rounded-xl border-0 outline-none text-white text-base font-bold tracking-[0.04em] cursor-pointer transition-all duration-150 bg-[linear-gradient(135deg,#E5103C,#D60934_58%,#B50829)] shadow-[0_14px_26px_rgba(214,9,52,0.2),inset_0_1px_0_rgba(255,255,255,0.24)] hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_18px_30px_rgba(214,9,52,0.28),inset_0_1px_0_rgba(255,255,255,0.24)] active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed"
                 style={{ marginTop: 4 }}
               >
                 {loading ? (
@@ -355,7 +355,7 @@ function LoginPage() {
                   <span
                     onClick={() => navigate('/password-reset')}
                     className="text-xs cursor-pointer"
-                    style={{ color: '#d40032' }}
+                    style={{ color: '#D60934' }}
                   >
                     パスワードお忘れですか？
                   </span>
@@ -393,7 +393,7 @@ function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-[52px] rounded-xl border-0 outline-none text-white text-base font-bold tracking-[0.04em] cursor-pointer transition-all duration-150 bg-[linear-gradient(135deg,#e00039,#d40032_58%,#b9002b)] shadow-[0_14px_26px_rgba(212,0,50,0.2),inset_0_1px_0_rgba(255,255,255,0.24)] hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_18px_30px_rgba(212,0,50,0.28),inset_0_1px_0_rgba(255,255,255,0.24)] active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full h-[52px] rounded-xl border-0 outline-none text-white text-base font-bold tracking-[0.04em] cursor-pointer transition-all duration-150 bg-[linear-gradient(135deg,#E5103C,#D60934_58%,#B50829)] shadow-[0_14px_26px_rgba(214,9,52,0.2),inset_0_1px_0_rgba(255,255,255,0.24)] hover:-translate-y-0.5 hover:brightness-105 hover:shadow-[0_18px_30px_rgba(214,9,52,0.28),inset_0_1px_0_rgba(255,255,255,0.24)] active:translate-y-0 disabled:opacity-60 disabled:cursor-not-allowed"
                 style={{ marginTop: 18 }}
               >
                 {loading ? (

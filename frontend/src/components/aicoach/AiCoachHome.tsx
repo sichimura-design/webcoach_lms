@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type CSSProperties } from 'react';
 import { ChevronRight, ArrowUp, Info, Plus, MessageSquare, Sparkles, X } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import {
@@ -72,7 +72,7 @@ export function AiCoachHome({
 
   return (
     <div style={{ height: '100%', overflowY: 'auto', background: color.pageBg }}>
-      <div style={{ maxWidth: 940, margin: '0 auto', padding: '38px 24px 56px' }}>
+      <div className="wc-page" style={{ '--wc-page-max': '940px', '--wc-page-top': '38px', '--wc-page-bottom': '56px' } as CSSProperties}>
         {/* ── 見出し ── */}
         <div className="flex flex-col items-center" style={{ gap: 10, textAlign: 'center' }}>
           <span
@@ -84,7 +84,7 @@ export function AiCoachHome({
               borderRadius: '50%',
               background: color.primarySoft,
               color: color.primary,
-              boxShadow: '0 8px 22px rgba(224,33,58,.10)',
+              boxShadow: '0 8px 22px rgba(214,9,52,.10)',
             }}
           >
             <Sparkles size={24} />

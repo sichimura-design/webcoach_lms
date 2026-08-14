@@ -39,7 +39,7 @@ const statusBoxStyle = (status: ApiStatus): React.CSSProperties => ({
   fontSize: '13px',
   display: status === 'idle' ? 'none' : 'block',
   backgroundColor: status === 'success' ? '#e8f5e9' : status === 'error' ? '#fdecea' : '#e3f2fd',
-  color: status === 'success' ? '#2e7d32' : status === 'error' ? '#c62828' : '#1565c0',
+  color: status === 'success' ? '#2e7d32' : status === 'error' ? '#D60934' : '#1565c0',
   whiteSpace: 'pre-wrap',
   wordBreak: 'break-all',
 });

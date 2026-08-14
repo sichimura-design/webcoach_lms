@@ -276,7 +276,7 @@ export default function ConnectCoachPage() {
               marginBottom: 14,
             }}
           >
-            <AlertTriangle className="w-4 h-4" style={{ color: '#C4102A', flexShrink: 0, marginTop: 2 }} />
+            <AlertTriangle className="w-4 h-4" style={{ color: '#B50829', flexShrink: 0, marginTop: 2 }} />
             <p style={{ ...font.caption, color: '#8A2230', margin: 0, lineHeight: 1.9 }}>{error}</p>
           </div>
         )}
