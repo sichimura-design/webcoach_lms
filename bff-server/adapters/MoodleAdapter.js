@@ -370,6 +370,62 @@ class MoodleAdapter {
   }
 
   /**
+   * Log that a user started a focus-booth study session.
+   * Writes \local_webcoach_utils\event\study_session_started to mdl_logstore_standard_log
+   * as an audit trail. The actual duration data lives in webcoach_study_activity (api-server).
+   * @param {number} userid - Moodle user ID
+   * @param {number} sessionid - webcoach_study_activity row id (issued by api-server)
+   * @param {number} [courseid] - Moodle course ID (optional)
+   * @returns {Promise<any>} API response
+   */
+  async logStudySessionStarted(userid, sessionid, courseid) {
+    const params = {
+      userid: parseInt(userid, 10),
+      sessionid: parseInt(sessionid, 10)
+    };
+    if (courseid) {
+      params.courseid = parseInt(courseid, 10);
+    }
+    return this.callAPI('local_webcoach_utils_start_study_session', params);
+  }
+
+  /**
+   * Log that a user ended a focus-booth study session.
+   * Writes \local_webcoach_utils\event\study_session_ended to mdl_logstore_standard_log.
+   * @param {number} userid - Moodle user ID
+   * @param {number} sessionid - webcoach_study_activity row id
+   * @param {number} durationMinutes - Final recorded duration in minutes
+   * @param {number} [courseid] - Moodle course ID (optional)
+   * @returns {Promise<any>} API response
+   */
+  async logStudySessionEnded(userid, sessionid, durationMinutes, courseid) {
+    const params = {
+      userid: parseInt(userid, 10),
+      sessionid: parseInt(sessionid, 10),
+      durationminutes: parseInt(durationMinutes, 10)
+    };
+    if (courseid) {
+      params.courseid = parseInt(courseid, 10);
+    }
+    return this.callAPI('local_webcoach_utils_end_study_session', params);
+  }
+
+  /**
+   * Log that a user started studying a course (SPA opened the course content screen).
+   * Writes \local_webcoach_utils\event\course_study_started (throttled server-side to
+   * once per user/course/day, same as updateUserLastAccess).
+   * @param {number} userid - Moodle user ID
+   * @param {number} courseid - Moodle course ID
+   * @returns {Promise<any>} API response
+   */
+  async logCourseStudyStarted(userid, courseid) {
+    return this.callAPI('local_webcoach_utils_log_course_study_started', {
+      userid: parseInt(userid, 10),
+      courseid: parseInt(courseid, 10)
+    });
+  }
+
+  /**
    * Delete users (bulk)
    */
   async deleteUsers(userIds) {

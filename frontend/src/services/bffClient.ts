@@ -23,6 +23,14 @@ import {
   HealthResponse,
 } from '../types/api';
 import { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
+import {
+  StudySession,
+  StudySessionStartInput,
+  StudySessionFinishInput,
+  StudyStats,
+  StudyStreak,
+  StudyCalendarData,
+} from '../types/studyActivity';
 import { getIdToken } from './cognitoAuth';
 
 /**
@@ -391,6 +399,86 @@ class BFFClient {
   async getRecommendedBadges(userId: number): Promise<Badge[]> {
     const response = await this.api.get(`/webcoach/recomendbadge/${userId}`);
     return response.data;
+  }
+
+  /**
+   * 集中ブース学習セッション開始
+   * POST /api/study/sessions/{userid}
+   */
+  async startStudySession(userId: number, input: StudySessionStartInput): Promise<StudySession> {
+    const response = await this.api.post(`/study/sessions/${userId}`, input);
+    return response.data;
+  }
+
+  /**
+   * 集中ブース学習セッション終了
+   * POST /api/study/sessions/{userid}/{sessionId}/finish
+   */
+  async finishStudySession(
+    userId: number,
+    sessionId: number,
+    input: StudySessionFinishInput
+  ): Promise<StudySession> {
+    const response = await this.api.post(`/study/sessions/${userId}/${sessionId}/finish`, input);
+    return response.data;
+  }
+
+  /**
+   * 進行中の学習セッション取得(無ければ404)
+   * GET /api/study/sessions/{userid}/active
+   */
+  async getActiveStudySession(userId: number): Promise<StudySession | null> {
+    try {
+      const response = await this.api.get(`/study/sessions/${userId}/active`);
+      return response.data;
+    } catch (error: any) {
+      if (error?.response?.status === 404) return null;
+      throw error;
+    }
+  }
+
+  /**
+   * 直近の学習セッション一覧取得
+   * GET /api/study/sessions/{userid}/recent
+   */
+  async getRecentStudySessions(userId: number, limit = 10): Promise<StudySession[]> {
+    const response = await this.api.get(`/study/sessions/${userId}/recent`, { params: { limit } });
+    return response.data;
+  }
+
+  /**
+   * 今日・今週・累計の学習時間取得
+   * GET /api/study/stats/{userid}
+   */
+  async getStudyStats(userId: number): Promise<StudyStats> {
+    const response = await this.api.get(`/study/stats/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 学習ストリーク取得
+   * GET /api/study/streak/{userid}
+   */
+  async getStudyStreak(userId: number): Promise<StudyStreak> {
+    const response = await this.api.get(`/study/streak/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 学習カレンダー取得
+   * GET /api/study/calendar/{userid}?year=&month=
+   */
+  async getStudyCalendar(userId: number, year: number, month: number): Promise<StudyCalendarData> {
+    const response = await this.api.get(`/study/calendar/${userId}`, { params: { year, month } });
+    return response.data;
+  }
+
+  /**
+   * コース学習開始ログ記録(1ユーザー×1コース×1日1回程度に間引かれる)
+   * POST /api/study/courses/{userid}/{courseid}/started
+   */
+  async logCourseStudyStarted(userId: number, courseId: number): Promise<void> {
+    await this.api.post(`/study/courses/${userId}/${courseId}/started`);
   }
 
   /**

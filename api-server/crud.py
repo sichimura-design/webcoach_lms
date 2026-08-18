@@ -20,6 +20,7 @@ from entities import (
     WebCoachStudyNote,
     WebCoachCoachingSchedule,
     WebCoachCoachingRecording,
+    WebCoachStudyActivity,
 )
 from dto.request import (
     CourseAccessCreate,
@@ -2008,4 +2009,197 @@ def update_coaching_recording_status(
     db.commit()
     db.refresh(recording)
     return recording
+
+
+# ==========================================
+# Study Activity (集中ブース / webcoach_study_activity)
+# ==========================================
+#
+# 学習時間・ストリーク・カレンダー・ランキング集計の正データ。開始/終了はここに
+# 書き込むと同時に、呼び出し側(bff-server)がMoodle webserviceを通じて
+# \local_webcoach_utils\event\study_session_started / study_session_ended を
+# mdl_logstore_standard_logにも記録する(mod_quizの自前attemptテーブル＋
+# イベントログの構成と同様。実データはこちら、ログ側は補助的な監査証跡)。
+
+
+def start_study_session(
+    db: Session,
+    mdl_user_id: int,
+    courseid: Optional[int] = None,
+    course_title: Optional[str] = None,
+    target_minutes: Optional[int] = None,
+) -> WebCoachStudyActivity:
+    """
+    集中ブースの学習セッションを開始する(in_progress行を1件作成)。
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        courseid: 学習対象のコースID(任意)
+        course_title: 表示用コース名(任意、非正規化)
+        target_minutes: 開始時に選択した目標時間(分、任意)
+
+    Returns:
+        WebCoachStudyActivity: 作成されたセッション行(id採番済み)
+    """
+    now_jst = datetime.now(JST).replace(tzinfo=None)
+    session = WebCoachStudyActivity(
+        mdl_user_id=mdl_user_id,
+        courseid=courseid,
+        course_title=course_title,
+        status="in_progress",
+        started_at=now_jst,
+        local_date=now_jst.date(),
+        target_minutes=target_minutes,
+        paused_seconds=0,
+    )
+    db.add(session)
+    db.commit()
+    db.refresh(session)
+    return session
+
+
+def finish_study_session(
+    db: Session,
+    session_id: int,
+    mdl_user_id: int,
+    duration_minutes: int,
+    paused_seconds: int = 0,
+) -> Optional[WebCoachStudyActivity]:
+    """
+    集中ブースの学習セッションを終了する。
+
+    duration_minutesはクライアント側で一時停止を差し引いた最終値であり、
+    集計・ランキングの正データとしてそのまま採用する(measured_secondsは
+    サーバー実測値として参考保持するのみ)。
+
+    Args:
+        db: Database session
+        session_id: webcoach_study_activity.id
+        mdl_user_id: 呼び出しユーザーのMoodleユーザーID(他人のセッションを終了できないようにする)
+        duration_minutes: 最終確定学習時間(分)
+        paused_seconds: 一時停止した合計秒数
+
+    Returns:
+        Optional[WebCoachStudyActivity]: 更新後のセッション。該当セッションが無い/他人のものの場合はNone
+    """
+    session = db.query(WebCoachStudyActivity).filter(
+        WebCoachStudyActivity.id == session_id,
+        WebCoachStudyActivity.mdl_user_id == mdl_user_id,
+        WebCoachStudyActivity.status == "in_progress",
+    ).first()
+
+    if not session:
+        return None
+
+    now_jst = datetime.now(JST).replace(tzinfo=None)
+    measured_seconds = max(0, int((now_jst - session.started_at).total_seconds()))
+
+    session.ended_at = now_jst
+    session.status = "completed"
+    session.duration_minutes = max(0, duration_minutes)
+    session.measured_seconds = measured_seconds
+    session.paused_seconds = max(0, paused_seconds)
+
+    db.commit()
+    db.refresh(session)
+    return session
+
+
+def get_active_study_session(db: Session, mdl_user_id: int) -> Optional[WebCoachStudyActivity]:
+    """
+    進行中(in_progress)の学習セッションを取得する。
+    別画面遷移・タブ再読込後もタイマーを継続表示するため、フロントは起動時にこれを参照する。
+    """
+    return db.query(WebCoachStudyActivity).filter(
+        WebCoachStudyActivity.mdl_user_id == mdl_user_id,
+        WebCoachStudyActivity.status == "in_progress",
+    ).order_by(desc(WebCoachStudyActivity.started_at)).first()
+
+
+def get_recent_study_sessions(db: Session, mdl_user_id: int, limit: int = 10) -> List[WebCoachStudyActivity]:
+    """直近に完了した学習セッションを新しい順に取得する。"""
+    return db.query(WebCoachStudyActivity).filter(
+        WebCoachStudyActivity.mdl_user_id == mdl_user_id,
+        WebCoachStudyActivity.status == "completed",
+    ).order_by(desc(WebCoachStudyActivity.started_at)).limit(limit).all()
+
+
+def get_study_stats(db: Session, mdl_user_id: int) -> Dict[str, Any]:
+    """
+    今日・今週(月曜始まり)・累計の学習時間(分)を集計する。
+    """
+    today_jst = datetime.now(JST).date()
+    week_start = today_jst - timedelta(days=today_jst.weekday())
+
+    def sum_minutes(since: Optional[date]) -> int:
+        q = db.query(func.coalesce(func.sum(WebCoachStudyActivity.duration_minutes), 0)).filter(
+            WebCoachStudyActivity.mdl_user_id == mdl_user_id,
+            WebCoachStudyActivity.status == "completed",
+        )
+        if since is not None:
+            q = q.filter(WebCoachStudyActivity.local_date >= since)
+        return int(q.scalar() or 0)
+
+    return {
+        "userid": mdl_user_id,
+        "today_minutes": sum_minutes(today_jst),
+        "week_minutes": sum_minutes(week_start),
+        "total_minutes": sum_minutes(None),
+    }
+
+
+def get_study_streak(db: Session, mdl_user_id: int) -> Dict[str, Any]:
+    """
+    学習ストリーク(連続で集中ブース学習を完了した日数)を算出する。
+
+    ログインストリーク(get_user_login_streak, \\core\\event\\user_loggedin基準)とは
+    独立した別指標。「アプリを開いた」ではなく「その日1回以上、学習セッションを完了した」を
+    ストリークの成立条件とする。
+    """
+    rows = db.query(WebCoachStudyActivity.local_date).filter(
+        WebCoachStudyActivity.mdl_user_id == mdl_user_id,
+        WebCoachStudyActivity.status == "completed",
+    ).distinct().order_by(desc(WebCoachStudyActivity.local_date)).all()
+    activity_dates = [row[0] for row in rows]
+
+    if not activity_dates:
+        return {"userid": mdl_user_id, "current_streak": 0, "last_active_date": None}
+
+    today_jst = datetime.now(JST).date()
+    yesterday_jst = today_jst - timedelta(days=1)
+
+    last_active_date = activity_dates[0]
+    if last_active_date not in (today_jst, yesterday_jst):
+        return {"userid": mdl_user_id, "current_streak": 0, "last_active_date": last_active_date}
+
+    streak = 1
+    for i in range(1, len(activity_dates)):
+        if activity_dates[i - 1] - activity_dates[i] == timedelta(days=1):
+            streak += 1
+        else:
+            break
+
+    return {"userid": mdl_user_id, "current_streak": streak, "last_active_date": last_active_date}
+
+
+def get_study_calendar(db: Session, mdl_user_id: int, year: int, month: int) -> List[Dict[str, Any]]:
+    """
+    指定年月(JSTローカル日付基準)の日別学習時間・セッション数を取得する(カレンダー表示用)。
+    """
+    query = text("""
+        SELECT local_date, SUM(duration_minutes) AS total_minutes, COUNT(*) AS session_count
+        FROM webcoach_study_activity
+        WHERE mdl_user_id = :userid
+          AND status = 'completed'
+          AND YEAR(local_date) = :year
+          AND MONTH(local_date) = :month
+        GROUP BY local_date
+        ORDER BY local_date
+    """)
+    result = db.execute(query, {"userid": mdl_user_id, "year": year, "month": month})
+    return [
+        {"date": row[0], "total_minutes": int(row[1] or 0), "session_count": int(row[2])}
+        for row in result.fetchall()
+    ]
 

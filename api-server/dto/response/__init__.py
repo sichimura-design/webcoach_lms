@@ -14,6 +14,13 @@ from .course import (
 from .badge import BadgeResponse, UserBadgesResponse
 from .roadmap import RoadmapResponse, RoadmapListResponse
 from .ai_application import AIApplicationResponse, AIApplicationListResponse
+from .study import (
+    StudySessionResponse,
+    StudyStatsResponse,
+    StudyStreakResponse,
+    StudyCalendarDayResponse,
+    StudyCalendarResponse,
+)
 from .common import (
     HealthResponse,
     ErrorResponse,
@@ -67,4 +74,10 @@ __all__ = [
     "CoachMeetingIntegrationStatusResponse",
     "LoginStreakResponse",
     "CoachingRecordingResponse",
+    # Study Activity (集中ブース)
+    "StudySessionResponse",
+    "StudyStatsResponse",
+    "StudyStreakResponse",
+    "StudyCalendarDayResponse",
+    "StudyCalendarResponse",
 ]

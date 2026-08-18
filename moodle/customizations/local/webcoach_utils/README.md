@@ -30,6 +30,17 @@ It exposes external web service functions for managing course tags and user info
 
 - **update_user_lastaccess**: ユーザーの最終アクセス時刻を更新
 
+### 3. 学習セッション記録 / Study Session Logging（集中ブース）
+
+- **start_study_session**: 集中ブース学習開始を`mdl_logstore_standard_log`に記録（`local_webcoach_utils\event\study_session_started`）
+- **end_study_session**: 集中ブース学習終了を`mdl_logstore_standard_log`に記録（`local_webcoach_utils\event\study_session_ended`）
+- **log_course_study_started**: コース学習開始を1ユーザー×1コース×1日1件だけ記録（`local_webcoach_utils\event\course_study_started`）
+
+実測時間・一時停止等の実データはapi-server側の`webcoach_study_activity`テーブルが正であり、
+ここで記録するイベントは開始/終了の監査ログ（mod_quizが自前のattemptテーブルとイベントログの
+両方を持つのと同じ構成）。`\core\event\user_loggedin`は既存の日次ログイン記録専用のままとし、
+学習開始・終了とは意味的に混在させない。
+
 ## ディレクトリ構成 / Directory Structure
 
 ```
@@ -71,6 +82,18 @@ cp -r moodle/customizations/local/webcoach_utils moodle/local/
    - パラメータ: userid (int)
    - 権限: なし
 
+4. `local_webcoach_utils_start_study_session`
+   - パラメータ: userid (int), sessionid (int), courseid (int, optional)
+   - 権限: なし
+
+5. `local_webcoach_utils_end_study_session`
+   - パラメータ: userid (int), sessionid (int), durationminutes (int), courseid (int, optional)
+   - 権限: なし
+
+6. `local_webcoach_utils_log_course_study_started`
+   - パラメータ: userid (int), courseid (int)
+   - 権限: なし
+
 ## ライセンス / License
 
 This plugin is part of the WebCoach system.
@@ -84,3 +107,5 @@ WebCoach Development Team
 - **1.0.0** (2026-06-21): 初回リリース
   - コースタグ管理機能
   - ユーザー最終アクセス更新機能
+- **1.1.0** (2026-08-16): 集中ブース学習セッション記録機能を追加
+  - `study_session_started` / `study_session_ended` / `course_study_started` イベントを追加

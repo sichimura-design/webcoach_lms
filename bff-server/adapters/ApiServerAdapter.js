@@ -119,6 +119,108 @@ class ApiServerAdapter {
   }
 
   /**
+   * Start a focus-booth study session
+   */
+  async startStudySession(userid, data) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/study/sessions/${userid}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Finish a focus-booth study session
+   */
+  async finishStudySession(userid, sessionId, data) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/study/sessions/${userid}/${sessionId}/finish`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get the currently in-progress study session (if any)
+   */
+  async getActiveStudySession(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/sessions/${userid}/active`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get recently completed study sessions
+   */
+  async getRecentStudySessions(userid, limit = 10) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/sessions/${userid}/recent`,
+      {
+        params: { limit },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get today / this week / total study minutes
+   */
+  async getStudyStats(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/stats/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get the study streak (consecutive days with a completed study session)
+   */
+  async getStudyStreak(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/streak/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get the study calendar for a given year/month
+   */
+  async getStudyCalendar(userid, year, month) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/calendar/${userid}`,
+      {
+        params: { year, month },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Get AI applications
    */
   async getAIApplications(filters = {}) {

@@ -36,6 +36,35 @@ $functions = [
         'ajax'          => true,
         'capabilities'  => '',
     ],
+
+    // Study session (focus booth) functions
+    'local_webcoach_utils_start_study_session' => [
+        'classname'     => 'local_webcoach_utils_external',
+        'methodname'    => 'start_study_session',
+        'classpath'     => 'local/webcoach_utils/externallib.php',
+        'description'   => 'Log that a user started a focus-booth study session',
+        'type'          => 'write',
+        'ajax'          => true,
+        'capabilities'  => '',
+    ],
+    'local_webcoach_utils_end_study_session' => [
+        'classname'     => 'local_webcoach_utils_external',
+        'methodname'    => 'end_study_session',
+        'classpath'     => 'local/webcoach_utils/externallib.php',
+        'description'   => 'Log that a user ended a focus-booth study session',
+        'type'          => 'write',
+        'ajax'          => true,
+        'capabilities'  => '',
+    ],
+    'local_webcoach_utils_log_course_study_started' => [
+        'classname'     => 'local_webcoach_utils_external',
+        'methodname'    => 'log_course_study_started',
+        'classpath'     => 'local/webcoach_utils/externallib.php',
+        'description'   => 'Log that a user started studying a course',
+        'type'          => 'write',
+        'ajax'          => true,
+        'capabilities'  => '',
+    ],
 ];
 
 $services = [
@@ -44,6 +73,9 @@ $services = [
             'local_webcoach_utils_set_course_tags',
             'local_webcoach_utils_get_course_tags',
             'local_webcoach_utils_update_user_lastaccess',
+            'local_webcoach_utils_start_study_session',
+            'local_webcoach_utils_end_study_session',
+            'local_webcoach_utils_log_course_study_started',
         ],
         'restrictedusers' => 0,
         'enabled' => 1,

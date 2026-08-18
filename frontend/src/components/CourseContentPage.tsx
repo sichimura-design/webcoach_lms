@@ -291,6 +291,19 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     clearPendingImage: clearAiPendingImage,
   } = useAiChat();
 
+  // コース学習開始ログ(mod_lessonのlesson_started相当)。同一ユーザー×コース×日は
+  // サーバー側で1件に間引かれるため、courseId/user変更ごとに呼ぶだけでよい。
+  const courseStudyLoggedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!user?.userid || !courseId) return;
+    const key = `${user.userid}:${courseId}`;
+    if (courseStudyLoggedRef.current === key) return;
+    courseStudyLoggedRef.current = key;
+    bffClient.logCourseStudyStarted(user.userid, courseId).catch(() => {
+      // 監査ログの送信失敗は学習体験をブロックしない
+    });
+  }, [user?.userid, courseId]);
+
   // モバイルサイドバー
   const [sidebarOpen, setSidebarOpen] = useState(false);
 

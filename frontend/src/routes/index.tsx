@@ -27,6 +27,7 @@ import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
 import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
 import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
 import { MyCoachingPage } from '../components/MyCoachingPage';
+import FocusBoothPage from '../components/FocusBoothPage';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigationStore } from '../store/navigationStore';
 import { ErrorBoundary } from '../components/shared';
@@ -234,6 +235,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <MyCoachingPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/focus-booth"
+        element={
+          <ProtectedRoute>
+            <FocusBoothPage />
           </ProtectedRoute>
         }
       />
