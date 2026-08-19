@@ -505,15 +505,12 @@ class BFFClient {
   }
 
   /**
-   * 教材(page/url/resource)閲覧ログ記録。Moodle標準webserviceのview系関数を発火する。
-   * POST /api/study/modules/{userid}/{moduleInstanceId}/viewed
+   * 教材(page/url/resource)閲覧ログ記録。courseid/cmidをネイティブ列として記録する
+   * 自前イベント(course_material_viewed)を発火する。cmidは省略可(コース単位のみ記録)。
+   * POST /api/study/modules/{userid}/viewed
    */
-  async logModuleView(
-    userId: number,
-    moduleType: 'page' | 'url' | 'resource',
-    moduleInstanceId: number
-  ): Promise<void> {
-    await this.api.post(`/study/modules/${userId}/${moduleInstanceId}/viewed`, { moduleType });
+  async logModuleView(userId: number, courseId: number, cmid?: number): Promise<void> {
+    await this.api.post(`/study/modules/${userId}/viewed`, { courseid: courseId, cmid });
   }
 
   /**

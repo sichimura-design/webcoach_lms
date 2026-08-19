@@ -2026,13 +2026,9 @@ def update_coaching_recording_status(
 _STUDY_STARTED_EVENT = "\\local_webcoach_utils\\event\\study_session_started"
 _STUDY_ENDED_EVENT = "\\local_webcoach_utils\\event\\study_session_ended"
 _STUDY_CORRECTED_EVENT = "\\local_webcoach_utils\\event\\study_session_corrected"
-# 教材コンテンツはpage/url/resourceのみ使用(lessonは未使用)。
-# BFF側がMoodle標準webservice(mod_page_view_page等)を呼んだ際にネイティブに発火するイベント。
-_COURSE_MODULE_VIEWED_EVENTS = [
-    "\\mod_page\\event\\course_module_viewed",
-    "\\mod_url\\event\\course_module_viewed",
-    "\\mod_resource\\event\\course_module_viewed",
-]
+# SPAが教材(page/url/resource)を開いた際にBFF経由で発火するイベント。courseid/cmidは
+# ネイティブ列(courseid列・contextinstanceid列)のみで記録されるためJSONパースは不要。
+_COURSE_MATERIAL_VIEWED_EVENT = "\\local_webcoach_utils\\event\\course_material_viewed"
 
 
 def _segment_totals_cte(user_scoped: bool) -> str:
@@ -2269,22 +2265,19 @@ def get_study_ranking(db: Session, period: str = "week", limit: int = 20) -> Lis
 
 def get_course_access_summary(db: Session, mdl_user_id: int) -> List[Dict[str, Any]]:
     """
-    コース単位のアクセス集計(course_module_viewed系イベントのCOUNT/直近アクセス日時)。
-    Moodle標準のmod_page_view_page等のwebservice呼び出しで発火するネイティブイベントを
-    そのまま集計する(JSON列は使わないネイティブ列のみの集計)。
+    コース単位のアクセス集計(course_material_viewedイベントのCOUNT/直近アクセス日時)。
+    courseidはネイティブ列なので、JSONパース不要でそのまま集計できる。
     """
-    event_params = {f"event{i}": name for i, name in enumerate(_COURSE_MODULE_VIEWED_EVENTS)}
-    event_in_clause = ", ".join(f":{key}" for key in event_params)
-    query = text(f"""
+    query = text("""
         SELECT courseid, COUNT(*) AS access_count, MAX(timecreated) AS last_accessed
         FROM mdl_logstore_standard_log
         WHERE userid = :userid
-          AND eventname IN ({event_in_clause})
+          AND eventname = :event
           AND courseid IS NOT NULL
         GROUP BY courseid
         ORDER BY last_accessed DESC
     """)
-    result = db.execute(query, {"userid": mdl_user_id, **event_params})
+    result = db.execute(query, {"userid": mdl_user_id, "event": _COURSE_MATERIAL_VIEWED_EVENT})
     return [
         {
             "courseid": row.courseid,
@@ -2298,21 +2291,20 @@ def get_course_access_summary(db: Session, mdl_user_id: int) -> List[Dict[str, A
 def get_course_material_access(db: Session, mdl_user_id: int, courseid: int) -> List[Dict[str, Any]]:
     """
     指定コース内の教材(コースモジュール)単位のアクセス集計。
-    contextlevel=70(CONTEXT_MODULE)のcontextinstanceidがcmidに対応する。
+    contextlevel=70(CONTEXT_MODULE)のcontextinstanceidがcmidに対応する
+    (cmidが分からず記録されたcourse_material_viewedはcontextlevel=50になるため自然に除外される)。
     """
-    event_params = {f"event{i}": name for i, name in enumerate(_COURSE_MODULE_VIEWED_EVENTS)}
-    event_in_clause = ", ".join(f":{key}" for key in event_params)
-    query = text(f"""
+    query = text("""
         SELECT contextinstanceid AS cmid, COUNT(*) AS access_count, MAX(timecreated) AS last_accessed
         FROM mdl_logstore_standard_log
         WHERE userid = :userid
           AND courseid = :courseid
-          AND eventname IN ({event_in_clause})
+          AND eventname = :event
           AND contextlevel = 70
         GROUP BY contextinstanceid
         ORDER BY last_accessed DESC
     """)
-    result = db.execute(query, {"userid": mdl_user_id, "courseid": courseid, **event_params})
+    result = db.execute(query, {"userid": mdl_user_id, "courseid": courseid, "event": _COURSE_MATERIAL_VIEWED_EVENT})
     return [
         {
             "cmid": row.cmid,

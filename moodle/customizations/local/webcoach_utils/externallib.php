@@ -391,4 +391,75 @@ class local_webcoach_utils_external extends external_api {
             'message' => new external_value(PARAM_TEXT, 'Status message'),
         ]);
     }
+
+    // ==================== COURSE MATERIAL VIEWED FUNCTION ====================
+
+    /**
+     * Parameters for log_course_material_viewed
+     */
+    public static function log_course_material_viewed_parameters() {
+        return new external_function_parameters([
+            'userid' => new external_value(PARAM_INT, 'User ID'),
+            'courseid' => new external_value(PARAM_INT, 'Course ID'),
+            'cmid' => new external_value(PARAM_INT, 'Course module ID (0 if unknown; course-level only)', VALUE_DEFAULT, 0),
+        ]);
+    }
+
+    /**
+     * Log that a user opened a course material (SPA opened a page/url/resource module).
+     *
+     * courseid/cmidはネイティブ列(courseid列・contextinstanceid列)として記録され、
+     * otherには何も入れない(集計・検索にネイティブ列をそのまま使うため)。
+     *
+     * @param int $userid
+     * @param int $courseid
+     * @param int $cmid
+     * @return array
+     */
+    public static function log_course_material_viewed($userid, $courseid, $cmid = 0) {
+        global $DB;
+
+        $params = self::validate_parameters(self::log_course_material_viewed_parameters(), [
+            'userid' => $userid,
+            'courseid' => $courseid,
+            'cmid' => $cmid,
+        ]);
+
+        $DB->get_record('user', ['id' => $params['userid']], '*', MUST_EXIST);
+        $DB->get_record('course', ['id' => $params['courseid']], '*', MUST_EXIST);
+
+        if (!empty($params['cmid'])) {
+            $context = context_module::instance($params['cmid']);
+        } else {
+            $context = context_course::instance($params['courseid']);
+        }
+        self::validate_context($context);
+
+        $eventdata = [
+            'userid' => $params['userid'],
+            'courseid' => $params['courseid'],
+            'context' => $context,
+        ];
+        if (!empty($params['cmid'])) {
+            $eventdata['objectid'] = $params['cmid'];
+        }
+
+        $event = \local_webcoach_utils\event\course_material_viewed::create($eventdata);
+        $event->trigger();
+
+        return [
+            'success' => true,
+            'message' => 'Course material viewed event logged successfully',
+        ];
+    }
+
+    /**
+     * Returns description of log_course_material_viewed return value
+     */
+    public static function log_course_material_viewed_returns() {
+        return new external_single_structure([
+            'success' => new external_value(PARAM_BOOL, 'Success status'),
+            'message' => new external_value(PARAM_TEXT, 'Status message'),
+        ]);
+    }
 }

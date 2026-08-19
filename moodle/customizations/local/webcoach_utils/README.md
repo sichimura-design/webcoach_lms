@@ -43,11 +43,16 @@ end、再開のたびにstartを発火するため、一時停止時間は合算
 `other`のJSONパースを集計時に許容する。`\core\event\user_loggedin`は既存の日次ログイン記録専用の
 ままとし、学習開始・終了とは意味的に混在させない。
 
-コースごとのアクセス記録・教材（page/url/resource）ごとの閲覧記録は、このプラグインではなく
-Moodle標準のwebservice（`mod_page_view_page`/`mod_resource_view_resource`/`mod_url_view_url`。
-`course_module_viewed`イベントとcompletion判定を標準機能として発火する）をアプリのwebservice
-トークンが属する外部サービス（デフォルトでは`moodle_mobile_app`）に追加登録して利用する。
-プラグイン開発は不要（旧`log_course_study_started`は廃止）。
+### 4. 教材アクセス記録 / Course Material Access Logging
+
+- **log_course_material_viewed**: 教材（page/url/resource）を開いたことを`mdl_logstore_standard_log`に記録（`local_webcoach_utils\event\course_material_viewed`）
+
+`courseid`/`cmid`はどちらもネイティブ列（`courseid`列・contextを`context_module`にした場合の
+`contextinstanceid`列）として記録され、`other`には何も入れない（検索・集計はネイティブ列に対して
+行うため）。`cmid`が分かる場合はコース+教材単位、分からない場合は`context_course`にフォールバックし
+コース単位のみで記録する。標準の`mod_page_view_page`等のwebservice（Moodle管理画面での外部サービス
+追加登録が必要）には依存しない。このイベントは`contextlevel=70`/`contextinstanceid`を使う点で標準の
+`course_module_viewed`と同じ形なので、api-server側の集計クエリはeventname 1本を`IN`句に追加するだけで済む。
 
 ## ディレクトリ構成 / Directory Structure
 
@@ -102,6 +107,10 @@ cp -r moodle/customizations/local/webcoach_utils moodle/local/
    - パラメータ: userid (int), deltaminutes (int), courseid (int, optional)
    - 権限: なし
 
+7. `local_webcoach_utils_log_course_material_viewed`
+   - パラメータ: userid (int), courseid (int), cmid (int, optional)
+   - 権限: なし
+
 ## ライセンス / License
 
 This plugin is part of the WebCoach system.
@@ -119,5 +128,7 @@ WebCoach Development Team
   - `study_session_started` / `study_session_ended` / `course_study_started` イベントを追加
 - **1.2.0** (2026-08-19): 学習時間の正データを自前テーブルからMoodleログのみに変更
   - `study_session_started`/`study_session_ended`から`other`(sessionid/durationminutes)を撤去し、timecreated差分で時間を算出する方式に変更
-  - `course_study_started`を廃止（教材アクセスはMoodle標準の`mod_*_view_*` webserviceで代替）
+  - `course_study_started`を廃止
   - `study_session_corrected`イベントを追加（学習時間の手動補正、低頻度）
+- **1.3.0** (2026-08-19): 教材アクセス記録機能を追加
+  - `course_material_viewed`イベントを追加（courseid/cmidはネイティブ列のみで記録、`other`未使用）

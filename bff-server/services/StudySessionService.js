@@ -98,23 +98,15 @@ class StudySessionService {
   }
 
   /**
-   * Log that a user viewed a course module (page/url/resource) using Moodle's
-   * standard mobile-app webservices. Fires course_module_viewed natively.
-   * @param {'page'|'url'|'resource'} moduleType
-   * @param {number} moduleInstanceId - the module's own instance id (NOT cmid)
+   * Log that a user opened a course material (page/url/resource) via our own plugin's
+   * course_material_viewed event. courseid/cmid land as native, queryable log columns.
+   * @param {number} userid
+   * @param {number} courseid
+   * @param {number} [cmid] - omit for course-level-only recording
    */
-  async logModuleView(moduleType, moduleInstanceId) {
-    console.log(`[StudySession] Logging module view: type=${moduleType} instance=${moduleInstanceId}`);
-    switch (moduleType) {
-      case 'page':
-        return await moodleAdapter.viewPageModule(moduleInstanceId);
-      case 'url':
-        return await moodleAdapter.viewUrlModule(moduleInstanceId);
-      case 'resource':
-        return await moodleAdapter.viewResourceModule(moduleInstanceId);
-      default:
-        throw new Error(`Unsupported module type for view logging: ${moduleType}`);
-    }
+  async logModuleView(userid, courseid, cmid) {
+    console.log(`[StudySession] Logging module view: user=${userid} course=${courseid} cmid=${cmid ?? '-'}`);
+    return await moodleAdapter.logCourseMaterialViewed(userid, courseid, cmid);
   }
 }
 

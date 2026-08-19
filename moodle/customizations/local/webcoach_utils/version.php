@@ -6,7 +6,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_webcoach_utils';
-$plugin->version = 2026081900;
+$plugin->version = 2026081901;
 $plugin->requires = 2021051700; // Moodle 3.11+
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.2.0';
+$plugin->release = '1.3.0';

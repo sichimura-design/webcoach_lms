@@ -423,34 +423,25 @@ class MoodleAdapter {
   }
 
   /**
-   * Log a "page" module view using Moodle's standard mobile-app webservice.
-   * This fires \mod_page\event\course_module_viewed natively (and completion-by-view rules),
-   * without any custom plugin code. Note: the log event's contextinstanceid (used for
-   * per-material aggregation in api-server) is always the cmid regardless of moduleInstanceId;
-   * this parameter is only what the webservice call itself requires.
-   * @param {number} moduleInstanceId - mdl_page.id (NOT the course module id/cmid)
+   * Log that a user opened a course material (page/url/resource) using our own plugin's
+   * custom event (\local_webcoach_utils\event\course_material_viewed). courseid/cmid are
+   * recorded as native log columns (courseid column / contextinstanceid column via a
+   * context_module context), never inside `other`, so they stay directly queryable/searchable.
+   * Does not depend on Moodle admin registering the standard mobile-app webservices.
+   * @param {number} userid - Moodle user ID
+   * @param {number} courseid - Moodle course ID
+   * @param {number} [cmid] - Course module ID (omit for course-level-only recording)
    * @returns {Promise<any>} API response
    */
-  async viewPageModule(moduleInstanceId) {
-    return this.callAPI('mod_page_view_page', { pageid: parseInt(moduleInstanceId, 10) });
-  }
-
-  /**
-   * Log a "url" module view using Moodle's standard mobile-app webservice.
-   * @param {number} moduleInstanceId - mdl_url.id (NOT the course module id/cmid)
-   * @returns {Promise<any>} API response
-   */
-  async viewUrlModule(moduleInstanceId) {
-    return this.callAPI('mod_url_view_url', { urlid: parseInt(moduleInstanceId, 10) });
-  }
-
-  /**
-   * Log a "resource" module view using Moodle's standard mobile-app webservice.
-   * @param {number} moduleInstanceId - mdl_resource.id (NOT the course module id/cmid)
-   * @returns {Promise<any>} API response
-   */
-  async viewResourceModule(moduleInstanceId) {
-    return this.callAPI('mod_resource_view_resource', { resourceid: parseInt(moduleInstanceId, 10) });
+  async logCourseMaterialViewed(userid, courseid, cmid) {
+    const params = {
+      userid: parseInt(userid, 10),
+      courseid: parseInt(courseid, 10)
+    };
+    if (cmid) {
+      params.cmid = parseInt(cmid, 10);
+    }
+    return this.callAPI('local_webcoach_utils_log_course_material_viewed', params);
   }
 
   /**

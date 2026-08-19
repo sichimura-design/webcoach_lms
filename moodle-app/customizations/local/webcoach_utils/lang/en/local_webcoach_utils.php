@@ -10,3 +10,4 @@ $string['pluginname'] = 'WebCoach Utils';
 $string['eventstudysessionstarted'] = 'Study session started';
 $string['eventstudysessionended'] = 'Study session ended';
 $string['eventstudysessioncorrected'] = 'Study session corrected';
+$string['eventcoursematerialviewed'] = 'Course material viewed';

@@ -40,8 +40,6 @@ interface Section {
 
 interface Module {
   id: number;
-  /** モジュール自身のインスタンスid(mdl_page.id等)。cmid(=id)とは別物。教材view系webservice呼び出しに使う */
-  instance?: number;
   name: string;
   modname: string;
   contents?: ModuleContent[];
@@ -293,12 +291,12 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     clearPendingImage: clearAiPendingImage,
   } = useAiChat();
 
-  // 教材(page/url/resource)を開いたら、Moodle標準のview系webserviceを呼んでcourse_module_viewed
-  // を発火させる(completion判定も標準機能として得られる)。SPAはMoodleの実ページコントローラを
-  // 経由しないため、この呼び出しをしない限りMoodle側には一切アクセス記録が残らない。
+  // 教材(page/url/resource)を開いたら、courseid/cmidをネイティブ列として記録する自前イベント
+  // (course_material_viewed)を発火させる。SPAはMoodleの実ページコントローラを経由しないため、
+  // この呼び出しをしない限りMoodle側には一切アクセス記録が残らない。
   const moduleViewLoggedRef = useRef<string | null>(null);
   useEffect(() => {
-    if (!user?.userid || !selectedModule?.instance) return;
+    if (!user?.userid || !selectedModule) return;
     const moduleType = selectedModule.modname;
     if (moduleType !== 'page' && moduleType !== 'url' && moduleType !== 'resource') return;
 
@@ -306,10 +304,10 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     if (moduleViewLoggedRef.current === key) return;
     moduleViewLoggedRef.current = key;
 
-    bffClient.logModuleView(user.userid, moduleType, selectedModule.instance).catch(() => {
+    bffClient.logModuleView(user.userid, courseId, selectedModule.id).catch(() => {
       // 閲覧ログの送信失敗は学習体験をブロックしない
     });
-  }, [user?.userid, selectedModule?.id, selectedModule?.instance, selectedModule?.modname]);
+  }, [user?.userid, courseId, selectedModule?.id, selectedModule?.modname]);
 
   // モバイルサイドバー
   const [sidebarOpen, setSidebarOpen] = useState(false);

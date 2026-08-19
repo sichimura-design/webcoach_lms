@@ -8,8 +8,6 @@ const requireAuth = require('../middleware/auth');
 const studySessionService = require('../services/StudySessionService');
 const { createErrorResponse } = require('../utils/errorHandler');
 
-const VIEWABLE_MODULE_TYPES = ['page', 'url', 'resource'];
-
 function isAdminOrCoach(req) {
   const userGroups = req.user?.groups || [];
   return userGroups.includes('admin') || userGroups.includes('coach');
@@ -301,24 +299,23 @@ router.get('/course-access/:userid/:courseid/materials', requireAuth, async (req
 });
 
 /**
- * POST /api/study/modules/:userid/:moduleInstanceId/viewed
- * Log that a user viewed a course module (page/url/resource) via Moodle's standard
- * mobile-app webservices. Body: { moduleType: 'page'|'url'|'resource' }
- * moduleInstanceId is the module's own instance id (NOT cmid).
+ * POST /api/study/modules/:userid/viewed
+ * Log that a user opened a course material (page/url/resource) via our own plugin's
+ * course_material_viewed event. Body: { courseid: number, cmid?: number }
  */
-router.post('/modules/:userid/:moduleInstanceId/viewed', requireAuth, async (req, res) => {
+router.post('/modules/:userid/viewed', requireAuth, async (req, res) => {
   try {
-    const { userid, moduleInstanceId } = req.params;
-    const { moduleType } = req.body || {};
+    const { userid } = req.params;
+    const { courseid, cmid } = req.body || {};
 
     if (!isSelfOrAdminOrCoach(req, userid)) {
       return forbid(res, req.user?.email, `log module view for user ${userid}`);
     }
-    if (!VIEWABLE_MODULE_TYPES.includes(moduleType)) {
-      return res.status(400).json({ error: 'Bad Request', detail: `moduleType must be one of: ${VIEWABLE_MODULE_TYPES.join(', ')}` });
+    if (!courseid) {
+      return res.status(400).json({ error: 'Bad Request', detail: 'courseid is required' });
     }
 
-    const result = await studySessionService.logModuleView(moduleType, parseInt(moduleInstanceId, 10));
+    const result = await studySessionService.logModuleView(parseInt(userid, 10), parseInt(courseid, 10), cmid ? parseInt(cmid, 10) : undefined);
     res.json(result);
   } catch (error) {
     console.error('[StudySession] Log module view error:', error.message);

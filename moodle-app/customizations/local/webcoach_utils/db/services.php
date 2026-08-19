@@ -65,6 +65,17 @@ $functions = [
         'ajax'          => true,
         'capabilities'  => '',
     ],
+
+    // Course material access functions
+    'local_webcoach_utils_log_course_material_viewed' => [
+        'classname'     => 'local_webcoach_utils_external',
+        'methodname'    => 'log_course_material_viewed',
+        'classpath'     => 'local/webcoach_utils/externallib.php',
+        'description'   => 'Log that a user opened a course material (page/url/resource)',
+        'type'          => 'write',
+        'ajax'          => true,
+        'capabilities'  => '',
+    ],
 ];
 
 $services = [
@@ -76,6 +87,7 @@ $services = [
             'local_webcoach_utils_start_study_session',
             'local_webcoach_utils_end_study_session',
             'local_webcoach_utils_correct_study_session',
+            'local_webcoach_utils_log_course_material_viewed',
         ],
         'restrictedusers' => 0,
         'enabled' => 1,
