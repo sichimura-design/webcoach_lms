@@ -30,8 +30,8 @@ export function RecentSessionsCard({ sessions, loading, onSeeAll }: RecentSessio
         <EmptySessions />
       ) : (
         <div className="flex flex-col" style={{ gap: 10 }}>
-          {sessions.map((s) => (
-            <StudySessionRow key={s.id} session={s} />
+          {sessions.map((s, i) => (
+            <StudySessionRow key={`${s.started_at}-${i}`} session={s} />
           ))}
         </div>
       )}

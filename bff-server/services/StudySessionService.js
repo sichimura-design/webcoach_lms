@@ -1,12 +1,15 @@
 /**
  * Study Session Service (集中ブース)
- * Handles focus-booth study session start/finish business logic.
+ * Handles focus-booth study session start/pause/resume/finish business logic.
  *
- * 実データ(学習時間の集計元)はapi-server側のwebcoach_study_activityテーブル。
- * 開始/終了それぞれ、Moodle側にも \local_webcoach_utils\event\study_session_started /
- * study_session_ended を監査ログとして記録する(mdl_logstore_standard_log)。
- * Moodle側の記録に失敗してもDB側の記録は既に確定しているため、ユーザーへは成功として返す
- * (監査ログはベストエフォート。取りこぼしはmeasured_seconds等でDB側から復元可能)。
+ * mdl_logstore_standard_log(Moodle)そのものが学習時間の正データ。自前テーブルは持たない。
+ * 開始/一時停止/再開/終了/補正はすべてMoodle webservice経由で直接記録する
+ * (study_session_started/study_session_ended/study_session_corrected)。
+ * 一時停止のたびにended、再開のたびに新しいstartedを発火するため、一時停止時間は
+ * 集計から自然に除外される。api-serverはこのログの読み取り集計のみを担当する。
+ *
+ * 教材(page/url/resource)の閲覧記録は、Moodle標準のmod_*_view_*webserviceを呼ぶことで
+ * course_module_viewedイベントを標準機能として発火させる(プラグイン開発不要)。
  */
 
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
@@ -14,35 +17,28 @@ const moodleAdapter = require('../adapters/MoodleAdapter');
 
 class StudySessionService {
   /**
-   * Start a new study session
+   * Start (or resume after a pause) a study session segment
    */
-  async startSession(userid, data) {
-    console.log(`[StudySession] Starting session for user ${userid}`);
-    const session = await apiServerAdapter.startStudySession(userid, data);
-
-    try {
-      await moodleAdapter.logStudySessionStarted(userid, session.id, data.courseid);
-    } catch (error) {
-      console.error(`[StudySession] Failed to log study_session_started event (session ${session.id}):`, error.message);
-    }
-
-    return session;
+  async startSession(userid, courseid) {
+    console.log(`[StudySession] Starting/resuming session segment for user ${userid}`);
+    return await moodleAdapter.logStudySessionStarted(userid, courseid);
   }
 
   /**
-   * Finish an in-progress study session
+   * Pause or finish the current study session segment
    */
-  async finishSession(userid, sessionId, data) {
-    console.log(`[StudySession] Finishing session ${sessionId} for user ${userid}`);
-    const session = await apiServerAdapter.finishStudySession(userid, sessionId, data);
+  async endSession(userid, courseid) {
+    console.log(`[StudySession] Pausing/ending session segment for user ${userid}`);
+    return await moodleAdapter.logStudySessionEnded(userid, courseid);
+  }
 
-    try {
-      await moodleAdapter.logStudySessionEnded(userid, sessionId, session.duration_minutes, session.courseid);
-    } catch (error) {
-      console.error(`[StudySession] Failed to log study_session_ended event (session ${sessionId}):`, error.message);
-    }
-
-    return session;
+  /**
+   * Manually correct the duration of the segment just ended (low frequency;
+   * only called when the user edits the recorded time on the finish screen)
+   */
+  async correctSession(userid, deltaMinutes, courseid) {
+    console.log(`[StudySession] Correcting last session segment for user ${userid} by ${deltaMinutes}min`);
+    return await moodleAdapter.correctStudySession(userid, deltaMinutes, courseid);
   }
 
   /**
@@ -81,11 +77,44 @@ class StudySessionService {
   }
 
   /**
-   * Log that a user started studying a course (independent of the focus-booth timer)
+   * Get the study time ranking for a period ('week' | 'month' | 'all')
    */
-  async logCourseStudyStarted(userid, courseid) {
-    console.log(`[StudySession] Logging course study started: user ${userid}, course ${courseid}`);
-    return await moodleAdapter.logCourseStudyStarted(userid, courseid);
+  async getRanking(period, limit) {
+    return await apiServerAdapter.getStudyRanking(period, limit);
+  }
+
+  /**
+   * Get per-course access counts
+   */
+  async getCourseAccess(userid) {
+    return await apiServerAdapter.getCourseAccess(userid);
+  }
+
+  /**
+   * Get per-material access counts within a course
+   */
+  async getCourseMaterialAccess(userid, courseid) {
+    return await apiServerAdapter.getCourseMaterialAccess(userid, courseid);
+  }
+
+  /**
+   * Log that a user viewed a course module (page/url/resource) using Moodle's
+   * standard mobile-app webservices. Fires course_module_viewed natively.
+   * @param {'page'|'url'|'resource'} moduleType
+   * @param {number} moduleInstanceId - the module's own instance id (NOT cmid)
+   */
+  async logModuleView(moduleType, moduleInstanceId) {
+    console.log(`[StudySession] Logging module view: type=${moduleType} instance=${moduleInstanceId}`);
+    switch (moduleType) {
+      case 'page':
+        return await moodleAdapter.viewPageModule(moduleInstanceId);
+      case 'url':
+        return await moodleAdapter.viewUrlModule(moduleInstanceId);
+      case 'resource':
+        return await moodleAdapter.viewResourceModule(moduleInstanceId);
+      default:
+        throw new Error(`Unsupported module type for view logging: ${moduleType}`);
+    }
   }
 }
 

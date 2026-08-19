@@ -8,6 +8,8 @@ const requireAuth = require('../middleware/auth');
 const studySessionService = require('../services/StudySessionService');
 const { createErrorResponse } = require('../utils/errorHandler');
 
+const VIEWABLE_MODULE_TYPES = ['page', 'url', 'resource'];
+
 function isAdminOrCoach(req) {
   const userGroups = req.user?.groups || [];
   return userGroups.includes('admin') || userGroups.includes('coach');
@@ -27,10 +29,10 @@ function forbid(res, userEmail, action) {
 }
 
 /**
- * POST /api/study/sessions/:userid
- * Start a new focus-booth study session
+ * POST /api/study/sessions/:userid/start
+ * Start (or resume after a pause) a study session segment
  */
-router.post('/sessions/:userid', requireAuth, async (req, res) => {
+router.post('/sessions/:userid/start', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
 
@@ -38,8 +40,8 @@ router.post('/sessions/:userid', requireAuth, async (req, res) => {
       return forbid(res, req.user?.email, `start a study session for user ${userid}`);
     }
 
-    const session = await studySessionService.startSession(parseInt(userid, 10), req.body);
-    res.status(201).json(session);
+    const result = await studySessionService.startSession(parseInt(userid, 10), req.body?.courseid);
+    res.status(201).json(result);
   } catch (error) {
     console.error('[StudySession] Start session error:', error.message);
     if (error.response) {
@@ -51,27 +53,49 @@ router.post('/sessions/:userid', requireAuth, async (req, res) => {
 });
 
 /**
- * POST /api/study/sessions/:userid/:sessionId/finish
- * Finish an in-progress study session
+ * POST /api/study/sessions/:userid/end
+ * Pause or finish the current study session segment
  */
-router.post('/sessions/:userid/:sessionId/finish', requireAuth, async (req, res) => {
+router.post('/sessions/:userid/end', requireAuth, async (req, res) => {
   try {
-    const { userid, sessionId } = req.params;
+    const { userid } = req.params;
 
     if (!isSelfOrAdminOrCoach(req, userid)) {
-      return forbid(res, req.user?.email, `finish a study session for user ${userid}`);
+      return forbid(res, req.user?.email, `end a study session for user ${userid}`);
     }
 
-    const session = await studySessionService.finishSession(parseInt(userid, 10), parseInt(sessionId, 10), req.body);
-    res.json(session);
+    const result = await studySessionService.endSession(parseInt(userid, 10), req.body?.courseid);
+    res.json(result);
   } catch (error) {
-    console.error('[StudySession] Finish session error:', error.message);
-    if (error.response && error.response.status === 404) {
-      return res.status(404).json({
-        error: 'Not Found',
-        detail: error.response.data.detail || 'In-progress study session not found'
-      });
+    console.error('[StudySession] End session error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
     }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
+ * POST /api/study/sessions/:userid/correct
+ * Manually correct the duration of the segment just ended (低頻度)
+ */
+router.post('/sessions/:userid/correct', requireAuth, async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const { deltaMinutes, courseid } = req.body || {};
+
+    if (!isSelfOrAdminOrCoach(req, userid)) {
+      return forbid(res, req.user?.email, `correct a study session for user ${userid}`);
+    }
+    if (typeof deltaMinutes !== 'number' || !Number.isFinite(deltaMinutes)) {
+      return res.status(400).json({ error: 'Bad Request', detail: 'deltaMinutes must be a number' });
+    }
+
+    const result = await studySessionService.correctSession(parseInt(userid, 10), deltaMinutes, courseid);
+    res.json(result);
+  } catch (error) {
+    console.error('[StudySession] Correct session error:', error.message);
     if (error.response) {
       return res.status(error.response.status).json(error.response.data);
     }
@@ -210,22 +234,94 @@ router.get('/calendar/:userid', requireAuth, async (req, res) => {
 });
 
 /**
- * POST /api/study/courses/:userid/:courseid/started
- * Log that a user started studying a course (independent of the focus-booth timer;
- * fired e.g. when CourseContentPage mounts). Throttled server-side to once/user/course/day.
+ * GET /api/study/ranking?period=week|month|all&limit=
+ * Get the study time ranking
  */
-router.post('/courses/:userid/:courseid/started', requireAuth, async (req, res) => {
+router.get('/ranking', requireAuth, async (req, res) => {
+  try {
+    const { period, limit } = req.query;
+    const ranking = await studySessionService.getRanking(period || 'week', limit ? parseInt(limit, 10) : undefined);
+    res.json(ranking);
+  } catch (error) {
+    console.error('[StudySession] Get ranking error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
+ * GET /api/study/course-access/:userid
+ * Get per-course access counts / last-accessed timestamps
+ */
+router.get('/course-access/:userid', requireAuth, async (req, res) => {
+  try {
+    const { userid } = req.params;
+
+    if (!isSelfOrAdminOrCoach(req, userid)) {
+      return forbid(res, req.user?.email, `access course access stats for user ${userid}`);
+    }
+
+    const access = await studySessionService.getCourseAccess(parseInt(userid, 10));
+    res.json(access);
+  } catch (error) {
+    console.error('[StudySession] Get course access error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
+ * GET /api/study/course-access/:userid/:courseid/materials
+ * Get per-material (course module) access counts within a course
+ */
+router.get('/course-access/:userid/:courseid/materials', requireAuth, async (req, res) => {
   try {
     const { userid, courseid } = req.params;
 
     if (!isSelfOrAdminOrCoach(req, userid)) {
-      return forbid(res, req.user?.email, `log course study start for user ${userid}`);
+      return forbid(res, req.user?.email, `access material access stats for user ${userid}`);
     }
 
-    const result = await studySessionService.logCourseStudyStarted(parseInt(userid, 10), parseInt(courseid, 10));
+    const access = await studySessionService.getCourseMaterialAccess(parseInt(userid, 10), parseInt(courseid, 10));
+    res.json(access);
+  } catch (error) {
+    console.error('[StudySession] Get course material access error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
+ * POST /api/study/modules/:userid/:moduleInstanceId/viewed
+ * Log that a user viewed a course module (page/url/resource) via Moodle's standard
+ * mobile-app webservices. Body: { moduleType: 'page'|'url'|'resource' }
+ * moduleInstanceId is the module's own instance id (NOT cmid).
+ */
+router.post('/modules/:userid/:moduleInstanceId/viewed', requireAuth, async (req, res) => {
+  try {
+    const { userid, moduleInstanceId } = req.params;
+    const { moduleType } = req.body || {};
+
+    if (!isSelfOrAdminOrCoach(req, userid)) {
+      return forbid(res, req.user?.email, `log module view for user ${userid}`);
+    }
+    if (!VIEWABLE_MODULE_TYPES.includes(moduleType)) {
+      return res.status(400).json({ error: 'Bad Request', detail: `moduleType must be one of: ${VIEWABLE_MODULE_TYPES.join(', ')}` });
+    }
+
+    const result = await studySessionService.logModuleView(moduleType, parseInt(moduleInstanceId, 10));
     res.json(result);
   } catch (error) {
-    console.error('[StudySession] Log course study started error:', error.message);
+    console.error('[StudySession] Log module view error:', error.message);
     if (error.response) {
       return res.status(error.response.status).json(error.response.data);
     }

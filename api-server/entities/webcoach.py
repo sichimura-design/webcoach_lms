@@ -252,34 +252,3 @@ class WebCoachCoachingSchedule(Base):
         Index('idx_coaching_schedule_coach_date', 'coach_user_id', 'coaching_date'),
     )
 
-
-class WebCoachStudyActivity(Base):
-    """
-    WebCoach: 集中ブースの学習セッション記録（開始〜終了）
-
-    学習時間・ストリーク・カレンダー・ランキング集計の正データ。
-    開始/終了それぞれ、Moodle側にも監査ログとして \\local_webcoach_utils\\event\\study_session_started
-    / study_session_ended がmdl_logstore_standard_logに記録される（mod_quizの
-    attemptテーブル＋イベントログの構成と同様、実データはこちら・ログは補助）。
-    """
-    __tablename__ = "webcoach_study_activity"
-
-    id = Column(BigInteger, primary_key=True, autoincrement=True)
-    mdl_user_id = Column(BigInteger, nullable=False, comment='MoodleユーザーID')
-    courseid = Column(BigInteger, nullable=True, comment='学習対象のMoodleコースID(任意)')
-    course_title = Column(String(256), nullable=True, comment='表示用に非正規化したコース名')
-    status = Column(String(16), nullable=False, default='in_progress', comment='in_progress, completed')
-    started_at = Column(TIMESTAMP, nullable=False, comment='開始日時')
-    ended_at = Column(TIMESTAMP, nullable=True, comment='終了日時')
-    local_date = Column(Date, nullable=False, comment='開始時点のJST日付(YYYY-MM-DD)。カレンダー/ストリーク集計のバケット')
-    target_minutes = Column(BigInteger, nullable=True, comment='開始時に選択した目標時間(分)')
-    duration_minutes = Column(BigInteger, nullable=True, comment='終了時の最終確定学習時間(分)。集計・ランキングの正データ')
-    measured_seconds = Column(BigInteger, nullable=True, comment='サーバー側で実測した経過秒数(started_at〜ended_at)')
-    paused_seconds = Column(BigInteger, nullable=False, default=0, comment='一時停止した合計秒数(クライアント申告)')
-    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
-    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
-
-    __table_args__ = (
-        Index('idx_study_activity_user_date', 'mdl_user_id', 'local_date'),
-        Index('idx_study_activity_user_status', 'mdl_user_id', 'status'),
-    )

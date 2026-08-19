@@ -119,37 +119,10 @@ class ApiServerAdapter {
   }
 
   /**
-   * Start a focus-booth study session
-   */
-  async startStudySession(userid, data) {
-    const response = await axios.post(
-      `${this.apiServerUrl}/api/study/sessions/${userid}`,
-      data,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 10000
-      }
-    );
-    return response.data;
-  }
-
-  /**
-   * Finish a focus-booth study session
-   */
-  async finishStudySession(userid, sessionId, data) {
-    const response = await axios.post(
-      `${this.apiServerUrl}/api/study/sessions/${userid}/${sessionId}/finish`,
-      data,
-      {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 10000
-      }
-    );
-    return response.data;
-  }
-
-  /**
    * Get the currently in-progress study session (if any)
+   *
+   * 開始/一時停止/再開/終了/補正の書き込みはbff-server(MoodleAdapter)がMoodle webservice経由で
+   * 直接行う。api-serverはmdl_logstore_standard_logからの読み取り集計のみを担当する。
    */
   async getActiveStudySession(userid) {
     const response = await axios.get(
@@ -213,6 +186,49 @@ class ApiServerAdapter {
       `${this.apiServerUrl}/api/study/calendar/${userid}`,
       {
         params: { year, month },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get the study time ranking for a given period ('week' | 'month' | 'all')
+   */
+  async getStudyRanking(period = 'week', limit = 20) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/ranking`,
+      {
+        params: { period, limit },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get per-course access counts / last-accessed timestamps
+   */
+  async getCourseAccess(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/course-access/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get per-material (course module) access counts within a course
+   */
+  async getCourseMaterialAccess(userid, courseid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/course-access/${userid}/${courseid}/materials`,
+      {
         headers: { 'Content-Type': 'application/json' },
         timeout: 10000
       }

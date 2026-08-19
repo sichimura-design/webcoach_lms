@@ -1,7 +1,7 @@
 <?php
 /**
  * WebCoach Utils Plugin
- * Study session ended event (集中ブース学習終了)
+ * Study session ended event (集中ブース学習終了/一時停止)
  */
 
 namespace local_webcoach_utils\event;
@@ -9,15 +9,10 @@ namespace local_webcoach_utils\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Fired when a user finishes/stops a focus-booth study session.
+ * Fired when a user pauses or finishes a focus-booth study session.
  *
- * @property-read array $other {
- *      Extra information about event.
- *
- *      - int sessionid: id of webcoach_study_activity row (source of truth for duration)
- *      - int durationminutes: final recorded duration in minutes
- *      - string source: always 'focus_booth'
- * }
+ * 実測時間はこのイベントと直前のstudy_session_startedのtimecreated差分から算出する。
+ * 区間ごとの差分を合算したものが実質学習時間(一時停止中は含まれない)。
  */
 class study_session_ended extends \core\event\base {
 
@@ -29,8 +24,7 @@ class study_session_ended extends \core\event\base {
     }
 
     public function get_description() {
-        return "The user with id '$this->userid' ended a study session (webcoach_study_activity id "
-            . "'{$this->other['sessionid']}', duration '{$this->other['durationminutes']}' minutes).";
+        return "The user with id '$this->userid' paused/ended a study session.";
     }
 
     public static function get_name() {
@@ -39,17 +33,6 @@ class study_session_ended extends \core\event\base {
 
     public function get_url() {
         return null;
-    }
-
-    protected function validate_data() {
-        parent::validate_data();
-
-        if (!isset($this->other['sessionid'])) {
-            throw new \coding_exception('The \'sessionid\' value must be set in other.');
-        }
-        if (!isset($this->other['durationminutes'])) {
-            throw new \coding_exception('The \'durationminutes\' value must be set in other.');
-        }
     }
 
     public static function get_objectid_mapping() {

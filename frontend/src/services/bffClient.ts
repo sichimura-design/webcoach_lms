@@ -25,11 +25,13 @@ import {
 import { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
 import {
   StudySession,
-  StudySessionStartInput,
-  StudySessionFinishInput,
+  ActiveStudySessionInfo,
   StudyStats,
   StudyStreak,
   StudyCalendarData,
+  StudyRanking,
+  CourseAccess,
+  CourseMaterialAccess,
 } from '../types/studyActivity';
 import { getIdToken } from './cognitoAuth';
 
@@ -402,32 +404,34 @@ class BFFClient {
   }
 
   /**
-   * 集中ブース学習セッション開始
-   * POST /api/study/sessions/{userid}
+   * 集中ブース学習セッションの開始/再開(一時停止後)
+   * POST /api/study/sessions/{userid}/start
    */
-  async startStudySession(userId: number, input: StudySessionStartInput): Promise<StudySession> {
-    const response = await this.api.post(`/study/sessions/${userId}`, input);
-    return response.data;
+  async startStudySession(userId: number, courseId?: number): Promise<void> {
+    await this.api.post(`/study/sessions/${userId}/start`, { courseid: courseId });
   }
 
   /**
-   * 集中ブース学習セッション終了
-   * POST /api/study/sessions/{userid}/{sessionId}/finish
+   * 集中ブース学習セッションの一時停止/終了
+   * POST /api/study/sessions/{userid}/end
    */
-  async finishStudySession(
-    userId: number,
-    sessionId: number,
-    input: StudySessionFinishInput
-  ): Promise<StudySession> {
-    const response = await this.api.post(`/study/sessions/${userId}/${sessionId}/finish`, input);
-    return response.data;
+  async endStudySession(userId: number, courseId?: number): Promise<void> {
+    await this.api.post(`/study/sessions/${userId}/end`, { courseid: courseId });
+  }
+
+  /**
+   * 直前に終了した区間の学習時間を手動で補正(低頻度)
+   * POST /api/study/sessions/{userid}/correct
+   */
+  async correctStudySession(userId: number, deltaMinutes: number, courseId?: number): Promise<void> {
+    await this.api.post(`/study/sessions/${userId}/correct`, { deltaMinutes, courseid: courseId });
   }
 
   /**
    * 進行中の学習セッション取得(無ければ404)
    * GET /api/study/sessions/{userid}/active
    */
-  async getActiveStudySession(userId: number): Promise<StudySession | null> {
+  async getActiveStudySession(userId: number): Promise<ActiveStudySessionInfo | null> {
     try {
       const response = await this.api.get(`/study/sessions/${userId}/active`);
       return response.data;
@@ -474,11 +478,42 @@ class BFFClient {
   }
 
   /**
-   * コース学習開始ログ記録(1ユーザー×1コース×1日1回程度に間引かれる)
-   * POST /api/study/courses/{userid}/{courseid}/started
+   * 学習時間ランキング取得
+   * GET /api/study/ranking?period=&limit=
    */
-  async logCourseStudyStarted(userId: number, courseId: number): Promise<void> {
-    await this.api.post(`/study/courses/${userId}/${courseId}/started`);
+  async getStudyRanking(period: 'week' | 'month' | 'all' = 'week', limit = 20): Promise<StudyRanking> {
+    const response = await this.api.get('/study/ranking', { params: { period, limit } });
+    return response.data;
+  }
+
+  /**
+   * コースごとのアクセス集計取得
+   * GET /api/study/course-access/{userid}
+   */
+  async getCourseAccess(userId: number): Promise<CourseAccess> {
+    const response = await this.api.get(`/study/course-access/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * コース内の教材ごとのアクセス集計取得
+   * GET /api/study/course-access/{userid}/{courseid}/materials
+   */
+  async getCourseMaterialAccess(userId: number, courseId: number): Promise<CourseMaterialAccess> {
+    const response = await this.api.get(`/study/course-access/${userId}/${courseId}/materials`);
+    return response.data;
+  }
+
+  /**
+   * 教材(page/url/resource)閲覧ログ記録。Moodle標準webserviceのview系関数を発火する。
+   * POST /api/study/modules/{userid}/{moduleInstanceId}/viewed
+   */
+  async logModuleView(
+    userId: number,
+    moduleType: 'page' | 'url' | 'resource',
+    moduleInstanceId: number
+  ): Promise<void> {
+    await this.api.post(`/study/modules/${userId}/${moduleInstanceId}/viewed`, { moduleType });
   }
 
   /**

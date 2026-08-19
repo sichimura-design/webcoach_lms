@@ -16,10 +16,17 @@ from .roadmap import RoadmapResponse, RoadmapListResponse
 from .ai_application import AIApplicationResponse, AIApplicationListResponse
 from .study import (
     StudySessionResponse,
+    ActiveStudySessionResponse,
     StudyStatsResponse,
     StudyStreakResponse,
     StudyCalendarDayResponse,
     StudyCalendarResponse,
+    StudyRankingEntryResponse,
+    StudyRankingResponse,
+    CourseAccessSummaryResponse,
+    CourseAccessResponse,
+    CourseMaterialAccessSummaryResponse,
+    CourseMaterialAccessResponse,
 )
 from .common import (
     HealthResponse,
@@ -76,8 +83,15 @@ __all__ = [
     "CoachingRecordingResponse",
     # Study Activity (集中ブース)
     "StudySessionResponse",
+    "ActiveStudySessionResponse",
     "StudyStatsResponse",
     "StudyStreakResponse",
     "StudyCalendarDayResponse",
     "StudyCalendarResponse",
+    "StudyRankingEntryResponse",
+    "StudyRankingResponse",
+    "CourseAccessSummaryResponse",
+    "CourseAccessResponse",
+    "CourseMaterialAccessSummaryResponse",
+    "CourseMaterialAccessResponse",
 ]

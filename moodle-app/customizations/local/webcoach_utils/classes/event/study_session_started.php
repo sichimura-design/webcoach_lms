@@ -1,7 +1,7 @@
 <?php
 /**
  * WebCoach Utils Plugin
- * Study session started event (集中ブース学習開始)
+ * Study session started event (集中ブース学習開始/再開)
  */
 
 namespace local_webcoach_utils\event;
@@ -9,14 +9,11 @@ namespace local_webcoach_utils\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Fired when a user starts a focus-booth study session.
+ * Fired when a user starts (or resumes after a pause) a focus-booth study session.
  *
- * @property-read array $other {
- *      Extra information about event.
- *
- *      - int sessionid: id of webcoach_study_activity row (source of truth for duration)
- *      - string source: always 'focus_booth'
- * }
+ * 実測時間はこのイベントとstudy_session_endedのtimecreated差分から算出する
+ * (mdl_logstore_standard_logそのものが正データ)。一時停止のたびにstudy_session_endedを、
+ * 再開のたびにこのイベントを発火する。
  */
 class study_session_started extends \core\event\base {
 
@@ -28,8 +25,7 @@ class study_session_started extends \core\event\base {
     }
 
     public function get_description() {
-        return "The user with id '$this->userid' started a study session (webcoach_study_activity id "
-            . "'{$this->other['sessionid']}').";
+        return "The user with id '$this->userid' started/resumed a study session.";
     }
 
     public static function get_name() {
@@ -38,14 +34,6 @@ class study_session_started extends \core\event\base {
 
     public function get_url() {
         return null;
-    }
-
-    protected function validate_data() {
-        parent::validate_data();
-
-        if (!isset($this->other['sessionid'])) {
-            throw new \coding_exception('The \'sessionid\' value must be set in other.');
-        }
     }
 
     public static function get_objectid_mapping() {

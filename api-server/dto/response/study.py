@@ -1,27 +1,26 @@
 """
 Study activity (集中ブース) related response DTOs
+
+mdl_logstore_standard_log(study_session_started/ended/correctedイベント)を正データとして
+集計した結果を返す。自前テーブルは持たないため、DB行idの概念は無い。
 """
 from typing import Optional, List
 from datetime import date, datetime
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel
 
 
 class StudySessionResponse(BaseModel):
-    """学習セッション1件"""
-    id: int
-    mdl_user_id: int
+    """完了した学習セッション(区間)1件。started/endedイベントのペアリング結果"""
     courseid: Optional[int] = None
-    course_title: Optional[str] = None
-    status: str
     started_at: datetime
-    ended_at: Optional[datetime] = None
-    local_date: date
-    target_minutes: Optional[int] = None
-    duration_minutes: Optional[int] = None
-    measured_seconds: Optional[int] = None
-    paused_seconds: int
+    ended_at: datetime
+    duration_minutes: int
 
-    model_config = ConfigDict(from_attributes=True)
+
+class ActiveStudySessionResponse(BaseModel):
+    """進行中の学習セッション(対応するendedイベントがまだ無いstartedイベント)"""
+    courseid: Optional[int] = None
+    started_at: datetime
 
 
 class StudyStatsResponse(BaseModel):
@@ -52,3 +51,43 @@ class StudyCalendarResponse(BaseModel):
     year: int
     month: int
     days: List[StudyCalendarDayResponse]
+
+
+class StudyRankingEntryResponse(BaseModel):
+    """ランキング1件"""
+    rank: int
+    userid: int
+    total_minutes: int
+
+
+class StudyRankingResponse(BaseModel):
+    """期間別ランキング"""
+    period: str
+    entries: List[StudyRankingEntryResponse]
+
+
+class CourseAccessSummaryResponse(BaseModel):
+    """コース単位のアクセス集計1件(course_module_viewed系イベントの集計)"""
+    courseid: int
+    access_count: int
+    last_accessed: datetime
+
+
+class CourseAccessResponse(BaseModel):
+    """ユーザーのコース別アクセス集計一覧"""
+    userid: int
+    courses: List[CourseAccessSummaryResponse]
+
+
+class CourseMaterialAccessSummaryResponse(BaseModel):
+    """教材(コースモジュール)単位のアクセス集計1件"""
+    cmid: int
+    access_count: int
+    last_accessed: datetime
+
+
+class CourseMaterialAccessResponse(BaseModel):
+    """指定コース内の教材別アクセス集計一覧"""
+    userid: int
+    courseid: int
+    materials: List[CourseMaterialAccessSummaryResponse]

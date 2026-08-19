@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useStudyTimerStore } from '../store/studyTimerStore';
 import { bffClient } from '../services/bffClient';
-import { ActiveStudySession, StudyFinishDraft, StudySession, StudySessionMode } from '../types/studyActivity';
+import { ActiveStudySession, StudyFinishDraft, StudySessionMode } from '../types/studyActivity';
 import { useElapsedSeconds } from './useElapsedSeconds';
 
 export interface StartParams {
@@ -16,6 +16,12 @@ export interface StartParams {
 const STALE_SESSION_MS = 12 * 60 * 60 * 1000;
 /** これ未満は記録しない(誤操作の数秒が「学習した日」を成立させないため) */
 const MIN_RECORDABLE_SECONDS = 60;
+/**
+ * 記録を破棄する際、直前に閉じたMoodleログ上のセグメントを実質ゼロ分に補正するための
+ * 十分大きな負の補正値。GREATEST(0, 実測分 + delta)で必ず0にクランプされる
+ * (1回のセグメントがこれを上回る分数になることは無い)。
+ */
+const DISCARD_DELTA_MINUTES = -100000;
 
 export interface UseStudySession {
   session: ActiveStudySession | null;
@@ -40,7 +46,7 @@ export interface UseStudySession {
   /** 下書きを捨てて計測に戻る(一時停止のまま残る) */
   cancelFinish: () => void;
   /** 「そのまま記録」「時間を修正して記録」の両方がこれを呼ぶ */
-  commitFinish: (actualMinutes?: number) => Promise<StudySession | null>;
+  commitFinish: (actualMinutes?: number) => Promise<void>;
   finishDraft: StudyFinishDraft | null;
 }
 
@@ -58,9 +64,9 @@ export function useStudySession(userId: number | undefined): UseStudySession {
   const [starting, setStarting] = useState(false);
   const elapsedSeconds = useElapsedSeconds(session);
 
-  // 起動時: localStorageに無くても、サーバーに進行中セッションがあれば復元する。
-  // タブを閉じた/別画面から戻った/localStorageが消えた場合でも、サーバー側(webcoach_study_activity
-  // のin_progress行)を正としてタイマー状態を継続できるようにする。
+  // 起動時: localStorageに無くても、サーバー(Moodleログ)に進行中セッションがあれば復元する。
+  // タブを閉じた/別画面から戻った/localStorageが消えた場合でも、直近のstudy_session_startedに
+  // 対応するendedがまだ無ければ、それを正としてタイマー状態を継続できるようにする。
   const syncedRef = useRef(false);
   useEffect(() => {
     if (!userId || syncedRef.current) return;
@@ -73,15 +79,16 @@ export function useStudySession(userId: number | undefined): UseStudySession {
           if (useStudyTimerStore.getState().session) clearSession();
           return;
         }
-        const local = useStudyTimerStore.getState().session;
-        if (local && local.sessionId === active.id) return;
+        // ローカルに既にセッションがあれば、サーバーの開始時刻とは厳密照合せずローカルを正とする
+        // (DB行idが無いため一意な突合はできない。一時停止/再開のズレは許容する)
+        if (useStudyTimerStore.getState().session) return;
 
         restoreFromServer({
-          sessionId: active.id,
-          mode: active.target_minutes ? 'pomodoro' : 'freeform',
-          targetMinutes: active.target_minutes ?? undefined,
+          sessionId: Date.now(),
+          mode: 'freeform',
+          targetMinutes: undefined,
           courseId: active.courseid ?? undefined,
-          courseTitle: active.course_title ?? undefined,
+          courseTitle: undefined,
           startedAt: new Date(active.started_at).getTime(),
           pausedAt: null,
           pausedCount: 0,
@@ -93,6 +100,24 @@ export function useStudySession(userId: number | undefined): UseStudySession {
         // 復元に失敗してもタイマー未開始として振る舞えばよい
       });
   }, [userId, clearSession, restoreFromServer]);
+
+  // 一時停止のたびにstudy_session_ended、再開のたびに新しいstudy_session_startedを
+  // Moodleへベストエフォートで送る(ローカルのタイマー状態は同期的に即座に更新する)。
+  const pause = useCallback(() => {
+    const current = useStudyTimerStore.getState().session;
+    pauseSession();
+    if (userId) {
+      bffClient.endStudySession(userId, current?.courseId).catch(() => {});
+    }
+  }, [userId, pauseSession]);
+
+  const resume = useCallback(() => {
+    const current = useStudyTimerStore.getState().session;
+    resumeSession();
+    if (userId) {
+      bffClient.startStudySession(userId, current?.courseId).catch(() => {});
+    }
+  }, [userId, resumeSession]);
 
   // ポモドーロ完了の検知。ref でガードして1回だけ処理する
   const targetHandledRef = useRef<number | null>(null);
@@ -109,21 +134,17 @@ export function useStudySession(userId: number | undefined): UseStudySession {
     targetHandledRef.current = session.sessionId;
     markTargetReached();
     // 自動記録はしない。一時停止するだけにして、記録するか続けるかは受講生が決める。
-    pauseSession();
-  }, [session, elapsedSeconds, markTargetReached, pauseSession]);
+    pause();
+  }, [session, elapsedSeconds, markTargetReached, pause]);
 
   const start = useCallback(
     async (params: StartParams) => {
       if (!userId) return;
       setStarting(true);
       try {
-        const created = await bffClient.startStudySession(userId, {
-          courseid: params.courseId,
-          course_title: params.courseTitle,
-          target_minutes: params.targetMinutes,
-        });
+        await bffClient.startStudySession(userId, params.courseId);
         startSessionInStore({
-          sessionId: created.id,
+          sessionId: Date.now(),
           mode: params.mode,
           targetMinutes: params.targetMinutes,
           courseId: params.courseId,
@@ -136,16 +157,32 @@ export function useStudySession(userId: number | undefined): UseStudySession {
     [userId, startSessionInStore]
   );
 
+  /** 直前に閉じたセグメントを実質ゼロ分に補正する(discard・極端に短い記録の破棄で共用) */
+  const zeroOutLastSegment = useCallback(
+    (courseId: number | undefined) => {
+      if (!userId) return;
+      bffClient.correctStudySession(userId, DISCARD_DELTA_MINUTES, courseId).catch(() => {});
+    },
+    [userId]
+  );
+
   const discard = useCallback(() => {
+    const current = session;
     setFinishDraft(null);
     clearSession();
-  }, [clearSession, setFinishDraft]);
+    if (!current) return;
+    // 稼働中のまま破棄する場合は先にセグメントを閉じる(一時停止中なら既に閉じている)
+    if (current.pausedAt === null && userId) {
+      bffClient.endStudySession(userId, current.courseId).catch(() => {});
+    }
+    zeroOutLastSegment(current.courseId);
+  }, [session, userId, clearSession, setFinishDraft, zeroOutLastSegment]);
 
   const prepareFinish = useCallback(() => {
     if (!session) return;
-    // 先に一時停止する。カードを見ている間もカウントが進むと数字がずれる。
+    // 先に一時停止する(=study_session_endedを送る)。カードを見ている間もカウントが進むと数字がずれる。
     const endAt = session.pausedAt ?? Date.now();
-    if (session.pausedAt === null) pauseSession();
+    if (session.pausedAt === null) pause();
     const measuredSeconds = Math.max(0, Math.floor((endAt - session.startedAt) / 1000));
 
     setFinishDraft({
@@ -155,45 +192,42 @@ export function useStudySession(userId: number | undefined): UseStudySession {
       pausedSeconds: Math.round(session.pausedTotalMs / 1000),
       mode: session.mode,
       targetMinutes: session.targetMinutes,
+      courseId: session.courseId,
       courseTitle: session.courseTitle,
       completedTarget: session.targetReachedAt !== null,
     });
-  }, [session, pauseSession, setFinishDraft]);
+  }, [session, pause, setFinishDraft]);
 
   const cancelFinish = useCallback(() => setFinishDraft(null), [setFinishDraft]);
 
   const commitFinish = useCallback(
-    async (actualMinutes?: number): Promise<StudySession | null> => {
+    async (actualMinutes?: number): Promise<void> => {
       const draft = useStudyTimerStore.getState().finishDraft;
       if (!draft || !userId) {
         setFinishDraft(null);
         clearSession();
-        return null;
+        return;
       }
+      const naturalMinutes = Math.max(1, Math.round(draft.measuredSeconds / 60));
       const finalMinutes = actualMinutes ?? draft.actualMinutes;
-
-      // 数秒の誤操作を記録しない(丸めた1分が積み上がると「学習した日」が誤って成立する)
-      const untouched = finalMinutes === Math.max(1, Math.round(draft.measuredSeconds / 60));
-      if (draft.measuredSeconds < MIN_RECORDABLE_SECONDS && untouched) {
-        setFinishDraft(null);
-        clearSession();
-        return null;
-      }
+      const untouched = finalMinutes === naturalMinutes;
 
       setFinishDraft(null);
       clearSession();
 
-      try {
-        return await bffClient.finishStudySession(userId, draft.sessionId, {
-          duration_minutes: Math.max(0, finalMinutes),
-          paused_seconds: draft.pausedSeconds,
-        });
-      } catch {
-        // 送信に失敗してもUIは「終了した」状態に進める(タイマーには戻さない)
-        return null;
+      // 数秒の誤操作は記録しない(丸めた1分が積み上がると「学習した日」が誤って成立する)。
+      // ended事件は既にprepareFinish/pauseで送信済みなので、実質ゼロ分に補正する。
+      if (draft.measuredSeconds < MIN_RECORDABLE_SECONDS && untouched) {
+        zeroOutLastSegment(draft.courseId);
+        return;
+      }
+
+      if (!untouched) {
+        const deltaMinutes = Math.max(0, finalMinutes) - naturalMinutes;
+        bffClient.correctStudySession(userId, deltaMinutes, draft.courseId).catch(() => {});
       }
     },
-    [userId, clearSession, setFinishDraft]
+    [userId, clearSession, setFinishDraft, zeroOutLastSegment]
   );
 
   const remainingSeconds =
@@ -220,8 +254,8 @@ export function useStudySession(userId: number | undefined): UseStudySession {
     stale: !!session && Date.now() - (session.pausedAt ?? session.startedAt) > STALE_SESSION_MS,
     starting,
     start,
-    pause: pauseSession,
-    resume: resumeSession,
+    pause,
+    resume,
     discard,
     prepareFinish,
     cancelFinish,

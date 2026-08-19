@@ -10,6 +10,7 @@ import FocusTimerCard from './focus/FocusTimerCard';
 import StudyStatsCard from './focus/StudyStatsCard';
 import StreakCalendarCard from './focus/StreakCalendarCard';
 import RecentSessionsCard from './focus/RecentSessionsCard';
+import RankingCard from './focus/RankingCard';
 import FinishSessionModal from './focus/FinishSessionModal';
 import { formatTodayLabel } from './focus/focusFormat';
 
@@ -47,7 +48,7 @@ function FocusBoothPage() {
     finishDraft,
   } = useStudySession(user?.userid);
 
-  const { stats, streak, recent, calendarDays, calendarYear, calendarMonth, setCalendarMonth, loading, refresh } =
+  const { stats, streak, recent, ranking, calendarDays, calendarYear, calendarMonth, setCalendarMonth, loading, refresh } =
     useStudyStats(user?.userid);
 
   // 開始前の設定。開始したらsession側が正になる
@@ -138,6 +139,7 @@ function FocusBoothPage() {
                   loading={loading}
                 />
                 <RecentSessionsCard sessions={recent} loading={loading} />
+                <RankingCard ranking={ranking} currentUserId={user?.userid} loading={loading} />
               </div>
             </div>
           </main>

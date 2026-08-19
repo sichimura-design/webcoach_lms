@@ -211,6 +211,10 @@ class local_webcoach_utils_external extends external_api {
     }
 
     // ==================== STUDY SESSION (FOCUS BOOTH) FUNCTIONS ====================
+    //
+    // mdl_logstore_standard_logそのものが集中ブース学習時間の正データ。started/endedの
+    // timecreated差分(区間ごとの合算)が実質学習時間になる。一時停止のたびにend、
+    // 再開のたびにstartを呼ぶ。DB側にセッション行を持たないため、sessionidは存在しない。
 
     /**
      * Parameters for start_study_session
@@ -218,29 +222,22 @@ class local_webcoach_utils_external extends external_api {
     public static function start_study_session_parameters() {
         return new external_function_parameters([
             'userid' => new external_value(PARAM_INT, 'User ID'),
-            'sessionid' => new external_value(PARAM_INT, 'webcoach_study_activity row id (issued by api-server)'),
             'courseid' => new external_value(PARAM_INT, 'Course ID (0 if not tied to a specific course)', VALUE_DEFAULT, 0),
         ]);
     }
 
     /**
-     * Log that a user started a focus-booth study session.
-     *
-     * 実測時間・一時停止等の実データはapi-server側のwebcoach_study_activityテーブルが
-     * 正とする。ここではmdl_logstore_standard_logに「開始した」という監査ログを1件残すのみ
-     * （mod_quizが自前のattemptテーブルとattempt_startedイベントの両方を持つのと同じ構成）。
+     * Log that a user started (or resumed after a pause) a focus-booth study session.
      *
      * @param int $userid
-     * @param int $sessionid
      * @param int $courseid
      * @return array
      */
-    public static function start_study_session($userid, $sessionid, $courseid = 0) {
+    public static function start_study_session($userid, $courseid = 0) {
         global $DB;
 
         $params = self::validate_parameters(self::start_study_session_parameters(), [
             'userid' => $userid,
-            'sessionid' => $sessionid,
             'courseid' => $courseid,
         ]);
 
@@ -251,10 +248,6 @@ class local_webcoach_utils_external extends external_api {
 
         $eventdata = [
             'userid' => $params['userid'],
-            'other' => [
-                'sessionid' => $params['sessionid'],
-                'source' => 'focus_booth',
-            ],
         ];
         if (!empty($params['courseid'])) {
             $eventdata['courseid'] = $params['courseid'];
@@ -265,7 +258,6 @@ class local_webcoach_utils_external extends external_api {
 
         return [
             'success' => true,
-            'sessionid' => $params['sessionid'],
             'message' => 'Study session started event logged successfully',
         ];
     }
@@ -276,7 +268,6 @@ class local_webcoach_utils_external extends external_api {
     public static function start_study_session_returns() {
         return new external_single_structure([
             'success' => new external_value(PARAM_BOOL, 'Success status'),
-            'sessionid' => new external_value(PARAM_INT, 'webcoach_study_activity row id'),
             'message' => new external_value(PARAM_TEXT, 'Status message'),
         ]);
     }
@@ -287,28 +278,83 @@ class local_webcoach_utils_external extends external_api {
     public static function end_study_session_parameters() {
         return new external_function_parameters([
             'userid' => new external_value(PARAM_INT, 'User ID'),
-            'sessionid' => new external_value(PARAM_INT, 'webcoach_study_activity row id (issued by api-server)'),
-            'durationminutes' => new external_value(PARAM_INT, 'Final recorded duration in minutes'),
             'courseid' => new external_value(PARAM_INT, 'Course ID (0 if not tied to a specific course)', VALUE_DEFAULT, 0),
         ]);
     }
 
     /**
-     * Log that a user ended a focus-booth study session.
+     * Log that a user paused or finished a focus-booth study session.
      *
      * @param int $userid
-     * @param int $sessionid
-     * @param int $durationminutes
      * @param int $courseid
      * @return array
      */
-    public static function end_study_session($userid, $sessionid, $durationminutes, $courseid = 0) {
+    public static function end_study_session($userid, $courseid = 0) {
         global $DB;
 
         $params = self::validate_parameters(self::end_study_session_parameters(), [
             'userid' => $userid,
-            'sessionid' => $sessionid,
-            'durationminutes' => $durationminutes,
+            'courseid' => $courseid,
+        ]);
+
+        $DB->get_record('user', ['id' => $params['userid']], '*', MUST_EXIST);
+
+        $context = context_system::instance();
+        self::validate_context($context);
+
+        $eventdata = [
+            'userid' => $params['userid'],
+        ];
+        if (!empty($params['courseid'])) {
+            $eventdata['courseid'] = $params['courseid'];
+        }
+
+        $event = \local_webcoach_utils\event\study_session_ended::create($eventdata);
+        $event->trigger();
+
+        return [
+            'success' => true,
+            'message' => 'Study session ended event logged successfully',
+        ];
+    }
+
+    /**
+     * Returns description of end_study_session return value
+     */
+    public static function end_study_session_returns() {
+        return new external_single_structure([
+            'success' => new external_value(PARAM_BOOL, 'Success status'),
+            'message' => new external_value(PARAM_TEXT, 'Status message'),
+        ]);
+    }
+
+    /**
+     * Parameters for correct_study_session
+     */
+    public static function correct_study_session_parameters() {
+        return new external_function_parameters([
+            'userid' => new external_value(PARAM_INT, 'User ID'),
+            'deltaminutes' => new external_value(PARAM_INT, 'Signed correction in minutes, applied to the segment just ended'),
+            'courseid' => new external_value(PARAM_INT, 'Course ID (0 if not tied to a specific course)', VALUE_DEFAULT, 0),
+        ]);
+    }
+
+    /**
+     * Log a manual correction to the duration of the study session segment the user just ended.
+     *
+     * ユーザーが終了画面で計測値と異なる時間を入力して記録した場合のみ呼ばれる(低頻度)。
+     *
+     * @param int $userid
+     * @param int $deltaminutes
+     * @param int $courseid
+     * @return array
+     */
+    public static function correct_study_session($userid, $deltaminutes, $courseid = 0) {
+        global $DB;
+
+        $params = self::validate_parameters(self::correct_study_session_parameters(), [
+            'userid' => $userid,
+            'deltaminutes' => $deltaminutes,
             'courseid' => $courseid,
         ]);
 
@@ -320,111 +366,28 @@ class local_webcoach_utils_external extends external_api {
         $eventdata = [
             'userid' => $params['userid'],
             'other' => [
-                'sessionid' => $params['sessionid'],
-                'durationminutes' => $params['durationminutes'],
-                'source' => 'focus_booth',
+                'deltaminutes' => $params['deltaminutes'],
             ],
         ];
         if (!empty($params['courseid'])) {
             $eventdata['courseid'] = $params['courseid'];
         }
 
-        $event = \local_webcoach_utils\event\study_session_ended::create($eventdata);
+        $event = \local_webcoach_utils\event\study_session_corrected::create($eventdata);
         $event->trigger();
 
         return [
             'success' => true,
-            'sessionid' => $params['sessionid'],
-            'message' => 'Study session ended event logged successfully',
+            'message' => 'Study session corrected event logged successfully',
         ];
     }
 
     /**
-     * Returns description of end_study_session return value
+     * Returns description of correct_study_session return value
      */
-    public static function end_study_session_returns() {
+    public static function correct_study_session_returns() {
         return new external_single_structure([
             'success' => new external_value(PARAM_BOOL, 'Success status'),
-            'sessionid' => new external_value(PARAM_INT, 'webcoach_study_activity row id'),
-            'message' => new external_value(PARAM_TEXT, 'Status message'),
-        ]);
-    }
-
-    // ==================== COURSE STUDY STARTED FUNCTION ====================
-
-    /**
-     * Parameters for log_course_study_started
-     */
-    public static function log_course_study_started_parameters() {
-        return new external_function_parameters([
-            'userid' => new external_value(PARAM_INT, 'User ID'),
-            'courseid' => new external_value(PARAM_INT, 'Course ID'),
-        ]);
-    }
-
-    /**
-     * Log that a user started studying a course (SPA opened the course content screen).
-     *
-     * SPAはMoodleのview.phpを経由せずAPI経由で教材を配信するため、mod_page/mod_url/mod_resource
-     * が標準で発火するcourse_module_viewed相当のコース単位ログが残らない。その代替として、
-     * update_user_lastaccessと同じ間引き方針（1ユーザー×1コース×1日1件のみ）で記録する。
-     *
-     * @param int $userid
-     * @param int $courseid
-     * @return array
-     */
-    public static function log_course_study_started($userid, $courseid) {
-        global $DB;
-
-        $params = self::validate_parameters(self::log_course_study_started_parameters(), [
-            'userid' => $userid,
-            'courseid' => $courseid,
-        ]);
-
-        $DB->get_record('user', ['id' => $params['userid']], '*', MUST_EXIST);
-        $DB->get_record('course', ['id' => $params['courseid']], '*', MUST_EXIST);
-
-        $context = context_course::instance($params['courseid']);
-        self::validate_context($context);
-
-        $todaystart = usergetmidnight(time());
-        $alreadyloggedtoday = $DB->record_exists_select(
-            'logstore_standard_log',
-            'userid = :userid AND courseid = :courseid AND eventname = :eventname AND timecreated >= :todaystart',
-            [
-                'userid' => $params['userid'],
-                'courseid' => $params['courseid'],
-                'eventname' => '\\local_webcoach_utils\\event\\course_study_started',
-                'todaystart' => $todaystart,
-            ]
-        );
-
-        if (!$alreadyloggedtoday) {
-            $event = \local_webcoach_utils\event\course_study_started::create([
-                'userid' => $params['userid'],
-                'courseid' => $params['courseid'],
-                'objectid' => $params['courseid'],
-                'context' => $context,
-            ]);
-            $event->trigger();
-        }
-
-        return [
-            'success' => true,
-            'userid' => $params['userid'],
-            'courseid' => $params['courseid'],
-            'message' => 'Course study started event logged successfully',
-        ];
-    }
-
-    /**
-     * Returns description of log_course_study_started return value
-     */
-    public static function log_course_study_started_returns() {
-        return new external_single_structure([
-            'success' => new external_value(PARAM_BOOL, 'Success status'),
-            'userid' => new external_value(PARAM_INT, 'User ID'),
-            'courseid' => new external_value(PARAM_INT, 'Course ID'),
             'message' => new external_value(PARAM_TEXT, 'Status message'),
         ]);
     }

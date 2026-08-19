@@ -1,9 +1,9 @@
 /**
  * 集中ブース（学習セッション記録）関連の型定義
  *
- * 集計値(今日/今週/累計・ストリーク・カレンダー)はクライアントで導出せず、
- * すべてapi-server(webcoach_study_activityテーブル)側で計算済みのものを
- * bff-server経由でそのまま受け取る契約にしている。
+ * 学習時間・ストリーク・カレンダー・ランキング・コースアクセスの集計値は、
+ * すべてMoodleのログ(mdl_logstore_standard_log)からapi-server側で計算済みのものを
+ * bff-server経由でそのまま受け取る契約にしている。自前テーブルは無く、DB行idの概念も無い。
  */
 
 export type StudySessionMode = 'freeform' | 'pomodoro';
@@ -13,31 +13,18 @@ export const STUDY_SESSION_MODE_LABEL: Record<StudySessionMode, string> = {
   pomodoro: 'ポモドーロ',
 };
 
-/** GET/POST /api/study/sessions/{userid}系のレスポンス形（webcoach_study_activity 1行分） */
+/** GET /api/study/sessions/{userid}/recent の1件(started/endedイベントのペアリング結果) */
 export interface StudySession {
-  id: number;
-  mdl_user_id: number;
   courseid: number | null;
-  course_title: string | null;
-  status: 'in_progress' | 'completed';
   started_at: string;
-  ended_at: string | null;
-  local_date: string;
-  target_minutes: number | null;
-  duration_minutes: number | null;
-  measured_seconds: number | null;
-  paused_seconds: number;
-}
-
-export interface StudySessionStartInput {
-  courseid?: number;
-  course_title?: string;
-  target_minutes?: number;
-}
-
-export interface StudySessionFinishInput {
+  ended_at: string;
   duration_minutes: number;
-  paused_seconds: number;
+}
+
+/** GET /api/study/sessions/{userid}/active */
+export interface ActiveStudySessionInfo {
+  courseid: number | null;
+  started_at: string;
 }
 
 /** GET /api/study/stats/{userid} */
@@ -69,9 +56,51 @@ export interface StudyCalendarData {
   days: StudyCalendarDay[];
 }
 
+/** GET /api/study/ranking?period=&limit= の1件 */
+export interface StudyRankingEntry {
+  rank: number;
+  userid: number;
+  total_minutes: number;
+}
+
+/** GET /api/study/ranking?period=&limit= */
+export interface StudyRanking {
+  period: 'week' | 'month' | 'all';
+  entries: StudyRankingEntry[];
+}
+
+/** GET /api/study/course-access/{userid} の1件 */
+export interface CourseAccessSummary {
+  courseid: number;
+  access_count: number;
+  last_accessed: string;
+}
+
+/** GET /api/study/course-access/{userid} */
+export interface CourseAccess {
+  userid: number;
+  courses: CourseAccessSummary[];
+}
+
+/** GET /api/study/course-access/{userid}/{courseid}/materials の1件 */
+export interface CourseMaterialAccessSummary {
+  cmid: number;
+  access_count: number;
+  last_accessed: string;
+}
+
+/** GET /api/study/course-access/{userid}/{courseid}/materials */
+export interface CourseMaterialAccess {
+  userid: number;
+  courseid: number;
+  materials: CourseMaterialAccessSummary[];
+}
+
 // ---- 実行中のタイマー(クライアント側・localStorage永続化) --------------------
 // 一時停止は startedAt を後ろにずらすことで、経過(now - startedAt)の計算をそのまま使えるようにする
-// (dev/miyabeのstudyTimerStoreと同じ方式)。sessionIdはapi-server側のwebcoach_study_activity.id。
+// (dev/miyabeのstudyTimerStoreと同じ方式)。sessionIdはサーバーのDB行を指すものではなく、
+// クライアント側で発行する一時的な識別子(Date.now()ベース)。一時停止/再開のたびにMoodleへ
+// study_session_ended/startedが送信されるため、集計上の一時停止時間の除外はサーバー側で完結する。
 
 export interface ActiveStudySession {
   sessionId: number;
@@ -98,6 +127,7 @@ export interface StudyFinishDraft {
   pausedSeconds: number;
   mode: StudySessionMode;
   targetMinutes?: number;
+  courseId?: number;
   courseTitle?: string;
   completedTarget: boolean;
 }

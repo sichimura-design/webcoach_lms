@@ -56,11 +56,11 @@ $functions = [
         'ajax'          => true,
         'capabilities'  => '',
     ],
-    'local_webcoach_utils_log_course_study_started' => [
+    'local_webcoach_utils_correct_study_session' => [
         'classname'     => 'local_webcoach_utils_external',
-        'methodname'    => 'log_course_study_started',
+        'methodname'    => 'correct_study_session',
         'classpath'     => 'local/webcoach_utils/externallib.php',
-        'description'   => 'Log that a user started studying a course',
+        'description'   => 'Log a manual correction to the duration of the study session segment just ended',
         'type'          => 'write',
         'ajax'          => true,
         'capabilities'  => '',
@@ -75,7 +75,7 @@ $services = [
             'local_webcoach_utils_update_user_lastaccess',
             'local_webcoach_utils_start_study_session',
             'local_webcoach_utils_end_study_session',
-            'local_webcoach_utils_log_course_study_started',
+            'local_webcoach_utils_correct_study_session',
         ],
         'restrictedusers' => 0,
         'enabled' => 1,

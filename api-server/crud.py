@@ -20,7 +20,6 @@ from entities import (
     WebCoachStudyNote,
     WebCoachCoachingSchedule,
     WebCoachCoachingRecording,
-    WebCoachStudyActivity,
 )
 from dto.request import (
     CourseAccessCreate,
@@ -2012,140 +2011,163 @@ def update_coaching_recording_status(
 
 
 # ==========================================
-# Study Activity (集中ブース / webcoach_study_activity)
+# Study Activity (集中ブース / mdl_logstore_standard_log)
 # ==========================================
 #
-# 学習時間・ストリーク・カレンダー・ランキング集計の正データ。開始/終了はここに
-# 書き込むと同時に、呼び出し側(bff-server)がMoodle webserviceを通じて
-# \local_webcoach_utils\event\study_session_started / study_session_ended を
-# mdl_logstore_standard_logにも記録する(mod_quizの自前attemptテーブル＋
-# イベントログの構成と同様。実データはこちら、ログ側は補助的な監査証跡)。
+# 自前テーブルは持たない。mdl_logstore_standard_logの
+# \local_webcoach_utils\event\study_session_started / study_session_ended の
+# timecreated差分(区間ごとの合算)が学習時間の正データ。一時停止のたびにended、
+# 再開のたびにstartedが記録されるため、一時停止時間は合算から自然に除外される。
+# \local_webcoach_utils\event\study_session_corrected(other.deltaminutes)は
+# ユーザーが手動で時間を補正した場合のみ低頻度で記録され、直前のendedセグメントに加算する。
+# get_user_login_streak(同ファイル内、\core\event\user_loggedin基準)と同じ
+# 「素のSQLでmdl_logstore_standard_logを直接参照する」パターンを踏襲する。
+
+_STUDY_STARTED_EVENT = "\\local_webcoach_utils\\event\\study_session_started"
+_STUDY_ENDED_EVENT = "\\local_webcoach_utils\\event\\study_session_ended"
+_STUDY_CORRECTED_EVENT = "\\local_webcoach_utils\\event\\study_session_corrected"
+# 教材コンテンツはpage/url/resourceのみ使用(lessonは未使用)。
+# BFF側がMoodle標準webservice(mod_page_view_page等)を呼んだ際にネイティブに発火するイベント。
+_COURSE_MODULE_VIEWED_EVENTS = [
+    "\\mod_page\\event\\course_module_viewed",
+    "\\mod_url\\event\\course_module_viewed",
+    "\\mod_resource\\event\\course_module_viewed",
+]
 
 
-def start_study_session(
-    db: Session,
-    mdl_user_id: int,
-    courseid: Optional[int] = None,
-    course_title: Optional[str] = None,
-    target_minutes: Optional[int] = None,
-) -> WebCoachStudyActivity:
+def _segment_totals_cte(user_scoped: bool) -> str:
     """
-    集中ブースの学習セッションを開始する(in_progress行を1件作成)。
+    started/endedイベントをペアリングして1区間ごとの学習時間(分)を算出するCTE。
+    補正イベント(study_session_corrected)があれば直前のendedセグメントに加算する。
 
     Args:
-        db: Database session
-        mdl_user_id: MoodleユーザーID
-        courseid: 学習対象のコースID(任意)
-        course_title: 表示用コース名(任意、非正規化)
-        target_minutes: 開始時に選択した目標時間(分、任意)
-
-    Returns:
-        WebCoachStudyActivity: 作成されたセッション行(id採番済み)
+        user_scoped: Trueなら:useridで絞り込む(個人集計用)。Falseなら全ユーザー対象(ランキング用)
     """
-    now_jst = datetime.now(JST).replace(tzinfo=None)
-    session = WebCoachStudyActivity(
-        mdl_user_id=mdl_user_id,
-        courseid=courseid,
-        course_title=course_title,
-        status="in_progress",
-        started_at=now_jst,
-        local_date=now_jst.date(),
-        target_minutes=target_minutes,
-        paused_seconds=0,
-    )
-    db.add(session)
-    db.commit()
-    db.refresh(session)
-    return session
-
-
-def finish_study_session(
-    db: Session,
-    session_id: int,
-    mdl_user_id: int,
-    duration_minutes: int,
-    paused_seconds: int = 0,
-) -> Optional[WebCoachStudyActivity]:
+    user_filter = "AND userid = :userid" if user_scoped else ""
+    return f"""
+        WITH ordered AS (
+            SELECT
+                id, userid, courseid, eventname, timecreated,
+                LEAD(eventname) OVER (PARTITION BY userid ORDER BY timecreated, id) AS next_eventname,
+                LEAD(timecreated) OVER (PARTITION BY userid ORDER BY timecreated, id) AS next_timecreated,
+                LEAD(id) OVER (PARTITION BY userid ORDER BY timecreated, id) AS next_id
+            FROM mdl_logstore_standard_log
+            WHERE eventname IN (:started_event, :ended_event)
+              {user_filter}
+        ),
+        segments AS (
+            SELECT
+                userid, courseid, timecreated AS started_at, next_timecreated AS ended_at,
+                next_id AS ended_log_id,
+                TIMESTAMPDIFF(SECOND, timecreated, next_timecreated) AS duration_seconds
+            FROM ordered
+            WHERE eventname = :started_event AND next_eventname = :ended_event
+        ),
+        corrections AS (
+            SELECT
+                c.userid,
+                c.timecreated,
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(c.other, '$.deltaminutes')) AS SIGNED) AS delta_minutes,
+                (
+                    SELECT MAX(e.id) FROM mdl_logstore_standard_log e
+                    WHERE e.userid = c.userid AND e.eventname = :ended_event
+                      AND e.timecreated <= c.timecreated
+                ) AS target_ended_log_id
+            FROM mdl_logstore_standard_log c
+            WHERE c.eventname = :corrected_event
+              {user_filter}
+        )
+        SELECT
+            s.userid, s.courseid, s.started_at, s.ended_at,
+            GREATEST(0, ROUND(s.duration_seconds / 60) + COALESCE(SUM(cor.delta_minutes), 0)) AS duration_minutes
+        FROM segments s
+        LEFT JOIN corrections cor ON cor.target_ended_log_id = s.ended_log_id
+        GROUP BY s.userid, s.courseid, s.started_at, s.ended_at, s.ended_log_id, s.duration_seconds
     """
-    集中ブースの学習セッションを終了する。
 
-    duration_minutesはクライアント側で一時停止を差し引いた最終値であり、
-    集計・ランキングの正データとしてそのまま採用する(measured_secondsは
-    サーバー実測値として参考保持するのみ)。
 
-    Args:
-        db: Database session
-        session_id: webcoach_study_activity.id
-        mdl_user_id: 呼び出しユーザーのMoodleユーザーID(他人のセッションを終了できないようにする)
-        duration_minutes: 最終確定学習時間(分)
-        paused_seconds: 一時停止した合計秒数
+def _segment_params(mdl_user_id: Optional[int] = None) -> Dict[str, Any]:
+    params = {
+        "started_event": _STUDY_STARTED_EVENT,
+        "ended_event": _STUDY_ENDED_EVENT,
+        "corrected_event": _STUDY_CORRECTED_EVENT,
+    }
+    if mdl_user_id is not None:
+        params["userid"] = mdl_user_id
+    return params
 
-    Returns:
-        Optional[WebCoachStudyActivity]: 更新後のセッション。該当セッションが無い/他人のものの場合はNone
+
+def get_active_study_session(db: Session, mdl_user_id: int) -> Optional[Dict[str, Any]]:
     """
-    session = db.query(WebCoachStudyActivity).filter(
-        WebCoachStudyActivity.id == session_id,
-        WebCoachStudyActivity.mdl_user_id == mdl_user_id,
-        WebCoachStudyActivity.status == "in_progress",
-    ).first()
-
-    if not session:
-        return None
-
-    now_jst = datetime.now(JST).replace(tzinfo=None)
-    measured_seconds = max(0, int((now_jst - session.started_at).total_seconds()))
-
-    session.ended_at = now_jst
-    session.status = "completed"
-    session.duration_minutes = max(0, duration_minutes)
-    session.measured_seconds = measured_seconds
-    session.paused_seconds = max(0, paused_seconds)
-
-    db.commit()
-    db.refresh(session)
-    return session
-
-
-def get_active_study_session(db: Session, mdl_user_id: int) -> Optional[WebCoachStudyActivity]:
-    """
-    進行中(in_progress)の学習セッションを取得する。
+    進行中の学習セッションを取得する(直近のstartedイベントに対応するendedがまだ無い場合)。
     別画面遷移・タブ再読込後もタイマーを継続表示するため、フロントは起動時にこれを参照する。
     """
-    return db.query(WebCoachStudyActivity).filter(
-        WebCoachStudyActivity.mdl_user_id == mdl_user_id,
-        WebCoachStudyActivity.status == "in_progress",
-    ).order_by(desc(WebCoachStudyActivity.started_at)).first()
+    query = text("""
+        SELECT courseid, timecreated
+        FROM mdl_logstore_standard_log
+        WHERE userid = :userid AND eventname = :started_event
+        ORDER BY timecreated DESC, id DESC
+        LIMIT 1
+    """)
+    row = db.execute(query, {"userid": mdl_user_id, "started_event": _STUDY_STARTED_EVENT}).fetchone()
+    if not row:
+        return None
+
+    courseid, started_timecreated = row
+    ended_after = db.execute(text("""
+        SELECT 1 FROM mdl_logstore_standard_log
+        WHERE userid = :userid AND eventname = :ended_event AND timecreated >= :started_timecreated
+        LIMIT 1
+    """), {"userid": mdl_user_id, "ended_event": _STUDY_ENDED_EVENT, "started_timecreated": started_timecreated}).fetchone()
+    if ended_after:
+        return None
+
+    return {
+        "courseid": courseid,
+        "started_at": datetime.fromtimestamp(started_timecreated, tz=JST).replace(tzinfo=None),
+    }
 
 
-def get_recent_study_sessions(db: Session, mdl_user_id: int, limit: int = 10) -> List[WebCoachStudyActivity]:
-    """直近に完了した学習セッションを新しい順に取得する。"""
-    return db.query(WebCoachStudyActivity).filter(
-        WebCoachStudyActivity.mdl_user_id == mdl_user_id,
-        WebCoachStudyActivity.status == "completed",
-    ).order_by(desc(WebCoachStudyActivity.started_at)).limit(limit).all()
+def get_recent_study_sessions(db: Session, mdl_user_id: int, limit: int = 10) -> List[Dict[str, Any]]:
+    """直近に完了した学習セッション(区間)を新しい順に取得する。"""
+    query = text(_segment_totals_cte(user_scoped=True) + " ORDER BY started_at DESC LIMIT :limit")
+    params = _segment_params(mdl_user_id)
+    params["limit"] = limit
+    result = db.execute(query, params)
+    return [
+        {
+            "courseid": row.courseid,
+            "started_at": datetime.fromtimestamp(row.started_at, tz=JST).replace(tzinfo=None),
+            "ended_at": datetime.fromtimestamp(row.ended_at, tz=JST).replace(tzinfo=None),
+            "duration_minutes": int(row.duration_minutes),
+        }
+        for row in result.fetchall()
+    ]
 
 
 def get_study_stats(db: Session, mdl_user_id: int) -> Dict[str, Any]:
     """
-    今日・今週(月曜始まり)・累計の学習時間(分)を集計する。
+    今日・今週(月曜始まり、JST)・累計の学習時間(分)を集計する。
     """
+    query = text(f"""
+        SELECT
+            SUM(CASE WHEN DATE(FROM_UNIXTIME(started_at + 9 * 3600)) = :today THEN duration_minutes ELSE 0 END) AS today_minutes,
+            SUM(CASE WHEN DATE(FROM_UNIXTIME(started_at + 9 * 3600)) >= :week_start THEN duration_minutes ELSE 0 END) AS week_minutes,
+            SUM(duration_minutes) AS total_minutes
+        FROM ({_segment_totals_cte(user_scoped=True)}) segment_totals
+    """)
     today_jst = datetime.now(JST).date()
     week_start = today_jst - timedelta(days=today_jst.weekday())
-
-    def sum_minutes(since: Optional[date]) -> int:
-        q = db.query(func.coalesce(func.sum(WebCoachStudyActivity.duration_minutes), 0)).filter(
-            WebCoachStudyActivity.mdl_user_id == mdl_user_id,
-            WebCoachStudyActivity.status == "completed",
-        )
-        if since is not None:
-            q = q.filter(WebCoachStudyActivity.local_date >= since)
-        return int(q.scalar() or 0)
+    params = _segment_params(mdl_user_id)
+    params["today"] = today_jst
+    params["week_start"] = week_start
+    row = db.execute(query, params).fetchone()
 
     return {
         "userid": mdl_user_id,
-        "today_minutes": sum_minutes(today_jst),
-        "week_minutes": sum_minutes(week_start),
-        "total_minutes": sum_minutes(None),
+        "today_minutes": int(row.today_minutes or 0),
+        "week_minutes": int(row.week_minutes or 0),
+        "total_minutes": int(row.total_minutes or 0),
     }
 
 
@@ -2155,13 +2177,15 @@ def get_study_streak(db: Session, mdl_user_id: int) -> Dict[str, Any]:
 
     ログインストリーク(get_user_login_streak, \\core\\event\\user_loggedin基準)とは
     独立した別指標。「アプリを開いた」ではなく「その日1回以上、学習セッションを完了した」を
-    ストリークの成立条件とする。
+    ストリークの成立条件とする(セグメントのstarted_atのJST日付で判定。stats/calendarと揃える)。
     """
-    rows = db.query(WebCoachStudyActivity.local_date).filter(
-        WebCoachStudyActivity.mdl_user_id == mdl_user_id,
-        WebCoachStudyActivity.status == "completed",
-    ).distinct().order_by(desc(WebCoachStudyActivity.local_date)).all()
-    activity_dates = [row[0] for row in rows]
+    query = text(f"""
+        SELECT DISTINCT DATE(FROM_UNIXTIME(started_at + 9 * 3600)) AS activity_date
+        FROM ({_segment_totals_cte(user_scoped=True)}) segment_totals
+        ORDER BY activity_date DESC
+    """)
+    result = db.execute(query, _segment_params(mdl_user_id))
+    activity_dates = [row[0] for row in result.fetchall()]
 
     if not activity_dates:
         return {"userid": mdl_user_id, "current_streak": 0, "last_active_date": None}
@@ -2187,19 +2211,114 @@ def get_study_calendar(db: Session, mdl_user_id: int, year: int, month: int) -> 
     """
     指定年月(JSTローカル日付基準)の日別学習時間・セッション数を取得する(カレンダー表示用)。
     """
-    query = text("""
-        SELECT local_date, SUM(duration_minutes) AS total_minutes, COUNT(*) AS session_count
-        FROM webcoach_study_activity
-        WHERE mdl_user_id = :userid
-          AND status = 'completed'
-          AND YEAR(local_date) = :year
-          AND MONTH(local_date) = :month
+    query = text(f"""
+        SELECT
+            DATE(FROM_UNIXTIME(started_at + 9 * 3600)) AS local_date,
+            SUM(duration_minutes) AS total_minutes,
+            COUNT(*) AS session_count
+        FROM ({_segment_totals_cte(user_scoped=True)}) segment_totals
+        WHERE YEAR(FROM_UNIXTIME(started_at + 9 * 3600)) = :year
+          AND MONTH(FROM_UNIXTIME(started_at + 9 * 3600)) = :month
         GROUP BY local_date
         ORDER BY local_date
     """)
-    result = db.execute(query, {"userid": mdl_user_id, "year": year, "month": month})
+    params = _segment_params(mdl_user_id)
+    params["year"] = year
+    params["month"] = month
+    result = db.execute(query, params)
     return [
-        {"date": row[0], "total_minutes": int(row[1] or 0), "session_count": int(row[2])}
+        {"date": row.local_date, "total_minutes": int(row.total_minutes or 0), "session_count": int(row.session_count)}
+        for row in result.fetchall()
+    ]
+
+
+def get_study_ranking(db: Session, period: str = "week", limit: int = 20) -> List[Dict[str, Any]]:
+    """
+    学習時間ランキング(period: 'week' | 'month' | 'all')を全ユーザー横断で算出する。
+    """
+    if period == "week":
+        today_jst = datetime.now(JST).date()
+        since = today_jst - timedelta(days=today_jst.weekday())
+    elif period == "month":
+        today_jst = datetime.now(JST).date()
+        since = today_jst.replace(day=1)
+    elif period == "all":
+        since = None
+    else:
+        raise ValueError(f"Invalid period: {period}")
+
+    since_filter = "WHERE DATE(FROM_UNIXTIME(started_at + 9 * 3600)) >= :since" if since is not None else ""
+    query = text(f"""
+        SELECT userid, SUM(duration_minutes) AS total_minutes
+        FROM ({_segment_totals_cte(user_scoped=False)}) segment_totals
+        {since_filter}
+        GROUP BY userid
+        ORDER BY total_minutes DESC
+        LIMIT :limit
+    """)
+    params = _segment_params()
+    params["limit"] = limit
+    if since is not None:
+        params["since"] = since
+    result = db.execute(query, params)
+    return [
+        {"rank": i + 1, "userid": row.userid, "total_minutes": int(row.total_minutes or 0)}
+        for i, row in enumerate(result.fetchall())
+    ]
+
+
+def get_course_access_summary(db: Session, mdl_user_id: int) -> List[Dict[str, Any]]:
+    """
+    コース単位のアクセス集計(course_module_viewed系イベントのCOUNT/直近アクセス日時)。
+    Moodle標準のmod_page_view_page等のwebservice呼び出しで発火するネイティブイベントを
+    そのまま集計する(JSON列は使わないネイティブ列のみの集計)。
+    """
+    event_params = {f"event{i}": name for i, name in enumerate(_COURSE_MODULE_VIEWED_EVENTS)}
+    event_in_clause = ", ".join(f":{key}" for key in event_params)
+    query = text(f"""
+        SELECT courseid, COUNT(*) AS access_count, MAX(timecreated) AS last_accessed
+        FROM mdl_logstore_standard_log
+        WHERE userid = :userid
+          AND eventname IN ({event_in_clause})
+          AND courseid IS NOT NULL
+        GROUP BY courseid
+        ORDER BY last_accessed DESC
+    """)
+    result = db.execute(query, {"userid": mdl_user_id, **event_params})
+    return [
+        {
+            "courseid": row.courseid,
+            "access_count": int(row.access_count),
+            "last_accessed": datetime.fromtimestamp(row.last_accessed, tz=JST).replace(tzinfo=None),
+        }
+        for row in result.fetchall()
+    ]
+
+
+def get_course_material_access(db: Session, mdl_user_id: int, courseid: int) -> List[Dict[str, Any]]:
+    """
+    指定コース内の教材(コースモジュール)単位のアクセス集計。
+    contextlevel=70(CONTEXT_MODULE)のcontextinstanceidがcmidに対応する。
+    """
+    event_params = {f"event{i}": name for i, name in enumerate(_COURSE_MODULE_VIEWED_EVENTS)}
+    event_in_clause = ", ".join(f":{key}" for key in event_params)
+    query = text(f"""
+        SELECT contextinstanceid AS cmid, COUNT(*) AS access_count, MAX(timecreated) AS last_accessed
+        FROM mdl_logstore_standard_log
+        WHERE userid = :userid
+          AND courseid = :courseid
+          AND eventname IN ({event_in_clause})
+          AND contextlevel = 70
+        GROUP BY contextinstanceid
+        ORDER BY last_accessed DESC
+    """)
+    result = db.execute(query, {"userid": mdl_user_id, "courseid": courseid, **event_params})
+    return [
+        {
+            "cmid": row.cmid,
+            "access_count": int(row.access_count),
+            "last_accessed": datetime.fromtimestamp(row.last_accessed, tz=JST).replace(tzinfo=None),
+        }
         for row in result.fetchall()
     ]
 

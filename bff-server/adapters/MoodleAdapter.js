@@ -370,19 +370,17 @@ class MoodleAdapter {
   }
 
   /**
-   * Log that a user started a focus-booth study session.
-   * Writes \local_webcoach_utils\event\study_session_started to mdl_logstore_standard_log
-   * as an audit trail. The actual duration data lives in webcoach_study_activity (api-server).
+   * Log that a user started (or resumed after a pause) a focus-booth study session.
+   * Writes \local_webcoach_utils\event\study_session_started to mdl_logstore_standard_log.
+   * mdl_logstore_standard_log itself is the source of truth for study duration
+   * (paired with the next study_session_ended via timecreated diff); there is no separate
+   * session table/id.
    * @param {number} userid - Moodle user ID
-   * @param {number} sessionid - webcoach_study_activity row id (issued by api-server)
    * @param {number} [courseid] - Moodle course ID (optional)
    * @returns {Promise<any>} API response
    */
-  async logStudySessionStarted(userid, sessionid, courseid) {
-    const params = {
-      userid: parseInt(userid, 10),
-      sessionid: parseInt(sessionid, 10)
-    };
+  async logStudySessionStarted(userid, courseid) {
+    const params = { userid: parseInt(userid, 10) };
     if (courseid) {
       params.courseid = parseInt(courseid, 10);
     }
@@ -390,20 +388,14 @@ class MoodleAdapter {
   }
 
   /**
-   * Log that a user ended a focus-booth study session.
+   * Log that a user paused or finished a focus-booth study session.
    * Writes \local_webcoach_utils\event\study_session_ended to mdl_logstore_standard_log.
    * @param {number} userid - Moodle user ID
-   * @param {number} sessionid - webcoach_study_activity row id
-   * @param {number} durationMinutes - Final recorded duration in minutes
    * @param {number} [courseid] - Moodle course ID (optional)
    * @returns {Promise<any>} API response
    */
-  async logStudySessionEnded(userid, sessionid, durationMinutes, courseid) {
-    const params = {
-      userid: parseInt(userid, 10),
-      sessionid: parseInt(sessionid, 10),
-      durationminutes: parseInt(durationMinutes, 10)
-    };
+  async logStudySessionEnded(userid, courseid) {
+    const params = { userid: parseInt(userid, 10) };
     if (courseid) {
       params.courseid = parseInt(courseid, 10);
     }
@@ -411,18 +403,54 @@ class MoodleAdapter {
   }
 
   /**
-   * Log that a user started studying a course (SPA opened the course content screen).
-   * Writes \local_webcoach_utils\event\course_study_started (throttled server-side to
-   * once per user/course/day, same as updateUserLastAccess).
+   * Log a manual correction to the duration of the study session segment just ended.
+   * Writes \local_webcoach_utils\event\study_session_corrected. Only called when the user
+   * actually edits the recorded time on the finish screen (low frequency).
    * @param {number} userid - Moodle user ID
-   * @param {number} courseid - Moodle course ID
+   * @param {number} deltaMinutes - Signed correction in minutes
+   * @param {number} [courseid] - Moodle course ID (optional)
    * @returns {Promise<any>} API response
    */
-  async logCourseStudyStarted(userid, courseid) {
-    return this.callAPI('local_webcoach_utils_log_course_study_started', {
+  async correctStudySession(userid, deltaMinutes, courseid) {
+    const params = {
       userid: parseInt(userid, 10),
-      courseid: parseInt(courseid, 10)
-    });
+      deltaminutes: parseInt(deltaMinutes, 10)
+    };
+    if (courseid) {
+      params.courseid = parseInt(courseid, 10);
+    }
+    return this.callAPI('local_webcoach_utils_correct_study_session', params);
+  }
+
+  /**
+   * Log a "page" module view using Moodle's standard mobile-app webservice.
+   * This fires \mod_page\event\course_module_viewed natively (and completion-by-view rules),
+   * without any custom plugin code. Note: the log event's contextinstanceid (used for
+   * per-material aggregation in api-server) is always the cmid regardless of moduleInstanceId;
+   * this parameter is only what the webservice call itself requires.
+   * @param {number} moduleInstanceId - mdl_page.id (NOT the course module id/cmid)
+   * @returns {Promise<any>} API response
+   */
+  async viewPageModule(moduleInstanceId) {
+    return this.callAPI('mod_page_view_page', { pageid: parseInt(moduleInstanceId, 10) });
+  }
+
+  /**
+   * Log a "url" module view using Moodle's standard mobile-app webservice.
+   * @param {number} moduleInstanceId - mdl_url.id (NOT the course module id/cmid)
+   * @returns {Promise<any>} API response
+   */
+  async viewUrlModule(moduleInstanceId) {
+    return this.callAPI('mod_url_view_url', { urlid: parseInt(moduleInstanceId, 10) });
+  }
+
+  /**
+   * Log a "resource" module view using Moodle's standard mobile-app webservice.
+   * @param {number} moduleInstanceId - mdl_resource.id (NOT the course module id/cmid)
+   * @returns {Promise<any>} API response
+   */
+  async viewResourceModule(moduleInstanceId) {
+    return this.callAPI('mod_resource_view_resource', { resourceid: parseInt(moduleInstanceId, 10) });
   }
 
   /**

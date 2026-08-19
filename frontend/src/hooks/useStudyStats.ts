@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { bffClient } from '../services/bffClient';
-import { StudyCalendarDay, StudySession, StudyStats, StudyStreak } from '../types/studyActivity';
+import { StudyCalendarDay, StudyRanking, StudySession, StudyStats, StudyStreak } from '../types/studyActivity';
 
 export interface StudyStatsBundle {
   stats: StudyStats | null;
   streak: StudyStreak | null;
   recent: StudySession[];
+  ranking: StudyRanking | null;
   calendarDays: StudyCalendarDay[];
   calendarYear: number;
   /** 0-indexed(0=1月)。StudyCalendarのmonth propと揃える */
@@ -17,8 +18,8 @@ export interface StudyStatsBundle {
 }
 
 /**
- * 今日/今週/累計・ストリーク・カレンダー・直近セッションをまとめて取得する。
- * 集計はすべてapi-server側(webcoach_study_activityテーブル)で計算済み。
+ * 今日/今週/累計・ストリーク・カレンダー・直近セッション・ランキングをまとめて取得する。
+ * 集計はすべてapi-server側(mdl_logstore_standard_log)で計算済み。
  */
 export function useStudyStats(userId: number | undefined): StudyStatsBundle {
   const now = new Date();
@@ -28,6 +29,7 @@ export function useStudyStats(userId: number | undefined): StudyStatsBundle {
   const [stats, setStats] = useState<StudyStats | null>(null);
   const [streak, setStreak] = useState<StudyStreak | null>(null);
   const [recent, setRecent] = useState<StudySession[]>([]);
+  const [ranking, setRanking] = useState<StudyRanking | null>(null);
   const [calendarDays, setCalendarDays] = useState<StudyCalendarDay[]>([]);
   const [loading, setLoading] = useState(true);
   const [revision, setRevision] = useState(0);
@@ -48,12 +50,14 @@ export function useStudyStats(userId: number | undefined): StudyStatsBundle {
       bffClient.getStudyStats(userId),
       bffClient.getStudyStreak(userId),
       bffClient.getRecentStudySessions(userId, 5),
+      bffClient.getStudyRanking('week', 20),
     ])
-      .then(([statsRes, streakRes, recentRes]) => {
+      .then(([statsRes, streakRes, recentRes, rankingRes]) => {
         if (cancelled) return;
         setStats(statsRes);
         setStreak(streakRes);
         setRecent(recentRes);
+        setRanking(rankingRes);
       })
       .catch(() => {
         // 未取得のまま(null/空配列)にしておけばUI側がローディング/ダッシュ表示にフォールバックする
@@ -87,6 +91,7 @@ export function useStudyStats(userId: number | undefined): StudyStatsBundle {
     stats,
     streak,
     recent,
+    ranking,
     calendarDays,
     calendarYear,
     calendarMonth,

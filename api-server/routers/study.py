@@ -1,30 +1,35 @@
 """
 Study activity (集中ブース) endpoints
 
-学習時間・ストリーク・カレンダー集計の正データはwebcoach_study_activityテーブル。
-開始/終了イベントのMoodle側監査ログ(mdl_logstore_standard_log)への記録は
-bff-server(MoodleAdapter経由)が別途担当するため、ここではDB更新のみを行う。
+学習時間・ストリーク・カレンダー・ランキング・コースアクセス集計はすべて
+mdl_logstore_standard_log(Moodleログ)から算出する。自前テーブルは持たない。
+開始/一時停止/再開/終了/補正の書き込みはbff-serverがMoodle webservice経由で直接行うため、
+ここには書き込み系エンドポイントは無い(読み取り専用)。
 """
 import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from database import get_db
-from dto.request import StudySessionStart, StudySessionFinish
 from dto.response import (
     StudySessionResponse,
+    ActiveStudySessionResponse,
     StudyStatsResponse,
     StudyStreakResponse,
     StudyCalendarResponse,
+    StudyRankingResponse,
+    CourseAccessResponse,
+    CourseMaterialAccessResponse,
 )
 from crud import (
-    start_study_session,
-    finish_study_session,
     get_active_study_session,
     get_recent_study_sessions,
     get_study_stats,
     get_study_streak,
     get_study_calendar,
+    get_study_ranking,
+    get_course_access_summary,
+    get_course_material_access,
 )
 
 logger = logging.getLogger(__name__)
@@ -32,84 +37,15 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/study", tags=["Study Activity (Focus Booth)"])
 
 
-@router.post(
-    "/sessions/{userid}",
-    response_model=StudySessionResponse,
-    status_code=status.HTTP_201_CREATED,
-    summary="集中ブース学習セッション開始"
-)
-def start_session(userid: int, request: StudySessionStart, db: Session = Depends(get_db)):
-    """
-    学習セッションを開始し、in_progress行を1件作成します。
-
-    Args:
-        userid: 受講生のMoodleユーザーID
-        request: 学習対象コース・目標時間(任意)
-    """
-    try:
-        session = start_study_session(
-            db,
-            mdl_user_id=userid,
-            courseid=request.courseid,
-            course_title=request.course_title,
-            target_minutes=request.target_minutes,
-        )
-        return session
-    except Exception as e:
-        db.rollback()
-        logger.error(f"Failed to start study session: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to start study session"
-        )
-
-
-@router.post(
-    "/sessions/{userid}/{session_id}/finish",
-    response_model=StudySessionResponse,
-    summary="集中ブース学習セッション終了"
-)
-def finish_session(
-    userid: int,
-    session_id: int,
-    request: StudySessionFinish,
-    db: Session = Depends(get_db)
-):
-    """
-    学習セッションを終了します。duration_minutesはユーザーが調整した最終値をそのまま集計に採用します。
-
-    Args:
-        userid: 受講生のMoodleユーザーID
-        session_id: webcoach_study_activity.id
-        request: 最終確定学習時間(分)・一時停止合計秒数
-    """
-    session = finish_study_session(
-        db,
-        session_id=session_id,
-        mdl_user_id=userid,
-        duration_minutes=request.duration_minutes,
-        paused_seconds=request.paused_seconds,
-    )
-    if not session:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"In-progress study session not found: id={session_id}, userid={userid}"
-        )
-    return session
-
-
 @router.get(
     "/sessions/{userid}/active",
-    response_model=StudySessionResponse,
+    response_model=ActiveStudySessionResponse,
     summary="進行中の学習セッション取得"
 )
 def get_active_session(userid: int, db: Session = Depends(get_db)):
     """
-    進行中(in_progress)の学習セッションを取得します。
+    進行中の学習セッションを取得します(対応するstudy_session_endedがまだ無いstudy_session_started)。
     別画面遷移・タブ再読込後もタイマー状態を復元するためにフロントが起動時に呼び出します。
-
-    Args:
-        userid: 受講生のMoodleユーザーID
     """
     session = get_active_study_session(db, userid)
     if not session:
@@ -126,13 +62,7 @@ def get_active_session(userid: int, db: Session = Depends(get_db)):
     summary="直近の学習セッション一覧取得"
 )
 def get_recent_sessions(userid: int, limit: int = 10, db: Session = Depends(get_db)):
-    """
-    直近に完了した学習セッションを新しい順に取得します。
-
-    Args:
-        userid: 受講生のMoodleユーザーID
-        limit: 取得件数上限(デフォルト10)
-    """
+    """直近に完了した学習セッション(区間)を新しい順に取得します。"""
     return get_recent_study_sessions(db, userid, limit=limit)
 
 
@@ -142,12 +72,7 @@ def get_recent_sessions(userid: int, limit: int = 10, db: Session = Depends(get_
     summary="今日・今週・累計の学習時間取得"
 )
 def get_stats(userid: int, db: Session = Depends(get_db)):
-    """
-    今日・今週(月曜始まり、JST)・累計の学習時間(分)を集計します。
-
-    Args:
-        userid: 受講生のMoodleユーザーID
-    """
+    """今日・今週(月曜始まり、JST)・累計の学習時間(分)を集計します。"""
     return get_study_stats(db, userid)
 
 
@@ -160,9 +85,6 @@ def get_streak(userid: int, db: Session = Depends(get_db)):
     """
     連続で学習セッションを完了した日数(学習ストリーク)を取得します。
     ログインストリーク(/webcoach/users/{userid}/login-streak)とは独立した別指標です。
-
-    Args:
-        userid: 受講生のMoodleユーザーID
     """
     return get_study_streak(db, userid)
 
@@ -173,16 +95,54 @@ def get_streak(userid: int, db: Session = Depends(get_db)):
     summary="学習カレンダー取得"
 )
 def get_calendar(userid: int, year: int, month: int, db: Session = Depends(get_db)):
-    """
-    指定年月(JSTローカル日付基準)の日別学習時間・セッション数を取得します(カレンダー表示用)。
-
-    Args:
-        userid: 受講生のMoodleユーザーID
-        year: 対象年
-        month: 対象月(1-12)
-    """
+    """指定年月(JSTローカル日付基準)の日別学習時間・セッション数を取得します(カレンダー表示用)。"""
     if not (1 <= month <= 12):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="month must be between 1 and 12")
 
     days = get_study_calendar(db, userid, year, month)
     return {"userid": userid, "year": year, "month": month, "days": days}
+
+
+@router.get(
+    "/ranking",
+    response_model=StudyRankingResponse,
+    summary="学習時間ランキング取得"
+)
+def get_ranking(period: str = "week", limit: int = 20, db: Session = Depends(get_db)):
+    """
+    学習時間ランキングを取得します。
+
+    Args:
+        period: 'week' | 'month' | 'all'
+        limit: 取得件数上限(デフォルト20)
+    """
+    if period not in ("week", "month", "all"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="period must be one of: week, month, all")
+
+    entries = get_study_ranking(db, period=period, limit=limit)
+    return {"period": period, "entries": entries}
+
+
+@router.get(
+    "/course-access/{userid}",
+    response_model=CourseAccessResponse,
+    summary="コースごとのアクセス集計取得"
+)
+def get_course_access(userid: int, db: Session = Depends(get_db)):
+    """
+    コースごとのアクセス回数・直近アクセス日時を取得します
+    (Moodle標準webservice経由のcourse_module_viewedイベントの集計)。
+    """
+    courses = get_course_access_summary(db, userid)
+    return {"userid": userid, "courses": courses}
+
+
+@router.get(
+    "/course-access/{userid}/{courseid}/materials",
+    response_model=CourseMaterialAccessResponse,
+    summary="コース内の教材ごとのアクセス集計取得"
+)
+def get_course_materials_access(userid: int, courseid: int, db: Session = Depends(get_db)):
+    """指定コース内で、どの教材(コースモジュール)にアクセスしたかを集計します。"""
+    materials = get_course_material_access(db, userid, courseid)
+    return {"userid": userid, "courseid": courseid, "materials": materials}

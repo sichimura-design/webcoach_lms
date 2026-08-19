@@ -1,6 +1,6 @@
 import { BookOpen } from 'lucide-react';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
-import { StudySession, STUDY_SESSION_MODE_LABEL, StudySessionMode } from '../../types/studyActivity';
+import { StudySession } from '../../types/studyActivity';
 import { formatDayTime } from './focusFormat';
 
 interface StudySessionRowProps {
@@ -8,10 +8,9 @@ interface StudySessionRowProps {
 }
 
 export function StudySessionRow({ session }: StudySessionRowProps) {
-  const mode: StudySessionMode = session.target_minutes ? 'pomodoro' : 'freeform';
-  const meta = [session.started_at ? formatDayTime(session.started_at) : null, STUDY_SESSION_MODE_LABEL[mode]]
-    .filter(Boolean)
-    .join(' ・ ');
+  // モード(通常/ポモドーロ)・コース名はMoodleログには残らないクライアント側限定の情報のため、
+  // 完了済みセッション一覧では表示しない(開始/終了時刻とコースの有無・学習時間のみ表示)。
+  const meta = session.started_at ? formatDayTime(session.started_at) : '';
 
   return (
     <div
@@ -47,7 +46,7 @@ export function StudySessionRow({ session }: StudySessionRowProps) {
             textOverflow: 'ellipsis',
           }}
         >
-          {session.course_title ?? '教材を指定しない'}
+          {session.courseid ? `コースID ${session.courseid}` : '教材を指定しない'}
         </div>
         <div
           style={{
