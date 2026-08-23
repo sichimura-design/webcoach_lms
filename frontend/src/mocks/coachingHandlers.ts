@@ -17,6 +17,7 @@ import { http, HttpResponse } from 'msw';
 import type {
   AudioRetention,
   AutoImportReadiness,
+  CoachContacts,
   CoachingAiSummary,
   CoachingSessionDetail,
   CoachingSessionPatch,
@@ -339,6 +340,13 @@ let nextSessionId = 1003;
 
 /** 次回コーチングで相談したいこと。コーチングが終わるまで持ち越す */
 let coachingAgenda: CoachingAgenda = { text: '', updatedAt: null };
+
+/**
+ * コーチへの連絡手段。初期は両方とも未登録にしておく。
+ * デザイン（コーチング トップ 1C）が「未登録 → 登録 → 変更」の3状態を持つので、
+ * 最初の状態から順に触れるようにする。
+ */
+const coachContacts: CoachContacts = { slackUrl: null, email: null };
 
 /** AI生成の開始時刻。GET detail のたびに経過から status を導出する */
 const generationStartedAt: Record<number, number> = {};
@@ -803,6 +811,37 @@ export const coachingHandlers = [
       updatedAt: new Date().toISOString(),
     };
     return HttpResponse.json(coachingAgenda);
+  }),
+
+  // --- コーチへの連絡手段（Slackリンク / メールアドレス） ---
+  // 🔴 実BFFには無い。コーチング以外のタイミングで連絡したくなったとき、
+  //    案内メールを探しに行かなくて済むよう、会議リンクと同じ場所に置く。
+  http.get('*/api/webcoach/coach-contacts/:userid', () => HttpResponse.json(coachContacts)),
+
+  http.put('*/api/webcoach/coach-contacts/:userid', async ({ request }) => {
+    let body: Partial<CoachContacts>;
+    try {
+      body = (await request.json()) as Partial<CoachContacts>;
+    } catch {
+      return HttpResponse.json({ error: 'invalid body' }, { status: 400 });
+    }
+
+    // 部分更新。キーが来ていない項目は触らない（Slackだけ変えてメールが消える、を防ぐ）
+    if ('slackUrl' in body) {
+      const raw = (body.slackUrl ?? '').trim();
+      if (raw && !/^https:\/\/\S+$/.test(raw)) {
+        return HttpResponse.json({ error: 'https:// からはじまるURLを入力してください' }, { status: 400 });
+      }
+      coachContacts.slackUrl = raw || null;
+    }
+    if ('email' in body) {
+      const raw = (body.email ?? '').trim();
+      if (raw && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
+        return HttpResponse.json({ error: 'メールアドレスの形式が正しくありません' }, { status: 400 });
+      }
+      coachContacts.email = raw || null;
+    }
+    return HttpResponse.json(coachContacts);
   }),
 
   // --- 一覧（次回予定 + 履歴 + 同意状況） ---

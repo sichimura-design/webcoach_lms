@@ -3,7 +3,6 @@ import { Routes, Route, Navigate, useNavigate, useParams, useSearchParams } from
 import LoginPage from '../components/LoginPage';
 import PasswordResetPage from '../components/PasswordResetPage';
 import MyPage from '../components/MyPage';
-import FocusBoothPage from '../components/FocusBoothPage';
 import StudyLogPage from '../components/studyLog/StudyLogPage';
 import CoachingNotesPage from '../components/CoachingNotesPage';
 import LearningPlanPage from '../components/learningPlan/LearningPlanPage';
@@ -14,7 +13,6 @@ import WebCoachDashboard from '../components/WebCoachDashboard';
 import CareerPathPage from '../components/CareerPathPage';
 import MaterialsTopPage from '../components/MaterialsTopPage';
 import LearningCoursesPage from '../components/LearningCoursesPage';
-import CategoryDetailPage from '../components/CategoryDetailPage';
 import AiCoachPage from '../components/aicoach/AiCoachPage';
 import BadgesPage from '../components/BadgesPage';
 import ContentListPage from '../components/ContentListPage';
@@ -146,10 +144,6 @@ function LearningCoursesWrapper() {
   return <LearningCoursesPage />;
 }
 
-function CategoryDetailWrapper() {
-  return <CategoryDetailPage />;
-}
-
 function AiCoachWrapper() {
   return <AiCoachPage />;
 }
@@ -237,16 +231,12 @@ function AppRoutes() {
         }
       />
 
-      <Route
-        path="/focus-booth"
-        element={
-          <ProtectedRoute>
-            <FocusBoothPage />
-          </ProtectedRoute>
-        }
-      />
+      {/* 集中ブースは廃止した。学習時間は各行動の開始時に自動で記録が始まる仕組みに
+          置き換わったので、タイマーを設定しに行くページ自体が不要になった
+          （components/shared/StudySessionHost.tsx）。旧ブックマークは学習記録へ送る。 */}
+      <Route path="/focus-booth" element={<Navigate to="/study-log" replace />} />
 
-      {/* 学習記録の詳細（累計・日別グラフ・全履歴）。集中ブースからの掘り下げ。 */}
+      {/* 学習記録の詳細（累計・日別グラフ・全履歴）。トップの「学習記録を見る」からの掘り下げ。 */}
       <Route
         path="/study-log"
         element={
@@ -364,14 +354,9 @@ function AppRoutes() {
           既存のブックマークや社内共有リンクを壊さないために残している。 */}
       <Route path="/ai-apps" element={<Navigate to="/ai-coach" replace />} />
 
-      <Route
-        path="/courses/category/:categoryId"
-        element={
-          <ProtectedRoute>
-            <CategoryDetailWrapper />
-          </ProtectedRoute>
-        }
-      />
+      {/* 学習領域（カテゴリ）だけのページは廃止した。学習領域は「学習する」の中の
+          見出しとして見せるもので、独立して辿る階層ではない。旧リンクは一覧へ送る。 */}
+      <Route path="/courses/category/:categoryId" element={<Navigate to="/courses" replace />} />
 
       <Route
         path="/learning-courses"

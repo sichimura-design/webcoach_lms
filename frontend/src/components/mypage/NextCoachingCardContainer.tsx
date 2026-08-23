@@ -83,7 +83,6 @@ export function NextCoachingCardContainer({ userId }: NextCoachingCardContainerP
       <NextCoachingCard
         next={sessions.next}
         readiness={readiness}
-        variant="compact"
         onRegisterLink={() => setLinkModalOpen(true)}
         onChangeLink={() => setLinkModalOpen(true)}
         onStart={() => {

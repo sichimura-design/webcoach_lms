@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { ActiveStudySession, StudyFinishDraft } from '../types/studyActivity';
-import { newActivityId } from '../utils/studyStats';
+import { ActiveStudySession, StudyCategory, StudyFinishDraft } from '../types/studyActivity';
+import { newActivityId, toLocalDateKey } from '../utils/studyStats';
 
 // 実行中セッションの型は types/studyActivity.ts にある（utils/studyStats.ts が参照するため。
 // ここに置くと store → utils → store の循環 import になる）。既存の import を壊さないよう再export する。
@@ -19,12 +19,25 @@ interface StudyTimerState {
    * 永続化しない（タブ内の合図なので、リロードで復元する意味がない）。
    */
   activityRevision: number;
+  /**
+   * 「記録せず始める」を選んだ日（YYYY-MM-DD）。この日は打診ポップを出さない。
+   * 🔴 断った人に同じことを何度も聞かないための唯一の状態。日付で持つので
+   *    翌日には自然に戻る（永久にオフにはしない）。手動開始の入口は常に残す。
+   */
+  promptDeclinedOn: string | null;
 
   startSession: (
     session: Omit<
       ActiveStudySession,
-      'startedAt' | 'pausedAt' | 'pausedCount' | 'pausedTotalMs' | 'activityId' | 'targetReachedAt'
-    >
+      | 'startedAt'
+      | 'pausedAt'
+      | 'pausedCount'
+      | 'pausedTotalMs'
+      | 'activityId'
+      | 'targetReachedAt'
+      | 'segments'
+      | 'lastActiveAt'
+    > & { category: StudyCategory }
   ) => void;
   clearSession: () => void;
   pauseSession: () => void;
@@ -34,9 +47,25 @@ interface StudyTimerState {
   /** 稼働中でも学習目標を書き足せる */
   updateGoal: (goalText: string) => void;
 
+  /** 開いている区間を閉じて、別カテゴリの区間を開く。同じカテゴリなら何もしない */
+  switchCategory: (category: StudyCategory) => void;
+  /** ユーザーの操作を観測した。放置検知の基準時刻を進める */
+  markActive: () => void;
+  /** 放置ぶんを切り捨てて一時停止する。開いている区間も lastActiveAt で閉じる */
+  trimToLastActive: () => void;
+
+  declinePromptToday: () => void;
+
   setFinishDraft: (draft: StudyFinishDraft | null) => void;
   patchFinishDraft: (patch: Partial<StudyFinishDraft>) => void;
   bumpActivityRevision: () => void;
+}
+
+/** 開いている区間（最後の要素で endedAt === null）の startedAt を後ろにずらす */
+function shiftOpenSegment(segments: ActiveStudySession['segments'], ms: number): ActiveStudySession['segments'] {
+  const open = segments[segments.length - 1];
+  if (!open || open.endedAt !== null) return segments;
+  return [...segments.slice(0, -1), { ...open, startedAt: open.startedAt + ms }];
 }
 
 // タイマーはページ遷移してもフローティングウィジェット／教材ページのミニタイマーとして
@@ -49,21 +78,26 @@ export const useStudyTimerStore = create<StudyTimerState>()(
       session: null,
       finishDraft: null,
       activityRevision: 0,
+      promptDeclinedOn: null,
 
-      startSession: (session) =>
+      startSession: ({ category, ...session }) => {
+        const now = Date.now();
         set({
           session: {
             ...session,
-            startedAt: Date.now(),
+            startedAt: now,
             pausedAt: null,
             pausedCount: 0,
             pausedTotalMs: 0,
             // 開始時に確定させる。POSTが失敗しても・再送しても EXP の eventId が変わらない
-            activityId: newActivityId(Date.now()),
+            activityId: newActivityId(now),
             targetReachedAt: null,
+            segments: [{ category, startedAt: now, endedAt: null }],
+            lastActiveAt: now,
           },
           finishDraft: null,
-        }),
+        });
+      },
 
       clearSession: () => set({ session: null }),
 
@@ -83,13 +117,67 @@ export const useStudyTimerStore = create<StudyTimerState>()(
           session: {
             ...session,
             startedAt: session.startedAt + pausedDuration,
+            // 🔴 開いている区間も同じ量ずらす。ここを忘れると区間の合計と
+            //    sessionElapsedSeconds が食い違い、内訳の和が学習時間と合わなくなる。
+            segments: shiftOpenSegment(session.segments, pausedDuration),
             pausedAt: null,
             pausedTotalMs: session.pausedTotalMs + pausedDuration,
+            lastActiveAt: Date.now(),
             // 目標に到達したあと再開したなら、超過分を続けて計測する
             targetReachedAt: session.targetReachedAt,
           },
         });
       },
+
+      switchCategory: (category) => {
+        const { session } = get();
+        if (!session) return;
+        // 一時停止中は「いま計測していない」ので切り替えない。
+        // 停止中に画面を見て回っただけで区間が増えると、内訳が細切れになる。
+        if (session.pausedAt !== null) return;
+        const open = session.segments[session.segments.length - 1];
+        if (open && open.endedAt === null && open.category === category) return;
+        const now = Date.now();
+        set({
+          session: {
+            ...session,
+            segments: [
+              ...session.segments.slice(0, -1),
+              ...(open ? [{ ...open, endedAt: open.endedAt ?? now }] : []),
+              { category, startedAt: now, endedAt: null },
+            ],
+            // 🔴 lastActiveAt はここでは触らない。markActive だけが書き手。
+            //    区間の切り替えはリロード直後にも起きるので、ここで今に更新すると
+            //    「数時間放置してから開き直した」証拠が消えて放置検知が効かなくなる。
+          },
+        });
+      },
+
+      markActive: () => {
+        const { session } = get();
+        if (!session || session.pausedAt !== null) return;
+        set({ session: { ...session, lastActiveAt: Date.now() } });
+      },
+
+      trimToLastActive: () => {
+        const { session } = get();
+        if (!session || session.pausedAt !== null) return;
+        /*
+         * 放置ぶんを計測から落とす。
+         * 🔴 pausedAt に「最後に操作した時刻」を入れるだけでよい。経過時間も区間の長さも
+         *    end = pausedAt ?? now で測る決まりなので、開いている区間もここで自動的に止まる。
+         *    区間を閉じてしまうと、再開したときに開いている区間が無くなってしまう。
+         */
+        set({
+          session: {
+            ...session,
+            pausedAt: Math.max(session.lastActiveAt, session.startedAt),
+            pausedCount: session.pausedCount + 1,
+          },
+        });
+      },
+
+      declinePromptToday: () => set({ promptDeclinedOn: toLocalDateKey(new Date()) }),
 
       markTargetReached: () => {
         const { session } = get();
@@ -115,30 +203,49 @@ export const useStudyTimerStore = create<StudyTimerState>()(
     }),
     {
       name: 'webcoach-study-timer',
-      version: 2,
-      // v1 の session には activityId / pausedCount / pausedTotalMs が無い。
-      // 補完しないと id 無しでPOSTしてしまうため、ここで必ず埋める。
+      version: 3,
+      /*
+       * v1: activityId / pausedCount / pausedTotalMs が無い。補完しないと id 無しでPOSTする。
+       * v2: segments / lastActiveAt が無い。区間が空だと内訳の合計が学習時間と合わなくなるので、
+       *     セッション全体を1本の 'material' 区間として作り直す（旧実装で開始できたのは
+       *     集中ブースと教材ページだけなので、教材として扱うのが実態に一番近い）。
+       */
       migrate: (state: unknown, from: number) => {
-        if (from >= 2) return state as StudyTimerState;
-        const old = state as { session?: Partial<ActiveStudySession> } | null;
-        const oldSession = old?.session;
+        const base = state as (Partial<StudyTimerState> & { session?: Partial<ActiveStudySession> }) | null;
+        let session = base?.session ?? null;
+
+        if (from < 2 && session?.startedAt) {
+          session = {
+            ...session,
+            pausedCount: 0,
+            pausedTotalMs: 0,
+            activityId: newActivityId(session.startedAt),
+            targetReachedAt: null,
+          };
+        }
+        if (from < 3 && session?.startedAt) {
+          session = {
+            ...session,
+            segments: [{ category: 'material' as const, startedAt: session.startedAt, endedAt: null }],
+            lastActiveAt: Date.now(),
+          };
+        }
+
         return {
           ...(state as object),
-          finishDraft: null,
+          finishDraft: from < 2 ? null : (base?.finishDraft ?? null),
           activityRevision: 0,
-          session: oldSession?.startedAt
-            ? {
-                ...oldSession,
-                pausedCount: 0,
-                pausedTotalMs: 0,
-                activityId: newActivityId(oldSession.startedAt),
-                targetReachedAt: null,
-              }
-            : null,
+          promptDeclinedOn: base?.promptDeclinedOn ?? null,
+          session: session?.startedAt ? session : null,
         } as StudyTimerState;
       },
       // 再取得トリガは永続化しない
-      partialize: (s) => ({ session: s.session, finishDraft: s.finishDraft }) as StudyTimerState,
+      partialize: (s) =>
+        ({
+          session: s.session,
+          finishDraft: s.finishDraft,
+          promptDeclinedOn: s.promptDeclinedOn,
+        }) as StudyTimerState,
     }
   )
 );

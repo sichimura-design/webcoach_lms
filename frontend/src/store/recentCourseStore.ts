@@ -2,7 +2,12 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 /**
- * 最近開いた教材。集中ブースの「教材を選ぶ」の選択肢に使う。
+ * 最近開いた教材。
+ *
+ * いまの主な用途は、学習記録の打診ポップ（components/shared/StudySessionHost.tsx）が
+ * 「いま開いている教材の名前」を知るため。レッスンを開くたびに useLessonDoc が
+ * touch していて、courseId から名前・レッスン名・進捗を引ける唯一の場所になっている。
+ * ここを見れば済むので、記録を始めるためにAPIを叩き直す必要がない。
  *
  * 「前回の続き」は実BFFの /webcoach/resumecourse が持っているが、そちらは
  * レッスンを完了したときにしか更新されない（hooks/useLessonCompletion.ts）。

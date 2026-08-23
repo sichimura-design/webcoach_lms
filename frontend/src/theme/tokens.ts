@@ -93,6 +93,17 @@ export const t = {
       related: { fg: '#D9930D', bg: '#FBF1DC' },
       ahead: { fg: '#8B5CD6', bg: '#F2ECFC' },
     },
+
+    /**
+     * コースタイルの 16:9 サムネ地色。画像アセットを持たないコースは
+     * この地色にカテゴリ名＋コース名を大きく組んで「絵柄」にする。
+     * デザイン案 1b の3テーマ（赤/ダーク/クリーム）を正規色 primary に寄せた値。
+     */
+    thumb: {
+      red: { bg: 'linear-gradient(135deg,#D60934,#8B0620)', fg: '#FFFFFF', sub: 'rgba(255,255,255,.75)' },
+      dark: { bg: 'linear-gradient(135deg,#332A26,#141414)', fg: '#FFFFFF', sub: 'rgba(255,255,255,.65)' },
+      cream: { bg: 'linear-gradient(135deg,#FDF7F3,#F3E7DA)', fg: '#1F1A1B', sub: '#8A8082' },
+    },
   },
 
   radius: {
@@ -100,6 +111,8 @@ export const t = {
     card: 20,
     /** カード内のカード（メンバー行）・イラスト枠 */
     inner: 14,
+    /** タイル（コースタイル・学習中の行・AI検索バー） */
+    tile: 16,
     /** ナビ項目 */
     nav: 12,
     /** 主要ボタン */

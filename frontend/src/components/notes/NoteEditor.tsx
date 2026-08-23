@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link2, MessageSquareText, Pencil, PenLine, Star, Trash2 } from 'lucide-react';
+import { Check, Link2, MessageSquareText, Pencil, PenLine, Star, Trash2 } from 'lucide-react';
 import { color, font, radius } from '../../theme/webcoachTheme';
 import { Note, NoteSourceRef } from '../../types/notes';
 import NoteBlockView from './NoteBlockView';
+import { formatNoteStamp } from './noteDate';
 
 /**
  * ノート面。クリーム地＋左端の綴じ代で「紙」に見せる。
@@ -22,13 +23,6 @@ interface NoteEditorProps {
   onPatchBlock: (blockId: string, patch: { text?: string; answer?: string }) => void;
   onRemoveBlock: (blockId: string) => void;
   onOpenSource: (source: NoteSourceRef, blockId: string | null) => void;
-}
-
-function formatUpdatedAt(iso: string): string {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  const p = (n: number) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}/${p(d.getMonth() + 1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
 const ACTION_STYLE: React.CSSProperties = {
@@ -65,11 +59,19 @@ export function NoteEditor({
 
   const [tail, setTail] = useState('');
   const tailRef = useRef<HTMLTextAreaElement>(null);
+  /**
+   * 未保存の下書きを ref にも持つ。
+   * 「保存する」を押すと textarea の blur と click が続けて走るので、
+   * state だけで判定すると同じ文章を2回足してしまう。
+   * ref を保存時に空にしておけば、2回目の呼び出しは何もしない。
+   */
+  const pendingRef = useRef('');
 
   useEffect(() => {
     setTitleDraft(note.title);
     setEditingTitle(false);
     setTail('');
+    pendingRef.current = '';
   }, [note.id, note.title]);
 
   useEffect(() => {
@@ -77,10 +79,16 @@ export function NoteEditor({
   }, [editingTitle]);
 
   const commitTail = () => {
-    const text = tail.trim();
+    const text = pendingRef.current.trim();
     if (!text) return;
-    onAddText(text);
+    pendingRef.current = '';
     setTail('');
+    onAddText(text);
+  };
+
+  const changeTail = (value: string) => {
+    pendingRef.current = value;
+    setTail(value);
   };
 
   return (
@@ -172,7 +180,7 @@ export function NoteEditor({
                 <span style={{ margin: '0 8px' }}>・</span>
               </>
             )}
-            更新日：{formatUpdatedAt(note.updatedAt)}
+            更新日：{formatNoteStamp(note.updatedAt)}
           </div>
         </div>
 
@@ -250,7 +258,7 @@ export function NoteEditor({
       <textarea
         ref={tailRef}
         value={tail}
-        onChange={(e) => setTail(e.target.value)}
+        onChange={(e) => changeTail(e.target.value)}
         onBlur={commitTail}
         onKeyDown={(e) => {
           if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
@@ -274,6 +282,41 @@ export function NoteEditor({
           outline: 'none',
         }}
       />
+
+      {/* 書いたものが確定したかどうかは、押せるボタンで示す。
+          自動保存（フォーカスを外したとき）も残してあるが、それだけだと
+          保存されたのか分からないまま画面を離れることになる。 */}
+      <div className="flex items-center" style={{ gap: 12, marginTop: 6 }}>
+        <button
+          type="button"
+          disabled={!tail.trim()}
+          // クリックで textarea が blur すると、この click が届く前に
+          // ボタンが disabled になる。フォーカスを移さないでおく。
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={commitTail}
+          className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 7,
+            height: 38,
+            padding: '0 20px',
+            border: 0,
+            borderRadius: radius.md,
+            background: tail.trim() ? color.primary : color.borderSoft,
+            color: tail.trim() ? color.textOnPrimary : color.textFaint,
+            fontFamily: 'inherit',
+            fontSize: 12.5,
+            fontWeight: 700,
+            cursor: tail.trim() ? 'pointer' : 'not-allowed',
+          }}
+        >
+          <Check size={15} /> 保存する
+        </button>
+        <span style={{ ...font.caption, color: color.textFaint }}>
+          Ctrl+Enter でも保存できます
+        </span>
+      </div>
     </section>
   );
 }

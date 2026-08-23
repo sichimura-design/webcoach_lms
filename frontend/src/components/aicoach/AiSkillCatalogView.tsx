@@ -1,5 +1,5 @@
 import { useMemo, useState, type CSSProperties } from 'react';
-import { ChevronRight, Search, Send, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, Send, Sparkles } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import {
   AI_SKILL_CATEGORY_LABEL,
@@ -27,11 +27,16 @@ interface AiSkillCatalogViewProps {
   onSelectSkill: (skillId: ConcreteAiSkillId) => void;
   /** どれを使えばいいか分からない人の逃げ道。ホームの自由入力に戻す */
   onAskFreely: () => void;
+  /**
+   * ホームへ戻る。以前は共通の上部バーが担っていたが、
+   * デザイン 1a でバーを外したのでこの画面が自分で戻り導線を持つ。
+   */
+  onBack: () => void;
 }
 
 type CategoryFilter = AiSkillCategory | 'all';
 
-export function AiSkillCatalogView({ onSelectSkill, onAskFreely }: AiSkillCatalogViewProps) {
+export function AiSkillCatalogView({ onSelectSkill, onAskFreely, onBack }: AiSkillCatalogViewProps) {
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState<CategoryFilter>('all');
 
@@ -52,7 +57,27 @@ export function AiSkillCatalogView({ onSelectSkill, onAskFreely }: AiSkillCatalo
 
   return (
     <div style={{ height: '100%', overflowY: 'auto', background: color.pageBg }}>
-      <div className="wc-page" style={{ '--wc-page-max': '980px', '--wc-page-top': '40px', '--wc-page-bottom': '56px' } as CSSProperties}>
+      <div className="wc-page" style={{ '--wc-page-max': '980px', '--wc-page-top': '20px', '--wc-page-bottom': '56px' } as CSSProperties}>
+        <button
+          type="button"
+          onClick={onBack}
+          className="inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+          style={{
+            gap: 4,
+            marginBottom: 12,
+            border: 0,
+            padding: 0,
+            background: 'transparent',
+            color: color.textMuted,
+            fontFamily: 'inherit',
+            fontSize: 12.5,
+            fontWeight: 700,
+            cursor: 'pointer',
+          }}
+        >
+          <ChevronLeft size={15} /> AIコーチにもどる
+        </button>
+
         <div className="flex flex-col items-center" style={{ gap: 10, textAlign: 'center' }}>
           <span
             aria-hidden

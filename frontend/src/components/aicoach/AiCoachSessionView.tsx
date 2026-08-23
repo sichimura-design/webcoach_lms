@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PanelRight } from 'lucide-react';
+import { ChevronLeft, PanelRight } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import { useToast } from '../../contexts/ToastContext';
 import { useLessonAi, LessonAiMessage } from '../../hooks/useLessonAi';
@@ -287,9 +287,27 @@ export function AiCoachSessionView({
     ) : (
       <div>
         <div className="flex items-center" style={{ gap: 8 }}>
-          <strong style={{ ...font.label, fontWeight: 800, color: color.text, flexShrink: 0 }}>
-            AIコーチ
-          </strong>
+          {/* 共通の上部バー（旧「ホーム」ボタン）を外したので、おまかせの会話でも
+              ここからホームへ戻れるようにしている。専門モード側は SkillModeHeader が持つ。 */}
+          <button
+            type="button"
+            onClick={backToCoach}
+            title="AIコーチのホームへ戻る"
+            className="inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+            style={{
+              gap: 2,
+              border: 0,
+              padding: 0,
+              background: 'transparent',
+              color: color.text,
+              fontFamily: 'inherit',
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            <ChevronLeft size={14} style={{ color: color.iconMuted }} />
+            <strong style={{ ...font.label, fontWeight: 800 }}>AIコーチ</strong>
+          </button>
           <SkillSelector value={ai.skillId} onChange={ai.selectSkill} disabled={ai.loading} />
           <span
             style={{

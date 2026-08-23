@@ -34,7 +34,15 @@ import ExplainPopover from './ExplainPopover';
  * 本文以外の常設要素をすべて外した:
  *   ・LMSのサイドバー（AppHeader）を描かない
  *   ・目次のドロワーを廃止し、「コースに戻る」1本にする
- *   ・AI/メモは右下のフローティングから必要なときだけオーバーレイで開く
+ *   ・AI/メモは右下のフローティングから必要なときだけ開く
+ *
+ * 【デザイン案 2a「ドキュメント型 ＋ 開閉式サイドパネル」の反映】
+ * 上の方針は保ったまま、開いたパネルの見せ方だけを変えた。
+ *   ・1280px以上ではパネルが本文の上に重ならず、横に並んで本文を押しのける
+ *     （ドラッグで 320〜560px に可変）。読みながら書ける・読みながら聞ける。
+ *   ・1280px未満は従来どおり暗幕付きのオーバーレイ、SPはボトムシート。
+ *     ノートPCで並べると本文が600px台まで潰れて、案の狙い自体が崩れるため。
+ *   ・本文は白いカードに戻した（案 2a）。枠なしの全幅版は別案 3a にあたる。
  *
  * このファイル自体は状態の集約に徹し、描画は learning/ 配下の各ペインへ委譲する。
  */
@@ -60,6 +68,13 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     open: false,
     tab: 'ai',
   });
+  /**
+   * ドッキング時のパネル幅（デザイン 2a の既定 400px、320〜560で可変）。
+   * 🔴 SupportPanel ではなくここに置く。パネルは閉じるとアンマウントするので、
+   *    向こうに持つと開き直すたびに 400px へ戻ってしまう。
+   *    ただし localStorage には出さない（開閉状態と同じ理由。§support のコメント参照）。
+   */
+  const [supportWidth, setSupportWidth] = useState(400);
   const [flashBlockId, setFlashBlockId] = useState<string | null>(null);
   const [explainState, setExplainState] = useState<
     { anchor: { top: number; left: number }; quote: LessonAiQuote; text: string | null } | null
@@ -423,9 +438,15 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
           教材に入ったらLMSの外枠は不要、というレビュー方針。
           サイドバーの余白は AppHeader 自身の effect が付けているので、
           描かなければ自動的に消える。 */}
-      <div className="wc-learning-shell" style={{ display: 'grid', gridTemplateRows: '56px minmax(0, 1fr)' }}>
+      <div
+        className="wc-learning-shell"
+        // 読み幅の切替をCSS側で拾うための印。パネルが並んでいる間だけ本文を狭める
+        data-support-open={support.open ? 'true' : 'false'}
+        style={{ display: 'grid', gridTemplateRows: '64px minmax(0, 1fr)' }}
+      >
         <LessonTopBar
           courseName={outline?.courseName ?? doc?.courseName ?? ''}
+          lessonTitle={doc?.title ?? ''}
           lessonIndex={lessonIndex > 0 ? lessonIndex : null}
           lessonTotal={flatLessons.length}
           courseId={courseId}
@@ -433,86 +454,106 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
           onBackToCourse={onBack}
         />
 
-        {/* 目次の列もサポートの列も無くなったので、本文が唯一のスクロールコンテナ */}
-        <main ref={scrollRef} style={{ overflowY: 'auto', minWidth: 0, scrollBehavior: 'smooth' }}>
-          {loading && (
-            <div className="flex items-center justify-center" style={{ height: '100%' }}>
-              <span
-                className="animate-spin rounded-full"
-                style={{ width: 34, height: 34, borderBottom: `2px solid ${color.primary}` }}
+        {/* 本文とサポートパネルの横並び。1280px未満ではパネルが position:fixed に
+            なるので、この行は本文だけが占める（index.css 参照） */}
+        <div className="wc-lesson-body">
+          {/* 目次の列は無くなったので、本文が唯一のスクロールコンテナ */}
+          {/* 左右のガターはここが持つ。本文カードの幅は LessonArticle 側の
+              --wc-reading-max が「カードの外寸」として決めるので、
+              あちらにパディングを足さない（index.css のコメント参照） */}
+          <main
+            ref={scrollRef}
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              minWidth: 0,
+              padding: '0 clamp(16px, 3vw, 32px)',
+              scrollBehavior: 'smooth',
+            }}
+          >
+            {loading && (
+              <div className="flex items-center justify-center" style={{ height: '100%' }}>
+                <span
+                  className="animate-spin rounded-full"
+                  style={{ width: 34, height: 34, borderBottom: `2px solid ${color.primary}` }}
+                />
+              </div>
+            )}
+
+            {!loading && error && (
+              <div className="flex flex-col items-center justify-center" style={{ height: '100%', gap: 14 }}>
+                <p style={{ ...font.label, color: color.primary, margin: 0 }}>{error}</p>
+                <button
+                  type="button"
+                  onClick={onBack}
+                  style={{
+                    padding: '10px 22px', borderRadius: 999, border: 'none',
+                    background: color.primary, color: '#fff', ...font.buttonSm, cursor: 'pointer',
+                  }}
+                >
+                  コースに戻る
+                </button>
+              </div>
+            )}
+
+            {!loading && !error && doc && (
+              <LessonArticle
+                doc={doc}
+                articleRef={articleRef}
+                clips={clipAnchors}
+                flashBlockId={flashBlockId}
+                videoUrl={videoUrl}
+                isCompleted={completion.isCompleted}
+                completing={completion.completing}
+                onComplete={handleComplete}
+                onUndoComplete={() => void completion.toggleComplete(false)}
+                onNavigate={navigateToLesson}
+                onBackToCourse={onBack}
               />
-            </div>
-          )}
+            )}
+          </main>
 
-          {!loading && error && (
-            <div className="flex flex-col items-center justify-center" style={{ height: '100%', gap: 14 }}>
-              <p style={{ ...font.label, color: color.primary, margin: 0 }}>{error}</p>
-              <button
-                type="button"
-                onClick={onBack}
-                style={{
-                  padding: '10px 22px', borderRadius: 999, border: 'none',
-                  background: color.primary, color: '#fff', ...font.buttonSm, cursor: 'pointer',
-                }}
-              >
-                コースに戻る
-              </button>
-            </div>
-          )}
-
-          {!loading && !error && doc && (
-            <LessonArticle
-              doc={doc}
-              articleRef={articleRef}
-              clips={clipAnchors}
-              flashBlockId={flashBlockId}
-              videoUrl={videoUrl}
-              isCompleted={completion.isCompleted}
-              completing={completion.completing}
-              onComplete={handleComplete}
-              onUndoComplete={() => void completion.toggleComplete(false)}
-              onNavigate={navigateToLesson}
-              onBackToCourse={onBack}
+          {/* ── AI／メモのパネル。1280px以上では本文と並ぶドッキング型、
+                それ未満は右からのドロワー、SPはボトムシート（index.css で分岐）── */}
+          {support.open && (
+            <SupportPanel
+              tab={support.tab}
+              onTabChange={(tab) => setSupport({ open: true, tab })}
+              onClose={closeSupport}
+              width={supportWidth}
+              onWidthChange={setSupportWidth}
+              aiPane={
+                <AiCoachPane
+                  ai={ai}
+                  onSaveAnswer={handleSaveAnswer}
+                  onAppendToMemo={handleAppendToMemo}
+                  onJumpToBlock={jumpToBlock}
+                  disabled={!selectionEnabled}
+                  onExpand={handleExpandToAiPage}
+                  onOpenWide={handleOpenWideWithSkill}
+                />
+              }
+              memoPane={
+                <MemoPane
+                  notes={notes}
+                  lessonTitle={doc?.title ?? ''}
+                  relatedNotes={relatedNotes.items}
+                  onKeepDraft={() => void handleKeepDraft()}
+                  onOpenNote={(noteId) => navigate(`/notes?note=${encodeURIComponent(noteId)}`)}
+                />
+              }
             />
           )}
-        </main>
+        </div>
       </div>
 
-      {/* ── 右下の常設アクション。教材を読みながらAI・メモへ入る唯一の入口 ── */}
+      {/* ── 右下の常設アクション。教材を読みながらAI・メモへ入る唯一の入口 ──
+          パネルが開いている間は引っ込むので、パネルと重なることはない */}
       {!loading && !error && doc && (
         <LessonFloatingActions
           hidden={support.open || !!selection || !!explainState}
           onOpenAi={() => openSupport('ai')}
           onOpenMemo={() => openSupport('notes')}
-        />
-      )}
-
-      {/* ── AI／メモのオーバーレイ。PCは右からのドロワー、SPはボトムシート ── */}
-      {support.open && (
-        <SupportPanel
-          tab={support.tab}
-          onTabChange={(tab) => setSupport({ open: true, tab })}
-          onClose={closeSupport}
-          aiPane={
-            <AiCoachPane
-              ai={ai}
-              onSaveAnswer={handleSaveAnswer}
-              onAppendToMemo={handleAppendToMemo}
-              onJumpToBlock={jumpToBlock}
-              disabled={!selectionEnabled}
-              onExpand={handleExpandToAiPage}
-              onOpenWide={handleOpenWideWithSkill}
-            />
-          }
-          memoPane={
-            <MemoPane
-              notes={notes}
-              lessonTitle={doc?.title ?? ''}
-              relatedNotes={relatedNotes.items}
-              onKeepDraft={() => void handleKeepDraft()}
-              onOpenNote={(noteId) => navigate(`/notes?note=${encodeURIComponent(noteId)}`)}
-            />
-          }
         />
       )}
 

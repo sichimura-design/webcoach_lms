@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, ChevronDown, ChevronRight, ChevronsLeft, ChevronsRight, DoorOpen, MessagesSquare, Map } from 'lucide-react';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotificationStore } from '../../store/notificationStore';
 import { useNewContentNotification } from '../../hooks/useNewContentNotification';
@@ -13,6 +13,9 @@ interface AppHeaderProps {
   userName?: string;
   avatarUrl?: string;
 }
+
+/** ナビの開閉をタブ内で持ち回すキー（ページ遷移で AppHeader が再マウントされるため） */
+const SIDEBAR_KEY = 'wc-sidebar-expanded';
 
 export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const navigate = useNavigate();
@@ -34,6 +37,20 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const helpRef = useRef<HTMLDivElement>(null);
   useNewContentNotification();
 
+  /*
+   * アカウントのポップオーバー。
+   * 🔴 アバターは「押した瞬間に /account-settings へ飛ぶ」作りだったが、
+   *    行き先が見えないまま画面が変わるのが唐突だったので、ホバー（と
+   *    クリック／フォーカス）で行き先の一覧を出してから選ぶ形にした。
+   * 🔴 ログアウトはここには置かない。アカウント設定画面が持っている
+   *    （SCREEN-013 でそう決めた）。ホバーで開く面に破壊的操作を混ぜない。
+   */
+  const [accountOpen, setAccountOpen] = useState(false);
+  // レール用とパネル用で別々。どちらも常時マウント（クロスフェード中に
+  // アカウント行だけ消えるのを避けるため）なので、外側クリック判定は両方見る。
+  const accountRailRef = useRef<HTMLDivElement>(null);
+  const accountPanelRef = useRef<HTMLDivElement>(null);
+
   // ドロップダウン外クリックで閉じる
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -43,26 +60,49 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
       if (helpRef.current && !helpRef.current.contains(e.target as Node)) {
         setHelpOpen(false);
       }
+      const inAccount =
+        accountRailRef.current?.contains(e.target as Node) ||
+        accountPanelRef.current?.contains(e.target as Node);
+      if (!inAccount) setAccountOpen(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
+  // ポップオーバーは Esc でも閉じる（ホバーから外すのが唯一の手段だと詰む）
+  useEffect(() => {
+    if (!accountOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setAccountOpen(false); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [accountOpen]);
+
   const avatarSrc = resolvedAvatarUrl ||
     `https://ui-avatars.com/api/?name=${encodeURIComponent(resolvedUserName)}&background=F0EAE6&color=CDC6C6`;
 
-  const isMyPage = location.pathname === '/mypage' || location.pathname === '/';
-  // 教材ページは /course/:id（単数形）。ここを含めないと学習中にナビがどこも点灯しない。
+  /*
+   * ナビのアクティブ判定。
+   * ============================================================
+   * 🔴 メインナビは「ユーザーが自分からやりに行く行動」5本柱だけにする。
+   *    トップ / 学習する / AIコーチ / コーチング / マイノート。
+   *    重要だが自分から見に行かない情報（学習記録・ランキング・ロードマップ）は
+   *    ナビに項目を作らず、トップや各体験の中で露出させる。
+   * 🔴 ナビに無いページも、必ずどれか1本の配下として点灯させる。
+   *    「今どの柱にいるか」が消えると現在地を見失うため。
+   * ============================================================
+   */
+  // トップ。学習記録（/study-log）はトップの「詳しく見る」の先なのでここに属する。
+  const isTop = location.pathname === '/mypage'
+    || location.pathname === '/'
+    || location.pathname === '/study-log';
+  // 学習する。教材ページは /course/:id（単数形）なので両方見る。
   const isCoursesPage = location.pathname === '/courses' || location.pathname.startsWith('/courses/')
     || location.pathname.startsWith('/course/') || location.pathname === '/learning-courses';
-  // 自習室 = 集中ブース（/focus-booth）＋学習記録（/study-log）＋ノート（/notes）。
-  // 3面ともページ内の共通タブ（StudyRoomHeader）で行き来するので、ナビ項目は1つにまとめ、
-  // どの面にいてもここを点灯させる（isCoursesPage が /course/* を含めているのと同じ考え方）。
-  const isStudyRoom = location.pathname === '/focus-booth'
-    || location.pathname === '/study-log'
-    || location.pathname.startsWith('/notes');
-  const isCoaching = location.pathname === '/coaching';
+  // マイノート。?note=<id> はクエリなので pathname だけで判定できる。
+  const isNotes = location.pathname.startsWith('/notes');
+  // コーチング。学習ロードマップ（/learning-plan）は「コーチと決める長期の計画」なのでここに属する。
   const isLearningPlan = location.pathname.startsWith('/learning-plan');
+  const isCoaching = location.pathname === '/coaching' || isLearningPlan;
   const isAiCoach = location.pathname === '/ai-coach';
   const isAdmin = location.pathname.startsWith('/admin');
   // 教材学習ワークスペースとAI専用ページには、それぞれ専用のAIコーチUIがある。
@@ -71,23 +111,40 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
   /*
    * ナビパネルの開閉。
-   * 🔴 初期値は「閉」で、localStorage にも保存しない。
-   *    以前はサイドバーが本文を押し widen/narrow する作り（＝レイアウトの好み）だったので
-   *    展開状態を復元するのが正しかった。いまはレールに重なる暗幕付きオーバーレイなので、
-   *    復元すると毎回のページ読み込みで暗幕が出たまま始まってしまう。
-   *    行き先を選ぶための一時的な面として、開くのは常に明示操作から。
+   * ============================================================
+   * 🔴 sessionStorage に保存する。AppHeader はレイアウトルートではなく
+   *    各ページが個別に描画しているので（16画面）、ページ遷移のたびに
+   *    再マウントされて state が落ちる。push 型の要件「開いたまま
+   *    コンテンツを操作できる」（DESIGN-3d.md §3-2）を満たすには、
+   *    遷移をまたいで開閉が保たれている必要がある。
+   * 🔴 localStorage ではなくタブ単位の sessionStorage にしているのは、
+   *    「開いたまま始まる」状態を次回の訪問まで持ち越さないため。
+   *    暗幕付きオーバーレイだった頃は復元すると毎回暗幕から始まる問題が
+   *    あったが、push 型では暗幕が無いのでタブ内の復元は害にならない。
+   * ============================================================
    */
-  const [expanded, setExpanded] = useState(false);
-
-  // PC版レールぶんの余白を body に付与（このヘッダーを描画するページのみ）。
-  // パネルは本文を押さないので、開閉に連動して変える余白は無い。
+  const [expanded, setExpanded] = useState(() => {
+    try { return sessionStorage.getItem(SIDEBAR_KEY) === '1'; } catch { return false; }
+  });
   useEffect(() => {
-    document.body.classList.add('with-sidebar');
-    return () => { document.body.classList.remove('with-sidebar'); };
-  }, []);
+    try { sessionStorage.setItem(SIDEBAR_KEY, expanded ? '1' : '0'); } catch { /* private mode 等 */ }
+  }, [expanded]);
 
-  // ナビパネルはレールに重なるオーバーレイなので、Escでも閉じられるようにする
-  // （背面クリックは overlay 側の onClick が受ける）
+  /*
+   * PC版ナビぶんの余白を body に付与（このヘッダーを描画するページのみ）。
+   * 🔴 push 型なので、開閉に連動して本文の余白も 72px ⇄ 224px で動く
+   *    （実際の値は index.css の --wc-sidebar-w / --wc-sidebar-w-expanded）。
+   * 🔴 useEffect ではなく useLayoutEffect。復元で開いた状態から始まるとき、
+   *    ペイント後にクラスが付くと本文が一度 72px 幅で描かれてから跳ねる。
+   */
+  useLayoutEffect(() => {
+    document.body.classList.add('with-sidebar');
+    document.body.classList.toggle('sidebar-expanded', expanded);
+    return () => { document.body.classList.remove('with-sidebar', 'sidebar-expanded'); };
+  }, [expanded]);
+
+  // 暗幕が無い（＝背面クリックで閉じる逃げ道が無い）ので、Escは閉じ手段として残す。
+  // 閉じるボタンとロゴクリックが主な導線。
   useEffect(() => {
     if (!expanded) return;
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setExpanded(false); };
@@ -102,16 +159,22 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   //   components/learning/SelectionToolbar.tsx + hooks/useTextSelection.ts
   // 復活させるときは、出す画面を絞ってから戻すこと（全画面で出すと同じ問題が再発する）。
 
-  // ナビ項目（サイドバー・下部ナビ共通の定義。既存ルートのみを使用）
-  // 並び順は「毎日開くもの → 相談するもの → たまに見る長期のもの」。
-  // 🔴 順序はレビューで指定されたもの。勝手に入れ替えないこと。
+  /*
+   * ナビ項目（PCサイドバー・SP下部ナビ共通の定義。ここが唯一の定義）。
+   * ============================================================
+   * 🔴 5本柱。並び順は「毎日開く → 相談する → 蓄積を見る」。
+   *    勝手に増やさないこと。増やしたくなったら、それが本当に
+   *   「ユーザーが自分からやりに行く行動」なのかを先に問う。
+   *    そうでないものはトップか、対応する体験の中に置く。
+   * 🔴 項目数はサイドバーの高さ予算にも効く（下の SZ のコメント参照）。
+   * ============================================================
+   */
   const navItems = [
-    { label: 'マイページ', icon: Home, path: '/mypage', active: isMyPage },
-    { label: '学習コンテンツ', icon: BookOpen, path: '/courses', active: isCoursesPage },
-    { label: '自習室', icon: DoorOpen, path: '/focus-booth', active: isStudyRoom },
+    { label: 'トップ', icon: Home, path: '/mypage', active: isTop },
+    { label: '学習する', icon: BookOpen, path: '/courses', active: isCoursesPage },
     { label: 'AIコーチ', icon: Sparkles, path: '/ai-coach', active: isAiCoach },
     { label: 'コーチング', icon: MessagesSquare, path: '/coaching', active: isCoaching },
-    { label: '学習ロードマップ', icon: Map, path: '/learning-plan', active: isLearningPlan },
+    { label: 'マイノート', icon: NotebookPen, path: '/notes', active: isNotes },
   ];
   const learnItems = navItems;
   const manageItems = user?.isAdmin
@@ -141,42 +204,62 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     panelInk: '#FDF7F3',
     /** 白い面に乗るアクティブ文字。primary そのままだと白地でやや浮くので一段暗く */
     panelActiveInk: color.primaryHover,
+    /** ツールチップのダークピル（デザインの .rail-tip） */
+    tipBg: '#3A3532',
   };
 
   /*
    * サイドバーの寸法。
    * ============================================================
-   * 🔴 デザイン（マイページ 3d.dc.html）の実寸より一段小さくしている。
-   *    デザインは行高52px・ロゴ23pxで組まれているが、その値だと
-   *    パネルの中身が約748px必要になり、実効ビューポート高が
-   *    700px を下回る環境（表示スケール150%のノートPCなど）で
-   *    最下部のアカウント行が見切れる。詰めた結果は約612px。
-   * 🔴 それでも足りない画面はありうるので、ナビ帯には overflow-y:auto を
-   *    持たせてある（下の scrollArea）。寸法だけで担保しないこと。
+   * 🔴 デザイン（マイページ 3d.dc.html）の実寸より一段小さい。デザインは
+   *    行高52px・ロゴ23px・パネル上余白44pxで組まれているが、その値だと
+   *    パネルの中身に約814px必要で、ノートPCの実効ビューポート高に収まらず
+   *    スクロールしないと下まで見えない。レビューでも「でかすぎる」判断。
+   *    この寸法での合計は約 671px で、700px の画面に収まる。
+   * 🔴 上端の詰め方が要点。閉じるボタン（絶対配置）とロゴを上に寄せ、
+   *    パネル上余白 44→12px・ロゴ上余白 24→30px（＝ボタンぶんの逃げだけ）に
+   *    したことで、ヘッダー部だけで約57px削れている。ここを戻すと
+   *    再び下が入りきらなくなる。
+   * 🔴 値を足すとき（ナビ項目や補助リンクを増やすとき）は合計を再計算すること。
+   *    行を1つ足しただけで700pxに収まらなくなり、管理の行が半分だけ見える
+   *    状態になる。ナビ帯の overflow-y:auto は最後の保険で、寸法で担保する。
    * ============================================================
    */
   const SZ = {
     /** パネルのナビ行 */
-    rowH: 44,
-    rowFont: 14,
-    rowIcon: 19,
+    rowH: 46,
+    rowFont: 13,
+    rowIcon: 18,
     rowGap: 12,
-    rowPadX: 15,
+    rowPadX: 16,
+    /** ナビ行どうしの隙間 */
+    rowSpacing: 4,
     /** レールの丸アイコン */
     railBtn: 40,
     railIcon: 18,
     railGap: 6,
     /** パネル下部の補助リンク */
-    subH: 34,
-    subFont: 13,
-    subIcon: 16,
+    subH: 32,
+    subFont: 12,
+    subIcon: 15,
     /** アカウント行のアバター */
     avatarPanel: 36,
     avatarRail: 36,
+    /** 外周 */
+    panelPad: '12px 12px 16px',
+    railPad: '16px 0 16px',
+    /** ロゴ。上余白は閉じるボタン（top:8・34px角）を避けるぶんだけ */
+    logoPad: '30px 8px 14px',
+    logoFont: 18,
+    logoSubFont: 11,
+    /** 学習項目と管理の間の区切り線 */
+    panelDividerMargin: '14px 8px',
   };
 
+  /** デザインの .rail-tip / .panel-tip（ダークピル・アイコン右にフェードイン） */
   const tooltipClass =
-    'pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg bg-[#262C35] px-2 py-1.5 text-[11px] font-bold text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none';
+    'pointer-events-none absolute left-full top-1/2 z-50 ml-2.5 -translate-y-1/2 whitespace-nowrap rounded-[7px] px-2.5 py-[5px] text-[12px] font-medium opacity-0 transition-opacity duration-[120ms] group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none';
+  const tooltipStyle = { background: SB.tipBg, color: SB.panelInk };
 
   /** 常時見えている72pxレールの丸アイコン1つ */
   const renderRailItem = (item: { label: string; icon: any; path: string; active: boolean }) => {
@@ -187,6 +270,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         onClick={() => navigate(item.path)}
         aria-label={item.label}
         aria-current={item.active ? 'page' : undefined}
+        tabIndex={expanded ? -1 : undefined}
         className={`group relative grid place-items-center rounded-full appearance-none border-0 cursor-pointer transition-colors duration-200 motion-reduce:transition-none ${focusRing} ${
           item.active ? '' : 'hover:bg-[#FDF2F2]'
         }`}
@@ -200,21 +284,26 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
       >
         <Icon size={SZ.railIcon} strokeWidth={1.75} color={item.active ? SB.panelInk : SB.iconIdle} />
         {/* レールはアイコンのみなので、ホバー/フォーカスでラベルを添える（title属性はキーボードで読めない） */}
-        <span role="tooltip" aria-hidden="true" className={tooltipClass}>
+        <span role="tooltip" aria-hidden="true" className={tooltipClass} style={tooltipStyle}>
           {item.label}
         </span>
       </button>
     );
   };
 
-  /** スライドオーバーパネル（224px・赤）の行1つ */
+  /*
+   * 展開パネル（224px・赤）の行1つ。
+   * 🔴 遷移しても閉じない。push 型は「開いたままコンテンツを操作できる」のが
+   *    要件（DESIGN-3d.md §3-2）なので、行き先を選んだら畳む挙動にしないこと。
+   */
   const renderPanelItem = (item: { label: string; icon: any; path: string; active: boolean }) => {
     const Icon = item.icon;
     return (
       <button
         key={item.path}
-        onClick={() => { navigate(item.path); setExpanded(false); }}
+        onClick={() => navigate(item.path)}
         aria-current={item.active ? 'page' : undefined}
+        tabIndex={expanded ? undefined : -1}
         className={`relative flex items-center w-full appearance-none border-0 cursor-pointer text-left rounded-full transition-colors duration-200 motion-reduce:transition-none ${focusRing} ${
           item.active ? '' : 'hover:bg-white/[0.12]'
         }`}
@@ -235,11 +324,66 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     );
   };
 
+  /*
+   * アカウントのポップオーバー本体。レール（閉）とパネル（開）で共用する。
+   * どちらも画面左下が起点なので、右上に向かって開く（left-full / bottom-0）。
+   * 🔴 常時マウントして opacity で出し入れする。条件レンダリングだと
+   *    マウスがトリガーからポップへ移る一瞬で消えて選べないことがある。
+   */
+  const accountItems = [
+    { label: 'アカウント設定', icon: Settings, path: '/account-settings' },
+    { label: 'プロフィール', icon: UserRound, path: '/profile' },
+  ];
+
+  const renderAccountPopover = () => (
+    <div
+      role="menu"
+      aria-label="アカウント"
+      aria-hidden={!accountOpen}
+      className="absolute left-full bottom-0 ml-2.5 bg-white overflow-hidden z-50 transition-opacity duration-150 motion-reduce:transition-none"
+      style={{
+        width: 232,
+        borderRadius: 14,
+        border: '1px solid #EBE7E5',
+        boxShadow: '0 16px 38px rgba(96,70,65,.16)',
+        opacity: accountOpen ? 1 : 0,
+        pointerEvents: accountOpen ? 'auto' : 'none',
+      }}
+    >
+      <div className="flex items-center gap-2.5 px-3.5 py-3" style={{ borderBottom: '1px solid #F3EFEE' }}>
+        <span className="grid place-items-center rounded-full overflow-hidden" style={{ width: 36, height: 36, flex: 'none', background: SB.softPink }}>
+          <img src={avatarSrc} alt="" className="w-full h-full object-cover" />
+        </span>
+        <span className="min-w-0">
+          <span className="block truncate" style={{ fontSize: 13, fontWeight: 700, color: '#2B2629' }}>{resolvedUserName}</span>
+          {user?.username && (
+            <span className="block truncate" style={{ fontSize: 11, color: '#8B8386', marginTop: 1 }}>{user.username}</span>
+          )}
+        </span>
+      </div>
+
+      {accountItems.map(({ label, icon: Icon, path }) => (
+        <button
+          key={path}
+          role="menuitem"
+          tabIndex={accountOpen ? undefined : -1}
+          onClick={() => { navigate(path); setAccountOpen(false); }}
+          className={`flex items-center w-full appearance-none border-0 bg-transparent cursor-pointer text-left transition-colors hover:bg-[#FAF7F7] motion-reduce:transition-none ${focusRing}`}
+          style={{ gap: 10, padding: '10px 14px', fontSize: 13, color: '#3D3D3D' }}
+        >
+          <Icon size={16} strokeWidth={1.75} color={SB.iconIdle} style={{ flex: 'none' }} />
+          <span className="truncate">{label}</span>
+        </button>
+      ))}
+    </div>
+  );
+
   /** パネル下部の補助リンク（利用マニュアル・よくある質問） */
   const renderPanelSubLink = (label: string, Icon: any, onClick: () => void) => (
     <button
       key={label}
       onClick={onClick}
+      tabIndex={expanded ? undefined : -1}
       className={`flex items-center w-full appearance-none border-0 bg-transparent cursor-pointer text-left rounded-lg transition-opacity hover:opacity-75 motion-reduce:transition-none ${focusRing}`}
       style={{ height: SZ.subH, gap: 12, fontSize: SZ.subFont, color: 'rgba(253,247,243,.95)' }}
     >
@@ -253,170 +397,144 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     <>
       {/* ──────────────────────────────────────────────────────────
           PC版 左ナビ（sm以上）。claude.ai/design『マイページ 3d.dc.html』準拠。
-          2層構造:
-            ① レール（72px・常時表示）… アイコンのみ。ここが本文のオフセット幅
-            ② パネル（224px・赤）    … レールの上に重なるオーバーレイ
+          2層構造（どちらも left:0 に常時マウントし、クロスフェードで入れ替わる）:
+            ① レール（72px・既定）… アイコンのみ
+            ② パネル（224px・赤） … 展開時
 
-          🔴 パネルは本文を押さない。だから body の padding-left は常に 72px で、
-             開閉で本文の幅が変わらない（以前は展開すると本文が 190px 削られていた）。
+          🔴 push 型。展開すると body の padding-left が 72px → 224px に伸び、
+             本文が右に縮んでリフローする（index.css の body.sidebar-expanded）。
+             暗幕は張らない ＝ 開いたまま本文を操作できる。
+             オーバーレイ＋暗幕に戻すと DESIGN-3d.md §3-2/§8 の決着に反する。
          ────────────────────────────────────────────────────────── */}
       <aside
         id="app-sidebar-rail"
-        className="hidden sm:flex flex-col items-center fixed left-0 top-0 bottom-0 z-40"
+        aria-hidden={expanded}
+        className="hidden sm:flex flex-col items-center fixed left-0 top-0 bottom-0 z-40 motion-reduce:transition-none"
         style={{
           width: 'var(--wc-sidebar-w)',
-          padding: '18px 0 16px',
+          padding: SZ.railPad,
           background: SB.railBg,
           borderRight: `1px solid ${SB.railBorder}`,
           boxShadow: '3px 0 10px -4px rgba(60,48,32,.18)',
+          opacity: expanded ? 0 : 1,
+          pointerEvents: expanded ? 'none' : 'auto',
+          transition: 'opacity 180ms ease',
         }}
       >
-        <span
-          aria-hidden="true"
-          style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800, fontSize: 18, color: SB.brand, marginBottom: 12, flex: 'none' }}
-        >
-          W
-        </span>
-
+        {/* レール最上部は開くボタン1つだけ（デザインにワードマークは無い） */}
         <button
           onClick={() => setExpanded(true)}
           aria-expanded={expanded}
           aria-controls="app-sidebar-panel"
           aria-label="サイドバーをひらく"
-          className={`group relative grid place-items-center appearance-none border-0 cursor-pointer transition-colors duration-200 hover:bg-[#FBE3E6] motion-reduce:transition-none ${focusRing}`}
-          style={{ width: 34, height: 34, borderRadius: 10, background: SB.softPink, color: SB.brand, marginBottom: 18, flex: 'none' }}
+          tabIndex={expanded ? -1 : undefined}
+          className={`group relative grid place-items-center appearance-none border-0 bg-transparent cursor-pointer transition-colors duration-200 hover:bg-[#FDF2F2] motion-reduce:transition-none ${focusRing}`}
+          style={{ width: SZ.railBtn, height: SZ.railBtn, borderRadius: 10, marginBottom: 14, flex: 'none' }}
         >
-          <ChevronsRight size={16} strokeWidth={2.25} />
-          <span role="tooltip" aria-hidden="true" className={tooltipClass}>サイドバーをひらく</span>
+          <PanelLeftOpen size={19} strokeWidth={1.75} color={SB.brand} />
+          <span role="tooltip" aria-hidden="true" className={tooltipClass} style={tooltipStyle}>サイドバーをひらく</span>
         </button>
 
         {/*
-          🔴 ナビ帯だけを伸縮・スクロールさせる（minHeight:0 が無いと flex 内で縮まない）。
-             下のお知らせ・アカウントは常に見えている必要があるので、
-             画面が低いときに削られるのはここ。
+          ナビ帯を伸縮させてアカウントを下端に置く（minHeight:0 が無いと flex 内で縮まない）。
+          🔴 ここに overflow を付けてはいけない。付けるとホバー時のツールチップが
+             レールの内側（72px幅）で切られて読めなくなる。overflow:hidden/auto は
+             どちらもクリップ領域を作るので、x だけ hidden にしても同じこと。
+             レールの中身は合計 約470px で、実用的な画面高には収まる。
         */}
-        <div className="flex flex-col items-center" style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden', width: '100%' }}>
+        <div className="flex flex-col items-center" style={{ flex: 1, minHeight: 0, width: '100%' }}>
           <nav aria-label="メインナビゲーション" className="flex flex-col items-center" style={{ gap: SZ.railGap }}>
             {learnItems.map(renderRailItem)}
           </nav>
 
           {manageItems.length > 0 && (
             <>
-              <div aria-hidden="true" style={{ width: 32, height: 1, background: SB.railDivider, margin: '12px 0', flex: 'none' }} />
+              <div aria-hidden="true" style={{ width: 32, height: 1, background: SB.railDivider, margin: '14px 0', flex: 'none' }} />
               {manageItems.map(renderRailItem)}
             </>
           )}
         </div>
 
-        {/* お知らせ（ベル + 件数バッジ + ドロップダウン） */}
-        <div className="relative" ref={notifRef} style={{ flex: 'none' }}>
-          <button
-            onClick={() => setNotifOpen(v => !v)}
-            aria-label="お知らせ"
-            aria-expanded={notifOpen}
-            className={`group relative grid place-items-center rounded-full appearance-none border-0 bg-transparent cursor-pointer transition-colors duration-200 hover:bg-[#FDF2F2] motion-reduce:transition-none ${focusRing}`}
-            style={{ width: SZ.railBtn, height: SZ.railBtn }}
-          >
-            <Bell size={SZ.railIcon} strokeWidth={1.75} color={SB.iconIdle} />
-            {notificationItems.length > 0 && (
-              <span
-                className="absolute flex items-center justify-center rounded-full font-extrabold text-white"
-                style={{ top: 4, right: 4, minWidth: 16, height: 16, fontSize: 9, padding: '0 3px', background: SB.brand }}
-              >
-                {notificationItems.length > 9 ? '9+' : notificationItems.length}
-              </span>
-            )}
-            <span role="tooltip" aria-hidden="true" className={tooltipClass}>お知らせ</span>
-          </button>
+        {/* 🔴 お知らせ（ベル）はレールにもパネルにも置かない（レビューで不要と判断）。
+               通知そのものは useNewContentNotification が拾い続けているので、
+               入口が要るようになったらここにベルを戻すのではなく、
+               どの面に置くかを決めてから追加すること。 */}
 
-          {notifOpen && (
-            <div
-              className="absolute left-full bottom-0 ml-2 bg-white overflow-hidden z-50"
-              style={{ width: 300, borderRadius: 16, border: '1px solid #EBE7E5', boxShadow: '0 16px 38px rgba(96,70,65,0.14)' }}
-            >
-              <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid #EBE7E5' }}>
-                <span className="font-bold text-sm text-dash-text">新着通知</span>
-                {notificationItems.length > 0 && (
-                  <button onClick={() => { markAllRead(); setNotifOpen(false); }} className="text-xs font-medium text-dash-primary hover:opacity-70">すべて既読</button>
-                )}
-              </div>
-              <div className="overflow-y-auto" style={{ maxHeight: 220 }}>
-                {notificationItems.length === 0 ? (
-                  <p className="text-xs text-center py-8 text-dash-muted">新着はありません</p>
-                ) : (
-                  notificationItems.map(item => (
-                    <div key={`${item.type}-${item.id}`} className="flex items-start gap-3 px-4 py-3 hover:bg-dash-soft transition-colors" style={{ borderBottom: '1px solid #F3EFEE' }}>
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 bg-dash-gradient">
-                        <BookMarked className="w-4 h-4 text-white" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-xs font-bold truncate text-dash-text">{item.name}</p>
-                        <p className="text-xs mt-0.5 text-dash-muted">新しいコースが追加されました・{new Date(item.timemodified).toLocaleDateString('ja-JP')}</p>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* アカウント */}
-        <button
-          onClick={() => navigate('/account-settings')}
-          aria-label={`アカウント設定: ${resolvedUserName}`}
-          className={`group relative grid place-items-center rounded-full overflow-hidden appearance-none cursor-pointer ${focusRing}`}
-          style={{ width: SZ.avatarRail, height: SZ.avatarRail, marginTop: 8, flex: 'none', background: SB.softPink, border: '1px solid #F5D8DB', boxSizing: 'border-box' }}
+        {/* アカウント。ホバー（＋クリック／フォーカス）でポップオーバーを出す。
+            🔴 円形の切り抜きは button ではなく内側の span に持たせる。button 側に
+               overflow:hidden があるとポップオーバーやツールチップが切られる。 */}
+        <div
+          ref={accountRailRef}
+          className="relative"
+          style={{ marginTop: 10, flex: 'none' }}
+          onMouseEnter={() => setAccountOpen(true)}
+          onMouseLeave={() => setAccountOpen(false)}
         >
-          <img src={avatarSrc} alt="" className="w-full h-full object-cover" />
-          <span role="tooltip" aria-hidden="true" className={tooltipClass}>
-            {`${resolvedUserName}（個人設定を開く）`}
-          </span>
-        </button>
+          <button
+            onClick={() => setAccountOpen(v => !v)}
+            onFocus={() => setAccountOpen(true)}
+            aria-label={`アカウント: ${resolvedUserName}`}
+            aria-haspopup="menu"
+            aria-expanded={accountOpen}
+            tabIndex={expanded ? -1 : undefined}
+            className={`grid place-items-center rounded-full appearance-none cursor-pointer ${focusRing}`}
+            style={{ width: SZ.avatarRail, height: SZ.avatarRail, background: SB.softPink, border: '1px solid #F5D8DB', boxSizing: 'border-box' }}
+          >
+            <span className="grid place-items-center rounded-full overflow-hidden w-full h-full">
+              <img src={avatarSrc} alt="" className="w-full h-full object-cover" />
+            </span>
+          </button>
+          {!expanded && renderAccountPopover()}
+        </div>
       </aside>
 
-      {/* パネルを開いているときの背面。クリックで閉じる（デザインの « 以外の逃げ道） */}
-      <div
-        aria-hidden="true"
-        onClick={() => setExpanded(false)}
-        className="hidden sm:block fixed inset-0 z-40 transition-opacity duration-[280ms] motion-reduce:transition-none"
-        style={{
-          background: 'rgba(20,20,20,.28)',
-          opacity: expanded ? 1 : 0,
-          pointerEvents: expanded ? 'auto' : 'none',
-        }}
-      />
-
+      {/* 展開パネル。レールと同じ位置に常時マウントし、クロスフェードで入れ替わる。
+          🔴 暗幕は張らない（DESIGN-3d.md §8 で不要と決着）。本文は body の
+             padding-left が伸びることで押し出される。 */}
       <div
         id="app-sidebar-panel"
         aria-hidden={!expanded}
         className="hidden sm:flex flex-col fixed left-0 top-0 bottom-0 motion-reduce:transition-none"
         style={{
-          width: 224,
+          width: 'var(--wc-sidebar-w-expanded)',
           zIndex: 45,
           background: SB.panelBg,
-          padding: '38px 12px 16px',
+          padding: SZ.panelPad,
           boxSizing: 'border-box',
-          transform: expanded ? 'translateX(0)' : 'translateX(-105%)',
-          transition: 'transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1)',
-          boxShadow: expanded ? '8px 0 32px -8px rgba(90,0,14,.45)' : 'none',
+          boxShadow: '3px 0 10px -4px rgba(90,0,14,.25)',
+          opacity: expanded ? 1 : 0,
           pointerEvents: expanded ? 'auto' : 'none',
+          transition: 'opacity 220ms ease',
         }}
       >
         <button
           onClick={() => setExpanded(false)}
+          aria-expanded={expanded}
+          aria-controls="app-sidebar-panel"
           aria-label="サイドバーを閉じる"
-          className={`absolute appearance-none border-0 bg-transparent cursor-pointer transition-opacity hover:opacity-75 motion-reduce:transition-none ${focusRing}`}
-          style={{ top: 14, right: 14, padding: '4px 8px', color: SB.panelInk }}
+          tabIndex={expanded ? undefined : -1}
+          className={`group absolute grid place-items-center appearance-none border-0 bg-transparent cursor-pointer transition-colors duration-200 hover:bg-white/[0.15] motion-reduce:transition-none ${focusRing}`}
+          style={{ top: 8, right: 8, width: 34, height: 34, borderRadius: 10, color: SB.panelInk }}
         >
-          <ChevronsLeft size={18} strokeWidth={2.25} />
+          <ChevronsLeft size={18} strokeWidth={2} />
+          <span role="tooltip" aria-hidden="true" className={tooltipClass} style={tooltipStyle}>サイドバーを閉じる</span>
         </button>
 
-        <div style={{ padding: '0 8px 22px', textAlign: 'center', flex: 'none' }}>
-          <div style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800, fontSize: 19, color: SB.panelInk, letterSpacing: '.03em' }}>
+        {/* ロゴもクリックで閉じられる（DESIGN-3d.md §3-2）。
+            hover の見た目変化は付けない指定なので付けないこと。 */}
+        <div
+          role="button"
+          tabIndex={expanded ? 0 : -1}
+          aria-label="サイドバーを閉じる"
+          onClick={() => setExpanded(false)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setExpanded(false); } }}
+          className={`cursor-pointer rounded-lg ${focusRing}`}
+          style={{ padding: SZ.logoPad, textAlign: 'center', flex: 'none' }}
+        >
+          <div style={{ fontFamily: "'Inter', system-ui, sans-serif", fontWeight: 800, fontSize: SZ.logoFont, color: SB.panelInk, letterSpacing: '.03em' }}>
             WEBCOACH
           </div>
-          <div style={{ fontSize: 11, fontWeight: 500, color: 'rgba(253,247,243,.9)', letterSpacing: '.12em', marginTop: 4 }}>
+          <div style={{ fontSize: SZ.logoSubFont, fontWeight: 500, color: 'rgba(253,247,243,.9)', letterSpacing: '.12em', marginTop: 6 }}>
             学習システム
           </div>
         </div>
@@ -427,40 +545,59 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
              画面が低いときに削られるのはここ。ユーザー報告の「下まで入りきってない」の対処。
         */}
         <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', overflowX: 'hidden' }}>
-          <nav aria-label="メインナビゲーション" className="flex flex-col" style={{ gap: 4 }}>
+          <nav aria-label="メインナビゲーション" className="flex flex-col" style={{ gap: SZ.rowSpacing }}>
             {learnItems.map(renderPanelItem)}
           </nav>
 
           {manageItems.length > 0 && (
             <>
-              <div aria-hidden="true" style={{ height: 1, background: 'rgba(253,247,243,.3)', margin: '14px 8px' }} />
+              <div aria-hidden="true" style={{ height: 1, background: 'rgba(253,247,243,.3)', margin: SZ.panelDividerMargin }} />
               {manageItems.map(renderPanelItem)}
             </>
           )}
         </div>
 
+        {/* 補助リンク。
+            🔴 遷移してもパネルを畳まない。ナビ項目と同じで、push 型は
+               「開いたままコンテンツを操作できる」のが要件（DESIGN-3d.md §3-2）。
+               ここだけ勝手に閉じると、開閉が自分の操作でなく画面の都合で変わる。
+            🔴 「お知らせ」はここには置かない（レビューで不要と判断）。 */}
         <div style={{ padding: '12px 8px', display: 'flex', flexDirection: 'column', gap: 2, flex: 'none' }}>
-          {renderPanelSubLink('利用マニュアル', FileText, () => { navigate('/help/manual'); setExpanded(false); })}
-          {renderPanelSubLink('よくある質問', HelpCircle, () => { navigate('/help/faq'); setExpanded(false); })}
+          {renderPanelSubLink('利用マニュアル', FileText, () => navigate('/help/manual'))}
+          {renderPanelSubLink('よくある質問', HelpCircle, () => navigate('/help/faq'))}
         </div>
 
-        <button
-          onClick={() => { navigate('/account-settings'); setExpanded(false); }}
-          aria-label={`アカウント設定: ${resolvedUserName}`}
-          className={`flex items-center w-full appearance-none border-0 bg-transparent cursor-pointer text-left transition-opacity hover:opacity-90 motion-reduce:transition-none ${focusRing}`}
-          style={{ borderTop: '1px solid rgba(253,247,243,.3)', padding: '12px 8px 2px', gap: 10, flex: 'none' }}
+        {/* アカウント。レール側と同じポップオーバーを出す（› は「まだ先がある」の意） */}
+        <div
+          ref={accountPanelRef}
+          className="relative"
+          style={{ flex: 'none' }}
+          onMouseEnter={() => setAccountOpen(true)}
+          onMouseLeave={() => setAccountOpen(false)}
         >
-          <span
-            className="grid place-items-center rounded-full overflow-hidden"
-            style={{ width: SZ.avatarPanel, height: SZ.avatarPanel, flex: 'none', background: '#F2E8E1' }}
+          <button
+            onClick={() => setAccountOpen(v => !v)}
+            onFocus={() => setAccountOpen(true)}
+            aria-label={`アカウント: ${resolvedUserName}`}
+            aria-haspopup="menu"
+            aria-expanded={accountOpen}
+            tabIndex={expanded ? undefined : -1}
+            className={`flex items-center w-full appearance-none border-0 bg-transparent cursor-pointer text-left transition-opacity hover:opacity-90 motion-reduce:transition-none ${focusRing}`}
+            style={{ borderTop: '1px solid rgba(253,247,243,.3)', padding: '16px 8px 2px', gap: 12 }}
           >
-            <img src={avatarSrc} alt="" className="w-full h-full object-cover" />
-          </span>
-          <span className="truncate" style={{ flex: 1, minWidth: 0, fontSize: 14, fontWeight: 700, color: SB.panelInk }}>
-            {resolvedUserName}
-          </span>
-          <ChevronRight size={15} strokeWidth={2} color={SB.panelInk} style={{ flex: 'none' }} />
-        </button>
+            <span
+              className="grid place-items-center rounded-full overflow-hidden"
+              style={{ width: SZ.avatarPanel, height: SZ.avatarPanel, flex: 'none', background: '#F2E8E1' }}
+            >
+              <img src={avatarSrc} alt="" className="w-full h-full object-cover" />
+            </span>
+            <span className="truncate" style={{ flex: 1, minWidth: 0, fontSize: SZ.rowFont, fontWeight: 700, color: SB.panelInk }}>
+              {resolvedUserName}
+            </span>
+            <ChevronRight size={16} strokeWidth={2} color={SB.panelInk} style={{ flex: 'none' }} />
+          </button>
+          {expanded && renderAccountPopover()}
+        </div>
       </div>
 
       <header
@@ -493,7 +630,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
               <button
                 onClick={() => navigate('/mypage')}
                 className={`flex items-center gap-1.5 rounded-full text-sm font-bold transition-all px-2.5 sm:px-5 border-0 ${
-                  isMyPage
+                  isTop
                     ? 'text-white bg-brand-gradient'
                     : 'text-brand-muted'
                 }`}
@@ -731,51 +868,33 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         </div>
       </header>
 
-      {/* Bottom Navigation — mobile only */}
+      {/* ──────────────────────────────────────────────────────────
+          SP版 下部ナビ（sm未満）。
+          🔴 項目は navItems / manageItems を共有する。以前はここに同じ内容を
+             手で並べていて、PC6項目に対しSP3項目という食い違いが起きていた
+             （コーチング・マイノートへSPから到達できなかった）。定義を1本にする。
+          🔴 管理・受講生一覧はロール保持者だけに出る6枚目。375pxで1枚62.5pxと
+             詰まるが、管理者がSPから到達できなくなる回帰よりはましと判断した。
+         ────────────────────────────────────────────────────────── */}
       <nav
+        aria-label="メインナビゲーション"
         className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#F0EAE6]"
         style={{ boxShadow: '0 -2px 10px rgba(0,0,0,0.06)', paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         <div className="flex items-stretch h-16">
-          <button
-            onClick={() => navigate('/mypage')}
-            className={`flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors ${isMyPage ? 'text-brand' : 'text-brand-muted'}`}
-          >
-            <Home className="w-5 h-5" />
-            <span className="text-[10px] font-bold">マイページ</span>
-          </button>
-          <button
-            onClick={() => navigate('/courses')}
-            className={`flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors ${isCoursesPage ? 'text-brand' : 'text-brand-muted'}`}
-          >
-            <BookOpen className="w-5 h-5" />
-            <span className="text-[10px] font-bold">学習する</span>
-          </button>
-          <button
-            onClick={() => navigate('/ai-coach')}
-            className={`flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors ${isAiCoach ? 'text-brand' : 'text-brand-muted'}`}
-          >
-            <Sparkles className="w-5 h-5" />
-            <span className="text-[10px] font-bold">AIコーチ</span>
-          </button>
-          {user?.isAdmin && (
+          {[...navItems, ...manageItems].map(({ label, icon: Icon, path, active }) => (
             <button
-              onClick={() => navigate('/admin')}
-              className={`flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors ${isAdmin ? 'text-brand' : 'text-brand-muted'}`}
+              key={path}
+              onClick={() => navigate(path)}
+              aria-current={active ? 'page' : undefined}
+              className={`flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 px-0.5 transition-colors ${focusRing} ${
+                active ? 'text-brand' : 'text-brand-muted'
+              }`}
             >
-              <Settings className="w-5 h-5" />
-              <span className="text-[10px] font-bold">管理</span>
+              <Icon className="w-5 h-5 flex-none" />
+              <span className="text-[10px] font-bold whitespace-nowrap truncate max-w-full">{label}</span>
             </button>
-          )}
-          {!user?.isAdmin && user?.isCoach && (
-            <button
-              onClick={() => navigate('/coach/students')}
-              className={`flex-1 flex flex-col items-center justify-center gap-0.5 transition-colors ${isStudentsPage ? 'text-brand' : 'text-brand-muted'}`}
-            >
-              <BookOpen className="w-5 h-5" />
-              <span className="text-[10px] font-bold">受講生一覧</span>
-            </button>
-          )}
+          ))}
         </div>
       </nav>
 

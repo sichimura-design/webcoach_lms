@@ -241,7 +241,7 @@ function CategoryDetailPage() {
             {/* パンくず（常に表示）。学習領域はコース一覧の大分類にあたる階層。 */}
             <LearningBreadcrumb
               items={[
-                { label: '学習コンテンツ', to: '/courses' },
+                { label: '学習する', to: '/courses' },
                 { label: categoryName || LEARNING_HIERARCHY.area },
               ]}
             />

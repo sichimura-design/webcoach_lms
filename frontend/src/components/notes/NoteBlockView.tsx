@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ExternalLink, Trash2 } from 'lucide-react';
+import { Check, ExternalLink, Trash2 } from 'lucide-react';
 import { color, font, radius } from '../../theme/webcoachTheme';
 import { NoteBlock, NoteSourceRef } from '../../types/notes';
 import { renderNoteText, NOTE_SYNTAX_HINT } from './noteText';
@@ -103,9 +103,14 @@ export function NoteBlockView({ block, onPatch, onRemove, onOpenSource }: NoteBl
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(isText ? block.text : '');
   const areaRef = useRef<HTMLTextAreaElement>(null);
+  /** 保存・取り消しの判定は ref を見る。blur と click の二重発火で戻り値がぶれないように */
+  const draftRef = useRef(isText ? block.text : '');
 
   useEffect(() => {
-    if (isText) setDraft(block.text);
+    if (isText) {
+      setDraft(block.text);
+      draftRef.current = block.text;
+    }
   }, [isText, block]);
 
   useEffect(() => {
@@ -117,21 +122,33 @@ export function NoteBlockView({ block, onPatch, onRemove, onOpenSource }: NoteBl
   }, [editing]);
 
   if (block.kind === 'text') {
+    const save = () => {
+      setEditing(false);
+      if (draftRef.current !== block.text) onPatch(block.id, { text: draftRef.current });
+    };
+
+    const cancel = () => {
+      draftRef.current = block.text;
+      setDraft(block.text);
+      setEditing(false);
+    };
+
     if (editing) {
       return (
         <div style={{ margin: '4px 0 12px' }}>
           <textarea
             ref={areaRef}
             value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onBlur={() => {
-              setEditing(false);
-              if (draft !== block.text) onPatch(block.id, { text: draft });
+            onChange={(e) => {
+              draftRef.current = e.target.value;
+              setDraft(e.target.value);
             }}
+            onBlur={save}
             onKeyDown={(e) => {
-              if (e.key === 'Escape') {
-                setDraft(block.text);
-                setEditing(false);
+              if (e.key === 'Escape') cancel();
+              if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                save();
               }
             }}
             rows={Math.max(3, draft.split('\n').length + 1)}
@@ -150,7 +167,54 @@ export function NoteBlockView({ block, onPatch, onRemove, onOpenSource }: NoteBl
               outline: 'none',
             }}
           />
-          <div style={{ ...font.caption, color: color.textFaint, marginTop: 5 }}>{NOTE_SYNTAX_HINT}</div>
+          <div className="flex items-center flex-wrap" style={{ gap: 10, marginTop: 8 }}>
+            <button
+              type="button"
+              // クリックで textarea が blur し、この click が届く前に消える。
+              // フォーカスを移さないでおけば、押した意図どおりに処理できる。
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={save}
+              className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                height: 34,
+                padding: '0 16px',
+                border: 0,
+                borderRadius: radius.md,
+                background: color.primary,
+                color: color.textOnPrimary,
+                fontFamily: 'inherit',
+                fontSize: 12,
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              <Check size={14} /> 保存する
+            </button>
+            <button
+              type="button"
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={cancel}
+              className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+              style={{
+                height: 34,
+                padding: '0 14px',
+                border: `1px solid ${color.borderSoft}`,
+                borderRadius: radius.md,
+                background: color.surface,
+                color: color.textMuted,
+                fontFamily: 'inherit',
+                fontSize: 12,
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              取り消す
+            </button>
+            <span style={{ ...font.caption, color: color.textFaint }}>{NOTE_SYNTAX_HINT}</span>
+          </div>
         </div>
       );
     }

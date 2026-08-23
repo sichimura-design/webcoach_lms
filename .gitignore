@@ -88,3 +88,9 @@ cdk-uat/
 
 # Test suites
 tests/
+
+# Clipkit 教材エクスポート（LMS移行用の中間データ・認証状態）
+# storageState にはセッションCookieが入るので絶対に追跡しない。
+materials/source/
+tools/clipkit-export/.auth/
+tools/clipkit-export/clipkit.config.json

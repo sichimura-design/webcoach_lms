@@ -3,7 +3,13 @@ import { useStudyTimerStore } from '../store/studyTimerStore';
 import { useProgressionStore } from '../store/progressionStore';
 import { bffClient } from '../services/bffClient';
 import { StudySessionMode } from '../types/studyRoom';
-import { ActiveStudySession, StudyActivity, StudyFinishDraft } from '../types/studyActivity';
+import {
+  ActiveStudySession,
+  StudyActivity,
+  StudyCategory,
+  StudyFinishDraft,
+  StudySegmentTotal,
+} from '../types/studyActivity';
 import { EXP_RULES } from '../utils/progression';
 import {
   MIN_RECORDABLE_SECONDS,
@@ -11,8 +17,10 @@ import {
   buildFinishDraft,
   dialRatio,
   hasReachedTarget,
+  isIdleSession,
   isStaleSession,
   sessionRemainingSeconds,
+  sessionSegmentTotals,
 } from '../utils/studyStats';
 import { useElapsedSeconds } from './useElapsedSeconds';
 
@@ -26,6 +34,8 @@ export interface StartParams {
   lessonTitle?: string;
   progressPercentAtStart?: number;
   goalText?: string;
+  /** 最初の区間のカテゴリ。開始時に見ていたページから決まる（ユーザーに選ばせない） */
+  category: StudyCategory;
 }
 
 export interface UseStudySession {
@@ -40,10 +50,18 @@ export interface UseStudySession {
   reachedTarget: boolean;
   /** 一時停止のまま/動かしたまま長時間放置された（タイマーの消し忘れ） */
   stale: boolean;
+  /** 最後の操作から30分動きが無い（離席の疑い）。確認ポップを出す合図 */
+  idle: boolean;
+  /** 実行中セッションのカテゴリ別内訳（実測秒）。合計は elapsedSeconds と一致する */
+  segmentTotals: StudySegmentTotal[];
 
   start: (params: StartParams) => void;
   pause: () => void;
   resume: () => void;
+  /** ページが変わってカテゴリが変わった。同じカテゴリなら何も起きない */
+  switchCategory: (category: StudyCategory) => void;
+  /** 放置ぶんを切り捨てて一時停止する */
+  trimToLastActive: () => void;
   /** 記録せずに破棄して未開始に戻す */
   discard: () => void;
   updateGoal: (goalText: string) => void;
@@ -66,6 +84,8 @@ export function useStudySession(userId: number | undefined): UseStudySession {
   const resumeSession = useStudyTimerStore((s) => s.resumeSession);
   const markTargetReached = useStudyTimerStore((s) => s.markTargetReached);
   const updateGoalInStore = useStudyTimerStore((s) => s.updateGoal);
+  const switchCategory = useStudyTimerStore((s) => s.switchCategory);
+  const trimToLastActive = useStudyTimerStore((s) => s.trimToLastActive);
   const setFinishDraft = useStudyTimerStore((s) => s.setFinishDraft);
   const bumpActivityRevision = useStudyTimerStore((s) => s.bumpActivityRevision);
   const awardExp = useProgressionStore((s) => s.awardExp);
@@ -103,6 +123,7 @@ export function useStudySession(userId: number | undefined): UseStudySession {
         lessonTitle: params.lessonTitle,
         progressPercentAtStart: params.progressPercentAtStart,
         goalText: params.goalText,
+        category: params.category,
       });
     },
     [startSession]
@@ -185,6 +206,13 @@ export function useStudySession(userId: number | undefined): UseStudySession {
     [session, elapsedSeconds]
   );
 
+  const segmentTotals = useMemo(
+    () => (session ? sessionSegmentTotals(session) : []),
+    // 内訳も毎秒動く（進行中の区間が伸びるため）
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [session, elapsedSeconds]
+  );
+
   return {
     session,
     elapsedSeconds,
@@ -193,9 +221,14 @@ export function useStudySession(userId: number | undefined): UseStudySession {
     running: !!session && session.pausedAt === null,
     reachedTarget: !!session && session.targetReachedAt !== null,
     stale: !!session && isStaleSession(session),
+    // elapsedSeconds を依存に持つ再計算の中で評価されるので、毎秒判定が更新される
+    idle: !!session && isIdleSession(session),
+    segmentTotals,
     start,
     pause: pauseSession,
     resume: resumeSession,
+    switchCategory,
+    trimToLastActive,
     discard,
     updateGoal: updateGoalInStore,
     prepareFinish,

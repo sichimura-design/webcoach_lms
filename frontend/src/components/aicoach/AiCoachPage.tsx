@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { History, Home, LayoutGrid, Sparkles, X } from 'lucide-react';
-import { color, font } from '../../theme/webcoachTheme';
 import { AppHeader } from '../shared';
 import { useAuth } from '../../contexts/AuthContext';
-import { useMypageData } from '../../hooks/useMypageData';
 import { useAiCoachStore } from '../../store/aiCoachStore';
 import { AiSkillId, ConcreteAiSkillId, isSpecialistSkill } from '../../types/aiSkill';
-import { buildRecommendations } from '../../utils/aiSkillRecommend';
 import AiCoachHome from './AiCoachHome';
+import AiCoachHowTo from './AiCoachHowTo';
 import AiCoachSessionView from './AiCoachSessionView';
 import AiSkillCatalogView from './AiSkillCatalogView';
 import ConversationList from './ConversationList';
@@ -17,7 +14,8 @@ import ConversationList from './ConversationList';
  * AI専用ページ（/ai-coach）。**1つのAIワークスペースの中でモードが切り替わる**画面。
  *
  * 状態は3つ（要件§「画面は3つの状態に分ける」）で、URLがそのまま状態になる:
- *   /ai-coach                  … ホーム状態。大きな入力欄＋AI機能一覧＋おすすめ
+ *   /ai-coach                  … ホーム状態。大きな入力欄＋AIアプリ6枚（デザイン 1a）
+ *   /ai-coach?view=catalog     … AIサポート機能一覧（検索・カテゴリで探す）
  *   /ai-coach?session=page:1   … メインチャット状態（モードは「おまかせ」）
  *   /ai-coach?session=page:2   … 専門モード状態（そのセッションのモードが専門スキル）
  *
@@ -31,9 +29,14 @@ import ConversationList from './ConversationList';
  *     無かったので、まずホーム状態を見せるようにした。
  *   ・機能を選んでも別ページ・別タブへは飛ばさない。同じページのチャットが
  *     その機能に適した状態へ切り替わる。
+ *   ・以前は全状態の上に52pxの共通バー（ロゴ／一覧切替／履歴）を敷いていた。
+ *     デザイン 1a のホームは問いかけだけを主役にする作りなので、バーを外し、
+ *     行き先はそれぞれの状態が自分で持つようにした:
+ *       ホーム       … 右上の「ヘルプ・使い方」「履歴」＋「全てのAIアプリを見る」
+ *       機能一覧     … 先頭の「AIコーチにもどる」
+ *       チャット     … ヘッダーの「AIコーチ」（親会話があればそこへ）
  */
 const DESKTOP_MIN_WIDTH = 1024;
-const LIST_WIDTH = 268;
 
 function useIsDesktop(): boolean {
   const [isDesktop, setIsDesktop] = useState(
@@ -61,6 +64,7 @@ export function AiCoachPage() {
   const setImage = useAiCoachStore((s) => s.setImage);
 
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [howToOpen, setHowToOpen] = useState(false);
   /** 自由入力から始めた直後だけ立てる。開いたセッションで1回送信する */
   const [autoSendFor, setAutoSendFor] = useState<string | null>(null);
 
@@ -93,6 +97,16 @@ export function AiCoachPage() {
     document.body.classList.add('learning-workspace');
     return () => document.body.classList.remove('learning-workspace');
   }, []);
+
+  // 履歴ドロワーは Esc でも閉じる（暗幕クリックと「×」だけに頼らない）
+  useEffect(() => {
+    if (!historyOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setHistoryOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [historyOpen]);
 
   const openSession = useCallback(
     (id: string) => {
@@ -156,224 +170,80 @@ export function AiCoachPage() {
     [order, sessions]
   );
 
-  /** ホームの「続きから」に出す直近の相談（親会話のみ、3件まで） */
-  const recentSessions = useMemo(
-    () => sessionList.filter((s) => !s.parentId && s.messages.length > 0).slice(0, 3),
-    [sessionList]
-  );
-
-  /** 最近使った機能。一覧の並びと「この会話から使える機能」の順に効かせる */
-  const recentSkills = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          sessionList
-            .map((s) => s.skillId)
-            .filter((id): id is ConcreteAiSkillId => isSpecialistSkill(id))
-        )
-      ),
-    [sessionList]
-  );
-
-  // おすすめは、マイページが既に取得している学習状況だけを根拠にする
-  // （そのための新しいAPIは作らない。根拠に使えないことは理由に書かない）。
-  const { resumableCourse } = useMypageData(user?.userid);
-  const recommendations = useMemo(
-    () =>
-      buildRecommendations({
-        courseTitle: resumableCourse?.title,
-        categoryName: resumableCourse?.categoryName,
-        currentLesson: resumableCourse?.currentLesson,
-        progress: resumableCourse?.progress,
-        usedSkills: recentSkills,
-      }),
-    [recentSkills, resumableCourse]
-  );
-
-  const showHistory = historyOpen && isDesktop;
-
   return (
-    <div style={{ background: color.pageBg }}>
+    <div className="wc-warm" style={{ background: 'var(--dc-bg)' }}>
       <AppHeader userName={user?.username || 'User'} />
 
-      <div className="wc-learning-shell" style={{ display: 'grid', gridTemplateRows: '52px minmax(0, 1fr)' }}>
-        {/* ── 上部バー。どの状態でも「AI機能一覧」と「履歴」に戻れる ── */}
-        <div
-          className="flex items-center"
-          style={{
-            gap: 10,
-            // 帯は全幅のまま、中の要素だけ本文と同じガターに乗せる。
-            // 16px 固定だと本文が中央で細く見えるのに対して上部バーだけ両端に張り付き、
-            // それが「詰まっている」印象の主因になっていた。
-            padding: '0 var(--wc-page-x)',
-            borderBottom: `1px solid ${color.border}`,
-            background: color.surface,
-          }}
-        >
-          <button
-            type="button"
-            onClick={goHome}
-            className="inline-flex items-center"
-            style={{
-              gap: 6,
-              border: 0,
-              background: 'transparent',
-              padding: 0,
-              cursor: 'pointer',
-              flexShrink: 0,
-            }}
-          >
-            <Sparkles size={15} style={{ color: color.primary }} />
-            <span style={{ ...font.rowTitle, color: color.text }}>AIコーチ</span>
-          </button>
-
-          <div style={{ flex: 1 }} />
-
-          {/* ホームからは一覧へ、それ以外からはホームへ。行き先が常に1つに決まる */}
-          {catalogOpen || activeId ? (
-            <button
-              type="button"
-              onClick={goHome}
-              className="inline-flex items-center"
-              style={topBarButtonStyle(false)}
-            >
-              <Home size={13} /> ホーム
-            </button>
+      {/* ── 本体 ──
+          上部バーを外し、履歴も右からのドロワーにしたので、ここは1面だけになった。 */}
+      <div
+        className="wc-learning-shell"
+        style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', minHeight: 0 }}
+      >
+        <div style={{ minWidth: 0, minHeight: 0, overflow: 'hidden' }}>
+          {activeId ? (
+            <AiCoachSessionView
+              key={activeId}
+              sessionId={activeId}
+              onGoHome={goHome}
+              onOpenSession={openSession}
+              autoSend={autoSendFor === activeId}
+              onAutoSendDone={() => setAutoSendFor(null)}
+              isDesktop={isDesktop}
+            />
+          ) : catalogOpen ? (
+            <AiSkillCatalogView onSelectSkill={handleSelectSkill} onAskFreely={goHome} onBack={goHome} />
           ) : (
-            <button
-              type="button"
-              onClick={() => setView('catalog')}
-              className="inline-flex items-center"
-              style={topBarButtonStyle(false)}
-            >
-              <LayoutGrid size={13} /> AIサポート機能一覧
-            </button>
+            <AiCoachHome
+              onSubmit={handleSubmit}
+              onSelectSkill={handleSelectSkill}
+              onOpenCatalog={() => setView('catalog')}
+              onOpenHowTo={() => setHowToOpen(true)}
+              onToggleHistory={() => setHistoryOpen((v) => !v)}
+            />
           )}
-          <button
-            type="button"
-            onClick={() => setHistoryOpen((v) => !v)}
-            aria-pressed={historyOpen}
-            className="inline-flex items-center"
-            style={topBarButtonStyle(historyOpen)}
-          >
-            <History size={13} /> 履歴
-          </button>
-        </div>
-
-        {/* ── 履歴 ＋ 本体 ── */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: showHistory ? `${LIST_WIDTH}px minmax(0, 1fr)` : 'minmax(0, 1fr)',
-            minHeight: 0,
-            transition: 'grid-template-columns .24s ease',
-          }}
-        >
-          {showHistory && (
-            <div style={{ overflow: 'hidden', minWidth: 0 }}>
-              <ConversationList
-                sessions={sessionList}
-                activeId={activeId ?? ''}
-                onSelect={openSession}
-                onCreate={handleCreate}
-                onDelete={handleDelete}
-              />
-            </div>
-          )}
-
-          <div style={{ minWidth: 0, minHeight: 0, overflow: 'hidden' }}>
-            {activeId ? (
-              <AiCoachSessionView
-                key={activeId}
-                sessionId={activeId}
-                onGoHome={goHome}
-                onOpenSession={openSession}
-                autoSend={autoSendFor === activeId}
-                onAutoSendDone={() => setAutoSendFor(null)}
-                isDesktop={isDesktop}
-              />
-            ) : catalogOpen ? (
-              <AiSkillCatalogView onSelectSkill={handleSelectSkill} onAskFreely={goHome} />
-            ) : (
-              <AiCoachHome
-                onSubmit={handleSubmit}
-                onSelectSkill={handleSelectSkill}
-                recommendations={recommendations}
-                recentSkills={recentSkills}
-                recentSessions={recentSessions}
-                onOpenSession={openSession}
-              />
-            )}
-          </div>
         </div>
       </div>
 
-      {/* 履歴（モバイル）。デスクトップは左カラムに出すのでオーバーレイにしない */}
-      {historyOpen && !isDesktop && (
+      {howToOpen && <AiCoachHowTo onClose={() => setHowToOpen(false)} />}
+
+      {/* ── 会話履歴 ──
+          右から出てくるドロワー。以前はデスクトップだけ左の常設カラムに出していたが、
+          「押したら右から出てくる」形に統一した。画面幅で出方が変わらないので、
+          押した先がどこかを覚えなくてよくなる。
+          見出しと「新規」「×」は ConversationList が自分のヘッダーに持つので、
+          ここでは器（暗幕・幅・影）だけを用意する。 */}
+      {historyOpen && (
         <div
           role="dialog"
+          aria-modal="true"
           aria-label="会話履歴"
-          className="fixed inset-0 z-50 flex"
-          style={{ background: 'rgba(31,29,30,.32)' }}
+          className="wc-drawer-scrim fixed inset-0 flex justify-end"
+          style={{ zIndex: 70, background: 'rgba(60,48,32,.32)' }}
           onClick={() => setHistoryOpen(false)}
         >
           <div
-            className="flex flex-col"
-            style={{ width: 'min(320px, 86vw)', background: color.surface }}
+            className="wc-drawer-right flex flex-col"
+            style={{
+              width: 'min(360px, 92vw)',
+              background: 'var(--dc-surface)',
+              boxShadow: 'var(--dc-shadow-float)',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className="flex items-center"
-              style={{ minHeight: 48, padding: '0 12px', borderBottom: `1px solid ${color.border}` }}
-            >
-              <strong style={{ ...font.rowTitle, color: color.text }}>会話履歴</strong>
-              <button
-                type="button"
-                onClick={() => setHistoryOpen(false)}
-                aria-label="閉じる"
-                className="grid place-items-center"
-                style={{
-                  marginLeft: 'auto',
-                  width: 28,
-                  height: 28,
-                  border: 0,
-                  borderRadius: 8,
-                  background: 'transparent',
-                  color: color.iconMuted,
-                  cursor: 'pointer',
-                }}
-              >
-                <X size={15} />
-              </button>
-            </div>
-            <div style={{ flex: 1, minHeight: 0 }}>
-              <ConversationList
-                sessions={sessionList}
-                activeId={activeId ?? ''}
-                onSelect={openSession}
-                onCreate={handleCreate}
-                onDelete={handleDelete}
-              />
-            </div>
+            <ConversationList
+              sessions={sessionList}
+              activeId={activeId ?? ''}
+              onSelect={openSession}
+              onCreate={handleCreate}
+              onDelete={handleDelete}
+              onClose={() => setHistoryOpen(false)}
+            />
           </div>
         </div>
       )}
     </div>
   );
 }
-
-const topBarButtonStyle = (active: boolean): React.CSSProperties => ({
-  gap: 5,
-  height: 30,
-  padding: '0 11px',
-  border: `1px solid ${active ? color.primaryBorder : color.borderStrong}`,
-  borderRadius: 8,
-  background: active ? color.primarySoft : color.surface,
-  color: active ? color.primary : color.textMuted,
-  fontSize: 11,
-  fontWeight: 700,
-  cursor: 'pointer',
-  flexShrink: 0,
-});
 
 export default AiCoachPage;

@@ -13,20 +13,20 @@ import { AppHeader } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import bffClient from '../services/bffClient';
-import { color, font, radius, t } from '../theme/webcoachTheme';
-import CoachingAgendaCard from './coaching/CoachingAgendaCard';
-import CoachingSummaryStrip from './coaching/CoachingSummaryStrip';
+import { color, font } from '../theme/webcoachTheme';
+import CoachingHeroCard from './coaching/CoachingHeroCard';
+import CoachingHistoryList from './coaching/CoachingHistoryList';
 import ConsentModal from './coaching/ConsentModal';
 import ImportRecordCard from './coaching/ImportRecordCard';
-import MeetingLinkModal from './coaching/MeetingLinkModal';
-import NextCoachingCard from './coaching/NextCoachingCard';
+import LastSessionCard from './coaching/LastSessionCard';
+import NextActionsCard from './coaching/NextActionsCard';
 import ProcessingStatus from './coaching/ProcessingStatus';
 import RecordingStatus from './coaching/RecordingStatus';
 import SessionReview from './coaching/SessionReview';
-import { RECORDING_SOURCE_LABEL } from '../types/coaching';
+import { C } from './coaching/design1c';
 import type {
   AutoImportReadiness,
-  CoachingAgenda,
+  CoachContacts,
   CoachingSessionDetail,
   CoachingSessions,
   ImportRecordPayload,
@@ -41,6 +41,40 @@ type Mode =
   | { kind: 'review'; session: CoachingSessionDetail }
   | { kind: 'import'; session: CoachingSessionDetail };
 
+/**
+ * タイムライン左端のノード（丸＋下に伸びる縦線）。
+ * デザイン1Cの 64px 列。狭い画面では index.css の .cg-node ごと畳まれる。
+ */
+function TimelineNode({ label, accent, last }: { label: string; accent?: boolean; last?: boolean }) {
+  return (
+    <div className="cg-node" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} aria-hidden>
+      <span
+        style={{
+          width: 44,
+          height: 44,
+          borderRadius: 9999,
+          flex: 'none',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center',
+          lineHeight: 1.2,
+          whiteSpace: 'pre-line',
+          fontSize: accent ? 10 : 11,
+          fontWeight: 700,
+          background: accent ? C.brand : '#fff',
+          border: accent ? 'none' : `1.5px solid ${C.borderInput}`,
+          color: accent ? '#fff' : C.muted,
+          boxSizing: 'border-box',
+        }}
+      >
+        {label}
+      </span>
+      {!last && <span style={{ flex: 1, width: 2, background: C.rail, marginTop: 8 }} />}
+    </div>
+  );
+}
+
 export default function CoachingNotesPage() {
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -49,12 +83,12 @@ export default function CoachingNotesPage() {
   const [sessions, setSessions] = useState<CoachingSessions | null>(null);
   const [goals, setGoals] = useState<CoachingGoalApi[]>([]);
   const [readiness, setReadiness] = useState<AutoImportReadiness | null>(null);
-  const [agenda, setAgenda] = useState<CoachingAgenda | null>(null);
-  const [savingAgenda, setSavingAgenda] = useState(false);
+  const [contacts, setContacts] = useState<CoachContacts | null>(null);
+  /** 直近セッションの詳細。「前回の振り返り」のキーポイントを出すために使う */
+  const [lastDetail, setLastDetail] = useState<CoachingSessionDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<Mode>({ kind: 'list' });
 
-  const [linkModalOpen, setLinkModalOpen] = useState(false);
   const [consentModalOpen, setConsentModalOpen] = useState(false);
   const [starting, setStarting] = useState(false);
   const [finishing, setFinishing] = useState(false);
@@ -63,16 +97,32 @@ export default function CoachingNotesPage() {
   const reload = useCallback(async () => {
     if (!userId) return;
     try {
-      const [list, goalList, ready, agendaData] = await Promise.all([
+      const [list, goalList, ready, contactData] = await Promise.all([
         bffClient.getCoachingSessions(userId),
         bffClient.getNextCoachingGoals(userId),
         bffClient.getAutoImportReadiness(userId),
-        bffClient.getCoachingAgenda(userId),
+        bffClient.getCoachContacts(userId),
       ]);
       setSessions(list);
       setGoals(goalList);
       setReadiness(ready);
-      setAgenda(agendaData);
+      setContacts(contactData);
+
+      /*
+       * 「前回の振り返り」は一覧の要約文字列だけでは足りない（決まったことが出せない）。
+       * 直近1件だけ詳細を追加で取る。失敗しても一覧の要約で描けるので、
+       * ここで画面全体をエラーにはしない。
+       */
+      const latest = list.past.find((s) => s.id !== list.next?.activeSessionId);
+      if (!latest) {
+        setLastDetail(null);
+      } else {
+        try {
+          setLastDetail(await bffClient.getCoachingSession(latest.id));
+        } catch {
+          setLastDetail(null);
+        }
+      }
     } catch {
       showToast('コーチング情報を取得できませんでした', 'error');
     } finally {
@@ -88,7 +138,11 @@ export default function CoachingNotesPage() {
     void reload();
   }, [userId, reload]);
 
-  const completedCount = useMemo(() => goals.filter((g) => g.is_completed === 1).length, [goals]);
+  /** 一覧に出す過去のコーチング。進行中のものは「次回」側に出ているので除く */
+  const pastSessions = useMemo(
+    () => (sessions?.past ?? []).filter((s) => s.id !== sessions?.next?.activeSessionId),
+    [sessions]
+  );
 
   // --- 目標の編集 -------------------------------------------------------------
   //
@@ -116,28 +170,53 @@ export default function CoachingNotesPage() {
     setEditingGoals(true);
   };
 
-  const cancelGoalEdit = () => {
-    setEditingGoals(false);
-    setGoalDraft([]);
-  };
-
   const patchGoal = (index: number, next: Partial<CoachingGoalUpdateItem>) =>
     setGoalDraft((prev) => prev.map((g, i) => (i === index ? { ...g, ...next } : g)));
 
-  /** 完了チェックは progress と連動させる（is_completed は progress>=100 の派生値） */
-  const toggleGoalDone = (index: number, done: boolean) =>
-    patchGoal(index, {
-      is_completed: done ? 1 : 0,
-      progress: done ? 100 : Math.min(99, goalDraft[index]?.progress ?? 0),
-    });
-
   const removeGoal = (index: number) => setGoalDraft((prev) => prev.filter((_, i) => i !== index));
 
-  const addGoal = () =>
+  const addGoal = (description: string) =>
     setGoalDraft((prev) => [
       ...prev,
-      { no: prev.length + 1, description: '', is_completed: 0, progress: 0 },
+      { no: prev.length + 1, description, is_completed: 0, progress: 0 },
     ]);
+
+  /*
+   * 表示モードでの完了トグルは即保存する。
+   * 「終わった」を記録するたびに保存ボタンを押させるのは日々の操作として重すぎるため
+   * （文言の書き換えだけは編集モードでまとめて保存する。上のコメント参照）。
+   * 楽観更新して、失敗したら元に戻す。
+   */
+  const toggleGoalDone = async (no: number) => {
+    if (!userId || editingGoals) return;
+    const before = goals;
+    const target = goals.find((g) => g.no === no);
+    if (!target) return;
+
+    const done = target.is_completed !== 1;
+    const next = goals.map((g) =>
+      g.no === no
+        ? { ...g, is_completed: (done ? 1 : 0) as 0 | 1, progress: done ? 100 : Math.min(99, g.progress) }
+        : g
+    );
+    setGoals(next);
+
+    try {
+      const saved = await bffClient.updateNextCoachingGoals(
+        userId,
+        next.map((g) => ({
+          no: g.no,
+          description: g.description,
+          is_completed: g.is_completed,
+          progress: g.progress,
+        }))
+      );
+      setGoals(saved);
+    } catch {
+      setGoals(before);
+      showToast('保存できませんでした', 'error');
+    }
+  };
 
   const commitGoals = async () => {
     if (!userId) return;
@@ -166,6 +245,29 @@ export default function CoachingNotesPage() {
     if (!userId) return;
     await bffClient.registerMeetingLink(userId, link);
     await reload();
+  };
+
+  // --- コーチへの連絡手段（Slack / メール） ----------------------------------
+
+  /** 保存できたら null、失敗したら入力欄に出す文言を返す */
+  const saveContacts = async (patch: Partial<CoachContacts>): Promise<string | null> => {
+    if (!userId) return '保存できませんでした';
+    try {
+      setContacts(await bffClient.saveCoachContacts(userId, patch));
+      return null;
+    } catch (e) {
+      const message = (e as { response?: { data?: { error?: string } } })?.response?.data?.error;
+      return message ?? '保存できませんでした';
+    }
+  };
+
+  const copyCoachEmail = async (email: string) => {
+    try {
+      await navigator.clipboard.writeText(email);
+      showToast('メールアドレスをコピーしました', 'success');
+    } catch {
+      showToast('コピーできませんでした', 'error');
+    }
   };
 
   // --- 参加 -----------------------------------------------------------------
@@ -252,316 +354,7 @@ export default function CoachingNotesPage() {
     void reload();
   };
 
-  const saveAgenda = async (text: string) => {
-    if (!userId) return;
-    setSavingAgenda(true);
-    try {
-      setAgenda(await bffClient.saveCoachingAgenda(userId, text));
-      showToast('相談したいことを保存しました', 'success');
-    } catch {
-      showToast('保存できませんでした', 'error');
-    } finally {
-      setSavingAgenda(false);
-    }
-  };
-
   // --- 描画 -----------------------------------------------------------------
-
-  const renderCurrentGoals = () => (
-    <section id="goals" style={{ ...t.card, padding: 24, scrollMarginTop: 20, height: '100%', boxSizing: 'border-box' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-        <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>次回までのアクション</h2>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          {goals.length > 0 && !editingGoals && (
-            <span style={{ ...font.link, color: color.primary }}>
-              {completedCount} / {goals.length} 完了
-            </span>
-          )}
-          {editingGoals ? (
-            <>
-              <button
-                type="button"
-                onClick={cancelGoalEdit}
-                style={{ ...t.chip, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
-              >
-                やめる
-              </button>
-              <button
-                type="button"
-                onClick={commitGoals}
-                disabled={savingGoals}
-                style={{
-                  ...t.chip,
-                  border: 'none',
-                  background: color.primary,
-                  color: color.textOnPrimary,
-                  padding: '7px 14px',
-                  fontFamily: 'inherit',
-                  cursor: savingGoals ? 'default' : 'pointer',
-                  opacity: savingGoals ? 0.6 : 1,
-                }}
-              >
-                {savingGoals ? '保存中…' : '保存する'}
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              onClick={startGoalEdit}
-              style={{ ...t.chip, border: 'none', cursor: 'pointer', fontFamily: 'inherit' }}
-            >
-              編集
-            </button>
-          )}
-        </div>
-      </div>
-
-      {editingGoals ? (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 16 }}>
-          {goalDraft.map((g, i) => (
-            <div
-              key={i}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                padding: '9px 12px',
-                border: `1px solid ${color.border}`,
-                borderRadius: 14,
-              }}
-            >
-              <input
-                type="checkbox"
-                checked={g.is_completed === 1}
-                onChange={(e) => toggleGoalDone(i, e.target.checked)}
-                aria-label="達成した"
-                style={{ accentColor: color.primary, flexShrink: 0, width: 17, height: 17 }}
-              />
-              <input
-                value={g.description}
-                onChange={(e) => patchGoal(i, { description: e.target.value })}
-                placeholder="例）バナーを1つ完成させる"
-                style={{
-                  flex: 1,
-                  minWidth: 0,
-                  border: 'none',
-                  outline: 'none',
-                  fontFamily: 'inherit',
-                  fontSize: 14.5,
-                  color: color.textStrong,
-                  background: 'transparent',
-                  textDecoration: g.is_completed === 1 ? 'line-through' : 'none',
-                }}
-              />
-              <button
-                type="button"
-                onClick={() => removeGoal(i)}
-                aria-label="この目標を削除する"
-                title="削除する"
-                style={{
-                  width: 30,
-                  height: 30,
-                  display: 'grid',
-                  placeItems: 'center',
-                  border: `1px solid ${color.borderSoft}`,
-                  borderRadius: 9,
-                  background: color.surface,
-                  color: color.textMuted,
-                  cursor: 'pointer',
-                  flexShrink: 0,
-                  fontFamily: 'inherit',
-                }}
-              >
-                ×
-              </button>
-            </div>
-          ))}
-
-          <button
-            type="button"
-            onClick={addGoal}
-            style={{
-              border: `1px dashed ${color.primaryDashed}`,
-              borderRadius: 14,
-              padding: '11px 14px',
-              background: color.surface,
-              color: color.primary,
-              fontFamily: 'inherit',
-              fontSize: 13,
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
-          >
-            ＋ 目標を追加する
-          </button>
-
-          <p style={{ ...font.meta, color: color.textMuted, margin: '2px 0 0', lineHeight: 1.8 }}>
-            コーチングで決めた目標は、コーチング記録を確定すると自動でここに入ります。
-          </p>
-        </div>
-      ) : goals.length === 0 ? (
-        <p style={{ ...font.meta, color: color.textSubtle, margin: '14px 0 0', lineHeight: 1.8 }}>
-          まだアクションがありません。コーチングが終わると、AIが目標とタスクを整理します。
-          いま決めたいことがあれば「編集」から自分でも書けます。
-        </p>
-      ) : (
-        /* 1行1アクション。行そのものをカード状にして、達成済みが一目で分かるようにする。
-           以前は素のリストで、達成/未達成の差がチェック丸の塗りだけだった。 */
-        <ul style={{ listStyle: 'none', margin: '16px 0 0', padding: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {goals.map((goal) => {
-            const done = goal.is_completed === 1;
-            return (
-              <li
-                key={goal.no}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 13,
-                  padding: '14px 16px',
-                  border: `1px solid ${color.border}`,
-                  borderRadius: radius.md,
-                  background: done ? color.pageBg : color.surface,
-                }}
-              >
-                <span
-                  aria-hidden
-                  style={{
-                    width: 22,
-                    height: 22,
-                    flex: '0 0 22px',
-                    borderRadius: '50%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: 12,
-                    fontWeight: 900,
-                    color: '#fff',
-                    background: done ? color.primary : 'transparent',
-                    border: done ? 'none' : `2px solid ${color.borderNeutral}`,
-                    boxSizing: 'border-box',
-                  }}
-                >
-                  {done ? '✓' : ''}
-                </span>
-                <span
-                  style={{
-                    ...font.listItem,
-                    flex: 1,
-                    minWidth: 0,
-                    color: done ? color.textSubtle : color.textStrong,
-                    textDecoration: done ? 'line-through' : 'none',
-                    lineHeight: 1.6,
-                  }}
-                >
-                  {goal.description}
-                </span>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </section>
-  );
-
-  /**
-   * これまでのコーチング。
-   *
-   * 見出しを「成長の記録」に変えたのは言い換えではなく役割の変更。
-   * 「このページって何をするためにあるのか伝わらない」という指摘の芯は、
-   * 過去のコーチングが“ログ”として並んでいるだけで、
-   * 自分が何を積み上げてきたかが読み取れないことだった。
-   * 空のときも「まだ記録がありません」で終わらせず、次の行動を書く。
-   */
-  const renderHistory = () => {
-    const past = (sessions?.past ?? []).filter((s) => s.id !== sessions?.next?.activeSessionId);
-    return (
-      <section style={{ ...t.card, padding: 24 }}>
-        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, marginBottom: 14 }}>
-          <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>成長の記録</h2>
-          {past.length > 0 && (
-            <span style={{ ...font.caption, color: color.textSubtle }}>{past.length}回のコーチング</span>
-          )}
-        </div>
-
-        {past.length === 0 ? (
-          <p style={{ ...font.meta, color: color.textMuted, margin: 0, lineHeight: 1.9 }}>
-            まだ記録がありません。
-            <br />
-            初回のコーチングが終わると、話した内容と決めたことがここに残り、
-            回を重ねるほど自分の変化を辿れるようになります。
-          </p>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {past.map((s) => (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => openSession(s.id)}
-                className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 18,
-                  padding: '16px 18px',
-                  border: `1px solid ${color.border}`,
-                  borderRadius: radius.md,
-                  background: color.surface,
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  width: '100%',
-                }}
-              >
-                {/* 回数と日付を左に固定。何回目かが縦に揃うと積み上げが見える */}
-                <span style={{ flex: '0 0 96px', minWidth: 0 }}>
-                  <span style={{ display: 'block', ...font.rowTitle, color: color.text }}>{s.title}</span>
-                  <span style={{ display: 'block', ...font.caption, color: color.textSubtle, marginTop: 3 }}>
-                    {s.date}
-                  </span>
-                </span>
-
-                <span style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: '0 0 auto' }}>
-                  {s.importedFrom === 'auto' && (
-                    <span style={{ ...t.chip, background: '#EEF3FB', color: '#3A5C8F', textAlign: 'center' }}>自動取得</span>
-                  )}
-                  {s.importedFrom === 'manual' && s.source && (
-                    <span style={{ ...t.chip, background: color.pageBg, color: color.textMuted, textAlign: 'center' }}>
-                      {RECORDING_SOURCE_LABEL[s.source]}
-                    </span>
-                  )}
-                  {s.tasksCreated ? (
-                    <span style={{ ...t.chip, background: '#E4F3EC', color: '#2F7F5B', textAlign: 'center' }}>確定済み</span>
-                  ) : s.status === 'review_required' ? (
-                    <span style={{ ...t.chip, textAlign: 'center' }}>確認待ち</span>
-                  ) : null}
-                </span>
-
-                <span
-                  style={{
-                    ...font.meta,
-                    flex: 1,
-                    minWidth: 0,
-                    color: color.textMuted,
-                    display: '-webkit-box',
-                    WebkitLineClamp: 2,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    lineHeight: 1.8,
-                  }}
-                >
-                  {s.summary}
-                </span>
-
-                <span style={{ ...font.link, color: color.primary, whiteSpace: 'nowrap', flexShrink: 0 }}>
-                  詳細を表示 ›
-                </span>
-              </button>
-            ))}
-          </div>
-        )}
-      </section>
-    );
-  };
 
   const backLink = (
     <button
@@ -582,7 +375,7 @@ export default function CoachingNotesPage() {
   );
 
   return (
-    <div style={{ minHeight: '100vh', background: color.pageBg, display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: C.bg, display: 'flex', flexDirection: 'column' }}>
       <AppHeader userName={user?.username} />
 
       <main
@@ -592,48 +385,66 @@ export default function CoachingNotesPage() {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          gap: 18,
+          gap: 20,
           fontFamily: font.family,
+          color: C.ink,
         } as React.CSSProperties}
       >
         <div>
-          <h1 style={{ ...font.pageTitle, color: color.text, margin: 0 }}>コーチング</h1>
-          <p style={{ ...font.meta, color: color.textMuted, margin: '6px 0 0', lineHeight: 1.8 }}>
+          <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.3, color: C.ink }}>
+            コーチング
+          </h1>
+          <p style={{ margin: '6px 0 0', fontSize: 13, color: C.muted }}>
             コーチと決めたことを実行に移し、積み上がった変化をふりかえる場所です。
           </p>
         </div>
 
         {loading ? (
-          <p style={{ ...font.meta, color: color.textMuted, textAlign: 'center', padding: '48px 0' }}>読み込み中…</p>
+          <p style={{ fontSize: 13, color: C.muted, textAlign: 'center', padding: '48px 0' }}>読み込み中…</p>
         ) : mode.kind === 'list' ? (
           <>
-            {/* 先頭で「次はいつ・あと何日・いまどこまで」に答える。
-                このページに来た人が最初に知りたいのは操作方法ではなく自分の現在地。 */}
-            <CoachingSummaryStrip
-              next={sessions?.next ?? null}
-              doneCount={completedCount}
-              totalCount={goals.length}
-            />
+            {/* 当日の入口（いつ・あと何日・参加・連絡手段）。ここだけ見れば
+                コーチング当日に迷わない、が1Cのヒーローの役割。 */}
+            {sessions?.next && (
+              <CoachingHeroCard
+                next={sessions.next}
+                readiness={readiness}
+                contacts={contacts}
+                onRegisterLink={registerLink}
+                onStart={handleStart}
+                onOpenSession={openSession}
+                onSaveContacts={saveContacts}
+                onCopyEmail={copyCoachEmail}
+                starting={starting}
+              />
+            )}
 
-            {/* 左＝やること、右＝当日の入口。以前は縦一列で、
-                「次に何をすればいいか」と「参加の準備」が離れて見えていた。 */}
-            <div className="coaching-2col">
-              {renderCurrentGoals()}
-              {sessions?.next && (
-                <NextCoachingCard
-                  next={sessions.next}
-                  readiness={readiness}
-                  onRegisterLink={() => setLinkModalOpen(true)}
-                  onChangeLink={() => setLinkModalOpen(true)}
-                  onStart={handleStart}
-                  onOpenSession={openSession}
-                  starting={starting}
-                />
+            {/* 前回 → 次回まで の1本のタイムライン。
+                「何を話したか」の直下に「だから次に何をするか」が来る並びにする。 */}
+            <div className="cg-timeline">
+              {pastSessions[0] && (
+                <>
+                  <TimelineNode label="前回" />
+                  <LastSessionCard session={pastSessions[0]} detail={lastDetail} onOpen={openSession} />
+                </>
               )}
+
+              <TimelineNode label={'次回\nまで'} accent last />
+              <NextActionsCard
+                goals={goals}
+                editing={editingGoals}
+                draft={goalDraft}
+                saving={savingGoals}
+                onToggle={(no) => void toggleGoalDone(no)}
+                onStartEdit={startGoalEdit}
+                onCommit={() => void commitGoals()}
+                onPatch={patchGoal}
+                onRemove={removeGoal}
+                onAdd={addGoal}
+              />
             </div>
 
-            <CoachingAgendaCard agenda={agenda} saving={savingAgenda} onSave={saveAgenda} />
-            {renderHistory()}
+            <CoachingHistoryList sessions={pastSessions} onOpen={openSession} />
           </>
         ) : mode.kind === 'recording' ? (
           <>
@@ -674,18 +485,8 @@ export default function CoachingNotesPage() {
           </>
         )}
 
-        <p style={{ ...font.caption, color: color.textFaint, textAlign: 'center', marginTop: 24 }}>2026 © WEBCOACH</p>
+        <p style={{ textAlign: 'center', fontSize: 12, color: C.faint, marginTop: 4 }}>© 2026 WEBCOACH Inc.</p>
       </main>
-
-      {linkModalOpen && sessions?.next && (
-        <MeetingLinkModal
-          coachName={sessions.next.coach}
-          currentLink={sessions.next.meetingLink}
-          readiness={readiness}
-          onRegister={registerLink}
-          onClose={() => setLinkModalOpen(false)}
-        />
-      )}
 
       {consentModalOpen && (
         <ConsentModal onAgree={agreeAndStart} onClose={() => setConsentModalOpen(false)} />

@@ -7,7 +7,7 @@ import AppRoutes from './routes';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import { theme } from './theme';
-import { FloatingStudyTimer, StudySessionFinishHost } from './components/shared';
+import { StudySessionFinishHost, StudySessionHost } from './components/shared';
 import { useStudyTimerSync } from './hooks/useStudyTimerSync';
 
 // Markdown rendering styles
@@ -23,8 +23,9 @@ function AppContent() {
       <AnimatePresence mode="wait">
         <AppRoutes />
       </AnimatePresence>
-      {/* タイマーと学習終了カードはルート遷移で消えないよう AppRoutes の外に常駐させる */}
-      <FloatingStudyTimer />
+      {/* 学習セッションの司令塔と終了カードは、ルート遷移で消えないよう AppRoutes の外に常駐させる。
+          StudySessionHost がページの移動を見てカテゴリを切り替え、打診・放置確認・常設表示を出す。 */}
+      <StudySessionHost />
       <StudySessionFinishHost />
     </BrowserRouter>
   );

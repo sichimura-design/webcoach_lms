@@ -6,33 +6,21 @@ import { useAuth } from '../../contexts/AuthContext';
 import { formatMMSS } from '../../utils/studyStats';
 
 /**
- * レッスンページのトップバーに置くミニタイマー。
+ * レッスンページのトップバーに置く、記録中の表示。
  *
  * LessonTopBar に ReactNode のスロットを開けず、自分でストアを読む自己完結型にしている。
  * 既存の props がすべてフラットな値型なので、スロットにすると
  * LearningWorkspacePage（500行超）にタイマーの状態を持ち込むことになるため。
  *
- * 未開始なら「集中して学習する」、稼働中なら経過時間＋一時停止／終了を、
- * 🔴 同じスロットで出し分ける（別の場所に置くと開始した瞬間に要素幅が動いて
- *    隣のボタンがズレる。同じスロットなら 38px 高が固定でレイアウトが揺れない）。
+ * 🔴 表示専用。開始は StudySessionHost の打診ポップに一本化した。
+ *    この画面では右上の StudySessionIndicator を出さない（二重表示になる）ので、
+ *    計測中であることを見せる役はここが担う。
  *
  * 終了はカードを開くだけ（App直下の StudySessionFinishHost が描く）。
  */
 interface LessonMiniTimerProps {
+  /** 別のレッスンで計測中かを見分けるため。表示の文言にしか使わない */
   courseId?: number;
-  courseName?: string;
-  lessonId?: number | null;
-  lessonTitle?: string;
-  /** レッスンの進捗（記録に残す） */
-  progressPercent?: number;
-  /**
-   * 未開始のときは何も描かない。
-   * 教材画面のトップバーは「出口と現在地だけ」に絞ったので、
-   * 待機中の「集中して学習する」CTAがそこに常駐すると注意を奪ってしまう。
-   * 稼働中は残す。この画面では FloatingStudyTimer が自分を隠すため、
-   * ここを消すと計測中であることがどこにも出なくなる。
-   */
-  hideWhenIdle?: boolean;
 }
 
 const miniIconButton: React.CSSProperties = {
@@ -48,59 +36,20 @@ const miniIconButton: React.CSSProperties = {
   flexShrink: 0,
 };
 
-export function LessonMiniTimer({
-  courseId,
-  courseName,
-  lessonId,
-  lessonTitle,
-  progressPercent,
-  hideWhenIdle,
-}: LessonMiniTimerProps) {
+export function LessonMiniTimer({ courseId }: LessonMiniTimerProps) {
   const { user } = useAuth();
   const session = useStudyTimerStore((s) => s.session);
-  const { elapsedSeconds, running, reachedTarget, start, pause, resume, prepareFinish } =
+  const { elapsedSeconds, running, reachedTarget, pause, resume, prepareFinish } =
     useStudySession(user?.userid);
 
-  // ---- 未開始: このレッスンでそのまま開始する（モーダルは挟まない）----
-  if (!session) {
-    if (hideWhenIdle) return null;
-    return (
-      <button
-        type="button"
-        title="このレッスンで集中タイマーを開始する"
-        onClick={() =>
-          start({
-            mode: 'freeform',
-            targetMinutes: 25,
-            courseId,
-            courseTitle: courseName,
-            lessonId: lessonId ?? undefined,
-            lessonTitle,
-            progressPercentAtStart: progressPercent,
-          })
-        }
-        className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 7,
-          minHeight: 38,
-          padding: '0 13px',
-          border: `1px solid ${color.primaryBorder}`,
-          borderRadius: radius.nav,
-          background: color.surface,
-          color: color.primary,
-          ...font.buttonSm,
-          cursor: 'pointer',
-          whiteSpace: 'nowrap',
-          flex: '0 0 auto',
-        }}
-      >
-        <Timer size={15} />
-        <span className="hidden lg:inline">集中して学習する</span>
-      </button>
-    );
-  }
+  /*
+   * 未開始のときは何も描かない。
+   * 🔴 ここに「集中して学習する」CTA は置かない。開始の入口は
+   *    StudySessionHost の打診ポップ1つに集約した。入口が2つあると
+   *    「押していないのに記録が始まった／押したのに始まらない」が混ざる。
+   *    教材画面のトップバーは「出口と現在地だけ」に絞る方針でもある。
+   */
+  if (!session) return null;
 
   // ---- 稼働中 ----
   const otherMaterial = session.courseId !== undefined && session.courseId !== courseId;

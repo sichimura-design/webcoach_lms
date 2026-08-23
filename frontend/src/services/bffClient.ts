@@ -33,6 +33,7 @@ import {
 } from '../types/focusBooth';
 import {
   AutoImportReadiness,
+  CoachContacts,
   CoachingAgenda,
   CoachingSessions,
   CoachingSessionDetail,
@@ -52,6 +53,7 @@ import {
   LessonOutline,
 } from '../types/lesson';
 import { AiSkillRequest, AiSkillResponse } from '../types/aiSkill';
+import { MaterialSearchResult } from '../types/courses';
 import {
   Note,
   NoteBlock,
@@ -217,6 +219,18 @@ class BFFClient {
     const response = await this.api.get('/moodle/courses/search', {
       params: { q: query }
     });
+    return response.data;
+  }
+
+  /**
+   * 学びたいこと・つまずきから教材をAIがおすすめする（モック専用API）。
+   * POST /api/webcoach/material-search
+   *
+   * 実BFFには未実装なので、モックOFF（本番）では 501 で失敗する。
+   * 呼び出し側で catch して、この機能だけを畳むこと。
+   */
+  async searchMaterialsByAI(query: string): Promise<MaterialSearchResult> {
+    const response = await this.api.post('/webcoach/material-search', { query });
     return response.data;
   }
 
@@ -802,6 +816,22 @@ class BFFClient {
 
   async saveCoachingAgenda(userId: number, text: string): Promise<CoachingAgenda> {
     const response = await this.api.put(`/webcoach/coaching-agenda/${userId}`, { text });
+    return response.data;
+  }
+
+  /**
+   * コーチへの連絡手段（Slackリンク / メールアドレス）
+   * GET/PUT /api/webcoach/coach-contacts/{userId}
+   * 🔴 実BFFには無い。モックで提供している。
+   */
+  async getCoachContacts(userId: number): Promise<CoachContacts> {
+    const response = await this.api.get(`/webcoach/coach-contacts/${userId}`);
+    return response.data;
+  }
+
+  /** 部分更新。送ったキーだけ上書きされる */
+  async saveCoachContacts(userId: number, patch: Partial<CoachContacts>): Promise<CoachContacts> {
+    const response = await this.api.put(`/webcoach/coach-contacts/${userId}`, patch);
     return response.data;
   }
 

@@ -234,9 +234,13 @@ export function LearningStreakCard({ stats, loading }: LearningStreakCardProps) 
         </div>
       </div>
 
+      {/* 🔴 「記録する」ではなく「はじめる」。学習時間は教材やAIコーチを開いた時点で
+             記録が始まる仕組みになったので、記録をつけに行くページはもう無い
+             （components/shared/StudySessionHost.tsx）。連続日数を伸ばす手段は
+             「今日ぶんの学習をする」ことそのもの。 */}
       <button
         type="button"
-        onClick={() => navigate('/focus-booth')}
+        onClick={() => navigate('/courses')}
         className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
         style={{
           display: 'inline-flex',
@@ -258,7 +262,7 @@ export function LearningStreakCard({ stats, loading }: LearningStreakCardProps) 
         onMouseEnter={(e) => { e.currentTarget.style.background = 'var(--dc-tint-50)'; }}
         onMouseLeave={(e) => { e.currentTarget.style.background = 'var(--dc-surface)'; }}
       >
-        本日も学習を記録する
+        今日の学習をはじめる
         <ChevronRight size={15} strokeWidth={2} />
       </button>
     </section>

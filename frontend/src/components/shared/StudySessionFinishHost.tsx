@@ -10,12 +10,13 @@ import FinishSessionModal from '../focus/FinishSessionModal';
  * 学習終了カードを App 直下に常駐させるためのホスト。
  *
  * 🔴 なぜ画面側ではなくここに置くか:
- *   1. 終了の入口が3つある（集中ブースの終了ボタン／教材ページのミニタイマー／
- *      フローティングタイマー）。ここに1つ置けば、呼び出し側は prepareFinish() を叩くだけになる。
- *   2. FocusBoothPage は transform: scale() の中にある。scale された要素は containing block を
- *      作るので、その内側の position: fixed はビューポート基準にならず縮小・位置ズレする。
- *      App直下ならこの罠を構造的に回避できる。
- *   3. FloatingStudyTimer と同じく AppRoutes の外なので、ルート遷移でアンマウントされない。
+ *   1. 終了の入口が3つある（右上のセッションインジケータ／教材ページのミニタイマー／
+ *      放置検知の「ここで終了する」）。ここに1つ置けば、呼び出し側は
+ *      prepareFinish() を叩くだけになる。
+ *   2. transform: scale() を使っているページ（学習記録・マイノート・学習する）の中に
+ *      置くと、scale された要素が containing block を作るので、内側の position: fixed が
+ *      ビューポート基準にならず縮小・位置ズレする。App直下ならこの罠を構造的に回避できる。
+ *   3. StudySessionHost と同じく AppRoutes の外なので、ルート遷移でアンマウントされない。
  */
 
 /**

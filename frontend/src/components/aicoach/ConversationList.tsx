@@ -1,4 +1,4 @@
-import { MessageSquarePlus, Trash2 } from 'lucide-react';
+import { MessageSquarePlus, Trash2, X } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import { AiCoachSession } from '../../types/aiCoach';
 import { AI_SKILL_SHORT_LABEL } from '../../types/aiSkill';
@@ -23,6 +23,8 @@ interface ConversationListProps {
   onSelect: (id: string) => void;
   onCreate: () => void;
   onDelete: (id: string) => void;
+  /** 右からのドロワーで開いているときの「閉じる」。常設カラムのときは渡さない */
+  onClose?: () => void;
 }
 
 function relativeTime(iso: string): string {
@@ -54,6 +56,7 @@ export function ConversationList({
   onSelect,
   onCreate,
   onDelete,
+  onClose,
 }: ConversationListProps) {
   // 親（メインチャット）と子（専門セッション）に分ける。
   // 親が消えている子は宙に浮かせず、親と同じ扱いで根に並べる。
@@ -75,7 +78,9 @@ export function ConversationList({
         minWidth: 0,
         overflow: 'hidden',
         background: color.surface,
-        borderRight: `1px solid ${color.border}`,
+        // 右からのドロワーで使うときは、境界と影は器（.wc-drawer-right）が持つ。
+        // 左の常設カラムとして使うときだけ自分で右境界を引く。
+        borderRight: onClose ? undefined : `1px solid ${color.border}`,
       }}
     >
       <div
@@ -106,6 +111,27 @@ export function ConversationList({
         >
           <MessageSquarePlus size={12} /> 新規
         </button>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            title="閉じる"
+            aria-label="会話履歴を閉じる"
+            className="grid place-items-center"
+            style={{
+              width: 28,
+              height: 28,
+              border: 0,
+              borderRadius: 8,
+              background: 'transparent',
+              color: color.iconMuted,
+              cursor: 'pointer',
+              flexShrink: 0,
+            }}
+          >
+            <X size={15} />
+          </button>
+        )}
       </div>
 
       <div style={{ flex: 1, overflowY: 'auto', padding: 10, minHeight: 0 }}>

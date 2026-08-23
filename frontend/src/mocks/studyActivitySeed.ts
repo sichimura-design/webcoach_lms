@@ -20,10 +20,18 @@
  *   - 6日は完全な休み              → カレンダーに未学習日が出る
  *   - 教材は 101/102/201/203 と null（指定なし）を混ぜる → 教材別集計の確認
  *   - pomodoro / freeform 両方、1件は adjusted: true（時間を修正した記録）
+ *   - カテゴリ配分を5パターン混ぜる       → カテゴリ別内訳（トップ・終了カード）の確認
+ *                                          「教材だけの日」も混ぜて、内訳1行のときに
+ *                                          表示を畳む挙動も見られるようにしてある
  * ============================================================
  */
 import { format, subDays } from 'date-fns';
-import { StudyActivity, StudyActivityCourseRef } from '../types/studyActivity';
+import {
+  StudyActivity,
+  StudyActivityCourseRef,
+  StudyCategory,
+  StudySegmentTotal,
+} from '../types/studyActivity';
 import { STUDY_DAY_MIN_MINUTES, toLocalDateKey } from '../utils/studyStats';
 
 const SEED_DAYS = 42;
@@ -60,6 +68,33 @@ const CONTENT_NOTES = [
   '余白の取り方だけで印象が変わるのを実際に試せた。',
 ];
 
+/**
+ * カテゴリ配分のパターン。
+ * 「教材だけの日」「教材＋AI相談」「コーチングの日」「ノートで復習した日」を混ぜて、
+ * トップと終了カードの内訳表示が空にならないようにする。
+ * 数字は比率で、合計を durationMinutes に配分する（rescaleSegments と同じ考え方）。
+ */
+const CATEGORY_MIXES: { category: StudyCategory; weight: number }[][] = [
+  [{ category: 'material', weight: 1 }],
+  [
+    { category: 'material', weight: 3 },
+    { category: 'ai', weight: 1 },
+  ],
+  [
+    { category: 'material', weight: 5 },
+    { category: 'ai', weight: 2 },
+    { category: 'review', weight: 1 },
+  ],
+  [
+    { category: 'coaching', weight: 4 },
+    { category: 'material', weight: 1 },
+  ],
+  [
+    { category: 'review', weight: 2 },
+    { category: 'material', weight: 3 },
+  ],
+];
+
 /** 日数インデックスからの決定的な擬似乱数（0..1） */
 function pseudoRandom(dayIndex: number, salt: number): number {
   const x = Math.sin(dayIndex * 12.9898 + salt * 78.233) * 43758.5453;
@@ -74,6 +109,20 @@ function sessionCountOf(dayIndex: number): number {
   if (dayIndex >= 26 && dayIndex <= 34) return pseudoRandom(dayIndex, 1) > 0.6 ? 2 : 1;
   if (dayIndex <= 4) return pseudoRandom(dayIndex, 2) > 0.5 ? 2 : 1;
   return pseudoRandom(dayIndex, 3) > 0.75 ? 2 : 1;
+}
+
+/** その記録のカテゴリ別内訳。合計は必ず minutes*60 に一致させる（余りは最大の区間へ） */
+function segmentsOf(dayIndex: number, slot: number, minutes: number): StudySegmentTotal[] {
+  const mix = CATEGORY_MIXES[(dayIndex + slot * 2) % CATEGORY_MIXES.length];
+  const totalWeight = mix.reduce((sum, m) => sum + m.weight, 0);
+  const totalSeconds = minutes * 60;
+  const out = mix.map((m) => ({
+    category: m.category,
+    seconds: Math.round((m.weight / totalWeight) * totalSeconds),
+  }));
+  const diff = totalSeconds - out.reduce((sum, s) => sum + s.seconds, 0);
+  if (diff !== 0) out[0] = { ...out[0], seconds: out[0].seconds + diff };
+  return out.filter((s) => s.seconds > 0);
 }
 
 function minutesOf(dayIndex: number, slot: number): number {
@@ -149,6 +198,7 @@ export function buildSeedActivities(userId: number, today: Date = new Date()): S
           memo: withDetail ? '明日は演習から始める' : null,
           achievement: withDetail ? (pseudoRandom(dayIndex, 90) > 0.5 ? 'high' : 'mid') : null,
           weeklyTotalMinutesAtEnd: undefined,
+          segments: segmentsOf(dayIndex, slot, minutes),
         },
         social: {
           visibility: 'private',

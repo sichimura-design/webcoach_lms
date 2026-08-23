@@ -49,6 +49,53 @@ export interface StudyActivityCourseRef {
   progressPercentAtEnd?: number;
 }
 
+/**
+ * 学習の活動カテゴリ。
+ * ============================================================
+ * 🔴 ユーザーには選ばせない。開いているページから自動で決める
+ *    （utils/studyCategory.ts が唯一の判定）。「教材ですか？課題ですか？」と
+ *    毎回聞かれるのが記録を面倒にする最大の原因なので、増やすときも
+ *    「ページを見れば分かるか」を先に問うこと。
+ * 🔴 'practice'（実践課題）は今は作っていない。実践課題を始める独立した操作が
+ *    まだアプリに無く、レッスンの learningtype='assignment' という属性としてしか
+ *    存在しないため。独立した体験になったら足す。
+ * ============================================================
+ */
+export type StudyCategory = 'material' | 'ai' | 'coaching' | 'review' | 'other';
+
+export const STUDY_CATEGORY_LABEL: Record<StudyCategory, string> = {
+  material: '教材',
+  ai: 'AIコーチ',
+  coaching: 'コーチング',
+  review: '復習',
+  other: 'その他',
+};
+
+/** 表示順。内訳を出すときは必ずこの順に並べる（画面ごとに順が違うと比べられない） */
+export const STUDY_CATEGORY_ORDER: StudyCategory[] = ['material', 'ai', 'coaching', 'review', 'other'];
+
+/**
+ * セッション内の連続した1区間。ページが変わってカテゴリが変わるたびに
+ * 開いている区間を閉じ、次の区間を開く。
+ *
+ * 🔴 一時停止はセッションの startedAt を後ろにずらして表現する（studyTimerStore 参照）。
+ *    そのとき「開いている区間」の startedAt も同じ量ずらすこと。ずらし忘れると
+ *    区間の合計と sessionElapsedSeconds が食い違い、内訳の和が学習時間と合わなくなる。
+ */
+export interface StudySegment {
+  category: StudyCategory;
+  /** 区間の開始時刻（ms）。一時停止のたび後ろにずれる */
+  startedAt: number;
+  /** null = 進行中。閉じた区間だけ値が入る */
+  endedAt: number | null;
+}
+
+/** 記録に残すカテゴリ別の内訳。合計は必ず durationMinutes*60 に一致させる（比例配分） */
+export interface StudySegmentTotal {
+  category: StudyCategory;
+  seconds: number;
+}
+
 export interface StudySessionPayload {
   mode: StudySessionMode;
   /** ポモドーロの設定時間。通常タイマーでも「目安」として入力されたら保持する */
@@ -73,6 +120,15 @@ export interface StudySessionPayload {
 
   /** 記録時点の今週累計（分）。表示用スナップショットで、集計には使わない */
   weeklyTotalMinutesAtEnd?: number;
+
+  /**
+   * カテゴリ別の内訳。
+   * 🔴 optional。この仕組みより前に記録された行には無い。集計側（categoryTotals）は
+   *    無い行を course の有無から material / other に寄せて扱う。
+   * 🔴 合計は durationMinutes*60 に一致する。ユーザーが終了カードで分数を修正したら
+   *    比例配分し直すので、実測秒そのものではない。
+   */
+  segments?: StudySegmentTotal[];
 }
 
 /** 今回は誰も書き込まない。タイムライン／リアクション／コメントを足すときにここだけ埋まる */
@@ -147,6 +203,18 @@ export interface ActiveStudySession {
   activityId: string;
   /** ポモドーロ完了を検知した時刻。多重通知の防止 */
   targetReachedAt: number | null;
+
+  /**
+   * カテゴリ別の区間。最後の要素だけ endedAt === null（進行中）。
+   * ページを移動するたびに閉じて開き直すので、1セッションで何本にもなる。
+   * 🔴 合計は必ず sessionElapsedSeconds と一致する（一時停止のずらしを区間にも波及させる）。
+   */
+  segments: StudySegment[];
+  /**
+   * 最後にユーザーの操作を観測した時刻（ms）。放置検知に使う。
+   * ページ遷移・クリック・キー入力・タブが可視に戻ったときに更新する。
+   */
+  lastActiveAt: number;
 }
 
 /** 終了カードの下書き。カード表示中のリロードで消えないよう store に永続化する */
@@ -172,6 +240,8 @@ export interface StudyFinishDraft {
     pausedCount: number;
     pausedSeconds: number;
     completedTarget: boolean;
+    /** 実測のカテゴリ別内訳。記録時に durationMinutes へ比例配分し直す元になる */
+    segments: StudySegmentTotal[];
   };
 }
 
@@ -209,6 +279,12 @@ export interface CourseStudyTotal {
   lastStudiedAt: string;
 }
 
+export interface CategoryStudyTotal {
+  category: StudyCategory;
+  minutes: number;
+  sessionCount: number;
+}
+
 export interface StudyPeriodTotal {
   minutes: number;
   sessionCount: number;
@@ -228,7 +304,9 @@ export interface StudyStatsSummary {
   /** 直近 days 日分。欠損日も 0 で埋めて連続させる（グラフとカレンダーが共用） */
   dailyTotals: StudyDayTotal[];
   byCourse: CourseStudyTotal[];
-  /** 最近の学習履歴。集中ブースの右下カードはこれだけで足りる */
+  /** 活動カテゴリ別の累計。STUDY_CATEGORY_ORDER の順で、0分のカテゴリは含めない */
+  byCategory: CategoryStudyTotal[];
+  /** 最近の学習履歴 */
   recent: StudyActivity[];
   generatedAt: string;
 }

@@ -1,5 +1,5 @@
 /**
- * 次回コーチングカード。マイページ（compact）と /coaching（full）で共有する。
+ * 次回コーチングカード（マイページ用）。
  *
  * 表現する状態（仕様§19）:
  *   会議リンク未登録 / 登録済み / コーチ未連携 / 記録中 / AI生成中 / AIノート完成
@@ -7,23 +7,20 @@
  * ボタン名を「録音を開始」にしないのは意図的。
  * 実際に録音するのは受講生の端末ではなく、コーチの認証済み権限を使った会議側の記録機能なので、
  * 「録音を開始」だと何が起きているかを取り違えさせる。
+ *
+ * 🔴 かつては /coaching とこのカードを variant='full' / 'compact' で共有していた。
+ *    /coaching はデザイン『コーチング トップ 3案.dc.html』案1C に作り替え、
+ *    専用の CoachingHeroCard を持つようになったので、ここはマイページ専用に絞った。
+ *    ＝ --dc-* の CSS 変数（.mypage-3d 配下でしか定義されない）を無条件に使ってよい。
  */
 import React from 'react';
-import { AlertTriangle, CalendarDays, CheckCircle2, Link as LinkIcon, Loader2, Sparkles, Video } from 'lucide-react';
-import { differenceInCalendarDays } from 'date-fns';
+import { AlertTriangle, CalendarDays, Link as LinkIcon, Loader2, Sparkles, Video } from 'lucide-react';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
+import { untilLabel } from '../../utils/coachingSchedule';
 import { displayMeetingUrl } from '../../utils/parseMeetingLink';
 import { PROVIDER_LABEL } from '../../types/coaching';
 import type { AutoImportReadiness, NextCoaching } from '../../types/coaching';
 
-/**
- * compact（マイページ）専用のスタイル。
- * ============================================================
- * 🔴 --dc-* は .mypage-3d 配下でしか定義されていない CSS 変数。
- *    このカードは /coaching（full）と共有しているので、compact のときだけ使う。
- *    full 側は従来の theme/webcoachTheme.ts の色を保つ（配色変更はマイページ限定）。
- * ============================================================
- */
 const DC_CARD: React.CSSProperties = {
   background: 'var(--dc-surface)',
   border: '1px solid var(--dc-border)',
@@ -32,6 +29,7 @@ const DC_CARD: React.CSSProperties = {
   padding: 20,
 };
 
+/** 主ボタン。赤ベタにしないのは、マイページの赤ベタを「続きから学習する」に集約しているため */
 const DC_SECONDARY_BUTTON: React.CSSProperties = {
   display: 'inline-flex',
   alignItems: 'center',
@@ -49,7 +47,7 @@ const DC_SECONDARY_BUTTON: React.CSSProperties = {
   cursor: 'pointer',
 };
 
-/** compact の注意書き（会議リンク未登録など）。DESIGN.md の Warning 面 */
+/** 注意書き（会議リンク未登録など）。DESIGN.md の Warning 面 */
 function DcWarnBox({ children }: { children: React.ReactNode }) {
   return (
     <div
@@ -69,20 +67,9 @@ function DcWarnBox({ children }: { children: React.ReactNode }) {
   );
 }
 
-/** 「あと5日」。startsAt が無い（機械的に読めない）ときは出さない */
-function untilLabel(startsAt: string | null): string | null {
-  if (!startsAt) return null;
-  const d = differenceInCalendarDays(new Date(startsAt), new Date());
-  if (Number.isNaN(d) || d < 0) return null;
-  if (d === 0) return '今日';
-  if (d === 1) return '明日';
-  return `あと${d}日`;
-}
-
 interface NextCoachingCardProps {
   next: NextCoaching;
   readiness: AutoImportReadiness | null;
-  variant?: 'compact' | 'full';
   onRegisterLink: () => void;
   onChangeLink: () => void;
   onStart: () => void;
@@ -94,32 +81,18 @@ interface NextCoachingCardProps {
 export function NextCoachingCard({
   next,
   readiness,
-  variant = 'full',
   onRegisterLink,
   onChangeLink,
   onStart,
   onOpenSession,
   starting,
 }: NextCoachingCardProps) {
-  const compact = variant === 'compact';
   const link = next.meetingLink;
   /** 会議リンク未登録以外の問題（コーチ未連携・プラン非対応・サービス不一致など） */
   const coachIssue = readiness?.issues.find((i) => i.code !== 'no_meeting_link') ?? null;
+  const until = untilLabel(next.startsAt);
 
-  /**
-   * カードの外枠。compact（マイページの 2×2 グリッド）だけ t.softCard にして
-   * セルの高さいっぱいに伸ばす。full（/coaching）は従来の t.card のまま変えない。
-   */
-  const shell = compact ? DC_CARD : { ...t.card, padding: 24 };
-
-  /** compact のときだけ CTA を全幅にする */
-  const ctaFit = compact ? { width: '100%' } : {};
-  /** compact の主ボタンは塗りつぶしにしない（赤ベタは「続きから学習する」に集約） */
-  const ctaStyle = compact
-    ? DC_SECONDARY_BUTTON
-    : { ...t.primaryButton, justifyContent: 'center' as const };
-
-  const heading = compact ? (
+  const heading = (
     <>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
         <span
@@ -129,31 +102,11 @@ export function NextCoachingCard({
         </span>
         <span>
           <span style={{ display: 'block', fontSize: 14, fontWeight: 700, color: 'var(--dc-text)' }}>次回コーチング</span>
-          {untilLabel(next.startsAt) && (
-            <span style={{ display: 'block', fontSize: 11, color: 'var(--dc-text-muted)' }}>{untilLabel(next.startsAt)}</span>
-          )}
+          {until && <span style={{ display: 'block', fontSize: 11, color: 'var(--dc-text-muted)' }}>{until}</span>}
         </span>
       </div>
       <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--dc-text)', marginBottom: 2 }}>{next.date}</div>
       <div style={{ fontSize: 13, color: 'var(--dc-text-muted)', marginBottom: 14 }}>担当：{next.coach}</div>
-    </>
-  ) : (
-    <>
-      <p
-        style={{
-          ...font.caption,
-          color: color.textSubtle,
-          margin: '0 0 8px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 6,
-        }}
-      >
-        <CalendarDays size={13} color={color.textSubtle} />
-        次回コーチング
-      </p>
-      <p style={{ ...font.heroTitle, color: color.text, margin: '0 0 6px' }}>{next.date}</p>
-      <p style={{ ...font.meta, color: color.textMuted, margin: 0 }}>{next.coach}</p>
     </>
   );
 
@@ -164,7 +117,7 @@ export function NextCoachingCard({
 
     if (s === 'recording') {
       return (
-        <section style={shell}>
+        <section style={DC_CARD}>
           {heading}
           <div
             style={{
@@ -197,7 +150,7 @@ export function NextCoachingCard({
               </p>
             </div>
           </div>
-          <button type="button" onClick={open} style={{ ...t.ghostButton, marginTop: 14, ...ctaFit }}>
+          <button type="button" onClick={open} style={{ ...t.ghostButton, marginTop: 14, width: '100%' }}>
             記録中の画面を開く
           </button>
           <style>{'@keyframes coaching-blink{0%,100%{opacity:1}50%{opacity:.25}}'}</style>
@@ -207,7 +160,7 @@ export function NextCoachingCard({
 
     if (s === 'review_required') {
       return (
-        <section style={shell}>
+        <section style={DC_CARD}>
           {heading}
           <div
             style={{
@@ -231,7 +184,7 @@ export function NextCoachingCard({
               </p>
             </div>
           </div>
-          <button type="button" onClick={open} style={{ ...ctaStyle, marginTop: 14, ...ctaFit }}>
+          <button type="button" onClick={open} style={{ ...DC_SECONDARY_BUTTON, marginTop: 14 }}>
             ノートを確認する
           </button>
         </section>
@@ -240,7 +193,7 @@ export function NextCoachingCard({
 
     if (s === 'failed') {
       return (
-        <section style={shell}>
+        <section style={DC_CARD}>
           {heading}
           <div
             style={{
@@ -264,7 +217,7 @@ export function NextCoachingCard({
               </p>
             </div>
           </div>
-          <button type="button" onClick={open} style={{ ...ctaStyle, marginTop: 14, ...ctaFit }}>
+          <button type="button" onClick={open} style={{ ...DC_SECONDARY_BUTTON, marginTop: 14 }}>
             記録を取り込む
           </button>
         </section>
@@ -273,7 +226,7 @@ export function NextCoachingCard({
 
     // uploading / transcribing / summarizing
     return (
-      <section style={shell}>
+      <section style={DC_CARD}>
         {heading}
         <div
           style={{
@@ -297,7 +250,7 @@ export function NextCoachingCard({
             </p>
           </div>
         </div>
-        <button type="button" onClick={open} style={{ ...t.ghostButton, marginTop: 14, ...ctaFit }}>
+        <button type="button" onClick={open} style={{ ...t.ghostButton, marginTop: 14, width: '100%' }}>
           進捗を見る
         </button>
       </section>
@@ -307,18 +260,12 @@ export function NextCoachingCard({
   // ---- 会議リンク未登録 ----
   if (!link) {
     return (
-      <section style={shell}>
+      <section style={DC_CARD}>
         {heading}
-        {compact ? (
-          <DcWarnBox>会議リンクがまだ登録されていません。</DcWarnBox>
-        ) : (
-          <p style={{ ...font.meta, color: color.textMuted, margin: '16px 0 12px', lineHeight: 1.8 }}>
-            会議リンクがまだ登録されていません。
-          </p>
-        )}
-        <button type="button" onClick={onRegisterLink} style={{ ...ctaStyle, ...ctaFit }}>
+        <DcWarnBox>会議リンクがまだ登録されていません。</DcWarnBox>
+        <button type="button" onClick={onRegisterLink} style={DC_SECONDARY_BUTTON}>
           <LinkIcon className="w-4 h-4" />
-          {compact ? '会議リンクを登録する' : '送られてきたリンクを登録'}
+          会議リンクを登録する
         </button>
       </section>
     );
@@ -326,7 +273,7 @@ export function NextCoachingCard({
 
   // ---- 会議リンク登録済み ----
   return (
-    <section style={shell}>
+    <section style={DC_CARD}>
       {heading}
 
       <div
@@ -352,20 +299,8 @@ export function NextCoachingCard({
         )}
       </div>
 
-      {!compact && (
-        <div style={{ marginTop: 14 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-            <Sparkles className="w-4 h-4" style={{ color: color.primary }} />
-            <span style={{ ...font.rowTitle, color: color.text }}>AIコーチングノート</span>
-          </div>
-          <p style={{ ...font.caption, color: color.textMuted, margin: 0, lineHeight: 1.8 }}>
-            会話を記録し、終了後に目標とタスクを整理します。
-          </p>
-        </div>
-      )}
-
       {/* コーチ側の設定が未完了なら、参加前に必ず知らせる */}
-      {coachIssue ? (
+      {coachIssue && (
         <div
           style={{
             marginTop: 14,
@@ -381,33 +316,13 @@ export function NextCoachingCard({
           <AlertTriangle className="w-4 h-4" style={{ color: '#B26A00', flexShrink: 0, marginTop: 2 }} />
           <p style={{ ...font.caption, color: '#8A5A10', margin: 0, lineHeight: 1.9 }}>{coachIssue.message}</p>
         </div>
-      ) : (
-        !compact && (
-          <div
-            style={{
-              marginTop: 14,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-              padding: '10px 14px',
-              borderRadius: radius.md,
-              background: '#E4F3EC',
-              border: '1px solid #C6E5D5',
-            }}
-          >
-            <CheckCircle2 className="w-4 h-4" style={{ color: '#2F7F5B', flexShrink: 0 }} />
-            <p style={{ ...font.caption, color: '#246145', margin: 0 }}>
-              {next.coach}の設定は完了しています
-            </p>
-          </div>
-        )
       )}
 
       <button
         type="button"
         onClick={onStart}
         disabled={starting}
-        style={{ ...ctaStyle, marginTop: 16, opacity: starting ? 0.6 : 1, ...ctaFit }}
+        style={{ ...DC_SECONDARY_BUTTON, marginTop: 16, opacity: starting ? 0.6 : 1 }}
       >
         <Sparkles className="w-4 h-4" />
         {starting ? '準備しています…' : 'AIノートを開始して参加'}

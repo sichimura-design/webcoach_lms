@@ -29,13 +29,6 @@ interface LessonArticleProps {
   onBackToCourse: () => void;
 }
 
-/**
- * 本文カラムの最大幅。
- * 以前は 1080px で、左右の目次・サポートが閉じていると1行が長くなりすぎた。
- * 目次とサポートが列でなくなった今は、読み幅そのものをここで決める。
- */
-const CONTENT_MAX_WIDTH = 900;
-
 export function LessonArticle({
   doc,
   articleRef,
@@ -64,15 +57,35 @@ export function LessonArticle({
   return (
     <article
       style={{
-        width: `min(100%, ${CONTENT_MAX_WIDTH}px)`,
-        margin: '0 auto',
-        padding: '44px clamp(20px, 4vw, 40px) 96px',
+        /*
+         * 読み幅は CSS 変数で決める。サポートパネルが横に並んだときだけ
+         * 狭める（1040 → 880）ので、その分岐は index.css 側に置いている。
+         * JSで幅を測ると境界で跳ねるうえ、パネルの開閉ごとに再レンダリングになる。
+         *
+         * 🔴 ここに左右パディングは持たせない。この幅を「白いカードの外寸」
+         *    そのものにしたいので（デザイン 2a の maxWidth 880/1040 と同値）、
+         *    狭い画面用のガターは main 側が持つ。
+         *    このプロジェクトは box-sizing のグローバル指定が無いため、
+         *    パディングを足すと外寸が変数の値と一致しなくなる。
+         */
+        width: 'min(100%, var(--wc-reading-max, 900px))',
+        margin: '40px auto 120px',
       }}
     >
-      {/* 白いカードの枠を外して全面化した。
-          目次とサポートが列でなくなり、本文だけが画面に残ったので、
-          その本文をさらに枠で囲うと「紙の中の紙」になる。 */}
-      <div>
+      {/* 白いカードに載せる（デザイン案 2a）。
+          一度は「本文だけが画面に残ったのに枠で囲うと紙の中の紙になる」として
+          外していたが、2a はサイドパネルと横に並ぶ構成なので、
+          本文がどこまでかを面で示したほうが読む場所が定まる。
+          枠なしで端から端まで白くする案は別案 3a にあたる。 */}
+      <div
+        style={{
+          background: color.surface,
+          border: `1px solid ${color.border}`,
+          borderRadius: radius.card,
+          boxShadow: shadow.card,
+          padding: 'clamp(24px, 4vw, 48px)',
+        }}
+      >
         {/* ── ヘッダー：カテゴリ・タイトル・リード ── */}
         <header style={{ textAlign: 'center', marginBottom: 40 }}>
           {doc.learningType && (
@@ -158,13 +171,15 @@ export function LessonArticle({
           {!isFallback && (
             <div
               className="flex items-center"
+              /* 🔴 白カードの中に入ったので、地色は白から淡いピンクへ。
+                 白地に白いカードだと枠線だけの見た目になり、帯として読めない */
               style={{
                 gap: 8,
                 marginBottom: 26,
                 padding: '9px 14px',
                 borderRadius: radius.nav,
-                background: color.surface,
-                border: `1px solid ${color.border}`,
+                background: color.hoverBgTint,
+                border: `1px solid ${color.primaryBorderSoft}`,
                 ...font.caption,
                 color: color.textMuted,
               }}

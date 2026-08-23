@@ -25,6 +25,25 @@ export const NOTE_BLOCK_LABEL: Record<NoteBlockKind, string> = {
   answer: 'AI回答',
 };
 
+/**
+ * ノートの出どころ。CONTENTS §16-4 の「自動付与」。
+ * 作った場所で一度決まり、以後は変わらない（あとから中身が増えても付け替えない）。
+ * 一覧のバッジと絞り込みチップの根拠。
+ *
+ * self     … 「新しいノートを作成」から自分で作った
+ * material … 教材（レッスン）から作られた
+ * ai       … AIコーチの回答を残すために作られた
+ * coaching … 面談のまとめ。※コーチング→ノートの導線は未実装なのでシードのみ
+ */
+export type NoteOrigin = 'self' | 'material' | 'ai' | 'coaching';
+
+export const NOTE_ORIGIN_LABEL: Record<NoteOrigin, string> = {
+  self: '自分のメモ',
+  material: '教材',
+  ai: 'AIコーチ',
+  coaching: 'コーチング',
+};
+
 /** ブロックの出どころ。「元のレッスンへ」と本文ハイライトの復元に使う */
 export interface NoteSourceRef {
   courseId: number;
@@ -73,7 +92,9 @@ export interface Note {
   id: string;
   title: string;
   blocks: NoteBlock[];
+  /** 一覧のラベル「重要」。CONTENTS §16-4 の手動ラベルはこれ1種だけ */
   favorite: boolean;
+  origin: NoteOrigin;
   /**
    * レッスンから作られたノートの出どころ。
    * 「新しいノートを作成」から作ったものは null。
@@ -89,6 +110,7 @@ export interface NoteSummary {
   id: string;
   title: string;
   favorite: boolean;
+  origin: NoteOrigin;
   blockCount: number;
   /** 一覧カードに出す本文の書き出し */
   excerpt: string;
@@ -118,6 +140,8 @@ export interface NoteListQuery {
 export interface NoteCreateInput {
   title?: string;
   source?: NoteSourceRef | null;
+  /** 省略時は source の有無から material / self を決める */
+  origin?: NoteOrigin;
 }
 
 /** PATCH /webcoach/notes/:id */

@@ -34,6 +34,7 @@ import { currentStreakInfo, studyActivityHandlers } from './studyActivityHandler
 import { STUDY_PEERS } from './studyPeers';
 import { listGoals, replaceGoals } from './coachingGoalsStore';
 import { buildNextCourses } from '../utils/nextCourseRecommend';
+import { searchMaterials } from './materialSearch';
 
 // ---- 固定モックデータ（型に沿った最小限） ----------------------------------
 const MOCK_USER_ID = 2;
@@ -382,6 +383,21 @@ export const handlers = [
     const base = catalog.find((c) => c.id === resumeId);
     const enrolledIds = userCourses.map((c) => c.id);
     return HttpResponse.json(buildNextCourses(base, catalog, enrolledIds));
+  }),
+
+  // AI教材検索。「配色が苦手」のような自由文から教材を選ぶ。
+  // 判定は materialSearch.ts に置いてある（実BFFが同じ形を返すようになったらこのハンドラだけ落とせばよい）。
+  http.post('*/api/webcoach/material-search', async ({ request }) => {
+    let query = '';
+    try {
+      const body = (await request.json()) as { query?: string };
+      query = typeof body?.query === 'string' ? body.query : '';
+    } catch {
+      /* 本文が壊れていても空クエリとして扱う */
+    }
+    return HttpResponse.json(
+      searchMaterials(query, catalog, userCourses.map((c) => c.id), resumeCourses[0]?.courseid)
+    );
   }),
 
   http.get('*/api/webcoach/community-pulse', () => HttpResponse.json(communityPulseMock)),

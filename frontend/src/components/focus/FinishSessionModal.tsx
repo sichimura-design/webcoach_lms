@@ -2,9 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Minus, Plus, X } from 'lucide-react';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
-import { ACHIEVEMENT_LABEL, Achievement, StudyFinishDraft } from '../../types/studyActivity';
-import { STUDY_SESSION_MODE_LABEL } from '../../types/studyRoom';
-import { MAX_ADJUST_EXTRA_MINUTES, formatMinutesHM } from '../../utils/studyStats';
+import {
+  ACHIEVEMENT_LABEL,
+  Achievement,
+  STUDY_CATEGORY_LABEL,
+  StudyFinishDraft,
+} from '../../types/studyActivity';
+import { MAX_ADJUST_EXTRA_MINUTES, displaySegments, formatMinutesHM } from '../../utils/studyStats';
 import { formatSessionRange } from './focusFormat';
 
 /**
@@ -111,6 +115,14 @@ export function FinishSessionModal({
   const { snapshot } = draft;
   const maxMinutes = measuredMinutes + MAX_ADJUST_EXTRA_MINUTES;
 
+  /*
+   * 表示する内訳。minutes（ユーザーが修正できる値）に合わせて配分し直す。
+   * 保存されるのも同じ比率（buildActivityInput が rescaleSegments を通す）。
+   * displaySegments は分に丸めたうえで、合計が minutes と一致するよう端数を配り、
+   * 1行しか残らないときは空を返す（学習時間と同じことを2回言わないため）。
+   */
+  const breakdown = displaySegments(snapshot.segments ?? [], minutes);
+
   const stepMinutes = (delta: number) =>
     setMinutes((v) => Math.min(maxMinutes, Math.max(1, v + delta)));
 
@@ -133,13 +145,7 @@ export function FinishSessionModal({
   };
 
   const title =
-    step === 'done'
-      ? '記録しました'
-      : step === 'detail'
-        ? '学習した内容を残す'
-        : snapshot.completedTarget
-          ? '目標時間まで集中できました'
-          : '学習を記録する';
+    step === 'done' ? '記録しました' : step === 'detail' ? '学習した内容を残す' : 'おつかれさまでした';
 
   return (
     <div
@@ -275,14 +281,22 @@ export function FinishSessionModal({
                   )}
                 </Row>
 
-                <Row label="タイマー種類">
-                  <Value>
-                    {STUDY_SESSION_MODE_LABEL[snapshot.mode]}
-                    {snapshot.mode === 'pomodoro' && snapshot.targetMinutes
-                      ? ` ${snapshot.targetMinutes}分`
-                      : ''}
-                  </Value>
-                </Row>
+                {/* カテゴリ別の内訳。合計は必ず上の「学習時間」と一致し、
+                    時間を修正すると内訳も比例して動く。1行だけになるときは出さない。 */}
+                {breakdown.length > 0 && (
+                  <Row label="内訳">
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, alignItems: 'flex-end' }}>
+                      {breakdown.map((seg) => (
+                        <div key={seg.category} style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                          <span style={{ ...font.caption, color: color.textMuted }}>
+                            {STUDY_CATEGORY_LABEL[seg.category]}
+                          </span>
+                          <Value>{formatMinutesHM(seg.minutes)}</Value>
+                        </div>
+                      ))}
+                    </div>
+                  </Row>
+                )}
 
                 <Row label="学習した教材">
                   {snapshot.course ? (

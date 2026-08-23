@@ -6,7 +6,7 @@ import { useStudyActivities } from '../../hooks/useStudyActivities';
 import { useScaleToFit } from '../../hooks/useScaleToFit';
 import { color, font, radius, shadow, space } from '../../theme/webcoachTheme';
 import { toLocalDateKey } from '../../utils/studyStats';
-import StudyRoomHeader from '../studyRoom/StudyRoomHeader';
+import PageTitleBar from '../shared/PageTitleBar';
 import StudyLogList from './StudyLogList';
 import StudySummaryCard from './StudySummaryCard';
 
@@ -93,8 +93,8 @@ function StudyLogPage() {
               transformOrigin: 'top left',
             }}
           >
-            <StudyRoomHeader
-              active="log"
+            <PageTitleBar
+              title="学習記録"
               right={
                 <div style={{ display: 'flex', gap: 8 }}>
                   {RANGES.map((r) => {

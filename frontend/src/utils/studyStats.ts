@@ -29,14 +29,18 @@ import {
 import {
   ActiveStudySession,
   Achievement,
+  CategoryStudyTotal,
   CourseStudyTotal,
   StudyActivity,
   StudyActivityInput,
+  StudyCategory,
   StudyDayTotal,
   StudyFinishDraft,
   StudyPeriodTotal,
+  StudySegmentTotal,
   StudyStatsSummary,
   StudyStreak,
+  STUDY_CATEGORY_ORDER,
 } from '../types/studyActivity';
 import { StreakInfo, WeekActivity } from '../types/mypage';
 
@@ -51,6 +55,14 @@ export const DAY_BOUNDARY_HOUR = 0;
 
 /** 一時停止したまま／動かしたまま放置されたと見なす時間。黙って記録すると累計が壊れる */
 export const STALE_SESSION_MS = 12 * 60 * 60 * 1000;
+
+/**
+ * 最後の操作からこの時間動きが無ければ「まだ学習していますか？」と確認する。
+ * 🔴 短すぎると集中して読んでいる人に割り込む。長すぎると離席ぶんが記録に混ざる。
+ *    STALE_SESSION_MS（12時間）はタブを閉じたまま日をまたいだ場合の最後の保険で、
+ *    こちらが日常的に効く方の検知。
+ */
+export const IDLE_PROMPT_MS = 30 * 60 * 1000;
 
 /** 終了時に修正できる上限（実測 + この分数）。桁の打ち間違いを弾く */
 export const MAX_ADJUST_EXTRA_MINUTES = 240;
@@ -108,6 +120,132 @@ export function hasReachedTarget(s: ActiveStudySession, now: number = Date.now()
 /** 一時停止したまま／動かしたまま長時間放置されたセッションか（＝タイマーの消し忘れ） */
 export function isStaleSession(s: ActiveStudySession, now: number = Date.now()): boolean {
   return now - (s.pausedAt ?? s.startedAt) > STALE_SESSION_MS;
+}
+
+/** 最後の操作から IDLE_PROMPT_MS 以上動きが無いか（＝離席したまま計測が続いている疑い） */
+export function isIdleSession(s: ActiveStudySession, now: number = Date.now()): boolean {
+  if (s.pausedAt !== null) return false;
+  return now - s.lastActiveAt > IDLE_PROMPT_MS;
+}
+
+/**
+ * 実行中セッションのカテゴリ別内訳（実測秒）。
+ *
+ * 🔴 区間の終わりは「閉じた区間なら endedAt、開いている区間なら end = pausedAt ?? now」で測る。
+ *    セッション全体の経過（sessionElapsedSeconds）と同じ end を使うので、
+ *    合計は必ず sessionElapsedSeconds と一致する。
+ * 🔴 同じカテゴリの区間はまとめる（教材→AI→教材 なら教材は1行）。
+ */
+export function sessionSegmentTotals(
+  s: ActiveStudySession,
+  now: number = Date.now()
+): StudySegmentTotal[] {
+  const end = s.pausedAt ?? now;
+  const acc = new Map<StudyCategory, number>();
+  for (const seg of s.segments ?? []) {
+    const segEnd = seg.endedAt ?? end;
+    const seconds = Math.max(0, Math.floor((segEnd - seg.startedAt) / 1000));
+    if (seconds <= 0) continue;
+    acc.set(seg.category, (acc.get(seg.category) ?? 0) + seconds);
+  }
+  return STUDY_CATEGORY_ORDER.filter((c) => acc.has(c)).map((category) => ({
+    category,
+    seconds: acc.get(category) as number,
+  }));
+}
+
+/**
+ * 内訳の合計を目標秒ぴったりに合わせ直す。
+ *
+ * 終了カードでユーザーが分数を修正できるため、実測の内訳をそのまま残すと
+ * 「学習時間 42分／内訳の合計 37分」という嘘が出る。durationMinutes を権威として
+ * 比例配分し、端数は最大の区間に寄せて必ず一致させる。
+ */
+export function rescaleSegments(segments: StudySegmentTotal[], targetSeconds: number): StudySegmentTotal[] {
+  const total = segments.reduce((sum, s) => sum + s.seconds, 0);
+  if (segments.length === 0 || targetSeconds <= 0) return [];
+  if (total <= 0) return [{ category: segments[0].category, seconds: targetSeconds }];
+
+  const scaled = segments.map((s) => ({ ...s, seconds: Math.round((s.seconds / total) * targetSeconds) }));
+  const diff = targetSeconds - scaled.reduce((sum, s) => sum + s.seconds, 0);
+  if (diff !== 0) {
+    let largest = 0;
+    for (let i = 1; i < scaled.length; i += 1) if (scaled[i].seconds > scaled[largest].seconds) largest = i;
+    scaled[largest] = { ...scaled[largest], seconds: Math.max(0, scaled[largest].seconds + diff) };
+  }
+  return scaled.filter((s) => s.seconds > 0);
+}
+
+/**
+ * 記録1件のカテゴリ別内訳を読む。
+ * segments を持たない古い記録は、教材が付いていれば教材・無ければその他として扱う
+ * （旧実装で計測できたのは集中ブースと教材ページだけなので実態に一番近い）。
+ */
+export function activitySegments(a: StudyActivity): StudySegmentTotal[] {
+  const seconds = a.session.durationMinutes * 60;
+  if (a.session.segments && a.session.segments.length > 0) return a.session.segments;
+  return [{ category: a.course ? 'material' : 'other', seconds }];
+}
+
+/**
+ * 内訳を「分」で表示するための配分。
+ *
+ * 🔴 秒をそのまま Math.round(s/60) すると、22秒を4カテゴリに分けた直後のような
+ *    短いセッションで「教材 0分 / AIコーチ 0分 / 復習 0分 / その他 0分」という
+ *    情報ゼロの行が並ぶ。最大剰余法で分を配ることで、
+ *      - 表示された分の合計が totalMinutes と必ず一致し、
+ *      - 端数だけの区間は 0分 になって（呼び出し側で）消える
+ *    という2つを同時に満たす。
+ * 🔴 0分の行は呼び出し側で捨てる。残りが1行だけなら内訳を出す意味が無い
+ *    （上に出ている学習時間と同じことを2回言うだけになる）。
+ */
+export function segmentMinutes(
+  segments: StudySegmentTotal[],
+  totalMinutes: number
+): { category: StudyCategory; minutes: number }[] {
+  const totalSeconds = segments.reduce((sum, s) => sum + s.seconds, 0);
+  if (segments.length === 0 || totalSeconds <= 0 || totalMinutes <= 0) return [];
+
+  const exact = segments.map((s) => ({ category: s.category, raw: (s.seconds / totalSeconds) * totalMinutes }));
+  const out = exact.map((e) => ({ category: e.category, minutes: Math.floor(e.raw) }));
+  let remainder = totalMinutes - out.reduce((sum, o) => sum + o.minutes, 0);
+
+  // 端数の大きい順に1分ずつ配る
+  const order = exact
+    .map((e, i) => ({ i, frac: e.raw - Math.floor(e.raw) }))
+    .sort((a, b) => b.frac - a.frac);
+  for (const { i } of order) {
+    if (remainder <= 0) break;
+    out[i] = { ...out[i], minutes: out[i].minutes + 1 };
+    remainder -= 1;
+  }
+  return out;
+}
+
+/** 表示用の内訳。0分の行を落とし、2行以上残らなければ空を返す（＝出さない） */
+export function displaySegments(
+  segments: StudySegmentTotal[],
+  totalMinutes: number
+): { category: StudyCategory; minutes: number }[] {
+  const rows = segmentMinutes(segments, totalMinutes).filter((r) => r.minutes > 0);
+  return rows.length > 1 ? rows : [];
+}
+
+/** カテゴリ別の累計。courseTotals と同じ考え方で、0分のカテゴリは含めない */
+export function categoryTotals(activities: StudyActivity[]): CategoryStudyTotal[] {
+  const acc = new Map<StudyCategory, { seconds: number; sessionCount: number }>();
+  for (const a of activities) {
+    for (const seg of activitySegments(a)) {
+      const cur = acc.get(seg.category) ?? { seconds: 0, sessionCount: 0 };
+      acc.set(seg.category, { seconds: cur.seconds + seg.seconds, sessionCount: cur.sessionCount + 1 });
+    }
+  }
+  return STUDY_CATEGORY_ORDER.filter((c) => acc.has(c))
+    .map((category) => {
+      const v = acc.get(category) as { seconds: number; sessionCount: number };
+      return { category, minutes: Math.round(v.seconds / 60), sessionCount: v.sessionCount };
+    })
+    .filter((c) => c.minutes > 0);
 }
 
 /** 円形ダイヤルの塗り割合（0..1）。通常タイマーは分母が無いので 60秒周期の秒針にする */
@@ -306,6 +444,7 @@ export function summarize(
     streak: computeStreak(activities, today),
     dailyTotals: dailyTotals(activities, subDays(today, Math.max(0, days - 1)), today),
     byCourse: courseTotals(activities),
+    byCategory: categoryTotals(activities),
     recent: sortByOccurredDesc(activities).slice(0, RECENT_LIMIT),
     generatedAt: new Date().toISOString(),
   };
@@ -365,6 +504,9 @@ export function buildActivityInput(
       contentNote: clampText(draft.contentNote),
       memo: clampText(draft.memo),
       achievement: draft.achievement,
+      // 🔴 実測の内訳をそのまま残さず、確定した durationMinutes に合わせ直す。
+      //    そうしないと「学習時間 42分／内訳の合計 37分」という嘘が記録に残る。
+      segments: rescaleSegments(snapshot.segments, Math.max(1, draft.actualMinutes) * 60),
     },
     visibility: 'private',
   };
@@ -408,6 +550,9 @@ export function buildFinishDraft(
       pausedCount: session.pausedCount,
       pausedSeconds: Math.round(session.pausedTotalMs / 1000),
       completedTarget: session.targetReachedAt !== null,
+      // 実測のまま持つ。durationMinutes への配分は buildActivityInput が行う
+      // （終了カードで分数を変えるたびに配分をやり直せるよう、元の比率を残しておく）
+      segments: sessionSegmentTotals(session, end),
     },
   };
 }

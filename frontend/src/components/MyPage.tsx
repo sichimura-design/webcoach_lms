@@ -14,6 +14,7 @@ import ContinueLearningHero from './mypage/ContinueLearningHero';
 import LearningStreakCard from './mypage/LearningStreakCard';
 import NextCoachingPlan from './mypage/NextCoachingPlan';
 import NextCoachingCardContainer from './mypage/NextCoachingCardContainer';
+import StudyRankingCard from './focus/StudyRankingCard';
 import { Course } from '../types/mypage';
 
 /**
@@ -38,7 +39,7 @@ import { Course } from '../types/mypage';
 /** セクションの小見出し（Eyebrow）。DESIGN.md §3 の 13px/700/letter-spacing .08em */
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--dc-text-muted)', letterSpacing: '.08em', paddingLeft: 4 }}>
+    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--dc-text-muted)', letterSpacing: '.08em', paddingLeft: 4 }}>
       {children}
     </div>
   );
@@ -139,7 +140,7 @@ function MyPage() {
 
       <main
         className="flex flex-col"
-        style={{ flex: 1, padding: '32px 28px 20px', color: 'var(--dc-text)' }}
+        style={{ flex: 1, padding: '44px 36px 24px', color: 'var(--dc-text)' }}
       >
         <MypageGreeting
           name={avatarName}
@@ -151,7 +152,7 @@ function MyPage() {
         <RoadmapStrip userId={user?.userid} />
 
         <div className="mypage-3d-grid">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <Eyebrow>続きを学ぶ</Eyebrow>
             {primaryCourse && (
               <ContinueLearningHero
@@ -165,13 +166,23 @@ function MyPage() {
             <LearningStreakCard stats={studyStats} loading={studyStatsLoading} />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <Eyebrow>コーチと学ぶ</Eyebrow>
             {/* 読み込み中と「次回の予定なし」のときは null を返す。
                 縦積みなので、消えても下のカードが繰り上がるだけで崩れない
                 （2×2グリッド時代はセルの位置を明示する必要があった） */}
             <NextCoachingCardContainer userId={user?.userid} />
             <NextCoachingPlan userId={user?.userid} />
+
+            {/*
+              🔴 ランキングは「自分から見に行かないがモチベーションになる情報」なので、
+                 独立ページを作らずトップで自然に目に入る位置に置く。
+                 集中ブースの廃止に伴ってここへ移設した（元は /focus-booth の右下）。
+              🔴 このカードは webcoachTheme 系の配色を内蔵している。マイページの
+                 --dc-* とは別系統なので、色を直すときは両方を見ること。
+            */}
+            <Eyebrow>みんなの学習時間</Eyebrow>
+            <StudyRankingCard userId={user?.userid} />
           </div>
         </div>
 

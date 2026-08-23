@@ -57,6 +57,7 @@ function toSummary(note: Note): NoteSummary {
     id: note.id,
     title: note.title,
     favorite: note.favorite,
+    origin: note.origin,
     blockCount: note.blocks.length,
     excerpt: excerptOf(note),
     source: note.source,
@@ -189,6 +190,9 @@ export const noteHandlers = [
       title: (body.title ?? '').trim() || '無題のノート',
       blocks: [],
       favorite: false,
+      // 出どころは「どこで作ったか」で一度決まる。指定が無ければ
+      // レッスンの文脈を持って来たかどうかで 教材 / 自分のメモ に振る
+      origin: body.origin ?? (body.source ? 'material' : 'self'),
       source: body.source ?? null,
       createdAt: nowIso,
       updatedAt: nowIso,

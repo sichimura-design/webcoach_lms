@@ -86,6 +86,10 @@ export function useNoteCapture() {
       const note = await bffClient.createNote({
         title: pending.suggestedTitle,
         source: pending.source,
+        // 出どころは取り込むものの種類で決まる。AI回答から生まれたノートは
+        // レッスンの文脈を持っていても「AIコーチ」として扱う
+        origin:
+          pending.block.kind === 'answer' ? 'ai' : pending.source ? 'material' : 'self',
       });
       const ok = await append(note.id, pending.block, pending.lessonId);
       if (ok) setPending(null);

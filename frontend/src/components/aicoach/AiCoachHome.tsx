@@ -1,54 +1,71 @@
 import { useRef, useState, type CSSProperties } from 'react';
-import { ChevronRight, ArrowUp, Info, Plus, MessageSquare, Sparkles, X } from 'lucide-react';
-import { color, font } from '../../theme/webcoachTheme';
+import {
+  ArrowUp,
+  Check,
+  ChevronRight,
+  HelpCircle,
+  History,
+  Info,
+  Plus,
+  Sparkles,
+  X,
+} from 'lucide-react';
 import {
   AiSkillId,
   AI_SKILL_META,
   ConcreteAiSkillId,
   FEATURED_AI_SKILLS,
 } from '../../types/aiSkill';
-import { AiCoachSession } from '../../types/aiCoach';
-import { AiSkillRecommendation } from '../../utils/aiSkillRecommend';
 import SkillSelector from '../learning/SkillSelector';
 import { AI_SKILL_ICON } from './aiSkillIcons';
 
 /**
  * AI専用ページのホーム状態（要件§「画面は3つの状態に分ける」1）。
  *
- * 上に大きな入力欄、下に目的別のAI機能一覧を置く。狙いは2種類の入り方を
- * 両方成立させること:
+ * claude.ai/design『AIコーチ 3案』の案 1a「センター集中型 — 問いかけが主役の
+ * ゼロ状態＋機能グリッド」をそのまま実装している。上から:
+ *   ヒーロー → 大きな入力欄 → できること帯 → AIアプリ6枚
+ * 狙いは2種類の入り方を両方成立させること:
  *   ・やりたいことをそのまま書く人 → 上の入力欄からAIコーチが受ける
- *   ・機能を見て選びたい人         → 下の一覧から直接選ぶ
+ *   ・機能を見て選びたい人         → 下のグリッドから直接選ぶ
  * どちらから入っても同じAIワークスペースの中で続くので、
  * カードを押しても別ページ・別タブへは飛ばさない（要件§「AIアプリを選択した後の画面」）。
  *
- * 一覧は「よく使う → あなたにおすすめ → すべて（カテゴリ別）」の3段。
- * 全機能を同じ大きさで並べると、結局どれを使うか判断できなくなるため。
+ * 1a に合わせて外したもの:
+ *   ・「続きから」チップ … 履歴と役割が重なる。右上の「履歴」に寄せた
+ *   ・おすすめ帯         … ゼロ状態から要素を減らし、問いかけを主役にする
+ *   ・ショートカット行   … 6枚のカードグリッドが役割を引き取った
+ *
+ * 色は index.css の --dc-* （.wc-warm）を使う。webcoachTheme の pageBg は
+ * ピンク寄りの #FDFCFC で、1a の暖色クリーム #FBF8F4 とは別系統のため。
+ * 赤は 1a の #DC0C31 ではなく既存のブランド赤 --dc-primary (#D60934) に寄せている
+ * （画面ごとに赤が分裂するのを避ける。目視差はほぼ無い）。
  */
 interface AiCoachHomeProps {
   /** 自由入力の送信。skillId が 'auto' でなければそのモードで始める */
   onSubmit: (text: string, image: string | null, skillId: AiSkillId) => void;
-  /**
-   * 機能を直接選んだ。その機能のモードで新しいセッションを開く。
-   * seedInput があれば入力欄に下書きとして入れる（おすすめ経由のとき）。
-   */
-  onSelectSkill: (skillId: ConcreteAiSkillId, seedInput?: string) => void;
-  /** 学習状況から作ったおすすめ（最大3件） */
-  recommendations: AiSkillRecommendation[];
-  /** 最近使った機能。よく使うAIの前に出す */
-  recentSkills: ConcreteAiSkillId[];
-  /** 続きから開ける直近の相談 */
-  recentSessions: AiCoachSession[];
-  onOpenSession: (id: string) => void;
+  /** 機能を直接選んだ。その機能のモードで新しいセッションを開く */
+  onSelectSkill: (skillId: ConcreteAiSkillId) => void;
+  /** 「全てのAIアプリを見る」→ 機能一覧（?view=catalog）へ */
+  onOpenCatalog: () => void;
+  /** 「ヘルプ・使い方」→ AIコーチの使い方パネル */
+  onOpenHowTo: () => void;
+  /** 「履歴」→ 会話履歴の開閉 */
+  onToggleHistory: () => void;
 }
+
+/** 1a の「できること」帯。相談の当たりを3つだけ見せる（増やすと読まれない） */
+const CAN_DO = ['ノートをもとに復習', '制作物の添削', '次に進める学習の相談'];
+
+/** コンポーザーと できること帯 の幅。1a の 760px */
+const CENTER_WIDTH = 760;
 
 export function AiCoachHome({
   onSubmit,
   onSelectSkill,
-  recommendations,
-  recentSkills,
-  recentSessions,
-  onOpenSession,
+  onOpenCatalog,
+  onOpenHowTo,
+  onToggleHistory,
 }: AiCoachHomeProps) {
   const [text, setText] = useState('');
   const [image, setImage] = useState<string | null>(null);
@@ -71,41 +88,81 @@ export function AiCoachHome({
   };
 
   return (
-    <div style={{ height: '100%', overflowY: 'auto', background: color.pageBg }}>
-      <div className="wc-page" style={{ '--wc-page-max': '940px', '--wc-page-top': '38px', '--wc-page-bottom': '56px' } as CSSProperties}>
-        {/* ── 見出し ── */}
-        <div className="flex flex-col items-center" style={{ gap: 10, textAlign: 'center' }}>
+    <div style={{ height: '100%', overflowY: 'auto', background: 'var(--dc-bg)' }}>
+      {/* 1a はコンテンツ幅いっぱい（padding 20px 40px 48px）で6枚を3列に並べる。
+          --wc-page-x を既定の clamp(20px,5vw,64px) から 40px に落として合わせ、
+          4Kでカードが伸び切らないよう max だけ持たせている。 */}
+      <div
+        className="wc-page"
+        style={
+          {
+            '--wc-page-max': '1180px',
+            '--wc-page-x': '40px',
+            '--wc-page-top': '20px',
+            '--wc-page-bottom': '48px',
+          } as CSSProperties
+        }
+      >
+        {/* ── 右上。上部バーを外した分、ここが使い方と履歴の入口になる ── */}
+        <div className="flex items-center justify-end" style={{ gap: 10 }}>
+          <button type="button" onClick={onOpenHowTo} className={CHIP_CLASS} style={chipStyle}>
+            <HelpCircle size={15} style={{ color: 'var(--dc-text-muted)', flexShrink: 0 }} />
+            ヘルプ・使い方
+          </button>
+          {/* 1a には無いが、ホームから過去の相談へ辿る道が他に無くなるので置く */}
+          <button type="button" onClick={onToggleHistory} className={CHIP_CLASS} style={chipStyle}>
+            <History size={15} style={{ color: 'var(--dc-text-muted)', flexShrink: 0 }} />
+            履歴
+          </button>
+        </div>
+
+        {/* ── ヒーロー ── */}
+        <div
+          className="flex flex-col items-center"
+          style={{ textAlign: 'center', marginTop: 16 }}
+        >
           <span
             aria-hidden
             className="grid place-items-center"
             style={{
-              width: 54,
-              height: 54,
+              width: 64,
+              height: 64,
               borderRadius: '50%',
-              background: color.primarySoft,
-              color: color.primary,
-              boxShadow: '0 8px 22px rgba(214,9,52,.10)',
+              background: 'var(--dc-soft-100)',
+              color: 'var(--dc-primary)',
             }}
           >
-            <Sparkles size={24} />
+            <Sparkles size={28} />
           </span>
-          <h1 style={{ ...font.pageTitle, fontSize: 32, margin: 0, color: color.text }}>
+          <h1
+            style={{
+              margin: '16px 0 0',
+              fontSize: 32,
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              color: 'var(--dc-text)',
+            }}
+          >
             今日は何をお手伝いしましょうか？
           </h1>
-          <p style={{ margin: 0, fontSize: 13, color: color.textMuted }}>
+          <p style={{ margin: '10px 0 0', fontSize: 15, color: 'var(--dc-text-muted)' }}>
             AIコーチが、学習・制作・キャリアに関するお悩みをサポートします。
           </p>
         </div>
 
         {/* ── 大きな入力欄（AIコーチ兼ルーター）── */}
+        {/* 🔴 overflow:hidden を付けないこと。
+            ツール行の SkillSelector は position:absolute のリストを下へ開くので、
+            ここで切ると「おまかせ」の選択肢がカードに食われて数pxしか見えなくなる。
+            角丸からの飛び出しは textarea 側を透明＋上だけ角丸にして防いでいる。 */}
         <div
           style={{
-            marginTop: 24,
-            border: `1px solid ${color.borderStrong}`,
-            borderRadius: 18,
-            background: color.surface,
-            boxShadow: '0 10px 30px rgba(190,60,70,.06)',
-            overflow: 'hidden',
+            maxWidth: CENTER_WIDTH,
+            margin: '28px auto 0',
+            border: '1px solid var(--dc-border)',
+            borderRadius: 'var(--dc-radius-xl)',
+            background: 'var(--dc-surface)',
+            boxShadow: 'var(--dc-shadow-card)',
           }}
         >
           <textarea
@@ -129,15 +186,19 @@ export function AiCoachHome({
             }}
             placeholder="AIに相談する…（例：バナーの配色を見てほしい／案件の応募文を書きたい）"
             style={{
+              display: 'block',
               width: '100%',
-              minHeight: 92,
+              minHeight: 52,
               maxHeight: 220,
               resize: 'vertical',
               border: 0,
-              padding: '18px 20px 6px',
-              color: color.text,
+              // カードの角丸から白い角が飛び出さないように、地は透かして上だけ丸める
+              borderRadius: 'var(--dc-radius-xl) var(--dc-radius-xl) 0 0',
+              background: 'transparent',
+              padding: '20px 20px 4px',
+              color: 'var(--dc-text)',
               outline: 'none',
-              fontSize: 13.5,
+              fontSize: 15,
               lineHeight: 1.7,
               fontFamily: 'inherit',
             }}
@@ -148,11 +209,11 @@ export function AiCoachHome({
               className="flex items-center"
               style={{
                 gap: 9,
-                margin: '0 16px 6px',
+                margin: '0 20px 6px',
                 padding: 8,
-                border: `1px solid ${color.border}`,
+                border: '1px solid var(--dc-border)',
                 borderRadius: 11,
-                background: color.pageBg,
+                background: 'var(--dc-bg)',
               }}
             >
               <img
@@ -160,7 +221,7 @@ export function AiCoachHome({
                 alt="添付画像のプレビュー"
                 style={{ width: 44, height: 44, objectFit: 'cover', borderRadius: 8 }}
               />
-              <span style={{ flex: 1, fontSize: 11, color: color.textSubtle }}>
+              <span style={{ flex: 1, fontSize: 11.5, color: 'var(--dc-text-subtle)' }}>
                 画像を添付しました。内容に応じて制作物添削を提案します。
               </span>
               <button
@@ -172,10 +233,10 @@ export function AiCoachHome({
                   height: 26,
                   display: 'grid',
                   placeItems: 'center',
-                  border: `1px solid ${color.border}`,
+                  border: '1px solid var(--dc-border)',
                   borderRadius: 7,
-                  background: color.surface,
-                  color: color.iconMuted,
+                  background: 'var(--dc-surface)',
+                  color: 'var(--dc-text-muted)',
                   cursor: 'pointer',
                 }}
               >
@@ -184,7 +245,7 @@ export function AiCoachHome({
             </div>
           )}
 
-          <div className="flex items-center" style={{ gap: 9, padding: '4px 14px 14px' }}>
+          <div className="flex items-center" style={{ gap: 12, padding: '0 20px 12px', height: 40 }}>
             <input
               ref={fileInputRef}
               type="file"
@@ -203,12 +264,12 @@ export function AiCoachHome({
               title="画像を添付する"
               className="grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
               style={{
-                width: 34,
-                height: 34,
-                border: `1px solid ${color.border}`,
-                borderRadius: 10,
-                background: color.surface,
-                color: color.textMuted,
+                width: 32,
+                height: 32,
+                border: '1px solid var(--dc-border-strong)',
+                borderRadius: '50%',
+                background: 'var(--dc-surface)',
+                color: 'var(--dc-text-muted)',
                 cursor: 'pointer',
                 flexShrink: 0,
               }}
@@ -217,7 +278,7 @@ export function AiCoachHome({
             </button>
             {/* 「AI選択できる？」への答え。既定は自動で、ここから明示的に選べる */}
             <SkillSelector value={skillId} onChange={setSkillId} />
-            <span style={{ fontSize: 10, color: color.textFaint }}>Ctrl+Enter で送信</span>
+            <span style={{ fontSize: 12, color: 'var(--dc-text-subtle)' }}>Ctrl+Enter で送信</span>
             <div style={{ flex: 1 }} />
             <button
               type="button"
@@ -226,17 +287,17 @@ export function AiCoachHome({
               aria-label="AIコーチに送信"
               className="grid place-items-center disabled:opacity-40"
               style={{
-                width: 36,
-                height: 36,
+                width: 44,
+                height: 44,
                 border: 0,
                 borderRadius: '50%',
-                background: color.primary,
+                background: 'var(--dc-primary)',
                 color: '#fff',
                 cursor: canSubmit ? 'pointer' : 'default',
                 flexShrink: 0,
               }}
             >
-              <ArrowUp size={17} />
+              <ArrowUp size={18} />
             </button>
           </div>
         </div>
@@ -244,162 +305,161 @@ export function AiCoachHome({
         {/* 「AI選択できる？」の答えを、選ばなかった人にも見えるところに置く */}
         <div
           className="flex items-center justify-center"
-          style={{ gap: 6, marginTop: 12, fontSize: 11.5, color: color.textFaint }}
+          style={{ gap: 6, marginTop: 12, fontSize: 12.5, color: 'var(--dc-text-muted)' }}
         >
-          <Info size={13} />
+          <Info size={14} />
           相談内容に応じて、最適なAIが自動で選ばれます
         </div>
 
-        {/* ── 続きから ── */}
-        {recentSessions.length > 0 && (
-          <div className="flex flex-wrap items-center" style={{ gap: 7, marginTop: 18 }}>
-            <span style={{ fontSize: 10.5, fontWeight: 700, color: color.textFaint }}>続きから</span>
-            {recentSessions.map((session) => (
-              <button
-                key={session.id}
-                type="button"
-                onClick={() => onOpenSession(session.id)}
-                className="inline-flex items-center"
-                style={{
-                  gap: 5,
-                  maxWidth: 260,
-                  height: 28,
-                  padding: '0 11px',
-                  border: `1px solid ${color.border}`,
-                  borderRadius: 999,
-                  background: color.surface,
-                  color: color.textBody,
-                  fontSize: 10.5,
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                }}
-              >
-                <MessageSquare size={11} style={{ color: color.textFaint, flexShrink: 0 }} />
-                <span
-                  style={{
-                    minWidth: 0,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {session.title}
-                </span>
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* ── よく使う機能へのショートカット ──
-            以前はここから下に「よく使う → おすすめ → すべて（カテゴリ別）」の
-            3段のカードギャラリーが続き、「ただアプリが並んでいるだけ」になっていた。
-            探す行為は「AIサポート機能一覧」に分けて、ホームは相談を書くことに専念させる。
-            ここに残すのは、名前を見れば分かる数件の近道だけ。 */}
-        <div className="ai-home-quicklinks">
-          {featuredOrder(recentSkills)
-            .slice(0, 5)
-            .map((id) => {
-              const meta = AI_SKILL_META[id];
-              const Icon = AI_SKILL_ICON[meta.icon];
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => onSelectSkill(id)}
-                  className="inline-flex items-center justify-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                  style={{
-                    gap: 8,
-                    minWidth: 0,
-                    padding: '10px 6px',
-                    border: 0,
-                    background: 'transparent',
-                    color: color.textBody,
-                    fontFamily: 'inherit',
-                    fontSize: 12.5,
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Icon size={15} style={{ color: color.primary, flexShrink: 0 }} />
-                  <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {meta.shortLabel}
-                  </span>
-                  <ChevronRight size={13} style={{ color: color.textFaint, flexShrink: 0 }} />
-                </button>
-              );
-            })}
+        {/* ── できること ──
+            何を書けばいいか分からない人向けの当たり。カードにせず帯1本に留めるのは、
+            ここで選択肢を増やすと入力欄から目が離れるため。 */}
+        <div
+          className="ai-home-can"
+          style={{
+            maxWidth: CENTER_WIDTH,
+            margin: '20px auto 0',
+            padding: '16px 24px',
+            borderRadius: 'var(--dc-radius-lg)',
+            background: 'var(--dc-tint-50)',
+          }}
+        >
+          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--dc-text)', flexShrink: 0 }}>
+            できること
+          </span>
+          {CAN_DO.map((label) => (
+            <span key={label} className="flex items-center" style={{ gap: 8, minWidth: 0 }}>
+              <Check
+                size={15}
+                strokeWidth={2}
+                style={{ color: 'var(--dc-primary)', flexShrink: 0 }}
+              />
+              <span style={{ fontSize: 13, color: 'var(--dc-text-body)' }}>{label}</span>
+            </span>
+          ))}
         </div>
 
-        {/* ── いま学んでいる教材からそのまま聞く ──
-            おすすめカードを3枚並べる代わりに、根拠が一番強い1本だけを帯にした。
-            「なぜ自分に出たか」が「いま学習中だから」で説明しきれる形にしている。 */}
-        {recommendations.length > 0 && (
-          <div
-            className="flex items-center"
+        {/* ── AIアプリでできること ──
+            機能を見て選びたい人の入口。ここは 1a のデザイン固定順（FEATURED_AI_SKILLS）で、
+            「最近使った順」に並べ替えない。毎回場所が変わると覚えられないため。
+            探す行為そのものは「全てのAIアプリを見る」の一覧に分けている。 */}
+        <div
+          className="flex items-baseline justify-between"
+          style={{ gap: 12, margin: '36px 0 14px' }}
+        >
+          <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: 'var(--dc-text)' }}>
+            AIアプリでできること
+          </h3>
+          <button
+            type="button"
+            onClick={onOpenCatalog}
+            className="inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={{
-              gap: 16,
-              flexWrap: 'wrap',
-              marginTop: 22,
-              padding: '14px 18px',
-              border: `1px solid ${color.border}`,
-              borderRadius: 14,
-              background: color.surface,
+              gap: 2,
+              border: 0,
+              padding: 0,
+              background: 'transparent',
+              color: 'var(--dc-primary)',
+              fontFamily: 'inherit',
+              fontSize: 13,
+              fontWeight: 500,
+              cursor: 'pointer',
+              flexShrink: 0,
             }}
           >
-            <span
-              aria-hidden
-              className="grid place-items-center flex-shrink-0"
-              style={{ width: 34, height: 34, borderRadius: '50%', background: color.primarySoft, color: color.primary }}
-            >
-              <MonitorIcon />
-            </span>
-            <span style={{ flex: '1 1 240px', minWidth: 0, fontSize: 13, fontWeight: 700, color: color.text }}>
-              {recommendations[0].title}
-            </span>
-            <span aria-hidden style={{ width: 1, height: 24, background: color.divider }} />
-            <button
-              type="button"
-              onClick={() => onSelectSkill(recommendations[0].skillId, recommendations[0].seedInput)}
-              className="inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{
-                gap: 6,
-                border: 0,
-                background: 'transparent',
-                color: color.primary,
-                fontFamily: 'inherit',
-                fontSize: 12.5,
-                fontWeight: 800,
-                cursor: 'pointer',
-                flexShrink: 0,
-              }}
-            >
-              {recommendations[0].reason}
-              <ChevronRight size={14} />
-            </button>
-          </div>
-        )}
+            全てのAIアプリを見る
+            <ChevronRight size={15} />
+          </button>
+        </div>
+
+        <div className="ai-home-apps">
+          {FEATURED_AI_SKILLS.map((id) => {
+            const meta = AI_SKILL_META[id];
+            const Icon = AI_SKILL_ICON[meta.icon];
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => onSelectSkill(id)}
+                className="ai-home-app-card flex items-start text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{
+                  gap: 14,
+                  height: '100%',
+                  padding: '18px 20px',
+                  border: '1px solid var(--dc-border)',
+                  borderRadius: 'var(--dc-radius-lg)',
+                  background: 'var(--dc-surface)',
+                  boxShadow: 'var(--dc-shadow-card)',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                }}
+              >
+                <span
+                  aria-hidden
+                  className="grid place-items-center flex-shrink-0"
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 'var(--dc-radius-md)',
+                    background: 'var(--dc-soft-100)',
+                    color: 'var(--dc-primary)',
+                  }}
+                >
+                  <Icon size={19} />
+                </span>
+                <span style={{ flex: 1, minWidth: 0 }}>
+                  <span
+                    style={{
+                      display: 'block',
+                      fontSize: 14.5,
+                      fontWeight: 700,
+                      color: 'var(--dc-text)',
+                    }}
+                  >
+                    {meta.shortLabel}
+                  </span>
+                  <span
+                    style={{
+                      display: 'block',
+                      marginTop: 4,
+                      fontSize: 12.5,
+                      lineHeight: 1.7,
+                      color: 'var(--dc-text-muted)',
+                    }}
+                  >
+                    {meta.description}
+                  </span>
+                </span>
+                <ChevronRight
+                  size={16}
+                  style={{ color: 'var(--dc-text-subtle)', alignSelf: 'center', flexShrink: 0 }}
+                />
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 }
 
-/** 教材を指すアイコン。lucide の Monitor 相当を最小構成で置く */
-function MonitorIcon() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2.5" y="4" width="19" height="13" rx="2.5" />
-      <path d="M8.5 20.5h7M12 17v3.5" />
-    </svg>
-  );
-}
+/** 右上のチップ（ヘルプ・履歴）。1a の h34 / r12 / 12.5px */
+const CHIP_CLASS =
+  'inline-flex items-center hover:bg-[#FDF7F3] focus-visible:ring-2 focus-visible:ring-[#F6B9BD]';
 
-/** 最近使った機能をショートカットの先頭へ寄せる */
-function featuredOrder(recentSkills: ConcreteAiSkillId[]): ConcreteAiSkillId[] {
-  const recent = recentSkills.filter((id) => FEATURED_AI_SKILLS.includes(id));
-  return [...recent, ...FEATURED_AI_SKILLS.filter((id) => !recent.includes(id))].slice(
-    0,
-    FEATURED_AI_SKILLS.length
-  );
-}
+const chipStyle: CSSProperties = {
+  gap: 6,
+  height: 34,
+  padding: '0 14px',
+  border: '1px solid var(--dc-border)',
+  borderRadius: 'var(--dc-radius-md)',
+  background: 'var(--dc-surface)',
+  color: 'var(--dc-text)',
+  fontFamily: 'inherit',
+  fontSize: 12.5,
+  fontWeight: 500,
+  cursor: 'pointer',
+  flexShrink: 0,
+};
 
 export default AiCoachHome;
