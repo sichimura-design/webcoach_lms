@@ -16,6 +16,13 @@ import {
   UpdateCoachingScheduleRequest,
   Roadmap,
   RoadmapQueryParams,
+  RoadmapSkill,
+  RoadmapPhase,
+  UserRoadmap,
+  RoadmapProgress,
+  RoadmapProgressUpdate,
+  RoadmapQuestion,
+  RoadmapAnswer,
   AIRequest,
   AIResponse,
   UpdateDBRequest,
@@ -723,6 +730,78 @@ class BFFClient {
 
     const response = await this.api.get('/moodle/course-image', {
       params: { path: param }
+    });
+    return response.data;
+  }
+
+  // ==================== キャリアロードマップ（フェーズ制・スキル別テンプレート） ====================
+
+  /**
+   * ロードマップ スキル一覧取得
+   * GET /api/roadmap/skills
+   */
+  async getRoadmapSkills(): Promise<RoadmapSkill[]> {
+    const response = await this.api.get('/roadmap/skills');
+    return response.data;
+  }
+
+  /**
+   * スキルのフェーズ・テンプレート取得
+   * GET /api/roadmap/phases?skill_id=
+   */
+  async getRoadmapPhases(skillId: number): Promise<RoadmapPhase[]> {
+    const response = await this.api.get('/roadmap/phases', { params: { skill_id: skillId } });
+    return response.data;
+  }
+
+  /**
+   * ロードマップ開始
+   * POST /api/roadmap/users/{userid}
+   */
+  async startUserRoadmap(userId: number, skillId: number): Promise<UserRoadmap> {
+    const response = await this.api.post(`/roadmap/users/${userId}`, { skill_id: skillId });
+    return response.data;
+  }
+
+  /**
+   * 現在のロードマップ取得
+   * GET /api/roadmap/users/{userid}
+   */
+  async getUserRoadmap(userId: number): Promise<UserRoadmap> {
+    const response = await this.api.get(`/roadmap/users/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * フェーズ進捗更新（管理者・コーチのみ）
+   * PUT /api/roadmap/progress/{id}
+   */
+  async updateRoadmapProgress(progressId: number, data: RoadmapProgressUpdate): Promise<RoadmapProgress> {
+    const response = await this.api.put(`/roadmap/progress/${progressId}`, data);
+    return response.data;
+  }
+
+  /**
+   * 見直し質問一覧取得
+   * GET /api/roadmap/questions/{reviewNo}
+   */
+  async getRoadmapQuestions(reviewNo: number): Promise<RoadmapQuestion[]> {
+    const response = await this.api.get(`/roadmap/questions/${reviewNo}`);
+    return response.data;
+  }
+
+  /**
+   * 見直し回答登録
+   * POST /api/roadmap/users/{userid}/answers
+   */
+  async submitRoadmapAnswers(
+    userId: number,
+    reviewNo: number,
+    answers: Array<{ question_no: number; answer: string }>
+  ): Promise<RoadmapAnswer[]> {
+    const response = await this.api.post(`/roadmap/users/${userId}/answers`, {
+      review_no: reviewNo,
+      answers,
     });
     return response.data;
   }

@@ -251,3 +251,118 @@ class WebCoachCoachingSchedule(Base):
         Index('uq_coaching_schedule_pair_no', 'mdl_user_id', 'coach_user_id', 'coaching_no', unique=True),
         Index('idx_coaching_schedule_coach_date', 'coach_user_id', 'coaching_date'),
     )
+
+
+class WebCoachRoadmapSkill(Base):
+    """
+    WebCoach: ロードマップのスキル種別マスタ
+    """
+    __tablename__ = "webcoach_roadmap_skill"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    code = Column(String(64), nullable=False, comment='システム内部識別子。例: web_design')
+    name = Column(String(128), nullable=False, comment='表示名。例: Webデザイナー')
+    goal_label = Column(String(256), nullable=False, comment='画面表示用の最終ゴール文言')
+    display_order = Column(SmallInteger, nullable=False, default=0)
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+    __table_args__ = (
+        Index('uq_roadmap_skill_code', 'code', unique=True),
+    )
+
+
+class WebCoachRoadmapPhase(Base):
+    """
+    WebCoach: スキル別ロードマップのフェーズ・テンプレート
+    """
+    __tablename__ = "webcoach_roadmap_phase"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    skill_id = Column(BigInteger, nullable=False, comment='スキルの種類(webデザイナー/動画編集など)')
+    phase_no = Column(SmallInteger, nullable=False, comment='phase no')
+    name = Column(String(128), nullable=False, comment='phase名')
+    goal = Column(Text, nullable=False, comment='このフェーズの目的')
+    milestone = Column(Text, nullable=True, comment='完了の目安となるマイルストーン')
+    duration_days = Column(SmallInteger, nullable=True, comment='想定期間(日数)。フェーズ開始時にendを自動算出する用途')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+    __table_args__ = (
+        Index('uq_roadmap_phase_skill_no', 'skill_id', 'phase_no', unique=True),
+    )
+
+
+class WebCoachRoadmapTodo(Base):
+    """
+    WebCoach: フェーズで取り組むテーマのテンプレート
+    """
+    __tablename__ = "webcoach_roadmap_todo"
+
+    phase_id = Column(BigInteger, primary_key=True, nullable=False, comment='対象フェーズ(webcoach_roadmap_phase.id)')
+    todo_no = Column(SmallInteger, primary_key=True, nullable=False, comment='フェーズ内の表示順')
+    description = Column(String(256), nullable=False, comment='取り組むテーマ。例: バナー制作')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+
+
+class WebCoachUserRoadmap(Base):
+    """
+    WebCoach: ユーザーが選択したロードマップ（掛け持ち非対応、同時アクティブは1件のみ）
+    """
+    __tablename__ = "webcoach_user_roadmap"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    mdl_user_id = Column(BigInteger, nullable=False, index=True, comment='userid')
+    skill_id = Column(BigInteger, nullable=False, comment='スキルの種類(webデザイナー/動画編集など)')
+    is_completed = Column(SmallInteger, nullable=False, default=0, comment='完了か')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+    # active_markerは「未完了ロードマップは1ユーザー同時1件まで」をDBのUNIQUE制約で強制するための
+    # 生成列（DDL側のみで定義。アプリからは参照・更新しないためここではマッピングしない）
+
+
+class WebCoachRoadmapProgress(Base):
+    """
+    WebCoach: ユーザーのフェーズ進捗
+    """
+    __tablename__ = "webcoach_roadmap_progress"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    user_roadmap_id = Column(BigInteger, nullable=False, comment='対象ロードマップ(webcoach_user_roadmap.id)')
+    phase_id = Column(BigInteger, nullable=False, comment='対象フェーズ(webcoach_roadmap_phase.id)')
+    status = Column(String(32), nullable=False, default='not_started', comment='not_started, in_progress, completed, skipped')
+    start = Column(Date, nullable=True, comment='開始日')
+    end = Column(Date, nullable=True, comment='終了日（期日）。コーチが直接編集可')
+    updated_by = Column(BigInteger, nullable=True, comment='期日を最後に編集したコーチのmdl_user_id')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+    __table_args__ = (
+        Index('uq_roadmap_progress_phase', 'user_roadmap_id', 'phase_id', unique=True),
+        Index('idx_roadmap_progress_status', 'user_roadmap_id', 'status'),
+    )
+
+
+class WebCoachRoadmapQuestion(Base):
+    """
+    WebCoach: 見直し用の固定質問（全ユーザー・全スキル共通）
+    """
+    __tablename__ = "webcoach_roadmap_question"
+
+    review_no = Column(SmallInteger, primary_key=True, nullable=False, comment='n回目の質問か')
+    question_no = Column(SmallInteger, primary_key=True, nullable=False, comment='質問番号')
+    question = Column(Text, nullable=False, comment='質問')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+
+
+class WebCoachRoadmapAnswer(Base):
+    """
+    WebCoach: 見直し質問への回答
+    """
+    __tablename__ = "webcoach_roadmap_answer"
+
+    mdl_user_id = Column(BigInteger, primary_key=True, nullable=False, comment='userid')
+    review_no = Column(SmallInteger, primary_key=True, nullable=False, comment='n回目の質問か')
+    question_no = Column(SmallInteger, primary_key=True, nullable=False, comment='質問番号')
+    answer = Column(SmallInteger, nullable=False, comment='解答の選択肢')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), comment='回答日時')

@@ -194,6 +194,73 @@ export interface RoadmapQueryParams {
   offset?: number;
 }
 
+// WebCoach Career Roadmap（フェーズ制・スキル別テンプレート）
+export interface RoadmapSkill {
+  id: number;
+  code: string;
+  name: string;
+  goal_label: string | null;
+  display_order: number;
+}
+
+export interface RoadmapTodo {
+  phase_id: number;
+  todo_no: number;
+  description: string;
+}
+
+export interface RoadmapPhase {
+  id: number;
+  skill_id: number;
+  phase_no: number;
+  name: string;
+  goal: string;
+  milestone: string;
+  duration_days: number | null;
+  todos: RoadmapTodo[];
+}
+
+export interface RoadmapProgress {
+  id: number;
+  user_roadmap_id: number;
+  phase_id: number;
+  status: 'not_started' | 'in_progress' | 'completed' | 'skipped';
+  start: string | null;
+  end: string | null;
+  updated_by: number | null;
+  phase: RoadmapPhase;
+}
+
+export interface UserRoadmap {
+  id: number;
+  mdl_user_id: number;
+  skill_id: number;
+  is_completed: boolean;
+  skill: RoadmapSkill;
+  target_date: string | null;
+  phases: RoadmapProgress[];
+}
+
+export interface RoadmapProgressUpdate {
+  status?: 'not_started' | 'in_progress' | 'completed' | 'skipped';
+  start?: string;
+  end?: string;
+}
+
+export interface RoadmapQuestion {
+  review_no: number;
+  question_no: number;
+  question: string;
+}
+
+export interface RoadmapAnswer {
+  mdl_user_id: number;
+  review_no: number;
+  question_no: number;
+  answer: string;
+  created_at: string;
+}
+
 // WebCoach AI
 export interface AIImageAttachment {
   media_type: string;

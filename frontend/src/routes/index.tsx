@@ -14,6 +14,7 @@ import BadgesPage from '../components/BadgesPage';
 import ContentListPage from '../components/ContentListPage';
 import CourseContentPage from '../components/CourseContentPage';
 import CourseTopPage from '../components/CourseTopPage';
+import { RoadmapPage } from '../components/RoadmapPage';
 import AccountSettingsPage from '../components/AccountSettingsPage';
 import AnimatedPage from '../components/AnimatedPage';
 import { AdminLayout } from '../components/admin/AdminLayout';
@@ -234,6 +235,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <MyCoachingPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/roadmap"
+        element={
+          <ProtectedRoute>
+            <RoadmapPage />
           </ProtectedRoute>
         }
       />

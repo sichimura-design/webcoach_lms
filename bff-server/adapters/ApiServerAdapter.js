@@ -440,6 +440,108 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get roadmap skill master list
+   */
+  async getRoadmapSkills() {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/roadmap/skills`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get phase templates for a skill
+   */
+  async getRoadmapPhases(skillId) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/roadmap/phases`,
+      {
+        params: { skill_id: skillId },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Start a new roadmap for a user
+   */
+  async startUserRoadmap(userid, skillId) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/roadmap/users/${userid}`,
+      { skill_id: skillId },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get a user's current (active) roadmap
+   */
+  async getUserRoadmap(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/roadmap/users/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update a phase progress entry (status / dates)
+   */
+  async updateRoadmapProgress(progressId, data) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/roadmap/progress/${progressId}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get fixed review questions for a review cycle
+   */
+  async getRoadmapQuestions(reviewNo) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/roadmap/questions/${reviewNo}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Submit answers for a review cycle
+   */
+  async submitRoadmapAnswers(userid, reviewNo, answers) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/roadmap/users/${userid}/answers`,
+      { review_no: reviewNo, answers },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Get next coaching goal
    */
   async getNextCoachingGoal(userid, no) {

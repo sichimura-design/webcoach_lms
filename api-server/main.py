@@ -13,7 +13,7 @@ from slowapi.errors import RateLimitExceeded
 from database import engine, Base
 
 # Import routers
-from routers import health, courses, profiles, webcoach, badges, roadmaps, ai, ai_langgraph, admin, tags, faiss_ingest, coaching, integrations, recordings
+from routers import health, courses, profiles, webcoach, badges, roadmaps, roadmap, ai, ai_langgraph, admin, tags, faiss_ingest, coaching, integrations, recordings
 
 # Load environment variables
 load_dotenv()
@@ -68,6 +68,7 @@ app.include_router(faiss_ingest.router)  # FAISS取り込み
 app.include_router(coaching.router)  # コーチング管理
 app.include_router(integrations.router)  # Zoom/Google Meet連携
 app.include_router(recordings.router)  # コーチング録画メタデータ
+app.include_router(roadmap.router)  # キャリアロードマップ(フェーズ制・スキル別テンプレート)
 
 
 # ==========================================

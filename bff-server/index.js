@@ -31,6 +31,7 @@ const adminRoutes = require('./routes/admin');
 const faissRoutes = require('./routes/faiss');
 const coachingRoutes = require('./routes/coaching');
 const integrationsRoutes = require('./routes/integrations');
+const roadmapRoutes = require('./routes/roadmap');
 
 // Initialize Express app
 const app = express();
@@ -173,6 +174,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/faiss', faissRoutes);
 app.use('/api/coaching', coachingRoutes);
 app.use('/api/integrations', integrationsRoutes);
+app.use('/api/roadmap', roadmapRoutes);
 
 // Backward compatibility - user info without /api prefix
 app.get('/user/info', authRoutes);
