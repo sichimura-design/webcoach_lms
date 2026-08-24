@@ -133,7 +133,13 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     [searchParams, setSearchParams]
   );
 
-  const completion = useLessonCompletion(courseId, doc?.lessonId ?? null, allLessonIds, navigateToLesson);
+  /**
+   * 🔴 第4引数（onAdvance）を渡さない＝完了しても自動で次へ飛ばさない。
+   *    デザイン案 2a の終点は「完了 → 緑の達成カードを見せる → 次のレッスンへを押させる」。
+   *    自動遷移すると達成カードが一瞬も見えず、祝う面が死ぬ。
+   *    次へ進む動線は達成カードの中の「次のレッスンへ」が持つ。
+   */
+  const completion = useLessonCompletion(courseId, doc?.lessonId ?? null, allLessonIds);
 
   /**
    * ページスクロールを止め、LMSのシェル（サイドバー・SP下部ナビ）ぶんの余白も消す。
@@ -373,15 +379,15 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     [ai, navigate]
   );
 
-  // ── 完了ボタン。完了済みなら次へ進むだけにする（旧実装と同じ挙動）──
+  /**
+   * 「このレッスンを完了する」。
+   * 完了済みのときの分岐は持たない。完了後は本文末尾が緑の達成カードに変わり、
+   * 次へ進むのはそのカードの中の「次のレッスンへ」（onNavigate）が担うため、
+   * このボタン自体が完了済みの状態では描かれない。
+   */
   const handleComplete = useCallback(() => {
-    if (completion.isCompleted) {
-      if (doc?.next) navigateToLesson(doc.next.lessonId);
-      else onBack();
-      return;
-    }
     void completion.toggleComplete(true);
-  }, [completion, doc?.next, navigateToLesson, onBack]);
+  }, [completion]);
 
   // ── Esc でオーバーレイを閉じる（PC/SPで挙動を分けない）──
   useEffect(() => {
@@ -431,6 +437,20 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
    *    完了率はコーストップ側だけで見せる。
    */
   const lessonIndex = flatLessons.findIndex((l) => l.lessonId === doc?.lessonId) + 1;
+
+  /**
+   * 終点の「次のレッスン」カードに添えるメタ情報。
+   * doc.next は lessonId と title しか持たないので、所要時間と学習タイプは
+   * 目次から引く。デザイン 2a はここに説明文を置いているが、
+   * 説明文はどこにも無いデータなので作らない（作文はしない）。
+   */
+  const nextMeta = useMemo(() => {
+    const nextId = doc?.next?.lessonId;
+    if (!nextId) return undefined;
+    const found = flatLessons.find((l) => l.lessonId === nextId);
+    return found ? { minutes: found.minutes, learningType: found.learningType } : undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [doc?.next?.lessonId, outline]);
 
   return (
     <div style={{ background: color.pageBg }}>
@@ -505,6 +525,7 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
                 videoUrl={videoUrl}
                 isCompleted={completion.isCompleted}
                 completing={completion.completing}
+                nextMeta={nextMeta}
                 onComplete={handleComplete}
                 onUndoComplete={() => void completion.toggleComplete(false)}
                 onNavigate={navigateToLesson}

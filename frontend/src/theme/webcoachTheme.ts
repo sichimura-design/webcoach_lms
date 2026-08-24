@@ -73,6 +73,15 @@ export const color = {
   online: '#34C759',
 
   /**
+   * 完了・達成（Success）。DESIGN.md §2-5 の Success をそのまま採る。
+   * 🔴 下の noteAnswerAccent（AI回答の緑）とは役割が別。あちらは
+   *    「ノートの中で出どころがAIであること」を示す識別色で、
+   *    こちらは「学習が完了したこと」を祝う色。混ぜないこと。
+   */
+  success: '#0E9F6E',
+  successSurface: '#E8F8F1',
+
+  /**
    * マイノート（自由帳）。
    * 「自分のノートを作っていく楽しさ」を出すために、他の画面の白いカードとは
    * 別の“紙”の質感を与える。以前は MyNotesPage / MemoPane が種別バッジの色を

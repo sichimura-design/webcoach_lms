@@ -9,14 +9,21 @@ import { EXP_RULES } from '../utils/progression';
  * レッスンの完了状態。
  *
  * 旧 CourseContentPage.tsx の handleToggleComplete をそのまま移設したもの。
- * 完了記録・EXP付与・resumeCourse更新・次レッスンへの遷移という一連の副作用は
+ * 完了記録・EXP付与・resumeCourse更新という一連のデータ副作用は
  * マイページやバッジの表示に効いているため、挙動を変えないこと。
+ *
+ * 🔴 onAdvance（完了したら次のレッスンへ自動で進む）は任意にした。
+ *    デザイン案 2a のレッスン終点は、完了したら緑の達成カードを見せて
+ *    「次のレッスンへ」を自分で押させる形になっている。自動で飛ばすと
+ *    その達成カードが一瞬も見えず、祝う面がまるごと死ぬため、
+ *    LearningWorkspacePage は onAdvance を渡していない。
+ *    データ側の副作用は今までと同じ。
  */
 export interface UseLessonCompletion {
   completedIds: Set<number>;
   isCompleted: boolean;
   completing: boolean;
-  /** 完了/取り消し。完了時のみ onAdvance で次のレッスンへ進める */
+  /** 完了/取り消し。onAdvance を渡した場合のみ、完了時に次のレッスンへ進める */
   toggleComplete: (markAsComplete: boolean) => Promise<void>;
 }
 
@@ -24,7 +31,7 @@ export function useLessonCompletion(
   courseId: number,
   lessonId: number | null,
   allLessonIds: number[],
-  onAdvance: (nextLessonId: number) => void
+  onAdvance?: (nextLessonId: number) => void
 ): UseLessonCompletion {
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -71,8 +78,8 @@ export function useLessonCompletion(
             .updateResumeCourse(user.userid, { courseid: courseId, progress_percent })
             .catch((e) => console.error('[ResumeCourse] Update failed:', e?.response?.data?.message ?? e));
 
-          // 完了時のみ次のレッスンへ遷移
-          if (markAsComplete) {
+          // 完了時のみ次のレッスンへ遷移（onAdvance を渡した呼び出し元だけ）
+          if (markAsComplete && onAdvance) {
             const nextId = allLessonIds[allLessonIds.indexOf(lessonId) + 1];
             if (nextId) onAdvance(nextId);
           }
