@@ -96,3 +96,6 @@ tests/
 materials/source/
 tools/clipkit-export/.auth/
 tools/clipkit-export/clipkit.config.json
+
+# 変換後の教材データ（materials/source から再生成できる中間データ・約55MB）
+materials/lessons/

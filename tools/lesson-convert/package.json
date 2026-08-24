@@ -1,0 +1,21 @@
+{
+  "name": "lesson-convert",
+  "version": "1.0.0",
+  "private": true,
+  "description": "取得済みの教材HTMLを、フロントエンドの LessonDoc 形式（構造化JSON）へ変換する",
+  "license": "UNLICENSED",
+  "bin": {
+    "lesson-convert": "src/cli.js"
+  },
+  "scripts": {
+    "convert": "node src/cli.js convert",
+    "verify": "node src/cli.js verify"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "sharp": "^0.35.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

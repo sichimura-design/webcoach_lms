@@ -39,6 +39,13 @@ import {
   LessonOutline,
 } from '../types/lesson';
 import { readNoteStore, writeNoteStore } from './noteMigration';
+import {
+  findMigratedLesson,
+  isMigratedCourse,
+  migratedCourseName,
+  migratedLessonCount,
+  migratedOutline,
+} from './migratedMaterials';
 import { LearningType } from '../constants/learningTaxonomy';
 import { SkillSuggestion } from '../types/aiSkill';
 import { detectSkill } from '../utils/aiSkillRouting';
@@ -166,10 +173,12 @@ export function buildCourseStructure(courseId: number): CourseSectionSeed[] {
 
 /** コースの総レッスン数。コース一覧の「全Nレッスン」を構造と一致させるために使う。 */
 export function courseLessonCount(courseId: number): number {
+  if (isMigratedCourse(courseId)) return migratedLessonCount(courseId);
   return buildCourseStructure(courseId).reduce((n, s) => n + s.lessons.length, 0);
 }
 
 /** コース名。catalog を持たないのでIDから引ける最低限のテーブルを持つ。 */
+// Clipkit から移行した実教材。該当コースはダミー生成ではなくこちらを返す。
 const COURSE_NAMES: Record<number, string> = {
   101: 'はじめてのWebデザイン',
   201: 'デザインの4大原則',
@@ -182,7 +191,7 @@ const COURSE_NAMES: Record<number, string> = {
 };
 
 function courseName(courseId: number): string {
-  return COURSE_NAMES[courseId] ?? `コース ${courseId}`;
+  return migratedCourseName(courseId) ?? COURSE_NAMES[courseId] ?? `コース ${courseId}`;
 }
 
 /** そのコースが扱うテーマ。汎用教材の文面を題材に寄せるために使う。 */
@@ -410,6 +419,10 @@ function findLessonPosition(courseId: number, lessonId: number) {
 
 /** aiSkillHandlers.ts からもレッスン本文を引くため export する */
 export function buildLessonDoc(courseId: number, lessonId: number): LessonDoc | null {
+  // 移行済みコースは Clipkit 由来の実教材をそのまま返す。
+  const migrated = findMigratedLesson(courseId, lessonId);
+  if (migrated) return migrated;
+
   const { flat, index } = findLessonPosition(courseId, lessonId);
   if (index < 0) return null;
 
@@ -462,6 +475,9 @@ export function isLessonDone(lessonId: number): boolean {
 }
 
 function buildOutline(courseId: number): LessonOutline {
+  const migrated = migratedOutline(courseId, isLessonDone);
+  if (migrated) return migrated;
+
   const sections = buildCourseStructure(courseId);
   const flat = sections.flatMap((s) => s.lessons);
   const isDone = isLessonDone;
