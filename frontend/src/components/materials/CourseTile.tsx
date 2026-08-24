@@ -49,9 +49,11 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
           </div>
         )}
 
+        {/* 地色は必ず白にする。バッジの淡い地色のままだとクリーム系のサムネに溶けて読めない */}
         <span
           style={{
-            ...badge.style, position: 'absolute', top: 10, right: 10,
+            position: 'absolute', top: 10, right: 10,
+            background: t.color.bg.card, color: badge.style.color,
             fontSize: 10, fontWeight: t.font.weight.bold, borderRadius: t.radius.pill, padding: '3px 9px',
             pointerEvents: 'none',
           }}
@@ -73,15 +75,20 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
       </div>
 
       <div style={{ padding: '11px 14px 13px' }}>
-        <div
-          style={{
-            fontSize: 13.5, fontWeight: t.font.weight.black, lineHeight: 1.45,
-            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-          }}
-        >
-          {course.title}
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 6 }}>
+        {/* サムネにコース名を組んでいる場合は、その真下でもう一度同じ名前を出さない。
+            画像サムネのコースだけ、ここが唯一の名前になる。 */}
+        {course.thumbnailUrl && (
+          <div
+            style={{
+              fontSize: 13.5, fontWeight: t.font.weight.black, lineHeight: 1.45,
+              whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+              marginBottom: 6,
+            }}
+          >
+            {course.title}
+          </div>
+        )}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <span style={{ fontSize: 11, color: t.color.text.subtle }}>
             {course.totalLessons ? `全${course.totalLessons}レッスン` : ''}
           </span>

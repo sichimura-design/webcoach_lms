@@ -77,55 +77,82 @@ const categories: Category[] = [
   { id: 4, name: 'キャリア', description: '副業・案件獲得の進め方', coursecount: 5 },
 ];
 
+/**
+ * 「続きから学ぶ」コースの現在位置。
+ *
+ * レッスンの完了状態の既定は「偶数IDは完了」（lessonHandlers.isLessonDone）で、
+ * これだと1レッスン目が未完了になり「45%進んでチャプター2にいる」と噛み合わない。
+ * 学習コンテンツトップは進捗と「次に学ぶレッスン」を並べて出すので、
+ * 食い違うとそのまま画面上の矛盾になる。そこでこのコースだけ完了状態を明示し、
+ * 進捗率・次のレッスン名・単元名・残り時間はすべてそこから導出する
+ * （手書きの数字を置くと、構成を変えたときに必ずズレる）。
+ */
+const RESUME_COURSE_ID = 101;
+
+const resumeLessons = buildCourseStructure(RESUME_COURSE_ID).flatMap((s) =>
+  s.lessons.map((l) => ({ ...l, sectionName: s.name }))
+);
+
+/** 単元2「手を動かす」の1レッスン目まで終えた状態＝次は4レッスン目 */
+const RESUME_DONE_COUNT = 3;
+resumeLessons.forEach((l, i) => setLessonDone(l.lessonId, i < RESUME_DONE_COUNT));
+
+const resumeNextLesson = resumeLessons[RESUME_DONE_COUNT];
+const resumeProgress = Math.round((RESUME_DONE_COUNT / resumeLessons.length) * 100);
+const resumeTotalMinutes = resumeLessons.reduce((n, l) => n + l.minutes, 0);
+const resumeRemainingMinutes = resumeLessons.slice(RESUME_DONE_COUNT).reduce((n, l) => n + l.minutes, 0);
+
 const resumeCourses: ResumeCourse[] = [
   {
-    courseid: 101,
+    courseid: RESUME_COURSE_ID,
     fullname: 'はじめてのWebデザイン',
     shortname: 'design-101',
     summary: 'デザインの基本原則を学ぶ入門コース',
-    progress: 45,
+    progress: resumeProgress,
     lastaccess: Math.floor(Date.now() / 1000) - 3600,
     accesscount: 12,
     // 学習サマリー（総学習時間・完了レッスン数）の簡易推定に使う目安値
-    durationminutes: 30,
-    totallessons: 5,
-    // マイページの「続きから学習」ヒーロー表示用
-    currentlesson: 'Lesson 4 バナー制作の基礎',
-    currentchapter: 'チャプター2',
-    remainingminutes: 18,
+    durationminutes: resumeTotalMinutes,
+    totallessons: resumeLessons.length,
+    // マイページ・学習コンテンツトップの「続きから学習」ヒーロー表示用
+    currentlesson: `Lesson ${RESUME_DONE_COUNT + 1} ${resumeNextLesson.title}`,
+    currentchapter: resumeNextLesson.sectionName,
+    remainingminutes: resumeRemainingMinutes,
   },
 ];
 
+// 受講中のコース。コース名とレッスン数はカタログ（buildCourseStructure）と必ず揃える。
+// 別の名前・別のレッスン数を書くと、同じ画面に同じコースが2つの姿で出る。
 const userCourses = [
   {
-    id: 101,
+    id: RESUME_COURSE_ID,
     fullname: 'はじめてのWebデザイン',
     displayname: 'はじめてのWebデザイン',
-    summary: 'デザインの基本原則を学ぶ入門コース',
-    progress: 45,
+    summary: 'デザインの基本原則をやさしく学ぶ入門コース',
+    progress: resumeProgress,
     categoryname: 'Webデザイン',
-    durationminutes: 30,
-    totallessons: 5,
+    durationminutes: resumeTotalMinutes,
+    totallessons: resumeLessons.length,
   },
   {
     id: 102,
-    fullname: 'HTML/CSS基礎',
-    displayname: 'HTML/CSS基礎',
-    summary: 'Webページを作る第一歩',
+    fullname: 'HTML & CSSのきほん',
+    displayname: 'HTML & CSSのきほん',
+    summary: 'Web制作に必要なHTMLとCSSをやさしく学びます',
     progress: 10,
     categoryname: 'コーディング',
     durationminutes: 40,
-    totallessons: 6,
+    totallessons: courseLessonCount(102),
   },
   {
     id: 201,
     fullname: 'デザインの4大原則',
     displayname: 'デザインの4大原則',
-    summary: '近接・整列・反復・コントラストを理解する',
+    summary: '近接・整列・反復・コントラストを事例で理解する',
     progress: 100,
     categoryname: 'Webデザイン',
     durationminutes: 20,
-    totallessons: 3,
+    totallessons: courseLessonCount(201),
   },
 ];
 

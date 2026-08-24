@@ -113,7 +113,8 @@ export function statusBadge(course: Pick<GalleryCourse, 'isCurrent' | 'progress'
   if (course.progress > 0) {
     return { label: '受講中', style: { background: t.color.primarySoft, color: t.color.primary } };
   }
-  return { label: '未受講', style: { background: '#F4F1F1', color: t.color.text.subtle } };
+  // subtle(#A29A9C) は白地でコントラストが足りない。バッジの文字なので一段濃い方を使う
+  return { label: '未受講', style: { background: '#F4F1F1', color: t.color.text.secondary } };
 }
 
 /**

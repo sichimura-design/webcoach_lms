@@ -102,7 +102,8 @@ export const t = {
     thumb: {
       red: { bg: 'linear-gradient(135deg,#D60934,#8B0620)', fg: '#FFFFFF', sub: 'rgba(255,255,255,.75)' },
       dark: { bg: 'linear-gradient(135deg,#332A26,#141414)', fg: '#FFFFFF', sub: 'rgba(255,255,255,.65)' },
-      cream: { bg: 'linear-gradient(135deg,#FDF7F3,#F3E7DA)', fg: '#1F1A1B', sub: '#8A8082' },
+      // クリーム地の sub は text.muted(#8A8082) だと地色とのコントラストが 3:1 を切るので一段濃くする
+      cream: { bg: 'linear-gradient(135deg,#FDF7F3,#F3E7DA)', fg: '#1F1A1B', sub: '#4A4244' },
     },
   },
 

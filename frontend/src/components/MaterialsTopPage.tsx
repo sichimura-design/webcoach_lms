@@ -30,6 +30,8 @@ interface NextLesson {
   id: number;
   name: string;
   sectionName: string;
+  /** コース通しの何レッスン目か（1始まり） */
+  index: number;
   minutes?: number;
 }
 
@@ -134,11 +136,14 @@ function MaterialsTopPage() {
       );
       if (!alive) return;
       const doneMap = new Map(results.map((r) => [r.id, r.done]));
-      const hit = flat.find(({ module }: any) => !doneMap.get(module.id)) ?? flat[0];
+      const at = flat.findIndex(({ module }: any) => !doneMap.get(module.id));
+      const hitIndex = at < 0 ? 0 : at;
+      const hit = flat[hitIndex];
       setNextLesson(hit && {
         id: hit.module.id,
         name: hit.module.name,
         sectionName: hit.sectionName,
+        index: hitIndex + 1,
         minutes: hit.module.durationminutes,
       });
     }).catch(() => setNextLesson(undefined));
@@ -282,11 +287,15 @@ function MaterialsTopPage() {
               <div style={{ fontSize: 12, fontWeight: t.font.weight.black, color: t.color.primary, marginBottom: 6, letterSpacing: t.font.letterSpacingWide }}>
                 続きから学ぶ
               </div>
+              {/* 主役はコース。レッスン名は右の「次に学ぶ」が持つので、ここでは繰り返さない。
+                  次のレッスンが取れなかったときだけ、続きの位置をここに出してから畳む。 */}
               <div style={{ fontSize: 21, fontWeight: t.font.weight.black, letterSpacing: '-.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {resumableCourse.currentLesson || resumableCourse.title}
+                {resumableCourse.title}
               </div>
               <div style={{ fontSize: 13, color: t.color.text.muted, marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {[resumableCourse.title, resumableCourse.currentChapter].filter(Boolean).join('・')}
+                {nextLesson
+                  ? `${nextLesson.sectionName}${resumableCourse.totalLessons ? ` ・ 全${resumableCourse.totalLessons}レッスン` : ''}`
+                  : [resumableCourse.currentLesson, resumableCourse.currentChapter].filter(Boolean).join('・')}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14, maxWidth: 360 }}>
                 <div
@@ -320,7 +329,7 @@ function MaterialsTopPage() {
                       {nextLesson.name}
                     </div>
                     <div style={{ fontSize: 11.5, color: t.color.text.muted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {[nextLesson.sectionName, nextLesson.minutes && `${nextLesson.minutes}分`].filter(Boolean).join('・')}
+                      {[`Lesson ${nextLesson.index}`, nextLesson.minutes && `${nextLesson.minutes}分`].filter(Boolean).join('・')}
                     </div>
                   </div>
                 </div>
