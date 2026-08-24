@@ -220,7 +220,11 @@ function buildBlocks($, root, { slug, config }) {
 
     const html = $.html($el).trim();
     const plain = plainOf($, el);
-    if (!plain && $el.find('img, video, iframe, table').length === 0) continue;
+    // 「3」のようなステップ番号だけの断片はブロックにしない。
+    // ブロックはクリップの保存位置とAIが参照する教材箇所の単位なので、
+    // それ自体で意味を持たないものを単位にしても使えない。
+    const hasVisual = $el.find('img, video, iframe, table').length > 0;
+    if (plain.length < 3 && !hasVisual) continue;
 
     const { kind, why } = classify($, el, config, heading);
     const itemId = $el.attr('data-item-id');

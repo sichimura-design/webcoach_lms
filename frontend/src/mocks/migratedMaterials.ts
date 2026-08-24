@@ -29,6 +29,8 @@ interface MaterialBundle {
   lessons: Array<{
     lessonId: number;
     slug: string;
+    /** 単元名（Clipkit の URL 階層に現れる章。例 chapter-02）。無いコースは空文字 */
+    section: string;
     title: string;
     lead: string;
     goals: string[];
@@ -65,6 +67,18 @@ interface MigratedCourse {
   courseSlug: string;
   courseName: string;
   lessons: LessonDoc[];
+  /** レッスンID → 単元名。目次を単元ごとに分けるために持つ */
+  sectionByLessonId: Map<number, string>;
+}
+
+/** 単元名の表示。`chapter-02` のような機械的な名前は「第2章」に読み替える。 */
+function sectionLabel(name: string, index: number): string {
+  const chapter = name.match(/^chapter[-_]?(\d+)$/i);
+  if (chapter) {
+    const n = Number(chapter[1]);
+    return n === 0 ? 'はじめに' : `第${n}章`;
+  }
+  return name || `単元${index + 1}`;
 }
 
 /** 起動時に1度だけ組み立てる。JSONは静的importなので追加の通信は発生しない。 */
@@ -92,7 +106,8 @@ const COURSES: MigratedCourse[] = BUNDLES.map((bundle) => {
     next: lesson.next,
     source: 'structured',
   }));
-  return { courseId, courseSlug: bundle.courseSlug, courseName: bundle.courseName, lessons };
+  const sectionByLessonId = new Map(bundle.lessons.map((l) => [l.lessonId, l.section || '']));
+  return { courseId, courseSlug: bundle.courseSlug, courseName: bundle.courseName, lessons, sectionByLessonId };
 });
 
 const BY_COURSE_ID = new Map(COURSES.map((c) => [c.courseId, c]));
@@ -117,8 +132,9 @@ export function findMigratedLesson(courseId: number, lessonId: number): LessonDo
 }
 
 /**
- * 目次。移行教材は Clipkit 側に単元の区切りが無いので、
- * 1コース＝1単元として並べる（順序は変換時の lessonId 順で安定している）。
+ * 目次。単元の区切りは Clipkit の URL 階層（chapter-02 など）に現れるので、
+ * 変換時にレッスンへ持たせた section で分ける。
+ * レッスンは学習順（章 → 章内の前後リンクの鎖）に並んでいる。
  */
 export function migratedOutline(
   courseId: number,
@@ -128,18 +144,24 @@ export function migratedOutline(
   if (!course) return null;
 
   const activeIndex = course.lessons.findIndex((l) => !isDone(l.lessonId));
-  const sections: OutlineSection[] = [
-    {
-      id: courseId * 1000 + 1,
-      name: course.courseName,
-      lessons: course.lessons.map((lesson, index) => ({
-        lessonId: lesson.lessonId,
-        title: lesson.title,
-        minutes: lesson.estimatedMinutes,
-        state: isDone(lesson.lessonId) ? 'done' : index === activeIndex ? 'active' : 'todo',
-      })),
-    },
-  ];
+
+  // 単元（Clipkit の章）ごとにまとめる。レッスンは学習順に並んでいるので、
+  // 単元名が変わったところで区切れば順序を保ったまま分けられる。
+  const sections: OutlineSection[] = [];
+  course.lessons.forEach((lesson, index) => {
+    const name = course.sectionByLessonId.get(lesson.lessonId) ?? '';
+    const last = sections[sections.length - 1];
+    const label = sectionLabel(name, sections.length);
+    if (!last || last.name !== label) {
+      sections.push({ id: courseId * 1000 + sections.length + 1, name: label, lessons: [] });
+    }
+    sections[sections.length - 1].lessons.push({
+      lessonId: lesson.lessonId,
+      title: lesson.title,
+      minutes: lesson.estimatedMinutes,
+      state: isDone(lesson.lessonId) ? 'done' : index === activeIndex ? 'active' : 'todo',
+    });
+  });
 
   const done = course.lessons.filter((l) => isDone(l.lessonId)).length;
   return {

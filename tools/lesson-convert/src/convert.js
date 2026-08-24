@@ -62,6 +62,76 @@ function dropDecorativeImages($, page, config) {
   return removed;
 }
 
+/**
+ * URL から「章（セクション）」のパスを取り出す。
+ * 例: /ai-designer/chapter-02/cfcse → ["chapter-02"]
+ *     /knowledge/2eNJV             → []（章分けなし）
+ * 教材の並び順と単元構成は Clipkit の URL 階層に現れているので、これを使う。
+ */
+function sectionPathOf(url, course) {
+  try {
+    const segments = decodeURIComponent(new URL(url).pathname).split('/').filter(Boolean);
+    const start = segments.indexOf(course);
+    const rest = start >= 0 ? segments.slice(start + 1) : segments;
+    return rest.slice(0, -1); // 末尾は教材ID
+  } catch (error) {
+    return [];
+  }
+}
+
+/** `chapter-2` と `chapter-10` を数値として比べる。 */
+function naturalCompare(a, b) {
+  return String(a).localeCompare(String(b), 'ja', { numeric: true, sensitivity: 'base' });
+}
+
+/**
+ * 学習順を決める。
+ * 章ごとにまとめ、章の中は「前の章に戻る／次の章に進む」の鎖をたどる。
+ * 鎖に載っていないものは URL 順で後ろに付ける（順序が決まらないものを捨てない）。
+ */
+function orderLessons(pages, course, resolveNeighborUrl) {
+  const groups = new Map();
+  for (const page of pages) {
+    const key = sectionPathOf(page.url, course).join(' / ');
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(page);
+  }
+
+  const sections = [];
+  for (const key of [...groups.keys()].sort(naturalCompare)) {
+    const members = groups.get(key).slice().sort((a, b) => naturalCompare(a.url, b.url));
+    const byUrl = new Map(members.map((p) => [p.url, p]));
+
+    // 章の中での前後関係（相手が同じ章にいるものだけ見る）
+    const nextOf = new Map();
+    const hasPrev = new Set();
+    for (const page of members) {
+      const nextUrl = resolveNeighborUrl(page, 'next');
+      if (nextUrl && byUrl.has(nextUrl)) {
+        nextOf.set(page.url, nextUrl);
+        hasPrev.add(nextUrl);
+      }
+    }
+
+    const ordered = [];
+    const seen = new Set();
+    for (const page of members) {
+      if (hasPrev.has(page.url) || seen.has(page.url)) continue;
+      let cursor = page;
+      while (cursor && !seen.has(cursor.url)) {
+        ordered.push(cursor);
+        seen.add(cursor.url);
+        const nextUrl = nextOf.get(cursor.url);
+        cursor = nextUrl ? byUrl.get(nextUrl) : null;
+      }
+    }
+    for (const page of members) if (!seen.has(page.url)) ordered.push(page);
+
+    sections.push({ name: key, pages: ordered });
+  }
+  return sections;
+}
+
 /** URL の末尾から page-slug を引くための索引。前後リンクの解決に使う。 */
 function buildUrlIndex(manifest) {
   const index = new Map();
@@ -94,9 +164,30 @@ function convertCourse({ course, sourceDir, outDir, config, log }) {
   const manifest = JSON.parse(fs.readFileSync(path.join(courseDir, 'manifest.json'), 'utf8'));
   const urlIndex = buildUrlIndex(manifest);
 
-  // lessonId は URL 順で安定させる（再実行しても同じ番号になる）
-  const ordered = manifest.pages.filter((p) => p.status === 'ok').sort((a, b) => a.url.localeCompare(b.url));
+  const okPages = manifest.pages.filter((p) => p.status === 'ok');
+
+  // 前後リンクは HTML の中にしか無いので、並び順を決める前に先読みする。
+  const neighborsBySlug = new Map();
+  for (const page of okPages) {
+    const htmlFile = path.join(courseDir, page.htmlPath);
+    if (!fs.existsSync(htmlFile)) continue;
+    const $head = cheerio.load(fs.readFileSync(htmlFile, 'utf8'));
+    neighborsBySlug.set(page.slug, readNeighbors($head, $head('body').get(0), config));
+  }
+  const neighborUrl = (page, which) => {
+    const raw = neighborsBySlug.get(page.slug)?.[which === 'next' ? 'nextUrl' : 'prevUrl'];
+    const target = resolveNeighbor(raw, page.url, urlIndex);
+    return target ? target.url : null;
+  };
+
+  // 学習順は URL の章構成と前後リンクの鎖から決める。
+  // URL のアルファベット順に並べると、目次が学習順にならない。
+  const sections = orderLessons(okPages, course, neighborUrl);
+  const ordered = sections.flatMap((s) => s.pages);
   const lessonIdBySlug = new Map(ordered.map((p, i) => [p.slug, i + 1]));
+  const sectionNameBySlug = new Map(
+    sections.flatMap((s) => s.pages.map((p) => [p.slug, s.name]))
+  );
 
   const docs = [];
   const issues = [];
@@ -118,10 +209,13 @@ function convertCourse({ course, sourceDir, outDir, config, log }) {
     const goals = readGoals($, root, config);
     const summary = readSummary($, root, config);
     const minutes = readMinutes(wholePlain, config);
-    const neighbors = readNeighbors($, root, config);
-
-    const prevPage = resolveNeighbor(neighbors.prevUrl, page.url, urlIndex);
-    const nextPage = resolveNeighbor(neighbors.nextUrl, page.url, urlIndex);
+    // 前後リンクはコース全体の学習順から作る。
+    // Clipkit の「前の章に戻る／次の章に進む」は章の中で閉じているため、
+    // そのまま使うと章の最後で行き止まりになり、受講生が次へ進めない。
+    // （章内の並び順を決めるためには、上で既にそのリンクを使っている）
+    const position = ordered.indexOf(page);
+    const prevPage = position > 0 ? ordered[position - 1] : null;
+    const nextPage = position >= 0 && position < ordered.length - 1 ? ordered[position + 1] : null;
     const link = (p) => (p && lessonIdBySlug.has(p.slug) ? { lessonId: lessonIdBySlug.get(p.slug), title: p.title } : null);
 
     const doc = {
@@ -129,6 +223,8 @@ function convertCourse({ course, sourceDir, outDir, config, log }) {
       courseName: course,
       lessonId: lessonIdBySlug.get(page.slug),
       slug: page.slug,
+      // 単元名。Clipkit の URL 階層（chapter-02 など）に現れる区切り。
+      section: sectionNameBySlug.get(page.slug) || '',
       title: page.title,
       lead: readLead(blocks),
       goals,
@@ -158,9 +254,14 @@ function convertCourse({ course, sourceDir, outDir, config, log }) {
     courseSlug: course,
     courseName: course,
     lessonCount: docs.length,
+    sections: sections.map((s) => ({
+      name: s.name,
+      lessonIds: s.pages.map((p) => lessonIdBySlug.get(p.slug)).filter(Boolean),
+    })),
     lessons: docs.map(({ doc }) => ({
       lessonId: doc.lessonId,
       slug: doc.slug,
+      section: doc.section,
       title: doc.title,
       minutes: doc.estimatedMinutes,
       blocks: doc.blocks.length,
