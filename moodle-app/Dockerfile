@@ -1,9 +1,13 @@
-# Built FROM the currently-deployed image rather than public.ecr.aws/bitnami/moodle:4.3.6
-# directly: that base tag has since been removed from Bitnami's public ECR catalog and is
-# no longer pullable. Layering on top of the already-built image is behaviorally
-# equivalent (same Moodle 4.3.6 + WebCoach customizations) and additionally guarantees
-# byte-identical output to what's actually running in production today.
-FROM 840513866884.dkr.ecr.ap-northeast-1.amazonaws.com/webcoach-lms:moodle-app-latest
+# Built FROM a fixed snapshot tag rather than public.ecr.aws/bitnami/moodle:4.3.6 directly:
+# that base tag has since been removed from Bitnami's public ECR catalog and is no longer
+# pullable. moodle-app-base-20260824 is a one-time copy of what was running in production
+# on that date (same digest as moodle-app-latest at the time), pinned so it never moves.
+# Deliberately NOT FROM moodle-app-latest: this Dockerfile is now built automatically by
+# CI on every push, and if it chained from whatever the previous CI run had just pushed to
+# -latest, each run would stack new layers on top of all prior runs' layers forever
+# (unbounded growth toward Docker's 127-layer limit). Building from this fixed tag instead
+# keeps the layer count constant across CI runs.
+FROM 840513866884.dkr.ecr.ap-northeast-1.amazonaws.com/webcoach-lms:moodle-app-base-20260824
 
 LABEL maintainer="WebCoach Team"
 LABEL description="Custom Moodle with WebCoach plugins (webcoach_tags, webcoach_utils)"

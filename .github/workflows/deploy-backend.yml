@@ -1,4 +1,4 @@
-name: Deploy Backend
+name: Deploy Backend and Moodle App
 
 on:
   push:
@@ -7,6 +7,9 @@ on:
     paths:
       - 'bff-server/**'
       - 'api-server/**'
+      - 'nginx/**'
+      - 'moodle-app/**'
+  workflow_dispatch: # 手動トリガー（動作確認用）
 
 permissions:
   id-token: write  # OIDC トークン発行に必要
@@ -53,7 +56,24 @@ jobs:
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:moodle-api-$GITHUB_SHA $ECR_REGISTRY/$ECR_REPOSITORY:moodle-api-latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:moodle-api-latest
 
-      # 現行タスク定義を取得し、bff-server / api-server のイメージだけを
+      - name: Build and push nginx image
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:moodle-nginx-$GITHUB_SHA ./nginx
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:moodle-nginx-$GITHUB_SHA
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:moodle-nginx-$GITHUB_SHA $ECR_REGISTRY/$ECR_REPOSITORY:moodle-nginx-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:moodle-nginx-latest
+
+      # moodle-app/Dockerfile は固定タグ(moodle-app-base-*)を FROM しており、
+      # 稼働中の moodle-app-latest を FROM しているわけではないため、ここで
+      # -latest を更新してもビルドの土台が動くことはない（レイヤー無限増殖の懸念なし）。
+      - name: Build and push moodle-app image
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:moodle-app-$GITHUB_SHA ./moodle-app
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:moodle-app-$GITHUB_SHA
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:moodle-app-$GITHUB_SHA $ECR_REGISTRY/$ECR_REPOSITORY:moodle-app-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:moodle-app-latest
+
+      # 現行タスク定義を取得し、nginx / bff-server / api-server / moodle-app のイメージだけを
       # 今回ビルドしたSHA固定タグに差し替えて新リビジョンとして登録する
       - name: Render new task definition
         id: render-task-def
@@ -71,6 +91,10 @@ jobs:
                   .image = ($registry + "/" + $repo + ":moodle-bff-" + $sha)
                 elif .name == "api-server" then
                   .image = ($registry + "/" + $repo + ":moodle-api-" + $sha)
+                elif .name == "nginx" then
+                  .image = ($registry + "/" + $repo + ":moodle-nginx-" + $sha)
+                elif .name == "moodle-app" then
+                  .image = ($registry + "/" + $repo + ":moodle-app-" + $sha)
                 else . end
               )
               | del(.taskDefinitionArn, .revision, .status, .requiresAttributes,
