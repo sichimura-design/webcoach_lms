@@ -85,6 +85,8 @@ services:
       MOODLE_DB_NAME: ${MOODLE_DB_NAME:-moodle}
       CHROMADB_PATH: /app/chromadb
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      DIFY_API_BASE_URL: ${DIFY_API_BASE_URL:-https://api.dify.ai/v1}
+      DIFY_CREDENTIALS_JSON: ${DIFY_CREDENTIALS_JSON}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3000}
       ENABLE_DOCS: ${ENABLE_DOCS:-true}
       # Vector DB configuration

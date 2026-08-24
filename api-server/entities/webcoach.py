@@ -86,6 +86,7 @@ class WebCoachAIApplication(Base):
     url = Column(String(512), nullable=True)
     icon_url = Column(String(512), nullable=True)
     tags = Column(Text, nullable=True)
+    secret_key = Column(String(256), nullable=True, comment='外部AI連携用の認証情報キー名（Secrets Manager JSON内のキー、Dify等）')
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
 

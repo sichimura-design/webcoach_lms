@@ -186,11 +186,16 @@ def ai_chat_langgraph(
         else:
             user_content = request.message
 
+        # DBに登録済みのAIアプリケーション（secret_key設定済み）を動的ツールとして構築
+        from agents.tools_langchain import create_ai_application_tools
+        dynamic_tools = create_ai_application_tools(db)
+
         # 初期ステートを構築
         initial_state: LearningCoachState = {
             "messages": [HumanMessage(content=user_content)],
             "user_id": request.user_id,
             "course_id": request.course_id,
+            "dynamic_tools": dynamic_tools,
             "rag_sources": [],
             "rag_context": "",
             "tool_results": [],

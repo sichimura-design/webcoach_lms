@@ -50,9 +50,10 @@ const CSV_TEMPLATES: Record<DataType, { filename: string; content: string }> = {
   'ai-applications': {
     filename: 'template_ai_applications.csv',
     content: [
-      'id,name,category,description,url,icon_url,tags,updateFlag,deleteFlag',
-      ',ChatGPT,生成AI,対話型AIチャットボット,https://chat.openai.com,https://example.com/chatgpt.png,"AI,チャット,自然言語処理",0,0',
-      ',Midjourney,画像生成AI,テキストから画像を生成するAIツール,https://midjourney.com,,,0,0',
+      'id,name,category,description,url,icon_url,tags,secret_key,updateFlag,deleteFlag',
+      ',ChatGPT,生成AI,対話型AIチャットボット,https://chat.openai.com,https://example.com/chatgpt.png,"AI,チャット,自然言語処理",,0,0',
+      ',Midjourney,画像生成AI,テキストから画像を生成するAIツール,https://midjourney.com,,,,0,0',
+      ',デイリーデザインスプリントチャレンジャー,デザイン,今日のデザイン練習課題を提案しフィードバックするAI,https://udify.app/chat/9kWaflrs1psrwRvs,,"AI,デザイン",design-sprint-challenger,0,0',
     ].join('\n'),
   },
   avatars: {
@@ -139,6 +140,7 @@ const CSV_FORMAT: Record<DataType, CsvColumn[]> = {
     { col: 'url',         required: false, desc: 'アクセスURL' },
     { col: 'icon_url',    required: false, desc: 'アイコン画像のURL' },
     { col: 'tags',        required: false, desc: 'タグ（カンマ区切り、複数の場合はダブルクォートで囲む）' },
+    { col: 'secret_key',  required: false, desc: 'AIチャットから呼び出す場合のみ指定。Secrets Managerに登録した認証情報JSON内のキー名（APIキー自体は含めない）' },
     { col: 'updateFlag',  required: false, desc: '1 の場合、既存レコードを更新する' },
     { col: 'deleteFlag',  required: false, desc: '1 の場合、該当レコードを削除する（id必須）' },
   ],

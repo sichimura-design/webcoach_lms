@@ -155,6 +155,16 @@ export class EcsStack extends cdk.Stack {
       ],
     });
 
+    // Dify API Keys（webcoach_ai_application.secret_key -> APIキー のJSONマップ。
+    // 外部発行のため値はデプロイ後に手動で設定し、アプリを追加するたびにJSONへキーを追加する運用）
+    const difyCredentialsSecret = new secretsmanager.Secret(this, 'DifyCredentialsSecret', {
+      secretName: `${envName}/moodle/dify-credentials`,
+      description: 'Dify API keys used by the WEBCOACH AI chat, keyed by webcoach_ai_application.secret_key',
+      secretObjectValue: {
+        CHANGE_ME_SECRET_KEY: cdk.SecretValue.unsafePlainText('CHANGE_ME_API_KEY'),
+      },
+    });
+
     // Grant access to secrets
     rdsSecret.grantRead(taskExecutionRole);
     auroraSecret.grantRead(taskExecutionRole);
@@ -167,6 +177,11 @@ export class EcsStack extends cdk.Stack {
 
     // Grant S3 access for coaching recordings (used by the api service)
     recordingsBucket.grantReadWrite(taskRole);
+
+    // api service reads the Dify credentials JSON directly via boto3 at runtime
+    // (values are looked up dynamically per AI application, not a fixed key), so the
+    // task role - not the task execution role - needs read access here.
+    difyCredentialsSecret.grantRead(taskRole);
 
     // CloudWatch Log Groups
     const frontendLogGroup = new logs.LogGroup(this, 'FrontendLogGroup', {
@@ -273,6 +288,8 @@ export class EcsStack extends cdk.Stack {
       environment: {
         ENV: envName,
         PORT: '8001',
+        DIFY_API_BASE_URL: 'https://api.dify.ai/v1',
+        DIFY_CREDENTIALS_SECRET_ID: difyCredentialsSecret.secretName,
       },
       secrets: {
         DB_HOST: ecs.Secret.fromSecretsManager(rdsSecret, 'host'),

@@ -166,6 +166,11 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
 
     new_iteration_count = iteration + 1
 
+    # 静的ツール（BFF API）+ 動的ツール（DBに登録されたAIアプリケーション）
+    dynamic_tools = state.get("dynamic_tools") or []
+    combined_tools = tools_list + dynamic_tools
+    dynamic_tools_text = "\n".join(f"- {t.name}: {t.description}" for t in dynamic_tools)
+
     # システムプロンプトを構築
     system_content = f"""あなたはWEBCOACHです。
 学習者の質問に日本語で丁寧に答え、学習をサポートしてください。
@@ -179,6 +184,7 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
 - get_course_contents: コースの詳細コンテンツを取得
 - get_user_profile: ユーザーの学習プロフィールを取得
 - get_resume_courses: 学習再開推奨コースを取得
+{dynamic_tools_text}
 
 # 回答のガイドライン:
 - 学習者が理解しやすいよう丁寧で親しみやすい言葉遣いを心がける
@@ -214,7 +220,7 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
     messages = [SystemMessage(content=system_content)] + state["messages"]
 
     # LLMを呼び出し（ツール付き）
-    llm_with_tools = llm.bind_tools(tools_list)
+    llm_with_tools = llm.bind_tools(combined_tools)
 
     # デバッグ: メッセージ構造をログ出力
     logger.info(f"Sending {len(messages)} messages to LLM:")
@@ -251,8 +257,8 @@ def tools_node(state: LearningCoachState) -> LearningCoachState:
         logger.warning("No tool calls found in last message")
         return state
 
-    # ToolNodeを使ってツールを実行
-    tool_node = ToolNode(tools_list)
+    # ToolNodeを使ってツールを実行（静的ツール + 動的ツール）
+    tool_node = ToolNode(tools_list + (state.get("dynamic_tools") or []))
 
     # ツール実行（全体のmessagesを渡す）
     result = tool_node.invoke({"messages": state["messages"]})

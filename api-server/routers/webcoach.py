@@ -583,6 +583,7 @@ def update_webcoach_database(
                             existing.url = record.get('url')
                             existing.icon_url = record.get('icon_url')
                             existing.tags = record.get('tags')
+                            existing.secret_key = record.get('secret_key')
                             existing.updated_at = func.now()
                         else:
                             # 新規作成
@@ -593,6 +594,7 @@ def update_webcoach_database(
                                 url=record.get('url'),
                                 icon_url=record.get('icon_url'),
                                 tags=record.get('tags'),
+                                secret_key=record.get('secret_key'),
                                 created_at=func.now(),
                                 updated_at=func.now()
                             )
