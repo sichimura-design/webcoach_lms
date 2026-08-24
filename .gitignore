@@ -57,6 +57,8 @@ chromadb/
 # 上の !frontend/public/*.png は直下1階層しか拾わず、images/home/... が
 # 巻き込まれてビルドから抜け落ちる（プレビュー・本番で画像が壊れる）。
 !frontend/public/images/**/*.png
+# public/mascot 配下も同様にアプリが配信する素材（CharacterAvatar が参照する）。
+!frontend/public/mascot/*.png
 
 # Documentation (non-essential)
 *.md
