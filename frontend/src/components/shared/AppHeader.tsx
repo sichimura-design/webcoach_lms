@@ -39,9 +39,11 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
   /*
    * アカウントのポップオーバー。
-   * 🔴 アバターは「押した瞬間に /account-settings へ飛ぶ」作りだったが、
-   *    行き先が見えないまま画面が変わるのが唐突だったので、ホバー（と
-   *    クリック／フォーカス）で行き先の一覧を出してから選ぶ形にした。
+   * 🔴 レールの丸アバターは、行き先が見えないまま画面が変わるのが唐突なので
+   *    クリックでもポップオーバーの開閉に留める（直行させない）。
+   * 🔴 一方、パネル（開いた224px）のアカウント行は名前と › が見えているので、
+   *    クリックで /account-settings へ直行する。行き先の一覧はホバー／フォーカスで
+   *    出るポップオーバーが引き続き担う。
    * 🔴 ログアウトはここには置かない。アカウント設定画面が持っている
    *    （SCREEN-013 でそう決めた）。ホバーで開く面に破壊的操作を混ぜない。
    */
@@ -105,9 +107,16 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const isCoaching = location.pathname === '/coaching' || isLearningPlan;
   const isAiCoach = location.pathname === '/ai-coach';
   const isAdmin = location.pathname.startsWith('/admin');
-  // 教材学習ワークスペースとAI専用ページには、それぞれ専用のAIコーチUIがある。
-  // ここで常駐ドロワーとFABも出すと入口が二重になり、要件が避けたい「競合」になる。
-  const hasOwnAiSurface = location.pathname.startsWith('/course/') || isAiCoach;
+  /*
+   * 常駐のAIコーチ（ドロワーとFAB）を出さない画面。
+   * 🔴 教材学習ワークスペースとAI専用ページには、それぞれ専用のAIコーチUIがある。
+   *    ここで常駐ドロワーとFABも出すと入口が二重になり、要件が避けたい「競合」になる。
+   * 🔴 アカウント設定・プロフィール設定は、学習ではなく「設定を変える」画面。
+   *    メールやパスワードを入れている最中にAIに相談する用事は無く、FABが
+   *    フォームの右下に重なるだけなので出さない。
+   */
+  const isSettingsPage = location.pathname === '/account-settings' || location.pathname === '/profile';
+  const hasOwnAiSurface = location.pathname.startsWith('/course/') || isAiCoach || isSettingsPage;
 
   /*
    * ナビパネルの開閉。
@@ -567,7 +576,13 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           {renderPanelSubLink('よくある質問', HelpCircle, () => navigate('/help/faq'))}
         </div>
 
-        {/* アカウント。レール側と同じポップオーバーを出す（› は「まだ先がある」の意） */}
+        {/*
+          アカウント。ホバー／フォーカスではレール側と同じポップオーバーを出すが、
+          クリックはアカウント設定へ直行する（› は「まだ先がある」の意）。
+          🔴 レール（閉じた72px）の方はクリックでもポップオーバーの開閉のままにしている。
+             あちらは丸アイコンだけで名前も › も無いので、押した瞬間に画面が変わると
+             どこへ飛んだのか分からない。名前と › が見えているこのパネル側だけ直行させる。
+        */}
         <div
           ref={accountPanelRef}
           className="relative"
@@ -576,9 +591,9 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           onMouseLeave={() => setAccountOpen(false)}
         >
           <button
-            onClick={() => setAccountOpen(v => !v)}
+            onClick={() => { setAccountOpen(false); navigate('/account-settings'); }}
             onFocus={() => setAccountOpen(true)}
-            aria-label={`アカウント: ${resolvedUserName}`}
+            aria-label={`アカウント設定: ${resolvedUserName}`}
             aria-haspopup="menu"
             aria-expanded={accountOpen}
             tabIndex={expanded ? undefined : -1}

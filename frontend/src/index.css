@@ -110,6 +110,13 @@ h1, h2, h3, .font-display {
   --dc-label-warm: #A08F72;      /* CHAPTER 01 のアイブロウ */
   --dc-idle-dash: #C9BFAF;       /* 未着手レッスンの破線丸 */
   --dc-neutral-surface: #F0EDE8; /* 「未着手」ピルの地 */
+  /* 設定画面（2a / 2b）で足したもの。
+     --dc-badge-pink は丸アイコン・アバターの地。--dc-soft-100(#FDF2F2) だと
+     白いカードの上でほぼ消えるので、設定画面の円だけ一段濃い値を使う。
+     --dc-chevron は行末の ›。--dc-text-subtle(#9E9E9E) は寒色グレーで、
+     暖色クリームの面では色味が浮いて chevron だけ目立ってしまう。 */
+  --dc-badge-pink: #FBE9EC;
+  --dc-chevron: #C9BFB2;
   --dc-gradient-next: linear-gradient(135deg, #FDF7F7 0%, #FDEBEE 100%); /* 「次のレッスン」帯 */
   --dc-shadow-card: 0 1px 2px rgba(60,48,32,.05), 0 12px 24px -16px rgba(60,48,32,.14);
   --dc-shadow-float: 0 8px 24px -8px rgba(60,48,32,.14);
@@ -237,6 +244,43 @@ h1, h2, h3, .font-display {
 
 @media (prefers-reduced-motion: reduce) {
   .ct-row {
+    transition: none;
+  }
+}
+
+/* ─── アカウント設定 / プロフィール設定 ───────────
+   デザイン『学習画面デザイン案.dc.html』2a / 2b の style-hover を再現する。
+   .ct-row と同じ理由（インライン style は :hover を持てない）でここに出している。 */
+.settings-hero,
+.settings-row-card {
+  transition: border-color 120ms var(--dc-ease);
+}
+
+.settings-hero:hover,
+.settings-row-card:hover {
+  border-color: var(--dc-soft-200);
+}
+
+.settings-logout:hover {
+  color: var(--dc-primary);
+}
+
+/* ラベル固定幅（160px / 170px）の行。狭い幅ではラベルを1行使って縦に積む。
+   🔴 ラベル幅はインライン style で当たっているので、ここで打ち消すには
+      !important が必要（Tailwind ではなくインラインが相手）。 */
+@media (max-width: 900px) {
+  .settings-field {
+    flex-wrap: wrap;
+  }
+
+  .settings-field-label {
+    width: 100% !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-hero,
+  .settings-row-card {
     transition: none;
   }
 }

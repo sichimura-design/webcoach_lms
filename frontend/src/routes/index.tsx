@@ -309,7 +309,7 @@ function AppRoutes() {
         path="/account-settings"
         element={
           <ProtectedRoute>
-            <AnimatedPage><AccountSettingsPage /></AnimatedPage>
+            <AccountSettingsPage />
           </ProtectedRoute>
         }
       />

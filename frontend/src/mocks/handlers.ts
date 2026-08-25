@@ -382,6 +382,51 @@ export const handlers = [
     return HttpResponse.json(profile);
   }),
   /**
+   * プロフィールアイコンの画像アップロード（モック専用）。
+   * 🔴 実BFFにこのエンドポイントは無い。受講生が任意の画像を自分のアイコンにできる
+   *    経路が本番に存在しないので、フロント側のモックだけで完結させている
+   *    （frontend/docs/mock-development.md の方針）。
+   * 🔴 S3の代わりに data URL にして profile に持たせる。オブジェクトURL
+   *    （URL.createObjectURL）だとリロードで切れるうえ、profile を保存して
+   *    読み直したときに画像が消えてしまう。data URL なら値そのものが画像なので
+   *    モックの範囲では実URLと同じように振る舞う。
+   */
+  http.post('*/api/webcoach/profile/:userid/avatar', async ({ request }) => {
+    let file: File | null = null;
+    try {
+      const form = await request.formData();
+      const value = form.get('file');
+      if (value instanceof File) file = value;
+    } catch {
+      /* multipart として読めなかった */
+    }
+
+    if (!file) {
+      return HttpResponse.json({ message: '画像ファイルが見つかりません' }, { status: 400 });
+    }
+    if (!['image/png', 'image/jpeg'].includes(file.type)) {
+      return HttpResponse.json({ message: 'PNG または JPG の画像を選んでください' }, { status: 415 });
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      return HttpResponse.json({ message: '画像は5MBまでです' }, { status: 413 });
+    }
+
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    let binary = '';
+    // btoa は文字列しか受け取らないので1バイトずつ詰める。
+    // 引数展開（String.fromCharCode(...bytes)）は5MBだとスタックが溢れる。
+    for (let i = 0; i < bytes.length; i += 1) binary += String.fromCharCode(bytes[i]);
+    const dataUrl = `data:${file.type};base64,${btoa(binary)}`;
+
+    // アップロードした時点で反映する（保存ボタンを待たない）。実運用のS3アップロードも
+    // ファイルが上がった時点でURLが確定するので、そこに寄せている。
+    profile.avatar_url = dataUrl;
+    profile.avatar_id = '';
+
+    return HttpResponse.json({ avatar_url: dataUrl });
+  }),
+
+  /**
    * 選べるアイコン。
    * 🔴 以前は空配列を返していて、AvatarPicker を開いても何も並ばなかった。
    *    「アイコンを変えられるようになりたい」というレビュー指摘の実体はこれ。
