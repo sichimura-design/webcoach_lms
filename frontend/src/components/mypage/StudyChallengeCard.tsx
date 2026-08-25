@@ -106,10 +106,10 @@ export function StudyChallengeCard({
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '22px 22px',
+        padding: '28px 30px',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
         <span
           style={{
             width: 30,
@@ -147,7 +147,7 @@ export function StudyChallengeCard({
               alignItems: 'baseline',
               gap: 2,
               flexWrap: 'wrap',
-              marginBottom: 26,
+              marginBottom: 30,
             }}
           >
             {isLeading ? (
@@ -325,7 +325,7 @@ export function StudyChallengeCard({
         </>
       )}
 
-      <div style={{ height: 1, background: '#F2EDE5', margin: '22px 0 18px' }} />
+      <div style={{ height: 1, background: '#F2EDE5', margin: '28px 0 22px' }} />
 
       {/* 差を埋める手段をその場に置く。ここがマイページ唯一の Primary CTA */}
       <div
@@ -333,7 +333,7 @@ export function StudyChallengeCard({
           background: 'var(--dc-bg)',
           border: '1px solid #F2EDE5',
           borderRadius: 14,
-          padding: '16px 18px',
+          padding: '20px 22px',
         }}
       >
         <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--dc-text-muted)', marginBottom: 12 }}>

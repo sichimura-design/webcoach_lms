@@ -30,7 +30,7 @@ const RANGES: { key: RangeKey; label: string; totalLabel: string }[] = [
 const WEEKDAY_LABELS = ['月', '火', '水', '木', '金', '土', '日'];
 
 /** 棒の描画領域（px）。下に曜日/日付ラベルの行が別途つく */
-const PLOT_H = 132;
+const PLOT_H = 150;
 /** 実績0の過去日に残す最小の芯 */
 const EMPTY_H = 3;
 
@@ -48,8 +48,10 @@ interface Bar {
 
 function scaleMaxOf(minutes: number[]): number {
   const peak = Math.max(0, ...minutes);
+  if (peak <= 30) return 30;
   if (peak <= 60) return 60;
-  return Math.ceil(peak / 30) * 30;
+  if (peak <= 120) return 120;
+  return Math.ceil(peak / 60) * 60;
 }
 
 /** dailyTotals（昇順・欠損日は0埋め）から日付キーで引ける Map を作る */
@@ -105,7 +107,7 @@ function Kpi({ label, value, accent }: { label: string; value: string; accent?: 
       style={{
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-md)',
-        padding: '12px 14px',
+        padding: '16px 18px',
         minWidth: 0,
       }}
     >
@@ -274,10 +276,10 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '20px 22px',
+        padding: '26px 28px',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
         <span
           style={{
             width: 30,
@@ -327,7 +329,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
         <Kpi label="現在の連続日数" value={loading ? '…' : `${stats?.streak.currentDays ?? 0}日`} accent />
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '20px 0 14px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '26px 0 18px', flexWrap: 'wrap' }}>
         {range === '1w' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <button

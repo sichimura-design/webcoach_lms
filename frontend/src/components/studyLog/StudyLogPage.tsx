@@ -74,7 +74,7 @@ function StudyLogPage() {
     border: '1px solid var(--dc-border)',
     borderRadius: 'var(--dc-radius-lg)',
     boxShadow: 'var(--dc-shadow-card)',
-    padding: '20px 22px',
+    padding: '26px 28px',
   };
 
   return (
@@ -83,7 +83,7 @@ function StudyLogPage() {
 
       <main
         className="dc-page-main flex flex-col"
-        style={{ flex: 1, padding: '44px 36px 24px', color: 'var(--dc-text)' }}
+        style={{ flex: 1, padding: '48px 48px 40px', color: 'var(--dc-text)' }}
       >
         <div style={{ marginBottom: 22 }}>
           <h1
@@ -108,7 +108,7 @@ function StudyLogPage() {
             学習記録を表示できませんでした。この機能はモック環境でのみ利用できます。
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
             <StudyRecordPanel stats={stats} loading={statsLoading} />
 
             <StreakCalendarCard stats={stats} loading={statsLoading} />

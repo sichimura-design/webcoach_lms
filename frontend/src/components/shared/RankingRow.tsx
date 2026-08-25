@@ -66,8 +66,8 @@ export function RankingRow({ item, divided, showAvatar = true }: RankingRowProps
       style={{
         display: 'flex',
         alignItems: 'center',
-        gap: 8,
-        padding: item.isMe ? '8px' : '9px 2px',
+        gap: 10,
+        padding: item.isMe ? '11px 8px' : '12px 4px',
         borderTop: divided && !item.isMe ? '1px solid var(--dc-border)' : undefined,
         background: item.isMe ? 'var(--dc-soft-100)' : undefined,
         borderRadius: item.isMe ? 10 : undefined,

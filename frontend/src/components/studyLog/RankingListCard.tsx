@@ -46,10 +46,10 @@ export function RankingListCard({
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '20px 22px',
+        padding: '26px 28px',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18, flexWrap: 'wrap' }}>
         <span
           style={{
             width: 30,
@@ -116,7 +116,7 @@ export function RankingListCard({
         <div style={{ fontSize: 12.5, color: 'var(--dc-text-subtle)', padding: '20px 0' }}>読み込んでいます…</div>
       ) : (
         <>
-          <div style={{ border: '1px solid var(--dc-border)', borderRadius: 14, padding: '4px 10px' }}>
+          <div style={{ border: '1px solid var(--dc-border)', borderRadius: 14, padding: '6px 16px' }}>
             {items.map((item, i) => (
               <RankingRow key={`${item.rank}-${item.nickname}`} item={item} divided={i > 0} />
             ))}

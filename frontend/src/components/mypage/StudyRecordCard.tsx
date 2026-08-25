@@ -39,11 +39,18 @@ type Bar = {
   isFuture: boolean;
 };
 
-/** 目盛りの上限。実績が小さい週でもグラフが暴れないよう 2時間を下限にする */
+/**
+ * 目盛りの上限。30分 → 1時間 → 2時間 → 1時間刻み、と段階的に上げる。
+ * 🔴 一律 2時間を下限にすると、実績が30分の週で棒が背丈の1/4しか立たず、
+ *    グラフの上半分が空白になって「使われていない面」に見える。
+ *    週ごとに目盛りを合わせて、棒がちゃんと立つようにする。
+ */
 function scaleMaxOf(minutes: number[]): number {
   const peak = Math.max(0, ...minutes);
+  if (peak <= 30) return 30;
+  if (peak <= 60) return 60;
   if (peak <= 120) return 120;
-  return Math.ceil(peak / 30) * 30;
+  return Math.ceil(peak / 60) * 60;
 }
 
 function MiniStat({ label, parts }: { label: string; parts: { value: string; unit: string }[] }) {
@@ -52,7 +59,7 @@ function MiniStat({ label, parts }: { label: string; parts: { value: string; uni
       style={{
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-md)',
-        padding: '12px 12px',
+        padding: '15px 16px',
         minWidth: 0,
       }}
     >
@@ -115,10 +122,10 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '22px 24px',
+        padding: '26px 28px',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
         <span
           style={{
             width: 30,
@@ -173,8 +180,8 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-          gap: 10,
-          marginBottom: 22,
+          gap: 14,
+          marginBottom: 28,
         }}
       >
         <MiniStat label="今週の学習時間" parts={loading ? loadingParts : splitMinutesHM(stats?.week.minutes ?? 0)} />
@@ -185,7 +192,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
         />
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
         <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--dc-text)' }}>今週の学習時間</div>
         <div className="dc-num" style={{ fontSize: 11.5, color: 'var(--dc-text-subtle)' }}>{rangeLabel}</div>
       </div>

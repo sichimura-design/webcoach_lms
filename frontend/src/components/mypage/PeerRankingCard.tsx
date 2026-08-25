@@ -69,10 +69,10 @@ function PeriodPills<T extends string>({
 function Block({ title, items }: { title: string; items: RankingRowItem[] }) {
   return (
     <div style={{ minWidth: 0 }}>
-      <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--dc-text-muted)', marginBottom: 8 }}>
+      <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--dc-text-muted)', marginBottom: 10 }}>
         {title}
       </div>
-      <div style={{ border: '1px solid var(--dc-border)', borderRadius: 14, padding: '2px 10px' }}>
+      <div style={{ border: '1px solid var(--dc-border)', borderRadius: 14, padding: '4px 16px' }}>
         {items.map((item, i) => (
           <RankingRow key={`${item.rank}-${item.nickname}`} item={item} divided={i > 0} showAvatar={false} />
         ))}
@@ -130,10 +130,10 @@ export function PeerRankingCard({ userId }: PeerRankingCardProps) {
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '20px 22px',
+        padding: '26px 28px',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
         <span
           style={{
             width: 30,
@@ -210,7 +210,7 @@ export function PeerRankingCard({ userId }: PeerRankingCardProps) {
       </div>
 
       {/* 種別タブ。学習時間だけだと「毎日短く続ける人」が上位に出ないので2軸を用意する */}
-      <div style={{ display: 'flex', gap: 6, marginBottom: 18 }} role="tablist" aria-label="ランキングの種類">
+      <div style={{ display: 'flex', gap: 6, marginBottom: 22 }} role="tablist" aria-label="ランキングの種類">
         {([
           { key: 'time' as Kind, label: '学習時間' },
           { key: 'streak' as Kind, label: 'ストリーク' },

@@ -108,10 +108,10 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '20px 22px',
+        padding: '26px 28px',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
         <span
           style={{
             width: 30,
@@ -148,7 +148,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
       </div>
 
       <div
-        style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: 4, marginBottom: 6 }}
+        style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: 6, marginBottom: 8 }}
         aria-hidden="true"
       >
         {WEEKDAY_LABELS.map((w) => (
@@ -158,9 +158,9 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: 4 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: 6 }}>
         {cells.map((c) => {
-          if (c.blank) return <span key={c.key} style={{ height: 44 }} />;
+          if (c.blank) return <span key={c.key} style={{ height: 50 }} />;
 
           return (
             <span
@@ -168,7 +168,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
               title={c.tip}
               aria-current={c.isToday ? 'date' : undefined}
               style={{
-                height: 44,
+                height: 50,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',

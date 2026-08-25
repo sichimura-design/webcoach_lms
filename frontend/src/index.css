@@ -145,10 +145,11 @@ h1, h2, h3, .font-display {
 }
 
 /* マイページ・学習記録ページの本文。デザイン 5a / 4a の main は約1460px
-   （キャンバス1680 − サイドバー220）。超ワイドで右カラムだけが無限に太るのを防ぐ。 */
+   （キャンバス1680 − サイドバー220）だが、実機ではサイドバーぶんを差し引いても
+   まだ余るので 1600px まで許す。超ワイドで右カラムだけが無限に太るのは防ぐ。 */
 .dc-page-main {
   width: 100%;
-  max-width: 1460px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
@@ -157,8 +158,8 @@ h1, h2, h3, .font-display {
    右（チャレンジ・ランキング）に余りを渡す。タブレット以下は1カラムへ（DESIGN.md §6）。 */
 .mypage-3d-grid {
   display: grid;
-  grid-template-columns: minmax(0, 470px) minmax(0, 1fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 500px) minmax(0, 1fr);
+  gap: 28px;
   align-items: start;
 }
 
@@ -173,14 +174,14 @@ h1, h2, h3, .font-display {
 .mypage-rank-split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  gap: 28px;
   align-items: start;
 }
 
 @media (max-width: 1279px) {
   .mypage-rank-split {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 22px;
   }
 }
 
@@ -191,7 +192,7 @@ h1, h2, h3, .font-display {
 @media (max-width: 1439px) {
   body.sidebar-expanded .mypage-rank-split {
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 22px;
   }
 }
 
@@ -671,14 +672,14 @@ body.learning-immersive {
 .studylog-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  gap: 16px;
 }
 
 /* 学習時間ランキングとストリークランキングの2枚並び */
 .studylog-rank-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
+  gap: 28px;
   align-items: start;
 }
 

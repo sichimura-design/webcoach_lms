@@ -76,12 +76,12 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
         background: 'linear-gradient(135deg,#E00F36 0%,#C00A2C 60%,#A80B27 100%)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: '0 14px 28px -14px rgba(160,8,36,.55)',
-        padding: '24px 26px',
+        padding: '28px 30px',
         color: '#fff',
         overflow: 'hidden',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
         <span
           style={{
             width: 34,
@@ -123,7 +123,7 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
         </button>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 16 }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 20 }}>
         <span
           className="dc-num"
           style={{ fontSize: numberSize, fontWeight: 800, lineHeight: 1, letterSpacing: '-0.02em' }}

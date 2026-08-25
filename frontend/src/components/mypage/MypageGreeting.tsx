@@ -23,7 +23,7 @@ function formatTodayJa(d: Date): string {
 
 function MypageGreeting({ name }: MypageGreetingProps) {
   return (
-    <div style={{ marginBottom: 24 }}>
+    <div style={{ marginBottom: 30 }}>
       <div style={{ fontSize: 12.5, color: 'var(--dc-text-muted)', marginBottom: 6 }}>
         {formatTodayJa(new Date())}
       </div>
