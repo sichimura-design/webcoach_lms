@@ -379,6 +379,22 @@ body.learning-immersive {
 .wc-lesson-prose strong { color: #2B2629; font-weight: 700; }
 .wc-lesson-prose b { font-weight: 700; }
 
+/* 移行してきた教材には、元サイトのCSSで縮めて表示していた大きな画像が入っている。
+   幅の指定が無いと本文の枠を突き抜けるので、ここで必ず収める。 */
+.wc-lesson-prose img,
+.wc-lesson-prose video,
+.wc-lesson-prose iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+.wc-lesson-prose video { border-radius: 8px; }
+/* 幅の広い表とコードは、本文ごと横に伸びるのではなく、その中でスクロールさせる */
+.wc-lesson-prose table { display: block; overflow-x: auto; max-width: 100%; border-collapse: collapse; }
+.wc-lesson-prose th,
+.wc-lesson-prose td { border: 1px solid #E6E1E3; padding: 6px 10px; font-size: 14px; }
+.wc-lesson-prose pre { overflow-x: auto; max-width: 100%; }
+
 /* ─── アニメーション ─────────────────────── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(8px); }

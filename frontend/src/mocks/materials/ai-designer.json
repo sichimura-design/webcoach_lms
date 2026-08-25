@@ -23,10 +23,10 @@
           "id": "qao0d-001",
           "heading": "",
           "kind": "video",
-          "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"https://www.dropbox.com/scl/fi/3f2jvejuyu80wfuxq26p0/_Chapter0.mp4?rlkey=5ya37pkvv7v98wbrsa078l4wm&amp;st=n70umyd6&amp;raw=1\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
+          "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"__ASSET__/media/med-de4f2e3db2.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
           "plain": "チャプター概要動画",
           "media": {
-            "src": "https://www.dropbox.com/scl/fi/3f2jvejuyu80wfuxq26p0/_Chapter0.mp4?rlkey=5ya37pkvv7v98wbrsa078l4wm&st=n70umyd6&raw=1"
+            "src": "__ASSET__/media/med-de4f2e3db2.mp4"
           }
         },
         {
@@ -225,8 +225,8 @@
           "id": "qao0d-026",
           "heading": "このコースが目指すゴール",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">このコースの1ヶ月のゴールとして正しいのは、どれでしょうか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">Canvaのすべての機能を使いこなせるようになる</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">デザインの専門知識を完璧にマスターする</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">ポートフォリオを公開して、案件に応募している状態になる</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">フリーランスとして安定した収入を得ている状態になる</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">1ヶ月のゴールはスキルの完成ではなく、<strong>市場デビューの体験</strong>です。ポートフォリオを公開して、実際に応募までやり切った状態になること。稼ぐのはそのあとの話。まずは市場に出る経験を優先します。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">このコースの1ヶ月ゴールは、<strong>ポートフォリオを公開して、案件に応募している状態になること</strong>です。スキルを完璧に仕上げることではなく、まず市場デビューの体験を積むことが目標です。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ このコースの1ヶ月のゴールとして正しいのは、どれでしょうか？ ACanvaのすべての機能を使いこなせるようになる Bデザインの専門知識を完璧にマスターする Cポートフォリオを公開して、案件に応募している状態になる Dフリーランスとして安定した収入を得ている状態になる ✓ 正解です！ 1ヶ月のゴールはスキルの完成ではなく、市場デビューの体験です。ポートフォリオを公開して、実際に応募までやり切った状態になること。稼ぐのはそのあとの話。まずは市場に出る経験を優先します。 ✕ 惜しい！ このコースの1ヶ月ゴールは、ポートフォリオを公開して、案件に応募している状態になることです。スキルを完璧に仕上げることではなく、まず市場デビューの体験を積むことが目標です。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "このコースの1ヶ月のゴールとして正しいのは、どれでしょうか？",
             "choices": [
@@ -321,8 +321,8 @@
           "id": "qao0d-035",
           "heading": "学習×実務の両輪を回す",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">つまずいて思い通りにいかない経験は、学習の中でどう位置づけられているでしょうか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">失敗であり、できるだけ避けるべきもの</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"true\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">成長のプロセスであり、できることが増えていく途中の証拠</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">コーチにすぐ相談すべきサイン</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">学習が向いていないことを示すもの</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q2-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">うまくいかなかったり思い通りに出ないことは失敗ではなく、できることが増えていく途中の証拠です。繰り返すほど、確実にスキルは伸びていきます。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q2-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">つまずきは失敗ではありません。うまくいかない経験は、すべて成長のプロセスです。試行錯誤を重ねるたびに、できることは確実に増えていきます。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ つまずいて思い通りにいかない経験は、学習の中でどう位置づけられているでしょうか？ A失敗であり、できるだけ避けるべきもの B成長のプロセスであり、できることが増えていく途中の証拠 Cコーチにすぐ相談すべきサイン D学習が向いていないことを示すもの ✓ 正解です！ うまくいかなかったり思い通りに出ないことは失敗ではなく、できることが増えていく途中の証拠です。繰り返すほど、確実にスキルは伸びていきます。 ✕ 惜しい！ つまずきは失敗ではありません。うまくいかない経験は、すべて成長のプロセスです。試行錯誤を重ねるたびに、できることは確実に増えていきます。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "つまずいて思い通りにいかない経験は、学習の中でどう位置づけられているでしょうか？",
             "choices": [
@@ -662,8 +662,8 @@
           "id": "cazsk-035",
           "heading": "スクール内での実践がそのまま実務練習になる",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">このコースを1ヶ月で進めた場合、最終的に応募する案件の合計件数は？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">1件（コンペのみ）</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">2件（コンペ2件のみ）</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">4件（コンペ2件＋通常応募2件）</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">10件以上（できるだけ多く）</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">コンペ2件・通常案件への応募2件の計4件が目標です。数より、実際に市場に出る経験を積むことが重要です。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">正解は<strong>4件（コンペ2件＋通常応募2件）</strong>です。最初の目標は数を稼ぐことではなく、実際に応募して市場のフィードバックを受ける経験を積むことです。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ このコースを1ヶ月で進めた場合、最終的に応募する案件の合計件数は？ A1件（コンペのみ） B2件（コンペ2件のみ） C4件（コンペ2件＋通常応募2件） D10件以上（できるだけ多く） ✓ 正解です！ コンペ2件・通常案件への応募2件の計4件が目標です。数より、実際に市場に出る経験を積むことが重要です。 ✕ 惜しい！ 正解は4件（コンペ2件＋通常応募2件）です。最初の目標は数を稼ぐことではなく、実際に応募して市場のフィードバックを受ける経験を積むことです。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "このコースを1ヶ月で進めた場合、最終的に応募する案件の合計件数は？",
             "choices": [
@@ -969,8 +969,8 @@
           "id": "ptuq5-031",
           "heading": "日次ログ（開始時と終了時に追記）",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">デザインを作っていて思い通りに仕上がらなかった、AIに指示を出しても期待した画像が出なかった。これはどう解釈するのが正しい？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">自分にデザインの才能がないサイン</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">AIが壊れているか、まだ使いにくいツールを使っている</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">次の修正のための情報が得られた。試行錯誤のプロセスの一部</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">すぐにコーチに質問すべきタイミング</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">うまくいかない経験は失敗ではなく、次の改善のための材料です。デザインもAIへの指示も、試行錯誤のサイクルを回すほど上達していきます。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">正解は「次の修正のための情報が得られた」です。デザイン制作もAIの活用も1回で決まることは稀です。うまくいかない経験こそが成長のプロセスです。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ デザインを作っていて思い通りに仕上がらなかった、AIに指示を出しても期待した画像が出なかった。これはどう解釈するのが正しい？ A自分にデザインの才能がないサイン BAIが壊れているか、まだ使いにくいツールを使っている C次の修正のための情報が得られた。試行錯誤のプロセスの一部 Dすぐにコーチに質問すべきタイミング ✓ 正解です！ うまくいかない経験は失敗ではなく、次の改善のための材料です。デザインもAIへの指示も、試行錯誤のサイクルを回すほど上達していきます。 ✕ 惜しい！ 正解は「次の修正のための情報が得られた」です。デザイン制作もAIの活用も1回で決まることは稀です。うまくいかない経験こそが成長のプロセスです。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "デザインを作っていて思い通りに仕上がらなかった、AIに指示を出しても期待した画像が出なかった。これはどう解釈するのが正しい？",
             "choices": [
@@ -1001,8 +1001,8 @@
           "id": "ptuq5-032",
           "heading": "日次ログ（開始時と終了時に追記）",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">このコースでの「到達目標」として正しいのはどれ？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">Canvaのすべての機能を暗記している状態</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">プロンプトのパターンを100個以上覚えている状態</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">必要なときに調べながら制作を進められる状態</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">このコースの教材をすべて完全に理解している状態</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q2-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\"><strong>調べながら使いこなせる</strong>のが目標です。プロでも調べながら仕事をするのが普通です。暗記ではなく、<strong>どこを調べれば解決できるかがわかる</strong>状態を目指しましょう。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q2-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">正解は「必要なときに調べながら制作を進められる状態」です。暗記は目標ではありません。実際に手を動かしながら、必要なことを必要なときに調べる力をつけることが大切です。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ このコースでの「到達目標」として正しいのはどれ？ ACanvaのすべての機能を暗記している状態 Bプロンプトのパターンを100個以上覚えている状態 C必要なときに調べながら制作を進められる状態 Dこのコースの教材をすべて完全に理解している状態 ✓ 正解です！ 調べながら使いこなせるのが目標です。プロでも調べながら仕事をするのが普通です。暗記ではなく、どこを調べれば解決できるかがわかる状態を目指しましょう。 ✕ 惜しい！ 正解は「必要なときに調べながら制作を進められる状態」です。暗記は目標ではありません。実際に手を動かしながら、必要なことを必要なときに調べる力をつけることが大切です。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "このコースでの「到達目標」として正しいのはどれ？",
             "choices": [
@@ -1081,10 +1081,10 @@
           "id": "yljsj-001",
           "heading": "",
           "kind": "video",
-          "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"https://www.dropbox.com/scl/fi/po5bqcn3g690d38tzkvzc/.mp4?rlkey=bhnvxid5iyc0pz06bz91g5oqn&amp;st=1xp8wmwa&amp;raw=1\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
+          "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"__ASSET__/media/med-e7f918bf16.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
           "plain": "チャプター概要動画",
           "media": {
-            "src": "https://www.dropbox.com/scl/fi/po5bqcn3g690d38tzkvzc/.mp4?rlkey=bhnvxid5iyc0pz06bz91g5oqn&st=1xp8wmwa&raw=1"
+            "src": "__ASSET__/media/med-e7f918bf16.mp4"
           }
         },
         {
@@ -1194,8 +1194,8 @@
           "id": "yljsj-015",
           "heading": "ChatGPT Images 2.0とCanvaの商用利用ルール",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">AI生成画像を商用利用する際に「最初に」確認すべきことはどれですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">画像のクオリティが十分か確認する</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">使用するツールの利用規約に商用利用が許可されているか確認する</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">クライアントにAIを使ったことを報告する</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">似たような画像がインターネット上にないか検索する</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">まず利用規約の確認が最初のステップです。ツールが商用利用を許可していなければ、その後のチェックは意味がありません。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">3ステップの順番は<strong>ツール規約確認 → 生成物チェック → クライアント報告</strong>です。まずツールの利用規約から確認しましょう。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ AI生成画像を商用利用する際に「最初に」確認すべきことはどれですか？ A画像のクオリティが十分か確認する B使用するツールの利用規約に商用利用が許可されているか確認する CクライアントにAIを使ったことを報告する D似たような画像がインターネット上にないか検索する ✓ 正解です！ まず利用規約の確認が最初のステップです。ツールが商用利用を許可していなければ、その後のチェックは意味がありません。 ✕ 惜しい！ 3ステップの順番はツール規約確認 → 生成物チェック → クライアント報告です。まずツールの利用規約から確認しましょう。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "AI生成画像を商用利用する際に「最初に」確認すべきことはどれですか？",
             "choices": [
@@ -1233,8 +1233,8 @@
           "id": "yljsj-017",
           "heading": "ChatGPT Images 2.0とCanvaの商用利用ルール",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">ChatGPTでChatGPT Images 2.0を商用利用する前に必ず行うべき設定変更はどれですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">GPT-4oモデルに切り替える</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"true\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">設定のデータコントロールで「全員のモデル改善に役立てる」をOFFにする</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">有料プランに加入する</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">生成した画像を公開設定にしない</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q2-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">この設定をOFFにすることで、クライアントの資料や未公開素材がモデル学習に使われるリスクを防げます。一度設定すれば以降ずっと有効です。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q2-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">正解は<strong>設定 → データコントロール →「全員のモデル改善に役立てる」をOFF</strong>です。これがデフォルトで必要な設定変更です。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ ChatGPTでChatGPT Images 2.0を商用利用する前に必ず行うべき設定変更はどれですか？ AGPT-4oモデルに切り替える B設定のデータコントロールで「全員のモデル改善に役立てる」をOFFにする C有料プランに加入する D生成した画像を公開設定にしない ✓ 正解です！ この設定をOFFにすることで、クライアントの資料や未公開素材がモデル学習に使われるリスクを防げます。一度設定すれば以降ずっと有効です。 ✕ 惜しい！ 正解は設定 → データコントロール →「全員のモデル改善に役立てる」をOFFです。これがデフォルトで必要な設定変更です。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "ChatGPTでChatGPT Images 2.0を商用利用する前に必ず行うべき設定変更はどれですか？",
             "choices": [
@@ -1340,8 +1340,8 @@
           "id": "33kqh-005",
           "heading": "ツールと費用の確認",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">このコースでCanva Proが推奨される主な理由はどれですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">テンプレートの種類が多いから</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">Magic LayersなどのAI機能を安定して使えるから</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">チームで共有できるから</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">商用利用が可能になるから</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">Canva ProでAIデザイン機能を安定して使えます。演習を円滑に進めるためにProへ切り替えておきましょう。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">正解は<strong>AI機能を安定して使えるから</strong>です。30日間の無料トライアルで始めてください。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ このコースでCanva Proが推奨される主な理由はどれですか？ Aテンプレートの種類が多いから BMagic LayersなどのAI機能を安定して使えるから Cチームで共有できるから D商用利用が可能になるから ✓ 正解です！ Canva ProでAIデザイン機能を安定して使えます。演習を円滑に進めるためにProへ切り替えておきましょう。 ✕ 惜しい！ 正解はAI機能を安定して使えるからです。30日間の無料トライアルで始めてください。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "このコースでCanva Proが推奨される主な理由はどれですか？",
             "choices": [
@@ -1444,8 +1444,8 @@
           "id": "33kqh-015",
           "heading": "学習データをOFFにする手順（ChatGPT）",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">Canva Proへのアップグレード後、プランが正しく有効になったことを確認する最も確実な方法はどれですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">テンプレートの種類が増えているか確認する</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"true\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">「設定」→「課金とプラン」でProプランが有効になっているか確認する</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">右上アカウントアイコンにバッジが出るまで待つ</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">ダウンロードオプションが増えているか確認する</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q2-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">「設定」→「課金とプラン」で直接プランの状態を確認するのが一番確実です。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q2-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">「設定」→「課金とプラン」を開いて、Proプランが有効になっているか確認しましょう。バッジ表示は環境によって出ないこともあります。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ Canva Proへのアップグレード後、プランが正しく有効になったことを確認する最も確実な方法はどれですか？ Aテンプレートの種類が増えているか確認する B「設定」→「課金とプラン」でProプランが有効になっているか確認する C右上アカウントアイコンにバッジが出るまで待つ Dダウンロードオプションが増えているか確認する ✓ 正解です！ 「設定」→「課金とプラン」で直接プランの状態を確認するのが一番確実です。 ✕ 惜しい！ 「設定」→「課金とプラン」を開いて、Proプランが有効になっているか確認しましょう。バッジ表示は環境によって出ないこともあります。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "Canva Proへのアップグレード後、プランが正しく有効になったことを確認する最も確実な方法はどれですか？",
             "choices": [
@@ -1590,8 +1590,8 @@
           "id": "pa6b2-009",
           "heading": "フォルダ構造を作ろう",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">クライアントに納品するPNGファイルはどのフォルダに入れるべきですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">02_draft</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">03_output</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">01_research</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">00_brief</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">03_outputは納品物専用フォルダです。クライアントに渡すファイルはここだけに入れることで、誤送信を防げます。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">正解は<strong>03_output</strong>です。作業ファイル（AI・PSD）は02_draftに、納品物は03_outputに分けて管理します。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ クライアントに納品するPNGファイルはどのフォルダに入れるべきですか？ A02_draft B03_output C01_research D00_brief ✓ 正解です！ 03_outputは納品物専用フォルダです。クライアントに渡すファイルはここだけに入れることで、誤送信を防げます。 ✕ 惜しい！ 正解は03_outputです。作業ファイル（AI・PSD）は02_draftに、納品物は03_outputに分けて管理します。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "クライアントに納品するPNGファイルはどのフォルダに入れるべきですか？",
             "choices": [
@@ -1650,8 +1650,8 @@
           "id": "pa6b2-014",
           "heading": "保存形式の使い分け",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">印刷所への入稿データとして適切な保存形式はどれですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">PNG（通常）</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">JPG（高品質）</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">PDF（印刷設定・トンボ付き)</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">PNG（背景透過）</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q2-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">印刷入稿はPDF（印刷設定）が基本です。トンボ付きで書き出すことで、印刷所が裁断位置を正確に判断できます。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q2-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">印刷入稿には<strong>PDF（印刷設定・トンボ付き）</strong>を使います。PNGは主にWeb・SNS用の形式です。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ 印刷所への入稿データとして適切な保存形式はどれですか？ APNG（通常） BJPG（高品質） CPDF（印刷設定・トンボ付き) DPNG（背景透過） ✓ 正解です！ 印刷入稿はPDF（印刷設定）が基本です。トンボ付きで書き出すことで、印刷所が裁断位置を正確に判断できます。 ✕ 惜しい！ 印刷入稿にはPDF（印刷設定・トンボ付き）を使います。PNGは主にWeb・SNS用の形式です。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "印刷所への入稿データとして適切な保存形式はどれですか？",
             "choices": [
@@ -1730,10 +1730,10 @@
           "id": "5kmqm-001",
           "heading": "",
           "kind": "video",
-          "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"https://www.dropbox.com/scl/fi/mpt10za3vysywlny7paht/.mp4?rlkey=w1otketsrdbg0kqrbiou6459m&amp;st=w3bbqvgm&amp;raw=1\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
+          "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"__ASSET__/media/med-30d1d72c4b.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
           "plain": "チャプター概要動画",
           "media": {
-            "src": "https://www.dropbox.com/scl/fi/mpt10za3vysywlny7paht/.mp4?rlkey=w1otketsrdbg0kqrbiou6459m&st=w3bbqvgm&raw=1"
+            "src": "__ASSET__/media/med-30d1d72c4b.mp4"
           }
         },
         {
@@ -1871,8 +1871,8 @@
           "id": "5kmqm-019",
           "heading": "コピペして使える分析指示文",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">クライアントから「こんな雰囲気で」と参考デザインを渡されたとき、最初にすべきことはどれですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">参考デザインをそのままコピーしてCanvaで再現する</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">自分の目で色・フォント・レイアウトを手動で分析する</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">ChatGPTに参考画像を貼り付けて、印象と配色の分析指示を送る</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">同じスタイルのテンプレートをCanvaで検索する</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">ChatGPTに画像を投げて印象と配色を分析させると、プロンプトに使えるキーワードが30秒で手に入ります。コピーは著作権リスクがあるので避けてください。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">参考デザインをコピーする行為は著作権侵害のリスクがあります。印象と配色のキーワードを抽出し、そのキーワードを使って新しく生成するのがプロの手順です。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ クライアントから「こんな雰囲気で」と参考デザインを渡されたとき、最初にすべきことはどれですか？ A参考デザインをそのままコピーしてCanvaで再現する B自分の目で色・フォント・レイアウトを手動で分析する CChatGPTに参考画像を貼り付けて、印象と配色の分析指示を送る D同じスタイルのテンプレートをCanvaで検索する ✓ 正解です！ ChatGPTに画像を投げて印象と配色を分析させると、プロンプトに使えるキーワードが30秒で手に入ります。コピーは著作権リスクがあるので避けてください。 ✕ 惜しい！ 参考デザインをコピーする行為は著作権侵害のリスクがあります。印象と配色のキーワードを抽出し、そのキーワードを使って新しく生成するのがプロの手順です。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "クライアントから「こんな雰囲気で」と参考デザインを渡されたとき、最初にすべきことはどれですか？",
             "choices": [
@@ -2092,8 +2092,8 @@
           "id": "cfcse-020",
           "heading": "例3：女性専用パーソナルジム — 体験レッスン申込",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">6要素フレームワークで「自分の言葉で補完する要素」として代表的なものはどれですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">依頼書に書かれたキャッチコピーのテキスト</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">依頼書に指定されたブランドカラーのカラーコード</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">印象・構図（依頼書に書かれていないことが多い要素）</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">媒体とサイズ（Instagramバナーなど）</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">印象と構図は依頼書に書かれていないことが多く、デザイナーが自分の判断で補う要素です。ブランドの世界観や、画面に映す被写体・構図をどう表現するかを言語化しましょう。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">テキスト・カラー・媒体・サイズは依頼書にあることが多い要素で、そのまま転記します。デザイナーが補完する代表的な要素は印象と構図です。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ 6要素フレームワークで「自分の言葉で補完する要素」として代表的なものはどれですか？ A依頼書に書かれたキャッチコピーのテキスト B依頼書に指定されたブランドカラーのカラーコード C印象・構図（依頼書に書かれていないことが多い要素） D媒体とサイズ（Instagramバナーなど） ✓ 正解です！ 印象と構図は依頼書に書かれていないことが多く、デザイナーが自分の判断で補う要素です。ブランドの世界観や、画面に映す被写体・構図をどう表現するかを言語化しましょう。 ✕ 惜しい！ テキスト・カラー・媒体・サイズは依頼書にあることが多い要素で、そのまま転記します。デザイナーが補完する代表的な要素は印象と構図です。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "6要素フレームワークで「自分の言葉で補完する要素」として代表的なものはどれですか？",
             "choices": [
@@ -2281,8 +2281,8 @@
           "id": "tclmk-016",
           "heading": "ベスト選別の3つの基準",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ 1</div>\n  </div>\n  <div class=\"quiz-q\">ChatGPT Images 2.0でバリエーションを複数生成してベストを選ぶ際、選別の基準として適切でないものはどれですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">テキストの大小バランス（テキスト階層）</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">ビジュアルの訴求力（目を引くか）</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">自分が個人的に好きなデザインかどうか</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">全体のバランス（余白・色・密度）</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">ベストを選ぶ基準は「テキスト階層・訴求力・全体バランス」という客観的な指標です。自分の好みではなく、クライアントのターゲットに届くかという視点で判断します。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">個人の好みではなく、テキスト階層・ビジュアルの訴求力・全体のバランスという客観的な基準で選別します。このターゲットに何が届くかの視点で判断してください。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ 1 ChatGPT Images 2.0でバリエーションを複数生成してベストを選ぶ際、選別の基準として適切でないものはどれですか？ Aテキストの大小バランス（テキスト階層） Bビジュアルの訴求力（目を引くか） C自分が個人的に好きなデザインかどうか D全体のバランス（余白・色・密度） ✓ 正解です！ ベストを選ぶ基準は「テキスト階層・訴求力・全体バランス」という客観的な指標です。自分の好みではなく、クライアントのターゲットに届くかという視点で判断します。 ✕ 惜しい！ 個人の好みではなく、テキスト階層・ビジュアルの訴求力・全体のバランスという客観的な基準で選別します。このターゲットに何が届くかの視点で判断してください。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "ChatGPT Images 2.0でバリエーションを複数生成してベストを選ぶ際、選別の基準として適切でないものはどれですか？",
             "choices": [
@@ -2380,8 +2380,8 @@
           "id": "tclmk-026",
           "heading": "そのほかの壁打ちの例",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ 2</div>\n  </div>\n  <div class=\"quiz-q\">ChatGPTとの壁打ちフェーズの「終了目安」として正しいものはどれですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">完璧に満足できるデザインが出るまで何度も繰り返す</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">10回以上やりとりして出てきた最新の画像を使う</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">なぜこのデザインにしたかを1文で説明できる状態になったら完了</div></button>\n    <button class=\"quiz-opt\" data-q=\"q2\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">自分が「いい感じ」と思えるまで続ける</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q2-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">なぜこのデザインにしたかを言語化できれば、Canva仕上げに進む準備ができています。完璧を求めてずっと壁打ちし続けると時間が無限にかかるので注意してください。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q2-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">回数や個人の感覚ではなく、なぜこのデザインにしたかを1文で説明できる状態になったら完了です。デザイン判断の言語化が次のステップへの基準になります。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ 2 ChatGPTとの壁打ちフェーズの「終了目安」として正しいものはどれですか？ A完璧に満足できるデザインが出るまで何度も繰り返す B10回以上やりとりして出てきた最新の画像を使う Cなぜこのデザインにしたかを1文で説明できる状態になったら完了 D自分が「いい感じ」と思えるまで続ける ✓ 正解です！ なぜこのデザインにしたかを言語化できれば、Canva仕上げに進む準備ができています。完璧を求めてずっと壁打ちし続けると時間が無限にかかるので注意してください。 ✕ 惜しい！ 回数や個人の感覚ではなく、なぜこのデザインにしたかを1文で説明できる状態になったら完了です。デザイン判断の言語化が次のステップへの基準になります。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "ChatGPTとの壁打ちフェーズの「終了目安」として正しいものはどれですか？",
             "choices": [
@@ -2547,8 +2547,8 @@
           "id": "jpuim-013",
           "heading": "③ 色精度の確認",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ 1</div>\n  </div>\n  <div class=\"quiz-q\">3ステップの中で「法的リスク」に直結するため、必ず毎回実施すべきチェックはどれですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">人体の違和感チェック（手指・顔・身体）</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">著作物類似チェック（逆画像検索）</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">色精度チェック</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">解像度チェック</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">著作物類似チェックは法的リスクに直結します。逆画像検索は1〜2分で終わるので、毎案件で必ず行う習慣にしてください。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">他のステップも大切ですが、著作物類似はCanvaで修正できない問題だからこそ、最初の段階で確認することが重要です。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ 1 3ステップの中で「法的リスク」に直結するため、必ず毎回実施すべきチェックはどれですか？ A人体の違和感チェック（手指・顔・身体） B著作物類似チェック（逆画像検索） C色精度チェック D解像度チェック ✓ 正解です！ 著作物類似チェックは法的リスクに直結します。逆画像検索は1〜2分で終わるので、毎案件で必ず行う習慣にしてください。 ✕ 惜しい！ 他のステップも大切ですが、著作物類似はCanvaで修正できない問題だからこそ、最初の段階で確認することが重要です。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "3ステップの中で「法的リスク」に直結するため、必ず毎回実施すべきチェックはどれですか？",
             "choices": [
@@ -2684,10 +2684,10 @@
           "id": "0ytgv-008",
           "heading": "AI出力をCanvaで完成させる6ステップ",
           "kind": "video",
-          "html": "<div class=\"video-block reveal\">\n  <video src=\"https://www.dropbox.com/scl/fi/uxaeosac4ppuauk33bge6/Magic-Layer.mp4?rlkey=cs9cyqoqev22jxucgf4mpctos&amp;st=ff38zhg0&amp;raw=1\" controls=\"\"></video>\n</div>",
+          "html": "<div class=\"video-block reveal\">\n  <video src=\"__ASSET__/media/med-1004f6b76f.mp4\" controls=\"\"></video>\n</div>",
           "plain": "",
           "media": {
-            "src": "https://www.dropbox.com/scl/fi/uxaeosac4ppuauk33bge6/Magic-Layer.mp4?rlkey=cs9cyqoqev22jxucgf4mpctos&st=ff38zhg0&raw=1"
+            "src": "__ASSET__/media/med-1004f6b76f.mp4"
           }
         },
         {
@@ -2947,8 +2947,8 @@
           "id": "pefvg-005",
           "heading": "テキスト配置チェック",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n  <div class=\"quiz-top\">\n    <div class=\"quiz-icon\">Q</div>\n    <div class=\"quiz-title\">確認クイズ</div>\n  </div>\n  <div class=\"quiz-q\">テキストの優先順位が視覚的に明確かを確認するとき、何を見ればよいですか？</div>\n  <div class=\"quiz-options\">\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">テキストの文字数が適切かどうか</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">キャッチ・サブコピー・詳細テキストの順にフォントサイズと太さで差がついているか</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">フォントの種類が3種類以上使われているかどうか</div></button>\n    <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">テキストが画像の中央に配置されているかどうか</div></button>\n  </div>\n  <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n    <div class=\"quiz-feedback-icon\">✓</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">正解です！</div>\n      <div class=\"quiz-feedback-text\">フォントサイズと太さで「どのテキストが最重要か」を視覚的に伝えるのが、テキスト階層の基本です。キャッチが一番大きく・太く見えるかを確認しましょう。</div>\n    </div>\n  </div>\n  <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n    <div class=\"quiz-feedback-icon\">✕</div>\n    <div class=\"quiz-feedback-body\">\n      <div class=\"quiz-feedback-title\">惜しい！</div>\n      <div class=\"quiz-feedback-text\">テキストの優先順位はフォントサイズと太さで表現します。キャッチコピー ＞ サブコピー ＞ 詳細テキストの順に差がついているかを確認してください。</div>\n    </div>\n  </div>\n</div>",
-          "plain": "Q 確認クイズ テキストの優先順位が視覚的に明確かを確認するとき、何を見ればよいですか？ Aテキストの文字数が適切かどうか Bキャッチ・サブコピー・詳細テキストの順にフォントサイズと太さで差がついているか Cフォントの種類が3種類以上使われているかどうか Dテキストが画像の中央に配置されているかどうか ✓ 正解です！ フォントサイズと太さで「どのテキストが最重要か」を視覚的に伝えるのが、テキスト階層の基本です。キャッチが一番大きく・太く見えるかを確認しましょう。 ✕ 惜しい！ テキストの優先順位はフォントサイズと太さで表現します。キャッチコピー ＞ サブコピー ＞ 詳細テキストの順に差がついているかを確認してください。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "テキストの優先順位が視覚的に明確かを確認するとき、何を見ればよいですか？",
             "choices": [
@@ -3048,10 +3048,10 @@
           "id": "oft67-001",
           "heading": "",
           "kind": "video",
-          "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"https://www.dropbox.com/scl/fi/pu5xcpe4oya7qjqob0pmx/.mp4?rlkey=a611y172x2z51a1gad32v69a9&amp;st=mlrqdxm2&amp;raw=1\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
+          "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"__ASSET__/media/med-484fce2c07.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
           "plain": "チャプター概要動画",
           "media": {
-            "src": "https://www.dropbox.com/scl/fi/pu5xcpe4oya7qjqob0pmx/.mp4?rlkey=a611y172x2z51a1gad32v69a9&st=mlrqdxm2&raw=1"
+            "src": "__ASSET__/media/med-484fce2c07.mp4"
           }
         },
         {
@@ -4826,10 +4826,10 @@
           "id": "0lezf-001",
           "heading": "",
           "kind": "video",
-          "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"https://www.dropbox.com/scl/fi/2qpe763bnissrkqlyt3r9/.mp4?rlkey=s0ygavsozry4ixh9ia8t4k8dp&amp;st=n3i7xytd&amp;raw=1\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
+          "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"__ASSET__/media/med-3d00c74fa0.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
           "plain": "チャプター概要動画",
           "media": {
-            "src": "https://www.dropbox.com/scl/fi/2qpe763bnissrkqlyt3r9/.mp4?rlkey=s0ygavsozry4ixh9ia8t4k8dp&st=n3i7xytd&raw=1"
+            "src": "__ASSET__/media/med-3d00c74fa0.mp4"
           }
         },
         {
@@ -5318,10 +5318,10 @@
           "id": "mo6kf-001",
           "heading": "",
           "kind": "video",
-          "html": "<div class=\"chapter-intro-video\">\n    <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n    <video src=\"https://www.dropbox.com/scl/fi/3pze81pf78datshgyu9bw/.mp4?rlkey=ttqlafsl4m72vy5tw80xk6eva&amp;raw=1\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n  </div>",
+          "html": "<div class=\"chapter-intro-video\">\n    <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n    <video src=\"__ASSET__/media/med-e6e6a286dd.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n  </div>",
           "plain": "チャプター概要動画",
           "media": {
-            "src": "https://www.dropbox.com/scl/fi/3pze81pf78datshgyu9bw/.mp4?rlkey=ttqlafsl4m72vy5tw80xk6eva&raw=1"
+            "src": "__ASSET__/media/med-e6e6a286dd.mp4"
           }
         },
         {
@@ -5601,8 +5601,8 @@
           "id": "mo6kf-041",
           "heading": "06. 今の段階で応募できる案件の見つけ方",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n    <div class=\"quiz-top\">\n      <div class=\"quiz-icon\">Q</div>\n      <div class=\"quiz-title\">確認クイズ</div>\n    </div>\n    <div class=\"quiz-q\">プロフィールの「修正回数」欄をどう書くと、無限修正のリスクを抑えつつ発注者に納得してもらえるでしょうか。</div>\n    <div class=\"quiz-options\">\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">受注を増やしたいので無制限と書く</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">空欄のままにして、毎回打ち合わせで決める</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">2〜3回までと書き、それ以上は別途見積もりとする</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">1回までに絞り、それ以外は受けない</div></button>\n    </div>\n    <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n      <div class=\"quiz-feedback-icon\">✓</div>\n      <div class=\"quiz-feedback-body\">\n        <div class=\"quiz-feedback-title\">正解です</div>\n        <div class=\"quiz-feedback-text\">2〜3回が、品質を担保しつつ無限修正を防ぐバランスの良い基準です。それを超える修正は別見積りにすることで、発注者にも事前に納得してもらえます。</div>\n      </div>\n    </div>\n    <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n      <div class=\"quiz-feedback-icon\">✕</div>\n      <div class=\"quiz-feedback-body\">\n        <div class=\"quiz-feedback-title\">惜しい</div>\n        <div class=\"quiz-feedback-text\">無制限は永遠に修正対応が続くリスクがあり、空欄は発注者に判断材料を与えられず通過しません。<strong>2〜3回まで</strong>と明記して、超過分は別見積りにする運用が、品質と工数の両立に最も向いています。</div>\n      </div>\n    </div>\n  </div>",
-          "plain": "Q 確認クイズ プロフィールの「修正回数」欄をどう書くと、無限修正のリスクを抑えつつ発注者に納得してもらえるでしょうか。 A受注を増やしたいので無制限と書く B空欄のままにして、毎回打ち合わせで決める C2〜3回までと書き、それ以上は別途見積もりとする D1回までに絞り、それ以外は受けない ✓ 正解です 2〜3回が、品質を担保しつつ無限修正を防ぐバランスの良い基準です。それを超える修正は別見積りにすることで、発注者にも事前に納得してもらえます。 ✕ 惜しい 無制限は永遠に修正対応が続くリスクがあり、空欄は発注者に判断材料を与えられず通過しません。2〜3回までと明記して、超過分は別見積りにする運用が、品質と工数の両立に最も向いています。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "プロフィールの「修正回数」欄をどう書くと、無限修正のリスクを抑えつつ発注者に納得してもらえるでしょうか。",
             "choices": [
@@ -5878,8 +5878,8 @@
           "id": "rulkk-029",
           "heading": "06. 3種のテキストをカスタマイズして保存する",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n    <div class=\"quiz-top\">\n      <div class=\"quiz-icon\">Q</div>\n      <div class=\"quiz-title\">確認クイズ</div>\n    </div>\n    <div class=\"quiz-q\">ChatGPTで生成した応募文をそのまま送らず、自分の言葉に直す主な理由は何でしょうか。</div>\n    <div class=\"quiz-options\">\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">文字数を増やして印象を強くするため</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">AI調の硬い表現や案件と無関係な一般的な営業文が混じり、テンプレ送信に見えてしまうのを防ぐため</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">クラウドワークスの規約でAI生成文章の送信が禁止されているため</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">ChatGPTの利用規約で生成テキストの再利用が禁止されているため</div></button>\n    </div>\n    <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n      <div class=\"quiz-feedback-icon\">✓</div>\n      <div class=\"quiz-feedback-body\">\n        <div class=\"quiz-feedback-title\">正解です</div>\n        <div class=\"quiz-feedback-text\">AI生成のままだと<strong>どの案件にも送れる一般文</strong>になりやすく、テンプレ送信と判定されて選考から外れます。依頼書の具体記述を引用したり、自分の言葉でカスタマイズすることで、この案件のために書いたと伝わります。</div>\n      </div>\n    </div>\n    <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n      <div class=\"quiz-feedback-icon\">✕</div>\n      <div class=\"quiz-feedback-body\">\n        <div class=\"quiz-feedback-title\">惜しい</div>\n        <div class=\"quiz-feedback-text\">クラウドワークスの規約やChatGPTの利用規約でAI生成テキストの送信が禁止されているわけではありません。問題は、AI調の硬い表現や案件と無関係な一般営業文が混じり、テンプレ送信に見えてしまうことです。</div>\n      </div>\n    </div>\n  </div>",
-          "plain": "Q 確認クイズ ChatGPTで生成した応募文をそのまま送らず、自分の言葉に直す主な理由は何でしょうか。 A文字数を増やして印象を強くするため BAI調の硬い表現や案件と無関係な一般的な営業文が混じり、テンプレ送信に見えてしまうのを防ぐため Cクラウドワークスの規約でAI生成文章の送信が禁止されているため DChatGPTの利用規約で生成テキストの再利用が禁止されているため ✓ 正解です AI生成のままだとどの案件にも送れる一般文になりやすく、テンプレ送信と判定されて選考から外れます。依頼書の具体記述を引用したり、自分の言葉でカスタマイズすることで、この案件のために書いたと伝わります。 ✕ 惜しい クラウドワークスの規約やChatGPTの利用規約でAI生成テキストの送信が禁止されているわけではありません。問題は、AI調の硬い表現や案件と無関係な一般営業文が混じり、テンプレ送信に見えてしまうことです。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "ChatGPTで生成した応募文をそのまま送らず、自分の言葉に直す主な理由は何でしょうか。",
             "choices": [
@@ -6092,8 +6092,8 @@
           "id": "3pwe7-020",
           "heading": "05. AI使用開示の書き方と応募前チェック",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n    <div class=\"quiz-top\">\n      <div class=\"quiz-icon\">Q</div>\n      <div class=\"quiz-title\">確認クイズ</div>\n    </div>\n    <div class=\"quiz-q\">最初の数件で低めの単価で受けることが、なぜ結果的に近道になるのでしょうか。</div>\n    <div class=\"quiz-options\">\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">クラウドワークスが新規ワーカーに低単価を強制しているため</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">最初の3か月は低単価でないと税制上不利になるため</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">単価は実力ではなく実績と信頼で上がるため、まず納品実績を1件ずつ積み上げて回転数を増やすほうが、結果的に単価アップへの近道になるため</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">最初に低単価で受けると評価ポイントが2倍になる仕様があるため</div></button>\n    </div>\n    <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n      <div class=\"quiz-feedback-icon\">✓</div>\n      <div class=\"quiz-feedback-body\">\n        <div class=\"quiz-feedback-title\">正解です</div>\n        <div class=\"quiz-feedback-text\">単価は実力ではなく実績と信頼の蓄積で上がっていく構造です。最初は完成→納品→評価の回転数を優先し、ポートフォリオと評価を積み上げると、自然と単価は上がっていきます。</div>\n      </div>\n    </div>\n    <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n      <div class=\"quiz-feedback-icon\">✕</div>\n      <div class=\"quiz-feedback-body\">\n        <div class=\"quiz-feedback-title\">惜しい</div>\n        <div class=\"quiz-feedback-text\">クラウドワークスや税制で強制されているわけではありません。単価は実績と信頼の蓄積で上がっていく構造なので、最初は完成して納品する回転数を優先するのが結果的に最速ルートです。</div>\n      </div>\n    </div>\n  </div>",
-          "plain": "Q 確認クイズ 最初の数件で低めの単価で受けることが、なぜ結果的に近道になるのでしょうか。 Aクラウドワークスが新規ワーカーに低単価を強制しているため B最初の3か月は低単価でないと税制上不利になるため C単価は実力ではなく実績と信頼で上がるため、まず納品実績を1件ずつ積み上げて回転数を増やすほうが、結果的に単価アップへの近道になるため D最初に低単価で受けると評価ポイントが2倍になる仕様があるため ✓ 正解です 単価は実力ではなく実績と信頼の蓄積で上がっていく構造です。最初は完成→納品→評価の回転数を優先し、ポートフォリオと評価を積み上げると、自然と単価は上がっていきます。 ✕ 惜しい クラウドワークスや税制で強制されているわけではありません。単価は実績と信頼の蓄積で上がっていく構造なので、最初は完成して納品する回転数を優先するのが結果的に最速ルートです。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "最初の数件で低めの単価で受けることが、なぜ結果的に近道になるのでしょうか。",
             "choices": [
@@ -6312,8 +6312,8 @@
           "id": "nf4sp-021",
           "heading": "04. 2件目応募で5-4完了",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n    <div class=\"quiz-top\">\n      <div class=\"quiz-icon\">Q</div>\n      <div class=\"quiz-title\">確認クイズ</div>\n    </div>\n    <div class=\"quiz-q\">5-4で「カラー・フォントなどブランド指定が細かい案件」が挑戦できる案件に入っている理由として正しいのはどれでしょうか。</div>\n    <div class=\"quiz-options\">\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">ブランド指定がある案件は単価が高いため</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">指定が多いほどプロンプトに転記できる材料が増え、方向性が明確になるため</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">ブランド指定はAIで自動的に守られるため</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">ブランド指定がある案件は本人確認が不要なため</div></button>\n    </div>\n    <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n      <div class=\"quiz-feedback-icon\">✓</div>\n      <div class=\"quiz-feedback-body\">\n        <div class=\"quiz-feedback-title\">正解です</div>\n        <div class=\"quiz-feedback-text\">指定が細かい＝難しい、ではありません。指定が多いほどプロンプトに転記できる材料が増え、方向性が明確になるため、むしろAI×Canvaの強みが発揮しやすい区分になります。</div>\n      </div>\n    </div>\n    <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n      <div class=\"quiz-feedback-icon\">✕</div>\n      <div class=\"quiz-feedback-body\">\n        <div class=\"quiz-feedback-title\">惜しい</div>\n        <div class=\"quiz-feedback-text\">単価や自動的な守られ方ではなく、指定が多い＝プロンプトに転記できる材料が多い＝方向性が明確になる、という構造です。なお、写真を1枚支給される案件（写真提供型）は3-1で対応済み。いま工数が増えやすいのは、支給素材が複数点の案件や既存ブランドの忠実な再現です。</div>\n      </div>\n    </div>\n  </div>",
-          "plain": "Q 確認クイズ 5-4で「カラー・フォントなどブランド指定が細かい案件」が挑戦できる案件に入っている理由として正しいのはどれでしょうか。 Aブランド指定がある案件は単価が高いため B指定が多いほどプロンプトに転記できる材料が増え、方向性が明確になるため Cブランド指定はAIで自動的に守られるため Dブランド指定がある案件は本人確認が不要なため ✓ 正解です 指定が細かい＝難しい、ではありません。指定が多いほどプロンプトに転記できる材料が増え、方向性が明確になるため、むしろAI×Canvaの強みが発揮しやすい区分になります。 ✕ 惜しい 単価や自動的な守られ方ではなく、指定が多い＝プロンプトに転記できる材料が多い＝方向性が明確になる、という構造です。なお、写真を1枚支給される案件（写真提供型）は3-1で対応済み。いま工数が増えやすいのは、支給素材が複数点の案件や既存ブランドの忠実な再現です。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "5-4で「カラー・フォントなどブランド指定が細かい案件」が挑戦できる案件に入っている理由として正しいのはどれでしょうか。",
             "choices": [
@@ -6525,8 +6525,8 @@
           "id": "ulmuh-020",
           "heading": "2ヶ月目以降の進め方をコーチと相談する",
           "kind": "quiz",
-          "html": "<div class=\"quiz-box reveal\">\n    <div class=\"quiz-top\">\n      <div class=\"quiz-icon\">Q</div>\n      <div class=\"quiz-title\">確認クイズ</div>\n    </div>\n    <div class=\"quiz-q\">未経験から市場デビューする1ヶ月目に、コンペ形式が特に向いている最大の理由はどれでしょうか。</div>\n    <div class=\"quiz-options\">\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">A</div><div class=\"quiz-opt-text\">コンペは応募費用が無料だから</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">B</div><div class=\"quiz-opt-text\">コンペは採用率が通常応募より高いから</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"true\"><div class=\"quiz-letter\">C</div><div class=\"quiz-opt-text\">プロフィール実績がゼロでも制作物そのもので評価されるため、スタート地点が同じだから</div></button>\n      <button class=\"quiz-opt\" data-q=\"q1\" data-correct=\"false\"><div class=\"quiz-letter\">D</div><div class=\"quiz-opt-text\">コンペは本人確認が不要だから</div></button>\n    </div>\n    <div class=\"quiz-feedback ok\" id=\"q1-ok\">\n      <div class=\"quiz-feedback-icon\">✓</div>\n      <div class=\"quiz-feedback-body\">\n        <div class=\"quiz-feedback-title\">正解です</div>\n        <div class=\"quiz-feedback-text\">通常応募は実績の少なさで選考に残りにくいですが、コンペは制作物そのもので評価されるため、実績ゼロでもスタート地点が同じです。さらに未採用作品もポートフォリオに残り、応募数を重ねるほどPFが厚くなります。</div>\n      </div>\n    </div>\n    <div class=\"quiz-feedback ng\" id=\"q1-ng\">\n      <div class=\"quiz-feedback-icon\">✕</div>\n      <div class=\"quiz-feedback-body\">\n        <div class=\"quiz-feedback-title\">惜しい</div>\n        <div class=\"quiz-feedback-text\">採用率はむしろ通常応募より低めです（1〜数％）。コンペの真価は実績ゼロでも制作物そのもので評価される入口の広さと、落選作品もポートフォリオに残る構造にあります。</div>\n      </div>\n    </div>\n  </div>",
-          "plain": "Q 確認クイズ 未経験から市場デビューする1ヶ月目に、コンペ形式が特に向いている最大の理由はどれでしょうか。 Aコンペは応募費用が無料だから Bコンペは採用率が通常応募より高いから Cプロフィール実績がゼロでも制作物そのもので評価されるため、スタート地点が同じだから Dコンペは本人確認が不要だから ✓ 正解です 通常応募は実績の少なさで選考に残りにくいですが、コンペは制作物そのもので評価されるため、実績ゼロでもスタート地点が同じです。さらに未採用作品もポートフォリオに残り、応募数を重ねるほどPFが厚くなります。 ✕ 惜しい 採用率はむしろ通常応募より低めです（1〜数％）。コンペの真価は実績ゼロでも制作物そのもので評価される入口の広さと、落選作品もポートフォリオに残る構造にあります。",
+          "html": "",
+          "plain": "",
           "quiz": {
             "question": "未経験から市場デビューする1ヶ月目に、コンペ形式が特に向いている最大の理由はどれでしょうか。",
             "choices": [

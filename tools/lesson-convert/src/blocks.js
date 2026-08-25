@@ -237,8 +237,23 @@ function buildBlocks($, root, { slug, config }) {
       const $quiz = hasClass($el, b.quizClass) ? $el : $el.find(`.${b.quizClass[0]}`).first();
       if ($quiz.length > 0) {
         const parsed = parseQuizBox($, $quiz.get(0));
-        if (parsed.resolved) block.quiz = parsed.quiz;
-        else quizIssues.push({ blockId: id, heading, reason: parsed.reason, source: 'quiz-box' });
+        if (parsed.resolved) {
+          block.quiz = parsed.quiz;
+          // 構造化できたクイズは、画面側が専用UIで出題する。
+          // 元のHTMLには正解・不正解のフィードバックが両方入っており
+          // （表示の出し分けは落とした JS がやっていた）、そのまま描くと
+          // 答えが最初から見えてしまううえ、クイズが二重に表示される。
+          if ($quiz.get(0) === el) {
+            // ブロックそのものがクイズ。本文として描くものは残らない。
+            block.html = '';
+            block.plain = '';
+          } else {
+            // クイズが本文の一部に入っている。その部分だけ取り除く。
+            $quiz.remove();
+            block.html = $.html($el).trim();
+            block.plain = plainOf($, el);
+          }
+        } else quizIssues.push({ blockId: id, heading, reason: parsed.reason, source: 'quiz-box' });
       } else if (/正解は/.test(plain)) {
         const parsed = parseQuizFromText(plain);
         if (parsed.resolved) block.quiz = parsed.quiz;
