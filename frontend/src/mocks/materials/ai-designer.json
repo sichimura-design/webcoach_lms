@@ -24,10 +24,7 @@
           "heading": "",
           "kind": "video",
           "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"__ASSET__/media/med-de4f2e3db2.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
-          "plain": "チャプター概要動画",
-          "media": {
-            "src": "__ASSET__/media/med-de4f2e3db2.mp4"
-          }
+          "plain": "チャプター概要動画"
         },
         {
           "id": "qao0d-002",
@@ -54,7 +51,7 @@
           "id": "qao0d-005",
           "heading": "ご入学おめでとうございます",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/9z6ces7px2rm1e41393ym/00.png?rlkey=hv4mib4nlb4iadhcq7vl81yvp&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-617da98943.webp\" alt=\"ご入学おめでとうございます\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-617da98943.webp",
@@ -86,7 +83,7 @@
           "id": "qao0d-009",
           "heading": "はじめにお伝えしておきたいこと",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/y4bhpfhhaff5xwsmumppy/01.png?rlkey=p37k1u8fatq05o86fjd6qwp0g&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-d54e8db66a.webp\" alt=\"100点で止まる vs 7割で動かす\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-d54e8db66a.webp",
@@ -111,7 +108,7 @@
           "id": "qao0d-012",
           "heading": "1ヶ月後のあなた",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/5fikj5ih5a7mtnx7r57dg/02.png?rlkey=d8q0j3mfv80xxberso99m23cb&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-58ce6adde0.webp\" alt=\"1ヶ月後のゴール4項目\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-58ce6adde0.webp",
@@ -136,7 +133,7 @@
           "id": "qao0d-015",
           "heading": "市場に出ながら学ぶ — 他のスクールにはない強み",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/aabjope6vfvvxylf6d5i1/03.png?rlkey=rjrttw2ybq0ryh7mtukms3sfn&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-3ad592a6d2.webp\" alt=\"学習と案件が並行で進む2本のレール\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-3ad592a6d2.webp",
@@ -154,7 +151,7 @@
           "id": "qao0d-017",
           "heading": "市場に出ながら学ぶ — 他のスクールにはない強み",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/otocbk9670yomg475uibc/03_b.png?rlkey=t26xjzipv66kl8bcb2wabfr32&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-f7b3360af0.webp\" alt=\"最初に取れる3種類の仕事と市場サイズ\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-f7b3360af0.webp",
@@ -207,7 +204,7 @@
           "id": "qao0d-024",
           "heading": "このコースが目指すゴール",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/n4ucquthmqvmxgx8awbt2/04.png?rlkey=4w7umdayc17o4hex0ayy0lqma&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-9143665396.webp\" alt=\"スキル完成後に市場へ vs 最初から市場へ\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-9143665396.webp",
@@ -271,7 +268,7 @@
           "id": "qao0d-029",
           "heading": "2ヶ月目以降の成長パス",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/yf7t6mrrckvglrzhv8j5o/05.png?rlkey=10od97ecz4shi0123itpmzxta&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-d1fd1a062d.webp\" alt=\"1ヶ月目→2→その先の成長ロードマップ\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-d1fd1a062d.webp",
@@ -303,7 +300,7 @@
           "id": "qao0d-033",
           "heading": "学習×実務の両輪を回す",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/zsk1rhtccq6y2k8xok1tj/06.png?rlkey=fgm6i5s9ztp93q9evt9nhnuz7&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-e53828276d.webp\" alt=\"学習と実務の両輪を表す循環図\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-e53828276d.webp",
@@ -407,7 +404,7 @@
           "id": "cazsk-002",
           "heading": "1ヶ月後に完成する3種類の制作物",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/qhe8od64ffvggxh3jmryy/01.png?rlkey=9tu5ceymtltl8ii8uhtoez5v1&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-5b83bcb9ca.webp\" alt=\"3種類の制作物\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-5b83bcb9ca.webp",
@@ -446,7 +443,7 @@
           "id": "cazsk-007",
           "heading": "ポートフォリオ公開と案件応募の実像",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/e8s7m7fxyu60kup7jdsjs/02.png?rlkey=1yvjqke5nizw5jf9qz3toinlp&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-730a7773d4.webp\" alt=\"ポートフォリオ公開→案件応募の流れ\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-730a7773d4.webp",
@@ -506,7 +503,7 @@
           "id": "cazsk-015",
           "heading": "調べる心得 — まずAIに聞く",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/j3elq9dniggowl6vsf951/04.png?rlkey=jr6pij4ijf4gnzcbduj22k1r0&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-7d4538ab91.webp\" alt=\"検索の心得とAI質問の流れ\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-7d4538ab91.webp",
@@ -538,7 +535,7 @@
           "id": "cazsk-019",
           "heading": "WEBCOACH先生・ChatGPTの使い方",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/4g4za7hn7k2cp565h00yk/05.png?rlkey=6dj1lxbjkmazoxc0gbvq2jre3&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-77fd0b2f9b.webp\" alt=\"WEBCOACH先生とChatGPTの使い分け\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-77fd0b2f9b.webp",
@@ -577,7 +574,7 @@
           "id": "cazsk-024",
           "heading": "コーチへの質問の心得 — 4要素フォーマット",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/9j7gwrpgeorny3il9gfdi/06.png?rlkey=3szyrnwd9iwrj7z0lvfpke581&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-9d0411d867.webp\" alt=\"コーチへの質問4要素フォーマット\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-9d0411d867.webp",
@@ -623,7 +620,7 @@
           "id": "cazsk-030",
           "heading": "信頼を作る人柄 — 働くうえで大切なこと",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/b5h1ulailqor20dr4otxq/07.png?rlkey=9namfrjt7a210hqocidoq1m0j&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-e25d9eb847.webp\" alt=\"信頼を作る3つの習慣\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-e25d9eb847.webp",
@@ -764,7 +761,7 @@
           "id": "ptuq5-004",
           "heading": "デザインの上達は試行錯誤の繰り返し",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/w9k1fiwimmua9iitgyd3c/01.png?rlkey=eclw95n5ia9xamvi5o1umnhg3&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-751cc6a840.webp\" alt=\"試行錯誤サイクル\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-751cc6a840.webp",
@@ -796,7 +793,7 @@
           "id": "ptuq5-008",
           "heading": "完璧主義を捨てる — 7割の法則",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/2p2hlbx9malf3s9m76dkj/02.png?rlkey=810xn9bc1cvgwvr9yhtehaw69&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-984aaf205f.webp\" alt=\"7割の法則\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-984aaf205f.webp",
@@ -842,7 +839,7 @@
           "id": "ptuq5-014",
           "heading": "調べて使える状態を目指す",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/n4u17k5tcg9e5sm8wim7u/03.png?rlkey=dow80aiizz84p86hbitnktt2x&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-793bebd682.webp\" alt=\"遅延評価勉強法\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-793bebd682.webp",
@@ -881,7 +878,7 @@
           "id": "ptuq5-019",
           "heading": "学びログ — 学習を記録して習慣にする",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/1w0l505qeg99zc8lj0gs3/04.png?rlkey=ku9janfbuvif8zbznee4kgxvs&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-512a821d3c.webp\" alt=\"週次学びログと日次ログの全体像\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-512a821d3c.webp",
@@ -1082,10 +1079,7 @@
           "heading": "",
           "kind": "video",
           "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"__ASSET__/media/med-e7f918bf16.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
-          "plain": "チャプター概要動画",
-          "media": {
-            "src": "__ASSET__/media/med-e7f918bf16.mp4"
-          }
+          "plain": "チャプター概要動画"
         },
         {
           "id": "yljsj-002",
@@ -1112,7 +1106,7 @@
           "id": "yljsj-005",
           "heading": "AI生成物と著作権の考え方",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/xk7nucja8foc5quotcub0/01.png?rlkey=xe9eddr3odez7eabynhh9xybe&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-b090525fb3.webp\" alt=\"AI生成物と著作権\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-b090525fb3.webp",
@@ -1137,7 +1131,7 @@
           "id": "yljsj-008",
           "heading": "商用利用OKの確認フロー3ステップ",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/3yu2cwr9fsok0xawjc9v8/02.png?rlkey=4tx8yrstmd92fhtxf1x3vzhs1&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-53f578f825.webp\" alt=\"商用利用OK確認フロー3ステップ\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-53f578f825.webp",
@@ -1169,7 +1163,7 @@
           "id": "yljsj-012",
           "heading": "ChatGPT Images 2.0とCanvaの商用利用ルール",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/0mmm3g25xon21g7fx8tzx/03.png?rlkey=dsmwiv8m0t8k9gkozb4bcaf9a&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-e2009b2139.webp\" alt=\"ツール別商用利用ルール\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-e2009b2139.webp",
@@ -1387,10 +1381,7 @@
           "heading": "ChatGPTのセットアップ",
           "kind": "video",
           "html": "<div class=\"video-wrap reveal\">\n  <iframe src=\"https://www.dropbox.com/scl/fi/t6xhqwt36yqgyopn5cvgp/ChatGPT.mp4?rlkey=2hakz9bvou1oe30d1ejticmbp&amp;st=cp56xjng&amp;raw=1\"></iframe>\n</div>",
-          "plain": "",
-          "media": {
-            "src": "https://www.dropbox.com/scl/fi/t6xhqwt36yqgyopn5cvgp/ChatGPT.mp4?rlkey=2hakz9bvou1oe30d1ejticmbp&st=cp56xjng&raw=1"
-          }
+          "plain": ""
         },
         {
           "id": "33kqh-009",
@@ -1418,10 +1409,7 @@
           "heading": "学習データをOFFにする手順（ChatGPT）",
           "kind": "video",
           "html": "<div class=\"video-wrap reveal\">\n  <iframe src=\"https://www.dropbox.com/scl/fi/gg6ixkbgccwsypalko8yu/chatGPT-OFF.mp4?rlkey=x7kqsd7pf2f3kzgec3mm8dqdw&amp;st=fd09efsk&amp;raw=1\"></iframe>\n</div>",
-          "plain": "",
-          "media": {
-            "src": "https://www.dropbox.com/scl/fi/gg6ixkbgccwsypalko8yu/chatGPT-OFF.mp4?rlkey=x7kqsd7pf2f3kzgec3mm8dqdw&st=fd09efsk&raw=1"
-          }
+          "plain": ""
         },
         {
           "id": "33kqh-013",
@@ -1435,10 +1423,7 @@
           "heading": "学習データをOFFにする手順（ChatGPT）",
           "kind": "video",
           "html": "<section id=\"s4\">\n<h2>Canvaのセットアップ</h2>\n\n<p>Canva Proにアップグレードして、プランが有効になっていることを確認します。</p>\n\n\n<div class=\"video-wrap reveal\">\n  <iframe src=\"https://www.dropbox.com/scl/fi/qwz49qtrr4zy6dhuoguqf/Canva.mp4?rlkey=q9n3am69ij5yimdcmyh2xapij&amp;st=r1kal2lc&amp;raw=1\"></iframe>\n</div>\n\n<div class=\"point-box reveal\">\n  <div class=\"point-box__head\">\n    <div class=\"point-box__tab\">✓ Point !</div>\n    <div class=\"point-box__sub\">Canva Proセットアップの手順</div>\n  </div>\n  <ol>\n    <li><strong>canva.com</strong> にアクセスしてログイン</li>\n    <li>右上のアカウントアイコン → <strong>「Canva Proを試す」</strong> または <strong>「プランをアップグレード」</strong> をクリック</li>\n    <li><strong>Proプラン</strong>を選択 → クレジットカード情報を入力（30日間無料トライアル。トライアル終了後に月額¥1,180の課金が始まります）</li>\n    <li>登録完了後、右上アカウントアイコン → <strong>「設定」</strong> をクリック</li>\n    <li>左メニューの <strong>「課金とプラン」</strong> を開き、<strong>Proプランが有効になっていること</strong>を確認する</li>\n  </ol>\n</div>\n\n<p>確実な確認方法は<strong>「設定」→「課金とプラン」</strong>でプランの状態を直接見ることです。バッジ表示は環境によって出ないこともあるため、画面で直接確認するのが安全です。</p>\n</section>",
-          "plain": "Canvaのセットアップ Canva Proにアップグレードして、プランが有効になっていることを確認します。 ✓ Point ! Canva Proセットアップの手順 canva.com にアクセスしてログイン 右上のアカウントアイコン → 「Canva Proを試す」 または 「プランをアップグレード」 をクリック Proプランを選択 → クレジットカード情報を入力（30日間無料トライアル。トライアル終了後に月額¥1,180の課金が始まります） 登録完了後、右上アカウントアイコン → 「設定」 をクリック 左メニューの 「課金とプラン」 を開き、Proプランが有効になっていることを確認する 確実な確認方法は「設定」→「課金とプラン」でプランの状態を直接見ることです。バッジ表示は環境によって出ないこともあるため、画面で直接確認するのが安全です。",
-          "media": {
-            "src": "https://www.dropbox.com/scl/fi/qwz49qtrr4zy6dhuoguqf/Canva.mp4?rlkey=q9n3am69ij5yimdcmyh2xapij&st=r1kal2lc&raw=1"
-          }
+          "plain": "Canvaのセットアップ Canva Proにアップグレードして、プランが有効になっていることを確認します。 ✓ Point ! Canva Proセットアップの手順 canva.com にアクセスしてログイン 右上のアカウントアイコン → 「Canva Proを試す」 または 「プランをアップグレード」 をクリック Proプランを選択 → クレジットカード情報を入力（30日間無料トライアル。トライアル終了後に月額¥1,180の課金が始まります） 登録完了後、右上アカウントアイコン → 「設定」 をクリック 左メニューの 「課金とプラン」 を開き、Proプランが有効になっていることを確認する 確実な確認方法は「設定」→「課金とプラン」でプランの状態を直接見ることです。バッジ表示は環境によって出ないこともあるため、画面で直接確認するのが安全です。"
         },
         {
           "id": "33kqh-015",
@@ -1538,7 +1523,7 @@
           "id": "pa6b2-003",
           "heading": "フォルダ構造を作ろう",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/2nwk08vs2v1watc8sbt53/02.png?rlkey=cwyamg4hbpgfknes4pvqoo90w&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-4853aabb7a.webp\" alt=\"推奨フォルダ構造\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-4853aabb7a.webp",
@@ -1557,20 +1542,14 @@
           "heading": "フォルダ構造を作ろう",
           "kind": "video",
           "html": "<div class=\"os-video reveal\">\n  <div class=\"os-video__label os-video__label--mac\"><span class=\"os-video__label-icon\">🍎</span>Mac版</div>\n  <div class=\"video-wrap\">\n    <iframe src=\"https://www.dropbox.com/scl/fi/9olphvkbgr5ml2pdyqxzk/_Mac.mp4?rlkey=zsehimrrllg35cyn8vmxdnm1n&amp;raw=1\"></iframe>\n  </div>\n</div>",
-          "plain": "🍎Mac版",
-          "media": {
-            "src": "https://www.dropbox.com/scl/fi/9olphvkbgr5ml2pdyqxzk/_Mac.mp4?rlkey=zsehimrrllg35cyn8vmxdnm1n&raw=1"
-          }
+          "plain": "🍎Mac版"
         },
         {
           "id": "pa6b2-006",
           "heading": "フォルダ構造を作ろう",
           "kind": "video",
           "html": "<div class=\"os-video reveal\">\n  <div class=\"os-video__label os-video__label--win\"><span class=\"os-video__label-icon\">🪟</span>Windows版</div>\n  <div class=\"video-wrap\">\n    <iframe src=\"https://www.dropbox.com/scl/fi/9ocsi7dleoxodnxuxx94e/_Windwos.mp4?rlkey=og4j336agbja60b2d71q5f7pn&amp;raw=1\"></iframe>\n  </div>\n</div>",
-          "plain": "🪟Windows版",
-          "media": {
-            "src": "https://www.dropbox.com/scl/fi/9ocsi7dleoxodnxuxx94e/_Windwos.mp4?rlkey=og4j336agbja60b2d71q5f7pn&raw=1"
-          }
+          "plain": "🪟Windows版"
         },
         {
           "id": "pa6b2-007",
@@ -1731,10 +1710,7 @@
           "heading": "",
           "kind": "video",
           "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"__ASSET__/media/med-30d1d72c4b.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
-          "plain": "チャプター概要動画",
-          "media": {
-            "src": "__ASSET__/media/med-30d1d72c4b.mp4"
-          }
+          "plain": "チャプター概要動画"
         },
         {
           "id": "5kmqm-002",
@@ -1754,7 +1730,7 @@
           "id": "5kmqm-004",
           "heading": "伝わる質問と伝わらない質問の差",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/x8f22l6l8e7qn9sv2avli/01.png?rlkey=h1vspy4ggt5d3ty4huz24rakm&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-95f039a550.webp\" alt=\"伝わる質問と伝わらない質問の比較\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-95f039a550.webp",
@@ -1793,7 +1769,7 @@
           "id": "5kmqm-009",
           "heading": "ChatGPTを壁打ち相手として使う",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/8zwkoe8mcgo8z7glo04mc/02.png?rlkey=6vbs1w00pl3egsldw62yfpbh7&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-f11ae7d7ff.webp\" alt=\"ChatGPTを壁打ち相手として使う4場面\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-f11ae7d7ff.webp",
@@ -1832,7 +1808,7 @@
           "id": "5kmqm-014",
           "heading": "参考デザインを分析してプロンプトに活かす",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/5i4ix3dprv7h3cng1578e/03.png?rlkey=irjs0clwo93g6bfo927g0twpo&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-8e500a6415.webp\" alt=\"参考デザインを分析してプロンプトに活かす流れ\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-8e500a6415.webp",
@@ -1965,7 +1941,7 @@
           "id": "cfcse-003",
           "heading": "プロンプト6要素の全体像",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/ofq91ovz4ph37xzezn0l5/01.png?rlkey=zy0u4yhbxjewqdku41eqzlh1n&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-72a21852bb.webp\" alt=\"プロンプト6要素フレームワーク全体図\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-72a21852bb.webp",
@@ -1997,7 +1973,7 @@
           "id": "cfcse-007",
           "heading": "依頼書にある要素と、自分で補完する要素",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/v3pdk97ru4r4echye4m4m/02.png?rlkey=u7y8c5pj9tw0dwob5ux0rodgs&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-7d20de07b9.webp\" alt=\"依頼書からプロンプトへの変換\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-7d20de07b9.webp",
@@ -2249,7 +2225,7 @@
           "id": "tclmk-012",
           "heading": "Beauty Salon Belleのプロンプト例（手本）",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/mz9h8zd38j1uyfwthynhd/02.png?rlkey=hfl9ss816s4bt4bqpzyopg8rf&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-a22d958933.webp\" alt=\"生成→選別の流れ\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-a22d958933.webp",
@@ -2327,7 +2303,7 @@
           "id": "tclmk-019",
           "heading": "ChatGPTと壁打ちして大きな修正を完了させる",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/mx50gicutm3dpy6kbea67/03.png?rlkey=niiswf79281y9nvm37k9yqgj7&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-c6058819bd.webp\" alt=\"壁打ちのコツと終了目安\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-c6058819bd.webp",
@@ -2496,10 +2472,7 @@
           "heading": "② 著作物類似の確認（逆画像検索）",
           "kind": "video",
           "html": "<div class=\"video-wrap reveal\">\n  <iframe src=\"https://www.dropbox.com/scl/fi/bu3h6trmpx1pzxmn7ss4o/.mp4?rlkey=lly8nvm2g255309awdnuk524x&amp;st=w6zjynjp&amp;raw=1\"></iframe>\n</div>",
-          "plain": "",
-          "media": {
-            "src": "https://www.dropbox.com/scl/fi/bu3h6trmpx1pzxmn7ss4o/.mp4?rlkey=lly8nvm2g255309awdnuk524x&st=w6zjynjp&raw=1"
-          }
+          "plain": ""
         },
         {
           "id": "jpuim-007",
@@ -2685,10 +2658,7 @@
           "heading": "AI出力をCanvaで完成させる6ステップ",
           "kind": "video",
           "html": "<div class=\"video-block reveal\">\n  <video src=\"__ASSET__/media/med-1004f6b76f.mp4\" controls=\"\"></video>\n</div>",
-          "plain": "",
-          "media": {
-            "src": "__ASSET__/media/med-1004f6b76f.mp4"
-          }
+          "plain": ""
         },
         {
           "id": "0ytgv-009",
@@ -2764,7 +2734,7 @@
           "id": "0ytgv-019",
           "heading": "Step 3：背景を独立レイヤーにして差し替える",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/lxwmyw60u9c014wbsvva8/01.png?rlkey=kdary7hlpzfmlhda65dpc8h73&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-1e8d07dd37.webp\" alt=\"背景の差し替え 手順1\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-1e8d07dd37.webp",
@@ -2775,7 +2745,7 @@
           "id": "0ytgv-020",
           "heading": "Step 3：背景を独立レイヤーにして差し替える",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/l4zlz47jdjthrfcuve1ma/02.png?rlkey=nhbwvt4vpkt06jn3oeq78oi9z&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-564f7e2476.webp\" alt=\"背景の差し替え 手順2\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-564f7e2476.webp",
@@ -2786,7 +2756,7 @@
           "id": "0ytgv-021",
           "heading": "Step 3：背景を独立レイヤーにして差し替える",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/ym8orhuz18s1u50bzkksg/03.png?rlkey=fkc74439byaj35ye5ox65y816&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-c3fc755f03.webp\" alt=\"背景の差し替え 手順3\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-c3fc755f03.webp",
@@ -2797,7 +2767,7 @@
           "id": "0ytgv-022",
           "heading": "Step 3：背景を独立レイヤーにして差し替える",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/fer77el4j5i0ul6w9hdw7/04.png?rlkey=onnwny4azejnt2y51f9tty1wt&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-f025c776bc.webp\" alt=\"背景の差し替え 手順4\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-f025c776bc.webp",
@@ -3049,10 +3019,7 @@
           "heading": "",
           "kind": "video",
           "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"__ASSET__/media/med-484fce2c07.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
-          "plain": "チャプター概要動画",
-          "media": {
-            "src": "__ASSET__/media/med-484fce2c07.mp4"
-          }
+          "plain": "チャプター概要動画"
         },
         {
           "id": "oft67-002",
@@ -3107,7 +3074,7 @@
           "id": "oft67-009",
           "heading": "クライアントの依頼書を確認する",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/tslxtq826tjow6pmfxzko/lesson1_.png?rlkey=kxn7ef44a9rvfk0e2uzx5y1wq&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-ae1c64cd33.webp\" alt=\"クライアント支給写真：いちごのアフタヌーンティー\" class=\"lightbox-img\">\n  </a>\n  <div>\n    <a href=\"https://www.dropbox.com/scl/fi/tslxtq826tjow6pmfxzko/lesson1_.png?rlkey=kxn7ef44a9rvfk0e2uzx5y1wq&amp;dl=1\">\n      <span>⬇</span>\n      <span>支給写真をダウンロード（PNG）</span>\n    </a>\n    <p>クリックするとファイルがダウンロードされます。</p>\n  </div>\n</div>",
+          "html": "<div class=\"reveal\">\n  \n  <div>\n    <a href=\"https://www.dropbox.com/scl/fi/tslxtq826tjow6pmfxzko/lesson1_.png?rlkey=kxn7ef44a9rvfk0e2uzx5y1wq&amp;dl=1\">\n      <span>⬇</span>\n      <span>支給写真をダウンロード（PNG）</span>\n    </a>\n    <p>クリックするとファイルがダウンロードされます。</p>\n  </div>\n</div>",
           "plain": "⬇ 支給写真をダウンロード（PNG） クリックするとファイルがダウンロードされます。",
           "media": {
             "src": "__ASSET__/images/img-ae1c64cd33.webp",
@@ -3328,7 +3295,7 @@
           "id": "oft67-040",
           "heading": "Step 3：背景画像を支給写真に差し替える",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/mlaywlrwmrtwv8whryq90/.png?rlkey=bnrovyifb0imltyb3wtfj0j3x&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-a89b35747a.webp\" alt=\"支給写真の上にグラデーションやぼかしを別レイヤーで挿入する例\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-a89b35747a.webp",
@@ -4827,10 +4794,7 @@
           "heading": "",
           "kind": "video",
           "html": "<div class=\"chapter-intro-video\">\n  <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n  <video src=\"__ASSET__/media/med-3d00c74fa0.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n</div>",
-          "plain": "チャプター概要動画",
-          "media": {
-            "src": "__ASSET__/media/med-3d00c74fa0.mp4"
-          }
+          "plain": "チャプター概要動画"
         },
         {
           "id": "0lezf-002",
@@ -4857,7 +4821,7 @@
           "id": "0lezf-005",
           "heading": "良いポートフォリオの推奨セクション構成",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/n04voybn6979k6jxi4h8l/02.png?rlkey=vzre38ir6f2auz6lbo9ck5iij&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-3832afdd91.webp\" alt=\"推奨6セクション構成\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-3832afdd91.webp",
@@ -4903,7 +4867,7 @@
           "id": "0lezf-011",
           "heading": "自分のポートフォリオ構成を書き出す",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/4d2go5mktlxeagmkvt1q4/03.png?rlkey=8g4yvg9mq6q44knosd2p3ycfm&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-e8046fb063.webp\" alt=\"ポートフォリオ構成の下書き\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-e8046fb063.webp",
@@ -4956,7 +4920,7 @@
           "id": "0lezf-018",
           "heading": "ポートフォリオに生成AI使用を一言添えておく",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/86mdu81u9w3jp0sdruowe/04.png?rlkey=dg12g9vd7eym0d2yuji705yu6&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-b04baa5174.webp\" alt=\"AI活用の一言を添える位置\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-b04baa5174.webp",
@@ -5009,7 +4973,7 @@
           "id": "0lezf-025",
           "heading": "ChatGPTでABOUT文の下書きを作る",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/d79zzsxshpytqya8ulihq/05.png?rlkey=zp8v5x2o3f4z1aok02o1uq8jn&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-919db8782f.webp\" alt=\"ABOUTセクションの構成フロー\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-919db8782f.webp",
@@ -5103,7 +5067,7 @@
           "id": "ff7xe-001",
           "heading": "",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/drvvium5pyvz9n1tb25ww/01.png?rlkey=gy5txmj0nxfjqizs2ezifc9e6&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-bc607f7d8f.webp\" alt=\"foriioトップページのサインアップ\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-bc607f7d8f.webp",
@@ -5142,7 +5106,7 @@
           "id": "ff7xe-006",
           "heading": "",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/f9cdkizzux595r42ub5e0/02.png?rlkey=4zwxhyq1p23h7860uswpqapqd&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-7d01659e28.webp\" alt=\"作品投稿フォームの入力フィールド\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-7d01659e28.webp",
@@ -5223,7 +5187,7 @@
           "id": "ff7xe-017",
           "heading": "1作品の投稿手順",
           "kind": "figure",
-          "html": "<div class=\"reveal\">\n  <a href=\"https://www.dropbox.com/scl/fi/qzqfk9rkzac2gtvx7e7ev/03.png?rlkey=zb8lb3va2x9eciespbi7hqpzd&amp;raw=1\" class=\"lightbox\">\n    <img src=\"__ASSET__/images/img-ed9001cf72.webp\" alt=\"公開URLのコピーメニュー\" class=\"lightbox-img\">\n  </a>\n</div>",
+          "html": "",
           "plain": "",
           "media": {
             "src": "__ASSET__/images/img-ed9001cf72.webp",
@@ -5319,10 +5283,7 @@
           "heading": "",
           "kind": "video",
           "html": "<div class=\"chapter-intro-video\">\n    <div class=\"chapter-intro-video__label\">チャプター概要動画</div>\n    <video src=\"__ASSET__/media/med-e6e6a286dd.mp4\" controls=\"\" class=\"chapter-intro-video__player\"></video>\n  </div>",
-          "plain": "チャプター概要動画",
-          "media": {
-            "src": "__ASSET__/media/med-e6e6a286dd.mp4"
-          }
+          "plain": "チャプター概要動画"
         },
         {
           "id": "mo6kf-002",

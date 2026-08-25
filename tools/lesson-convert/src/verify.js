@@ -52,9 +52,22 @@ function runVerify({ configPath, log }) {
         problems.push('取得HTMLが見つからない');
       }
 
-      // 見出しはブロックの plain ではなく heading に入るので、カバー率の計算に含める。
+      // 本文以外の場所へ移した文字も、取りこぼしの判定では「拾えている」と数える。
+      //   見出し → block.heading
+      //   クイズ（設問・選択肢・解説）→ block.quiz（html からは取り除いてある）
+      //   図解の説明 → block.media.alt / caption
       const headings = [...new Set(doc.blocks.map((b) => b.heading).filter(Boolean))];
-      const blockChars = compact(doc.blocks.map((b) => b.plain).join('') + headings.join('')).length;
+      const quizText = doc.blocks
+        .filter((b) => b.quiz)
+        .map((b) => b.quiz.question + b.quiz.choices.map((c) => c.text + (c.explain || '')).join(''))
+        .join('');
+      const mediaText = doc.blocks
+        .filter((b) => b.media)
+        .map((b) => `${b.media.alt || ''}${b.media.caption || ''}`)
+        .join('');
+      const blockChars = compact(
+        doc.blocks.map((b) => b.plain).join('') + headings.join('') + quizText + mediaText
+      ).length;
       const coverage = sourceChars > 0 ? blockChars / sourceChars : 0;
 
       for (const b of doc.blocks) kindTotals[b.kind] = (kindTotals[b.kind] || 0) + 1;
@@ -65,14 +78,15 @@ function runVerify({ configPath, log }) {
       }
       if (!doc.title) problems.push('タイトルが空');
       if (new Set(doc.blocks.map((b) => b.id)).size !== doc.blocks.length) problems.push('ブロックIDが重複');
-      // 選択式クイズ（quiz-box）だけが構造化の対象。
+      // 選択式クイズは構造化できたら html から取り除くので、html では数えられない。
+      // 構造化された quiz を持つブロックと、クイズなのに中身が空のブロックで見る。
       // 理解度チェック（check-box）は自己採点用の一問一答で、選択肢が無いのが正しい。
       const quizBlocks = doc.blocks.filter((b) => b.kind === 'quiz');
-      const choiceQuizzes = quizBlocks.filter((b) => /class="[^"]*\bquiz-box\b/.test(b.html));
-      const structured = choiceQuizzes.filter((b) => b.quiz);
-      if (choiceQuizzes.length > structured.length) {
-        problems.push(`選択式クイズが構造化できていない: ${choiceQuizzes.length - structured.length}件`);
-      }
+      const structured = quizBlocks.filter((b) => b.quiz);
+      const empty = quizBlocks.filter((b) => !b.quiz && !b.html.trim());
+      if (empty.length > 0) problems.push(`中身の無いクイズブロック: ${empty.length}件`);
+      const leftover = quizBlocks.filter((b) => /class="[^"]*\bquiz-box\b/.test(b.html));
+      if (leftover.length > 0) problems.push(`クイズの生HTMLが残っている: ${leftover.length}件`);
 
       rows.push({
         course, slug: doc.slug, title: doc.title,
@@ -83,9 +97,9 @@ function runVerify({ configPath, log }) {
         summary: doc.summary ? 1 : 0,
         prev: doc.prev ? 1 : 0,
         next: doc.next ? 1 : 0,
-        quizBlocks: choiceQuizzes.length,
+        quizBlocks: quizBlocks.length,
         quizStructured: structured.length,
-        selfChecks: quizBlocks.length - choiceQuizzes.length,
+        selfChecks: quizBlocks.length - structured.length,
         problems,
       });
     }

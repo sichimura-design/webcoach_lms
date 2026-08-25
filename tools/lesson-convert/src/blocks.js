@@ -63,17 +63,15 @@ function classify($, el, config, heading) {
   return { kind: 'text', why: '既定' };
 }
 
-/** figure / video ブロックから media を組み立てる。 */
+/**
+ * ブロックの代表画像を返す。
+ *
+ * 画面側は media を `<img>` として描く。動画や iframe の URL を入れると
+ * 画像として読み込もうとして壊れるので、**画像だけ**を対象にする。
+ * 動画・埋め込みは html の中の <video>／<iframe> のまま描かせる。
+ */
 function mediaOf($, el) {
   const $el = $(el);
-  const video = $el.find('video[src]').first();
-  if (video.length > 0) {
-    return { src: video.attr('src'), alt: norm($el.find('figcaption').first().text()) || undefined };
-  }
-  const frame = $el.find('iframe[src]').first();
-  if (frame.length > 0) {
-    return { src: frame.attr('src'), alt: frame.attr('title') || undefined };
-  }
   const img = $el.find('img[src]').first();
   if (img.length > 0) {
     const caption = norm($el.find('figcaption, h4').first().text());
@@ -263,7 +261,33 @@ function buildBlocks($, root, { slug, config }) {
 
     if (kind === 'figure' || kind === 'video') {
       const media = mediaOf($, el);
-      if (media) block.media = media;
+      if (media) {
+        block.media = media;
+        // 画面側は media を <figure> として描いたうえで html も描く。
+        // 同じ画像・動画が html にも入ったままだと二重に表示されるので、
+        // media にした要素は html から取り除く。
+        // 説明文やキャプションなど、画像以外の中身は html に残す。
+        const $used = $el.find(`img[src="${media.src}"]`).first();
+        if ($used.length > 0) {
+          // 画像だけを包んでいる入れ物（lightbox のリンクなど）ごと落とす。
+          // 「親の中身がその画像だけ」のときに限って登る。テキストが空同士でも
+          // 一致してしまうため、子の数と親自身のテキストの有無で判断する。
+          let $target = $used;
+          for (let depth = 0; depth < 4; depth += 1) {
+            const $parent = $target.parent();
+            if ($parent.length === 0 || $parent.get(0) === el) break;
+            const onlyChild = $parent.children().length === 1;
+            const ownText = norm($parent.text()) === norm($target.text());
+            if (!onlyChild || !ownText) break;
+            $target = $parent;
+          }
+          $target.remove();
+          block.html = norm($el.text()) || $el.find('img, video, iframe, table').length > 0
+            ? $.html($el).trim()
+            : '';
+          block.plain = plainOf($, el);
+        }
+      }
     }
 
     blocks.push(block);

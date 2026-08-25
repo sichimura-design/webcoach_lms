@@ -66,14 +66,20 @@ async function publishCourse({ course, lessonsDir, sourceDir, frontendDir, optio
   const files = fs.readdirSync(courseLessons).filter((f) => f.endsWith('.json') && f !== 'index.json');
   const docs = files.map((f) => JSON.parse(fs.readFileSync(path.join(courseLessons, f), 'utf8')));
 
-  // 実際に参照されている資産だけを配置する（未参照の画像を配りたくない）
+  // 実際に参照されている資産だけを配置する（未参照の画像を配りたくない）。
+  // 画像・動画は本文HTMLだけでなく block.media にも入っている。
+  // media にしたものは html から取り除いてあるので、両方を見ないと配置漏れになる。
   const usedImages = new Set();
   const usedMedia = new Set();
+  const collect = (text) => {
+    for (const m of (text || '').matchAll(/\.\.\/(images|media)\/([^"'）)\s]+)/g)) {
+      (m[1] === 'images' ? usedImages : usedMedia).add(m[2]);
+    }
+  };
   for (const doc of docs) {
     for (const b of doc.blocks) {
-      for (const m of (b.html || '').matchAll(/\.\.\/(images|media)\/([^"'）)\s]+)/g)) {
-        (m[1] === 'images' ? usedImages : usedMedia).add(m[2]);
-      }
+      collect(b.html);
+      if (b.media) collect(b.media.src);
     }
   }
 
@@ -138,6 +144,27 @@ async function publishCourse({ course, lessonsDir, sourceDir, frontendDir, optio
     lessonCount: published.length,
     lessons: published,
   };
+
+  // 配置漏れの自己点検。JSON が指す資産が実ファイルとして置かれているかを確かめる。
+  // 参照元（html / media）を1つでも見落とすと、画面で画像が壊れる。
+  const referenced = new Set();
+  for (const lesson of published) {
+    for (const b of lesson.blocks) {
+      for (const m of `${b.html || ''}${b.media ? b.media.src : ''}`.matchAll(/__ASSET__\/(images|media)\/([^"'）)\s]+)/g)) {
+        referenced.add(path.join(m[1] === 'images' ? imagesOut : mediaOut, m[2]));
+      }
+    }
+  }
+  const brokenRefs = [...referenced].filter((f) => !fs.existsSync(f));
+  const unresolved = published.flatMap((l) =>
+    l.blocks.flatMap((b) => [...`${b.html || ''}${b.media ? b.media.src : ''}`.matchAll(/\.\.\/(images|media)\/[^"'）)\s]+/g)].map((m) => m[0]))
+  );
+  if (brokenRefs.length > 0 || unresolved.length > 0) {
+    throw new Error(
+      `配置に漏れがあります。実ファイルが無い参照 ${brokenRefs.length}件 / ` +
+        `置換されなかったパス ${unresolved.length}件\n  ${[...brokenRefs, ...unresolved].slice(0, 3).join('\n  ')}`
+    );
+  }
 
   const mockDir = path.join(frontendDir, 'src', 'mocks', 'materials');
   fs.mkdirSync(mockDir, { recursive: true });
