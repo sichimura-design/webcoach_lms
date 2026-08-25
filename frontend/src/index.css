@@ -137,11 +137,20 @@ h1, h2, h3, .font-display {
   font-variant-numeric: tabular-nums;
 }
 
-/* マイページ本体の2カラム。デザインは 2.33fr / 1fr。
-   タブレット以下は1カラムへ（DESIGN.md §6）。 */
+/* マイページ・学習記録ページの本文。デザイン 5a / 4a の main は約1460px
+   （キャンバス1680 − サイドバー220）。超ワイドで右カラムだけが無限に太るのを防ぐ。 */
+.dc-page-main {
+  width: 100%;
+  max-width: 1460px;
+  margin: 0 auto;
+}
+
+/* マイページ本体の2カラム。デザイン『トップページ 3案』5a は 470px / 1fr。
+   左（ストリーク・学習記録）は中身が固定幅で足りるので伸ばさず、
+   右（チャレンジ・ランキング）に余りを渡す。タブレット以下は1カラムへ（DESIGN.md §6）。 */
 .mypage-3d-grid {
   display: grid;
-  grid-template-columns: 2.33fr 1fr;
+  grid-template-columns: minmax(0, 470px) minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
@@ -149,6 +158,33 @@ h1, h2, h3, .font-display {
 @media (max-width: 1023px) {
   .mypage-3d-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* 「みんなのランキング」の TOP3 / あなたの近く の2ブロック。
+   カード自体が細くなる幅では縦積みにする（順位表は横に潰すと読めない）。 */
+.mypage-rank-split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1279px) {
+  .mypage-rank-split {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+/* 🔴 サイドバー展開中は本文が 152px（224 − 72）細くなる。
+   メディアクエリはビューポート幅しか見ないので、そのぶんを body のクラスで補う。
+   これが無いと「1280px の画面でナビを開くと順位表だけ潰れる」が起きる
+   （仮名が「ぺん…」まで削られたのはこれが原因）。 */
+@media (max-width: 1439px) {
+  body.sidebar-expanded .mypage-rank-split {
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 }
 
@@ -186,12 +222,16 @@ h1, h2, h3, .font-display {
   border-color: var(--dc-primary);
 }
 
-.ct-btn-primary:hover {
+/* .dc-cta-* はコーストップ以外（マイページ 5a・学習記録 4a）も使う共通名。
+   中身は同じなのでセレクタだけ足している。 */
+.ct-btn-primary:hover,
+.dc-cta-primary:hover {
   background: var(--dc-primary-hover);
   box-shadow: var(--dc-shadow-primary-soft);
 }
 
-.ct-btn-outline:hover {
+.ct-btn-outline:hover,
+.dc-cta-outline:hover {
   background: var(--dc-soft-100);
 }
 
@@ -561,8 +601,8 @@ body.learning-immersive {
 
    🔴 かつての .home-main / .home-3col / .home-dash（1440px 固定キャンバスを
       transform:scale で縮小する方式の土台）はここで廃止した。
-      同じ方式は自習室3面（.focus-main / .studylog-main / .notes-main）に
-      まだ残っているので、あちらを触るときに混同しないこと。
+      同じ方式は学習コンテンツ（MaterialsTopPage）にまだ残っているので、
+      あちらを触るときに混同しないこと。
 
    .home-stats だけは残置。現在どの画面からも到達しない旧カード
    components/mypage/StatsStrip.tsx が参照している。 */
@@ -572,26 +612,59 @@ body.learning-immersive {
   flex-wrap: nowrap;
 }
 
-/* ─── 学習記録(/study-log) ─────────────────────
-   .home-* と同じ思想。列数は画面幅で変えず、ページ側の transform:scale で収める。
-   1440 - 60 - 60 = 1320 が中身の幅。padding を同値にしてヘッダ位置を揃えている。
+/* ─── 学習記録・ランキング(/study-log) ─────────────
+   デザイン『トップページ 3案』4a。マイページと同じ fr ベースの流動レイアウトへ移行した。
 
-   🔴 かつてここにあった .focus-main / .focus-2col（集中ブース）は削除した。
+   🔴 かつてここにあった .studylog-main / .studylog-summary-row（1440px 固定キャンバスを
+      transform:scale で縮小する方式の土台）は 4a 改修で廃止した。
+      同じ方式は学習コンテンツにまだ残っているので、あちらを触るときに混同しないこと。
+   🔴 かつてここにあった .focus-main / .focus-2col（集中ブース）も削除済み。
       学習時間は各行動の開始時に自動で記録が始まる仕組みになり、タイマーを
       設定しに行くページ自体が無くなったため
-      （components/shared/StudySessionHost.tsx）。
-   🔴 これが transform:scale 方式の最後の1面。マイノートは可変幅へ移行した。 */
-.studylog-main {
-  padding: 28px 60px 40px;
+      （components/shared/StudySessionHost.tsx）。 */
+
+/* 学習記録カードのKPI。4つ→2つ→1つと落とす（横に潰すと単位まで折り返す） */
+.studylog-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
 }
 
-/* 学習記録のサマリー行。主役（期間の学習時間）を広く取り、残り3つは等幅。
-   以前の .studylog-2col（左に本文・右に累計/内訳）は、内容を4つの数字に絞ったのでやめた。 */
-.studylog-summary-row {
+/* 学習時間ランキングとストリークランキングの2枚並び */
+.studylog-rank-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr;
-  align-items: center;
-  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  align-items: start;
+}
+
+@media (max-width: 1023px) {
+  .studylog-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .studylog-rank-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 479px) {
+  .studylog-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* サイドバー展開中の 152px ぶんを補う（.mypage-rank-split と同じ理由）。
+   1023px の1カラム化に 152px を足した 1175px で先に落とす。 */
+@media (max-width: 1175px) {
+  body.sidebar-expanded .studylog-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.sidebar-expanded .studylog-rank-grid,
+  body.sidebar-expanded .mypage-3d-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ─── マイノート(/notes) ───────────────────────

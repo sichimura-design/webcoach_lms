@@ -41,3 +41,33 @@ export interface StudyRanking {
   /** 母数。順位の意味が分かるようにする */
   participantCount: number;
 }
+
+/**
+ * ストリークランキングの集計期間。
+ *
+ * 🔴 「連続日数」ではなく「学習した日数」を並べる。連続日数は途切れると 0 に戻るため、
+ *    ランキングにすると「今日たまたま途切れた人」が最下位に落ちて意味が読めなくなる。
+ *   ・month … 今月の学習日数（StudyStreak.monthStudyDays と同じ定義）
+ *   ・total … 累計の学習日数（dailyTotals のうち isStudyDay の総数）
+ */
+export type StreakRankingPeriod = 'month' | 'total';
+
+export interface StreakRankingEntry {
+  rank: number;
+  /** 仮名。自分の行だけ「あなた」になる */
+  nickname: string;
+  avatarEmoji: string;
+  /** 学習した日数 */
+  days: number;
+  isMe: boolean;
+}
+
+/** GET /webcoach/study-ranking-streak/{userId}?period=month|total */
+export interface StreakRanking {
+  period: StreakRankingPeriod;
+  /** 「今月」「累計」のように期間を明示するためのラベル */
+  periodLabel: string;
+  entries: StreakRankingEntry[];
+  me: StreakRankingEntry;
+  participantCount: number;
+}

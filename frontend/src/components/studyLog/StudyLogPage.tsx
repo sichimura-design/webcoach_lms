@@ -1,169 +1,194 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
+import { Clock, Flame } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { AppHeader } from '../shared';
 import { useStudyStats } from '../../hooks/useStudyStats';
 import { useStudyActivities } from '../../hooks/useStudyActivities';
-import { useScaleToFit } from '../../hooks/useScaleToFit';
-import { color, font, radius, shadow, space } from '../../theme/webcoachTheme';
-import { toLocalDateKey } from '../../utils/studyStats';
-import PageTitleBar from '../shared/PageTitleBar';
+import { useStreakRanking, useStudyRanking } from '../../hooks/useRankings';
+import { StreakRankingPeriod, StudyRankingPeriod } from '../../types/focusBooth';
+import { formatMinutesHM } from '../../utils/studyStats';
+import { RankingRowItem } from '../shared/RankingRow';
 import StudyLogList from './StudyLogList';
-import StudySummaryCard from './StudySummaryCard';
-
-const DESIGN_WIDTH = 1440;
-
-type RangeKey = '30d' | '3m' | 'all';
-
-const RANGES: { key: RangeKey; label: string; days: number }[] = [
-  { key: '30d', label: '直近30日', days: 30 },
-  { key: '3m', label: '直近3ヶ月', days: 92 },
-  { key: 'all', label: '全期間', days: 400 },
-];
+import StudyRecordPanel from './StudyRecordPanel';
+import StreakCalendarCard from './StreakCalendarCard';
+import RankingListCard from './RankingListCard';
 
 /**
- * 学習記録（自習室タブの2つ目）。集中ブースの「学習履歴をすべて見る」からも来る。
+ * 学習記録・ランキング（/study-log）。claude.ai/design『トップページ 3案』4a 準拠。
  *
- * 以前は「日別の棒グラフ ＋ 累計カード（5行）＋ 教材別の内訳 ＋ 全履歴」の4面構成で、
- * 「色々書いてありすぎる」という指摘を受けた。
- * 数字は4つ（期間の学習時間・学習した日数・今週・連続日数）だけに絞り、
- * グラフと教材別内訳は落として、サマリーと履歴の2カードにした。
+ * マイページのストリークカード・学習記録カード・みんなのランキングの
+ * 「詳しく見る／もっと見る」がすべてここに着地する。
+ *
+ * 【レイアウト方式】
+ * 🔴 useScaleToFit（1440px の固定キャンバスを transform:scale で縮小）は使わない。
+ *    4a が fr ベースの流動レイアウトになったので、マイページと同じく素直に折り返す。
+ *    scale 方式は狭い画面で文字まで一緒に縮んで読めなくなるのが難点だった。
+ *
+ * 【データ取得】
+ * 🔴 学習記録は useStudyStats(userId, 92) の1本だけ。期間タブ（1週間 / 30日間 / 3ヶ月）と
+ *    週送り・月送りは、この92日ぶんの dailyTotals をクライアント側で切り出して作る。
+ *    タブごとに days を変えて叩くと、切り替えのたびに画面が読み込み中へ戻る。
+ *
+ * 【構成】
+ *   ① 学習記録（期間タブ / KPI×4 / 棒グラフ）
+ *   ② ストリークカレンダー
+ *   ③ 学習時間ランキング ｜ ストリークランキング
+ *   ④ 学習履歴（4a には無いが、掘り下げの終点として残している）
  */
+
+/** dailyTotals をまとめて取る日数。3ヶ月タブ（13週）とカレンダー3か月ぶんを1回で賄う */
+const STATS_DAYS = 92;
+
 function StudyLogPage() {
   const { user } = useAuth();
-  const { outerRef, innerRef, scale, innerHeight } = useScaleToFit(DESIGN_WIDTH);
+  const userId = user?.userid;
 
-  const [range, setRange] = useState<RangeKey>('30d');
-  const activeRange = RANGES.find((r) => r.key === range) ?? RANGES[0];
+  const { stats, loading: statsLoading, unavailable } = useStudyStats(userId, STATS_DAYS);
 
-  const { stats, loading: statsLoading, unavailable } = useStudyStats(
-    user?.userid,
-    activeRange.days
-  );
+  const [timePeriod, setTimePeriod] = useState<StudyRankingPeriod>('week');
+  const [streakPeriod, setStreakPeriod] = useState<StreakRankingPeriod>('month');
+  const time = useStudyRanking(userId, timePeriod);
+  const streak = useStreakRanking(userId, streakPeriod);
 
-  // 一覧は期間で絞る。all のときは from を渡さない
-  const listQuery = useMemo(() => {
-    if (range === 'all') return {};
-    const from = new Date();
-    from.setDate(from.getDate() - (activeRange.days - 1));
-    return { from: toLocalDateKey(from) };
-  }, [range, activeRange.days]);
+  // 履歴は全期間。件数が多いので useStudyActivities のページングに任せる
+  const list = useStudyActivities(userId);
 
-  const list = useStudyActivities(user?.userid, listQuery);
+  const timeItems: RankingRowItem[] = (time.ranking?.entries ?? []).map((e) => ({
+    rank: e.rank,
+    nickname: e.isMe ? 'あなた' : e.nickname,
+    avatarEmoji: e.avatarEmoji,
+    value: formatMinutesHM(e.minutes),
+    isMe: e.isMe,
+  }));
 
-  const daily = stats?.dailyTotals ?? [];
-  const rangeMinutes = daily.reduce((sum, d) => sum + d.minutes, 0);
-  const studiedDays = daily.filter((d) => d.isStudyDay).length;
+  const streakItems: RankingRowItem[] = (streak.ranking?.entries ?? []).map((e) => ({
+    rank: e.rank,
+    nickname: e.isMe ? 'あなた' : e.nickname,
+    avatarEmoji: e.avatarEmoji,
+    value: `${e.days}日`,
+    isMe: e.isMe,
+  }));
 
   const cardStyle: React.CSSProperties = {
-    background: color.surface,
-    border: `1px solid ${color.border}`,
-    borderRadius: radius.card,
-    boxShadow: shadow.card,
-    padding: '20px 24px 18px',
+    background: 'var(--dc-surface)',
+    border: '1px solid var(--dc-border)',
+    borderRadius: 'var(--dc-radius-lg)',
+    boxShadow: 'var(--dc-shadow-card)',
+    padding: '20px 22px',
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: color.pageBg }}>
+    <div className="mypage-3d min-h-screen flex flex-col" style={{ background: 'var(--dc-bg)' }}>
       <AppHeader userName={user?.username || 'User'} />
 
-      <div className="relative flex-1">
-        <div
-          ref={outerRef}
-          style={{
-            width: '100%',
-            maxWidth: DESIGN_WIDTH,
-            margin: '0 auto',
-            position: 'relative',
-            height: innerHeight ? innerHeight * scale : undefined,
-          }}
-        >
-          <main
-            ref={innerRef}
-            className="studylog-main flex flex-col"
+      <main
+        className="dc-page-main flex flex-col"
+        style={{ flex: 1, padding: '44px 36px 24px', color: 'var(--dc-text)' }}
+      >
+        <div style={{ marginBottom: 22 }}>
+          <h1
             style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: DESIGN_WIDTH,
-              boxSizing: 'border-box',
-              gap: space.sectionGap,
-              fontFamily: font.family,
-              color: color.text,
-              transform: `scale(${scale})`,
-              transformOrigin: 'top left',
+              margin: '0 0 8px',
+              fontSize: 30,
+              lineHeight: 1.3,
+              fontWeight: 800,
+              letterSpacing: '-0.01em',
+              color: 'var(--dc-text)',
             }}
           >
-            <PageTitleBar
-              title="学習記録"
-              right={
-                <div style={{ display: 'flex', gap: 8 }}>
-                  {RANGES.map((r) => {
-                    const active = r.key === range;
-                    return (
-                      <button
-                        key={r.key}
-                        type="button"
-                        onClick={() => setRange(r.key)}
-                        aria-pressed={active}
-                        className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                        style={{
-                          borderRadius: radius.pill,
-                          padding: '9px 20px',
-                          border: `1px solid ${active ? color.primary : color.border}`,
-                          background: active ? color.primary : color.surface,
-                          color: active ? color.textOnPrimary : color.textBody,
-                          fontFamily: 'inherit',
-                          ...font.buttonSm,
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {r.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              }
-            />
-
-            {unavailable ? (
-              <div style={{ ...cardStyle, ...font.meta, color: color.textMuted, lineHeight: 1.9 }}>
-                学習記録を表示できませんでした。この機能はモック環境でのみ利用できます。
-              </div>
-            ) : (
-              <div className="flex flex-col" style={{ gap: space.columnGap }}>
-                <StudySummaryCard
-                  stats={stats}
-                  loading={statsLoading}
-                  rangeLabel={activeRange.label}
-                  rangeMinutes={rangeMinutes}
-                  studiedDays={studiedDays}
-                />
-
-                <div style={cardStyle}>
-                  <h2 style={{ ...font.cardTitle, color: color.text, margin: 0 }}>
-                    学習履歴
-                    <span style={{ ...font.caption, color: color.textSubtle, marginLeft: 10 }}>
-                      {list.total}件
-                    </span>
-                  </h2>
-                  <StudyLogList
-                    activities={list.items}
-                    loading={list.loading}
-                    loadingMore={list.loadingMore}
-                    hasMore={list.hasMore}
-                    error={list.error}
-                    onLoadMore={list.loadMore}
-                  />
-                </div>
-              </div>
-            )}
-          </main>
+            学習記録・ランキング
+          </h1>
+          <p style={{ margin: 0, fontSize: 13, color: 'var(--dc-text-body)' }}>
+            学習の記録とランキングをまとめて確認できます。
+          </p>
         </div>
-      </div>
 
-      <footer className="h-10 flex items-center justify-center" style={{ background: '#2B2629' }}>
-        <span className="text-[11.4px] font-bold text-white">2026 &copy; WEBCOACH</span>
-      </footer>
+        {unavailable ? (
+          <div style={{ ...cardStyle, fontSize: 13, color: 'var(--dc-text-muted)', lineHeight: 1.9 }}>
+            学習記録を表示できませんでした。この機能はモック環境でのみ利用できます。
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+            <StudyRecordPanel stats={stats} loading={statsLoading} />
+
+            <StreakCalendarCard stats={stats} loading={statsLoading} />
+
+            <div className="studylog-rank-grid">
+              <RankingListCard
+                title="学習時間ランキング"
+                icon={<Clock size={16} strokeWidth={1.75} />}
+                iconBackground="var(--dc-soft-100)"
+                iconColor="var(--dc-primary)"
+                periods={[
+                  { key: 'week', label: '週間' },
+                  { key: 'month', label: '月間' },
+                ]}
+                activePeriod={timePeriod}
+                onPeriodChange={(k) => setTimePeriod(k as StudyRankingPeriod)}
+                items={timeItems}
+                footer={
+                  time.ranking
+                    ? `${time.ranking.periodLabel}・${time.ranking.participantCount}人中 ${time.ranking.me.rank}位`
+                    : undefined
+                }
+                loading={time.loading}
+                failed={time.failed}
+              />
+
+              <RankingListCard
+                title="ストリークランキング"
+                icon={<Flame size={16} strokeWidth={1.75} />}
+                iconBackground="var(--dc-gold-surface)"
+                iconColor="var(--dc-gold)"
+                periods={[
+                  { key: 'month', label: '月間' },
+                  { key: 'total', label: '累計' },
+                ]}
+                activePeriod={streakPeriod}
+                onPeriodChange={(k) => setStreakPeriod(k as StreakRankingPeriod)}
+                items={streakItems}
+                footer={
+                  streak.ranking
+                    ? `${streak.ranking.periodLabel}の学習日数・${streak.ranking.participantCount}人中 ${streak.ranking.me.rank}位`
+                    : undefined
+                }
+                loading={streak.loading}
+                failed={streak.failed}
+              />
+            </div>
+
+            {/* 4a には無いが、1件ずつの記録を確認・削除する場所がここしか無いので残している */}
+            <section style={cardStyle}>
+              <h2 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--dc-text)' }}>
+                学習履歴
+                <span className="dc-num" style={{ fontSize: 11.5, color: 'var(--dc-text-subtle)', marginLeft: 10 }}>
+                  {list.total}件
+                </span>
+              </h2>
+              <StudyLogList
+                activities={list.items}
+                loading={list.loading}
+                loadingMore={list.loadingMore}
+                hasMore={list.hasMore}
+                error={list.error}
+                onLoadMore={list.loadMore}
+              />
+            </section>
+          </div>
+        )}
+
+        <footer
+          style={{
+            textAlign: 'center',
+            fontSize: 12,
+            color: 'var(--dc-text-subtle)',
+            padding: '32px 0 0',
+            marginTop: 'auto',
+          }}
+        >
+          2026 &copy; WEBCOACH
+        </footer>
+      </main>
     </div>
   );
 }

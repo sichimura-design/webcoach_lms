@@ -12,7 +12,8 @@ import { Course } from '../../types/mypage';
  *    という1枚絵（public/images/home/continue-bg.png）の上に文字を重ねている。
  *    写真の上に文字は乗らないので、暗いオーバーレイは敷かない。
  *
- * 🔴 ArrowRightIcon の export は消さない。
+ * 🔴 ArrowRightIcon / splitLesson の export は消さない。
+ *    マイページ本体からは 5a 改修で外れたが、他コンポーネントがここを参照している。
  *    GuildLobbyCard / PeopleActivityCard / StatsStrip / NextCoachingPlan が import している。
  */
 interface ContinueLearningHeroProps {
@@ -223,4 +224,4 @@ function ContinueLearningHero({ course, onOpen, onOpenCurriculum }: ContinueLear
 }
 
 export default ContinueLearningHero;
-export { ArrowRightIcon };
+export { ArrowRightIcon, splitLesson };

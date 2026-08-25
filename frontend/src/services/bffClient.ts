@@ -28,6 +28,8 @@ import {
 import {
   FocusBoothMember,
   FocusBoothPulse,
+  StreakRanking,
+  StreakRankingPeriod,
   StudyRanking,
   StudyRankingPeriod,
 } from '../types/focusBooth';
@@ -542,6 +544,18 @@ class BFFClient {
    */
   async getStudyRanking(userId: number, period: StudyRankingPeriod): Promise<StudyRanking> {
     const response = await this.api.get(`/webcoach/study-ranking/${userId}`, { params: { period } });
+    return response.data;
+  }
+
+  /**
+   * ストリークランキング（今月／累計の学習日数）
+   * GET /api/webcoach/study-ranking-streak/{userId}?period=month|total
+   * 🔴 実BFFには無い。学習時間ランキングと同じくモックで提供している。
+   */
+  async getStreakRanking(userId: number, period: StreakRankingPeriod): Promise<StreakRanking> {
+    const response = await this.api.get(`/webcoach/study-ranking-streak/${userId}`, {
+      params: { period },
+    });
     return response.data;
   }
 

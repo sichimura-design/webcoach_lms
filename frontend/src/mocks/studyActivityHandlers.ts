@@ -7,6 +7,8 @@
  *   GET    /api/webcoach/study-stats/:userid?days=35         今日/今週/今月・ストリーク・日別・教材別
  *   DELETE /api/webcoach/study-activities/:userid/:activityId 1件削除
  *   POST   /api/webcoach/study-activities/:userid/reset       🔴モック確認用（シード再生成）
+ *   GET    /api/webcoach/study-ranking/:userid?period=week|month    学習時間ランキング
+ *   GET    /api/webcoach/study-ranking-streak/:userid?period=month|total ストリークランキング
  *   GET    /api/webcoach/streak/:userid                       ★既存パスの実装差し替え
  *
  * 設計上の判断:
@@ -30,15 +32,20 @@ import {
 } from '../types/studyActivity';
 import { StreakInfo } from '../types/mypage';
 import {
+  StreakRanking,
+  StreakRankingEntry,
+  StreakRankingPeriod,
   StudyRanking,
   StudyRankingEntry,
   StudyRankingPeriod,
 } from '../types/focusBooth';
 import {
   clampText,
+  computeStreak,
   monthStartOf,
   periodTotal,
   sortByOccurredDesc,
+  studyDayKeys,
   summarize,
   toLocalDateKey,
   toStreakInfo,
@@ -201,6 +208,39 @@ function buildRanking(userId: number, period: StudyRankingPeriod): StudyRanking 
   return { period, periodLabel: label, entries, me, participantCount: entries.length };
 }
 
+// ---- ストリークランキング ---------------------------------------------------
+// 学習時間ランキングと同じ作法（自分は実データ・他人は固定名簿・順位はここで確定）。
+//
+// 🔴 並べるのは「連続日数」ではなく「学習した日数」。
+//    連続日数は1日空くと 0 に戻るので、ランキングにすると順位が乱高下して意味が読めない。
+//    ・month … 今月の学習日数（computeStreak の monthStudyDays と同じ定義）
+//    ・total … 累計の学習日数（studyDayKeys の件数）
+
+function buildStreakRanking(userId: number, period: StreakRankingPeriod): StreakRanking {
+  const mine = activitiesOf(userId);
+  const myDays =
+    period === 'month' ? computeStreak(mine, new Date()).monthStudyDays : studyDayKeys(mine).length;
+
+  const rows = [
+    ...STUDY_PEERS.map((p) => ({
+      nickname: p.nickname,
+      avatarEmoji: p.avatarEmoji,
+      days: period === 'month' ? p.monthStudyDays : p.totalStudyDays,
+      isMe: false,
+    })),
+    { nickname: 'あなた', avatarEmoji: MY_RANKING_EMOJI, days: myDays, isMe: true },
+  ];
+
+  // 同着は自分を上に置く（buildRanking と同じ）。
+  rows.sort((a, b) => b.days - a.days || (a.isMe ? -1 : b.isMe ? 1 : 0));
+
+  const entries: StreakRankingEntry[] = rows.map((r, i) => ({ ...r, rank: i + 1 }));
+  const me = entries.find((e) => e.isMe)!;
+  const label = period === 'month' ? `${new Date().getMonth() + 1}月` : '累計';
+
+  return { period, periodLabel: label, entries, me, participantCount: entries.length };
+}
+
 export const studyActivityHandlers = [
   // 注意: リテラルの 'reset' を ':activityId' より先に登録する。
   //       後にすると 'reset' が activityId として食われる。
@@ -324,7 +364,15 @@ export const studyActivityHandlers = [
     return HttpResponse.json({ ok: true });
   }),
 
-  // 学習時間ランキング（今週／今月）。集中ブースの右カラムが使う。
+  // ストリークランキング（今月／累計の学習日数）。マイページと学習記録ページが使う。
+  http.get('*/api/webcoach/study-ranking-streak/:userid', async ({ params, request }) => {
+    await delay();
+    const raw = new URL(request.url).searchParams.get('period');
+    const period: StreakRankingPeriod = raw === 'total' ? 'total' : 'month';
+    return HttpResponse.json(buildStreakRanking(userIdOf(params), period));
+  }),
+
+  // 学習時間ランキング（今週／今月）
   http.get('*/api/webcoach/study-ranking/:userid', async ({ params, request }) => {
     await delay();
     const raw = new URL(request.url).searchParams.get('period');

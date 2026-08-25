@@ -9,41 +9,35 @@ import { useStudyStats } from '../hooks/useStudyStats';
 import { useProgressionStore } from '../store/progressionStore';
 import { EXP_RULES } from '../utils/progression';
 import MypageGreeting from './mypage/MypageGreeting';
-import RoadmapStrip from './mypage/RoadmapStrip';
-import ContinueLearningHero from './mypage/ContinueLearningHero';
-import LearningStreakCard from './mypage/LearningStreakCard';
-import NextCoachingPlan from './mypage/NextCoachingPlan';
-import NextCoachingCardContainer from './mypage/NextCoachingCardContainer';
-import StudyRankingCard from './focus/StudyRankingCard';
+import StreakHeroCard from './mypage/StreakHeroCard';
+import StudyRecordCard from './mypage/StudyRecordCard';
+import StudyChallengeCard from './mypage/StudyChallengeCard';
+import PeerRankingCard from './mypage/PeerRankingCard';
 import { Course } from '../types/mypage';
 
 /**
- * マイページ（ダッシュボード）。claude.ai/design『マイページ 3d.dc.html』準拠。
+ * マイページ（ダッシュボード）。claude.ai/design『トップページ 3案』5a 準拠。
  *
  * 【レイアウト方式】
  * 🔴 useScaleToFit（1440px の固定キャンバスを transform:scale で縮小）は使わない。
  *    デザインが fr ベースの流動レイアウトになったため。scale 方式は狭い画面で
  *    文字まで一緒に縮んで読めなくなるのが難点で、こちらは素直に折り返す。
- *    自習室・学習コンテンツは今も scale 方式なので、あちらと作りが違う点に注意。
+ *    学習コンテンツは今も scale 方式なので、あちらと作りが違う点に注意。
  *
- * 【構成】
- *   ① 挨拶 + 統計（カードなし・地色に直置き）
- *   ② 学習ロードマップの横型帯
- *   ③ 2カラム: 左＝続きを学ぶ / 継続記録、右＝次回コーチング / 目標
- *   ④ フッター
+ * 【構成】5a は「継続」と「競争」の2軸だけに絞った画面
+ *   ① 挨拶（日付＋名前。カードなし・地色に直置き）
+ *   ② 2カラム: 左＝学習ストリーク / 学習記録、右＝学習時間チャレンジ / みんなのランキング
+ *   ③ フッター
  *
- * 主アクション（塗りつぶしの赤ボタン）は『続きから学習する』の1つだけ。
- * 他のカードのCTAはアウトラインかテキストリンクに留めること（DESIGN.md §15-5）。
+ * 🔴 かつてここにあった「学習ロードマップ帯」「続きを学ぶヒーローカード」
+ *    「次回コーチング」「次回コーチングまでの目標」は 5a 改修で外した。
+ *    学習の再開動線は StudyChallengeCard の中（「続きから学習する」）に畳んである。
+ *    コンポーネント自体は mypage/ に残してあるので、戻すときは import を足すだけでよい。
+ *
+ * 主アクション（塗りつぶしの赤ボタン）は StudyChallengeCard の
+ * 『続きから学習する』1つだけ。他のカードのCTAはアウトラインかテキストリンクに
+ * 留めること（DESIGN.md §15-5）。
  */
-
-/** セクションの小見出し（Eyebrow）。DESIGN.md §3 の 13px/700/letter-spacing .08em */
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--dc-text-muted)', letterSpacing: '.08em', paddingLeft: 4 }}>
-      {children}
-    </div>
-  );
-}
 
 function MyPage() {
   const navigate = useNavigate();
@@ -139,50 +133,35 @@ function MyPage() {
       <AppHeader userName={avatarName} />
 
       <main
-        className="flex flex-col"
+        className="dc-page-main flex flex-col"
         style={{ flex: 1, padding: '44px 36px 24px', color: 'var(--dc-text)' }}
       >
-        <MypageGreeting
-          name={avatarName}
-          stats={studyStats}
-          loading={studyStatsLoading}
-          completedLessons={learningSummary.completedLessons.total}
-        />
-
-        <RoadmapStrip userId={user?.userid} />
+        <MypageGreeting name={avatarName} />
 
         <div className="mypage-3d-grid">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <Eyebrow>続きを学ぶ</Eyebrow>
-            {primaryCourse && (
-              <ContinueLearningHero
-                course={primaryCourse}
-                onOpen={openLesson}
-                onOpenCurriculum={openCurriculum}
-              />
-            )}
-
-            <Eyebrow>継続記録</Eyebrow>
-            <LearningStreakCard stats={studyStats} loading={studyStatsLoading} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <StreakHeroCard stats={studyStats} loading={studyStatsLoading} />
+            <StudyRecordCard
+              stats={studyStats}
+              loading={studyStatsLoading}
+              completedLessons={learningSummary.completedLessons.total}
+            />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <Eyebrow>コーチと学ぶ</Eyebrow>
-            {/* 読み込み中と「次回の予定なし」のときは null を返す。
-                縦積みなので、消えても下のカードが繰り上がるだけで崩れない
-                （2×2グリッド時代はセルの位置を明示する必要があった） */}
-            <NextCoachingCardContainer userId={user?.userid} />
-            <NextCoachingPlan userId={user?.userid} />
-
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 24, minWidth: 0 }}>
             {/*
               🔴 ランキングは「自分から見に行かないがモチベーションになる情報」なので、
-                 独立ページを作らずトップで自然に目に入る位置に置く。
-                 集中ブースの廃止に伴ってここへ移設した（元は /focus-booth の右下）。
-              🔴 このカードは webcoachTheme 系の配色を内蔵している。マイページの
-                 --dc-* とは別系統なので、色を直すときは両方を見ること。
+                 独立ページだけに置かずトップで自然に目に入る位置に出す。
+                 全順位・期間の掘り下げは /study-log（4a）が受け持つ。
             */}
-            <Eyebrow>みんなの学習時間</Eyebrow>
-            <StudyRankingCard userId={user?.userid} />
+            <StudyChallengeCard
+              userId={user?.userid}
+              userName={avatarName}
+              course={primaryCourse}
+              onOpenLesson={openLesson}
+              onOpenCurriculum={openCurriculum}
+            />
+            <PeerRankingCard userId={user?.userid} />
           </div>
         </div>
 
