@@ -74,7 +74,7 @@ function StudyLogPage() {
     border: '1px solid var(--dc-border)',
     borderRadius: 'var(--dc-radius-lg)',
     boxShadow: 'var(--dc-shadow-card)',
-    padding: '26px 28px',
+    padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
   };
 
   return (
@@ -83,13 +83,13 @@ function StudyLogPage() {
 
       <main
         className="dc-page-main flex flex-col"
-        style={{ flex: 1, padding: '48px 48px 40px', color: 'var(--dc-text)' }}
+        style={{ flex: 1, padding: 'var(--dc-sp-page-y) var(--dc-sp-page-x) calc(var(--dc-sp-page-y) * 0.8)', color: 'var(--dc-text)' }}
       >
         <div style={{ marginBottom: 22 }}>
           <h1
             style={{
               margin: '0 0 8px',
-              fontSize: 30,
+              fontSize: 'var(--dc-fs-xl)',
               lineHeight: 1.3,
               fontWeight: 800,
               letterSpacing: '-0.01em',
@@ -98,17 +98,17 @@ function StudyLogPage() {
           >
             学習記録・ランキング
           </h1>
-          <p style={{ margin: 0, fontSize: 13, color: 'var(--dc-text-body)' }}>
+          <p style={{ margin: 0, fontSize: 'var(--dc-fs-base)', color: 'var(--dc-text-body)' }}>
             学習の記録とランキングをまとめて確認できます。
           </p>
         </div>
 
         {unavailable ? (
-          <div style={{ ...cardStyle, fontSize: 13, color: 'var(--dc-text-muted)', lineHeight: 1.9 }}>
+          <div style={{ ...cardStyle, fontSize: 'var(--dc-fs-base)', color: 'var(--dc-text-muted)', lineHeight: 1.9 }}>
             学習記録を表示できませんでした。この機能はモック環境でのみ利用できます。
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dc-sp-gap)' }}>
             <StudyRecordPanel stats={stats} loading={statsLoading} />
 
             <StreakCalendarCard stats={stats} loading={statsLoading} />
@@ -159,9 +159,9 @@ function StudyLogPage() {
 
             {/* 4a には無いが、1件ずつの記録を確認・削除する場所がここしか無いので残している */}
             <section style={cardStyle}>
-              <h2 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--dc-text)' }}>
+              <h2 style={{ margin: 0, fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)' }}>
                 学習履歴
-                <span className="dc-num" style={{ fontSize: 11.5, color: 'var(--dc-text-subtle)', marginLeft: 10 }}>
+                <span className="dc-num" style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-subtle)', marginLeft: 10 }}>
                   {list.total}件
                 </span>
               </h2>
@@ -180,7 +180,7 @@ function StudyLogPage() {
         <footer
           style={{
             textAlign: 'center',
-            fontSize: 12,
+            fontSize: 'var(--dc-fs-xs)',
             color: 'var(--dc-text-subtle)',
             padding: '32px 0 0',
             marginTop: 'auto',

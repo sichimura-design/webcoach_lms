@@ -46,14 +46,14 @@ export function RankingListCard({
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '26px 28px',
+        padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18, flexWrap: 'wrap' }}>
         <span
           style={{
-            width: 30,
-            height: 30,
+            width: 'var(--dc-sz-badge)',
+            height: 'var(--dc-sz-badge)',
             flex: 'none',
             borderRadius: 9999,
             background: iconBackground,
@@ -68,7 +68,7 @@ export function RankingListCard({
           style={{
             margin: 0,
             flex: 1,
-            fontSize: 16,
+            fontSize: 'var(--dc-fs-title)',
             fontWeight: 700,
             color: 'var(--dc-text)',
             whiteSpace: 'nowrap',
@@ -92,7 +92,7 @@ export function RankingListCard({
                   padding: '5px 12px',
                   borderRadius: 9999,
                   fontFamily: 'inherit',
-                  fontSize: 12,
+                  fontSize: 'var(--dc-fs-xs)',
                   fontWeight: 700,
                   whiteSpace: 'nowrap',
                   border: `1px solid ${active ? 'var(--dc-primary)' : '#E5DED3'}`,
@@ -109,11 +109,11 @@ export function RankingListCard({
       </div>
 
       {failed ? (
-        <div style={{ fontSize: 12.5, color: 'var(--dc-text-muted)', lineHeight: 1.9 }}>
+        <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-muted)', lineHeight: 1.9 }}>
           ランキングを取得できませんでした。
         </div>
       ) : loading || items.length === 0 ? (
-        <div style={{ fontSize: 12.5, color: 'var(--dc-text-subtle)', padding: '20px 0' }}>読み込んでいます…</div>
+        <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-subtle)', padding: '20px 0' }}>読み込んでいます…</div>
       ) : (
         <>
           <div style={{ border: '1px solid var(--dc-border)', borderRadius: 14, padding: '6px 16px' }}>
@@ -122,7 +122,7 @@ export function RankingListCard({
             ))}
           </div>
           {footer && (
-            <div style={{ padding: '10px 4px 0', fontSize: 11.5, color: 'var(--dc-text-subtle)' }}>{footer}</div>
+            <div style={{ padding: '10px 4px 0', fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-subtle)' }}>{footer}</div>
           )}
         </>
       )}

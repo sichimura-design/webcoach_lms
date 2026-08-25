@@ -134,12 +134,12 @@ function MyPage() {
 
       <main
         className="dc-page-main flex flex-col"
-        style={{ flex: 1, padding: '48px 48px 40px', color: 'var(--dc-text)' }}
+        style={{ flex: 1, padding: 'var(--dc-sp-page-y) var(--dc-sp-page-x) calc(var(--dc-sp-page-y) * 0.8)', color: 'var(--dc-text)' }}
       >
         <MypageGreeting name={avatarName} />
 
         <div className="mypage-3d-grid">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dc-sp-gap)' }}>
             <StreakHeroCard stats={studyStats} loading={studyStatsLoading} />
             <StudyRecordCard
               stats={studyStats}
@@ -148,7 +148,7 @@ function MyPage() {
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 28, minWidth: 0 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dc-sp-gap)', minWidth: 0 }}>
             {/*
               🔴 ランキングは「自分から見に行かないがモチベーションになる情報」なので、
                  独立ページだけに置かずトップで自然に目に入る位置に出す。
@@ -166,7 +166,7 @@ function MyPage() {
         </div>
 
         <footer
-          style={{ textAlign: 'center', fontSize: 12, color: 'var(--dc-text-subtle)', padding: '32px 0 0', marginTop: 'auto' }}
+          style={{ textAlign: 'center', fontSize: 'var(--dc-fs-xs)', color: 'var(--dc-text-subtle)', padding: '32px 0 0', marginTop: 'auto' }}
         >
           2026 &copy; WEBCOACH
         </footer>

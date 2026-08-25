@@ -92,7 +92,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
         background: '#fff',
         display: 'grid',
         placeItems: 'center',
-        fontSize: 14,
+        fontSize: 'var(--dc-fs-14)',
         color: enabled ? 'var(--dc-text-body)' : '#C9BFB0',
         cursor: enabled ? 'pointer' : 'not-allowed',
       }}
@@ -108,14 +108,14 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '26px 28px',
+        padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
         <span
           style={{
-            width: 30,
-            height: 30,
+            width: 'var(--dc-sz-badge)',
+            height: 'var(--dc-sz-badge)',
             flex: 'none',
             borderRadius: 9999,
             background: 'var(--dc-gold-surface)',
@@ -130,7 +130,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
           style={{
             margin: 0,
             flex: 1,
-            fontSize: 16,
+            fontSize: 'var(--dc-fs-title)',
             fontWeight: 700,
             color: 'var(--dc-text)',
             whiteSpace: 'nowrap',
@@ -140,7 +140,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
         </h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           {navButton('前の月へ', '‹', canGoBack, () => setMonthOffset((m) => m - 1))}
-          <span className="dc-num" style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--dc-text-body)', whiteSpace: 'nowrap' }}>
+          <span className="dc-num" style={{ fontSize: 'var(--dc-fs-sm)', fontWeight: 700, color: 'var(--dc-text-body)', whiteSpace: 'nowrap' }}>
             {title}
           </span>
           {navButton('次の月へ', '›', canGoForward, () => setMonthOffset((m) => Math.min(0, m + 1)))}
@@ -152,7 +152,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
         aria-hidden="true"
       >
         {WEEKDAY_LABELS.map((w) => (
-          <span key={w} style={{ textAlign: 'center', fontSize: 11.5, fontWeight: 700, color: 'var(--dc-text-subtle)' }}>
+          <span key={w} style={{ textAlign: 'center', fontSize: 'var(--dc-fs-2xs)', fontWeight: 700, color: 'var(--dc-text-subtle)' }}>
             {w}
           </span>
         ))}
@@ -160,7 +160,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, minmax(0, 1fr))', gap: 6 }}>
         {cells.map((c) => {
-          if (c.blank) return <span key={c.key} style={{ height: 50 }} />;
+          if (c.blank) return <span key={c.key} style={{ height: 'var(--dc-sz-cell)' }} />;
 
           return (
             <span
@@ -168,7 +168,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
               title={c.tip}
               aria-current={c.isToday ? 'date' : undefined}
               style={{
-                height: 50,
+                height: 'var(--dc-sz-cell)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -187,7 +187,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
               <span
                 className="dc-num"
                 style={{
-                  fontSize: 11,
+                  fontSize: 'var(--dc-fs-3xs)',
                   fontWeight: c.studied || c.isToday ? 700 : 400,
                   color: c.studied
                     ? 'var(--dc-primary)'
@@ -215,7 +215,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
           alignItems: 'center',
           gap: 6,
           marginTop: 12,
-          fontSize: 11.5,
+          fontSize: 'var(--dc-fs-2xs)',
           color: 'var(--dc-text-muted)',
           flexWrap: 'wrap',
         }}

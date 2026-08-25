@@ -40,7 +40,7 @@ function ProgressBar({ value }: { value: number }) {
   const pct = Math.max(0, Math.min(100, Math.round(value)));
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-      <span className="dc-num" style={{ fontSize: 12, fontWeight: 700, color: 'var(--dc-text-body)' }}>
+      <span className="dc-num" style={{ fontSize: 'var(--dc-fs-xs)', fontWeight: 700, color: 'var(--dc-text-body)' }}>
         {pct}%
       </span>
       <div
@@ -106,14 +106,14 @@ export function StudyChallengeCard({
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '28px 30px',
+        padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
         <span
           style={{
-            width: 30,
-            height: 30,
+            width: 'var(--dc-sz-badge)',
+            height: 'var(--dc-sz-badge)',
             flex: 'none',
             borderRadius: 9999,
             background: 'var(--dc-gold-surface)',
@@ -124,17 +124,17 @@ export function StudyChallengeCard({
         >
           <Trophy size={16} strokeWidth={1.75} />
         </span>
-        <h2 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--dc-text)', whiteSpace: 'nowrap' }}>
+        <h2 style={{ margin: 0, fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)', whiteSpace: 'nowrap' }}>
           学習時間チャレンジ
         </h2>
       </div>
 
       {failed ? (
-        <div style={{ fontSize: 12.5, color: 'var(--dc-text-muted)', lineHeight: 1.9, padding: '8px 0 18px' }}>
+        <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-muted)', lineHeight: 1.9, padding: '8px 0 18px' }}>
           ランキングを取得できませんでした。
         </div>
       ) : loading || !me ? (
-        <div style={{ fontSize: 12.5, color: 'var(--dc-text-subtle)', padding: '28px 0 40px', textAlign: 'center' }}>
+        <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-subtle)', padding: '28px 0 40px', textAlign: 'center' }}>
           読み込んでいます…
         </div>
       ) : (
@@ -152,23 +152,23 @@ export function StudyChallengeCard({
           >
             {isLeading ? (
               <>
-                <span className="dc-num" style={{ fontSize: 46, fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em' }}>
+                <span className="dc-num" style={{ fontSize: 'var(--dc-fs-2xl)', fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em' }}>
                   1
                 </span>
-                <span style={{ fontSize: 20, fontWeight: 800, color: 'var(--dc-text)' }}>位をキープ中！</span>
+                <span style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-text)' }}>位をキープ中！</span>
               </>
             ) : (
               <>
-                <span style={{ fontSize: 20, fontWeight: 800, color: 'var(--dc-text)' }}>あと</span>
-                <span className="dc-num" style={{ fontSize: 46, fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em', padding: '0 4px' }}>
+                <span style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-text)' }}>あと</span>
+                <span className="dc-num" style={{ fontSize: 'var(--dc-fs-2xl)', fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em', padding: '0 4px' }}>
                   {gap}
                 </span>
-                <span style={{ fontSize: 20, fontWeight: 800, color: 'var(--dc-primary)', marginRight: 6 }}>分</span>
-                <span style={{ fontSize: 20, fontWeight: 800, color: 'var(--dc-text)' }}>で</span>
-                <span className="dc-num" style={{ fontSize: 46, fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em', padding: '0 4px' }}>
+                <span style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-primary)', marginRight: 6 }}>分</span>
+                <span style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-text)' }}>で</span>
+                <span className="dc-num" style={{ fontSize: 'var(--dc-fs-2xl)', fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em', padding: '0 4px' }}>
                   {target!.rank}
                 </span>
-                <span style={{ fontSize: 20, fontWeight: 800, color: 'var(--dc-text)' }}>位！</span>
+                <span style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-text)' }}>位！</span>
               </>
             )}
           </div>
@@ -181,7 +181,7 @@ export function StudyChallengeCard({
                 display: 'grid',
                 gridTemplateColumns: `repeat(${slots.length}, minmax(0, 1fr))`,
                 textAlign: 'center',
-                fontSize: 12.5,
+                fontSize: 'var(--dc-fs-sm)',
                 fontWeight: 700,
                 marginBottom: 10,
               }}
@@ -270,7 +270,7 @@ export function StudyChallengeCard({
                 <div key={s.entry.rank} style={{ minWidth: 0 }}>
                   <div
                     style={{
-                      fontSize: 13,
+                      fontSize: 'var(--dc-fs-base)',
                       fontWeight: i === 0 ? 800 : 700,
                       color: i === 0 ? 'var(--dc-primary)' : i === 1 ? 'var(--dc-text)' : 'var(--dc-text-body)',
                       overflow: 'hidden',
@@ -296,7 +296,7 @@ export function StudyChallengeCard({
                   >
                     <span
                       className="dc-num"
-                      style={{ fontSize: 12, color: i === 2 ? 'var(--dc-text-subtle)' : 'var(--dc-text-muted)' }}
+                      style={{ fontSize: 'var(--dc-fs-xs)', color: i === 2 ? 'var(--dc-text-subtle)' : 'var(--dc-text-muted)' }}
                     >
                       {formatMinutesHM(s.entry.minutes)}
                     </span>
@@ -304,7 +304,7 @@ export function StudyChallengeCard({
                       <span
                         className="dc-num"
                         style={{
-                          fontSize: 11.5,
+                          fontSize: 'var(--dc-fs-2xs)',
                           fontWeight: 800,
                           borderRadius: 9999,
                           padding: '3px 8px',
@@ -336,7 +336,7 @@ export function StudyChallengeCard({
           padding: '20px 22px',
         }}
       >
-        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--dc-text-muted)', marginBottom: 12 }}>
+        <div style={{ fontSize: 'var(--dc-fs-xs)', fontWeight: 700, color: 'var(--dc-text-muted)', marginBottom: 12 }}>
           学習して記録を伸ばそう
         </div>
 
@@ -345,11 +345,11 @@ export function StudyChallengeCard({
             <div style={{ flex: 1, minWidth: 200 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
                 {no && (
-                  <span className="dc-num" style={{ fontSize: 13.5, fontWeight: 800, color: 'var(--dc-text)' }}>
+                  <span className="dc-num" style={{ fontSize: 'var(--dc-fs-lesson)', fontWeight: 800, color: 'var(--dc-text)' }}>
                     {no}
                   </span>
                 )}
-                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--dc-text-body)' }}>{lessonName}</span>
+                <span style={{ fontSize: 'var(--dc-fs-base)', fontWeight: 600, color: 'var(--dc-text-body)' }}>{lessonName}</span>
               </div>
               <ProgressBar value={course.progress ?? 0} />
             </div>
@@ -363,14 +363,14 @@ export function StudyChallengeCard({
                   display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  height: 38,
+                  height: 'var(--dc-sz-btn)',
                   padding: '0 16px',
                   borderRadius: 10,
                   border: 0,
                   background: 'var(--dc-primary)',
                   color: '#fff',
                   fontFamily: 'inherit',
-                  fontSize: 12.5,
+                  fontSize: 'var(--dc-fs-sm)',
                   fontWeight: 700,
                   cursor: 'pointer',
                 }}
@@ -385,14 +385,14 @@ export function StudyChallengeCard({
                   display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  height: 38,
+                  height: 'var(--dc-sz-btn)',
                   padding: '0 14px',
                   borderRadius: 10,
                   background: '#fff',
                   border: '1px solid #E5DED3',
                   color: 'var(--dc-text-body)',
                   fontFamily: 'inherit',
-                  fontSize: 12.5,
+                  fontSize: 'var(--dc-fs-sm)',
                   fontWeight: 600,
                   cursor: 'pointer',
                 }}
@@ -404,7 +404,7 @@ export function StudyChallengeCard({
         ) : (
           // 受講中のコースが無いときは「続きから」が成立しないので、選ぶところから始めてもらう
           <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
-            <div style={{ flex: 1, minWidth: 200, fontSize: 13, color: 'var(--dc-text-body)', lineHeight: 1.8 }}>
+            <div style={{ flex: 1, minWidth: 200, fontSize: 'var(--dc-fs-base)', color: 'var(--dc-text-body)', lineHeight: 1.8 }}>
               まだ受講中のコースがありません。学習コンテンツから最初の1つを選びましょう。
             </div>
             <button
@@ -415,14 +415,14 @@ export function StudyChallengeCard({
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                height: 38,
+                height: 'var(--dc-sz-btn)',
                 padding: '0 16px',
                 borderRadius: 10,
                 border: 0,
                 background: 'var(--dc-primary)',
                 color: '#fff',
                 fontFamily: 'inherit',
-                fontSize: 12.5,
+                fontSize: 'var(--dc-fs-sm)',
                 fontWeight: 700,
                 cursor: 'pointer',
                 flex: 'none',

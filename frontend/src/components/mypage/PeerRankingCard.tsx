@@ -49,7 +49,7 @@ function PeriodPills<T extends string>({
               padding: '5px 12px',
               borderRadius: 9999,
               fontFamily: 'inherit',
-              fontSize: 12,
+              fontSize: 'var(--dc-fs-xs)',
               fontWeight: active ? 700 : 600,
               background: active ? 'var(--dc-primary)' : '#fff',
               border: `1px solid ${active ? 'var(--dc-primary)' : '#E5DED3'}`,
@@ -69,7 +69,7 @@ function PeriodPills<T extends string>({
 function Block({ title, items }: { title: string; items: RankingRowItem[] }) {
   return (
     <div style={{ minWidth: 0 }}>
-      <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--dc-text-muted)', marginBottom: 10 }}>
+      <div style={{ fontSize: 'var(--dc-fs-xs)', fontWeight: 700, color: 'var(--dc-text-muted)', marginBottom: 10 }}>
         {title}
       </div>
       <div style={{ border: '1px solid var(--dc-border)', borderRadius: 14, padding: '4px 16px' }}>
@@ -130,14 +130,14 @@ export function PeerRankingCard({ userId }: PeerRankingCardProps) {
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '26px 28px',
+        padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
         <span
           style={{
-            width: 30,
-            height: 30,
+            width: 'var(--dc-sz-badge)',
+            height: 'var(--dc-sz-badge)',
             flex: 'none',
             borderRadius: 9999,
             background: 'var(--dc-gold-surface)',
@@ -155,7 +155,7 @@ export function PeerRankingCard({ userId }: PeerRankingCardProps) {
           style={{
             margin: 0,
             flex: 1,
-            fontSize: 16,
+            fontSize: 'var(--dc-fs-title)',
             fontWeight: 700,
             color: 'var(--dc-text)',
             whiteSpace: 'nowrap',
@@ -197,7 +197,7 @@ export function PeerRankingCard({ userId }: PeerRankingCardProps) {
             background: 'transparent',
             padding: 0,
             fontFamily: 'inherit',
-            fontSize: 12,
+            fontSize: 'var(--dc-fs-xs)',
             fontWeight: 600,
             color: 'var(--dc-primary)',
             cursor: 'pointer',
@@ -229,7 +229,7 @@ export function PeerRankingCard({ userId }: PeerRankingCardProps) {
                 borderRadius: 9999,
                 border: 0,
                 fontFamily: 'inherit',
-                fontSize: 12,
+                fontSize: 'var(--dc-fs-xs)',
                 fontWeight: isActive ? 700 : 600,
                 background: isActive ? 'var(--dc-primary)' : '#F5F1EA',
                 color: isActive ? '#fff' : 'var(--dc-text-body)',
@@ -243,11 +243,11 @@ export function PeerRankingCard({ userId }: PeerRankingCardProps) {
       </div>
 
       {active.failed ? (
-        <div style={{ fontSize: 12.5, color: 'var(--dc-text-muted)', lineHeight: 1.9 }}>
+        <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-muted)', lineHeight: 1.9 }}>
           ランキングを取得できませんでした。
         </div>
       ) : active.loading || items.length === 0 ? (
-        <div style={{ fontSize: 12.5, color: 'var(--dc-text-subtle)', padding: '20px 0' }}>
+        <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-subtle)', padding: '20px 0' }}>
           読み込んでいます…
         </div>
       ) : (
@@ -255,7 +255,7 @@ export function PeerRankingCard({ userId }: PeerRankingCardProps) {
           <div>
             <Block title="TOP3" items={top3} />
             {periodLabel && (
-              <div style={{ marginTop: 10, fontSize: 11.5, color: 'var(--dc-text-subtle)' }}>
+              <div style={{ marginTop: 10, fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-subtle)' }}>
                 {kind === 'time' ? `集計期間：${periodLabel}` : `${periodLabel}の学習日数`}
               </div>
             )}

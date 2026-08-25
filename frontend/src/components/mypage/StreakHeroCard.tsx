@@ -49,7 +49,7 @@ function Pill({ children }: { children: React.ReactNode }) {
         background: 'rgba(255,255,255,.16)',
         borderRadius: 9999,
         padding: '6px 12px',
-        fontSize: 12,
+        fontSize: 'var(--dc-fs-xs)',
         fontWeight: 600,
         whiteSpace: 'nowrap',
       }}
@@ -67,8 +67,10 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
   const isNewBest = current > 0 && current >= (streak?.bestDays ?? 0);
   const remain = Math.max(0, best - current);
 
-  // 桁が増えても「日連続」とぶつからないように数字だけ縮める
-  const numberSize = current >= 100 ? 42 : current >= 10 ? 52 : 62;
+  // 桁が増えても「日連続」とぶつからないように数字だけ縮める。
+  // px ではなくトークンを返す（幅に連動して縮む。index.css の .mypage-3d 参照）
+  const numberSize =
+    current >= 100 ? 'var(--dc-fs-hero-xs)' : current >= 10 ? 'var(--dc-fs-hero-sm)' : 'var(--dc-fs-hero)';
 
   return (
     <section
@@ -76,7 +78,7 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
         background: 'linear-gradient(135deg,#E00F36 0%,#C00A2C 60%,#A80B27 100%)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: '0 14px 28px -14px rgba(160,8,36,.55)',
-        padding: '28px 30px',
+        padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
         color: '#fff',
         overflow: 'hidden',
       }}
@@ -84,8 +86,8 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
         <span
           style={{
-            width: 34,
-            height: 34,
+            width: 'calc(var(--dc-sz-badge) + 4px)',
+            height: 'calc(var(--dc-sz-badge) + 4px)',
             flex: 'none',
             borderRadius: 9999,
             background: '#fff',
@@ -96,7 +98,7 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
         >
           <FlameIcon />
         </span>
-        <h2 style={{ margin: 0, flex: 1, fontSize: 16, fontWeight: 700, color: '#fff', whiteSpace: 'nowrap' }}>
+        <h2 style={{ margin: 0, flex: 1, fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: '#fff', whiteSpace: 'nowrap' }}>
           学習ストリーク
         </h2>
         <button
@@ -111,7 +113,7 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
             background: 'transparent',
             padding: 0,
             fontFamily: 'inherit',
-            fontSize: 12,
+            fontSize: 'var(--dc-fs-xs)',
             fontWeight: 600,
             color: '#fff',
             cursor: 'pointer',
@@ -130,7 +132,7 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
         >
           {loading ? '…' : current}
         </span>
-        <span style={{ fontSize: 18, fontWeight: 700 }}>日連続</span>
+        <span style={{ fontSize: 'var(--dc-fs-unit)', fontWeight: 700 }}>日連続</span>
       </div>
 
       {/* 事実 → 励まし の順（DESIGN.md §12）。自己ベスト更新中は煽らずに1つへ畳む */}

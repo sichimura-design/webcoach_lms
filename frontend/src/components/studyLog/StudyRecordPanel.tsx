@@ -87,7 +87,7 @@ function Pill({
         padding: '5px 12px',
         borderRadius: 9999,
         fontFamily: 'inherit',
-        fontSize: 12,
+        fontSize: 'var(--dc-fs-xs)',
         fontWeight: 700,
         whiteSpace: 'nowrap',
         border: `1px solid ${active ? 'var(--dc-primary)' : '#E5DED3'}`,
@@ -111,13 +111,13 @@ function Kpi({ label, value, accent }: { label: string; value: string; accent?: 
         minWidth: 0,
       }}
     >
-      <div style={{ fontSize: 11.5, color: 'var(--dc-text-body)', marginBottom: 6, whiteSpace: 'nowrap' }}>
+      <div style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-body)', marginBottom: 6, whiteSpace: 'nowrap' }}>
         {label}
       </div>
       <div
         className="dc-num"
         style={{
-          fontSize: 21,
+          fontSize: 'var(--dc-fs-lg)',
           fontWeight: 800,
           whiteSpace: 'nowrap',
           color: accent ? 'var(--dc-primary)' : 'var(--dc-text)',
@@ -276,14 +276,14 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '26px 28px',
+        padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
         <span
           style={{
-            width: 30,
-            height: 30,
+            width: 'var(--dc-sz-badge)',
+            height: 'var(--dc-sz-badge)',
             flex: 'none',
             borderRadius: 9999,
             background: 'var(--dc-soft-100)',
@@ -298,7 +298,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
           style={{
             margin: 0,
             flex: 1,
-            fontSize: 16,
+            fontSize: 'var(--dc-fs-title)',
             fontWeight: 700,
             color: 'var(--dc-text)',
             whiteSpace: 'nowrap',
@@ -346,14 +346,14 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                 background: '#fff',
                 display: 'grid',
                 placeItems: 'center',
-                fontSize: 14,
+                fontSize: 'var(--dc-fs-14)',
                 color: canGoBack ? 'var(--dc-text-body)' : '#C9BFB0',
                 cursor: canGoBack ? 'pointer' : 'not-allowed',
               }}
             >
               ‹
             </button>
-            <span className="dc-num" style={{ fontSize: 12, fontWeight: 700, color: 'var(--dc-text-body)', whiteSpace: 'nowrap' }}>
+            <span className="dc-num" style={{ fontSize: 'var(--dc-fs-xs)', fontWeight: 700, color: 'var(--dc-text-body)', whiteSpace: 'nowrap' }}>
               {weekOffset === 0 ? '今週' : `${-weekOffset}週間前`}
             </span>
             <button
@@ -370,7 +370,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                 background: '#fff',
                 display: 'grid',
                 placeItems: 'center',
-                fontSize: 14,
+                fontSize: 'var(--dc-fs-14)',
                 color: weekOffset < 0 ? 'var(--dc-text-body)' : '#C9BFB0',
                 cursor: weekOffset < 0 ? 'pointer' : 'not-allowed',
               }}
@@ -383,8 +383,8 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
         <div style={{ flex: 1 }} />
 
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-          <span style={{ fontSize: 11.5, color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}>期間合計</span>
-          <span className="dc-num" style={{ fontSize: 15, fontWeight: 800, color: 'var(--dc-text)', whiteSpace: 'nowrap' }}>
+          <span style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}>期間合計</span>
+          <span className="dc-num" style={{ fontSize: 'var(--dc-fs-15)', fontWeight: 800, color: 'var(--dc-text)', whiteSpace: 'nowrap' }}>
             {loading ? '…' : formatMinutesHM(totalMinutes)}
           </span>
         </div>
@@ -398,7 +398,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
               gap: 4,
               borderRadius: 9999,
               padding: '3px 9px',
-              fontSize: 11.5,
+              fontSize: 'var(--dc-fs-2xs)',
               fontWeight: 700,
               whiteSpace: 'nowrap',
               background: delta >= 0 ? 'var(--dc-success-surface)' : 'var(--dc-sunken)',
@@ -419,7 +419,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
             flexDirection: 'column',
             justifyContent: 'space-between',
             height: PLOT_H,
-            fontSize: 11,
+            fontSize: 'var(--dc-fs-3xs)',
             color: 'var(--dc-text-subtle)',
             textAlign: 'right',
             flex: 'none',
@@ -470,7 +470,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                     position: 'absolute',
                     right: 0,
                     top: 2,
-                    fontSize: 10.5,
+                    fontSize: 'var(--dc-fs-4xs)',
                     fontWeight: 600,
                     color: '#C96E7E',
                     background: 'rgba(255,255,255,.85)',
@@ -503,7 +503,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                       position: 'absolute',
                       right: 0,
                       bottom: avgH + 2,
-                      fontSize: 10.5,
+                      fontSize: 'var(--dc-fs-4xs)',
                       fontWeight: 600,
                       color: '#C96E7E',
                       background: 'rgba(255,255,255,.85)',
@@ -541,7 +541,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                     <span
                       className="dc-num"
                       style={{
-                        fontSize: 11,
+                        fontSize: 'var(--dc-fs-3xs)',
                         marginBottom: 4,
                         whiteSpace: 'nowrap',
                         fontWeight: b.isToday ? 700 : 400,
@@ -574,7 +574,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                   flex: 1,
                   minWidth: 0,
                   textAlign: 'center',
-                  fontSize: 11,
+                  fontSize: 'var(--dc-fs-3xs)',
                   fontWeight: b.isToday ? 700 : 400,
                   color: b.isToday ? 'var(--dc-primary)' : 'var(--dc-text-muted)',
                   whiteSpace: 'nowrap',
@@ -588,7 +588,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
         </div>
       </div>
 
-      <div style={{ marginTop: 12, fontSize: 11.5, color: 'var(--dc-text-subtle)' }}>{note}</div>
+      <div style={{ marginTop: 12, fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-subtle)' }}>{note}</div>
     </section>
   );
 }

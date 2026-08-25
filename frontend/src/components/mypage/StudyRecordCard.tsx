@@ -63,16 +63,16 @@ function MiniStat({ label, parts }: { label: string; parts: { value: string; uni
         minWidth: 0,
       }}
     >
-      <div style={{ fontSize: 11.5, color: 'var(--dc-text-muted)', marginBottom: 6, whiteSpace: 'nowrap' }}>
+      <div style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-muted)', marginBottom: 6, whiteSpace: 'nowrap' }}>
         {label}
       </div>
       <div
         className="dc-num"
-        style={{ fontSize: 17, fontWeight: 800, color: 'var(--dc-text)', whiteSpace: 'nowrap' }}
+        style={{ fontSize: 'var(--dc-fs-kpi-sub)', fontWeight: 800, color: 'var(--dc-text)', whiteSpace: 'nowrap' }}
       >
         {parts.map((p, i) => (
           <span key={i}>
-            <span style={{ fontSize: 21 }}>{p.value}</span>
+            <span style={{ fontSize: 'var(--dc-fs-lg)' }}>{p.value}</span>
             {p.unit}
           </span>
         ))}
@@ -122,14 +122,14 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
         boxShadow: 'var(--dc-shadow-card)',
-        padding: '26px 28px',
+        padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
         <span
           style={{
-            width: 30,
-            height: 30,
+            width: 'var(--dc-sz-badge)',
+            height: 'var(--dc-sz-badge)',
             flex: 'none',
             borderRadius: 9999,
             background: 'var(--dc-soft-100)',
@@ -144,7 +144,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
           style={{
             margin: 0,
             flex: 1,
-            fontSize: 16,
+            fontSize: 'var(--dc-fs-title)',
             fontWeight: 700,
             color: 'var(--dc-text)',
             whiteSpace: 'nowrap',
@@ -164,7 +164,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
             background: 'transparent',
             padding: 0,
             fontFamily: 'inherit',
-            fontSize: 12,
+            fontSize: 'var(--dc-fs-xs)',
             fontWeight: 600,
             color: 'var(--dc-primary)',
             cursor: 'pointer',
@@ -193,8 +193,8 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
       </div>
 
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-        <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--dc-text)' }}>今週の学習時間</div>
-        <div className="dc-num" style={{ fontSize: 11.5, color: 'var(--dc-text-subtle)' }}>{rangeLabel}</div>
+        <div style={{ fontSize: 'var(--dc-fs-sm)', fontWeight: 700, color: 'var(--dc-text)' }}>今週の学習時間</div>
+        <div className="dc-num" style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-subtle)' }}>{rangeLabel}</div>
       </div>
 
       <div style={{ display: 'flex', gap: 10 }}>
@@ -207,7 +207,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
             justifyContent: 'space-between',
             height: 172,
             paddingBottom: 22,
-            fontSize: 11,
+            fontSize: 'var(--dc-fs-3xs)',
             color: 'var(--dc-text-subtle)',
             textAlign: 'right',
             flex: 'none',
@@ -258,7 +258,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
                   <div
                     className="dc-num"
                     style={{
-                      fontSize: 11,
+                      fontSize: 'var(--dc-fs-3xs)',
                       marginBottom: 4,
                       whiteSpace: 'nowrap',
                       fontWeight: b.isToday ? 700 : 400,
@@ -274,7 +274,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
                     height: 22,
                     display: 'flex',
                     alignItems: 'center',
-                    fontSize: 12,
+                    fontSize: 'var(--dc-fs-xs)',
                     fontWeight: b.isToday ? 700 : 400,
                     color: b.isToday
                       ? 'var(--dc-primary)'

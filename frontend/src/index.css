@@ -127,6 +127,53 @@ h1, h2, h3, .font-display {
   --dc-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
+/* ─── 可変スケール（マイページ 5a / 学習記録 4a）─────────
+   🔴 なぜ px 直書きをやめてトークンにしたか:
+      表示倍率125%の環境では CSS の可視幅が 1900 → 1520px 相当まで落ちる。
+      px 固定だと文字と余白だけが元の大きさで残るので、画面いっぱいに
+      拡大したように見えて情報が入らなくなる（「拡大率が高すぎる」状態）。
+      余白を足しても直らない ＝ スケールの問題なので、幅に連動させる。
+
+   設計: 基準幅 1900px で最大値、そこから幅に比例して縮み、clamp の下限で止まる。
+      係数は「最大値 × 100 / 1900 ＝ vw」。例) 30px → 30×100/1900 ≒ 1.58vw。
+      1520px（＝表示倍率125%）でちょうど 0.8 倍になる。
+   🔴 新しいサイズを足すときも必ずこの式で vw を出すこと。
+      個別に目分量の vw を入れると、幅を変えたときに要素同士の比率が崩れる。
+   🔴 サイドバー（--wc-sidebar-w）はここに含めない。全画面共通の AppHeader が
+      持っており、変えると教材・コーチングなど他の画面まで縮む。 */
+.mypage-3d {
+  /* タイポグラフィ */
+  --dc-fs-hero: clamp(42px, 3.26vw, 62px);      /* ストリークの日数（1桁） */
+  --dc-fs-hero-sm: clamp(36px, 2.74vw, 52px);   /* 同（2桁） */
+  --dc-fs-hero-xs: clamp(30px, 2.21vw, 42px);   /* 同（3桁） */
+  --dc-fs-2xl: clamp(32px, 2.42vw, 46px);       /* チャレンジの「あと 41 分」 */
+  --dc-fs-xl: clamp(22px, 1.58vw, 30px);        /* h1 */
+  --dc-fs-lg: clamp(17px, 1.11vw, 21px);        /* KPI の数値 */
+  --dc-fs-md: clamp(15px, 1.05vw, 20px);        /* チャレンジの単位（分・位） */
+  --dc-fs-unit: clamp(14px, 0.95vw, 18px);      /* ストリークの「日連続」 */
+  --dc-fs-kpi-sub: clamp(14px, 0.9vw, 17px);    /* KPI の単位（時間・分） */
+  --dc-fs-title: clamp(13.5px, 0.84vw, 16px);   /* カード見出し h2 */
+  --dc-fs-15: clamp(12.5px, 0.79vw, 15px);
+  --dc-fs-14: clamp(12px, 0.74vw, 14px);
+  --dc-fs-lesson: clamp(12px, 0.71vw, 13.5px);
+  --dc-fs-base: clamp(11.5px, 0.68vw, 13px);
+  --dc-fs-sm: clamp(11px, 0.66vw, 12.5px);
+  --dc-fs-xs: clamp(10.5px, 0.63vw, 12px);
+  --dc-fs-2xs: clamp(10.5px, 0.61vw, 11.5px);
+  --dc-fs-3xs: clamp(10px, 0.58vw, 11px);
+  --dc-fs-4xs: clamp(9.5px, 0.55vw, 10.5px);
+
+  /* 余白・寸法 */
+  --dc-sp-page-x: clamp(20px, 2.53vw, 48px);
+  --dc-sp-page-y: clamp(28px, 2.53vw, 48px);
+  --dc-sp-gap: clamp(16px, 1.47vw, 28px);       /* カード間・グリッドの間隔 */
+  --dc-sp-card-y: clamp(18px, 1.37vw, 26px);    /* カードの上下パディング */
+  --dc-sp-card-x: clamp(18px, 1.47vw, 28px);    /* カードの左右パディング */
+  --dc-sz-badge: clamp(26px, 1.58vw, 30px);     /* 見出し左の丸アイコン */
+  --dc-sz-btn: clamp(32px, 2vw, 38px);          /* ボタンの高さ */
+  --dc-sz-cell: clamp(38px, 2.63vw, 50px);      /* カレンダーの升目 */
+}
+
 /* 全体では h1〜h3 を丸ゴシック（Zen Maru Gothic）にしているが、
    このデザインは見出しも本文と同じ Noto Sans JP で組む指定なので打ち消す。 */
 .mypage-3d h1,
@@ -158,8 +205,9 @@ h1, h2, h3, .font-display {
    右（チャレンジ・ランキング）に余りを渡す。タブレット以下は1カラムへ（DESIGN.md §6）。 */
 .mypage-3d-grid {
   display: grid;
-  grid-template-columns: minmax(0, 500px) minmax(0, 1fr);
-  gap: 28px;
+  /* 左カラムも幅に連動（500 × 100 / 1900 ≒ 26.3vw） */
+  grid-template-columns: minmax(0, clamp(340px, 26.3vw, 500px)) minmax(0, 1fr);
+  gap: var(--dc-sp-gap);
   align-items: start;
 }
 
@@ -174,25 +222,24 @@ h1, h2, h3, .font-display {
 .mypage-rank-split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
+  gap: var(--dc-sp-gap);
   align-items: start;
 }
 
-@media (max-width: 1279px) {
+/* 🔴 しきい値は控えめでよい。上の可変スケールで文字も余白も一緒に縮むので、
+   幅が減ったぶんは中身が小さくなって吸収される。ここを高くしすぎると、
+   まだ2列で読める幅なのに縦積みになって画面の右半分が空く。
+   縦積みにするのは「0.8倍でも仮名が省略され始める」ところだけでよい。 */
+@media (max-width: 1100px) {
   .mypage-rank-split {
     grid-template-columns: 1fr;
-    gap: 22px;
   }
 }
 
-/* 🔴 サイドバー展開中は本文が 152px（224 − 72）細くなる。
-   メディアクエリはビューポート幅しか見ないので、そのぶんを body のクラスで補う。
-   これが無いと「1280px の画面でナビを開くと順位表だけ潰れる」が起きる
-   （仮名が「ぺん…」まで削られたのはこれが原因）。 */
-@media (max-width: 1439px) {
+/* サイドバー展開中は本文が 152px（224 − 72）細くなるぶんを body のクラスで補う */
+@media (max-width: 1252px) {
   body.sidebar-expanded .mypage-rank-split {
     grid-template-columns: 1fr;
-    gap: 22px;
   }
 }
 
@@ -672,14 +719,14 @@ body.learning-immersive {
 .studylog-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  gap: calc(var(--dc-sp-gap) * 0.55);
 }
 
 /* 学習時間ランキングとストリークランキングの2枚並び */
 .studylog-rank-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
+  gap: var(--dc-sp-gap);
   align-items: start;
 }
 
