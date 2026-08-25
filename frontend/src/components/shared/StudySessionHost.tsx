@@ -35,20 +35,27 @@ import StudySessionPrompt from './StudySessionPrompt';
 const ACTIVE_THROTTLE_MS = 10_000;
 
 /*
- * 同じ日にこの回数断られたら、その日はもう打診しない。
+ * 同じ日に同じカテゴリでこの回数断られたら、そのカテゴリはその日もう打診しない。
  * ============================================================
- * 🔴 1回目の「あとで」はそのページの見送りにする。別の学習ページに着けばまた聞く。
+ * 🔴 カテゴリ単位で数えるのが要点。「コーチングの時間は記録しないが、学習の時間は
+ *    記録する」を成立させるため。アプリ全体で1つのカウンタにすると、コーチングを
+ *    断った回数で学習の打診まで止まってしまう（実際にそうなっていた）。
+ *    打診の文言（PROMPT_TITLE）が元からカテゴリ別なのとも整合する。
+ * 🔴 URL単位では数えない。レッスン本文はレッスンごとに別URL（/course/12,
+ *    /course/13, ...）なので、URL単位だと開くたびに打診が出て上限が効かなくなる。
+ *    material カテゴリが共通カウンタになることで、レッスンを何本開いても
+ *    打診はそのカテゴリの上限までで止まる。
+ * 🔴 上限に達するまでの「あとで」はそのページの見送り。別の学習ページに着けばまた聞く。
  *    以前は1回断ったらその日ずっと打診が止まり、気が変わったときの復帰手段が
  *    常設ピル（＝2つ目の開始入口）しか無かった。ピルは終日画面に残って邪魔だった
  *    ので撤去し、代わりに断り方を段階的にしている。
- * 🔴 上限があることが要点。無制限に聞き直すと、本当に記録したくない日に
- *    学習ページを開くたび中央モーダルが出る。2回なら誤タップからは復帰でき、
- *    かつ鬱陶しさは1日あたり最大2回で打ち止めになる。
+ * 🔴 上限があること自体も要点。無制限に聞き直すと、本当に記録したくない日に
+ *    学習ページを開くたび中央モーダルが出る。
  * 🔴 上限に達する直前は文言を「今日はもう聞かない」に変える（下の secondaryLabel）。
  *    「あとで」と言っておいて二度と聞かないのは嘘になるため。
  * ============================================================
  */
-const PROMPT_DECLINE_LIMIT = 2;
+const PROMPT_DECLINE_LIMIT = 3;
 
 function StudySessionHost() {
   const location = useLocation();
@@ -56,17 +63,10 @@ function StudySessionHost() {
   const s = useStudySession(user?.userid);
 
   const promptDeclinedOn = useStudyTimerStore((x) => x.promptDeclinedOn);
-  const promptDeclineCount = useStudyTimerStore((x) => x.promptDeclineCount);
+  const promptDeclineCounts = useStudyTimerStore((x) => x.promptDeclineCounts);
   const declinePrompt = useStudyTimerStore((x) => x.declinePrompt);
   const markActive = useStudyTimerStore((x) => x.markActive);
   const recentEntries = useRecentCourseStore((x) => x.entries);
-
-  /**
-   * 今日すでに何回断ったか。日付が変わっていれば 0 に戻る。
-   * 打診を出すかの判定と、副ボタンの文言の両方がこれを見る（判定を二重に持たない）。
-   */
-  const declinesToday =
-    promptDeclinedOn === toLocalDateKey(new Date()) ? promptDeclineCount : 0;
 
   /** 打診を出しているパス。null なら出していない */
   const [promptFor, setPromptFor] = useState<string | null>(null);
@@ -76,6 +76,14 @@ function StudySessionHost() {
   const category = categoryOfPath(location.pathname);
   const hasSession = !!s.session;
   const activityId = s.session?.activityId;
+
+  /**
+   * いま開いているページのカテゴリを、今日すでに何回断ったか。
+   * 日付が変わっていれば 0 に戻る。
+   * 🔴 打診を出すかの判定と副ボタンの文言の両方がこれを見る（判定を二重に持たない）。
+   */
+  const declinedInCategory =
+    promptDeclinedOn === toLocalDateKey(new Date()) ? (promptDeclineCounts[category] ?? 0) : 0;
 
   /*
    * いま開いている教材。レッスン本文ページなら、useLessonDoc が開くたびに
@@ -161,9 +169,9 @@ function StudySessionHost() {
     }
     if (!isStudyEntryPath(location.pathname)) { setPromptFor(null); return; }
     if (handledPathRef.current === location.pathname) { setPromptFor(null); return; }
-    if (declinesToday >= PROMPT_DECLINE_LIMIT) { setPromptFor(null); return; }
+    if (declinedInCategory >= PROMPT_DECLINE_LIMIT) { setPromptFor(null); return; }
     setPromptFor(location.pathname);
-  }, [location.pathname, hasSession, declinesToday]);
+  }, [location.pathname, hasSession, declinedInCategory]);
 
   const startHere = useCallback(() => {
     s.start({
@@ -249,10 +257,10 @@ function StudySessionHost() {
              *    「今日はもう聞かない」に変える。取り返しがつかない選択を
              *    「あとで」と名乗らせない（PROMPT_DECLINE_LIMIT のコメント参照）。
              */
-            secondaryLabel={declinesToday >= PROMPT_DECLINE_LIMIT - 1 ? '今日はもう聞かない' : 'あとで'}
+            secondaryLabel={declinedInCategory >= PROMPT_DECLINE_LIMIT - 1 ? '今日はもう聞かない' : 'あとで'}
             onPrimary={startHere}
             onSecondary={() => {
-              declinePrompt();
+              declinePrompt(category);
               // 同じページで即座に聞き直さないための記録。これが無いと
               // 「あとで」を押した直後に同じ打診が戻ってくる。
               handledPathRef.current = location.pathname;

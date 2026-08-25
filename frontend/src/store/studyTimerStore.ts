@@ -20,19 +20,26 @@ interface StudyTimerState {
    */
   activityRevision: number;
   /**
-   * 最後に打診を断った日（YYYY-MM-DD）。日付が変わったら promptDeclineCount を数え直す。
+   * promptDeclineCounts が属する日（YYYY-MM-DD）。
    * 🔴 日付で持つので翌日には自然に戻る（永久にオフにはしない）。
+   *    日付が変わったら回数は捨てる（前日ぶんを引き継がない）。
    */
   promptDeclinedOn: string | null;
   /**
-   * promptDeclinedOn の日に断った回数。
-   * 🔴 断るのは「そのページの見送り」で、同じ日に一定回数（打診側の
-   *    PROMPT_DECLINE_LIMIT）に達したらその日はもう打診しない、という段階的な作り。
-   *    以前は1回断ったらその日ずっと打診を止めていたが、気が変わったときの
-   *    復帰手段が常設ピル（＝2つ目の開始入口）しか無くなるのが問題だった。
-   *    ピルを撤去して、代わりに断り方をここで段階化している。
+   * promptDeclinedOn の日に、カテゴリごとに何回断ったか。
+   * 🔴 カテゴリ別に数えるのが要点。「コーチングの時間は記録しないが、学習の時間は
+   *    記録する」を成立させるため。アプリ全体で1つのカウンタにすると、コーチングを
+   *    断った回数で学習の打診まで止まってしまう。
+   * 🔴 一定回数（打診側の PROMPT_DECLINE_LIMIT）に達したそのカテゴリだけ、
+   *    その日はもう打診しない。以前は1回断ったらその日ずっと全部止めていたが、
+   *    気が変わったときの復帰手段が常設ピル（＝2つ目の開始入口）しか無くなるのが
+   *    問題だった。ピルを撤去して、代わりに断り方をここで段階化している。
+   * 🔴 URL単位では数えない。レッスン本文はレッスンごとに別URL（/course/12,
+   *    /course/13, ...）なので、URL単位だと開くたびに打診が出て上限が効かなくなる。
+   *    material カテゴリが共通カウンタになることで、レッスンを何本開いても
+   *    打診は上限までで止まる。
    */
-  promptDeclineCount: number;
+  promptDeclineCounts: Partial<Record<StudyCategory, number>>;
 
   startSession: (
     session: Omit<
@@ -62,8 +69,8 @@ interface StudyTimerState {
   /** 放置ぶんを切り捨てて一時停止する。開いている区間も lastActiveAt で閉じる */
   trimToLastActive: () => void;
 
-  /** 打診を断った。同じ日のうちは回数が積み上がる */
-  declinePrompt: () => void;
+  /** 打診を断った。同じ日・同じカテゴリのうちは回数が積み上がる */
+  declinePrompt: (category: StudyCategory) => void;
 
   setFinishDraft: (draft: StudyFinishDraft | null) => void;
   patchFinishDraft: (patch: Partial<StudyFinishDraft>) => void;
@@ -88,7 +95,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
       finishDraft: null,
       activityRevision: 0,
       promptDeclinedOn: null,
-      promptDeclineCount: 0,
+      promptDeclineCounts: {},
 
       startSession: ({ category, ...session }) => {
         const now = Date.now();
@@ -187,12 +194,15 @@ export const useStudyTimerStore = create<StudyTimerState>()(
         });
       },
 
-      declinePrompt: () => {
+      declinePrompt: (category) => {
         const today = toLocalDateKey(new Date());
         const s = get();
-        // 日付が変わっていたら数え直す（前日ぶんを引き継がない）
-        const count = s.promptDeclinedOn === today ? s.promptDeclineCount + 1 : 1;
-        set({ promptDeclinedOn: today, promptDeclineCount: count });
+        // 日付が変わっていたら全カテゴリ捨てて数え直す（前日ぶんを引き継がない）
+        const counts = s.promptDeclinedOn === today ? s.promptDeclineCounts : {};
+        set({
+          promptDeclinedOn: today,
+          promptDeclineCounts: { ...counts, [category]: (counts[category] ?? 0) + 1 },
+        });
       },
 
       markTargetReached: () => {
@@ -252,7 +262,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
           finishDraft: from < 2 ? null : (base?.finishDraft ?? null),
           activityRevision: 0,
           promptDeclinedOn: base?.promptDeclinedOn ?? null,
-          promptDeclineCount: base?.promptDeclineCount ?? 0,
+          promptDeclineCounts: base?.promptDeclineCounts ?? {},
           session: session?.startedAt ? session : null,
         } as StudyTimerState;
       },
@@ -262,7 +272,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
           session: s.session,
           finishDraft: s.finishDraft,
           promptDeclinedOn: s.promptDeclinedOn,
-          promptDeclineCount: s.promptDeclineCount,
+          promptDeclineCounts: s.promptDeclineCounts,
         }) as StudyTimerState,
     }
   )
