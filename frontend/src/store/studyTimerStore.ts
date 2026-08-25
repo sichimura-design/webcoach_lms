@@ -20,11 +20,19 @@ interface StudyTimerState {
    */
   activityRevision: number;
   /**
-   * 「記録せず始める」を選んだ日（YYYY-MM-DD）。この日は打診ポップを出さない。
-   * 🔴 断った人に同じことを何度も聞かないための唯一の状態。日付で持つので
-   *    翌日には自然に戻る（永久にオフにはしない）。手動開始の入口は常に残す。
+   * 最後に打診を断った日（YYYY-MM-DD）。日付が変わったら promptDeclineCount を数え直す。
+   * 🔴 日付で持つので翌日には自然に戻る（永久にオフにはしない）。
    */
   promptDeclinedOn: string | null;
+  /**
+   * promptDeclinedOn の日に断った回数。
+   * 🔴 断るのは「そのページの見送り」で、同じ日に一定回数（打診側の
+   *    PROMPT_DECLINE_LIMIT）に達したらその日はもう打診しない、という段階的な作り。
+   *    以前は1回断ったらその日ずっと打診を止めていたが、気が変わったときの
+   *    復帰手段が常設ピル（＝2つ目の開始入口）しか無くなるのが問題だった。
+   *    ピルを撤去して、代わりに断り方をここで段階化している。
+   */
+  promptDeclineCount: number;
 
   startSession: (
     session: Omit<
@@ -54,7 +62,8 @@ interface StudyTimerState {
   /** 放置ぶんを切り捨てて一時停止する。開いている区間も lastActiveAt で閉じる */
   trimToLastActive: () => void;
 
-  declinePromptToday: () => void;
+  /** 打診を断った。同じ日のうちは回数が積み上がる */
+  declinePrompt: () => void;
 
   setFinishDraft: (draft: StudyFinishDraft | null) => void;
   patchFinishDraft: (patch: Partial<StudyFinishDraft>) => void;
@@ -79,6 +88,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
       finishDraft: null,
       activityRevision: 0,
       promptDeclinedOn: null,
+      promptDeclineCount: 0,
 
       startSession: ({ category, ...session }) => {
         const now = Date.now();
@@ -177,7 +187,13 @@ export const useStudyTimerStore = create<StudyTimerState>()(
         });
       },
 
-      declinePromptToday: () => set({ promptDeclinedOn: toLocalDateKey(new Date()) }),
+      declinePrompt: () => {
+        const today = toLocalDateKey(new Date());
+        const s = get();
+        // 日付が変わっていたら数え直す（前日ぶんを引き継がない）
+        const count = s.promptDeclinedOn === today ? s.promptDeclineCount + 1 : 1;
+        set({ promptDeclinedOn: today, promptDeclineCount: count });
+      },
 
       markTargetReached: () => {
         const { session } = get();
@@ -236,6 +252,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
           finishDraft: from < 2 ? null : (base?.finishDraft ?? null),
           activityRevision: 0,
           promptDeclinedOn: base?.promptDeclinedOn ?? null,
+          promptDeclineCount: base?.promptDeclineCount ?? 0,
           session: session?.startedAt ? session : null,
         } as StudyTimerState;
       },
@@ -245,6 +262,7 @@ export const useStudyTimerStore = create<StudyTimerState>()(
           session: s.session,
           finishDraft: s.finishDraft,
           promptDeclinedOn: s.promptDeclinedOn,
+          promptDeclineCount: s.promptDeclineCount,
         }) as StudyTimerState,
     }
   )

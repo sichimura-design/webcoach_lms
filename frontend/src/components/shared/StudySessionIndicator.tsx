@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Clock, Pause, Play, Square } from 'lucide-react';
+import { Pause, Play, Square } from 'lucide-react';
 import { color, font, radius, shadow } from '../../theme/webcoachTheme';
 import { STUDY_CATEGORY_LABEL, StudySegmentTotal } from '../../types/studyActivity';
 import { displaySegments, formatHMS, formatMinutesHM } from '../../utils/studyStats';
@@ -21,7 +21,7 @@ import { displaySegments, formatHMS, formatMinutesHM } from '../../utils/studySt
  * ============================================================
  */
 
-/** ドラッグ位置の保存先。開始ピルと記録中ピルは同じ場所に出るので座標を共有する */
+/** ドラッグ位置の保存先 */
 const POS_KEY = 'wc-study-pill-pos';
 /** 既定位置（右上）からの余白。画面端に寄せたときの最小マージンにも使う */
 const INSET = 16;
@@ -167,7 +167,7 @@ function useDraggablePill() {
   };
 }
 
-/** ピルの共通の見た目。インジケータと「記録する」の入口で使い回す */
+/** ピルの見た目 */
 const pillStyle: React.CSSProperties = {
   gap: 7,
   height: 32,
@@ -183,34 +183,14 @@ const pillStyle: React.CSSProperties = {
   cursor: 'pointer',
 };
 
-/**
- * 「記録する」の入口。
- * 🔴 打診を断った日にだけ出す。断ると翌日まで打診が出ないので、これが無いと
- *    「あとで記録したくなった」人がその日ずっと記録を始められない。
- *    ふだんは出さない（記録していない状態のUIを増やさない）。
+/*
+ * 🔴 かつてここに StudySessionStartPill（「⏱ 学習時間を記録する」の常設ピル）があったが
+ *    撤去した。打診を断った日にその日ずっと画面の上に残り続けるのが邪魔だったのと、
+ *    開始の入口を2つにしていたため（LessonMiniTimer.tsx のコメント参照）。
+ *    記録を始める経路は打診（StudySessionPrompt）だけ。ここに開始UIを戻さないこと。
+ *    断ったあとの復帰は打診側が持っている: 1回目は「あとで」でそのページの見送りにし、
+ *    別の学習ページに着けばまた聞く（StudySessionHost の PROMPT_DECLINE_LIMIT）。
  */
-export function StudySessionStartPill({ onStart }: { onStart: () => void }) {
-  const { ref, dragProps, handleProps } = useDraggablePill();
-  return (
-    <div ref={ref} className="fixed z-50" {...dragProps}>
-      <button
-        type="button"
-        onClick={onStart}
-        className="inline-flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-        {...handleProps}
-        style={{
-          ...pillStyle,
-          color: color.primary,
-          borderColor: color.primaryBorder,
-          ...handleProps.style,
-        }}
-      >
-        <Clock size={13} />
-        学習時間を記録する
-      </button>
-    </div>
-  );
-}
 
 interface StudySessionIndicatorProps {
   /** 経過秒 */
