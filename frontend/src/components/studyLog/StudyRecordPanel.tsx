@@ -111,7 +111,10 @@ function Kpi({ label, value, accent }: { label: string; value: string; accent?: 
         minWidth: 0,
       }}
     >
-      <div style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-body)', marginBottom: 6, whiteSpace: 'nowrap' }}>
+      {/* 🔴 ラベルに nowrap を掛けない。「直近3ヶ月の学習時間」のように長い期間名が
+             入るので、枠から溢れるくらいなら2行になったほうがよい
+             （4枚は grid なので高さは自動で揃う）。値だけは nowrap を保つ。 */}
+      <div style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-body)', marginBottom: 6, lineHeight: 1.4 }}>
         {label}
       </div>
       <div

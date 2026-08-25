@@ -53,25 +53,43 @@ function scaleMaxOf(minutes: number[]): number {
   return Math.ceil(peak / 60) * 60;
 }
 
+/**
+ * KPI 1枚。
+ *
+ * 🔴 `whiteSpace: nowrap` を全体に掛けない。
+ *    「累計学習時間 25時間14分」は左カラム（最大500px）を3等分した枠に対して
+ *    ぎりぎりで、狭い環境ではラベルも値も枠の外へはみ出していた。
+ *    ・単位（時間・分）は数値より2段小さくして1行の実寸を詰める
+ *    ・折り返しは「25時間 / 14分」の切れ目だけ許す（数字と単位の間では切らない）
+ *    ・列数は .mypage-kpi-grid が auto-fit で落とす（3列 → 2列）
+ *    この3つで、3桁時間（例: 125時間30分）になっても溢れない。
+ */
 function MiniStat({ label, parts }: { label: string; parts: { value: string; unit: string }[] }) {
   return (
     <div
       style={{
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-md)',
-        padding: '15px 16px',
+        padding: '14px 12px',
         minWidth: 0,
       }}
     >
-      <div style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-muted)', marginBottom: 6, whiteSpace: 'nowrap' }}>
+      <div
+        style={{
+          fontSize: 'var(--dc-fs-2xs)',
+          color: 'var(--dc-text-muted)',
+          marginBottom: 6,
+          lineHeight: 1.4,
+        }}
+      >
         {label}
       </div>
       <div
         className="dc-num"
-        style={{ fontSize: 'var(--dc-fs-kpi-sub)', fontWeight: 800, color: 'var(--dc-text)', whiteSpace: 'nowrap' }}
+        style={{ fontSize: 'var(--dc-fs-sm)', fontWeight: 800, color: 'var(--dc-text)', lineHeight: 1.25 }}
       >
         {parts.map((p, i) => (
-          <span key={i}>
+          <span key={i} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
             <span style={{ fontSize: 'var(--dc-fs-lg)' }}>{p.value}</span>
             {p.unit}
           </span>
@@ -176,14 +194,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
         </button>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-          gap: 14,
-          marginBottom: 28,
-        }}
-      >
+      <div className="mypage-kpi-grid">
         <MiniStat label="今週の学習時間" parts={loading ? loadingParts : splitMinutesHM(stats?.week.minutes ?? 0)} />
         <MiniStat label="累計学習時間" parts={loading ? loadingParts : splitMinutesHM(stats?.allTime.minutes ?? 0)} />
         <MiniStat
