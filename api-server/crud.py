@@ -2,7 +2,7 @@
 CRUD operations for user course access and profile settings
 """
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone, date
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, text, func
@@ -20,6 +20,13 @@ from entities import (
     WebCoachStudyNote,
     WebCoachCoachingSchedule,
     WebCoachCoachingRecording,
+    WebCoachRoadmapSkill,
+    WebCoachRoadmapPhase,
+    WebCoachRoadmapTodo,
+    WebCoachUserRoadmap,
+    WebCoachRoadmapProgress,
+    WebCoachRoadmapQuestion,
+    WebCoachRoadmapAnswer,
 )
 from dto.request import (
     CourseAccessCreate,
@@ -1768,6 +1775,334 @@ def delete_coaching_schedule(
     db.delete(schedule)
     db.flush()
     return True
+
+
+# ==========================================
+# Career Roadmap (フェーズ制・スキル別テンプレートの学習ロードマップ) CRUD
+# ==========================================
+
+def get_roadmap_skills(db: Session) -> List[WebCoachRoadmapSkill]:
+    """
+    WebCoach: ロードマップのスキル種別マスタ一覧を取得
+
+    Args:
+        db: Database session
+
+    Returns:
+        List[WebCoachRoadmapSkill]: 表示順に並んだスキル一覧
+    """
+    return db.query(WebCoachRoadmapSkill).order_by(
+        WebCoachRoadmapSkill.display_order,
+        WebCoachRoadmapSkill.id,
+    ).all()
+
+
+def get_roadmap_phase_todos(db: Session, phase_id: int) -> List[WebCoachRoadmapTodo]:
+    """
+    WebCoach: フェーズで取り組むテーマのテンプレート一覧を取得
+
+    Args:
+        db: Database session
+        phase_id: 対象フェーズ(webcoach_roadmap_phase.id)
+
+    Returns:
+        List[WebCoachRoadmapTodo]: フェーズ内の表示順に並んだテーマ一覧
+    """
+    return db.query(WebCoachRoadmapTodo).filter(
+        WebCoachRoadmapTodo.phase_id == phase_id
+    ).order_by(WebCoachRoadmapTodo.todo_no).all()
+
+
+def get_roadmap_phases(db: Session, skill_id: int) -> List[WebCoachRoadmapPhase]:
+    """
+    WebCoach: スキルに紐づくフェーズ・テンプレート一覧を取得（各フェーズにtodosを付与して返す）
+
+    Args:
+        db: Database session
+        skill_id: 対象スキル(webcoach_roadmap_skill.id)
+
+    Returns:
+        List[WebCoachRoadmapPhase]: phase_no順のフェーズ一覧
+    """
+    phases = db.query(WebCoachRoadmapPhase).filter(
+        WebCoachRoadmapPhase.skill_id == skill_id
+    ).order_by(WebCoachRoadmapPhase.phase_no).all()
+
+    for phase in phases:
+        phase.todos = get_roadmap_phase_todos(db, phase.id)
+
+    return phases
+
+
+def create_user_roadmap(db: Session, mdl_user_id: int, skill_id: int) -> WebCoachUserRoadmap:
+    """
+    WebCoach: ユーザーのロードマップを新規開始する。
+    スキルの全フェーズ分の進捗行を自動シードし、最初のフェーズをin_progressにする。
+    既に未完了のロードマップを持つ場合はValueErrorを送出する（同時アクティブは1件のみ）。
+
+    Args:
+        db: Database session
+        mdl_user_id: userid
+        skill_id: 開始するスキル(webcoach_roadmap_skill.id)
+
+    Returns:
+        WebCoachUserRoadmap: 作成されたロードマップ
+    """
+    existing_active = db.query(WebCoachUserRoadmap).filter(
+        WebCoachUserRoadmap.mdl_user_id == mdl_user_id,
+        WebCoachUserRoadmap.is_completed == 0,
+    ).first()
+    if existing_active:
+        raise ValueError("未完了のロードマップが既に存在します。先に完了させてください。")
+
+    phases = db.query(WebCoachRoadmapPhase).filter(
+        WebCoachRoadmapPhase.skill_id == skill_id
+    ).order_by(WebCoachRoadmapPhase.phase_no).all()
+
+    if not phases:
+        raise ValueError(f"skill_id={skill_id} のフェーズ・テンプレートが登録されていません。")
+
+    user_roadmap = WebCoachUserRoadmap(mdl_user_id=mdl_user_id, skill_id=skill_id, is_completed=0)
+    db.add(user_roadmap)
+    db.flush()
+
+    today = date.today()
+    for index, phase in enumerate(phases):
+        is_first = index == 0
+        start = today if is_first else None
+        end = None
+        if is_first and phase.duration_days:
+            end = today + timedelta(days=phase.duration_days)
+
+        progress = WebCoachRoadmapProgress(
+            user_roadmap_id=user_roadmap.id,
+            phase_id=phase.id,
+            status='in_progress' if is_first else 'not_started',
+            start=start,
+            end=end,
+        )
+        db.add(progress)
+
+    db.flush()
+    return user_roadmap
+
+
+def get_current_user_roadmap(db: Session, mdl_user_id: int) -> Optional[WebCoachUserRoadmap]:
+    """
+    WebCoach: ユーザーの現在アクティブな（未完了の）ロードマップを取得する
+
+    Args:
+        db: Database session
+        mdl_user_id: userid
+
+    Returns:
+        WebCoachUserRoadmap: 見つからない場合はNone
+    """
+    return db.query(WebCoachUserRoadmap).filter(
+        WebCoachUserRoadmap.mdl_user_id == mdl_user_id,
+        WebCoachUserRoadmap.is_completed == 0,
+    ).first()
+
+
+def get_user_roadmap_progress(db: Session, user_roadmap_id: int) -> List[WebCoachRoadmapProgress]:
+    """
+    WebCoach: ロードマップのフェーズ進捗一覧をphase_no順に取得する（各進捗にフェーズ・テンプレートとtodosを付与）
+
+    Args:
+        db: Database session
+        user_roadmap_id: 対象ロードマップ(webcoach_user_roadmap.id)
+
+    Returns:
+        List[WebCoachRoadmapProgress]: phase_no順の進捗一覧
+    """
+    rows = db.query(WebCoachRoadmapProgress, WebCoachRoadmapPhase).join(
+        WebCoachRoadmapPhase, WebCoachRoadmapProgress.phase_id == WebCoachRoadmapPhase.id
+    ).filter(
+        WebCoachRoadmapProgress.user_roadmap_id == user_roadmap_id
+    ).order_by(WebCoachRoadmapPhase.phase_no).all()
+
+    progresses = []
+    for progress, phase in rows:
+        phase.todos = get_roadmap_phase_todos(db, phase.id)
+        progress.phase = phase
+        progresses.append(progress)
+
+    return progresses
+
+
+def get_user_roadmap_detail(db: Session, mdl_user_id: int) -> Optional[WebCoachUserRoadmap]:
+    """
+    WebCoach: 画面表示用にユーザーの現在のロードマップを集約して取得する
+    （skill・phases(各フェーズのtodos含む)・target_dateを付与して返す）
+
+    Args:
+        db: Database session
+        mdl_user_id: userid
+
+    Returns:
+        WebCoachUserRoadmap: 見つからない場合はNone
+    """
+    user_roadmap = get_current_user_roadmap(db, mdl_user_id)
+    if not user_roadmap:
+        return None
+
+    skill = db.query(WebCoachRoadmapSkill).filter(
+        WebCoachRoadmapSkill.id == user_roadmap.skill_id
+    ).first()
+    phases_progress = get_user_roadmap_progress(db, user_roadmap.id)
+
+    user_roadmap.skill = skill
+    user_roadmap.phases = phases_progress
+    user_roadmap.target_date = phases_progress[-1].end if phases_progress else None
+
+    return user_roadmap
+
+
+def _advance_to_next_phase(db: Session, completed_progress: WebCoachRoadmapProgress) -> None:
+    """
+    WebCoach: 完了したフェーズの次のフェーズを自動的にin_progressへ進める内部ヘルパー。
+    次フェーズが無ければロードマップをis_completed=1にする。
+    """
+    current_phase = db.query(WebCoachRoadmapPhase).filter(
+        WebCoachRoadmapPhase.id == completed_progress.phase_id
+    ).first()
+    if not current_phase:
+        return
+
+    next_phase = db.query(WebCoachRoadmapPhase).filter(
+        WebCoachRoadmapPhase.skill_id == current_phase.skill_id,
+        WebCoachRoadmapPhase.phase_no == current_phase.phase_no + 1,
+    ).first()
+
+    if not next_phase:
+        user_roadmap = db.query(WebCoachUserRoadmap).filter(
+            WebCoachUserRoadmap.id == completed_progress.user_roadmap_id
+        ).first()
+        if user_roadmap:
+            user_roadmap.is_completed = 1
+        return
+
+    next_progress = db.query(WebCoachRoadmapProgress).filter(
+        WebCoachRoadmapProgress.user_roadmap_id == completed_progress.user_roadmap_id,
+        WebCoachRoadmapProgress.phase_id == next_phase.id,
+    ).first()
+
+    if next_progress and next_progress.status == 'not_started':
+        today = date.today()
+        next_progress.status = 'in_progress'
+        next_progress.start = today
+        if next_phase.duration_days:
+            next_progress.end = today + timedelta(days=next_phase.duration_days)
+
+
+def update_roadmap_progress(
+    db: Session,
+    progress_id: int,
+    status: Optional[str] = None,
+    start: Optional[Any] = None,
+    end: Optional[Any] = None,
+    updated_by: Optional[int] = None,
+) -> Optional[WebCoachRoadmapProgress]:
+    """
+    WebCoach: フェーズ進捗を更新する（コーチによる期日修正・ステータス変更）。
+    statusが'completed'になった場合、次フェーズが'not_started'なら自動的に'in_progress'へ進める。
+    次フェーズが無ければロードマップ自体をis_completed=1にする。
+
+    Args:
+        db: Database session
+        progress_id: 更新対象(webcoach_roadmap_progress.id)
+        status: 変更後のステータス
+        start: 開始日
+        end: 終了日（期日）
+        updated_by: 編集したコーチのmdl_user_id
+
+    Returns:
+        WebCoachRoadmapProgress: 更新後のレコード。見つからない場合はNone
+    """
+    progress = db.query(WebCoachRoadmapProgress).filter(
+        WebCoachRoadmapProgress.id == progress_id
+    ).first()
+    if not progress:
+        return None
+
+    if status is not None:
+        progress.status = status
+    if start is not None:
+        progress.start = start
+    if end is not None:
+        progress.end = end
+    if updated_by is not None:
+        progress.updated_by = updated_by
+
+    db.flush()
+
+    if status == 'completed':
+        _advance_to_next_phase(db, progress)
+        db.flush()
+
+    return progress
+
+
+def get_roadmap_questions(db: Session, review_no: int) -> List[WebCoachRoadmapQuestion]:
+    """
+    WebCoach: 見直し用の固定質問を取得する
+
+    Args:
+        db: Database session
+        review_no: n回目の質問か
+
+    Returns:
+        List[WebCoachRoadmapQuestion]: question_no順の質問一覧
+    """
+    return db.query(WebCoachRoadmapQuestion).filter(
+        WebCoachRoadmapQuestion.review_no == review_no
+    ).order_by(WebCoachRoadmapQuestion.question_no).all()
+
+
+def submit_roadmap_answers(
+    db: Session,
+    mdl_user_id: int,
+    review_no: int,
+    answers: List[Dict[str, int]],
+) -> List[WebCoachRoadmapAnswer]:
+    """
+    WebCoach: 見直し質問への回答をまとめて登録/更新する
+
+    Args:
+        db: Database session
+        mdl_user_id: userid
+        review_no: n回目の質問か
+        answers: [{"question_no": int, "answer": int}, ...]
+
+    Returns:
+        List[WebCoachRoadmapAnswer]: 保存された回答一覧
+    """
+    results = []
+    for item in answers:
+        question_no = item["question_no"]
+        answer_value = item["answer"]
+
+        existing = db.query(WebCoachRoadmapAnswer).filter(
+            WebCoachRoadmapAnswer.mdl_user_id == mdl_user_id,
+            WebCoachRoadmapAnswer.review_no == review_no,
+            WebCoachRoadmapAnswer.question_no == question_no,
+        ).first()
+
+        if existing:
+            existing.answer = answer_value
+            results.append(existing)
+        else:
+            new_answer = WebCoachRoadmapAnswer(
+                mdl_user_id=mdl_user_id,
+                review_no=review_no,
+                question_no=question_no,
+                answer=answer_value,
+            )
+            db.add(new_answer)
+            results.append(new_answer)
+
+    db.flush()
+    return results
 
 
 # ==========================================

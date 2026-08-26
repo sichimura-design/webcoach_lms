@@ -12,7 +12,17 @@ from .course import (
     ResumeCourseResponse,
 )
 from .badge import BadgeResponse, UserBadgesResponse
-from .roadmap import RoadmapResponse, RoadmapListResponse
+from .roadmap import (
+    RoadmapResponse,
+    RoadmapListResponse,
+    RoadmapSkillResponse,
+    RoadmapTodoResponse,
+    RoadmapPhaseResponse,
+    RoadmapProgressResponse,
+    UserRoadmapResponse,
+    RoadmapQuestionResponse,
+    RoadmapAnswerResponse,
+)
 from .ai_application import AIApplicationResponse, AIApplicationListResponse
 from .study import (
     StudySessionResponse,
@@ -58,9 +68,17 @@ __all__ = [
     # Badge
     "BadgeResponse",
     "UserBadgesResponse",
-    # Roadmap
+    # Roadmap (legacy mock catalog)
     "RoadmapResponse",
     "RoadmapListResponse",
+    # Career Roadmap
+    "RoadmapSkillResponse",
+    "RoadmapTodoResponse",
+    "RoadmapPhaseResponse",
+    "RoadmapProgressResponse",
+    "UserRoadmapResponse",
+    "RoadmapQuestionResponse",
+    "RoadmapAnswerResponse",
     # AI Application
     "AIApplicationResponse",
     "AIApplicationListResponse",

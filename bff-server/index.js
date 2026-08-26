@@ -32,6 +32,7 @@ const faissRoutes = require('./routes/faiss');
 const coachingRoutes = require('./routes/coaching');
 const integrationsRoutes = require('./routes/integrations');
 const studySessionRoutes = require('./routes/studySession');
+const roadmapRoutes = require('./routes/roadmap');
 
 // Initialize Express app
 const app = express();
@@ -175,6 +176,7 @@ app.use('/api/faiss', faissRoutes);
 app.use('/api/coaching', coachingRoutes);
 app.use('/api/integrations', integrationsRoutes);
 app.use('/api/study', studySessionRoutes);
+app.use('/api/roadmap', roadmapRoutes);
 
 // Backward compatibility - user info without /api prefix
 app.get('/user/info', authRoutes);
