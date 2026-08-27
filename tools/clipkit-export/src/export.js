@@ -80,6 +80,23 @@ function sha256(value) {
   return crypto.createHash('sha256').update(value, 'utf8').digest('hex');
 }
 
+/**
+ * 教材が持っていた CSS を styles/<hash>.css に保存し、ファイル名を返す。
+ * 内容が同じなら同じファイルになるので、コース内で自然に重複が畳まれる。
+ * 見た目の再現（移行先で教材の枠に閉じ込めて適用する）に使う。
+ */
+function saveStyles(courseDir, styles) {
+  if (!styles || styles.length === 0) return [];
+  const dir = path.join(courseDir, 'styles');
+  ensureDir(dir);
+  return styles.map((css) => {
+    const name = `css-${sha256(css).slice(0, 10)}.css`;
+    const file = path.join(dir, name);
+    if (!fs.existsSync(file)) writeFileAtomic(file, css, 'utf8');
+    return `styles/${name}`;
+  });
+}
+
 /** HTML からタグを除いた本文の文字数。取得結果の劣化を検知するために使う。 */
 function textLengthOf(html) {
   return String(html)
@@ -513,6 +530,8 @@ async function processCourse({ context, config, course, options, toolDir, outDir
         htmlPath,
         status: 'ok',
         extractedBy: extracted.extractedBy,
+        // 教材が持っていた CSS の保存先。移行先で見た目を再現するために使う。
+        stylePaths: saveStyles(courseDir, extracted.styles),
         contentHash,
         contentLength,
         fetchedAt,
@@ -572,6 +591,7 @@ async function processCourse({ context, config, course, options, toolDir, outDir
         embeds: (previous && previous.embeds) || [],
         media: (previous && previous.media) || [],
         mediaFiles: (previous && previous.mediaFiles) || [],
+        stylePaths: (previous && previous.stylePaths) || [],
         internalLinks: (previous && previous.internalLinks) || [],
       };
     }

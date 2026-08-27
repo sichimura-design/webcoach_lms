@@ -40,6 +40,7 @@ interface MaterialBundle {
     nextAction: string;
     prev: { lessonId: number; title: string } | null;
     next: { lessonId: number; title: string } | null;
+    css: string;
     origin: { url: string; htmlPath: string; extractedBy: string; splitBy: string };
   }>;
 }
@@ -105,6 +106,7 @@ const COURSES: MigratedCourse[] = BUNDLES.map((bundle) => {
     prev: lesson.prev,
     next: lesson.next,
     source: 'structured',
+    css: lesson.css || undefined,
   }));
   const sectionByLessonId = new Map(bundle.lessons.map((l) => [l.lessonId, l.section || '']));
   return { courseId, courseSlug: bundle.courseSlug, courseName: bundle.courseName, lessons, sectionByLessonId };

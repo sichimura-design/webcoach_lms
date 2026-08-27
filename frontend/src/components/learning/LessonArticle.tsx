@@ -240,6 +240,10 @@ export function LessonArticle({
 
   return (
     <article
+      /* 移行教材は元サイトのCSSを持っている。その CSS は .wc-lesson-scope の内側だけに
+         効くよう書き換えてあるので、この枠を付けて初めて元の見た目になる。
+         移行教材以外（doc.css が無い）には付けないので、既存の教材は影響を受けない。 */
+      className={doc.css ? 'wc-lesson-scope' : undefined}
       style={{
         /*
          * 読み幅は CSS 変数で決める。サポートパネルが横に並んだときだけ
@@ -261,6 +265,8 @@ export function LessonArticle({
           外していたが、2a はサイドパネルと横に並ぶ構成なので、
           本文がどこまでかを面で示したほうが読む場所が定まる。
           枠なしで端から端まで白くする案は別案 3a にあたる。 */}
+      {/* 教材が持っていた CSS。枠に閉じ込めてあるので LMS 側の画面には漏れない。 */}
+      {doc.css && <style>{doc.css}</style>}
       <div
         style={{
           background: color.surface,

@@ -197,6 +197,13 @@ function extractInPage(options) {
     return heading ? (heading.textContent || '').replace(/\s+/g, ' ').trim() : '';
   })();
 
+  // 教材が自前で持っている CSS を控えておく。
+  // 見た目の再現に使うので、この直後の除外（style を落とす）より前に取る。
+  // 本文としては描かせたくないので、HTML からは従来どおり除去する。
+  const styles = Array.from(root.querySelectorAll('style'))
+    .map((el) => el.textContent || '')
+    .filter((css) => css.trim().length > 0);
+
   // --- 2. 除外セレクタ（ルート内側のみ） ------------------------------------
   for (const selector of excludeSelectors) {
     let matches = [];
@@ -428,6 +435,7 @@ function extractInPage(options) {
     embeds,
     media,
     mediaDownloads,
+    styles,
     internalLinks,
     debug,
   };

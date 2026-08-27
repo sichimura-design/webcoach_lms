@@ -91,6 +91,12 @@ export interface LessonDoc {
   prev: LessonLink | null;
   next: LessonLink | null;
   source: LessonSource;
+  /**
+   * 移行してきた教材が持っていた CSS。教材の枠（.wc-lesson-scope）の内側だけに
+   * 効くよう書き換えてある。元サイトの見た目を再現するために画面側で流し込む。
+   * 移行教材以外は持たない。
+   */
+  css?: string;
   /** moodle-fallback のときだけ入る。従来の iframe 描画に渡す生HTML。 */
   fallbackHtml?: string;
   /** moodle-fallback のときだけ入る。modname 由来のコンテンツ種別。 */

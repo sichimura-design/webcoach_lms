@@ -13,6 +13,7 @@ const cheerio = require('cheerio');
 
 const { buildBlocks } = require('./blocks');
 const { readGoals, readSummary, readMinutes, readNeighbors, readLead, readNextAction } = require('./meta');
+const { buildScopedCss } = require('./css');
 
 const norm = (s) => (s || '').replace(/\s+/g, ' ').trim();
 
@@ -218,6 +219,14 @@ function convertCourse({ course, sourceDir, outDir, config, log }) {
     const nextPage = position >= 0 && position < ordered.length - 1 ? ordered[position + 1] : null;
     const link = (p) => (p && lessonIdBySlug.has(p.slug) ? { lessonId: lessonIdBySlug.get(p.slug), title: p.title } : null);
 
+    // 教材が持っていた CSS を、教材枠だけに効く形にして持たせる。
+    // 元サイトの見た目を再現するために使う（適用は画面側）。
+    const cssSources = (page.stylePaths || [])
+      .map((rel) => path.join(courseDir, rel))
+      .filter((f) => fs.existsSync(f))
+      .map((f) => fs.readFileSync(f, 'utf8'));
+    const scopedCss = cssSources.length > 0 ? buildScopedCss(cssSources) : '';
+
     const doc = {
       courseSlug: course,
       courseName: course,
@@ -235,6 +244,7 @@ function convertCourse({ course, sourceDir, outDir, config, log }) {
       prev: link(prevPage),
       next: link(nextPage),
       source: 'structured',
+      css: scopedCss,
       origin: {
         url: page.url,
         htmlPath: `${course}/${page.htmlPath}`,
