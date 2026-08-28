@@ -13,6 +13,7 @@
  *   3. .lesson-wrapper も枠そのものに読み替える（変換でこの入れ物は無くなっている）
  *   4. スクロール連動で出現する要素を、最初から見える状態にする
  *      （出現させる JavaScript は取得時に落としているため、放っておくと本文が消える）
+ *   5. 差し色のオレンジを LMS の赤へ寄せる（下の retoneCss を見よ）
  */
 
 const SCOPE = '.wc-lesson-scope';
@@ -21,6 +22,155 @@ const SCOPE = '.wc-lesson-scope';
 const NESTED_AT_RULE = /^@(media|supports|container|layer)\b/i;
 /** セレクタを書き換えてはいけない塊 */
 const OPAQUE_AT_RULE = /^@(keyframes|font-face|import|charset|namespace|page|counter-style|property)\b/i;
+
+/* ───────────────────────── 差し色をLMSのトンマナへ寄せる ───────────────────────── */
+
+/**
+ * LMS の差し色は #D60934（色相347）。教材のオレンジはここへ寄せる。
+ * 色相を1点に潰すとグラデーションが単色になってしまうので、
+ * 「元がどれだけオレンジ寄りだったか」を明るさの差として残す。
+ */
+const ACCENT_HUE = 350;
+
+/**
+ * 寄せる対象の見分け方。教材には系統の違う暖色が2つある。
+ *   差し色   … 彩度が高い（見出し下線・表ヘッダ・ヒーロー・バッジ）→ 赤へ寄せる
+ *   紙・金具 … 彩度が低いベージュ／ブロンズ（.brief-box などの書類モチーフ）→ 触らない
+ * さらに、ごく薄いクリーム地（Point ボックスの背景）も触らない。
+ * ここまで赤くすると囲みの種類が見分けられなくなるため。
+ */
+const RETONE_MIN_SATURATION = 55;
+const RETONE_MIN_LIGHTNESS = 35;
+const RETONE_MAX_LIGHTNESS = 72;
+
+/** 暖色の弧。赤（350付近）から黄みのオレンジ（55）まで。 */
+const WARM_ARC = 70;
+
+function toHsl(r, g, b) {
+  const R = r / 255;
+  const G = g / 255;
+  const B = b / 255;
+  const max = Math.max(R, G, B);
+  const min = Math.min(R, G, B);
+  const l = (max + min) / 2;
+  if (max === min) return { h: 0, s: 0, l };
+  const d = max - min;
+  const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  let h;
+  if (max === R) h = (G - B) / d + (G < B ? 6 : 0);
+  else if (max === G) h = (B - R) / d + 2;
+  else h = (R - G) / d + 4;
+  return { h: h * 60, s, l };
+}
+
+function toRgb(h, s, l) {
+  if (s === 0) {
+    const v = Math.round(l * 255);
+    return [v, v, v];
+  }
+  const c = (1 - Math.abs(2 * l - 1)) * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = l - c / 2;
+  const t = [
+    [c, x, 0],
+    [x, c, 0],
+    [0, c, x],
+    [0, x, c],
+    [x, 0, c],
+    [c, 0, x],
+  ][Math.floor((((h % 360) + 360) % 360) / 60)];
+  return t.map((v) => Math.round((v + m) * 255));
+}
+
+/**
+ * 1色を赤へ寄せる。対象外ならそのまま返す。
+ * 明るさは元の値を土台にして、少し深くしたうえで
+ * 「オレンジ寄りだった分」を足す。こうするとグラデーションの濃淡が残り、
+ * 白抜き文字のコントラストも元より悪くならない。
+ */
+function retoneColor(r, g, b) {
+  const { h, s, l } = toHsl(r, g, b);
+  const sPct = s * 100;
+  const lPct = l * 100;
+  const warm = h >= 330 || h <= 55;
+  if (!warm || sPct < RETONE_MIN_SATURATION) return null;
+  if (lPct < RETONE_MIN_LIGHTNESS || lPct > RETONE_MAX_LIGHTNESS) return null;
+
+  // 元の色相がどれだけオレンジ寄りだったか（0＝赤, 1＝黄みのオレンジ）
+  const distance = Math.min(((h - ACCENT_HUE + 360) % 360) / WARM_ARC, 1);
+  // LMS の #D60934 は明度44。教材の赤は明度62前後と浅いので、明るい色ほど深くする。
+  // 元から暗い色まで一律に深くすると潰れるため、深める量は明るさに比例させる。
+  const deepen = 14 * Math.max(0, Math.min(1, (lPct - RETONE_MIN_LIGHTNESS) / 30));
+  const lightness = Math.max(30, Math.min(76, lPct + distance * 16 - deepen));
+  return toRgb(ACCENT_HUE, Math.min(sPct, 92) / 100, lightness / 100);
+}
+
+const HEX = /#([0-9a-fA-F]{3,8})\b/g;
+const RGB_FUNC = /rgba?\(\s*([\d.]+)\s*[, ]\s*([\d.]+)\s*[, ]\s*([\d.]+)\s*([,/][^)]*)?\)/gi;
+
+function hex2(n) {
+  return n.toString(16).padStart(2, '0');
+}
+
+/** 宣言の値だけを対象に、色を書き換える。 */
+function retoneValue(value) {
+  return value
+    .replace(HEX, (whole, digits) => {
+      let d = digits;
+      if (d.length === 3 || d.length === 4) d = d.split('').map((c) => c + c).join('');
+      if (d.length !== 6 && d.length !== 8) return whole;
+      const rgb = [0, 2, 4].map((i) => parseInt(d.slice(i, i + 2), 16));
+      const next = retoneColor(...rgb);
+      return next ? `#${next.map(hex2).join('')}${d.slice(6)}` : whole;
+    })
+    .replace(RGB_FUNC, (whole, r, g, b, tail) => {
+      const next = retoneColor(Number(r), Number(g), Number(b));
+      return next ? `rgba(${next.join(', ')}${tail || ''})`.replace('rgba(', tail ? 'rgba(' : 'rgb(') : whole;
+    });
+}
+
+/**
+ * CSS を舐めて、宣言の値に出てくる色だけ書き換える。
+ * セレクタの `#id` や `@media (max-width: …)` を色と取り違えないよう、
+ * 波括弧の内側で `:` の後ろにいるあいだだけ書き換える。
+ */
+function retoneCss(css) {
+  const source = String(css);
+  let out = '';
+  let depth = 0;
+  let value = null; // 値の途中なら、そこまでの文字列
+
+  const flush = () => {
+    if (value !== null) {
+      out += retoneValue(value);
+      value = null;
+    }
+  };
+
+  for (const ch of source) {
+    if (ch === '{') {
+      flush();
+      depth += 1;
+      out += ch;
+    } else if (ch === '}') {
+      flush();
+      depth -= 1;
+      out += ch;
+    } else if (ch === ';') {
+      flush();
+      out += ch;
+    } else if (ch === ':' && depth > 0 && value === null) {
+      out += ch;
+      value = '';
+    } else if (value !== null) {
+      value += ch;
+    } else {
+      out += ch;
+    }
+  }
+  flush();
+  return out;
+}
 
 /**
  * 1つのセレクタに枠を前置する。
@@ -185,9 +335,12 @@ function stripFrameDeclarations(body) {
  * 先頭に注記を入れて、生成物であることが分かるようにする。
  */
 function buildScopedCss(cssList) {
-  const scoped = cssList.map((css) => scopeCss(css)).filter(Boolean).join('\n');
+  const scoped = cssList
+    .map((css) => scopeCss(retoneCss(css)))
+    .filter(Boolean)
+    .join('\n');
   if (!scoped) return '';
   return `/* Clipkit の教材CSSを ${SCOPE} の内側だけに効くよう書き換えたもの。手で編集しない。 */\n${scoped}\n${REVEAL_RESET}`;
 }
 
-module.exports = { SCOPE, scopeCss, scopeSelector, buildScopedCss };
+module.exports = { SCOPE, scopeCss, scopeSelector, retoneCss, buildScopedCss };
