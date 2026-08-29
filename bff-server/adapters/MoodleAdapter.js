@@ -370,6 +370,81 @@ class MoodleAdapter {
   }
 
   /**
+   * Log that a user started (or resumed after a pause) a focus-booth study session.
+   * Writes \local_webcoach_utils\event\study_session_started to mdl_logstore_standard_log.
+   * mdl_logstore_standard_log itself is the source of truth for study duration
+   * (paired with the next study_session_ended via timecreated diff); there is no separate
+   * session table/id.
+   * @param {number} userid - Moodle user ID
+   * @param {number} [courseid] - Moodle course ID (optional)
+   * @returns {Promise<any>} API response
+   */
+  async logStudySessionStarted(userid, courseid) {
+    const params = { userid: parseInt(userid, 10) };
+    if (courseid) {
+      params.courseid = parseInt(courseid, 10);
+    }
+    return this.callAPI('local_webcoach_utils_start_study_session', params);
+  }
+
+  /**
+   * Log that a user paused or finished a focus-booth study session.
+   * Writes \local_webcoach_utils\event\study_session_ended to mdl_logstore_standard_log.
+   * @param {number} userid - Moodle user ID
+   * @param {number} [courseid] - Moodle course ID (optional)
+   * @returns {Promise<any>} API response
+   */
+  async logStudySessionEnded(userid, courseid) {
+    const params = { userid: parseInt(userid, 10) };
+    if (courseid) {
+      params.courseid = parseInt(courseid, 10);
+    }
+    return this.callAPI('local_webcoach_utils_end_study_session', params);
+  }
+
+  /**
+   * Log a manual correction to the duration of the study session segment just ended.
+   * Writes \local_webcoach_utils\event\study_session_corrected. Only called when the user
+   * actually edits the recorded time on the finish screen (low frequency).
+   * @param {number} userid - Moodle user ID
+   * @param {number} deltaMinutes - Signed correction in minutes
+   * @param {number} [courseid] - Moodle course ID (optional)
+   * @returns {Promise<any>} API response
+   */
+  async correctStudySession(userid, deltaMinutes, courseid) {
+    const params = {
+      userid: parseInt(userid, 10),
+      deltaminutes: parseInt(deltaMinutes, 10)
+    };
+    if (courseid) {
+      params.courseid = parseInt(courseid, 10);
+    }
+    return this.callAPI('local_webcoach_utils_correct_study_session', params);
+  }
+
+  /**
+   * Log that a user opened a course material (page/url/resource) using our own plugin's
+   * custom event (\local_webcoach_utils\event\course_material_viewed). courseid/cmid are
+   * recorded as native log columns (courseid column / contextinstanceid column via a
+   * context_module context), never inside `other`, so they stay directly queryable/searchable.
+   * Does not depend on Moodle admin registering the standard mobile-app webservices.
+   * @param {number} userid - Moodle user ID
+   * @param {number} courseid - Moodle course ID
+   * @param {number} [cmid] - Course module ID (omit for course-level-only recording)
+   * @returns {Promise<any>} API response
+   */
+  async logCourseMaterialViewed(userid, courseid, cmid) {
+    const params = {
+      userid: parseInt(userid, 10),
+      courseid: parseInt(courseid, 10)
+    };
+    if (cmid) {
+      params.cmid = parseInt(cmid, 10);
+    }
+    return this.callAPI('local_webcoach_utils_log_course_material_viewed', params);
+  }
+
+  /**
    * Delete users (bulk)
    */
   async deleteUsers(userIds) {

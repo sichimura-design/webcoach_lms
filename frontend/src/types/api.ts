@@ -139,6 +139,81 @@ export interface UpdateResumeCourseRequest {
   progress_percent: number;
 }
 
+// WebCoach StudyNote
+export interface StudyNote {
+  content: string;
+  updated_at: string | null;
+}
+
+export interface UpdateStudyNoteRequest {
+  content: string;
+}
+
+// WebCoach CoachingSchedule
+export type CoachingScheduleStatus = 'completed' | 'interrupted' | 'rescheduled';
+
+export interface CoachingSchedule {
+  id: number;
+  mdl_user_id: number;
+  coach_user_id: number;
+  coaching_no: number;
+  coaching_date: string;
+  status: CoachingScheduleStatus | null;
+  meeting_url: string;
+  coaching_summary: string | null;
+  todo: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateCoachingScheduleRequest {
+  coach_user_id: number;
+  coaching_date: string;
+  meeting_url: string;
+  coaching_summary?: string | null;
+  todo?: string | null;
+}
+
+export interface UpdateCoachingScheduleRequest {
+  coaching_date?: string;
+  status?: CoachingScheduleStatus;
+  meeting_url?: string;
+  coaching_summary?: string | null;
+  todo?: string | null;
+}
+
+// WebCoach AI Coaching Note
+export type CoachingNoteStatus = 'ai_suggested' | 'coach_confirmed' | 'published';
+
+export interface CoachingNote {
+  id: number;
+  coaching_schedule_id: number;
+  status: CoachingNoteStatus;
+  session_summary: string | null;
+  client_status_and_goal: string | null;
+  main_issues: string | null;
+  coach_feedback: string | null;
+  decisions: string | null;
+  client_next_actions: string | null;
+  coach_follow_up: string | null;
+  next_session_check: string | null;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UpdateCoachingNoteRequest {
+  status?: CoachingNoteStatus;
+  session_summary?: string | null;
+  client_status_and_goal?: string | null;
+  main_issues?: string | null;
+  coach_feedback?: string | null;
+  decisions?: string | null;
+  client_next_actions?: string | null;
+  coach_follow_up?: string | null;
+  next_session_check?: string | null;
+}
+
 // WebCoach Roadmap
 export interface Roadmap {
   id: number;
@@ -155,7 +230,84 @@ export interface RoadmapQueryParams {
   offset?: number;
 }
 
+// WebCoach Career Roadmap（フェーズ制・スキル別テンプレート）
+export interface RoadmapSkill {
+  id: number;
+  code: string;
+  name: string;
+  goal_label: string | null;
+  display_order: number;
+}
+
+export interface RoadmapTodo {
+  phase_id: number;
+  todo_no: number;
+  description: string;
+}
+
+export interface RoadmapPhase {
+  id: number;
+  skill_id: number;
+  phase_no: number;
+  name: string;
+  goal: string;
+  milestone: string;
+  duration_days: number | null;
+  todos: RoadmapTodo[];
+}
+
+export interface RoadmapProgress {
+  id: number;
+  user_roadmap_id: number;
+  phase_id: number;
+  status: 'not_started' | 'in_progress' | 'completed' | 'skipped';
+  start: string | null;
+  end: string | null;
+  updated_by: number | null;
+  phase: RoadmapPhase;
+}
+
+export interface UserRoadmap {
+  id: number;
+  mdl_user_id: number;
+  skill_id: number;
+  is_completed: boolean;
+  skill: RoadmapSkill;
+  target_date: string | null;
+  phases: RoadmapProgress[];
+}
+
+export interface RoadmapProgressUpdate {
+  status?: 'not_started' | 'in_progress' | 'completed' | 'skipped';
+  start?: string;
+  end?: string;
+}
+
+export interface RoadmapQuestion {
+  review_no: number;
+  question_no: number;
+  question: string;
+}
+
+export interface RoadmapAnswer {
+  mdl_user_id: number;
+  review_no: number;
+  question_no: number;
+  answer: string;
+  created_at: string;
+}
+
 // WebCoach AI
+export interface AIImageAttachment {
+  media_type: string;
+  data: string; // Base64エンコード済み（data:URIプレフィックスなし）
+}
+
+export interface AIConversationMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 export interface AIRequest {
   message: string;
   user_id?: number;
@@ -163,6 +315,8 @@ export interface AIRequest {
   context?: Record<string, any>;
   max_chunks?: number;
   use_tools?: boolean;
+  image?: AIImageAttachment;
+  conversation_history?: AIConversationMessage[];
 }
 
 export interface AISource {

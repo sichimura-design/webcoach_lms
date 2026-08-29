@@ -63,20 +63,6 @@ class WebCoachService {
   }
 
   /**
-   * Get roadmaps
-   */
-  async getRoadmaps(filters = {}) {
-    return await apiServerAdapter.getRoadmaps(filters);
-  }
-
-  /**
-   * Get roadmap detail
-   */
-  async getRoadmapDetail(roadmapid) {
-    return await apiServerAdapter.getRoadmapDetail(roadmapid);
-  }
-
-  /**
    * Get AI applications
    */
   async getAIApplications(filters = {}) {
@@ -287,6 +273,22 @@ class WebCoachService {
   async getAllAvatars(limit = 100, offset = 0) {
     console.log(`[WebCoach Avatar] Getting avatars (limit: ${limit}, offset: ${offset})`);
     return await apiServerAdapter.getAllAvatars(limit, offset);
+  }
+
+  /**
+   * Get study note
+   */
+  async getStudyNote(userid, courseid, cmid) {
+    console.log(`[WebCoach StudyNote] Getting note for user ${userid}, course ${courseid}, cmid ${cmid}`);
+    return await apiServerAdapter.getStudyNote(userid, courseid, cmid);
+  }
+
+  /**
+   * Update study note
+   */
+  async updateStudyNote(userid, courseid, cmid, content) {
+    console.log(`[WebCoach StudyNote] Updating note for user ${userid}, course ${courseid}, cmid ${cmid}`);
+    return await apiServerAdapter.updateStudyNote(userid, courseid, cmid, content);
   }
 
   /**

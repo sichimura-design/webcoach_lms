@@ -165,6 +165,23 @@ function MyPage() {
             </div>
           </div>
 
+          {/* Career Roadmap */}
+          <button
+            onClick={() => navigate('/roadmap')}
+            className="w-full bg-white border border-[#F0EAE6] rounded-2xl px-5 py-4 flex items-center justify-between hover:border-brand transition-colors text-left"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-brand flex items-center justify-center flex-shrink-0">
+                <Flag className="w-4 h-4 text-white" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-brand-text">キャリアロードマップ</p>
+                <p className="text-xs text-brand-muted">目標までの進み方を確認する</p>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-brand-muted flex-shrink-0" />
+          </button>
+
           {/* Coaching Goals */}
           <CoachingGoals userId={user?.userid} />
 

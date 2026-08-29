@@ -16,6 +16,22 @@ from vector_db import get_vector_db_retriever, VectorDBRetriever
 
 logger = logging.getLogger(__name__)
 
+
+def _extract_text(content) -> str:
+    """メッセージのcontentからテキスト部分のみを抽出（画像添付時はlist形式になるため）"""
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):
+        text_parts = []
+        for block in content:
+            if isinstance(block, dict) and block.get('type') == 'text':
+                text_parts.append(block.get('text', ''))
+            elif isinstance(block, str):
+                text_parts.append(block)
+        return ''.join(text_parts)
+    return ''
+
+
 # グローバル変数
 llm: ChatAnthropic = None
 vector_db: VectorDBRetriever = None
@@ -65,11 +81,11 @@ def retrieve_node(state: LearningCoachState) -> LearningCoachState:
     for i, msg in enumerate(state["messages"]):
         logger.info(f"  [{i}] {type(msg).__name__}")
 
-    # 最新のユーザーメッセージを取得
+    # 最新のユーザーメッセージを取得（画像添付時はcontentがlistになるためテキストのみ抽出）
     user_message = None
     for msg in reversed(state["messages"]):
         if isinstance(msg, HumanMessage):
-            user_message = msg.content
+            user_message = _extract_text(msg.content)
             break
 
     if not user_message:
@@ -150,6 +166,11 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
 
     new_iteration_count = iteration + 1
 
+    # 静的ツール（BFF API）+ 動的ツール（DBに登録されたAIアプリケーション）
+    dynamic_tools = state.get("dynamic_tools") or []
+    combined_tools = tools_list + dynamic_tools
+    dynamic_tools_text = "\n".join(f"- {t.name}: {t.description}" for t in dynamic_tools)
+
     # システムプロンプトを構築
     system_content = f"""あなたはWEBCOACHです。
 学習者の質問に日本語で丁寧に答え、学習をサポートしてください。
@@ -163,6 +184,7 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
 - get_course_contents: コースの詳細コンテンツを取得
 - get_user_profile: ユーザーの学習プロフィールを取得
 - get_resume_courses: 学習再開推奨コースを取得
+{dynamic_tools_text}
 
 # 回答のガイドライン:
 - 学習者が理解しやすいよう丁寧で親しみやすい言葉遣いを心がける
@@ -198,7 +220,7 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
     messages = [SystemMessage(content=system_content)] + state["messages"]
 
     # LLMを呼び出し（ツール付き）
-    llm_with_tools = llm.bind_tools(tools_list)
+    llm_with_tools = llm.bind_tools(combined_tools)
 
     # デバッグ: メッセージ構造をログ出力
     logger.info(f"Sending {len(messages)} messages to LLM:")
@@ -235,8 +257,8 @@ def tools_node(state: LearningCoachState) -> LearningCoachState:
         logger.warning("No tool calls found in last message")
         return state
 
-    # ToolNodeを使ってツールを実行
-    tool_node = ToolNode(tools_list)
+    # ToolNodeを使ってツールを実行（静的ツール + 動的ツール）
+    tool_node = ToolNode(tools_list + (state.get("dynamic_tools") or []))
 
     # ツール実行（全体のmessagesを渡す）
     result = tool_node.invoke({"messages": state["messages"]})
@@ -303,19 +325,7 @@ def respond_node(state: LearningCoachState) -> LearningCoachState:
     final_response = None
     for msg in reversed(state["messages"]):
         if isinstance(msg, AIMessage):
-            # contentが文字列の場合
-            if isinstance(msg.content, str):
-                final_response = msg.content
-            # contentがリスト（ブロック形式）の場合
-            elif isinstance(msg.content, list):
-                # テキストブロックを抽出
-                text_parts = []
-                for block in msg.content:
-                    if isinstance(block, dict) and block.get('type') == 'text':
-                        text_parts.append(block.get('text', ''))
-                    elif isinstance(block, str):
-                        text_parts.append(block)
-                final_response = ''.join(text_parts)
+            final_response = _extract_text(msg.content)
             break
 
     if not final_response:

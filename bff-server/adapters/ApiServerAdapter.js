@@ -119,6 +119,124 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get the currently in-progress study session (if any)
+   *
+   * 開始/一時停止/再開/終了/補正の書き込みはbff-server(MoodleAdapter)がMoodle webservice経由で
+   * 直接行う。api-serverはmdl_logstore_standard_logからの読み取り集計のみを担当する。
+   */
+  async getActiveStudySession(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/sessions/${userid}/active`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get recently completed study sessions
+   */
+  async getRecentStudySessions(userid, limit = 10) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/sessions/${userid}/recent`,
+      {
+        params: { limit },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get today / this week / total study minutes
+   */
+  async getStudyStats(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/stats/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get the study streak (consecutive days with a completed study session)
+   */
+  async getStudyStreak(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/streak/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get the study calendar for a given year/month
+   */
+  async getStudyCalendar(userid, year, month) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/calendar/${userid}`,
+      {
+        params: { year, month },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get the study time ranking for a given period ('week' | 'month' | 'all')
+   */
+  async getStudyRanking(period = 'week', limit = 20) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/ranking`,
+      {
+        params: { period, limit },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get per-course access counts / last-accessed timestamps
+   */
+  async getCourseAccess(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/course-access/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get per-material (course module) access counts within a course
+   */
+  async getCourseMaterialAccess(userid, courseid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/course-access/${userid}/${courseid}/materials`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Get AI applications
    */
   async getAIApplications(filters = {}) {
@@ -411,6 +529,137 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get study note
+   */
+  async getStudyNote(userid, courseid, cmid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study-note/${userid}/${courseid}/${cmid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update study note
+   */
+  async updateStudyNote(userid, courseid, cmid, content) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/study-note/${userid}/${courseid}/${cmid}`,
+      { content },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get roadmap skill master list
+   */
+  async getRoadmapSkills() {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/roadmap/skills`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get phase templates for a skill
+   */
+  async getRoadmapPhases(skillId) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/roadmap/phases`,
+      {
+        params: { skill_id: skillId },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Start a new roadmap for a user
+   */
+  async startUserRoadmap(userid, skillId) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/roadmap/users/${userid}`,
+      { skill_id: skillId },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get a user's current (active) roadmap
+   */
+  async getUserRoadmap(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/roadmap/users/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update a phase progress entry (status / dates)
+   */
+  async updateRoadmapProgress(progressId, data) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/roadmap/progress/${progressId}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get fixed review questions for a review cycle
+   */
+  async getRoadmapQuestions(reviewNo) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/roadmap/questions/${reviewNo}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Submit answers for a review cycle
+   */
+  async submitRoadmapAnswers(userid, reviewNo, answers) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/roadmap/users/${userid}/answers`,
+      { review_no: reviewNo, answers },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Get next coaching goal
    */
   async getNextCoachingGoal(userid, no) {
@@ -550,6 +799,93 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get coaching schedules for a student
+   */
+  async getCoachingSchedules(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/coaching/schedule/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Create coaching schedule
+   */
+  async createCoachingSchedule(userid, data) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/coaching/schedule/${userid}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update coaching schedule
+   */
+  async updateCoachingSchedule(userid, id, data) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/coaching/schedule/${userid}/${id}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Delete coaching schedule
+   */
+  async deleteCoachingSchedule(userid, id) {
+    const response = await axios.delete(
+      `${this.apiServerUrl}/api/coaching/schedule/${userid}/${id}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get AI coaching note for a coaching schedule
+   */
+  async getCoachingNote(coachingScheduleId) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/coaching/notes/${coachingScheduleId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update (edit/confirm/publish) AI coaching note
+   */
+  async updateCoachingNote(coachingScheduleId, data) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/coaching/notes/${coachingScheduleId}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Create coach-student mapping
    */
   async createCoachStudentMapping(coachUserId, studentUserId) {
@@ -603,6 +939,35 @@ class ApiServerAdapter {
     const response = await axios.post(
       `${this.apiServerUrl}/api/coaching/mappings/${coachUserId}/${studentUserId}/restore`,
       {},
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Save (upsert) a coach's meeting integration tokens (already encrypted)
+   */
+  async upsertCoachMeetingIntegration(coachUserId, payload) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/coaching/integrations/${coachUserId}`,
+      payload,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get a coach's meeting integration status (no tokens included)
+   */
+  async getCoachMeetingIntegrationStatus(coachUserId) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/coaching/integrations/${coachUserId}`,
       {
         headers: { 'Content-Type': 'application/json' },
         timeout: 10000

@@ -3,7 +3,6 @@ import { useAsyncData } from '../hooks/useAsyncData';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   ChevronRight,
-  ChevronLeft,
   Sparkles,
   BookOpen,
   Clock,
@@ -12,16 +11,17 @@ import {
   BookText,
   PlusCircle,
 } from 'lucide-react';
-import { AppHeader, AppIcon, CourseImage } from './shared';
+import { AppHeader, AppIcon, CourseImage, LearningBreadcrumb } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { bffClient } from '../services/bffClient';
+import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
 
-// カテゴリのテーマカラーパレット
+// 学習領域のテーマカラーパレット
 const categoryColorPalette = [
-  { color: '#E86D78', iconLightColor: '#FFEDEE' },
+  { color: '#FF5A7A', iconLightColor: '#FFEDEE' },
   { color: '#F0AF23', iconLightColor: '#FFFAEA' },
-  { color: '#FA9161', iconLightColor: '#FFF4EF' },
+  { color: '#FFC24B', iconLightColor: '#FFF4EF' },
   { color: '#A688D4', iconLightColor: '#F7F2FF' },
   { color: '#E6819D', iconLightColor: '#FFF1F5' },
   { color: '#5B9BD5', iconLightColor: '#EBF3FB' },
@@ -87,7 +87,7 @@ function extractTagNames(tags: any): string[] {
     .filter((name) => name !== '');
 }
 
-/** コースをMoodleタグ名でグループ化 */
+/** コースをMoodleタグ名でグループ化。タグは階層ではなく学習領域内の切り口。 */
 function groupByTag(courses: MoodleCourse[]): CourseSection[] {
   const grouped = new Map<string, MoodleCourse[]>();
 
@@ -115,15 +115,15 @@ function groupByTag(courses: MoodleCourse[]): CourseSection[] {
 /** 難易度バッジのスタイル (Figma実測値) */
 function getDifficultyStyle(difficulty: string): { bg: string; text: string } {
   switch (difficulty) {
-    case '応用': return { bg: '#fa9161', text: '#ffffff' };
-    case '発展': return { bg: '#e86d78', text: '#ffffff' };
+    case '応用': return { bg: '#FFC24B', text: '#ffffff' };
+    case '発展': return { bg: '#FF5A7A', text: '#ffffff' };
     case '基礎':
     default:
-      return { bg: '#ffd454', text: '#7e6e68' };
+      return { bg: '#ffd454', text: '#7A7392' };
   }
 }
 
-/** セクションのアイコン（タグ名から推定） */
+/** コースまとまり（Moodleタグ）のアイコン（タグ名から推定） */
 function getSectionIcon(tagName: string): React.ReactNode {
   const s = tagName.toLowerCase();
   if (s.includes('ai') || s.includes('生成')) {
@@ -241,23 +241,21 @@ function CategoryDetailPage() {
           <div className="absolute w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] lg:w-[1152px] lg:h-[1152px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(242,147,103,0.3) 0%, transparent 70%)', bottom: '-300px', left: '30%', filter: 'blur(40px)' }} />
         </div>
 
-        {/* カテゴリヘッダーバー */}
+        {/* 学習領域ヘッダーバー */}
         <div
           className="relative border-b py-6 sm:py-8 lg:py-[40px]"
           style={{ backgroundColor: 'rgba(255,255,255,0.5)', borderColor: '#FEFAF8' }}
         >
           <div className="max-w-[1100px] mx-auto px-4 sm:px-6 flex flex-col" style={{ gap: '24px' }}>
-            {/* 戻るボタン */}
-            <button
-              onClick={() => navigate('/courses')}
-              className="flex items-center gap-1 bg-white border border-brand-border rounded-[30px] text-brand-muted hover:bg-gray-50 transition-colors self-start"
-              style={{ fontSize: '12px', fontWeight: 500, padding: '6px 22px 6px 16px' }}
-            >
-              <ChevronLeft className="w-3 h-3" />
-              <span>カテゴリ一覧に戻る</span>
-            </button>
+            {/* パンくず（常に表示）。学習領域はコース一覧の大分類にあたる階層。 */}
+            <LearningBreadcrumb
+              items={[
+                { label: '学習コンテンツ', to: '/courses' },
+                { label: categoryName || LEARNING_HIERARCHY.area },
+              ]}
+            />
 
-            {/* カテゴリ情報 */}
+            {/* 学習領域情報 */}
             <div className="flex items-center" style={{ gap: '24px' }}>
               <div className="flex-shrink-0">
                 <div
@@ -279,15 +277,15 @@ function CategoryDetailPage() {
                 <div className="flex flex-col" style={{ gap: '4px' }}>
                   <span
                     className="inline-block self-start px-2.5 py-0.5 text-xs font-bold"
-                    style={{ fontFamily: 'Arial, sans-serif', fontSize: '12px', color: palette.color, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: '6px' }}
+                    style={{ fontSize: '12px', color: palette.color, backgroundColor: 'rgba(255,255,255,0.6)', borderRadius: '6px' }}
                   >
-                    Category
+                    {LEARNING_HIERARCHY.area}
                   </span>
                   <h1
                     className="font-bold text-brand-text text-2xl sm:text-3xl lg:text-[32px]"
                     style={{ lineHeight: '1.2' }}
                   >
-                    {categoryName || 'カテゴリ'}
+                    {categoryName || LEARNING_HIERARCHY.area}
                   </h1>
                 </div>
                 {categoryDescription && (
@@ -310,13 +308,13 @@ function CategoryDetailPage() {
         >
           <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-10">
 
-            {/* 左カラム: タグ別コースセクション */}
+            {/* 左カラム: タグ別のコース一覧 */}
             <div className="flex-1 min-w-0 flex flex-col gap-6 sm:gap-8 lg:gap-10">
               {totalCourses === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 gap-3">
                   <BookOpen className="w-12 h-12 text-brand-subtle" />
                   <p className="text-sm text-brand-muted">
-                    このカテゴリにはまだコースがありません
+                    この学習領域にはまだコースがありません
                   </p>
                 </div>
               ) : (
@@ -330,7 +328,7 @@ function CategoryDetailPage() {
                         style={
                           selectedTag === null
                             ? { backgroundColor: palette.color, color: '#fff' }
-                            : { backgroundColor: '#fff', color: '#7E6E68', border: '1px solid #C2B9B3' }
+                            : { backgroundColor: '#fff', color: '#7A7392', border: '1px solid #C2B9B3' }
                         }
                       >
                         すべて
@@ -343,7 +341,7 @@ function CategoryDetailPage() {
                           style={
                             selectedTag === section.tagName
                               ? { backgroundColor: palette.color, color: '#fff' }
-                              : { backgroundColor: '#fff', color: '#7E6E68', border: '1px solid #C2B9B3' }
+                              : { backgroundColor: '#fff', color: '#7A7392', border: '1px solid #C2B9B3' }
                           }
                         >
                           {section.tagName}

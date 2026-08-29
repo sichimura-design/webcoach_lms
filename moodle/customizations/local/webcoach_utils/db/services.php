@@ -36,6 +36,46 @@ $functions = [
         'ajax'          => true,
         'capabilities'  => '',
     ],
+
+    // Study session (focus booth) functions
+    'local_webcoach_utils_start_study_session' => [
+        'classname'     => 'local_webcoach_utils_external',
+        'methodname'    => 'start_study_session',
+        'classpath'     => 'local/webcoach_utils/externallib.php',
+        'description'   => 'Log that a user started a focus-booth study session',
+        'type'          => 'write',
+        'ajax'          => true,
+        'capabilities'  => '',
+    ],
+    'local_webcoach_utils_end_study_session' => [
+        'classname'     => 'local_webcoach_utils_external',
+        'methodname'    => 'end_study_session',
+        'classpath'     => 'local/webcoach_utils/externallib.php',
+        'description'   => 'Log that a user ended a focus-booth study session',
+        'type'          => 'write',
+        'ajax'          => true,
+        'capabilities'  => '',
+    ],
+    'local_webcoach_utils_correct_study_session' => [
+        'classname'     => 'local_webcoach_utils_external',
+        'methodname'    => 'correct_study_session',
+        'classpath'     => 'local/webcoach_utils/externallib.php',
+        'description'   => 'Log a manual correction to the duration of the study session segment just ended',
+        'type'          => 'write',
+        'ajax'          => true,
+        'capabilities'  => '',
+    ],
+
+    // Course material access functions
+    'local_webcoach_utils_log_course_material_viewed' => [
+        'classname'     => 'local_webcoach_utils_external',
+        'methodname'    => 'log_course_material_viewed',
+        'classpath'     => 'local/webcoach_utils/externallib.php',
+        'description'   => 'Log that a user opened a course material (page/url/resource)',
+        'type'          => 'write',
+        'ajax'          => true,
+        'capabilities'  => '',
+    ],
 ];
 
 $services = [
@@ -44,6 +84,10 @@ $services = [
             'local_webcoach_utils_set_course_tags',
             'local_webcoach_utils_get_course_tags',
             'local_webcoach_utils_update_user_lastaccess',
+            'local_webcoach_utils_start_study_session',
+            'local_webcoach_utils_end_study_session',
+            'local_webcoach_utils_correct_study_session',
+            'local_webcoach_utils_log_course_material_viewed',
         ],
         'restrictedusers' => 0,
         'enabled' => 1,

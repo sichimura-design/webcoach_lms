@@ -9,14 +9,16 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text, func
 
 from database import get_db
-from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest
-from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse
+from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate
+from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse, StudyNoteResponse, LoginStreakResponse
 import crud
 from crud import (
     get_webcoach_user_profile,
     upsert_webcoach_user_profile,
     get_webcoach_resume_courses,
     upsert_webcoach_user_course_lastaccess,
+    get_study_note,
+    upsert_study_note,
     get_moodle_user_info,
     get_image_url,
     upsert_image_url,
@@ -35,6 +37,7 @@ from crud import (
     delete_next_coaching_goal,
     reorder_next_coaching_goals,
     bulk_upsert_next_coaching_goals,
+    get_user_login_streak,
 )
 from entities.webcoach import WebCoachAIApplication
 
@@ -388,6 +391,105 @@ def update_resume_course(
 
 
 # ==========================================
+# Study Note Endpoints
+# ==========================================
+
+@router.get(
+    "/study-note/{userid}/{courseid}/{cmid}",
+    response_model=StudyNoteResponse,
+    summary="学習メモ取得"
+)
+def get_study_note_endpoint(
+    userid: int,
+    courseid: int,
+    cmid: int,
+    db: Session = Depends(get_db)
+):
+    """
+    教材ごとの学習メモを取得します。
+
+    レコードが存在しない場合も404にせず、空メモとして返します
+    （フロント側は常に編集可能な空の状態から始められる）。
+
+    Args:
+        userid: MoodleユーザーID
+        courseid: MoodleコースID
+        cmid: Moodleコースモジュール(教材)ID
+
+    Returns:
+        学習メモ情報
+    """
+    try:
+        note = get_study_note(db, userid, courseid, cmid)
+
+        if not note:
+            return StudyNoteResponse(
+                mdl_user_id=userid,
+                courseid=courseid,
+                cmid=cmid,
+                content="",
+                updated_at=None
+            )
+
+        return StudyNoteResponse(
+            mdl_user_id=note.mdl_user_id,
+            courseid=note.courseid,
+            cmid=note.cmid,
+            content=note.content,
+            updated_at=note.updated_at
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get study note: {str(e)}"
+        )
+
+
+@router.put(
+    "/study-note/{userid}/{courseid}/{cmid}",
+    response_model=StudyNoteResponse,
+    summary="学習メモ更新"
+)
+def update_study_note_endpoint(
+    userid: int,
+    courseid: int,
+    cmid: int,
+    data: StudyNoteUpdate,
+    db: Session = Depends(get_db)
+):
+    """
+    教材ごとの学習メモを更新（無ければ作成）します。
+
+    Args:
+        userid: MoodleユーザーID
+        courseid: MoodleコースID
+        cmid: Moodleコースモジュール(教材)ID
+        data: 更新するメモ内容
+
+    Returns:
+        更新された学習メモ情報
+    """
+    try:
+        note = upsert_study_note(db, userid, courseid, cmid, data.content)
+        db.commit()
+        db.refresh(note)
+
+        return StudyNoteResponse(
+            mdl_user_id=note.mdl_user_id,
+            courseid=note.courseid,
+            cmid=note.cmid,
+            content=note.content,
+            updated_at=note.updated_at
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update study note: {str(e)}"
+        )
+
+
+# ==========================================
 # UpdateDB Endpoint
 # ==========================================
 
@@ -481,6 +583,7 @@ def update_webcoach_database(
                             existing.url = record.get('url')
                             existing.icon_url = record.get('icon_url')
                             existing.tags = record.get('tags')
+                            existing.secret_key = record.get('secret_key')
                             existing.updated_at = func.now()
                         else:
                             # 新規作成
@@ -491,6 +594,7 @@ def update_webcoach_database(
                                 url=record.get('url'),
                                 icon_url=record.get('icon_url'),
                                 tags=record.get('tags'),
+                                secret_key=record.get('secret_key'),
                                 created_at=func.now(),
                                 updated_at=func.now()
                             )
@@ -1283,4 +1387,40 @@ def bulk_upsert_next_coaching_goals_endpoint(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to bulk upsert next coaching goals: {str(e)}"
+        )
+
+
+# ==========================================
+# Login Streak Endpoint
+# ==========================================
+
+@router.get(
+    "/users/{userid}/login-streak",
+    response_model=LoginStreakResponse,
+    summary="連続ログイン日数を取得"
+)
+def get_login_streak(
+    userid: int,
+    db: Session = Depends(get_db)
+):
+    """
+    ユーザーの連続ログイン日数（ストリーク）を取得します。
+
+    mdl_logstore_standard_logに記録された\\core\\event\\user_loggedinイベントを
+    日単位（JST）で集計し、最新の記録日から連続している日数を返します。
+    最終ログインが今日・昨日のいずれでもない場合はストリークが途切れているとみなし0を返します。
+
+    Args:
+        userid: ユーザーID
+
+    Returns:
+        連続ログイン日数と最終ログイン日
+    """
+    try:
+        streak = get_user_login_streak(db, userid)
+        return LoginStreakResponse(**streak)
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get login streak: {str(e)}"
         )

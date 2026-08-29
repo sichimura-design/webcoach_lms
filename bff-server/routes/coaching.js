@@ -223,6 +223,198 @@ router.get('/students/:student_user_id/coach', requireAuth, async (req, res) => 
   }
 });
 
+// ==================== COACHING SCHEDULE ====================
+
+/**
+ * GET /api/coaching/schedule/:userid
+ * Get coaching schedule list for a student (Admin, Coach, or the student themselves)
+ */
+router.get('/schedule/:userid', requireAuth, async (req, res) => {
+  try {
+    const { userid } = req.params;
+
+    const userGroups = req.user?.groups || [];
+    const isAdmin = userGroups.includes('admin');
+    const isCoach = userGroups.includes('coach');
+    const moodleUserId = req.user?.moodleUserId;
+
+    if (!isAdmin && !isCoach && moodleUserId != userid) {
+      console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to access coaching schedule for user ${userid}`);
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: '管理者、コーチ、または本人のみアクセス可能です。'
+      });
+    }
+
+    const schedules = await coachingService.getCoachingSchedules(parseInt(userid));
+    res.json(schedules);
+  } catch (error) {
+    console.error('[Coaching] Get coaching schedules error:', error.message);
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
+ * POST /api/coaching/schedule/:userid
+ * Create a coaching schedule entry (Admin or Coach only)
+ */
+router.post('/schedule/:userid', requireAuth, async (req, res) => {
+  try {
+    const { userid } = req.params;
+
+    const userGroups = req.user?.groups || [];
+    const isAdmin = userGroups.includes('admin');
+    const isCoach = userGroups.includes('coach');
+
+    if (!isAdmin && !isCoach) {
+      console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to create coaching schedule for user ${userid}`);
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: '管理者またはコーチのみ作成できます。'
+      });
+    }
+
+    const schedule = await coachingService.createCoachingSchedule(parseInt(userid), req.body);
+    res.status(201).json(schedule);
+  } catch (error) {
+    console.error('[Coaching] Create coaching schedule error:', error.message);
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
+ * PUT /api/coaching/schedule/:userid/:id
+ * Update a coaching schedule entry (Admin or Coach only)
+ */
+router.put('/schedule/:userid/:id', requireAuth, async (req, res) => {
+  try {
+    const { userid, id } = req.params;
+
+    const userGroups = req.user?.groups || [];
+    const isAdmin = userGroups.includes('admin');
+    const isCoach = userGroups.includes('coach');
+
+    if (!isAdmin && !isCoach) {
+      console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to update coaching schedule ${id} for user ${userid}`);
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: '管理者またはコーチのみ更新できます。'
+      });
+    }
+
+    const schedule = await coachingService.updateCoachingSchedule(parseInt(userid), parseInt(id), req.body);
+    res.json(schedule);
+  } catch (error) {
+    console.error('[Coaching] Update coaching schedule error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
+ * DELETE /api/coaching/schedule/:userid/:id
+ * Delete a coaching schedule entry (Admin or Coach only)
+ */
+router.delete('/schedule/:userid/:id', requireAuth, async (req, res) => {
+  try {
+    const { userid, id } = req.params;
+
+    const userGroups = req.user?.groups || [];
+    const isAdmin = userGroups.includes('admin');
+    const isCoach = userGroups.includes('coach');
+
+    if (!isAdmin && !isCoach) {
+      console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to delete coaching schedule ${id} for user ${userid}`);
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: '管理者またはコーチのみ削除できます。'
+      });
+    }
+
+    await coachingService.deleteCoachingSchedule(parseInt(userid), parseInt(id));
+    res.status(204).send();
+  } catch (error) {
+    console.error('[Coaching] Delete coaching schedule error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+// ==================== AI COACHING NOTE ====================
+
+/**
+ * GET /api/coaching/notes/:coaching_schedule_id
+ * Get AI coaching note (Admin, Coach: any status. Student: only if published)
+ */
+router.get('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
+  try {
+    const { coaching_schedule_id } = req.params;
+
+    const userGroups = req.user?.groups || [];
+    const isAdmin = userGroups.includes('admin');
+    const isCoach = userGroups.includes('coach');
+
+    const note = await coachingService.getCoachingNote(parseInt(coaching_schedule_id));
+
+    if (!isAdmin && !isCoach && note.status !== 'published') {
+      console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to access unpublished coaching note ${coaching_schedule_id}`);
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: '公開済みのノートのみ閲覧できます。'
+      });
+    }
+
+    res.json(note);
+  } catch (error) {
+    console.error('[Coaching] Get coaching note error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
+ * PUT /api/coaching/notes/:coaching_schedule_id
+ * Edit/confirm/publish AI coaching note (Admin or Coach only)
+ */
+router.put('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
+  try {
+    const { coaching_schedule_id } = req.params;
+
+    const userGroups = req.user?.groups || [];
+    const isAdmin = userGroups.includes('admin');
+    const isCoach = userGroups.includes('coach');
+
+    if (!isAdmin && !isCoach) {
+      console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to update coaching note ${coaching_schedule_id}`);
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: '管理者またはコーチのみ更新できます。'
+      });
+    }
+
+    const note = await coachingService.updateCoachingNote(parseInt(coaching_schedule_id), req.body);
+    res.json(note);
+  } catch (error) {
+    console.error('[Coaching] Update coaching note error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
 /**
  * DELETE /api/coaching/mappings/:coach_user_id/:student_user_id
  * Delete coach-student mapping (Admin only)

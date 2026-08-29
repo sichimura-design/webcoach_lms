@@ -10,8 +10,6 @@ from dto.response import BulkUploadResponse, BulkUploadError
 from crud import (
     upsert_webcoach_user_profile,
     upsert_webcoach_user_course_lastaccess,
-    upsert_webcoach_learning_roadmap,
-    upsert_webcoach_learning_roadmap_step,
 )
 
 router = APIRouter(prefix="/api", tags=["Bulk Update"])
@@ -31,8 +29,6 @@ def update_database(
 
     対応しているデータタイプ:
     - users: ユーザー情報
-    - courses: コース情報
-    - enrollments: 受講登録情報
     - categories: カテゴリ情報
 
     Args:
@@ -65,34 +61,6 @@ def update_database(
                         processed_count += 1
                     else:
                         raise ValueError("Unknown user data type")
-
-                elif request.data_type == "courses":
-                    # ロードマップ情報の処理
-                    if 'roadmap' in str(record).lower() or 'name' in record:
-                        # webcoach_learning_roadmap テーブル
-                        if not record.get("name"):
-                            raise ValueError("name is required for roadmap")
-                        if not record.get("category"):
-                            raise ValueError("category is required for roadmap")
-                        if not record.get("required_study_time"):
-                            raise ValueError("required_study_time is required for roadmap")
-                        if not record.get("icon_url"):
-                            raise ValueError("icon_url is required for roadmap")
-                        upsert_webcoach_learning_roadmap(db, record)
-                        processed_count += 1
-                    else:
-                        raise ValueError("Unknown course data type")
-
-                elif request.data_type == "enrollments":
-                    # ロードマップステップ情報の処理
-                    if not record.get("roadmap_id"):
-                        raise ValueError("roadmap_id is required for roadmap step")
-                    if not record.get("step_number"):
-                        raise ValueError("step_number is required for roadmap step")
-                    if not record.get("mdl_course_id"):
-                        raise ValueError("mdl_course_id is required for roadmap step")
-                    upsert_webcoach_learning_roadmap_step(db, record)
-                    processed_count += 1
 
                 elif request.data_type == "categories":
                     # カテゴリ情報は現在未使用

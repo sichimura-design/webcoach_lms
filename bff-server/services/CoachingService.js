@@ -32,6 +32,54 @@ class CoachingService {
   }
 
   /**
+   * Get coaching schedules for a student
+   */
+  async getCoachingSchedules(userid) {
+    console.log(`[Coaching] Getting coaching schedules for user ${userid}`);
+    return await apiServerAdapter.getCoachingSchedules(userid);
+  }
+
+  /**
+   * Create coaching schedule
+   */
+  async createCoachingSchedule(userid, data) {
+    console.log(`[Coaching] Creating coaching schedule for user ${userid}`);
+    return await apiServerAdapter.createCoachingSchedule(userid, data);
+  }
+
+  /**
+   * Update coaching schedule
+   */
+  async updateCoachingSchedule(userid, id, data) {
+    console.log(`[Coaching] Updating coaching schedule ${id} for user ${userid}`);
+    return await apiServerAdapter.updateCoachingSchedule(userid, id, data);
+  }
+
+  /**
+   * Delete coaching schedule
+   */
+  async deleteCoachingSchedule(userid, id) {
+    console.log(`[Coaching] Deleting coaching schedule ${id} for user ${userid}`);
+    return await apiServerAdapter.deleteCoachingSchedule(userid, id);
+  }
+
+  /**
+   * Get AI coaching note for a coaching schedule
+   */
+  async getCoachingNote(coachingScheduleId) {
+    console.log(`[Coaching] Getting coaching note for schedule ${coachingScheduleId}`);
+    return await apiServerAdapter.getCoachingNote(coachingScheduleId);
+  }
+
+  /**
+   * Update (edit/confirm/publish) AI coaching note
+   */
+  async updateCoachingNote(coachingScheduleId, data) {
+    console.log(`[Coaching] Updating coaching note for schedule ${coachingScheduleId}`);
+    return await apiServerAdapter.updateCoachingNote(coachingScheduleId, data);
+  }
+
+  /**
    * Create coach-student mapping
    */
   async createMapping(coachUserId, studentUserId) {

@@ -103,6 +103,15 @@ export class Ec2AmiStack extends cdk.Stack {
       resources: ['*'],
     }));
 
+    // Dify APIキー（webcoach_ai_application.secret_key -> APIキー のJSONマップ）読み取り権限
+    role.addToPolicy(new iam.PolicyStatement({
+      sid: 'DifyCredentialsSecretAccess',
+      actions: ['secretsmanager:GetSecretValue'],
+      resources: [
+        `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${envName}/moodle/dify-credentials-*`,
+      ],
+    }));
+
     // SPAフロントエンドバケットのアクセス権限（HTMLコンテンツ取得・画像アップロード用）
     const spaBucketName = 'moodle-spa-frontend-spafrontendbucketa0c499f3-1q1oez2ib24b';
     role.addToPolicy(new iam.PolicyStatement({
@@ -114,6 +123,19 @@ export class Ec2AmiStack extends cdk.Stack {
       sid: 'SpaFrontendBucketListAccess',
       actions: ['s3:ListBucket'],
       resources: [`arn:aws:s3:::${spaBucketName}`],
+    }));
+
+    // コーチング録画バケットのアクセス権限
+    const recordingsBucketName = `${envName}-moodle-recordings-${this.account}`;
+    role.addToPolicy(new iam.PolicyStatement({
+      sid: 'RecordingsBucketReadWriteAccess',
+      actions: ['s3:GetObject', 's3:PutObject', 's3:DeleteObject'],
+      resources: [`arn:aws:s3:::${recordingsBucketName}/*`],
+    }));
+    role.addToPolicy(new iam.PolicyStatement({
+      sid: 'RecordingsBucketListAccess',
+      actions: ['s3:ListBucket'],
+      resources: [`arn:aws:s3:::${recordingsBucketName}`],
     }));
 
     // ========================================

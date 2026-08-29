@@ -11,3 +11,5 @@ export { CourseImage } from './CourseImage';
 export { ErrorBoundary } from './ErrorBoundary';
 export { DataRenderer } from './DataRenderer';
 export { AppIcon } from './AppIcon';
+export { default as LearningBreadcrumb } from './LearningBreadcrumb';
+export type { Crumb } from './LearningBreadcrumb';

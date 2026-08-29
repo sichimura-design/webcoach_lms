@@ -9,8 +9,22 @@ import {
   ProfileUpdate,
   ResumeCourse,
   UpdateResumeCourseRequest,
+  StudyNote,
+  UpdateStudyNoteRequest,
+  CoachingSchedule,
+  CreateCoachingScheduleRequest,
+  UpdateCoachingScheduleRequest,
+  CoachingNote,
+  UpdateCoachingNoteRequest,
   Roadmap,
   RoadmapQueryParams,
+  RoadmapSkill,
+  RoadmapPhase,
+  UserRoadmap,
+  RoadmapProgress,
+  RoadmapProgressUpdate,
+  RoadmapQuestion,
+  RoadmapAnswer,
   AIRequest,
   AIResponse,
   UpdateDBRequest,
@@ -18,6 +32,16 @@ import {
   HealthResponse,
 } from '../types/api';
 import { CoachingGoalApi, CoachingGoalUpdateItem } from '../types/mypage';
+import {
+  StudySession,
+  ActiveStudySessionInfo,
+  StudyStats,
+  StudyStreak,
+  StudyCalendarData,
+  StudyRanking,
+  CourseAccess,
+  CourseMaterialAccess,
+} from '../types/studyActivity';
 import { getIdToken } from './cognitoAuth';
 
 /**
@@ -310,12 +334,213 @@ class BFFClient {
   }
 
   /**
+   * 学習メモ取得
+   * GET /api/webcoach/study-note/{userid}/{courseid}/{cmid}
+   */
+  async getStudyNote(userId: number, courseId: number, cmid: number): Promise<StudyNote> {
+    const response = await this.api.get(
+      `/webcoach/study-note/${userId}/${courseId}/${cmid}`
+    );
+    return response.data;
+  }
+
+  /**
+   * 学習メモ更新
+   * PUT /api/webcoach/study-note/{userid}/{courseid}/{cmid}
+   */
+  async updateStudyNote(
+    userId: number,
+    courseId: number,
+    cmid: number,
+    data: UpdateStudyNoteRequest
+  ): Promise<StudyNote> {
+    const response = await this.api.put(
+      `/webcoach/study-note/${userId}/${courseId}/${cmid}`,
+      data
+    );
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール一覧取得
+   * GET /api/coaching/schedule/{userid}
+   */
+  async getCoachingSchedules(userId: number): Promise<CoachingSchedule[]> {
+    const response = await this.api.get(`/coaching/schedule/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール作成
+   * POST /api/coaching/schedule/{userid}
+   */
+  async createCoachingSchedule(
+    userId: number,
+    data: CreateCoachingScheduleRequest
+  ): Promise<CoachingSchedule> {
+    const response = await this.api.post(`/coaching/schedule/${userId}`, data);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール更新
+   * PUT /api/coaching/schedule/{userid}/{id}
+   */
+  async updateCoachingSchedule(
+    userId: number,
+    id: number,
+    data: UpdateCoachingScheduleRequest
+  ): Promise<CoachingSchedule> {
+    const response = await this.api.put(`/coaching/schedule/${userId}/${id}`, data);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール削除
+   * DELETE /api/coaching/schedule/{userid}/{id}
+   */
+  async deleteCoachingSchedule(userId: number, id: number): Promise<void> {
+    await this.api.delete(`/coaching/schedule/${userId}/${id}`);
+  }
+
+  /**
+   * AIコーチングノート取得
+   * GET /api/coaching/notes/{coaching_schedule_id}
+   */
+  async getCoachingNote(coachingScheduleId: number): Promise<CoachingNote> {
+    const response = await this.api.get(`/coaching/notes/${coachingScheduleId}`);
+    return response.data;
+  }
+
+  /**
+   * AIコーチングノート編集・確定・公開
+   * PUT /api/coaching/notes/{coaching_schedule_id}
+   */
+  async updateCoachingNote(
+    coachingScheduleId: number,
+    data: UpdateCoachingNoteRequest
+  ): Promise<CoachingNote> {
+    const response = await this.api.put(`/coaching/notes/${coachingScheduleId}`, data);
+    return response.data;
+  }
+
+  /**
    * おすすめバッジ取得
    * GET /api/webcoach/recomendbadge/{userid}
    */
   async getRecommendedBadges(userId: number): Promise<Badge[]> {
     const response = await this.api.get(`/webcoach/recomendbadge/${userId}`);
     return response.data;
+  }
+
+  /**
+   * 集中ブース学習セッションの開始/再開(一時停止後)
+   * POST /api/study/sessions/{userid}/start
+   */
+  async startStudySession(userId: number, courseId?: number): Promise<void> {
+    await this.api.post(`/study/sessions/${userId}/start`, { courseid: courseId });
+  }
+
+  /**
+   * 集中ブース学習セッションの一時停止/終了
+   * POST /api/study/sessions/{userid}/end
+   */
+  async endStudySession(userId: number, courseId?: number): Promise<void> {
+    await this.api.post(`/study/sessions/${userId}/end`, { courseid: courseId });
+  }
+
+  /**
+   * 直前に終了した区間の学習時間を手動で補正(低頻度)
+   * POST /api/study/sessions/{userid}/correct
+   */
+  async correctStudySession(userId: number, deltaMinutes: number, courseId?: number): Promise<void> {
+    await this.api.post(`/study/sessions/${userId}/correct`, { deltaMinutes, courseid: courseId });
+  }
+
+  /**
+   * 進行中の学習セッション取得(無ければ404)
+   * GET /api/study/sessions/{userid}/active
+   */
+  async getActiveStudySession(userId: number): Promise<ActiveStudySessionInfo | null> {
+    try {
+      const response = await this.api.get(`/study/sessions/${userId}/active`);
+      return response.data;
+    } catch (error: any) {
+      if (error?.response?.status === 404) return null;
+      throw error;
+    }
+  }
+
+  /**
+   * 直近の学習セッション一覧取得
+   * GET /api/study/sessions/{userid}/recent
+   */
+  async getRecentStudySessions(userId: number, limit = 10): Promise<StudySession[]> {
+    const response = await this.api.get(`/study/sessions/${userId}/recent`, { params: { limit } });
+    return response.data;
+  }
+
+  /**
+   * 今日・今週・累計の学習時間取得
+   * GET /api/study/stats/{userid}
+   */
+  async getStudyStats(userId: number): Promise<StudyStats> {
+    const response = await this.api.get(`/study/stats/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 学習ストリーク取得
+   * GET /api/study/streak/{userid}
+   */
+  async getStudyStreak(userId: number): Promise<StudyStreak> {
+    const response = await this.api.get(`/study/streak/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * 学習カレンダー取得
+   * GET /api/study/calendar/{userid}?year=&month=
+   */
+  async getStudyCalendar(userId: number, year: number, month: number): Promise<StudyCalendarData> {
+    const response = await this.api.get(`/study/calendar/${userId}`, { params: { year, month } });
+    return response.data;
+  }
+
+  /**
+   * 学習時間ランキング取得
+   * GET /api/study/ranking?period=&limit=
+   */
+  async getStudyRanking(period: 'week' | 'month' | 'all' = 'week', limit = 20): Promise<StudyRanking> {
+    const response = await this.api.get('/study/ranking', { params: { period, limit } });
+    return response.data;
+  }
+
+  /**
+   * コースごとのアクセス集計取得
+   * GET /api/study/course-access/{userid}
+   */
+  async getCourseAccess(userId: number): Promise<CourseAccess> {
+    const response = await this.api.get(`/study/course-access/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * コース内の教材ごとのアクセス集計取得
+   * GET /api/study/course-access/{userid}/{courseid}/materials
+   */
+  async getCourseMaterialAccess(userId: number, courseId: number): Promise<CourseMaterialAccess> {
+    const response = await this.api.get(`/study/course-access/${userId}/${courseId}/materials`);
+    return response.data;
+  }
+
+  /**
+   * 教材(page/url/resource)閲覧ログ記録。courseid/cmidをネイティブ列として記録する
+   * 自前イベント(course_material_viewed)を発火する。cmidは省略可(コース単位のみ記録)。
+   * POST /api/study/modules/{userid}/viewed
+   */
+  async logModuleView(userId: number, courseId: number, cmid?: number): Promise<void> {
+    await this.api.post(`/study/modules/${userId}/viewed`, { courseid: courseId, cmid });
   }
 
   /**
@@ -586,6 +811,35 @@ class BFFClient {
     return response.data;
   }
 
+  // ==================== ミーティング連携 (Zoom / Google Meet) ====================
+
+  /**
+   * 自分（コーチ）のミーティング連携状態取得
+   * GET /api/integrations/status
+   */
+  async getMeetingIntegrationStatus(): Promise<{
+    coach_user_id: number;
+    integrations: Array<{
+      coach_user_id: number;
+      provider: string;
+      provider_account_email: string | null;
+      connected_at: string;
+      updated_at: string;
+    }>;
+  }> {
+    const response = await this.api.get('/integrations/status');
+    return response.data;
+  }
+
+  /**
+   * Zoom/Google Meet連携の認可URL取得
+   * GET /api/integrations/{provider}/authorize
+   */
+  async getMeetingIntegrationAuthorizeUrl(provider: 'zoom' | 'google'): Promise<{ authorizeUrl: string }> {
+    const response = await this.api.get(`/integrations/${provider}/authorize`);
+    return response.data;
+  }
+
   /**
    * コース画像取得（Base64）
    * GET /api/moodle/course-image?path={relativePath}
@@ -619,6 +873,78 @@ class BFFClient {
 
     const response = await this.api.get('/moodle/course-image', {
       params: { path: param }
+    });
+    return response.data;
+  }
+
+  // ==================== キャリアロードマップ（フェーズ制・スキル別テンプレート） ====================
+
+  /**
+   * ロードマップ スキル一覧取得
+   * GET /api/roadmap/skills
+   */
+  async getRoadmapSkills(): Promise<RoadmapSkill[]> {
+    const response = await this.api.get('/roadmap/skills');
+    return response.data;
+  }
+
+  /**
+   * スキルのフェーズ・テンプレート取得
+   * GET /api/roadmap/phases?skill_id=
+   */
+  async getRoadmapPhases(skillId: number): Promise<RoadmapPhase[]> {
+    const response = await this.api.get('/roadmap/phases', { params: { skill_id: skillId } });
+    return response.data;
+  }
+
+  /**
+   * ロードマップ開始
+   * POST /api/roadmap/users/{userid}
+   */
+  async startUserRoadmap(userId: number, skillId: number): Promise<UserRoadmap> {
+    const response = await this.api.post(`/roadmap/users/${userId}`, { skill_id: skillId });
+    return response.data;
+  }
+
+  /**
+   * 現在のロードマップ取得
+   * GET /api/roadmap/users/{userid}
+   */
+  async getUserRoadmap(userId: number): Promise<UserRoadmap> {
+    const response = await this.api.get(`/roadmap/users/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * フェーズ進捗更新（管理者・コーチのみ）
+   * PUT /api/roadmap/progress/{id}
+   */
+  async updateRoadmapProgress(progressId: number, data: RoadmapProgressUpdate): Promise<RoadmapProgress> {
+    const response = await this.api.put(`/roadmap/progress/${progressId}`, data);
+    return response.data;
+  }
+
+  /**
+   * 見直し質問一覧取得
+   * GET /api/roadmap/questions/{reviewNo}
+   */
+  async getRoadmapQuestions(reviewNo: number): Promise<RoadmapQuestion[]> {
+    const response = await this.api.get(`/roadmap/questions/${reviewNo}`);
+    return response.data;
+  }
+
+  /**
+   * 見直し回答登録
+   * POST /api/roadmap/users/{userid}/answers
+   */
+  async submitRoadmapAnswers(
+    userId: number,
+    reviewNo: number,
+    answers: Array<{ question_no: number; answer: string }>
+  ): Promise<RoadmapAnswer[]> {
+    const response = await this.api.post(`/roadmap/users/${userId}/answers`, {
+      review_no: reviewNo,
+      answers,
     });
     return response.data;
   }

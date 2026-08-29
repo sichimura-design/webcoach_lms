@@ -1,10 +1,11 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, ChevronRight, User } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Search, User, Calendar } from 'lucide-react';
 import { AppHeader } from '../shared/AppHeader';
 import { Button } from '../ui/button';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
+import { color as themeColor } from '../../theme/webcoachTheme';
 
 interface Student {
   id: number;
@@ -25,7 +26,6 @@ function isAlert(s: Student): boolean {
 
 export function CoachStudentsPage() {
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -113,7 +113,7 @@ export function CoachStudentsPage() {
           >
             <span className="flex-1 text-sm font-bold text-white">受講生</span>
             <span className="w-28 text-sm font-bold text-white text-center">最終ログイン</span>
-            <span className="w-32" />
+            <span className="w-36 flex-shrink-0 text-sm font-bold text-white text-center">コーチング</span>
           </div>
 
           {/* Rows */}
@@ -151,17 +151,16 @@ export function CoachStudentsPage() {
                     {student.lastaccess === 0 ? '未ログイン' : student.lastaccess_formatted}
                   </span>
 
-                  {/* Detail button */}
-                  <div className="w-32 flex justify-end">
-                    <Button
-                      variant="brand-ghost"
-                      size="pill-sm"
-                      onClick={() => navigate(`/coach/students/${student.id}`)}
-                    >
-                      詳しく見る
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </Button>
-                  </div>
+                  {/* コーチング記録 */}
+                  <Link
+                    to={`/coach/schedule/${student.id}`}
+                    className="flex items-center gap-1 ml-4 px-3 py-1.5 rounded-full text-xs font-bold flex-shrink-0 transition-colors hover:opacity-80"
+                    style={{ background: themeColor.primarySoft, color: themeColor.primary }}
+                  >
+                    <Calendar className="w-3.5 h-3.5" />
+                    コーチング記録
+                  </Link>
+
                 </div>
               ))
             )}

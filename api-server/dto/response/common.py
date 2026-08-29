@@ -2,7 +2,7 @@
 Common response DTOs
 """
 from typing import Optional, List, Dict, Any
-from datetime import datetime
+from datetime import datetime, date
 from pydantic import BaseModel, Field, ConfigDict
 
 
@@ -59,6 +59,54 @@ class NextCoachingGoalResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class StudyNoteResponse(BaseModel):
+    """学習メモレスポンス"""
+    mdl_user_id: int
+    courseid: int
+    cmid: int
+    content: str
+    updated_at: Optional[datetime] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CoachingScheduleResponse(BaseModel):
+    """コーチングスケジュールレスポンス"""
+    id: int
+    mdl_user_id: int
+    coach_user_id: int
+    coaching_no: int
+    coaching_date: date
+    status: Optional[str] = None
+    meeting_url: str
+    coaching_summary: Optional[str] = None
+    todo: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CoachingNoteResponse(BaseModel):
+    """AIコーチングノートレスポンス"""
+    id: int
+    coaching_schedule_id: int
+    status: str
+    session_summary: Optional[str] = None
+    client_status_and_goal: Optional[str] = None
+    main_issues: Optional[str] = None
+    coach_feedback: Optional[str] = None
+    decisions: Optional[str] = None
+    client_next_actions: Optional[str] = None
+    coach_follow_up: Optional[str] = None
+    next_session_check: Optional[str] = None
+    published_at: Optional[datetime] = None
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class CoachStudentMappingResponse(BaseModel):
     """コーチと受講生のマッピングレスポンス"""
     coach_user_id: int
@@ -80,3 +128,43 @@ class CoachResponse(BaseModel):
     """コーチ情報レスポンス"""
     student_user_id: int
     coach_user_id: Optional[int] = Field(None, description="コーチのユーザーID（未割り当ての場合None）")
+
+
+class CoachMeetingIntegrationResponse(BaseModel):
+    """コーチのミーティング連携状態レスポンス（トークン本体は含まない）"""
+    coach_user_id: int
+    provider: str
+    provider_account_email: Optional[str] = None
+    connected_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CoachMeetingIntegrationStatusResponse(BaseModel):
+    """コーチの連携状態一覧レスポンス"""
+    coach_user_id: int
+    integrations: List[CoachMeetingIntegrationResponse]
+
+
+class CoachingRecordingResponse(BaseModel):
+    """コーチング録画メタデータレスポンス"""
+    id: int
+    coaching_schedule_id: int
+    recording_type: str
+    source: str
+    external_recording_id: Optional[str] = None
+    s3_bucket: str
+    s3_key: str
+    status: str
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class LoginStreakResponse(BaseModel):
+    """継続ログイン日数レスポンス"""
+    userid: int
+    current_streak: int = Field(..., description="連続ログイン日数（今日または昨日が最終ログインの場合のみカウント）")
+    last_active_date: Optional[date] = Field(None, description="mdl_logstore_standard_logに記録された最終ログイン日（JST）")

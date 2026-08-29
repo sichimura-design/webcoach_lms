@@ -3,7 +3,7 @@ import DOMPurify from 'dompurify';
 import { bffClient } from '../services/bffClient';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
-import { useAiChat, ChatMessage } from '../hooks/useAiChat';
+import { useAiChat, ChatMessage, PendingImage } from '../hooks/useAiChat';
 import {
   FileText,
   Send,
@@ -16,6 +16,9 @@ import {
   Menu,
   Bot,
   User,
+  Paperclip,
+  ImageOff,
+  StickyNote,
 } from 'lucide-react';
 import Encoding from 'encoding-japanese';
 import MarkdownRenderer from './MarkdownRenderer';
@@ -281,10 +284,75 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // AI コーチ
-  const { messages: aiMessages, input: aiQuestion, setInput: setAiQuestion, loading: aiLoading, messagesEndRef: chatEndRef, sendMessage: sendAiMessage, handleKeyPress: handleAiKeyPress } = useAiChat();
+  const {
+    messages: aiMessages, input: aiQuestion, setInput: setAiQuestion, loading: aiLoading,
+    messagesEndRef: chatEndRef, sendMessage: sendAiMessage, handleKeyPress: handleAiKeyPress,
+    pendingImage: aiPendingImage, imageError: aiImageError, handleImageSelect: handleAiImageSelect,
+    clearPendingImage: clearAiPendingImage,
+  } = useAiChat();
+
+  // 教材(page/url/resource)を開いたら、courseid/cmidをネイティブ列として記録する自前イベント
+  // (course_material_viewed)を発火させる。SPAはMoodleの実ページコントローラを経由しないため、
+  // この呼び出しをしない限りMoodle側には一切アクセス記録が残らない。
+  const moduleViewLoggedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!user?.userid || !selectedModule) return;
+    const moduleType = selectedModule.modname;
+    if (moduleType !== 'page' && moduleType !== 'url' && moduleType !== 'resource') return;
+
+    const key = `${user.userid}:${selectedModule.id}`;
+    if (moduleViewLoggedRef.current === key) return;
+    moduleViewLoggedRef.current = key;
+
+    bffClient.logModuleView(user.userid, courseId, selectedModule.id).catch(() => {
+      // 閲覧ログの送信失敗は学習体験をブロックしない
+    });
+  }, [user?.userid, courseId, selectedModule?.id, selectedModule?.modname]);
 
   // モバイルサイドバー
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // 右サイドバー タブ（AIコーチ／メモ）
+  const [sidebarTab, setSidebarTab] = useState<'ai' | 'memo'>('ai');
+
+  // 学習メモ
+  const [memoContent, setMemoContent] = useState('');
+  const [memoStatus, setMemoStatus] = useState<'idle' | 'loading' | 'saving' | 'saved'>('idle');
+  const memoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const memoLoadedKeyRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!selectedModule || !user) return;
+    const key = `${courseId}:${selectedModule.id}`;
+    memoLoadedKeyRef.current = key;
+    setMemoStatus('loading');
+    bffClient.getStudyNote(user.userid, courseId, selectedModule.id)
+      .then(note => {
+        if (memoLoadedKeyRef.current === key) {
+          setMemoContent(note.content);
+          setMemoStatus('idle');
+        }
+      })
+      .catch(() => {
+        if (memoLoadedKeyRef.current === key) {
+          setMemoStatus('idle');
+        }
+      });
+  }, [selectedModule?.id, courseId, user]);
+
+  const handleMemoChange = (value: string) => {
+    setMemoContent(value);
+    if (!selectedModule || !user) return;
+    const targetCourseId = courseId;
+    const targetCmid = selectedModule.id;
+    if (memoSaveTimer.current) clearTimeout(memoSaveTimer.current);
+    memoSaveTimer.current = setTimeout(() => {
+      setMemoStatus('saving');
+      bffClient.updateStudyNote(user.userid, targetCourseId, targetCmid, { content: value })
+        .then(() => setMemoStatus('saved'))
+        .catch(() => setMemoStatus('idle'));
+    }, 500);
+  };
 
   // アクティビティ完了
   const [completing, setCompleting] = useState(false);
@@ -617,6 +685,56 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     }
   };
 
+  // ─── 右サイドバー（AIコーチ／メモ タブ） ─────
+  const renderSupportPanel = (mobile: boolean) => (
+    <div className={mobile ? 'bg-white rounded-2xl shadow-sm overflow-hidden' : ''}>
+      <div className="flex items-center gap-1.5 px-4 pt-3 pb-2 bg-brand-bg">
+        <button
+          onClick={() => setSidebarTab('ai')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
+            sidebarTab === 'ai' ? 'bg-brand-gradient text-white' : 'text-brand-muted hover:bg-white'
+          }`}
+        >
+          <Bot className="w-3.5 h-3.5" />
+          AIコーチ
+        </button>
+        <button
+          onClick={() => setSidebarTab('memo')}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
+            sidebarTab === 'memo' ? 'bg-brand-gradient text-white' : 'text-brand-muted hover:bg-white'
+          }`}
+        >
+          <StickyNote className="w-3.5 h-3.5" />
+          メモ
+        </button>
+      </div>
+      {sidebarTab === 'ai' ? (
+        <AiCoachPanel
+          aiMessages={aiMessages}
+          aiLoading={aiLoading}
+          aiQuestion={aiQuestion}
+          setAiQuestion={setAiQuestion}
+          handleAiKeyPress={handleAiKeyPress}
+          onSend={handleAiQuestion}
+          chatEndRef={chatEndRef}
+          pendingImage={aiPendingImage}
+          imageError={aiImageError}
+          onImageSelect={handleAiImageSelect}
+          onClearImage={clearAiPendingImage}
+          mobile={mobile}
+        />
+      ) : (
+        <MemoPanel
+          content={memoContent}
+          status={memoStatus}
+          onChange={handleMemoChange}
+          lessonTitle={selectedModule?.name}
+          mobile={mobile}
+        />
+      )}
+    </div>
+  );
+
   // ─── ローディング / エラー ────────────────
   if (loading) {
     return (
@@ -816,15 +934,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         <div className="hidden lg:flex flex-col gap-0 w-80 flex-shrink-0 sticky top-[160px] rounded-3xl overflow-y-auto" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6', maxHeight: 'calc(100vh - 170px)' }}>
           <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} />
           <div className="border-t border-brand-border">
-            <AiCoachPanel
-              aiMessages={aiMessages}
-              aiLoading={aiLoading}
-              aiQuestion={aiQuestion}
-              setAiQuestion={setAiQuestion}
-              handleAiKeyPress={handleAiKeyPress}
-              onSend={handleAiQuestion}
-              chatEndRef={chatEndRef}
-            />
+            {renderSupportPanel(false)}
           </div>
         </div>
       </div>
@@ -849,16 +959,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
               </button>
             </div>
             <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} mobile />
-            <AiCoachPanel
-              aiMessages={aiMessages}
-              aiLoading={aiLoading}
-              aiQuestion={aiQuestion}
-              setAiQuestion={setAiQuestion}
-              handleAiKeyPress={handleAiKeyPress}
-              onSend={handleAiQuestion}
-              chatEndRef={chatEndRef}
-              mobile
-            />
+            {renderSupportPanel(true)}
           </div>
         </div>
       )}
@@ -934,11 +1035,19 @@ interface AiCoachPanelProps {
   handleAiKeyPress: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   onSend: () => void;
   chatEndRef: React.RefObject<HTMLDivElement>;
+  pendingImage: PendingImage | null;
+  imageError: string | null;
+  onImageSelect: (file: File) => void;
+  onClearImage: () => void;
   mobile?: boolean;
 }
 
-function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, chatEndRef, mobile = false }: AiCoachPanelProps) {
+function AiCoachPanel({
+  aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, chatEndRef,
+  pendingImage, imageError, onImageSelect, onClearImage, mobile = false,
+}: AiCoachPanelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!aiQuestion && textareaRef.current) {
@@ -961,6 +1070,9 @@ function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handle
               {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
             </div>
             <div className={`rounded-2xl px-4 py-3 shadow-sm max-w-xs text-sm ${msg.role === 'user' ? 'bg-brand text-white' : 'bg-white text-brand-muted'}`}>
+              {msg.imageDataUrl && (
+                <img src={msg.imageDataUrl} alt="添付画像" className="max-w-full max-h-40 rounded-lg mb-2 object-contain" />
+              )}
               {msg.role === 'assistant' ? (
                 <MarkdownRenderer content={msg.content} compact />
               ) : (
@@ -983,7 +1095,35 @@ function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handle
         <div ref={chatEndRef} />
       </div>
       <div className="px-6 py-4 bg-white border-t border-brand-border">
+        {pendingImage && (
+          <div className="mb-2 flex items-center gap-2">
+            <img src={pendingImage.dataUrl} alt="添付予定の画像" className="w-12 h-12 rounded-lg object-cover border border-brand-border" />
+            <button onClick={onClearImage} className="p-1 text-brand-muted hover:text-brand-text" title="画像を取り消す">
+              <ImageOff className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+        {imageError && <p className="text-xs text-red-500 mb-2">{imageError}</p>}
         <div className="flex items-end gap-2 px-4 py-2 rounded-2xl bg-brand-bg">
+          <input
+            ref={imageInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            className="hidden"
+            onChange={e => {
+              const file = e.target.files?.[0];
+              if (file) onImageSelect(file);
+              e.target.value = '';
+            }}
+          />
+          <button
+            onClick={() => imageInputRef.current?.click()}
+            disabled={aiLoading}
+            className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-brand-muted hover:text-brand disabled:opacity-50 transition-colors"
+            title="画像を添付"
+          >
+            <Paperclip className="w-4 h-4" />
+          </button>
           <textarea
             ref={textareaRef}
             placeholder="質問を入力..."
@@ -995,17 +1135,68 @@ function AiCoachPanel({ aiMessages, aiLoading, aiQuestion, setAiQuestion, handle
               e.target.style.height = `${e.target.scrollHeight}px`;
             }}
             onKeyDown={handleAiKeyPress}
+            onPaste={e => {
+              const items = e.clipboardData?.items;
+              if (!items) return;
+              for (let i = 0; i < items.length; i++) {
+                if (items[i].type.startsWith('image/')) {
+                  const file = items[i].getAsFile();
+                  if (file) {
+                    e.preventDefault();
+                    onImageSelect(file);
+                  }
+                  break;
+                }
+              }
+            }}
             className="flex-1 bg-transparent outline-none text-sm text-brand-text resize-none overflow-hidden leading-5 py-1"
             style={{ maxHeight: '120px', overflowY: 'auto' }}
           />
           <button
             onClick={onSend}
-            disabled={!aiQuestion.trim() || aiLoading}
-            className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mb-0.5 transition-colors ${aiQuestion.trim() && !aiLoading ? 'bg-brand' : 'bg-[#d0cac6]'}`}
+            disabled={(!aiQuestion.trim() && !pendingImage) || aiLoading}
+            className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mb-0.5 transition-colors ${(aiQuestion.trim() || pendingImage) && !aiLoading ? 'bg-brand' : 'bg-[#d0cac6]'}`}
           >
             <Send className="w-3 h-3 text-white" />
           </button>
         </div>
+      </div>
+    </div>
+  );
+}
+
+interface MemoPanelProps {
+  content: string;
+  status: 'idle' | 'loading' | 'saving' | 'saved';
+  onChange: (value: string) => void;
+  lessonTitle?: string;
+  mobile?: boolean;
+}
+
+function MemoPanel({ content, status, onChange, lessonTitle, mobile = false }: MemoPanelProps) {
+  const statusLabel =
+    status === 'saving' ? '保存中…' : status === 'saved' ? '自動保存済み' : '自動保存';
+
+  return (
+    <div className={`bg-white ${mobile ? 'rounded-2xl shadow-sm' : ''} overflow-hidden`}>
+      <div className="flex items-center justify-between px-6 py-4 bg-brand-bg border-b border-brand-border">
+        <div className="flex items-center gap-2">
+          <StickyNote className="w-5 h-5 text-brand" />
+          <span className="font-bold text-brand-muted" style={{ fontSize: '15px' }}>メモ</span>
+        </div>
+        <span className="text-xs text-brand-subtle">{statusLabel}</span>
+      </div>
+      <div className="px-6 py-5" style={{ background: '#fafafa' }}>
+        <textarea
+          value={content}
+          onChange={e => onChange(e.target.value)}
+          placeholder="教材を見ながら、気づいたこと・試したいことを書く…"
+          className="w-full bg-white rounded-2xl px-4 py-3 text-sm text-brand-text outline-none border border-brand-border resize-none"
+          style={{ minHeight: '220px' }}
+        />
+        {lessonTitle && (
+          <p className="mt-2 text-xs text-brand-subtle">「{lessonTitle}」に保存</p>
+        )}
       </div>
     </div>
   );

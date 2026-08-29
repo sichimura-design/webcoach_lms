@@ -3,10 +3,12 @@ LangChain Tools for BFF API Integration
 BFF APIツールをLangChain Tool形式で定義
 """
 import os
+import json
 import logging
+from functools import lru_cache
 from typing import Dict, Any, List, Optional
 import requests
-from langchain_core.tools import Tool
+from langchain_core.tools import Tool, StructuredTool, BaseTool
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -14,6 +16,43 @@ logger = logging.getLogger(__name__)
 # BFFサーバーのURL
 BFF_SERVER_URL = os.getenv("BFF_SERVER_URL", "http://bff-server:3001")
 INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "default-internal-key-change-in-production")
+
+# Dify連携設定
+# APIキーは webcoach_ai_application.secret_key で指定されたキー名をもとに、
+# 以下のいずれかから読み込む認証情報JSON（{"<secret_key>": "<APIキー>", ...}）から解決する。
+#   1. DIFY_CREDENTIALS_JSON（ローカル開発用: JSON文字列を直接指定）
+#   2. DIFY_CREDENTIALS_SECRET_ID（AWS Secrets Managerのシークレット名/ARN）
+DIFY_API_BASE_URL = os.getenv("DIFY_API_BASE_URL", "https://api.dify.ai/v1")
+DIFY_CREDENTIALS_JSON = os.getenv("DIFY_CREDENTIALS_JSON")
+DIFY_CREDENTIALS_SECRET_ID = os.getenv("DIFY_CREDENTIALS_SECRET_ID")
+
+
+@lru_cache(maxsize=1)
+def _load_dify_credentials() -> Dict[str, str]:
+    """Dify認証情報（アプリのsecret_key -> APIキー）を読み込む（プロセス内キャッシュ）"""
+    if DIFY_CREDENTIALS_JSON:
+        try:
+            return json.loads(DIFY_CREDENTIALS_JSON)
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse DIFY_CREDENTIALS_JSON: {e}")
+            return {}
+
+    if not DIFY_CREDENTIALS_SECRET_ID:
+        return {}
+
+    try:
+        import boto3
+        client = boto3.client("secretsmanager", region_name=os.getenv("AWS_REGION", "ap-northeast-1"))
+        response = client.get_secret_value(SecretId=DIFY_CREDENTIALS_SECRET_ID)
+        return json.loads(response["SecretString"])
+    except Exception as e:
+        logger.error(f"Failed to load Dify credentials from Secrets Manager: {e}")
+        return {}
+
+
+def _get_dify_api_key(secret_key: str) -> Optional[str]:
+    """secret_keyに対応するDify APIキーを取得"""
+    return _load_dify_credentials().get(secret_key)
 
 
 # ツール入力スキーマ定義
@@ -56,6 +95,12 @@ class GetRoadmapDetailInput(BaseModel):
 
 class GetUserBadgesInput(BaseModel):
     """ユーザーバッジ取得ツールの入力"""
+    userid: int = Field(..., description="ユーザーID")
+
+
+class AskAiApplicationInput(BaseModel):
+    """AIアプリケーション連携ツールの入力"""
+    query: str = Field(..., description="AIアプリに問い合わせる質問内容")
     userid: int = Field(..., description="ユーザーID")
 
 
@@ -182,6 +227,81 @@ def get_user_badges(userid: int) -> str:
         path_params={"userid": userid}
     )
     return str(result)
+
+
+# Dify会話の継続用キャッシュ（(userid, app_id) -> conversation_id）。
+# プロセス内メモリのみ。複数コンテナ構成やコンテナ再起動をまたぐ継続には対応しない。
+_dify_conversation_cache: Dict[tuple, str] = {}
+
+
+def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
+    """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリの会話はプロセス内で継続する）"""
+    conversation_id = _dify_conversation_cache.get((userid, app_id), "")
+    try:
+        response = requests.post(
+            f"{DIFY_API_BASE_URL}/chat-messages",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "inputs": {},
+                "query": query,
+                "response_mode": "blocking",
+                "conversation_id": conversation_id,
+                "user": f"webcoach-user-{userid}",
+            },
+            timeout=30,
+        )
+        response.raise_for_status()
+        data = response.json()
+
+        new_conversation_id = data.get("conversation_id")
+        if new_conversation_id:
+            _dify_conversation_cache[(userid, app_id)] = new_conversation_id
+
+        return data.get("answer", "")
+
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Dify API call failed: {e}")
+        return f"Difyへの問い合わせに失敗しました: {str(e)}"
+
+
+def create_ai_application_tools(db) -> List[BaseTool]:
+    """
+    DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
+    LangChain Toolとして動的に生成する。
+
+    secret_keyに対応するAPIキーがSecrets Manager等の認証情報から見つからない場合はスキップする。
+    """
+    from entities.webcoach import WebCoachAIApplication
+
+    tools: List[Tool] = []
+    apps = db.query(WebCoachAIApplication).filter(
+        WebCoachAIApplication.secret_key.isnot(None)
+    ).all()
+
+    for app in apps:
+        api_key = _get_dify_api_key(app.secret_key)
+        if not api_key:
+            logger.warning(f"No credential found for AI application '{app.name}' (secret_key={app.secret_key})")
+            continue
+
+        def make_func(api_key: str = api_key, app_id: int = app.id):
+            def _call(query: str, userid: int) -> str:
+                return _call_dify_chat(query, userid, api_key, app_id)
+            return _call
+
+        tools.append(
+            StructuredTool.from_function(
+                name=f"ask_ai_application_{app.id}",
+                description=f"「{app.name}」（{app.category}）に問い合わせます。{app.description}",
+                func=make_func(),
+                args_schema=AskAiApplicationInput
+            )
+        )
+
+    return tools
 
 
 # LangChain Tools定義

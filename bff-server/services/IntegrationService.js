@@ -1,214 +1,218 @@
 /**
- * Integration Service
- * Manages OAuth2 integrations with third-party meeting providers (Zoom, Google Meet)
+ * Meeting Integration Service
+ * Handles the Zoom / Google Meet OAuth "connect" flow for coaches.
+ *
+ * Scope of this service (current implementation):
+ *   - Build authorize URLs, exchange authorization codes for tokens,
+ *     encrypt tokens, and persist/report connection status.
+ * Explicitly out of scope for now:
+ *   - Fetching meeting transcripts/minutes (future work) — decrypt logic
+ *     is intentionally not implemented here since nothing consumes it yet.
  */
 
 const crypto = require('crypto');
 const axios = require('axios');
 const { config } = require('../config/environment');
+const apiServerAdapter = require('../adapters/ApiServerAdapter');
 const logger = require('../utils/logger');
 
-// In-memory token storage (replace with database in production)
-const tokenStore = new Map();
+const STATE_TTL_MS = 10 * 60 * 1000; // 10 minutes
 
-// State verification secret
-const STATE_SECRET = process.env.INTEGRATION_STATE_SECRET || crypto.randomBytes(32).toString('hex');
+const PROVIDERS = {
+  zoom: {
+    authorizeUrl: 'https://zoom.us/oauth/authorize',
+    tokenUrl: 'https://zoom.us/oauth/token',
+    clientId: () => config.zoomClientId,
+    clientSecret: () => config.zoomClientSecret,
+    redirectUri: () => config.zoomRedirectUri,
+    scopes: () => config.zoomOAuthScopes,
+  },
+  google: {
+    authorizeUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+    tokenUrl: 'https://oauth2.googleapis.com/token',
+    clientId: () => config.googleClientId,
+    clientSecret: () => config.googleClientSecret,
+    redirectUri: () => config.googleRedirectUri,
+    scopes: () => config.googleOAuthScopes,
+  },
+};
 
 class IntegrationService {
   /**
-   * Get integration status for a coach
-   * @param {number} moodleUserId
-   * @returns {Promise<{coach_user_id: number, integrations: Array}>}
-   */
-  async getStatus(moodleUserId) {
-    const integrations = [];
-
-    // Check for stored tokens
-    const zoomTokenKey = `zoom:${moodleUserId}`;
-    const googleTokenKey = `google:${moodleUserId}`;
-
-    if (tokenStore.has(zoomTokenKey)) {
-      const token = tokenStore.get(zoomTokenKey);
-      integrations.push({
-        coach_user_id: moodleUserId,
-        provider: 'zoom',
-        provider_account_email: token.account_email || null,
-        connected_at: token.connected_at,
-        updated_at: token.updated_at || token.connected_at,
-      });
-    }
-
-    if (tokenStore.has(googleTokenKey)) {
-      const token = tokenStore.get(googleTokenKey);
-      integrations.push({
-        coach_user_id: moodleUserId,
-        provider: 'google',
-        provider_account_email: token.account_email || null,
-        connected_at: token.connected_at,
-        updated_at: token.updated_at || token.connected_at,
-      });
-    }
-
-    return {
-      coach_user_id: moodleUserId,
-      integrations,
-    };
-  }
-
-  /**
-   * Build OAuth2 authorization URL
-   * @param {string} provider - 'zoom' or 'google'
-   * @param {number} moodleUserId
-   * @returns {string} Authorization URL
-   */
-  buildAuthorizeUrl(provider, moodleUserId) {
-    const state = this.generateState(moodleUserId, provider);
-    const callbackUrl = `${config.bffBaseUrl || 'http://localhost:3001'}/api/integrations/${provider}/callback`;
-
-    if (provider === 'zoom') {
-      const zoomClientId = process.env.ZOOM_CLIENT_ID;
-      if (!zoomClientId) {
-        throw new Error('ZOOM_CLIENT_ID not configured');
-      }
-
-      return `https://zoom.us/oauth/authorize?response_type=code&client_id=${zoomClientId}&redirect_uri=${encodeURIComponent(callbackUrl)}&state=${state}`;
-    }
-
-    if (provider === 'google') {
-      const googleClientId = process.env.GOOGLE_CLIENT_ID;
-      if (!googleClientId) {
-        throw new Error('GOOGLE_CLIENT_ID not configured');
-      }
-
-      const scopes = encodeURIComponent('https://www.googleapis.com/auth/calendar.readonly');
-      return `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${googleClientId}&redirect_uri=${encodeURIComponent(callbackUrl)}&scope=${scopes}&state=${state}&access_type=offline&prompt=consent`;
-    }
-
-    throw new Error(`Unsupported provider: ${provider}`);
-  }
-
-  /**
-   * Generate signed state parameter
-   * @param {number} moodleUserId
-   * @param {string} provider
-   * @returns {string} Signed state
+   * Sign a short-lived state parameter carrying the coach's moodleUserId + provider.
+   * Mirrors AuthService.generateContentToken's HMAC scheme.
    */
   generateState(moodleUserId, provider) {
-    const payload = JSON.stringify({ moodleUserId, provider, ts: Date.now() });
-    const signature = crypto.createHmac('sha256', STATE_SECRET).update(payload).digest('hex');
-    return Buffer.from(`${payload}.${signature}`).toString('base64url');
+    const secret = config.integrationStateSecret;
+    if (!secret) {
+      throw new Error('INTEGRATION_STATE_SECRET is not configured');
+    }
+
+    const nonce = crypto.randomBytes(8).toString('hex');
+    const expiry = Date.now() + STATE_TTL_MS;
+    const data = `${moodleUserId}:${provider}:${expiry}:${nonce}`;
+    const hmac = crypto.createHmac('sha256', secret).update(data).digest('hex');
+
+    return Buffer.from(`${data}:${hmac}`).toString('base64url');
   }
 
   /**
-   * Verify state parameter
-   * @param {string} state
-   * @param {string} provider
-   * @returns {{moodleUserId: number}}
+   * Verify + decode a state parameter. Throws if invalid/expired/tampered.
    */
-  verifyState(state, provider) {
+  verifyState(state, expectedProvider) {
+    const secret = config.integrationStateSecret;
+    if (!secret) {
+      throw new Error('INTEGRATION_STATE_SECRET is not configured');
+    }
+
+    let decoded;
     try {
-      const decoded = Buffer.from(state, 'base64url').toString('utf-8');
-      const [payload, signature] = decoded.split('.');
-
-      const expectedSignature = crypto.createHmac('sha256', STATE_SECRET).update(payload).digest('hex');
-      if (signature !== expectedSignature) {
-        throw new Error('Invalid state signature');
-      }
-
-      const data = JSON.parse(payload);
-
-      // Verify timestamp (max 10 minutes old)
-      if (Date.now() - data.ts > 10 * 60 * 1000) {
-        throw new Error('State expired');
-      }
-
-      if (data.provider !== provider) {
-        throw new Error('Provider mismatch');
-      }
-
-      return { moodleUserId: data.moodleUserId };
-    } catch (error) {
-      logger.error('[IntegrationService] State verification failed:', error.message);
+      decoded = Buffer.from(state, 'base64url').toString('utf8');
+    } catch (err) {
       throw new Error('Invalid state parameter');
     }
+
+    const parts = decoded.split(':');
+    if (parts.length !== 5) {
+      throw new Error('Invalid state parameter');
+    }
+    const [moodleUserId, provider, expiryStr, nonce, hmac] = parts;
+    const data = `${moodleUserId}:${provider}:${expiryStr}:${nonce}`;
+    const expectedHmac = crypto.createHmac('sha256', secret).update(data).digest('hex');
+
+    if (!crypto.timingSafeEqual(Buffer.from(hmac), Buffer.from(expectedHmac))) {
+      throw new Error('State signature mismatch');
+    }
+
+    if (Date.now() > parseInt(expiryStr, 10)) {
+      throw new Error('State has expired');
+    }
+
+    if (provider !== expectedProvider) {
+      throw new Error('State provider mismatch');
+    }
+
+    return { moodleUserId: parseInt(moodleUserId, 10), provider };
   }
 
   /**
-   * Exchange authorization code for tokens
-   * @param {string} provider
-   * @param {string} code
-   * @returns {Promise<Object>} Token response
+   * Derive a 32-byte AES key from the configured secret and encrypt with AES-256-GCM.
+   * Returns "iv:authTag:ciphertext" (all base64), storable as an opaque string.
    */
-  async exchangeCodeForTokens(provider, code) {
-    const callbackUrl = `${config.bffBaseUrl || 'http://localhost:3001'}/api/integrations/${provider}/callback`;
-
-    if (provider === 'zoom') {
-      const zoomClientId = process.env.ZOOM_CLIENT_ID;
-      const zoomClientSecret = process.env.ZOOM_CLIENT_SECRET;
-
-      if (!zoomClientId || !zoomClientSecret) {
-        throw new Error('Zoom credentials not configured');
-      }
-
-      const response = await axios.post('https://zoom.us/oauth/token', null, {
-        params: {
-          grant_type: 'authorization_code',
-          code,
-          redirect_uri: callbackUrl,
-        },
-        auth: {
-          username: zoomClientId,
-          password: zoomClientSecret,
-        },
-      });
-
-      return response.data;
+  encryptToken(plaintext) {
+    const secret = config.integrationTokenEncKey;
+    if (!secret) {
+      throw new Error('INTEGRATION_TOKEN_ENC_KEY is not configured');
     }
 
-    if (provider === 'google') {
-      const googleClientId = process.env.GOOGLE_CLIENT_ID;
-      const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    const key = crypto.createHash('sha256').update(secret).digest();
+    const iv = crypto.randomBytes(12);
+    const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
+    const ciphertext = Buffer.concat([cipher.update(plaintext, 'utf8'), cipher.final()]);
+    const authTag = cipher.getAuthTag();
 
-      if (!googleClientId || !googleClientSecret) {
-        throw new Error('Google credentials not configured');
-      }
+    return [iv.toString('base64'), authTag.toString('base64'), ciphertext.toString('base64')].join(':');
+  }
 
-      const response = await axios.post('https://oauth2.googleapis.com/token', {
-        grant_type: 'authorization_code',
-        code,
-        redirect_uri: callbackUrl,
-        client_id: googleClientId,
-        client_secret: googleClientSecret,
-      });
-
-      return response.data;
+  _getProviderConfig(provider) {
+    const providerConfig = PROVIDERS[provider];
+    if (!providerConfig) {
+      throw new Error(`Unsupported provider: ${provider}`);
     }
-
-    throw new Error(`Unsupported provider: ${provider}`);
+    return providerConfig;
   }
 
   /**
-   * Save tokens for a user
-   * @param {number} moodleUserId
-   * @param {string} provider
-   * @param {Object} tokenResponse
+   * Build the URL to redirect the coach's browser to for consent.
    */
-  async saveTokens(moodleUserId, provider, tokenResponse) {
-    const key = `${provider}:${moodleUserId}`;
-    const now = new Date().toISOString();
+  buildAuthorizeUrl(provider, moodleUserId) {
+    const providerConfig = this._getProviderConfig(provider);
+    const clientId = providerConfig.clientId();
+    const redirectUri = providerConfig.redirectUri();
 
-    tokenStore.set(key, {
-      access_token: tokenResponse.access_token,
-      refresh_token: tokenResponse.refresh_token,
-      expires_in: tokenResponse.expires_in,
-      token_type: tokenResponse.token_type,
-      account_email: tokenResponse.email || null,
-      connected_at: now,
-      updated_at: now,
+    if (!clientId || !redirectUri) {
+      throw new Error(`${provider} OAuth is not configured (client ID / redirect URI missing)`);
+    }
+
+    const state = this.generateState(moodleUserId, provider);
+    const params = new URLSearchParams({
+      response_type: 'code',
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      scope: providerConfig.scopes(),
+      state,
     });
 
-    logger.info(`[IntegrationService] Saved ${provider} tokens for user ${moodleUserId}`);
+    if (provider === 'google') {
+      params.set('access_type', 'offline');
+      params.set('prompt', 'consent');
+    }
+
+    return `${providerConfig.authorizeUrl}?${params.toString()}`;
+  }
+
+  /**
+   * Exchange an authorization code for tokens.
+   */
+  async exchangeCodeForTokens(provider, code) {
+    const providerConfig = this._getProviderConfig(provider);
+    const clientId = providerConfig.clientId();
+    const clientSecret = providerConfig.clientSecret();
+    const redirectUri = providerConfig.redirectUri();
+
+    if (!clientId || !clientSecret || !redirectUri) {
+      throw new Error(`${provider} OAuth is not configured (client credentials missing)`);
+    }
+
+    const params = new URLSearchParams({
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: redirectUri,
+    });
+
+    const requestConfig = {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      timeout: 10000,
+    };
+
+    if (provider === 'zoom') {
+      requestConfig.auth = { username: clientId, password: clientSecret };
+    } else {
+      params.set('client_id', clientId);
+      params.set('client_secret', clientSecret);
+    }
+
+    const response = await axios.post(providerConfig.tokenUrl, params.toString(), requestConfig);
+    return response.data; // { access_token, refresh_token, expires_in, scope, ... }
+  }
+
+  /**
+   * Encrypt and persist the tokens returned by the provider.
+   */
+  async saveTokens(moodleUserId, provider, tokenResponse, providerAccountEmail = null) {
+    const expiresAt = new Date(Date.now() + (tokenResponse.expires_in || 3600) * 1000).toISOString();
+
+    const payload = {
+      provider,
+      access_token: this.encryptToken(tokenResponse.access_token),
+      refresh_token: this.encryptToken(tokenResponse.refresh_token),
+      expires_at: expiresAt,
+      scope: tokenResponse.scope || null,
+      provider_account_email: providerAccountEmail,
+    };
+
+    logger.log(`[Integration] Saving ${provider} tokens for coach ${moodleUserId}`);
+    return await apiServerAdapter.upsertCoachMeetingIntegration(moodleUserId, payload);
+  }
+
+  /**
+   * Get the coach's connection status across all providers (no tokens included).
+   */
+  async getStatus(moodleUserId) {
+    return await apiServerAdapter.getCoachMeetingIntegrationStatus(moodleUserId);
   }
 }
 
-module.exports = new IntegrationService();
+const integrationService = new IntegrationService();
+
+module.exports = integrationService;

@@ -2,9 +2,10 @@
 CRUD operations for user course access and profile settings
 """
 import time
+from datetime import datetime, timedelta, timezone, date
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, text
+from sqlalchemy import desc, text, func
 from entities import (
     UserLastCourseAccess,
     UserProfileSettings,
@@ -15,6 +16,18 @@ from entities import (
     WebCoachImageUrl,
     WebCoachAvatar,
     WebCoachStudentCoachMapping,
+    WebCoachCoachMeetingIntegration,
+    WebCoachStudyNote,
+    WebCoachCoachingSchedule,
+    WebCoachCoachingRecording,
+    WebCoachCoachingNote,
+    WebCoachRoadmapSkill,
+    WebCoachRoadmapPhase,
+    WebCoachRoadmapTodo,
+    WebCoachUserRoadmap,
+    WebCoachRoadmapProgress,
+    WebCoachRoadmapQuestion,
+    WebCoachRoadmapAnswer,
 )
 from dto.request import (
     CourseAccessCreate,
@@ -304,6 +317,68 @@ def upsert_webcoach_user_course_lastaccess(
             progress_percent=progress_percent,
             current_section=current_section
             # created_at and updated_at are set automatically
+        )
+        db.add(existing)
+
+    db.flush()
+    return existing
+
+
+def get_study_note(
+    db: Session,
+    mdl_user_id: int,
+    courseid: int,
+    cmid: int
+) -> Optional[WebCoachStudyNote]:
+    """
+    WebCoach: 学習メモを取得
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        courseid: MoodleコースID
+        cmid: Moodleコースモジュール(教材)ID
+
+    Returns:
+        WebCoachStudyNote: レコードが無い場合はNone
+    """
+    return db.query(WebCoachStudyNote).filter(
+        WebCoachStudyNote.mdl_user_id == mdl_user_id,
+        WebCoachStudyNote.courseid == courseid,
+        WebCoachStudyNote.cmid == cmid,
+    ).first()
+
+
+def upsert_study_note(
+    db: Session,
+    mdl_user_id: int,
+    courseid: int,
+    cmid: int,
+    content: str
+) -> WebCoachStudyNote:
+    """
+    WebCoach: 学習メモを登録/更新
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        courseid: MoodleコースID
+        cmid: Moodleコースモジュール(教材)ID
+        content: メモの内容
+
+    Returns:
+        WebCoachStudyNote: Created or updated record
+    """
+    existing = get_study_note(db, mdl_user_id, courseid, cmid)
+
+    if existing:
+        existing.content = content
+    else:
+        existing = WebCoachStudyNote(
+            mdl_user_id=mdl_user_id,
+            courseid=courseid,
+            cmid=cmid,
+            content=content,
         )
         db.add(existing)
 
@@ -1561,4 +1636,1154 @@ def restore_coach_student_mapping(
     db.commit()
     db.refresh(restored_mapping)
     return restored_mapping
+
+
+# ==========================================
+# Coaching Schedule CRUD
+# ==========================================
+
+def create_coaching_schedule(
+    db: Session,
+    mdl_user_id: int,
+    coach_user_id: int,
+    coaching_date,
+    meeting_url: str,
+    coaching_summary: Optional[str] = None,
+    todo: Optional[str] = None,
+) -> WebCoachCoachingSchedule:
+    """
+    コーチングスケジュールを作成します。coaching_noは該当ペアのMAX+1で自動採番します。
+
+    Args:
+        db: Database session
+        mdl_user_id: 受講生のMoodleユーザーID
+        coach_user_id: コーチのMoodleユーザーID
+        coaching_date: 実施日
+        meeting_url: ミーティングURL
+        coaching_summary: コーチング内容の要約
+        todo: 次回までのTODO
+
+    Returns:
+        WebCoachCoachingSchedule: 作成されたレコード
+    """
+    max_no = db.query(func.max(WebCoachCoachingSchedule.coaching_no)).filter(
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id,
+        WebCoachCoachingSchedule.coach_user_id == coach_user_id,
+    ).scalar()
+    next_no = (max_no or 0) + 1
+
+    schedule = WebCoachCoachingSchedule(
+        mdl_user_id=mdl_user_id,
+        coach_user_id=coach_user_id,
+        coaching_no=next_no,
+        coaching_date=coaching_date,
+        meeting_url=meeting_url,
+        coaching_summary=coaching_summary,
+        todo=todo,
+    )
+    db.add(schedule)
+    db.flush()
+    return schedule
+
+
+def get_coaching_schedules(
+    db: Session,
+    mdl_user_id: int,
+) -> List[WebCoachCoachingSchedule]:
+    """
+    受講生のコーチングスケジュール一覧を取得します（実施日・回数の降順）。
+
+    Args:
+        db: Database session
+        mdl_user_id: 受講生のMoodleユーザーID
+
+    Returns:
+        List[WebCoachCoachingSchedule]
+    """
+    return db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id
+    ).order_by(
+        desc(WebCoachCoachingSchedule.coaching_date),
+        desc(WebCoachCoachingSchedule.coaching_no),
+    ).all()
+
+
+def update_coaching_schedule(
+    db: Session,
+    mdl_user_id: int,
+    schedule_id: int,
+    coaching_date=None,
+    status: Optional[str] = None,
+    meeting_url: Optional[str] = None,
+    coaching_summary: Optional[str] = None,
+    todo: Optional[str] = None,
+) -> Optional[WebCoachCoachingSchedule]:
+    """
+    コーチングスケジュールを更新します。mdl_user_idも一致するレコードのみ対象。
+
+    Args:
+        db: Database session
+        mdl_user_id: 受講生のMoodleユーザーID（所有者チェック）
+        schedule_id: 更新対象のid
+        status: コーチング実施結果 (completed, interrupted, rescheduled)
+
+    Returns:
+        WebCoachCoachingSchedule: 更新後のレコード。見つからない場合はNone
+    """
+    schedule = db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.id == schedule_id,
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id,
+    ).first()
+
+    if not schedule:
+        return None
+
+    if coaching_date is not None:
+        schedule.coaching_date = coaching_date
+    if status is not None:
+        schedule.status = status
+    if meeting_url is not None:
+        schedule.meeting_url = meeting_url
+    if coaching_summary is not None:
+        schedule.coaching_summary = coaching_summary
+    if todo is not None:
+        schedule.todo = todo
+
+    db.flush()
+    return schedule
+
+
+def delete_coaching_schedule(
+    db: Session,
+    mdl_user_id: int,
+    schedule_id: int,
+) -> bool:
+    """
+    コーチングスケジュールを削除します。mdl_user_idも一致するレコードのみ対象。
+
+    Args:
+        db: Database session
+        mdl_user_id: 受講生のMoodleユーザーID（所有者チェック）
+        schedule_id: 削除対象のid
+
+    Returns:
+        bool: 削除できた場合True
+    """
+    schedule = db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.id == schedule_id,
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id,
+    ).first()
+
+    if not schedule:
+        return False
+
+    db.delete(schedule)
+    db.flush()
+    return True
+
+
+# ==========================================
+# Career Roadmap (フェーズ制・スキル別テンプレートの学習ロードマップ) CRUD
+# ==========================================
+
+def get_roadmap_skills(db: Session) -> List[WebCoachRoadmapSkill]:
+    """
+    WebCoach: ロードマップのスキル種別マスタ一覧を取得
+
+    Args:
+        db: Database session
+
+    Returns:
+        List[WebCoachRoadmapSkill]: 表示順に並んだスキル一覧
+    """
+    return db.query(WebCoachRoadmapSkill).order_by(
+        WebCoachRoadmapSkill.display_order,
+        WebCoachRoadmapSkill.id,
+    ).all()
+
+
+def get_roadmap_phase_todos(db: Session, phase_id: int) -> List[WebCoachRoadmapTodo]:
+    """
+    WebCoach: フェーズで取り組むテーマのテンプレート一覧を取得
+
+    Args:
+        db: Database session
+        phase_id: 対象フェーズ(webcoach_roadmap_phase.id)
+
+    Returns:
+        List[WebCoachRoadmapTodo]: フェーズ内の表示順に並んだテーマ一覧
+    """
+    return db.query(WebCoachRoadmapTodo).filter(
+        WebCoachRoadmapTodo.phase_id == phase_id
+    ).order_by(WebCoachRoadmapTodo.todo_no).all()
+
+
+def get_roadmap_phases(db: Session, skill_id: int) -> List[WebCoachRoadmapPhase]:
+    """
+    WebCoach: スキルに紐づくフェーズ・テンプレート一覧を取得（各フェーズにtodosを付与して返す）
+
+    Args:
+        db: Database session
+        skill_id: 対象スキル(webcoach_roadmap_skill.id)
+
+    Returns:
+        List[WebCoachRoadmapPhase]: phase_no順のフェーズ一覧
+    """
+    phases = db.query(WebCoachRoadmapPhase).filter(
+        WebCoachRoadmapPhase.skill_id == skill_id
+    ).order_by(WebCoachRoadmapPhase.phase_no).all()
+
+    for phase in phases:
+        phase.todos = get_roadmap_phase_todos(db, phase.id)
+
+    return phases
+
+
+def create_user_roadmap(db: Session, mdl_user_id: int, skill_id: int) -> WebCoachUserRoadmap:
+    """
+    WebCoach: ユーザーのロードマップを新規開始する。
+    スキルの全フェーズ分の進捗行を自動シードし、最初のフェーズをin_progressにする。
+    既に未完了のロードマップを持つ場合はValueErrorを送出する（同時アクティブは1件のみ）。
+
+    Args:
+        db: Database session
+        mdl_user_id: userid
+        skill_id: 開始するスキル(webcoach_roadmap_skill.id)
+
+    Returns:
+        WebCoachUserRoadmap: 作成されたロードマップ
+    """
+    existing_active = db.query(WebCoachUserRoadmap).filter(
+        WebCoachUserRoadmap.mdl_user_id == mdl_user_id,
+        WebCoachUserRoadmap.is_completed == 0,
+    ).first()
+    if existing_active:
+        raise ValueError("未完了のロードマップが既に存在します。先に完了させてください。")
+
+    phases = db.query(WebCoachRoadmapPhase).filter(
+        WebCoachRoadmapPhase.skill_id == skill_id
+    ).order_by(WebCoachRoadmapPhase.phase_no).all()
+
+    if not phases:
+        raise ValueError(f"skill_id={skill_id} のフェーズ・テンプレートが登録されていません。")
+
+    user_roadmap = WebCoachUserRoadmap(mdl_user_id=mdl_user_id, skill_id=skill_id, is_completed=0)
+    db.add(user_roadmap)
+    db.flush()
+
+    today = date.today()
+    for index, phase in enumerate(phases):
+        is_first = index == 0
+        start = today if is_first else None
+        end = None
+        if is_first and phase.duration_days:
+            end = today + timedelta(days=phase.duration_days)
+
+        progress = WebCoachRoadmapProgress(
+            user_roadmap_id=user_roadmap.id,
+            phase_id=phase.id,
+            status='in_progress' if is_first else 'not_started',
+            start=start,
+            end=end,
+        )
+        db.add(progress)
+
+    db.flush()
+    return user_roadmap
+
+
+def get_current_user_roadmap(db: Session, mdl_user_id: int) -> Optional[WebCoachUserRoadmap]:
+    """
+    WebCoach: ユーザーの現在アクティブな（未完了の）ロードマップを取得する
+
+    Args:
+        db: Database session
+        mdl_user_id: userid
+
+    Returns:
+        WebCoachUserRoadmap: 見つからない場合はNone
+    """
+    return db.query(WebCoachUserRoadmap).filter(
+        WebCoachUserRoadmap.mdl_user_id == mdl_user_id,
+        WebCoachUserRoadmap.is_completed == 0,
+    ).first()
+
+
+def get_user_roadmap_progress(db: Session, user_roadmap_id: int) -> List[WebCoachRoadmapProgress]:
+    """
+    WebCoach: ロードマップのフェーズ進捗一覧をphase_no順に取得する（各進捗にフェーズ・テンプレートとtodosを付与）
+
+    Args:
+        db: Database session
+        user_roadmap_id: 対象ロードマップ(webcoach_user_roadmap.id)
+
+    Returns:
+        List[WebCoachRoadmapProgress]: phase_no順の進捗一覧
+    """
+    rows = db.query(WebCoachRoadmapProgress, WebCoachRoadmapPhase).join(
+        WebCoachRoadmapPhase, WebCoachRoadmapProgress.phase_id == WebCoachRoadmapPhase.id
+    ).filter(
+        WebCoachRoadmapProgress.user_roadmap_id == user_roadmap_id
+    ).order_by(WebCoachRoadmapPhase.phase_no).all()
+
+    progresses = []
+    for progress, phase in rows:
+        phase.todos = get_roadmap_phase_todos(db, phase.id)
+        progress.phase = phase
+        progresses.append(progress)
+
+    return progresses
+
+
+def get_user_roadmap_detail(db: Session, mdl_user_id: int) -> Optional[WebCoachUserRoadmap]:
+    """
+    WebCoach: 画面表示用にユーザーの現在のロードマップを集約して取得する
+    （skill・phases(各フェーズのtodos含む)・target_dateを付与して返す）
+
+    Args:
+        db: Database session
+        mdl_user_id: userid
+
+    Returns:
+        WebCoachUserRoadmap: 見つからない場合はNone
+    """
+    user_roadmap = get_current_user_roadmap(db, mdl_user_id)
+    if not user_roadmap:
+        return None
+
+    skill = db.query(WebCoachRoadmapSkill).filter(
+        WebCoachRoadmapSkill.id == user_roadmap.skill_id
+    ).first()
+    phases_progress = get_user_roadmap_progress(db, user_roadmap.id)
+
+    user_roadmap.skill = skill
+    user_roadmap.phases = phases_progress
+    user_roadmap.target_date = phases_progress[-1].end if phases_progress else None
+
+    return user_roadmap
+
+
+def _advance_to_next_phase(db: Session, completed_progress: WebCoachRoadmapProgress) -> None:
+    """
+    WebCoach: 完了したフェーズの次のフェーズを自動的にin_progressへ進める内部ヘルパー。
+    次フェーズが無ければロードマップをis_completed=1にする。
+    """
+    current_phase = db.query(WebCoachRoadmapPhase).filter(
+        WebCoachRoadmapPhase.id == completed_progress.phase_id
+    ).first()
+    if not current_phase:
+        return
+
+    next_phase = db.query(WebCoachRoadmapPhase).filter(
+        WebCoachRoadmapPhase.skill_id == current_phase.skill_id,
+        WebCoachRoadmapPhase.phase_no == current_phase.phase_no + 1,
+    ).first()
+
+    if not next_phase:
+        user_roadmap = db.query(WebCoachUserRoadmap).filter(
+            WebCoachUserRoadmap.id == completed_progress.user_roadmap_id
+        ).first()
+        if user_roadmap:
+            user_roadmap.is_completed = 1
+        return
+
+    next_progress = db.query(WebCoachRoadmapProgress).filter(
+        WebCoachRoadmapProgress.user_roadmap_id == completed_progress.user_roadmap_id,
+        WebCoachRoadmapProgress.phase_id == next_phase.id,
+    ).first()
+
+    if next_progress and next_progress.status == 'not_started':
+        today = date.today()
+        next_progress.status = 'in_progress'
+        next_progress.start = today
+        if next_phase.duration_days:
+            next_progress.end = today + timedelta(days=next_phase.duration_days)
+
+
+def update_roadmap_progress(
+    db: Session,
+    progress_id: int,
+    status: Optional[str] = None,
+    start: Optional[Any] = None,
+    end: Optional[Any] = None,
+    updated_by: Optional[int] = None,
+) -> Optional[WebCoachRoadmapProgress]:
+    """
+    WebCoach: フェーズ進捗を更新する（コーチによる期日修正・ステータス変更）。
+    statusが'completed'になった場合、次フェーズが'not_started'なら自動的に'in_progress'へ進める。
+    次フェーズが無ければロードマップ自体をis_completed=1にする。
+
+    Args:
+        db: Database session
+        progress_id: 更新対象(webcoach_roadmap_progress.id)
+        status: 変更後のステータス
+        start: 開始日
+        end: 終了日（期日）
+        updated_by: 編集したコーチのmdl_user_id
+
+    Returns:
+        WebCoachRoadmapProgress: 更新後のレコード。見つからない場合はNone
+    """
+    progress = db.query(WebCoachRoadmapProgress).filter(
+        WebCoachRoadmapProgress.id == progress_id
+    ).first()
+    if not progress:
+        return None
+
+    if status is not None:
+        progress.status = status
+    if start is not None:
+        progress.start = start
+    if end is not None:
+        progress.end = end
+    if updated_by is not None:
+        progress.updated_by = updated_by
+
+    db.flush()
+
+    if status == 'completed':
+        _advance_to_next_phase(db, progress)
+        db.flush()
+
+    return progress
+
+
+def get_roadmap_questions(db: Session, review_no: int) -> List[WebCoachRoadmapQuestion]:
+    """
+    WebCoach: 見直し用の固定質問を取得する
+
+    Args:
+        db: Database session
+        review_no: n回目の質問か
+
+    Returns:
+        List[WebCoachRoadmapQuestion]: question_no順の質問一覧
+    """
+    return db.query(WebCoachRoadmapQuestion).filter(
+        WebCoachRoadmapQuestion.review_no == review_no
+    ).order_by(WebCoachRoadmapQuestion.question_no).all()
+
+
+def submit_roadmap_answers(
+    db: Session,
+    mdl_user_id: int,
+    review_no: int,
+    answers: List[Dict[str, int]],
+) -> List[WebCoachRoadmapAnswer]:
+    """
+    WebCoach: 見直し質問への回答をまとめて登録/更新する
+
+    Args:
+        db: Database session
+        mdl_user_id: userid
+        review_no: n回目の質問か
+        answers: [{"question_no": int, "answer": int}, ...]
+
+    Returns:
+        List[WebCoachRoadmapAnswer]: 保存された回答一覧
+    """
+    results = []
+    for item in answers:
+        question_no = item["question_no"]
+        answer_value = item["answer"]
+
+        existing = db.query(WebCoachRoadmapAnswer).filter(
+            WebCoachRoadmapAnswer.mdl_user_id == mdl_user_id,
+            WebCoachRoadmapAnswer.review_no == review_no,
+            WebCoachRoadmapAnswer.question_no == question_no,
+        ).first()
+
+        if existing:
+            existing.answer = answer_value
+            results.append(existing)
+        else:
+            new_answer = WebCoachRoadmapAnswer(
+                mdl_user_id=mdl_user_id,
+                review_no=review_no,
+                question_no=question_no,
+                answer=answer_value,
+            )
+            db.add(new_answer)
+            results.append(new_answer)
+
+    db.flush()
+    return results
+
+
+# ==========================================
+# Login Streak (mdl_logstore_standard_log)
+# ==========================================
+
+JST = timezone(timedelta(hours=9))
+
+
+def get_user_login_streak(db: Session, userid: int) -> Dict[str, Any]:
+    """
+    ユーザーの連続ログイン日数を算出する
+
+    local_webcoach_utils_update_user_lastaccess がその日最初のAPIアクセス時に
+    1回だけ記録する \\core\\event\\user_loggedin イベントを日単位（JST）で集計し、
+    最新の記録日から連続している日数を数える。
+    最終ログインが今日でも昨日でもない場合はストリークが途切れているとみなし0を返す。
+
+    Args:
+        db: Database session
+        userid: MoodleユーザーID
+
+    Returns:
+        Dict[str, Any]: {"userid", "current_streak", "last_active_date"}
+    """
+    query = text("""
+        SELECT DISTINCT DATE(FROM_UNIXTIME(timecreated + 9 * 3600)) AS activity_date
+        FROM mdl_logstore_standard_log
+        WHERE userid = :userid
+          AND eventname = :eventname
+        ORDER BY activity_date DESC
+    """)
+    result = db.execute(query, {"userid": userid, "eventname": "\\core\\event\\user_loggedin"})
+    activity_dates = [row[0] for row in result.fetchall()]
+
+    if not activity_dates:
+        return {"userid": userid, "current_streak": 0, "last_active_date": None}
+
+    today_jst = datetime.now(JST).date()
+    yesterday_jst = today_jst - timedelta(days=1)
+
+    last_active_date = activity_dates[0]
+    if last_active_date not in (today_jst, yesterday_jst):
+        return {"userid": userid, "current_streak": 0, "last_active_date": last_active_date}
+
+    streak = 1
+    for i in range(1, len(activity_dates)):
+        if activity_dates[i - 1] - activity_dates[i] == timedelta(days=1):
+            streak += 1
+        else:
+            break
+
+    return {"userid": userid, "current_streak": streak, "last_active_date": last_active_date}
+
+
+# ==========================================
+# Coach Meeting Integration CRUD (Zoom / Google Meet OAuth)
+# ==========================================
+
+def upsert_coach_meeting_integration(
+    db: Session,
+    coach_user_id: int,
+    provider: str,
+    access_token_enc: str,
+    refresh_token_enc: str,
+    token_expires_at,
+    scope: Optional[str] = None,
+    provider_account_email: Optional[str] = None,
+) -> WebCoachCoachMeetingIntegration:
+    """
+    コーチのミーティング連携トークンを保存（既存があれば更新）
+
+    Args:
+        db: Database session
+        coach_user_id: コーチのMoodleユーザーID
+        provider: 連携先プロバイダ (zoom, google)
+        access_token_enc: 暗号化済みアクセストークン
+        refresh_token_enc: 暗号化済みリフレッシュトークン
+        token_expires_at: アクセストークン有効期限
+        scope: 付与されたスコープ
+        provider_account_email: 連携先アカウントのメールアドレス
+
+    Returns:
+        WebCoachCoachMeetingIntegration: 保存された連携情報
+    """
+    existing = db.query(WebCoachCoachMeetingIntegration).filter(
+        WebCoachCoachMeetingIntegration.coach_user_id == coach_user_id,
+        WebCoachCoachMeetingIntegration.provider == provider,
+    ).first()
+
+    if existing:
+        existing.access_token_enc = access_token_enc
+        existing.refresh_token_enc = refresh_token_enc
+        existing.token_expires_at = token_expires_at
+        existing.scope = scope
+        existing.provider_account_email = provider_account_email
+        db.commit()
+        db.refresh(existing)
+        return existing
+
+    integration = WebCoachCoachMeetingIntegration(
+        coach_user_id=coach_user_id,
+        provider=provider,
+        access_token_enc=access_token_enc,
+        refresh_token_enc=refresh_token_enc,
+        token_expires_at=token_expires_at,
+        scope=scope,
+        provider_account_email=provider_account_email,
+    )
+    db.add(integration)
+    db.commit()
+    db.refresh(integration)
+    return integration
+
+
+def get_coach_meeting_integrations(
+    db: Session,
+    coach_user_id: int,
+) -> List[WebCoachCoachMeetingIntegration]:
+    """
+    コーチのミーティング連携状態を全プロバイダ分取得
+
+    Args:
+        db: Database session
+        coach_user_id: コーチのMoodleユーザーID
+
+    Returns:
+        List[WebCoachCoachMeetingIntegration]: 連携情報一覧
+    """
+    return db.query(WebCoachCoachMeetingIntegration).filter(
+        WebCoachCoachMeetingIntegration.coach_user_id == coach_user_id
+    ).all()
+
+
+# ==========================================
+# Coaching Recording CRUD (録画メタデータ管理、実データはS3)
+# ==========================================
+
+def upsert_coaching_recording(
+    db: Session,
+    coaching_schedule_id: int,
+    recording_type: str,
+    source: str,
+    s3_bucket: str,
+    s3_key: str,
+    external_recording_id: Optional[str] = None,
+    status: str = "pending",
+) -> WebCoachCoachingRecording:
+    """
+    コーチング録画のメタデータを保存（同一schedule×typeが既にあれば更新）
+
+    Args:
+        db: Database session
+        coaching_schedule_id: 対象のコーチング回（webcoach_coaching_schedule.id）
+        recording_type: 録画ファイルの種別 (video, audio, transcript, chat)
+        source: 取得元サービス (zoom, google_meet)
+        s3_bucket: 保存先S3バケット名
+        s3_key: 保存先S3オブジェクトキー
+        external_recording_id: 取得元サービス側の録画ID
+        status: 取得処理の状態
+
+    Returns:
+        WebCoachCoachingRecording: 保存されたレコード
+    """
+    existing = db.query(WebCoachCoachingRecording).filter(
+        WebCoachCoachingRecording.coaching_schedule_id == coaching_schedule_id,
+        WebCoachCoachingRecording.recording_type == recording_type,
+    ).first()
+
+    if existing:
+        existing.source = source
+        existing.s3_bucket = s3_bucket
+        existing.s3_key = s3_key
+        existing.external_recording_id = external_recording_id
+        existing.status = status
+        db.commit()
+        db.refresh(existing)
+        return existing
+
+    recording = WebCoachCoachingRecording(
+        coaching_schedule_id=coaching_schedule_id,
+        recording_type=recording_type,
+        source=source,
+        s3_bucket=s3_bucket,
+        s3_key=s3_key,
+        external_recording_id=external_recording_id,
+        status=status,
+    )
+    db.add(recording)
+    db.commit()
+    db.refresh(recording)
+    return recording
+
+
+def get_coaching_recordings(
+    db: Session,
+    coaching_schedule_id: int,
+) -> List[WebCoachCoachingRecording]:
+    """
+    コーチング回に紐づく録画一覧を取得
+
+    Args:
+        db: Database session
+        coaching_schedule_id: 対象のコーチング回（webcoach_coaching_schedule.id）
+
+    Returns:
+        List[WebCoachCoachingRecording]
+    """
+    return db.query(WebCoachCoachingRecording).filter(
+        WebCoachCoachingRecording.coaching_schedule_id == coaching_schedule_id
+    ).all()
+
+
+def update_coaching_recording_status(
+    db: Session,
+    recording_id: int,
+    status: str,
+) -> Optional[WebCoachCoachingRecording]:
+    """
+    録画の取得処理状態を更新
+
+    Args:
+        db: Database session
+        recording_id: 対象のwebcoach_coaching_recording.id
+        status: 更新後の状態 (pending, downloading, completed, failed)
+
+    Returns:
+        WebCoachCoachingRecording: 更新後のレコード。見つからない場合はNone
+    """
+    recording = db.query(WebCoachCoachingRecording).filter(
+        WebCoachCoachingRecording.id == recording_id
+    ).first()
+
+    if not recording:
+        return None
+
+    recording.status = status
+    db.commit()
+    db.refresh(recording)
+    return recording
+
+
+# ==========================================
+# Coaching Note CRUD (AIコーチングノート: 下書き→コーチ確認→公開)
+# ==========================================
+
+def upsert_ai_coaching_note_draft(
+    db: Session,
+    coaching_schedule_id: int,
+    session_summary: Optional[str] = None,
+    client_status_and_goal: Optional[str] = None,
+    main_issues: Optional[str] = None,
+    coach_feedback: Optional[str] = None,
+    decisions: Optional[str] = None,
+    client_next_actions: Optional[str] = None,
+    coach_follow_up: Optional[str] = None,
+    next_session_check: Optional[str] = None,
+) -> WebCoachCoachingNote:
+    """
+    AI生成したコーチングノートの下書きを保存（同一schedule_idが既にあれば内容のみ上書き、statusは変更しない）
+
+    Args:
+        db: Database session
+        coaching_schedule_id: 対象のコーチング回（webcoach_coaching_schedule.id）
+        session_summary〜next_session_check: AIが生成した8項目
+
+    Returns:
+        WebCoachCoachingNote: 保存されたレコード
+    """
+    fields = dict(
+        session_summary=session_summary,
+        client_status_and_goal=client_status_and_goal,
+        main_issues=main_issues,
+        coach_feedback=coach_feedback,
+        decisions=decisions,
+        client_next_actions=client_next_actions,
+        coach_follow_up=coach_follow_up,
+        next_session_check=next_session_check,
+    )
+
+    existing = db.query(WebCoachCoachingNote).filter(
+        WebCoachCoachingNote.coaching_schedule_id == coaching_schedule_id
+    ).first()
+
+    if existing:
+        for key, value in fields.items():
+            setattr(existing, key, value)
+        db.commit()
+        db.refresh(existing)
+        return existing
+
+    note = WebCoachCoachingNote(coaching_schedule_id=coaching_schedule_id, **fields)
+    db.add(note)
+    db.commit()
+    db.refresh(note)
+    return note
+
+
+def get_coaching_note(
+    db: Session,
+    coaching_schedule_id: int,
+) -> Optional[WebCoachCoachingNote]:
+    """
+    コーチング回に紐づくAIコーチングノートを取得
+
+    Args:
+        db: Database session
+        coaching_schedule_id: 対象のコーチング回（webcoach_coaching_schedule.id）
+
+    Returns:
+        WebCoachCoachingNote: 見つからない場合はNone
+    """
+    return db.query(WebCoachCoachingNote).filter(
+        WebCoachCoachingNote.coaching_schedule_id == coaching_schedule_id
+    ).first()
+
+
+def update_coaching_note(
+    db: Session,
+    note_id: int,
+    status: Optional[str] = None,
+    session_summary: Optional[str] = None,
+    client_status_and_goal: Optional[str] = None,
+    main_issues: Optional[str] = None,
+    coach_feedback: Optional[str] = None,
+    decisions: Optional[str] = None,
+    client_next_actions: Optional[str] = None,
+    coach_follow_up: Optional[str] = None,
+    next_session_check: Optional[str] = None,
+) -> Optional[WebCoachCoachingNote]:
+    """
+    コーチによるコーチングノートの編集・確定・公開を保存
+
+    Args:
+        db: Database session
+        note_id: 更新対象のwebcoach_coaching_note.id
+        status: coach_confirmed または published に遷移させる場合に指定。
+                published にすると published_at が現在時刻でセットされる。
+
+    Returns:
+        WebCoachCoachingNote: 更新後のレコード。見つからない場合はNone
+    """
+    note = db.query(WebCoachCoachingNote).filter(
+        WebCoachCoachingNote.id == note_id
+    ).first()
+
+    if not note:
+        return None
+
+    if session_summary is not None:
+        note.session_summary = session_summary
+    if client_status_and_goal is not None:
+        note.client_status_and_goal = client_status_and_goal
+    if main_issues is not None:
+        note.main_issues = main_issues
+    if coach_feedback is not None:
+        note.coach_feedback = coach_feedback
+    if decisions is not None:
+        note.decisions = decisions
+    if client_next_actions is not None:
+        note.client_next_actions = client_next_actions
+    if coach_follow_up is not None:
+        note.coach_follow_up = coach_follow_up
+    if next_session_check is not None:
+        note.next_session_check = next_session_check
+    if status is not None:
+        note.status = status
+        if status == "published":
+            note.published_at = func.current_timestamp()
+
+    db.commit()
+    db.refresh(note)
+    return note
+
+
+# ==========================================
+# Study Activity (集中ブース / mdl_logstore_standard_log)
+# ==========================================
+#
+# 自前テーブルは持たない。mdl_logstore_standard_logの
+# \local_webcoach_utils\event\study_session_started / study_session_ended の
+# timecreated差分(区間ごとの合算)が学習時間の正データ。一時停止のたびにended、
+# 再開のたびにstartedが記録されるため、一時停止時間は合算から自然に除外される。
+# \local_webcoach_utils\event\study_session_corrected(other.deltaminutes)は
+# ユーザーが手動で時間を補正した場合のみ低頻度で記録され、直前のendedセグメントに加算する。
+# get_user_login_streak(同ファイル内、\core\event\user_loggedin基準)と同じ
+# 「素のSQLでmdl_logstore_standard_logを直接参照する」パターンを踏襲する。
+
+_STUDY_STARTED_EVENT = "\\local_webcoach_utils\\event\\study_session_started"
+_STUDY_ENDED_EVENT = "\\local_webcoach_utils\\event\\study_session_ended"
+_STUDY_CORRECTED_EVENT = "\\local_webcoach_utils\\event\\study_session_corrected"
+# SPAが教材(page/url/resource)を開いた際にBFF経由で発火するイベント。courseid/cmidは
+# ネイティブ列(courseid列・contextinstanceid列)のみで記録されるためJSONパースは不要。
+_COURSE_MATERIAL_VIEWED_EVENT = "\\local_webcoach_utils\\event\\course_material_viewed"
+
+
+def _segment_totals_cte(user_scoped: bool) -> str:
+    """
+    started/endedイベントをペアリングして1区間ごとの学習時間(分)を算出するCTE。
+    補正イベント(study_session_corrected)があれば直前のendedセグメントに加算する。
+
+    Args:
+        user_scoped: Trueなら:useridで絞り込む(個人集計用)。Falseなら全ユーザー対象(ランキング用)
+    """
+    user_filter = "AND userid = :userid" if user_scoped else ""
+    return f"""
+        WITH ordered AS (
+            SELECT
+                id, userid, courseid, eventname, timecreated,
+                LEAD(eventname) OVER (PARTITION BY userid ORDER BY timecreated, id) AS next_eventname,
+                LEAD(timecreated) OVER (PARTITION BY userid ORDER BY timecreated, id) AS next_timecreated,
+                LEAD(id) OVER (PARTITION BY userid ORDER BY timecreated, id) AS next_id
+            FROM mdl_logstore_standard_log
+            WHERE eventname IN (:started_event, :ended_event)
+              {user_filter}
+        ),
+        segments AS (
+            SELECT
+                userid, courseid, timecreated AS started_at, next_timecreated AS ended_at,
+                next_id AS ended_log_id,
+                TIMESTAMPDIFF(SECOND, timecreated, next_timecreated) AS duration_seconds
+            FROM ordered
+            WHERE eventname = :started_event AND next_eventname = :ended_event
+        ),
+        corrections AS (
+            SELECT
+                c.userid,
+                c.timecreated,
+                CAST(JSON_UNQUOTE(JSON_EXTRACT(c.other, '$.deltaminutes')) AS SIGNED) AS delta_minutes,
+                (
+                    SELECT MAX(e.id) FROM mdl_logstore_standard_log e
+                    WHERE e.userid = c.userid AND e.eventname = :ended_event
+                      AND e.timecreated <= c.timecreated
+                ) AS target_ended_log_id
+            FROM mdl_logstore_standard_log c
+            WHERE c.eventname = :corrected_event
+              {user_filter}
+        )
+        SELECT
+            s.userid, s.courseid, s.started_at, s.ended_at,
+            GREATEST(0, ROUND(s.duration_seconds / 60) + COALESCE(SUM(cor.delta_minutes), 0)) AS duration_minutes
+        FROM segments s
+        LEFT JOIN corrections cor ON cor.target_ended_log_id = s.ended_log_id
+        GROUP BY s.userid, s.courseid, s.started_at, s.ended_at, s.ended_log_id, s.duration_seconds
+    """
+
+
+def _segment_params(mdl_user_id: Optional[int] = None) -> Dict[str, Any]:
+    params = {
+        "started_event": _STUDY_STARTED_EVENT,
+        "ended_event": _STUDY_ENDED_EVENT,
+        "corrected_event": _STUDY_CORRECTED_EVENT,
+    }
+    if mdl_user_id is not None:
+        params["userid"] = mdl_user_id
+    return params
+
+
+def get_active_study_session(db: Session, mdl_user_id: int) -> Optional[Dict[str, Any]]:
+    """
+    進行中の学習セッションを取得する(直近のstartedイベントに対応するendedがまだ無い場合)。
+    別画面遷移・タブ再読込後もタイマーを継続表示するため、フロントは起動時にこれを参照する。
+    """
+    query = text("""
+        SELECT courseid, timecreated
+        FROM mdl_logstore_standard_log
+        WHERE userid = :userid AND eventname = :started_event
+        ORDER BY timecreated DESC, id DESC
+        LIMIT 1
+    """)
+    row = db.execute(query, {"userid": mdl_user_id, "started_event": _STUDY_STARTED_EVENT}).fetchone()
+    if not row:
+        return None
+
+    courseid, started_timecreated = row
+    ended_after = db.execute(text("""
+        SELECT 1 FROM mdl_logstore_standard_log
+        WHERE userid = :userid AND eventname = :ended_event AND timecreated >= :started_timecreated
+        LIMIT 1
+    """), {"userid": mdl_user_id, "ended_event": _STUDY_ENDED_EVENT, "started_timecreated": started_timecreated}).fetchone()
+    if ended_after:
+        return None
+
+    return {
+        "courseid": courseid,
+        "started_at": datetime.fromtimestamp(started_timecreated, tz=JST).replace(tzinfo=None),
+    }
+
+
+def get_recent_study_sessions(db: Session, mdl_user_id: int, limit: int = 10) -> List[Dict[str, Any]]:
+    """直近に完了した学習セッション(区間)を新しい順に取得する。"""
+    query = text(_segment_totals_cte(user_scoped=True) + " ORDER BY started_at DESC LIMIT :limit")
+    params = _segment_params(mdl_user_id)
+    params["limit"] = limit
+    result = db.execute(query, params)
+    return [
+        {
+            "courseid": row.courseid,
+            "started_at": datetime.fromtimestamp(row.started_at, tz=JST).replace(tzinfo=None),
+            "ended_at": datetime.fromtimestamp(row.ended_at, tz=JST).replace(tzinfo=None),
+            "duration_minutes": int(row.duration_minutes),
+        }
+        for row in result.fetchall()
+    ]
+
+
+def get_study_stats(db: Session, mdl_user_id: int) -> Dict[str, Any]:
+    """
+    今日・今週(月曜始まり、JST)・累計の学習時間(分)を集計する。
+    """
+    query = text(f"""
+        SELECT
+            SUM(CASE WHEN DATE(FROM_UNIXTIME(started_at + 9 * 3600)) = :today THEN duration_minutes ELSE 0 END) AS today_minutes,
+            SUM(CASE WHEN DATE(FROM_UNIXTIME(started_at + 9 * 3600)) >= :week_start THEN duration_minutes ELSE 0 END) AS week_minutes,
+            SUM(duration_minutes) AS total_minutes
+        FROM ({_segment_totals_cte(user_scoped=True)}) segment_totals
+    """)
+    today_jst = datetime.now(JST).date()
+    week_start = today_jst - timedelta(days=today_jst.weekday())
+    params = _segment_params(mdl_user_id)
+    params["today"] = today_jst
+    params["week_start"] = week_start
+    row = db.execute(query, params).fetchone()
+
+    return {
+        "userid": mdl_user_id,
+        "today_minutes": int(row.today_minutes or 0),
+        "week_minutes": int(row.week_minutes or 0),
+        "total_minutes": int(row.total_minutes or 0),
+    }
+
+
+def get_study_streak(db: Session, mdl_user_id: int) -> Dict[str, Any]:
+    """
+    学習ストリーク(連続で集中ブース学習を完了した日数)を算出する。
+
+    ログインストリーク(get_user_login_streak, \\core\\event\\user_loggedin基準)とは
+    独立した別指標。「アプリを開いた」ではなく「その日1回以上、学習セッションを完了した」を
+    ストリークの成立条件とする(セグメントのstarted_atのJST日付で判定。stats/calendarと揃える)。
+    """
+    query = text(f"""
+        SELECT DISTINCT DATE(FROM_UNIXTIME(started_at + 9 * 3600)) AS activity_date
+        FROM ({_segment_totals_cte(user_scoped=True)}) segment_totals
+        ORDER BY activity_date DESC
+    """)
+    result = db.execute(query, _segment_params(mdl_user_id))
+    activity_dates = [row[0] for row in result.fetchall()]
+
+    if not activity_dates:
+        return {"userid": mdl_user_id, "current_streak": 0, "last_active_date": None}
+
+    today_jst = datetime.now(JST).date()
+    yesterday_jst = today_jst - timedelta(days=1)
+
+    last_active_date = activity_dates[0]
+    if last_active_date not in (today_jst, yesterday_jst):
+        return {"userid": mdl_user_id, "current_streak": 0, "last_active_date": last_active_date}
+
+    streak = 1
+    for i in range(1, len(activity_dates)):
+        if activity_dates[i - 1] - activity_dates[i] == timedelta(days=1):
+            streak += 1
+        else:
+            break
+
+    return {"userid": mdl_user_id, "current_streak": streak, "last_active_date": last_active_date}
+
+
+def get_study_calendar(db: Session, mdl_user_id: int, year: int, month: int) -> List[Dict[str, Any]]:
+    """
+    指定年月(JSTローカル日付基準)の日別学習時間・セッション数を取得する(カレンダー表示用)。
+    """
+    query = text(f"""
+        SELECT
+            DATE(FROM_UNIXTIME(started_at + 9 * 3600)) AS local_date,
+            SUM(duration_minutes) AS total_minutes,
+            COUNT(*) AS session_count
+        FROM ({_segment_totals_cte(user_scoped=True)}) segment_totals
+        WHERE YEAR(FROM_UNIXTIME(started_at + 9 * 3600)) = :year
+          AND MONTH(FROM_UNIXTIME(started_at + 9 * 3600)) = :month
+        GROUP BY local_date
+        ORDER BY local_date
+    """)
+    params = _segment_params(mdl_user_id)
+    params["year"] = year
+    params["month"] = month
+    result = db.execute(query, params)
+    return [
+        {"date": row.local_date, "total_minutes": int(row.total_minutes or 0), "session_count": int(row.session_count)}
+        for row in result.fetchall()
+    ]
+
+
+def get_study_ranking(db: Session, period: str = "week", limit: int = 20) -> List[Dict[str, Any]]:
+    """
+    学習時間ランキング(period: 'week' | 'month' | 'all')を全ユーザー横断で算出する。
+    """
+    if period == "week":
+        today_jst = datetime.now(JST).date()
+        since = today_jst - timedelta(days=today_jst.weekday())
+    elif period == "month":
+        today_jst = datetime.now(JST).date()
+        since = today_jst.replace(day=1)
+    elif period == "all":
+        since = None
+    else:
+        raise ValueError(f"Invalid period: {period}")
+
+    since_filter = "WHERE DATE(FROM_UNIXTIME(started_at + 9 * 3600)) >= :since" if since is not None else ""
+    query = text(f"""
+        SELECT userid, SUM(duration_minutes) AS total_minutes
+        FROM ({_segment_totals_cte(user_scoped=False)}) segment_totals
+        {since_filter}
+        GROUP BY userid
+        ORDER BY total_minutes DESC
+        LIMIT :limit
+    """)
+    params = _segment_params()
+    params["limit"] = limit
+    if since is not None:
+        params["since"] = since
+    result = db.execute(query, params)
+    return [
+        {"rank": i + 1, "userid": row.userid, "total_minutes": int(row.total_minutes or 0)}
+        for i, row in enumerate(result.fetchall())
+    ]
+
+
+def get_course_access_summary(db: Session, mdl_user_id: int) -> List[Dict[str, Any]]:
+    """
+    コース単位のアクセス集計(course_material_viewedイベントのCOUNT/直近アクセス日時)。
+    courseidはネイティブ列なので、JSONパース不要でそのまま集計できる。
+    """
+    query = text("""
+        SELECT courseid, COUNT(*) AS access_count, MAX(timecreated) AS last_accessed
+        FROM mdl_logstore_standard_log
+        WHERE userid = :userid
+          AND eventname = :event
+          AND courseid IS NOT NULL
+        GROUP BY courseid
+        ORDER BY last_accessed DESC
+    """)
+    result = db.execute(query, {"userid": mdl_user_id, "event": _COURSE_MATERIAL_VIEWED_EVENT})
+    return [
+        {
+            "courseid": row.courseid,
+            "access_count": int(row.access_count),
+            "last_accessed": datetime.fromtimestamp(row.last_accessed, tz=JST).replace(tzinfo=None),
+        }
+        for row in result.fetchall()
+    ]
+
+
+def get_course_material_access(db: Session, mdl_user_id: int, courseid: int) -> List[Dict[str, Any]]:
+    """
+    指定コース内の教材(コースモジュール)単位のアクセス集計。
+    contextlevel=70(CONTEXT_MODULE)のcontextinstanceidがcmidに対応する
+    (cmidが分からず記録されたcourse_material_viewedはcontextlevel=50になるため自然に除外される)。
+    """
+    query = text("""
+        SELECT contextinstanceid AS cmid, COUNT(*) AS access_count, MAX(timecreated) AS last_accessed
+        FROM mdl_logstore_standard_log
+        WHERE userid = :userid
+          AND courseid = :courseid
+          AND eventname = :event
+          AND contextlevel = 70
+        GROUP BY contextinstanceid
+        ORDER BY last_accessed DESC
+    """)
+    result = db.execute(query, {"userid": mdl_user_id, "courseid": courseid, "event": _COURSE_MATERIAL_VIEWED_EVENT})
+    return [
+        {
+            "cmid": row.cmid,
+            "access_count": int(row.access_count),
+            "last_accessed": datetime.fromtimestamp(row.last_accessed, tz=JST).replace(tzinfo=None),
+        }
+        for row in result.fetchall()
+    ]
 
