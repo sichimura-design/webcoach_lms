@@ -63,20 +63,6 @@ class WebCoachService {
   }
 
   /**
-   * Get roadmaps
-   */
-  async getRoadmaps(filters = {}) {
-    return await apiServerAdapter.getRoadmaps(filters);
-  }
-
-  /**
-   * Get roadmap detail
-   */
-  async getRoadmapDetail(roadmapid) {
-    return await apiServerAdapter.getRoadmapDetail(roadmapid);
-  }
-
-  /**
    * Get AI applications
    */
   async getAIApplications(filters = {}) {

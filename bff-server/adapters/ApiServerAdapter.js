@@ -857,6 +857,35 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get AI coaching note for a coaching schedule
+   */
+  async getCoachingNote(coachingScheduleId) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/coaching/notes/${coachingScheduleId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update (edit/confirm/publish) AI coaching note
+   */
+  async updateCoachingNote(coachingScheduleId, data) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/coaching/notes/${coachingScheduleId}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Create coach-student mapping
    */
   async createCoachStudentMapping(coachUserId, studentUserId) {

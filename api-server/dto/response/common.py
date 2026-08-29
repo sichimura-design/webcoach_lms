@@ -77,9 +77,30 @@ class CoachingScheduleResponse(BaseModel):
     coach_user_id: int
     coaching_no: int
     coaching_date: date
+    status: Optional[str] = None
     meeting_url: str
     coaching_summary: Optional[str] = None
     todo: Optional[str] = None
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class CoachingNoteResponse(BaseModel):
+    """AIコーチングノートレスポンス"""
+    id: int
+    coaching_schedule_id: int
+    status: str
+    session_summary: Optional[str] = None
+    client_status_and_goal: Optional[str] = None
+    main_issues: Optional[str] = None
+    coach_feedback: Optional[str] = None
+    decisions: Optional[str] = None
+    client_next_actions: Optional[str] = None
+    coach_follow_up: Optional[str] = None
+    next_session_check: Optional[str] = None
+    published_at: Optional[datetime] = None
     created_at: datetime
     updated_at: datetime
 

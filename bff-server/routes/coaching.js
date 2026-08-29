@@ -348,6 +348,73 @@ router.delete('/schedule/:userid/:id', requireAuth, async (req, res) => {
   }
 });
 
+// ==================== AI COACHING NOTE ====================
+
+/**
+ * GET /api/coaching/notes/:coaching_schedule_id
+ * Get AI coaching note (Admin, Coach: any status. Student: only if published)
+ */
+router.get('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
+  try {
+    const { coaching_schedule_id } = req.params;
+
+    const userGroups = req.user?.groups || [];
+    const isAdmin = userGroups.includes('admin');
+    const isCoach = userGroups.includes('coach');
+
+    const note = await coachingService.getCoachingNote(parseInt(coaching_schedule_id));
+
+    if (!isAdmin && !isCoach && note.status !== 'published') {
+      console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to access unpublished coaching note ${coaching_schedule_id}`);
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: '公開済みのノートのみ閲覧できます。'
+      });
+    }
+
+    res.json(note);
+  } catch (error) {
+    console.error('[Coaching] Get coaching note error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
+ * PUT /api/coaching/notes/:coaching_schedule_id
+ * Edit/confirm/publish AI coaching note (Admin or Coach only)
+ */
+router.put('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
+  try {
+    const { coaching_schedule_id } = req.params;
+
+    const userGroups = req.user?.groups || [];
+    const isAdmin = userGroups.includes('admin');
+    const isCoach = userGroups.includes('coach');
+
+    if (!isAdmin && !isCoach) {
+      console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to update coaching note ${coaching_schedule_id}`);
+      return res.status(403).json({
+        error: 'Forbidden',
+        message: '管理者またはコーチのみ更新できます。'
+      });
+    }
+
+    const note = await coachingService.updateCoachingNote(parseInt(coaching_schedule_id), req.body);
+    res.json(note);
+  } catch (error) {
+    console.error('[Coaching] Update coaching note error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
 /**
  * DELETE /api/coaching/mappings/:coach_user_id/:student_user_id
  * Delete coach-student mapping (Admin only)

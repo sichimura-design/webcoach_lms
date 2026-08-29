@@ -242,6 +242,7 @@ class WebCoachCoachingSchedule(Base):
     coach_user_id = Column(BigInteger, nullable=False, comment='コーチのMoodleユーザーID')
     coaching_no = Column(BigInteger, nullable=False, comment='コーチング回数（表示用連番。student-coachペア内で採番）')
     coaching_date = Column(Date, nullable=False, comment='実施日')
+    status = Column(String(32), nullable=True, comment='コーチング実施結果 (completed=終了, interrupted=中断, rescheduled=リスケ)')
     meeting_url = Column(String(1024), nullable=False)
     coaching_summary = Column(Text, nullable=True, comment='コーチング内容の要約')
     todo = Column(Text, nullable=True, comment='次回までのTODO')
@@ -251,6 +252,32 @@ class WebCoachCoachingSchedule(Base):
     __table_args__ = (
         Index('uq_coaching_schedule_pair_no', 'mdl_user_id', 'coach_user_id', 'coaching_no', unique=True),
         Index('idx_coaching_schedule_coach_date', 'coach_user_id', 'coaching_date'),
+    )
+
+
+class WebCoachCoachingNote(Base):
+    """
+    WebCoach: AIコーチングノート（下書き→コーチ確認→公開）
+    """
+    __tablename__ = "webcoach_coaching_note"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    coaching_schedule_id = Column(BigInteger, nullable=False, comment='対象のコーチング回（webcoach_coaching_schedule.id）')
+    status = Column(String(32), nullable=False, default='ai_suggested', comment='ノートの確認状態 (ai_suggested, coach_confirmed, published)')
+    session_summary = Column(Text, nullable=True, comment='セッション概要')
+    client_status_and_goal = Column(Text, nullable=True, comment='Clientの現状と目標')
+    main_issues = Column(Text, nullable=True, comment='主な課題')
+    coach_feedback = Column(Text, nullable=True, comment='Coachからのフィードバック')
+    decisions = Column(Text, nullable=True, comment='今回決めたこと')
+    client_next_actions = Column(Text, nullable=True, comment='Clientの次回までのアクション')
+    coach_follow_up = Column(Text, nullable=True, comment='Coach側のフォロー事項')
+    next_session_check = Column(Text, nullable=True, comment='次回確認すること')
+    published_at = Column(TIMESTAMP, nullable=True, comment='受講生に公開された日時')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+    __table_args__ = (
+        Index('uq_coaching_note_schedule', 'coaching_schedule_id', unique=True),
     )
 
 

@@ -3,8 +3,19 @@ import { Calendar, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react';
 import { AppHeader } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import bffClient from '../services/bffClient';
-import { CoachingSchedule } from '../types/api';
+import { CoachingSchedule, CoachingNote } from '../types/api';
 import { color, font, t } from '../theme/webcoachTheme';
+
+const NOTE_FIELD_LABELS: { key: keyof CoachingNote; label: string }[] = [
+  { key: 'session_summary', label: 'セッション概要' },
+  { key: 'client_status_and_goal', label: '現状と目標' },
+  { key: 'main_issues', label: '主な課題' },
+  { key: 'coach_feedback', label: 'コーチからのフィードバック' },
+  { key: 'decisions', label: '今回決めたこと' },
+  { key: 'client_next_actions', label: '次回までのアクション' },
+  { key: 'coach_follow_up', label: 'コーチからのフォロー' },
+  { key: 'next_session_check', label: '次回確認すること' },
+];
 
 export function MyCoachingPage() {
   const { user } = useAuth();
@@ -12,6 +23,7 @@ export function MyCoachingPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [openId, setOpenId] = useState<number | null>(null);
+  const [notes, setNotes] = useState<Record<number, CoachingNote | null>>({});
 
   useEffect(() => {
     if (!user) return;
@@ -56,11 +68,20 @@ export function MyCoachingPage() {
           ) : (
             schedules.map(schedule => {
               const isOpen = openId === schedule.id;
+              const note = notes[schedule.id];
               return (
                 <div key={schedule.id} style={{ ...t.card, padding: '16px 18px' }}>
                   <button
                     type="button"
-                    onClick={() => setOpenId(isOpen ? null : schedule.id)}
+                    onClick={() => {
+                      const next = isOpen ? null : schedule.id;
+                      setOpenId(next);
+                      if (next !== null && notes[next] === undefined) {
+                        bffClient.getCoachingNote(next)
+                          .then(n => setNotes(prev => ({ ...prev, [next]: n })))
+                          .catch(() => setNotes(prev => ({ ...prev, [next]: null })));
+                      }
+                    }}
                     style={{
                       textAlign: 'left', width: '100%', background: 'none', border: 'none', padding: 0,
                       cursor: 'pointer', fontFamily: 'inherit', display: 'flex',
@@ -122,6 +143,22 @@ export function MyCoachingPage() {
                           {schedule.todo || '—'}
                         </p>
                       </div>
+
+                      {note && (
+                        <div style={{ borderTop: `1px solid ${color.divider}`, paddingTop: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                          <p style={{ ...font.rowTitle, color: color.text, margin: 0 }}>AIコーチングノート</p>
+                          {NOTE_FIELD_LABELS.map(({ key, label }) => (
+                            note[key] ? (
+                              <div key={key}>
+                                <p style={{ ...font.label, color: color.textSubtle, margin: '0 0 4px' }}>{label}</p>
+                                <p style={{ ...font.meta, color: color.textBody, margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.8 }}>
+                                  {note[key] as string}
+                                </p>
+                              </div>
+                            ) : null
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

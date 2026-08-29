@@ -20,6 +20,7 @@ from entities import (
     WebCoachStudyNote,
     WebCoachCoachingSchedule,
     WebCoachCoachingRecording,
+    WebCoachCoachingNote,
     WebCoachRoadmapSkill,
     WebCoachRoadmapPhase,
     WebCoachRoadmapTodo,
@@ -1712,6 +1713,7 @@ def update_coaching_schedule(
     mdl_user_id: int,
     schedule_id: int,
     coaching_date=None,
+    status: Optional[str] = None,
     meeting_url: Optional[str] = None,
     coaching_summary: Optional[str] = None,
     todo: Optional[str] = None,
@@ -1723,6 +1725,7 @@ def update_coaching_schedule(
         db: Database session
         mdl_user_id: 受講生のMoodleユーザーID（所有者チェック）
         schedule_id: 更新対象のid
+        status: コーチング実施結果 (completed, interrupted, rescheduled)
 
     Returns:
         WebCoachCoachingSchedule: 更新後のレコード。見つからない場合はNone
@@ -1737,6 +1740,8 @@ def update_coaching_schedule(
 
     if coaching_date is not None:
         schedule.coaching_date = coaching_date
+    if status is not None:
+        schedule.status = status
     if meeting_url is not None:
         schedule.meeting_url = meeting_url
     if coaching_summary is not None:
@@ -2343,6 +2348,139 @@ def update_coaching_recording_status(
     db.commit()
     db.refresh(recording)
     return recording
+
+
+# ==========================================
+# Coaching Note CRUD (AIコーチングノート: 下書き→コーチ確認→公開)
+# ==========================================
+
+def upsert_ai_coaching_note_draft(
+    db: Session,
+    coaching_schedule_id: int,
+    session_summary: Optional[str] = None,
+    client_status_and_goal: Optional[str] = None,
+    main_issues: Optional[str] = None,
+    coach_feedback: Optional[str] = None,
+    decisions: Optional[str] = None,
+    client_next_actions: Optional[str] = None,
+    coach_follow_up: Optional[str] = None,
+    next_session_check: Optional[str] = None,
+) -> WebCoachCoachingNote:
+    """
+    AI生成したコーチングノートの下書きを保存（同一schedule_idが既にあれば内容のみ上書き、statusは変更しない）
+
+    Args:
+        db: Database session
+        coaching_schedule_id: 対象のコーチング回（webcoach_coaching_schedule.id）
+        session_summary〜next_session_check: AIが生成した8項目
+
+    Returns:
+        WebCoachCoachingNote: 保存されたレコード
+    """
+    fields = dict(
+        session_summary=session_summary,
+        client_status_and_goal=client_status_and_goal,
+        main_issues=main_issues,
+        coach_feedback=coach_feedback,
+        decisions=decisions,
+        client_next_actions=client_next_actions,
+        coach_follow_up=coach_follow_up,
+        next_session_check=next_session_check,
+    )
+
+    existing = db.query(WebCoachCoachingNote).filter(
+        WebCoachCoachingNote.coaching_schedule_id == coaching_schedule_id
+    ).first()
+
+    if existing:
+        for key, value in fields.items():
+            setattr(existing, key, value)
+        db.commit()
+        db.refresh(existing)
+        return existing
+
+    note = WebCoachCoachingNote(coaching_schedule_id=coaching_schedule_id, **fields)
+    db.add(note)
+    db.commit()
+    db.refresh(note)
+    return note
+
+
+def get_coaching_note(
+    db: Session,
+    coaching_schedule_id: int,
+) -> Optional[WebCoachCoachingNote]:
+    """
+    コーチング回に紐づくAIコーチングノートを取得
+
+    Args:
+        db: Database session
+        coaching_schedule_id: 対象のコーチング回（webcoach_coaching_schedule.id）
+
+    Returns:
+        WebCoachCoachingNote: 見つからない場合はNone
+    """
+    return db.query(WebCoachCoachingNote).filter(
+        WebCoachCoachingNote.coaching_schedule_id == coaching_schedule_id
+    ).first()
+
+
+def update_coaching_note(
+    db: Session,
+    note_id: int,
+    status: Optional[str] = None,
+    session_summary: Optional[str] = None,
+    client_status_and_goal: Optional[str] = None,
+    main_issues: Optional[str] = None,
+    coach_feedback: Optional[str] = None,
+    decisions: Optional[str] = None,
+    client_next_actions: Optional[str] = None,
+    coach_follow_up: Optional[str] = None,
+    next_session_check: Optional[str] = None,
+) -> Optional[WebCoachCoachingNote]:
+    """
+    コーチによるコーチングノートの編集・確定・公開を保存
+
+    Args:
+        db: Database session
+        note_id: 更新対象のwebcoach_coaching_note.id
+        status: coach_confirmed または published に遷移させる場合に指定。
+                published にすると published_at が現在時刻でセットされる。
+
+    Returns:
+        WebCoachCoachingNote: 更新後のレコード。見つからない場合はNone
+    """
+    note = db.query(WebCoachCoachingNote).filter(
+        WebCoachCoachingNote.id == note_id
+    ).first()
+
+    if not note:
+        return None
+
+    if session_summary is not None:
+        note.session_summary = session_summary
+    if client_status_and_goal is not None:
+        note.client_status_and_goal = client_status_and_goal
+    if main_issues is not None:
+        note.main_issues = main_issues
+    if coach_feedback is not None:
+        note.coach_feedback = coach_feedback
+    if decisions is not None:
+        note.decisions = decisions
+    if client_next_actions is not None:
+        note.client_next_actions = client_next_actions
+    if coach_follow_up is not None:
+        note.coach_follow_up = coach_follow_up
+    if next_session_check is not None:
+        note.next_session_check = next_session_check
+    if status is not None:
+        note.status = status
+        if status == "published":
+            note.published_at = func.current_timestamp()
+
+    db.commit()
+    db.refresh(note)
+    return note
 
 
 # ==========================================

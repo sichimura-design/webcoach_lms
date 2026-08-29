@@ -136,54 +136,6 @@ router.get('/recomendbadge/:userid', requireAuth, requireOwnership, async (req, 
   }
 });
 
-// Get roadmaps
-router.get('/roadmaps', requireAuth, async (req, res) => {
-  try {
-    const { category, difficulty, limit, offset } = req.query;
-
-    const filters = {
-      category,
-      difficulty,
-      limit: limit || 20,
-      offset: offset || 0
-    };
-
-    const result = await webCoachService.getRoadmaps(filters);
-    res.json(result);
-  } catch (error) {
-    console.error('[WebCoach Roadmaps] Error:', error.message);
-
-    if (error.response) {
-      return res.status(error.response.status).json(error.response.data);
-    }
-
-    res.status(500).json({
-      error: 'Failed to get roadmaps',
-      detail: error.message
-    });
-  }
-});
-
-// Get roadmap detail
-router.get('/roadmap/:roadmapid', requireAuth, async (req, res) => {
-  try {
-    const { roadmapid } = req.params;
-    const result = await webCoachService.getRoadmapDetail(roadmapid);
-    res.json(result);
-  } catch (error) {
-    console.error('[WebCoach Roadmap Detail] Error:', error.message);
-
-    if (error.response) {
-      return res.status(error.response.status).json(error.response.data);
-    }
-
-    res.status(500).json({
-      error: 'Failed to get roadmap detail',
-      detail: error.message
-    });
-  }
-});
-
 // Get AI applications
 router.get('/ai-applications', requireAuth, async (req, res) => {
   try {

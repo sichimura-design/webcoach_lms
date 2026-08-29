@@ -14,6 +14,8 @@ import {
   CoachingSchedule,
   CreateCoachingScheduleRequest,
   UpdateCoachingScheduleRequest,
+  CoachingNote,
+  UpdateCoachingNoteRequest,
   Roadmap,
   RoadmapQueryParams,
   RoadmapSkill,
@@ -399,6 +401,27 @@ class BFFClient {
    */
   async deleteCoachingSchedule(userId: number, id: number): Promise<void> {
     await this.api.delete(`/coaching/schedule/${userId}/${id}`);
+  }
+
+  /**
+   * AIコーチングノート取得
+   * GET /api/coaching/notes/{coaching_schedule_id}
+   */
+  async getCoachingNote(coachingScheduleId: number): Promise<CoachingNote> {
+    const response = await this.api.get(`/coaching/notes/${coachingScheduleId}`);
+    return response.data;
+  }
+
+  /**
+   * AIコーチングノート編集・確定・公開
+   * PUT /api/coaching/notes/{coaching_schedule_id}
+   */
+  async updateCoachingNote(
+    coachingScheduleId: number,
+    data: UpdateCoachingNoteRequest
+  ): Promise<CoachingNote> {
+    const response = await this.api.put(`/coaching/notes/${coachingScheduleId}`, data);
+    return response.data;
   }
 
   /**

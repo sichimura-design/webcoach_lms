@@ -1,11 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Plus, ExternalLink, Trash2 } from 'lucide-react';
+import { Calendar, Plus, ExternalLink, Trash2, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { AppHeader } from '../shared';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
-import { CoachingSchedule } from '../../types/api';
+import { CoachingSchedule, CoachingScheduleStatus, CoachingNote, CoachingNoteStatus, UpdateCoachingNoteRequest } from '../../types/api';
 import { color, font, t } from '../../theme/webcoachTheme';
+
+const NOTE_FIELD_LABELS: { key: keyof UpdateCoachingNoteRequest; label: string }[] = [
+  { key: 'session_summary', label: 'セッション概要' },
+  { key: 'client_status_and_goal', label: 'Clientの現状と目標' },
+  { key: 'main_issues', label: '主な課題' },
+  { key: 'coach_feedback', label: 'Coachからのフィードバック' },
+  { key: 'decisions', label: '今回決めたこと' },
+  { key: 'client_next_actions', label: 'Clientの次回までのアクション' },
+  { key: 'coach_follow_up', label: 'Coach側のフォロー事項' },
+  { key: 'next_session_check', label: '次回確認すること' },
+];
+
+const NOTE_STATUS_LABEL: Record<CoachingNoteStatus, string> = {
+  ai_suggested: 'AI下書き',
+  coach_confirmed: '確認済み（未公開）',
+  published: '公開済み',
+};
+
+const NOTE_STATUS_STYLE: Record<CoachingNoteStatus, React.CSSProperties> = {
+  ai_suggested: { background: '#F1EFEA', color: color.textMuted },
+  coach_confirmed: { background: '#E8F0FC', color: '#3A5C8F' },
+  published: { background: '#E6F4EA', color: '#1E7A34' },
+};
 
 interface Student {
   id: number;
@@ -15,6 +38,7 @@ interface Student {
 
 interface ScheduleFormState {
   coaching_date: string;
+  status: CoachingScheduleStatus | '';
   meeting_url: string;
   coaching_summary: string;
   todo: string;
@@ -22,9 +46,16 @@ interface ScheduleFormState {
 
 const emptyForm: ScheduleFormState = {
   coaching_date: new Date().toISOString().slice(0, 10),
+  status: '',
   meeting_url: '',
   coaching_summary: '',
   todo: '',
+};
+
+const SCHEDULE_STATUS_LABEL: Record<CoachingScheduleStatus, string> = {
+  completed: '終了',
+  interrupted: '中断',
+  rescheduled: 'リスケ',
 };
 
 const smallPrimaryButton: React.CSSProperties = {
@@ -82,6 +113,12 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState<ScheduleFormState>(emptyForm);
 
+  const [noteOpenId, setNoteOpenId] = useState<number | null>(null);
+  const [notes, setNotes] = useState<Record<number, CoachingNote | 'none'>>({});
+  const [noteLoading, setNoteLoading] = useState(false);
+  const [noteForm, setNoteForm] = useState<UpdateCoachingNoteRequest>({});
+  const [noteSaving, setNoteSaving] = useState(false);
+
   const loadSchedules = () => {
     setLoading(true);
     bffClient.getCoachingSchedules(studentId)
@@ -126,6 +163,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
     setEditingId(schedule.id);
     setEditForm({
       coaching_date: schedule.coaching_date,
+      status: schedule.status || '',
       meeting_url: schedule.meeting_url,
       coaching_summary: schedule.coaching_summary || '',
       todo: schedule.todo || '',
@@ -138,6 +176,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
     try {
       await bffClient.updateCoachingSchedule(studentId, id, {
         coaching_date: editForm.coaching_date,
+        status: editForm.status || undefined,
         meeting_url: editForm.meeting_url,
         coaching_summary: editForm.coaching_summary || null,
         todo: editForm.todo || null,
@@ -148,6 +187,47 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       setError('コーチング記録の更新に失敗しました');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const toggleNote = async (scheduleId: number) => {
+    if (noteOpenId === scheduleId) {
+      setNoteOpenId(null);
+      return;
+    }
+    setNoteOpenId(scheduleId);
+    if (notes[scheduleId]) {
+      const existing = notes[scheduleId];
+      setNoteForm(existing === 'none' ? {} : { ...existing });
+      return;
+    }
+    setNoteLoading(true);
+    try {
+      const note = await bffClient.getCoachingNote(scheduleId);
+      setNotes(prev => ({ ...prev, [scheduleId]: note }));
+      setNoteForm({ ...note });
+    } catch {
+      setNotes(prev => ({ ...prev, [scheduleId]: 'none' }));
+      setNoteForm({});
+    } finally {
+      setNoteLoading(false);
+    }
+  };
+
+  const handleSaveNote = async (scheduleId: number, status?: CoachingNoteStatus) => {
+    if (noteSaving) return;
+    setNoteSaving(true);
+    try {
+      const updated = await bffClient.updateCoachingNote(scheduleId, {
+        ...noteForm,
+        ...(status ? { status } : {}),
+      });
+      setNotes(prev => ({ ...prev, [scheduleId]: updated }));
+      setNoteForm({ ...updated });
+    } catch {
+      setError('コーチングノートの保存に失敗しました');
+    } finally {
+      setNoteSaving(false);
     }
   };
 
@@ -266,6 +346,11 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                         <Calendar className="w-3.5 h-3.5" />
                         {schedule.coaching_date}
                       </span>
+                      {schedule.status && (
+                        <span style={{ ...t.chip, background: '#F1EFEA', color: color.textMuted }}>
+                          {SCHEDULE_STATUS_LABEL[schedule.status]}
+                        </span>
+                      )}
                       {schedule.todo && (
                         <span style={{ ...t.chip, background: '#FFF6E5', color: '#B26A00' }}>TODOあり</span>
                       )}
@@ -295,6 +380,69 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                     )}
                   </button>
                 )}
+
+                <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${color.borderSoft}` }}>
+                  <button
+                    type="button"
+                    onClick={() => toggleNote(schedule.id)}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 6,
+                      background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit',
+                      ...font.buttonSm, color: '#3A5C8F',
+                    }}
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    AIコーチングノート
+                    {notes[schedule.id] && notes[schedule.id] !== 'none' && (
+                      <span style={{ ...t.chip, ...NOTE_STATUS_STYLE[(notes[schedule.id] as CoachingNote).status] }}>
+                        {NOTE_STATUS_LABEL[(notes[schedule.id] as CoachingNote).status]}
+                      </span>
+                    )}
+                    {noteOpenId === schedule.id ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                  </button>
+
+                  {noteOpenId === schedule.id && (
+                    <div style={{ marginTop: 12 }}>
+                      {noteLoading ? (
+                        <p style={{ ...font.meta, color: color.textMuted }}>読み込み中…</p>
+                      ) : notes[schedule.id] === 'none' ? (
+                        <p style={{ ...font.meta, color: color.textSubtle }}>
+                          まだAIノートが生成されていません（文字起こし取得後に自動生成されます）。
+                        </p>
+                      ) : (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                          {NOTE_FIELD_LABELS.map(({ key, label }) => (
+                            <div key={key}>
+                              <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>{label}</label>
+                              <textarea
+                                value={(noteForm[key] as string) || ''}
+                                onChange={e => setNoteForm(prev => ({ ...prev, [key]: e.target.value }))}
+                                rows={2}
+                                style={{ ...inputStyle, resize: 'none' }}
+                              />
+                            </div>
+                          ))}
+                          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                            <button type="button" style={ghostSmallButton} onClick={() => handleSaveNote(schedule.id)} disabled={noteSaving}>
+                              {noteSaving ? '保存中...' : '下書き保存'}
+                            </button>
+                            <button type="button" style={smallPrimaryButton} onClick={() => handleSaveNote(schedule.id, 'coach_confirmed')} disabled={noteSaving}>
+                              内容を確定
+                            </button>
+                            <button
+                              type="button"
+                              style={{ ...smallPrimaryButton, background: '#1E7A34' }}
+                              onClick={() => handleSaveNote(schedule.id, 'published')}
+                              disabled={noteSaving}
+                            >
+                              受講生に公開
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             ))
           )}
@@ -332,6 +480,19 @@ function ScheduleForm({
             placeholder="https://..."
             style={inputStyle}
           />
+        </div>
+        <div style={{ flex: 1, minWidth: 140 }}>
+          <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>実施結果</label>
+          <select
+            value={form.status}
+            onChange={e => onChange({ ...form, status: e.target.value as ScheduleFormState['status'] })}
+            style={inputStyle}
+          >
+            <option value="">未設定</option>
+            <option value="completed">終了</option>
+            <option value="interrupted">中断</option>
+            <option value="rescheduled">リスケ</option>
+          </select>
         </div>
       </div>
       <div>

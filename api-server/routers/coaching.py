@@ -396,6 +396,7 @@ def update_coaching_schedule_endpoint(
             mdl_user_id=userid,
             schedule_id=schedule_id,
             coaching_date=data.coaching_date,
+            status=data.status,
             meeting_url=data.meeting_url,
             coaching_summary=data.coaching_summary,
             todo=data.todo,
