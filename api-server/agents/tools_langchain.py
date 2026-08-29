@@ -8,7 +8,7 @@ import logging
 from functools import lru_cache
 from typing import Dict, Any, List, Optional
 import requests
-from langchain_core.tools import Tool
+from langchain_core.tools import Tool, StructuredTool, BaseTool
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -255,7 +255,7 @@ def _call_dify_chat(query: str, userid: int, api_key: str) -> str:
         return f"Difyへの問い合わせに失敗しました: {str(e)}"
 
 
-def create_ai_application_tools(db) -> List[Tool]:
+def create_ai_application_tools(db) -> List[BaseTool]:
     """
     DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
     LangChain Toolとして動的に生成する。
@@ -281,7 +281,7 @@ def create_ai_application_tools(db) -> List[Tool]:
             return _call
 
         tools.append(
-            Tool(
+            StructuredTool.from_function(
                 name=f"ask_ai_application_{app.id}",
                 description=f"「{app.name}」（{app.category}）に問い合わせます。{app.description}",
                 func=make_func(),

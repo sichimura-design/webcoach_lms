@@ -4,7 +4,7 @@ Agent State Definitions
 """
 from typing import List, Dict, Any, Optional, TypedDict, Annotated
 from langchain_core.messages import BaseMessage
-from langchain_core.tools import Tool
+from langchain_core.tools import BaseTool
 import operator
 
 
@@ -19,7 +19,7 @@ class LearningCoachState(TypedDict):
     course_id: Optional[int]
 
     # DBの webcoach_ai_application から動的に生成されたツール（リクエストごとに構築）
-    dynamic_tools: List[Tool]
+    dynamic_tools: List[BaseTool]
 
     # RAGコンテキスト
     rag_sources: List[Dict[str, Any]]
