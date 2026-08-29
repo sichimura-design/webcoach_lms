@@ -1,5 +1,5 @@
 import { color, font, radius } from '../../theme/webcoachTheme';
-import { STUDY_SESSION_MODE_LABEL, StudySessionMode } from '../../types/studyActivity';
+import { STUDY_SESSION_MODE_LABEL, StudySessionMode } from '../../types/studyRoom';
 
 /**
  * 通常タイマー／ポモドーロの切り替え。稼働中はdisabledにする(非表示ではなく無効化)。

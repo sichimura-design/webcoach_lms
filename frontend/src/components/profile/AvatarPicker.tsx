@@ -14,6 +14,11 @@ export function resolveAvatarUrl(identifier: string | null | undefined, fallback
   if (identifier.startsWith('http')) {
     return identifier;
   }
+  // アップロードした画像。モックは data URL を返すので、そのまま <img src> に渡せる
+  // （ここを通さないと下のイニシャル画像に落ちてアップロードが反映されない）
+  if (identifier.startsWith('data:image/')) {
+    return identifier;
+  }
   // DiceBear識別子（後方互換）
   if (identifier.startsWith('dicebear:')) {
     const parts = identifier.split(':');
@@ -34,14 +39,33 @@ export function withCfToken(url: string, token: string | null | undefined): stri
   return `${url}${sep}cf_token=${encodeURIComponent(token)}`;
 }
 
+/** モーダルを開くボタンの既定の見た目。呼び出し側が指定しなければこれを使う */
+const DEFAULT_TRIGGER_CLASS =
+  'flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#9CA3AF] bg-white border border-[#E5E0DB] rounded-full hover:bg-gray-50 transition-colors';
+
 interface AvatarPickerProps {
   /** 現在選択中のアバターID（APIから取得した数値ID） */
   selectedAvatarId: number | null;
   /** アバターID と URL を受け取るコールバック */
   onSelect: (avatarId: number, url: string) => void;
+  /**
+   * モーダルを開くボタンの文言・見た目。
+   * プロフィール設定（デザイン 2b）はアウトラインボタンで組まれていて、
+   * ここの既定（丸ピル・無彩色）とは別物なので差し替えられるようにしている。
+   * 未指定なら従来の見た目のまま。
+   */
+  triggerLabel?: string;
+  triggerClassName?: string;
+  triggerStyle?: React.CSSProperties;
 }
 
-export function AvatarPicker({ selectedAvatarId, onSelect }: AvatarPickerProps) {
+export function AvatarPicker({
+  selectedAvatarId,
+  onSelect,
+  triggerLabel = 'アバターを選択',
+  triggerClassName = DEFAULT_TRIGGER_CLASS,
+  triggerStyle,
+}: AvatarPickerProps) {
   const [open, setOpen] = useState(false);
   const [avatars, setAvatars] = useState<Array<{ avatar_id: number; url: string }>>([]);
   const [loading, setLoading] = useState(false);
@@ -75,9 +99,10 @@ export function AvatarPicker({ selectedAvatarId, onSelect }: AvatarPickerProps) 
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#9CA3AF] bg-white border border-[#E5E0DB] rounded-full hover:bg-gray-50 transition-colors"
+        className={triggerClassName}
+        style={triggerStyle}
       >
-        アバターを選択
+        {triggerLabel}
       </button>
 
       {open && (

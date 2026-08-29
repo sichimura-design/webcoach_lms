@@ -1,5 +1,5 @@
 import { color, font } from '../../theme/webcoachTheme';
-import { StudySessionMode } from '../../types/studyActivity';
+import { StudySessionMode } from '../../types/studyRoom';
 import { formatHMS, formatMMSS } from './focusFormat';
 
 /**

@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { AppHeader } from './shared';
 import { useStudySession } from '../hooks/useStudySession';
-import { useStudyStats } from '../hooks/useStudyStats';
+import { useStudyStatsBundle } from '../hooks/useStudyStats';
 import { useScaleToFit } from '../hooks/useScaleToFit';
-import { StudySessionMode } from '../types/studyActivity';
+import { StudySessionMode } from '../types/studyRoom';
 import { color, font, space } from '../theme/webcoachTheme';
 import FocusTimerCard from './focus/FocusTimerCard';
 import StudyStatsCard from './focus/StudyStatsCard';
@@ -49,7 +49,7 @@ function FocusBoothPage() {
   } = useStudySession(user?.userid);
 
   const { stats, streak, recent, ranking, calendarDays, calendarYear, calendarMonth, setCalendarMonth, loading, refresh } =
-    useStudyStats(user?.userid);
+    useStudyStatsBundle(user?.userid);
 
   // 開始前の設定。開始したらsession側が正になる
   const [mode, setMode] = useState<StudySessionMode>('freeform');

@@ -10,7 +10,10 @@ import {
   BadgeProgress,
   MonthlyGoal,
   CareerGoal,
+  DailyTodo,
+  StreakInfo,
 } from '../types/mypage';
+import type { NextRecommendation } from '../utils/nextCourseRecommend';
 
 // アバター一覧のモジュールレベルキャッシュ（セッション中は保持）
 let cachedAvatars: Array<{ avatar_id: number; url: string }> | null = null;
@@ -55,8 +58,12 @@ export const fetchResumeCourse = async (userId: number): Promise<Course | null> 
       roadmapName: 'ロードマップ',
       categoryName: 'カテゴリ',
       categoryColor: '#F3A7A7',
-      currentLesson: undefined,
+      currentLesson: course.currentlesson,
+      currentChapter: course.currentchapter,
+      remainingMinutes: course.remainingminutes,
       lastAccessDate: course.lastaccess ? new Date(course.lastaccess * 1000).toISOString() : undefined,
+      durationMinutes: course.durationminutes,
+      totalLessons: course.totallessons,
     };
   }
 
@@ -104,6 +111,8 @@ export const fetchUserCourses = async (userId: number): Promise<Course[]> => {
       categoryName: course.categoryname || 'カテゴリ',
       categoryColor: '#60A5FA',
       lastAccessDate: course.lastaccess ? new Date(course.lastaccess * 1000).toISOString() : undefined,
+      durationMinutes: course.durationminutes,
+      totalLessons: course.totallessons,
     }));
     console.log('fetchUserCourses mapped courses:', courses);
     return courses;
@@ -173,4 +182,46 @@ export const fetchCareerGoal = async (userId: number): Promise<CareerGoal> => {
   return {
     goal: response.goal || '目標を設定しましょう'
   };
+};
+
+/**
+ * 今日のTODO取得
+ */
+export const fetchDailyTodos = async (userId: number): Promise<DailyTodo[]> => {
+  return bffClient.getDailyTodos(userId);
+};
+
+/**
+ * 学習ストリーク（連続学習日数・週間の学習有無）取得
+ */
+export const fetchStreak = async (userId: number): Promise<StreakInfo> => {
+  return bffClient.getStreak(userId);
+};
+
+const mapRecommendedCourse = (course: any): Course => ({
+  id: course.id || course.courseid,
+  title: course.fullname || course.displayname || '',
+  description: course.summary || '',
+  categoryName: course.categoryname || 'カテゴリ',
+  thumbnailUrl: course.courseimage,
+  difficulty: course.difficulty,
+  duration: course.duration,
+  totalLessons: course.lessoncount ?? course.totallessons,
+});
+
+/**
+ * 「次におすすめ」取得（実践／関連／1歩先の最大3枠）。
+ * 枠が埋まらなければ件数が減る。3件に満たないことを異常として扱わないこと。
+ */
+export const fetchNextCourses = async (userId: number): Promise<NextRecommendation<Course>[]> => {
+  const response = await bffClient.getNextCourses(userId);
+  if (!Array.isArray(response)) return [];
+
+  return response
+    .filter((r: any) => r?.course)
+    .map((r: any) => ({
+      slot: r.slot,
+      label: r.label,
+      course: mapRecommendedCourse(r.course),
+    }));
 };

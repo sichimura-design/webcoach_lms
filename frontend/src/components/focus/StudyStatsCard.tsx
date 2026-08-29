@@ -1,5 +1,5 @@
 import { color, font, radius, shadow } from '../../theme/webcoachTheme';
-import { StudyStats, StudyStreak } from '../../types/studyActivity';
+import { StudyStats, StudyStreakInfo } from '../../types/studyActivity';
 import { formatMinutesHM } from './focusFormat';
 import { CalendarIcon, ClockIcon, FlameIcon, StackIcon } from './statIcons';
 
@@ -8,7 +8,7 @@ import { CalendarIcon, ClockIcon, FlameIcon, StackIcon } from './statIcons';
  */
 interface StudyStatsCardProps {
   stats: StudyStats | null;
-  streak: StudyStreak | null;
+  streak: StudyStreakInfo | null;
   loading: boolean;
 }
 

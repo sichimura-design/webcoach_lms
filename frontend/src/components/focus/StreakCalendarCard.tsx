@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { color, font, radius, shadow } from '../../theme/webcoachTheme';
-import { StudyCalendarDay, StudyStreak } from '../../types/studyActivity';
+import { StudyCalendarDay, StudyStreakInfo } from '../../types/studyActivity';
 import StudyCalendar from './StudyCalendar';
 
 /**
@@ -9,7 +9,7 @@ import StudyCalendar from './StudyCalendar';
  * (ログインストリークとは独立した別指標)。
  */
 interface StreakCalendarCardProps {
-  streak: StudyStreak | null;
+  streak: StudyStreakInfo | null;
   calendarDays: StudyCalendarDay[];
   calendarYear: number;
   /** 0 = 1月 */

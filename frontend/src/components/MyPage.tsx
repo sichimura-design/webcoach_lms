@@ -1,33 +1,85 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Edit2, PlayCircle, ChevronRight, Flag, Bookmark, Play } from 'lucide-react';
+import { ChevronRight, Flag } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
 import { AppHeader } from './shared';
-import { CourseImage } from './shared/CourseImage';
 import { useMypageData } from '../hooks/useMypageData';
-import { resolveAvatarUrl, withCfToken } from './profile/AvatarPicker';
-import { CoachingGoals } from './mypage/CoachingGoals';
+import { useLearningSummary } from '../hooks/useLearningSummary';
+import { useStudyStats } from '../hooks/useStudyStats';
+import { useProgressionStore } from '../store/progressionStore';
+import { EXP_RULES } from '../utils/progression';
+import MypageGreeting from './mypage/MypageGreeting';
+import StreakHeroCard from './mypage/StreakHeroCard';
+import StudyRecordCard from './mypage/StudyRecordCard';
+import StudyChallengeCard from './mypage/StudyChallengeCard';
+import PeerRankingCard from './mypage/PeerRankingCard';
+import { Course } from '../types/mypage';
+
+/**
+ * マイページ（ダッシュボード）。claude.ai/design『トップページ 3案』5a 準拠。
+ *
+ * 【レイアウト方式】
+ * 🔴 useScaleToFit（1440px の固定キャンバスを transform:scale で縮小）は使わない。
+ *    デザインが fr ベースの流動レイアウトになったため。scale 方式は狭い画面で
+ *    文字まで一緒に縮んで読めなくなるのが難点で、こちらは素直に折り返す。
+ *    学習コンテンツは今も scale 方式なので、あちらと作りが違う点に注意。
+ *
+ * 【構成】5a は「継続」と「競争」の2軸だけに絞った画面
+ *   ① 挨拶（日付＋名前。カードなし・地色に直置き）
+ *   ② 2カラム: 左＝学習ストリーク / 学習記録、右＝学習時間チャレンジ / みんなのランキング
+ *   ③ フッター
+ *
+ * 🔴 かつてここにあった「学習ロードマップ帯」「続きを学ぶヒーローカード」
+ *    「次回コーチング」「次回コーチングまでの目標」は 5a 改修で外した。
+ *    学習の再開動線は StudyChallengeCard の中（「続きから学習する」）に畳んである。
+ *    コンポーネント自体は mypage/ に残してあるので、戻すときは import を足すだけでよい。
+ *
+ * 主アクション（塗りつぶしの赤ボタン）は StudyChallengeCard の
+ * 『続きから学習する』1つだけ。他のカードのCTAはアウトラインかテキストリンクに
+ * 留めること（DESIGN.md §15-5）。
+ */
 
 function MyPage() {
   const navigate = useNavigate();
-  const { user, loading: authLoading, contentToken } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   const {
     userProfile,
     resumableCourse,
     activeCourses,
+    streak,
     loading: isLoading,
     error,
   } = useMypageData(user?.userid);
 
+  const noteStreakDays = useProgressionStore((s) => s.noteStreakDays);
+
+  // 「学習中のコース」= 続きから(resumableCourse) + 受講中一覧。id重複は除外
+  const learningCourses: Course[] = resumableCourse
+    ? [resumableCourse, ...activeCourses.filter(c => c.id !== resumableCourse.id)]
+    : activeCourses;
+
+  // 学習時間は集中ブースの実測を正にする（取れなければ進捗率からの推定に落ちる）。
+  // useMypageData の Promise.all には足さない（ブートをブロックしないため）。
+  const { stats: studyStats, loading: studyStatsLoading } = useStudyStats(user?.userid);
+  const learningSummary = useLearningSummary(learningCourses, studyStats);
+  const primaryCourse = learningCourses[0];
+
+  // ストリークが新たに伸びたタイミングでEXPボーナスを1度だけ付与
+  useEffect(() => {
+    if (streak?.days !== undefined) {
+      noteStreakDays(streak.days, EXP_RULES.STREAK_DAY_BONUS);
+    }
+  }, [streak?.days, noteStreakDays]);
+
   // Loading state
   if (authLoading || isLoading) {
     return (
-      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
+      <div className="mypage-3d min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto mb-4"></div>
-          <p className="text-brand-muted">読み込み中...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4" style={{ borderColor: 'var(--dc-primary)' }}></div>
+          <p style={{ color: 'var(--dc-text-muted)' }}>読み込み中...</p>
         </div>
       </div>
     );
@@ -36,13 +88,17 @@ function MyPage() {
   // Moodle account not linked
   if (!user?.userid) {
     return (
-      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
+      <div className="mypage-3d min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
         <div className="text-center px-6">
-          <p className="text-brand-muted font-bold mb-2">セッションが切れました</p>
-          <p className="text-sm text-brand-muted mb-4">
+          <p className="font-bold mb-2" style={{ color: 'var(--dc-text)' }}>セッションが切れました</p>
+          <p className="text-sm mb-4" style={{ color: 'var(--dc-text-muted)' }}>
             再度ログインしてください。
           </p>
-          <Button onClick={() => navigate('/login')} variant="brand" className="mt-2 rounded-xl px-6 py-2">
+          <Button
+            onClick={() => navigate('/login')}
+            className="mt-2 rounded-xl px-6 py-2 border-0 text-white"
+            style={{ background: 'var(--dc-primary)' }}
+          >
             ログイン画面へ
           </Button>
         </div>
@@ -53,13 +109,13 @@ function MyPage() {
   // Error state
   if (error || !userProfile) {
     return (
-      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
+      <div className="mypage-3d min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
         <div className="text-center">
-          <p className="text-brand-muted">{error || 'データの読み込みに失敗しました'}</p>
+          <p style={{ color: 'var(--dc-text-muted)' }}>{error || 'データの読み込みに失敗しました'}</p>
           <Button
             onClick={() => window.location.reload()}
-            variant="brand"
-            className="mt-4 rounded-xl px-6 py-2"
+            className="mt-4 rounded-xl px-6 py-2 border-0 text-white"
+            style={{ background: 'var(--dc-primary)' }}
           >
             再読み込み
           </Button>
@@ -69,274 +125,94 @@ function MyPage() {
   }
 
   const avatarName = userProfile.nick_name || '';
-  const avatarIdentifier = userProfile.avatar_url?.startsWith('http')
-    ? userProfile.avatar_url
-    : userProfile.avatar_id || userProfile.avatar_url;
-  const avatarSrc = withCfToken(resolveAvatarUrl(avatarIdentifier, avatarName), contentToken);
+  // 「続きから学習する」は没入型レッスンへ直行、「レッスン全体を見る」はコース目次へ
+  const openLesson = () => primaryCourse && navigate(`/course/${primaryCourse.id}`);
+  const openCurriculum = () => primaryCourse && navigate(`/course/${primaryCourse.id}/curriculum`);
 
   return (
-    <div className="min-h-screen bg-brand-bg flex flex-col">
-      <AppHeader
-        userName={avatarName}
-        avatarUrl={avatarSrc}
-      />
+    <div className="mypage-3d min-h-screen flex flex-col" style={{ background: 'var(--dc-bg)' }}>
+      <AppHeader userName={avatarName} />
 
-      {/* Background with gradient circles */}
-      <div className="relative flex-1">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div
-            className="absolute w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] lg:w-[1152px] lg:h-[1152px] rounded-full opacity-10"
-            style={{ background: 'radial-gradient(circle, rgba(225,112,121,0.3) 0%, transparent 70%)', top: '-200px', left: '-300px' }}
-          />
-          <div
-            className="absolute w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] lg:w-[1152px] lg:h-[1152px] rounded-full opacity-10"
-            style={{ background: 'radial-gradient(circle, rgba(253,234,226,0.5) 0%, transparent 70%)', top: '-100px', right: '-400px' }}
-          />
-          <div
-            className="absolute w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] lg:w-[1152px] lg:h-[1152px] rounded-full opacity-10"
-            style={{ background: 'radial-gradient(circle, rgba(242,147,103,0.3) 0%, transparent 70%)', bottom: '-300px', left: '50%' }}
-          />
+      <main
+        className="dc-page-main flex flex-col"
+        style={{ flex: 1, padding: 'var(--dc-sp-page-y) var(--dc-sp-page-x) calc(var(--dc-sp-page-y) * 0.8)', color: 'var(--dc-text)' }}
+      >
+        <MypageGreeting name={avatarName} />
+
+        <div className="mypage-3d-grid">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dc-sp-gap)' }}>
+            <StreakHeroCard stats={studyStats} loading={studyStatsLoading} />
+            <StudyRecordCard
+              stats={studyStats}
+              loading={studyStatsLoading}
+              completedLessons={learningSummary.completedLessons.total}
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dc-sp-gap)', minWidth: 0 }}>
+            {/*
+              🔴 ランキングは「自分から見に行かないがモチベーションになる情報」なので、
+                 独立ページだけに置かずトップで自然に目に入る位置に出す。
+                 全順位・期間の掘り下げは /study-log（4a）が受け持つ。
+            */}
+            <StudyChallengeCard
+              userId={user?.userid}
+              userName={avatarName}
+              course={primaryCourse}
+              onOpenLesson={openLesson}
+              onOpenCurriculum={openCurriculum}
+            />
+            <PeerRankingCard userId={user?.userid} />
+          </div>
         </div>
 
-        {/* Main Content */}
-        <main className="relative max-w-[1100px] mx-auto px-4 sm:px-6 py-8">
-          {/* Profile Card - Full Width */}
-          <div className="bg-white rounded-[32px] shadow-sm p-6 sm:p-8 mb-6 relative overflow-hidden">
-            {/* Decorative circles */}
-            <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-[#FFF5F0] opacity-60" />
-            <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full bg-[#E8F5E9] opacity-60" />
-
-            <div className="relative flex gap-5 sm:gap-6">
-              {/* Left: Avatar + Name */}
-              <div className="flex flex-col items-center gap-2 flex-shrink-0 w-[80px] sm:w-[96px]">
-                <div className="w-[72px] sm:w-[88px] h-[72px] sm:h-[88px] rounded-full overflow-hidden bg-[#F0EAE6]">
-                  <img
-                    src={avatarSrc}
-                    alt={avatarName}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <p className="text-sm font-bold text-brand-text text-center leading-tight">
-                  {userProfile.nick_name || '未設定'}
-                </p>
-              </div>
-
-              {/* Right: Info cards */}
-              <div className="flex-1 flex flex-col gap-3">
-                {/* 理想のキャリア */}
-                <div className="rounded-2xl px-4 py-3" style={{ background: '#FFF5EA' }}>
-                  <div className="flex items-center gap-1.5 mb-1">
-                    <div className="w-[18px] h-[18px] rounded bg-[#FA9262] flex items-center justify-center flex-shrink-0">
-                      <Flag className="w-2.5 h-2.5 text-white" />
-                    </div>
-                    <span className="text-xs font-bold text-[#FA9262]">理想のキャリア</span>
-                  </div>
-                  <p className="text-sm font-bold text-brand-text">
-                    {userProfile.ideal_career || '未設定'}
-                  </p>
-                </div>
-
-                {/* 今日のスモールステップ */}
-                <div className="bg-white border border-[#F0EAE6] rounded-2xl px-4 py-3">
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <div className="w-[18px] h-[18px] rounded-full bg-brand flex items-center justify-center flex-shrink-0">
-                      <Bookmark className="w-2.5 h-2.5 text-white" />
-                    </div>
-                    <span className="text-xs font-bold text-brand-muted">今日のスモールステップ</span>
-                  </div>
-                  <div className="pl-3 border-l-2 border-[#FA9262]">
-                    <p className="text-sm text-brand-text">
-                      {userProfile.today_small_step || '未設定'}
-                    </p>
-                  </div>
-                </div>
-              </div>
+        {/*
+          dev/kanegae統合: キャリアロードマップへの導線。
+          5a改修で「学習ロードマップ帯」は意図的に外されているが（上のコメント参照）、
+          dev/kanegaeの実装(RoadmapPage, /api/roadmap/*)への導線自体は失いたくないため
+          小さなカードとして復元する。mypage/RoadmapStrip.tsx（useLearningPlanのモック連動）
+          には接続しない。
+        */}
+        <button
+          onClick={() => navigate('/roadmap')}
+          className="dc-card"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
+            marginTop: 'var(--dc-sp-gap)',
+            padding: '16px 20px',
+            background: 'var(--dc-surface)',
+            border: '1px solid var(--dc-border)',
+            borderRadius: 'var(--dc-radius-lg)',
+            cursor: 'pointer',
+            textAlign: 'left',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div
+              style={{
+                width: 36, height: 36, borderRadius: '50%',
+                background: 'var(--dc-primary)', display: 'grid', placeItems: 'center', flexShrink: 0,
+              }}
+            >
+              <Flag className="w-4 h-4 text-white" />
             </div>
-
-            {/* Edit Profile Button - bottom right */}
-            <div className="relative flex justify-end mt-4">
-              <button
-                onClick={() => navigate('/profile')}
-                className="flex items-center gap-1.5 text-xs text-brand-muted hover:text-brand transition-colors"
-              >
-                <Edit2 className="w-3.5 h-3.5" />
-                プロフィール編集
-              </button>
+            <div>
+              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--dc-text)' }}>キャリアロードマップ</p>
+              <p style={{ fontSize: 12, color: 'var(--dc-text-muted)' }}>目標までの進み方を確認する</p>
             </div>
           </div>
+          <ChevronRight className="w-4 h-4" style={{ color: 'var(--dc-text-muted)', flexShrink: 0 }} />
+        </button>
 
-          {/* Career Roadmap */}
-          <button
-            onClick={() => navigate('/roadmap')}
-            className="w-full bg-white border border-[#F0EAE6] rounded-2xl px-5 py-4 flex items-center justify-between hover:border-brand transition-colors text-left"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-brand flex items-center justify-center flex-shrink-0">
-                <Flag className="w-4 h-4 text-white" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-brand-text">キャリアロードマップ</p>
-                <p className="text-xs text-brand-muted">目標までの進み方を確認する</p>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-brand-muted flex-shrink-0" />
-          </button>
-
-          {/* Coaching Goals */}
-          <CoachingGoals userId={user?.userid} />
-
-          {/* Course Content */}
-          <div className="space-y-6">
-            {/* Resume Course Card */}
-            {resumableCourse && (
-              <div className="bg-white rounded-[32px] shadow-sm overflow-hidden">
-                <div className="flex flex-col sm:flex-row">
-                  {/* Left Content */}
-                  <div className="flex-1 p-6 sm:p-8">
-                    <div className="inline-block px-4 py-1.5 bg-[#FFEAE1] text-brand text-sm font-semibold rounded-full mb-4">
-                      前回のつづき
-                    </div>
-
-                    <div className="flex items-start gap-3 mb-3">
-                      <div className="w-[3px] h-7 bg-brand-text rounded-full mt-0.5 flex-shrink-0"></div>
-                      <h3 className="text-2xl font-semibold text-brand-text">
-                        {resumableCourse.title}
-                      </h3>
-                    </div>
-
-                    {resumableCourse.currentLesson && (
-                      <div className="inline-block px-3 py-1.5 bg-[#FFF5D6] rounded-lg mb-5">
-                        <span className="text-sm font-medium text-brand-muted">
-                          {resumableCourse.currentLesson}
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="mb-5">
-                      <div className="flex items-center justify-between text-sm mb-2">
-                        <span className="text-xs text-brand-muted">進捗率</span>
-                        <span className="text-base font-semibold text-brand">{resumableCourse.progress || 0}%</span>
-                      </div>
-                      <div className="h-2 bg-[#EFEFEF] rounded-full overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all"
-                          style={{
-                            width: `${resumableCourse.progress || 0}%`,
-                            background: 'linear-gradient(90deg, #FA9161, #E86D78)',
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    <Button
-                      onClick={() => navigate(`/course/${resumableCourse.id}/curriculum`)}
-                      variant="brand"
-                      className="w-full rounded-xl px-6 py-3 flex items-center justify-center gap-2"
-                    >
-                      学習を再開する
-                      <PlayCircle className="w-[18px] h-[18px]" />
-                    </Button>
-                  </div>
-
-                  {/* Right: Course Icon/Image */}
-                  <div className="hidden sm:block w-[240px] flex-shrink-0 m-4 rounded-[28px] overflow-hidden">
-                    <CourseImage
-                      imageUrl={resumableCourse.thumbnailUrl}
-                      alt={resumableCourse.title}
-                      fallbackText={resumableCourse.title}
-                      fallbackColor="#F3A7A7"
-                      className="w-full h-full"
-                      style={{ height: '100%', minHeight: '140px' }}
-                      hideFallbackText
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Active Courses Section */}
-            {activeCourses.length > 0 && (
-              <section>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-bold text-brand-muted">
-                    学習中のコース
-                  </h3>
-                  <button
-                    onClick={() => navigate('/learning-courses')}
-                    className="text-xs font-medium text-brand-muted bg-white hover:bg-gray-50 flex items-center gap-1 border border-gray-200 rounded-full px-4 py-1.5 shadow-sm transition-colors"
-                  >
-                    すべて見る
-                    <ChevronRight className="w-3 h-3" />
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {activeCourses.slice(0, 6).map((course) => (
-                    <div
-                      key={course.id}
-                      className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden cursor-pointer hover:shadow-md transition-shadow flex flex-col"
-                      onClick={() => navigate(`/course/${course.id}/curriculum`)}
-                    >
-                      {/* Thumbnail */}
-                      <div className="relative w-full aspect-video overflow-hidden bg-[#E8E4E0]">
-                        <CourseImage
-                          imageUrl={course.thumbnailUrl}
-                          alt={course.title}
-                          fallbackColor="#E8E4E0"
-                          className="w-full h-full object-cover"
-                          style={{ height: '100%' }}
-                          hideFallbackText
-                        />
-                        {course.categoryName && (
-                          <span className="absolute top-2 left-2 text-[10px] font-bold text-brand-muted bg-white bg-opacity-90 rounded px-2 py-0.5">
-                            {course.categoryName}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Content */}
-                      <div className="p-4 flex flex-col flex-1">
-                        <h4 className="text-sm font-bold text-brand-text mb-3 line-clamp-2 flex-1">
-                          {course.title}
-                        </h4>
-
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="h-1.5 flex-1 bg-[#EFEFEF] rounded-full overflow-hidden">
-                            <div
-                              className="h-full rounded-full transition-all"
-                              style={{
-                                width: `${course.progress || 0}%`,
-                                background: 'linear-gradient(90deg, #FA9161, #E86D78)',
-                              }}
-                            />
-                          </div>
-                          <span className="text-xs font-bold text-[#FA9161] min-w-[32px] text-right">{course.progress || 0}%</span>
-                        </div>
-
-                        <button
-                          onClick={(e) => { e.stopPropagation(); navigate(`/course/${course.id}/curriculum`); }}
-                          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl text-white text-sm font-bold transition-opacity hover:opacity-90"
-                          style={{ background: 'linear-gradient(90deg, #FA9161, #E86D78)' }}
-                        >
-                          続きから学習する
-                          <Play className="w-3.5 h-3.5 fill-white" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )}
-          </div>
-        </main>
-      </div>
-
-      {/* Footer */}
-      <footer className="bg-brand-footer h-10 flex items-center justify-center">
-        <span className="text-[11.4px] font-bold text-white">
+        <footer
+          style={{ textAlign: 'center', fontSize: 'var(--dc-fs-xs)', color: 'var(--dc-text-subtle)', padding: '32px 0 0', marginTop: 'auto' }}
+        >
           2026 &copy; WEBCOACH
-        </span>
-      </footer>
+        </footer>
+      </main>
     </div>
   );
 }

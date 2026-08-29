@@ -1,0 +1,68 @@
+{
+  "baseUrl": "https://example.clipkit.co",
+  "storageState": ".auth/example.clipkit.co.json",
+  "outDir": "../../materials/source",
+  "content": {
+    "include": [
+      "article.item-body",
+      "main article",
+      "main .content",
+      "#content",
+      ".article-body",
+      ".post-body"
+    ],
+    "exclude": [
+      "script",
+      "style",
+      "noscript",
+      "template",
+      "header",
+      "nav",
+      "aside",
+      "footer",
+      ".breadcrumb",
+      ".breadcrumbs",
+      ".sidebar",
+      ".global-nav",
+      ".global-header",
+      ".global-footer",
+      ".share",
+      ".sns",
+      ".comments",
+      ".pagination",
+      ".related",
+      "[class*='gtm']",
+      "[id*='gtm']",
+      "iframe[src*='googletagmanager']",
+      "iframe[src*='google-analytics']",
+      "iframe[src*='doubleclick']",
+      "img[src*='google-analytics']",
+      "img[width='1'][height='1']"
+    ],
+    "allowedEmbedHosts": [
+      "www.youtube.com",
+      "youtube.com",
+      "youtu.be",
+      "www.youtube-nocookie.com",
+      "player.vimeo.com",
+      "vimeo.com"
+    ],
+    "attributes": [
+      "href",
+      "src",
+      "alt",
+      "title",
+      "colspan",
+      "rowspan"
+    ]
+  },
+  "courses": [
+    {
+      "slug": "web-marketing-basic",
+      "urls": [
+        "https://example.clipkit.co/items/1",
+        "https://example.clipkit.co/items/2"
+      ]
+    }
+  ]
+}

@@ -7,15 +7,15 @@
  *
  * ルール:
  *   1. 新しい色・角丸・影・サイズをコンポーネント内に直書きしない。必ずここに追加してから参照する。
- *   2. 既存の frontend/src/theme/colors.ts (#C62828 系) は旧デザイン。新規画面ではこのファイルを使う。
+ *   2. 既存の frontend/src/theme/colors.ts (#D60934 系) は旧デザイン。新規画面ではこのファイルを使う。
  *   3. 値はデザインモック WebcoachHomeLayered.dc.html のインライン style から 1:1 で写経したもの。推測値なし。
  */
 
 export const t = {
   color: {
     /** ブランド赤。CTA・アクティブ状態・アクセントすべてこの1色 */
-    primary: '#E60012',
-    primaryHover: '#B3000E',
+    primary: '#D60934',
+    primaryHover: '#B50829',
     /** 赤の淡い背景（アクティブなナビ、バッジ地） */
     primarySoft: '#FDEEEF',
     /** 赤の枠線（セカンダリボタン） */
@@ -67,7 +67,7 @@ export const t = {
     successSoft: '#EAF6ED',
 
     streak: {
-      on: '#E60012',
+      on: '#D60934',
       off: '#F7DADC',
     },
 
@@ -78,10 +78,32 @@ export const t = {
 
     /** コースのカテゴリ色（design_handoff_materialsのREADME「カテゴリ色」表に準拠。design/careerは既存トークンを再利用） */
     category: {
-      design: '#E60012',
+      design: '#D60934',
       coding: '#D9930D',
       marketing: '#8B5CD6',
       career: '#2FA35C',
+    },
+
+    /**
+     * 「次におすすめ」3枠のバッジ色。枠の意味を色でも区別する。
+     * カテゴリ色と同じ色相を使うが、意味は別（枠の種類 ≠ 学習領域）なので独立したトークンにする。
+     */
+    recommendSlot: {
+      practice: { fg: '#2FA35C', bg: '#EAF6ED' },
+      related: { fg: '#D9930D', bg: '#FBF1DC' },
+      ahead: { fg: '#8B5CD6', bg: '#F2ECFC' },
+    },
+
+    /**
+     * コースタイルの 16:9 サムネ地色。画像アセットを持たないコースは
+     * この地色にカテゴリ名＋コース名を大きく組んで「絵柄」にする。
+     * デザイン案 1b の3テーマ（赤/ダーク/クリーム）を正規色 primary に寄せた値。
+     */
+    thumb: {
+      red: { bg: 'linear-gradient(135deg,#D60934,#8B0620)', fg: '#FFFFFF', sub: 'rgba(255,255,255,.75)' },
+      dark: { bg: 'linear-gradient(135deg,#332A26,#141414)', fg: '#FFFFFF', sub: 'rgba(255,255,255,.65)' },
+      // クリーム地の sub は text.muted(#8A8082) だと地色とのコントラストが 3:1 を切るので一段濃くする
+      cream: { bg: 'linear-gradient(135deg,#FDF7F3,#F3E7DA)', fg: '#1F1A1B', sub: '#4A4244' },
     },
   },
 
@@ -90,6 +112,8 @@ export const t = {
     card: 20,
     /** カード内のカード（メンバー行）・イラスト枠 */
     inner: 14,
+    /** タイル（コースタイル・学習中の行・AI検索バー） */
+    tile: 16,
     /** ナビ項目 */
     nav: 12,
     /** 主要ボタン */
@@ -103,7 +127,7 @@ export const t = {
     /** 全カード共通。非常に浅い */
     card: '0 2px 10px rgba(120,90,95,.04)',
     /** イラストに重ねる赤ボタン */
-    buttonPrimary: '0 8px 20px rgba(230,0,18,.28)',
+    buttonPrimary: '0 8px 20px rgba(214,9,52,.28)',
   },
 
   space: {

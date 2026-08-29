@@ -3,19 +3,28 @@ import { Routes, Route, Navigate, useNavigate, useParams, useSearchParams } from
 import LoginPage from '../components/LoginPage';
 import PasswordResetPage from '../components/PasswordResetPage';
 import MyPage from '../components/MyPage';
+import StudyLogPage from '../components/studyLog/StudyLogPage';
+// CoachingNotesPage(dev/miyabeの招待URL型コーチング連携、モック)はどのルートにも接続していない。
+// TODO(backend未実装/方針転換で陳腐化): 下の /coaching ルートのコメント参照。
+import LearningPlanPage from '../components/learningPlan/LearningPlanPage';
+import LearningPlanSetupPage from '../components/learningPlan/LearningPlanSetupPage';
+import ConnectCoachPage from '../components/ConnectCoachPage';
 import ProfilePage from '../components/ProfilePage';
 import WebCoachDashboard from '../components/WebCoachDashboard';
 import CareerPathPage from '../components/CareerPathPage';
 import MaterialsTopPage from '../components/MaterialsTopPage';
 import LearningCoursesPage from '../components/LearningCoursesPage';
-import CategoryDetailPage from '../components/CategoryDetailPage';
-import AIAppsPage from '../components/AIAppsPage';
+import AiCoachPage from '../components/aicoach/AiCoachPage';
 import BadgesPage from '../components/BadgesPage';
 import ContentListPage from '../components/ContentListPage';
 import CourseContentPage from '../components/CourseContentPage';
 import CourseTopPage from '../components/CourseTopPage';
 import { RoadmapPage } from '../components/RoadmapPage';
+// LearningWorkspacePage(dev/miyabeの構造化教材/モック中心UI)は現在どのルートにも
+// 接続していない。TODO(教材表示アーキテクチャ未決定): 上のCourseContentWrapperのコメント参照。
+import MyNotesPage from '../components/notes/MyNotesPage';
 import AccountSettingsPage from '../components/AccountSettingsPage';
+import HelpPage from '../components/help/HelpPage';
 import AnimatedPage from '../components/AnimatedPage';
 import { AdminLayout } from '../components/admin/AdminLayout';
 import { AdminCsvPage } from '../components/admin/AdminCsvPage';
@@ -24,6 +33,7 @@ import { AdminImageUploadPage } from '../components/admin/AdminImageUploadPage';
 import { AdminVectorPage } from '../components/admin/AdminVectorPage';
 import { AdminStudentsPage } from '../components/admin/AdminStudentsPage';
 import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage';
+import { AdminCoachIntegrationsPage } from '../components/admin/AdminCoachIntegrationsPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
 import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
 import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
@@ -142,12 +152,8 @@ function LearningCoursesWrapper() {
   return <LearningCoursesPage />;
 }
 
-function CategoryDetailWrapper() {
-  return <CategoryDetailPage />;
-}
-
-function AIAppsWrapper() {
-  return <AIAppsPage />;
+function AiCoachWrapper() {
+  return <AiCoachPage />;
 }
 
 function ContentListWrapper() {
@@ -167,6 +173,14 @@ function CourseCurriculumWrapper() {
   return <CourseTopPage />;
 }
 
+/**
+ * dev/kanegae統合: 教材表示は dev/kanegae の実装(CourseContentPage、実Moodle教材を
+ * iframe描画)をそのまま使う。dev/miyabeのLearningWorkspacePage（構造化教材/LessonDoc）は
+ * 裏のAPIがモックのみで実データを返せないため、ここには接続しない。
+ * TODO(教材表示アーキテクチャ未決定): CourseContentPage(実装・稼働中) と
+ *   LearningWorkspacePage(構造化ブロック・モック中心)の統合方針は未決定のまま。
+ *   LearningWorkspacePage自体はコードとして残っている（将来ここへ差し替える候補）。
+ */
 function CourseContentWrapper() {
   const navigate = useNavigate();
   const { courseId } = useParams<{ courseId: string }>();
@@ -213,11 +227,74 @@ function AppRoutes() {
         }
       />
 
+      {/*
+        コーチ向けの録画連携ページ。コーチはLMSのアカウントを持たないため、
+        ここだけは意図的に ProtectedRoute の外に置く（未ログインで到達できる必要がある）。
+      */}
+      <Route
+        path="/connect/:token"
+        element={
+          <AnimatedPage>
+            <ConnectCoachPage />
+          </AnimatedPage>
+        }
+      />
+
       <Route
         path="/mypage"
         element={
           <ProtectedRoute>
             <MyPageWrapper />
+          </ProtectedRoute>
+        }
+      />
+
+      {/*
+        dev/miyabeは「集中ブースは廃止し、自動記録(StudySessionHost.tsx)に一本化する」方針で
+        ここを /study-log へのリダイレクトにしていたが、dev/kanegae統合では実装済み・実バックエンド
+        接続済みのFocusBoothPage（下の /focus-booth ルート）を優先して残す
+        （dev/kanegaeの実装で取得できるものはそれを使う方針）。StudySessionHost自体はApp直下に
+        常駐しており引き続き動作する（自動記録とFocusBoothPage、両方の入り口が併存する）。
+        TODO: 学習時間まわりのUI導線が2系統(集中ブース/自動記録+学習記録)残っている状態。
+        将来的にどちらかへ一本化するか要検討。
+      */}
+
+      {/* 学習記録の詳細（累計・日別グラフ・全履歴）。トップの「学習記録を見る」からの掘り下げ。 */}
+      <Route
+        path="/study-log"
+        element={
+          <ProtectedRoute>
+            <StudyLogPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/*
+        dev/kanegae統合: /coaching は下の方で dev/kanegae の実装(MyCoachingPage、
+        実装済みのOAuth型連携・録画・スケジュール・AIコーチングノートに接続)へルーティングする。
+        dev/miyabeのCoachingNotesPage（招待URL型連携の想定）は、その前提(Google Meet
+        Organizer中心モデルへの方針転換)が既に陳腐化しているためルートに接続しない
+        （ファイルはTODOとして残置。実装しないと決めたわけではない）。
+      */}
+
+      {/*
+        長期学習ロードマップ。閲覧・編集・確定をすべて受講生側で行う（コーチはLMSを操作しない運用）。
+        より具体的な /learning-plan/setup を先に置く。
+      */}
+      <Route
+        path="/learning-plan/setup"
+        element={
+          <ProtectedRoute>
+            <LearningPlanSetupPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/learning-plan"
+        element={
+          <ProtectedRoute>
+            <LearningPlanPage />
           </ProtectedRoute>
         }
       />
@@ -230,6 +307,25 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+
+      {/* 利用マニュアル・よくある質問。以前はサイドバーから外部Notionを別タブで開いていた */}
+      <Route
+        path="/help/manual"
+        element={
+          <ProtectedRoute>
+            <HelpPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/help/faq"
+        element={
+          <ProtectedRoute>
+            <HelpPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/help" element={<Navigate to="/help/manual" replace />} />
 
       <Route
         path="/coaching"
@@ -262,7 +358,7 @@ function AppRoutes() {
         path="/account-settings"
         element={
           <ProtectedRoute>
-            <AnimatedPage><AccountSettingsPage /></AnimatedPage>
+            <AccountSettingsPage />
           </ProtectedRoute>
         }
       />
@@ -295,22 +391,21 @@ function AppRoutes() {
       />
 
       <Route
-        path="/ai-apps"
+        path="/ai-coach"
         element={
           <ProtectedRoute>
-            <AIAppsWrapper />
+            <AiCoachWrapper />
           </ProtectedRoute>
         }
       />
 
-      <Route
-        path="/courses/category/:categoryId"
-        element={
-          <ProtectedRoute>
-            <CategoryDetailWrapper />
-          </ProtectedRoute>
-        }
-      />
+      {/* 旧「AIアプリ一覧」。AIコーチに内包したので転送する。
+          既存のブックマークや社内共有リンクを壊さないために残している。 */}
+      <Route path="/ai-apps" element={<Navigate to="/ai-coach" replace />} />
+
+      {/* 学習領域（カテゴリ）だけのページは廃止した。学習領域は「学習する」の中の
+          見出しとして見せるもので、独立して辿る階層ではない。旧リンクは一覧へ送る。 */}
+      <Route path="/courses/category/:categoryId" element={<Navigate to="/courses" replace />} />
 
       <Route
         path="/learning-courses"
@@ -348,6 +443,16 @@ function AppRoutes() {
         }
       />
 
+      {/* ノート（自習室タブの3つ目）：メモ・クリップ・保存したAI回答の横断管理 */}
+      <Route
+        path="/notes"
+        element={
+          <ProtectedRoute>
+            <MyNotesPage />
+          </ProtectedRoute>
+        }
+      />
+
       <Route
         path="/badges"
         element={
@@ -377,6 +482,7 @@ function AppRoutes() {
         <Route path="avatars" element={<AdminCsvPage key="avatars" dataType="avatars" />} />
         <Route path="vector-data" element={<AdminVectorPage />} />
         <Route path="coach-mapping" element={<AdminCoachMappingPage />} />
+        <Route path="coach-integrations" element={<AdminCoachIntegrationsPage />} />
       </Route>
 
       <Route

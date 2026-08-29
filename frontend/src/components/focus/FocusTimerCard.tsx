@@ -1,6 +1,7 @@
 import { Pause, Play, Square } from 'lucide-react';
 import { color, font, radius, shadow, t } from '../../theme/webcoachTheme';
-import { ActiveStudySession, StudySessionMode } from '../../types/studyActivity';
+import { ActiveStudySession } from '../../types/studyActivity';
+import { StudySessionMode } from '../../types/studyRoom';
 import TimerDial, { DialState } from './TimerDial';
 import TimerModeToggle from './TimerModeToggle';
 import DurationPresets from './DurationPresets';

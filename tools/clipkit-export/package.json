@@ -1,0 +1,23 @@
+{
+  "name": "clipkit-export",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Clipkit の教材ページを materials/source 配下へ取得するエクスポートツール（LMS移行の第1段）",
+  "license": "UNLICENSED",
+  "bin": {
+    "clipkit-export": "src/cli.js"
+  },
+  "scripts": {
+    "login": "node src/cli.js login",
+    "export": "node src/cli.js export",
+    "zip": "node src/cli.js zip",
+    "postinstall-hint": "echo \"次に: npx playwright install chromium\""
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "playwright": "^1.49.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

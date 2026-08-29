@@ -11,10 +11,11 @@ import {
   BookText,
   PlusCircle,
 } from 'lucide-react';
-import { AppHeader, AppIcon, CourseImage, LearningBreadcrumb } from './shared';
+import { AppHeader, CourseImage, LearningBreadcrumb } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { bffClient } from '../services/bffClient';
+import { useAiCoachStore } from '../store/aiCoachStore';
 import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
 
 // 学習領域のテーマカラーパレット
@@ -54,15 +55,6 @@ interface CourseSection {
   tagName: string;
   isFeatured: boolean;
   courses: MoodleCourse[];
-}
-
-interface AIApp {
-  id: number | string;
-  name: string;
-  description: string;
-  icon?: string;
-  url?: string;
-  [key: string]: any;
 }
 
 // --- Helpers ---
@@ -149,6 +141,8 @@ function CategoryDetailPage() {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const [selectedTag, setSelectedTag] = React.useState<string | null>(null);
+  // 右サイドバーからAIコーチのドロワーを開く（本体は AppHeader 配下の GlobalAiCoachDrawer）
+  const openDrawer = useAiCoachStore((s) => s.openDrawer);
 
   const catIdNum = Number(categoryId);
   const paletteIndex = (catIdNum - 1) % categoryColorPalette.length;
@@ -158,8 +152,7 @@ function CategoryDetailPage() {
     () => Promise.all([
       bffClient.getCourseByField('category', String(catIdNum)),
       bffClient.getCategories().catch(() => []),
-      bffClient.getAIApplications().catch(() => []),
-    ]).then(([courseData, allCategories, apps]) => {
+    ]).then(([courseData, allCategories]) => {
       const moodleCat = Array.isArray(allCategories)
         ? allCategories.find((c: any) => Number(c.id) === catIdNum)
         : null;
@@ -173,7 +166,6 @@ function CategoryDetailPage() {
         categoryName: moodleCat?.name || '',
         categoryDescription: moodleCat?.description || '',
         categoryImage: moodleCat?.categoryimage || '',
-        aiApps: (Array.isArray(apps) ? apps : []).slice(0, 3) as AIApp[],
       };
     }),
     [catIdNum],
@@ -182,7 +174,6 @@ function CategoryDetailPage() {
   const categoryName: string = data?.categoryName ?? '';
   const categoryDescription: string = data?.categoryDescription ?? '';
   const categoryImage: string = data?.categoryImage ?? '';
-  const aiApps: AIApp[] = data?.aiApps ?? [];
 
   const handleCourseClick = (course: MoodleCourse) => {
     const courseId = Number(course.id);
@@ -246,11 +237,11 @@ function CategoryDetailPage() {
           className="relative border-b py-6 sm:py-8 lg:py-[40px]"
           style={{ backgroundColor: 'rgba(255,255,255,0.5)', borderColor: '#FEFAF8' }}
         >
-          <div className="max-w-[1100px] mx-auto px-4 sm:px-6 flex flex-col" style={{ gap: '24px' }}>
+          <div className="wc-page flex flex-col" style={{ '--wc-page-max': '1100px', '--wc-page-top': '0px', '--wc-page-bottom': '0px', gap: '24px' } as React.CSSProperties}>
             {/* パンくず（常に表示）。学習領域はコース一覧の大分類にあたる階層。 */}
             <LearningBreadcrumb
               items={[
-                { label: '学習コンテンツ', to: '/courses' },
+                { label: '学習する', to: '/courses' },
                 { label: categoryName || LEARNING_HIERARCHY.area },
               ]}
             />
@@ -303,8 +294,8 @@ function CategoryDetailPage() {
 
         {/* メインコンテンツ */}
         <div
-          className="relative max-w-[1100px] mx-auto px-4 sm:px-6"
-          style={{ paddingTop: '40px', paddingBottom: '40px' }}
+          className="wc-page relative"
+          style={{ '--wc-page-max': '1100px', '--wc-page-top': '40px', '--wc-page-bottom': '40px' } as React.CSSProperties}
         >
           <div className="flex flex-col lg:flex-row gap-6 sm:gap-8 lg:gap-10">
 
@@ -365,7 +356,7 @@ function CategoryDetailPage() {
 
             {/* 右サイドバー */}
             <div className="w-full lg:w-[340px] flex-shrink-0">
-              <AIAppsSidebar apps={aiApps} onViewAll={() => navigate('/ai-apps')} />
+              <AiCoachSidebar categoryName={categoryName} onOpen={openDrawer} />
             </div>
           </div>
         </div>
@@ -509,76 +500,67 @@ function CourseCard({
   );
 }
 
-// --- AI Apps Sidebar ---
+// --- AIコーチへの導線 ---
+// 以前は「おすすめのAIアプリ」を並べて別タブで開いていた。
+// AIアプリはAIコーチが必要に応じて使う専門スキルとして裏に隠したので、
+// ここに出す入口はAIコーチ1つだけにする（何を選ぶかを最初に考えさせない）。
 
-function AIAppsSidebar({ apps, onViewAll }: { apps: AIApp[]; onViewAll: () => void }) {
+function AiCoachSidebar({ categoryName, onOpen }: { categoryName: string; onOpen: (seed?: string) => void }) {
+  const prompts = [
+    `${categoryName || 'この分野'}は何から始めるのがいい？`,
+    '作ったものを見てもらいたい',
+    '学ぶ順番を整理したい',
+  ];
+
   return (
     <div
       className="bg-white border border-brand-border shadow-sm"
       style={{ borderRadius: '24px', padding: '24px' }}
     >
-      <div className="flex items-center justify-between mb-4">
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-[#A688D4]" />
-          <h3
-            className="font-bold text-brand-muted"
-            style={{ fontSize: '16px' }}
-          >
-            おすすめのAIアプリ
-          </h3>
-        </div>
-        <button
-          onClick={onViewAll}
-          className="flex items-center gap-0.5 text-[#A688D4] hover:text-[#8B6FC0] transition-colors"
-          style={{ fontSize: '12px', fontWeight: 500 }}
-        >
-          <span>すべて見る</span>
-          <ChevronRight className="w-3.5 h-3.5" />
-        </button>
+      <div className="flex items-center gap-2 mb-3">
+        <Sparkles className="w-5 h-5 text-[#D60934]" />
+        <h3 className="font-bold text-brand-muted" style={{ fontSize: '16px' }}>
+          AIコーチに相談
+        </h3>
       </div>
 
-      {apps.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-8 gap-2">
-          <Sparkles className="w-8 h-8 text-brand-subtle" />
-          <p className="text-xs text-brand-muted">
-            AIアプリを読み込み中...
-          </p>
-        </div>
-      ) : (
-        <div className="flex flex-col" style={{ gap: '10px' }}>
-          {apps.map((app) => (
-            <div
-              key={app.id}
-              className="flex items-center border border-brand-border cursor-pointer hover:bg-gray-50 transition-colors"
-              style={{ borderRadius: '12px', padding: '12px', gap: '12px' }}
-              onClick={() => {
-                if (app.url) window.open(app.url, '_blank', 'noopener,noreferrer');
-              }}
-            >
-              <div
-                className="w-10 h-10 flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: '#F7F2FF', borderRadius: '8px' }}
-              >
-                <AppIcon iconUrl={app.icon_url} url={app.url} icon={app.icon} alt={app.name} size={32} />
-              </div>
-              <div className="flex flex-col min-w-0" style={{ gap: '4px' }}>
-                <span
-                  className="text-brand-text font-medium truncate"
-                  style={{ fontSize: '14px' }}
-                >
-                  {app.name}
-                </span>
-                <span
-                  className="text-brand-muted truncate"
-                  style={{ fontSize: '11px', fontWeight: 400 }}
-                >
-                  {app.description}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <p className="text-brand-muted" style={{ fontSize: '12px', lineHeight: 1.8, marginBottom: '14px' }}>
+        迷っていることをそのまま書けば大丈夫です。制作物の添削や文章の改善が必要なときは、AIコーチが提案します。
+      </p>
+
+      <div className="flex flex-col" style={{ gap: '8px' }}>
+        {prompts.map((prompt) => (
+          <button
+            key={prompt}
+            type="button"
+            onClick={() => onOpen(prompt)}
+            className="flex items-center border border-brand-border hover:bg-gray-50 transition-colors text-left"
+            style={{ borderRadius: '12px', padding: '11px 13px', gap: '8px' }}
+          >
+            <span className="text-brand-text" style={{ fontSize: '12.5px', fontWeight: 500 }}>
+              {prompt}
+            </span>
+            <ChevronRight className="w-3.5 h-3.5 text-brand-muted flex-shrink-0 ml-auto" />
+          </button>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        onClick={() => onOpen()}
+        className="w-full flex items-center justify-center gap-1 mt-4 text-white transition-opacity hover:opacity-90"
+        style={{
+          borderRadius: '999px',
+          padding: '11px 18px',
+          border: 'none',
+          background: 'linear-gradient(120deg,#E5103C,#D60934)',
+          fontSize: '12.5px',
+          fontWeight: 700,
+          cursor: 'pointer',
+        }}
+      >
+        ✦ AIコーチを開く
+      </button>
     </div>
   );
 }

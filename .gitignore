@@ -80,3 +80,45 @@ sql/
 
 # RDS migration
 rds-migration/
+
+# Reference screenshots
+*.png
+!frontend/public/*.png
+# public/images 配下はアプリが実際に配信する素材なので追跡する。
+# 上の !frontend/public/*.png は直下1階層しか拾わず、images/home/... が
+# 巻き込まれてビルドから抜け落ちる（プレビュー・本番で画像が壊れる）。
+!frontend/public/images/**/*.png
+# public/mascot 配下も同様にアプリが配信する素材（CharacterAvatar が参照する）。
+!frontend/public/mascot/*.png
+
+# Documentation (non-essential)
+# Claude 作業ルールとモック開発ガイドは追跡する
+!CLAUDE.md
+!frontend/docs/*.md
+
+# Temporary files
+*.temp
+
+# SSH keys
+*.pem
+*.ppk
+
+# SSL certificates
+ssl/
+
+# Test suites
+tests/
+
+# Clipkit 教材エクスポート（LMS移行用の中間データ・認証状態）
+# storageState にはセッションCookieが入るので絶対に追跡しない。
+materials/source/
+tools/clipkit-export/.auth/
+tools/clipkit-export/clipkit.config.json
+
+# 変換後の教材データ（materials/source から再生成できる中間データ・約55MB）
+materials/lessons/
+
+# NOTE: cdk-prod/・cdk-uat/・.github/ をまるごとignoreするルールは意図的に採用していない。
+# cdk-prod/はprod用CDKソースの正式な置き場所（上のCDK build output directoriesの
+# 警告コメント参照）、.github/は実際にCIワークフローを追跡しているため、
+# 一括ignoreすると git 管理から丸ごと外れてしまう。

@@ -1,0 +1,8 @@
+# 認証状態（セッションCookieを含む）。絶対にコミットしない。
+.auth/
+
+# 実際の設定（社内ホスト名・教材URLを含む）。example のみ追跡する。
+clipkit.config.json
+*.local.json
+
+node_modules/

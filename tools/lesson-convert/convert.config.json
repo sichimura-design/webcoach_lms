@@ -1,0 +1,52 @@
+{
+  "sourceDir": "../../materials/source",
+  "outDir": "../../materials/lessons",
+  "blocks": {
+    "//": "ブロックの種別を上から順に判定する。class は Clipkit / WEBCOACH のテーマ由来。",
+    "quizClass": [
+      "quiz-box"
+    ],
+    "selfCheckClass": [
+      "check-box"
+    ],
+    "summaryClass": [
+      "summary-box"
+    ],
+    "goalClass": [
+      "goal-box"
+    ],
+    "heroClass": [
+      "lesson-hero"
+    ],
+    "tocClass": [
+      "toc",
+      "nav-toc",
+      "toc-head"
+    ],
+    "chapterNavClass": [
+      "chapter-nav",
+      "pagenation-buttons",
+      "back-to-roadmap"
+    ],
+    "//decorativeImage": "サイトテーマの装飾アイコン。元サイトはCSSで8px程度に縮めて表示していたが、教材として持ち出すと巨大に表示されてしまう。取得元URLで判定して落とす。",
+    "decorativeImageSource": "/theme/|/icons/|/img/icon",
+    "calloutText": "TIPS|ポイント|補足|注意|💡|⚠",
+    "taskText": "課題|演習|ワーク|提出|やってみよう|実践してみ",
+    "exampleText": "具体例|例：|例\\)|Before|After|ビフォー|アフター|比較"
+  },
+  "itemTypeKind": {
+    "//": "Clipkit のブロック種別から LessonBlockKind への対応",
+    "ItemImage": "figure",
+    "ItemMovie": "video",
+    "ItemCode": "text",
+    "ItemLink": "text",
+    "ItemFile": "task",
+    "ItemQuote": "text",
+    "ItemTwitter": "text"
+  },
+  "meta": {
+    "minutesPattern": "(?:所要時間|目安の?学習時間|学習時間)[^0-9]{0,8}(?:約)?\\s*([0-9]+)\\s*(分|時間|h|時)",
+    "prevText": "前の章に戻る|前のページ|前へ",
+    "nextText": "次の章に進む|次のページ|次へ"
+  }
+}

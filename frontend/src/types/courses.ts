@@ -117,3 +117,20 @@ export interface CourseLesson {
   isCompleted?: boolean;
   isLocked?: boolean;
 }
+
+/**
+ * AI教材検索（POST /api/webcoach/material-search）のレスポンス。
+ * モック専用API。実BFFには無いので、呼び出し側は失敗を前提に組むこと。
+ */
+export interface MaterialSearchHit {
+  /** Moodleのコース生データ（/moodle/courses と同じ形） */
+  course: any;
+  /** そのコースを挙げた理由。1行でそのまま表示する */
+  reason: string;
+}
+
+export interface MaterialSearchResult {
+  /** 検索結果全体への一言。0件のときも代替文が入る */
+  summary: string;
+  results: MaterialSearchHit[];
+}

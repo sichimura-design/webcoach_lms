@@ -145,7 +145,7 @@ function WebCoachHeader({
   const isDevPreview = process.env.PUBLIC_URL?.startsWith('/branches/');
 
   return (
-    <AppBar position="static" sx={{ bgcolor: '#C62828' }}>
+    <AppBar position="static" sx={{ bgcolor: '#D60934' }}>
       {isDevPreview && (
         <Box sx={{ bgcolor: '#F57F17', textAlign: 'center', py: 0.5, fontSize: '0.75rem', fontWeight: 'bold', letterSpacing: 1 }}>
           ⚠️ DEV PREVIEW — {process.env.PUBLIC_URL}
@@ -219,7 +219,7 @@ function WebCoachHeader({
           <Box
             sx={{
               p: 2,
-              bgcolor: '#C62828',
+              bgcolor: '#D60934',
               color: 'white',
               display: 'flex',
               alignItems: 'center',
@@ -258,7 +258,7 @@ function WebCoachHeader({
               >
                 <Avatar
                   sx={{
-                    bgcolor: message.role === 'user' ? '#1976d2' : '#C62828',
+                    bgcolor: message.role === 'user' ? '#1976d2' : '#D60934',
                     width: 36,
                     height: 36,
                   }}
@@ -330,7 +330,7 @@ function WebCoachHeader({
             ))}
             {loading && (
               <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                <Avatar sx={{ bgcolor: '#C62828', width: 36, height: 36 }}>
+                <Avatar sx={{ bgcolor: '#D60934', width: 36, height: 36 }}>
                   <SmartToy />
                 </Avatar>
                 <Paper elevation={1} sx={{ p: 2 }}>
@@ -365,7 +365,7 @@ function WebCoachHeader({
                 onClick={handleSendMessage}
                 disabled={!input.trim() || loading}
                 sx={{
-                  bgcolor: '#C62828',
+                  bgcolor: '#D60934',
                   color: 'white',
                   '&:hover': { bgcolor: '#8B1A1A' },
                   '&:disabled': { bgcolor: '#ccc' },

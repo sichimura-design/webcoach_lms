@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { Bot, BrainCircuit, FolderOpen, ImageUp, KeyRound, PlusCircle, UserCircle2, Users, Link2 } from 'lucide-react';
+import { Bot, BrainCircuit, FolderOpen, ImageUp, KeyRound, PlusCircle, UserCircle2, Users, Link2, Video } from 'lucide-react';
 import { AppHeader } from '../shared/AppHeader';
 
 const sidebarItems = [
   { to: '/admin/cognito-users', label: 'ユーザー管理', icon: KeyRound },
   { to: '/admin/students', label: '受講生一覧', icon: Users },
   { to: '/admin/coach-mapping', label: 'コーチ割り当て', icon: Link2 },
+  { to: '/admin/coach-integrations', label: '録画連携', icon: Video },
   { to: '/admin/create-course', label: 'コース作成', icon: PlusCircle },
   // { to: '/admin/courses', label: 'コース管理', icon: BookOpen },
   { to: '/admin/categories', label: 'カテゴリ管理', icon: FolderOpen },

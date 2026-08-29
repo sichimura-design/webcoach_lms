@@ -152,20 +152,20 @@ function CareerPathPage({ careerPath, onBack }: CareerPathPageProps) {
         }}
       >
         <Box sx={{ p: 2 }}>
-          <Typography variant="h6" sx={{ color: '#C62828', fontWeight: 'bold', mb: 2 }}>
+          <Typography variant="h6" sx={{ color: '#D60934', fontWeight: 'bold', mb: 2 }}>
             WEBCOACH
           </Typography>
           <List>
             {menuItems.map((item, index) => (
               <ListItem key={index} sx={{ py: 1.5, cursor: 'pointer', '&:hover': { bgcolor: 'grey.100' } }}>
                 <ListItemIcon sx={{ minWidth: 32 }}>
-                  <FiberManualRecord sx={{ fontSize: 8, color: index === 1 ? '#C62828' : 'grey.400' }} />
+                  <FiberManualRecord sx={{ fontSize: 8, color: index === 1 ? '#D60934' : 'grey.400' }} />
                 </ListItemIcon>
                 <ListItemText
                   primary={item}
                   primaryTypographyProps={{
                     fontWeight: index === 1 ? 'bold' : 'normal',
-                    color: index === 1 ? '#C62828' : 'text.primary',
+                    color: index === 1 ? '#D60934' : 'text.primary',
                   }}
                 />
               </ListItem>
@@ -180,7 +180,7 @@ function CareerPathPage({ careerPath, onBack }: CareerPathPageProps) {
           <IconButton edge="start" color="inherit" onClick={() => setDrawerOpen(true)} sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: '#C62828', fontWeight: 'bold' }}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1, color: '#D60934', fontWeight: 'bold' }}>
             WEBCOACH
           </Typography>
           <IconButton color="inherit" onClick={onBack}>

@@ -4,18 +4,28 @@ import {
   AuthenticationDetails,
   CognitoUserSession,
 } from 'amazon-cognito-identity-js';
+import { MOCKS_ENABLED } from '../mocks/config';
+import {
+  mockSignIn,
+  mockGetCurrentSession,
+  mockGetIdToken,
+  mockSignOut,
+} from '../mocks/mockAuth';
 
 const COGNITO_USER_POOL_ID = process.env.REACT_APP_COGNITO_USER_POOL_ID;
 const COGNITO_CLIENT_ID = process.env.REACT_APP_COGNITO_CLIENT_ID;
 
-if (!COGNITO_USER_POOL_ID || !COGNITO_CLIENT_ID) {
+// モック有効時は実 Cognito 環境変数を必須にしない（完全オフライン開発のため）
+if (!MOCKS_ENABLED && (!COGNITO_USER_POOL_ID || !COGNITO_CLIENT_ID)) {
   throw new Error('REACT_APP_COGNITO_USER_POOL_ID and REACT_APP_COGNITO_CLIENT_ID must be set');
 }
 
-const userPool = new CognitoUserPool({
-  UserPoolId: COGNITO_USER_POOL_ID,
-  ClientId: COGNITO_CLIENT_ID,
-});
+const userPool = MOCKS_ENABLED
+  ? (null as unknown as CognitoUserPool)
+  : new CognitoUserPool({
+      UserPoolId: COGNITO_USER_POOL_ID as string,
+      ClientId: COGNITO_CLIENT_ID as string,
+    });
 
 export interface CognitoAuthResult {
   idToken: string;
@@ -51,6 +61,9 @@ function extractAuthResult(session: CognitoUserSession, username: string): Cogni
 }
 
 export function signIn(username: string, password: string): Promise<SignInResult> {
+  if (MOCKS_ENABLED) {
+    return mockSignIn();
+  }
   return new Promise((resolve, reject) => {
     const cognitoUser = new CognitoUser({
       Username: username,
@@ -104,6 +117,10 @@ export function completeNewPassword(
 }
 
 export function signOut(): void {
+  if (MOCKS_ENABLED) {
+    mockSignOut();
+    return;
+  }
   const currentUser = userPool.getCurrentUser();
   if (currentUser) {
     currentUser.signOut();
@@ -111,6 +128,9 @@ export function signOut(): void {
 }
 
 export function getCurrentSession(): Promise<CognitoAuthResult | null> {
+  if (MOCKS_ENABLED) {
+    return mockGetCurrentSession();
+  }
   return new Promise((resolve) => {
     const currentUser = userPool.getCurrentUser();
     if (!currentUser) {
@@ -129,6 +149,9 @@ export function getCurrentSession(): Promise<CognitoAuthResult | null> {
 }
 
 export function getIdToken(): Promise<string | null> {
+  if (MOCKS_ENABLED) {
+    return mockGetIdToken();
+  }
   return new Promise((resolve) => {
     const currentUser = userPool.getCurrentUser();
     if (!currentUser) {

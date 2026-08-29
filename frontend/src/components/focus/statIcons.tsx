@@ -1,5 +1,8 @@
 /**
- * 統計タイル用のアイコン。mypage/StatsCard.tsxと同じ書式のインラインSVG。
+ * 統計タイル用のアイコン。
+ * mypage/StatsStrip.tsx と同じ書式（viewBox 0 0 24 24 / strokeWidth 1.5〜1.6 /
+ * strokeLinecap round）のインラインSVG。あちらはファイル内のローカル定義で
+ * export されていないため、触らずにこちらへ同じ作法で置く。
  */
 import { color } from '../../theme/webcoachTheme';
 
@@ -41,7 +44,7 @@ export function CalendarIcon({ size = 26, stroke = color.textBody }: IconProps) 
   );
 }
 
-/** ストリーク(炎) */
+/** ストリーク（炎） */
 export function FlameIcon({ size = 26, stroke = color.primary }: IconProps) {
   return (
     <svg {...base(size, stroke)}>
@@ -51,12 +54,32 @@ export function FlameIcon({ size = 26, stroke = color.primary }: IconProps) {
   );
 }
 
-/** 累計の学習時間 */
+/** 今日のセッション数 */
 export function StackIcon({ size = 26, stroke = color.textBody }: IconProps) {
   return (
     <svg {...base(size, stroke)}>
       <path d="M4 8.5 12 4.5l8 4-8 4-8-4z" />
       <path d="M4 12.5l8 4 8-4M4 16.5l8 4 8-4" />
+    </svg>
+  );
+}
+
+/** 今月の学習時間 */
+export function MonthIcon({ size = 20, stroke = color.textSubtle }: IconProps) {
+  return (
+    <svg {...base(size, stroke)}>
+      <rect x="3.5" y="5" width="17" height="15" rx="3" />
+      <path d="M7.5 13h3v3h-3z" />
+    </svg>
+  );
+}
+
+/** 最長集中時間 */
+export function PeakIcon({ size = 20, stroke = color.textSubtle }: IconProps) {
+  return (
+    <svg {...base(size, stroke)}>
+      <path d="M3.5 18.5h17" />
+      <path d="M5.5 18.5 10 8l3.2 5.4L16 9.5l2.5 9" />
     </svg>
   );
 }

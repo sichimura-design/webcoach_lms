@@ -6,14 +6,26 @@
  * 使い方: 新規/改修コンポーネントの style オブジェクトは必ずここを参照する。
  *   import { t } from '../theme/webcoachTheme';
  *   <div style={{ ...t.card, padding: t.space.cardPad }} />
- * 既存の theme/colors.ts（#C62828 系）は旧デザイン用。新画面では使わない。
+ * 既存の theme/colors.ts は旧デザイン用。新画面では使わない
+ * （ブランド赤だけは統一済みで、どちらも #D60934 を指す）。
  */
 
 export const color = {
-  // brand
-  primary: '#E0213A',
-  primaryHover: '#C4102A',
-  primaryPressed: '#A80B21',
+  /*
+   * brand
+   * ============================================================
+   * 🔴 基準色は #D60934。サイドバー（AppHeader.tsx の SB.brand）と同値。
+   *    かつては画面ごとに 5系統の赤（webcoachTheme / tokens / colors /
+   *    tailwind dash / マイページ）が混在し、ページを移動するたびに
+   *    赤の印象が変わっていた。
+   *    ここを唯一の基準にして全系統をこの値へ寄せた。変えるならここだけを変える。
+   * 🔴 Hover / Pressed も #D60934 から導いた値。基準色だけ差し替えると
+   *    濃色側の色相がずれるので、必ずセットで扱うこと。
+   * ============================================================
+   */
+  primary: '#D60934',
+  primaryHover: '#B50829',
+  primaryPressed: '#94061F',
   primarySoft: '#FFECEE',      // チップ・「いまここ」ピル背景
   primarySoftAlt: '#FFE9EB',   // 画像上のボタン背景
   primarySoftHover: '#FFDCE0',
@@ -35,6 +47,16 @@ export const color = {
   trackBg: '#EFE9E9',          // ロードマップの未通過ライン
   hoverBg: '#FAF7F7',
   hoverBgTint: '#FFF6F7',
+  progressTrack: '#FBE2E6',    // 進捗バーの下地。trackBg(#EFE9E9)は暖色グレーで別用途
+  borderPink: 'rgba(214,9,52,.12)',       // 淡いピンク枠（マイページのダッシュボードカード）
+  borderPinkStrong: 'rgba(214,9,52,.16)', // 区切り線・アウトラインCTA枠
+
+  // ロードマップのノード（マイページ下部の帯）
+  goalBg: '#FEF6E7',           // ゴールノードの地。ここだけブランド外のアンバーを使う
+  goalBorder: '#F0C97A',
+  goalText: '#C9860F',
+  stepFutureBg: '#F7F5F5',     // 未到達ノードの地
+  stepFutureIcon: '#B9B2B4',
 
   // text
   text: '#1F1D1E',
@@ -49,10 +71,37 @@ export const color = {
 
   // status
   online: '#34C759',
+
+  /**
+   * 完了・達成（Success）。DESIGN.md §2-5 の Success をそのまま採る。
+   * 🔴 下の noteAnswerAccent（AI回答の緑）とは役割が別。あちらは
+   *    「ノートの中で出どころがAIであること」を示す識別色で、
+   *    こちらは「学習が完了したこと」を祝う色。混ぜないこと。
+   */
+  success: '#0E9F6E',
+  successSurface: '#E8F8F1',
+
+  /**
+   * マイノート（自由帳）。
+   * 「自分のノートを作っていく楽しさ」を出すために、他の画面の白いカードとは
+   * 別の“紙”の質感を与える。以前は MyNotesPage / MemoPane が種別バッジの色を
+   * 直書きしていたので、ここに集約した。
+   */
+  notePaper: '#FFFDFA',        // ノート面の地。白より少し温かい
+  noteRule: '#EFE4E4',         // 左端の綴じ代（点線）
+  noteHighlight: '#FFD9E0',    // 手書き風のマーカー・下線
+  noteClipBg: '#FFF4F5',       // クリップブロックの地
+  noteClipAccent: '#D60934',   // クリップの左罫（教材＝ブランド色）
+  noteAnswerBg: '#F3FAF6',     // AI回答ブロックの地
+  noteAnswerAccent: '#3E9E70', // AI回答の左罫（AI＝緑。教材と出どころを区別する）
 } as const;
 
 export const gradient = {
-  heroThumb: 'linear-gradient(135deg,#FF5A4E 0%,#E0213A 55%,#C90D22 100%)',
+  heroThumb: 'linear-gradient(135deg,#FF5A4E 0%,#D60934 55%,#B50829 100%)',
+  /** 「続きからはじめる」カードの地。ごく淡いピンクの斜めグラデ（強いグラデにしない） */
+  continueCard: 'linear-gradient(135deg,#FFFFFF 0%,#FFF8F9 46%,#FFF0F2 100%)',
+  /** 線形の進捗バーの塗り。バーを増やすときは必ずこれを使う */
+  progressFill: 'linear-gradient(90deg,#E5103C 0%,#D60934 100%)',
 } as const;
 
 export const radius = {
@@ -69,10 +118,12 @@ export const shadow = {
   hero: '0 10px 30px rgba(190,60,70,.08)',
   card: '0 8px 26px rgba(190,60,70,.06)',
   soft: '0 4px 14px rgba(190,60,70,.05)',
-  primaryButton: '0 8px 20px rgba(224,33,58,.28)',
+  primaryButton: '0 8px 20px rgba(214,9,52,.28)',
   overlayButton: '0 6px 18px rgba(190,60,70,.18)',
-  currentStep: '0 0 0 5px #FFFFFF,0 4px 12px rgba(224,33,58,.22)',
+  currentStep: '0 0 0 5px #FFFFFF,0 4px 12px rgba(214,9,52,.22)',
   stepRing: '0 0 0 5px #FFFFFF',
+  cardWide: '0 14px 40px rgba(190,60,70,.07)',  // マイページ 2×2 グリッドのカード
+  continue: '0 18px 46px rgba(214,9,52,.08)',  // 続きからカード（最も広く柔らかい）
 } as const;
 
 export const space = {
@@ -86,6 +137,11 @@ export const space = {
   roadmapPad: '24px 28px 30px',
   listGap: 10,
   goalGap: 22,
+  // マイページのダッシュボード
+  dashGap: 20,
+  summaryPad: '24px 32px',
+  dashCardPad: '26px 30px',
+  roadmapPadWide: '40px 46px 44px',
 } as const;
 
 /** 3カラム行（合計 1326px 幅の本文領域内） */
@@ -93,6 +149,9 @@ export const grid = {
   contentWidth: 1326,
   columns: '384px 554px 1fr',
   gap: 18,
+  /** マイページ 2×2 ダッシュボード。1440 - 60*2 = 1320 = 860 + 20 + 440 */
+  dashColumns: '860px 440px',
+  dashRows: 'minmax(396px, auto) minmax(284px, auto)',
 } as const;
 
 export const font = {
@@ -101,6 +160,15 @@ export const font = {
   pageTitle:     { fontSize: 28,   fontWeight: 900, letterSpacing: '.2px' },
   heroTitle:     { fontSize: 25,   fontWeight: 900, letterSpacing: '.2px' },
   statValue:     { fontSize: 22,   fontWeight: 900, letterSpacing: '.2px' },
+  // ---- マイページ（ダッシュボード）----
+  displayTitle:  { fontSize: 30,   fontWeight: 900, letterSpacing: '.2px' }, // 続きから: コース名
+  statValueLg:   { fontSize: 30,   fontWeight: 900, letterSpacing: '.2px' }, // サマリー帯: 数字部
+  statUnit:      { fontSize: 20,   fontWeight: 900 },                        // サマリー帯: 時間/分
+  userName:      { fontSize: 22,   fontWeight: 900 },
+  cardTitleLg:   { fontSize: 19,   fontWeight: 900 }, // Lesson N / 次回コーチング日付 / ロードマップのステップ名
+  cardHeading:   { fontSize: 15,   fontWeight: 900 }, // 続きからはじめる / 学習ストリーク
+  encourage:     { fontSize: 13.5, fontWeight: 500 },
+  statLabel:     { fontSize: 13,   fontWeight: 500 },
   sectionTitle:  { fontSize: 17.5, fontWeight: 900 },
   cardTitle:     { fontSize: 16.5, fontWeight: 900 },
   logo:          { fontSize: 16,   fontWeight: 900, letterSpacing: '1.2px' },
@@ -133,6 +201,21 @@ export const t = {
     borderRadius: radius.hero,
     boxShadow: shadow.hero,
     overflow: 'hidden',
+  },
+  /**
+   * マイページ 2×2 グリッドのカード共通。
+   * 🔴 height:100% と flex column が要点。グリッドアイテムは箱が伸びても
+   *    中身は伸びないので、これが無いと行内でカードの丈が揃わない。
+   */
+  softCard: {
+    background: color.surface,
+    border: `1px solid ${color.borderPink}`,
+    borderRadius: radius.hero,
+    boxShadow: shadow.cardWide,
+    boxSizing: 'border-box' as const,
+    height: '100%',
+    display: 'flex' as const,
+    flexDirection: 'column' as const,
   },
   primaryButton: {
     display: 'flex', alignItems: 'center', gap: 12,

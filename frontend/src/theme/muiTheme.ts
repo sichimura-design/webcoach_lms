@@ -3,7 +3,7 @@ import { createTheme } from '@mui/material/styles';
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#C62828',
+      main: '#D60934',
       light: '#EF5350',
       dark: '#8B1A1A',
       contrastText: '#fff',
@@ -71,7 +71,7 @@ export const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: '#C62828',
+          backgroundColor: '#D60934',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         },
       },

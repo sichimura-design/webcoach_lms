@@ -1,13 +1,19 @@
 import { Profile } from '../types/api';
-import { Course, MonthlyGoal, CareerGoal } from '../types/mypage';
+import { Course, MonthlyGoal, CareerGoal, StreakInfo } from '../types/mypage';
 import {
   fetchUserProfile,
   fetchResumeCourse,
   fetchUserCourses,
   fetchMonthlyGoal,
   fetchCareerGoal,
+  fetchStreak,
 } from '../services/mypageApi';
 import { useAsyncData } from './useAsyncData';
+
+// data未確定時のフォールバック用に固定参照を使う。`?? []`をレンダーごとに書くと
+// 毎回新しい配列参照になり、これを依存配列に使っている呼び出し元のuseEffectが
+// ロード完了まで無限に再実行されてしまう（ネットワーク呼び出しの重複発生）。
+const EMPTY_COURSES: Course[] = [];
 
 interface MypageData {
   userProfile: Profile;
@@ -15,6 +21,7 @@ interface MypageData {
   careerGoal: CareerGoal;
   resumableCourse: Course | null;
   activeCourses: Course[];
+  streak: StreakInfo;
 }
 
 export function useMypageData(userId: number | undefined) {
@@ -26,12 +33,14 @@ export function useMypageData(userId: number | undefined) {
           fetchCareerGoal(userId),
           fetchResumeCourse(userId),
           fetchUserCourses(userId),
-        ]).then(([userProfile, monthlyGoal, careerGoal, resumableCourse, activeCourses]) => ({
+          fetchStreak(userId),
+        ]).then(([userProfile, monthlyGoal, careerGoal, resumableCourse, activeCourses, streak]) => ({
           userProfile,
           monthlyGoal,
           careerGoal,
           resumableCourse,
           activeCourses,
+          streak,
         }))
       : Promise.resolve(null),
     [userId],
@@ -42,7 +51,8 @@ export function useMypageData(userId: number | undefined) {
     monthlyGoal: data?.monthlyGoal ?? null,
     careerGoal: data?.careerGoal ?? null,
     resumableCourse: data?.resumableCourse ?? null,
-    activeCourses: data?.activeCourses ?? [],
+    activeCourses: data?.activeCourses ?? EMPTY_COURSES,
+    streak: data?.streak ?? null,
     loading,
     error,
     refetch,
