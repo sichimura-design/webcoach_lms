@@ -229,8 +229,14 @@ def get_user_badges(userid: int) -> str:
     return str(result)
 
 
-def _call_dify_chat(query: str, userid: int, api_key: str) -> str:
-    """Dify上に構築されたAIアプリに問い合わせる"""
+# Dify会話の継続用キャッシュ（(userid, app_id) -> conversation_id）。
+# プロセス内メモリのみ。複数コンテナ構成やコンテナ再起動をまたぐ継続には対応しない。
+_dify_conversation_cache: Dict[tuple, str] = {}
+
+
+def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
+    """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリの会話はプロセス内で継続する）"""
+    conversation_id = _dify_conversation_cache.get((userid, app_id), "")
     try:
         response = requests.post(
             f"{DIFY_API_BASE_URL}/chat-messages",
@@ -242,13 +248,19 @@ def _call_dify_chat(query: str, userid: int, api_key: str) -> str:
                 "inputs": {},
                 "query": query,
                 "response_mode": "blocking",
-                "conversation_id": "",
+                "conversation_id": conversation_id,
                 "user": f"webcoach-user-{userid}",
             },
             timeout=30,
         )
         response.raise_for_status()
-        return response.json().get("answer", "")
+        data = response.json()
+
+        new_conversation_id = data.get("conversation_id")
+        if new_conversation_id:
+            _dify_conversation_cache[(userid, app_id)] = new_conversation_id
+
+        return data.get("answer", "")
 
     except requests.exceptions.RequestException as e:
         logger.error(f"Dify API call failed: {e}")
@@ -275,9 +287,9 @@ def create_ai_application_tools(db) -> List[BaseTool]:
             logger.warning(f"No credential found for AI application '{app.name}' (secret_key={app.secret_key})")
             continue
 
-        def make_func(api_key: str = api_key):
+        def make_func(api_key: str = api_key, app_id: int = app.id):
             def _call(query: str, userid: int) -> str:
-                return _call_dify_chat(query, userid, api_key)
+                return _call_dify_chat(query, userid, api_key, app_id)
             return _call
 
         tools.append(
