@@ -267,6 +267,11 @@ export interface AIImageAttachment {
   data: string; // Base64エンコード済み（data:URIプレフィックスなし）
 }
 
+export interface AIConversationMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 export interface AIRequest {
   message: string;
   user_id?: number;
@@ -275,6 +280,7 @@ export interface AIRequest {
   max_chunks?: number;
   use_tools?: boolean;
   image?: AIImageAttachment;
+  conversation_history?: AIConversationMessage[];
 }
 
 export interface AISource {

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { bffClient } from '../services/bffClient';
 import { useChatStore } from '../store/chatStore';
+import { toConversationHistory } from '../utils/aiChatHistory';
 
 export interface ChatMessage {
   id: string;
@@ -89,6 +90,7 @@ export function useAiChat() {
     try {
       const result = await bffClient.sendAIMessage({
         message: messageText,
+        conversation_history: toConversationHistory(messages),
         ...(currentImage
           ? {
               image: {
