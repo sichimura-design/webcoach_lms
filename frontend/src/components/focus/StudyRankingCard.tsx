@@ -120,7 +120,7 @@ export function StudyRankingCard({ userId }: StudyRankingCardProps) {
     setLoading(true);
     setFailed(false);
     bffClient
-      .getStudyRanking(userId, period)
+      .getStudyRankingMock(userId, period)
       .then((r) => alive && setRanking(r))
       .catch(() => alive && setFailed(true))
       .finally(() => alive && setLoading(false));

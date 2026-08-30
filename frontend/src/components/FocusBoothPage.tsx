@@ -5,6 +5,7 @@ import { useStudySession } from '../hooks/useStudySession';
 import { useStudyStatsBundle } from '../hooks/useStudyStats';
 import { useScaleToFit } from '../hooks/useScaleToFit';
 import { StudySessionMode } from '../types/studyRoom';
+import { StudyFinishDraft } from '../types/studyActivity';
 import { color, font, space } from '../theme/webcoachTheme';
 import FocusTimerCard from './focus/FocusTimerCard';
 import StudyStatsCard from './focus/StudyStatsCard';
@@ -37,7 +38,6 @@ function FocusBoothPage() {
     running,
     reachedTarget,
     stale,
-    starting,
     start,
     pause,
     resume,
@@ -54,20 +54,17 @@ function FocusBoothPage() {
   // 開始前の設定。開始したらsession側が正になる
   const [mode, setMode] = useState<StudySessionMode>('freeform');
   const [targetMinutes, setTargetMinutes] = useState(25);
-  const [committing, setCommitting] = useState(false);
 
   const handleStart = () => {
-    start({ mode, targetMinutes });
+    // dev/kanegae統合: 実API呼び出しは useStudySession 内で非同期(fire-and-forget)に
+    // 送信されるようになり、開始操作そのものは同期で完了する（starting状態は不要）。
+    // category はページ専用のカテゴリが無いため、集中ブースは一律 'other' 扱いにする。
+    start({ mode, targetMinutes, category: 'other' });
   };
 
-  const handleCommit = async (actualMinutes: number) => {
-    setCommitting(true);
-    try {
-      await commitFinish(actualMinutes);
-      refresh();
-    } finally {
-      setCommitting(false);
-    }
+  const handleCommit = async (patch: Partial<StudyFinishDraft>) => {
+    await commitFinish(patch);
+    refresh();
   };
 
   return (
@@ -115,7 +112,7 @@ function FocusBoothPage() {
                   running={running}
                   reachedTarget={reachedTarget}
                   stale={stale}
-                  starting={starting}
+                  starting={false}
                   onDiscard={discard}
                   mode={mode}
                   targetMinutes={targetMinutes}
@@ -151,7 +148,13 @@ function FocusBoothPage() {
       </footer>
 
       {finishDraft && (
-        <FinishSessionModal draft={finishDraft} committing={committing} onCancel={cancelFinish} onCommit={handleCommit} />
+        <FinishSessionModal
+          draft={finishDraft}
+          weekTotalMinutes={stats?.week_minutes ?? 0}
+          streakDays={streak?.current_streak}
+          onRecord={handleCommit}
+          onDismiss={cancelFinish}
+        />
       )}
     </div>
   );

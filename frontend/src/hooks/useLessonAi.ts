@@ -231,7 +231,17 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       // （UI側も教材の文脈が無いときは「教材だけでは判断できません」を出さない）。
       if (!request) {
         try {
-          const res = await bffClient.sendAIMessage({ message: question, image: img ?? undefined });
+          const res = await bffClient.sendAIMessage({
+            message: question,
+            ...(img
+              ? {
+                  image: {
+                    media_type: img.slice(5, img.indexOf(';')) || 'image/png',
+                    data: img.split(',')[1] || '',
+                  },
+                }
+              : {}),
+          });
           appendMessage(sessionId, {
             id: nextId('a'),
             role: 'assistant',
