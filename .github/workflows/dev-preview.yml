@@ -28,6 +28,17 @@ jobs:
           echo "slug=$SLUG" >> $GITHUB_OUTPUT
           echo "preview_url=https://${{ secrets.CLOUDFRONT_DOMAIN_DEV }}/branches/$SLUG/" >> $GITHUB_OUTPUT
 
+      - name: Determine mock flag
+        id: mocks
+        run: |
+          # dev/kanegae は実Cognito認証・実dev BFF（CloudFrontの/api/*プロキシ経由）で
+          # プレビューする。それ以外の dev/** はオフラインモック（MSW＋擬似認証）のまま。
+          if [ "${{ github.ref_name }}" = "dev/kanegae" ]; then
+            echo "enabled=false" >> $GITHUB_OUTPUT
+          else
+            echo "enabled=true" >> $GITHUB_OUTPUT
+          fi
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -43,9 +54,11 @@ jobs:
         env:
           REACT_APP_COGNITO_USER_POOL_ID: ${{ secrets.REACT_APP_COGNITO_USER_POOL_ID }}
           REACT_APP_COGNITO_CLIENT_ID: ${{ secrets.REACT_APP_COGNITO_CLIENT_ID }}
-          # dev/** プレビューはモックを有効化し、実BFFに無い新機能もプレビューで動くようにする
+          # dev/** プレビューは原則モックを有効化し、実BFFに無い新機能もプレビューで動くようにする。
+          # ただし dev/kanegae だけは実Cognito認証・実dev BFF（CloudFrontの/api/*プロキシ経由）で
+          # 確認したいため、上のDetermine mock flagステップでブランチ名を見て無効化する。
           # （本番 master 用の deploy-frontend.yml では設定しないので本番はモックOFF）
-          REACT_APP_ENABLE_MOCKS: 'true'
+          REACT_APP_ENABLE_MOCKS: ${{ steps.mocks.outputs.enabled }}
           PUBLIC_URL: /branches/${{ steps.slug.outputs.slug }}
           GENERATE_SOURCEMAP: false
           CI: false
