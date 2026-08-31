@@ -47,6 +47,7 @@ import {
   migratedOutline,
 } from './migratedMaterials';
 import { LearningType } from '../constants/learningTaxonomy';
+import { COURSE_ID_BY_SLUG, courseById } from '../constants/courseTaxonomy';
 import { SkillSuggestion } from '../types/aiSkill';
 import { detectSkill } from '../utils/aiSkillRouting';
 
@@ -177,40 +178,51 @@ export function courseLessonCount(courseId: number): number {
   return buildCourseStructure(courseId).reduce((n, s) => n + s.lessons.length, 0);
 }
 
-/** コース名。catalog を持たないのでIDから引ける最低限のテーブルを持つ。 */
-// Clipkit から移行した実教材。該当コースはダミー生成ではなくこちらを返す。
-const COURSE_NAMES: Record<number, string> = {
-  101: 'はじめてのWebデザイン',
-  201: 'デザインの4大原則',
-  202: '配色の基本とツール',
-  203: 'バナーを作ってみよう',
-  211: 'HTML/CSS入門',
-  212: 'Flexboxでレイアウト',
-  221: 'SNS集客の基本',
-  222: '刺さる広告文の書き方',
-};
-
+/**
+ * コース名。カタログ（courseCatalog.ts）を import すると循環するので、
+ * import を持たない constants/courseTaxonomy.ts から引く。
+ * 名前をここに書き写すと必ず片方だけ直してカタログと食い違う（実際に一度そうなっていた）。
+ */
 function courseName(courseId: number): string {
-  return migratedCourseName(courseId) ?? COURSE_NAMES[courseId] ?? `コース ${courseId}`;
+  // カタログを優先する。移行済み教材の bundle 側の名前（「AI×デザイナー」）と
+  // カタログのコース名（「AI×デザイン」）は微妙に違うことがあり、一覧のタイルと
+  // 教材ページで別名が出ると同じコースが2つあるように見えるため。
+  return courseById(courseId)?.name ?? migratedCourseName(courseId) ?? `コース ${courseId}`;
 }
 
-/** そのコースが扱うテーマ。汎用教材の文面を題材に寄せるために使う。 */
+/**
+ * そのコースが扱うテーマ。汎用教材の文面を題材に寄せるために使う。
+ * 判定は領域の family。IDのレンジで分けると、採番を変えた瞬間に全コースが
+ * 同じテーマに倒れて気づけない。
+ */
 function courseTopic(courseId: number): { subject: string; artifact: string; check: string } {
-  if (courseId >= 211 && courseId <= 219) {
-    return { subject: 'マークアップ', artifact: 'コード', check: '意図した見た目になっているか' };
+  switch (courseById(courseId)?.family) {
+    case 'build':
+      return { subject: 'マークアップ', artifact: 'コード', check: '意図した見た目になっているか' };
+    case 'grow':
+      return { subject: '情報設計', artifact: '投稿・広告文', check: '読み手に伝わる順番になっているか' };
+    case 'career':
+      return { subject: '進め方の設計', artifact: '提案・計画', check: '相手が判断できる材料になっているか' };
+    case 'ai':
+      return { subject: 'AIの使い方', artifact: '指示文と成果物', check: '根拠を自分で確かめられるか' };
+    default: // create（Webデザイン・動画編集）と未知のコース
+      return { subject: 'デザイン', artifact: '制作物', check: '一番見てほしいものが最初に目に入るか' };
   }
-  if (courseId >= 221 && courseId <= 229) {
-    return { subject: '情報設計', artifact: '投稿・広告文', check: '読み手に伝わる順番になっているか' };
-  }
-  return { subject: 'デザイン', artifact: '制作物', check: '一番見てほしいものが最初に目に入るか' };
 }
 
-// ---- 手書きレッスン：配色の基本（コース202 / レッスン202012）------------------
+// ---- 手書きレッスン：配色の基本（Webデザイン ＞ デザイン基礎 の「基本の考え方」枠）------
 //
 // 学習ワークスペースのショーケース。選択→解説／質問／クリップ、AIの根拠提示、
 // 確認問題まで一通り体験できるだけの密度を持たせてある。
+//
+// 旧構成の「配色の基本とツール」（コース202）に置いていたが、新しい教材構成に
+// 配色単独のコースは無い。リポジトリで一番密度の高いモックレッスンがURL直打ちしか
+// 到達できない孤児にならないよう、デザイン基礎の中に置く。
+// レッスンIDは buildCourseStructure の単元1「基本の考え方」枠（learningType:'knowledge'）
+// に一致させる。ここを動かすときは noteMigration.ts のシードも一緒に直すこと。
 
-const COLOR_LESSON_ID = 202012;
+const COLOR_LESSON_COURSE_ID = COURSE_ID_BY_SLUG['design-basics'];
+export const COLOR_LESSON_ID = COLOR_LESSON_COURSE_ID * 1000 + 12;
 
 const COLOR_BLOCKS: BlockSeed[] = [
   {
@@ -301,8 +313,8 @@ const COLOR_BLOCKS: BlockSeed[] = [
 ];
 
 const COLOR_LESSON: Omit<LessonDoc, 'prev' | 'next'> = {
-  courseId: 202,
-  courseName: courseName(202),
+  courseId: COLOR_LESSON_COURSE_ID,
+  courseName: courseName(COLOR_LESSON_COURSE_ID),
   lessonId: COLOR_LESSON_ID,
   title: '配色の基本：色で情報の優先順位をつける',
   lead: '色を増やして見栄えをよくするのではなく、「何を一番見てほしいか」から配色を設計する方法を学びます。',

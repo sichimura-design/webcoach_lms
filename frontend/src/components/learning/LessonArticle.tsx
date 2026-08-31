@@ -5,6 +5,7 @@ import { LessonDoc } from '../../types/lesson';
 import { LEARNING_TYPE_LABEL, MATERIAL_FORMAT_LABEL } from '../../constants/learningTaxonomy';
 import type { LearningType } from '../../constants/learningTaxonomy';
 import LessonBlockView from './LessonBlockView';
+import LessonImageZoom from './LessonImageZoom';
 import MoodleFallbackBlock from './MoodleFallbackBlock';
 import { ClipAnchor, applyClipMarks } from './clipHighlight';
 import { groupByHeading } from './lessonSections';
@@ -356,7 +357,12 @@ export function LessonArticle({
           </div>
         )}
 
-        {/* ── 本文 ── */}
+        {/* ── 本文 ──
+            LessonImageZoom は本文の画像クリックを拾って拡大表示に差し替える。
+            🔴 articleRef の div 自体は包み替えない。ハイライトの復元・選択ツールバー・
+               ?block= の深リンク・読書位置の監視がこの div と data-block-id を見ているので、
+               外側に1枚足すだけにしてある。 */}
+        <LessonImageZoom>
         <div ref={articleRef} data-lesson-article>
           {!isFallback && (
             <div
@@ -404,19 +410,20 @@ export function LessonArticle({
                       aria-hidden
                       className="grid place-items-center flex-shrink-0"
                       style={{
-                        width: 34,
-                        height: 34,
+                        width: 36,
+                        height: 36,
                         borderRadius: '50%',
                         background: color.primary,
                         color: color.textOnPrimary,
-                        fontSize: 12.5,
+                        fontSize: 13,
                         fontWeight: 900,
                         fontVariantNumeric: 'tabular-nums',
                       }}
                     >
                       {String(section.index).padStart(2, '0')}
                     </span>
-                    <h2 style={{ margin: 0, fontSize: 19, fontWeight: 900, lineHeight: 1.5, color: color.text }}>
+                    {/* 章見出しは本文中の h2（22px）より一段上。ここが本文の最上位の区切り */}
+                    <h2 style={{ margin: 0, fontSize: 24, fontWeight: 900, lineHeight: 1.45, letterSpacing: '-.015em', color: color.text }}>
                       {section.heading}
                     </h2>
                   </div>
@@ -580,6 +587,7 @@ export function LessonArticle({
             )}
           </footer>
         </div>
+        </LessonImageZoom>
       </div>
     </article>
   );
