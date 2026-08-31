@@ -70,6 +70,36 @@ const profile: Profile = {
   weekly_target_minutes: 600,
 };
 
+/**
+ * 週間の学習時間目標だけを localStorage に持たせる（モック専用）。
+ * 🔴 profile ごと保存しない。アバターは data URL で入ってくるので、
+ *    丸ごと保存すると localStorage が base64 画像で埋まる。
+ * 🔴 目標だけ永続化する理由: リロードで既定値（600分）に戻ると、
+ *    「目標を変更できる」という 8a の体験そのものが確認できない。
+ */
+const WEEKLY_GOAL_KEY = 'webcoach-weekly-target-minutes';
+
+function loadWeeklyGoal(): void {
+  try {
+    const raw = localStorage.getItem(WEEKLY_GOAL_KEY);
+    if (!raw) return;
+    const n = Number(raw);
+    if (Number.isFinite(n) && n > 0) profile.weekly_target_minutes = n;
+  } catch {
+    /* プライベートモード等は既定値のまま */
+  }
+}
+
+function saveWeeklyGoal(): void {
+  try {
+    localStorage.setItem(WEEKLY_GOAL_KEY, String(profile.weekly_target_minutes ?? 600));
+  } catch {
+    /* 容量超過などは黙って諦める（モックのため） */
+  }
+}
+
+loadWeeklyGoal();
+
 const categories: Category[] = [
   { id: 1, name: 'Webデザイン', description: 'デザインの基礎から実践まで', coursecount: 9 },
   { id: 2, name: 'コーディング', description: 'HTML/CSS/JavaScript', coursecount: 8 },
@@ -376,6 +406,7 @@ export const handlers = [
     try {
       const body = (await request.json()) as Partial<Profile>;
       Object.assign(profile, body);
+      if (body.weekly_target_minutes !== undefined) saveWeeklyGoal();
     } catch {
       /* ignore */
     }

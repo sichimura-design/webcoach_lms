@@ -19,18 +19,19 @@ const STORE_KEY = 'webcoach-coaching-goals';
 
 export type StoredGoal = Pick<
   CoachingGoalApi,
-  'no' | 'description' | 'is_completed' | 'progress' | 'completed_at'
+  'no' | 'description' | 'is_completed' | 'progress' | 'completed_at' | 'estimated_minutes'
 >;
 
 /**
  * 初期値。コーチが前回のコーチングで設定した内容という想定。
- * completed_at はモック専用（実BFFは返さない）。達成した目標に「いつ終えたか」が付くと、
- * 積み上がっている感じが出るのでマイページの目標カードで出している。
+ * completed_at / estimated_minutes はモック専用（実BFFは返さない）。達成した目標に
+ * 「いつ終えたか」が付くと積み上がっている感じが出るのでマイページの目標カードで出している。
+ * estimated_minutes はトップページ 8a のタスク行の「目安 40分」に使う。
  */
 const SEED: StoredGoal[] = [
-  { no: 1, description: '配色の基礎を修了する', is_completed: 1, progress: 100, completed_at: '2026-08-10T10:00:00+09:00' },
-  { no: 2, description: 'バナーを1つ完成させる', is_completed: 1, progress: 100, completed_at: '2026-08-12T15:30:00+09:00' },
-  { no: 3, description: 'レイアウト実践に着手する', is_completed: 0, progress: 0, completed_at: null },
+  { no: 1, description: '配色の基礎を修了する', is_completed: 1, progress: 100, completed_at: '2026-08-10T10:00:00+09:00', estimated_minutes: 30 },
+  { no: 2, description: 'バナーを1つ完成させる', is_completed: 1, progress: 100, completed_at: '2026-08-12T15:30:00+09:00', estimated_minutes: 60 },
+  { no: 3, description: 'レイアウト実践に着手する', is_completed: 0, progress: 0, completed_at: null, estimated_minutes: 40 },
 ];
 
 interface GoalsStore {
@@ -91,6 +92,9 @@ export function replaceGoals(goals: StoredGoal[]): StoredGoal[] {
       progress: g.progress,
       // 未達→達成で打刻し、達成→未達で消す。達成のままなら最初の打刻を保つ
       completed_at: completed ? (prev?.completed_at ?? now) : null,
+      // 目安時間はコーチが決めるもので、受講生の編集（PUT）では送られてこない。
+      // 送られてこなければ前の値を保つ（チェックを付け外ししただけで消えないように）
+      estimated_minutes: g.estimated_minutes ?? prev?.estimated_minutes ?? null,
     };
   });
   write(store);
@@ -118,7 +122,7 @@ export function reflectCandidates(
     if (!text || existing.has(text)) return;
     existing.add(text);
     no += 1;
-    added.push({ no, description: text, is_completed: 0, progress: 0, completed_at: null });
+    added.push({ no, description: text, is_completed: 0, progress: 0, completed_at: null, estimated_minutes: null });
   });
 
   store.goals = [...store.goals, ...added];

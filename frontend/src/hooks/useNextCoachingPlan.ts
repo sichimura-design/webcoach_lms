@@ -12,6 +12,11 @@ export interface PlanItem {
    * 表示側は null を前提にフォールバックすること。
    */
   completedAt: string | null;
+  /**
+   * 所要時間の目安（分）。実BFFはこの項目を返さないため本番では常に null。
+   * 表示側は null のとき「目安」行ごと省くこと。
+   */
+  estimatedMinutes: number | null;
 }
 
 interface NextSession {
@@ -27,6 +32,7 @@ function fromApi(raw: CoachingGoalApi): PlanItem {
     completed: progress >= 100,
     progress,
     completedAt: raw.completed_at ?? null,
+    estimatedMinutes: raw.estimated_minutes ?? null,
   };
 }
 

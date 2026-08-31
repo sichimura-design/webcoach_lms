@@ -19,6 +19,12 @@ export interface CoachingGoalApi {
    * 値が無い場合を必ず考慮すること。本番では未定義になる。
    */
   completed_at?: string | null;
+  /**
+   * 所要時間の目安（分）。**モック専用の任意フィールド**。
+   * 実BFFの next-coaching-goals はこの項目を返さない（バックエンドは変更禁止）。
+   * トップページ 8a のタスク行が「目安 40分」として出すが、値が無ければ行を省く。
+   */
+  estimated_minutes?: number | null;
 }
 
 export interface CoachingGoalUpdateItem {
