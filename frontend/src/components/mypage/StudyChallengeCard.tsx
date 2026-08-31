@@ -4,6 +4,8 @@ import { useStudyRanking } from '../../hooks/useRankings';
 import { StudyRankingEntry } from '../../types/focusBooth';
 import { Course } from '../../types/mypage';
 import { formatMinutesHM } from '../../utils/studyStats';
+import { lessonProgressFromPercent } from '../../utils/lessonProgress';
+import { LEARNING_HIERARCHY } from '../../constants/learningTaxonomy';
 import { splitLesson } from './ContinueLearningHero';
 
 /**
@@ -36,18 +38,22 @@ interface Slot {
   diffMinutes: number | null;
 }
 
-function ProgressBar({ value }: { value: number }) {
+/** 進み具合は「4 / 9」で出す。総レッスン数が取れないコースだけ％に落とす */
+function ProgressBar({ value, totalLessons }: { value: number; totalLessons?: number }) {
   const pct = Math.max(0, Math.min(100, Math.round(value)));
+  const lessons = lessonProgressFromPercent(pct, totalLessons);
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-      <span className="dc-num" style={{ fontSize: 'var(--dc-fs-xs)', fontWeight: 700, color: 'var(--dc-text-body)' }}>
-        {pct}%
+      <span style={{ fontSize: 'var(--dc-fs-xs)', fontWeight: 700, color: 'var(--dc-text-body)', flex: 'none' }}>
+        <span className="dc-num">{lessons ? lessons.short : `${pct}%`}</span>
+        {lessons && <span style={{ color: 'var(--dc-text-muted)' }}> {LEARNING_HIERARCHY.lesson}</span>}
       </span>
       <div
         role="progressbar"
         aria-valuenow={pct}
         aria-valuemin={0}
         aria-valuemax={100}
+        aria-valuetext={lessons?.full}
         aria-label="レッスンの進捗"
         style={{ flex: 1, height: 6, borderRadius: 9999, background: '#F0EAE1', overflow: 'hidden' }}
       >
@@ -351,7 +357,7 @@ export function StudyChallengeCard({
                 )}
                 <span style={{ fontSize: 'var(--dc-fs-base)', fontWeight: 600, color: 'var(--dc-text-body)' }}>{lessonName}</span>
               </div>
-              <ProgressBar value={course.progress ?? 0} />
+              <ProgressBar value={course.progress ?? 0} totalLessons={course.totalLessons} />
             </div>
 
             <div style={{ display: 'flex', gap: 10, flex: 'none', flexWrap: 'wrap' }}>

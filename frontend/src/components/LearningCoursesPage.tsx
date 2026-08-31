@@ -6,6 +6,7 @@ import { AppHeader } from './shared';
 import { CourseImage } from './shared/CourseImage';
 import { useAuth } from '../contexts/AuthContext';
 import { useAsyncData } from '../hooks/useAsyncData';
+import { lessonProgressFromPercent } from '../utils/lessonProgress';
 
 function LearningCoursesPage() {
   const { user } = useAuth();
@@ -125,7 +126,10 @@ function LearningCoursesPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {courses.map((course) => (
+              {courses.map((course) => {
+                // 進み具合は「4 / 9」で見せる。レッスン総数が来ないコースだけ％のまま
+                const lessons = lessonProgressFromPercent(course.progress, course.lessoncount ?? course.totallessons);
+                return (
                 <div
                   key={course.id}
                   className="bg-white rounded-3xl shadow-sm p-5 sm:p-6 flex items-start gap-3 sm:gap-4 hover:shadow-md transition-shadow"
@@ -176,9 +180,10 @@ function LearningCoursesPage() {
                           />
                         </div>
                         <span
-                          className="text-sm font-bold text-[#FFC24B] min-w-[36px] text-right"
+                          className="text-sm font-bold text-[#FFC24B] whitespace-nowrap text-right"
+                          title={lessons?.full}
                         >
-                          {Math.round(course.progress ?? 0)}%
+                          {lessons ? lessons.short : `${Math.round(course.progress ?? 0)}%`}
                         </span>
                       </div>
 
@@ -193,7 +198,8 @@ function LearningCoursesPage() {
                     </div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </main>

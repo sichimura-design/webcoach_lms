@@ -10,6 +10,7 @@ import { bffClient } from '../services/bffClient';
 import { useScaleToFit } from '../hooks/useScaleToFit';
 import { t } from '../theme/tokens';
 import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
+import { lessonProgressFromPercent } from '../utils/lessonProgress';
 import type { MaterialSearchResult } from '../types/courses';
 
 const DESIGN_WIDTH = 1440;
@@ -50,14 +51,18 @@ type SortKey = typeof SORTS[number]['key'];
 /** AI検索バーの例。押すと入力欄に入る */
 const SEARCH_EXAMPLES = ['配色が苦手', 'バナーを作りたい', '次に学ぶべき教材は？'];
 
-/** プルダウンを pill に見せる。新しいドロップダウンは作らず素の select を使う */
+/**
+ * 「区分」「並び替え」のプルダウン。新しいドロップダウンは作らず素の select を使う。
+ * 角丸は pill ではなく control(9px)。pill はボタン・チップ・タブに取っておき、
+ * 押すと画面が進む要素と、その場で絞り込むだけの要素を形で描き分ける。
+ */
 const selectStyle: React.CSSProperties = {
   appearance: 'none',
   WebkitAppearance: 'none',
   background: `${t.color.bg.card} no-repeat right 12px center`,
   backgroundImage: 'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%238A8082\' stroke-width=\'2.2\' stroke-linecap=\'round\'><path d=\'m6 9 6 6 6-6\'/></svg>")',
   border: `1px solid ${t.color.border.card}`,
-  borderRadius: t.radius.pill,
+  borderRadius: t.radius.control,
   padding: '7px 30px 7px 14px',
   fontSize: 12.5,
   fontFamily: 'inherit',
@@ -185,6 +190,9 @@ function MaterialsTopPage() {
   const completedLessons = learningSummary.completedLessons.total;
   const enrolledLessons = activeCourses.reduce((sum, c) => sum + (c.totalLessons ?? 0), 0);
 
+  /** ヒーローの進み具合。％ではなく「4 / 9」で出す（残り本数が引き算1回で分かる） */
+  const resumeLessons = lessonProgressFromPercent(resumableCourse?.progress, resumableCourse?.totalLessons);
+
   const goToContinue = () => {
     if (!resumableCourse) return;
     navigate(nextLesson ? `/course/${resumableCourse.id}?module=${nextLesson.id}` : `/course/${resumableCourse.id}/curriculum`);
@@ -239,18 +247,14 @@ function MaterialsTopPage() {
         style={{ position: 'absolute', top: 0, left: 0, width: DESIGN_WIDTH, paddingTop: PAGE_TOP, paddingLeft: t.space.pageX, paddingRight: t.space.pageX, paddingBottom: t.space.pageBottom, gap: t.space.stack, fontFamily: t.font.family, color: t.color.text.primary, boxSizing: 'border-box', transform: `scale(${scale})`, transformOrigin: 'top left' }}
       >
         {/* ① 見出し行。右端に「修了レッスン」だけを置く。
-            数えているのはコースではなくレッスンなので、分母も「受講中コースの総レッスン数」に揃える。 */}
+            数えているのはコースではなくレッスンなので、分母も「受講中コースの総レッスン数」に揃える。
+            ここはクリックできない数字なので、カード枠（pill・枠線・影）を持たせず地の上に直接組む。
+            枠を付けるとページ内で唯一「押せない pill」になり、押せる要素の見分けを鈍らせる。 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
           <h1 style={{ margin: 0, fontSize: t.font.size.pageTitle, fontWeight: t.font.weight.black, letterSpacing: '-.01em', flex: 1 }}>学習する</h1>
 
           {enrolledLessons > 0 && (
-            <div
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 12,
-                background: t.color.bg.card, border: `1px solid ${t.color.border.card}`,
-                borderRadius: t.radius.pill, padding: '8px 20px 8px 10px', boxShadow: t.shadow.card,
-              }}
-            >
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
               <span
                 className="flex items-center justify-center flex-shrink-0"
                 style={{ width: 34, height: 34, borderRadius: '50%', background: `linear-gradient(135deg,${t.color.primary},${t.color.primaryHover})` }}
@@ -293,8 +297,9 @@ function MaterialsTopPage() {
                 {resumableCourse.title}
               </div>
               <div style={{ fontSize: 13, color: t.color.text.muted, marginTop: 4, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {/* 全レッスン数は下の「4 / 9 レッスン」が持つので、ここでは繰り返さない */}
                 {nextLesson
-                  ? `${nextLesson.sectionName}${resumableCourse.totalLessons ? ` ・ 全${resumableCourse.totalLessons}レッスン` : ''}`
+                  ? nextLesson.sectionName
                   : [resumableCourse.currentLesson, resumableCourse.currentChapter].filter(Boolean).join('・')}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14, maxWidth: 360 }}>
@@ -303,12 +308,21 @@ function MaterialsTopPage() {
                   aria-valuenow={resumableCourse.progress ?? 0}
                   aria-valuemin={0}
                   aria-valuemax={100}
+                  aria-valuetext={resumeLessons?.full}
                   style={{ flex: 1, height: 8, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}
                 >
                   <div style={{ width: `${resumableCourse.progress ?? 0}%`, height: '100%', borderRadius: t.radius.pill, background: t.color.primary }} />
                 </div>
+                {/* レッスン総数が取れないコースだけ、従来どおり％に落とす */}
                 <span style={{ fontSize: 13, color: t.color.text.muted, flexShrink: 0 }}>
-                  進捗 <span style={{ fontWeight: t.font.weight.bold, color: t.color.text.primary }}>{resumableCourse.progress ?? 0}%</span>
+                  {resumeLessons ? (
+                    <>
+                      <span style={{ fontWeight: t.font.weight.bold, color: t.color.text.primary }}>{resumeLessons.short}</span>
+                      {' '}{LEARNING_HIERARCHY.lesson}
+                    </>
+                  ) : (
+                    <>進捗 <span style={{ fontWeight: t.font.weight.bold, color: t.color.text.primary }}>{resumableCourse.progress ?? 0}%</span></>
+                  )}
                 </span>
               </div>
             </div>
@@ -361,7 +375,9 @@ function MaterialsTopPage() {
           <section style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             <div style={{ fontSize: 14.5, fontWeight: t.font.weight.black }}>ほかに学習中</div>
             <div className="grid" style={{ gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
-              {otherActive.map((c) => (
+              {otherActive.map((c) => {
+                const lessons = lessonProgressFromPercent(c.progress, c.totalLessons);
+                return (
                 <div
                   key={c.id}
                   onClick={() => navigate(`/course/${c.id}/curriculum`)}
@@ -380,12 +396,18 @@ function MaterialsTopPage() {
                       <div style={{ flex: 1, height: 5, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}>
                         <div style={{ width: `${c.progress ?? 0}%`, height: '100%', borderRadius: t.radius.pill, background: t.color.primary }} />
                       </div>
-                      <span style={{ fontSize: 11, fontWeight: t.font.weight.bold, color: t.color.text.muted, flexShrink: 0 }}>{c.progress ?? 0}%</span>
+                      <span
+                        title={lessons?.full}
+                        style={{ fontSize: 11, fontWeight: t.font.weight.bold, color: t.color.text.muted, flexShrink: 0 }}
+                      >
+                        {lessons ? lessons.short : `${c.progress ?? 0}%`}
+                      </span>
                     </div>
                   </div>
                   <span style={{ fontSize: 12, fontWeight: t.font.weight.black, color: t.color.primary, flexShrink: 0 }}>続きから →</span>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </section>
         )}

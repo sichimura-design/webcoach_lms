@@ -4,3 +4,4 @@
 
 export * from './moduleHelpers';
 export * from './dateFormatting';
+export * from './lessonProgress';

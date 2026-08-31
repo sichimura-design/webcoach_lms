@@ -49,12 +49,14 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
           </div>
         )}
 
-        {/* 地色は必ず白にする。バッジの淡い地色のままだとクリーム系のサムネに溶けて読めない */}
+        {/* 地色は必ず白にする。バッジの淡い地色のままだとクリーム系のサムネに溶けて読めない。
+            角丸は pill ではなく badge(5px)。押せない状態ラベルなので、
+            すぐ下の所要時間バッジ（6px）と同じ「四角い＝読むだけ」の側に揃える。 */}
         <span
           style={{
             position: 'absolute', top: 10, right: 10,
             background: t.color.bg.card, color: badge.style.color,
-            fontSize: 10, fontWeight: t.font.weight.bold, borderRadius: t.radius.pill, padding: '3px 9px',
+            fontSize: 10, fontWeight: t.font.weight.bold, borderRadius: t.radius.badge, padding: '3px 9px',
             pointerEvents: 'none',
           }}
         >

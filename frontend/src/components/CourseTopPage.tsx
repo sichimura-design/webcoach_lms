@@ -6,6 +6,7 @@ import { bffClient } from '../services/bffClient';
 import { AppHeader, LearningBreadcrumb } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { formatMinutesHM } from '../utils/studyStats';
+import { lessonProgressOf } from '../utils/lessonProgress';
 import {
   LEARNING_HIERARCHY,
   LEARNING_TYPE_LABEL,
@@ -220,6 +221,8 @@ export default function CourseTopPage() {
   }
 
   const progressPercent = modules.length > 0 ? Math.round((completedIds.size / modules.length) * 100) : 0;
+  // 表示は分数。この画面は完了レッスンの実数を持っているので率から復元せず直接組む
+  const lessons = lessonProgressOf(completedIds.size, modules.length);
   // 次にやるレッスン。ロックはかけず、どのレッスンからでも開ける
   const nextModule = modules.find(m => !completedIds.has(m.id));
   const currentSectionIndex = sections.findIndex(s => s.modules.some(m => m.id === nextModule?.id));
@@ -289,22 +292,23 @@ export default function CourseTopPage() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', paddingBottom: 4 }}>
             <span style={{ fontSize: 13, color: 'var(--dc-text-muted)' }}>
-              全 {modules.length} {LEARNING_HIERARCHY.lesson}中{' '}
-              <b className="dc-num" style={{ color: 'var(--dc-text)' }}>{completedIds.size}</b>{' '}
-              {LEARNING_HIERARCHY.lesson}完了
+              残り {lessons.total - lessons.done} {LEARNING_HIERARCHY.lesson}
             </span>
             <div
               role="progressbar"
               aria-valuenow={progressPercent}
               aria-valuemin={0}
               aria-valuemax={100}
+              aria-valuetext={lessons.full}
               aria-label="コースの進捗"
               style={{ width: 160, height: 8, borderRadius: 9999, background: 'var(--dc-soft-200)', overflow: 'hidden', flex: 'none' }}
             >
               <div style={{ width: `${progressPercent}%`, height: '100%', borderRadius: 9999, background: 'var(--dc-primary)' }} />
             </div>
-            <span className="dc-num" style={{ fontSize: 14, fontWeight: 700, color: 'var(--dc-primary)' }}>
-              {progressPercent}%
+            {/* ％は母数を掛け直さないと残り本数が出ないので、分数で見せる */}
+            <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--dc-primary)' }}>
+              <span className="dc-num">{lessons.short}</span>{' '}
+              <span style={{ fontSize: 12, color: 'var(--dc-text-muted)' }}>{LEARNING_HIERARCHY.lesson}</span>
             </span>
           </div>
         </div>
