@@ -19,7 +19,7 @@ import CoachingHistoryList from './coaching/CoachingHistoryList';
 import ConsentModal from './coaching/ConsentModal';
 import ImportRecordCard from './coaching/ImportRecordCard';
 import LastSessionCard from './coaching/LastSessionCard';
-import NextActionsCard from './coaching/NextActionsCard';
+import NextActionsCard, { type GoalDraftRow } from './coaching/NextActionsCard';
 import ProcessingStatus from './coaching/ProcessingStatus';
 import RecordingStatus from './coaching/RecordingStatus';
 import SessionReview from './coaching/SessionReview';
@@ -154,8 +154,12 @@ export default function CoachingNotesPage() {
   //
   // 編集は「編集モードに入って、まとめて保存」。1文字ごとに保存すると
   // 打っている途中の文言が正になってしまうため。
+  //
+  // 🔴 削除は下書きの上で「削除予定」にするだけで、行は消さない（removed フラグ）。
+  //    間違って × を押しても「戻す」で復活し、「編集をやめる」で丸ごと元に戻る。
+  //    サーバーに渡すのは commitGoals で removed を落としたあとの配列だけ。
   const [editingGoals, setEditingGoals] = useState(false);
-  const [goalDraft, setGoalDraft] = useState<CoachingGoalUpdateItem[]>([]);
+  const [goalDraft, setGoalDraft] = useState<GoalDraftRow[]>([]);
   const [savingGoals, setSavingGoals] = useState(false);
 
   const startGoalEdit = () => {
@@ -165,20 +169,33 @@ export default function CoachingNotesPage() {
         description: g.description,
         is_completed: g.is_completed,
         progress: g.progress,
+        removed: false,
+        isNew: false,
       }))
     );
     setEditingGoals(true);
   };
 
+  const cancelGoalEdit = () => {
+    setEditingGoals(false);
+    setGoalDraft([]);
+  };
+
   const patchGoal = (index: number, next: Partial<CoachingGoalUpdateItem>) =>
     setGoalDraft((prev) => prev.map((g, i) => (i === index ? { ...g, ...next } : g)));
 
-  const removeGoal = (index: number) => setGoalDraft((prev) => prev.filter((_, i) => i !== index));
+  /** 削除予定にする。実際に消えるのは保存したとき */
+  const removeGoal = (index: number) =>
+    setGoalDraft((prev) => prev.map((g, i) => (i === index ? { ...g, removed: true } : g)));
 
+  const restoreGoal = (index: number) =>
+    setGoalDraft((prev) => prev.map((g, i) => (i === index ? { ...g, removed: false } : g)));
+
+  // 追加行は no を持たない（0）。保存時に表示順で振り直すため
   const addGoal = (description: string) =>
     setGoalDraft((prev) => [
       ...prev,
-      { no: prev.length + 1, description, is_completed: 0, progress: 0 },
+      { no: 0, description, is_completed: 0, progress: 0, removed: false, isNew: true },
     ]);
 
   /*
@@ -220,9 +237,16 @@ export default function CoachingNotesPage() {
 
   const commitGoals = async () => {
     if (!userId) return;
-    // 空行は保存しない（消したいときに空にする操作を許すため）
+    const removedCount = goalDraft.filter((g) => g.removed).length;
     const cleaned = goalDraft
-      .map((g) => ({ ...g, description: g.description.trim() }))
+      .filter((g) => !g.removed)
+      .map((g) => ({
+        no: g.no,
+        description: g.description.trim(),
+        is_completed: g.is_completed,
+        progress: g.progress,
+      }))
+      // 空行はカード側で保存を止めているが、念のため落とす
       .filter((g) => g.description.length > 0)
       // no は表示順そのもの。削除で歯抜けにならないよう毎回振り直す
       .map((g, i) => ({ ...g, no: i + 1 }));
@@ -232,7 +256,12 @@ export default function CoachingNotesPage() {
       setGoals(saved);
       setEditingGoals(false);
       setGoalDraft([]);
+      showToast(
+        removedCount > 0 ? `変更を保存しました（${removedCount}件を削除）` : '変更を保存しました',
+        'success'
+      );
     } catch {
+      // 下書きは残す。ここで編集モードを閉じると入力が消えてしまう
       showToast('目標を保存できませんでした', 'error');
     } finally {
       setSavingGoals(false);
@@ -438,8 +467,10 @@ export default function CoachingNotesPage() {
                 onToggle={(no) => void toggleGoalDone(no)}
                 onStartEdit={startGoalEdit}
                 onCommit={() => void commitGoals()}
+                onCancel={cancelGoalEdit}
                 onPatch={patchGoal}
                 onRemove={removeGoal}
+                onRestore={restoreGoal}
                 onAdd={addGoal}
               />
             </div>

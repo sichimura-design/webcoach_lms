@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ChevronLeft, Plus, Search, SlidersHorizontal, Star } from 'lucide-react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { BookOpen, ChevronLeft, Plus, Search, SlidersHorizontal, Star } from 'lucide-react';
 import { AppHeader } from '../shared';
 import { MOCKS_ENABLED } from '../../mocks/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import { useNote } from '../../hooks/useNote';
 import { useNoteList } from '../../hooks/useNoteList';
+import { BackTo } from '../../hooks/useNoteCapture';
 import bffClient from '../../services/bffClient';
 import {
   NOTE_ORIGIN_LABEL,
@@ -54,10 +55,43 @@ const SORTS: NoteSort[] = ['updated', 'created', 'title'];
 /** チップ行の出どころ。「すべて」を先頭に置く（CONTENTS §10-3） */
 const ORIGIN_CHIPS: NoteOrigin[] = ['self', 'material', 'ai', 'coaching'];
 
+/**
+ * 「〈教材名〉に戻る」。隣の「マイノートに戻る」とは行き先が違うので、
+ * 枠付き＋別アイコンにして押し間違いを防ぐ。
+ */
+const BACK_TO_SOURCE_STYLE: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  padding: '6px 12px',
+  border: '1px solid var(--dc-border-strong)',
+  borderRadius: 8,
+  background: 'var(--dc-surface)',
+  color: 'var(--dc-text-body)',
+  fontFamily: 'inherit',
+  fontSize: 12.5,
+  fontWeight: 700,
+  cursor: 'pointer',
+  maxWidth: '100%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+};
+
 export function MyNotesPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { showToast } = useToast();
+
+  /**
+   * 「どこから来たか」。教材のメモ欄やトーストの「ノートを見る」が預けてくれる。
+   * 🔴 ノート自身の source では代用できない。あれは"そのノートが生まれた
+   *    レッスン"なので、第5レッスンのクリップを第1レッスン由来のノートへ
+   *    入れた場合に、誤ったレッスンへ戻すボタンになってしまう。
+   *    state が無いときだけ source を保険に使う（下の backButton）。
+   */
+  const backTo = (location.state as { backTo?: BackTo } | null)?.backTo ?? null;
 
   const list = useNoteList();
 
@@ -195,28 +229,53 @@ export function MyNotesPage() {
         {selectedId ? (
           /* ── ノート面。一覧から1枚を開いた状態 ── */
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <button
-              type="button"
-              onClick={() => select(null)}
-              className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-                alignSelf: 'flex-start',
-                padding: '6px 10px 6px 4px',
-                border: 0,
-                borderRadius: 8,
-                background: 'none',
-                color: 'var(--dc-primary)',
-                fontFamily: 'inherit',
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
-            >
-              <ChevronLeft size={16} /> マイノートに戻る
-            </button>
+            {/* 戻り先は2つ出る。一覧へ戻るのと、来た教材へ帰るのは別の用事なので
+                どちらかに寄せない（教材から見に来た人が一覧経由で帰らずに済む）。 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => select(null)}
+                className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  padding: '6px 10px 6px 4px',
+                  border: 0,
+                  borderRadius: 8,
+                  background: 'none',
+                  color: 'var(--dc-primary)',
+                  fontFamily: 'inherit',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                <ChevronLeft size={16} /> マイノートに戻る
+              </button>
+
+              {backTo ? (
+                <button
+                  type="button"
+                  onClick={() => navigate(backTo.to)}
+                  className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={BACK_TO_SOURCE_STYLE}
+                >
+                  <BookOpen size={15} /> {backTo.label}
+                </button>
+              ) : (
+                detail.note?.source && (
+                  <button
+                    type="button"
+                    onClick={() => openSource(detail.note!.source!, null)}
+                    className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                    style={BACK_TO_SOURCE_STYLE}
+                  >
+                    <BookOpen size={15} /> 「{detail.note.source.lessonTitle}」に戻る
+                  </button>
+                )
+              )}
+            </div>
 
             <div style={{ width: '100%', maxWidth: 900 }}>
               {detail.note ? (

@@ -15,6 +15,7 @@ import {
   NoteOrigin,
   NoteSourceRef,
 } from '../types/notes';
+import { courseBySlug } from '../constants/courseTaxonomy';
 
 export const NOTES_KEY = 'webcoach-lesson-notes';
 
@@ -327,12 +328,21 @@ export function buildSeedNotes(now: Date, count: number = DEFAULT_SEED_COUNT): N
   return [...curated, ...buildDummyNotes(count - curated.length, now, 36)];
 }
 
+/**
+ * 手書きノートの引用元。コースIDと名前はカタログ（courseTaxonomy）から引く。
+ * レッスンIDは lessonHandlers.buildCourseStructure の採番（courseId*1000 + 単元*10 + 連番）に
+ * 合わせる。lessonHandlers は noteMigration を import しているので定数を借りられない。
+ */
+const bannerCourse = courseBySlug('banner-dojo');
+const designBasicsCourse = courseBySlug('design-basics');
+
 function buildCuratedNotes(now: Date): Note[] {
   const iso = (minutesAgo: number) => new Date(now.getTime() - minutesAgo * 60_000).toISOString();
   const source: NoteSourceRef = {
-    courseId: 203,
-    courseName: 'バナーを作ってみよう',
-    lessonId: 203021,
+    courseId: bannerCourse?.id ?? 0,
+    courseName: bannerCourse?.name ?? '',
+    // 単元2「手を動かす」の1レッスン目＝ハンズオン①
+    lessonId: (bannerCourse?.id ?? 0) * 1000 + 21,
     lessonTitle: 'ハンズオン①',
     heading: 'バナー制作の基礎',
     blockId: null,
@@ -392,9 +402,11 @@ function buildCuratedNotes(now: Date): Note[] {
       origin: 'material',
       source: {
         ...source,
-        courseId: 202,
-        courseName: '配色の基本とツール',
-        lessonId: 202012,
+        // 手書きの配色ショーケースレッスン（lessonHandlers.ts の COLOR_LESSON）を指す。
+        // あちらのレッスンIDを動かしたら、ここも一緒に直すこと（クリップが何も指さなくなる）
+        courseId: designBasicsCourse?.id ?? 0,
+        courseName: designBasicsCourse?.name ?? '',
+        lessonId: (designBasicsCourse?.id ?? 0) * 1000 + 12,
         lessonTitle: '基本の考え方',
         heading: '配色の役割',
       },
