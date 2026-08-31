@@ -68,7 +68,7 @@ export function RankingListCard({
           style={{
             margin: 0,
             flex: 1,
-            fontSize: 'var(--dc-fs-title)',
+            fontSize: 'var(--dc-fs-lead)',
             fontWeight: 700,
             color: 'var(--dc-text)',
             whiteSpace: 'nowrap',
@@ -92,8 +92,8 @@ export function RankingListCard({
                   padding: '5px 12px',
                   borderRadius: 9999,
                   fontFamily: 'inherit',
-                  fontSize: 'var(--dc-fs-xs)',
-                  fontWeight: 700,
+                  fontSize: 'var(--dc-fs-body)',
+                  fontWeight: active ? 700 : 500,
                   whiteSpace: 'nowrap',
                   border: `1px solid ${active ? 'var(--dc-primary)' : '#E5DED3'}`,
                   background: active ? 'var(--dc-primary)' : '#fff',
@@ -109,11 +109,11 @@ export function RankingListCard({
       </div>
 
       {failed ? (
-        <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-muted)', lineHeight: 1.9 }}>
+        <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)', lineHeight: 'var(--dc-lh-prose)' }}>
           ランキングを取得できませんでした。
         </div>
       ) : loading || items.length === 0 ? (
-        <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-subtle)', padding: '20px 0' }}>読み込んでいます…</div>
+        <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-subtle)', padding: '20px 0' }}>読み込んでいます…</div>
       ) : (
         <>
           <div style={{ border: '1px solid var(--dc-border)', borderRadius: 14, padding: '6px 16px' }}>
@@ -122,7 +122,7 @@ export function RankingListCard({
             ))}
           </div>
           {footer && (
-            <div style={{ padding: '10px 4px 0', fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-subtle)' }}>{footer}</div>
+            <div style={{ padding: '10px 4px 0', fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)' }}>{footer}</div>
           )}
         </>
       )}

@@ -93,7 +93,7 @@ export function WeeklyGoalModal({ open, value, saving, onClose, onSave }: Weekly
           >
             <Clock size={18} strokeWidth={1.75} />
           </span>
-          <h2 style={{ margin: 0, flex: 1, fontSize: 18, fontWeight: 800, color: 'var(--dc-text)' }}>
+          <h2 style={{ margin: 0, flex: 1, fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)' }}>
             今週の学習目標
           </h2>
           <button
@@ -117,7 +117,7 @@ export function WeeklyGoalModal({ open, value, saving, onClose, onSave }: Weekly
           </button>
         </div>
 
-        <p style={{ fontSize: 13, color: 'var(--dc-text-muted)', lineHeight: 1.7, margin: '0 0 20px 44px' }}>
+        <p style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)', lineHeight: 'var(--dc-lh-prose)', margin: '0 0 20px 44px' }}>
           1週間で学習する時間の目標です。達成状況はトップページのゲージに表示されます。
         </p>
 
@@ -140,8 +140,8 @@ export function WeeklyGoalModal({ open, value, saving, onClose, onSave }: Weekly
                   borderRadius: 'var(--dc-radius-md)',
                   padding: '10px 0',
                   fontFamily: 'inherit',
-                  fontSize: 13.5,
-                  fontWeight: 700,
+                  fontSize: 'var(--dc-fs-body)',
+                  fontWeight: 600,
                   cursor: 'pointer',
                 }}
               >
@@ -178,7 +178,7 @@ export function WeeklyGoalModal({ open, value, saving, onClose, onSave }: Weekly
               background: 'var(--dc-surface)',
               display: 'grid',
               placeItems: 'center',
-              fontSize: 20,
+              fontSize: 'var(--dc-fs-title)',
               color: 'var(--dc-text-muted)',
               cursor: 'pointer',
             }}
@@ -188,7 +188,7 @@ export function WeeklyGoalModal({ open, value, saving, onClose, onSave }: Weekly
           <div
             className="dc-num"
             aria-live="polite"
-            style={{ minWidth: 160, textAlign: 'center', fontSize: 30, fontWeight: 800, color: 'var(--dc-text)' }}
+            style={{ minWidth: 160, textAlign: 'center', fontSize: 'var(--dc-fs-display)', fontWeight: 700, color: 'var(--dc-text)' }}
           >
             {formatMinutesHM(draft)}
           </div>
@@ -206,7 +206,7 @@ export function WeeklyGoalModal({ open, value, saving, onClose, onSave }: Weekly
               background: 'var(--dc-surface)',
               display: 'grid',
               placeItems: 'center',
-              fontSize: 20,
+              fontSize: 'var(--dc-fs-title)',
               color: 'var(--dc-text-muted)',
               cursor: 'pointer',
             }}
@@ -215,7 +215,7 @@ export function WeeklyGoalModal({ open, value, saving, onClose, onSave }: Weekly
           </button>
         </div>
 
-        <div style={{ fontSize: 12.5, color: 'var(--dc-text-muted)', textAlign: 'center', marginBottom: 22 }}>
+        <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', textAlign: 'center', marginBottom: 22 }}>
           1日あたり {formatMinutesHM(perDay)} が目安（30分きざみで調整できます）
         </div>
 
@@ -235,8 +235,8 @@ export function WeeklyGoalModal({ open, value, saving, onClose, onSave }: Weekly
               borderRadius: 'var(--dc-radius-md)',
               padding: '13px 0',
               fontFamily: 'inherit',
-              fontSize: 14,
-              fontWeight: 700,
+              fontSize: 'var(--dc-fs-body)',
+              fontWeight: 600,
               cursor: 'pointer',
             }}
           >
@@ -258,8 +258,8 @@ export function WeeklyGoalModal({ open, value, saving, onClose, onSave }: Weekly
               borderRadius: 'var(--dc-radius-md)',
               padding: '13px 0',
               fontFamily: 'inherit',
-              fontSize: 14,
-              fontWeight: 800,
+              fontSize: 'var(--dc-fs-lead)',
+              fontWeight: 700,
               cursor: saving ? 'default' : 'pointer',
               opacity: saving ? 0.7 : 1,
               boxShadow: '0 8px 18px -8px rgba(160,8,36,.6)',

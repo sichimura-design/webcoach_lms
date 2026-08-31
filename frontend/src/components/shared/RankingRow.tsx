@@ -43,8 +43,8 @@ export function RankBadge({ rank, isMe, size = 22 }: { rank: number; isMe?: bool
         placeItems: 'center',
         background: tone.bg,
         color: tone.fg,
-        fontSize: 'var(--dc-fs-3xs)',
-        fontWeight: 800,
+        fontSize: 'var(--dc-fs-caption)',
+        fontWeight: 700,
       }}
     >
       {rank}
@@ -86,7 +86,7 @@ export function RankingRow({ item, divided, showAvatar = true }: RankingRowProps
             borderRadius: 9999,
             display: 'grid',
             placeItems: 'center',
-            fontSize: 'var(--dc-fs-15)',
+            fontSize: 'var(--dc-fs-lead)',
             lineHeight: 1,
             background: item.isMe ? '#fff' : 'var(--dc-sunken)',
             border: item.isMe ? '1px solid var(--dc-soft-200)' : '1px solid var(--dc-border)',
@@ -101,8 +101,8 @@ export function RankingRow({ item, divided, showAvatar = true }: RankingRowProps
         style={{
           flex: 1,
           minWidth: 0,
-          fontSize: 'var(--dc-fs-base)',
-          fontWeight: item.isMe ? 800 : 600,
+          fontSize: 'var(--dc-fs-body)',
+          fontWeight: item.isMe ? 700 : 600,
           color: item.isMe ? 'var(--dc-primary)' : 'var(--dc-text)',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
@@ -116,8 +116,8 @@ export function RankingRow({ item, divided, showAvatar = true }: RankingRowProps
         className="dc-num"
         style={{
           flex: 'none',
-          fontSize: 'var(--dc-fs-sm)',
-          fontWeight: item.isMe ? 800 : 700,
+          fontSize: 'var(--dc-fs-body)',
+          fontWeight: item.isMe ? 700 : 600,
           color: item.isMe ? 'var(--dc-primary)' : 'var(--dc-text-body)',
           whiteSpace: 'nowrap',
         }}

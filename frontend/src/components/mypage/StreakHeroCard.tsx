@@ -49,7 +49,7 @@ function Pill({ children }: { children: React.ReactNode }) {
         background: 'rgba(255,255,255,.16)',
         borderRadius: 9999,
         padding: '6px 12px',
-        fontSize: 'var(--dc-fs-xs)',
+        fontSize: 'var(--dc-fs-caption)',
         fontWeight: 600,
         whiteSpace: 'nowrap',
       }}
@@ -98,7 +98,18 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
         >
           <FlameIcon />
         </span>
-        <h2 style={{ margin: 0, flex: 1, fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: '#fff', whiteSpace: 'nowrap' }}>
+        {/* 16px になったので nowrap を外す。狭い幅で「詳しく見る」を押し出すより、
+            見出しが2行に折り返すほうが壊れ方として素直。 */}
+        <h2
+          style={{
+            margin: 0,
+            flex: 1,
+            fontSize: 'var(--dc-fs-lead)',
+            fontWeight: 700,
+            color: '#fff',
+            lineHeight: 'var(--dc-lh-heading)',
+          }}
+        >
           学習ストリーク
         </h2>
         <button
@@ -113,7 +124,7 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
             background: 'transparent',
             padding: 0,
             fontFamily: 'inherit',
-            fontSize: 'var(--dc-fs-xs)',
+            fontSize: 'var(--dc-fs-body)',
             fontWeight: 600,
             color: '#fff',
             cursor: 'pointer',
@@ -128,11 +139,13 @@ export function StreakHeroCard({ stats, loading }: StreakHeroCardProps) {
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 20 }}>
         <span
           className="dc-num"
-          style={{ fontSize: numberSize, fontWeight: 800, lineHeight: 1, letterSpacing: '-0.02em' }}
+          // 数字だけの箱なので lineHeight は 1 のまま（--dc-lh-hero=1.2 だと
+          // 62px の数字に 12px の余分な行送りが付いてカードが伸びるだけ）
+          style={{ fontSize: numberSize, fontWeight: 700, lineHeight: 1, letterSpacing: '-0.02em' }}
         >
           {loading ? '…' : current}
         </span>
-        <span style={{ fontSize: 'var(--dc-fs-unit)', fontWeight: 700 }}>日連続</span>
+        <span style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: 700 }}>日連続</span>
       </div>
 
       {/* 事実 → 励まし の順（DESIGN.md §12）。自己ベスト更新中は煽らずに1つへ畳む */}

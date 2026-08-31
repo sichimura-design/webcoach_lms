@@ -181,7 +181,7 @@ function MyPage() {
         />
 
         <footer
-          style={{ textAlign: 'center', fontSize: 'var(--dc-fs-xs)', color: 'var(--dc-text-subtle)', padding: '32px 0 0', marginTop: 'auto' }}
+          style={{ textAlign: 'center', fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)', padding: '32px 0 0', marginTop: 'auto' }}
         >
           2026 &copy; WEBCOACH
         </footer>

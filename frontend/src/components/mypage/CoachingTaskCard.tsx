@@ -84,19 +84,21 @@ function TaskRow({ item, onToggle, disabled }: { item: PlanItem; onToggle: () =>
       </button>
 
       <div style={{ flex: 1, minWidth: 0 }}>
+        {/* タスク名は「次に何をするか」そのものなので lead(16px)。
+            完了済みは取り消し線で役目が終わっているので weight を一段落とす。 */}
         <div
           style={{
-            fontSize: 'var(--dc-fs-14)',
-            fontWeight: done ? 600 : 700,
+            fontSize: 'var(--dc-fs-lead)',
+            fontWeight: done ? 500 : 600,
             color: done ? '#B08A8F' : 'var(--dc-text)',
             textDecoration: done ? 'line-through' : 'none',
-            lineHeight: 1.5,
+            lineHeight: 'var(--dc-lh-ui)',
           }}
         >
           {item.text}
         </div>
         {!done && item.estimatedMinutes != null && item.estimatedMinutes > 0 && (
-          <div style={{ fontSize: 'var(--dc-fs-3xs)', color: 'var(--dc-text-subtle)', marginTop: 3 }}>
+          <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)', marginTop: 3 }}>
             目安 {formatMinutesHM(item.estimatedMinutes)}
           </div>
         )}
@@ -127,7 +129,16 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
   return (
     <section style={CARD_STYLE}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-        <h2 style={{ margin: 0, flex: 1, fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)' }}>
+        <h2
+          style={{
+            margin: 0,
+            flex: 1,
+            fontSize: 'var(--dc-fs-lead)',
+            fontWeight: 700,
+            color: 'var(--dc-text)',
+            lineHeight: 'var(--dc-lh-heading)',
+          }}
+        >
           次回コーチングまでのタスク
         </h2>
         <button
@@ -139,8 +150,8 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
             background: 'transparent',
             padding: 0,
             fontFamily: 'inherit',
-            fontSize: 'var(--dc-fs-xs)',
-            fontWeight: 700,
+            fontSize: 'var(--dc-fs-body)',
+            fontWeight: 600,
             color: 'var(--dc-primary)',
             cursor: 'pointer',
             whiteSpace: 'nowrap',
@@ -150,7 +161,7 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
         </button>
       </div>
 
-      <div style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-subtle)', margin: '0 0 16px' }}>
+      <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)', margin: '0 0 16px' }}>
         {nextSession
           ? `次回コーチング ${formatSessionDate(nextSession.date)} までにやること`
           : '次回コーチングまでにやること'}
@@ -158,11 +169,18 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
         {loading ? (
-          <div style={{ fontSize: 'var(--dc-fs-base)', color: 'var(--dc-text-subtle)', padding: '8px 0' }}>
+          <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-subtle)', padding: '8px 0' }}>
             読み込んでいます…
           </div>
         ) : items.length === 0 ? (
-          <div style={{ fontSize: 'var(--dc-fs-base)', color: 'var(--dc-text-muted)', lineHeight: 1.9, padding: '8px 0' }}>
+          <div
+            style={{
+              fontSize: 'var(--dc-fs-body)',
+              color: 'var(--dc-text-muted)',
+              lineHeight: 'var(--dc-lh-prose)',
+              padding: '8px 0',
+            }}
+          >
             まだタスクがありません。コーチング記録を確定すると、決まったタスクがここに入ります。
           </div>
         ) : (
@@ -172,7 +190,14 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
         )}
       </div>
 
-      <div style={{ fontSize: 'var(--dc-fs-3xs)', color: 'var(--dc-text-subtle)', marginTop: 14 }}>
+      <div
+        style={{
+          fontSize: 'var(--dc-fs-caption)',
+          color: 'var(--dc-text-subtle)',
+          marginTop: 14,
+          lineHeight: 'var(--dc-lh-ui)',
+        }}
+      >
         コーチングノートのタスクを表示しています。編集はコーチングページから。
       </div>
     </section>

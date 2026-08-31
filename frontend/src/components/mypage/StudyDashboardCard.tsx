@@ -49,12 +49,17 @@ const CARD_STYLE: CSSProperties = {
   padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
 };
 
+/**
+ * ブロックの見出しラベル（連続学習日数・総学習時間・今週の目標）。
+ * 🔴 数値を大きくするぶん、ラベルは 14px / 500 に留める。
+ *    ラベルまで太字にすると、隣の数字と強さが並んでダッシュボードが読めなくなる。
+ */
 const BLOCK_LABEL_STYLE: CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   gap: 7,
-  fontSize: 'var(--dc-fs-xs)',
-  fontWeight: 700,
+  fontSize: 'var(--dc-fs-body)',
+  fontWeight: 500,
   color: 'var(--dc-text-body)',
   marginBottom: 14,
 };
@@ -108,19 +113,28 @@ function MiniStat({
         {icon}
         {label}
       </div>
+      {/* 数字は display(28〜32px)、単位は lead(16px)。同じ大きさで組むより
+          「128時間45分」の数字だけが立つほうがダッシュボードとして読みやすい。
+          部品ごとに nowrap なので、狭いときは「128時間」「45分」で折り返す。 */}
       <div
         className="dc-num"
-        style={{ fontSize: 'var(--dc-fs-kpi-sub)', fontWeight: 800, color: 'var(--dc-text)', marginBottom: 8, lineHeight: 1.25 }}
+        style={{
+          fontSize: 'var(--dc-fs-lead)',
+          fontWeight: 700,
+          color: 'var(--dc-text)',
+          marginBottom: 8,
+          lineHeight: 'var(--dc-lh-hero)',
+        }}
       >
         {parts.map((p, i) => (
           <span key={i} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-            <span style={{ fontSize: 'var(--dc-fs-lg)' }}>{p.value}</span>
+            <span style={{ fontSize: 'var(--dc-fs-display)' }}>{p.value}</span>
             {p.unit}
           </span>
         ))}
       </div>
       {footnote && (
-        <div style={{ fontSize: 'var(--dc-fs-3xs)', color: 'var(--dc-text-subtle)', marginTop: 'auto' }}>
+        <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)', marginTop: 'auto' }}>
           {footnote}
         </div>
       )}
@@ -186,7 +200,15 @@ export function StudyDashboardCard({
         >
           <Activity size={16} strokeWidth={2} />
         </span>
-        <h2 style={{ margin: 0, fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)' }}>
+        <h2
+          style={{
+            margin: 0,
+            fontSize: 'var(--dc-fs-lead)',
+            fontWeight: 700,
+            color: 'var(--dc-text)',
+            lineHeight: 'var(--dc-lh-heading)',
+          }}
+        >
           学習状況ダッシュボード
         </h2>
       </div>
@@ -210,15 +232,16 @@ export function StudyDashboardCard({
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginBottom: 14, flexWrap: 'wrap' }}>
               <span
                 className="dc-num"
-                style={{ fontSize: 'var(--dc-fs-hero-xs)', fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1 }}
+                style={{ fontSize: 'var(--dc-fs-hero-xs)', fontWeight: 700, color: 'var(--dc-primary)', lineHeight: 1 }}
               >
                 {loading ? '…' : streakDays}
               </span>
-              <span style={{ fontSize: 'var(--dc-fs-base)', fontWeight: 700, color: 'var(--dc-text)' }}>
+              <span style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)' }}>
                 日連続で学習中
               </span>
               <span style={{ flex: 1 }} />
-              <span style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}>
+              {/* 自己ベストは補足。nowrap は残すが、親の flexWrap:'wrap' で next-line に逃げる */}
+              <span style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}>
                 🔥 自己ベスト：{loading ? '…' : bestDays}日
               </span>
             </div>
@@ -234,8 +257,8 @@ export function StudyDashboardCard({
                   >
                     <span
                       style={{
-                        fontSize: 'var(--dc-fs-4xs)',
-                        fontWeight: d.isToday ? 800 : 400,
+                        fontSize: 'var(--dc-fs-caption)',
+                        fontWeight: d.isToday ? 700 : 400,
                         color: d.isToday
                           ? 'var(--dc-primary)'
                           : d.isFuture
@@ -330,14 +353,21 @@ export function StudyDashboardCard({
                   gap: 2,
                 }}
               >
-                <div style={{ fontSize: 'var(--dc-fs-4xs)', color: 'var(--dc-text-subtle)' }}>合計</div>
+                {/* リングの内側は直径 128px しか無いので、ここは lead(16px) で止める。
+                    title(20px) にすると「4時間35分」がリングの弧に当たる。 */}
+                <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)' }}>合計</div>
                 <div
                   className="dc-num"
-                  style={{ fontSize: 'var(--dc-fs-kpi-sub)', fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1.1 }}
+                  style={{
+                    fontSize: 'var(--dc-fs-lead)',
+                    fontWeight: 700,
+                    color: 'var(--dc-primary)',
+                    lineHeight: 'var(--dc-lh-hero)',
+                  }}
                 >
                   {loading ? '…' : formatMinutesHM(weekMinutes)}
                 </div>
-                <div style={{ fontSize: 'var(--dc-fs-4xs)', color: 'var(--dc-text-subtle)' }}>
+                <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)' }}>
                   目標 {formatMinutesHM(goalMinutes)}
                 </div>
               </div>
@@ -362,8 +392,8 @@ export function StudyDashboardCard({
                   borderRadius: 9999,
                   padding: '5px 11px',
                   fontFamily: 'inherit',
-                  fontSize: 'var(--dc-fs-3xs)',
-                  fontWeight: 700,
+                  fontSize: 'var(--dc-fs-body)',
+                  fontWeight: 600,
                   color: 'var(--dc-text-body)',
                   cursor: 'pointer',
                   whiteSpace: 'nowrap',
@@ -374,14 +404,19 @@ export function StudyDashboardCard({
             </div>
 
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 'var(--dc-fs-base)', fontWeight: 700, color: 'var(--dc-text)' }}>目標</span>
+              <span style={{ fontSize: 'var(--dc-fs-body)', fontWeight: 600, color: 'var(--dc-text)' }}>目標</span>
               <span
                 className="dc-num"
-                style={{ fontSize: 'var(--dc-fs-kpi-sub)', fontWeight: 800, color: 'var(--dc-text)', lineHeight: 1 }}
+                style={{
+                  fontSize: 'var(--dc-fs-title)',
+                  fontWeight: 700,
+                  color: 'var(--dc-text)',
+                  lineHeight: 'var(--dc-lh-hero)',
+                }}
               >
                 {formatMinutesHM(goalMinutes)}
               </span>
-              <span style={{ fontSize: 'var(--dc-fs-base)', fontWeight: 700, color: 'var(--dc-text-muted)' }}>/ 週</span>
+              <span style={{ fontSize: 'var(--dc-fs-body)', fontWeight: 500, color: 'var(--dc-text-muted)' }}>/ 週</span>
             </div>
 
             <div
@@ -406,6 +441,9 @@ export function StudyDashboardCard({
                 return (
                   <div
                     key={d.key}
+                    // mypage-dash-col: 値ラベルが列幅を超えたら ellipsis で切る。
+                    // 隣の曜日と重なるのを幅のしきい値ではなく構造で防ぐ（index.css）
+                    className="mypage-dash-col"
                     title={`${d.label}曜日 ${formatMinutesHM(d.minutes)}`}
                     style={{
                       display: 'flex',
@@ -419,8 +457,8 @@ export function StudyDashboardCard({
                     <span
                       className="dc-num"
                       style={{
-                        fontSize: 'var(--dc-fs-4xs)',
-                        fontWeight: d.isToday ? 800 : 400,
+                        fontSize: 'var(--dc-fs-caption)',
+                        fontWeight: d.isToday ? 700 : 400,
                         color: d.isToday
                           ? 'var(--dc-primary)'
                           : d.isFuture
@@ -445,13 +483,14 @@ export function StudyDashboardCard({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: 'var(--dc-fs-4xs)',
-                      fontWeight: 800,
+                      fontSize: 'var(--dc-fs-caption)',
+                      fontWeight: 700,
                       color: '#fff',
                       background: 'var(--dc-primary)',
                       borderRadius: 9999,
-                      width: 22,
-                      height: 22,
+                      // 文字が 9.5px → 12px になったぶん丸を広げる。22px だと余白がほぼ残らない
+                      width: 24,
+                      height: 24,
                       margin: '0 auto',
                     }}
                   >
@@ -461,7 +500,7 @@ export function StudyDashboardCard({
                   <span
                     key={d.key}
                     style={{
-                      fontSize: 'var(--dc-fs-4xs)',
+                      fontSize: 'var(--dc-fs-caption)',
                       textAlign: 'center',
                       color: d.isFuture ? 'var(--dc-text-subtle)' : 'var(--dc-text-muted)',
                     }}
@@ -472,7 +511,8 @@ export function StudyDashboardCard({
               )}
             </div>
 
-            <div style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-body)', textAlign: 'right' }}>
+            {/* 「目標まであと○分」は次の行動に直結するので caption には落とさない */}
+            <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-body)', textAlign: 'right' }}>
               {remain > 0 ? (
                 <>
                   目標まであと{' '}

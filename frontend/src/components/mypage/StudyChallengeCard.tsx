@@ -44,7 +44,7 @@ function ProgressBar({ value, totalLessons }: { value: number; totalLessons?: nu
   const lessons = lessonProgressFromPercent(pct, totalLessons);
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-      <span style={{ fontSize: 'var(--dc-fs-xs)', fontWeight: 700, color: 'var(--dc-text-body)', flex: 'none' }}>
+      <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: 600, color: 'var(--dc-text-body)', flex: 'none' }}>
         <span className="dc-num">{lessons ? lessons.short : `${pct}%`}</span>
         {lessons && <span style={{ color: 'var(--dc-text-muted)' }}> {LEARNING_HIERARCHY.lesson}</span>}
       </span>
@@ -130,17 +130,32 @@ export function StudyChallengeCard({
         >
           <Trophy size={16} strokeWidth={1.75} />
         </span>
-        <h2 style={{ margin: 0, fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)', whiteSpace: 'nowrap' }}>
+        <h2
+          style={{
+            margin: 0,
+            fontSize: 'var(--dc-fs-lead)',
+            fontWeight: 700,
+            color: 'var(--dc-text)',
+            lineHeight: 'var(--dc-lh-heading)',
+          }}
+        >
           学習時間チャレンジ
         </h2>
       </div>
 
       {failed ? (
-        <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-muted)', lineHeight: 1.9, padding: '8px 0 18px' }}>
+        <div
+          style={{
+            fontSize: 'var(--dc-fs-body)',
+            color: 'var(--dc-text-muted)',
+            lineHeight: 'var(--dc-lh-prose)',
+            padding: '8px 0 18px',
+          }}
+        >
           ランキングを取得できませんでした。
         </div>
       ) : loading || !me ? (
-        <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-subtle)', padding: '28px 0 40px', textAlign: 'center' }}>
+        <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-subtle)', padding: '28px 0 40px', textAlign: 'center' }}>
           読み込んでいます…
         </div>
       ) : (
@@ -158,23 +173,23 @@ export function StudyChallengeCard({
           >
             {isLeading ? (
               <>
-                <span className="dc-num" style={{ fontSize: 'var(--dc-fs-2xl)', fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em' }}>
+                <span className="dc-num" style={{ fontSize: 'var(--dc-fs-hero-xs)', fontWeight: 700, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em' }}>
                   1
                 </span>
-                <span style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-text)' }}>位をキープ中！</span>
+                <span style={{ fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)' }}>位をキープ中！</span>
               </>
             ) : (
               <>
-                <span style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-text)' }}>あと</span>
-                <span className="dc-num" style={{ fontSize: 'var(--dc-fs-2xl)', fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em', padding: '0 4px' }}>
+                <span style={{ fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)' }}>あと</span>
+                <span className="dc-num" style={{ fontSize: 'var(--dc-fs-hero-xs)', fontWeight: 700, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em', padding: '0 4px' }}>
                   {gap}
                 </span>
-                <span style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-primary)', marginRight: 6 }}>分</span>
-                <span style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-text)' }}>で</span>
-                <span className="dc-num" style={{ fontSize: 'var(--dc-fs-2xl)', fontWeight: 800, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em', padding: '0 4px' }}>
+                <span style={{ fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-primary)', marginRight: 6 }}>分</span>
+                <span style={{ fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)' }}>で</span>
+                <span className="dc-num" style={{ fontSize: 'var(--dc-fs-hero-xs)', fontWeight: 700, color: 'var(--dc-primary)', lineHeight: 1, letterSpacing: '-.02em', padding: '0 4px' }}>
                   {target!.rank}
                 </span>
-                <span style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-text)' }}>位！</span>
+                <span style={{ fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)' }}>位！</span>
               </>
             )}
           </div>
@@ -187,8 +202,8 @@ export function StudyChallengeCard({
                 display: 'grid',
                 gridTemplateColumns: `repeat(${slots.length}, minmax(0, 1fr))`,
                 textAlign: 'center',
-                fontSize: 'var(--dc-fs-sm)',
-                fontWeight: 700,
+                fontSize: 'var(--dc-fs-body)',
+                fontWeight: 600,
                 marginBottom: 10,
               }}
             >
@@ -276,8 +291,8 @@ export function StudyChallengeCard({
                 <div key={s.entry.rank} style={{ minWidth: 0 }}>
                   <div
                     style={{
-                      fontSize: 'var(--dc-fs-base)',
-                      fontWeight: i === 0 ? 800 : 700,
+                      fontSize: 'var(--dc-fs-body)',
+                      fontWeight: i === 0 ? 700 : 600,
                       color: i === 0 ? 'var(--dc-primary)' : i === 1 ? 'var(--dc-text)' : 'var(--dc-text-body)',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
@@ -302,7 +317,7 @@ export function StudyChallengeCard({
                   >
                     <span
                       className="dc-num"
-                      style={{ fontSize: 'var(--dc-fs-xs)', color: i === 2 ? 'var(--dc-text-subtle)' : 'var(--dc-text-muted)' }}
+                      style={{ fontSize: 'var(--dc-fs-caption)', color: i === 2 ? 'var(--dc-text-subtle)' : 'var(--dc-text-muted)' }}
                     >
                       {formatMinutesHM(s.entry.minutes)}
                     </span>
@@ -310,8 +325,8 @@ export function StudyChallengeCard({
                       <span
                         className="dc-num"
                         style={{
-                          fontSize: 'var(--dc-fs-2xs)',
-                          fontWeight: 800,
+                          fontSize: 'var(--dc-fs-caption)',
+                          fontWeight: 700,
                           borderRadius: 9999,
                           padding: '3px 8px',
                           whiteSpace: 'nowrap',
@@ -342,7 +357,7 @@ export function StudyChallengeCard({
           padding: '20px 22px',
         }}
       >
-        <div style={{ fontSize: 'var(--dc-fs-xs)', fontWeight: 700, color: 'var(--dc-text-muted)', marginBottom: 12 }}>
+        <div style={{ fontSize: 'var(--dc-fs-body)', fontWeight: 500, color: 'var(--dc-text-muted)', marginBottom: 12 }}>
           学習して記録を伸ばそう
         </div>
 
@@ -351,11 +366,11 @@ export function StudyChallengeCard({
             <div style={{ flex: 1, minWidth: 200 }}>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
                 {no && (
-                  <span className="dc-num" style={{ fontSize: 'var(--dc-fs-lesson)', fontWeight: 800, color: 'var(--dc-text)' }}>
+                  <span className="dc-num" style={{ fontSize: 'var(--dc-fs-body)', fontWeight: 700, color: 'var(--dc-text)' }}>
                     {no}
                   </span>
                 )}
-                <span style={{ fontSize: 'var(--dc-fs-base)', fontWeight: 600, color: 'var(--dc-text-body)' }}>{lessonName}</span>
+                <span style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: 600, color: 'var(--dc-text-body)' }}>{lessonName}</span>
               </div>
               <ProgressBar value={course.progress ?? 0} totalLessons={course.totalLessons} />
             </div>
@@ -376,7 +391,7 @@ export function StudyChallengeCard({
                   background: 'var(--dc-primary)',
                   color: '#fff',
                   fontFamily: 'inherit',
-                  fontSize: 'var(--dc-fs-sm)',
+                  fontSize: 'var(--dc-fs-lead)',
                   fontWeight: 700,
                   cursor: 'pointer',
                 }}
@@ -398,7 +413,7 @@ export function StudyChallengeCard({
                   border: '1px solid #E5DED3',
                   color: 'var(--dc-text-body)',
                   fontFamily: 'inherit',
-                  fontSize: 'var(--dc-fs-sm)',
+                  fontSize: 'var(--dc-fs-body)',
                   fontWeight: 600,
                   cursor: 'pointer',
                 }}
@@ -410,7 +425,7 @@ export function StudyChallengeCard({
         ) : (
           // 受講中のコースが無いときは「続きから」が成立しないので、選ぶところから始めてもらう
           <div style={{ display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
-            <div style={{ flex: 1, minWidth: 200, fontSize: 'var(--dc-fs-base)', color: 'var(--dc-text-body)', lineHeight: 1.8 }}>
+            <div style={{ flex: 1, minWidth: 200, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-body)', lineHeight: 'var(--dc-lh-prose)' }}>
               まだ受講中のコースがありません。学習コンテンツから最初の1つを選びましょう。
             </div>
             <button
@@ -428,7 +443,7 @@ export function StudyChallengeCard({
                 background: 'var(--dc-primary)',
                 color: '#fff',
                 fontFamily: 'inherit',
-                fontSize: 'var(--dc-fs-sm)',
+                fontSize: 'var(--dc-fs-lead)',
                 fontWeight: 700,
                 cursor: 'pointer',
                 flex: 'none',

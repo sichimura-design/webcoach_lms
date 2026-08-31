@@ -62,7 +62,7 @@ export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: Resu
         >
           <Play size={15} fill="currentColor" strokeWidth={0} />
         </span>
-        <h2 style={{ margin: 0, fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)' }}>
+        <h2 style={{ margin: 0, fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)' }}>
           続きから学習
         </h2>
       </div>
@@ -90,9 +90,11 @@ export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: Resu
             </div>
 
             <div style={{ minWidth: 0 }}>
+              {/* コース名は「どのコースの続きか」の識別に必要なので caption(12px) には落とさない。
+                  溢れは ellipsis で処理しているので nowrap のままで安全。 */}
               <div
                 style={{
-                  fontSize: 'var(--dc-fs-xs)',
+                  fontSize: 'var(--dc-fs-body)',
                   color: 'var(--dc-text-subtle)',
                   marginBottom: 6,
                   overflow: 'hidden',
@@ -102,7 +104,16 @@ export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: Resu
               >
                 {course.title}
               </div>
-              <div style={{ fontSize: 'var(--dc-fs-md)', fontWeight: 800, color: 'var(--dc-text)', lineHeight: 1.5 }}>
+              {/* レッスン名がこのカードで一番大きい文字。カード見出しの「続きから学習」より
+                  大きくするのは、ラベルより中身のコンテンツ名を先に読ませたいため。 */}
+              <div
+                style={{
+                  fontSize: 'var(--dc-fs-title)',
+                  fontWeight: 700,
+                  color: 'var(--dc-text)',
+                  lineHeight: 'var(--dc-lh-heading)',
+                }}
+              >
                 {no && (
                   <>
                     <span className="dc-num">{no}</span>
@@ -121,11 +132,11 @@ export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: Resu
               justifyContent: 'space-between',
               gap: 10,
               flexWrap: 'wrap',
-              fontSize: 'var(--dc-fs-xs)',
+              fontSize: 'var(--dc-fs-caption)',
               marginBottom: 8,
             }}
           >
-            <span className="dc-num" style={{ fontWeight: 800, color: 'var(--dc-text)' }}>
+            <span className="dc-num" style={{ fontWeight: 700, color: 'var(--dc-text)' }}>
               {lessons ? (
                 <>
                   {lessons.done}
@@ -179,8 +190,8 @@ export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: Resu
               background: 'var(--dc-primary)',
               color: '#fff',
               fontFamily: 'inherit',
-              fontSize: 'var(--dc-fs-15)',
-              fontWeight: 800,
+              fontSize: 'var(--dc-fs-lead)',
+              fontWeight: 700,
               cursor: 'pointer',
               boxShadow: '0 10px 22px -10px rgba(160,8,36,.55)',
               marginBottom: 10,
@@ -204,7 +215,7 @@ export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: Resu
               border: '1px solid var(--dc-border-strong)',
               color: 'var(--dc-text-body)',
               fontFamily: 'inherit',
-              fontSize: 'var(--dc-fs-14)',
+              fontSize: 'var(--dc-fs-body)',
               fontWeight: 600,
               cursor: 'pointer',
               marginTop: 'auto',
@@ -219,9 +230,9 @@ export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: Resu
           <div
             style={{
               flex: 1,
-              fontSize: 'var(--dc-fs-base)',
+              fontSize: 'var(--dc-fs-body)',
               color: 'var(--dc-text-body)',
-              lineHeight: 1.9,
+              lineHeight: 'var(--dc-lh-prose)',
               marginBottom: 20,
             }}
           >
@@ -242,8 +253,8 @@ export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: Resu
               background: 'var(--dc-primary)',
               color: '#fff',
               fontFamily: 'inherit',
-              fontSize: 'var(--dc-fs-15)',
-              fontWeight: 800,
+              fontSize: 'var(--dc-fs-lead)',
+              fontWeight: 700,
               cursor: 'pointer',
               boxShadow: '0 10px 22px -10px rgba(160,8,36,.55)',
               marginTop: 'auto',

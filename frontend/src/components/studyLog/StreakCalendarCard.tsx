@@ -92,7 +92,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
         background: '#fff',
         display: 'grid',
         placeItems: 'center',
-        fontSize: 'var(--dc-fs-14)',
+        fontSize: 'var(--dc-fs-body)',
         color: enabled ? 'var(--dc-text-body)' : '#C9BFB0',
         cursor: enabled ? 'pointer' : 'not-allowed',
       }}
@@ -130,7 +130,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
           style={{
             margin: 0,
             flex: 1,
-            fontSize: 'var(--dc-fs-title)',
+            fontSize: 'var(--dc-fs-lead)',
             fontWeight: 700,
             color: 'var(--dc-text)',
             whiteSpace: 'nowrap',
@@ -140,7 +140,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
         </h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           {navButton('前の月へ', '‹', canGoBack, () => setMonthOffset((m) => m - 1))}
-          <span className="dc-num" style={{ fontSize: 'var(--dc-fs-sm)', fontWeight: 700, color: 'var(--dc-text-body)', whiteSpace: 'nowrap' }}>
+          <span className="dc-num" style={{ fontSize: 'var(--dc-fs-body)', fontWeight: 600, color: 'var(--dc-text-body)', whiteSpace: 'nowrap' }}>
             {title}
           </span>
           {navButton('次の月へ', '›', canGoForward, () => setMonthOffset((m) => Math.min(0, m + 1)))}
@@ -152,7 +152,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
         aria-hidden="true"
       >
         {WEEKDAY_LABELS.map((w) => (
-          <span key={w} style={{ textAlign: 'center', fontSize: 'var(--dc-fs-2xs)', fontWeight: 700, color: 'var(--dc-text-subtle)' }}>
+          <span key={w} style={{ textAlign: 'center', fontSize: 'var(--dc-fs-caption)', fontWeight: 600, color: 'var(--dc-text-subtle)' }}>
             {w}
           </span>
         ))}
@@ -187,7 +187,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
               <span
                 className="dc-num"
                 style={{
-                  fontSize: 'var(--dc-fs-3xs)',
+                  fontSize: 'var(--dc-fs-caption)',
                   fontWeight: c.studied || c.isToday ? 700 : 400,
                   color: c.studied
                     ? 'var(--dc-primary)'
@@ -215,7 +215,7 @@ export function StreakCalendarCard({ stats, loading }: StreakCalendarCardProps) 
           alignItems: 'center',
           gap: 6,
           marginTop: 12,
-          fontSize: 'var(--dc-fs-2xs)',
+          fontSize: 'var(--dc-fs-caption)',
           color: 'var(--dc-text-muted)',
           flexWrap: 'wrap',
         }}

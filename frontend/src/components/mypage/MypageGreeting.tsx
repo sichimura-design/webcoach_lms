@@ -24,16 +24,17 @@ function formatTodayJa(d: Date): string {
 function MypageGreeting({ name }: MypageGreetingProps) {
   return (
     <div style={{ marginBottom: 30 }}>
-      <div style={{ fontSize: 'var(--dc-fs-sm)', color: 'var(--dc-text-muted)', marginBottom: 6 }}>
+      {/* 日付は「読めなくても操作に影響しない」補足なので caption(12px) */}
+      <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', marginBottom: 6 }}>
         {formatTodayJa(new Date())}
       </div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <h1
           style={{
             margin: 0,
-            fontSize: 'var(--dc-fs-xl)',
-            lineHeight: 1.3,
-            fontWeight: 800,
+            fontSize: 'var(--dc-fs-display)',
+            lineHeight: 'var(--dc-lh-heading)',
+            fontWeight: 700,
             letterSpacing: '-0.01em',
             color: 'var(--dc-text)',
           }}
