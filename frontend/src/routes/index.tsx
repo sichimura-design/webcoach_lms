@@ -32,8 +32,18 @@ import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage
 import { AdminCoachIntegrationsPage } from '../components/admin/AdminCoachIntegrationsPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
 import { useAuth } from '../contexts/AuthContext';
+import { useAiCoachExpandOriginCleanup } from '../hooks/useAiCoachExpandOriginCleanup';
 import { useNavigationStore } from '../store/navigationStore';
 import { ErrorBoundary } from '../components/shared';
+import { MOCKS_ENABLED } from '../mocks/config';
+
+/**
+ * トークン・部品カタログ（/dev/catalog）。UI/UXレビューの「横串」用の比較台で、
+ * 受講生には見せない。MOCKS_ENABLED でルート自体を出し分ける。
+ * lazy にしているのは、静的 import だとモック無効のビルドでもメインバンドルに
+ * 混ざるため。別チャンクに切り出しておけば本番では一度も取得されない。
+ */
+const DevCatalogPage = React.lazy(() => import('../components/dev/DevCatalogPage'));
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -188,6 +198,10 @@ function BadgesPageWrapper() {
 }
 
 function AppRoutes() {
+  // AI専用ページを離れたときの後始末（戻り先の破棄／ブラウザバック時のドロワー復帰）。
+  // 教材ページは AppHeader を描かないので、全遷移を見られるここに置く。
+  useAiCoachExpandOriginCleanup();
+
   return (
     <ErrorBoundary>
     <Routes>
@@ -444,6 +458,17 @@ function AppRoutes() {
           </CoachRoute>
         }
       />
+
+      {MOCKS_ENABLED && (
+        <Route
+          path="/dev/catalog"
+          element={
+            <React.Suspense fallback={<div style={{ minHeight: '100vh', background: '#FBF8F4' }} />}>
+              <DevCatalogPage />
+            </React.Suspense>
+          }
+        />
+      )}
 
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />

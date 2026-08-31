@@ -76,12 +76,32 @@ export const t = {
     /** セクション間・チップ間の区切り線（border.lineとは別の実測値。学習コンテンツページで追加） */
     divider: '#EDE6E6',
 
-    /** コースのカテゴリ色（design_handoff_materialsのREADME「カテゴリ色」表に準拠。design/careerは既存トークンを再利用） */
+    /**
+     * 学習領域の色（文字色 fg と、サムネ・見出しの地色 bg）。
+     *
+     * 領域は10個あるが、色は5つしか作らない。10領域に10色を割ると近い色相が並んで
+     * 「色が違うこと」自体が情報を持たなくなるため、constants/courseTaxonomy.ts の
+     * family（何をしているか）でまとめる。領域名はタイルに文字で出るので、
+     * 色が担うのは family までの粗さでよい。
+     *
+     *   create … Webデザイン / 動画編集
+     *   build  … Web制作
+     *   grow   … Webマーケティング / SNS運用
+     *   career … ソフトスキル / キャリア / 案件獲得攻略プログラム
+     *   ai     … 生成AI基礎 / Web×AI
+     *
+     * create/build/grow/career の4色は旧カテゴリ色（design_handoff_materials の
+     * README「カテゴリ色」表）をそのまま引き継ぐ。ai だけ、赤・琥珀・紫・緑の隣で
+     * 唯一空いていた青緑を足した。
+     */
     category: {
-      design: '#D60934',
-      coding: '#D9930D',
-      marketing: '#8B5CD6',
-      career: '#2FA35C',
+      create: { fg: '#D60934', bg: '#FDEEEF' },
+      build: { fg: '#D9930D', bg: '#FBF1DC' },
+      grow: { fg: '#8B5CD6', bg: '#F2ECFC' },
+      career: { fg: '#2FA35C', bg: '#EAF6ED' },
+      ai: { fg: '#1E88A8', bg: '#E7F2F6' },
+      /** family が引けない領域（実BFFの独自カテゴリ名など） */
+      unknown: { fg: '#8A8082', bg: '#F4F1F1' },
     },
 
     /**
