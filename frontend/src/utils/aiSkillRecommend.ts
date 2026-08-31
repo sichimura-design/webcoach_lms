@@ -34,12 +34,21 @@ export interface RecommendInput {
   usedSkills?: ConcreteAiSkillId[];
 }
 
-/** 学習領域から、その領域で最初に効く機能を1つ選ぶ */
+/**
+ * 学習領域から、その領域で最初に効く機能を1つ選ぶ。
+ * 現行の10領域（constants/courseTaxonomy.ts の AREAS）すべてを網羅する。
+ * 領域名を変えたらここも直すこと。網羅していない領域は FALLBACK_ORDER に落ちて、
+ * 学習領域を見ていないのと同じ結果になる。
+ */
 const CATEGORY_SKILL: Array<{ match: RegExp; skillId: ConcreteAiSkillId }> = [
+  // 「Web×AI」「生成AI基礎」を先に見る（「Web×AI」は下のデザイン/制作にも当たるため）
+  { match: /AI/, skillId: 'learning' },
   { match: /デザイン/, skillId: 'design-review' },
-  { match: /コーディング|コード|プログラ/, skillId: 'tooling' },
+  { match: /動画/, skillId: 'design-review' },
+  { match: /Web制作|コーディング|コード|プログラ/, skillId: 'tooling' },
   { match: /マーケ|ライティング|セールス/, skillId: 'copy' },
-  { match: /キャリア|副業|案件/, skillId: 'job-search' },
+  { match: /SNS/, skillId: 'copy' },
+  { match: /キャリア|副業|案件|ソフトスキル/, skillId: 'job-search' },
 ];
 
 /** 教材名から拾う、より具体的な手がかり。カテゴリより優先する */

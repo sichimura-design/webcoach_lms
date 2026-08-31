@@ -5,16 +5,19 @@ import {
   ChevronRight,
   HelpCircle,
   History,
+  ImagePlus,
   Info,
-  Plus,
   Sparkles,
   X,
 } from 'lucide-react';
 import {
   AiSkillId,
+  AI_SKILL_CATEGORY_LABEL,
+  AI_SKILL_CATEGORY_ORDER,
   AI_SKILL_META,
   ConcreteAiSkillId,
-  FEATURED_AI_SKILLS,
+  CONCRETE_AI_SKILLS,
+  skillsInCategory,
 } from '../../types/aiSkill';
 import SkillSelector from '../learning/SkillSelector';
 import { AI_SKILL_ICON } from './aiSkillIcons';
@@ -24,7 +27,7 @@ import { AI_SKILL_ICON } from './aiSkillIcons';
  *
  * claude.ai/design『AIコーチ 3案』の案 1a「センター集中型 — 問いかけが主役の
  * ゼロ状態＋機能グリッド」をそのまま実装している。上から:
- *   ヒーロー → 大きな入力欄 → できること帯 → AIアプリ6枚
+ *   ヒーロー → 大きな入力欄 → できること帯 → AIアプリ全件（カテゴリ別）
  * 狙いは2種類の入り方を両方成立させること:
  *   ・やりたいことをそのまま書く人 → 上の入力欄からAIコーチが受ける
  *   ・機能を見て選びたい人         → 下のグリッドから直接選ぶ
@@ -34,7 +37,14 @@ import { AI_SKILL_ICON } from './aiSkillIcons';
  * 1a に合わせて外したもの:
  *   ・「続きから」チップ … 履歴と役割が重なる。右上の「履歴」に寄せた
  *   ・おすすめ帯         … ゼロ状態から要素を減らし、問いかけを主役にする
- *   ・ショートカット行   … 6枚のカードグリッドが役割を引き取った
+ *   ・ショートカット行   … カードグリッドが役割を引き取った
+ *
+ * 1a から変えたもの:
+ *   ・6枚＋「全てのAIアプリを見る」→ **全11件をここに出す**。
+ *     アプリは11個しかないので、一覧を別ページに分けると7個目以降が
+ *     存在に気づかれず、使うのに1ステップ余計にかかるだけだった。
+ *     11枚を素で並べると壁になるのでカテゴリ（学習／制作／キャリア／そのほか）で束ね、
+ *     「こんなときに」を各カードに添えて、名前だけで選ばせないようにしている。
  *
  * 色は index.css の --dc-* （.wc-warm）を使う。webcoachTheme の pageBg は
  * ピンク寄りの #FDFCFC で、1a の暖色クリーム #FBF8F4 とは別系統のため。
@@ -46,8 +56,6 @@ interface AiCoachHomeProps {
   onSubmit: (text: string, image: string | null, skillId: AiSkillId) => void;
   /** 機能を直接選んだ。その機能のモードで新しいセッションを開く */
   onSelectSkill: (skillId: ConcreteAiSkillId) => void;
-  /** 「全てのAIアプリを見る」→ 機能一覧（?view=catalog）へ */
-  onOpenCatalog: () => void;
   /** 「ヘルプ・使い方」→ AIコーチの使い方パネル */
   onOpenHowTo: () => void;
   /** 「履歴」→ 会話履歴の開閉 */
@@ -63,7 +71,6 @@ const CENTER_WIDTH = 760;
 export function AiCoachHome({
   onSubmit,
   onSelectSkill,
-  onOpenCatalog,
   onOpenHowTo,
   onToggleHistory,
 }: AiCoachHomeProps) {
@@ -274,7 +281,7 @@ export function AiCoachHome({
                 flexShrink: 0,
               }}
             >
-              <Plus size={16} />
+              <ImagePlus size={15} />
             </button>
             {/* 「AI選択できる？」への答え。既定は自動で、ここから明示的に選べる */}
             <SkillSelector value={skillId} onChange={setSkillId} />
@@ -340,107 +347,119 @@ export function AiCoachHome({
         </div>
 
         {/* ── AIアプリでできること ──
-            機能を見て選びたい人の入口。ここは 1a のデザイン固定順（FEATURED_AI_SKILLS）で、
-            「最近使った順」に並べ替えない。毎回場所が変わると覚えられないため。
-            探す行為そのものは「全てのAIアプリを見る」の一覧に分けている。 */}
+            機能を見て選びたい人の入口。並びは AI_SKILL_META の宣言順（固定）で、
+            「最近使った順」に並べ替えない。毎回場所が変わると覚えられないため。 */}
         <div
-          className="flex items-baseline justify-between"
-          style={{ gap: 12, margin: '36px 0 14px' }}
+          className="flex items-baseline"
+          style={{ gap: 10, flexWrap: 'wrap', margin: '36px 0 4px' }}
         >
           <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: 'var(--dc-text)' }}>
             AIアプリでできること
           </h3>
-          <button
-            type="button"
-            onClick={onOpenCatalog}
-            className="inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-            style={{
-              gap: 2,
-              border: 0,
-              padding: 0,
-              background: 'transparent',
-              color: 'var(--dc-primary)',
-              fontFamily: 'inherit',
-              fontSize: 13,
-              fontWeight: 500,
-              cursor: 'pointer',
-              flexShrink: 0,
-            }}
-          >
-            全てのAIアプリを見る
-            <ChevronRight size={15} />
-          </button>
+          <span style={{ fontSize: 12.5, color: 'var(--dc-text-muted)' }}>
+            全{CONCRETE_AI_SKILLS.length}種類・押すとその場で始まります
+          </span>
         </div>
 
-        <div className="ai-home-apps">
-          {FEATURED_AI_SKILLS.map((id) => {
-            const meta = AI_SKILL_META[id];
-            const Icon = AI_SKILL_ICON[meta.icon];
-            return (
-              <button
-                key={id}
-                type="button"
-                onClick={() => onSelectSkill(id)}
-                className="ai-home-app-card flex items-start text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={{
-                  gap: 14,
-                  height: '100%',
-                  padding: '18px 20px',
-                  border: '1px solid var(--dc-border)',
-                  borderRadius: 'var(--dc-radius-lg)',
-                  background: 'var(--dc-surface)',
-                  boxShadow: 'var(--dc-shadow-card)',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                }}
-              >
-                <span
-                  aria-hidden
-                  className="grid place-items-center flex-shrink-0"
-                  style={{
-                    width: 40,
-                    height: 40,
-                    borderRadius: 'var(--dc-radius-md)',
-                    background: 'var(--dc-soft-100)',
-                    color: 'var(--dc-primary)',
-                  }}
-                >
-                  <Icon size={19} />
-                </span>
-                <span style={{ flex: 1, minWidth: 0 }}>
-                  <span
-                    style={{
-                      display: 'block',
-                      fontSize: 14.5,
-                      fontWeight: 700,
-                      color: 'var(--dc-text)',
-                    }}
-                  >
-                    {meta.shortLabel}
-                  </span>
-                  <span
-                    style={{
-                      display: 'block',
-                      marginTop: 4,
-                      fontSize: 12.5,
-                      lineHeight: 1.7,
-                      color: 'var(--dc-text-muted)',
-                    }}
-                  >
-                    {meta.description}
-                  </span>
-                </span>
-                <ChevronRight
-                  size={16}
-                  style={{ color: 'var(--dc-text-subtle)', alignSelf: 'center', flexShrink: 0 }}
-                />
-              </button>
-            );
-          })}
-        </div>
+        {AI_SKILL_CATEGORY_ORDER.map((category) => (
+          <section key={category} style={{ marginTop: 24 }}>
+            <h4
+              style={{
+                margin: '0 0 12px',
+                fontSize: 12.5,
+                fontWeight: 700,
+                letterSpacing: '0.04em',
+                color: 'var(--dc-text-muted)',
+              }}
+            >
+              {AI_SKILL_CATEGORY_LABEL[category]}
+            </h4>
+            <div className="ai-home-apps">{skillsInCategory(category).map(renderCard)}</div>
+          </section>
+        ))}
       </div>
     </div>
   );
+
+  /** アプリ1枚。カテゴリごとに同じ形で並べるので描画だけ切り出す */
+  function renderCard(id: ConcreteAiSkillId) {
+    const meta = AI_SKILL_META[id];
+    const Icon = AI_SKILL_ICON[meta.icon];
+    return (
+      <button
+        key={id}
+        type="button"
+        onClick={() => onSelectSkill(id)}
+        className="ai-home-app-card flex items-start text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        style={{
+          gap: 14,
+          height: '100%',
+          padding: '18px 20px',
+          border: '1px solid var(--dc-border)',
+          borderRadius: 'var(--dc-radius-lg)',
+          background: 'var(--dc-surface)',
+          boxShadow: 'var(--dc-shadow-card)',
+          cursor: 'pointer',
+          fontFamily: 'inherit',
+        }}
+      >
+        <span
+          aria-hidden
+          className="grid place-items-center flex-shrink-0"
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 'var(--dc-radius-md)',
+            background: 'var(--dc-soft-100)',
+            color: 'var(--dc-primary)',
+          }}
+        >
+          <Icon size={19} />
+        </span>
+        <span style={{ flex: 1, minWidth: 0 }}>
+          <span
+            style={{
+              display: 'block',
+              fontSize: 14.5,
+              fontWeight: 700,
+              color: 'var(--dc-text)',
+            }}
+          >
+            {meta.shortLabel}
+          </span>
+          <span
+            style={{
+              display: 'block',
+              marginTop: 4,
+              fontSize: 12.5,
+              lineHeight: 1.7,
+              color: 'var(--dc-text-muted)',
+            }}
+          >
+            {meta.description}
+          </span>
+          {/* 名前と説明だけでは選べない。「自分がいまその状況か」で選ばせる
+              （一覧ページを畳んだ分、その手がかりをここへ持ってきた） */}
+          <span
+            style={{
+              display: 'block',
+              marginTop: 8,
+              fontSize: 11.5,
+              lineHeight: 1.7,
+              color: 'var(--dc-text-subtle)',
+            }}
+          >
+            <span style={{ color: 'var(--dc-primary)', fontWeight: 700 }}>こんなときに：</span>
+            {meta.useCase}
+          </span>
+        </span>
+        <ChevronRight
+          size={16}
+          style={{ color: 'var(--dc-text-subtle)', alignSelf: 'center', flexShrink: 0 }}
+        />
+      </button>
+    );
+  }
 }
 
 /** 右上のチップ（ヘルプ・履歴）。1a の h34 / r12 / 12.5px */

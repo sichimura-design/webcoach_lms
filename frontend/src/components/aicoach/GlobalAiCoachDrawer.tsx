@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Sparkles, X } from 'lucide-react';
 import { color } from '../../theme/webcoachTheme';
 import { useLessonAi, LessonAiMessage } from '../../hooks/useLessonAi';
@@ -22,14 +22,28 @@ import NoteTargetPicker from '../notes/NoteTargetPicker';
  */
 export function GlobalAiCoachDrawer() {
   const navigate = useNavigate();
+  const location = useLocation();
   const drawerOpen = useAiCoachStore((s) => s.drawerOpen);
   const setDrawerOpen = useAiCoachStore((s) => s.setDrawerOpen);
+  const setExpandOrigin = useAiCoachStore((s) => s.setExpandOrigin);
   const ai = useLessonAi(null, DRAWER_SESSION_ID);
 
+  /**
+   * 広い画面へ。どこから拡大したかを預けておく。
+   * AI専用ページ側はこれを見て「元の画面に戻す」（＝このドロワーを開き直す）を出す。
+   */
   const handleExpand = useCallback(() => {
+    setExpandOrigin({
+      sessionId: DRAWER_SESSION_ID,
+      path: `${location.pathname}${location.search}`,
+      // ドロワーはどのページにも出るので、行き先を名前で言い当てられない。
+      // 教材ページのように具体名（「◯◯」に戻る）は付けられないので一般名にする。
+      label: '元の画面に戻る',
+      fromDrawer: true,
+    });
     setDrawerOpen(false);
     navigate(`/ai-coach?session=${encodeURIComponent(DRAWER_SESSION_ID)}`);
-  }, [navigate, setDrawerOpen]);
+  }, [location.pathname, location.search, navigate, setDrawerOpen, setExpandOrigin]);
 
   /**
    * 提案カードの「広い画面で開く」。ここでは実行せず、モードだけ切り替えて
@@ -68,7 +82,7 @@ export function GlobalAiCoachDrawer() {
           : '';
       if (!answer) return;
 
-      await capture.capture({
+      capture.capture({
         block: { kind: 'answer', question, answer, selectedText: null, image: null, source: null },
         suggestedTitle: 'AIコーチとの相談',
         source: null,
@@ -177,9 +191,11 @@ export function GlobalAiCoachDrawer() {
         />
       </div>
 
+      {/* 保存のたびに出る。どのノートに入れるかは毎回ここで選ぶ */}
       {capture.pending && (
         <NoteTargetPicker
-          suggestedTitle={capture.pending.suggestedTitle}
+          pending={capture.pending}
+          busy={capture.saving}
           onPickNote={(noteId) => void capture.resolvePendingWithNote(noteId)}
           onCreateNew={() => void capture.resolvePendingWithNewNote()}
           onCancel={capture.cancelPending}

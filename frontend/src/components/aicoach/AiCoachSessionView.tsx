@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, PanelRight } from 'lucide-react';
+import { Home, PanelRight } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import { useToast } from '../../contexts/ToastContext';
 import { useLessonAi, LessonAiMessage } from '../../hooks/useLessonAi';
@@ -22,12 +22,16 @@ import AiSkillDock from './AiSkillDock';
  * AI専用ページの「会話している状態」（要件§「画面は3つの状態に分ける」2・3）。
  *
  * 1つのコンポーネントで2状態を描く:
- *   メインチャット状態 … モードは「おまかせ」。機能一覧は入力欄の上に縮めて置く
+ *   メインチャット状態 … モードは「おまかせ」
  *   専門モード状態     … 機能名・必要な入力・クイックアクション・参照情報を出す
  *
  * どちらも中身は教材ページの右パネルと同じ AiCoachPane。
  * ここで別のチャットUIを作らないのが要点で、作ると挙動が2系統に分かれて必ずズレる。
- * 状態の違いはヘッダー（headerSlot）と入力欄の上（footerSlot）の差し替えだけで表す。
+ * 状態の違いはヘッダー（headerSlot）の差し替えで表す。
+ *
+ * 入力欄の上の AiSkillDock は**両方の状態で出す**。全11アプリはそこから
+ * その場で展開できるので、一覧のためにこの画面を離れる必要はない。
+ * 専門モードで隠すと、別のアプリへ移る道がホーム経由だけになってしまう。
  *
  * ホーム状態は AiCoachHome にあり、セッションが無いあいだは
  * このコンポーネント自体を描かない（会話が始まる前に空のセッションを作らないため）。
@@ -65,6 +69,9 @@ export function AiCoachSessionView({
   const session = useAiCoachStore((s) => s.sessions[sessionId]);
   const createSkillSession = useAiCoachStore((s) => s.createSkillSession);
   const appendMessage = useAiCoachStore((s) => s.appendMessage);
+  // 「元の画面に戻す」は AiCoachReturnBar（ページ上部の常設帯）が持つ。
+  // ここでは「教材へ戻る」を出すかどうかの判断にだけ使う。
+  const expandOrigin = useAiCoachStore((s) => s.expandOrigin);
 
   // 教材を持たない呼び出しなので doc は渡さない。文脈は store 側が保持している。
   const ai = useLessonAi(null, sessionId);
@@ -197,7 +204,7 @@ export function AiCoachSessionView({
             }
           : null;
 
-      await capture.capture({
+      capture.capture({
         block: {
           kind: 'answer',
           question,
@@ -242,13 +249,23 @@ export function AiCoachSessionView({
    *
    * 会話中の提案カードを受け入れた場合は、同じ会話のまま切り替わる（useLessonAi 側）。
    * そちらは「いまの話の続き」なので、別セッションへ移すと文脈が切れて読みにくい。
+   *
+   * 🔴 専門モードからさらに別のアプリを選んだときは、いまの会話の子ではなく
+   *    **兄弟**として作る（親は自分の親）。ConversationList は roots とその子の
+   *    2階層しか描かないので、孫を作ると履歴一覧からそのまま消える。
    */
   const startSkillSession = useCallback(
     (skillId: ConcreteAiSkillId) => {
-      const parentTitle = session?.title ?? 'AIコーチとの会話';
+      if (skillId === ai.skillId) return;
+      const parentId = session?.parentId ?? sessionId;
+      // 親会話は購読せず getState で引く。ここで sessions 全体を購読すると
+      // 発言のたびにこの画面ごと再描画される。
+      const parent =
+        parentId === sessionId ? session : useAiCoachStore.getState().sessions[parentId];
+      const parentTitle = parent?.title ?? 'AIコーチとの会話';
       const childId = createSkillSession({
         skillId,
-        parentId: sessionId,
+        parentId,
         context: session?.context,
         image: latestImage,
         quote: session?.quote ?? null,
@@ -261,7 +278,7 @@ export function AiCoachSessionView({
       });
       onOpenSession(childId);
     },
-    [appendMessage, createSkillSession, latestImage, onOpenSession, session, sessionId]
+    [ai.skillId, appendMessage, createSkillSession, latestImage, onOpenSession, session, sessionId]
   );
 
   /** 専門モードから抜ける。親会話があればそこへ、無ければホームへ */
@@ -272,6 +289,16 @@ export function AiCoachSessionView({
 
   const showReference = isDesktop && referenceOpen;
 
+  /**
+   * 戻り先が「いま参照している教材のページ」なら「教材へ戻る」は出さない。
+   * 上部の戻り帯と同じ行き先のボタンが並ぶと、どちらが元の画面なのか分からなくなる。
+   */
+  const collapseIsThisLesson =
+    !!expandOrigin &&
+    !expandOrigin.fromDrawer &&
+    !!courseId &&
+    expandOrigin.path.startsWith(`/course/${courseId}`);
+
   const headerSlot =
     inSkillMode && meta ? (
       <SkillModeHeader
@@ -279,7 +306,7 @@ export function AiCoachSessionView({
         references={ai.references}
         image={ai.image ?? latestImage}
         onBack={backToCoach}
-        onOpenLesson={courseId && lessonId ? () => openLesson() : undefined}
+        onOpenLesson={courseId && lessonId && !collapseIsThisLesson ? () => openLesson() : undefined}
         onRequestImage={() => fileInputRef.current?.click()}
         onToggleReference={isDesktop ? () => setReferenceOpen((v) => !v) : undefined}
         referenceOpen={referenceOpen}
@@ -288,7 +315,10 @@ export function AiCoachSessionView({
       <div>
         <div className="flex items-center" style={{ gap: 8 }}>
           {/* 共通の上部バー（旧「ホーム」ボタン）を外したので、おまかせの会話でも
-              ここからホームへ戻れるようにしている。専門モード側は SkillModeHeader が持つ。 */}
+              ここからホームへ戻れるようにしている。専門モード側は SkillModeHeader が持つ。
+              🔴 アイコンは ‹ ではなくホーム。‹ だと「元の画面（教材・マイページ）に戻る」に
+                 見えるのに行き先はAIコーチのホームで、押した先で迷わせていた。
+                 元の画面へ戻るのは上部の戻り帯（AiCoachReturnBar）の役目。 */}
           <button
             type="button"
             onClick={backToCoach}
@@ -305,7 +335,7 @@ export function AiCoachSessionView({
               flexShrink: 0,
             }}
           >
-            <ChevronLeft size={14} style={{ color: color.iconMuted }} />
+            <Home size={13} style={{ color: color.iconMuted }} />
             <strong style={{ ...font.label, fontWeight: 800 }}>AIコーチ</strong>
           </button>
           <SkillSelector value={ai.skillId} onChange={ai.selectSkill} disabled={ai.loading} />
@@ -409,9 +439,12 @@ export function AiCoachSessionView({
           quickPrompts={meta?.quickActions}
           placeholder={meta?.placeholder}
           footerSlot={
-            inSkillMode ? undefined : (
-              <AiSkillDock onSelectSkill={startSkillSession} onShowAll={onGoHome} />
-            )
+            /* key でセッションを移ったら展開を畳む（前の会話の open を持ち越さない） */
+            <AiSkillDock
+              key={sessionId}
+              onSelectSkill={startSkillSession}
+              activeSkillId={inSkillMode ? (ai.skillId as ConcreteAiSkillId) : null}
+            />
           }
         />
       </div>
@@ -431,10 +464,11 @@ export function AiCoachSessionView({
         </div>
       )}
 
-      {/* 追加先ノートが未定のときだけ出る */}
+      {/* 保存のたびに出る。どのノートに入れるかは毎回ここで選ぶ */}
       {capture.pending && (
         <NoteTargetPicker
-          suggestedTitle={capture.pending.suggestedTitle}
+          pending={capture.pending}
+          busy={capture.saving}
           onPickNote={(noteId) => void capture.resolvePendingWithNote(noteId)}
           onCreateNew={() => void capture.resolvePendingWithNewNote()}
           onCancel={capture.cancelPending}

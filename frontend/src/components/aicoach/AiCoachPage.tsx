@@ -6,16 +6,15 @@ import { useAiCoachStore } from '../../store/aiCoachStore';
 import { AiSkillId, ConcreteAiSkillId, isSpecialistSkill } from '../../types/aiSkill';
 import AiCoachHome from './AiCoachHome';
 import AiCoachHowTo from './AiCoachHowTo';
+import AiCoachReturnBar from './AiCoachReturnBar';
 import AiCoachSessionView from './AiCoachSessionView';
-import AiSkillCatalogView from './AiSkillCatalogView';
 import ConversationList from './ConversationList';
 
 /**
  * AI専用ページ（/ai-coach）。**1つのAIワークスペースの中でモードが切り替わる**画面。
  *
- * 状態は3つ（要件§「画面は3つの状態に分ける」）で、URLがそのまま状態になる:
- *   /ai-coach                  … ホーム状態。大きな入力欄＋AIアプリ6枚（デザイン 1a）
- *   /ai-coach?view=catalog     … AIサポート機能一覧（検索・カテゴリで探す）
+ * 状態は2つで、URLがそのまま状態になる:
+ *   /ai-coach                  … ホーム状態。大きな入力欄＋AIアプリ全11件（デザイン 1a 派生）
  *   /ai-coach?session=page:1   … メインチャット状態（モードは「おまかせ」）
  *   /ai-coach?session=page:2   … 専門モード状態（そのセッションのモードが専門スキル）
  *
@@ -32,9 +31,11 @@ import ConversationList from './ConversationList';
  *   ・以前は全状態の上に52pxの共通バー（ロゴ／一覧切替／履歴）を敷いていた。
  *     デザイン 1a のホームは問いかけだけを主役にする作りなので、バーを外し、
  *     行き先はそれぞれの状態が自分で持つようにした:
- *       ホーム       … 右上の「ヘルプ・使い方」「履歴」＋「全てのAIアプリを見る」
- *       機能一覧     … 先頭の「AIコーチにもどる」
+ *       ホーム       … 右上の「ヘルプ・使い方」「履歴」
  *       チャット     … ヘッダーの「AIコーチ」（親会話があればそこへ）
+ *   ・以前は ?view=catalog に「AIサポート機能一覧」を分けていた（検索・カテゴリ）。
+ *     アプリは11個しかなく、分けると7個目以降が存在に気づかれないうえ、
+ *     使うのに1ステップ増えるだけだったので、ホームに全件を出して一覧は畳んだ。
  */
 const DESKTOP_MIN_WIDTH = 1024;
 
@@ -72,24 +73,6 @@ export function AiCoachPage() {
   // 存在しないIDを渡されたらホームに落とす（履歴を消した後のリロードなど）。
   const requestedSession = searchParams.get('session');
   const activeId = requestedSession && sessions[requestedSession] ? requestedSession : null;
-
-  // ?view=catalog で「AIサポート機能一覧」。
-  // 以前は一覧がホームの下半分に常設されていて、相談を書きに来た人にも
-  // カードの壁が押し付けられていた（「ただアプリが並んでいるだけ」）。
-  // URLに状態を持たせるのはセッションと同じ流儀で、戻るボタンでも行き来できる。
-  const catalogOpen = !activeId && searchParams.get('view') === 'catalog';
-
-  const setView = useCallback(
-    (view: 'home' | 'catalog') => {
-      const next = new URLSearchParams(searchParams);
-      next.delete('session');
-      if (view === 'catalog') next.set('view', 'catalog');
-      else next.delete('view');
-      setSearchParams(next, { replace: false });
-      setHistoryOpen(false);
-    },
-    [searchParams, setSearchParams]
-  );
 
   // この画面もビューポート高に固定するのでページスクロールを止める
   // （.wc-learning-shell の高さ指定は body.learning-workspace と対で効く）
@@ -175,12 +158,19 @@ export function AiCoachPage() {
       <AppHeader userName={user?.username || 'User'} />
 
       {/* ── 本体 ──
-          上部バーを外し、履歴も右からのドロワーにしたので、ここは1面だけになった。 */}
+          上部バーを外し、履歴も右からのドロワーにしたので、ここは1面だけになった。
+          唯一の例外が戻り帯で、「広い画面で続ける」で来たときだけ最上部に出る。
+
+          🔴 .wc-learning-shell は height:100dvh（body は overflow:hidden）。
+             帯をこの外に足すと、その分だけ本体が画面からはみ出て
+             入力欄と送信ボタンが押せなくなる。縦積みのflexにして
+             100dvh の内訳（帯 + 本体）に収める。 */}
       <div
         className="wc-learning-shell"
-        style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', minHeight: 0 }}
+        style={{ display: 'flex', flexDirection: 'column', minHeight: 0 }}
       >
-        <div style={{ minWidth: 0, minHeight: 0, overflow: 'hidden' }}>
+        <AiCoachReturnBar activeId={activeId} />
+        <div style={{ flex: 1, minWidth: 0, minHeight: 0, overflow: 'hidden' }}>
           {activeId ? (
             <AiCoachSessionView
               key={activeId}
@@ -191,13 +181,10 @@ export function AiCoachPage() {
               onAutoSendDone={() => setAutoSendFor(null)}
               isDesktop={isDesktop}
             />
-          ) : catalogOpen ? (
-            <AiSkillCatalogView onSelectSkill={handleSelectSkill} onAskFreely={goHome} onBack={goHome} />
           ) : (
             <AiCoachHome
               onSubmit={handleSubmit}
               onSelectSkill={handleSelectSkill}
-              onOpenCatalog={() => setView('catalog')}
               onOpenHowTo={() => setHowToOpen(true)}
               onToggleHistory={() => setHistoryOpen((v) => !v)}
             />
