@@ -66,6 +66,9 @@ chromadb/
 # Claude 作業ルールとモック開発ガイドは追跡する
 !CLAUDE.md
 !frontend/docs/*.md
+# UI/UXレビューの段取り・観点定義は複数人で共有するので追跡する。
+# 上の !frontend/docs/*.md は直下1階層しか拾わず、ui-review/ 配下が巻き込まれる。
+!frontend/docs/**/*.md
 
 # Temporary files
 *.tmp
@@ -99,3 +102,17 @@ tools/clipkit-export/clipkit.config.json
 
 # 変換後の教材データ（materials/source から再生成できる中間データ・約55MB）
 materials/lessons/
+
+# Claude のローカル設定・worktree（各自の環境依存なので共有しない）
+.claude/
+
+# デザイン受領物・配布物の展開先（リポジトリの成果物ではなく作業用の置き場）
+__MACOSX/
+design_handoff_lms_app/
+フロントデザイン/
+web-production*/
+harness-starter/
+poc/
+
+# Claude Design のキャンバス下書き
+*.dc.html
