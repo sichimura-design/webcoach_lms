@@ -249,7 +249,10 @@ function MaterialsTopPage() {
         {/* ① 見出し行。右端に「修了レッスン」だけを置く。
             数えているのはコースではなくレッスンなので、分母も「受講中コースの総レッスン数」に揃える。
             ここはクリックできない数字なので、カード枠（pill・枠線・影）を持たせず地の上に直接組む。
-            枠を付けるとページ内で唯一「押せない pill」になり、押せる要素の見分けを鈍らせる。 */}
+            枠を付けるとページ内で唯一「押せない pill」になり、押せる要素の見分けを鈍らせる。
+
+            スコープを必ず書く: すぐ下のヒーローにも「このコース 3 / 9」が出るので、
+            スコープ無しの分数が2つ並ぶと、分母が違う理由が読めない（レビュー指摘）。 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
           <h1 style={{ margin: 0, fontSize: t.font.size.pageTitle, fontWeight: t.font.weight.black, letterSpacing: '-.01em', flex: 1 }}>学習する</h1>
 
@@ -262,8 +265,13 @@ function MaterialsTopPage() {
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5L20 7" /></svg>
               </span>
-              <span style={{ fontSize: 12.5, fontWeight: t.font.weight.bold, color: t.color.text.muted }}>修了レッスン</span>
-              <span style={{ fontSize: 24, fontWeight: t.font.weight.black, color: t.color.primary, lineHeight: 1 }}>
+              <span style={{ fontSize: 12.5, fontWeight: t.font.weight.bold, color: t.color.text.muted }}>
+                受講中コース全体の修了レッスン
+              </span>
+              <span
+                style={{ fontSize: 24, fontWeight: t.font.weight.black, color: t.color.primary, lineHeight: 1 }}
+                aria-label={`受講中コース全体で ${enrolledLessons}${LEARNING_HIERARCHY.lesson}中 ${completedLessons}${LEARNING_HIERARCHY.lesson}修了`}
+              >
                 {completedLessons}
                 <span style={{ fontSize: 12, fontWeight: t.font.weight.bold, color: t.color.text.subtle, marginLeft: 3 }}>/ {enrolledLessons}</span>
               </span>
@@ -313,15 +321,18 @@ function MaterialsTopPage() {
                 >
                   <div style={{ width: `${resumableCourse.progress ?? 0}%`, height: '100%', borderRadius: t.radius.pill, background: t.color.primary }} />
                 </div>
-                {/* レッスン総数が取れないコースだけ、従来どおり％に落とす */}
+                {/* 「このコース」を必ず付ける。見出し右の「受講中コース全体」の分数と
+                    分母が違うので、どちらを数えた分数なのかを数字の隣で言い切る。
+                    レッスン総数が取れないコースだけ、従来どおり％に落とす。 */}
                 <span style={{ fontSize: 13, color: t.color.text.muted, flexShrink: 0 }}>
+                  このコース{' '}
                   {resumeLessons ? (
                     <>
                       <span style={{ fontWeight: t.font.weight.bold, color: t.color.text.primary }}>{resumeLessons.short}</span>
                       {' '}{LEARNING_HIERARCHY.lesson}
                     </>
                   ) : (
-                    <>進捗 <span style={{ fontWeight: t.font.weight.bold, color: t.color.text.primary }}>{resumableCourse.progress ?? 0}%</span></>
+                    <span style={{ fontWeight: t.font.weight.bold, color: t.color.text.primary }}>{resumableCourse.progress ?? 0}%</span>
                   )}
                 </span>
               </div>
