@@ -19,7 +19,7 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
       role="button"
       tabIndex={0}
-      className="cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      className="course-tile cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
       style={{
         background: t.color.bg.card,
         border: course.isCurrent ? `1.5px solid ${t.color.primaryBorder}` : `1px solid ${t.color.border.card}`,
@@ -94,12 +94,12 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
           <span style={{ fontSize: 11, color: t.color.text.subtle }}>
             {course.totalLessons ? `全${course.totalLessons}レッスン` : ''}
           </span>
-          <span
-            className="flex items-center justify-center flex-shrink-0"
-            style={{ width: 22, height: 22, borderRadius: '50%', background: t.color.primarySoft }}
-            aria-hidden
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={t.color.primary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          {/* 行末は淡い丸ではなく文字にする。丸の地色は白カードの上で消えるうえ、
+              押せるのはタイル全体なので「小さな丸ボタン」に見せる理由がない。
+              色とホバーは index.css の .course-tile-more が持つ。 */}
+          <span className="course-tile-more inline-flex items-center flex-shrink-0" style={{ gap: 3, fontSize: 11.5, fontWeight: t.font.weight.bold }} aria-hidden>
+            コースを見る
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m9 6 6 6-6 6" />
             </svg>
           </span>

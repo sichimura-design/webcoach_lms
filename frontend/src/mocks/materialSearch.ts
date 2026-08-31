@@ -14,6 +14,7 @@
  * モックを見て仕様を決める人に嘘の根拠を渡すことになるため。
  */
 import { buildNextCourses, RecommendCandidate } from '../utils/nextCourseRecommend';
+import { isEntryCourse } from '../constants/courseTaxonomy';
 
 /** 検索対象のコース。カタログ側の項目名（Moodle準拠）に合わせている */
 export interface SearchableCourse extends RecommendCandidate {
@@ -40,27 +41,43 @@ export interface MaterialSearchResponse<T> {
  * 下の部分一致で拾えるので書かない。
  */
 const SYNONYMS: Record<string, string[]> = {
-  '色': ['配色'],
-  'カラー': ['配色'],
-  '集客': ['マーケティング', 'SNS', '広告'],
-  'アクセス': ['アクセス解析'],
-  '数字': ['アクセス解析'],
-  'コーディング': ['HTML', 'CSS'],
-  'コード': ['HTML', 'CSS'],
-  'マークアップ': ['HTML', 'CSS'],
+  '色': ['デザイン基礎'],
+  'カラー': ['デザイン基礎'],
+  '配色': ['デザイン基礎'],
+  '集客': ['Webマーケティング', 'SNS運用', '広告運用'],
+  'アクセス': ['Google Analytics'],
+  '解析': ['Google Analytics'],
+  '数字': ['Google Analytics', 'ヒートマップ'],
+  '検索': ['SEO', 'Google Search Console'],
+  '広告': ['広告運用'],
+  'コーディング': ['HTML/CSS', 'JavaScript'],
+  'コード': ['HTML/CSS', 'JavaScript'],
+  'マークアップ': ['HTML/CSS'],
   'JS': ['JavaScript'],
-  'スマホ': ['レスポンシブ'],
-  'レイアウト': ['Flexbox', 'ワイヤーフレーム', '余白'],
-  '文章': ['ライティング', '広告文'],
-  'コピー': ['広告文'],
-  '営業': ['案件獲得', '提案'],
-  '仕事': ['案件獲得', '副業'],
-  'お金': ['見積もり', '副業'],
-  '転職': ['キャリア'],
+  'エディタ': ['VSCode'],
+  '文章': ['ライティング'],
+  'コピー': ['ライティング'],
+  '記事': ['ライティング', 'SEO'],
+  '営業': ['案件獲得'],
+  '仕事': ['案件獲得'],
+  'お金': ['案件獲得'],
+  '就職': ['転職'],
   '作品': ['ポートフォリオ', 'バナー'],
   'デザイン': ['Webデザイン'],
   'CMS': ['WordPress'],
-  'バージョン管理': ['Git'],
+  'ネットショップ': ['Shopify'],
+  'EC': ['Shopify', 'ECバナー'],
+  '店舗': ['MEO'],
+  '動画': ['動画編集'],
+  '編集': ['動画編集'],
+  'サムネ': ['サムネイル'],
+  'ショート': ['ショート動画'],
+  'インスタ': ['インスタグラム'],
+  'ツイッター': ['X運用'],
+  'カメラ': ['実機カメラ'],
+  'AI': ['生成AI'],
+  '心構え': ['心得集'],
+  'マインド': ['心得集'],
 };
 
 /** つまずき側の言い方。基礎コースを上に持ち上げる */
@@ -116,7 +133,7 @@ function collectTopics(query: string, catalog: SearchableCourse[]): string[] {
   // 助詞や飾りを落として、2文字以上の断片を照合語にする。
   catalog.forEach((c) => {
     const pieces = c.fullname
-      .split(/[のとでをがはへ・\s&/｜|()「」]+/)
+      .split(/[のとでをがはへ・：×\s&/｜|()「」]+/)
       .concat(c.categoryname, ...c.purposes)
       .map((s) => s.trim())
       .filter((s) => s.length >= 2);
@@ -177,10 +194,12 @@ export function searchMaterials<T extends SearchableCourse>(
 
       const reasons = [`「${hitTopics[0]}」を扱うコースです`];
 
+      // つまずいている人には「その領域の入口になるコース」を上げる。
+      // 種類（基礎コース）は55件中44件で真になり弁別力が無いので使わない。
       if (wantsBasics) {
-        if (course.difficulty === '基礎') {
+        if (isEntryCourse(course)) {
           score += 4;
-          reasons.push('つまずいたところから、基礎で組み直せます');
+          reasons.push('この領域の最初から、順番に組み直せます');
         } else {
           score -= 2;
         }
@@ -204,7 +223,7 @@ export function searchMaterials<T extends SearchableCourse>(
   if (scored.length > 0) {
     const results = scored.slice(0, limit).map(({ course, reason }) => ({ course, reason }));
     const lead = wantsBasics
-      ? `「${q}」から、基礎で組み直せるコースを${results.length}件選びました。`
+      ? `「${q}」から、最初から組み直せるコースを${results.length}件選びました。`
       : wantsMaking
         ? `「${q}」から、手を動かして仕上げられるコースを${results.length}件選びました。`
         : `「${q}」に関係するコースを${results.length}件選びました。`;
@@ -225,8 +244,8 @@ export function searchMaterials<T extends SearchableCourse>(
           reason: label === '実践'
             ? '学んだことを、手を動かして形にする番です'
             : label === '関連'
-              ? `${base.fullname}と同じ段で、まだ触れていない範囲です`
-              : `${base.fullname}より一歩先の内容です`,
+              ? `${base.categoryname}で、まだ触れていない範囲です`
+              : `${base.fullname}より、カリキュラムで一歩先の内容です`,
         })),
       };
     }

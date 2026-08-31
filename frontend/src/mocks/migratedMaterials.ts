@@ -18,6 +18,7 @@
  */
 
 import type { LessonBlock, LessonDoc, LessonOutline, OutlineSection } from '../types/lesson';
+import { COURSE_ID_BY_SLUG as CATALOG_COURSE_ID } from '../constants/courseTaxonomy';
 import aiDesigner from './materials/ai-designer.json';
 
 /** 変換ツールが書き出す1コース分の形。LessonDoc に変換前の素の形。 */
@@ -49,10 +50,18 @@ const ASSET_TOKEN = '__ASSET__';
 
 /**
  * 移行コースに割り当てる courseId。
- * 既存のダミーコース（101〜229）と衝突しない帯を使う。
+ *
+ * 移行済み教材は「カタログに無い別枠のコース」ではなく、カタログのコースそのものにする。
+ * 専用の帯（旧 901〜）に置いていた間はコース一覧から到達できず、courseId 直リンクだけで
+ * 開ける状態だった。カタログIDを使えば一覧のタイルがそのまま実教材の入口になり、
+ * レッスン数も courseLessonCount が移行コースを特別扱いして実数を返す。
+ *
+ * 注意: materials/lessons/ の残りのスラッグ（web-design・coding・sns など）は
+ * コースではなく**学習領域サイズのバケツ**（web-design だけで144レッスン＝13コース分）。
+ * 配置するときは領域ごと1コースにせず、コース単位に割り直してそれぞれのカタログIDを割り当てる。
  */
 const COURSE_ID_BY_SLUG: Record<string, number> = {
-  'ai-designer': 901,
+  'ai-designer': CATALOG_COURSE_ID['ai-design'],
 };
 
 const BUNDLES: MaterialBundle[] = [aiDesigner as unknown as MaterialBundle];

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppHeader } from './shared';
 import { CourseTile } from './materials/CourseTile';
-import { GalleryCourse, CourseThumb } from './materials/courseVisuals';
+import { GalleryCourse, CourseThumb, categoryColor } from './materials/courseVisuals';
 import { useAuth } from '../contexts/AuthContext';
 import { useMypageData } from '../hooks/useMypageData';
 import { useLearningSummary } from '../hooks/useLearningSummary';
@@ -10,6 +10,7 @@ import { bffClient } from '../services/bffClient';
 import { useScaleToFit } from '../hooks/useScaleToFit';
 import { t } from '../theme/tokens';
 import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
+import { AREA_NAMES, COURSE_KIND, CourseKind, courseKindOf } from '../constants/courseTaxonomy';
 import { lessonProgressFromPercent } from '../utils/lessonProgress';
 import type { MaterialSearchResult } from '../types/courses';
 
@@ -23,7 +24,8 @@ const DESIGN_WIDTH = 1440;
 const PAGE_TOP = t.space.pageTop + 20;
 
 interface CatalogCourse extends GalleryCourse {
-  difficulty?: string;
+  /** 種類の判定材料。実BFFで来ないときは courseKindOf がコース名から拾う */
+  tags?: { rawname: string }[];
 }
 
 /** ヒーロー右の「次に学ぶ」。コース構成から取れた最初の未完了レッスン */
@@ -38,8 +40,11 @@ interface NextLesson {
 
 const ALL = 'すべて';
 
-/** 「区分」プルダウン。カタログの difficulty 文字列と1:1で対応する */
-const LEVELS = ['基礎', '応用', '発展'];
+/** 「種類」プルダウン。値は courseKindOf が返す2値と1:1で対応する */
+const KINDS: readonly CourseKind[] = [COURSE_KIND.basic, COURSE_KIND.practice];
+
+/** 学習領域＝すべてのとき、各領域のセクションに出すコース数（グリッド1行ぶん） */
+const SECTION_PREVIEW = 4;
 
 const SORTS = [
   { key: 'recommended', label: 'おすすめ順' },
@@ -52,7 +57,7 @@ type SortKey = typeof SORTS[number]['key'];
 const SEARCH_EXAMPLES = ['配色が苦手', 'バナーを作りたい', '次に学ぶべき教材は？'];
 
 /**
- * 「区分」「並び替え」のプルダウン。新しいドロップダウンは作らず素の select を使う。
+ * 「学習領域」「種類」「並び替え」のプルダウン。新しいドロップダウンは作らず素の select を使う。
  * 角丸は pill ではなく control(9px)。pill はボタン・チップ・タブに取っておき、
  * 押すと画面が進む要素と、その場で絞り込むだけの要素を形で描き分ける。
  */
@@ -85,8 +90,8 @@ function MaterialsTopPage() {
   const [aiResult, setAiResult] = useState<MaterialSearchResult | null>(null);
   const [aiState, setAiState] = useState<'idle' | 'loading' | 'error'>('idle');
 
-  const [activeTab, setActiveTab] = useState<string>(ALL);
-  const [level, setLevel] = useState<string>(ALL);
+  const [area, setArea] = useState<string>(ALL);
+  const [kind, setKind] = useState<string>(ALL);
   const [sort, setSort] = useState<SortKey>('recommended');
 
   // コースカタログ（全コース）を取得し、自分の受講進捗をマージする
@@ -101,11 +106,13 @@ function MaterialsTopPage() {
           id: c.id,
           title: c.fullname || c.displayname || '',
           description: c.summary || '',
-          categoryName: c.categoryname || LEARNING_HIERARCHY.area,
+          // 領域が来ないときは空にする。「学習領域」という文字を入れると、
+          // それがカテゴリ名としてタイルに印字されてしまう
+          categoryName: c.categoryname || '',
           totalLessons: c.lessoncount ?? enrolled?.totalLessons,
           duration: c.duration,
           purposes: Array.isArray(c.purposes) ? c.purposes : undefined,
-          difficulty: c.difficulty,
+          tags: Array.isArray(c.tags) ? c.tags : undefined,
           thumbnailUrl: c.courseimage,
           progress: enrolled?.progress ?? 0,
           isCurrent: resumableCourse?.id === c.id,
@@ -163,20 +170,50 @@ function MaterialsTopPage() {
   );
 
   /**
-   * カテゴリタブ。学習領域が1つしか無いとき（＝実BFFで categoryname が来ないとき）は
-   * 「すべて」と同じ意味のタブが2つ並ぶだけなので、タブ自体を出さない。
+   * コースを持つ学習領域。並びは constants/courseTaxonomy.ts の AREA_NAMES が正典で、
+   * 知らない領域名（実BFFが独自のカテゴリ名を返す場合）は取得順で後ろに足す。
+   * 領域が1つしか無いとき（＝実BFFで categoryname が来ないとき）は
+   * 「すべて」と同じ意味の選択肢が2つ並ぶだけなので、プルダウン自体を出さない。
    */
-  const tabs = useMemo(() => {
-    const names = Array.from(new Set(catalog.map((c) => c.categoryName)));
-    return names.length > 1 ? [ALL, ...names] : [];
-  }, [catalog]);
+  const orderAreas = (names: string[]) => [
+    ...AREA_NAMES.filter((n) => names.includes(n)),
+    ...names.filter((n) => !AREA_NAMES.includes(n)),
+  ];
 
-  const hasDifficulty = useMemo(() => catalog.some((c) => c.difficulty), [catalog]);
+  const areas = useMemo(
+    () => orderAreas(Array.from(new Set(catalog.map((c) => c.categoryName).filter(Boolean)))),
+    [catalog],
+  );
 
-  /** タブ・区分・並び替えを効かせた一覧。全件そのまま並べる（ページネーションはしない） */
-  const visibleCourses = useMemo(() => {
+  /**
+   * 学習領域プルダウンの選択肢。いま選んでいる種類でコースが残る領域だけを出す。
+   * 実践課題を持つ領域は10のうち2つしか無いので、全領域を出すと「選んだ瞬間に0件」に
+   * なる組み合わせが並ぶ。いま選んでいる領域は、0件になっても選択肢に残す
+   * （消すと select の表示が空になる）。
+   */
+  const areaOptions = useMemo(() => {
+    const matching = catalog.filter((c) => kind === ALL || courseKindOf(c) === kind);
+    const names = Array.from(new Set(matching.map((c) => c.categoryName).filter(Boolean)));
+    if (area !== ALL && !names.includes(area)) names.push(area);
+    return orderAreas(names);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [catalog, kind, area]);
+
+  /**
+   * 種類プルダウンは、実践課題が1件も無いときは出さない。
+   * 実践課題＝空、基礎コース＝すべてと同じ、で正直な状態を持てないため。
+   * courseKindOf はコース名の「実践課題：」でも判定するので、実BFFがタグを返さなくても
+   * 命名が揃っていればこのガードは満たされる。
+   */
+  const hasPracticeCourses = useMemo(
+    () => catalog.some((c) => courseKindOf(c) === COURSE_KIND.practice),
+    [catalog],
+  );
+
+  /** 領域・種類・並び替えを効かせた一覧。全件そのまま並べる（ページネーションはしない） */
+  const filtered = useMemo(() => {
     const list = catalog.filter(
-      (c) => (activeTab === ALL || c.categoryName === activeTab) && (level === ALL || c.difficulty === level),
+      (c) => (area === ALL || c.categoryName === area) && (kind === ALL || courseKindOf(c) === kind),
     );
     if (sort === 'inProgress') {
       return [...list].sort((a, b) => Number(b.progress > 0 && b.progress < 100) - Number(a.progress > 0 && a.progress < 100));
@@ -185,7 +222,29 @@ function MaterialsTopPage() {
       return [...list].sort((a, b) => (a.totalLessons ?? 99) - (b.totalLessons ?? 99));
     }
     return list; // おすすめ順＝カタログの並び（カリキュラム順）
-  }, [catalog, activeTab, level, sort]);
+  }, [catalog, area, kind, sort]);
+
+  /**
+   * 領域ごとの節。既定表示（領域＝すべて＋おすすめ順）のときだけ組む。
+   *
+   * 並び替えを選んだら節を畳んでフラットな1グリッドに戻す。「受講中を先に」
+   * 「レッスン数が少ない順」は領域をまたいだ順位なので、10個の節の中では効かない
+   * （受講中のコースが最後の領域にあったら見出し9本ぶん下）。畳んでも領域は
+   * タイル自身が印字しているので情報は失われない。
+   */
+  const groups = useMemo(() => {
+    const showSections = area === ALL && sort === 'recommended' && areas.length > 1;
+    if (!showSections) return [{ area: '', courses: filtered, total: filtered.length }];
+    return areas
+      .map((name) => {
+        const courses = filtered.filter((c) => c.categoryName === name);
+        return { area: name, courses: courses.slice(0, SECTION_PREVIEW), total: courses.length };
+      })
+      .filter((g) => g.total > 0);
+  }, [filtered, areas, area, sort]);
+
+  const isFiltered = area !== ALL || kind !== ALL;
+  const resetFilters = () => { setArea(ALL); setKind(ALL); };
 
   const completedLessons = learningSummary.completedLessons.total;
   const enrolledLessons = activeCourses.reduce((sum, c) => sum + (c.totalLessons ?? 0), 0);
@@ -220,10 +279,10 @@ function MaterialsTopPage() {
           id: course.id,
           title: course.fullname || '',
           description: course.summary || '',
-          categoryName: course.categoryname || LEARNING_HIERARCHY.area,
+          categoryName: course.categoryname || '',
           totalLessons: course.lessoncount,
           duration: course.duration,
-          difficulty: course.difficulty,
+          tags: Array.isArray(course.tags) ? course.tags : undefined,
           thumbnailUrl: course.courseimage,
           progress: 0,
           isCurrent: false,
@@ -511,21 +570,36 @@ function MaterialsTopPage() {
         )}
 
         {/* ⑤ すべてのコースから探す。
-            以前は学習領域→段階の見出しで全件を縦に積んでいたが、ページが長くなりすぎたため
-            タブ1段＋区分／並び替えの2プルダウンに畳んだ。 */}
+            学習領域が10個あるので、pill のタブを1段に並べると2〜3段に折り返して
+            見出しより目立ってしまう。絞り込みは「学習領域 → 種類 → 並び替え」の
+            プルダウン3つに畳み、代わりに領域＝すべてのときはグリッドを領域ごとの
+            見出しで区切って、55コースを塊として読めるようにする（各領域1行＋続きへの導線）。
+
+            以前あった「区分（基礎/応用/発展）」は廃止した。3段のどこに置くかを人が
+            手で決めていて受講生に違いを説明できず、分かりづらいという指摘が出たため。
+            代わりの「種類」はコース名の「実践課題：」から機械的に決まる
+            （constants/courseTaxonomy.ts の courseKindOf）。 */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 10 }}>
               <div style={{ fontSize: 14.5, fontWeight: t.font.weight.black }}>すべてのコースから探す</div>
+              {/* 全件数は動かない基準として残し、絞り込み中だけ内訳を足す */}
               <span style={{ fontSize: 12, color: t.color.text.subtle }}>
-                全 {catalog.length} コース ・ 目標以外のコースも自由に受講できます
+                全 {catalog.length} コース
+                {isFiltered ? ` ・ 絞り込み中 ${filtered.length} コース` : ' ・ 目標以外のコースも自由に受講できます'}
               </span>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
-              {hasDifficulty && (
-                <select aria-label="区分" value={level} onChange={(e) => setLevel(e.target.value)} style={selectStyle}>
-                  <option value={ALL}>区分：すべて</option>
-                  {LEVELS.map((l) => <option key={l} value={l}>区分：{l}</option>)}
+              {areas.length > 1 && (
+                <select aria-label={LEARNING_HIERARCHY.area} value={area} onChange={(e) => setArea(e.target.value)} style={selectStyle}>
+                  <option value={ALL}>{LEARNING_HIERARCHY.area}：すべて</option>
+                  {areaOptions.map((name) => <option key={name} value={name}>{LEARNING_HIERARCHY.area}：{name}</option>)}
+                </select>
+              )}
+              {hasPracticeCourses && (
+                <select aria-label="種類" value={kind} onChange={(e) => setKind(e.target.value)} style={selectStyle}>
+                  <option value={ALL}>種類：すべて</option>
+                  {KINDS.map((k) => <option key={k} value={k}>種類：{k}</option>)}
                 </select>
               )}
               <select aria-label="並び替え" value={sort} onChange={(e) => setSort(e.target.value as SortKey)} style={selectStyle}>
@@ -534,41 +608,53 @@ function MaterialsTopPage() {
             </div>
           </div>
 
-          {tabs.length > 0 && (
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-              {tabs.map((name) => {
-                const on = activeTab === name;
-                return (
-                  <button
-                    key={name}
-                    onClick={() => setActiveTab(name)}
-                    aria-pressed={on}
-                    className="appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    style={{
-                      background: on ? t.color.primary : t.color.bg.card,
-                      color: on ? '#fff' : t.color.text.muted,
-                      border: `1px solid ${on ? t.color.primary : t.color.border.card}`,
-                      borderRadius: t.radius.pill, padding: '7px 18px',
-                      fontSize: 12.5, fontWeight: t.font.weight.bold, fontFamily: 'inherit',
-                    }}
-                  >
-                    {name}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-
-          {visibleCourses.length === 0 ? (
-            <div className="flex flex-col items-center justify-center" style={{ padding: '60px 0', gap: 8 }}>
+          {filtered.length === 0 ? (
+            <div className="flex flex-col items-center justify-center" style={{ padding: '60px 0', gap: 12 }}>
               <span style={{ fontSize: 28 }}>🔍</span>
-              <p style={{ fontSize: 13, color: t.color.text.muted, margin: 0 }}>条件に合うコースが見つかりませんでした。タブや区分を変えてみてください。</p>
+              <p style={{ fontSize: 13, color: t.color.text.muted, margin: 0 }}>
+                条件に合うコースが見つかりませんでした。{LEARNING_HIERARCHY.area}や種類を変えてみてください。
+              </p>
+              {/* 実践課題を持つ領域は限られるので、行き止まりは2クリックで踏める。戻る道を必ず置く */}
+              <button
+                onClick={resetFilters}
+                className="appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{ background: t.color.bg.card, color: t.color.primary, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.button, padding: '9px 20px', fontSize: 12.5, fontWeight: t.font.weight.black, fontFamily: 'inherit' }}
+              >
+                絞り込みをリセット
+              </button>
             </div>
           ) : (
-            <div className="grid" style={{ gridTemplateColumns: 'repeat(4,1fr)', gap: 14 }}>
-              {visibleCourses.map((c) => (
-                <CourseTile key={c.id} course={c} onClick={() => navigate(`/course/${c.id}/curriculum`)} />
-              ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
+              {groups.map((group) => {
+                const headingId = `area-${group.area || 'all'}`;
+                const hidden = group.total - group.courses.length;
+                return (
+                  <section key={group.area || 'all'} aria-labelledby={group.area ? headingId : undefined} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                    {group.area && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        {/* 領域色の縦バー。タイルのサムネと同じ色なので、節とタイルが同じものだと分かる */}
+                        <span aria-hidden style={{ width: 3, height: 15, borderRadius: 2, background: categoryColor(group.area), flexShrink: 0 }} />
+                        <h3 id={headingId} style={{ margin: 0, fontSize: 13.5, fontWeight: t.font.weight.black }}>{group.area}</h3>
+                        <span style={{ fontSize: 11.5, color: t.color.text.subtle }}>{group.total} {LEARNING_HIERARCHY.course}</span>
+                        {hidden > 0 && (
+                          <button
+                            onClick={() => setArea(group.area)}
+                            className="appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                            style={{ marginLeft: 'auto', background: 'transparent', padding: '2px 4px', fontSize: 12, fontWeight: t.font.weight.bold, fontFamily: 'inherit', color: t.color.primary }}
+                          >
+                            {group.area}をすべて見る（{group.total}）→
+                          </button>
+                        )}
+                      </div>
+                    )}
+                    <div className="grid" style={{ gridTemplateColumns: 'repeat(4,1fr)', gap: 14 }}>
+                      {group.courses.map((c) => (
+                        <CourseTile key={c.id} course={c} onClick={() => navigate(`/course/${c.id}/curriculum`)} />
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
             </div>
           )}
         </section>
