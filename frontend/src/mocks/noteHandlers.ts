@@ -34,7 +34,13 @@ import {
   NoteSummary,
   NoteUpdateInput,
 } from '../types/notes';
-import { nextId, readNoteStore, writeNoteStore } from './noteMigration';
+import {
+  DEFAULT_SEED_COUNT,
+  buildSeedNotes,
+  nextId,
+  readNoteStore,
+  writeNoteStore,
+} from './noteMigration';
 
 const delay = (ms = 200) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -132,6 +138,25 @@ function updateNote(id: string, mutate: (note: Note) => void): Note | null {
 }
 
 export const noteHandlers = [
+  // --- デモデータの入れ直し（モック専用。実APIには無い） -----------------
+  // ページ送りの見え方を件数を変えて確かめるため。'/notes' の POST（作成）とは
+  // パスが違うので取り違えは起きないが、読む順を分かりやすくするため先頭に置く。
+  http.post('*/api/webcoach/notes/reset', async ({ request }) => {
+    let count = DEFAULT_SEED_COUNT;
+    try {
+      const body = (await request.json()) as { count?: number };
+      if (Number.isFinite(body?.count)) count = Math.max(0, Math.min(500, Math.trunc(body!.count!)));
+    } catch {
+      /* ボディ無しなら既定件数 */
+    }
+    const store = readNoteStore();
+    store.notes = count > 0 ? buildSeedNotes(new Date(), count) : [];
+    // 0件を指定したときに次の読み込みでデモが戻ってこないよう、置いた印を立てる
+    store.seeded = true;
+    writeNoteStore(store);
+    return HttpResponse.json({ ok: true, count: store.notes.length });
+  }),
+
   // --- 教材ハイライト用（:id より先に登録する。'note-clips' が id に食われないようパスは別） ---
   http.get('*/api/webcoach/note-clips', ({ request }) => {
     const lessonIdRaw = new URL(request.url).searchParams.get('lessonId');

@@ -1288,6 +1288,16 @@ class BFFClient {
     return response.data;
   }
 
+  /**
+   * POST /api/webcoach/notes/reset — デモノートを指定件数で入れ直す（モック専用）
+   * ページ送りや空状態の見え方を、件数を変えて確かめるための開発用。
+   * 実BFFには無いので、本番ビルドでは呼び出し側（NotesDevPanel）ごと消える。
+   */
+  async resetNotes(count: number): Promise<{ ok: boolean; count: number }> {
+    const response = await this.api.post('/webcoach/notes/reset', { count });
+    return response.data;
+  }
+
   // ==================== 学習ロードマップ（LearningPlan） ====================
   // 実BFFには未実装。すべて mocks/learningPlanHandlers.ts のMSWモックが応答する。
 

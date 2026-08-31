@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ChevronLeft, Plus, Search, SlidersHorizontal, Star } from 'lucide-react';
 import { AppHeader } from '../shared';
+import { MOCKS_ENABLED } from '../../mocks/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import { useNote } from '../../hooks/useNote';
@@ -40,6 +41,13 @@ import NotesPagination from './NotesPagination';
 
 /** 1ページの件数。3列 × 8行 */
 const PAGE_SIZE = 24;
+
+/**
+ * デモデータの件数を差し替える開発用パネル（モック時のみ）。
+ * ページ送りの操作性は件数を変えないと確かめられないため。
+ * 本番ビルドでは MOCKS_ENABLED が false なので読み込まれない。
+ */
+const NotesDevPanel = React.lazy(() => import('../dev/NotesDevPanel'));
 
 const SORTS: NoteSort[] = ['updated', 'created', 'title'];
 
@@ -484,6 +492,20 @@ export function MyNotesPage() {
       <footer className="h-10 flex items-center justify-center" style={{ background: '#2B2629' }}>
         <span className="text-[11.4px] font-bold text-white">2026 &copy; WEBCOACH</span>
       </footer>
+
+      {MOCKS_ENABLED && (
+        <React.Suspense fallback={null}>
+          <NotesDevPanel
+            pageSize={PAGE_SIZE}
+            total={list.items.length}
+            onDone={async () => {
+              setPage(1);
+              select(null);
+              await list.reload();
+            }}
+          />
+        </React.Suspense>
+      )}
     </div>
   );
 }

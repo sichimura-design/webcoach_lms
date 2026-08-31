@@ -40,6 +40,13 @@ export interface NoteStoreV3 {
   schemaVersion: 3;
   notes: Note[];
   memos: Record<string, { text: string; updatedAt: string }>;
+  /**
+   * デモノートを一度でも置いたか。
+   * 0件のときにシードを置き直すかどうかの判断に使う。これが無いと
+   * 「自分で全部消した0件」と「置かれないままの0件」を区別できず、
+   * 消したそばから28件戻ってくるか、真っ白のまま直らないかのどちらかになる。
+   */
+  seeded?: boolean;
 }
 
 let seq = 0;
@@ -206,17 +213,121 @@ const SEED_CARDS: SeedCard[] = [
 ];
 
 /**
- * ストアが空のときに置くデモノート（28件）。
+ * ダミーの水増し用。テーマ（何について書いたか）と切り口（どう書いたか）を
+ * 掛け合わせて、重複しないタイトルを作る。24テーマ × 6切り口 = 144通り。
+ *
+ * 🔴 「サンプル1」「サンプル2」のような連番タイトルにはしない。
+ *    ページ送りの操作性を見るための水増しでも、カードの見え方（タイトルの
+ *    長さのばらつき、書き出しの読めなさ）が本物と違うと判断を誤らせる。
+ */
+const DUMMY_TOPICS: { topic: string; text: string }[] = [
+  { topic: '配色', text: 'ベース・メイン・アクセントの3層で考える。色を足したくなったら、まず明度と彩度で差をつけられないか試す。' },
+  { topic: '余白', text: '要素の間より、グループの外側を広く取る。詰まって見えるときは大抵、外側が足りていない。' },
+  { topic: 'フォント選び', text: '見出しと本文で役割を分け、使うのは2書体まで。可読性を最優先に、世界観はその次。' },
+  { topic: '文字組み', text: '行間は文字サイズの1.6〜1.8倍。1行が長いときは行間を広げるより、幅を詰めるほうが読みやすい。' },
+  { topic: '写真の選び方', text: '被写体の視線の先に余白を残す。文字を載せる前提なら、背景がうるさくないものを選ぶ。' },
+  { topic: 'バナー制作', text: '訴求は1つに絞る。伝えたいことが2つあるなら、それは2枚のバナーにするべきという合図。' },
+  { topic: 'LP構成', text: 'ファーストビューで「誰の」「どの悩みを」「どう解決するか」。ここが決まらないと以降が全部ぶれる。' },
+  { topic: '視線誘導', text: 'Zの法則を基準に、一番伝えたいものを起点か終点に置く。装飾より配置で誘導する。' },
+  { topic: 'コントラスト', text: '文字と背景の明度差を先に確認する。色の綺麗さは、読めることを満たしてから。' },
+  { topic: 'あしらいの引き算', text: '影・枠・グラデを1つずつ外して、崩れないか見る。外して問題ないものは元々要らなかった。' },
+  { topic: 'ワイヤーフレーム', text: '色を付けずに情報の順番だけ決める。ここで迷うなら、デザインではなく中身が決まっていない。' },
+  { topic: 'Figmaの使い方', text: 'オートレイアウトを先に組むと、後の修正が段違いに早い。コンポーネント化は使い回す直前で十分。' },
+  { topic: '素材の管理', text: 'ファイル名に日付と用途を入れる。「最新_v2_final」を作らないためのルールを最初に決める。' },
+  { topic: '制作の段取り', text: 'ラフに時間をかけすぎない。30分で当たりを付けて、残りを詰める作業に回す。' },
+  { topic: 'フィードバックの受け方', text: '指摘をそのまま直す前に、何が引っかかったのかを言葉にしてもらう。直し方は自分で決める。' },
+  { topic: '模写のやり方', text: '見た目を似せるだけで終わらせない。なぜこの配置なのかを1要素ずつ言葉にしながら進める。' },
+  { topic: 'ポートフォリオ', text: '作品ごとに自分の役割と意図を2行で添える。並び順は「見せたい順」にする。' },
+  { topic: '案件の相談', text: '相手の目的と期限を先に聞く。デザインの話はその後。ここを飛ばすと後で必ず戻る。' },
+  { topic: '見積もりの考え方', text: '作業時間だけでなく、修正の回数を前提に置く。含む範囲を先に文章にしておく。' },
+  { topic: '学習ペース', text: '週の合計より、触らない日を作らないほうが効く。15分でも開くと翌日の入りが軽い。' },
+  { topic: 'コーディング基礎', text: 'まずHTMLの構造だけで意味が通るか。見た目はCSSで後から乗せる。' },
+  { topic: 'レスポンシブ', text: '狭い幅から作ると、詰め込みすぎに気付ける。広い幅は余白を足すだけで済むことが多い。' },
+  { topic: 'アクセシビリティ', text: '色だけで情報を伝えない。形・位置・文言のどれかを必ず添える。' },
+  { topic: 'AIの使いどころ', text: 'たたき台を出させて、選ぶのは自分。判断まで任せると、自分の引き出しが増えない。' },
+];
+
+const DUMMY_LENSES = ['のまとめ', 'の要点メモ', 'でつまずいた点', 'の振り返り', 'の練習ログ', 'をやってみた'];
+
+/** 切り口ごとの締めの1行。書き出しが全部同じ調子になるのを避ける */
+const DUMMY_TAILS = [
+  '次に同じ場面が来たら、ここから読み直す。',
+  '迷ったときの判断基準としてメモしておく。',
+  '同じつまずき方を2回した。次は手順を変えて試す。',
+  '今週やったことの中で、これが一番効いた。',
+  '手を動かして分かったことなので、忘れないうちに残す。',
+  'まず1回やってみた記録。次はここを変える。',
+];
+
+/** 出どころの出方。実際の使われ方に近づけて、教材とAIを厚めにする */
+const DUMMY_ORIGINS: NoteOrigin[] = [
+  'material', 'ai', 'self', 'material', 'coaching', 'ai', 'material', 'self', 'ai', 'material',
+];
+
+/**
+ * ページ送りの確認用に、ダミーノートを指定件数だけ作る。
+ *
+ * @param count    作る件数
+ * @param now      基準時刻
+ * @param startDay 何日前から並べ始めるか（既存のデモノートより古い側に置く）
+ */
+export function buildDummyNotes(count: number, now: Date, startDay = 0): Note[] {
+  const notes: Note[] = [];
+  for (let i = 0; i < count; i += 1) {
+    const { topic, text } = DUMMY_TOPICS[i % DUMMY_TOPICS.length];
+    const lensIndex = Math.floor(i / DUMMY_TOPICS.length) % DUMMY_LENSES.length;
+    // 0.7日刻み。全部が同じ時刻だと更新日順の並びが確認できない
+    const minutesAgo = Math.round((startDay + i * 0.7) * 24 * 60);
+    const stamp = new Date(now.getTime() - minutesAgo * 60_000).toISOString();
+    notes.push({
+      id: nextId('note'),
+      title: `${topic}${DUMMY_LENSES[lensIndex]}`,
+      favorite: i % 7 === 3,
+      origin: DUMMY_ORIGINS[i % DUMMY_ORIGINS.length],
+      source: null,
+      createdAt: stamp,
+      updatedAt: stamp,
+      blocks: [
+        {
+          id: nextId('text'),
+          kind: 'text',
+          createdAt: stamp,
+          updatedAt: stamp,
+          text: `${text}\n${DUMMY_TAILS[lensIndex]}`,
+        },
+      ],
+    });
+  }
+  return notes;
+}
+
+/**
+ * 初回に置くノートの件数。1ページ24件（MyNotesPage の PAGE_SIZE）なので
+ * 100件 = 5ページ。ページ送りと、チップで絞ったときのページ数の変化を
+ * そのまま確認できる件数にしてある。
+ */
+export const DEFAULT_SEED_COUNT = 100;
+
+/**
+ * ストアが空のときに置くデモノート（既定100件）。
  * 🔴 これが無いと新規ブラウザでノート画面が真っ白になり、
  *    カードグリッドも絞り込みチップもページ送りもレビューできない。
  *    studyActivitySeed.ts と同じ「確認できる状態から始める」方針。
  *
- * 先頭3件だけはブロックを持つ厚いノート。クリップ・AI回答・==ハイライト== を
- * 含む唯一のデモで、カードを開いたノート面の確認に要る。
+ * 先頭28件は手書きのデモ。うち3件はブロックを持つ厚いノートで、
+ * クリップ・AI回答・==ハイライト== を含む唯一のデモ（ノート面の確認に要る）。
+ * 29件目以降は buildDummyNotes の水増しで、ページ送りの確認用。
  * 日付を固定日にせず現在からの相対で置くのは、いつ開いても一覧が
  * 「最近の学び」に見えるようにするため。
  */
-export function buildSeedNotes(now: Date): Note[] {
+export function buildSeedNotes(now: Date, count: number = DEFAULT_SEED_COUNT): Note[] {
+  const curated = buildCuratedNotes(now);
+  if (count <= curated.length) return curated.slice(0, count);
+  // 手書き分の一番古いカード（35日前）より後ろに続ける
+  return [...curated, ...buildDummyNotes(count - curated.length, now, 36)];
+}
+
+function buildCuratedNotes(now: Date): Note[] {
   const iso = (minutesAgo: number) => new Date(now.getTime() - minutesAgo * 60_000).toISOString();
   const source: NoteSourceRef = {
     courseId: 203,
@@ -345,8 +456,17 @@ export function buildSeedNotes(now: Date): Note[] {
   ];
 }
 
+/**
+ * localStorage が使えない・容量超過のときの退避先。
+ * 🔴 保存できなかったときに黙って諦めると、書いたノートが次のリクエストで
+ *    消えて「読み込めない」ように見える。保存だけ諦めて、その場では動かす。
+ */
+let fallbackStore: NoteStoreV3 | null = null;
+
 /** localStorage から読む。v1・v2 なら移行し、空ならシードを置く */
 export function readNoteStore(): NoteStoreV3 {
+  if (fallbackStore) return fallbackStore;
+
   const empty: NoteStoreV3 = { schemaVersion: 3, notes: [], memos: {} };
   let parsed: any = null;
   try {
@@ -359,13 +479,31 @@ export function readNoteStore(): NoteStoreV3 {
   const memos = parsed?.memos && typeof parsed.memos === 'object' ? parsed.memos : {};
 
   if (parsed?.schemaVersion === 3 && Array.isArray(parsed.notes)) {
-    return { schemaVersion: 3, notes: parsed.notes, memos };
+    // 🔴 「置かれないままの0件」はここで直す。デモを一度も置いていないのに
+    //    0件で保存されているブラウザは、以後いくら開き直しても真っ白のまま
+    //    （＝ノートが全然読み込めない）になる。seeded が立っていれば、
+    //    自分で全部消した結果なので触らない。
+    if (parsed.notes.length > 0 || parsed.seeded === true) {
+      // 1枚でもあるストアは「出来上がっている」ので印を立てておく。
+      // こうしておくと、このあと全部消しても勝手にデモが戻ってこない。
+      return { schemaVersion: 3, notes: parsed.notes, memos, seeded: true };
+    }
+    const reseeded: NoteStoreV3 = {
+      schemaVersion: 3,
+      notes: buildSeedNotes(new Date()),
+      memos,
+      seeded: true,
+    };
+    writeNoteStore(reseeded);
+    // eslint-disable-next-line no-console
+    console.info(`[MSW] ノートが0件だったのでデモを置き直しました: ${reseeded.notes.length}件`);
+    return reseeded;
   }
 
   // v2 → v3。器はそのまま、出どころだけを中身から推定して足す
   if (parsed?.schemaVersion === 2 && Array.isArray(parsed.notes)) {
     const notes = (parsed.notes as Note[]).map((note) => withOrigin(note));
-    const upgraded: NoteStoreV3 = { schemaVersion: 3, notes, memos };
+    const upgraded: NoteStoreV3 = { schemaVersion: 3, notes, memos, seeded: true };
     writeNoteStore(upgraded);
     // eslint-disable-next-line no-console
     console.info(`[MSW] ノートに出どころを付けました（v2 → v3）: ${notes.length}ノート`);
@@ -375,7 +513,7 @@ export function readNoteStore(): NoteStoreV3 {
   // v1（schemaVersion 無し）か、まったくの空
   const legacy: LegacyNoteItem[] = Array.isArray(parsed?.notes) ? parsed.notes : [];
   const notes = legacy.length > 0 ? migrateLegacyNotes(legacy) : buildSeedNotes(new Date());
-  const migrated: NoteStoreV3 = { schemaVersion: 3, notes, memos };
+  const migrated: NoteStoreV3 = { schemaVersion: 3, notes, memos, seeded: true };
   writeNoteStore(migrated);
   if (legacy.length > 0) {
     // eslint-disable-next-line no-console
@@ -387,7 +525,12 @@ export function readNoteStore(): NoteStoreV3 {
 export function writeNoteStore(store: NoteStoreV3): void {
   try {
     localStorage.setItem(NOTES_KEY, JSON.stringify(store));
-  } catch {
-    /* 容量超過などは黙って諦める（モックのため） */
+    fallbackStore = null; // 保存できたので退避先は要らない
+  } catch (e) {
+    // 容量超過（AI回答の画像を貼ったノートで起きやすい）。保存は諦めるが、
+    // このタブが開いている間はメモリ上のストアで動かし続ける。
+    fallbackStore = store;
+    // eslint-disable-next-line no-console
+    console.warn('[MSW] ノートを保存できませんでした。このタブの間だけメモリ上で保持します', e);
   }
 }
