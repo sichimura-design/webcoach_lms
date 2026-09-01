@@ -1058,6 +1058,37 @@ body.learning-immersive {
   align-items: stretch;
 }
 
+/* 領域ページ（/courses/category/:code）のコースタイル。
+   学習トップの 4列固定と違い、ここは流動レイアウトなので幅で折り返す。 */
+.wc-area-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1100px) {
+  .wc-area-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .wc-area-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .wc-area-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 学習トップの「領域から探す」。1440pxキャンバス内なので固定3列で足りる */
+.wc-area-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
 @media (max-width: 1279px) {
   .notes-grid {
     grid-template-columns: repeat(2, 1fr);
