@@ -1091,11 +1091,35 @@ body.learning-immersive {
   }
 }
 
-/* 学習トップの「領域から探す」。1440pxキャンバス内なので固定3列で足りる */
+/* 学習トップの「領域から探す」。
+   🔴 かつては「1440pxキャンバス内なので固定3列で足りる」と固定していたが、
+      MaterialsTopPage の useScaleToFit（transform:scale で全体を縮める方式）を
+      やめたので、狭い幅は列数で受けることになった。しきい値は
+      .wc-area-grid（領域ページ側の同種グリッド）と揃えている。 */
 .wc-area-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
+}
+
+@media (max-width: 1100px) {
+  .wc-area-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .wc-area-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* サイドバー展開中は本文が 152px（224 − 72）細くなるぶんを補う
+   （.mypage-rank-split などと同じ理由・同じ足し方） */
+@media (max-width: 1252px) {
+  body.sidebar-expanded .wc-area-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 1279px) {

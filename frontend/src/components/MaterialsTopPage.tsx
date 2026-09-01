@@ -9,7 +9,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { useMypageData } from '../hooks/useMypageData';
 import { useLearningSummary } from '../hooks/useLearningSummary';
 import { bffClient } from '../services/bffClient';
-import { useScaleToFit } from '../hooks/useScaleToFit';
 import { t } from '../theme/tokens';
 import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
 import {
@@ -22,7 +21,19 @@ import {
 import { lessonProgressFromPercent } from '../utils/lessonProgress';
 import type { MaterialSearchResult } from '../types/courses';
 
-const DESIGN_WIDTH = 1440;
+/**
+ * ページの最大幅。デザインは 1440px キャンバスで描かれている。
+ *
+ * 🔴 かつてここを「固定キャンバスの幅」として使い、useScaleToFit(1440) で
+ *    transform:scale してビューポートに収めていた。やめた理由:
+ *    ブラウザのズームはCSSビューポート幅を減らすことで文字を大きくするのに対し、
+ *    useScaleToFit は減った幅に合わせて全体を縮める。つまり両者が打ち消し合い、
+ *    「拡大してもサイドバー（72px固定）だけが大きくなり、本文は大きくならない」
+ *    状態になっていた。実測でも幅1280pxで scale 0.839 がかかり、
+ *    14px が 11.7px、12px が 10.1px まで落ちて 12px 下限を51箇所で割っていた。
+ *    いまは max-width として使い、狭いときは他ページと同じように折り返す。
+ */
+const MAX_WIDTH = 1440;
 
 /**
  * この画面だけ上端の余白を共通トークンより広く取る。
@@ -30,6 +41,15 @@ const DESIGN_WIDTH = 1440;
  * pageTop(34) のままだとページが上に詰まって見えた（レビュー指摘）。
  */
 const PAGE_TOP = t.space.pageTop + 20;
+
+/**
+ * ページ左右のガター。
+ * 🔴 t.space.pageX(42) の固定値だと、375px 幅で左右 84px が抜けて中身が入らない
+ *    （固定キャンバス時代は transform:scale が全部まとめて縮めていたので露見しなかった）。
+ *    他ページの --dc-sp-page-x と同じ「幅に連動して縮む」形にする。
+ *    上限は従来と同じ 42px なので、PC の見た目は変わらない。
+ */
+const PAGE_X = `clamp(20px, 2.53vw, ${t.space.pageX}px)`;
 
 /** ヒーロー右の「次に学ぶ」。コース構成から取れた最初の未完了レッスン */
 interface NextLesson {
@@ -54,7 +74,6 @@ function MaterialsTopPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { resumableCourse, activeCourses } = useMypageData(user?.userid);
-  const { outerRef, innerRef, scale, innerHeight } = useScaleToFit(DESIGN_WIDTH);
   const learningSummary = useLearningSummary(activeCourses);
 
   const [catalog, setCatalog] = useState<CatalogCourse[]>([]);
@@ -239,14 +258,9 @@ function MaterialsTopPage() {
     <div className="min-h-screen flex flex-col" style={{ background: t.color.bg.page }}>
       <AppHeader userName={user?.username || 'User'} />
 
-      <div
-        ref={outerRef}
-        style={{ width: '100%', maxWidth: DESIGN_WIDTH, margin: '0 auto', position: 'relative', height: innerHeight ? innerHeight * scale : undefined }}
-      >
       <main
-        ref={innerRef}
         className="flex flex-col"
-        style={{ position: 'absolute', top: 0, left: 0, width: DESIGN_WIDTH, paddingTop: PAGE_TOP, paddingLeft: t.space.pageX, paddingRight: t.space.pageX, paddingBottom: t.space.pageBottom, gap: t.space.stack, fontFamily: t.font.family, color: t.color.text.primary, boxSizing: 'border-box', transform: `scale(${scale})`, transformOrigin: 'top left' }}
+        style={{ width: '100%', maxWidth: MAX_WIDTH, margin: '0 auto', paddingTop: PAGE_TOP, paddingLeft: PAGE_X, paddingRight: PAGE_X, paddingBottom: t.space.pageBottom, gap: t.space.stack, fontFamily: t.font.family, color: t.color.text.primary, boxSizing: 'border-box' }}
       >
         {/* ① 見出し行。右端に「修了レッスン」だけを置く。
             数えているのはコースではなくレッスンなので、分母も「受講中コースの総レッスン数」に揃える。
@@ -291,7 +305,7 @@ function MaterialsTopPage() {
             🔴 片方が無いときは残った方を全幅にする（空の列を残さない）。
             ============================================================ */}
         {(resumableCourse || otherActive.length > 0) && (
-          <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', flexWrap: 'wrap' }}>
             {resumableCourse && (
               <div
                 style={{
@@ -305,7 +319,7 @@ function MaterialsTopPage() {
                        全幅バナー＋縦積み（情報／次に学ぶ／CTA）だと、1コース分の再開動線だけで
                        ファーストビューをほぼ使い切ってしまい、下のカタログが見えなかった。
                        アートに情報は無いので、縮めても失うものはない。 */}
-                <div style={{ display: 'flex', gap: 18, alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap' }}>
                   <img
                     src={`${process.env.PUBLIC_URL}/images/materials/hero-art.png`}
                     alt=""
@@ -327,7 +341,7 @@ function MaterialsTopPage() {
                         ? nextLesson.sectionName
                         : [resumableCourse.currentLesson, resumableCourse.currentChapter].filter(Boolean).join('・')}
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 10 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 10, flexWrap: 'wrap' }}>
                       <div
                         role="progressbar"
                         aria-valuenow={resumableCourse.progress ?? 0}
@@ -463,8 +477,8 @@ function MaterialsTopPage() {
         {/* ④ ぴったりの教材をさがす。
             コース名のキーワード検索だと「配色が苦手」のような相談は空振りするので、
             学びたいこと・つまずきをそのまま入れられる1本の入力にまとめた。 */}
-        <section style={{ background: t.color.primarySoft, borderRadius: t.radius.tile, padding: '18px 24px', display: 'flex', alignItems: 'center', gap: 18 }}>
-          <div style={{ flexShrink: 0, width: 200 }}>
+        <section style={{ background: t.color.primarySoft, borderRadius: t.radius.tile, padding: '18px 24px', display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
+          <div style={{ width: 200, minWidth: 0 }}>
             <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ぴったりの教材をさがす</div>
             <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, marginTop: 2, lineHeight: 'var(--dc-lh-prose)' }}>
               学びたいこと・つまずいていることから、AIが教材をおすすめ
@@ -537,7 +551,7 @@ function MaterialsTopPage() {
               <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>{aiResult.summary}</div>
             </div>
             {aiCourses.length > 0 && (
-              <div className="grid" style={{ gridTemplateColumns: 'repeat(4,1fr)', gap: 14 }}>
+              <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 14 }}>
                 {aiCourses.map(({ course, reason }) => (
                   <div key={course.id} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                     <CourseTile course={course} onClick={() => navigate(`/course/${course.id}/curriculum`)} />
@@ -625,6 +639,7 @@ function MaterialsTopPage() {
                               display: 'flex',
                               alignItems: 'baseline',
                               gap: 8,
+                              flexWrap: 'wrap',
                               fontSize: 'var(--dc-fs-lead)',
                               fontWeight: t.font.weight.semibold,
                             }}
@@ -678,7 +693,6 @@ function MaterialsTopPage() {
           )}
         </section>
       </main>
-      </div>
     </div>
   );
 }
