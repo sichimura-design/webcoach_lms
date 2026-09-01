@@ -212,12 +212,14 @@ components/mypage/WeeklyGoalModal.tsx components/mypage/StreakHeroCard.tsx
 components/mypage/StudyChallengeCard.tsx components/mypage/PeerRankingCard.tsx
 components/mypage/StudyRecordCard.tsx components/studyLog/StudyLogPage.tsx
 components/studyLog/StudyRecordPanel.tsx components/studyLog/StreakCalendarCard.tsx
-components/studyLog/RankingListCard.tsx"
+components/studyLog/RankingListCard.tsx
+components/MaterialsTopPage.tsx components/materials/AreaCoursesPage.tsx
+components/materials/CourseTile.tsx components/shared/LearningBreadcrumb.tsx"
 
 # 旧トークンが残っていないか
 grep -n "dc-fs-\(4xs\|3xs\|2xs\|xs\|sm\|base\|lesson\|14\|15\|kpi-sub\|unit\|md\|lg\|xl\|2xl\)\b" $FILES
-# 800/900 が残っていないか
-grep -n "fontWeight: [89]00" $FILES
+# 800/900 が残っていないか（t.font.weight.black は撤去済みなので復活させない）
+grep -n "fontWeight: [89]00\|font\.weight\.black" $FILES
 # 行間が 1.8 以上のまま残っていないか
 grep -n "lineHeight: 1\.[89]" $FILES
 # 生px直書きが増えていないか
@@ -226,17 +228,30 @@ grep -n "fontSize: [0-9]" $FILES
 
 すべて0件が正。
 
-## 12. 適用範囲（2026-08-31 時点）
-
-このガイドラインが**適用済み**なのは `--dc-fs-*` を使う画面だけ。
+## 12. 適用範囲（2026-09-01 時点）
 
 | 状態 | 対象 |
 |---|---|
-| ✅ 適用済み | 上の grep の `$FILES` 15ファイル（マイページ・学習記録・`shared/RankingRow.tsx`）と `index.css` の `.mypage-3d` スコープ |
+| ✅ 適用済み | 上の grep の `$FILES` 19ファイル（マイページ・学習記録・**学習する導線**・`shared/RankingRow.tsx`）と `index.css` の `:root` |
 | ❌ 未適用 | `components/mypage/` に残る 5a 時代の未使用カード 8ファイル（`StatsStrip` `LearningStreakCard` `RoadmapStrip` `RoadmapRail` `ContinueLearningHero` `GuildLobby` `GuildLobbyCard` `PeopleActivityCard` `NextCoachingPlan`）。どれも現在の 8a マイページでは描画されておらず、5a に戻すとき用に残してあるだけ。**戻すなら先にここを移行すること**（`fontWeight: 900` や 10px が残っている） |
 | ❌ 未適用 | `theme/webcoachTheme.ts` の `font.*` を参照する約60ファイル（教材・コーストップ・レッスン・AIコーチ・コーチング・管理・設定）。`font.caption` = 11.5px が112箇所、`font.meta` = 12.5px が52箇所など、**12px 未満が多数残っている** |
 | ❌ 未適用 | `fontSize` の生px直書き約600箇所 |
-| 🗑 デッド | `theme/tokens.ts` の `font.size`（参照1箇所のみ。新規では使わない） |
+| 🗑 撤去済み | `theme/tokens.ts` の `font.size` と `font.weight.black`(900)。参照は `pageTitle` の1箇所だけで、残りは生px直書きに散っており、**この系統の画面（学習する・領域一覧）だけが一段小さいまま取り残される原因**になっていたので型から消した |
+
+### ⚠️ 「学習する」だけに残っている構造的な差
+
+`MaterialsTopPage`（`/courses`）は `useScaleToFit(1440)` で **1440px 固定キャンバスを
+`transform: scale()` で縮小している**。アプリ中でこの方式を使っているのはこのページだけ
+（姉妹ページの `AreaCoursesPage` は普通の折り返し）。
+
+- 幅 1512px 以上・サイドバー折りたたみ → `scale = 1`。**他ページと文字サイズが完全に一致する**
+- サイドバー展開時、または幅 1512px 未満 → `scale ≒ 0.9`。**14px が 12.6px、12px が 10.8px** になり、
+  この条件下では 12px 下限が守れない
+
+トークン側では解決できない（固定pxを何pxにしても scale 倍される）。直すには
+固定キャンバスをやめて折り返しにする必要があり、その場合 `.wc-area-cards` の固定3列と
+AI検索結果の4列グリッドにメディアクエリを足すことになる。**フォントではなくレイアウトの
+変更なので、必要になったら別で扱う。**
 
 未適用の画面に手を入れるときは、`webcoachTheme.ts` の `font.*` 定義側を
 このガイドラインの値に書き換えるのが最小の変更になる（参照側はトークン名が同じなら自動で追従する）。

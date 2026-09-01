@@ -52,7 +52,7 @@ const selectStyle: React.CSSProperties = {
   border: `1px solid ${t.color.border.card}`,
   borderRadius: t.radius.control,
   padding: '7px 30px 7px 14px',
-  fontSize: 12.5,
+  fontSize: 'var(--dc-fs-body)',
   fontFamily: 'inherit',
   color: t.color.text.primary,
   cursor: 'pointer',
@@ -139,7 +139,7 @@ function AreaCoursesPage() {
         }
       >
         {/* パンくず。学習トップへ戻る導線をここに置く（サイドバーの「学習する」も同じ場所へ） */}
-        <nav aria-label="現在の位置" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12 }}>
+        <nav aria-label="現在の位置" style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 'var(--dc-fs-body)' }}>
           <button
             type="button"
             onClick={() => navigate('/courses')}
@@ -148,8 +148,8 @@ function AreaCoursesPage() {
               background: 'transparent',
               padding: 0,
               fontFamily: 'inherit',
-              fontSize: 12,
-              fontWeight: t.font.weight.black,
+              fontSize: 'var(--dc-fs-body)',
+              fontWeight: t.font.weight.semibold,
               color: t.color.primary,
             }}
           >
@@ -160,7 +160,7 @@ function AreaCoursesPage() {
         </nav>
 
         {!area ? (
-          <p style={{ fontSize: 13, color: t.color.text.muted }}>
+          <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>
             この{LEARNING_HIERARCHY.area}は見つかりませんでした。
           </p>
         ) : (
@@ -180,13 +180,13 @@ function AreaCoursesPage() {
               <CourseThumb categoryName={area.name} size={52} radius={14} />
               <div style={{ minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-                  <h1 style={{ margin: 0, fontSize: 20, fontWeight: t.font.weight.black }}>{area.name}</h1>
-                  <span style={{ fontSize: 12, color: t.color.text.subtle }}>
+                  <h1 style={{ margin: 0, fontSize: 'var(--dc-fs-display)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>{area.name}</h1>
+                  <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle }}>
                     {areaCourses.length} {LEARNING_HIERARCHY.course}
                   </span>
                 </div>
                 {area.description && (
-                  <p style={{ margin: '6px 0 0', fontSize: 12.5, color: t.color.text.muted, lineHeight: 1.7 }}>
+                  <p style={{ margin: '6px 0 0', fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, lineHeight: 'var(--dc-lh-prose)' }}>
                     {area.description}
                   </p>
                 )}
@@ -203,10 +203,10 @@ function AreaCoursesPage() {
                 flexWrap: 'wrap',
               }}
             >
-              <div style={{ fontSize: 14.5, fontWeight: t.font.weight.black }}>
+              <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>
                 コースを選ぶ
                 {kind !== ALL && (
-                  <span style={{ marginLeft: 10, fontSize: 12, fontWeight: 400, color: t.color.text.subtle }}>
+                  <span style={{ marginLeft: 10, fontSize: 'var(--dc-fs-caption)', fontWeight: 400, color: t.color.text.subtle }}>
                     絞り込み中 {filtered.length} {LEARNING_HIERARCHY.course}
                   </span>
                 )}
@@ -238,10 +238,10 @@ function AreaCoursesPage() {
             </div>
 
             {loading ? (
-              <p style={{ fontSize: 13, color: t.color.text.muted }}>読み込んでいます…</p>
+              <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>読み込んでいます…</p>
             ) : filtered.length === 0 ? (
               <div className="flex flex-col items-center" style={{ padding: '48px 0', gap: 12 }}>
-                <p style={{ fontSize: 13, color: t.color.text.muted, margin: 0 }}>
+                <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, margin: 0 }}>
                   条件に合うコースが見つかりませんでした。
                 </p>
                 {kind !== ALL && (
@@ -254,8 +254,8 @@ function AreaCoursesPage() {
                       border: `1px solid ${t.color.primaryBorder}`,
                       borderRadius: t.radius.button,
                       padding: '9px 20px',
-                      fontSize: 12.5,
-                      fontWeight: t.font.weight.black,
+                      fontSize: 'var(--dc-fs-body)',
+                      fontWeight: t.font.weight.semibold,
                       fontFamily: 'inherit',
                     }}
                   >
@@ -285,7 +285,7 @@ function AreaCoursesPage() {
           </>
         )}
 
-        <p style={{ textAlign: 'center', fontSize: 12, color: t.color.text.subtle, marginTop: 4 }}>
+        <p style={{ textAlign: 'center', fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle, marginTop: 4 }}>
           © 2026 WEBCOACH
         </p>
       </main>

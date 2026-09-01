@@ -256,22 +256,22 @@ function MaterialsTopPage() {
             スコープを必ず書く: すぐ下のヒーローにも「このコース 3 / 9」が出るので、
             スコープ無しの分数が2つ並ぶと、分母が違う理由が読めない（レビュー指摘）。 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
-          <h1 style={{ margin: 0, fontSize: t.font.size.pageTitle, fontWeight: t.font.weight.black, letterSpacing: '-.01em', flex: 1 }}>学習する</h1>
+          <h1 style={{ margin: 0, fontSize: 'var(--dc-fs-display)', fontWeight: t.font.weight.bold, letterSpacing: '-.01em', lineHeight: 'var(--dc-lh-heading)', flex: 1 }}>学習する</h1>
 
           {/* 🔴 かつてラベルの左に赤い丸チェックのバッジを置いていたが撤去した。意味を持たない
                  装飾で、押せない丸がこの行の主役になってしまっていた。
                  主役はラベルと数字なので、ラベルは muted ではなく本文色で組む。 */}
           {enrolledLessons > 0 && (
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontSize: 13, fontWeight: t.font.weight.bold, color: t.color.text.primary }}>
+              <span style={{ fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.medium, color: t.color.text.primary }}>
                 受講中コース全体の修了レッスン
               </span>
               <span
-                style={{ fontSize: 24, fontWeight: t.font.weight.black, color: t.color.primary, lineHeight: 1 }}
+                style={{ fontSize: 'var(--dc-fs-display)', fontWeight: t.font.weight.bold, color: t.color.primary, lineHeight: 1 }}
                 aria-label={`受講中コース全体で ${enrolledLessons}${LEARNING_HIERARCHY.lesson}中 ${completedLessons}${LEARNING_HIERARCHY.lesson}修了`}
               >
                 {completedLessons}
-                <span style={{ fontSize: 12, fontWeight: t.font.weight.bold, color: t.color.text.subtle, marginLeft: 3 }}>/ {enrolledLessons}</span>
+                <span style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.semibold, color: t.color.text.subtle, marginLeft: 3 }}>/ {enrolledLessons}</span>
               </span>
             </div>
           )}
@@ -313,15 +313,15 @@ function MaterialsTopPage() {
                   />
 
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 12, fontWeight: t.font.weight.black, color: t.color.primary, marginBottom: 4, letterSpacing: t.font.letterSpacingWide }}>
+                    <div style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.bold, color: t.color.primary, marginBottom: 4, letterSpacing: t.font.letterSpacingWide }}>
                       続きから学ぶ
                     </div>
                     {/* 主役はコース。レッスン名は下の「次に学ぶ」が持つので、ここでは繰り返さない。
                         次のレッスンが取れなかったときだけ、続きの位置をここに出してから畳む。 */}
-                    <div style={{ fontSize: 20, fontWeight: t.font.weight.black, letterSpacing: '-.01em', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <div style={{ fontSize: 'var(--dc-fs-title)', fontWeight: t.font.weight.bold, letterSpacing: '-.01em', lineHeight: 'var(--dc-lh-heading)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {resumableCourse.title}
                     </div>
-                    <div style={{ fontSize: 13, color: t.color.text.muted, marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {/* 全レッスン数は右の「4 / 9 レッスン」が持つので、ここでは繰り返さない */}
                       {nextLesson
                         ? nextLesson.sectionName
@@ -341,7 +341,7 @@ function MaterialsTopPage() {
                       {/* 「このコース」を必ず付ける。見出し右の「受講中コース全体」の分数と
                           分母が違うので、どちらを数えた分数なのかを数字の隣で言い切る。
                           レッスン総数が取れないコースだけ、従来どおり％に落とす。 */}
-                      <span style={{ fontSize: 12.5, color: t.color.text.muted, flexShrink: 0 }}>
+                      <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.muted, flexShrink: 0 }}>
                         このコース{' '}
                         {resumeLessons ? (
                           <>
@@ -375,10 +375,10 @@ function MaterialsTopPage() {
                         <svg width="13" height="13" viewBox="0 0 24 24" fill={t.color.primary}><path d="M9 6.5v11l9-5.5z" /></svg>
                       </span>
                       <div style={{ minWidth: 0 }}>
-                        <div style={{ fontSize: 11.5, color: t.color.text.muted }}>次に学ぶ</div>
-                        <div style={{ fontSize: 13.5, fontWeight: t.font.weight.black, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <div style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.muted }}>次に学ぶ</div>
+                        <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.semibold, lineHeight: 'var(--dc-lh-ui)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {nextLesson.name}
-                          <span style={{ fontSize: 11.5, fontWeight: t.font.weight.bold, color: t.color.text.muted, marginLeft: 8 }}>
+                          <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: t.color.text.muted, marginLeft: 8 }}>
                             {[`Lesson ${nextLesson.index}`, nextLesson.minutes && `${nextLesson.minutes}分`].filter(Boolean).join('・')}
                           </span>
                         </div>
@@ -389,14 +389,14 @@ function MaterialsTopPage() {
                   <button
                     onClick={goToContinue}
                     className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    style={{ background: t.color.primary, color: '#fff', borderRadius: t.radius.button, padding: '11px 24px', fontSize: 14, fontWeight: t.font.weight.black, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
+                    style={{ background: t.color.primary, color: '#fff', borderRadius: t.radius.button, padding: '11px 24px', fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
                   >
                     続きから学ぶ
                   </button>
                   <button
                     onClick={() => navigate(`/course/${resumableCourse.id}/curriculum`)}
                     className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    style={{ background: t.color.bg.card, color: t.color.primary, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.button, padding: '10px 20px', fontSize: 13, fontWeight: t.font.weight.black, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
+                    style={{ background: t.color.bg.card, color: t.color.primary, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.button, padding: '10px 20px', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
                   >
                     コース目次を見る
                   </button>
@@ -413,7 +413,7 @@ function MaterialsTopPage() {
                   display: 'flex', flexDirection: 'column', gap: 12,
                 }}
               >
-                <div style={{ fontSize: 14.5, fontWeight: t.font.weight.black }}>ほかに学習中</div>
+                <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ほかに学習中</div>
                 {otherActive.map((c) => {
                   const lessons = lessonProgressFromPercent(c.progress, c.totalLessons);
                   return (
@@ -430,11 +430,11 @@ function MaterialsTopPage() {
                         <CourseThumb categoryName={c.categoryName ?? ''} size={56} radius={14} />
                         <div style={{ flex: 1, minWidth: 0 }}>
                           {c.categoryName && (
-                            <div style={{ fontSize: 11, fontWeight: t.font.weight.bold, color: t.color.text.subtle, marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            <div style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: t.color.text.subtle, marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                               {c.categoryName}
                             </div>
                           )}
-                          <div style={{ fontSize: 15, fontWeight: t.font.weight.black, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.semibold, lineHeight: 'var(--dc-lh-ui)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                             {c.title}
                           </div>
                         </div>
@@ -446,11 +446,11 @@ function MaterialsTopPage() {
                         </div>
                         <span
                           title={lessons?.full}
-                          style={{ fontSize: 12, fontWeight: t.font.weight.bold, color: t.color.text.muted, flexShrink: 0 }}
+                          style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: t.color.text.muted, flexShrink: 0 }}
                         >
                           {lessons ? lessons.short : `${c.progress ?? 0}%`}
                         </span>
-                        <span style={{ fontSize: 12.5, fontWeight: t.font.weight.black, color: t.color.primary, flexShrink: 0 }}>続きから →</span>
+                        <span style={{ fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, color: t.color.primary, flexShrink: 0 }}>続きから →</span>
                       </div>
                     </div>
                   );
@@ -465,8 +465,8 @@ function MaterialsTopPage() {
             学びたいこと・つまずきをそのまま入れられる1本の入力にまとめた。 */}
         <section style={{ background: t.color.primarySoft, borderRadius: t.radius.tile, padding: '18px 24px', display: 'flex', alignItems: 'center', gap: 18 }}>
           <div style={{ flexShrink: 0, width: 200 }}>
-            <div style={{ fontSize: 14.5, fontWeight: t.font.weight.black }}>ぴったりの教材をさがす</div>
-            <div style={{ fontSize: 12, color: t.color.text.muted, marginTop: 2, lineHeight: 1.6 }}>
+            <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ぴったりの教材をさがす</div>
+            <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, marginTop: 2, lineHeight: 'var(--dc-lh-prose)' }}>
               学びたいこと・つまずいていることから、AIが教材をおすすめ
             </div>
           </div>
@@ -486,26 +486,26 @@ function MaterialsTopPage() {
                 onChange={(e) => setAiQuery(e.target.value)}
                 placeholder="学びたいこと・つまずいていることを入力（例：配色が苦手）"
                 aria-label="学びたいこと・つまずいていること"
-                style={{ width: '100%', boxSizing: 'border-box', height: 44, borderRadius: t.radius.pill, border: `1px solid ${t.color.primaryBorder}`, background: t.color.bg.card, padding: '0 118px 0 42px', fontSize: 13, fontFamily: 'inherit', color: t.color.text.primary, outline: 'none' }}
+                style={{ width: '100%', boxSizing: 'border-box', height: 44, borderRadius: t.radius.pill, border: `1px solid ${t.color.primaryBorder}`, background: t.color.bg.card, padding: '0 118px 0 42px', fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.primary, outline: 'none' }}
               />
               <button
                 type="submit"
                 disabled={aiState === 'loading' || !aiQuery.trim()}
                 className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={{ position: 'absolute', right: 5, top: 5, height: 34, borderRadius: t.radius.pill, background: aiQuery.trim() ? t.color.primary : t.color.text.subtle, padding: '0 16px', color: '#fff', fontSize: 12.5, fontWeight: t.font.weight.black, fontFamily: 'inherit', cursor: aiQuery.trim() ? 'pointer' : 'default' }}
+                style={{ position: 'absolute', right: 5, top: 5, height: 34, borderRadius: t.radius.pill, background: aiQuery.trim() ? t.color.primary : t.color.text.subtle, padding: '0 16px', color: '#fff', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, fontFamily: 'inherit', cursor: aiQuery.trim() ? 'pointer' : 'default' }}
               >
                 {aiState === 'loading' ? 'さがし中…' : '教材をさがす'}
               </button>
             </form>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', maxWidth: 620 }}>
-              <span style={{ fontSize: 11, color: t.color.text.subtle, flexShrink: 0 }}>例：</span>
+              <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle, flexShrink: 0 }}>例：</span>
               {SEARCH_EXAMPLES.map((ex) => (
                 <button
                   key={ex}
                   onClick={() => { setAiQuery(ex); runAiSearch(ex); }}
                   className="appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                  style={{ background: t.color.bg.card, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.pill, padding: '5px 13px', fontSize: 12, fontFamily: 'inherit', color: t.color.text.body }}
+                  style={{ background: t.color.bg.card, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.pill, padding: '5px 13px', fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.body }}
                 >
                   {ex}
                 </button>
@@ -514,7 +514,7 @@ function MaterialsTopPage() {
                 <button
                   onClick={clearAiSearch}
                   className="appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                  style={{ background: 'transparent', padding: '5px 4px', fontSize: 12, fontFamily: 'inherit', color: t.color.text.muted, textDecoration: 'underline' }}
+                  style={{ background: 'transparent', padding: '5px 4px', fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.muted, textDecoration: 'underline' }}
                 >
                   結果を閉じる
                 </button>
@@ -525,7 +525,7 @@ function MaterialsTopPage() {
 
         {/* AI検索の結果。実BFF（モックOFF）ではこのAPIが無いので、1行のことわりだけ出して一覧に戻す */}
         {aiState === 'error' && (
-          <div style={{ fontSize: 12.5, color: t.color.text.muted }}>
+          <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>
             いまは教材のおすすめを取得できませんでした。下のコース一覧から探してください。
           </div>
         )}
@@ -533,15 +533,15 @@ function MaterialsTopPage() {
         {aiResult && (
           <section style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-              <div style={{ fontSize: 14.5, fontWeight: t.font.weight.black }}>AIが選んだ教材</div>
-              <div style={{ fontSize: 12.5, color: t.color.text.muted }}>{aiResult.summary}</div>
+              <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>AIが選んだ教材</div>
+              <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>{aiResult.summary}</div>
             </div>
             {aiCourses.length > 0 && (
               <div className="grid" style={{ gridTemplateColumns: 'repeat(4,1fr)', gap: 14 }}>
                 {aiCourses.map(({ course, reason }) => (
                   <div key={course.id} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                     <CourseTile course={course} onClick={() => navigate(`/course/${course.id}/curriculum`)} />
-                    <div style={{ fontSize: 11.5, color: t.color.text.muted, lineHeight: 1.6 }}>{reason}</div>
+                    <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, lineHeight: 'var(--dc-lh-prose)' }}>{reason}</div>
                   </div>
                 ))}
               </div>
@@ -564,16 +564,16 @@ function MaterialsTopPage() {
             ============================================================ */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-            <div style={{ fontSize: 14.5, fontWeight: t.font.weight.black }}>
+            <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>
               {LEARNING_HIERARCHY.area}から探す
             </div>
-            <span style={{ fontSize: 12, color: t.color.text.subtle }}>
+            <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle }}>
               全 {catalog.length} {LEARNING_HIERARCHY.course} ・ 目標以外のコースも自由に受講できます
             </span>
           </div>
 
           {areaGroups.length === 0 ? (
-            <p style={{ fontSize: 13, color: t.color.text.muted, margin: 0 }}>
+            <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, margin: 0 }}>
               コースを読み込んでいます…
             </p>
           ) : (
@@ -591,10 +591,10 @@ function MaterialsTopPage() {
                         flexShrink: 0,
                       }}
                     />
-                    <h3 style={{ margin: 0, fontSize: 13.5, fontWeight: t.font.weight.black }}>
+                    <h3 style={{ margin: 0, fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.bold }}>
                       {group.label}
                     </h3>
-                    <span style={{ fontSize: 11.5, color: t.color.text.subtle }}>
+                    <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle }}>
                       {group.areas.length} {LEARNING_HIERARCHY.area}
                     </span>
                   </div>
@@ -625,12 +625,12 @@ function MaterialsTopPage() {
                               display: 'flex',
                               alignItems: 'baseline',
                               gap: 8,
-                              fontSize: 13.5,
-                              fontWeight: t.font.weight.black,
+                              fontSize: 'var(--dc-fs-lead)',
+                              fontWeight: t.font.weight.semibold,
                             }}
                           >
                             {a.name}
-                            <span style={{ fontSize: 11.5, fontWeight: 400, color: t.color.text.subtle }}>
+                            <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: 400, color: t.color.text.subtle }}>
                               {a.count} {LEARNING_HIERARCHY.course}
                             </span>
                           </span>
@@ -639,9 +639,9 @@ function MaterialsTopPage() {
                               style={{
                                 display: 'block',
                                 marginTop: 3,
-                                fontSize: 11.5,
+                                fontSize: 'var(--dc-fs-caption)',
                                 color: t.color.text.muted,
-                                lineHeight: 1.6,
+                                lineHeight: 'var(--dc-lh-ui)',
                                 overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                                 whiteSpace: 'nowrap',
@@ -660,8 +660,8 @@ function MaterialsTopPage() {
                                 borderRadius: 999,
                                 background: t.color.primarySoft,
                                 color: t.color.primary,
-                                fontSize: 11,
-                                fontWeight: t.font.weight.black,
+                                fontSize: 'var(--dc-fs-caption)',
+                                fontWeight: t.font.weight.bold,
                               }}
                             >
                               学習中 {a.inProgress}
