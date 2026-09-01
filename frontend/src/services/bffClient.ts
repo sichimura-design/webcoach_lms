@@ -59,6 +59,7 @@ import {
   Note,
   NoteBlock,
   NoteBlockInput,
+  NoteBlockInsert,
   NoteBlockPatch,
   NoteClipRef,
   NoteCreateInput,
@@ -1244,8 +1245,14 @@ class BFFClient {
     await this.api.delete(`/webcoach/notes/${id}`);
   }
 
-  /** POST /api/webcoach/notes/{id}/blocks — 本文・クリップ・AI回答の追加 */
-  async appendNoteBlock(noteId: string, input: NoteBlockInput): Promise<NoteBlock> {
+  /**
+   * POST /api/webcoach/notes/{id}/blocks — 本文・クリップ・AI回答・画像の追加
+   * index を渡すとその位置に差し込む（省略時は末尾）。
+   */
+  async appendNoteBlock(
+    noteId: string,
+    input: NoteBlockInput & NoteBlockInsert
+  ): Promise<NoteBlock> {
     const response = await this.api.post(`/webcoach/notes/${noteId}/blocks`, input);
     return response.data;
   }

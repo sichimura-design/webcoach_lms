@@ -17,12 +17,13 @@
  * clip   … 教材本文を選択して取り込んだもの。元の位置へ戻れる
  * answer … AIコーチの回答。質問とセットで持つ
  */
-export type NoteBlockKind = 'text' | 'clip' | 'answer';
+export type NoteBlockKind = 'text' | 'clip' | 'answer' | 'image';
 
 export const NOTE_BLOCK_LABEL: Record<NoteBlockKind, string> = {
   text: '本文',
   clip: 'クリップ',
   answer: 'AI回答',
+  image: '画像',
 };
 
 /**
@@ -86,7 +87,24 @@ export interface NoteAnswerBlock extends NoteBlockBase {
   source: NoteSourceRef | null;
 }
 
-export type NoteBlock = NoteTextBlock | NoteClipBlock | NoteAnswerBlock;
+/**
+ * 自分で貼った画像。
+ * 🔴 画像の中身はここに持たない。`imageId` は IndexedDB
+ *    （utils/noteImageStore.ts）の参照キーで、ノート本体は localStorage に
+ *    入るため、dataURL を持たせると数枚で容量上限を超える
+ *    （store/aiCoachStore.ts:27 で同じ失敗をしている）。
+ *    実APIになったら imageId をサーバのURLに置き換える。
+ */
+export interface NoteImageBlock extends NoteBlockBase {
+  kind: 'image';
+  imageId: string;
+  /** 読み上げ用。ファイル名を既定にする */
+  alt: string;
+  /** 画像の下に出す説明。未入力は null */
+  caption: string | null;
+}
+
+export type NoteBlock = NoteTextBlock | NoteClipBlock | NoteAnswerBlock | NoteImageBlock;
 
 export interface Note {
   id: string;
@@ -119,11 +137,18 @@ export interface NoteSummary {
   updatedAt: string;
 }
 
-export type NoteSort = 'updated' | 'created' | 'title';
+/**
+ * 一覧の並び順。
+ * 🔴 昇順（古い順）を必ず持たせる。「最初に書いたノートから読み返す」は
+ *    振り返りの基本動作で、降順3種だけでは辿れない。
+ */
+export type NoteSort = 'updated' | 'updatedAsc' | 'created' | 'createdAsc' | 'title';
 
 export const NOTE_SORT_LABEL: Record<NoteSort, string> = {
-  updated: '更新日順',
-  created: '作成日順',
+  updated: '更新が新しい順',
+  updatedAsc: '更新が古い順',
+  created: '作成が新しい順',
+  createdAsc: '作成が古い順',
   title: 'タイトル順',
 };
 
@@ -161,12 +186,23 @@ export type NoteBlockInput =
       selectedText?: string | null;
       image?: string | null;
       source?: NoteSourceRef | null;
-    };
+    }
+  | { kind: 'image'; imageId: string; alt?: string; caption?: string | null };
+
+/**
+ * 挿入位置。省略すると末尾。
+ * ブロックの間の ＋ から差し込むために要る（`order` 列は持たず、配列の順序が正）。
+ */
+export interface NoteBlockInsert {
+  index?: number;
+}
 
 /** PATCH /webcoach/notes/:id/blocks/:blockId */
 export interface NoteBlockPatch {
   text?: string;
   answer?: string;
+  /** 画像ブロックの説明文 */
+  caption?: string | null;
 }
 
 /**

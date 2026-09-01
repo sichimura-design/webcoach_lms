@@ -89,58 +89,58 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             <span>{toast.message}</span>
 
             {toast.action && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const { onClick } = toast.action!;
-                    dismiss(toast.id);
-                    onClick();
-                  }}
-                  className="focus-visible:ring-2 focus-visible:ring-white"
-                  style={{
-                    flexShrink: 0,
-                    padding: '4px 12px',
-                    border: 0,
-                    borderRadius: 999,
-                    background: 'rgba(255,255,255,.20)',
-                    color: '#ffffff',
-                    fontFamily: 'inherit',
-                    fontSize: 12.5,
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {toast.action.label}
-                </button>
-
-                {/* 🔴 手で消せるようにする。トーストは z-9999 で、教材ページの
-                    右下ピル（LessonFloatingActions）を覆う位置にいる。
-                    action 付きは6秒残るので、消せないと次の操作が待たされる。 */}
-                <button
-                  type="button"
-                  onClick={() => dismiss(toast.id)}
-                  aria-label="閉じる"
-                  className="grid place-items-center focus-visible:ring-2 focus-visible:ring-white"
-                  style={{
-                    flexShrink: 0,
-                    width: 22,
-                    height: 22,
-                    border: 0,
-                    borderRadius: 999,
-                    background: 'transparent',
-                    color: '#ffffff',
-                    fontFamily: 'inherit',
-                    fontSize: 15,
-                    lineHeight: 1,
-                    cursor: 'pointer',
-                  }}
-                >
-                  ×
-                </button>
-              </>
+              <button
+                type="button"
+                onClick={() => {
+                  const { onClick } = toast.action!;
+                  dismiss(toast.id);
+                  onClick();
+                }}
+                className="focus-visible:ring-2 focus-visible:ring-white"
+                style={{
+                  flexShrink: 0,
+                  padding: '4px 12px',
+                  border: 0,
+                  borderRadius: 999,
+                  background: 'rgba(255,255,255,.20)',
+                  color: '#ffffff',
+                  fontFamily: 'inherit',
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {toast.action.label}
+              </button>
             )}
+
+            {/* 🔴 手で消せるようにする。トーストは z-9999 で、教材ページの
+                右下ピル（LessonFloatingActions）を覆う位置にいる。
+                消せないと次の操作が待たされる。
+                🔴 action の有無で出し分けない。案内文の長いトーストは
+                   durationMs を伸ばすので、action が無いものほど残る。 */}
+            <button
+              type="button"
+              onClick={() => dismiss(toast.id)}
+              aria-label="閉じる"
+              className="grid place-items-center focus-visible:ring-2 focus-visible:ring-white"
+              style={{
+                flexShrink: 0,
+                width: 22,
+                height: 22,
+                border: 0,
+                borderRadius: 999,
+                background: 'transparent',
+                color: '#ffffff',
+                fontFamily: 'inherit',
+                fontSize: 15,
+                lineHeight: 1,
+                cursor: 'pointer',
+              }}
+            >
+              ×
+            </button>
           </div>
         ))}
       </div>

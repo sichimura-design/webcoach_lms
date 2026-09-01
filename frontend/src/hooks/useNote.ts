@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import bffClient from '../services/bffClient';
-import { Note, NoteBlockInput, NoteBlockPatch } from '../types/notes';
+import { Note, NoteBlockInput, NoteBlockInsert, NoteBlockPatch } from '../types/notes';
+import { deleteNoteImage } from '../utils/noteImageStore';
 
 /**
  * ノート1件の読み書き。
@@ -66,12 +67,20 @@ export function useNote(noteId: string | null) {
     }
   }, [noteId, note, reload]);
 
+  /** index を渡すとその位置に差し込む（ブロック間の ＋ から挿入するため） */
   const addBlock = useCallback(
-    async (input: NoteBlockInput) => {
+    async (input: NoteBlockInput & NoteBlockInsert) => {
       if (!noteId) return null;
       try {
         const block = await bffClient.appendNoteBlock(noteId, input);
-        setNote((prev) => (prev ? { ...prev, blocks: [...prev.blocks, block] } : prev));
+        setNote((prev) => {
+          if (!prev) return prev;
+          const blocks = [...prev.blocks];
+          const at = input.index;
+          if (typeof at === 'number' && at >= 0 && at < blocks.length) blocks.splice(at, 0, block);
+          else blocks.push(block);
+          return { ...prev, blocks };
+        });
         return block;
       } catch {
         void reload();
@@ -89,13 +98,14 @@ export function useNote(noteId: string | null) {
         prev
           ? {
               ...prev,
-              blocks: prev.blocks.map((b) =>
-                b.id !== blockId
-                  ? b
-                  : b.kind === 'answer'
-                    ? { ...b, answer: patch.answer ?? b.answer }
-                    : { ...b, text: patch.text ?? b.text }
-              ),
+              blocks: prev.blocks.map((b) => {
+                if (b.id !== blockId) return b;
+                if (b.kind === 'answer') return { ...b, answer: patch.answer ?? b.answer };
+                if (b.kind === 'image') {
+                  return { ...b, caption: patch.caption !== undefined ? patch.caption : b.caption };
+                }
+                return { ...b, text: patch.text ?? b.text };
+              }),
             }
           : prev
       );
@@ -111,14 +121,17 @@ export function useNote(noteId: string | null) {
   const removeBlock = useCallback(
     async (blockId: string) => {
       if (!noteId) return;
+      // 画像ブロックなら IndexedDB の実体も落とす（消したのに容量が残るのを防ぐ）
+      const target = note?.blocks.find((b) => b.id === blockId);
       setNote((prev) => (prev ? { ...prev, blocks: prev.blocks.filter((b) => b.id !== blockId) } : prev));
       try {
         await bffClient.deleteNoteBlock(noteId, blockId);
+        if (target?.kind === 'image') void deleteNoteImage(target.imageId);
       } catch {
         void reload();
       }
     },
-    [noteId, reload]
+    [noteId, note, reload]
   );
 
   return { note, loading, error, reload, renameNote, toggleFavorite, addBlock, patchBlock, removeBlock };

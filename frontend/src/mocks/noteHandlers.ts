@@ -27,6 +27,7 @@ import {
   Note,
   NoteBlock,
   NoteBlockInput,
+  NoteBlockInsert,
   NoteBlockPatch,
   NoteClipRef,
   NoteCreateInput,
@@ -44,11 +45,18 @@ import {
 
 const delay = (ms = 200) => new Promise((resolve) => setTimeout(resolve, ms));
 
+/** 検索・書き出しに使う、そのブロックの文字列。画像は文字を持たない */
+function textOf(block: NoteBlock): string {
+  if (block.kind === 'answer') return `${block.question} ${block.answer}`;
+  if (block.kind === 'image') return block.caption ?? '';
+  return block.text;
+}
+
 /** 一覧カードの書き出し。記法（## / - / ==）は落として素の文にする */
 function excerptOf(note: Note): string {
   for (const block of note.blocks) {
     const raw =
-      block.kind === 'answer' ? block.question || block.answer : block.text;
+      block.kind === 'answer' ? block.question || block.answer : textOf(block);
     const plain = raw
       .split('\n')
       .map((line) => line.replace(/^\s*(##\s+|-\s+)/, '').replace(/==(.+?)==/g, '$1').trim())
@@ -79,9 +87,7 @@ function matchesQuery(note: Note, q: string): boolean {
     note.title,
     note.source?.courseName ?? '',
     note.source?.lessonTitle ?? '',
-    ...note.blocks.map((b) =>
-      b.kind === 'answer' ? `${b.question} ${b.answer}` : b.text
-    ),
+    ...note.blocks.map(textOf),
   ]
     .join(' ')
     .toLowerCase();
@@ -92,7 +98,7 @@ function matchesQuery(note: Note, q: string): boolean {
 function touchesLesson(note: Note, lessonId: number): boolean {
   if (note.source?.lessonId === lessonId) return true;
   return note.blocks.some(
-    (b) => b.kind !== 'text' && b.source?.lessonId === lessonId
+    (b) => (b.kind === 'clip' || b.kind === 'answer') && b.source?.lessonId === lessonId
   );
 }
 
@@ -100,6 +106,8 @@ function sortNotes(notes: Note[], sort: NoteSort): Note[] {
   const copy = [...notes];
   if (sort === 'title') return copy.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
   if (sort === 'created') return copy.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  if (sort === 'createdAsc') return copy.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  if (sort === 'updatedAsc') return copy.sort((a, b) => a.updatedAt.localeCompare(b.updatedAt));
   return copy.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
@@ -121,6 +129,17 @@ function buildBlock(input: NoteBlockInput, nowIso: string): NoteBlock | null {
       selectedText: input.selectedText ?? null,
       image: input.image ?? null,
       source: input.source ?? null,
+    };
+  }
+  if (input.kind === 'image') {
+    // 画像の中身は IndexedDB（utils/noteImageStore.ts）にあり、ここは参照キーだけ持つ
+    if (!input.imageId) return null;
+    return {
+      ...base,
+      kind: 'image',
+      imageId: input.imageId,
+      alt: input.alt ?? '',
+      caption: input.caption ?? null,
     };
   }
   return null;
@@ -262,10 +281,12 @@ export const noteHandlers = [
   }),
 
   // --- ブロック追加 ---
+  // index を渡すとその位置に差し込む（ブロック間の ＋ から挿入するため）。
+  // 省略・範囲外は末尾。order 列は持たず、配列の順序が正。
   http.post('*/api/webcoach/notes/:id/blocks', async ({ params, request }) => {
-    let input: NoteBlockInput | null = null;
+    let input: (NoteBlockInput & NoteBlockInsert) | null = null;
     try {
-      input = (await request.json()) as NoteBlockInput;
+      input = (await request.json()) as NoteBlockInput & NoteBlockInsert;
     } catch {
       return HttpResponse.json({ error: 'invalid body' }, { status: 400 });
     }
@@ -273,7 +294,11 @@ export const noteHandlers = [
     const block = input ? buildBlock(input, nowIso) : null;
     if (!block) return HttpResponse.json({ error: 'invalid block' }, { status: 400 });
 
-    const note = updateNote(String(params.id), (n) => n.blocks.push(block));
+    const at = input?.index;
+    const note = updateNote(String(params.id), (n) => {
+      if (typeof at === 'number' && at >= 0 && at < n.blocks.length) n.blocks.splice(at, 0, block);
+      else n.blocks.push(block);
+    });
     if (!note) return new HttpResponse(null, { status: 404 });
     return HttpResponse.json(block, { status: 201 });
   }),
@@ -291,8 +316,11 @@ export const noteHandlers = [
     const note = updateNote(String(params.id), (n) => {
       const block = n.blocks.find((b) => b.id === String(params.blockId));
       if (!block) return;
-      if (typeof patch.text === 'string' && block.kind !== 'answer') block.text = patch.text;
+      if (typeof patch.text === 'string' && (block.kind === 'text' || block.kind === 'clip')) {
+        block.text = patch.text;
+      }
       if (typeof patch.answer === 'string' && block.kind === 'answer') block.answer = patch.answer;
+      if (patch.caption !== undefined && block.kind === 'image') block.caption = patch.caption;
       block.updatedAt = new Date().toISOString();
       updated = block;
     });
