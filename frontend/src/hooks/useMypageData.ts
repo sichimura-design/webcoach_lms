@@ -33,7 +33,9 @@ export function useMypageData(userId: number | undefined) {
           fetchCareerGoal(userId),
           fetchResumeCourse(userId),
           fetchUserCourses(userId),
-          fetchStreak(userId),
+          // ストリークはEXPボーナス判定にしか使わない付随データ。ここが失敗しただけで
+          // プロフィール等ページ全体まで巻き添えでエラー表示にしないよう個別にcatchする。
+          fetchStreak(userId).catch(() => ({ days: 0, week: [] })),
         ]).then(([userProfile, monthlyGoal, careerGoal, resumableCourse, activeCourses, streak]) => ({
           userProfile,
           monthlyGoal,

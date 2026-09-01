@@ -716,11 +716,16 @@ class BFFClient {
   }
 
   /**
-   * 学習ストリーク（連続学習日数・週間の学習有無）取得
+   * 学習ストリーク（連続学習日数）取得
+   * 🔴 旧 `/webcoach/streak/{userid}` は実BFFに存在しない(モック専用ハンドラのみ)。
+   *    実装は StudySessionService 側の `/study/streak/{userid}`(getStudyStreak が使う経路)
+   *    に統合済みのため、こちらもそちらを呼ぶ。`week`(曜日別の学習有無)は実APIに無く、
+   *    かつ現状の呼び出し元(useMypageData → EXPボーナス判定)は `days` しか見ていないため空で返す。
    */
   async getStreak(userId: number): Promise<StreakInfo> {
-    const response = await this.api.get(`/webcoach/streak/${userId}`);
-    return response.data;
+    const response = await this.api.get(`/study/streak/${userId}`);
+    const data = response.data as StudyStreakInfo;
+    return { days: data.current_streak, week: [] };
   }
 
   /**
