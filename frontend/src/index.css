@@ -271,6 +271,33 @@ h1, h2, h3 {
   align-items: stretch;
 }
 
+/* ダッシュボード左カラム。中の並びは .mypage-dash-grid が2列か1列かで反転する。
+   🔴 「連続学習日数 ｜ KPI」の横割りは、左カラムがカード全幅のときだけ。
+      .mypage-dash-grid が2列のとき左カラムは最大でも 500px 前後しかなく、
+      そこから KPI 用の幅を引くと 7日ドットの1列が 30px 台になって
+      曜日ラベルとドットが破綻する（サイドバーを閉じた 1250〜1400px で顕著）。
+      なのでこの既定は「連続学習日数が全幅、下に KPI 2枚を横並び」。
+      横割りに切り替えるルールは下の 1250px / 1402px ブロックにある
+      （.mypage-dash-grid が1列に落ちるのと同じしきい値で反転させる）。 */
+.mypage-dash-left {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* 🔴 flex:1 で残り高さを KPI 行に吸わせる。連続学習日数を全幅にすると
+      左カラムが右のゲージ列より低くなりがちで、align-items:stretch の
+      ぶんだけ下に空きができて間延びして見える。
+      （左カラムが grid に変わる幅では flex:1 は無視される） */
+.mypage-dash-kpi {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+  flex: 1;
+}
+
 /* ゲージ（固定128px）と棒グラフの横並び。枠線付きの箱ごと1つのブロック */
 .mypage-dash-right {
   border: 1px solid var(--dc-border);
@@ -309,8 +336,22 @@ h1, h2, h3 {
              いまこのしきい値が見ているのは棒の太さだけ。）
    720px:  ゲージと棒グラフも縦積みに。128pxのリングを残したまま
            棒グラフを詰めると、棒の幅が16px未満になって本数が読めなくなる。 */
+/* 🔴 .mypage-dash-left の反転は必ず .mypage-dash-grid と同じブロックに置く。
+      左カラムがカード全幅になった＝連続学習日数だけで 1400px 使うことになり、
+      7日ドットが間延びするので「連続学習日数 ｜ KPI 縦積み」の横割りにする。
+      しきい値がずれると、片方だけ切り替わった中間の幅で崩れる。 */
 @media (max-width: 1250px) {
   .mypage-dash-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mypage-dash-left {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+    align-items: stretch;
+  }
+
+  .mypage-dash-kpi {
     grid-template-columns: 1fr;
   }
 }
@@ -326,6 +367,35 @@ h1, h2, h3 {
 /* サイドバー展開中は本文が 152px（224 − 72）細くなるぶんを body のクラスで補う */
 @media (max-width: 1402px) {
   body.sidebar-expanded .mypage-dash-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.sidebar-expanded .mypage-dash-left {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+    align-items: stretch;
+  }
+
+  body.sidebar-expanded .mypage-dash-kpi {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 🔴 スマホ幅は横割りをやめて縦積みへ。カード内側が 300px 前後まで落ちると
+      連続学習日数の 7 割＝約 200px しか残らず、1列 23px でドット(26px)が入らない。
+      🔴 body.sidebar-expanded 版も併記する。上の 1402px ブロックのほうが
+      詳細度が高く、クラス1つの指定では上書きできない。 */
+@media (max-width: 480px) {
+  .mypage-dash-left,
+  body.sidebar-expanded .mypage-dash-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 数字は display(28〜32px) 固定。1枠 100px 前後だと
+     「86時間」「40分」が2行になって高さが跳ねる */
+  .mypage-dash-kpi,
+  body.sidebar-expanded .mypage-dash-kpi {
     grid-template-columns: 1fr;
   }
 }
@@ -1045,19 +1115,9 @@ body.learning-immersive {
   }
 }
 
-/* ヒーロー下段の連絡先2セルと、前回振り返りの2カラム。
-   狭い画面では縦罫を消して素直に積む（180px の値が2つ横並びだと読めない）。 */
+/* 前回振り返りの2カラム。狭い画面では素直に積む
+   （180px の値が2つ横並びだと読めない）。 */
 @media (max-width: 760px) {
-  .cg-contacts {
-    grid-template-columns: 1fr !important;
-  }
-  .cg-contacts > div {
-    border-right: 0 !important;
-    border-bottom: 1px solid #efe9e0;
-  }
-  .cg-contacts > div:last-child {
-    border-bottom: 0;
-  }
   .cg-last-2col {
     grid-template-columns: 1fr !important;
   }
@@ -1127,11 +1187,13 @@ body.learning-immersive {
 /* ホームの「AIアプリでできること」3列グリッド（デザイン 1a）。
    1a は 1280px で3列。狭い画面では2列→1列に落とす。
    カテゴリ（学習／制作／キャリア／そのほか）ごとにこのグリッドを1つ使う。 */
+/* 🔴 align-items は start。stretch にすると、1枚の説明を開いた行の
+   他のカードまで一緒に伸びて空白の箱になる。 */
 .ai-home-apps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
-  align-items: stretch;
+  align-items: start;
 }
 
 @media (max-width: 1023px) {
@@ -1150,25 +1212,15 @@ body.learning-immersive {
   box-shadow: 0 4px 16px -8px rgba(60, 48, 32, .2);
 }
 
+/* カードは「本体（押すと始まる）」と「開閉」の2つのボタンに割れているので、
+   どちらを押すことになるかを地色で見せる。 */
+.ai-home-app-start:hover {
+  background: #fdf7f3;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ai-home-app-card { transition: none; }
   .ai-home-app-card:hover { transform: none; }
-}
-
-/* できること帯。狭い画面では見出しごと縦に積む（1a は横1行） */
-.ai-home-can {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 22px;
-}
-
-@media (max-width: 767px) {
-  .ai-home-can {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 10px;
-  }
 }
 
 :root {

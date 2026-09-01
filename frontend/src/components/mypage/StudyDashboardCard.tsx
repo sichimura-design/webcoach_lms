@@ -64,6 +64,17 @@ const BLOCK_LABEL_STYLE: CSSProperties = {
   marginBottom: 14,
 };
 
+/**
+ * 右カラムの2つの見出し（今週の学習時間・今週の目標）の行。
+ * 🔴 「今週の目標」だけ行内に「目標を変更」ボタンが入るので、素だと行の高さが
+ *    ボタンぶん高くなり、隣の「今週の学習時間」と文字の位置がずれる。
+ *    ボタンの高さ（14px/normal + padding 5px + border 1px = 32px）を両方に敷いて揃える。
+ */
+const RIGHT_LABEL_ROW_STYLE: CSSProperties = {
+  minHeight: 32,
+  marginBottom: 12,
+};
+
 type Day = {
   key: string;
   label: string;
@@ -83,6 +94,19 @@ function scaleMaxOf(minutes: number[], perDayTarget: number): number {
 function formatHoursShort(min: number): string {
   if (min <= 0) return '0h';
   return `${(min / 60).toFixed(1).replace(/\.0$/, '')}h`;
+}
+
+/**
+ * ストリークの曜日1列に入れる学習時間。
+ * 🔴 formatMinutesHM をそのまま使わない。「1時間20分」は5文字あり、
+ *    左カラムが約500pxのとき1列62px（12px フォント）に入らず切れる。
+ *    1時間未満は「45分」、それ以上は棒グラフのラベルと同じ h 表記に落として
+ *    最長4文字（「1.3h」）に収める。
+ */
+function formatDayShort(min: number): string {
+  if (min <= 0) return '0分';
+  if (min < 60) return `${min}分`;
+  return formatHoursShort(min);
 }
 
 /** KPI 1枚。StudyRecordCard の MiniStat と同じ折り返し方針（単位は数値より小さく） */
@@ -182,6 +206,10 @@ export function StudyDashboardCard({
 
   const streakDays = stats?.streak.currentDays ?? 0;
   const bestDays = stats?.streak.bestDays ?? 0;
+  // 自己ベストまでの進捗。判定は LearningStreakCard / StreakHeroCard と同じ式に揃える
+  const isNewBest = streakDays > 0 && streakDays >= bestDays;
+  const bestRemain = Math.max(0, bestDays - streakDays);
+  const bestRatio = bestDays > 0 ? Math.min(1, streakDays / bestDays) : 0;
 
   return (
     <section style={CARD_STYLE}>
@@ -214,14 +242,28 @@ export function StudyDashboardCard({
       </div>
 
       <div className="mypage-dash-grid">
-        {/* ── 左: 連続学習日数 ＋ KPI 2枚 ───────────── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14, minWidth: 0 }}>
+        {/* ── 左: 連続学習日数 ＋ KPI 2枚 ─────────────
+            並びは幅で反転する（index.css の .mypage-dash-left）。
+              ・このグリッドが2列＝左カラムが約500px:
+                  連続学習日数が全幅、下に KPI 2枚を横並び
+              ・1列＝左カラムがカード全幅（サイドバー展開時など）:
+                  連続学習日数 ｜ KPI 2枚を縦積み
+            🔴 どちらの向きも決め打ちにしない。7日ドットは1行に7列なので、
+               狭いほうで横割りにすると1列が30px台になってドットが潰れ、
+               広いほうで全幅にすると1400px を1行に間延びさせることになる。 */}
+        <div className="mypage-dash-left">
+          {/* 🔴 flex column。横割りのとき、この箱は隣の KPI 列（2枚ぶん）に
+                 引き伸ばされる。中身が上に詰まったままだと下に大きな白が残るので、
+                 曜日グリッドに flex:1 を持たせて余りを吸わせる。 */}
           <div
             style={{
               background: 'var(--dc-soft-100)',
               border: '1px solid var(--dc-soft-200)',
               borderRadius: 14,
               padding: '16px 18px',
+              minWidth: 0,
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <div style={BLOCK_LABEL_STYLE}>
@@ -246,14 +288,22 @@ export function StudyDashboardCard({
               </span>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 4 }}>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(7, 1fr)',
+                gap: 4,
+                flex: 1,
+                alignContent: 'stretch',
+              }}
+            >
               {days.map((d) => {
                 const on = d.isStudyDay || (d.isToday && d.minutes > 0);
                 return (
                   <div
                     key={d.key}
                     title={`${d.label}曜日 ${formatMinutesHM(d.minutes)}`}
-                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5 }}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 5, minWidth: 0 }}
                   >
                     <span
                       style={{
@@ -268,10 +318,16 @@ export function StudyDashboardCard({
                     >
                       {d.isToday ? '今日' : d.label}
                     </span>
+                    {/* 🔴 丸は列幅に追従させる（最大34px）。26px 固定にすると、
+                           スマホ幅で1列が33px前後まで落ちたときに隣とぶつかる。
+                        🔴 margin:'auto 0' が余り高さの受け皿。箱が引き伸ばされたとき
+                           丸が上下の中央に寄り、下だけに白が残るのを防ぐ。 */}
                     <span
                       style={{
-                        width: 26,
-                        height: 26,
+                        width: '100%',
+                        maxWidth: 34,
+                        aspectRatio: '1 / 1',
+                        margin: 'auto 0',
                         borderRadius: 9999,
                         display: 'grid',
                         placeItems: 'center',
@@ -286,19 +342,81 @@ export function StudyDashboardCard({
                     >
                       {on && (
                         <Flame
-                          size={12}
+                          size={14}
                           fill={d.isToday ? '#fff' : 'var(--dc-primary)'}
                           strokeWidth={0}
                         />
                       )}
                     </span>
+                    {/* 🔴 まだ来ていない日に「0分」を出さない（このファイル冒頭の方針）。
+                           起きていない不足を先に見せることになるので、来ていないことが
+                           分かる「–」に留める。高さは常に確保して升目を揃える。 */}
+                    <span
+                      className="dc-num"
+                      style={{
+                        fontSize: 'var(--dc-fs-caption)',
+                        fontWeight: d.isToday ? 700 : 400,
+                        color: d.isFuture
+                          ? 'var(--dc-text-subtle)'
+                          : on
+                            ? 'var(--dc-text-body)'
+                            : 'var(--dc-text-muted)',
+                        maxWidth: '100%',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {loading ? '…' : d.isFuture ? '–' : formatDayShort(d.minutes)}
+                    </span>
                   </div>
                 );
               })}
             </div>
+
+            {/* 自己ベストまでの進捗。右ブロックの棒グラフが「今週の時間」を見せるのに対し、
+                ここは「日数がどこまで伸びたか」を見せる。
+                🔴 文言は LearningStreakCard / StreakHeroCard と揃える（更新中は煽らない）。
+                🔴 ベストが0（記録がまだ無い）ときは出さない。0/0 の空バーになるだけ。 */}
+            {!loading && bestDays > 0 && (
+              <div style={{ marginTop: 16 }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 6, flexWrap: 'wrap' }}>
+                  <span
+                    style={{
+                      fontSize: 'var(--dc-fs-caption)',
+                      fontWeight: 700,
+                      color: isNewBest ? 'var(--dc-gold-text)' : 'var(--dc-text-body)',
+                    }}
+                  >
+                    {isNewBest ? '自己ベスト更新中！' : `あと${bestRemain}日で自己ベスト`}
+                  </span>
+                  <span style={{ flex: 1 }} />
+                  <span
+                    className="dc-num"
+                    style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}
+                  >
+                    {streakDays} / {bestDays}日
+                  </span>
+                </div>
+                {/* 進捗はすぐ上のテキストが言い切っているので、バーは装飾として隠す */}
+                <div
+                  aria-hidden="true"
+                  style={{ height: 8, borderRadius: 9999, background: 'var(--dc-sunken)', overflow: 'hidden' }}
+                >
+                  <div
+                    style={{
+                      width: `${Math.round(bestRatio * 100)}%`,
+                      height: '100%',
+                      borderRadius: 9999,
+                      background: isNewBest ? 'var(--dc-gold)' : 'var(--dc-primary)',
+                    }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+          <div className="mypage-dash-kpi">
             <MiniStat
               label="総学習時間"
               icon={<Clock size={14} strokeWidth={2} color="var(--dc-primary)" />}
@@ -323,7 +441,7 @@ export function StudyDashboardCard({
         {/* ── 右: 今週の学習時間ゲージ ＋ 今週の目標 ───────────── */}
         <div className="mypage-dash-right">
           <div style={{ flex: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <div style={{ ...BLOCK_LABEL_STYLE, alignSelf: 'flex-start', marginBottom: 12 }}>
+            <div style={{ ...BLOCK_LABEL_STYLE, alignSelf: 'flex-start', ...RIGHT_LABEL_ROW_STYLE }}>
               <span style={{ width: 9, height: 9, borderRadius: 9999, background: '#2BB49A' }} />
               今週の学習時間
             </div>
@@ -375,7 +493,7 @@ export function StudyDashboardCard({
           </div>
 
           <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-            <div style={{ ...BLOCK_LABEL_STYLE, marginBottom: 10 }}>
+            <div style={{ ...BLOCK_LABEL_STYLE, ...RIGHT_LABEL_ROW_STYLE }}>
               <span style={{ width: 9, height: 9, borderRadius: 9999, background: '#3B82F6' }} />
               今週の目標
               <span style={{ flex: 1 }} />
