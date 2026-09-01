@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Clock, Flame } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { AppHeader } from '../shared';
+import { AppFooter, AppHeader } from '../shared';
 import { useStudyStats } from '../../hooks/useStudyStats';
 import { useStudyActivities } from '../../hooks/useStudyActivities';
 import { useStreakRanking, useStudyRanking } from '../../hooks/useRankings';
@@ -177,17 +177,7 @@ function StudyLogPage() {
           </div>
         )}
 
-        <footer
-          style={{
-            textAlign: 'center',
-            fontSize: 'var(--dc-fs-caption)',
-            color: 'var(--dc-text-subtle)',
-            padding: '32px 0 0',
-            marginTop: 'auto',
-          }}
-        >
-          2026 &copy; WEBCOACH
-        </footer>
+        <AppFooter />
       </main>
     </div>
   );

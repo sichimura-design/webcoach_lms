@@ -23,6 +23,9 @@ interface CoachingTaskCardProps {
   userId: number | undefined;
 }
 
+/** カードに並べるタスクの上限。増やすと左の ResumeStudyCard との高さが揃わなくなる */
+const MAX_ROWS = 3;
+
 const CARD_STYLE: CSSProperties = {
   flex: 1,
   background: 'var(--dc-surface)',
@@ -33,18 +36,6 @@ const CARD_STYLE: CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
 };
-
-/** 「8/17（月）20:00」。ISO文字列でも「8/17（月）」形式でもそのまま出せるようにする */
-const WEEKDAY_JA = ['日', '月', '火', '水', '木', '金', '土'];
-
-function formatSessionDate(raw: string): string {
-  const d = new Date(raw);
-  if (Number.isNaN(d.getTime())) return raw; // 既に整形済みの文字列はそのまま
-  const hh = d.getHours();
-  const mm = d.getMinutes();
-  const time = hh || mm ? ` ${hh}:${String(mm).padStart(2, '0')}` : '';
-  return `${d.getMonth() + 1}/${d.getDate()}（${WEEKDAY_JA[d.getDay()]}）${time}`;
-}
 
 function TaskRow({ item, onToggle, disabled }: { item: PlanItem; onToggle: () => void; disabled: boolean }) {
   const done = item.completed;
@@ -109,9 +100,28 @@ function TaskRow({ item, onToggle, disabled }: { item: PlanItem; onToggle: () =>
 
 export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
   const navigate = useNavigate();
-  const { items, nextSession, loading, saving, save } = useNextCoachingPlan(userId);
+  const { items, loading, saving, save } = useNextCoachingPlan(userId);
   // 連打で複数の保存が飛ぶのを防ぐ。どの行を押したかはボタンの見た目に出さない
   const [pending, setPending] = useState(false);
+
+  /*
+   * カードに出すのは先頭 MAX_ROWS 件だけ。
+   * ============================================================
+   * 🔴 全件出さない。このカードは左の ResumeStudyCard と同じ行に並んでいて
+   *    （.mypage-8a-grid は align-items:stretch）、行が増えるとこのカードだけ
+   *    背が伸びて左側に大きな空白ができる。タスクは
+   *    coachingGoalsStore の reflectGoalCandidates が確定のたびに追記するので、
+   *    4件以上は普通に起きる（初期データがちょうど3件なので気づきにくい）。
+   * 🔴 未完了を先に詰める。ただ先頭から3件取ると、完了済みが3件並んだ日に
+   *    「いまやること」が1件も見えないカードになる。
+   *    並び自体は崩さない（それぞれの中では元の順序を保つ）。
+   * 🔴 溢れたぶんは件数だけ出して /coaching へ送る。ここで全件見せる役は持たない
+   *    （編集もあちらが正）。
+   * ============================================================
+   */
+  const [undone, done] = [items.filter((it) => !it.completed), items.filter((it) => it.completed)];
+  const visible = [...undone, ...done].slice(0, MAX_ROWS);
+  const hidden = items.length - visible.length;
 
   const toggle = async (target: PlanItem) => {
     if (pending || saving) return;
@@ -128,7 +138,7 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
 
   return (
     <section style={CARD_STYLE}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
         <h2
           style={{
             margin: 0,
@@ -161,12 +171,6 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
         </button>
       </div>
 
-      <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)', margin: '0 0 16px' }}>
-        {nextSession
-          ? `次回コーチング ${formatSessionDate(nextSession.date)} までにやること`
-          : '次回コーチングまでにやること'}
-      </div>
-
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
         {loading ? (
           <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-subtle)', padding: '8px 0' }}>
@@ -184,9 +188,30 @@ export function CoachingTaskCard({ userId }: CoachingTaskCardProps) {
             まだタスクがありません。コーチング記録を確定すると、決まったタスクがここに入ります。
           </div>
         ) : (
-          items.map((it) => (
+          visible.map((it) => (
             <TaskRow key={it.no} item={it} onToggle={() => toggle(it)} disabled={pending || saving} />
           ))
+        )}
+
+        {hidden > 0 && (
+          <button
+            type="button"
+            onClick={() => navigate('/coaching')}
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+            style={{
+              alignSelf: 'flex-start',
+              border: 0,
+              background: 'transparent',
+              padding: '2px 0',
+              fontFamily: 'inherit',
+              fontSize: 'var(--dc-fs-body)',
+              fontWeight: 600,
+              color: 'var(--dc-primary)',
+              cursor: 'pointer',
+            }}
+          >
+            ほか {hidden} 件を見る ›
+          </button>
         )}
       </div>
 

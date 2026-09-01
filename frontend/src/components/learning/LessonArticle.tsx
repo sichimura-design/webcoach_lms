@@ -2,7 +2,7 @@ import { RefObject, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, Check, Clock, List, Sparkles } from 'lucide-react';
 import { color, font, radius, shadow } from '../../theme/webcoachTheme';
 import { LessonDoc } from '../../types/lesson';
-import { LEARNING_TYPE_LABEL, MATERIAL_FORMAT_LABEL } from '../../constants/learningTaxonomy';
+import { MATERIAL_FORMAT_LABEL } from '../../constants/learningTaxonomy';
 import type { LearningType } from '../../constants/learningTaxonomy';
 import LessonBlockView from './LessonBlockView';
 import LessonImageZoom from './LessonImageZoom';
@@ -135,10 +135,9 @@ function NextUpCard({
   const nextStyle = nextEmphasis === 'primary' ? primarySmButton : outlineButton;
   const nextIconColor = nextEmphasis === 'primary' ? color.textOnPrimary : color.textStrong;
 
-  const metaBits = [
-    nextMeta?.learningType ? LEARNING_TYPE_LABEL[nextMeta.learningType] : null,
-    nextMeta?.minutes ? `読了目安 ${nextMeta.minutes}分` : null,
-  ].filter(Boolean);
+  // 🔴 学習タイプ（演習／基礎知識…）はここに出さない。選ぶ判断に使われていなかったので
+  //    アプリ全体で表示をやめた。残すのは目次から取れる実データだけ。
+  const metaBits = [nextMeta?.minutes ? `読了目安 ${nextMeta.minutes}分` : null].filter(Boolean);
 
   return (
     <div
@@ -277,17 +276,13 @@ export function LessonArticle({
           padding: 'clamp(24px, 4vw, 48px)',
         }}
       >
-        {/* ── ヘッダー：カテゴリ・タイトル・リード ── */}
+        {/* ── ヘッダー：タイトル・リード ──
+            🔴 タイトルの上に学習タイプ（演習／基礎知識…）の eyebrow を出していたが撤去した。
+               受講生が読むのはレッスン名で、分類名は選ぶ判断に使われていなかった。 */}
         <header style={{ textAlign: 'center', marginBottom: 40 }}>
-          {doc.learningType && (
-            <div style={{ ...font.eyebrow, color: color.primary }}>
-              {LEARNING_TYPE_LABEL[doc.learningType]}
-            </div>
-          )}
-
           <h1
             style={{
-              margin: '14px 0 0',
+              margin: 0,
               fontSize: 'clamp(24px, 3.4vw, 38px)',
               fontWeight: 900,
               lineHeight: 1.35,

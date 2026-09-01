@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen, ChevronRight } from 'lucide-react';
 import { bffClient } from '../services/bffClient';
-import { AppHeader } from './shared';
+import { AppFooter, AppHeader } from './shared';
 import { CourseImage } from './shared/CourseImage';
 import { useAuth } from '../contexts/AuthContext';
 import { useAsyncData } from '../hooks/useAsyncData';
@@ -205,12 +205,7 @@ function LearningCoursesPage() {
         </main>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-brand-footer h-10 flex items-center justify-center">
-        <span className="text-[11.4px] font-bold text-white" style={{ letterSpacing: '0.6px' }}>
-          2026 &copy; WEBCOACH
-        </span>
-      </footer>
+      <AppFooter style={{ padding: '32px 0 24px' }} />
     </div>
   );
 }

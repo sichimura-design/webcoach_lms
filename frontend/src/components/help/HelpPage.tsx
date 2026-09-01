@@ -14,7 +14,7 @@ import { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FileText, HelpCircle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { AppHeader } from '../shared';
+import { AppFooter, AppHeader } from '../shared';
 import { color, font, radius, shadow } from '../../theme/webcoachTheme';
 
 interface Section {
@@ -299,9 +299,7 @@ function HelpPage() {
 
       </main>
 
-      <footer className="h-10 flex items-center justify-center" style={{ background: '#2B2629' }}>
-        <span className="text-[11.4px] font-bold text-white">2026 &copy; WEBCOACH</span>
-      </footer>
+      <AppFooter style={{ padding: '32px 0 24px' }} />
     </div>
   );
 }

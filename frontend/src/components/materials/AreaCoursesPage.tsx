@@ -286,7 +286,7 @@ function AreaCoursesPage() {
         )}
 
         <p style={{ textAlign: 'center', fontSize: 12, color: t.color.text.subtle, marginTop: 4 }}>
-          © 2026 WEBCOACH Inc.
+          © 2026 WEBCOACH
         </p>
       </main>
     </div>

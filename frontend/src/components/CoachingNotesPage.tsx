@@ -547,7 +547,7 @@ export default function CoachingNotesPage() {
           </>
         )}
 
-        <p style={{ textAlign: 'center', fontSize: 12, color: C.faint, marginTop: 4 }}>© 2026 WEBCOACH Inc.</p>
+        <p style={{ textAlign: 'center', fontSize: 12, color: C.faint, marginTop: 4 }}>© 2026 WEBCOACH</p>
       </main>
 
       {consentModalOpen && (

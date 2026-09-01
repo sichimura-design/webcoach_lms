@@ -149,8 +149,8 @@ export function LessonTopBar({
           </>
         )}
 
-        {/* 記録中のときだけ出す。この画面は右上の StudySessionIndicator を出さない
-            （二重表示になる）ので、ここを消すと計測中であることが分からなくなる。
+        {/* 記録中のときだけ出す。この画面はサイドバー（AppHeader）を描かない＝
+            SidebarStudyTimer が出ないので、ここを消すと計測中であることが分からなくなる。
             開始は StudySessionHost の打診ポップが担うので、ここに開始CTAは無い。 */}
         <LessonMiniTimer courseId={courseId} />
       </div>

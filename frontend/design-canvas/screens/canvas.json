@@ -1,0 +1,30 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 1180, "title": "STU-01 マイページ /mypage" },
+    { "file": "Courses.dc.html", "x": 1600, "y": 0, "w": 1512, "h": 1250, "title": "STU-03 学習する /courses" }
+  ],
+  "annotations": [
+    {
+      "id": "about",
+      "x": 0,
+      "y": -260,
+      "w": 620,
+      "text": "dev/miyabe の現行実装を写したカタログ。\n実装を見ながら手で起こしたもので、自動変換ではない。\n寸法・色は frontend/design-canvas/_capture/ に撮った実画面の computed style から取っている。\n\n静止画のカタログなので、状態遷移・タイマー・ドロワーの開閉といった「動き」は入らない。\n必要なものは状態ごとに別アートボードとして足していく。\n教材サムネイル・マスコットは画像を持ち込めないためプレースホルダ。"
+    },
+    {
+      "id": "stu-01",
+      "x": 0,
+      "y": -150,
+      "w": 620,
+      "text": "STU-01 /mypage — components/MyPage.tsx（30ファイル・3888行）\nトークン系統: --dc-*（index.css の .mypage-3d）\nこの画面と /study-log だけが --dc-* 系。ほかの画面と色が違うのは意図的。"
+    },
+    {
+      "id": "stu-03",
+      "x": 1600,
+      "y": -150,
+      "w": 620,
+      "text": "STU-03 /courses — components/MaterialsTopPage.tsx（3ファイル・789行）\nトークン系統: theme/tokens.ts（--dc-* とは別系統。混ぜない）\n\n唯一 useScaleToFit(1440) を使う画面。1440px の固定キャンバスを transform:scale で\n使える幅に縮めて収める作りなので、ここでは縮尺1の設計値そのままを描いている。"
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

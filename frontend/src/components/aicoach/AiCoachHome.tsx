@@ -1,22 +1,11 @@
 import { useRef, useState, type CSSProperties } from 'react';
-import {
-  ArrowUp,
-  Check,
-  ChevronRight,
-  HelpCircle,
-  History,
-  ImagePlus,
-  Info,
-  Sparkles,
-  X,
-} from 'lucide-react';
+import { ArrowUp, ChevronDown, HelpCircle, History, ImagePlus, Sparkles, X } from 'lucide-react';
 import {
   AiSkillId,
   AI_SKILL_CATEGORY_LABEL,
   AI_SKILL_CATEGORY_ORDER,
   AI_SKILL_META,
   ConcreteAiSkillId,
-  CONCRETE_AI_SKILLS,
   skillsInCategory,
 } from '../../types/aiSkill';
 import SkillSelector from '../learning/SkillSelector';
@@ -62,10 +51,7 @@ interface AiCoachHomeProps {
   onToggleHistory: () => void;
 }
 
-/** 1a の「できること」帯。相談の当たりを3つだけ見せる（増やすと読まれない） */
-const CAN_DO = ['ノートをもとに復習', '制作物の添削', '次に進める学習の相談'];
-
-/** コンポーザーと できること帯 の幅。1a の 760px */
+/** コンポーザーの幅。1a の 760px */
 const CENTER_WIDTH = 760;
 
 export function AiCoachHome({
@@ -78,6 +64,20 @@ export function AiCoachHome({
   const [image, setImage] = useState<string | null>(null);
   const [skillId, setSkillId] = useState<AiSkillId>('auto');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  /**
+   * 説明を開いているアプリ。
+   * 🔴 既定は全部たたむ。カードは「名前＋サムネイル」だけの1行にして、
+   *    11枚を一覧として読めるようにするのがこの画面の狙い（説明を全部載せると壁になる）。
+   *    複数同時に開けてよい（見比べる操作を邪魔しない）。
+   */
+  const [openDetails, setOpenDetails] = useState<Set<ConcreteAiSkillId>>(new Set());
+
+  const toggleDetails = (id: ConcreteAiSkillId) =>
+    setOpenDetails((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(id)) next.add(id);
+      return next;
+    });
 
   const attachImage = (file: File) => {
     if (!file.type.startsWith('image/')) return;
@@ -191,7 +191,8 @@ export function AiCoachHome({
                 submit();
               }
             }}
-            placeholder="AIに相談する…（例：バナーの配色を見てほしい／案件の応募文を書きたい）"
+            aria-label="AIコーチへの相談内容"
+            placeholder="例：バナーの配色を見てほしい／案件の応募文を書きたい"
             style={{
               display: 'block',
               width: '100%',
@@ -309,57 +310,18 @@ export function AiCoachHome({
           </div>
         </div>
 
-        {/* 「AI選択できる？」の答えを、選ばなかった人にも見えるところに置く */}
-        <div
-          className="flex items-center justify-center"
-          style={{ gap: 6, marginTop: 12, fontSize: 12.5, color: 'var(--dc-text-muted)' }}
-        >
-          <Info size={14} />
-          相談内容に応じて、最適なAIが自動で選ばれます
-        </div>
-
-        {/* ── できること ──
-            何を書けばいいか分からない人向けの当たり。カードにせず帯1本に留めるのは、
-            ここで選択肢を増やすと入力欄から目が離れるため。 */}
-        <div
-          className="ai-home-can"
-          style={{
-            maxWidth: CENTER_WIDTH,
-            margin: '20px auto 0',
-            padding: '16px 24px',
-            borderRadius: 'var(--dc-radius-lg)',
-            background: 'var(--dc-tint-50)',
-          }}
-        >
-          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--dc-text)', flexShrink: 0 }}>
-            できること
-          </span>
-          {CAN_DO.map((label) => (
-            <span key={label} className="flex items-center" style={{ gap: 8, minWidth: 0 }}>
-              <Check
-                size={15}
-                strokeWidth={2}
-                style={{ color: 'var(--dc-primary)', flexShrink: 0 }}
-              />
-              <span style={{ fontSize: 13, color: 'var(--dc-text-body)' }}>{label}</span>
-            </span>
-          ))}
-        </div>
+        {/* 🔴 入力欄の下にあった説明2つは撤去した。戻さないこと。
+               ・「相談内容に応じて、最適なAIが自動で選ばれます」
+               ・「できること」帯（ノートをもとに復習／制作物の添削／…）
+               どちらも下のカード一覧が実物で示しているので、
+               ゼロ状態の文字量を増やすだけになっていた。 */}
 
         {/* ── AIアプリでできること ──
             機能を見て選びたい人の入口。並びは AI_SKILL_META の宣言順（固定）で、
             「最近使った順」に並べ替えない。毎回場所が変わると覚えられないため。 */}
-        <div
-          className="flex items-baseline"
-          style={{ gap: 10, flexWrap: 'wrap', margin: '36px 0 4px' }}
-        >
-          <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: 'var(--dc-text)' }}>
-            AIアプリでできること
-          </h3>
-          <span style={{ fontSize: 12.5, color: 'var(--dc-text-muted)' }}>
-            全{CONCRETE_AI_SKILLS.length}種類・押すとその場で始まります
-          </span>
-        </div>
+        <h3 style={{ margin: '36px 0 4px', fontSize: 18, fontWeight: 700, color: 'var(--dc-text)' }}>
+          AIアプリでできること
+        </h3>
 
         {AI_SKILL_CATEGORY_ORDER.map((category) => (
           <section key={category} style={{ marginTop: 24 }}>
@@ -381,83 +343,136 @@ export function AiCoachHome({
     </div>
   );
 
-  /** アプリ1枚。カテゴリごとに同じ形で並べるので描画だけ切り出す */
+  /**
+   * アプリ1枚。既定は「サムネイル＋名前」の1行で、説明はシェブロンで開く。
+   *
+   * 🔴 器は <div>。カード全体を <button> にすると、中に置く開閉ボタンが
+   *    button の入れ子（不正なHTML／キーボード操作が壊れる）になる。
+   *    代わりに「本体ボタン（押すと始まる）」と「開閉ボタン」の2つを並べ、
+   *    押した先が違うことをホバーの地色で見せる。
+   * 🔴 本体ボタンは1クリックでそのモードに入る。ここを2クリック（開いてから始める）に
+   *    しないこと。アプリを選ぶ人はカードの名前だけで選んでいる。
+   */
   function renderCard(id: ConcreteAiSkillId) {
     const meta = AI_SKILL_META[id];
     const Icon = AI_SKILL_ICON[meta.icon];
+    const open = openDetails.has(id);
+    const detailsId = `ai-app-details-${id}`;
+
     return (
-      <button
+      <div
         key={id}
-        type="button"
-        onClick={() => onSelectSkill(id)}
-        className="ai-home-app-card flex items-start text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        className="ai-home-app-card"
         style={{
-          gap: 14,
-          height: '100%',
-          padding: '18px 20px',
           border: '1px solid var(--dc-border)',
           borderRadius: 'var(--dc-radius-lg)',
           background: 'var(--dc-surface)',
           boxShadow: 'var(--dc-shadow-card)',
-          cursor: 'pointer',
-          fontFamily: 'inherit',
+          overflow: 'hidden',
         }}
       >
-        <span
-          aria-hidden
-          className="grid place-items-center flex-shrink-0"
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 'var(--dc-radius-md)',
-            background: 'var(--dc-soft-100)',
-            color: 'var(--dc-primary)',
-          }}
-        >
-          <Icon size={19} />
-        </span>
-        <span style={{ flex: 1, minWidth: 0 }}>
-          <span
+        <div className="flex items-stretch">
+          <button
+            type="button"
+            onClick={() => onSelectSkill(id)}
+            className="ai-home-app-start flex items-center text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={{
-              display: 'block',
-              fontSize: 14.5,
-              fontWeight: 700,
-              color: 'var(--dc-text)',
+              flex: 1,
+              minWidth: 0,
+              gap: 12,
+              padding: '14px 8px 14px 16px',
+              border: 0,
+              background: 'transparent',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
             }}
           >
-            {meta.shortLabel}
-          </span>
-          <span
+            <span
+              aria-hidden
+              className="grid place-items-center flex-shrink-0"
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 'var(--dc-radius-md)',
+                background: 'var(--dc-soft-100)',
+                color: 'var(--dc-primary)',
+              }}
+            >
+              <Icon size={18} />
+            </span>
+            <span
+              className="truncate"
+              style={{ fontSize: 14.5, fontWeight: 700, color: 'var(--dc-text)' }}
+            >
+              {meta.shortLabel}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => toggleDetails(id)}
+            aria-expanded={open}
+            aria-controls={detailsId}
+            aria-label={`${meta.shortLabel}の説明を${open ? '閉じる' : '開く'}`}
+            className="grid place-items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD] hover:bg-[#FDF7F3]"
             style={{
-              display: 'block',
-              marginTop: 4,
-              fontSize: 12.5,
-              lineHeight: 1.7,
-              color: 'var(--dc-text-muted)',
-            }}
-          >
-            {meta.description}
-          </span>
-          {/* 名前と説明だけでは選べない。「自分がいまその状況か」で選ばせる
-              （一覧ページを畳んだ分、その手がかりをここへ持ってきた） */}
-          <span
-            style={{
-              display: 'block',
-              marginTop: 8,
-              fontSize: 11.5,
-              lineHeight: 1.7,
+              width: 44,
+              flex: 'none',
+              border: 0,
+              borderLeft: '1px solid var(--dc-border)',
+              background: 'transparent',
               color: 'var(--dc-text-subtle)',
+              cursor: 'pointer',
             }}
           >
-            <span style={{ color: 'var(--dc-primary)', fontWeight: 700 }}>こんなときに：</span>
-            {meta.useCase}
-          </span>
-        </span>
-        <ChevronRight
-          size={16}
-          style={{ color: 'var(--dc-text-subtle)', alignSelf: 'center', flexShrink: 0 }}
-        />
-      </button>
+            <ChevronDown
+              size={16}
+              style={{
+                transform: open ? 'rotate(180deg)' : 'none',
+                transition: 'transform 160ms var(--dc-ease)',
+              }}
+            />
+          </button>
+        </div>
+
+        {open && (
+          <div
+            id={detailsId}
+            style={{
+              padding: '0 16px 16px',
+              borderTop: '1px solid var(--dc-border)',
+              paddingTop: 12,
+            }}
+          >
+            <p style={{ margin: 0, fontSize: 12.5, lineHeight: 1.7, color: 'var(--dc-text-muted)' }}>
+              {meta.description}
+            </p>
+            {/* 何を入力すればいいか・どんな場面か。名前だけでは選べない人向けの手がかり */}
+            <p
+              style={{
+                margin: '8px 0 0',
+                fontSize: 11.5,
+                lineHeight: 1.7,
+                color: 'var(--dc-text-subtle)',
+              }}
+            >
+              <span style={{ color: 'var(--dc-primary)', fontWeight: 700 }}>入力するもの：</span>
+              {meta.inputHint}
+            </p>
+            <p
+              style={{
+                margin: '4px 0 0',
+                fontSize: 11.5,
+                lineHeight: 1.7,
+                color: 'var(--dc-text-subtle)',
+              }}
+            >
+              <span style={{ color: 'var(--dc-primary)', fontWeight: 700 }}>こんなときに：</span>
+              {meta.useCase}
+            </p>
+          </div>
+        )}
+      </div>
     );
   }
 }

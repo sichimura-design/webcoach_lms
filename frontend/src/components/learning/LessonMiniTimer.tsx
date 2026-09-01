@@ -13,8 +13,8 @@ import { formatMMSS } from '../../utils/studyStats';
  * LearningWorkspacePage（500行超）にタイマーの状態を持ち込むことになるため。
  *
  * 🔴 表示専用。開始は StudySessionHost の打診ポップに一本化した。
- *    この画面では右上の StudySessionIndicator を出さない（二重表示になる）ので、
- *    計測中であることを見せる役はここが担う。
+ *    この画面は AppHeader（サイドバー）を描かない＝サイドバーの
+ *    SidebarStudyTimer が出ないので、計測中であることを見せる役はここが担う。
  *
  * 終了はカードを開くだけ（App直下の StudySessionFinishHost が描く）。
  */

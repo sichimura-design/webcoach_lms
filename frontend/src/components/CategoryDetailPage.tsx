@@ -11,7 +11,7 @@ import {
   BookText,
   PlusCircle,
 } from 'lucide-react';
-import { AppHeader, CourseImage, LearningBreadcrumb } from './shared';
+import { AppFooter, AppHeader, CourseImage, LearningBreadcrumb } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { bffClient } from '../services/bffClient';
@@ -362,15 +362,7 @@ function CategoryDetailPage() {
         </div>
       </div>
 
-      {/* フッター */}
-      <footer className="flex items-center justify-center" style={{ height: '48px' }}>
-        <span
-          className="text-brand-muted"
-          style={{ fontSize: '11.4px', fontWeight: 500, letterSpacing: '0.6px' }}
-        >
-          2026 &copy; WEBCOACH
-        </span>
-      </footer>
+      <AppFooter style={{ padding: '32px 0 24px' }} />
 
     </div>
   );

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 import { forgotPassword, confirmForgotPassword } from '../services/cognitoAuth';
 import { Button } from './ui/button';
+import { AppFooter } from './shared';
 
 type Step = 'email' | 'code' | 'done';
 
@@ -265,11 +266,7 @@ function PasswordResetPage() {
         </div>
       </div>
 
-      <footer className="relative bg-brand-footer h-10 flex items-center justify-center">
-        <span className="text-[11.4px] font-bold text-white" style={{ letterSpacing: '0.6px' }}>
-          2026 &copy; WEBCOACH
-        </span>
-      </footer>
+      <AppFooter style={{ position: 'relative', padding: '32px 0 24px' }} />
     </div>
   );
 }

@@ -28,25 +28,20 @@ function MypageGreeting({ name }: MypageGreetingProps) {
       <div style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', marginBottom: 6 }}>
         {formatTodayJa(new Date())}
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 'var(--dc-fs-display)',
-            lineHeight: 'var(--dc-lh-heading)',
-            fontWeight: 700,
-            letterSpacing: '-0.01em',
-            color: 'var(--dc-text)',
-          }}
-        >
-          {name || 'ゲスト'}さん、こんにちは
-        </h1>
-        {/* 8a のきらめき。装飾なので読み上げ対象から外す */}
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--dc-primary)" opacity=".8" aria-hidden="true" style={{ flex: 'none' }}>
-          <path d="M12 2l1.8 5.2L19 9l-5.2 1.8L12 16l-1.8-5.2L5 9l5.2-1.8z" />
-          <path d="M19 15l.9 2.6L22.5 18l-2.6.9L19 21.5l-.9-2.6-2.6-.9 2.6-.9z" opacity=".6" />
-        </svg>
-      </div>
+      {/* 🔴 見出しの隣に装飾（8a のきらめき）を置いていたが撤去した。意味を持たない
+             飾りなので、戻さないこと。囲みの flex も星のためだけにあったので畳んである。 */}
+      <h1
+        style={{
+          margin: 0,
+          fontSize: 'var(--dc-fs-display)',
+          lineHeight: 'var(--dc-lh-heading)',
+          fontWeight: 700,
+          letterSpacing: '-0.01em',
+          color: 'var(--dc-text)',
+        }}
+      >
+        {name || 'ゲスト'}さん、こんにちは
+      </h1>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { MOCKS_ENABLED } from '../mocks/config';
+import { AppFooter } from './shared';
 
 function MailIcon() {
   return (
@@ -410,20 +411,17 @@ function LoginPage() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer
-        className="absolute bottom-0 left-0 right-0 text-center"
+      {/* ヒーローの上に絶対配置で重ねるので位置だけ上書きする（色・字は共通のまま） */}
+      <AppFooter
         style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          right: 0,
           padding: '19px 24px',
-          color: '#8e817e',
-          background: 'rgba(247,232,228,0.5)',
-          borderTop: '1px solid rgba(255,255,255,0.7)',
-          fontSize: '12px',
-          letterSpacing: '0.06em',
+          marginTop: 0,
         }}
-      >
-        2026 &copy; WEBCOACH
-      </footer>
+      />
     </div>
   );
 }

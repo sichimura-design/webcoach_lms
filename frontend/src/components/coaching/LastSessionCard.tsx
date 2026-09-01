@@ -23,8 +23,9 @@ interface LastSessionCardProps {
 function keyPoints(detail: CoachingSessionDetail | null): string[] {
   const s = detail?.summary;
   if (!s) return [];
-  const source = s.decisions.length > 0 ? s.decisions : s.coachFeedback.length > 0 ? s.coachFeedback : s.progressSinceLast;
-  return source.slice(0, 3).map((e) => e.title);
+  // 🔴 どれか1つの配列だけを見ると、決まったことが1件しかない回で3件に足りない。
+  //    「決まったこと」から重複を除いた結果、この配列は1〜2件になることがある。
+  return [...s.decisions, ...s.coachFeedback, ...s.progressSinceLast].slice(0, 3).map((e) => e.title);
 }
 
 export function LastSessionCard({ session, detail, onOpen }: LastSessionCardProps) {

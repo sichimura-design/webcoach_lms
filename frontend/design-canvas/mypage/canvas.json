@@ -1,0 +1,15 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 1180, "title": "マイページ（現行実装）" }
+  ],
+  "annotations": [
+    {
+      "id": "source-note",
+      "x": 0,
+      "y": -150,
+      "w": 520,
+      "text": "frontend/src/components/MyPage.tsx の現行実装をそのまま写したもの。\n色・寸法は index.css の --dc-* トークンの実値。\n数字はモック（MSW）が返す値。教材サムネイルはプレースホルダ。"
+    }
+  ],
+  "launch": { "view": "focused", "file": "Main.dc.html" }
+}
