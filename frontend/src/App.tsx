@@ -7,7 +7,7 @@ import AppRoutes from './routes';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToastProvider } from './contexts/ToastContext';
 import { theme } from './theme';
-import { StudySessionFinishHost, StudySessionHost } from './components/shared';
+import { ResumeStudyHost, StudySessionFinishHost, StudySessionHost } from './components/shared';
 import { useStudyTimerSync } from './hooks/useStudyTimerSync';
 
 // Markdown rendering styles
@@ -27,6 +27,9 @@ function AppContent() {
           StudySessionHost がページの移動を見てカテゴリを切り替え、打診・放置確認・常設表示を出す。 */}
       <StudySessionHost />
       <StudySessionFinishHost />
+      {/* 「前回は〇〇を学習しました」→ そこから再開。マイページと学習トップに着いたとき
+          だけ、1日1回。打診が除外しているパスなので2枚重ならない。 */}
+      <ResumeStudyHost />
     </BrowserRouter>
   );
 }
