@@ -135,17 +135,20 @@ export function SidebarStudyTimer({ variant, tabIndex }: SidebarStudyTimerProps)
             width: 40,
             height: 40,
             borderRadius: 10,
+            // 停止中も枠と地を残す。記録中との差はドットと色で示す
             border: `1px solid ${running ? color.primaryBorder : color.borderNeutral}`,
             background: running ? color.primaryTint : color.surface,
+            boxShadow: '0 1px 3px rgba(60,48,32,.08)',
             fontFamily: font.family,
             cursor: 'pointer',
             gap: 2,
           }}
         >
           {dot(6, false)}
+          {/* 分だけ。9.5px では読めなかったので 11px まで上げ、停止中も本文色で出す */}
           <span
             className="dc-num"
-            style={{ fontSize: 9.5, fontWeight: 700, color: running ? color.primary : color.textSubtle, lineHeight: 1 }}
+            style={{ fontSize: 11, fontWeight: 700, color: running ? color.primary : color.textBody, lineHeight: 1 }}
           >
             {minutes < 1 ? '0' : minutes}
           </span>
