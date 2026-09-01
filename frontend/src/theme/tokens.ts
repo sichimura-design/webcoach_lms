@@ -178,23 +178,25 @@ export const t = {
     row: 14,
   },
 
+  /**
+   * 🔴 size はここに持たない。フォントサイズは index.css の :root にある
+   *    CSS カスタムプロパティ（--dc-fs-caption / -body / -lead / -title /
+   *    -display）が唯一の情報源。詳細は frontend/docs/typography.md。
+   *
+   *    かつてここに size を持っていたが、実際に参照されていたのは pageTitle の
+   *    1箇所だけで、残りは各コンポーネントの生px直書き（13 / 12.5 / 11.5 / 11px）
+   *    に散っていた。結果この系統の画面（学習する・領域一覧）だけが
+   *    他ページより一段小さい文字のまま取り残されたので、size は撤去した。
+   */
   font: {
     family: "'Noto Sans JP', sans-serif",
-    /** 見出しは 900、本文 400、ラベル 700 */
-    weight: { regular: 400, medium: 500, bold: 700, black: 900 },
-    size: {
-      pageTitle: 30,      // おかえりなさい、モックさん！
-      heroTitle: 26,      // Lesson 4 バナー制作の基礎
-      statValue: 23,      // 4 時間 35 分 / 128 時間
-      cardTitle: 15.5,    // 次回コーチングまでの目標 / ギルドロビー
-      roadmapTitle: 16,
-      body: 14,           // チェックリスト項目
-      memberName: 13.5,
-      label: 12.5,        // 日付・リンク・ステップラベル
-      small: 12,          // キャプション
-      xsmall: 11.5,       // メンバーの学習内容
-      micro: 11,          // バッジ内テキスト
-    },
+    /**
+     * 400 説明・補足 / 500 UIラベル・ナビ / 600 ボタン・タスク名 / 700 見出し・重要な数値。
+     * 🔴 800〜900 は作らない。かつて black: 900 があり、この系統の画面は
+     *    見出しから小さなバッジまで全部 900 で組まれていた。赤が強いUIなので
+     *    太字まで強くすると画面全体がうるさくなる（typography.md §4）。
+     */
+    weight: { regular: 400, medium: 500, semibold: 600, bold: 700 },
     /** CONTINUE ラベル用 */
     letterSpacingWide: '.08em',
   },
