@@ -12,6 +12,7 @@ import ProfilePage from '../components/ProfilePage';
 import WebCoachDashboard from '../components/WebCoachDashboard';
 import CareerPathPage from '../components/CareerPathPage';
 import MaterialsTopPage from '../components/MaterialsTopPage';
+import AreaCoursesPage from '../components/materials/AreaCoursesPage';
 import LearningCoursesPage from '../components/LearningCoursesPage';
 import AiCoachPage from '../components/aicoach/AiCoachPage';
 import BadgesPage from '../components/BadgesPage';
@@ -148,6 +149,10 @@ function CareerPathWrapper() {
 
 function CoursesWrapper() {
   return <MaterialsTopPage />;
+}
+
+function AreaCoursesWrapper() {
+  return <AreaCoursesPage />;
 }
 
 function LearningCoursesWrapper() {
@@ -368,9 +373,20 @@ function AppRoutes() {
           既存のブックマークや社内共有リンクを壊さないために残している。 */}
       <Route path="/ai-apps" element={<Navigate to="/ai-coach" replace />} />
 
-      {/* 学習領域（カテゴリ）だけのページは廃止した。学習領域は「学習する」の中の
-          見出しとして見せるもので、独立して辿る階層ではない。旧リンクは一覧へ送る。 */}
-      <Route path="/courses/category/:categoryId" element={<Navigate to="/courses" replace />} />
+      {/* 学習領域のコース一覧。
+          🔴 一度「領域だけのページは廃止（見出しとして見せるもので、独立して辿る
+             階層ではない）」と判断してリダイレクトにしていたが、初見の人に構造が
+             伝わらないという指摘を受けて復活させた。学習トップは領域の地図、
+             絞り込み・並び替えのある一覧はこちら、の2段。
+          パラメータは領域code（11/21/…）。未知のカテゴリ名も受ける。 */}
+      <Route
+        path="/courses/category/:categoryId"
+        element={
+          <ProtectedRoute>
+            <AreaCoursesWrapper />
+          </ProtectedRoute>
+        }
+      />
 
       <Route
         path="/learning-courses"

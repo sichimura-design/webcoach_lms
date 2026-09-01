@@ -180,8 +180,27 @@ export const AREA_COURSES: ReadonlyArray<AreaDef & { courses: readonly CourseDef
   },
 ] as const;
 
+/**
+ * family の見出し。学習トップの「領域から探す」で、10領域を5つの塊に括る
+ * ラベルとして出す（領域カードのグループ見出し）。
+ * 色・図形と同じ単位なので、見出しの色が下のカードの帯と一致する。
+ */
+export const AREA_FAMILY_LABEL: Record<AreaFamily, string> = {
+  career: '仕事の土台',
+  create: 'つくる',
+  build: 'Webをつくる',
+  grow: '集める・伸ばす',
+  ai: 'AIを使う',
+};
+
+/** family の並び。AREA_COURSES に最初に出てくる順と同じ */
+export const AREA_FAMILY_ORDER: readonly AreaFamily[] = ['career', 'create', 'build', 'grow', 'ai'];
+
 /** 領域だけの一覧（表示順）。コースを持たない用途はこちらを使う */
 export const AREAS: readonly AreaDef[] = AREA_COURSES.map(({ courses, ...area }) => area);
+
+/** 領域code → 領域。URL（/courses/category/:code）から領域を引くのに使う */
+export const areaByCode = (code: number): AreaDef | undefined => AREAS.find((a) => a.code === code);
 
 /** 領域名（表示順）。絞り込みプルダウンの並びはこれが正典 */
 export const AREA_NAMES: readonly string[] = AREAS.map((a) => a.name);
