@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
-import { AppHeader } from './shared';
+import { AppFooter, AppHeader } from './shared';
 import { useMypageData } from '../hooks/useMypageData';
 import { useLearningSummary } from '../hooks/useLearningSummary';
 import { useStudyStats } from '../hooks/useStudyStats';
 import { useWeeklyGoal } from '../hooks/useWeeklyGoal';
 import { useProgressionStore } from '../store/progressionStore';
+import { useRecentCourseStore } from '../store/recentCourseStore';
 import { EXP_RULES } from '../utils/progression';
 import MypageGreeting from './mypage/MypageGreeting';
 import ResumeStudyCard from './mypage/ResumeStudyCard';
@@ -59,6 +60,8 @@ function MyPage() {
   } = useMypageData(user?.userid);
 
   const noteStreakDays = useProgressionStore((s) => s.noteStreakDays);
+  /** 前回どのレッスンを開いたか。「続きから学習する」の飛び先に使う */
+  const recentEntries = useRecentCourseStore((s) => s.entries);
 
   // 「学習中のコース」= 続きから(resumableCourse) + 受講中一覧。id重複は除外
   const learningCourses: Course[] = resumableCourse
@@ -137,8 +140,23 @@ function MyPage() {
   }
 
   const avatarName = userProfile.nick_name || '';
-  // 「続きから学習する」は没入型レッスンへ直行、「レッスン全体を見る」はコース目次へ
-  const openLesson = () => primaryCourse && navigate(`/course/${primaryCourse.id}`);
+  /*
+   * 「続きから学習する」は没入型レッスンへ直行、「レッスン全体を見る」はコース目次へ。
+   * 🔴 ?module= を必ず付ける。付けないと useLessonDoc の既定＝目次の先頭レッスンが
+   *    開くので、「続きから」と書いてあるのに毎回1本目に戻っていた。
+   *    前回開いたレッスンは recentCourseStore が覚えている（同じ履歴を
+   *    ResumeStudyHost の「前回の続き」カードも使うので、両方の行き先が一致する）。
+   *    履歴が無いときだけコース既定の入口に落とす。
+   */
+  const openLesson = () => {
+    if (!primaryCourse) return;
+    const recent = recentEntries.find((e) => e.courseId === primaryCourse.id);
+    navigate(
+      recent?.lessonId
+        ? `/course/${primaryCourse.id}?module=${recent.lessonId}`
+        : `/course/${primaryCourse.id}`
+    );
+  };
   const openCurriculum = () => primaryCourse && navigate(`/course/${primaryCourse.id}/curriculum`);
 
   return (
@@ -180,11 +198,7 @@ function MyPage() {
           }}
         />
 
-        <footer
-          style={{ textAlign: 'center', fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)', padding: '32px 0 0', marginTop: 'auto' }}
-        >
-          2026 &copy; WEBCOACH
-        </footer>
+        <AppFooter />
       </main>
     </div>
   );
