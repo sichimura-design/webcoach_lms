@@ -94,7 +94,7 @@ z-index: フローティングピル 60 / オーバーレイ 70-71 / 選択ツ�
 | 教材本文・目次 | モックAPI（`useLessonDoc`） | 将来サーバ管理 |
 | メモ下書き（レッスン単位） | モックAPI（`useNotes`）→ ハンドラ内で localStorage | 実API化がハンドラ削除だけで済む |
 | ノート（器＋ブロック） | モックAPI（`useNote` / `useNoteList`）→ `noteHandlers.ts` で localStorage | 同上 |
-| 取り込み先ノート（レッスン→ノート） | `store/noteTargetStore.ts`（zustand + persist） | 端末ごとの好み。サーバへ送る意味がない |
+| 前回の追加先ノート（ピッカーの先頭候補） | `store/noteTargetStore.ts`（zustand + persist） | 端末ごとの好み。サーバへ送る意味がない。**保存先を決めるものではない**（決定は毎回ピッカー） |
 | AI会話 | フック内のローカル状態（レッスン単位） | 教材ごとの文脈を混ぜない |
 
 `store/learningWorkspaceStore.ts`（`navOpen` / `supportOpen` / `supportWidth` / `splitPercent` / `supportMode`）は削除した。
@@ -206,10 +206,26 @@ z-index: フローティングピル 60 / オーバーレイ 70-71 / 選択ツ�
 そのまま入ることになるため。レッスンが解決できないものだけ「未整理」へ。
 ストアが空のときはデモノートを3件シードする（真っ白だとレイアウトが確認できない）。
 
-**取り込み先の決め方**: 教材やAIコーチからクリップ／AI回答を入れるとき、
-どのノートに入るかは `store/noteTargetStore.ts` が覚える（レッスンID → ノートID）。
-未定のときだけ `NoteTargetPicker` を出し、選んだら以後は聞かない。
-判断は `hooks/useNoteCapture.ts` の1箇所に集約してある。
+**取り込み先の決め方**: 教材やAIコーチからクリップ／AI回答／下書きを入れるとき、
+**保存のたびに `NoteTargetPicker` を出して選ばせる**。入口は
+`hooks/useNoteCapture.ts` の1箇所に集約してある（`capture()` は追加先を決めず
+`pending` を立てるだけ）。
+
+🔴 以前は「1度だけ聞いて、以後は覚えた先へ無言で追記する」作りだった。
+ピッカーが出る条件が「記憶が無いとき」だけで、しかも `store/noteTargetStore.ts` の
+記憶がレッスンを越えるグローバル値だったため、**別レッスン・別コース・
+AIコーチ（`lessonId: null`）からの保存まで、最初に選んだ1つのノートへ
+吸い込まれていた**（多くの人にとっては第1レッスン名の「イントロダクション」）。
+保存先を選び直すUIも無かった。
+
+`noteTargetStore` は記憶を捨てず、**ピッカーの先頭に置く候補**として使う
+（`suggestFor()`。`{ noteId, title }` を持つので追加のフェッチが要らない）。
+普段は「前回と同じ『X』に追加」を押すだけの1タップで済む。
+
+**保存後は遷移しない。** トーストの「ノートを見る」を押した人だけがノートへ移り、
+その際に戻り先（`BackTo`）を `location.state` で預けるので、`/notes` のノート面に
+「〈レッスン名〉に戻る」が出る。戻り先URLには `?panel=notes` を足して、
+帰ってきたときにメモ欄が開いた状態にする。
 
 ### 章立ての単一情報源
 
@@ -232,13 +248,13 @@ z-index: フローティングピル 60 / オーバーレイ 70-71 / 選択ツ�
 | `components/learning/ExplainPopover.tsx` | かんたん解説（`mode: 'brief'`）＋「さらに詳しく質問」 |
 | `components/learning/SupportPanel.tsx` | AI/メモのオーバーレイ（PC=右ドロワー / SP=ボトムシート） |
 | `components/learning/AiCoachPane.tsx` | 引用・画像添付・構造化回答・[コピー][⭐保存][メモに追加] |
-| `components/learning/MemoPane.tsx` | 自動保存エディタ＋保存物一覧＋検索 |
+| `components/learning/MemoPane.tsx` | 自動保存の下書き＋「ノートに残す」＋このレッスンのノートへの入口 |
 | `components/learning/clipHighlight.ts` | クリップの `<mark>` 復元 |
 | `components/learning/moodleContent.ts` | 旧 CourseContentPage から移設した Moodle 描画ヘルパ |
 | `components/notes/MyNotesPage.tsx` | `/notes`。左＝ノート一覧／右＝ノート面の2カラム |
 | `components/notes/NoteEditor.tsx` | ノート面（紙の質感・タイトル編集・3種の追加ボタン） |
 | `components/notes/NoteBlockView.tsx` | 本文／クリップ／AI回答の3ブロック描画 |
-| `components/notes/NoteTargetPicker.tsx` | 取り込み先ノートを1度だけ聞く |
+| `components/notes/NoteTargetPicker.tsx` | 取り込み先ノートを毎回聞く（前回の追加先を先頭に置く＋検索） |
 
 フック: `useLessonDoc` / `useLessonCompletion` / `useLessonAi` / `useNotes` / `useTextSelection`
 

@@ -1,23 +1,25 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Flag } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../contexts/AuthContext';
-import { AppHeader } from './shared';
+import { AppFooter, AppHeader } from './shared';
 import { useMypageData } from '../hooks/useMypageData';
 import { useLearningSummary } from '../hooks/useLearningSummary';
 import { useStudyStats } from '../hooks/useStudyStats';
+import { useWeeklyGoal } from '../hooks/useWeeklyGoal';
 import { useProgressionStore } from '../store/progressionStore';
+import { useRecentCourseStore } from '../store/recentCourseStore';
 import { EXP_RULES } from '../utils/progression';
 import MypageGreeting from './mypage/MypageGreeting';
-import StreakHeroCard from './mypage/StreakHeroCard';
-import StudyRecordCard from './mypage/StudyRecordCard';
-import StudyChallengeCard from './mypage/StudyChallengeCard';
-import PeerRankingCard from './mypage/PeerRankingCard';
+import ResumeStudyCard from './mypage/ResumeStudyCard';
+import CoachingTaskCard from './mypage/CoachingTaskCard';
+import StudyDashboardCard from './mypage/StudyDashboardCard';
+import WeeklyGoalModal from './mypage/WeeklyGoalModal';
 import { Course } from '../types/mypage';
 
 /**
- * マイページ（ダッシュボード）。claude.ai/design『トップページ 3案』5a 準拠。
+ * マイページ（ダッシュボード）。claude.ai/design『トップページ 3案』8a 準拠。
  *
  * 【レイアウト方式】
  * 🔴 useScaleToFit（1440px の固定キャンバスを transform:scale で縮小）は使わない。
@@ -25,17 +27,22 @@ import { Course } from '../types/mypage';
  *    文字まで一緒に縮んで読めなくなるのが難点で、こちらは素直に折り返す。
  *    学習コンテンツは今も scale 方式なので、あちらと作りが違う点に注意。
  *
- * 【構成】5a は「継続」と「競争」の2軸だけに絞った画面
- *   ① 挨拶（日付＋名前。カードなし・地色に直置き）
- *   ② 2カラム: 左＝学習ストリーク / 学習記録、右＝学習時間チャレンジ / みんなのランキング
- *   ③ フッター
+ * 【構成】8a は「今やること」と「積み上がり」の2段構え
+ *   ① 挨拶（日付＋名前＋きらめき。カードなし・地色に直置き）
+ *   ② 上段2カラム: 左＝続きから学習、右＝次回コーチングまでのタスク
+ *   ③ 下段1枚: 学習状況ダッシュボード（連続日数・総学習時間・修了レッスン数・
+ *      今週の学習時間ゲージ・今週の目標グラフ）
+ *   ④ フッター
  *
- * 🔴 かつてここにあった「学習ロードマップ帯」「続きを学ぶヒーローカード」
- *    「次回コーチング」「次回コーチングまでの目標」は 5a 改修で外した。
- *    学習の再開動線は StudyChallengeCard の中（「続きから学習する」）に畳んである。
- *    コンポーネント自体は mypage/ に残してあるので、戻すときは import を足すだけでよい。
+ * 🔴 8a で「学習時間チャレンジ」「みんなのランキング」を外した。
+ *    順位の掘り下げは /study-log が受け持つ。5a に戻すときは
+ *    StudyChallengeCard / PeerRankingCard / StreakHeroCard / StudyRecordCard を
+ *    import し直すだけでよい（どれも mypage/ に残してある）。
  *
- * 主アクション（塗りつぶしの赤ボタン）は StudyChallengeCard の
+ * 🔴 AIコーチのFAB（右下）はこの画面が持っていない。全画面共通の AppHeader が
+ *    GlobalAiCoachDrawer を出しているので、ここに足すと二重になる。
+ *
+ * 主アクション（塗りつぶしの赤ボタン）は ResumeStudyCard の
  * 『続きから学習する』1つだけ。他のカードのCTAはアウトラインかテキストリンクに
  * 留めること（DESIGN.md §15-5）。
  */
@@ -54,6 +61,8 @@ function MyPage() {
   } = useMypageData(user?.userid);
 
   const noteStreakDays = useProgressionStore((s) => s.noteStreakDays);
+  /** 前回どのレッスンを開いたか。「続きから学習する」の飛び先に使う */
+  const recentEntries = useRecentCourseStore((s) => s.entries);
 
   // 「学習中のコース」= 続きから(resumableCourse) + 受講中一覧。id重複は除外
   const learningCourses: Course[] = resumableCourse
@@ -65,6 +74,13 @@ function MyPage() {
   const { stats: studyStats, loading: studyStatsLoading } = useStudyStats(user?.userid);
   const learningSummary = useLearningSummary(learningCourses, studyStats);
   const primaryCourse = learningCourses[0];
+
+  // 今週の学習時間の目標（8a）。プロフィールに持たせている
+  const { goalMinutes, saving: goalSaving, save: saveGoal } = useWeeklyGoal(
+    user?.userid,
+    userProfile?.weekly_target_minutes
+  );
+  const [goalOpen, setGoalOpen] = useState(false);
 
   // ストリークが新たに伸びたタイミングでEXPボーナスを1度だけ付与
   useEffect(() => {
@@ -125,8 +141,23 @@ function MyPage() {
   }
 
   const avatarName = userProfile.nick_name || '';
-  // 「続きから学習する」は没入型レッスンへ直行、「レッスン全体を見る」はコース目次へ
-  const openLesson = () => primaryCourse && navigate(`/course/${primaryCourse.id}`);
+  /*
+   * 「続きから学習する」は没入型レッスンへ直行、「レッスン全体を見る」はコース目次へ。
+   * 🔴 ?module= を必ず付ける。付けないと useLessonDoc の既定＝目次の先頭レッスンが
+   *    開くので、「続きから」と書いてあるのに毎回1本目に戻っていた。
+   *    前回開いたレッスンは recentCourseStore が覚えている（同じ履歴を
+   *    ResumeStudyHost の「前回の続き」カードも使うので、両方の行き先が一致する）。
+   *    履歴が無いときだけコース既定の入口に落とす。
+   */
+  const openLesson = () => {
+    if (!primaryCourse) return;
+    const recent = recentEntries.find((e) => e.courseId === primaryCourse.id);
+    navigate(
+      recent?.lessonId
+        ? `/course/${primaryCourse.id}?module=${recent.lessonId}`
+        : `/course/${primaryCourse.id}`
+    );
+  };
   const openCurriculum = () => primaryCourse && navigate(`/course/${primaryCourse.id}/curriculum`);
 
   return (
@@ -139,36 +170,18 @@ function MyPage() {
       >
         <MypageGreeting name={avatarName} />
 
-        <div className="mypage-3d-grid">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dc-sp-gap)' }}>
-            <StreakHeroCard stats={studyStats} loading={studyStatsLoading} />
-            <StudyRecordCard
-              stats={studyStats}
-              loading={studyStatsLoading}
-              completedLessons={learningSummary.completedLessons.total}
-            />
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dc-sp-gap)', minWidth: 0 }}>
-            {/*
-              🔴 ランキングは「自分から見に行かないがモチベーションになる情報」なので、
-                 独立ページだけに置かずトップで自然に目に入る位置に出す。
-                 全順位・期間の掘り下げは /study-log（4a）が受け持つ。
-            */}
-            <StudyChallengeCard
-              userId={user?.userid}
-              userName={avatarName}
-              course={primaryCourse}
-              onOpenLesson={openLesson}
-              onOpenCurriculum={openCurriculum}
-            />
-            <PeerRankingCard userId={user?.userid} />
-          </div>
+        <div className="mypage-8a-grid">
+          <ResumeStudyCard
+            course={primaryCourse}
+            onOpenLesson={openLesson}
+            onOpenCurriculum={openCurriculum}
+          />
+          <CoachingTaskCard userId={user?.userid} />
         </div>
 
         {/*
           dev/kanegae統合: キャリアロードマップへの導線。
-          5a改修で「学習ロードマップ帯」は意図的に外されているが（上のコメント参照）、
+          8a改修で「学習ロードマップ帯」は意図的に外されているが（上のコメント参照）、
           dev/kanegaeの実装(RoadmapPage, /api/roadmap/*)への導線自体は失いたくないため
           小さなカードとして復元する。mypage/RoadmapStrip.tsx（useLearningPlanのモック連動）
           には接続しない。
@@ -207,11 +220,27 @@ function MyPage() {
           <ChevronRight className="w-4 h-4" style={{ color: 'var(--dc-text-muted)', flexShrink: 0 }} />
         </button>
 
-        <footer
-          style={{ textAlign: 'center', fontSize: 'var(--dc-fs-xs)', color: 'var(--dc-text-subtle)', padding: '32px 0 0', marginTop: 'auto' }}
-        >
-          2026 &copy; WEBCOACH
-        </footer>
+        <StudyDashboardCard
+          stats={studyStats}
+          loading={studyStatsLoading}
+          completedLessons={learningSummary.completedLessons.total}
+          completedLessonsDelta={learningSummary.completedLessons.weekDelta}
+          goalMinutes={goalMinutes}
+          onEditGoal={() => setGoalOpen(true)}
+        />
+
+        <WeeklyGoalModal
+          open={goalOpen}
+          value={goalMinutes}
+          saving={goalSaving}
+          onClose={() => setGoalOpen(false)}
+          onSave={async (m) => {
+            await saveGoal(m);
+            setGoalOpen(false);
+          }}
+        />
+
+        <AppFooter />
       </main>
     </div>
   );

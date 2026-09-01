@@ -73,19 +73,6 @@ export const PRIMARY_BUTTON: React.CSSProperties = {
   boxShadow: '0 4px 12px -6px rgba(220,12,49,.5)',
 };
 
-/** 白地のセカンダリ。hover は .cg-btn-ghost */
-export const GHOST_BUTTON: React.CSSProperties = {
-  background: C.surface,
-  border: `1px solid ${C.borderInput}`,
-  borderRadius: 8,
-  padding: '6px 12px',
-  fontSize: 12,
-  fontWeight: 700,
-  fontFamily: 'inherit',
-  color: C.ink,
-  cursor: 'pointer',
-};
-
 /** 「未登録」の琥珀ピル */
 export const WARN_PILL: React.CSSProperties = {
   fontSize: 12,

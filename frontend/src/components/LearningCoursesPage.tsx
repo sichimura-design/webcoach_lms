@@ -2,10 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, BookOpen, ChevronRight } from 'lucide-react';
 import { bffClient } from '../services/bffClient';
-import { AppHeader } from './shared';
+import { AppFooter, AppHeader } from './shared';
 import { CourseImage } from './shared/CourseImage';
 import { useAuth } from '../contexts/AuthContext';
 import { useAsyncData } from '../hooks/useAsyncData';
+import { lessonProgressFromPercent } from '../utils/lessonProgress';
 
 function LearningCoursesPage() {
   const { user } = useAuth();
@@ -125,7 +126,10 @@ function LearningCoursesPage() {
             </div>
           ) : (
             <div className="space-y-4">
-              {courses.map((course) => (
+              {courses.map((course) => {
+                // 進み具合は「4 / 9」で見せる。レッスン総数が来ないコースだけ％のまま
+                const lessons = lessonProgressFromPercent(course.progress, course.lessoncount ?? course.totallessons);
+                return (
                 <div
                   key={course.id}
                   className="bg-white rounded-3xl shadow-sm p-5 sm:p-6 flex items-start gap-3 sm:gap-4 hover:shadow-md transition-shadow"
@@ -176,9 +180,10 @@ function LearningCoursesPage() {
                           />
                         </div>
                         <span
-                          className="text-sm font-bold text-[#FFC24B] min-w-[36px] text-right"
+                          className="text-sm font-bold text-[#FFC24B] whitespace-nowrap text-right"
+                          title={lessons?.full}
                         >
-                          {Math.round(course.progress ?? 0)}%
+                          {lessons ? lessons.short : `${Math.round(course.progress ?? 0)}%`}
                         </span>
                       </div>
 
@@ -193,18 +198,14 @@ function LearningCoursesPage() {
                     </div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </main>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-brand-footer h-10 flex items-center justify-center">
-        <span className="text-[11.4px] font-bold text-white" style={{ letterSpacing: '0.6px' }}>
-          2026 &copy; WEBCOACH
-        </span>
-      </footer>
+      <AppFooter style={{ padding: '32px 0 24px' }} />
     </div>
   );
 }

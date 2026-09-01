@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import DOMPurify from 'dompurify';
-import { color, font, radius } from '../../theme/webcoachTheme';
+import { color, font, radius, shadow } from '../../theme/webcoachTheme';
 import { LessonBlock } from '../../types/lesson';
 
 /**
@@ -19,62 +19,197 @@ interface LessonBlockViewProps {
 /** 本文HTMLの共通タイポグラフィ。moodle-content と衝突しないよう専用クラスにする。 */
 const proseClass = 'wc-lesson-prose';
 
+const CHOICE_LETTERS = 'ABCDEFGH';
+
+/**
+ * 選択肢テキストの頭に入っている「A.」「1)」「①」などの通し記号を落とす。
+ * 移行教材（mocks/materials/*.json）は本文に記号を含み、構造化教材は含まない。
+ * 表示側で必ずバッジを出すので、二重に見えないようここで正規化する。
+ */
+function stripChoiceMarker(text: string): string {
+  // 区切り記号（. ) 、 : など）は必須。これが無いと「A/Bテスト…」の A まで削ってしまう。
+  return text.replace(/^\s*(?:[A-Ha-h1-8]\s*[.)．）、,:：]|[①-⑧]\s*)\s*/, '').trim() || text;
+}
+
+/**
+ * 確認問題。
+ *
+ * 🔴 回答したら「選んだ選択肢」だけでなく **正解の選択肢を必ず緑で開示する**。
+ *    以前は選んだものにしか色が付かず、間違えた人はどれが正解か分からなかった。
+ * 🔴 開示後は選択肢をロックする（正解が見えている状態で選び直せると答え合わせが
+ *    成立しない）。やり直しは「もう一度解く」から。
+ */
 function Quiz({ block }: { block: LessonBlock }) {
   const [pickedIndex, setPickedIndex] = useState<number | null>(null);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   if (!block.quiz) return null;
-  const picked = pickedIndex === null ? null : block.quiz.choices[pickedIndex];
+
+  const choices = block.quiz.choices;
+  const answered = pickedIndex !== null;
+  const picked = pickedIndex === null ? null : choices[pickedIndex];
+  const correctIndex = choices.findIndex((c) => c.correct);
+  const isRight = !!picked?.correct;
 
   return (
     <div
+      role="group"
+      aria-label="確認問題"
       style={{
         marginTop: 8,
-        padding: 20,
+        padding: '22px 24px 20px',
         border: `1px solid ${color.border}`,
-        borderRadius: radius.md,
-        background: color.pageBg,
+        borderRadius: radius.card,
+        background: color.surface,
+        boxShadow: shadow.soft,
       }}
     >
-      <strong style={{ ...font.rowTitle, color: color.text, display: 'block', marginBottom: 10 }}>
-        ここまでの確認
-      </strong>
-      <p style={{ ...font.label, color: color.textMuted, margin: '0 0 12px' }}>{block.quiz.question}</p>
-      {block.quiz.choices.map((choice, i) => {
-        const isPicked = pickedIndex === i;
-        const showCorrect = isPicked && choice.correct;
-        const showWrong = isPicked && !choice.correct;
-        return (
-          <button
-            key={choice.text}
-            type="button"
-            onClick={() => setPickedIndex(i)}
-            className="w-full text-left focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      <div className="flex items-center" style={{ gap: 8, marginBottom: 12 }}>
+        <span
+          style={{
+            ...font.chip,
+            color: color.primary,
+            background: color.primarySoft,
+            borderRadius: radius.pill,
+            padding: '4px 10px',
+          }}
+        >
+          ✓ 確認問題
+        </span>
+        <span style={{ ...font.caption, color: color.textSubtle }}>1つ選んでください</span>
+      </div>
+
+      <p
+        style={{
+          fontSize: 15,
+          fontWeight: 700,
+          color: color.text,
+          lineHeight: 1.75,
+          margin: '0 0 14px',
+        }}
+      >
+        {block.quiz.question}
+      </p>
+
+      <div style={{ display: 'grid', gap: 8 }}>
+        {choices.map((choice, i) => {
+          const isPicked = pickedIndex === i;
+          // 回答後は「正解」を常に開示する。選んだのが不正解でも正解が一目で分かる。
+          const revealCorrect = answered && choice.correct;
+          const revealWrong = answered && isPicked && !choice.correct;
+          const faded = answered && !revealCorrect && !revealWrong;
+          const hovered = !answered && hoverIndex === i;
+
+          const borderColor = revealCorrect
+            ? color.success
+            : revealWrong
+            ? color.primary
+            : hovered
+            ? color.primaryBorder
+            : color.borderNeutral;
+
+          return (
+            <button
+              key={choice.text}
+              type="button"
+              onClick={() => !answered && setPickedIndex(i)}
+              onMouseEnter={() => setHoverIndex(i)}
+              onMouseLeave={() => setHoverIndex((prev) => (prev === i ? null : prev))}
+              disabled={answered}
+              aria-pressed={isPicked}
+              className="w-full text-left flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+              style={{
+                gap: 12,
+                padding: '13px 15px',
+                border: `1.5px solid ${borderColor}`,
+                borderRadius: radius.md,
+                background: revealCorrect
+                  ? color.successSurface
+                  : revealWrong
+                  ? color.primarySoft
+                  : hovered
+                  ? color.hoverBgTint
+                  : color.surface,
+                color: revealCorrect ? color.success : color.textBody,
+                fontSize: 13.5,
+                fontWeight: revealCorrect || revealWrong ? 700 : 500,
+                lineHeight: 1.6,
+                textAlign: 'left',
+                opacity: faded ? 0.5 : 1,
+                cursor: answered ? 'default' : 'pointer',
+                transition: 'background .15s ease, border-color .15s ease, opacity .2s ease',
+              }}
+            >
+              <span
+                aria-hidden
+                className="flex items-center justify-center shrink-0"
+                style={{
+                  width: 24,
+                  height: 24,
+                  borderRadius: radius.pill,
+                  fontSize: 12,
+                  fontWeight: 900,
+                  background: revealCorrect
+                    ? color.success
+                    : revealWrong
+                    ? color.primary
+                    : color.pageBg,
+                  color: revealCorrect || revealWrong ? color.textOnPrimary : color.textSubtle,
+                  border:
+                    revealCorrect || revealWrong ? 'none' : `1px solid ${color.borderNeutral}`,
+                }}
+              >
+                {revealCorrect ? '✓' : revealWrong ? '✕' : CHOICE_LETTERS[i] ?? i + 1}
+              </span>
+              <span style={{ flex: 1 }}>{stripChoiceMarker(choice.text)}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {picked && (
+        <div
+          aria-live="polite"
+          style={{
+            marginTop: 14,
+            padding: '14px 16px',
+            borderRadius: radius.md,
+            background: isRight ? color.successSurface : color.pageBg,
+            border: `1px solid ${isRight ? color.success : color.border}`,
+          }}
+        >
+          <div
+            className="flex items-center"
             style={{
-              display: 'block',
-              margin: '7px 0',
-              padding: '11px 13px',
-              border: `1px solid ${showCorrect ? '#9FD8C3' : showWrong ? color.primaryBorder : color.border}`,
-              borderRadius: radius.nav,
-              background: showCorrect ? '#EAF7F2' : showWrong ? color.primarySoft : color.surface,
-              color: showCorrect ? '#1F7655' : color.text,
-              fontSize: 13,
+              gap: 8,
+              ...font.rowTitle,
+              color: isRight ? color.success : color.primary,
+              marginBottom: 6,
+            }}
+          >
+            <span aria-hidden>{isRight ? '🎉' : '💡'}</span>
+            {isRight ? '正解です' : `不正解 — 正解は ${CHOICE_LETTERS[correctIndex] ?? ''}`}
+          </div>
+          <p style={{ ...font.label, color: color.textBody, margin: 0, lineHeight: 1.8 }}>
+            {picked.explain}
+          </p>
+          <button
+            type="button"
+            onClick={() => setPickedIndex(null)}
+            className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+            style={{
+              ...font.link,
+              marginTop: 10,
+              padding: 0,
+              border: 'none',
+              background: 'none',
+              color: color.textMuted,
+              textDecoration: 'underline',
               cursor: 'pointer',
             }}
           >
-            {choice.text}
+            もう一度解く
           </button>
-        );
-      })}
-      {picked && (
-        <p
-          style={{
-            ...font.caption,
-            margin: '10px 0 0',
-            color: picked.correct ? '#1F7655' : color.textMuted,
-            lineHeight: 1.7,
-          }}
-        >
-          {picked.explain}
-        </p>
+        </div>
       )}
     </div>
   );
@@ -167,7 +302,8 @@ export function LessonBlockView({ block, flashing }: LessonBlockViewProps) {
             )}
           </figure>
         )}
-        {block.html && (
+        {/* quiz は下のカードが自前の見出しを持つ。html 側の「ここまでの確認」と二重になるので出さない */}
+        {block.html && !isQuiz && (
           <div
             className={isTask ? `${proseClass} wc-lesson-checklist` : proseClass}
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(block.html) }}

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Sparkles, X } from 'lucide-react';
 import { color } from '../../theme/webcoachTheme';
 import { useLessonAi, LessonAiMessage } from '../../hooks/useLessonAi';
@@ -22,14 +22,28 @@ import NoteTargetPicker from '../notes/NoteTargetPicker';
  */
 export function GlobalAiCoachDrawer() {
   const navigate = useNavigate();
+  const location = useLocation();
   const drawerOpen = useAiCoachStore((s) => s.drawerOpen);
   const setDrawerOpen = useAiCoachStore((s) => s.setDrawerOpen);
+  const setExpandOrigin = useAiCoachStore((s) => s.setExpandOrigin);
   const ai = useLessonAi(null, DRAWER_SESSION_ID);
 
+  /**
+   * 広い画面へ。どこから拡大したかを預けておく。
+   * AI専用ページ側はこれを見て「元の画面に戻す」（＝このドロワーを開き直す）を出す。
+   */
   const handleExpand = useCallback(() => {
+    setExpandOrigin({
+      sessionId: DRAWER_SESSION_ID,
+      path: `${location.pathname}${location.search}`,
+      // ドロワーはどのページにも出るので、行き先を名前で言い当てられない。
+      // 教材ページのように具体名（「◯◯」に戻る）は付けられないので一般名にする。
+      label: '元の画面に戻る',
+      fromDrawer: true,
+    });
     setDrawerOpen(false);
     navigate(`/ai-coach?session=${encodeURIComponent(DRAWER_SESSION_ID)}`);
-  }, [navigate, setDrawerOpen]);
+  }, [location.pathname, location.search, navigate, setDrawerOpen, setExpandOrigin]);
 
   /**
    * 提案カードの「広い画面で開く」。ここでは実行せず、モードだけ切り替えて
@@ -68,7 +82,7 @@ export function GlobalAiCoachDrawer() {
           : '';
       if (!answer) return;
 
-      await capture.capture({
+      capture.capture({
         block: { kind: 'answer', question, answer, selectedText: null, image: null, source: null },
         suggestedTitle: 'AIコーチとの相談',
         source: null,
@@ -85,11 +99,13 @@ export function GlobalAiCoachDrawer() {
   if (!drawerOpen) {
     return (
       /*
-       * 常駐FAB。claude.ai/design『マイページ 3d.dc.html』準拠のピル。
-       * 🔴 赤ベタの円にしない。DESIGN.md §2-6 の「赤ベタの面は1画面に2〜3箇所まで」に対して、
-       *    この FAB は全ページに出るので、どの画面でも赤の枠を1つ食い潰してしまう。
-       *    白地 + コーラルピンク（AI Accent）のアイコンにして、
-       *    学習アクションの Primary と役割を色で描き分ける（DESIGN.md §15-8）。
+       * 常駐FAB。claude.ai/design『マイページ 3d.dc.html』のピルを踏み台にしている。
+       * 🔴 赤地＋白文字。以前は白地＋コーラルピンクのアイコンだったが、
+       *    地色（クリーム）との差が小さく、全ページに出るのに「押せるもの」として
+       *    認識されなかった（レビュー指摘）。ここは赤で通す。
+       *    ※ かつてこの位置に「赤ベタにしない（DESIGN.md §2-6 / §15-8）」という
+       *      コメントがあったが、参照先の DESIGN.md はリポジトリに存在しない。
+       *      判断の根拠が辿れない指示なので、実物の見え方を優先して赤にした。
        * 🔴 SPはボトムナビ（h-16）を避けて bottom を上げる。
        */
       <button
@@ -100,26 +116,28 @@ export function GlobalAiCoachDrawer() {
         style={{
           height: 52,
           gap: 8,
-          padding: '0 20px',
-          background: '#FFFFFF',
-          border: '1px solid #EFE9E0',
+          padding: '0 22px',
+          background: color.primary,
+          border: `1px solid ${color.primary}`,
           fontFamily: 'inherit',
           fontSize: 14,
           fontWeight: 700,
-          color: '#141414',
+          color: color.textOnPrimary,
           cursor: 'pointer',
-          boxShadow: '0 8px 24px -8px rgba(60,48,32,.14)',
+          boxShadow: '0 8px 24px -8px rgba(160,8,36,.45)',
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = 'translateY(-1px)';
-          e.currentTarget.style.boxShadow = '0 8px 32px -12px rgba(236,112,138,.45)';
+          e.currentTarget.style.background = color.primaryHover;
+          e.currentTarget.style.boxShadow = '0 10px 30px -10px rgba(160,8,36,.6)';
         }}
         onMouseLeave={(e) => {
           e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = '0 8px 24px -8px rgba(60,48,32,.14)';
+          e.currentTarget.style.background = color.primary;
+          e.currentTarget.style.boxShadow = '0 8px 24px -8px rgba(160,8,36,.45)';
         }}
       >
-        <Sparkles size={20} strokeWidth={1.75} color="#EC708A" />
+        <Sparkles size={20} strokeWidth={1.75} color={color.textOnPrimary} />
         AIコーチに相談
       </button>
     );
@@ -177,9 +195,11 @@ export function GlobalAiCoachDrawer() {
         />
       </div>
 
+      {/* 保存のたびに出る。どのノートに入れるかは毎回ここで選ぶ */}
       {capture.pending && (
         <NoteTargetPicker
-          suggestedTitle={capture.pending.suggestedTitle}
+          pending={capture.pending}
+          busy={capture.saving}
           onPickNote={(noteId) => void capture.resolvePendingWithNote(noteId)}
           onCreateNew={() => void capture.resolvePendingWithNewNote()}
           onCancel={capture.cancelPending}

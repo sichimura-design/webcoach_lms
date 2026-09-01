@@ -19,7 +19,7 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
       role="button"
       tabIndex={0}
-      className="cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      className="course-tile cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
       style={{
         background: t.color.bg.card,
         border: course.isCurrent ? `1.5px solid ${t.color.primaryBorder}` : `1px solid ${t.color.border.card}`,
@@ -35,12 +35,12 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
           <img src={course.thumbnailUrl} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
         ) : (
           <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 16px', boxSizing: 'border-box' }}>
-            <div style={{ fontSize: 12, fontWeight: t.font.weight.bold, color: theme.sub, letterSpacing: '.04em' }}>
+            <div style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: theme.sub, letterSpacing: '.04em' }}>
               {course.categoryName}
             </div>
             <div
               style={{
-                fontSize: 19, fontWeight: t.font.weight.black, color: theme.fg, lineHeight: 1.25, letterSpacing: '-.01em',
+                fontSize: 'var(--dc-fs-title)', fontWeight: t.font.weight.bold, color: theme.fg, lineHeight: 'var(--dc-lh-heading)', letterSpacing: '-.01em',
                 display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2, overflow: 'hidden',
               }}
             >
@@ -49,12 +49,14 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
           </div>
         )}
 
-        {/* 地色は必ず白にする。バッジの淡い地色のままだとクリーム系のサムネに溶けて読めない */}
+        {/* 地色は必ず白にする。バッジの淡い地色のままだとクリーム系のサムネに溶けて読めない。
+            角丸は pill ではなく badge(5px)。押せない状態ラベルなので、
+            すぐ下の所要時間バッジ（6px）と同じ「四角い＝読むだけ」の側に揃える。 */}
         <span
           style={{
             position: 'absolute', top: 10, right: 10,
             background: t.color.bg.card, color: badge.style.color,
-            fontSize: 10, fontWeight: t.font.weight.bold, borderRadius: t.radius.pill, padding: '3px 9px',
+            fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, borderRadius: t.radius.badge, padding: '3px 9px',
             pointerEvents: 'none',
           }}
         >
@@ -65,7 +67,7 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
           <span
             style={{
               position: 'absolute', bottom: 8, right: 10,
-              fontSize: 10, fontWeight: t.font.weight.bold, color: '#fff', background: 'rgba(0,0,0,.55)',
+              fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: '#fff', background: 'rgba(0,0,0,.55)',
               borderRadius: 6, padding: '2px 7px', pointerEvents: 'none',
             }}
           >
@@ -80,7 +82,7 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
         {course.thumbnailUrl && (
           <div
             style={{
-              fontSize: 13.5, fontWeight: t.font.weight.black, lineHeight: 1.45,
+              fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.semibold, lineHeight: 'var(--dc-lh-ui)',
               whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
               marginBottom: 6,
             }}
@@ -89,15 +91,15 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
           </div>
         )}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: 11, color: t.color.text.subtle }}>
+          <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle }}>
             {course.totalLessons ? `全${course.totalLessons}レッスン` : ''}
           </span>
-          <span
-            className="flex items-center justify-center flex-shrink-0"
-            style={{ width: 22, height: 22, borderRadius: '50%', background: t.color.primarySoft }}
-            aria-hidden
-          >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={t.color.primary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          {/* 行末は淡い丸ではなく文字にする。丸の地色は白カードの上で消えるうえ、
+              押せるのはタイル全体なので「小さな丸ボタン」に見せる理由がない。
+              色とホバーは index.css の .course-tile-more が持つ。 */}
+          <span className="course-tile-more inline-flex items-center flex-shrink-0" style={{ gap: 3, fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold }} aria-hidden>
+            コースを見る
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="m9 6 6 6-6 6" />
             </svg>
           </span>

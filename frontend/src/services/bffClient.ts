@@ -58,7 +58,6 @@ import {
 } from '../types/focusBooth';
 import {
   AutoImportReadiness,
-  CoachContacts,
   CoachingAgenda,
   CoachingSessions,
   CoachingSessionDetail,
@@ -83,6 +82,7 @@ import {
   Note,
   NoteBlock,
   NoteBlockInput,
+  NoteBlockInsert,
   NoteBlockPatch,
   NoteClipRef,
   NoteCreateInput,
@@ -1083,22 +1083,6 @@ class BFFClient {
   }
 
   /**
-   * コーチへの連絡手段（Slackリンク / メールアドレス）
-   * GET/PUT /api/webcoach/coach-contacts/{userId}
-   * 🔴 実BFFには無い。モックで提供している。
-   */
-  async getCoachContacts(userId: number): Promise<CoachContacts> {
-    const response = await this.api.get(`/webcoach/coach-contacts/${userId}`);
-    return response.data;
-  }
-
-  /** 部分更新。送ったキーだけ上書きされる */
-  async saveCoachContacts(userId: number, patch: Partial<CoachContacts>): Promise<CoachContacts> {
-    const response = await this.api.put(`/webcoach/coach-contacts/${userId}`, patch);
-    return response.data;
-  }
-
-  /**
    * 認証URLを再送する（運営画面から。既存トークンを無効化して新しく発行し直す）
    * POST /api/webcoach/meeting-connections/{coachId}/resend
    */
@@ -1592,8 +1576,14 @@ class BFFClient {
     await this.api.delete(`/webcoach/notes/${id}`);
   }
 
-  /** POST /api/webcoach/notes/{id}/blocks — 本文・クリップ・AI回答の追加 */
-  async appendNoteBlock(noteId: string, input: NoteBlockInput): Promise<NoteBlock> {
+  /**
+   * POST /api/webcoach/notes/{id}/blocks — 本文・クリップ・AI回答・画像の追加
+   * index を渡すとその位置に差し込む（省略時は末尾）。
+   */
+  async appendNoteBlock(
+    noteId: string,
+    input: NoteBlockInput & NoteBlockInsert
+  ): Promise<NoteBlock> {
     const response = await this.api.post(`/webcoach/notes/${noteId}/blocks`, input);
     return response.data;
   }
@@ -1616,6 +1606,16 @@ class BFFClient {
    */
   async listNoteClips(lessonId: number): Promise<NoteClipRef[]> {
     const response = await this.api.get('/webcoach/note-clips', { params: { lessonId } });
+    return response.data;
+  }
+
+  /**
+   * POST /api/webcoach/notes/reset — デモノートを指定件数で入れ直す（モック専用）
+   * ページ送りや空状態の見え方を、件数を変えて確かめるための開発用。
+   * 実BFFには無いので、本番ビルドでは呼び出し側（NotesDevPanel）ごと消える。
+   */
+  async resetNotes(count: number): Promise<{ ok: boolean; count: number }> {
+    const response = await this.api.post('/webcoach/notes/reset', { count });
     return response.data;
   }
 

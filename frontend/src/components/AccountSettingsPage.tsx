@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronRight, Eye, EyeOff, CheckCircle2, Lock, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { changePassword, updateEmail, verifyEmailChange } from '../services/cognitoAuth';
-import { AppHeader } from './shared';
+import { AppFooter, AppHeader } from './shared';
 import { resolveAvatarUrl, withCfToken } from './profile/AvatarPicker';
 import SettingsAvatar from './profile/SettingsAvatar';
 import {
@@ -500,11 +500,7 @@ function AccountSettingsPage() {
           </div>
         </div>
 
-        <footer
-          style={{ textAlign: 'center', fontSize: 12, color: 'var(--dc-text-subtle)', padding: '32px 0 0', marginTop: 'auto' }}
-        >
-          2026 &copy; WEBCOACH
-        </footer>
+        <AppFooter />
       </main>
     </div>
   );

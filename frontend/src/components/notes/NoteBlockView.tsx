@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Check, ExternalLink, Trash2 } from 'lucide-react';
 import { color, font, radius } from '../../theme/webcoachTheme';
-import { NoteBlock, NoteSourceRef } from '../../types/notes';
+import { NoteBlock, NoteBlockPatch, NoteSourceRef } from '../../types/notes';
+import { getNoteImageUrl } from '../../utils/noteImageStore';
 import { renderNoteText, NOTE_SYNTAX_HINT } from './noteText';
 
 /**
@@ -16,7 +17,9 @@ import { renderNoteText, NOTE_SYNTAX_HINT } from './noteText';
  */
 interface NoteBlockViewProps {
   block: NoteBlock;
-  onPatch: (blockId: string, patch: { text?: string; answer?: string }) => void;
+  /** ＋ から作った直後の本文ブロック。開いた瞬間に書けるよう編集状態で出す */
+  autoEdit?: boolean;
+  onPatch: (blockId: string, patch: NoteBlockPatch) => void;
   onRemove: (blockId: string) => void;
   /** クリップ・AI回答から元のレッスンへ戻る */
   onOpenSource: (source: NoteSourceRef, blockId: string | null) => void;
@@ -97,10 +100,147 @@ function SourceLine({
   );
 }
 
-export function NoteBlockView({ block, onPatch, onRemove, onOpenSource }: NoteBlockViewProps) {
+/**
+ * IndexedDB に置いた画像を表示する。
+ * 🔴 objectURL は使い終わりに revoke する。ノート面を開き閉じするたびに
+ *    作りっぱなしにすると、そのタブが画像を掴んだままになる。
+ */
+function NoteImage({ imageId, alt }: { imageId: string; alt: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+  const [missing, setMissing] = useState(false);
+
+  useEffect(() => {
+    let revoked = false;
+    let current: string | null = null;
+    setMissing(false);
+    void getNoteImageUrl(imageId).then((next) => {
+      if (revoked) {
+        if (next) URL.revokeObjectURL(next);
+        return;
+      }
+      current = next;
+      setUrl(next);
+      if (!next) setMissing(true);
+    });
+    return () => {
+      revoked = true;
+      if (current) URL.revokeObjectURL(current);
+      setUrl(null);
+    };
+  }, [imageId]);
+
+  if (missing) {
+    return (
+      <div
+        style={{
+          padding: '20px 16px',
+          border: `1px dashed ${color.borderSoft}`,
+          borderRadius: radius.md,
+          background: color.surface,
+          ...font.caption,
+          color: color.textFaint,
+          textAlign: 'center',
+        }}
+      >
+        画像を読み込めませんでした（この端末に保存されていません）
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={url ?? undefined}
+      alt={alt}
+      style={{
+        display: 'block',
+        maxWidth: '100%',
+        borderRadius: radius.md,
+        border: `1px solid ${color.border}`,
+        // 読み込み前に高さ0で行が飛ばないように最低限の背は持たせる
+        minHeight: url ? undefined : 80,
+        background: color.surface,
+      }}
+    />
+  );
+}
+
+/** 画像の説明。クリックで編集できる（本文ブロックと同じ作法） */
+function NoteImageCaption({
+  caption,
+  onSave,
+}: {
+  caption: string | null;
+  onSave: (caption: string) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(caption ?? '');
+
+  useEffect(() => setDraft(caption ?? ''), [caption]);
+
+  if (editing) {
+    return (
+      <input
+        autoFocus
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={() => {
+          setEditing(false);
+          if (draft !== (caption ?? '')) onSave(draft.trim());
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') e.currentTarget.blur();
+          if (e.key === 'Escape') {
+            setDraft(caption ?? '');
+            setEditing(false);
+          }
+        }}
+        placeholder="画像の説明（任意）"
+        style={{
+          width: '100%',
+          boxSizing: 'border-box',
+          marginTop: 6,
+          border: 0,
+          borderBottom: `1px solid ${color.primaryBorderSoft}`,
+          background: 'transparent',
+          fontFamily: 'inherit',
+          ...font.caption,
+          color: color.textBody,
+          outline: 'none',
+          padding: '2px 0',
+        }}
+      />
+    );
+  }
+
+  return (
+    <figcaption
+      role="button"
+      tabIndex={0}
+      onClick={() => setEditing(true)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          setEditing(true);
+        }
+      }}
+      className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      style={{
+        marginTop: 6,
+        ...font.caption,
+        color: caption ? color.textMuted : color.textFaint,
+        cursor: 'text',
+        outline: 'none',
+      }}
+    >
+      {caption || '説明を書く（任意）'}
+    </figcaption>
+  );
+}
+
+export function NoteBlockView({ block, autoEdit, onPatch, onRemove, onOpenSource }: NoteBlockViewProps) {
   // ---- 本文：クリックで編集、blur で確定 ----
   const isText = block.kind === 'text';
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(Boolean(autoEdit) && block.kind === 'text');
   const [draft, setDraft] = useState(isText ? block.text : '');
   const areaRef = useRef<HTMLTextAreaElement>(null);
   /** 保存・取り消しの判定は ref を見る。blur と click の二重発火で戻り値がぶれないように */
@@ -245,6 +385,21 @@ export function NoteBlockView({ block, onPatch, onRemove, onOpenSource }: NoteBl
     );
   }
 
+  if (block.kind === 'image') {
+    return (
+      <div className="group flex items-start" style={{ gap: 8, margin: '12px 0' }}>
+        <figure style={{ flex: 1, minWidth: 0, margin: 0 }}>
+          <NoteImage imageId={block.imageId} alt={block.alt} />
+          <NoteImageCaption
+            caption={block.caption}
+            onSave={(caption) => onPatch(block.id, { caption: caption || null })}
+          />
+        </figure>
+        <RemoveButton onClick={() => onRemove(block.id)} />
+      </div>
+    );
+  }
+
   if (block.kind === 'clip') {
     return (
       <div
@@ -298,6 +453,21 @@ export function NoteBlockView({ block, onPatch, onRemove, onOpenSource }: NoteBl
           <p style={{ margin: '6px 0 0', fontSize: 13.5, fontWeight: 700, lineHeight: 1.8, color: color.text }}>
             {block.question}
           </p>
+        )}
+        {/* 質問に添付していた画像。保存されていたのに描いていなかった（質問の意味が分からなくなる） */}
+        {block.image && (
+          <img
+            src={block.image}
+            alt="質問に添付した画像"
+            style={{
+              display: 'block',
+              maxWidth: '100%',
+              maxHeight: 260,
+              marginTop: 8,
+              borderRadius: radius.sm,
+              border: `1px solid ${color.border}`,
+            }}
+          />
         )}
         <p
           style={{

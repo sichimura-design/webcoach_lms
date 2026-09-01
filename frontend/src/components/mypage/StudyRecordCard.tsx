@@ -76,21 +76,26 @@ function MiniStat({ label, parts }: { label: string; parts: { value: string; uni
     >
       <div
         style={{
-          fontSize: 'var(--dc-fs-2xs)',
+          fontSize: 'var(--dc-fs-body)',
           color: 'var(--dc-text-muted)',
           marginBottom: 6,
-          lineHeight: 1.4,
+          lineHeight: 'var(--dc-lh-ui)',
         }}
       >
         {label}
       </div>
       <div
         className="dc-num"
-        style={{ fontSize: 'var(--dc-fs-sm)', fontWeight: 800, color: 'var(--dc-text)', lineHeight: 1.25 }}
+        style={{
+          fontSize: 'var(--dc-fs-lead)',
+          fontWeight: 700,
+          color: 'var(--dc-text)',
+          lineHeight: 'var(--dc-lh-hero)',
+        }}
       >
         {parts.map((p, i) => (
           <span key={i} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-            <span style={{ fontSize: 'var(--dc-fs-lg)' }}>{p.value}</span>
+            <span style={{ fontSize: 'var(--dc-fs-display)' }}>{p.value}</span>
             {p.unit}
           </span>
         ))}
@@ -162,7 +167,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
           style={{
             margin: 0,
             flex: 1,
-            fontSize: 'var(--dc-fs-title)',
+            fontSize: 'var(--dc-fs-lead)',
             fontWeight: 700,
             color: 'var(--dc-text)',
             whiteSpace: 'nowrap',
@@ -182,7 +187,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
             background: 'transparent',
             padding: 0,
             fontFamily: 'inherit',
-            fontSize: 'var(--dc-fs-xs)',
+            fontSize: 'var(--dc-fs-body)',
             fontWeight: 600,
             color: 'var(--dc-primary)',
             cursor: 'pointer',
@@ -204,8 +209,8 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
       </div>
 
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
-        <div style={{ fontSize: 'var(--dc-fs-sm)', fontWeight: 700, color: 'var(--dc-text)' }}>今週の学習時間</div>
-        <div className="dc-num" style={{ fontSize: 'var(--dc-fs-2xs)', color: 'var(--dc-text-subtle)' }}>{rangeLabel}</div>
+        <div style={{ fontSize: 'var(--dc-fs-body)', fontWeight: 600, color: 'var(--dc-text)' }}>今週の学習時間</div>
+        <div className="dc-num" style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)' }}>{rangeLabel}</div>
       </div>
 
       <div style={{ display: 'flex', gap: 10 }}>
@@ -218,7 +223,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
             justifyContent: 'space-between',
             height: 172,
             paddingBottom: 22,
-            fontSize: 'var(--dc-fs-3xs)',
+            fontSize: 'var(--dc-fs-caption)',
             color: 'var(--dc-text-subtle)',
             textAlign: 'right',
             flex: 'none',
@@ -269,9 +274,12 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
                   <div
                     className="dc-num"
                     style={{
-                      fontSize: 'var(--dc-fs-3xs)',
+                      fontSize: 'var(--dc-fs-caption)',
                       marginBottom: 4,
                       whiteSpace: 'nowrap',
+                      maxWidth: '100%',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
                       fontWeight: b.isToday ? 700 : 400,
                       color: b.isToday ? 'var(--dc-primary)' : 'var(--dc-text-subtle)',
                     }}
@@ -285,7 +293,7 @@ export function StudyRecordCard({ stats, loading, completedLessons }: StudyRecor
                     height: 22,
                     display: 'flex',
                     alignItems: 'center',
-                    fontSize: 'var(--dc-fs-xs)',
+                    fontSize: 'var(--dc-fs-caption)',
                     fontWeight: b.isToday ? 700 : 400,
                     color: b.isToday
                       ? 'var(--dc-primary)'

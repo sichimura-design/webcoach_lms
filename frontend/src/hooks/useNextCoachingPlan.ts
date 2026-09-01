@@ -12,6 +12,11 @@ export interface PlanItem {
    * 表示側は null を前提にフォールバックすること。
    */
   completedAt: string | null;
+  /**
+   * 所要時間の目安（分）。実BFFはこの項目を返さないため本番では常に null。
+   * 表示側は null のとき「目安」行ごと省くこと。
+   */
+  estimatedMinutes: number | null;
 }
 
 interface NextSession {
@@ -27,6 +32,7 @@ function fromApi(raw: CoachingGoalApi): PlanItem {
     completed: progress >= 100,
     progress,
     completedAt: raw.completed_at ?? null,
+    estimatedMinutes: raw.estimated_minutes ?? null,
   };
 }
 
@@ -81,11 +87,16 @@ export function useNextCoachingPlan(userId: number | undefined): UseNextCoaching
     setLoading(true);
     setError(null);
 
-    Promise.all([bffClient.getNextCoachingGoals(userId), bffClient.getCoachingSessions(userId)])
+    Promise.all([
+      bffClient.getNextCoachingGoals(userId),
+      // 実BFFに存在しない(モック専用)。目標一覧の取得自体を巻き込んで失敗させないよう、
+      // 次回セッション情報だけ個別にcatchして「無し」に縮退させる。
+      bffClient.getCoachingSessions(userId).catch(() => null),
+    ])
       .then(([goals, sessions]) => {
         if (cancelled) return;
         setItems(goals.map(fromApi));
-        setNextSession(sessions.next ?? null);
+        setNextSession(sessions?.next ?? null);
         setLoading(false);
       })
       .catch(() => {

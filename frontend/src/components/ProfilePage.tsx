@@ -5,7 +5,7 @@ import { ProfileFormData } from '../types/profile';
 import bffClient from '../services/bffClient';
 import { fetchUserProfile } from '../services/mypageApi';
 import { useAuth } from '../contexts/AuthContext';
-import { AppHeader } from './shared';
+import { AppFooter, AppHeader } from './shared';
 import { AvatarPicker, resolveAvatarUrl, withCfToken } from './profile/AvatarPicker';
 import SettingsAvatar from './profile/SettingsAvatar';
 import {
@@ -373,11 +373,7 @@ function ProfilePage() {
           </div>
         </div>
 
-        <footer
-          style={{ textAlign: 'center', fontSize: 12, color: 'var(--dc-text-subtle)', padding: '32px 0 0', marginTop: 'auto' }}
-        >
-          2026 &copy; WEBCOACH
-        </footer>
+        <AppFooter />
       </main>
     </div>
   );

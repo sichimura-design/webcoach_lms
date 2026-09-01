@@ -10,6 +10,7 @@ import { useAiChat } from '../../hooks/useAiChat';
 import { useChatStore } from '../../store/chatStore';
 import { AccountSettingsDropdown } from './AccountSettingsDropdown';
 import GlobalAiCoachDrawer from '../aicoach/GlobalAiCoachDrawer';
+import SidebarStudyTimer from './SidebarStudyTimer';
 import { withCfToken } from '../profile/AvatarPicker';
 import { color } from '../../theme/webcoachTheme';
 
@@ -486,6 +487,13 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
               {manageItems.map(renderRailItem)}
             </>
           )}
+
+          {/* 学習タイマー。記録中・一時停止中だけ出る（SidebarStudyTimer が自分で判断する）。
+              🔴 ナビの下に置く。以前は画面に浮かぶドラッグ可能なピルで、既定の右上が
+                 ページごとに他のUIと重なっていた。定位置に移したのがこれ。 */}
+          <div style={{ marginTop: 14, flex: 'none' }}>
+            <SidebarStudyTimer variant="rail" tabIndex={expanded ? -1 : undefined} />
+          </div>
         </div>
 
         {/* 🔴 お知らせ（ベル）はレールにもパネルにも置かない（レビューで不要と判断）。
@@ -595,6 +603,11 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                「開いたままコンテンツを操作できる」のが要件（DESIGN-3d.md §3-2）。
                ここだけ勝手に閉じると、開閉が自分の操作でなく画面の都合で変わる。
             🔴 「お知らせ」はここには置かない（レビューで不要と判断）。 */}
+        {/* 学習タイマー。レール側と同じものをパネル幅で出す（同時に見えることは無い） */}
+        <div style={{ padding: '8px 8px 0', flex: 'none' }}>
+          <SidebarStudyTimer variant="panel" tabIndex={expanded ? undefined : -1} />
+        </div>
+
         <div style={{ padding: '12px 8px', display: 'flex', flexDirection: 'column', gap: 2, flex: 'none' }}>
           {renderPanelSubLink('利用マニュアル', FileText, () => navigate('/help/manual'))}
           {renderPanelSubLink('よくある質問', HelpCircle, () => navigate('/help/faq'))}
@@ -920,6 +933,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#F0EAE6]"
         style={{ boxShadow: '0 -2px 10px rgba(0,0,0,0.06)', paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
+        {/* 学習タイマー。SPはサイドバーが無いので、ナビの上に細い帯として出す */}
+        <SidebarStudyTimer variant="mobile" />
         <div className="flex items-stretch h-16">
           {[...navItems, ...manageItems].map(({ label, icon: Icon, path, active }) => (
             <button

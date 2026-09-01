@@ -76,12 +76,32 @@ export const t = {
     /** セクション間・チップ間の区切り線（border.lineとは別の実測値。学習コンテンツページで追加） */
     divider: '#EDE6E6',
 
-    /** コースのカテゴリ色（design_handoff_materialsのREADME「カテゴリ色」表に準拠。design/careerは既存トークンを再利用） */
+    /**
+     * 学習領域の色（文字色 fg と、サムネ・見出しの地色 bg）。
+     *
+     * 領域は10個あるが、色は5つしか作らない。10領域に10色を割ると近い色相が並んで
+     * 「色が違うこと」自体が情報を持たなくなるため、constants/courseTaxonomy.ts の
+     * family（何をしているか）でまとめる。領域名はタイルに文字で出るので、
+     * 色が担うのは family までの粗さでよい。
+     *
+     *   create … Webデザイン / 動画編集
+     *   build  … Web制作
+     *   grow   … Webマーケティング / SNS運用
+     *   career … ソフトスキル / キャリア / 案件獲得攻略プログラム
+     *   ai     … 生成AI基礎 / Web×AI
+     *
+     * create/build/grow/career の4色は旧カテゴリ色（design_handoff_materials の
+     * README「カテゴリ色」表）をそのまま引き継ぐ。ai だけ、赤・琥珀・紫・緑の隣で
+     * 唯一空いていた青緑を足した。
+     */
     category: {
-      design: '#D60934',
-      coding: '#D9930D',
-      marketing: '#8B5CD6',
-      career: '#2FA35C',
+      create: { fg: '#D60934', bg: '#FDEEEF' },
+      build: { fg: '#D9930D', bg: '#FBF1DC' },
+      grow: { fg: '#8B5CD6', bg: '#F2ECFC' },
+      career: { fg: '#2FA35C', bg: '#EAF6ED' },
+      ai: { fg: '#1E88A8', bg: '#E7F2F6' },
+      /** family が引けない領域（実BFFの独自カテゴリ名など） */
+      unknown: { fg: '#8A8082', bg: '#F4F1F1' },
     },
 
     /**
@@ -120,6 +140,18 @@ export const t = {
     button: 12,
     /** イラスト上のボタン */
     buttonOnImage: 10,
+    /**
+     * プルダウン・入力補助など「押しボタンではないが操作はできる」コントロール。
+     * pill にすると押しボタンと見分けがつかなくなるので一段浅くする。
+     */
+    control: 9,
+    /** クリックできない状態ラベル（受講中・修了などのバッジ）。pill と明確に差をつける */
+    badge: 5,
+    /**
+     * pill はクリックできる要素だけに使う（ボタン・チップ・タブ）。
+     * 進捗バーのような「線の端の丸め」も対象外ではないが、
+     * 面を持つ矩形に使うときは必ずクリックできるものに限る。
+     */
     pill: 999,
   },
 
@@ -146,23 +178,25 @@ export const t = {
     row: 14,
   },
 
+  /**
+   * 🔴 size はここに持たない。フォントサイズは index.css の :root にある
+   *    CSS カスタムプロパティ（--dc-fs-caption / -body / -lead / -title /
+   *    -display）が唯一の情報源。詳細は frontend/docs/typography.md。
+   *
+   *    かつてここに size を持っていたが、実際に参照されていたのは pageTitle の
+   *    1箇所だけで、残りは各コンポーネントの生px直書き（13 / 12.5 / 11.5 / 11px）
+   *    に散っていた。結果この系統の画面（学習する・領域一覧）だけが
+   *    他ページより一段小さい文字のまま取り残されたので、size は撤去した。
+   */
   font: {
     family: "'Noto Sans JP', sans-serif",
-    /** 見出しは 900、本文 400、ラベル 700 */
-    weight: { regular: 400, medium: 500, bold: 700, black: 900 },
-    size: {
-      pageTitle: 30,      // おかえりなさい、モックさん！
-      heroTitle: 26,      // Lesson 4 バナー制作の基礎
-      statValue: 23,      // 4 時間 35 分 / 128 時間
-      cardTitle: 15.5,    // 次回コーチングまでの目標 / ギルドロビー
-      roadmapTitle: 16,
-      body: 14,           // チェックリスト項目
-      memberName: 13.5,
-      label: 12.5,        // 日付・リンク・ステップラベル
-      small: 12,          // キャプション
-      xsmall: 11.5,       // メンバーの学習内容
-      micro: 11,          // バッジ内テキスト
-    },
+    /**
+     * 400 説明・補足 / 500 UIラベル・ナビ / 600 ボタン・タスク名 / 700 見出し・重要な数値。
+     * 🔴 800〜900 は作らない。かつて black: 900 があり、この系統の画面は
+     *    見出しから小さなバッジまで全部 900 で組まれていた。赤が強いUIなので
+     *    太字まで強くすると画面全体がうるさくなる（typography.md §4）。
+     */
+    weight: { regular: 400, medium: 500, semibold: 600, bold: 700 },
     /** CONTINUE ラベル用 */
     letterSpacingWide: '.08em',
   },

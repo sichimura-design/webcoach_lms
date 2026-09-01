@@ -105,6 +105,12 @@ export interface ProfileUpdate {
   today_small_step?: string | null;
   avatar_url?: string | null;
   avatar_id?: string | null;
+  /**
+   * 週間の学習時間目標（分）。トップページ 8a の「今週の目標」で受講生が変更する。
+   * 🔴 実BFFの ProfileUpdate はこの項目を受け取らない（バックエンドは変更禁止）。
+   *    モックONのときだけ往復し、本番では送っても無視される。
+   */
+  weekly_target_minutes?: number | null;
 }
 
 export interface Profile {

@@ -21,7 +21,6 @@ import { http, HttpResponse, passthrough } from 'msw';
 import type {
   UserInfo,
   Profile,
-  Category,
   ResumeCourse,
 } from '../types/api';
 import type { FocusBoothMember } from '../types/focusBooth';
@@ -35,6 +34,7 @@ import { STUDY_PEERS } from './studyPeers';
 import { listGoals, replaceGoals } from './coachingGoalsStore';
 import { buildNextCourses } from '../utils/nextCourseRecommend';
 import { searchMaterials } from './materialSearch';
+import { COURSE_ID, catalog, categories, courseInCatalog } from './courseCatalog';
 
 // ---- 固定モックデータ（型に沿った最小限） ----------------------------------
 const MOCK_USER_ID = 2;
@@ -70,12 +70,35 @@ const profile: Profile = {
   weekly_target_minutes: 600,
 };
 
-const categories: Category[] = [
-  { id: 1, name: 'Webデザイン', description: 'デザインの基礎から実践まで', coursecount: 9 },
-  { id: 2, name: 'コーディング', description: 'HTML/CSS/JavaScript', coursecount: 8 },
-  { id: 3, name: 'マーケティング', description: 'Web集客の基礎', coursecount: 5 },
-  { id: 4, name: 'キャリア', description: '副業・案件獲得の進め方', coursecount: 5 },
-];
+/**
+ * 週間の学習時間目標だけを localStorage に持たせる（モック専用）。
+ * 🔴 profile ごと保存しない。アバターは data URL で入ってくるので、
+ *    丸ごと保存すると localStorage が base64 画像で埋まる。
+ * 🔴 目標だけ永続化する理由: リロードで既定値（600分）に戻ると、
+ *    「目標を変更できる」という 8a の体験そのものが確認できない。
+ */
+const WEEKLY_GOAL_KEY = 'webcoach-weekly-target-minutes';
+
+function loadWeeklyGoal(): void {
+  try {
+    const raw = localStorage.getItem(WEEKLY_GOAL_KEY);
+    if (!raw) return;
+    const n = Number(raw);
+    if (Number.isFinite(n) && n > 0) profile.weekly_target_minutes = n;
+  } catch {
+    /* プライベートモード等は既定値のまま */
+  }
+}
+
+function saveWeeklyGoal(): void {
+  try {
+    localStorage.setItem(WEEKLY_GOAL_KEY, String(profile.weekly_target_minutes ?? 600));
+  } catch {
+    /* 容量超過などは黙って諦める（モックのため） */
+  }
+}
+
+loadWeeklyGoal();
 
 /**
  * 「続きから学ぶ」コースの現在位置。
@@ -87,14 +110,18 @@ const categories: Category[] = [
  * 進捗率・次のレッスン名・単元名・残り時間はすべてそこから導出する
  * （手書きの数字を置くと、構成を変えたときに必ずズレる）。
  */
-const RESUME_COURSE_ID = 101;
+const RESUME_COURSE_ID = COURSE_ID['design-basics'];
 
 const resumeLessons = buildCourseStructure(RESUME_COURSE_ID).flatMap((s) =>
   s.lessons.map((l) => ({ ...l, sectionName: s.name }))
 );
 
-/** 単元2「手を動かす」の1レッスン目まで終えた状態＝次は4レッスン目 */
-const RESUME_DONE_COUNT = 3;
+/**
+ * 1レッスン目だけ終えた状態＝次は2レッスン目。
+ * デザイン基礎の2レッスン目「基本の考え方」は手書きの配色レッスン（lessonHandlers.ts の
+ * COLOR_LESSON）なので、「続きから学ぶ」を押すとショーケースの本文が開く。
+ */
+const RESUME_DONE_COUNT = 1;
 resumeLessons.forEach((l, i) => setLessonDone(l.lessonId, i < RESUME_DONE_COUNT));
 
 const resumeNextLesson = resumeLessons[RESUME_DONE_COUNT];
@@ -102,12 +129,18 @@ const resumeProgress = Math.round((RESUME_DONE_COUNT / resumeLessons.length) * 1
 const resumeTotalMinutes = resumeLessons.reduce((n, l) => n + l.minutes, 0);
 const resumeRemainingMinutes = resumeLessons.slice(RESUME_DONE_COUNT).reduce((n, l) => n + l.minutes, 0);
 
+/** コース名はカタログから引く。フィクスチャにコース名を書き写すと一覧と食い違う */
+const catalogName = (id: number): string => courseInCatalog(id)?.fullname ?? '';
+
+/** 続きから学ぶコースのカタログ上の姿。名前・説明をここに書き写さないための踏み台 */
+const resumeCatalogCourse = courseInCatalog(RESUME_COURSE_ID);
+
 const resumeCourses: ResumeCourse[] = [
   {
     courseid: RESUME_COURSE_ID,
-    fullname: 'はじめてのWebデザイン',
-    shortname: 'design-101',
-    summary: 'デザインの基本原則を学ぶ入門コース',
+    fullname: resumeCatalogCourse?.fullname ?? '',
+    shortname: resumeCatalogCourse?.shortname ?? '',
+    summary: resumeCatalogCourse?.summary ?? '',
     progress: resumeProgress,
     lastaccess: Math.floor(Date.now() / 1000) - 3600,
     accesscount: 12,
@@ -121,94 +154,37 @@ const resumeCourses: ResumeCourse[] = [
   },
 ];
 
-// 受講中のコース。コース名とレッスン数はカタログ（buildCourseStructure）と必ず揃える。
-// 別の名前・別のレッスン数を書くと、同じ画面に同じコースが2つの姿で出る。
+/**
+ * 受講中のコース。名前・説明・レッスン数はすべてカタログから引く。
+ * 別の名前・別のレッスン数を書くと、同じ画面に同じコースが2つの姿で出る。
+ * 3件は別々の学習領域から選び、「ほかに学習中」の行で複数のサムネ図形が出るようにする。
+ */
 const userCourses = [
-  {
-    id: RESUME_COURSE_ID,
-    fullname: 'はじめてのWebデザイン',
-    displayname: 'はじめてのWebデザイン',
-    summary: 'デザインの基本原則をやさしく学ぶ入門コース',
-    progress: resumeProgress,
-    categoryname: 'Webデザイン',
-    durationminutes: resumeTotalMinutes,
-    totallessons: resumeLessons.length,
-  },
-  {
-    id: 102,
-    fullname: 'HTML & CSSのきほん',
-    displayname: 'HTML & CSSのきほん',
-    summary: 'Web制作に必要なHTMLとCSSをやさしく学びます',
-    progress: 10,
-    categoryname: 'コーディング',
-    durationminutes: 40,
-    totallessons: courseLessonCount(102),
-  },
-  {
-    id: 201,
-    fullname: 'デザインの4大原則',
-    displayname: 'デザインの4大原則',
-    summary: '近接・整列・反復・コントラストを事例で理解する',
-    progress: 100,
-    categoryname: 'Webデザイン',
-    durationminutes: 20,
-    totallessons: courseLessonCount(201),
-  },
-];
+  { id: RESUME_COURSE_ID, progress: resumeProgress, durationminutes: resumeTotalMinutes },
+  { id: COURSE_ID['html-css'], progress: 10, durationminutes: 40 },
+  { id: COURSE_ID.capcut, progress: 100, durationminutes: 20 },
+].map((enrolled) => {
+  const c = courseInCatalog(enrolled.id);
+  return {
+    id: enrolled.id,
+    fullname: c?.fullname ?? '',
+    displayname: c?.fullname ?? '',
+    summary: c?.summary ?? '',
+    categoryname: c?.categoryname ?? '',
+    progress: enrolled.progress,
+    durationminutes: enrolled.durationminutes,
+    totallessons: courseLessonCount(enrolled.id),
+  };
+});
 
-// ---- 学習コンテンツ（学習領域→コース→単元→レッスン）ダミー --------------------
-type MockCourse = {
-  id: number; fullname: string; shortname: string;
-  categoryid: number; categoryname: string; summary: string;
-  courseimage?: string; tags: { rawname: string }[];
-  difficulty: string; duration: string;
-  /** 総レッスン数。buildCourseStructure から導出するので、コーストップの単元表示と必ず一致する */
-  lessoncount: number;
-  /** カード表示用の「どんな人向けか」タグ。tags（学習タイプ）とは別で、絞り込みには使わない */
-  purposes: string[];
-};
-
-// コースカタログ（/moodle/courses と /moodle/getcoursebyfield の元データ）。
-// 学習コンテンツ一覧をギャラリーとして見せるため、各学習領域に一定数のコースを置く。
-const rawCatalog: Omit<MockCourse, 'lessoncount'>[] = [
-  // カテゴリ1: Webデザイン
-  { id: 101, fullname: 'はじめてのWebデザイン', shortname: 'design-101', categoryid: 1, categoryname: 'Webデザイン', summary: 'デザインの基本原則をやさしく学ぶ入門コース', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分', purposes: ['未経験向け', '最初におすすめ'] },
-  { id: 201, fullname: 'デザインの4大原則', shortname: 'design-201', categoryid: 1, categoryname: 'Webデザイン', summary: '近接・整列・反復・コントラストを事例で理解する', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '20分', purposes: ['基礎から', 'デザイン力UP'] },
-  { id: 202, fullname: '配色の基本とツール', shortname: 'design-202', categoryid: 1, categoryname: 'Webデザイン', summary: '色の役割と配色ツールの使い方をわかりやすく解説', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '25分', purposes: ['基礎から', 'デザイン力UP'] },
-  { id: 206, fullname: 'Figmaの基本操作', shortname: 'design-206', categoryid: 1, categoryname: 'Webデザイン', summary: '制作の現場で使うFigmaを、触りながら覚える', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '35分', purposes: ['未経験向け', '基礎から'] },
-  { id: 203, fullname: 'バナーを作ってみよう', shortname: 'design-203', categoryid: 1, categoryname: 'Webデザイン', summary: 'バナー制作の基本を実践で学び、作品を1つ完成させる', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '45分', purposes: ['実践で学ぶ', '作品を作る'] },
-  { id: 207, fullname: 'デザイン模写のすすめ', shortname: 'design-207', categoryid: 1, categoryname: 'Webデザイン', summary: 'うまい人の意図を読み解きながら手を動かして盗む', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '40分', purposes: ['実践で学ぶ', 'デザイン力UP'] },
-  { id: 204, fullname: 'LPのワイヤーフレーム制作', shortname: 'design-204', categoryid: 1, categoryname: 'Webデザイン', summary: '伝わるレイアウトの設計方法を学びます', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '60分', purposes: ['基礎から', '実践で学ぶ'] },
-  { id: 208, fullname: 'ポートフォリオサイトを作る', shortname: 'design-208', categoryid: 1, categoryname: 'Webデザイン', summary: '案件応募で見せられる自分の作品集を仕上げる', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '90分', purposes: ['作品を作る', '副業準備'] },
-  { id: 205, fullname: '余白の使い方Tips', shortname: 'design-205', categoryid: 1, categoryname: 'Webデザイン', summary: '見やすさが変わる余白の小ワザ', tags: [{ rawname: 'Tips・小ネタ' }], difficulty: '基礎', duration: '10分', purposes: ['デザイン力UP'] },
-  // カテゴリ2: コーディング
-  { id: 102, fullname: 'HTML & CSSのきほん', shortname: 'coding-102', categoryid: 2, categoryname: 'コーディング', summary: 'Web制作に必要なHTMLとCSSをやさしく学びます', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '40分', purposes: ['未経験向け', '基礎から'] },
-  { id: 211, fullname: 'よく使うHTMLタグ辞典', shortname: 'coding-211', categoryid: 2, categoryname: 'コーディング', summary: '実務で頻出のタグをまとめて習得', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分', purposes: ['基礎から'] },
-  { id: 212, fullname: 'Flexboxでレイアウト', shortname: 'coding-212', categoryid: 2, categoryname: 'コーディング', summary: '横並び・中央寄せを自在に組めるようになる', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '50分', purposes: ['実践で学ぶ'] },
-  { id: 213, fullname: 'レスポンシブ対応の基本', shortname: 'coding-213', categoryid: 2, categoryname: 'コーディング', summary: 'スマホでも崩れないページの作り方', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '45分', purposes: ['実践で学ぶ'] },
-  { id: 214, fullname: 'JavaScript入門', shortname: 'coding-214', categoryid: 2, categoryname: 'コーディング', summary: 'ページに動きをつけるための第一歩', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '55分', purposes: ['基礎から'] },
-  { id: 215, fullname: 'フォームと入力チェック', shortname: 'coding-215', categoryid: 2, categoryname: 'コーディング', summary: 'お問い合わせフォームを実装できるようになる', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '40分', purposes: ['実践で学ぶ', '作品を作る'] },
-  { id: 216, fullname: 'WordPressでサイトを作る', shortname: 'coding-216', categoryid: 2, categoryname: 'コーディング', summary: '案件で一番よく使うCMSを一通り触る', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '80分', purposes: ['作品を作る', '副業準備'] },
-  { id: 217, fullname: 'Git / GitHubのきほん', shortname: 'coding-217', categoryid: 2, categoryname: 'コーディング', summary: '変更履歴の残し方と、共同作業の進め方', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '35分', purposes: ['基礎から', '副業準備'] },
-  // カテゴリ3: マーケティング
-  { id: 221, fullname: 'Webマーケティング入門', shortname: 'mkt-221', categoryid: 3, categoryname: 'マーケティング', summary: '集客の基本と施策の考え方をやさしく解説', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '25分', purposes: ['基礎から', '副業準備'] },
-  { id: 223, fullname: 'SNS集客の基本', shortname: 'mkt-223', categoryid: 3, categoryname: 'マーケティング', summary: '各SNSの特性と使い分けを知る', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '25分', purposes: ['基礎から'] },
-  { id: 222, fullname: '刺さる広告文の書き方', shortname: 'mkt-222', categoryid: 3, categoryname: 'マーケティング', summary: 'クリックされるコピーの型を身につける', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '35分', purposes: ['実践で学ぶ'] },
-  { id: 224, fullname: 'SEOライティング入門', shortname: 'mkt-224', categoryid: 3, categoryname: 'マーケティング', summary: '検索から人が来る記事の組み立て方', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '40分', purposes: ['基礎から', '副業準備'] },
-  { id: 225, fullname: 'アクセス解析でふりかえる', shortname: 'mkt-225', categoryid: 3, categoryname: 'マーケティング', summary: '数字を見て次の一手を決められるようになる', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '45分', purposes: ['実践で学ぶ'] },
-  // カテゴリ4: キャリア・案件獲得
-  { id: 231, fullname: '案件獲得の基礎', shortname: 'career-231', categoryid: 4, categoryname: 'キャリア', summary: '営業の考え方や提案のコツを基礎から学びます', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分', purposes: ['副業準備', '案件獲得'] },
-  { id: 232, fullname: '提案文・見積もりの作り方', shortname: 'career-232', categoryid: 4, categoryname: 'キャリア', summary: '選ばれる提案と、適正な値付けの考え方', tags: [{ rawname: '実践課題' }], difficulty: '応用', duration: '40分', purposes: ['案件獲得'] },
-  { id: 233, fullname: 'クラウドソーシングの歩き方', shortname: 'career-233', categoryid: 4, categoryname: 'キャリア', summary: '最初の1件を取るための現実的な進め方', tags: [{ rawname: '基礎知識' }], difficulty: '基礎', duration: '30分', purposes: ['未経験向け', '案件獲得'] },
-  { id: 234, fullname: 'クライアントワークの進め方', shortname: 'career-234', categoryid: 4, categoryname: 'キャリア', summary: 'ヒアリングから納品までのやりとりを一通り', tags: [{ rawname: '実践課題' }], difficulty: '発展', duration: '50分', purposes: ['実践で学ぶ', '案件獲得'] },
-  { id: 235, fullname: '副業のはじめ方と続け方', shortname: 'career-235', categoryid: 4, categoryname: 'キャリア', summary: '時間の作り方、お金まわり、無理のない続け方', tags: [{ rawname: 'Tips・小ネタ' }], difficulty: '基礎', duration: '20分', purposes: ['副業準備'] },
-];
-
-const catalog: MockCourse[] = rawCatalog.map((c) => ({ ...c, lessoncount: courseLessonCount(c.id) }));
-
-// コースの構成（/moodle/courses/:id/contents）。
-// 単元とレッスンは lessonHandlers.ts の buildCourseStructure を
-// 単一の情報源にする。レッスンページの目次とコーストップの表示がズレないようにするため。
+// ---- 学習コンテンツ（学習領域→コース→単元→レッスン）--------------------------
+//
+// コースカタログ（/moodle/courses・/moodle/getcoursebyfield）と
+// 学習領域（/moodle/categories）の元データは mocks/courseCatalog.ts が持つ。
+//
+// コースの構成（/moodle/courses/:id/contents）は、単元とレッスンを
+// lessonHandlers.ts の buildCourseStructure を単一の情報源にする。
+// レッスンページの目次とコーストップの表示がズレないようにするため。
 const MODULE_DESCRIPTIONS: Record<string, string> = {
   'イントロダクション': '<h2>このコースで学ぶこと</h2><p>この単元では全体像をつかみます。手を動かす前に、まず「なぜそれが必要なのか」を理解しましょう。</p><ul><li>学ぶゴールの確認</li><li>用語の整理</li><li>進め方のコツ</li></ul>',
   '基本の考え方': '<h2>基本の考え方</h2><p>ここが土台になります。焦らず、一つずつ確認していきましょう。</p><p>ポイントは<strong>「まず真似る」</strong>こと。型を覚えてから応用に進みます。</p>',
@@ -271,7 +247,7 @@ const studentsStore = [
 // 次回コーチングまでの目標（セッション内で保持：AI細分化やコーチングページからの生成を
 // マイページに反映させるため、GET/PUT で同じストアを読み書きする）
 // マイページ側は読み取り専用表示のため、コーチが前回のコーチングで設定した内容として初期値を持たせる
-// （journeyの現在地=「バナーを作ってみよう」と揃えてある）
+// （journeyの現在地=「バナー100本道場」と揃えてある）
 // ストアの実体は mocks/coachingGoalsStore.ts（coachingHandlers.ts の confirm-goals からも
 // 追記するため独立モジュールにしてある。詳細はそちらのヘッダコメント）。
 
@@ -347,15 +323,16 @@ function weekDays(offsetWeeks: number) {
 function weekLabelOf(days: any[]) {
   return `${days[0].md}–${days[6].md}`;
 }
-// サンプルの週間予定（曜日index→セッション）
+// サンプルの週間予定（曜日index→セッション）。
+// コースを開くセッションのタイトルはカタログから引く（書き写すと一覧と食い違う）。
 function buildWeek(offsetWeeks: number) {
   const days = weekDays(offsetWeeks);
   const plan = [
-    { i: 0, title: 'バナーを作ってみよう', minutes: 45, courseId: 203 },
-    { i: 1, title: '配色の基本とツール', minutes: 30, courseId: 202 },
-    { i: 3, title: 'バナー制作のつづき', minutes: 60, courseId: 203 },
+    { i: 0, title: catalogName(COURSE_ID['design-basics']), minutes: 45, courseId: COURSE_ID['design-basics'] },
+    { i: 1, title: catalogName(COURSE_ID['banner-dojo']), minutes: 30, courseId: COURSE_ID['banner-dojo'] },
+    { i: 3, title: `${catalogName(COURSE_ID['banner-dojo'])}のつづき`, minutes: 60, courseId: COURSE_ID['banner-dojo'] },
     { i: 4, title: '参考サイトを3つ分析する', minutes: 30 },
-    { i: 5, title: '作品を仕上げる', minutes: 60, courseId: 204 },
+    { i: 5, title: catalogName(COURSE_ID['practice-lp']), minutes: 60, courseId: COURSE_ID['practice-lp'] },
     { i: 6, title: '今週の振り返り', minutes: 15 },
   ];
   plan.forEach(s => days[s.i].sessions.push({ title: s.title, minutes: s.minutes, courseId: s.courseId, done: false }));
@@ -376,6 +353,7 @@ export const handlers = [
     try {
       const body = (await request.json()) as Partial<Profile>;
       Object.assign(profile, body);
+      if (body.weekly_target_minutes !== undefined) saveWeeklyGoal();
     } catch {
       /* ignore */
     }
@@ -621,7 +599,7 @@ export const handlers = [
         message:
           '画像を拝見しました。バナーのようですね。よく作り込まれています！さらに良くするなら、\n\n① **主役を1つに絞る**：いちばん伝えたい要素（キャッチ or 写真）を大きく、他は控えめに。\n② **余白を足す**：文字と端の間に少し余白を取ると一気に洗練されます。\n③ **色数を3色まで**：ベース・メイン・アクセントで統一感が出ます。\n\nどの点から直したいか教えてください。一緒に直していきましょう！',
         sources: [
-          { chunk_index: 0, module_name: 'デザインの4大原則', filename: 'principles.md', section_name: '基礎知識', similarity: 0.79 },
+          { chunk_index: 0, module_name: catalogName(COURSE_ID['design-basics']), filename: 'principles.md', section_name: '基礎知識', similarity: 0.79 },
         ],
         suggestions: ['余白の取り方を詳しく', '配色の直し方は？', 'この構成でOK？'],
         timestamp: '2026-07-09T00:00:00Z',
@@ -644,8 +622,8 @@ export const handlers = [
       success: true,
       message: reply,
       sources: [
-        { chunk_index: 0, module_name: 'はじめてのWebデザイン', filename: 'intro.md', section_name: '基礎知識', similarity: 0.82 },
-        { chunk_index: 1, module_name: 'デザインの4大原則', filename: 'principles.md', section_name: '基礎知識', similarity: 0.71 },
+        { chunk_index: 0, module_name: catalogName(COURSE_ID['design-basics']), filename: 'intro.md', section_name: '基礎知識', similarity: 0.82 },
+        { chunk_index: 1, module_name: catalogName(COURSE_ID['banner-dojo']), filename: 'principles.md', section_name: '基礎知識', similarity: 0.71 },
       ],
       suggestions: ['具体例を教えて', '次に学ぶべきことは？', 'おすすめのコースは？'],
       timestamp: '2026-07-09T00:00:00Z',
@@ -664,25 +642,26 @@ export const handlers = [
         last7days: streak.week.map((d) => d.studied),
       },
       todayQuest: {
-        title: '「バナーを作ってみよう」を進める',
+        title: `「${catalogName(COURSE_ID['banner-dojo'])}」を進める`,
         subtitle: '今日はここから ・ 約45分',
-        courseId: 203,
+        courseId: COURSE_ID['banner-dojo'],
         cta: 'はじめる',
       },
+      // コースを指すノード・フェーズのタイトルはカタログ名を使う（一覧と揃える）
       phases: [
-        { id: 1, title: 'フェーズ1: 基礎を固める', outcome: 'デザインの基本原則と配色を説明できる', status: 'done', progress: 100, recommendedCourseIds: [101, 201, 202] },
-        { id: 2, title: 'フェーズ2: 手を動かして作る', outcome: 'バナーとLPを自力で1つずつ完成できる', status: 'current', progress: 35, recommendedCourseIds: [203, 204] },
-        { id: 3, title: 'フェーズ3: 案件に挑戦する', outcome: 'ポートフォリオを作り、初案件に応募する', status: 'locked', progress: 0, recommendedCourseIds: [] },
+        { id: 1, title: 'フェーズ1: 基礎を固める', outcome: 'デザインの基本原則を説明し、ツールを触れる', status: 'done', progress: 100, recommendedCourseIds: [COURSE_ID['design-basics'], COURSE_ID.figma, COURSE_ID.canva] },
+        { id: 2, title: 'フェーズ2: 手を動かして作る', outcome: 'バナーとLPを自力で1つずつ完成できる', status: 'current', progress: 35, recommendedCourseIds: [COURSE_ID['banner-dojo'], COURSE_ID['practice-lp']] },
+        { id: 3, title: 'フェーズ3: 案件に挑戦する', outcome: 'ポートフォリオを作り、初案件に応募する', status: 'locked', progress: 0, recommendedCourseIds: [COURSE_ID['practice-portfolio-site'], COURSE_ID['client-work-program']] },
       ],
       nodes: [
         { id: 1, title: 'オリエンテーション', type: 'milestone', status: 'done', phaseId: 1 },
-        { id: 2, title: 'デザインの4大原則', type: 'lesson', status: 'done', courseId: 201, phaseId: 1 },
-        { id: 3, title: '配色の基本とツール', type: 'lesson', status: 'done', courseId: 202, phaseId: 1 },
+        { id: 2, title: catalogName(COURSE_ID['design-basics']), type: 'lesson', status: 'done', courseId: COURSE_ID['design-basics'], phaseId: 1 },
+        { id: 3, title: catalogName(COURSE_ID.figma), type: 'lesson', status: 'done', courseId: COURSE_ID.figma, phaseId: 1 },
         { id: 4, title: '基礎チェック', type: 'boss', status: 'done', phaseId: 1 },
-        { id: 5, title: 'バナーを作ってみよう', type: 'lesson', status: 'current', courseId: 203, phaseId: 2 },
-        { id: 6, title: 'LPのワイヤーフレーム制作', type: 'lesson', status: 'locked', courseId: 204, phaseId: 2 },
+        { id: 5, title: catalogName(COURSE_ID['banner-dojo']), type: 'lesson', status: 'current', courseId: COURSE_ID['banner-dojo'], phaseId: 2 },
+        { id: 6, title: catalogName(COURSE_ID['practice-lp']), type: 'lesson', status: 'locked', courseId: COURSE_ID['practice-lp'], phaseId: 2 },
         { id: 7, title: '作品を仕上げる', type: 'boss', status: 'locked', phaseId: 2 },
-        { id: 8, title: 'ポートフォリオ作成', type: 'milestone', status: 'locked', phaseId: 3 },
+        { id: 8, title: catalogName(COURSE_ID['practice-portfolio-site']), type: 'milestone', status: 'locked', courseId: COURSE_ID['practice-portfolio-site'], phaseId: 3 },
         { id: 9, title: '初案件に応募', type: 'boss', status: 'locked', phaseId: 3 },
       ],
     });
@@ -711,7 +690,7 @@ export const handlers = [
       ];
     } else if (/(バナー|デザイン|配色|design)/i.test(goal)) {
       subgoals = [
-        '「デザインの4大原則」を復習する',
+        `「${catalogName(COURSE_ID['design-basics'])}」を復習する`,
         '好きなバナーを3つ集めて良い点を言語化する',
         '配色ツールで配色案を2パターン作る',
         'バナーを1枚ラフまで作る',

@@ -2,7 +2,7 @@
  * /coaching 先頭の「次回コーチング」カード。
  * デザイン『コーチング トップ 3案.dc.html』案1C。
  *
- * 左＝いつ・あと何日、右＝当日の入口（会議リンク登録 → 参加）、下段＝コーチへの連絡手段。
+ * 左＝いつ・あと何日、右＝当日の入口（会議リンク登録 → 参加）。
  *
  * 🔴 会議リンクの登録はモーダルではなくこのカードの中で完結させる（1Cの指定）。
  *    マイページ側は従来どおり MeetingLinkModal を使う（あちらは幅が足りない）。
@@ -10,24 +10,19 @@
  *    ここを落とすと、コーチング当日に「いま何が起きているか」が画面から消える。
  */
 import React, { useState } from 'react';
-import { AlertTriangle, CalendarDays, Check, Link2, Loader2, Mail, Sparkles, Video } from 'lucide-react';
+import { AlertTriangle, CalendarDays, Check, Loader2, Sparkles, Video } from 'lucide-react';
 import { parseMeetingLink } from '../../utils/parseMeetingLink';
 import { untilLabel } from '../../utils/coachingSchedule';
-import CoachContactCell from './CoachContactCell';
 import { C, CARD, INPUT, PRIMARY_BUTTON, TEXT_LINK_BUTTON, WARN_PILL } from './design1c';
-import type { AutoImportReadiness, CoachContacts, MeetingLink, NextCoaching } from '../../types/coaching';
+import type { AutoImportReadiness, MeetingLink, NextCoaching } from '../../types/coaching';
 
 interface CoachingHeroCardProps {
   next: NextCoaching;
   readiness: AutoImportReadiness | null;
-  contacts: CoachContacts | null;
   /** 会議リンクの登録。失敗時は throw する */
   onRegisterLink: (link: MeetingLink) => Promise<void>;
   onStart: () => void;
   onOpenSession: (sessionId: number) => void;
-  /** 連絡先の保存。エラー文言を返すと入力欄に留まる */
-  onSaveContacts: (patch: Partial<CoachContacts>) => Promise<string | null>;
-  onCopyEmail: (email: string) => void;
   starting?: boolean;
 }
 
@@ -74,12 +69,9 @@ const TONE = {
 export function CoachingHeroCard({
   next,
   readiness,
-  contacts,
   onRegisterLink,
   onStart,
   onOpenSession,
-  onSaveContacts,
-  onCopyEmail,
   starting,
 }: CoachingHeroCardProps) {
   const [editingLink, setEditingLink] = useState(false);
@@ -372,71 +364,6 @@ export function CoachingHeroCard({
         </div>
       </div>
 
-      {/* コーチへの連絡手段。会議リンクと同じカードに置くことで、
-          「コーチとのやりとりはここを見る」を1箇所にまとめる */}
-      <div
-        className="cg-contacts"
-        style={{ border: `1px solid ${C.border}`, borderRadius: 12, display: 'grid', gridTemplateColumns: '1fr 1fr' }}
-      >
-        <CoachContactCell
-          borderRight
-          icon={<Link2 size={16} color={C.brand} strokeWidth={1.75} />}
-          label="コーチとのSlackリンク"
-          value={contacts?.slackUrl ?? null}
-          placeholder="https://～.slack.com/…"
-          idleButtonLabel="リンクを登録"
-          onSave={(v) => onSaveContacts({ slackUrl: v || null })}
-          renderAction={(v) => (
-            <a
-              href={v}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="cg-link"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 3,
-                fontSize: 12.5,
-                fontWeight: 700,
-                color: C.brand,
-                flex: 'none',
-                textDecoration: 'none',
-              }}
-            >
-              開く ›
-            </a>
-          )}
-        />
-        <CoachContactCell
-          icon={<Mail size={16} color={C.brand} strokeWidth={1.75} />}
-          label="コーチのメールアドレス"
-          value={contacts?.email ?? null}
-          placeholder="coach@example.com"
-          idleButtonLabel="アドレスを登録"
-          onSave={(v) => onSaveContacts({ email: v || null })}
-          renderAction={(v) => (
-            <button
-              type="button"
-              className="cg-btn-ghost"
-              onClick={() => onCopyEmail(v)}
-              style={{
-                background: C.surface,
-                border: `1px solid ${C.borderInput}`,
-                borderRadius: 7,
-                padding: '5px 12px',
-                fontSize: 11.5,
-                fontWeight: 500,
-                fontFamily: 'inherit',
-                color: C.ink,
-                cursor: 'pointer',
-                flex: 'none',
-              }}
-            >
-              コピー
-            </button>
-          )}
-        />
-      </div>
     </section>
   );
 }

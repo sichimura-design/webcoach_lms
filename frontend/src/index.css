@@ -10,8 +10,18 @@ body {
   color: #2B2440;
 }
 
-/* 見出しは丸ゴシック（Zen Maru Gothic）。本文は Noto Sans JP。 */
-h1, h2, h3, .font-display {
+/* 見出しも本文と同じ Noto Sans JP で組む。
+   🔴 以前は h1〜h3 を丸ゴシック（Zen Maru Gothic）にしていたが、新しいデザインは
+      すべて Noto Sans JP 指定で、各ページが個別に打ち消していた。打ち消し漏れの
+      ページ（コーチング・学習する）だけ丸ゴシックが残って浮いていたため、既定を
+      反転させた。丸ゴシックを使いたい箇所は .font-display で明示的に付ける。 */
+h1, h2, h3 {
+  font-family: 'Noto Sans JP', sans-serif;
+  letter-spacing: 0.01em;
+}
+
+/* 丸ゴシック（Zen Maru Gothic）を意図して使う箇所だけ。例) ギルドロビーの見出し */
+.font-display {
   font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif;
   letter-spacing: 0.01em;
 }
@@ -117,6 +127,13 @@ h1, h2, h3, .font-display {
      暖色クリームの面では色味が浮いて chevron だけ目立ってしまう。 */
   --dc-badge-pink: #FBE9EC;
   --dc-chevron: #C9BFB2;
+  /* 進捗バーの溝（トップページ 8a）。--dc-soft-200(#F5D8DB) は「達成した面」の色で、
+     溝に使うと未達のぶんまで進んだように見えるので、一段くすませた暖色を別に持つ。 */
+  --dc-progress-track: #F3E3E0;
+  /* 「今週の目標」の棒グラフの過去日（8a）。今日だけ --dc-primary で立てて、
+     済んだ日はここまで彩度を落とす。--dc-primary のままだと7本全部が主張して
+     「今日どうだったか」が読み取れない。 */
+  --dc-bar-past: #E97B90;
   --dc-gradient-next: linear-gradient(135deg, #FDF7F7 0%, #FDEBEE 100%); /* 「次のレッスン」帯 */
   --dc-shadow-card: 0 1px 2px rgba(60,48,32,.05), 0 12px 24px -16px rgba(60,48,32,.14);
   --dc-shadow-float: 0 8px 24px -8px rgba(60,48,32,.14);
@@ -125,6 +142,53 @@ h1, h2, h3, .font-display {
   --dc-radius-lg: 20px;
   --dc-radius-xl: 24px;
   --dc-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ─── タイポグラフィ（全画面共通）─────────────────────
+   🔴 :root に置いてある。スコープクラス（.mypage-3d / .wc-warm）を持たない
+      画面からも使えることが要件。かつて .mypage-3d 限定だったため、
+      「学習する」（MaterialsTopPage / AreaCoursesPage）だけがこのスケールを
+      使えず、theme/tokens.ts と生px直書きで一段小さい文字のまま取り残されていた
+      （本文 13px・補足 11px・weight 900）。サイズは固定pxなので、
+      画面ごとにスコープを分ける理由がもう無い。
+   🔴 20px以下は固定px。下の可変スケール（--dc-sp-*）の対象外にする。
+      かつては本文まで clamp にしていたが、表示倍率125%（実効幅1520px）では
+      ほぼ全段が clamp の下限に張り付き、カード見出しが 13.5px、
+      最頻出のラベルが 10.5px、曜日ラベルが 9.5px まで落ちていた。
+      日本語は漢字が潰れるので、幅に関係なく「12px未満を作らない／
+      UI の下限は 14px」を守る。詳細は frontend/docs/typography.md。
+   🔴 28px以上（h1・成果の数値）だけ可変を残す。ここを固定にすると
+      125%環境で数字が原寸のまま残り、カードが縦に伸びて情報が入らなくなる。
+      係数は「最大値 × 100 / 1900 ＝ vw」。
+   🔴 名前は役割で付ける。旧トークンは 4xs/3xs/2xs/xs のようにサイズで
+      名付けていたため、同じトークンが「注記」と「主要ラベル」の両方に
+      使われ、どちらを大きくすべきかが名前から判断できなくなっていた。
+   🔴 21〜27px は意図的に空けている。見出しとコンテンツ名が 2px 差で
+      並ぶと、どちらも太字のとき階層が読めなくなる。 */
+:root {
+  /* 固定 */
+  --dc-fs-caption: 12px;  /* 補足専用。日時・目安時間・単位ラベル・曜日・脚注 */
+  --dc-fs-body:    14px;  /* UI標準。タブ・説明文・カード内サブ情報・セカンダリボタン */
+  --dc-fs-lead:    16px;  /* 行動と主要ラベル。CTA・タスク名・カード見出し h2・数値の単位 */
+  /* コンテンツ名。「いま何を学んでいるか」を1つだけ大きく出す用途。
+     一覧の1行（ランキングの仮名・領域カードの名前など）はここではなく body を使う。
+     20px を並べると、どれが主役か分からなくなる。 */
+  --dc-fs-title:   20px;
+
+  /* 可変 */
+  --dc-fs-display: clamp(28px, 1.68vw, 32px);  /* h1・KPI の数値 */
+  /* ストリークの日数。桁数で3段に分けるのは StreakHeroCard が
+     「数字そのものが絵」のカードで、3桁でも枠に収める必要があるため。
+     上限62pxは 28〜36px の目安を超えるが、ここだけの意図的な例外。 */
+  --dc-fs-hero:    clamp(36px, 3.26vw, 62px);  /* 同（1桁） */
+  --dc-fs-hero-sm: clamp(30px, 2.74vw, 52px);  /* 同（2桁） */
+  --dc-fs-hero-xs: clamp(28px, 2.21vw, 42px);  /* 同（3桁）・「あと 41 分」 */
+
+  /* 行間。日本語は英語より広く取る（2行以上を1.3台にすると窮屈） */
+  --dc-lh-hero: 1.2;     /* 28px以上の数値 */
+  --dc-lh-heading: 1.4;  /* 16px / 20px の見出し */
+  --dc-lh-ui: 1.6;       /* 14px の1行UI・ラベル */
+  --dc-lh-prose: 1.7;    /* 2行以上になる説明文 */
 }
 
 /* ─── 可変スケール（マイページ 5a / 学習記録 4a）─────────
@@ -142,26 +206,7 @@ h1, h2, h3, .font-display {
    🔴 サイドバー（--wc-sidebar-w）はここに含めない。全画面共通の AppHeader が
       持っており、変えると教材・コーチングなど他の画面まで縮む。 */
 .mypage-3d {
-  /* タイポグラフィ */
-  --dc-fs-hero: clamp(42px, 3.26vw, 62px);      /* ストリークの日数（1桁） */
-  --dc-fs-hero-sm: clamp(36px, 2.74vw, 52px);   /* 同（2桁） */
-  --dc-fs-hero-xs: clamp(30px, 2.21vw, 42px);   /* 同（3桁） */
-  --dc-fs-2xl: clamp(32px, 2.42vw, 46px);       /* チャレンジの「あと 41 分」 */
-  --dc-fs-xl: clamp(22px, 1.58vw, 30px);        /* h1 */
-  --dc-fs-lg: clamp(17px, 1.11vw, 21px);        /* KPI の数値 */
-  --dc-fs-md: clamp(15px, 1.05vw, 20px);        /* チャレンジの単位（分・位） */
-  --dc-fs-unit: clamp(14px, 0.95vw, 18px);      /* ストリークの「日連続」 */
-  --dc-fs-kpi-sub: clamp(14px, 0.9vw, 17px);    /* KPI の単位（時間・分） */
-  --dc-fs-title: clamp(13.5px, 0.84vw, 16px);   /* カード見出し h2 */
-  --dc-fs-15: clamp(12.5px, 0.79vw, 15px);
-  --dc-fs-14: clamp(12px, 0.74vw, 14px);
-  --dc-fs-lesson: clamp(12px, 0.71vw, 13.5px);
-  --dc-fs-base: clamp(11.5px, 0.68vw, 13px);
-  --dc-fs-sm: clamp(11px, 0.66vw, 12.5px);
-  --dc-fs-xs: clamp(10.5px, 0.63vw, 12px);
-  --dc-fs-2xs: clamp(10.5px, 0.61vw, 11.5px);
-  --dc-fs-3xs: clamp(10px, 0.58vw, 11px);
-  --dc-fs-4xs: clamp(9.5px, 0.55vw, 10.5px);
+  /* タイポグラフィは :root（上）に移した。ここは余白・寸法だけ。 */
 
   /* 余白・寸法 */
   --dc-sp-page-x: clamp(20px, 2.53vw, 48px);
@@ -172,17 +217,6 @@ h1, h2, h3, .font-display {
   --dc-sz-badge: clamp(26px, 1.58vw, 30px);     /* 見出し左の丸アイコン */
   --dc-sz-btn: clamp(32px, 2vw, 38px);          /* ボタンの高さ */
   --dc-sz-cell: clamp(38px, 2.63vw, 50px);      /* カレンダーの升目 */
-}
-
-/* 全体では h1〜h3 を丸ゴシック（Zen Maru Gothic）にしているが、
-   このデザインは見出しも本文と同じ Noto Sans JP で組む指定なので打ち消す。 */
-.mypage-3d h1,
-.mypage-3d h2,
-.mypage-3d h3,
-.wc-warm h1,
-.wc-warm h2,
-.wc-warm h3 {
-  font-family: 'Noto Sans JP', sans-serif;
 }
 
 /* 数値は Inter + tabular-nums（桁が揃わないと統計行が踊る） */
@@ -217,18 +251,185 @@ h1, h2, h3, .font-display {
   }
 }
 
+/* ─── トップページ 8a ───────────────────────
+   上段は「続きから学習」と「次回コーチングまでのタスク」の2枚。
+   デザインは 1fr / 1.15fr。タスク側のほうが行数で伸びるので余りを右に渡す。
+   align-items:stretch で2枚の丈を揃える（カード側が height:100% を持つ）。 */
+.mypage-8a-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: var(--dc-sp-gap);
+  align-items: stretch;
+  margin-bottom: var(--dc-sp-gap);
+}
+
+/* 🔴 しきい値は .mypage-3d-grid（1023px）と揃える。同じ画面の上下で
+   折り返す幅が違うと、中間の幅で片方だけ1カラムになって崩れて見える。 */
+@media (max-width: 1023px) {
+  .mypage-8a-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 学習状況ダッシュボードの中身。左＝ストリーク＋KPI、右＝ゲージ＋週間グラフ。
+   デザインは 1fr / 1.55fr。右は棒グラフ7本ぶんの横幅が要るので広く取る。 */
+.mypage-dash-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+  gap: 14px;
+  align-items: stretch;
+}
+
+/* ダッシュボード左カラム。中の並びは .mypage-dash-grid が2列か1列かで反転する。
+   🔴 「連続学習日数 ｜ KPI」の横割りは、左カラムがカード全幅のときだけ。
+      .mypage-dash-grid が2列のとき左カラムは最大でも 500px 前後しかなく、
+      そこから KPI 用の幅を引くと 7日ドットの1列が 30px 台になって
+      曜日ラベルとドットが破綻する（サイドバーを閉じた 1250〜1400px で顕著）。
+      なのでこの既定は「連続学習日数が全幅、下に KPI 2枚を横並び」。
+      横割りに切り替えるルールは下の 1250px / 1402px ブロックにある
+      （.mypage-dash-grid が1列に落ちるのと同じしきい値で反転させる）。 */
+.mypage-dash-left {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* 🔴 flex:1 で残り高さを KPI 行に吸わせる。連続学習日数を全幅にすると
+      左カラムが右のゲージ列より低くなりがちで、align-items:stretch の
+      ぶんだけ下に空きができて間延びして見える。
+      （左カラムが grid に変わる幅では flex:1 は無視される） */
+.mypage-dash-kpi {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: stretch;
+  flex: 1;
+}
+
+/* ゲージ（固定128px）と棒グラフの横並び。枠線付きの箱ごと1つのブロック */
+.mypage-dash-right {
+  border: 1px solid var(--dc-border);
+  border-radius: 14px;
+  padding: 18px 22px;
+  display: flex;
+  gap: 36px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+/* 週間グラフの1列（値ラベル・曜日ラベル）。
+   🔴 min-width:0 + ellipsis で「列より広いラベルは切る」を保証する。
+      ラベルは 9.5px → 12px（固定）に上げたので、以前より広い幅で
+      隣の列とぶつかり始める。しきい値（下の1250px）を上げて逃げると、
+      まだ横並びで読める幅なのにダッシュボードが縦積みになって密度が落ちる。
+      重なりは「はみ出しを許していること」が原因なので、そこを塞ぐ。
+   🔴 grid の子は既定で min-width:auto（＝中身より小さくならない）なので、
+      これを 0 にしないと ellipsis も overflow も効かない。 */
+.mypage-dash-col {
+  min-width: 0;
+}
+
+.mypage-dash-col > span {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 🔴 ダッシュボードは中で2段階に折り返す。
+   1250px: 左右（ストリーク列とゲージ列）を縦積みに。棒グラフの棒が
+           細くなって本数が読めなくなるのがこのあたり。
+           （かつては「1.5h ラベルが重なり始める幅」でもあったが、
+             重なりは .mypage-dash-col の ellipsis で塞いだので、
+             いまこのしきい値が見ているのは棒の太さだけ。）
+   720px:  ゲージと棒グラフも縦積みに。128pxのリングを残したまま
+           棒グラフを詰めると、棒の幅が16px未満になって本数が読めなくなる。 */
+/* 🔴 .mypage-dash-left の反転は必ず .mypage-dash-grid と同じブロックに置く。
+      左カラムがカード全幅になった＝連続学習日数だけで 1400px 使うことになり、
+      7日ドットが間延びするので「連続学習日数 ｜ KPI 縦積み」の横割りにする。
+      しきい値がずれると、片方だけ切り替わった中間の幅で崩れる。 */
+@media (max-width: 1250px) {
+  .mypage-dash-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mypage-dash-left {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+    align-items: stretch;
+  }
+
+  .mypage-dash-kpi {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .mypage-dash-right {
+    flex-direction: column;
+    gap: 22px;
+    padding: 18px;
+  }
+}
+
+/* サイドバー展開中は本文が 152px（224 − 72）細くなるぶんを body のクラスで補う */
+@media (max-width: 1402px) {
+  body.sidebar-expanded .mypage-dash-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.sidebar-expanded .mypage-dash-left {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+    align-items: stretch;
+  }
+
+  body.sidebar-expanded .mypage-dash-kpi {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 🔴 スマホ幅は横割りをやめて縦積みへ。カード内側が 300px 前後まで落ちると
+      連続学習日数の 7 割＝約 200px しか残らず、1列 23px でドット(26px)が入らない。
+      🔴 body.sidebar-expanded 版も併記する。上の 1402px ブロックのほうが
+      詳細度が高く、クラス1つの指定では上書きできない。 */
+@media (max-width: 480px) {
+  .mypage-dash-left,
+  body.sidebar-expanded .mypage-dash-left {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 数字は display(28〜32px) 固定。1枠 100px 前後だと
+     「86時間」「40分」が2行になって高さが跳ねる */
+  .mypage-dash-kpi,
+  body.sidebar-expanded .mypage-dash-kpi {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1175px) {
+  body.sidebar-expanded .mypage-8a-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* 学習記録カードのKPI（今週 / 累計 / 修了レッスン数）。
    🔴 3列固定にしない。左カラムは最大500pxで、そこから
       カードのパディングと gap を引くと1枠あたり110px前後しか残らず、
       「累計学習時間 25時間14分」がラベルごと枠の外へ溢れていた。
       auto-fit にして、入らない幅では自動で2列へ落とす。
-      下限 108px は「ラベル7文字（最小10.5px）＋左右パディング24px」＋余裕。
+      下限 132px は「ラベル7文字（14px 固定）＋左右パディング24px」＋余裕。
+      🔴 以前は 108px だった。ラベルが 10.5px 前提の値で、
+         ラベルを 14px 固定に上げたぶん（7×14＋24＝122）を織り込んで引き上げた。
+         ここを上げ忘れると、3列のまま「累計学習時間」がラベルごと溢れる。
       デザイン 5a は3列なので、3列が成立する幅ではできるだけ3列を保つ値にしてある。
       さらに MiniStat 側でラベルと値の折り返しを許してあるので、
       ここで2列に落ちきらない中途半端な幅でも枠の外へは出ない。 */
 .mypage-kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
   gap: 14px;
   margin-bottom: 28px;
 }
@@ -346,6 +547,49 @@ h1, h2, h3, .font-display {
   .settings-hero,
   .settings-row-card {
     transition: none;
+  }
+}
+
+/* ─── コースタイル（学習コンテンツ一覧の4列タイル）───────────
+   タイル右下の「コースを見る ›」。
+
+   🔴 以前は primarySoft(#FDEEEF) の丸に赤い chevron を置いていたが、
+      白カード(#FFFFFF)との差が 1.04:1 で丸そのものが消え、細い矢印だけが
+      浮いて見えていた（設定画面の --dc-badge-pink と同じ失敗）。
+      さらに完全円＝pill なのに aria-hidden で押せない要素だったので、
+      「pill はクリックできる要素だけ」というトークンの約束も破っていた。
+   → 地色を捨てて文字リンクにした。押せるのはタイル全体なので、
+      ホバーの起点もタイル側に置く。既定は無彩色、ホバーで初めて赤に寄る
+      （.ct-btn-ghost と同じ作法）。 */
+.course-tile-more {
+  /* t.color.text.secondary。muted(#8A8082) は白地 3.8:1 で小さい文字には足りない */
+  color: #6b6365;
+  transition: color 120ms var(--dc-ease);
+}
+
+.course-tile-more svg {
+  transition: transform 120ms var(--dc-ease);
+}
+
+.course-tile:hover .course-tile-more,
+.course-tile:focus-visible .course-tile-more {
+  color: var(--dc-primary);
+}
+
+.course-tile:hover .course-tile-more svg,
+.course-tile:focus-visible .course-tile-more svg {
+  transform: translateX(2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .course-tile-more,
+  .course-tile-more svg {
+    transition: none;
+  }
+
+  .course-tile:hover .course-tile-more svg,
+  .course-tile:focus-visible .course-tile-more svg {
+    transform: none;
   }
 }
 
@@ -490,13 +734,19 @@ body.learning-immersive {
 
 /* 教材本文のタイポグラフィ。既存の .moodle-content とは別系統にして衝突を避ける。
    本文だけが画面に残る構成になったので、行の高さと文字を少し上げて読みやすくした。 */
+/* 見出しは本文（15px）に対して十分なジャンプ率を持たせる。
+   h2 = 22px（1.47倍）／h3 = 17.5px（1.17倍）。
+   以前は 19px / 16.5px で、特に h3 が本文とほぼ同じ大きさになり、
+   スクロール中に「どこで話題が変わったか」が拾えなかった。 */
 .wc-lesson-prose h2 {
   margin: 0 0 14px;
-  font-size: 19px;
-  line-height: 1.55;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: -.01em;
   color: #1F1D1E;
 }
-.wc-lesson-prose h2:not(:first-child) { margin-top: 30px; }
+.wc-lesson-prose h2:not(:first-child) { margin-top: 34px; }
 /* 章見出し（01/02のバッジ付き）を JSX 側で出すようになったので、
    ブロック先頭の h2 は上マージンを詰めて二重の見出しに見えないようにする。 */
 .wc-lesson-prose > h2:first-child { margin-top: 0; }
@@ -509,8 +759,19 @@ body.learning-immersive {
   padding-left: 0;
 }
 .wc-lesson-prose h3 {
-  margin: 26px 0 10px;
-  font-size: 16.5px;
+  margin: 28px 0 10px;
+  font-size: 17.5px;
+  font-weight: 700;
+  line-height: 1.55;
+  color: #1F1D1E;
+}
+/* 移行教材には h4 まで入っているものがある。指定が無いと 16px（=本文とほぼ同じ）に
+   落ちて見出しに見えないので、h3 の一段下として明示する。 */
+.wc-lesson-prose h4 {
+  margin: 22px 0 8px;
+  font-size: 15.5px;
+  font-weight: 700;
+  line-height: 1.6;
   color: #1F1D1E;
 }
 .wc-lesson-prose p,
@@ -537,6 +798,20 @@ body.learning-immersive {
   display: block;
 }
 .wc-lesson-prose video { border-radius: 8px; }
+
+/* 教材本文の画像は押すと拡大表示（LessonImageZoom）になる。押せることを形で示す。
+   移行教材に残っている a.lightbox はもうリンクとしては働かない（外部の原寸画像へ
+   飛んでいた挙動を止めた）ので、リンクの色と下線も消しておく。 */
+.wc-lesson-prose img,
+.wc-lesson-scope figure img,
+.moodle-content img { cursor: zoom-in; }
+.wc-lesson-scope a.lightbox,
+.wc-lesson-prose a.lightbox {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: zoom-in;
+}
 /* 幅の広い表とコードは、本文ごと横に伸びるのではなく、その中でスクロールさせる */
 .wc-lesson-prose table { display: block; overflow-x: auto; max-width: 100%; border-collapse: collapse; }
 .wc-lesson-prose th,
@@ -792,6 +1067,61 @@ body.learning-immersive {
   align-items: stretch;
 }
 
+/* 領域ページ（/courses/category/:code）のコースタイル。
+   学習トップの 4列固定と違い、ここは流動レイアウトなので幅で折り返す。 */
+.wc-area-grid {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1100px) {
+  .wc-area-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .wc-area-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .wc-area-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 学習トップの「領域から探す」。
+   🔴 かつては「1440pxキャンバス内なので固定3列で足りる」と固定していたが、
+      MaterialsTopPage の useScaleToFit（transform:scale で全体を縮める方式）を
+      やめたので、狭い幅は列数で受けることになった。しきい値は
+      .wc-area-grid（領域ページ側の同種グリッド）と揃えている。 */
+.wc-area-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 1100px) {
+  .wc-area-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .wc-area-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* サイドバー展開中は本文が 152px（224 − 72）細くなるぶんを補う
+   （.mypage-rank-split などと同じ理由・同じ足し方） */
+@media (max-width: 1252px) {
+  body.sidebar-expanded .wc-area-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 1279px) {
   .notes-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -849,19 +1179,9 @@ body.learning-immersive {
   }
 }
 
-/* ヒーロー下段の連絡先2セルと、前回振り返りの2カラム。
-   狭い画面では縦罫を消して素直に積む（180px の値が2つ横並びだと読めない）。 */
+/* 前回振り返りの2カラム。狭い画面では素直に積む
+   （180px の値が2つ横並びだと読めない）。 */
 @media (max-width: 760px) {
-  .cg-contacts {
-    grid-template-columns: 1fr !important;
-  }
-  .cg-contacts > div {
-    border-right: 0 !important;
-    border-bottom: 1px solid #efe9e0;
-  }
-  .cg-contacts > div:last-child {
-    border-bottom: 0;
-  }
   .cg-last-2col {
     grid-template-columns: 1fr !important;
   }
@@ -928,28 +1248,16 @@ body.learning-immersive {
 }
 
 /* ─── AIコーチ(/ai-coach) ─────────────────── */
-/* 機能一覧の3列カード。狭い画面では2列→1列に落とす。 */
-.ai-catalog-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  align-items: stretch;
-}
-
-@media (max-width: 900px) {
-  .ai-catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 600px) {
-  .ai-catalog-grid { grid-template-columns: 1fr; }
-}
-
 /* ホームの「AIアプリでできること」3列グリッド（デザイン 1a）。
-   1a は 1280px で3列。狭い画面では2列→1列に落とす。 */
+   1a は 1280px で3列。狭い画面では2列→1列に落とす。
+   カテゴリ（学習／制作／キャリア／そのほか）ごとにこのグリッドを1つ使う。 */
+/* 🔴 align-items は start。stretch にすると、1枚の説明を開いた行の
+   他のカードまで一緒に伸びて空白の箱になる。 */
 .ai-home-apps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
-  align-items: stretch;
+  align-items: start;
 }
 
 @media (max-width: 1023px) {
@@ -968,25 +1276,15 @@ body.learning-immersive {
   box-shadow: 0 4px 16px -8px rgba(60, 48, 32, .2);
 }
 
+/* カードは「本体（押すと始まる）」と「開閉」の2つのボタンに割れているので、
+   どちらを押すことになるかを地色で見せる。 */
+.ai-home-app-start:hover {
+  background: #fdf7f3;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ai-home-app-card { transition: none; }
   .ai-home-app-card:hover { transform: none; }
-}
-
-/* できること帯。狭い画面では見出しごと縦に積む（1a は横1行） */
-.ai-home-can {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 22px;
-}
-
-@media (max-width: 767px) {
-  .ai-home-can {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 10px;
-  }
 }
 
 :root {

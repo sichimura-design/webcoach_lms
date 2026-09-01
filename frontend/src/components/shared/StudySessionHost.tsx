@@ -4,26 +4,27 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useStudySession } from '../../hooks/useStudySession';
 import { useStudyTimerStore } from '../../store/studyTimerStore';
 import { useRecentCourseStore } from '../../store/recentCourseStore';
-import { STUDY_CATEGORY_LABEL } from '../../types/studyActivity';
 import { categoryOfPath, courseIdOfPath, isLessonPath, isStudyEntryPath } from '../../utils/studyCategory';
 import { toLocalDateKey } from '../../utils/studyStats';
-import StudySessionIndicator from './StudySessionIndicator';
 import StudySessionPrompt from './StudySessionPrompt';
 
 /**
  * 学習セッションの司令塔。App直下に1つだけ常駐する。
  * ============================================================
  * 狙いは「ユーザーが記録をつけようと思わなくても記録が貯まる」こと。そのために
- * ここが4つの仕事をまとめて持つ。
+ * ここが3つの仕事をまとめて持つ。
  *
  *   1. 打診    … 学習を始めるページに着いたら「記録しますか？」を1回だけ出す
  *   2. 自動分類 … セッション中にページが変わったら、区間のカテゴリを差し替える
  *   3. 放置検知 … 最後の操作から30分動きが無ければ、計測を切って確認する
- *   4. 常設表示 … 記録中であることを小さく出す（操作は押されたときだけ）
  *
- * 🔴 なぜ1コンポーネントに寄せたか: この4つは同じ1つの状態機械（いま打診中か／
+ * 🔴 なぜ1コンポーネントに寄せたか: この3つは同じ1つの状態機械（いま打診中か／
  *    計測中か／放置確認中か）の別の顔なので、別コンポーネントに散らすと
  *    「打診ポップと放置ポップが同時に出る」ような組み合わせを取りこぼす。
+ *
+ * 🔴 「記録中であることの常設表示」はここが持たない。サイドバーの
+ *    SidebarStudyTimer（AppHeader が3面ぶん置く）と、教材ページの
+ *    LessonMiniTimer が担う。
  *
  * 🔴 AppRoutes の外に置く。ルート遷移でアンマウントされると計測もポップも消える。
  *    scale 方式のページの中に置くと position:fixed がビューポート基準にならない、
@@ -188,51 +189,22 @@ function StudySessionHost() {
   }, [category, lessonCourse]);
 
   // ---- 表示 ---------------------------------------------------------------
-  // 教材ページは LessonTopBar のミニタイマーが計測中の表示を担うので、二重に出さない。
-  const onLessonPage = isLessonPath(location.pathname);
-
   /*
-   * 常設ピルを出す条件。
+   * 🔴 計測中の常設表示はここが持たない。サイドバー（AppHeader の
+   *    SidebarStudyTimer）が定位置で出す。以前はここが画面に浮かぶ
+   *    ドラッグ可能なピル（StudySessionIndicator）を描いていたが、
+   *    既定の右上がページごとに他のUIと重なり、置き場所をユーザーに
+   *    決めさせる形になっていた。教材ページはサイドバーを描かないので、
+   *    あちらは従来どおり LessonTopBar の LessonMiniTimer が担う。
    *
-   * 🔴 計測中はどのページでも出す。止め忘れに気づけなくなるため。
-   * 🔴 一時停止中は「学習を始めるページ」に着いたときだけ出す。
-   *    一時停止は計測していない状態なので常設する理由が無いのに、以前は
-   *    マイページや学習記録を見ているあいだも「一時停止中 36分」が
-   *    視界に残り続けていた（レビュー指摘）。再開したいのは次に学習を
-   *    始める瞬間だけなので、その瞬間に戻ってくる形にする。
-   * 🔴 判定は打診と同じ isStudyEntryPath を使う。「学習を始める場所」の
-   *    定義をアプリ内に二重に持たない（utils/studyCategory.ts）。
+   * 🔴 ここに「⏱ 学習時間を記録する」の常設ピルもあったが撤去済み。
+   *    打診を断った日はその日ずっと画面に残るので邪魔だったのと、
+   *    そもそも開始の入口を2つにしていた（LessonMiniTimer.tsx のコメント参照）。
+   *    断ったあとの復帰は、ピルではなく打診そのものが受け持つ
+   *    （PROMPT_DECLINE_LIMIT: 1回目の「あとで」なら別の学習ページでまた聞く）。
    */
-  const showIndicator =
-    !!s.session && !onLessonPage && (s.running || isStudyEntryPath(location.pathname));
-
-  const subject = s.session?.lessonTitle
-    ? `${s.session.courseTitle ?? ''} / ${s.session.lessonTitle}`
-    : s.session?.courseTitle || STUDY_CATEGORY_LABEL[category];
-
   return (
     <>
-      {showIndicator && s.session && (
-        <StudySessionIndicator
-          elapsedSeconds={s.elapsedSeconds}
-          running={s.running}
-          subject={subject}
-          segments={s.segmentTotals}
-          onPause={s.pause}
-          onResume={s.resume}
-          onFinish={s.prepareFinish}
-          onDiscard={s.discard}
-        />
-      )}
-
-      {/*
-        🔴 ここに「⏱ 学習時間を記録する」の常設ピルがあったが撤去した。
-           打診を断った日はその日ずっと画面に残るので邪魔だったのと、
-           そもそも開始の入口を2つにしていた（LessonMiniTimer.tsx のコメント参照）。
-           断ったあとの復帰は、ピルではなく打診そのものが受け持つ
-           （PROMPT_DECLINE_LIMIT: 1回目の「あとで」なら別の学習ページでまた聞く）。
-      */}
-
       {/* 放置確認は打診より優先する（計測中に打診は出ないので実際には排他） */}
       {s.session && idleFor === activityId ? (
         <StudySessionPrompt

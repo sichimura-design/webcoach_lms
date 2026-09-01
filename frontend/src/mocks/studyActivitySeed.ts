@@ -33,6 +33,7 @@ import {
   StudySegmentTotal,
 } from '../types/studyActivity';
 import { STUDY_DAY_MIN_MINUTES, toLocalDateKey } from '../utils/studyStats';
+import { courseBySlug } from '../constants/courseTaxonomy';
 
 const SEED_DAYS = 42;
 
@@ -45,12 +46,17 @@ const REST_DAYS = new Set([5, 9, 14, 20, 25, 38]);
 /** 合計10分未満にする日（学習日として成立しない） */
 const SHORT_DAYS = new Set([6, 15, 39]);
 
-/** 教材の候補。handlers.ts の userCourses / catalog と同じ id・名前にする */
+/** 教材の候補。コース名は courseTaxonomy から引く（書き写すとカタログと食い違う） */
+const courseRef = (slug: string, lessonId: number, lessonTitle: string): StudyActivityCourseRef => {
+  const course = courseBySlug(slug);
+  return { courseId: course?.id ?? 0, courseTitle: course?.name ?? '', lessonId, lessonTitle };
+};
+
 const COURSES: (StudyActivityCourseRef | null)[] = [
-  { courseId: 101, courseTitle: 'はじめてのWebデザイン', lessonId: 4, lessonTitle: 'バナー制作の基礎' },
-  { courseId: 102, courseTitle: 'HTML/CSS基礎', lessonId: 2, lessonTitle: 'ボックスモデル' },
-  { courseId: 201, courseTitle: 'デザインの4大原則', lessonId: 1, lessonTitle: '近接と整列' },
-  { courseId: 203, courseTitle: 'バナーを作ってみよう', lessonId: 3, lessonTitle: '配色を決める' },
+  courseRef('design-basics', 4, '配色の基本'),
+  courseRef('html-css', 2, 'ボックスモデル'),
+  courseRef('banner-dojo', 1, 'お題1: セールバナー'),
+  courseRef('capcut', 3, 'テロップを入れる'),
   null, // 教材を指定しない
 ];
 

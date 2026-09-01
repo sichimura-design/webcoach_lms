@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { ChevronLeft, Plus, Search, SlidersHorizontal, Star } from 'lucide-react';
-import { AppHeader } from '../shared';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { ArrowUpDown, BookOpen, ChevronDown, ChevronLeft, Plus, Search, Star } from 'lucide-react';
+import { AppFooter, AppHeader } from '../shared';
+import { MOCKS_ENABLED } from '../../mocks/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import { useNote } from '../../hooks/useNote';
 import { useNoteList } from '../../hooks/useNoteList';
+import { BackTo } from '../../hooks/useNoteCapture';
 import bffClient from '../../services/bffClient';
 import {
   NOTE_ORIGIN_LABEL,
@@ -41,15 +43,55 @@ import NotesPagination from './NotesPagination';
 /** 1ページの件数。3列 × 8行 */
 const PAGE_SIZE = 24;
 
-const SORTS: NoteSort[] = ['updated', 'created', 'title'];
+/**
+ * デモデータの件数を差し替える開発用パネル（モック時のみ）。
+ * ページ送りの操作性は件数を変えないと確かめられないため。
+ * 本番ビルドでは MOCKS_ENABLED が false なので読み込まれない。
+ */
+const NotesDevPanel = React.lazy(() => import('../dev/NotesDevPanel'));
+
+const SORTS: NoteSort[] = ['updated', 'updatedAsc', 'created', 'createdAsc', 'title'];
 
 /** チップ行の出どころ。「すべて」を先頭に置く（CONTENTS §10-3） */
 const ORIGIN_CHIPS: NoteOrigin[] = ['self', 'material', 'ai', 'coaching'];
 
+/**
+ * 「〈教材名〉に戻る」。隣の「マイノートに戻る」とは行き先が違うので、
+ * 枠付き＋別アイコンにして押し間違いを防ぐ。
+ */
+const BACK_TO_SOURCE_STYLE: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  padding: '6px 12px',
+  border: '1px solid var(--dc-border-strong)',
+  borderRadius: 8,
+  background: 'var(--dc-surface)',
+  color: 'var(--dc-text-body)',
+  fontFamily: 'inherit',
+  fontSize: 12.5,
+  fontWeight: 700,
+  cursor: 'pointer',
+  maxWidth: '100%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+};
+
 export function MyNotesPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const { showToast } = useToast();
+
+  /**
+   * 「どこから来たか」。教材のメモ欄やトーストの「ノートを見る」が預けてくれる。
+   * 🔴 ノート自身の source では代用できない。あれは"そのノートが生まれた
+   *    レッスン"なので、第5レッスンのクリップを第1レッスン由来のノートへ
+   *    入れた場合に、誤ったレッスンへ戻すボタンになってしまう。
+   *    state が無いときだけ source を保険に使う（下の backButton）。
+   */
+  const backTo = (location.state as { backTo?: BackTo } | null)?.backTo ?? null;
 
   const list = useNoteList();
 
@@ -58,11 +100,17 @@ export function MyNotesPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedId = searchParams.get('note');
 
+  /*
+   * 開くときは履歴を積み（push）、閉じるときは積まない（replace）。
+   * 🔴 開くのを replace にすると、ノートを見てからブラウザバックしても
+   *    一覧に戻れず、来る前のページまで飛んでしまう。
+   *    逆に閉じるのを push にすると、戻るでさっき閉じたノートに引き戻される。
+   */
   const select = (id: string | null) => {
     const next = new URLSearchParams(searchParams);
     if (id) next.set('note', id);
     else next.delete('note');
-    setSearchParams(next, { replace: true });
+    setSearchParams(next, { replace: id === null });
   };
 
   const detail = useNote(selectedId);
@@ -160,22 +208,6 @@ export function MyNotesPage() {
     navigate(`/course/${source.courseId}?${params.toString()}`);
   };
 
-  /**
-   * 「クリップを追加」「AI回答を追加」は、このページ単体では素材が無い。
-   * 空のブロックを置くと嘘になるので、素材のある場所へ案内する。
-   */
-  const guideToLesson = (what: 'clip' | 'answer') => {
-    const source = detail.note?.source;
-    showToast(
-      what === 'clip'
-        ? '教材の文章をドラッグして「クリップ」すると、このノートに入ります'
-        : 'AIコーチの回答の「保存」から、このノートに入れられます',
-      'success'
-    );
-    if (source) navigate(`/course/${source.courseId}?module=${source.lessonId}`);
-    else navigate('/courses');
-  };
-
   return (
     <div className="wc-warm min-h-screen flex flex-col" style={{ background: 'var(--dc-bg)' }}>
       <AppHeader userName={user?.username || 'User'} />
@@ -185,44 +217,70 @@ export function MyNotesPage() {
         style={{ flex: 1, gap: 24, color: 'var(--dc-text)' }}
       >
         {selectedId ? (
-          /* ── ノート面。一覧から1枚を開いた状態 ── */
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <button
-              type="button"
-              onClick={() => select(null)}
-              className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 4,
-                alignSelf: 'flex-start',
-                padding: '6px 10px 6px 4px',
-                border: 0,
-                borderRadius: 8,
-                background: 'none',
-                color: 'var(--dc-primary)',
-                fontFamily: 'inherit',
-                fontSize: 13,
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
-            >
-              <ChevronLeft size={16} /> マイノートに戻る
-            </button>
+          /* ── ノート面。一覧から1枚を開いた状態 ──
+             🔴 紙をページの高さいっぱいに伸ばす。伸ばさないと、書きかけの
+                空ノートの下にフッターまでの空白が残って落ち着かない。 */
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, flex: 1, minHeight: 0 }}>
+            {/* 戻り先は2つ出る。一覧へ戻るのと、来た教材へ帰るのは別の用事なので
+                どちらかに寄せない（教材から見に来た人が一覧経由で帰らずに済む）。 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => select(null)}
+                className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  padding: '6px 10px 6px 4px',
+                  border: 0,
+                  borderRadius: 8,
+                  background: 'none',
+                  color: 'var(--dc-primary)',
+                  fontFamily: 'inherit',
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                <ChevronLeft size={16} /> マイノートに戻る
+              </button>
 
-            <div style={{ width: '100%', maxWidth: 900 }}>
+              {backTo ? (
+                <button
+                  type="button"
+                  onClick={() => navigate(backTo.to)}
+                  className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={BACK_TO_SOURCE_STYLE}
+                >
+                  <BookOpen size={15} /> {backTo.label}
+                </button>
+              ) : (
+                detail.note?.source && (
+                  <button
+                    type="button"
+                    onClick={() => openSource(detail.note!.source!, null)}
+                    className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                    style={BACK_TO_SOURCE_STYLE}
+                  >
+                    <BookOpen size={15} /> 「{detail.note.source.lessonTitle}」に戻る
+                  </button>
+                )
+              )}
+            </div>
+
+            <div style={{ width: '100%', maxWidth: 900, flex: 1, display: 'flex', flexDirection: 'column' }}>
               {detail.note ? (
                 <NoteEditor
                   note={detail.note}
                   onRename={detail.renameNote}
                   onToggleFavorite={detail.toggleFavorite}
                   onDelete={() => void handleDelete(detail.note!.id)}
-                  onAddText={(text) => void detail.addBlock({ kind: 'text', text })}
-                  onAddClipPrompt={() => guideToLesson('clip')}
-                  onAddAnswerPrompt={() => guideToLesson('answer')}
+                  onAddBlock={detail.addBlock}
                   onPatchBlock={detail.patchBlock}
                   onRemoveBlock={detail.removeBlock}
                   onOpenSource={openSource}
+                  onError={(message) => showToast(message, 'error')}
                 />
               ) : (
                 <div
@@ -271,21 +329,26 @@ export function MyNotesPage() {
                 >
                   マイノート
                 </h1>
+                {/* 🔴 「確認できます」だと見る場所に読める。この画面は書く場所。
+                       ノートを開けばそのまま書ける、が伝わる文言にする。 */}
                 <p style={{ margin: '5px 0 0', fontSize: 12.5, color: 'var(--dc-text-muted)' }}>
-                  学習やコーチング、AIコーチで残したメモをまとめて確認できます。
+                  自分のノートを作って、文章・画像・教材のクリップ・AIの回答を書きためていく場所です。
                 </p>
               </div>
               <NoteReviewCard />
             </div>
 
-            {/* ── 検索・並び替え・作成 ── */}
+            {/* ── 検索・作成 ──
+                🔴 検索欄は幅いっぱいにしない。1080px 全幅だと、左端の入力から
+                   右端のコントロールまで視線が横断してしまう。
+                   並び替えは検索欄の中（アイコンだけ）から絞り込みチップの行へ出した。 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ position: 'relative', flex: 1, minWidth: 0 }}>
+              <div style={{ position: 'relative', flex: '0 1 360px', minWidth: 0 }}>
                 <Search
                   size={18}
                   style={{
                     position: 'absolute',
-                    left: 16,
+                    left: 14,
                     top: '50%',
                     transform: 'translateY(-50%)',
                     color: 'var(--dc-text-muted)',
@@ -300,92 +363,20 @@ export function MyNotesPage() {
                     width: '100%',
                     boxSizing: 'border-box',
                     height: 48,
-                    padding: '0 52px 0 44px',
+                    padding: '0 16px 0 42px',
                     border: '1px solid var(--dc-border-strong)',
                     borderRadius: 'var(--dc-radius-md)',
                     background: 'var(--dc-surface)',
                     fontFamily: 'inherit',
-                    fontSize: 14,
+                    // 16px 未満だと iOS が入力時にページを拡大する
+                    fontSize: 16,
                     color: 'var(--dc-text)',
                     outline: 'none',
                   }}
                 />
-
-                {/* 1a の右端アイコン。チップがすでに絞り込みなので、ここは並び替えを担う */}
-                <div
-                  ref={sortRef}
-                  style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)' }}
-                >
-                  <button
-                    type="button"
-                    aria-label="並び替えを開く"
-                    aria-expanded={sortOpen}
-                    onClick={() => setSortOpen((v) => !v)}
-                    className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: 36,
-                      height: 36,
-                      border: 0,
-                      borderRadius: 8,
-                      background: sortOpen ? 'var(--dc-sunken)' : 'none',
-                      color: 'var(--dc-text-muted)',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    <SlidersHorizontal size={18} />
-                  </button>
-
-                  {sortOpen && (
-                    <div
-                      role="menu"
-                      style={{
-                        position: 'absolute',
-                        top: 42,
-                        right: 0,
-                        zIndex: 20,
-                        minWidth: 170,
-                        padding: 6,
-                        background: 'var(--dc-surface)',
-                        border: '1px solid var(--dc-border)',
-                        borderRadius: 'var(--dc-radius-md)',
-                        boxShadow: 'var(--dc-shadow-float)',
-                      }}
-                    >
-                      {SORTS.map((s) => (
-                        <button
-                          key={s}
-                          type="button"
-                          role="menuitemradio"
-                          aria-checked={list.sort === s}
-                          onClick={() => {
-                            changeFilter(() => list.setSort(s));
-                            setSortOpen(false);
-                          }}
-                          style={{
-                            display: 'block',
-                            width: '100%',
-                            padding: '9px 10px',
-                            border: 0,
-                            borderRadius: 8,
-                            background: list.sort === s ? 'var(--dc-soft-100)' : 'transparent',
-                            color: list.sort === s ? 'var(--dc-primary)' : 'var(--dc-text-body)',
-                            fontFamily: 'inherit',
-                            fontSize: 13,
-                            fontWeight: 700,
-                            textAlign: 'left',
-                            cursor: 'pointer',
-                          }}
-                        >
-                          {NOTE_SORT_LABEL[s]}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
               </div>
+
+              <span style={{ flex: 1 }} />
 
               {/* 1a に無いが残す。ここを外すとノートを作る手段が画面から消える */}
               <button
@@ -437,6 +428,88 @@ export function MyNotesPage() {
                 />
                 重要
               </Chip>
+
+              {/* ── 並び替え。絞り込み（チップ）と同じ行で対にする ──
+                  🔴 現在の並び順を文字で出す。以前は検索欄の右端の
+                     SlidersHorizontal アイコンだけで、絞り込みに見えて
+                     並び替えがあることに気づけなかった。 */}
+              <div ref={sortRef} style={{ position: 'relative', marginLeft: 'auto' }}>
+                <button
+                  type="button"
+                  aria-haspopup="menu"
+                  aria-expanded={sortOpen}
+                  onClick={() => setSortOpen((v) => !v)}
+                  className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    height: 34,
+                    padding: '0 12px',
+                    border: '1px solid var(--dc-border-strong)',
+                    borderRadius: 9999,
+                    background: sortOpen ? 'var(--dc-sunken)' : 'var(--dc-surface)',
+                    color: 'var(--dc-text-body)',
+                    fontFamily: 'inherit',
+                    fontSize: 12.5,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <ArrowUpDown size={14} style={{ color: 'var(--dc-text-muted)' }} />
+                  {NOTE_SORT_LABEL[list.sort]}
+                  <ChevronDown size={14} style={{ color: 'var(--dc-text-muted)' }} />
+                </button>
+
+                {sortOpen && (
+                  <div
+                    role="menu"
+                    style={{
+                      position: 'absolute',
+                      top: 40,
+                      right: 0,
+                      zIndex: 20,
+                      minWidth: 180,
+                      padding: 6,
+                      background: 'var(--dc-surface)',
+                      border: '1px solid var(--dc-border)',
+                      borderRadius: 'var(--dc-radius-md)',
+                      boxShadow: 'var(--dc-shadow-float)',
+                    }}
+                  >
+                    {SORTS.map((s) => (
+                      <button
+                        key={s}
+                        type="button"
+                        role="menuitemradio"
+                        aria-checked={list.sort === s}
+                        onClick={() => {
+                          changeFilter(() => list.setSort(s));
+                          setSortOpen(false);
+                        }}
+                        style={{
+                          display: 'block',
+                          width: '100%',
+                          padding: '9px 10px',
+                          border: 0,
+                          borderRadius: 8,
+                          background: list.sort === s ? 'var(--dc-soft-100)' : 'transparent',
+                          color: list.sort === s ? 'var(--dc-primary)' : 'var(--dc-text-body)',
+                          fontFamily: 'inherit',
+                          fontSize: 13,
+                          fontWeight: 700,
+                          textAlign: 'left',
+                          cursor: 'pointer',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        {NOTE_SORT_LABEL[s]}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
 
             {list.error ? (
@@ -481,9 +554,21 @@ export function MyNotesPage() {
         )}
       </main>
 
-      <footer className="h-10 flex items-center justify-center" style={{ background: '#2B2629' }}>
-        <span className="text-[11.4px] font-bold text-white">2026 &copy; WEBCOACH</span>
-      </footer>
+      <AppFooter style={{ padding: '32px 0 24px' }} />
+
+      {MOCKS_ENABLED && (
+        <React.Suspense fallback={null}>
+          <NotesDevPanel
+            pageSize={PAGE_SIZE}
+            total={list.items.length}
+            onDone={async () => {
+              setPage(1);
+              select(null);
+              await list.reload();
+            }}
+          />
+        </React.Suspense>
+      )}
     </div>
   );
 }

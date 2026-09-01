@@ -2,9 +2,10 @@ import { RefObject, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, Check, Clock, List, Sparkles } from 'lucide-react';
 import { color, font, radius, shadow } from '../../theme/webcoachTheme';
 import { LessonDoc } from '../../types/lesson';
-import { LEARNING_TYPE_LABEL, MATERIAL_FORMAT_LABEL } from '../../constants/learningTaxonomy';
+import { MATERIAL_FORMAT_LABEL } from '../../constants/learningTaxonomy';
 import type { LearningType } from '../../constants/learningTaxonomy';
 import LessonBlockView from './LessonBlockView';
+import LessonImageZoom from './LessonImageZoom';
 import MoodleFallbackBlock from './MoodleFallbackBlock';
 import { ClipAnchor, applyClipMarks } from './clipHighlight';
 import { groupByHeading } from './lessonSections';
@@ -134,10 +135,9 @@ function NextUpCard({
   const nextStyle = nextEmphasis === 'primary' ? primarySmButton : outlineButton;
   const nextIconColor = nextEmphasis === 'primary' ? color.textOnPrimary : color.textStrong;
 
-  const metaBits = [
-    nextMeta?.learningType ? LEARNING_TYPE_LABEL[nextMeta.learningType] : null,
-    nextMeta?.minutes ? `読了目安 ${nextMeta.minutes}分` : null,
-  ].filter(Boolean);
+  // 🔴 学習タイプ（演習／基礎知識…）はここに出さない。選ぶ判断に使われていなかったので
+  //    アプリ全体で表示をやめた。残すのは目次から取れる実データだけ。
+  const metaBits = [nextMeta?.minutes ? `読了目安 ${nextMeta.minutes}分` : null].filter(Boolean);
 
   return (
     <div
@@ -276,17 +276,13 @@ export function LessonArticle({
           padding: 'clamp(24px, 4vw, 48px)',
         }}
       >
-        {/* ── ヘッダー：カテゴリ・タイトル・リード ── */}
+        {/* ── ヘッダー：タイトル・リード ──
+            🔴 タイトルの上に学習タイプ（演習／基礎知識…）の eyebrow を出していたが撤去した。
+               受講生が読むのはレッスン名で、分類名は選ぶ判断に使われていなかった。 */}
         <header style={{ textAlign: 'center', marginBottom: 40 }}>
-          {doc.learningType && (
-            <div style={{ ...font.eyebrow, color: color.primary }}>
-              {LEARNING_TYPE_LABEL[doc.learningType]}
-            </div>
-          )}
-
           <h1
             style={{
-              margin: '14px 0 0',
+              margin: 0,
               fontSize: 'clamp(24px, 3.4vw, 38px)',
               fontWeight: 900,
               lineHeight: 1.35,
@@ -356,7 +352,12 @@ export function LessonArticle({
           </div>
         )}
 
-        {/* ── 本文 ── */}
+        {/* ── 本文 ──
+            LessonImageZoom は本文の画像クリックを拾って拡大表示に差し替える。
+            🔴 articleRef の div 自体は包み替えない。ハイライトの復元・選択ツールバー・
+               ?block= の深リンク・読書位置の監視がこの div と data-block-id を見ているので、
+               外側に1枚足すだけにしてある。 */}
+        <LessonImageZoom>
         <div ref={articleRef} data-lesson-article>
           {!isFallback && (
             <div
@@ -404,19 +405,20 @@ export function LessonArticle({
                       aria-hidden
                       className="grid place-items-center flex-shrink-0"
                       style={{
-                        width: 34,
-                        height: 34,
+                        width: 36,
+                        height: 36,
                         borderRadius: '50%',
                         background: color.primary,
                         color: color.textOnPrimary,
-                        fontSize: 12.5,
+                        fontSize: 13,
                         fontWeight: 900,
                         fontVariantNumeric: 'tabular-nums',
                       }}
                     >
                       {String(section.index).padStart(2, '0')}
                     </span>
-                    <h2 style={{ margin: 0, fontSize: 19, fontWeight: 900, lineHeight: 1.5, color: color.text }}>
+                    {/* 章見出しは本文中の h2（22px）より一段上。ここが本文の最上位の区切り */}
+                    <h2 style={{ margin: 0, fontSize: 24, fontWeight: 900, lineHeight: 1.45, letterSpacing: '-.015em', color: color.text }}>
                       {section.heading}
                     </h2>
                   </div>
@@ -580,6 +582,7 @@ export function LessonArticle({
             )}
           </footer>
         </div>
+        </LessonImageZoom>
       </div>
     </article>
   );

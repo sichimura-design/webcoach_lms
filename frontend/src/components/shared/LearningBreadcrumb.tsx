@@ -37,7 +37,7 @@ export function LearningBreadcrumb({ items, style }: LearningBreadcrumbProps) {
       aria-label="現在の階層"
       style={{
         minWidth: 0,
-        fontSize: 12,
+        fontSize: 'var(--dc-fs-body)',
         color: t.color.text.subtle,
         overflow: 'hidden',
         whiteSpace: 'nowrap',

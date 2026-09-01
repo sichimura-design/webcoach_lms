@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { color, font } from '../../theme/webcoachTheme';
 import { useToast } from '../../contexts/ToastContext';
 import { useLessonDoc } from '../../hooks/useLessonDoc';
 import { useLessonCompletion } from '../../hooks/useLessonCompletion';
 import { useLessonAi, LessonAiMessage, LessonAiQuote } from '../../hooks/useLessonAi';
 import { useNotes } from '../../hooks/useNotes';
-import { useNoteCapture } from '../../hooks/useNoteCapture';
+import { useNoteCapture, BackTo } from '../../hooks/useNoteCapture';
 import { useNoteList } from '../../hooks/useNoteList';
 import { useTextSelection } from '../../hooks/useTextSelection';
 import bffClient from '../../services/bffClient';
 import { NoteSourceRef } from '../../types/notes';
 import { AiSkillId } from '../../types/aiSkill';
+import { useAiCoachStore } from '../../store/aiCoachStore';
 import NoteTargetPicker from '../notes/NoteTargetPicker';
 import { ClipAnchor } from './clipHighlight';
 import LessonTopBar from './LessonTopBar';
@@ -55,7 +56,9 @@ interface LearningWorkspacePageProps {
 export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: LearningWorkspacePageProps) {
   const { showToast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const setExpandOrigin = useAiCoachStore((s) => s.setExpandOrigin);
 
   const [lessonId, setLessonId] = useState<number | null>(initialModuleId ?? null);
   /**
@@ -97,6 +100,24 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
 
   /** このレッスンから触ったノート。メモ欄の入口として出す */
   const relatedNotes = useNoteList({ lessonId: doc?.lessonId });
+
+  /**
+   * ノートから この教材へ戻るための行き先。
+   * 開いているパネルを ?panel= に載せるのが要点。載せないと、ノートを見て
+   * 帰ってきたときにメモ／AIが閉じた教材ページになり、開き直す手間が毎回かかる
+   * （パネルの開閉は永続化していないので、URLに書くしか復元手段がない）。
+   */
+  const backToLesson = useCallback(
+    (tab?: SupportTab): BackTo | undefined => {
+      if (!doc) return undefined;
+      const params = new URLSearchParams(location.search);
+      const panel = tab ?? (support.open ? support.tab : null);
+      if (panel) params.set('panel', panel);
+      else params.delete('panel');
+      return { to: `${location.pathname}?${params.toString()}`, label: `「${doc.title}」に戻る` };
+    },
+    [doc, location.pathname, location.search, support.open, support.tab]
+  );
 
   /** 取り込んだ内容にいつも付ける出どころ */
   const sourceOf = useCallback(
@@ -197,6 +218,21 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingBlock, doc?.lessonId, loading]);
 
+  // ── AI専用ページ／マイノートから戻ってきたときの復帰 ──
+  // 出ていったときと同じ状態（AIコーチ or メモのパネルが開いている）に戻す。
+  // メモも対象にしているのは、ノートを見て帰ってきたときにメモ欄が閉じていると
+  // 開き直す手間が毎回かかるため。一度使ったらURLからは消す
+  // （リロードや共有で毎回開かせない）。
+  const pendingPanel = searchParams.get('panel');
+  useEffect(() => {
+    if (pendingPanel !== 'ai' && pendingPanel !== 'notes') return;
+    openSupport(pendingPanel);
+    const next = new URLSearchParams(searchParams);
+    next.delete('panel');
+    setSearchParams(next, { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingPanel]);
+
   // ── 選択操作 ──
   const selectionToQuote = useCallback(
     (): LessonAiQuote | null =>
@@ -248,15 +284,15 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     if (!source) return;
     clearSelection();
     window.getSelection()?.removeAllRanges();
-    // 追加先が未定なら capture.pending が立ち、下でピッカーが出る
-    await capture.capture({
+    // 追加先はピッカーで選ぶ（capture は pending を立てるだけ）
+    capture.capture({
       block: { kind: 'clip', text: selection.text, source },
       suggestedTitle: doc.title,
       source,
       lessonId: doc.lessonId,
+      backTo: backToLesson(),
     });
-    void relatedNotes.reload();
-  }, [selection, doc, sourceOf, capture, clearSelection, relatedNotes]);
+  }, [selection, doc, sourceOf, capture, clearSelection, backToLesson]);
 
   // ── AI回答の保存／メモ追加 ──
   const questionFor = useCallback(
@@ -312,7 +348,7 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
         blockId: sources[0]?.blockId ?? null,
         heading: sources[0]?.heading ?? ai.contextHeading,
       });
-      await capture.capture({
+      capture.capture({
         block: {
           kind: 'answer',
           question,
@@ -324,27 +360,39 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
         suggestedTitle: doc.title,
         source,
         lessonId: doc.lessonId,
+        backTo: backToLesson('ai'),
       });
-      void relatedNotes.reload();
     },
-    [doc, questionFor, sourceOf, ai.contextHeading, answerToText, capture, relatedNotes]
+    [doc, questionFor, sourceOf, ai.contextHeading, answerToText, capture, backToLesson]
   );
 
   /** 下書きをノートの本文として残す。編集してから取り込みたい人の経路 */
-  const handleKeepDraft = useCallback(async () => {
+  const handleKeepDraft = useCallback(() => {
     const text = notes.memoDraft.trim();
     if (!text || !doc) return;
     const source = sourceOf();
-    const ok = await capture.capture({
+    capture.capture({
       block: { kind: 'text', text },
       suggestedTitle: doc.title,
       source,
       lessonId: doc.lessonId,
+      backTo: backToLesson('notes'),
+      // ピッカーが出ている間・やめたときは下書きを消さない。
+      // 追加が成功したときにだけ呼ばれるので、内容を失わせない
+      onSaved: () => notes.setMemoDraft(''),
     });
-    // ピッカーが出ている間は下書きを消さない。選び終えるまで内容を失わせない
-    if (ok) notes.setMemoDraft('');
-    void relatedNotes.reload();
-  }, [notes, doc, sourceOf, capture, relatedNotes]);
+  }, [notes, doc, sourceOf, capture, backToLesson]);
+
+  /**
+   * メモ欄の「このレッスンのノート」からノートを開く。
+   * 戻り先を預けるので、向こう側に「〜に戻る」が出る（メモ欄を開いた状態で戻る）。
+   */
+  const handleOpenNote = useCallback(
+    (noteId: string) => {
+      capture.openNotes(noteId, backToLesson('notes'));
+    },
+    [capture, backToLesson]
+  );
 
   const handleAppendToMemo = useCallback(
     (message: LessonAiMessage) => {
@@ -360,10 +408,26 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
    * AI専用ページへ拡大する（要件§5）。
    * 会話は aiCoachStore にあるので、セッションIDだけ渡せば会話・添付画像・
    * 専門モードがそのまま引き継がれる。SPA遷移なのでメモリ上の状態は生きたまま。
+   *
+   * 戻り先（このレッスンのURL）も預ける。拡大が一方通行だと、
+   * 向こう側に「元の画面に戻す」を描けない。
    */
   const handleExpandToAiPage = useCallback(() => {
+    // 戻り先には ?panel=ai を足す。パネルの開閉は永続化していないので、
+    // これが無いと畳んだ先が「AIコーチが閉じた教材ページ」になり、
+    // せっかく引き継いだ会話がまた見えなくなる。
+    const back = new URLSearchParams(location.search);
+    back.set('panel', 'ai');
+    setExpandOrigin({
+      sessionId: ai.sessionId,
+      path: `${location.pathname}?${back.toString()}`,
+      // 戻り先を名指しする（backToLesson と同じ書式）。「元の画面」より、
+      // どの教材へ帰るのかが読めるほうが押す前に分かる。
+      label: doc ? `「${doc.title}」に戻る` : '教材に戻る',
+      fromDrawer: false,
+    });
     navigate(`/ai-coach?session=${encodeURIComponent(ai.sessionId)}`);
-  }, [navigate, ai.sessionId]);
+  }, [ai.sessionId, doc, location.pathname, location.search, navigate, setExpandOrigin]);
 
   /**
    * 提案カードの「広い画面で開く」（要件§「教材学習画面との接続」）。
@@ -374,9 +438,9 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
   const handleOpenWideWithSkill = useCallback(
     (skillId: AiSkillId) => {
       ai.selectSkill(skillId);
-      navigate(`/ai-coach?session=${encodeURIComponent(ai.sessionId)}`);
+      handleExpandToAiPage();
     },
-    [ai, navigate]
+    [ai, handleExpandToAiPage]
   );
 
   /**
@@ -559,8 +623,8 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
                   notes={notes}
                   lessonTitle={doc?.title ?? ''}
                   relatedNotes={relatedNotes.items}
-                  onKeepDraft={() => void handleKeepDraft()}
-                  onOpenNote={(noteId) => navigate(`/notes?note=${encodeURIComponent(noteId)}`)}
+                  onKeepDraft={handleKeepDraft}
+                  onOpenNote={handleOpenNote}
                 />
               }
             />
@@ -578,10 +642,11 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
         />
       )}
 
-      {/* 追加先ノートが未定のときだけ出る。一度選べば以後このレッスンでは聞かない */}
+      {/* 保存のたびに出る。どのノートに入れるかは毎回ここで選ぶ */}
       {capture.pending && (
         <NoteTargetPicker
-          suggestedTitle={capture.pending.suggestedTitle}
+          pending={capture.pending}
+          busy={capture.saving}
           onPickNote={(noteId) => {
             void capture.resolvePendingWithNote(noteId).then(() => relatedNotes.reload());
           }}

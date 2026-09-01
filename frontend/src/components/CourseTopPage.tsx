@@ -3,14 +3,11 @@ import { useAsyncData } from '../hooks/useAsyncData';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Check, Clock, Play } from 'lucide-react';
 import { bffClient } from '../services/bffClient';
-import { AppHeader, LearningBreadcrumb } from './shared';
+import { AppFooter, AppHeader, LearningBreadcrumb } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { formatMinutesHM } from '../utils/studyStats';
-import {
-  LEARNING_HIERARCHY,
-  LEARNING_TYPE_LABEL,
-  LearningType,
-} from '../constants/learningTaxonomy';
+import { lessonProgressOf } from '../utils/lessonProgress';
+import { LEARNING_HIERARCHY, LearningType } from '../constants/learningTaxonomy';
 
 interface Module {
   id: number;
@@ -41,8 +38,6 @@ interface Course {
   summary?: string;
 }
 
-const stripTags = (html?: string) => (html ?? '').replace(/<[^>]*>/g, '').trim();
-
 /** 所要時間の合計。実BFFには時間が無いので、1件も持っていなければ 0 を返して表示ごと消す */
 const totalMinutes = (modules: Module[]) =>
   modules.reduce((sum, m) => sum + (m.durationminutes ?? 0), 0);
@@ -52,13 +47,33 @@ const pad2 = (n: number) => String(n).padStart(2, '0');
 
 type LessonState = 'done' | 'current' | 'idle';
 
+const LESSON_STATE_LABEL: Record<LessonState, string> = {
+  done: '完了',
+  current: '学習中',
+  idle: '未着手',
+};
+
 /**
  * レッスン・チャプターの状態を表す丸。
  * デザイン（コーストップ 3案.dc.html 案2a）では
  *   完了 = 緑塗り＋✓ ／ 学習中 = 赤塗り＋▶ ／ 未着手 = 破線の空丸
  * の3つだけ。状態以外の意味で色を増やさないこと。
+ *
+ * 🔴 この丸が状態の唯一の表示。以前は隣に「完了／学習中／未着手」のテキストも
+ *    出していたが、丸と同じことを言っているだけなので撤去した。そのぶん
+ *    状態は role="img" + aria-label でここが読み上げに渡す（labelled=false の
+ *    凡例だけは、すぐ隣に同じ語が文字で出ているので読み上げから外す）。
  */
-function StatusCircle({ state, size }: { state: LessonState; size: number }) {
+function StatusCircle({
+  state,
+  size,
+  labelled = true,
+}: {
+  state: LessonState;
+  size: number;
+  /** false にすると装飾扱い。隣に同じ意味の文字があるときに使う */
+  labelled?: boolean;
+}) {
   const base: React.CSSProperties = {
     width: size,
     height: size,
@@ -69,39 +84,56 @@ function StatusCircle({ state, size }: { state: LessonState; size: number }) {
     alignItems: 'center',
     justifyContent: 'center',
   };
+  const a11y = labelled
+    ? { role: 'img' as const, 'aria-label': LESSON_STATE_LABEL[state] }
+    : { 'aria-hidden': true };
+
   if (state === 'done') {
     return (
-      <span style={{ ...base, background: 'var(--dc-success)', color: '#fff' }}>
+      <span {...a11y} style={{ ...base, background: 'var(--dc-success)', color: '#fff' }}>
         <Check size={Math.round(size * 0.6)} strokeWidth={3} />
       </span>
     );
   }
   if (state === 'current') {
     return (
-      <span style={{ ...base, background: 'var(--dc-primary)', color: '#fff' }}>
+      <span {...a11y} style={{ ...base, background: 'var(--dc-primary)', color: '#fff' }}>
         <Play size={Math.round(size * 0.45)} strokeWidth={2} fill="currentColor" />
       </span>
     );
   }
-  return <span style={{ ...base, border: '1.5px dashed var(--dc-idle-dash)' }} />;
+  return <span {...a11y} style={{ ...base, border: '1.5px dashed var(--dc-idle-dash)' }} />;
 }
 
-/** 「◷ 14分」。実BFFには時間が無いので、値が無ければ何も出さない */
+/**
+ * レッスン行右端の所要時間の列。
+ *
+ * 🔴 値が無くても器は残す（幅 DURATION_W の空箱を返す）。null を返すと
+ *    その行だけ隣のボタンが左へ寄り、行ごとに「◷ 8分」の縦位置が揃わなくなる。
+ *    実BFFは所要時間を持たないので、混在は普通に起きる。
+ */
+const DURATION_W = 58;
+
 function DurationLabel({ minutes, dim }: { minutes?: number; dim?: boolean }) {
-  if (!minutes) return null;
   return (
     <span
       style={{
         display: 'inline-flex',
         alignItems: 'center',
+        justifyContent: 'flex-end',
         gap: 5,
         flex: 'none',
+        width: DURATION_W,
         fontSize: 12.5,
         color: dim ? 'var(--dc-text-subtle)' : 'var(--dc-text-muted)',
       }}
     >
-      <Clock size={13} strokeWidth={1.75} />
-      {minutes}分
+      {!!minutes && (
+        <>
+          <Clock size={13} strokeWidth={1.75} />
+          {minutes}分
+        </>
+      )}
     </span>
   );
 }
@@ -110,7 +142,7 @@ function DurationLabel({ minutes, dim }: { minutes?: number; dim?: boolean }) {
 function Legend() {
   const item = (state: LessonState, label: string) => (
     <span key={label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-      <StatusCircle state={state} size={14} />
+      <StatusCircle state={state} size={14} labelled={false} />
       {label}
     </span>
   );
@@ -158,6 +190,13 @@ const BTN: React.CSSProperties = {
   cursor: 'pointer',
   whiteSpace: 'nowrap',
 };
+
+/**
+ * レッスン行のボタンの最小幅。いちばん長い「もう一度見る」が1行で入る幅。
+ * 🔴 状態ごとに文言が変わっても行の右端の組みを動かさないための固定値。
+ *    文言を増やすときはここも見直す（増やしただけだと折り返す）。
+ */
+const LESSON_BTN_W = 132;
 
 const FOCUS_RING = 'outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]';
 
@@ -220,6 +259,8 @@ export default function CourseTopPage() {
   }
 
   const progressPercent = modules.length > 0 ? Math.round((completedIds.size / modules.length) * 100) : 0;
+  // 表示は分数。この画面は完了レッスンの実数を持っているので率から復元せず直接組む
+  const lessons = lessonProgressOf(completedIds.size, modules.length);
   // 次にやるレッスン。ロックはかけず、どのレッスンからでも開ける
   const nextModule = modules.find(m => !completedIds.has(m.id));
   const currentSectionIndex = sections.findIndex(s => s.modules.some(m => m.id === nextModule?.id));
@@ -270,11 +311,8 @@ export default function CourseTopPage() {
             <h1 style={{ margin: 0, fontSize: 32, fontWeight: 700, letterSpacing: '-.01em', lineHeight: 1.3 }}>
               {course?.fullname ?? LEARNING_HIERARCHY.course}
             </h1>
-            {stripTags(course?.summary) && (
-              <p style={{ margin: '8px 0 0', fontSize: 14, color: 'var(--dc-text-muted)', lineHeight: 1.7 }}>
-                {stripTags(course?.summary)}
-              </p>
-            )}
+            {/* 🔴 コース概要（course.summary）の1行リードは撤去した。何をやるコースかは
+                   コース名とチャプター一覧で分かるので、見出し直下に読ませる文章を置かない。 */}
             {/* コースの規模。デザインには無い行だが、現状ページが出している情報なので残す */}
             {sections.length > 0 && (
               <div style={{ display: 'flex', gap: 18, marginTop: 12, fontSize: 12.5, color: 'var(--dc-text-subtle)', flexWrap: 'wrap' }}>
@@ -289,22 +327,23 @@ export default function CourseTopPage() {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', paddingBottom: 4 }}>
             <span style={{ fontSize: 13, color: 'var(--dc-text-muted)' }}>
-              全 {modules.length} {LEARNING_HIERARCHY.lesson}中{' '}
-              <b className="dc-num" style={{ color: 'var(--dc-text)' }}>{completedIds.size}</b>{' '}
-              {LEARNING_HIERARCHY.lesson}完了
+              残り {lessons.total - lessons.done} {LEARNING_HIERARCHY.lesson}
             </span>
             <div
               role="progressbar"
               aria-valuenow={progressPercent}
               aria-valuemin={0}
               aria-valuemax={100}
+              aria-valuetext={lessons.full}
               aria-label="コースの進捗"
               style={{ width: 160, height: 8, borderRadius: 9999, background: 'var(--dc-soft-200)', overflow: 'hidden', flex: 'none' }}
             >
               <div style={{ width: `${progressPercent}%`, height: '100%', borderRadius: 9999, background: 'var(--dc-primary)' }} />
             </div>
-            <span className="dc-num" style={{ fontSize: 14, fontWeight: 700, color: 'var(--dc-primary)' }}>
-              {progressPercent}%
+            {/* ％は母数を掛け直さないと残り本数が出ないので、分数で見せる */}
+            <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--dc-primary)' }}>
+              <span className="dc-num">{lessons.short}</span>{' '}
+              <span style={{ fontSize: 12, color: 'var(--dc-text-muted)' }}>{LEARNING_HIERARCHY.lesson}</span>
             </span>
           </div>
         </div>
@@ -530,36 +569,18 @@ export default function CourseTopPage() {
                           {m.name}
                         </span>
 
-                        {/* 学習タイプ（階層ではなく分類）。デザインには無いが、
-                            現状ページが出している情報なので薄いチップで残す */}
-                        {m.learningtype && (
-                          <span
-                            style={{
-                              flex: 'none', fontSize: 10.5,
-                              color: 'var(--dc-text-subtle)',
-                              background: 'var(--dc-bg)',
-                              borderRadius: 6, padding: '3px 8px',
-                              whiteSpace: 'nowrap',
-                            }}
-                          >
-                            {LEARNING_TYPE_LABEL[m.learningtype]}
-                          </span>
-                        )}
+                        {/* 🔴 ここにあった2つの表示は撤去した。
+                               ・学習タイプのチップ（演習／基礎知識…）… 選ぶ判断に使われていない
+                               ・状態ラベル（完了／学習中／未着手）… 左端の StatusCircle と同じことを言う
+                               状態の読み上げは StatusCircle の aria-label が持っている。 */}
 
-                        {isDone ? (
-                          <span style={{ ...PILL, fontSize: 11, padding: '3px 9px', color: 'var(--dc-success)', background: 'var(--dc-success-surface)' }}>
-                            完了
-                          </span>
-                        ) : isNext ? (
-                          <span style={{ flex: 'none', fontSize: 11, fontWeight: 700, color: 'var(--dc-primary)', whiteSpace: 'nowrap' }}>
-                            学習中
-                          </span>
-                        ) : (
-                          <span style={{ ...PILL, fontSize: 11, padding: '3px 9px', color: 'var(--dc-text-subtle)', background: 'var(--dc-neutral-surface)' }}>
-                            未着手
-                          </span>
-                        )}
-
+                        {/*
+                          右端は固定幅の2列。
+                          🔴 幅を固定するのが要点。ボタンの文言は状態ごとに変わる
+                             （もう一度見る／再開する ›／はじめる）ので、幅を中身に任せると
+                             その差だけ左隣の「◷ 8分」が行ごとに横へズレる（レビュー指摘）。
+                             padding も状態別に変えないこと（同じ理由で幅が動く）。
+                        */}
                         <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6 }}>
                           <DurationLabel minutes={m.durationminutes} dim={state === 'idle'} />
 
@@ -571,11 +592,17 @@ export default function CourseTopPage() {
                             style={{
                               ...BTN,
                               marginLeft: 6,
+                              minWidth: LESSON_BTN_W,
+                              padding: '9px 16px',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              boxSizing: 'border-box',
                               ...(isDone
-                                ? { background: 'var(--dc-surface)', color: 'var(--dc-text-muted)', border: '1px solid var(--dc-border-strong)', padding: '8px 16px' }
+                                ? { background: 'var(--dc-surface)', color: 'var(--dc-text-muted)', border: '1px solid var(--dc-border-strong)' }
                                 : isNext
-                                  ? { background: 'var(--dc-primary)', color: '#fff', border: 'none', padding: '9px 18px' }
-                                  : { background: 'var(--dc-surface)', color: 'var(--dc-primary)', border: '1.5px solid var(--dc-primary)', padding: '8px 16px' }),
+                                  ? { background: 'var(--dc-primary)', color: '#fff', border: '1.5px solid var(--dc-primary)' }
+                                  : { background: 'var(--dc-surface)', color: 'var(--dc-primary)', border: '1.5px solid var(--dc-primary)' }),
                             }}
                           >
                             {isDone ? 'もう一度見る' : isNext ? (started ? '再開する ›' : 'はじめる ›') : 'はじめる'}
@@ -591,9 +618,7 @@ export default function CourseTopPage() {
         </div>
       </main>
 
-      <footer className="h-10 flex items-center justify-center bg-brand-footer">
-        <span className="font-bold text-white" style={{ fontSize: '11.4px', letterSpacing: '0.6px' }}>2026 © WEBCOACH</span>
-      </footer>
+      <AppFooter style={{ padding: '32px 0 24px' }} />
     </div>
   );
 }

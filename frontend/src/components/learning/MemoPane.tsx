@@ -108,7 +108,7 @@ export function MemoPane({
             </div>
           </div>
           <p style={{ margin: '8px 2px 0', fontSize: 9.5, color: color.textFaint, lineHeight: 1.8 }}>
-            下書きは自動保存されます。「ノートに残す」を押すとノートの本文になります。
+            下書きは自動保存されます。「ノートに残す」を押すと、追加先のノートを選ぶ画面が出ます。
           </p>
         </div>
 

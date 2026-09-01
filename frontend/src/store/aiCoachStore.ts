@@ -35,6 +35,33 @@ import { AiSkillId, AI_SKILL_SHORT_LABEL, ConcreteAiSkillId } from '../types/aiS
  */
 export const DRAWER_SESSION_ID = 'drawer';
 
+/**
+ * 「広い画面で続ける」で拡大する前に居た場所。
+ *
+ * 拡大は一方通行にしない。押した側（右下ドロワー・教材ページの右パネル）は
+ * 自分がどこに居たかを知っているが、遷移先のAI専用ページは知らないので、
+ * ここに預けて戻り導線（AiCoachReturnBar）を描けるようにする。
+ * ブラウザバックでも戻れるが、それだとドロワーが閉じたままになり、
+ * 画面上に畳む手掛かりが無い状態が残る。
+ *
+ * 🔴 これは「セッションの戻り先」ではなく「AI専用ページに入る前の居場所」。
+ *    以前はセッション単位に見ていたので、ホームへ移る・別の相談を開くだけで
+ *    戻り導線が消え、出口の無い画面になっていた。
+ */
+export interface AiCoachExpandOrigin {
+  /**
+   * 拡大したセッション。戻り導線を出すかどうかの条件ではなく、
+   * 押したときの挙動の出し分け（畳む＝ドロワーを開き直す／ただ戻る）に使う。
+   */
+  sessionId: string;
+  /** 戻り先（pathname + search） */
+  path: string;
+  /** 戻り導線に出す呼び名。例:「『Webデザイン基礎』に戻る」 */
+  label: string;
+  /** 常駐ドロワーからの拡大。畳んだらドロワーを開き直す */
+  fromDrawer: boolean;
+}
+
 /** 会話履歴の一覧に出す名前を、最初のユーザー発言から作る */
 function deriveTitle(messages: AiCoachMessage[]): string | null {
   const first = messages.find((m) => m.role === 'user' && m.content.trim());
@@ -69,10 +96,16 @@ interface AiCoachState {
   pageSeq: number;
   /** 常駐ドロワーの開閉。UI状態だがドロワーを開く操作が各所から呼ばれるのでここに置く */
   drawerOpen: boolean;
+  /** 「広い画面で続ける」の戻り先。拡大していないときは null */
+  expandOrigin: AiCoachExpandOrigin | null;
 
   /** 無ければ作る。あれば context だけ最新に更新する */
   ensureSession: (id: string, context?: Partial<AiCoachContext>) => void;
   setDrawerOpen: (open: boolean) => void;
+  /** 拡大時に呼ぶ。戻り先を覚えて「元の画面に戻す」を出せるようにする */
+  setExpandOrigin: (origin: AiCoachExpandOrigin) => void;
+  /** 畳んだ／別の相談に移ったので戻り先を捨てる */
+  clearExpandOrigin: () => void;
   /** ドロワーを開く。文章を渡すと入力欄に流し込む（なぞって解説からの引用など） */
   openDrawer: (seedInput?: string) => void;
   patchSession: (id: string, patch: Partial<AiCoachSession>) => void;
@@ -118,6 +151,7 @@ export const useAiCoachStore = create<AiCoachState>()(
       order: [],
       pageSeq: 0,
       drawerOpen: false,
+      expandOrigin: null,
 
       ensureSession: (id, context) =>
         set((state) => {
@@ -140,6 +174,9 @@ export const useAiCoachStore = create<AiCoachState>()(
         }),
 
       setDrawerOpen: (drawerOpen) => set({ drawerOpen }),
+
+      setExpandOrigin: (expandOrigin) => set({ expandOrigin }),
+      clearExpandOrigin: () => set({ expandOrigin: null }),
 
       openDrawer: (seedInput) => {
         get().ensureSession(DRAWER_SESSION_ID);
@@ -275,6 +312,9 @@ export const useAiCoachStore = create<AiCoachState>()(
               Object.entries(state.sessions).filter(([key]) => !removing.has(key))
             ),
             order: state.order.filter((x) => !removing.has(x)),
+            // 🔴 expandOrigin はここで消さない。会話を消しても「元居た画面」は
+            //    そのまま有効で、消すとAI専用ページから出る手段ごと失われる。
+            //    畳む先の会話が無いときは、戻り導線が「ただ戻る」に変わるだけ。
           };
         }),
     }),
@@ -286,6 +326,8 @@ export const useAiCoachStore = create<AiCoachState>()(
       partialize: (state) => ({
         order: state.order,
         pageSeq: state.pageSeq,
+        // 拡大したまま再読み込みしても畳めるように、戻り先だけは保存する
+        expandOrigin: state.expandOrigin,
         sessions: Object.fromEntries(
           Object.entries(state.sessions).map(([id, session]) => [
             id,

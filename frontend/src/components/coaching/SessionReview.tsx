@@ -1,18 +1,24 @@
 /**
  * AIコーチングノート画面。
  *
- * セクション順（仕様§12）:
- *   今回のまとめ → 前回からの進捗 → コーチからのフィードバック → 決まったこと
- *   → 次回までの目標 → 次回までのタスク → 次回確認すること
+ * カード構成:
+ *   ①今回のまとめ → ②次回までにやること（確定CTA込み） → ③今回の会話から
+ *   → ④自分のメモ → ⑤この記録について（折りたたみ）
  *
- * 文字起こしと録音は常時表示せず末尾の折りたたみに置く。
- * 学習管理システムとして重要なのは記録そのものではなく、次にやることが残ることなので。
+ * 🔴 もとは同じ見た目のカードが12枚縦に並んでいて読めなかった。整理の指針は3つ:
+ *  - 学習管理システムとして重要なのは記録そのものではなく次にやることなので、
+ *    確定するもの（②）を上に出し、根拠の会話（③）は参照される側として下に置く。
+ *  - 目標とタスクは確定先も操作も同じなので、表示は1リストにまとめて種別チップで区別する。
+ *  - 会話由来の読み物（進捗・アドバイス・決まったこと・持ち越し）はカードを分けず、
+ *    1枚の中の小見出しにする。カードの枠は「操作の単位」にだけ使う。
+ *
+ * 文字起こしと録音設定は常時表示せず末尾⑤の折りたたみに置く。
  *
  * AIが生成した内容はそのまま確定させない（§13）。受講生が確認・修正してから
  * 「この内容で確定」を押した分だけ学習目標に反映する。
  */
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { AlertTriangle, ChevronDown, Info, Sparkles } from 'lucide-react';
+import { AlertTriangle, ChevronDown } from 'lucide-react';
 import bffClient from '../../services/bffClient';
 import { useToast } from '../../contexts/ToastContext';
 import { color, font, radius, t } from '../../theme/webcoachTheme';
@@ -69,6 +75,19 @@ export function SessionReview({ session, userId, onReflected, onDeleted }: Sessi
   const summary = detail.summary;
   const reflected = useMemo(() => new Set(detail.reflectedGoalIds), [detail.reflectedGoalIds]);
   const allItems = useMemo(() => [...goals, ...tasks], [goals, tasks]);
+  /*
+   * 表示上は目標とタスクを1リストにする（確定先も操作も同じで、2つに分ける意味がないため）。
+   * ただし state は goals / tasks のまま分けて持つ。persist と confirm がこの形で送るのと、
+   * 「目標」「タスク」の種別チップを出すのに kind が要るため。並びは目標→タスクの固定順で、
+   * 反映済みを下に寄せるソートはしない（確定のたびに行が動くと押し間違えるので）。
+   */
+  const actionItems = useMemo(
+    () => [
+      ...goals.map((item) => ({ kind: 'goal' as const, item })),
+      ...tasks.map((item) => ({ kind: 'task' as const, item })),
+    ],
+    [goals, tasks],
+  );
   const selectable = allItems.filter((g) => !reflected.has(g.id));
   const selectedItems = selectable.filter((g) => g.selected);
   const allReflected = selectable.length === 0 && allItems.length > 0;
@@ -256,7 +275,8 @@ export function SessionReview({ session, userId, onReflected, onDeleted }: Sessi
 
   // --- 目標・タスクのカード -------------------------------------------------
 
-  const renderItemCard = (kind: 'goal' | 'task', item: GoalCandidate, index: number) => {
+  const renderItemCard = (kind: 'goal' | 'task', item: GoalCandidate) => {
+    const kindLabel = kind === 'goal' ? '目標' : 'タスク';
     const isReflected = reflected.has(item.id);
     const flagged = warnNeedsReview && item.selected && !isReflected && item.needsReview;
     const readOnly = isReflected || !editing;
@@ -278,9 +298,20 @@ export function SessionReview({ session, userId, onReflected, onDeleted }: Sessi
             disabled={isReflected}
             onChange={(e) => patchItem(kind, item.id, { selected: e.target.checked })}
             style={{ marginTop: 5, accentColor: color.primary, flex: '0 0 auto' }}
-            aria-label={`${index + 1}件目を選択`}
+            aria-label={`${kindLabel}「${item.title || '未入力の項目'}」を選択`}
           />
           <div style={{ flex: 1, minWidth: 0 }}>
+            <span
+              style={{
+                ...t.chip,
+                background: color.pageBg,
+                color: color.textMuted,
+                display: 'inline-block',
+                marginBottom: 8,
+              }}
+            >
+              {kindLabel}
+            </span>
             {readOnly ? (
               <p
                 style={{
@@ -430,17 +461,60 @@ export function SessionReview({ session, userId, onReflected, onDeleted }: Sessi
 
   const sectionCard = { ...t.card, padding: 24 } as React.CSSProperties;
 
+  /** ⑤の折りたたみ見出し。3つとも同じ形にして、開くものが3つあることを見た目で示す */
+  const disclosureSummary: React.CSSProperties = {
+    ...font.rowTitle,
+    color: color.textStrong,
+    cursor: 'pointer',
+    padding: '14px 0',
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+  };
+
+  /*
+   * ③「今回の会話から」の中身。カードを4枚に割らず、1枚の中の小見出しにする。
+   * 空のブロックは積まないので、全部空ならカードごと出ない。
+   */
+  const conversationBlocks: Array<{ title: string; body: React.ReactNode }> = [];
+  if (summary.progressSinceLast.length > 0) {
+    conversationBlocks.push({ title: '前回からの進捗', body: renderEvidenced(summary.progressSinceLast) });
+  }
+  if (summary.coachFeedback.length > 0) {
+    conversationBlocks.push({ title: 'コーチからのアドバイス', body: renderEvidenced(summary.coachFeedback) });
+  }
+  if (summary.decisions.length > 0) {
+    conversationBlocks.push({ title: '決まったこと', body: renderEvidenced(summary.decisions) });
+  }
+  if (summary.nextSessionAgenda.length > 0) {
+    conversationBlocks.push({
+      title: '次回に持ち越すこと',
+      body: (
+        <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {summary.nextSessionAgenda.map((a, i) => (
+            <li key={i} style={{ ...font.listItem, color: color.textBody, display: 'flex', gap: 10, lineHeight: 1.8 }}>
+              <span aria-hidden style={{ color: color.primary }}>・</span>
+              {a}
+            </li>
+          ))}
+        </ul>
+      ),
+    });
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-      {/* ---- 今回のまとめ ---- */}
+      {/* ---- ① 今回のまとめ ---- */}
       <section style={sectionCard}>
         <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
           <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>今回のまとめ</h2>
+          {/* AIが整理したものだと分かる場所は、専用のバナーを立てず日付の並びで済ませる */}
           <span style={{ ...font.caption, color: color.textSubtle }}>
             {detail.date}
             {detail.importedFrom === 'auto'
               ? ' ・ 自動取得'
               : detail.source && ` ・ ${RECORDING_SOURCE_LABEL[detail.source]}から作成`}
+            {' ・ AIが整理'}
           </span>
         </div>
         <p style={{ ...font.listItem, color: color.textBody, lineHeight: 1.9, margin: '14px 0 0' }}>
@@ -448,132 +522,109 @@ export function SessionReview({ session, userId, onReflected, onDeleted }: Sessi
         </p>
       </section>
 
-      {/* ---- 前回からの進捗 ---- */}
-      {summary.progressSinceLast.length > 0 && (
-        <section style={sectionCard}>
-          <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 14px' }}>前回からの進捗</h2>
-          {renderEvidenced(summary.progressSinceLast)}
-        </section>
-      )}
-
-      {/* ---- コーチからのフィードバック ---- */}
-      {summary.coachFeedback.length > 0 && (
-        <section style={sectionCard}>
-          <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 14px' }}>コーチからのフィードバック</h2>
-          {renderEvidenced(summary.coachFeedback)}
-        </section>
-      )}
-
-      {/* ---- 決まったこと ---- */}
-      {summary.decisions.length > 0 && (
-        <section style={sectionCard}>
-          <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 14px' }}>決まったこと</h2>
-          {renderEvidenced(summary.decisions)}
-        </section>
-      )}
-
-      {/* ---- 次回までの目標 ---- */}
+      {/* ---- ② 次回までにやること（目標＋タスク＋確定） ---- */}
       <section style={sectionCard}>
-        <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 14px' }}>次回までの目標</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {goals.map((g, i) => renderItemCard('goal', g, i))}
-        </div>
-        {editing && (
-          <button type="button" onClick={() => addItem('goal')} style={{ ...t.ghostButton, marginTop: 12 }}>
-            ＋ 目標を追加
-          </button>
-        )}
-      </section>
+        <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 14px' }}>
+          次回までにやること{actionItems.length > 0 && `（${actionItems.length}件）`}
+        </h2>
 
-      {/* ---- 次回までのタスク ---- */}
-      <section style={sectionCard}>
-        <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 14px' }}>次回までのタスク</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {tasks.map((g, i) => renderItemCard('task', g, i))}
-        </div>
-        {editing && (
-          <button type="button" onClick={() => addItem('task')} style={{ ...t.ghostButton, marginTop: 12 }}>
-            ＋ タスクを追加
-          </button>
-        )}
-      </section>
-
-      {/* ---- 次回確認すること ---- */}
-      {summary.nextSessionAgenda.length > 0 && (
-        <section style={sectionCard}>
-          <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 14px' }}>次回確認すること</h2>
-          <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {summary.nextSessionAgenda.map((a, i) => (
-              <li key={i} style={{ ...font.listItem, color: color.textBody, display: 'flex', gap: 10, lineHeight: 1.8 }}>
-                <span aria-hidden style={{ color: color.primary }}>・</span>
-                {a}
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
-
-      {/* ---- 確認・確定 ---- */}
-      <section style={{ ...sectionCard, border: `1px solid ${color.primaryBorder}`, background: color.primaryTint }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 14 }}>
-          <Sparkles className="w-4 h-4" style={{ color: color.primary, flexShrink: 0, marginTop: 3 }} />
-          <div>
-            <p style={{ ...font.rowTitle, color: color.text, margin: 0 }}>AIが今回の内容を整理しました</p>
-            <p style={{ ...font.caption, color: color.textBody, margin: '4px 0 0', lineHeight: 1.9 }}>
-              内容に誤りがないか確認してください。確定すると、選んだ目標とタスクが学習タスクに反映されます。
-            </p>
-          </div>
-        </div>
-
-        {warnNeedsReview && (
-          <div
-            style={{
-              display: 'flex',
-              gap: 10,
-              alignItems: 'flex-start',
-              background: NEEDS_INPUT_BG,
-              border: `1px solid #F0DDB8`,
-              borderRadius: radius.md,
-              padding: '12px 14px',
-              marginBottom: 14,
-            }}
-          >
-            <AlertTriangle className="w-4 h-4" style={{ color: NEEDS_INPUT, flexShrink: 0, marginTop: 2 }} />
-            <p style={{ ...font.caption, color: '#8A5A10', margin: 0, lineHeight: 1.9 }}>
-              会話から読み取れなかった項目があります。期限と完了条件を入力してから確定してください。
-            </p>
+        {actionItems.length === 0 ? (
+          <p style={{ ...font.meta, color: color.textMuted, margin: 0 }}>
+            この会話からは、次回までの目標・タスクが見つかりませんでした。
+          </p>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {actionItems.map(({ kind, item }) => renderItemCard(kind, item))}
           </div>
         )}
 
-        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-          <button
-            type="button"
-            onClick={() => setEditing((v) => !v)}
-            style={{ ...t.ghostButton, width: 'auto', background: color.surface }}
-          >
-            {editing ? '編集を終える' : '内容を編集'}
-          </button>
-          <button
-            type="button"
-            onClick={confirm}
-            disabled={allReflected || selectedItems.length === 0 || saving}
-            style={{
-              ...t.primaryButton,
-              padding: '14px 24px',
-              opacity: allReflected || selectedItems.length === 0 || saving ? 0.5 : 1,
-              cursor: allReflected || selectedItems.length === 0 || saving ? 'not-allowed' : 'pointer',
-            }}
-          >
-            {allReflected
-              ? 'すべて反映済みです'
-              : saving
-                ? '確定しています…'
-                : `この内容で確定（${selectedItems.length}件）`}
-          </button>
+        {editing && (
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
+            <button type="button" onClick={() => addItem('goal')} style={{ ...t.ghostButton, width: 'auto' }}>
+              ＋ 目標を追加
+            </button>
+            <button type="button" onClick={() => addItem('task')} style={{ ...t.ghostButton, width: 'auto' }}>
+              ＋ タスクを追加
+            </button>
+          </div>
+        )}
+
+        {/* 確定はこのリストに対する操作なので、別カードに離さずリストの直下に置く */}
+        <div style={{ marginTop: 18, paddingTop: 18, borderTop: `1px solid ${color.border}` }}>
+          <p style={{ ...font.caption, color: color.textMuted, margin: '0 0 12px', lineHeight: 1.9 }}>
+            AIが会話から整理した内容です。誤りがないか確認して、チェックした項目を学習タスクに反映してください。
+          </p>
+
+          {warnNeedsReview && (
+            <div
+              style={{
+                display: 'flex',
+                gap: 10,
+                alignItems: 'flex-start',
+                background: NEEDS_INPUT_BG,
+                border: `1px solid #F0DDB8`,
+                borderRadius: radius.md,
+                padding: '12px 14px',
+                marginBottom: 14,
+              }}
+            >
+              <AlertTriangle className="w-4 h-4" style={{ color: NEEDS_INPUT, flexShrink: 0, marginTop: 2 }} />
+              <p style={{ ...font.caption, color: '#8A5A10', margin: 0, lineHeight: 1.9 }}>
+                会話から読み取れなかった項目があります。期限と完了条件を入力してから確定してください。
+              </p>
+            </div>
+          )}
+
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <button
+              type="button"
+              onClick={() => setEditing((v) => !v)}
+              style={{ ...t.ghostButton, width: 'auto', background: color.surface }}
+            >
+              {editing ? '編集を終える' : '内容を編集'}
+            </button>
+            <button
+              type="button"
+              onClick={confirm}
+              disabled={allReflected || selectedItems.length === 0 || saving}
+              style={{
+                ...t.primaryButton,
+                padding: '14px 24px',
+                opacity: allReflected || selectedItems.length === 0 || saving ? 0.5 : 1,
+                cursor: allReflected || selectedItems.length === 0 || saving ? 'not-allowed' : 'pointer',
+              }}
+            >
+              {allReflected
+                ? 'すべて反映済みです'
+                : saving
+                  ? '確定しています…'
+                  : `この内容で確定（${selectedItems.length}件）`}
+            </button>
+          </div>
         </div>
       </section>
 
-      {/* ---- 自分のメモ ---- */}
+      {/* ---- ③ 今回の会話から ---- */}
+      {conversationBlocks.length > 0 && (
+        <section style={sectionCard}>
+          <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>今回の会話から</h2>
+          {conversationBlocks.map(({ title, body }, i) => (
+            <div
+              key={title}
+              style={{
+                marginTop: i === 0 ? 16 : 20,
+                paddingTop: i === 0 ? 0 : 20,
+                borderTop: i === 0 ? 'none' : `1px solid ${color.border}`,
+              }}
+            >
+              <h3 style={{ ...font.rowTitle, color: color.textStrong, margin: '0 0 10px' }}>{title}</h3>
+              {body}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* ---- ④ 自分のメモ ---- */}
       <section style={sectionCard}>
         <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 10px' }}>自分のメモ</h2>
         <textarea
@@ -599,40 +650,33 @@ export function SessionReview({ session, userId, onReflected, onDeleted }: Sessi
         />
       </section>
 
-      {/* ---- 参照した情報 ---- */}
-      {summary.referencedContext.length > 0 && (
-        <section style={{ ...t.card, padding: '18px 24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-            <Info className="w-4 h-4" style={{ color: color.textSubtle }} />
-            <h2 style={{ ...font.rowTitle, color: color.textStrong, margin: 0 }}>整理に使った情報</h2>
-          </div>
-          <p style={{ ...font.caption, color: color.textMuted, margin: '0 0 10px', lineHeight: 1.8 }}>
-            会話だけでなく、あなたの学習状況も踏まえて整理しています。
-          </p>
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            {summary.referencedContext.map((c) => (
-              <span key={c} style={{ ...t.chip, background: color.pageBg, color: color.textMuted }}>
-                {c}
-              </span>
-            ))}
-          </div>
-        </section>
-      )}
+      {/* ---- ⑤ この記録について（軽い→重い→破壊的の順） ---- */}
+      <section style={{ ...t.card, padding: '4px 24px 10px' }}>
+        {summary.referencedContext.length > 0 && (
+          <details>
+            <summary style={disclosureSummary}>
+              <ChevronDown className="w-4 h-4" />
+              整理に使った情報
+            </summary>
+            <p style={{ ...font.caption, color: color.textMuted, margin: '0 0 10px', lineHeight: 1.8 }}>
+              会話だけでなく、あなたの学習状況も踏まえて整理しています。
+            </p>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', paddingBottom: 16 }}>
+              {summary.referencedContext.map((c) => (
+                <span key={c} style={{ ...t.chip, background: color.pageBg, color: color.textMuted }}>
+                  {c}
+                </span>
+              ))}
+            </div>
+          </details>
+        )}
 
-      {/* ---- 文字起こし（折りたたみ） ---- */}
-      <section style={{ ...t.card, padding: '6px 24px' }}>
-        <details open={transcriptOpen} onToggle={(e) => setTranscriptOpen((e.target as HTMLDetailsElement).open)}>
-          <summary
-            style={{
-              ...font.rowTitle,
-              color: color.textStrong,
-              cursor: 'pointer',
-              padding: '16px 0',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 8,
-            }}
-          >
+        <details
+          open={transcriptOpen}
+          onToggle={(e) => setTranscriptOpen((e.target as HTMLDetailsElement).open)}
+          style={{ borderTop: `1px solid ${color.border}` }}
+        >
+          <summary style={disclosureSummary}>
             <ChevronDown className="w-4 h-4" />
             文字起こしを見る（{detail.segments.length}件の発言）
           </summary>
@@ -707,52 +751,62 @@ export function SessionReview({ session, userId, onReflected, onDeleted }: Sessi
             ))}
           </ul>
         </details>
-      </section>
 
-      {/* ---- 記録の管理 ---- */}
-      <section style={sectionCard}>
-        <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 12px' }}>記録の管理</h2>
-        <p style={{ ...font.caption, color: color.textMuted, margin: '0 0 12px' }}>音声の保存期間</p>
-        {(
-          [
-            ['keep_30d', '音声を30日間保存する'],
-            ['delete_after_summary', '要約が終わったら音声を削除する'],
-          ] as const
-        ).map(([value, label]) => (
-          <label key={value} style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}>
-            <input
-              type="radio"
-              name={`retention-${detail.id}`}
-              checked={detail.audioRetention === value}
-              disabled={!detail.hasAudio && value === 'keep_30d'}
-              onChange={() => persist({ audioRetention: value as AudioRetention })}
-              style={{ accentColor: color.primary }}
-            />
-            <span style={{ ...font.meta, color: color.textBody }}>{label}</span>
-          </label>
-        ))}
-        {!detail.hasAudio && (
-          <p style={{ ...font.caption, color: color.textSubtle, margin: '4px 0 0' }}>
-            この記録には音声データがありません。
-          </p>
-        )}
+        <details style={{ borderTop: `1px solid ${color.border}` }}>
+          <summary style={disclosureSummary}>
+            <ChevronDown className="w-4 h-4" />
+            記録の管理
+          </summary>
+          <div style={{ paddingBottom: 18 }}>
+            {/* 音声が無い記録では選ぶものが無い。無効のラジオを並べても意味が無いので出さない */}
+            {detail.hasAudio ? (
+              <>
+                <p style={{ ...font.caption, color: color.textMuted, margin: '0 0 12px' }}>音声の保存期間</p>
+                {(
+                  [
+                    ['keep_30d', '音声を30日間保存する'],
+                    ['delete_after_summary', '要約が終わったら音声を削除する'],
+                  ] as const
+                ).map(([value, label]) => (
+                  <label
+                    key={value}
+                    style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8, cursor: 'pointer' }}
+                  >
+                    <input
+                      type="radio"
+                      name={`retention-${detail.id}`}
+                      checked={detail.audioRetention === value}
+                      onChange={() => persist({ audioRetention: value as AudioRetention })}
+                      style={{ accentColor: color.primary }}
+                    />
+                    <span style={{ ...font.meta, color: color.textBody }}>{label}</span>
+                  </label>
+                ))}
+              </>
+            ) : (
+              <p style={{ ...font.meta, color: color.textMuted, margin: 0 }}>
+                この記録には音声データがありません。文字起こしのみ保存されています。
+              </p>
+            )}
 
-        <button
-          type="button"
-          onClick={removeSession}
-          style={{
-            ...font.link,
-            color: color.textSubtle,
-            background: 'none',
-            border: 'none',
-            padding: 0,
-            marginTop: 18,
-            cursor: 'pointer',
-            textDecoration: 'underline',
-          }}
-        >
-          この記録を削除する
-        </button>
+            <button
+              type="button"
+              onClick={removeSession}
+              style={{
+                ...font.link,
+                color: color.textSubtle,
+                background: 'none',
+                border: 'none',
+                padding: 0,
+                marginTop: 18,
+                cursor: 'pointer',
+                textDecoration: 'underline',
+              }}
+            >
+              この記録を削除する
+            </button>
+          </div>
+        </details>
       </section>
     </div>
   );

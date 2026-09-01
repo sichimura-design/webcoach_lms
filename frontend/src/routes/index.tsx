@@ -13,6 +13,7 @@ import ProfilePage from '../components/ProfilePage';
 import WebCoachDashboard from '../components/WebCoachDashboard';
 import CareerPathPage from '../components/CareerPathPage';
 import MaterialsTopPage from '../components/MaterialsTopPage';
+import AreaCoursesPage from '../components/materials/AreaCoursesPage';
 import LearningCoursesPage from '../components/LearningCoursesPage';
 import AiCoachPage from '../components/aicoach/AiCoachPage';
 import BadgesPage from '../components/BadgesPage';
@@ -40,8 +41,18 @@ import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
 import { MyCoachingPage } from '../components/MyCoachingPage';
 import FocusBoothPage from '../components/FocusBoothPage';
 import { useAuth } from '../contexts/AuthContext';
+import { useAiCoachExpandOriginCleanup } from '../hooks/useAiCoachExpandOriginCleanup';
 import { useNavigationStore } from '../store/navigationStore';
 import { ErrorBoundary } from '../components/shared';
+import { MOCKS_ENABLED } from '../mocks/config';
+
+/**
+ * トークン・部品カタログ（/dev/catalog）。UI/UXレビューの「横串」用の比較台で、
+ * 受講生には見せない。MOCKS_ENABLED でルート自体を出し分ける。
+ * lazy にしているのは、静的 import だとモック無効のビルドでもメインバンドルに
+ * 混ざるため。別チャンクに切り出しておけば本番では一度も取得されない。
+ */
+const DevCatalogPage = React.lazy(() => import('../components/dev/DevCatalogPage'));
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -148,6 +159,10 @@ function CoursesWrapper() {
   return <MaterialsTopPage />;
 }
 
+function AreaCoursesWrapper() {
+  return <AreaCoursesPage />;
+}
+
 function LearningCoursesWrapper() {
   return <LearningCoursesPage />;
 }
@@ -206,6 +221,10 @@ function CoachingScheduleWrapper() {
 }
 
 function AppRoutes() {
+  // AI専用ページを離れたときの後始末（戻り先の破棄／ブラウザバック時のドロワー復帰）。
+  // 教材ページは AppHeader を描かないので、全遷移を見られるここに置く。
+  useAiCoachExpandOriginCleanup();
+
   return (
     <ErrorBoundary>
     <Routes>
@@ -403,9 +422,20 @@ function AppRoutes() {
           既存のブックマークや社内共有リンクを壊さないために残している。 */}
       <Route path="/ai-apps" element={<Navigate to="/ai-coach" replace />} />
 
-      {/* 学習領域（カテゴリ）だけのページは廃止した。学習領域は「学習する」の中の
-          見出しとして見せるもので、独立して辿る階層ではない。旧リンクは一覧へ送る。 */}
-      <Route path="/courses/category/:categoryId" element={<Navigate to="/courses" replace />} />
+      {/* 学習領域のコース一覧。
+          🔴 一度「領域だけのページは廃止（見出しとして見せるもので、独立して辿る
+             階層ではない）」と判断してリダイレクトにしていたが、初見の人に構造が
+             伝わらないという指摘を受けて復活させた。学習トップは領域の地図、
+             絞り込み・並び替えのある一覧はこちら、の2段。
+          パラメータは領域code（11/21/…）。未知のカテゴリ名も受ける。 */}
+      <Route
+        path="/courses/category/:categoryId"
+        element={
+          <ProtectedRoute>
+            <AreaCoursesWrapper />
+          </ProtectedRoute>
+        }
+      />
 
       <Route
         path="/learning-courses"
@@ -511,6 +541,17 @@ function AppRoutes() {
           </CoachRoute>
         }
       />
+
+      {MOCKS_ENABLED && (
+        <Route
+          path="/dev/catalog"
+          element={
+            <React.Suspense fallback={<div style={{ minHeight: '100vh', background: '#FBF8F4' }} />}>
+              <DevCatalogPage />
+            </React.Suspense>
+          }
+        />
+      )}
 
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="*" element={<Navigate to="/login" replace />} />

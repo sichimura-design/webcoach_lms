@@ -1,4 +1,5 @@
 import { t } from '../../theme/tokens';
+import { familyOf } from '../../constants/courseTaxonomy';
 
 /**
  * 学習コンテンツ一覧のコース表現を1か所にまとめたモジュール。
@@ -26,38 +27,32 @@ export interface GalleryCourse {
   thumbnailUrl?: string;
 }
 
+/** 領域の色は family 単位。10領域に10色を割らない理由は tokens.ts の category を参照 */
+const paletteOf = (name?: string) => t.color.category[familyOf(name) ?? 'unknown'];
+
 export function categoryColor(name?: string): string {
-  switch (name) {
-    case 'Webデザイン': return t.color.category.design;
-    case 'コーディング': return t.color.category.coding;
-    case 'マーケティング': return t.color.category.marketing;
-    case 'キャリア': return t.color.category.career;
-    default: return t.color.text.subtle;
-  }
+  return paletteOf(name).fg;
 }
 
 /** カテゴリ色を薄く敷いた地色。サムネの円と同じ考え方で使う */
 export function categoryTint(name?: string): string {
-  switch (name) {
-    case 'Webデザイン': return '#FDEEEF';
-    case 'コーディング': return '#FBF1DC';
-    case 'マーケティング': return '#F2ECFC';
-    case 'キャリア': return '#EAF6ED';
-    default: return '#F4F1F1';
-  }
+  return paletteOf(name).bg;
 }
 
 /**
- * コースの図形サムネ。学習領域ごとに意味の分かる簡単な図形を描く
- * （デザイン=図形の構成 / コーディング=タグ / 集客=吹き出し / キャリア=書類）。
+ * コースの図形サムネ。領域の family ごとに意味の分かる簡単な図形を描く
+ * （create=図形の構成 / build=タグ / grow=吹き出し / career=書類 / ai=きらめき）。
+ *
+ * 領域名そのものではなく family で分けるのは、領域が10個あっても図形は5つで足りるため。
+ * 領域名はタイルに文字で出るので、図形が担うのは family までの粗さでよい。
  *
  * @param radius 枠の角丸。既定は真円。角丸の四角で使いたい行（ほかに学習中）は数値で渡す
  */
 export function CourseThumb({ categoryName, size = 64, radius }: { categoryName: string; size?: number; radius?: number }) {
   const color = categoryColor(categoryName);
   const inner = (() => {
-    switch (categoryName) {
-      case 'コーディング':
+    switch (familyOf(categoryName)) {
+      case 'build':
         return (
           <g fill="none" stroke={color} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
             <path d="M13 12 L7 18 L13 24" />
@@ -65,14 +60,14 @@ export function CourseThumb({ categoryName, size = 64, radius }: { categoryName:
             <path d="M20 9 L16 27" />
           </g>
         );
-      case 'マーケティング':
+      case 'grow':
         return (
           <g>
             <path d="M9 22 L9 14 L16 14 L26 8 L26 28 L16 22 Z" fill={color} opacity=".85" />
             <path d="M12 22 L12 28 L16 28 L15 22 Z" fill={color} opacity=".55" />
           </g>
         );
-      case 'キャリア':
+      case 'career':
         return (
           <g>
             <rect x="8" y="12" width="20" height="15" rx="2.5" fill={color} opacity=".85" />
@@ -80,7 +75,14 @@ export function CourseThumb({ categoryName, size = 64, radius }: { categoryName:
             <rect x="8" y="17" width="20" height="2.4" fill="#fff" opacity=".85" />
           </g>
         );
-      default: // Webデザイン
+      case 'ai':
+        return (
+          <g>
+            <path d="M18 7 L20.4 15.6 L29 18 L20.4 20.4 L18 29 L15.6 20.4 L7 18 L15.6 15.6 Z" fill={color} opacity=".85" />
+            <circle cx="27" cy="9" r="2.4" fill={color} opacity=".45" />
+          </g>
+        );
+      default: // create（Webデザイン・動画編集）と未知の領域
         return (
           <g>
             <rect x="8" y="9" width="12" height="12" rx="2.5" fill={color} opacity=".85" />
@@ -123,6 +125,10 @@ export function statusBadge(course: Pick<GalleryCourse, 'isCurrent' | 'progress'
  */
 const THUMB_THEMES = ['red', 'dark', 'cream'] as const;
 
+/**
+ * courseId をそのまま3で割ると、レッスン数（buildCourseStructure も courseId % 3）と
+ * 完全に相関して「5レッスンのコースは必ずクリーム」になる。3で割ってからずらして切る。
+ */
 export function thumbTheme(courseId: number) {
-  return t.color.thumb[THUMB_THEMES[Math.abs(courseId) % THUMB_THEMES.length]];
+  return t.color.thumb[THUMB_THEMES[Math.floor(Math.abs(courseId) / 3) % THUMB_THEMES.length]];
 }

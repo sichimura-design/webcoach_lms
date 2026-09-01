@@ -9,6 +9,9 @@ node_modules/
 # Production
 /build
 
+# design-canvas の実画面キャプチャ（アートボード手写しの材料。PNG と DOM ダンプで重い）
+design-canvas/_capture/
+
 # Environment variables
 .env
 .env.local
