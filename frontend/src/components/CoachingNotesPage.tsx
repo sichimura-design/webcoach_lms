@@ -26,7 +26,6 @@ import SessionReview from './coaching/SessionReview';
 import { C } from './coaching/design1c';
 import type {
   AutoImportReadiness,
-  CoachContacts,
   CoachingSessionDetail,
   CoachingSessions,
   ImportRecordPayload,
@@ -83,7 +82,6 @@ export default function CoachingNotesPage() {
   const [sessions, setSessions] = useState<CoachingSessions | null>(null);
   const [goals, setGoals] = useState<CoachingGoalApi[]>([]);
   const [readiness, setReadiness] = useState<AutoImportReadiness | null>(null);
-  const [contacts, setContacts] = useState<CoachContacts | null>(null);
   /** 直近セッションの詳細。「前回の振り返り」のキーポイントを出すために使う */
   const [lastDetail, setLastDetail] = useState<CoachingSessionDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -97,16 +95,14 @@ export default function CoachingNotesPage() {
   const reload = useCallback(async () => {
     if (!userId) return;
     try {
-      const [list, goalList, ready, contactData] = await Promise.all([
+      const [list, goalList, ready] = await Promise.all([
         bffClient.getCoachingSessions(userId),
         bffClient.getNextCoachingGoals(userId),
         bffClient.getAutoImportReadiness(userId),
-        bffClient.getCoachContacts(userId),
       ]);
       setSessions(list);
       setGoals(goalList);
       setReadiness(ready);
-      setContacts(contactData);
 
       /*
        * 「前回の振り返り」は一覧の要約文字列だけでは足りない（決まったことが出せない）。
@@ -276,29 +272,6 @@ export default function CoachingNotesPage() {
     await reload();
   };
 
-  // --- コーチへの連絡手段（Slack / メール） ----------------------------------
-
-  /** 保存できたら null、失敗したら入力欄に出す文言を返す */
-  const saveContacts = async (patch: Partial<CoachContacts>): Promise<string | null> => {
-    if (!userId) return '保存できませんでした';
-    try {
-      setContacts(await bffClient.saveCoachContacts(userId, patch));
-      return null;
-    } catch (e) {
-      const message = (e as { response?: { data?: { error?: string } } })?.response?.data?.error;
-      return message ?? '保存できませんでした';
-    }
-  };
-
-  const copyCoachEmail = async (email: string) => {
-    try {
-      await navigator.clipboard.writeText(email);
-      showToast('メールアドレスをコピーしました', 'success');
-    } catch {
-      showToast('コピーできませんでした', 'error');
-    }
-  };
-
   // --- 参加 -----------------------------------------------------------------
 
   /** 同意済みならそのまま開始、未同意なら先に同意モーダルを出す */
@@ -438,12 +411,9 @@ export default function CoachingNotesPage() {
               <CoachingHeroCard
                 next={sessions.next}
                 readiness={readiness}
-                contacts={contacts}
                 onRegisterLink={registerLink}
                 onStart={handleStart}
                 onOpenSession={openSession}
-                onSaveContacts={saveContacts}
-                onCopyEmail={copyCoachEmail}
                 starting={starting}
               />
             )}

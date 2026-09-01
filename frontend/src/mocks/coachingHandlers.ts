@@ -17,7 +17,6 @@ import { http, HttpResponse } from 'msw';
 import type {
   AudioRetention,
   AutoImportReadiness,
-  CoachContacts,
   CoachingAiSummary,
   CoachingSessionDetail,
   CoachingSessionPatch,
@@ -211,20 +210,22 @@ function buildSummary(segments: TranscriptSegment[], sessionId: number): Coachin
       { title: '平日は30分単位に区切って毎日触る。まとめてやると間が空いて忘れる', sourceSegmentIds: at(13).concat(at(14)) },
       { title: 'ポートフォリオはサービス選定より先に構成から考える', sourceSegmentIds: at(20) },
     ],
+    /*
+     * 🔴 goals / tasks の言い換えを入れないこと。
+     * ここに入れてよいのは「合意されたが、次回までの行動にはならない方針」だけ。
+     * 以前は4件すべてが goals / tasks と同内容で、画面に同じ文が2回出ていた。
+     */
     decisions: [
-      { title: 'バナー1案を今週中に完成させる', sourceSegmentIds: at(10) },
-      { title: '平日朝に30分の学習時間を固定する', sourceSegmentIds: at(15).concat(at(16)) },
-      { title: 'ポートフォリオ構成案をNotionにまとめて次回レビューする', sourceSegmentIds: at(23).concat(at(24)) },
-      { title: '案件サイトのプロフィールを早めに埋める', sourceSegmentIds: at(27) },
+      { title: '狙う案件は、まずは小さめのバナー案件から入る', sourceSegmentIds: at(18) },
     ],
     goals,
     tasks,
-    nextSessionAgenda: [
-      'バナー1案のレビュー',
-      'ポートフォリオ構成案のレビュー',
-      '平日30分の学習が続いたかの振り返り',
-      'ポートフォリオを作るサービスの決定',
-    ],
+    /*
+     * 🔴 タスクの完了確認は書かないこと（「バナー1案のレビュー」など）。
+     * それは tasks 側に期限・完了条件つきで載っていて、画面でも上に出る。
+     * ここは「今回決めきれず、次回に持ち越したもの」だけ。
+     */
+    nextSessionAgenda: ['ポートフォリオを作るサービスの決定'],
     referencedContext: [
       '今回の文字起こし',
       '前回のコーチングノート（第3回）',
@@ -340,13 +341,6 @@ let nextSessionId = 1003;
 
 /** 次回コーチングで相談したいこと。コーチングが終わるまで持ち越す */
 let coachingAgenda: CoachingAgenda = { text: '', updatedAt: null };
-
-/**
- * コーチへの連絡手段。初期は両方とも未登録にしておく。
- * デザイン（コーチング トップ 1C）が「未登録 → 登録 → 変更」の3状態を持つので、
- * 最初の状態から順に触れるようにする。
- */
-const coachContacts: CoachContacts = { slackUrl: null, email: null };
 
 /** AI生成の開始時刻。GET detail のたびに経過から status を導出する */
 const generationStartedAt: Record<number, number> = {};
@@ -811,37 +805,6 @@ export const coachingHandlers = [
       updatedAt: new Date().toISOString(),
     };
     return HttpResponse.json(coachingAgenda);
-  }),
-
-  // --- コーチへの連絡手段（Slackリンク / メールアドレス） ---
-  // 🔴 実BFFには無い。コーチング以外のタイミングで連絡したくなったとき、
-  //    案内メールを探しに行かなくて済むよう、会議リンクと同じ場所に置く。
-  http.get('*/api/webcoach/coach-contacts/:userid', () => HttpResponse.json(coachContacts)),
-
-  http.put('*/api/webcoach/coach-contacts/:userid', async ({ request }) => {
-    let body: Partial<CoachContacts>;
-    try {
-      body = (await request.json()) as Partial<CoachContacts>;
-    } catch {
-      return HttpResponse.json({ error: 'invalid body' }, { status: 400 });
-    }
-
-    // 部分更新。キーが来ていない項目は触らない（Slackだけ変えてメールが消える、を防ぐ）
-    if ('slackUrl' in body) {
-      const raw = (body.slackUrl ?? '').trim();
-      if (raw && !/^https:\/\/\S+$/.test(raw)) {
-        return HttpResponse.json({ error: 'https:// からはじまるURLを入力してください' }, { status: 400 });
-      }
-      coachContacts.slackUrl = raw || null;
-    }
-    if ('email' in body) {
-      const raw = (body.email ?? '').trim();
-      if (raw && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) {
-        return HttpResponse.json({ error: 'メールアドレスの形式が正しくありません' }, { status: 400 });
-      }
-      coachContacts.email = raw || null;
-    }
-    return HttpResponse.json(coachContacts);
   }),
 
   // --- 一覧（次回予定 + 履歴 + 同意状況） ---

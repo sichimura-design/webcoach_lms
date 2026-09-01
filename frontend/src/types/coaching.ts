@@ -232,21 +232,6 @@ export interface CoachingAgenda {
 /** 相談したいことの文字数上限。長文はコーチングの場で話すべきなのでここでは受けない */
 export const COACHING_AGENDA_MAX = 500;
 
-/**
- * コーチへの連絡手段（Slackリンク / メールアドレス）。
- * 🔴 実BFFには無い。モック（MSW）で提供する。
- *
- * コーチングの合間に「ちょっと聞きたい」が発生したとき、受講生は毎回
- * 案内メールを探しに行っていた。次回コーチングカードの中に置いて、
- * 会議リンクと同じ「一度貼れば以降はそこにある」扱いにする。
- */
-export interface CoachContacts {
-  /** Slack の DM / チャンネルURL。未登録は null */
-  slackUrl: string | null;
-  /** コーチのメールアドレス。未登録は null */
-  email: string | null;
-}
-
 export interface CoachingSessions {
   next: NextCoaching | null;
   past: CoachingSessionSummary[];

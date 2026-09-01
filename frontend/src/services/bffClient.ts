@@ -35,7 +35,6 @@ import {
 } from '../types/focusBooth';
 import {
   AutoImportReadiness,
-  CoachContacts,
   CoachingAgenda,
   CoachingSessions,
   CoachingSessionDetail,
@@ -850,22 +849,6 @@ class BFFClient {
 
   async saveCoachingAgenda(userId: number, text: string): Promise<CoachingAgenda> {
     const response = await this.api.put(`/webcoach/coaching-agenda/${userId}`, { text });
-    return response.data;
-  }
-
-  /**
-   * コーチへの連絡手段（Slackリンク / メールアドレス）
-   * GET/PUT /api/webcoach/coach-contacts/{userId}
-   * 🔴 実BFFには無い。モックで提供している。
-   */
-  async getCoachContacts(userId: number): Promise<CoachContacts> {
-    const response = await this.api.get(`/webcoach/coach-contacts/${userId}`);
-    return response.data;
-  }
-
-  /** 部分更新。送ったキーだけ上書きされる */
-  async saveCoachContacts(userId: number, patch: Partial<CoachContacts>): Promise<CoachContacts> {
-    const response = await this.api.put(`/webcoach/coach-contacts/${userId}`, patch);
     return response.data;
   }
 
