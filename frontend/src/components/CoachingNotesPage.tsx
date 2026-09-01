@@ -8,7 +8,8 @@
  * コーチの認証済み権限で行われるので、受講生の操作は
  * 「リンクを貼る」「参加する」「確認して確定する」の3つだけに収めている。
  */
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { AppHeader } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
@@ -86,6 +87,32 @@ export default function CoachingNotesPage() {
   const [lastDetail, setLastDetail] = useState<CoachingSessionDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<Mode>({ kind: 'list' });
+
+  /*
+   * 開いているセッションは URL に持つ（/coaching?session=<id>）。
+   * 🔴 これが無いと、サイドバーの「コーチング」を押しても URL が変わらず、
+   *    Route の element が再マウントされないので mode が詳細のまま残る
+   *    ＝「押しても一覧に戻らない」。ブラウザバックも効かない。
+   *    AIコーチ（?session=）・マイノート（?note=）と同じ作法で、ルートは増やさない。
+   */
+  const [searchParams, setSearchParams] = useSearchParams();
+  const openId = searchParams.get('session');
+  /** 自分で書いた URL 変化を同期 effect が拾い直さないための目印 */
+  const syncedIdRef = useRef<string | null>(null);
+
+  /**
+   * 手元にある session をそのまま表示する。URL の ?session= も必ず合わせる。
+   * 同じセッションの中の状態遷移（記録中→生成中→確認）では履歴を増やさない。
+   */
+  const showSession = (next: Exclude<Mode, { kind: 'list' }>) => {
+    const id = String(next.session.id);
+    const sameSession = searchParams.get('session') === id;
+    syncedIdRef.current = id;
+    setMode(next);
+    const params = new URLSearchParams(searchParams);
+    params.set('session', id);
+    setSearchParams(params, { replace: sameSession });
+  };
 
   const [consentModalOpen, setConsentModalOpen] = useState(false);
   const [starting, setStarting] = useState(false);
@@ -290,7 +317,7 @@ export default function CoachingNotesPage() {
       if (session.meetingLink) {
         window.open(session.meetingLink.url, '_blank', 'noopener,noreferrer');
       }
-      setMode({ kind: 'recording', session });
+      showSession({ kind: 'recording', session });
       await reload();
     } catch {
       showToast('コーチングを開始できませんでした', 'error');
@@ -311,7 +338,7 @@ export default function CoachingNotesPage() {
     try {
       const updated = await bffClient.finishCoachingSession(mode.session.id);
       // 自動取得できない状態だったときは failed で返る。嘘の「生成中」を見せない
-      setMode(updated.status === 'failed' ? { kind: 'import', session: updated } : { kind: 'processing', session: updated });
+      showSession(updated.status === 'failed' ? { kind: 'import', session: updated } : { kind: 'processing', session: updated });
       await reload();
     } catch {
       showToast('処理を開始できませんでした', 'error');
@@ -327,7 +354,7 @@ export default function CoachingNotesPage() {
     setImporting(true);
     try {
       const updated = await bffClient.importCoachingRecord(mode.session.id, payload);
-      setMode(updated.status === 'failed' ? { kind: 'import', session: updated } : { kind: 'processing', session: updated });
+      showSession(updated.status === 'failed' ? { kind: 'import', session: updated } : { kind: 'processing', session: updated });
       await reload();
     } catch {
       showToast('記録を取り込めませんでした', 'error');
@@ -338,23 +365,57 @@ export default function CoachingNotesPage() {
 
   // --- セッションを開く -----------------------------------------------------
 
-  const openSession = async (sessionId: number) => {
+  /**
+   * 一覧のカードから呼ばれる入口。URLを書くだけで、取得は下の同期effectがやる。
+   * push（replace:false）にしてブラウザバックで一覧に戻れるようにする。
+   */
+  const openSession = (sessionId: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('session', String(sessionId));
+    setSearchParams(params, { replace: false });
+  };
+
+  /** URLのIDから詳細を取って表示する。同期effect専用 */
+  const loadSession = async (sessionId: number) => {
     try {
       const detail = await bffClient.getCoachingSession(sessionId);
-      if (detail.status === 'recording') setMode({ kind: 'recording', session: detail });
-      else if (detail.status === 'failed' || detail.status === 'draft') setMode({ kind: 'import', session: detail });
+      if (detail.status === 'recording') showSession({ kind: 'recording', session: detail });
+      else if (detail.status === 'failed' || detail.status === 'draft') showSession({ kind: 'import', session: detail });
       else if (['uploading', 'transcribing', 'summarizing'].includes(detail.status)) {
-        setMode({ kind: 'processing', session: detail });
-      } else setMode({ kind: 'review', session: detail });
+        showSession({ kind: 'processing', session: detail });
+      } else showSession({ kind: 'review', session: detail });
     } catch {
       showToast('記録を開けませんでした', 'error');
+      // 存在しないIDのURLを踏んだまま留まらせない（リロード・直リンクの取り違え）
+      backToList();
     }
   };
 
   const backToList = () => {
     setMode({ kind: 'list' });
+    syncedIdRef.current = null;
+    const params = new URLSearchParams(searchParams);
+    params.delete('session');
+    // replace にして、一覧に戻った直後の「戻る」が元のページ（マイページ等）に向くようにする
+    setSearchParams(params, { replace: true });
     void reload();
   };
+
+  /*
+   * サイドバーの「コーチング」・ブラウザバック・直リンクは URL だけが変わる。
+   * ここが唯一の受け口。自分で書いた変化（syncedIdRef）は無視してループを防ぐ。
+   */
+  useEffect(() => {
+    if (openId === syncedIdRef.current) return;
+    syncedIdRef.current = openId;
+    if (openId === null) {
+      setMode({ kind: 'list' });
+      void reload();
+    } else {
+      void loadSession(Number(openId));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openId, reload]);
 
   // --- 描画 -----------------------------------------------------------------
 
@@ -457,8 +518,8 @@ export default function CoachingNotesPage() {
             {backLink}
             <ProcessingStatus
               session={mode.session}
-              onDone={(session) => setMode({ kind: 'review', session })}
-              onFallback={(session) => setMode({ kind: 'import', session })}
+              onDone={(session) => showSession({ kind: 'review', session })}
+              onFallback={(session) => showSession({ kind: 'import', session })}
             />
           </>
         ) : mode.kind === 'import' ? (
@@ -478,7 +539,7 @@ export default function CoachingNotesPage() {
               session={mode.session}
               userId={userId}
               onReflected={(updated) => {
-                setMode({ kind: 'review', session: updated });
+                showSession({ kind: 'review', session: updated });
                 void reload();
               }}
               onDeleted={backToList}
