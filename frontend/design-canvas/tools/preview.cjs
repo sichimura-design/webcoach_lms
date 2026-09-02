@@ -27,6 +27,9 @@ const OUT_DIR = path.resolve(__dirname, '../_preview');
 const WIDTHS = {
   'Main.dc.html': 1440,
   'Courses.dc.html': 1512,
+  'Notes.dc.html': 1440,
+  'Coaching.dc.html': 1440,
+  'NotesImproved.dc.html': 1440,
 };
 const FALLBACK_WIDTH = 1440;
 
