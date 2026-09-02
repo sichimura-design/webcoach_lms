@@ -855,10 +855,15 @@ function MaterialsTopPage() {
                       >
                         {a.name}
                       </h3>
+                      {/* 🔴 絞り込み中は「一致した数 / 全体の数」にする。全体の数だけを
+                             出したままだと、見出しが「動画編集 7 コース」なのに下に
+                             1枚しか無い、という矛盾した見え方になる。 */}
                       <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle }}>
                         {[
-                          `${a.count} ${LEARNING_HIERARCHY.course}`,
-                          a.inProgress > 0 && `学習中 ${a.inProgress}`,
+                          filtering
+                            ? `${a.courses.length} / ${a.count} ${LEARNING_HIERARCHY.course}`
+                            : `${a.count} ${LEARNING_HIERARCHY.course}`,
+                          !filtering && a.inProgress > 0 && `学習中 ${a.inProgress}`,
                         ].filter(Boolean).join('・')}
                       </span>
 

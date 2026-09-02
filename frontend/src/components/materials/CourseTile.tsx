@@ -34,8 +34,11 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
       }}
     >
       {/* サムネ。画像を持つコースは画像、無ければコース名を大きく組んで絵柄にする
-          （絵柄そのものは courseVisuals の CourseArt。ヒーローと同じものを使う） */}
-      <CourseArt course={course} style={{ aspectRatio: '16 / 9' }}>
+          （絵柄そのものは courseVisuals の CourseArt。ヒーローと同じものを使う）
+          🔴 16:9 にしない。3列（1枚 約447px）だと高さが約250pxになり、
+             1〜2行のコース名に対して淡い地色の空白が広く残る。
+             5:2（約179px）が「絵柄として成立する高さ」と「中身の量」の釣り合い。 */}
+      <CourseArt course={course} style={{ aspectRatio: '5 / 2' }}>
         {/* 🔴 「未受講」ではバッジを出さない。何もしていない既定の状態にラベルを
                貼ると、一覧の大半（55コース中ほとんど）が同じ札で埋まる。
                手を付けたコースだけが目印を持つ方が、目で拾える。
