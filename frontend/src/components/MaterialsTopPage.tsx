@@ -403,14 +403,8 @@ function MaterialsTopPage() {
                   //    基準幅で伸縮させて 約55:45 に寄せる。460px は文字組みサムネで
                   //    単元名が2行に折れない下限として決めた値で、下限は今も守っている。
                   ...(otherActive.length > 0 ? { flex: '1 1 520px', minWidth: 0 } : { flex: 1, minWidth: 0 }),
-                  display: 'flex', flexDirection: 'column', gap: 12,
                 }}
               >
-                {/* 見出しは右の「ほかに学習中」と同じ組み。2つのカードが同じ高さから始まる。
-                    かつてカード内に赤い「続きから学ぶ」ラベルを置いていたが、下の CTA と
-                    同じ言葉が2回出るので、見出しに「前回学習したもの」として1回だけ出す。 */}
-                <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>前回学習したもの</div>
-
                 <div
                   style={{
                     background: t.color.bg.card, border: `1px solid ${t.color.border.card}`,
@@ -418,6 +412,12 @@ function MaterialsTopPage() {
                     padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 14,
                   }}
                 >
+                  {/* 見出しはカードの中の1行目。右の「ほかに学習中」と同じ組みにして
+                      2つのカードが同じ高さから始まるようにする。
+                      かつてカード内に赤い「続きから学ぶ」ラベルを置いていたが、下の CTA と
+                      同じ言葉が2回出るので、見出しに「前回学習したもの」として1回だけ出す。 */}
+                  <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>前回学習したもの</div>
+
                   {/* 🔴 アートは全幅200pxのバナーではなく、左に置く小さめのサムネイルにする。
                          全幅バナー＋縦積み（情報／次に学ぶ／CTA）だと、1コース分の再開動線だけで
                          ファーストビューをほぼ使い切ってしまい、下のカタログが見えなかった。
@@ -516,20 +516,29 @@ function MaterialsTopPage() {
             {/* ほかに学習中。ヒーローに出せるのは1コースだけなので、
                 並行して進めているコースだけをここで拾う（修了済みは出さない）。 */}
             {otherActive.length > 0 && (
-              <section style={{ flex: '1 1 400px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {/* 見出しに件数を出す。畳んでいるときに「これで全部」と読み違えないため */}
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
-                  <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ほかに学習中</div>
-                  {otherActive.length > OTHER_ACTIVE_VISIBLE && (
-                    <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.muted }}>{otherActive.length} コース</span>
-                  )}
-                </div>
+              <section style={{ flex: '1 1 400px', minWidth: 0 }}>
                 {/* 🔴 1コース＝1行の一覧にする。カード＋サムネで組むと1件あたり
                        約110px を使い、並行受講が増えるほどここだけが下に伸びて
                        左のヒーロー（約210px）と釣り合わなくなる。行なら1件44px で、
                        3件でもヒーローより低い。ここは「並行して何を進めているか」の
                        早見なので、絵は要らず、名前と残りが分かれば足りる。 */}
                 <div style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.tile, boxShadow: t.shadow.card, overflow: 'hidden' }}>
+                  {/* 見出しはカードの中の1行目。件数も出すのは、畳んでいるときに
+                      「これで全部」と読み違えないため。
+                      🔴 区切りは自分の borderBottom で持つ。1件目の行の borderTop を
+                         付けると、行側の「1件目だけ線を引かない」分岐と二重になる。 */}
+                  <div
+                    style={{
+                      display: 'flex', alignItems: 'baseline', gap: 8,
+                      padding: '12px 16px', borderBottom: `1px solid ${t.color.border.card}`,
+                    }}
+                  >
+                    <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ほかに学習中</div>
+                    {otherActive.length > OTHER_ACTIVE_VISIBLE && (
+                      <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.muted }}>{otherActive.length} コース</span>
+                    )}
+                  </div>
+
                   {(showAllActive ? otherActive : otherActive.slice(0, OTHER_ACTIVE_VISIBLE)).map((c, i) => {
                     const lessons = lessonProgressFromPercent(c.progress, c.totalLessons);
                     return (
