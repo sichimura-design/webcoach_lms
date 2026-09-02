@@ -631,13 +631,8 @@ function MaterialsTopPage() {
                カード1枚だけの一覧を作らない（10領域のうち3つが該当）。
             ============================================================ */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-            <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>
-              {LEARNING_HIERARCHY.area}から探す
-            </div>
-            <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle }}>
-              全 {catalog.length} {LEARNING_HIERARCHY.course} ・ 目標以外のコースも自由に受講できます
-            </span>
+          <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>
+            {LEARNING_HIERARCHY.area}から探す
           </div>
 
           {sortedAreas.length === 0 ? (
