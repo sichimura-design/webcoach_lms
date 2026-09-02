@@ -1572,19 +1572,16 @@ body.learning-immersive {
   color: var(--dc-text-subtle);
 }
 
-/* 領域ページ（/courses/category/:code）のコースタイル。
-   学習トップの 4列固定と違い、ここは流動レイアウトなので幅で折り返す。 */
+/* コースタイルのグリッド。学習トップの領域ブロックと領域ページ
+   （/courses/category/:code）が共有する。
+   🔴 3列まで。4列だと1枚が約330pxまで縮み、8枚並ぶと絵柄も文字も細切れの
+      パッチワークに見えていた。3列なら1枚約440pxで、タイル内の文字を削った
+      ぶんが絵柄として効く。 */
 .wc-area-grid {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 }
 
-@media (max-width: 1100px) {
-  .wc-area-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 860px) {
+@media (max-width: 900px) {
   .wc-area-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1601,17 +1598,10 @@ body.learning-immersive {
    コースのグリッドは領域ページと同じ .wc-area-grid を使い回すので、
    かつてここにあった .wc-area-cards（領域カード3列）は削除した。
 
-   ただし学習トップのブロックは左右に 20px のパディングを持つぶん、
-   領域ページより1列ぶん早く詰まる。サイドバー展開中（本文が
-   152px = 224 − 72 細くなる）はそこにさらに乗るので、1段落とす
-   （.mypage-rank-split などと同じ理由・同じ足し方）。 */
-@media (max-width: 1252px) {
-  body.sidebar-expanded .wc-area-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 1000px) {
+   サイドバー展開中は本文が 152px（= 224 − 72）細くなるので、その分を足した
+   幅で先に1段落とす（.mypage-rank-split などと同じ理由・同じ足し方）。
+   900 + 152 = 1052px。 */
+@media (max-width: 1052px) {
   body.sidebar-expanded .wc-area-grid {
     grid-template-columns: repeat(2, 1fr);
   }
