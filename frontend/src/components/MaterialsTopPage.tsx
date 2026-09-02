@@ -425,12 +425,15 @@ function MaterialsTopPage() {
                          文字組みサムネがコース名を持つので、本文側からコース名の行を落とせる。 */}
                   <div style={{ display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap' }}>
                     {/* 152px は文字組みサムネ（画像を持たないコース）でコース名が
-                        2行に収まる下限。カードが横に伸びたので比率（約1.65:1）を
-                        保ったまま一段大きくしている。これ以上縮めるなら titleSize も下げること。 */}
+                        2行に収まる下限。カードが横に伸びたので比率（5:3）を保ったまま
+                        180px に上げてある。これ以上縮めるなら titleSize も下げること。
+                        🔴 min(180px, 42vw) で狭い幅だけ縮める。375px で 180px 固定にすると
+                           右の「このコース 1 / 7 レッスン」（縮まない）が入る幅を食って、
+                           ページが3pxだけ横スクロールする。 */}
                     <CourseArt
                       course={resumeArt}
                       titleSize="var(--dc-fs-body)"
-                      style={{ width: 180, height: 108, flexShrink: 0, borderRadius: t.radius.inner }}
+                      style={{ width: 'min(180px, 42vw)', aspectRatio: '5 / 3', flexShrink: 0, borderRadius: t.radius.inner }}
                     />
 
                     <div style={{ flex: 1, minWidth: 0 }}>
