@@ -383,10 +383,11 @@ function MaterialsTopPage() {
                  1440px では横に伸びきって間延びしていた
                ・「ほかに学習中」は3列グリッドで、1〜2件だと列が空いて
                  スカスカに見えていた（レビュー指摘）
-            🔴 幅は「左を固定・右を可変」にする。再開できるコースは常に1本なので
-               左に必要な幅は決まっているが、右は並行受講の本数で必要な幅が変わる。
-               逆にすると（左 flex:1・右 340px 固定）右が1列しか組めず、
-               受講本数が増えたぶんだけ右だけが下に伸びて、左と釣り合わなくなる。
+            🔴 幅は基準幅（左520・右400）で伸縮させ、広い画面では約 55 : 45 になる。
+               左を 460px 固定・右を flex:1 にしていた頃は、1440px で 左460 : 右876 と
+               主役の方が狭くなり、ヒーローが縮こまって見えていた。
+               右を固定幅にするのも駄目で（右340px固定）1列しか組めず、受講本数が
+               増えたぶんだけ右だけが下に伸びて左と釣り合わなくなる。
             🔴 左のヒーローは高さを伸ばさない。ここが高いとカタログがファーストビューから
                落ちる。アートを全幅バナーにしたり、行を増やしたりしないこと。
             🔴 片方が無いときは残った方を全幅にする（空の列を残さない）。
@@ -396,9 +397,12 @@ function MaterialsTopPage() {
             {resumableCourse && resumeArt && (
               <section
                 style={{
-                  // 460px は「サムネ152＋余白＋単元名が2行に折れない」最小幅。SP では
-                  // maxWidth が勝って全幅に戻る（width だけだと 375px 幅で溢れる）。
-                  ...(otherActive.length > 0 ? { width: 460, maxWidth: '100%', flexShrink: 0 } : { flex: 1, minWidth: 0 }),
+                  // 🔴 ヒーローを固定幅にしない。460px 固定＋右が flex:1 だと、
+                  //    1440px 幅で 左460 : 右876 になり、主役のヒーローの方が
+                  //    狭いという逆転が起きていた（「縮こまって見える」の原因）。
+                  //    基準幅で伸縮させて 約55:45 に寄せる。460px は文字組みサムネで
+                  //    単元名が2行に折れない下限として決めた値で、下限は今も守っている。
+                  ...(otherActive.length > 0 ? { flex: '1 1 520px', minWidth: 0 } : { flex: 1, minWidth: 0 }),
                   display: 'flex', flexDirection: 'column', gap: 12,
                 }}
               >
@@ -421,11 +425,12 @@ function MaterialsTopPage() {
                          文字組みサムネがコース名を持つので、本文側からコース名の行を落とせる。 */}
                   <div style={{ display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap' }}>
                     {/* 152px は文字組みサムネ（画像を持たないコース）でコース名が
-                        2行に収まる下限。これ以上縮めるなら titleSize も下げること。 */}
+                        2行に収まる下限。カードが横に伸びたので比率（約1.65:1）を
+                        保ったまま一段大きくしている。これ以上縮めるなら titleSize も下げること。 */}
                     <CourseArt
                       course={resumeArt}
                       titleSize="var(--dc-fs-body)"
-                      style={{ width: 152, height: 92, flexShrink: 0, borderRadius: t.radius.inner }}
+                      style={{ width: 180, height: 108, flexShrink: 0, borderRadius: t.radius.inner }}
                     />
 
                     <div style={{ flex: 1, minWidth: 0 }}>
@@ -511,7 +516,7 @@ function MaterialsTopPage() {
             {/* ほかに学習中。ヒーローに出せるのは1コースだけなので、
                 並行して進めているコースだけをここで拾う（修了済みは出さない）。 */}
             {otherActive.length > 0 && (
-              <section style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <section style={{ flex: '1 1 400px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
                 {/* 見出しに件数を出す。畳んでいるときに「これで全部」と読み違えないため */}
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
                   <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ほかに学習中</div>
