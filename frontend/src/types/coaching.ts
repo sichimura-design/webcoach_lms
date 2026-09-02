@@ -127,9 +127,27 @@ export interface GoalCandidate {
   selected: boolean;
 }
 
+/**
+ * 会話から拾った要点のひとかたまり。
+ * 見出しは回ごとにAIが付ける（「前回からの進捗」のような固定文言にしない）。
+ * 何が話されたかは回によって違うので、毎回同じ4つの箱に押し込むと
+ * 中身の無い見出しが残ったり、逆に収まらない話題が落ちたりしていた。
+ */
+export interface SummaryHighlight {
+  heading: string;
+  items: Evidenced[];
+}
+
 export interface CoachingAiSummary {
   /** 今回のまとめ */
   sessionSummary: string;
+  /**
+   * 会話の要点。見出しはAIが回ごとに付ける。
+   * 🔴 実BFFはまだこれを返さないので optional。無いときは下の
+   *    progressSinceLast / coachFeedback / decisions / nextSessionAgenda から組み立てる
+   *    （SessionReview の conversationBlocks）。
+   */
+  highlights?: SummaryHighlight[];
   /** 前回からの進捗。前回の目標に対して進んだこと */
   progressSinceLast: Evidenced[];
   /** コーチからのフィードバック（改善点・アドバイス） */

@@ -121,6 +121,25 @@ function segmentsFromText(text: string): TranscriptSegment[] {
  *  - 会話で決まっていない期限・完了条件は補完せず null にして needsReview を立てる
  *  - 合意された内容だけをタスク化し、数を増やしすぎない
  */
+/**
+ * ③の小見出し。実運用ではAIが回ごとに付けるので、モックでもセッションごとに変える。
+ * 🔴 ここを固定文言（「前回からの進捗」など）に戻さないこと。全回で同じ見出しに
+ *    なっていると、画面側が highlights を使っているのか旧4項目に落ちているのかが
+ *    見分けられなくなる。
+ */
+const HIGHLIGHT_HEADINGS: Record<number, string[]> = {
+  1002: ['手が止まっていた原因', '腑に落ちたアドバイス', '案件について決めたこと', '次回に持ち越したこと'],
+  1001: ['前回からできるようになったこと', '制作の進め方で受けた指摘', 'ポートフォリオの方針', '次回に持ち越したこと'],
+};
+
+/** 未登録のセッション（その場で作った記録）はこちら */
+const DEFAULT_HIGHLIGHT_HEADINGS = [
+  '前回からの進捗',
+  'コーチからのアドバイス',
+  '決まったこと',
+  '次回に持ち越すこと',
+];
+
 function buildSummary(segments: TranscriptSegment[], sessionId: number): CoachingAiSummary {
   const at = (i: number): string[] => {
     const seg = segments[Math.min(i, segments.length - 1)];
@@ -196,7 +215,9 @@ function buildSummary(segments: TranscriptSegment[], sessionId: number): Coachin
     },
   ];
 
-  return {
+  const headings = HIGHLIGHT_HEADINGS[sessionId] ?? DEFAULT_HIGHLIGHT_HEADINGS;
+
+  const summary: CoachingAiSummary = {
     sessionSummary:
       'バナー制作が「完成度を気にして手が止まる」状態で停滞していることを確認し、1案目は粗くても最後まで通す方針で合意しました。学習時間は土日まとめ型から平日30分の毎日型へ切り替えます。ポートフォリオは制作サービスを決める前に構成案から着手し、次回コーチングでレビューします。',
     progressSinceLast: [
@@ -235,6 +256,20 @@ function buildSummary(segments: TranscriptSegment[], sessionId: number): Coachin
       '中長期の学習ロードマップ',
     ],
   };
+
+  // 中身は旧4項目と同じものを、回ごとの見出しで束ね直す。
+  // 実運用ではAIが直接この形で返す想定。空の束は積まない。
+  summary.highlights = [
+    { heading: headings[0], items: summary.progressSinceLast },
+    { heading: headings[1], items: summary.coachFeedback },
+    { heading: headings[2], items: summary.decisions },
+    {
+      heading: headings[3],
+      items: summary.nextSessionAgenda.map((title) => ({ title, sourceSegmentIds: [] })),
+    },
+  ].filter((h) => h.items.length > 0);
+
+  return summary;
 }
 
 // ---- ストア ----------------------------------------------------------------
@@ -281,23 +316,42 @@ function seedSession(
 
 const sessionsStore: Record<number, CoachingSessionDetail> = {};
 
+/**
+ * 過去のコーチング日を「今日から何日前」で作る。
+ * 🔴 固定文字列にしない。buildNextSchedule（下）に次回予定で同じ注意が書いてあるが、
+ *    過去側にも同じ理由がある。学習記録ページのカレンダーがコーチング実施日に
+ *    マークを出すようになったので、決め打ちの日付だと時間が経つほど
+ *    表示範囲の外へ流れていき、機能の確認ができなくなる。
+ *    隔週コーチングの想定で 14日前 / 28日前に置く。
+ */
+function pastSessionDate(daysAgo: number): { date: string; reflectedAt: string } {
+  const d = new Date();
+  d.setDate(d.getDate() - daysAgo);
+  const date = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  // 振り返りはその日の夜という想定
+  return { date, reflectedAt: `${date}T20:40:00+09:00` };
+}
+
 function seedAll(): void {
-  const s2 = seedSession(1002, '2026-07-20', '第3回コーチング', {
+  const recent = pastSessionDate(14);
+  const older = pastSessionDate(28);
+
+  const s2 = seedSession(1002, recent.date, '第3回コーチング', {
     status: 'published',
     step: '目標とタスクを確定しました',
     progress: 100,
     studentMemo: '余白の取り方は次のバナーで意識する。',
     reflectedGoalIds: ['goal_1002_1', 'task_1002_1', 'task_1002_2'],
-    reflectedAt: '2026-07-20T20:40:00+09:00',
+    reflectedAt: recent.reflectedAt,
   });
-  const s1 = seedSession(1001, '2026-07-06', '第2回コーチング', {
+  const s1 = seedSession(1001, older.date, '第2回コーチング', {
     status: 'published',
     step: '目標とタスクを確定しました',
     progress: 100,
     source: 'pasted_text',
     importedFrom: 'manual',
     reflectedGoalIds: ['goal_1001_1'],
-    reflectedAt: '2026-07-06T21:05:00+09:00',
+    reflectedAt: older.reflectedAt,
   });
   [s1, s2].forEach((s) => {
     // 反映済みのものはステートも進めておく
