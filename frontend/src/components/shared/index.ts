@@ -22,3 +22,4 @@ export { default as RoadmapPath } from './RoadmapPath';
 export type { RoadmapStep } from './RoadmapPath';
 export { default as LearningBreadcrumb } from './LearningBreadcrumb';
 export type { Crumb } from './LearningBreadcrumb';
+export { default as ConfirmDialog } from './ConfirmDialog';
