@@ -22,6 +22,7 @@ import {
   StudyActivity,
   StudyActivityInput,
   StudyActivityPage,
+  StudyActivityPatch,
   StudyActivityQuery,
   StudyStatsSummary,
 } from '../types/studyActivity';
@@ -561,8 +562,29 @@ class BFFClient {
    * GET /api/webcoach/study-stats/{userId}?days=35
    * 画面はこれ1本で描けるようにしてある（リクエストを増やさない）。
    */
-  async getStudyStats(userId: number, days = 35): Promise<StudyStatsSummary> {
+  async getStudyStats(userId: number, days: number | 'all' = 35): Promise<StudyStatsSummary> {
     const response = await this.api.get(`/webcoach/study-stats/${userId}`, { params: { days } });
+    return response.data;
+  }
+
+  /**
+   * 学習記録を1件編集する（時間・教材・メモ・達成度・日付）
+   * PATCH /api/webcoach/study-activities/{userId}/{activityId}
+   *
+   * タイマーの止め忘れ・付け忘れを後から直すための口。
+   * 🔴 measuredSeconds など「実際に起きたこと」の項目は送れない（StudyActivityPatch 参照）。
+   * 🔴 検証は送る前に utils/studyStats.ts の validateActivityPatch で済ませる。
+   *    サーバ役（MSW）も同じ関数を使うので、400 の文言は画面と同じものが返る。
+   */
+  async updateStudyActivity(
+    userId: number,
+    activityId: string,
+    patch: StudyActivityPatch
+  ): Promise<StudyActivity> {
+    const response = await this.api.patch(
+      `/webcoach/study-activities/${userId}/${activityId}`,
+      patch
+    );
     return response.data;
   }
 

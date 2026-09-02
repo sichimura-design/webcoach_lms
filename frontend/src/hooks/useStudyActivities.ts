@@ -8,6 +8,11 @@ const PAGE_LIMIT = 30;
 /**
  * 学習履歴（新しい順・追記ページング）。/study-log の一覧が使う。
  * 集中ブースの「最近の学習記録」は useStudyStats の recent で足りるのでこちらは不要。
+ *
+ * 🔴 記録の書き換え（編集・削除・手動追加）はここに置かない。useStudyActivityEditor が持つ。
+ *    編集は履歴一覧とカレンダーの日別パネルの両方から起きるが、このフックは
+ *    ページング状態を抱えた一覧専用なので、日別パネルからこれを生やしたくない。
+ *    editor 側が bumpActivityRevision するので、書き換えの結果はここにも自動で反映される。
  */
 export interface UseStudyActivitiesResult {
   items: StudyActivity[];
@@ -18,7 +23,6 @@ export interface UseStudyActivitiesResult {
   error: string | null;
   loadMore: () => void;
   reload: () => void;
-  remove: (activityId: string) => Promise<void>;
 }
 
 export function useStudyActivities(
@@ -86,21 +90,7 @@ export function useStudyActivities(
       .catch(() => setLoadingMore(false));
   }, [userId, loadingMore, hasMore, queryKey, items.length]);
 
-  const remove = useCallback(
-    async (activityId: string) => {
-      if (!userId) return;
-      try {
-        await bffClient.deleteStudyActivity(userId, activityId);
-        setItems((prev) => prev.filter((a) => a.id !== activityId));
-        setTotal((prev) => Math.max(0, prev - 1));
-      } catch {
-        /* 失敗しても一覧は変えない */
-      }
-    },
-    [userId]
-  );
-
-  return { items, total, hasMore, loading, loadingMore, error, loadMore, reload, remove };
+  return { items, total, hasMore, loading, loadingMore, error, loadMore, reload };
 }
 
 export default useStudyActivities;

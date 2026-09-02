@@ -31,11 +31,14 @@ import {
   Achievement,
   CategoryStudyTotal,
   CourseStudyTotal,
+  ManualStudyEntryInput,
   StudyActivity,
   StudyActivityInput,
+  StudyActivityPatch,
   StudyCategory,
   StudyDayTotal,
   StudyFinishDraft,
+  StudyMonthTotal,
   StudyPeriodTotal,
   StudySegmentTotal,
   StudyStatsSummary,
@@ -64,11 +67,32 @@ export const STALE_SESSION_MS = 12 * 60 * 60 * 1000;
  */
 export const IDLE_PROMPT_MS = 30 * 60 * 1000;
 
-/** 終了時に修正できる上限（実測 + この分数）。桁の打ち間違いを弾く */
+/**
+ * 終了時に修正できる上限（実測 + この分数）。桁の打ち間違いを弾く。
+ * 🔴 終了カード専用。実測のない手動追加に当てると常に 0 分上限になって使えないので、
+ *    手動追加・後からの編集には MAX_MANUAL_MINUTES を使うこと。
+ */
 export const MAX_ADJUST_EXTRA_MINUTES = 240;
+
+/** 1件の記録の下限。MIN_RECORDABLE_SECONDS（60秒）と整合させる */
+export const MIN_ACTIVITY_MINUTES = 1;
+
+/**
+ * 手動追加・後からの編集で許す1件あたりの上限（分）。
+ * 1日の大半を1セッションにするのは打ち間違いなので 10 時間で止める。
+ */
+export const MAX_MANUAL_MINUTES = 600;
 
 /** フリーテキストの保存上限（localStorage 容量対策） */
 export const TEXT_MAX_LENGTH = 500;
+
+/**
+ * カレンダーの濃淡の閾値（分）。L1 / L2 / L3 / L4 の下限。
+ * 🔴 L1 の下限を STUDY_DAY_MIN_MINUTES にしてあるのが要。こうしておくと
+ *    「段階ドットが1つでも付いている = 学習した日」が構造的に真になり、
+ *    凡例の文言（「10分以上で学習した日」）と実装がずれない。
+ */
+export const STUDY_HEAT_THRESHOLDS = [STUDY_DAY_MIN_MINUTES, 30, 60, 120] as const;
 
 const WEEKDAY_LABELS = ['月', '火', '水', '木', '金', '土', '日'];
 
@@ -302,6 +326,69 @@ export function dailyTotals(activities: StudyActivity[], from: Date, to: Date): 
   return out;
 }
 
+/**
+ * カレンダーの濃淡の段階。0 = 記録なし、1..4 = STUDY_HEAT_THRESHOLDS の各段。
+ * 1〜9分（閾値未満）は 0 と区別したいので、呼び出し側が minutes > 0 で見分ける。
+ */
+export function heatLevelOf(minutes: number): 0 | 1 | 2 | 3 | 4 {
+  if (minutes < STUDY_HEAT_THRESHOLDS[0]) return 0;
+  if (minutes < STUDY_HEAT_THRESHOLDS[1]) return 1;
+  if (minutes < STUDY_HEAT_THRESHOLDS[2]) return 2;
+  if (minutes < STUDY_HEAT_THRESHOLDS[3]) return 3;
+  return 4;
+}
+
+/** 最古の記録の localDate。1件も無ければ null。カレンダーの遡り下限になる */
+export function firstStudyDateOf(activities: StudyActivity[]): string | null {
+  let min: string | null = null;
+  for (const a of activities) {
+    if (min === null || a.localDate < min) min = a.localDate;
+  }
+  return min;
+}
+
+/**
+ * 月別の合計。最古の記録の月から今月までを、記録の無い月も 0 で埋めて連続させる。
+ * 🔴 dailyTotals をクライアントで畳んで作らないこと。dailyTotals は days で窓が
+ *    切られているので、35日ぶんしか取っていないマイページで同じ計算をすると
+ *    「1ヶ月だけの月別グラフ」になる。studyDays の閾値判定も画面に持ち出さない。
+ */
+export function monthlyTotals(activities: StudyActivity[], today: Date = new Date()): StudyMonthTotal[] {
+  const first = firstStudyDateOf(activities);
+  if (!first) return [];
+
+  const dayMap = dayTotalMap(activities);
+  const acc = new Map<string, StudyMonthTotal>();
+  for (const day of Object.values(dayMap)) {
+    const month = day.date.slice(0, 7);
+    const cur = acc.get(month);
+    if (cur) {
+      cur.minutes += day.minutes;
+      cur.sessionCount += day.sessionCount;
+      if (day.isStudyDay) cur.studyDays += 1;
+    } else {
+      acc.set(month, {
+        month,
+        minutes: day.minutes,
+        sessionCount: day.sessionCount,
+        studyDays: day.isStudyDay ? 1 : 0,
+      });
+    }
+  }
+
+  // 欠損月を 0 で埋める。月の桁上がりは Date に任せる（12月→翌1月を手で書かない）
+  const out: StudyMonthTotal[] = [];
+  const lastMonth = format(monthStartOf(today), 'yyyy-MM');
+  let cursor = new Date(Number(first.slice(0, 4)), Number(first.slice(5, 7)) - 1, 1);
+  for (let guard = 0; guard < 600; guard += 1) {
+    const key = format(cursor, 'yyyy-MM');
+    out.push(acc.get(key) ?? { month: key, minutes: 0, sessionCount: 0, studyDays: 0 });
+    if (key >= lastMonth) break;
+    cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+  }
+  return out;
+}
+
 /** 閾値を満たす「学習した日」のキーを昇順で返す */
 export function studyDayKeys(activities: StudyActivity[]): string[] {
   const map = dayTotalMap(activities);
@@ -423,29 +510,51 @@ export function sortByOccurredDesc(activities: StudyActivity[]): StudyActivity[]
   return [...activities].sort((a, b) => b.occurredAt.localeCompare(a.occurredAt));
 }
 
+/**
+ * @param days 直近何日ぶんの dailyTotals を返すか。'all' なら最初の記録の日から今日まで。
+ *   🔴 /study-log は 'all' で呼ぶ。カレンダーの月送り・月別グラフ・期間タブを
+ *      1回の取得で全部賄うためで、これを日数で切ると「タブを切り替えるたびに
+ *      読み込み中に戻る」が復活する。マイページは既定の 35 のまま。
+ */
 export function summarize(
   activities: StudyActivity[],
   today: Date = new Date(),
-  days: number = 35
+  days: number | 'all' = 35
 ): StudyStatsSummary {
   const todayKey = toLocalDateKey(today);
   const weekStartKey = format(weekStartOf(today), 'yyyy-MM-dd');
   const lastWeekStart = subDays(weekStartOf(today), 7);
   const lastWeekEndKey = format(subDays(weekStartOf(today), 1), 'yyyy-MM-dd');
   const monthStartKey = format(monthStartOf(today), 'yyyy-MM-dd');
-  const allKeys = activities.map((a) => a.localDate).sort();
+  const firstStudyDate = firstStudyDateOf(activities);
+
+  // 'all' のときは最初の記録の日から。1件も無ければ今日1日ぶん（空配列にしない —
+  // グラフ側が「今日の0分」を描けなくなる）
+  const dailyFrom =
+    days === 'all'
+      ? firstStudyDate
+        ? new Date(
+            Number(firstStudyDate.slice(0, 4)),
+            Number(firstStudyDate.slice(5, 7)) - 1,
+            Number(firstStudyDate.slice(8, 10))
+          )
+        : today
+      : subDays(today, Math.max(0, days - 1));
 
   return {
     today: periodTotal(activities, todayKey, todayKey),
     week: periodTotal(activities, weekStartKey, todayKey),
     lastWeek: periodTotal(activities, format(lastWeekStart, 'yyyy-MM-dd'), lastWeekEndKey),
     month: periodTotal(activities, monthStartKey, todayKey),
-    allTime: periodTotal(activities, allKeys[0] ?? todayKey, todayKey),
+    allTime: periodTotal(activities, firstStudyDate ?? todayKey, todayKey),
     streak: computeStreak(activities, today),
-    dailyTotals: dailyTotals(activities, subDays(today, Math.max(0, days - 1)), today),
+    dailyTotals: dailyTotals(activities, dailyFrom, today),
     byCourse: courseTotals(activities),
     byCategory: categoryTotals(activities),
     recent: sortByOccurredDesc(activities).slice(0, RECENT_LIMIT),
+    firstStudyDate,
+    // days に関係なく常に全期間。高々数十行なので、35日で呼ぶマイページでも負担にならない
+    monthlyTotals: monthlyTotals(activities, today),
     generatedAt: new Date().toISOString(),
   };
 }
@@ -555,6 +664,213 @@ export function buildFinishDraft(
       segments: sessionSegmentTotals(session, end),
     },
   };
+}
+
+// ---- 記録の編集・手動追加 --------------------------------------------------
+// 🔴 検証も適用もここに置く。MSW ハンドラにも画面にも書かないこと
+//    （書くと「モックでは通るが画面では弾かれる」が起きる）。
+
+/** 手動で足された記録か。entrySource が無い古い行のために measuredSeconds も見る */
+export function isManualEntry(a: StudyActivity): boolean {
+  return a.session.entrySource === 'manual' || a.session.measuredSeconds === 0;
+}
+
+/**
+ * 保存後に編集された記録か。
+ * 🔴 adjusted では判定しない。あれは「終了カードで実測と違う分数を確定した」印で、
+ *    後から書き換えたこととは別の話（types/studyActivity.ts の対応表を参照）。
+ */
+export function isEditedEntry(a: StudyActivity): boolean {
+  return a.updatedAt !== a.createdAt;
+}
+
+/** YYYY-MM-DD → ローカルの Date（正午）。文字列から Date を起こす唯一の入口 */
+function dateFromKey(key: string): Date {
+  return new Date(Number(key.slice(0, 4)), Number(key.slice(5, 7)) - 1, Number(key.slice(8, 10)), 12, 0, 0, 0);
+}
+
+function isDateKey(v: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(dateFromKey(v).getTime());
+}
+
+/**
+ * 日付の付け替えに伴って動く時刻をまとめて出す。
+ * 🔴 localDate だけ書き換えないこと。occurredAt は「タイムラインの並び順の唯一の基準」
+ *    なので、日付とずれると日別の一覧が並ばなくなる。
+ * 🔴 toISOString().slice(0,10) を使わない（UTC 日付になり JST の深夜が前日に落ちる）。
+ */
+export function shiftActivityDates(
+  a: StudyActivity,
+  nextLocalDate: string
+): Pick<StudyActivity, 'startedAt' | 'endedAt' | 'occurredAt' | 'localDate' | 'endLocalDate'> {
+  const shift = differenceInCalendarDays(dateFromKey(nextLocalDate), dateFromKey(a.localDate));
+  if (shift === 0) {
+    return {
+      startedAt: a.startedAt,
+      endedAt: a.endedAt,
+      occurredAt: a.occurredAt,
+      localDate: a.localDate,
+      endLocalDate: a.endLocalDate,
+    };
+  }
+  const started = addDays(new Date(a.startedAt), shift);
+  const ended = addDays(new Date(a.endedAt), shift);
+  return {
+    startedAt: started.toISOString(),
+    endedAt: ended.toISOString(),
+    // occurredAt = endedAt（型のコメントどおり）。ずらしても同じ関係を保つ
+    occurredAt: ended.toISOString(),
+    localDate: nextLocalDate,
+    endLocalDate: toLocalDateKey(ended),
+  };
+}
+
+/** 分数の範囲チェック。編集と手動追加で同じ文言を出すために共有する */
+function minutesError(minutes: number): string | null {
+  if (!Number.isFinite(minutes) || !Number.isInteger(minutes)) return '学習時間は分単位の整数で入力してください';
+  if (minutes < MIN_ACTIVITY_MINUTES) return `学習時間は${MIN_ACTIVITY_MINUTES}分以上にしてください`;
+  if (minutes > MAX_MANUAL_MINUTES) return `学習時間は${MAX_MANUAL_MINUTES}分（${MAX_MANUAL_MINUTES / 60}時間）までにしてください`;
+  return null;
+}
+
+function dateError(localDate: string, today: Date): string | null {
+  if (!isDateKey(localDate)) return '日付の形式が正しくありません';
+  if (localDate > toLocalDateKey(today)) return '未来の日付には記録できません';
+  return null;
+}
+
+/** 手動追加の検証。問題なければ null、あれば画面にそのまま出せる日本語を返す */
+export function validateManualEntry(
+  v: ManualStudyEntryInput,
+  today: Date = new Date()
+): string | null {
+  if (!v.id) return '記録IDがありません';
+  return dateError(v.localDate, today) ?? minutesError(v.durationMinutes);
+}
+
+/** 編集の検証。触っていない項目は見ない（undefined = 変更なし） */
+export function validateActivityPatch(
+  cur: StudyActivity,
+  p: StudyActivityPatch,
+  today: Date = new Date()
+): string | null {
+  if (p.durationMinutes !== undefined) {
+    const e = minutesError(p.durationMinutes);
+    if (e) return e;
+  }
+  if (p.localDate !== undefined) {
+    const e = dateError(p.localDate, today);
+    if (e) return e;
+  }
+  return null;
+}
+
+/**
+ * パッチを当てた新しい記録を返す（元は変更しない）。
+ *
+ * 🔴 durationMinutes が変わったら必ず segments を配分し直す。そうしないと
+ *    「学習時間 42分／内訳の合計 37分」という嘘が残る（buildActivityInput と同じ理由）。
+ *    segments を持たない古い行は activitySegments が course から1本合成するので、
+ *    そちらも「内訳の合計 = durationMinutes*60」を満たしたまま移行できる。
+ * 🔴 measuredSeconds / mode / pausedCount などは触らない。adjusted だけは
+ *    「durationMinutes が実測と違うか」の定義どおり計算し直す。
+ */
+export function applyActivityPatch(
+  cur: StudyActivity,
+  p: StudyActivityPatch,
+  now: Date = new Date()
+): StudyActivity {
+  const durationMinutes =
+    p.durationMinutes !== undefined ? Math.max(MIN_ACTIVITY_MINUTES, p.durationMinutes) : cur.session.durationMinutes;
+  const dates = p.localDate !== undefined ? shiftActivityDates(cur, p.localDate) : null;
+  const measuredMinutes = Math.round(cur.session.measuredSeconds / 60);
+  const course = p.course !== undefined ? p.course : cur.course;
+
+  /*
+   * 配分し直す元の内訳。
+   * 🔴 実測の内訳がある行は、教材を付け外ししてもカテゴリ構成を触らない。
+   *    あれは「そのとき何をしていたか」の実測であって、course から導く値ではない。
+   * 🔴 内訳を持たない古い行だけは activitySegments が course から1本合成するので、
+   *    合成には**新しい** course を使う。cur を渡すと、教材を外したのに
+   *    内訳が material のまま残る。
+   */
+  const baseSegments =
+    cur.session.segments && cur.session.segments.length > 0
+      ? cur.session.segments
+      : [{ category: (course ? 'material' : 'other') as StudyCategory, seconds: durationMinutes * 60 }];
+
+  return {
+    ...cur,
+    ...(dates ?? {}),
+    course,
+    session: {
+      ...cur.session,
+      durationMinutes,
+      adjusted: durationMinutes !== measuredMinutes,
+      goalText: p.goalText !== undefined ? clampText(p.goalText) : cur.session.goalText,
+      contentNote: p.contentNote !== undefined ? clampText(p.contentNote) : cur.session.contentNote,
+      memo: p.memo !== undefined ? clampText(p.memo) : cur.session.memo,
+      achievement: p.achievement !== undefined ? p.achievement : cur.session.achievement,
+      segments: rescaleSegments(baseSegments, durationMinutes * 60),
+    },
+    // 編集済みの印はこれ（isEditedEntry）。専用フィールドを増やさない
+    updatedAt: now.toISOString(),
+  };
+}
+
+/**
+ * 手動追加 → POST body。
+ *
+ * 🔴 StudyActivityInput をここで直接組み立てず buildActivityInput に委譲する。
+ *    組み立てが2箇所に増えると clampText の適用漏れ・rescaleSegments の呼び忘れが
+ *    起きる場所ができる。
+ *
+ * 時刻の決め方（決定的にしないと日別の一覧の並びが記録するたびに変わる）:
+ *   その日が今日なら endedAt = 今、過去日なら endedAt = その日の 12:00。
+ *   startedAt = endedAt - durationMinutes。
+ */
+export function buildManualActivityInput(
+  v: ManualStudyEntryInput,
+  now: Date = new Date()
+): StudyActivityInput {
+  const minutes = Math.max(MIN_ACTIVITY_MINUTES, v.durationMinutes);
+  const isToday = v.localDate === toLocalDateKey(now);
+  const ended = isToday ? new Date(now) : dateFromKey(v.localDate);
+  const started = new Date(ended.getTime() - minutes * 60_000);
+
+  const input = buildActivityInput({
+    activityId: v.id,
+    // 計測していないので 0。isManualEntry のフォールバック判定もこれを見る
+    measuredSeconds: 0,
+    actualMinutes: minutes,
+    goalText: v.goalText ?? '',
+    contentNote: v.contentNote ?? '',
+    memo: v.memo ?? '',
+    achievement: v.achievement ?? null,
+    snapshot: {
+      startedAt: started.toISOString(),
+      endedAt: ended.toISOString(),
+      localDate: v.localDate,
+      endLocalDate: toLocalDateKey(ended),
+      timezoneOffsetMinutes: -now.getTimezoneOffset(),
+      course: v.course,
+      // 計測ではないが mode は必須。'freeform' を入れる
+      // （StudySessionMode に 'manual' を足すとタイマーUI全体に波及するため）
+      mode: 'freeform',
+      pausedCount: 0,
+      pausedSeconds: 0,
+      completedTarget: false,
+      // 内訳は course の有無から1本だけ。rescaleSegments が分数に合わせる
+      segments: [{ category: v.course ? 'material' : 'other', seconds: minutes * 60 }],
+    },
+  });
+
+  return { ...input, session: { ...input.session, entrySource: 'manual' } };
+}
+
+/** 手動追加の記録ID。newActivityId と同じ形にして、保存側の扱いを1つに保つ */
+export function newManualActivityId(atMs: number = Date.now()): string {
+  return newActivityId(atMs);
 }
 
 // ---- 表示用の書式（画面とモックのシードが共有する）------------------------

@@ -129,7 +129,34 @@ export interface StudySessionPayload {
    *    比例配分し直すので、実測秒そのものではない。
    */
   segments?: StudySegmentTotal[];
+
+  /**
+   * 記録の出どころ。
+   * 🔴 optional。この仕組みより前に記録された行には無いので、未定義は 'timer' として扱う
+   *    （判定は utils/studyStats.ts の isManualEntry が唯一の実装）。
+   * 🔴 StudySessionMode に 'manual' を足さないこと。あの union は
+   *    studyTimerStore / SidebarStudyTimer / FinishSessionModal が分岐に使っていて、
+   *    「計測していない記録」を混ぜるとタイマーUI全体が壊れる。出どころは別の軸。
+   */
+  entrySource?: 'timer' | 'manual';
 }
+
+/**
+ * measuredSeconds / adjusted / entrySource と画面の印の対応。
+ * ============================================================
+ *   タイマー記録（無修正）   measured=実測  adjusted=false  entrySource=未定義  印なし
+ *   終了カードで分数修正     measured=実測  adjusted=true   entrySource=未定義  印なし
+ *   履歴から後で編集         measured=実測(変えない)         entrySource=変えない  「✎編集済み」
+ *                            adjusted は duration!==round(measured/60) で再計算
+ *   手動追加                 measured=0     adjusted=true   entrySource='manual'  「手動」
+ *
+ * 🔴 「編集済み」の印を adjusted に相乗りさせない。終了カードで45→50分にした記録と
+ *    後から書き換えた記録が同じ印になり、印の意味が説明できなくなる。
+ *    編集済みは updatedAt !== createdAt で判定する（isEditedEntry）。
+ * 🔴 measuredSeconds は編集で書き換えない。「修正の有無を後から確認するためだけ」の
+ *    実測値なので、書き換えると adjusted が意味を失う。
+ * ============================================================
+ */
 
 /** 今回は誰も書き込まない。タイムライン／リアクション／コメントを足すときにここだけ埋まる */
 export interface StudyActivitySocial {
@@ -291,6 +318,16 @@ export interface StudyPeriodTotal {
   longestMinutes: number;
 }
 
+/** 月別の合計。受講開始月〜今月を欠損なく並べる（月別グラフが飛ばないように） */
+export interface StudyMonthTotal {
+  /** YYYY-MM */
+  month: string;
+  minutes: number;
+  sessionCount: number;
+  /** isStudyDay を満たした日数。閾値判定を画面で再実装しないために持つ */
+  studyDays: number;
+}
+
 /** GET /webcoach/study-stats/{userId} */
 export interface StudyStatsSummary {
   today: StudyPeriodTotal;
@@ -308,6 +345,16 @@ export interface StudyStatsSummary {
   byCategory: CategoryStudyTotal[];
   /** 最近の学習履歴 */
   recent: StudyActivity[];
+  /**
+   * 最古の記録の localDate。1件も無ければ null。
+   * カレンダーが「どこまで遡れるか」の唯一の根拠。
+   * 🔴 受講開始日にロードマップ（LearningPlan.phases[0].startDate）を使わないこと。
+   *    先に学習を始めてから後日プランを作る導線があるので、プラン開始日を下限にすると
+   *    それ以前の既存の記録がカレンダーから見えなくなる（データを隠す不具合になる）。
+   */
+  firstStudyDate: string | null;
+  /** 受講開始月〜今月の月別。days に関係なく常に全期間ぶん返す（数十行なので軽い） */
+  monthlyTotals: StudyMonthTotal[];
   generatedAt: string;
 }
 
@@ -323,4 +370,45 @@ export interface StudyActivityPage {
   items: StudyActivity[];
   total: number;
   hasMore: boolean;
+}
+
+/**
+ * PATCH body。保存済みの記録を後から直すためのもの（タイマーの止め忘れ・付け忘れの訂正）。
+ *
+ * 🔴 ここに無いフィールドは編集できない。特に measuredSeconds / mode / targetMinutes /
+ *    pausedCount / pausedSeconds / completedTarget / social / weeklyTotalMinutesAtEnd は
+ *    「そのとき実際に起きたこと」の記録なので、後から書き換えると記録の意味が消える。
+ * 🔴 segments は直接受け取らない。durationMinutes から比例配分し直す
+ *    （applyActivityPatch が rescaleSegments を通す）。
+ */
+export interface StudyActivityPatch {
+  durationMinutes?: number;
+  course?: StudyActivityCourseRef | null;
+  goalText?: string | null;
+  contentNote?: string | null;
+  memo?: string | null;
+  achievement?: Achievement | null;
+  /**
+   * 日付の付け替え。startedAt / endedAt / occurredAt も同じ日数だけずれる
+   * （shiftActivityDates）。localDate だけ書き換えると「occurredAt = 並び順の
+   * 唯一の基準」という約束と食い違い、日別の一覧が壊れる。
+   */
+  localDate?: string;
+}
+
+/**
+ * 手動で足す記録（記録し忘れた分）の入力。
+ * buildManualActivityInput が StudyActivityInput に変換する。
+ * 専用の POST は作らず、既存の recordStudyActivity をそのまま使う。
+ */
+export interface ManualStudyEntryInput {
+  /** クライアント生成。POST の冪等キー */
+  id: string;
+  localDate: string;
+  durationMinutes: number;
+  course: StudyActivityCourseRef | null;
+  goalText?: string | null;
+  contentNote?: string | null;
+  memo?: string | null;
+  achievement?: Achievement | null;
 }

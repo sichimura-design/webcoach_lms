@@ -507,8 +507,19 @@ h1, h2, h3 {
   background: var(--dc-soft-100);
 }
 
+/* カード内のテキストリンク（「編集する ›」など）。塗りボタンを増やさずに
+   操作の在りかを示すために使う。インライン style では :hover が書けないので
+   ここに出している（.dc-cta-* と同じ理由）。 */
+.dc-link-primary:hover {
+  color: var(--dc-primary-hover);
+  text-decoration: underline;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .ct-row {
+  .ct-row,
+  .studylog-cal-cell,
+  .studylog-row,
+  .studylog-row-actions {
     transition: none;
   }
 }
@@ -1021,12 +1032,73 @@ body.learning-immersive {
   align-items: start;
 }
 
+/* 学習カレンダー ｜ 選んだ日の詳細。
+   詳細側は 320〜380px の固定寄り（中は1行1記録なので、広げても情報は増えない）。
+   🔴 折り返すしきい値は .studylog-rank-grid と揃える。同じ画面の上下で
+      折り返す幅が違うと、中間の幅で片方だけ1カラムになって崩れて見える。 */
+.studylog-calendar-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  gap: var(--dc-sp-gap);
+  align-items: start;
+}
+
+/* 期間タブが5つ（1週間/30日間/3ヶ月/6ヶ月/月別）あるので折り返せるようにする */
+.studylog-range-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* 🔴 カレンダーのセルのホバーを background で書かない。
+      濃淡ヒートマップの段階と混ざって、何段目のセルか読めなくなる。 */
+.studylog-cal-cell {
+  transition: box-shadow 120ms var(--dc-ease);
+}
+
+.studylog-cal-cell:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 2px var(--dc-soft-200);
+}
+
+/* 学習記録の1行。操作はホバー／フォーカスで出す（並んだ行にボタンが増えると
+   記録そのものが読みにくくなるため）。 */
+.studylog-row {
+  transition: border-color 120ms var(--dc-ease);
+}
+
+.studylog-row:hover {
+  border-color: var(--dc-soft-200);
+}
+
+.studylog-row-actions {
+  opacity: 0;
+  transition: opacity 120ms var(--dc-ease);
+}
+
+.studylog-row:hover .studylog-row-actions,
+.studylog-row:focus-within .studylog-row-actions {
+  opacity: 1;
+}
+
+/* 🔴 タッチ端末ではホバーが無いので常に出す。出さないと編集も削除もできない */
+@media (hover: none) {
+  .studylog-row-actions {
+    opacity: 1;
+  }
+}
+
+/* 過去の目標宣言の行 */
+.studylog-goal-row:hover {
+  background: var(--dc-soft-100);
+}
+
 @media (max-width: 1023px) {
   .studylog-kpi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .studylog-rank-grid {
+  .studylog-rank-grid,
+  .studylog-calendar-grid {
     grid-template-columns: 1fr;
   }
 }

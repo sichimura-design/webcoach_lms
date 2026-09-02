@@ -1,50 +1,34 @@
 import { useMemo, useState } from 'react';
 import { Clock } from 'lucide-react';
-import { StudyDayTotal, StudyStatsSummary } from '../../types/studyActivity';
-import { formatMinutesHM, toLocalDateKey, weekStartOf } from '../../utils/studyStats';
+import { StudyStatsSummary } from '../../types/studyActivity';
+import { formatMinutesHM } from '../../utils/studyStats';
+import { RangeKey, TREND_RANGES, buildTrendSeries } from './trendSeries';
 
 /**
- * 学習記録（/study-log の①）。claude.ai/design『トップページ 3案』4a 準拠。
+ * 学習の推移（/study-log の③）。claude.ai/design『トップページ 3案』4a 由来。
  *
  * 🔴 期間タブを切り替えても再フェッチしない。
- *    StudyLogPage が 92日ぶんの dailyTotals を1回だけ取り、ここはその配列を切り出すだけ。
- *    タブごとに days を変えて叩くと、切り替えのたびに画面が「読み込んでいます」に戻り、
- *    しかも同じ日の値を別のリクエストで2回数えることになる。
+ *    StudyLogPage が days='all'（受講開始日〜今日）の dailyTotals を1回だけ取り、
+ *    ここはその配列を切り出すだけ。タブごとに days を変えて叩くと、切り替えのたびに
+ *    画面が「読み込んでいます」に戻り、しかも同じ日の値を別のリクエストで2回数える。
  *
- * 🔴 判定（学習した日 = 10分以上）は StudyDayTotal.isStudyDay をそのまま使う。
- *    閾値をここで再実装しない（utils/studyStats.ts が唯一の実装）。
+ * 🔴 どの日をどのバーに束ねるかは trendSeries.ts（純関数）が持つ。
+ *    ここは描画だけ。期間を足すときは trendSeries 側に足す。
+ *
+ * 🔴 KPI 4枚はこのカードから外して StudySummaryStrip に移した。
+ *    4枚のうち「期間合計」だけがタブ連動で、残り3枚は無関係だったため。
+ *    タブに「月別」が入ると「期間合計＝直近13ヶ月」というKPIになり、
+ *    隣の「今週の学習時間」と粒度が合わなくなる。
  */
 interface StudyRecordPanelProps {
   stats: StudyStatsSummary | null;
   loading: boolean;
 }
 
-type RangeKey = '1w' | '30d' | '3m';
-
-const RANGES: { key: RangeKey; label: string; totalLabel: string }[] = [
-  { key: '1w', label: '1週間', totalLabel: 'この週の学習時間' },
-  { key: '30d', label: '30日間', totalLabel: '直近30日の学習時間' },
-  { key: '3m', label: '3ヶ月', totalLabel: '直近3ヶ月の学習時間' },
-];
-
-const WEEKDAY_LABELS = ['月', '火', '水', '木', '金', '土', '日'];
-
 /** 棒の描画領域（px）。下に曜日/日付ラベルの行が別途つく */
 const PLOT_H = 150;
 /** 実績0の過去日に残す最小の芯 */
 const EMPTY_H = 3;
-
-interface Bar {
-  key: string;
-  /** X軸ラベル。空文字なら間引く */
-  x: string;
-  /** 棒の上に出す値ラベル。null なら出さない */
-  label: string | null;
-  minutes: number;
-  isToday: boolean;
-  isFuture: boolean;
-  tip: string;
-}
 
 function scaleMaxOf(minutes: number[]): number {
   const peak = Math.max(0, ...minutes);
@@ -52,19 +36,6 @@ function scaleMaxOf(minutes: number[]): number {
   if (peak <= 60) return 60;
   if (peak <= 120) return 120;
   return Math.ceil(peak / 60) * 60;
-}
-
-/** dailyTotals（昇順・欠損日は0埋め）から日付キーで引ける Map を作る */
-function indexOf(daily: StudyDayTotal[]): Map<string, StudyDayTotal> {
-  return new Map(daily.map((d) => [d.date, d]));
-}
-
-function dateKeysBetween(start: Date, count: number): string[] {
-  return Array.from({ length: count }, (_, i) => {
-    const d = new Date(start);
-    d.setDate(start.getDate() + i);
-    return toLocalDateKey(d);
-  });
 }
 
 function Pill({
@@ -101,176 +72,53 @@ function Pill({
   );
 }
 
-function Kpi({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
-  return (
-    <div
-      style={{
-        border: '1px solid var(--dc-border)',
-        borderRadius: 'var(--dc-radius-md)',
-        padding: '16px 18px',
-        minWidth: 0,
-      }}
-    >
-      {/* 🔴 ラベルに nowrap を掛けない。「直近3ヶ月の学習時間」のように長い期間名が
-             入るので、枠から溢れるくらいなら2行になったほうがよい
-             （4枚は grid なので高さは自動で揃う）。値だけは nowrap を保つ。 */}
-      <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-body)', marginBottom: 6, lineHeight: 'var(--dc-lh-ui)' }}>
-        {label}
-      </div>
-      <div
-        className="dc-num"
-        style={{
-          fontSize: 'var(--dc-fs-display)',
-          fontWeight: 700,
-          whiteSpace: 'nowrap',
-          color: accent ? 'var(--dc-primary)' : 'var(--dc-text)',
-        }}
-      >
-        {value}
-      </div>
-    </div>
-  );
-}
-
 export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
   const [range, setRange] = useState<RangeKey>('30d');
-  /** 0 = 今週。1週間タブでのみ使う（過去へは -12 週まで＝92日ぶんの範囲） */
+  /** 0 = 今週。1週間タブでのみ使う */
   const [weekOffset, setWeekOffset] = useState(0);
 
-  const activeRange = RANGES.find((r) => r.key === range) ?? RANGES[1];
+  const activeRange = TREND_RANGES.find((r) => r.key === range) ?? TREND_RANGES[1];
   const daily = useMemo(() => stats?.dailyTotals ?? [], [stats]);
-  /** 取得済みの最も古い日。ここより前へは遡らせない */
-  const oldestKey = daily[0]?.date ?? toLocalDateKey(new Date());
 
-  const { bars, sliceDays, prevMinutes, note } = useMemo(() => {
-    const map = indexOf(daily);
-    const today = new Date();
-    const todayKey = toLocalDateKey(today);
-
-    /** 日付キー配列 → その期間の StudyDayTotal 相当 */
-    const pick = (keys: string[]) =>
-      keys.map((k) => map.get(k) ?? { date: k, minutes: 0, sessionCount: 0, longestMinutes: 0, isStudyDay: false });
-
-    if (range === '1w') {
-      const start = weekStartOf(today);
-      start.setDate(start.getDate() + weekOffset * 7);
-      const keys = dateKeysBetween(start, 7);
-      const days = pick(keys);
-
-      const prevStart = new Date(start);
-      prevStart.setDate(start.getDate() - 7);
-      const prev = pick(dateKeysBetween(prevStart, 7));
-
-      const end = new Date(start);
-      end.setDate(start.getDate() + 6);
-      const fmt = (d: Date) => `${d.getMonth() + 1}/${d.getDate()}`;
-
-      return {
-        bars: days.map((d, i): Bar => ({
-          key: d.date,
-          x: WEEKDAY_LABELS[i],
-          label: d.minutes > 0 ? formatMinutesHM(d.minutes) : null,
-          minutes: d.minutes,
-          isToday: d.date === todayKey,
-          isFuture: d.date > todayKey,
-          tip: `${d.date} ${formatMinutesHM(d.minutes)}`,
-        })),
-        sliceDays: days,
-        prevMinutes: prev.reduce((s, d) => s + d.minutes, 0),
-        note: `${fmt(start)} 〜 ${fmt(end)} の1日あたりの学習時間`,
-      };
-    }
-
-    if (range === '30d') {
-      const start = new Date(today);
-      start.setDate(today.getDate() - 29);
-      const days = pick(dateKeysBetween(start, 30));
-
-      const prevStart = new Date(start);
-      prevStart.setDate(start.getDate() - 30);
-      const prev = pick(dateKeysBetween(prevStart, 30));
-
-      return {
-        bars: days.map((d, i): Bar => {
-          const dt = new Date(`${d.date}T00:00:00`);
-          return {
-            key: d.date,
-            // 30本に全部ラベルを振ると潰れるので5日おきに間引く
-            x: i % 5 === 0 || i === 29 ? `${dt.getMonth() + 1}/${dt.getDate()}` : '',
-            label: null,
-            minutes: d.minutes,
-            isToday: d.date === todayKey,
-            isFuture: false,
-            tip: `${d.date} ${formatMinutesHM(d.minutes)}`,
-          };
-        }),
-        sliceDays: days,
-        prevMinutes: prev.reduce((s, d) => s + d.minutes, 0),
-        note: '直近30日の1日あたりの学習時間。折れ線は7日移動平均です',
-      };
-    }
-
-    // 3ヶ月は日別だと91本になって読めないので、週（月曜起点）に集約する
-    const thisWeekStart = weekStartOf(today);
-    const weeks = Array.from({ length: 13 }, (_, i) => {
-      const s = new Date(thisWeekStart);
-      s.setDate(thisWeekStart.getDate() - (12 - i) * 7);
-      return s;
-    });
-    const weekDays = weeks.map((s) => pick(dateKeysBetween(s, 7)));
-    const allDays = weekDays.flat().filter((d) => d.date <= todayKey);
-
-    return {
-      bars: weeks.map((s, i): Bar => {
-        const minutes = weekDays[i].reduce((sum, d) => sum + d.minutes, 0);
-        const e = new Date(s);
-        e.setDate(s.getDate() + 6);
-        return {
-          key: toLocalDateKey(s),
-          x: i % 2 === 0 ? `${s.getMonth() + 1}/${s.getDate()}` : '',
-          label: null,
-          minutes,
-          isToday: i === 12,
-          isFuture: false,
-          tip: `${s.getMonth() + 1}/${s.getDate()}〜${e.getMonth() + 1}/${e.getDate()} ${formatMinutesHM(minutes)}`,
-        };
-      }),
-      sliceDays: allDays,
-      prevMinutes: 0,
-      note: '直近13週の週ごとの学習時間',
-    };
-  }, [daily, range, weekOffset]);
+  const series = useMemo(
+    () => buildTrendSeries(daily, range, weekOffset),
+    [daily, range, weekOffset]
+  );
+  const { bars, days, prevMinutes, note, movingAverage, canGoBack, showDelta } = series;
 
   const scaleMax = scaleMaxOf(bars.map((b) => b.minutes));
-  const totalMinutes = sliceDays.reduce((s, d) => s + d.minutes, 0);
-  const studiedDays = sliceDays.filter((d) => d.isStudyDay).length;
+  const totalMinutes = days.reduce((s, d) => s + d.minutes, 0);
   const showValueLabels = bars.some((b) => b.label);
   const barPlotH = PLOT_H - (showValueLabels ? 16 : 0);
 
-  // 平均線。3ヶ月は週平均、それ以外は日平均
-  const measured = range === '3m' ? bars : bars.filter((b) => !b.isFuture);
+  // 平均線。週/月に束ねるタブはバーの平均、日単位のタブは実績のある側だけの平均
+  const measured = range === '1w' || range === '30d' ? bars.filter((b) => !b.isFuture) : bars;
   const avg = measured.length ? Math.round(measured.reduce((s, b) => s + b.minutes, 0) / measured.length) : 0;
   const avgH = Math.min(barPlotH, Math.round((avg / scaleMax) * barPlotH));
 
-  // 7日移動平均（30日間タブのみ）
-  const movingAverage = useMemo(() => {
-    if (range !== '30d') return null;
-    return bars.map((_, i) => {
-      const window = bars.slice(Math.max(0, i - 6), i + 1);
-      return window.reduce((s, b) => s + b.minutes, 0) / window.length;
-    });
-  }, [bars, range]);
-
   const delta = prevMinutes > 0 || totalMinutes > 0 ? totalMinutes - prevMinutes : 0;
-  const showDelta = range !== '3m';
+  // 棒が細い30日タブだけ隙間を詰める。月別は本数が少ないので通常どおり
+  const barGap = range === '30d' ? 3 : 10;
 
-  // 取得済みは92日ぶんだけ。それより前の週へは遡らせない（空のグラフを見せない）
-  const canGoBack = useMemo(() => {
-    if (range !== '1w') return false;
-    const prevStart = weekStartOf(new Date());
-    prevStart.setDate(prevStart.getDate() + (weekOffset - 1) * 7);
-    return toLocalDateKey(prevStart) >= oldestKey;
-  }, [range, weekOffset, oldestKey]);
+  const navButton = (label: string, glyph: string, enabled: boolean, onClick: () => void) => (
+    <button
+      type="button"
+      aria-label={label}
+      disabled={!enabled}
+      onClick={onClick}
+      className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      style={{
+        width: 24, height: 24, borderRadius: 9999,
+        border: '1px solid var(--dc-border-strong)', background: '#fff',
+        display: 'grid', placeItems: 'center',
+        fontSize: 'var(--dc-fs-body)',
+        color: enabled ? 'var(--dc-text-body)' : '#C9BFB0',
+        cursor: enabled ? 'pointer' : 'not-allowed',
+      }}
+    >
+      {glyph}
+    </button>
+  );
 
   return (
     <section
@@ -285,32 +133,25 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
         <span
           style={{
-            width: 'var(--dc-sz-badge)',
-            height: 'var(--dc-sz-badge)',
-            flex: 'none',
-            borderRadius: 9999,
-            background: 'var(--dc-soft-100)',
-            color: 'var(--dc-primary)',
-            display: 'grid',
-            placeItems: 'center',
+            width: 'var(--dc-sz-badge)', height: 'var(--dc-sz-badge)', flex: 'none',
+            borderRadius: 9999, background: 'var(--dc-soft-100)', color: 'var(--dc-primary)',
+            display: 'grid', placeItems: 'center',
           }}
         >
           <Clock size={16} strokeWidth={1.75} />
         </span>
         <h2
           style={{
-            margin: 0,
-            flex: 1,
-            fontSize: 'var(--dc-fs-lead)',
-            fontWeight: 700,
-            color: 'var(--dc-text)',
-            whiteSpace: 'nowrap',
+            margin: 0, flex: 1,
+            fontSize: 'var(--dc-fs-lead)', fontWeight: 700,
+            color: 'var(--dc-text)', whiteSpace: 'nowrap',
           }}
         >
-          学習記録
+          学習の推移
         </h2>
-        <div style={{ display: 'flex', gap: 6 }} role="tablist" aria-label="集計期間">
-          {RANGES.map((r) => (
+        {/* タブが5つになったので折り返せるようにする（.studylog-range-tabs） */}
+        <div className="studylog-range-tabs" role="tablist" aria-label="集計期間">
+          {TREND_RANGES.map((r) => (
             <Pill
               key={r.key}
               active={r.key === range}
@@ -325,69 +166,30 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
         </div>
       </div>
 
-      <div className="studylog-kpi-grid">
-        <Kpi label={activeRange.totalLabel} value={loading ? '…' : formatMinutesHM(totalMinutes)} />
-        <Kpi label="学習した日数" value={loading ? '…' : `${studiedDays}日`} />
-        <Kpi label="今週の学習時間" value={loading ? '…' : formatMinutesHM(stats?.week.minutes ?? 0)} />
-        <Kpi label="現在の連続日数" value={loading ? '…' : `${stats?.streak.currentDays ?? 0}日`} accent />
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '26px 0 18px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '0 0 18px', flexWrap: 'wrap' }}>
         {range === '1w' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <button
-              type="button"
-              aria-label="前の週へ"
-              disabled={!canGoBack}
-              onClick={() => setWeekOffset((w) => w - 1)}
-              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{
-                width: 24,
-                height: 24,
-                borderRadius: 9999,
-                border: '1px solid var(--dc-border-strong)',
-                background: '#fff',
-                display: 'grid',
-                placeItems: 'center',
-                fontSize: 'var(--dc-fs-body)',
-                color: canGoBack ? 'var(--dc-text-body)' : '#C9BFB0',
-                cursor: canGoBack ? 'pointer' : 'not-allowed',
-              }}
+            {navButton('前の週へ', '‹', canGoBack, () => setWeekOffset((w) => w - 1))}
+            <span
+              className="dc-num"
+              style={{ fontSize: 'var(--dc-fs-body)', fontWeight: 600, color: 'var(--dc-text-body)', whiteSpace: 'nowrap' }}
             >
-              ‹
-            </button>
-            <span className="dc-num" style={{ fontSize: 'var(--dc-fs-body)', fontWeight: 600, color: 'var(--dc-text-body)', whiteSpace: 'nowrap' }}>
               {weekOffset === 0 ? '今週' : `${-weekOffset}週間前`}
             </span>
-            <button
-              type="button"
-              aria-label="次の週へ"
-              disabled={weekOffset >= 0}
-              onClick={() => setWeekOffset((w) => Math.min(0, w + 1))}
-              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{
-                width: 24,
-                height: 24,
-                borderRadius: 9999,
-                border: '1px solid var(--dc-border-strong)',
-                background: '#fff',
-                display: 'grid',
-                placeItems: 'center',
-                fontSize: 'var(--dc-fs-body)',
-                color: weekOffset < 0 ? 'var(--dc-text-body)' : '#C9BFB0',
-                cursor: weekOffset < 0 ? 'pointer' : 'not-allowed',
-              }}
-            >
-              ›
-            </button>
+            {navButton('次の週へ', '›', weekOffset < 0, () => setWeekOffset((w) => Math.min(0, w + 1)))}
           </div>
         )}
 
         <div style={{ flex: 1 }} />
 
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-          <span style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}>期間合計</span>
-          <span className="dc-num" style={{ fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)', whiteSpace: 'nowrap' }}>
+          <span style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}>
+            {activeRange.totalLabel}
+          </span>
+          <span
+            className="dc-num"
+            style={{ fontSize: 'var(--dc-fs-title)', fontWeight: 700, color: 'var(--dc-text)', whiteSpace: 'nowrap' }}
+          >
             {loading ? '…' : formatMinutesHM(totalMinutes)}
           </span>
         </div>
@@ -396,14 +198,9 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
           <span
             className="dc-num"
             style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 4,
-              borderRadius: 9999,
-              padding: '3px 9px',
-              fontSize: 'var(--dc-fs-caption)',
-              fontWeight: 700,
-              whiteSpace: 'nowrap',
+              display: 'inline-flex', alignItems: 'center', gap: 4,
+              borderRadius: 9999, padding: '3px 9px',
+              fontSize: 'var(--dc-fs-caption)', fontWeight: 700, whiteSpace: 'nowrap',
               background: delta >= 0 ? 'var(--dc-success-surface)' : 'var(--dc-sunken)',
               color: delta >= 0 ? 'var(--dc-success)' : 'var(--dc-text-muted)',
             }}
@@ -418,14 +215,9 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
           className="dc-num"
           aria-hidden="true"
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            height: PLOT_H,
-            fontSize: 'var(--dc-fs-caption)',
-            color: 'var(--dc-text-subtle)',
-            textAlign: 'right',
-            flex: 'none',
+            display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+            height: PLOT_H, fontSize: 'var(--dc-fs-caption)',
+            color: 'var(--dc-text-subtle)', textAlign: 'right', flex: 'none',
           }}
         >
           <span>{formatMinutesHM(scaleMax)}</span>
@@ -436,13 +228,10 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
             style={{
-              position: 'relative',
-              height: PLOT_H,
+              position: 'relative', height: PLOT_H,
               borderBottom: '1px solid var(--dc-border)',
-              display: 'flex',
-              alignItems: 'flex-end',
-              gap: range === '30d' ? 3 : 10,
-              padding: '0 4px',
+              display: 'flex', alignItems: 'flex-end',
+              gap: barGap, padding: '0 4px',
             }}
           >
             {/* 平均線。30日間タブは移動平均の折れ線に差し替える */}
@@ -470,17 +259,10 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                 </svg>
                 <span
                   style={{
-                    position: 'absolute',
-                    right: 0,
-                    top: 2,
-                    fontSize: 'var(--dc-fs-caption)',
-                    fontWeight: 600,
-                    color: '#C96E7E',
-                    background: 'rgba(255,255,255,.85)',
-                    padding: '0 4px',
-                    borderRadius: 4,
-                    pointerEvents: 'none',
-                    whiteSpace: 'nowrap',
+                    position: 'absolute', right: 0, top: 2,
+                    fontSize: 'var(--dc-fs-caption)', fontWeight: 600, color: '#C96E7E',
+                    background: 'rgba(255,255,255,.85)', padding: '0 4px', borderRadius: 4,
+                    pointerEvents: 'none', whiteSpace: 'nowrap',
                   }}
                 >
                   7日移動平均
@@ -492,31 +274,20 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                   <span
                     aria-hidden="true"
                     style={{
-                      position: 'absolute',
-                      left: 0,
-                      right: 0,
-                      bottom: avgH,
-                      borderTop: '1.5px dashed #E5A0AC',
-                      pointerEvents: 'none',
+                      position: 'absolute', left: 0, right: 0, bottom: avgH,
+                      borderTop: '1.5px dashed #E5A0AC', pointerEvents: 'none',
                     }}
                   />
                   <span
                     className="dc-num"
                     style={{
-                      position: 'absolute',
-                      right: 0,
-                      bottom: avgH + 2,
-                      fontSize: 'var(--dc-fs-caption)',
-                      fontWeight: 600,
-                      color: '#C96E7E',
-                      background: 'rgba(255,255,255,.85)',
-                      padding: '0 4px',
-                      borderRadius: 4,
-                      pointerEvents: 'none',
-                      whiteSpace: 'nowrap',
+                      position: 'absolute', right: 0, bottom: avgH + 2,
+                      fontSize: 'var(--dc-fs-caption)', fontWeight: 600, color: '#C96E7E',
+                      background: 'rgba(255,255,255,.85)', padding: '0 4px', borderRadius: 4,
+                      pointerEvents: 'none', whiteSpace: 'nowrap',
                     }}
                   >
-                    平均 {formatMinutesHM(avg)}
+                    {range === 'month' ? '月平均' : '平均'} {formatMinutesHM(avg)}
                   </span>
                 </>
               )
@@ -531,22 +302,16 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                   key={b.key}
                   title={b.tip}
                   style={{
-                    flex: 1,
-                    minWidth: 0,
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
+                    flex: 1, minWidth: 0, height: '100%',
+                    display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', justifyContent: 'flex-end',
                   }}
                 >
                   {b.label && (
                     <span
                       className="dc-num"
                       style={{
-                        fontSize: 'var(--dc-fs-caption)',
-                        marginBottom: 4,
-                        whiteSpace: 'nowrap',
+                        fontSize: 'var(--dc-fs-caption)', marginBottom: 4, whiteSpace: 'nowrap',
                         fontWeight: b.isToday ? 700 : 400,
                         color: b.isToday ? 'var(--dc-primary)' : 'var(--dc-text-subtle)',
                       }}
@@ -556,9 +321,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                   )}
                   <span
                     style={{
-                      width: '100%',
-                      maxWidth: 26,
-                      height: h,
+                      width: '100%', maxWidth: 26, height: h,
                       borderRadius: '4px 4px 0 0',
                       background: b.isToday ? 'var(--dc-primary)' : '#EAE4DA',
                     }}
@@ -568,20 +331,17 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
             })}
           </div>
 
-          <div style={{ display: 'flex', gap: range === '30d' ? 3 : 10, padding: '6px 4px 0' }} aria-hidden="true">
+          <div style={{ display: 'flex', gap: barGap, padding: '6px 4px 0' }} aria-hidden="true">
             {bars.map((b) => (
               <span
                 key={b.key}
                 className="dc-num"
                 style={{
-                  flex: 1,
-                  minWidth: 0,
-                  textAlign: 'center',
+                  flex: 1, minWidth: 0, textAlign: 'center',
                   fontSize: 'var(--dc-fs-caption)',
                   fontWeight: b.isToday ? 700 : 400,
                   color: b.isToday ? 'var(--dc-primary)' : 'var(--dc-text-muted)',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
+                  whiteSpace: 'nowrap', overflow: 'hidden',
                 }}
               >
                 {b.x}
