@@ -516,7 +516,7 @@ function MaterialsTopPage() {
             {/* ほかに学習中。ヒーローに出せるのは1コースだけなので、
                 並行して進めているコースだけをここで拾う（修了済みは出さない）。 */}
             {otherActive.length > 0 && (
-              <section style={{ flex: '1 1 400px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <section style={{ flex: '1 1 400px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {/* 見出しに件数を出す。畳んでいるときに「これで全部」と読み違えないため */}
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
                   <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ほかに学習中</div>
@@ -569,24 +569,28 @@ function MaterialsTopPage() {
                       </div>
                     );
                   })}
-                </div>
 
-                {/* 畳んだぶんの開閉。飛び先を持たない「もっと見る」にはしない
-                    （この画面がコース一覧そのものなので、送る先が無い）。 */}
-                {otherActive.length > OTHER_ACTIVE_VISIBLE && (
-                  <button
-                    type="button"
-                    onClick={() => setShowAllActive((v) => !v)}
-                    aria-expanded={showAllActive}
-                    className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    style={{
-                      background: 'transparent', border: 0, padding: '2px 4px', alignSelf: 'flex-start',
-                      color: t.color.primary, fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, cursor: 'pointer',
-                    }}
-                  >
-                    {showAllActive ? '畳む' : `ほか ${otherActive.length - OTHER_ACTIVE_VISIBLE} コースを表示`}
-                  </button>
-                )}
+                  {/* 畳んだぶんの開閉。飛び先を持たない「もっと見る」にはしない
+                      （この画面がコース一覧そのものなので、送る先が無い）。
+                      🔴 カードの中の最終行として置く。カードの外に浮かせていた頃は
+                         カードとの隙間とボタン自身の余白で約26px を使い、
+                         赤い文字だけが宙に浮いて見えていた。 */}
+                  {otherActive.length > OTHER_ACTIVE_VISIBLE && (
+                    <button
+                      type="button"
+                      onClick={() => setShowAllActive((v) => !v)}
+                      aria-expanded={showAllActive}
+                      className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                      style={{
+                        display: 'block', width: '100%', background: 'transparent', border: 0,
+                        borderTop: `1px solid ${t.color.border.card}`, padding: '11px 16px', textAlign: 'center',
+                        color: t.color.primary, fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, cursor: 'pointer',
+                      }}
+                    >
+                      {showAllActive ? '畳む' : `ほか ${otherActive.length - OTHER_ACTIVE_VISIBLE} コースを表示`}
+                    </button>
+                  )}
+                </div>
               </section>
             )}
           </div>
