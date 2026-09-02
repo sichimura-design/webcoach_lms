@@ -30,6 +30,7 @@ import { noteHandlers } from './noteHandlers';
 import { learningPlanHandlers } from './learningPlanHandlers';
 import { aiSkillHandlers } from './aiSkillHandlers';
 import { currentStreakInfo, studyActivityHandlers } from './studyActivityHandlers';
+import { goalDeclarationHandlers } from './goalDeclarationHandlers';
 import { STUDY_PEERS } from './studyPeers';
 import { listGoals, replaceGoals } from './coachingGoalsStore';
 import { buildNextCourses } from '../utils/nextCourseRecommend';
@@ -781,6 +782,11 @@ export const handlers = [
   // タイマー記録・統計・ストリーク。localStorage永続化のため studyActivityHandlers.ts に分離している。
   // 🔴 GET /webcoach/streak/:userid もこちらが持つ（上の固定モックは削除済み）。
   ...studyActivityHandlers,
+
+  // ==================== 目標宣言 ====================
+  // 受講生が自分の言葉で書く、期間つきの意思表明と振り返り（学習管理シートの目標宣言欄）。
+  // コーチが決める next-coaching-goals（上）とは書き手が違う別データ。
+  ...goalDeclarationHandlers,
 
   // ==================== サンプル機能（新API＝モックの雛形） ====================
   // 実BFFには存在しない新エンドポイント。/announcements ページから利用する。

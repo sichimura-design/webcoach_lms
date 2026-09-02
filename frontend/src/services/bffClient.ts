@@ -26,6 +26,12 @@ import {
   StudyStatsSummary,
 } from '../types/studyActivity';
 import {
+  GoalDeclaration,
+  GoalDeclarationInput,
+  GoalDeclarationPatch,
+  GoalDeclarationQuery,
+} from '../types/goalDeclaration';
+import {
   FocusBoothMember,
   FocusBoothPulse,
   StreakRanking,
@@ -602,6 +608,58 @@ class BFFClient {
       null,
       { params: { seed } }
     );
+    return response.data;
+  }
+
+  // ==================== 目標宣言 ====================
+  // 受講生が自分の言葉で書く、期間つきの意思表明と振り返り（学習管理シートの目標宣言欄）。
+  // 🔴 実BFFには存在しない。すべて mocks/goalDeclarationHandlers.ts が応答する。
+  //    モックOFF（本番）では 404 になるので、呼び出し側は「取得できない = カードを出さない」
+  //    に縮退させる（hooks/useGoalDeclaration.ts の unavailable を参照）。
+  // 🔴 コーチが決める next-coaching-goals（上）とは別データ。書き手が違うので統合しないこと。
+
+  /** GET /api/webcoach/goal-declarations/{userId}?status&limit */
+  async getGoalDeclarations(
+    userId: number,
+    query: GoalDeclarationQuery = {}
+  ): Promise<GoalDeclaration[]> {
+    const response = await this.api.get(`/webcoach/goal-declarations/${userId}`, { params: query });
+    return response.data;
+  }
+
+  /** POST /api/webcoach/goal-declarations/{userId}（id はクライアント生成＝冪等） */
+  async createGoalDeclaration(
+    userId: number,
+    input: GoalDeclarationInput
+  ): Promise<GoalDeclaration> {
+    const response = await this.api.post(`/webcoach/goal-declarations/${userId}`, input);
+    return response.data;
+  }
+
+  /** PATCH /api/webcoach/goal-declarations/{userId}/{id}（編集・振り返りの保存） */
+  async updateGoalDeclaration(
+    userId: number,
+    declarationId: string,
+    patch: GoalDeclarationPatch
+  ): Promise<GoalDeclaration> {
+    const response = await this.api.patch(
+      `/webcoach/goal-declarations/${userId}/${declarationId}`,
+      patch
+    );
+    return response.data;
+  }
+
+  /** DELETE /api/webcoach/goal-declarations/{userId}/{id} */
+  async deleteGoalDeclaration(userId: number, declarationId: string): Promise<void> {
+    await this.api.delete(`/webcoach/goal-declarations/${userId}/${declarationId}`);
+  }
+
+  /**
+   * 【モック確認用】目標宣言を初期の3件（進行中・達成・未達）に戻す。
+   * 実BFF実装時に持っていく想定ではない。
+   */
+  async resetGoalDeclarations(userId: number): Promise<{ ok: boolean; count: number }> {
+    const response = await this.api.post(`/webcoach/goal-declarations/${userId}/reset`);
     return response.data;
   }
 
