@@ -11,6 +11,7 @@ import {
 } from '../../types/aiSkill';
 import SkillPlusMenu from '../learning/SkillPlusMenu';
 import { AI_SKILL_ICON } from './aiSkillIcons';
+import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
 
 /**
  * AI専用ページのホーム状態（要件§「画面は3つの状態に分ける」1）。
@@ -67,6 +68,7 @@ export function AiCoachHome({
   const [image, setImage] = useState<string | null>(null);
   const [skillId, setSkillId] = useState<AiSkillId>('auto');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useAutoGrowTextarea(text);
   const navigate = useNavigate();
 
   const attachImage = (file: File) => {
@@ -165,6 +167,7 @@ export function AiCoachHome({
           }}
         >
           <textarea
+            ref={textareaRef}
             value={text}
             onChange={(e) => setText(e.target.value)}
             onPaste={(e) => {
@@ -190,7 +193,11 @@ export function AiCoachHome({
               width: '100%',
               minHeight: 52,
               maxHeight: 220,
-              resize: 'vertical',
+              // 🔴 resize は none。ブラウザのリサイズハンドル（右下の斜め2本線）が
+              //    ツール行のすぐ上に描かれて、送信ボタンの脇のゴミに見えていた。
+              //    代わりに useAutoGrowTextarea で書いた分だけ伸ばす。
+              resize: 'none',
+              overflowY: 'auto',
               border: 0,
               // カードの角丸から白い角が飛び出さないように、地は透かして上だけ丸める
               borderRadius: 'var(--dc-radius-xl) var(--dc-radius-xl) 0 0',

@@ -4,6 +4,7 @@ import { color, font } from '../../theme/webcoachTheme';
 import { LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
 import { LessonAiResponse } from '../../types/lesson';
 import { AiSkillId, AI_SKILL_META, isSpecialistSkill } from '../../types/aiSkill';
+import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
 import MarkdownRenderer from '../MarkdownRenderer';
 import SkillPlusMenu from './SkillPlusMenu';
 import SkillProposalCard from './SkillProposalCard';
@@ -174,7 +175,6 @@ export function AiCoachPane({
   onOpenWide,
 }: AiCoachPaneProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handlePaste = (e: React.ClipboardEvent) => {
     const item = Array.from(e.clipboardData?.items ?? []).find((i) => i.type.startsWith('image/'));
@@ -192,6 +192,8 @@ export function AiCoachPane({
 
   const wide = variant === 'page';
   const contentWidth = wide ? 760 : undefined;
+  // 入力欄は書いた分だけ伸びる。wide で min/max も変わるので、切り替わったら測り直す
+  const textareaRef = useAutoGrowTextarea(ai.input, [wide]);
   // 専門モードに入っているときだけ、その機能の説明・入力の案内を使う
   const specialistMeta = isSpecialistSkill(ai.skillId) ? AI_SKILL_META[ai.skillId] : null;
   // 会話が始まる前だけ出すもの（空状態の案内・質問例）。始まったら邪魔になる
@@ -717,7 +719,11 @@ export function AiCoachPane({
                 width: '100%',
                 minHeight: wide ? 78 : 56,
                 maxHeight: wide ? 200 : 120,
-                resize: 'vertical',
+                // 🔴 resize は none。ブラウザのリサイズハンドル（右下の斜め2本線）が
+                //    ツール行のすぐ上に描かれて、送信ボタンの脇のゴミに見えていた。
+                //    代わりに useAutoGrowTextarea で書いた分だけ伸ばす。
+                resize: 'none',
+                overflowY: 'auto',
                 border: 0,
                 // 器の overflow:hidden を外したぶん、角は自分で丸める
                 borderRadius: '12px 12px 0 0',
