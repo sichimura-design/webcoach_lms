@@ -604,6 +604,37 @@ h1, h2, h3 {
   }
 }
 
+/* 修了したコース。一覧には残すが、まだやっていないコースより一段沈める。
+   ホバー・フォーカスでは元に戻す（見返すために押す先なので、押せないようには見せない）。
+   opacity をタイル全体に掛けるとバッジの文字コントラストまで落ちるので、
+   彩度を抜くのはサムネだけにして、本体は控えめな opacity に留める。 */
+.course-tile.is-done {
+  opacity: 0.72;
+  transition: opacity 120ms var(--dc-ease);
+}
+
+.course-tile.is-done > :first-child {
+  filter: grayscale(0.7);
+  transition: filter 120ms var(--dc-ease);
+}
+
+.course-tile.is-done:hover,
+.course-tile.is-done:focus-visible {
+  opacity: 1;
+}
+
+.course-tile.is-done:hover > :first-child,
+.course-tile.is-done:focus-visible > :first-child {
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .course-tile.is-done,
+  .course-tile.is-done > :first-child {
+    transition: none;
+  }
+}
+
 /* ─── 教材学習ワークスペース（/course/:courseId）───────────
    教材・目次・AI/メモをビューポート内で並列表示する画面。
    ページ全体はスクロールさせず、本文カラムだけをスクロールさせる。

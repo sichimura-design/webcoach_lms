@@ -18,6 +18,14 @@ import {
 } from '../constants/courseTaxonomy';
 import { lessonProgressFromPercent } from '../utils/lessonProgress';
 import type { MaterialSearchResult } from '../types/courses';
+import {
+  ALL,
+  COURSE_STATUSES,
+  COURSE_STATUS,
+  courseStatusOf,
+  isCompleted,
+  selectStyle,
+} from './materials/courseFilters';
 
 /**
  * ページの最大幅。デザインは 1440px キャンバスで描かれている。
@@ -80,9 +88,18 @@ const OTHER_ACTIVE_VISIBLE = 3;
 const AREA_PREVIEW_LIMIT = 8;
 
 /*
- * 🔴 「学習領域」「種類」「並び替え」のプルダウンはこの画面から領域ページへ移した
- *    （materials/AreaCoursesPage.tsx）。この画面は領域の地図で、絞り込みは
- *    領域を選んだ先が受け持つ。select のスタイルもあちらに置いてある。
+ * 絞り込みの分担。
+ * ============================================================
+ * 🔴 この画面は「領域」と「受講状況」の2軸だけを持つ。かつては絞り込みを
+ *    全部領域ページへ移していたが、10領域55コースを上から眺めるとき
+ *   「学習中だけ見たい」「もう終わったものは畳みたい」に応える手段が
+ *    無かったので、この2軸だけ戻した。
+ * 🔴 「種類（基礎/実践課題）」と「並び替え」は領域ページのまま
+ *    （materials/AreaCoursesPage.tsx）。領域を選んだあとにしか意味を
+ *    持たない軸を、領域が並ぶこの画面に出さない。
+ * 🔴 絞り込みの状態は URL に持たせない。この画面はブックマークして戻る
+ *    対象ではなく、領域の開閉（openAreas）も state で持っている。
+ * ============================================================
  */
 
 function MaterialsTopPage() {
@@ -99,6 +116,13 @@ function MaterialsTopPage() {
   const [aiQuery, setAiQuery] = useState('');
   const [aiResult, setAiResult] = useState<MaterialSearchResult | null>(null);
   const [aiState, setAiState] = useState<'idle' | 'loading' | 'error'>('idle');
+  /** 例チップを出すかどうか。入力に用がある間だけ見せて、常設の飾りにしない */
+  const [searchFocused, setSearchFocused] = useState(false);
+
+  // --- 絞り込み（⑤「領域から探す」に効く） ---
+  const [areaFilter, setAreaFilter] = useState<string>(ALL);
+  const [statusFilter, setStatusFilter] = useState<string>(ALL);
+  const [hideCompleted, setHideCompleted] = useState(false);
 
   /**
    * 全件を開いている領域（領域名で持つ）。既定はすべて畳んだ状態。
@@ -220,6 +244,41 @@ function MaterialsTopPage() {
     () => [...areaCards].sort((a, b) => b.count - a.count),
     [areaCards],
   );
+
+  /** 絞り込みが1つでも効いているか。畳みの解除と「リセット」の出し分けに使う */
+  const filtering = areaFilter !== ALL || statusFilter !== ALL || hideCompleted;
+
+  /**
+   * 絞り込み後の領域ブロック。
+   * 🔴 コースが0件になった領域はブロックごと落とす。見出しだけが残ると
+   *    「この領域には何も無い」ではなく「読み込みに失敗した」に見える。
+   * count / inProgress は絞り込み前の実数のまま（見出しは領域の全体像を示す）。
+   */
+  const visibleAreas = useMemo(() => {
+    if (!filtering) return sortedAreas;
+    return sortedAreas
+      .filter((a) => areaFilter === ALL || a.name === areaFilter)
+      .map((a) => ({
+        ...a,
+        courses: a.courses.filter((c) => {
+          if (hideCompleted && isCompleted(c)) return false;
+          return statusFilter === ALL || courseStatusOf(c) === statusFilter;
+        }),
+      }))
+      .filter((a) => a.courses.length > 0);
+  }, [sortedAreas, filtering, areaFilter, statusFilter, hideCompleted]);
+
+  /** 絞り込み中に見出し横へ出す件数 */
+  const filteredCount = useMemo(
+    () => visibleAreas.reduce((sum, a) => sum + a.courses.length, 0),
+    [visibleAreas],
+  );
+
+  const resetFilters = () => {
+    setAreaFilter(ALL);
+    setStatusFilter(ALL);
+    setHideCompleted(false);
+  };
 
   const completedLessons = learningSummary.completedLessons.total;
   const enrolledLessons = activeCourses.reduce((sum, c) => sum + (c.totalLessons ?? 0), 0);
@@ -528,70 +587,119 @@ function MaterialsTopPage() {
           </div>
         )}
 
-        {/* ④ ぴったりの教材をさがす。
-            コース名のキーワード検索だと「配色が苦手」のような相談は空振りするので、
-            学びたいこと・つまずきをそのまま入れられる1本の入力にまとめた。 */}
-        <section style={{ background: t.color.primarySoft, borderRadius: t.radius.tile, padding: '18px 24px', display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
-          <div style={{ width: 200, minWidth: 0 }}>
-            <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ぴったりの教材をさがす</div>
-          </div>
-
-          {/* 🔴 入力欄を伸ばしきらない。flex:1 のまま width:100% にすると 1440px 幅で
-                 入力が約1180pxになり、1行の質問に対して間延びした帯になる（レビュー指摘）。 */}
-          <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {/* ④ 教材をさがすツールバー（AI検索 ＋ 絞り込み）。
+            ============================================================
+            🔴 かつてはピンクの帯に見出し「ぴったりの教材をさがす」と説明文を並べた
+               約140pxのブロックだった。1行の入力に対して場所を取りすぎるという
+               レビューで、地色も見出しもやめて1本のツールバーに統合した
+               （見出しの役目は placeholder と aria-label が引き受ける）。
+            🔴 コース名のキーワード検索にはしない。「配色が苦手」のような相談は
+               名前一致では空振りするので、入力はAIに投げる1本のままにする。
+            ============================================================ */}
+        <section style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
             <form
               onSubmit={(e) => { e.preventDefault(); runAiSearch(aiQuery); }}
-              style={{ position: 'relative', width: '100%', maxWidth: 620 }}
+              style={{ position: 'relative', flex: '1 1 320px', minWidth: 0, maxWidth: 460 }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={t.color.text.muted} strokeWidth="1.75" strokeLinecap="round" style={{ position: 'absolute', left: 16, top: 14 }} aria-hidden>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={t.color.text.muted} strokeWidth="1.75" strokeLinecap="round" style={{ position: 'absolute', left: 14, top: 12 }} aria-hidden>
                 <path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm10 17-5-5" />
               </svg>
               <input
                 value={aiQuery}
                 onChange={(e) => setAiQuery(e.target.value)}
-                placeholder="学びたいこと・つまずいていることを入力（例：配色が苦手）"
-                aria-label="学びたいこと・つまずいていること"
-                style={{ width: '100%', boxSizing: 'border-box', height: 44, borderRadius: t.radius.pill, border: `1px solid ${t.color.primaryBorder}`, background: t.color.bg.card, padding: '0 118px 0 42px', fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.primary, outline: 'none' }}
+                onFocus={() => setSearchFocused(true)}
+                onBlur={() => setSearchFocused(false)}
+                placeholder="学びたいこと・つまずいていることでさがす"
+                aria-label="学びたいこと・つまずいていることから教材をさがす"
+                style={{ width: '100%', boxSizing: 'border-box', height: 40, borderRadius: t.radius.pill, border: `1px solid ${t.color.primaryBorder}`, background: t.color.bg.card, padding: '0 78px 0 38px', fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.primary, outline: 'none' }}
               />
               <button
                 type="submit"
                 disabled={aiState === 'loading' || !aiQuery.trim()}
                 className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                style={{ position: 'absolute', right: 5, top: 5, height: 34, borderRadius: t.radius.pill, background: aiQuery.trim() ? t.color.primary : t.color.text.subtle, padding: '0 16px', color: '#fff', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, fontFamily: 'inherit', cursor: aiQuery.trim() ? 'pointer' : 'default' }}
+                style={{ position: 'absolute', right: 4, top: 4, height: 32, borderRadius: t.radius.pill, background: aiQuery.trim() ? t.color.primary : t.color.text.subtle, padding: '0 14px', color: '#fff', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, fontFamily: 'inherit', cursor: aiQuery.trim() ? 'pointer' : 'default' }}
               >
-                {aiState === 'loading' ? 'さがし中…' : '教材をさがす'}
+                {aiState === 'loading' ? 'さがし中…' : 'さがす'}
               </button>
             </form>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap', maxWidth: 620 }}>
+            <select
+              aria-label={`${LEARNING_HIERARCHY.area}で絞り込む`}
+              value={areaFilter}
+              onChange={(e) => setAreaFilter(e.target.value)}
+              style={selectStyle}
+            >
+              <option value={ALL}>{LEARNING_HIERARCHY.area}：すべて</option>
+              {sortedAreas.map((a) => (
+                <option key={a.name} value={a.name}>{a.name}</option>
+              ))}
+            </select>
+
+            <select
+              aria-label="受講状況で絞り込む"
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              style={selectStyle}
+            >
+              <option value={ALL}>受講状況：すべて</option>
+              {COURSE_STATUSES.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+
+            {/* 受講状況で「修了」を選んでいるときは両立しないので押させない */}
+            <label
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                fontSize: 'var(--dc-fs-body)', color: t.color.text.body,
+                cursor: statusFilter === COURSE_STATUS.completed ? 'default' : 'pointer',
+                opacity: statusFilter === COURSE_STATUS.completed ? 0.5 : 1,
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={hideCompleted}
+                disabled={statusFilter === COURSE_STATUS.completed}
+                onChange={(e) => setHideCompleted(e.target.checked)}
+                style={{ width: 15, height: 15, accentColor: t.color.primary, cursor: 'inherit' }}
+              />
+              修了を隠す
+            </label>
+          </div>
+
+          {/* 例チップ。入力に用がある間だけ出す（常設の飾りにしない）。
+              🔴 onMouseDown で既定動作を止める。止めないと blur が click より先に
+                 走ってチップが消え、押せないボタンになる。 */}
+          {(searchFocused || aiQuery !== '') && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
               <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle, flexShrink: 0 }}>例：</span>
               {SEARCH_EXAMPLES.map((ex) => (
                 <button
                   key={ex}
+                  onMouseDown={(e) => e.preventDefault()}
                   onClick={() => { setAiQuery(ex); runAiSearch(ex); }}
                   className="appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                  style={{ background: t.color.bg.card, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.pill, padding: '5px 13px', fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.body }}
+                  style={{ background: t.color.bg.card, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.pill, padding: '4px 12px', fontSize: 'var(--dc-fs-caption)', fontFamily: 'inherit', color: t.color.text.body }}
                 >
                   {ex}
                 </button>
               ))}
-              {(aiResult || aiState === 'error') && (
-                <button
-                  onClick={clearAiSearch}
-                  className="appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                  style={{ background: 'transparent', padding: '5px 4px', fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.muted, textDecoration: 'underline' }}
-                >
-                  結果を閉じる
-                </button>
-              )}
             </div>
-          </div>
+          )}
         </section>
 
         {/* AI検索の結果。実BFF（モックOFF）ではこのAPIが無いので、1行のことわりだけ出して一覧に戻す */}
         {aiState === 'error' && (
-          <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap', fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>
             いまは教材のおすすめを取得できませんでした。下のコース一覧から探してください。
+            <button
+              onClick={clearAiSearch}
+              className="appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+              style={{ background: 'transparent', padding: '2px 4px', fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.muted, textDecoration: 'underline' }}
+            >
+              閉じる
+            </button>
           </div>
         )}
 
@@ -599,7 +707,16 @@ function MaterialsTopPage() {
           <section style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
               <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>AIが選んだ教材</div>
-              <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>{aiResult.summary}</div>
+              <div style={{ flex: 1, minWidth: 0, fontSize: 'var(--dc-fs-body)', color: t.color.text.muted }}>{aiResult.summary}</div>
+              {/* 結果を畳む導線は結果側に置く。ツールバーに常設すると、結果が
+                  出ていないときも場所を取る */}
+              <button
+                onClick={clearAiSearch}
+                className="appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{ background: 'transparent', padding: '2px 4px', flexShrink: 0, fontSize: 'var(--dc-fs-body)', fontFamily: 'inherit', color: t.color.text.muted, textDecoration: 'underline' }}
+              >
+                結果を閉じる
+              </button>
             </div>
             {aiCourses.length > 0 && (
               <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 14 }}>
@@ -631,19 +748,60 @@ function MaterialsTopPage() {
                カード1枚だけの一覧を作らない（10領域のうち3つが該当）。
             ============================================================ */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>
-            {LEARNING_HIERARCHY.area}から探す
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
+            <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>
+              {LEARNING_HIERARCHY.area}から探す
+            </div>
+            {filtering && (
+              <>
+                <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle }}>
+                  絞り込み中 {filteredCount} {LEARNING_HIERARCHY.course}
+                </span>
+                <button
+                  type="button"
+                  onClick={resetFilters}
+                  className="appearance-none border-0 outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={{ background: 'transparent', padding: '2px 4px', fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, color: t.color.primary }}
+                >
+                  絞り込みをリセット
+                </button>
+              </>
+            )}
           </div>
 
           {sortedAreas.length === 0 ? (
             <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, margin: 0 }}>
               コースを読み込んでいます…
             </p>
+          ) : visibleAreas.length === 0 ? (
+            <div className="flex flex-col items-center" style={{ padding: '48px 0', gap: 12 }}>
+              <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, margin: 0 }}>
+                条件に合うコースが見つかりませんでした。
+              </p>
+              <button
+                onClick={resetFilters}
+                className="appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{
+                  background: t.color.bg.card,
+                  color: t.color.primary,
+                  border: `1px solid ${t.color.primaryBorder}`,
+                  borderRadius: t.radius.button,
+                  padding: '9px 20px',
+                  fontSize: 'var(--dc-fs-body)',
+                  fontWeight: t.font.weight.semibold,
+                  fontFamily: 'inherit',
+                }}
+              >
+                絞り込みをリセット
+              </button>
+            </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              {sortedAreas.map((a) => {
+              {visibleAreas.map((a) => {
                 const expanded = openAreas.has(a.name);
-                const foldable = a.courses.length > AREA_PREVIEW_LIMIT;
+                // 🔴 絞り込み中は畳まない。一致したコースが「すべて見る」の裏に
+                //    隠れると、絞り込んだのに見つからないという状態になる
+                const foldable = !filtering && a.courses.length > AREA_PREVIEW_LIMIT;
                 const shown = foldable && !expanded ? a.courses.slice(0, AREA_PREVIEW_LIMIT) : a.courses;
                 const accent = categoryColor(a.name);
 

@@ -1,16 +1,21 @@
 import { t } from '../../theme/tokens';
 import { CourseArt, GalleryCourse, statusBadge } from './courseVisuals';
+import { isCompleted } from './courseFilters';
 
 /**
- * 「すべてのコースから探す」の4列タイル。
+ * コース一覧のタイル。
  *
  * 一覧は絞り込みよりも「並んだ絵柄を眺めて選ぶ」を優先するので、
  * カード1枚の情報は 16:9のサムネ・受講状況・所要時間・コース名・レッスン数だけに絞る。
  * 進捗バーはここには出さない（受講中コースの進捗はヒーローと「ほかに学習中」で見せる）。
+ *
+ * 🔴 修了したコースは淡く沈める。一覧から消さないのは「もう一度見返す」ができなく
+ *    なるため。消したい人は学習トップの「修了を隠す」で外せる。
  */
 
 export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick: () => void }) {
   const badge = statusBadge(course);
+  const done = isCompleted(course);
 
   return (
     <div
@@ -18,7 +23,7 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } }}
       role="button"
       tabIndex={0}
-      className="course-tile cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      className={`course-tile cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]${done ? ' is-done' : ''}`}
       style={{
         background: t.color.bg.card,
         border: course.isCurrent ? `1.5px solid ${t.color.primaryBorder}` : `1px solid ${t.color.border.card}`,
