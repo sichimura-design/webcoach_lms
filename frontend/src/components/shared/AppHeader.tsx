@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound } from 'lucide-react';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotificationStore } from '../../store/notificationStore';
 import { useNewContentNotification } from '../../hooks/useNewContentNotification';
@@ -86,18 +86,18 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   /*
    * ナビのアクティブ判定。
    * ============================================================
-   * 🔴 メインナビは「ユーザーが自分からやりに行く行動」5本柱だけにする。
-   *    トップ / 学習する / AIコーチ / コーチング / マイノート。
-   *    重要だが自分から見に行かない情報（学習記録・ランキング・ロードマップ）は
-   *    ナビに項目を作らず、トップや各体験の中で露出させる。
+   * 🔴 メインナビは「ユーザーが自分からやりに行く行動」6本柱だけにする。
+   *    トップ / 学習する / AIコーチ / コーチング / マイノート / 記録。
+   *    ロードマップのように自分から見に行かない情報は、ナビに項目を作らず
+   *    トップや各体験の中で露出させる。
    * 🔴 ナビに無いページも、必ずどれか1本の配下として点灯させる。
    *    「今どの柱にいるか」が消えると現在地を見失うため。
    * ============================================================
    */
-  // トップ。学習記録（/study-log）はトップの「詳しく見る」の先なのでここに属する。
-  const isTop = location.pathname === '/mypage'
-    || location.pathname === '/'
-    || location.pathname === '/study-log';
+  const isTop = location.pathname === '/mypage' || location.pathname === '/';
+  // 記録。かつては「トップの詳しく見るの先」としてトップ配下で点灯させていたが、
+  // ナビに項目を持ったので独立させる（両方点灯すると現在地が2つに見える）。
+  const isStudyLog = location.pathname === '/study-log';
   // 学習する。教材ページは /course/:id（単数形）なので両方見る。
   const isCoursesPage = location.pathname === '/courses' || location.pathname.startsWith('/courses/')
     || location.pathname.startsWith('/course/') || location.pathname === '/learning-courses';
@@ -172,7 +172,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   /*
    * ナビ項目（PCサイドバー・SP下部ナビ共通の定義。ここが唯一の定義）。
    * ============================================================
-   * 🔴 5本柱。並び順は「毎日開く → 相談する → 蓄積を見る」。
+   * 🔴 6本柱。並び順は「毎日開く → 相談する → 蓄積を見る」。
    *    勝手に増やさないこと。増やしたくなったら、それが本当に
    *   「ユーザーが自分からやりに行く行動」なのかを先に問う。
    *    そうでないものはトップか、対応する体験の中に置く。
@@ -185,6 +185,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     { label: 'AIコーチ', icon: Sparkles, path: '/ai-coach', active: isAiCoach },
     { label: 'コーチング', icon: MessagesSquare, path: '/coaching', active: isCoaching },
     { label: 'マイノート', icon: NotebookPen, path: '/notes', active: isNotes },
+    // 「蓄積を見る」の末尾。アイコンはページの主役がカレンダーなので CalendarDays
+    { label: '記録', icon: CalendarDays, path: '/study-log', active: isStudyLog },
   ];
   const learnItems = navItems;
   const manageItems = user?.isAdmin
@@ -225,7 +227,10 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    *    行高52px・ロゴ23px・パネル上余白44pxで組まれているが、その値だと
    *    パネルの中身に約814px必要で、ノートPCの実効ビューポート高に収まらず
    *    スクロールしないと下まで見えない。レビューでも「でかすぎる」判断。
-   *    この寸法での合計は約 671px で、700px の画面に収まる。
+   *    この寸法での合計は 5項目のとき約 671px。「記録」を足して6項目になり
+   *    約 721px なので、700px 前後の画面ではナビ帯（overflow-y:auto）が
+   *    数十px ぶんスクロールする。補助リンクとアカウント行は帯の外なので
+   *    削られない。7項目（管理ロール）はさらに +50px。
    * 🔴 上端の詰め方が要点。閉じるボタン（絶対配置）とロゴを上に寄せ、
    *    パネル上余白 44→12px・ロゴ上余白 24→30px（＝ボタンぶんの逃げだけ）に
    *    したことで、ヘッダー部だけで約57px削れている。ここを戻すと
@@ -901,7 +906,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           🔴 項目は navItems / manageItems を共有する。以前はここに同じ内容を
              手で並べていて、PC6項目に対しSP3項目という食い違いが起きていた
              （コーチング・マイノートへSPから到達できなかった）。定義を1本にする。
-          🔴 管理・受講生一覧はロール保持者だけに出る6枚目。375pxで1枚62.5pxと
+          🔴 管理・受講生一覧はロール保持者だけに出る7枚目。375pxで1枚53pxと
              詰まるが、管理者がSPから到達できなくなる回帰よりはましと判断した。
          ────────────────────────────────────────────────────────── */}
       <nav
