@@ -23,8 +23,9 @@ import { toLocalDateKey } from '../../utils/studyStats';
  *    バーにすると達成度%に読める（学習効果の数値化はしない規約）。
  *
  * CoachingTaskCard（次回コーチングまでのタスク）との見分け:
- *   位置が別段／中身が1文の引用体（左4pxの縦罫＋20px）vs チェック付き複数行／
- *   脚注で編集先が違うことを明示（学習記録ページ vs コーチングページ）。
+ *   位置が別段／中身が1文の引用体（左4pxの縦罫＋20px）vs チェック付き複数行。
+ *   かつては「目標宣言は学習記録ページで編集できます。」の脚注でも見分けさせて
+ *   いたが、見出し右の「編集する ›」が同じ場所へ送るので二重だった。
  * ============================================================
  */
 interface MypageGoalDeclarationCardProps {
@@ -93,7 +94,7 @@ export function MypageGoalDeclarationCard({
         <Flag size={16} strokeWidth={1.75} />
       </span>
       <h2 style={{ margin: 0, flex: 1, fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)' }}>
-        いまの目標宣言
+        あなたの目標
       </h2>
       {target && (
         <>
@@ -165,9 +166,6 @@ export function MypageGoalDeclarationCard({
         }}
       >
         {target.text}
-      </p>
-      <p style={{ margin: '12px 0 0', fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)' }}>
-        目標宣言は学習記録ページで編集できます。
       </p>
     </section>
   );
