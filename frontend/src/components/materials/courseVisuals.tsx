@@ -121,26 +121,20 @@ export function statusBadge(course: Pick<GalleryCourse, 'isCurrent' | 'progress'
 }
 
 /**
- * サムネの地色テーマ。コースIDから決定的に選ぶので、
- * 一覧を絞り込んでも同じコースは同じ色のまま並ぶ。
- */
-const THUMB_THEMES = ['red', 'dark', 'cream'] as const;
-
-/**
- * courseId をそのまま3で割ると、レッスン数（buildCourseStructure も courseId % 3）と
- * 完全に相関して「5レッスンのコースは必ずクリーム」になる。3で割ってからずらして切る。
- */
-export function thumbTheme(courseId: number) {
-  return t.color.thumb[THUMB_THEMES[Math.floor(Math.abs(courseId) / 3) % THUMB_THEMES.length]];
-}
-
-/**
- * コース1本の絵柄。画像を持つコースは画像、無ければ領域名＋コース名を大きく組む。
+ * コース1本の絵柄。画像を持つコースは画像、無ければコース名を大きく組む。
  *
  * 🔴 コース名を絵柄の中に組むのはただの装飾ではない。呼び出し側は
  *    「サムネがコース名を持っているか」で本文側のコース名を出し分けており
  *    （CourseTile / MaterialsTopPage の「前回学習したもの」）、同じ名前が
  *    上下に2回並ぶのを避けている。文字を消すとこの前提が崩れる。
+ *
+ * 🔴 地色は領域（family）の淡いトーン。かつては courseId を3で割った余りで
+ *    赤／黒／クリームの3テーマを振り分けていたが、領域とも進捗とも関係の無い
+ *    色分けなので、一覧が意味の読めない色の寄せ集めになっていた。
+ *    いまは同じ領域のコースが同じ地色で並ぶので、囲いが無くてもまとまりが見える。
+ *
+ * 🔴 領域名は絵柄の中に印字しない。この絵柄が並ぶのは領域ごとのブロックの中で、
+ *    見出しが同じ文字列を持っている（8枚並ぶと8回「Webデザイン」と出ていた）。
  *
  * 枠の大きさ・角丸は呼び出し側が style で決める（一覧は 16:9、ヒーローは固定サイズ）。
  * バッジなど絵柄の上に重ねるものは children で渡す（内側は position:relative）。
@@ -157,10 +151,8 @@ export function CourseArt({
   style?: CSSProperties;
   children?: ReactNode;
 }) {
-  const theme = thumbTheme(course.id);
-
   return (
-    <div style={{ position: 'relative', background: theme.bg, overflow: 'hidden', ...style }}>
+    <div style={{ position: 'relative', background: categoryTint(course.categoryName), overflow: 'hidden', ...style }}>
       {course.thumbnailUrl ? (
         <img
           src={course.thumbnailUrl}
@@ -169,12 +161,9 @@ export function CourseArt({
         />
       ) : (
         <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 16px', boxSizing: 'border-box' }}>
-          <div style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: theme.sub, letterSpacing: '.04em' }}>
-            {course.categoryName}
-          </div>
           <div
             style={{
-              fontSize: titleSize, fontWeight: t.font.weight.bold, color: theme.fg, lineHeight: 'var(--dc-lh-heading)', letterSpacing: '-.01em',
+              fontSize: titleSize, fontWeight: t.font.weight.bold, color: t.color.text.primary, lineHeight: 'var(--dc-lh-heading)', letterSpacing: '-.01em',
               display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2, overflow: 'hidden',
             }}
           >

@@ -1729,6 +1729,34 @@ body.learning-immersive {
   border-color: #0e9f6e;
 }
 
+/* 完了済みの「完了」ピル。
+   行全体がクリックでトグルできるのに、完了行だけ静的なステータス表示に見えて
+   「押せば戻せる」ことが伝わっていなかった。行にホバー／フォーカスしたときだけ
+   「未完了に戻す」に入れ替えて、未完了側の「完了にする」ピルと対にする。
+
+   ピルの中は2つの文言を同じグリッドセルに重ねてあるので（NextActionsCard.tsx）、
+   入れ替えても幅は広い方のまま変わらない。ホバーの起点はピルではなく行:
+   行のどこにマウスが乗ってもクリックでトグルされるため、ピルの上だけ反応させると
+   「ピルを狙って押すもの」と誤解させる。 */
+.cg-undopill > :nth-child(2) {
+  visibility: hidden;
+}
+
+.cg-row:hover .cg-undopill > :first-child,
+.cg-row:focus-visible .cg-undopill > :first-child {
+  visibility: hidden;
+}
+
+.cg-row:hover .cg-undopill > :nth-child(2),
+.cg-row:focus-visible .cg-undopill > :nth-child(2) {
+  visibility: visible;
+}
+
+.cg-row:hover .cg-undopill,
+.cg-row:focus-visible .cg-undopill {
+  border-color: #a8dfc9;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cg-row {
     transition: none;

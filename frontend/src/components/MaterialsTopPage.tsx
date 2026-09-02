@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { AppHeader } from './shared';
 import { CourseTile } from './materials/CourseTile';
-import { CourseArt, CourseThumb, categoryColor } from './materials/courseVisuals';
+import { CourseArt } from './materials/courseVisuals';
 import { buildCatalog, type CatalogCourse } from './materials/catalogCourse';
 import { useAuth } from '../contexts/AuthContext';
 import { useMypageData } from '../hooks/useMypageData';
@@ -757,7 +757,12 @@ function MaterialsTopPage() {
                いまは領域をブロックにして、その場でコースを並べる。
             🔴 グループ見出し（family = キャリア/制作/構築/グロース/AI）は廃止した。
                「コースの多い領域から先に見せる」ためには family の並びが邪魔になる。
-               領域の色・図形サムネは今も family 単位なので、色の手がかりは残っている。
+               領域の淡い地色は今も family 単位なので、色の手がかりは残っている。
+            🔴 ブロックを囲まない。かつてはカード枠＋影＋左に領域色の3px帯を通し、
+               見出しに44pxの図形アイコンと説明文を並べていた。10ブロックぶん積むと
+               枠と色と文字で画面がうるさく、領域ごとに変わる帯の色は
+               「なぜこの色なのか」が読めない色分けになっていた。
+               いまはまとまりを 見出し＋その下の罫線＋ブロック間の余白(48px) で示す。
             🔴 並びはコース数の降順。同数のときは courseTaxonomy の宣言順を保つ
                （sort は安定なので、areaCards の順序がそのまま効く）。
             🔴 コースが多い領域は AREA_PREVIEW_LIMIT 件で畳む。畳まないと
@@ -814,95 +819,55 @@ function MaterialsTopPage() {
               </button>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
               {visibleAreas.map((a) => {
                 const expanded = openAreas.has(a.name);
                 // 🔴 絞り込み中は畳まない。一致したコースが「すべて見る」の裏に
                 //    隠れると、絞り込んだのに見つからないという状態になる
                 const foldable = !filtering && a.courses.length > AREA_PREVIEW_LIMIT;
                 const shown = foldable && !expanded ? a.courses.slice(0, AREA_PREVIEW_LIMIT) : a.courses;
-                const accent = categoryColor(a.name);
 
                 return (
                   <section
                     key={a.name}
-                    style={{
-                      // ブロックの左に領域色の帯を通す。まとまりの境目はここで見せるので、
-                      // 中のコースタイルには枠を足さない（枠の入れ子でうるさくなる）
-                      borderLeft: `3px solid ${accent}`,
-                      borderRadius: t.radius.card,
-                      background: t.color.bg.card,
-                      border: `1px solid ${t.color.border.card}`,
-                      borderLeftWidth: 3,
-                      borderLeftColor: accent,
-                      boxShadow: t.shadow.card,
-                      padding: '18px 20px 20px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 14,
-                    }}
+                    style={{ display: 'flex', flexDirection: 'column', gap: 14 }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-                      <CourseThumb categoryName={a.name} size={44} radius={12} />
-
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        {/* 領域名は地図時代の --dc-fs-lead から一段上げる。
-                            ブロックの中にコースタイルが並ぶので、同じ大きさだと
-                            どこからどこまでが1つの領域なのか読めない。 */}
-                        <h3
-                          style={{
-                            margin: 0,
-                            display: 'flex',
-                            alignItems: 'baseline',
-                            gap: 10,
-                            flexWrap: 'wrap',
-                            fontSize: 'var(--dc-fs-title)',
-                            fontWeight: t.font.weight.bold,
-                            letterSpacing: '-.01em',
-                            lineHeight: 'var(--dc-lh-heading)',
-                          }}
-                        >
-                          {a.name}
-                          <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: 400, color: t.color.text.subtle }}>
-                            {a.count} {LEARNING_HIERARCHY.course}
-                          </span>
-                          {/* 受講中があれば出す。「どこまで手を付けたか」が並びの上で分かる */}
-                          {a.inProgress > 0 && (
-                            <span
-                              style={{
-                                padding: '2px 8px',
-                                borderRadius: 999,
-                                background: t.color.primarySoft,
-                                color: t.color.primary,
-                                fontSize: 'var(--dc-fs-caption)',
-                                fontWeight: t.font.weight.bold,
-                              }}
-                            >
-                              学習中 {a.inProgress}
-                            </span>
-                          )}
-                        </h3>
-                        {a.description && (
-                          <p
-                            style={{
-                              margin: '3px 0 0',
-                              fontSize: 'var(--dc-fs-caption)',
-                              color: t.color.text.muted,
-                              lineHeight: 'var(--dc-lh-ui)',
-                              overflow: 'hidden',
-                              textOverflow: 'ellipsis',
-                              whiteSpace: 'nowrap',
-                            }}
-                          >
-                            {a.description}
-                          </p>
-                        )}
-                      </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'baseline',
+                        gap: 10,
+                        flexWrap: 'wrap',
+                        paddingBottom: 10,
+                        borderBottom: `1px solid ${t.color.border.card}`,
+                      }}
+                    >
+                      {/* 領域名は一段大きく組む。ブロックの中にコースタイルが並ぶので、
+                          同じ大きさだとどこからどこまでが1つの領域なのか読めない。 */}
+                      <h3
+                        style={{
+                          margin: 0,
+                          fontSize: 'var(--dc-fs-title)',
+                          fontWeight: t.font.weight.bold,
+                          letterSpacing: '-.01em',
+                          lineHeight: 'var(--dc-lh-heading)',
+                        }}
+                      >
+                        {a.name}
+                      </h3>
+                      <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle }}>
+                        {[
+                          `${a.count} ${LEARNING_HIERARCHY.course}`,
+                          a.inProgress > 0 && `学習中 ${a.inProgress}`,
+                        ].filter(Boolean).join('・')}
+                      </span>
 
                       {/* 🔴 見出し右の「この学習領域をすべて見る」は置かない。
-                             ブロックの中にその領域のコースが全部（8件超は「すべて見る」で）
-                             並んでいるので、行き先が同じ一覧の別ページになるだけだった。
-                             押す先はコースタイル1種類に絞る。 */}
+                             ブロックの中にその領域のコースが全部（限度を超えたぶんは
+                             「すべて見る」で）並んでいるので、行き先が同じ一覧の
+                             別ページになるだけだった。押す先はコースタイル1種類に絞る。
+                          🔴 領域の説明文（「デザインの基礎概念からツール、実践課題まで」等）も
+                             出さない。真下にコースが並ぶので、何を学べるかはコース名が語る。 */}
                     </div>
 
                     <div className="wc-area-grid grid" style={{ gap: 14 }}>
@@ -927,10 +892,11 @@ function MaterialsTopPage() {
                           justifyContent: 'center',
                           gap: 6,
                           width: '100%',
-                          minHeight: 40,
+                          minHeight: 36,
+                          // 枠は持たせない。ブロックの囲いをやめたので、ここに枠を残すと
+                          // 画面で唯一の四角い枠になって浮く
                           background: 'transparent',
-                          border: `1px solid ${t.color.border.card}`,
-                          borderRadius: t.radius.button,
+                          border: 0,
                           fontFamily: 'inherit',
                           fontSize: 'var(--dc-fs-body)',
                           fontWeight: t.font.weight.bold,

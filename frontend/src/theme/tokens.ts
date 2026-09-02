@@ -114,17 +114,12 @@ export const t = {
       ahead: { fg: '#8B5CD6', bg: '#F2ECFC' },
     },
 
-    /**
-     * コースタイルの 16:9 サムネ地色。画像アセットを持たないコースは
-     * この地色にカテゴリ名＋コース名を大きく組んで「絵柄」にする。
-     * デザイン案 1b の3テーマ（赤/ダーク/クリーム）を正規色 primary に寄せた値。
+    /*
+     * コースタイルのサムネ地色（thumb: 赤/ダーク/クリームの3テーマ）は廃止した。
+     * courseId を3で割った余りで振り分けていて、領域とも進捗とも関係が無く、
+     * 一覧が意味の読めない色の寄せ集めになっていた。
+     * いまは上の category（family 単位の淡いトーン）を CourseArt が使う。
      */
-    thumb: {
-      red: { bg: 'linear-gradient(135deg,#D60934,#8B0620)', fg: '#FFFFFF', sub: 'rgba(255,255,255,.75)' },
-      dark: { bg: 'linear-gradient(135deg,#332A26,#141414)', fg: '#FFFFFF', sub: 'rgba(255,255,255,.65)' },
-      // クリーム地の sub は text.muted(#8A8082) だと地色とのコントラストが 3:1 を切るので一段濃くする
-      cream: { bg: 'linear-gradient(135deg,#FDF7F3,#F3E7DA)', fg: '#1F1A1B', sub: '#4A4244' },
-    },
   },
 
   radius: {
