@@ -1045,16 +1045,218 @@ body.learning-immersive {
   }
 
   body.sidebar-expanded .studylog-rank-grid,
+  body.sidebar-expanded .studylog-calendar-grid,
   body.sidebar-expanded .mypage-3d-grid {
     grid-template-columns: 1fr;
   }
 }
 
 /* ─── マイノート(/notes) ───────────────────────
-   デザイン『マイノート 3案』1a。1440px 固定キャンバスの transform:scale をやめ、
-   マイページと同じ可変幅にした。padding は 1a の main と同値。 */
+   デザイン『マイノート 改善案』。左にフォルダ列（248px）、右に一覧／ノート面。
+   値はアートボード（design-canvas/screens/NotesImproved.dc.html）と同値。
+
+   🔴 切り替わる・hover する見た目はここ（クラス）に置く。インライン style は
+      :hover を持てず、インラインの display は CSS から上書きできない。 */
+.notes-shell {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+/* フォルダ列。本文がスクロールしても列は画面に留まる */
+.notes-folder-col {
+  width: 248px;
+  flex: none;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+  overflow-y: auto;
+  background: #FFFDFA;
+  border-right: 1px solid var(--dc-border);
+  padding: 24px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notes-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .notes-main {
-  padding: 32px 32px 28px;
+  padding: 24px 28px 28px;
+}
+
+/* フォルダ列の1行。行全体（__main）と右端の ⋮（__more）が別のボタンなので、
+   行は div にして hover の地色だけをここで持つ */
+.notes-folder-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  border-radius: 8px;
+  color: var(--dc-text-body);
+}
+
+.notes-folder-row:hover {
+  background: #F4EFE8;
+}
+
+.notes-folder-row.is-active {
+  background: var(--dc-soft-100);
+  color: var(--dc-primary-deep);
+}
+
+.notes-folder-row.is-active .notes-folder-row__main {
+  font-weight: 700;
+}
+
+/* ドラッグ中のカードが上に乗っている行 */
+.notes-folder-row.is-drop-target {
+  outline: 2px solid var(--dc-primary);
+  outline-offset: -2px;
+  background: var(--dc-soft-100);
+}
+
+.notes-folder-row__main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 10px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.notes-folder-row__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notes-folder-row__count {
+  margin-left: auto;
+  font-size: 11.5px;
+  color: var(--dc-text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ⋮ は hover / フォーカス中だけ出す。常時出すと列が操作パネルに見える */
+.notes-folder-row__more {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dc-text-subtle);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+
+.notes-folder-row:hover .notes-folder-row__more,
+.notes-folder-row:focus-within .notes-folder-row__more,
+.notes-folder-row__more[aria-expanded="true"] {
+  opacity: 1;
+}
+
+.notes-folder-row__more:hover {
+  background: #EDE6DC;
+  color: var(--dc-text-body);
+}
+
+/* 狭い画面（1023px 以下）ではフォルダ列の代わりに横並びのピル */
+.notes-folder-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.notes-folder-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--dc-border-strong);
+  border-radius: 9999px;
+  background: var(--dc-surface);
+  color: var(--dc-text-body);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notes-folder-pill.is-active {
+  background: var(--dc-soft-100);
+  border-color: var(--dc-soft-200);
+  color: var(--dc-primary-deep);
+  font-weight: 700;
+}
+
+/* 種類チップ（自分のメモ／教材／AIコーチ／コーチング） */
+.notes-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--dc-border-strong);
+  border-radius: 9999px;
+  background: var(--dc-surface);
+  color: var(--dc-text-body);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notes-chip:hover {
+  background: var(--dc-soft-100);
+}
+
+.notes-chip.is-active {
+  background: var(--dc-primary);
+  border-color: var(--dc-primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* 検索欄の文字サイズ。16px 未満だと iOS が入力時にページを拡大するので、
+   スマホ幅は 16px を守り、デザイン値の 13px は広い画面だけに当てる */
+.notes-search-input {
+  font-size: 16px;
+}
+
+@media (min-width: 1024px) {
+  .notes-search-input {
+    font-size: 13px;
+  }
 }
 
 /* ノート一覧のカードグリッド。列数は画面幅で落とす（.mypage-3d-grid と同じ方針）。
@@ -1062,9 +1264,187 @@ body.learning-immersive {
    ノート面が /notes?note= の全幅表示に移ったので削除した。 */
 .notes-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
   align-items: stretch;
+}
+
+/* カードはフォルダへドラッグできる。掴めることはポインタで示す（タッチには出ない） */
+@media (pointer: fine) {
+  .notes-card {
+    cursor: grab;
+  }
+}
+
+.notes-card.is-dragging {
+  opacity: .5;
+}
+
+/* ドロップダウン／ポップオーバー共通 */
+.notes-menu {
+  position: absolute;
+  z-index: 30;
+  min-width: 180px;
+  padding: 6px;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-md);
+  box-shadow: var(--dc-shadow-float);
+}
+
+.notes-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dc-text-body);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notes-menu-item:hover {
+  background: var(--dc-sunken);
+}
+
+.notes-menu-item.is-selected {
+  background: var(--dc-soft-100);
+  color: var(--dc-primary);
+}
+
+.notes-menu-item.is-danger {
+  color: var(--dc-primary);
+}
+
+/* ノート面の上部バー・ツールバーの角丸ボタン */
+.notes-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--dc-border-strong);
+  border-radius: 8px;
+  background: var(--dc-surface);
+  color: var(--dc-text-body);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notes-tool:hover {
+  background: #FAF7F3;
+}
+
+/* 「重要」が付いている状態 */
+.notes-tool.is-on {
+  background: var(--dc-soft-100);
+  border-color: var(--dc-soft-200);
+  color: var(--dc-primary-deep);
+}
+
+.notes-tool--light {
+  font-weight: 500;
+}
+
+/* 本文のブロック行。hover で左に ⠿ と ＋ が出る */
+.notes-block {
+  position: relative;
+  padding: 4px 0 4px 34px;
+  border-radius: 6px;
+}
+
+.notes-block:hover {
+  background: #FCF9F5;
+}
+
+.notes-block.is-dragging {
+  opacity: .45;
+}
+
+/* opacity で出し入れする（display だとキーボードで届かない） */
+.notes-block-grip {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+
+.notes-block:hover .notes-block-grip,
+.notes-block:focus-within .notes-block-grip,
+.notes-block-grip.is-open {
+  opacity: 1;
+}
+
+.notes-grip-btn {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #C9BFB2;
+  cursor: pointer;
+}
+
+.notes-grip-btn:hover {
+  background: #F1EBE3;
+  color: var(--dc-text-muted);
+}
+
+.notes-grip-btn--drag {
+  cursor: grab;
+}
+
+/* ドロップ位置の線 */
+.notes-block.is-drop-before::before,
+.notes-block.is-drop-after::after {
+  content: '';
+  position: absolute;
+  left: 34px;
+  right: 0;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--dc-primary);
+}
+
+.notes-block.is-drop-before::before {
+  top: -2px;
+}
+
+.notes-block.is-drop-after::after {
+  bottom: -2px;
+}
+
+/* チェックリスト（noteText.tsx の `- [ ] `） */
+.notes-checklist {
+  list-style: none;
+}
+
+.notes-checklist input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--dc-primary);
+}
+
+.notes-checklist .is-done > span {
+  text-decoration: line-through;
+  color: var(--dc-text-subtle);
 }
 
 /* 領域ページ（/courses/category/:code）のコースタイル。

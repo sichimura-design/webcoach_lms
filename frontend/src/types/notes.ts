@@ -34,7 +34,8 @@ export const NOTE_BLOCK_LABEL: Record<NoteBlockKind, string> = {
  * self     … 「新しいノートを作成」から自分で作った
  * material … 教材（レッスン）から作られた
  * ai       … AIコーチの回答を残すために作られた
- * coaching … 面談のまとめ。※コーチング→ノートの導線は未実装なのでシードのみ
+ * coaching … 面談のまとめ。coachingSessionId でどの回のものかが分かる
+ *             （ノート作成の導線自体はまだ無く、シードで入っているだけ）
  */
 export type NoteOrigin = 'self' | 'material' | 'ai' | 'coaching';
 
@@ -44,6 +45,20 @@ export const NOTE_ORIGIN_LABEL: Record<NoteOrigin, string> = {
   ai: 'AIコーチ',
   coaching: 'コーチング',
 };
+
+/**
+ * フォルダ。デザイン『マイノート 改善案』で足した「自分で決める入れ物」。
+ * 出どころ（origin）は自動で付くラベル、フォルダは手で選ぶ置き場所、と軸が違う。
+ * 階層は持たない（1段だけ）。フォルダに入っていないノートは「未整理」に見える。
+ */
+export interface NoteFolder {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
+/** フォルダの名前の上限。列の幅（248px）に1行で収まる長さ */
+export const NOTE_FOLDER_NAME_MAX = 40;
 
 /** ブロックの出どころ。「元のレッスンへ」と本文ハイライトの復元に使う */
 export interface NoteSourceRef {
@@ -110,15 +125,26 @@ export interface Note {
   id: string;
   title: string;
   blocks: NoteBlock[];
-  /** 一覧のラベル「重要」。CONTENTS §16-4 の手動ラベルはこれ1種だけ */
+  /**
+   * 一覧のラベル「重要」。手で付けるラベルはこれ1種だけ。
+   * フォルダ（folderId）はラベルではなく置き場所で、別の軸として持つ。
+   */
   favorite: boolean;
   origin: NoteOrigin;
+  /** 入っているフォルダ。null は「未整理」（取り込んだものが最初に入る場所） */
+  folderId: string | null;
   /**
    * レッスンから作られたノートの出どころ。
    * 「新しいノートを作成」から作ったものは null。
    * ノート面のメタ行「Webデザイン入門 / Lesson 4」はこれを描く。
    */
   source: NoteSourceRef | null;
+  /**
+   * このノートを取ったコーチング回（CoachingSessionDetail.id）。
+   * コーチング記録の「自分のメモ」がこれで自分の回のノートを引く。
+   * source は教材（courseId / lessonId）専用なので、そちらには相乗りできない。
+   */
+  coachingSessionId?: number | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -129,10 +155,12 @@ export interface NoteSummary {
   title: string;
   favorite: boolean;
   origin: NoteOrigin;
+  folderId: string | null;
   blockCount: number;
   /** 一覧カードに出す本文の書き出し */
   excerpt: string;
   source: NoteSourceRef | null;
+  coachingSessionId?: number | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -159,6 +187,8 @@ export interface NoteListQuery {
   favorite?: boolean;
   /** そのレッスンから触ったノートだけを引く（教材画面のメモ欄が使う） */
   lessonId?: number;
+  /** そのコーチング回のノートだけを引く（コーチング記録の「自分のメモ」が使う） */
+  coachingSessionId?: number;
 }
 
 /** POST /webcoach/notes */
@@ -167,12 +197,63 @@ export interface NoteCreateInput {
   source?: NoteSourceRef | null;
   /** 省略時は source の有無から material / self を決める */
   origin?: NoteOrigin;
+  coachingSessionId?: number | null;
+  /** 省略時は未整理（null）。一覧でフォルダを開いた状態から作ると、そのフォルダに入る */
+  folderId?: string | null;
 }
 
 /** PATCH /webcoach/notes/:id */
 export interface NoteUpdateInput {
   title?: string;
   favorite?: boolean;
+  /** フォルダの移動。null で未整理へ。移動だけなら updatedAt は上がらない */
+  folderId?: string | null;
+}
+
+/** POST /webcoach/note-folders */
+export interface NoteFolderCreateInput {
+  name: string;
+}
+
+/** PATCH /webcoach/note-folders/:id */
+export interface NoteFolderUpdateInput {
+  name?: string;
+}
+
+/**
+ * 一覧の左列で選ぶ「どこを見ているか」。
+ * all/favorite は集計ビュー、inbox は folderId=null、folder は1フォルダ。
+ * URL の ?folder= に載せる（all は省略、favorite は star）。
+ */
+export type NoteFolderFilter =
+  | { kind: 'all' }
+  | { kind: 'favorite' }
+  | { kind: 'inbox' }
+  | { kind: 'folder'; id: string };
+
+export function parseFolderParam(raw: string | null): NoteFolderFilter {
+  if (!raw) return { kind: 'all' };
+  if (raw === 'star') return { kind: 'favorite' };
+  if (raw === 'inbox') return { kind: 'inbox' };
+  return { kind: 'folder', id: raw };
+}
+
+export function folderParamOf(filter: NoteFolderFilter): string | null {
+  if (filter.kind === 'all') return null;
+  if (filter.kind === 'favorite') return 'star';
+  if (filter.kind === 'inbox') return 'inbox';
+  return filter.id;
+}
+
+/** 一覧の1件がフィルタに入るか（フォルダ軸だけ。種類は別に掛ける） */
+export function matchesFolderFilter(
+  note: Pick<NoteSummary, 'favorite' | 'folderId'>,
+  filter: NoteFolderFilter
+): boolean {
+  if (filter.kind === 'all') return true;
+  if (filter.kind === 'favorite') return note.favorite;
+  if (filter.kind === 'inbox') return note.folderId === null;
+  return note.folderId === filter.id;
 }
 
 /** POST /webcoach/notes/:id/blocks — kind ごとに必要なものだけ渡す */
@@ -203,6 +284,8 @@ export interface NoteBlockPatch {
   answer?: string;
   /** 画像ブロックの説明文 */
   caption?: string | null;
+  /** 並べ替え。この位置へ動かす（ノート面の ⠿）。範囲外は端に寄せる */
+  index?: number;
 }
 
 /**

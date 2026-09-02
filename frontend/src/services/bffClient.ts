@@ -63,6 +63,9 @@ import {
   NoteBlockPatch,
   NoteClipRef,
   NoteCreateInput,
+  NoteFolder,
+  NoteFolderCreateInput,
+  NoteFolderUpdateInput,
   NoteListQuery,
   NoteSummary,
   NoteUpdateInput,
@@ -1234,7 +1237,7 @@ class BFFClient {
     return response.data;
   }
 
-  /** PATCH /api/webcoach/notes/{id} — タイトル・お気に入り */
+  /** PATCH /api/webcoach/notes/{id} — タイトル・お気に入り・フォルダ移動 */
   async updateNote(id: string, body: NoteUpdateInput): Promise<Note> {
     const response = await this.api.patch(`/webcoach/notes/${id}`, body);
     return response.data;
@@ -1257,7 +1260,7 @@ class BFFClient {
     return response.data;
   }
 
-  /** PATCH /api/webcoach/notes/{id}/blocks/{blockId} */
+  /** PATCH /api/webcoach/notes/{id}/blocks/{blockId} — 本文の書き換え、または index で並べ替え */
   async updateNoteBlock(noteId: string, blockId: string, patch: NoteBlockPatch): Promise<NoteBlock> {
     const response = await this.api.patch(`/webcoach/notes/${noteId}/blocks/${blockId}`, patch);
     return response.data;
@@ -1275,6 +1278,35 @@ class BFFClient {
    */
   async listNoteClips(lessonId: number): Promise<NoteClipRef[]> {
     const response = await this.api.get('/webcoach/note-clips', { params: { lessonId } });
+    return response.data;
+  }
+
+  // --- フォルダ（デザイン『マイノート 改善案』の左列）。実BFFには無く、noteHandlers.ts が応答する ---
+
+  /** GET /api/webcoach/note-folders — 作成順 */
+  async listNoteFolders(): Promise<NoteFolder[]> {
+    const response = await this.api.get('/webcoach/note-folders');
+    return response.data;
+  }
+
+  /** POST /api/webcoach/note-folders */
+  async createNoteFolder(body: NoteFolderCreateInput): Promise<NoteFolder> {
+    const response = await this.api.post('/webcoach/note-folders', body);
+    return response.data;
+  }
+
+  /** PATCH /api/webcoach/note-folders/{id} — 名前の変更 */
+  async updateNoteFolder(id: string, body: NoteFolderUpdateInput): Promise<NoteFolder> {
+    const response = await this.api.patch(`/webcoach/note-folders/${id}`, body);
+    return response.data;
+  }
+
+  /**
+   * DELETE /api/webcoach/note-folders/{id}
+   * 中のノートは消さず未整理へ移す。moved はその件数（トーストに出す）。
+   */
+  async deleteNoteFolder(id: string): Promise<{ moved: number }> {
+    const response = await this.api.delete(`/webcoach/note-folders/${id}`);
     return response.data;
   }
 
