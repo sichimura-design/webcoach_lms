@@ -1,5 +1,5 @@
 import { t } from '../../theme/tokens';
-import { GalleryCourse, statusBadge, thumbTheme } from './courseVisuals';
+import { CourseArt, GalleryCourse, statusBadge } from './courseVisuals';
 
 /**
  * 「すべてのコースから探す」の4列タイル。
@@ -11,7 +11,6 @@ import { GalleryCourse, statusBadge, thumbTheme } from './courseVisuals';
 
 export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick: () => void }) {
   const badge = statusBadge(course);
-  const theme = thumbTheme(course.id);
 
   return (
     <div
@@ -29,26 +28,9 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
         boxSizing: 'border-box',
       }}
     >
-      {/* サムネ。画像を持つコースは画像、無ければカテゴリ名＋コース名を大きく組んで絵柄にする */}
-      <div style={{ position: 'relative', aspectRatio: '16 / 9', background: theme.bg, overflow: 'hidden' }}>
-        {course.thumbnailUrl ? (
-          <img src={course.thumbnailUrl} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-        ) : (
-          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 16px', boxSizing: 'border-box' }}>
-            <div style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: theme.sub, letterSpacing: '.04em' }}>
-              {course.categoryName}
-            </div>
-            <div
-              style={{
-                fontSize: 'var(--dc-fs-title)', fontWeight: t.font.weight.bold, color: theme.fg, lineHeight: 'var(--dc-lh-heading)', letterSpacing: '-.01em',
-                display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2, overflow: 'hidden',
-              }}
-            >
-              {course.title}
-            </div>
-          </div>
-        )}
-
+      {/* サムネ。画像を持つコースは画像、無ければカテゴリ名＋コース名を大きく組んで絵柄にする
+          （絵柄そのものは courseVisuals の CourseArt。ヒーローと同じものを使う） */}
+      <CourseArt course={course} style={{ aspectRatio: '16 / 9' }}>
         {/* 地色は必ず白にする。バッジの淡い地色のままだとクリーム系のサムネに溶けて読めない。
             角丸は pill ではなく badge(5px)。押せない状態ラベルなので、
             すぐ下の所要時間バッジ（6px）と同じ「四角い＝読むだけ」の側に揃える。 */}
@@ -74,7 +56,7 @@ export function CourseTile({ course, onClick }: { course: GalleryCourse; onClick
             {course.duration}
           </span>
         )}
-      </div>
+      </CourseArt>
 
       <div style={{ padding: '11px 14px 13px' }}>
         {/* サムネにコース名を組んでいる場合は、その真下でもう一度同じ名前を出さない。

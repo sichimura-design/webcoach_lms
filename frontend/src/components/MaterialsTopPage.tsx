@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronRight } from 'lucide-react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import { AppHeader } from './shared';
 import { CourseTile } from './materials/CourseTile';
-import { CourseThumb, categoryColor } from './materials/courseVisuals';
+import { CourseArt, CourseThumb, categoryColor } from './materials/courseVisuals';
 import { buildCatalog, type CatalogCourse } from './materials/catalogCourse';
 import { useAuth } from '../contexts/AuthContext';
 import { useMypageData } from '../hooks/useMypageData';
@@ -13,8 +13,6 @@ import { t } from '../theme/tokens';
 import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
 import {
   AREAS,
-  AREA_FAMILY_LABEL,
-  AREA_FAMILY_ORDER,
   AREA_NAMES,
   type AreaFamily,
 } from '../constants/courseTaxonomy';
@@ -64,6 +62,23 @@ interface NextLesson {
 /** AI検索バーの例。押すと入力欄に入る */
 const SEARCH_EXAMPLES = ['配色が苦手', 'バナーを作りたい', '次に学ぶべき教材は？'];
 
+/**
+ * 「ほかに学習中」を畳まずに出す件数。
+ *
+ * 🔴 増やさない。ここは「並行して何を進めているか」の早見で、全コースの一覧は
+ *    下の「学習領域から探す」が受け持つ。3件ならヒーローより低いままで、
+ *    ファーストビューをカタログに残せる。超えたぶんは畳んで、開きたい人だけ開く。
+ */
+const OTHER_ACTIVE_VISIBLE = 3;
+
+/**
+ * 領域ブロックに畳まずに出すコース数。4列グリッドなので2行ぶん。
+ * 10領域のうち畳まれるのは Webデザイン(13)・Webマーケティング(11) の2つだけで、
+ * 残り8領域（Web制作8・動画編集7・SNS運用6・Web×AI5 …）はそのまま全部出る。
+ * ここを下げると畳まれる領域が増えて、開く操作ばかりの画面になる。
+ */
+const AREA_PREVIEW_LIMIT = 8;
+
 /*
  * 🔴 「学習領域」「種類」「並び替え」のプルダウンはこの画面から領域ページへ移した
  *    （materials/AreaCoursesPage.tsx）。この画面は領域の地図で、絞り込みは
@@ -78,10 +93,25 @@ function MaterialsTopPage() {
 
   const [catalog, setCatalog] = useState<CatalogCourse[]>([]);
   const [nextLesson, setNextLesson] = useState<NextLesson | undefined>();
+  /** 「ほかに学習中」を全件出すか（既定は OTHER_ACTIVE_VISIBLE 件で畳む） */
+  const [showAllActive, setShowAllActive] = useState(false);
 
   const [aiQuery, setAiQuery] = useState('');
   const [aiResult, setAiResult] = useState<MaterialSearchResult | null>(null);
   const [aiState, setAiState] = useState<'idle' | 'loading' | 'error'>('idle');
+
+  /**
+   * 全件を開いている領域（領域名で持つ）。既定はすべて畳んだ状態。
+   * 複数同時に開けてよい（領域を見比べる操作を邪魔しない）。
+   */
+  const [openAreas, setOpenAreas] = useState<Set<string>>(new Set());
+
+  const toggleArea = (name: string) =>
+    setOpenAreas((prev) => {
+      const next = new Set(prev);
+      if (!next.delete(name)) next.add(name);
+      return next;
+    });
 
 
   // コースカタログ（全コース）を取得し、自分の受講進捗をマージする
@@ -180,39 +210,35 @@ function MaterialsTopPage() {
     }));
   }, [catalog]);
 
-  /** family ごとのまとまり。見出しは5つまでで、色は下のカードの図形サムネと同じ */
-  const areaGroups = useMemo(() => {
-    const families: Array<AreaFamily | 'unknown'> = [...AREA_FAMILY_ORDER, 'unknown'];
-    return families
-      .map((family) => {
-        const areas = areaCards.filter((a) => a.family === family);
-        return {
-          family,
-          label: family === 'unknown' ? 'そのほか' : AREA_FAMILY_LABEL[family],
-          color: areas[0] ? categoryColor(areas[0].name) : t.color.text.subtle,
-          areas,
-        };
-      })
-      .filter((g) => g.areas.length > 0);
-  }, [areaCards]);
-
   /**
-   * 領域カードの飛び先。コースが1本だけの領域は、1枚しか並ばない一覧を挟まず
-   * そのコースのトップへ直接送る（ソフトスキル・キャリア・案件獲得の3つが該当）。
+   * 表示順＝コース数の降順。
+   * 🔴 「学べることが多い領域から見せる」がこの画面の並びの根拠。
+   *    family（キャリア/制作/…）のグループ見出しは廃止した。
+   * Array.prototype.sort は安定なので、同数の領域は courseTaxonomy の宣言順のまま残る。
    */
-  const openArea = (a: { name: string; code: number | null; courses: CatalogCourse[] }) => {
-    if (a.courses.length === 1) {
-      navigate(`/course/${a.courses[0].id}/curriculum`);
-      return;
-    }
-    navigate(`/courses/category/${a.code ?? encodeURIComponent(a.name)}`);
-  };
+  const sortedAreas = useMemo(
+    () => [...areaCards].sort((a, b) => b.count - a.count),
+    [areaCards],
+  );
 
   const completedLessons = learningSummary.completedLessons.total;
   const enrolledLessons = activeCourses.reduce((sum, c) => sum + (c.totalLessons ?? 0), 0);
 
   /** ヒーローの進み具合。％ではなく「4 / 9」で出す（残り本数が引き算1回で分かる） */
   const resumeLessons = lessonProgressFromPercent(resumableCourse?.progress, resumableCourse?.totalLessons);
+
+  /**
+   * ヒーローのサムネに使うコースの姿。
+   * 🔴 resumecourse は領域名もコース画像も返さないので、カタログ側を正典にする
+   *    （mypageApi が入れている categoryName:'カテゴリ' はプレースホルダで、
+   *      そのまま渡すと文字組みサムネに「カテゴリ」と印字されてしまう）。
+   */
+  const resumeArt = useMemo(() => {
+    if (!resumableCourse) return undefined;
+    const known = catalog.find((c) => c.id === resumableCourse.id);
+    // カタログの到着前でも絵柄を出す。領域名は分からないので空に倒す
+    return known ?? { id: resumableCourse.id, title: resumableCourse.title, categoryName: '', thumbnailUrl: resumableCourse.thumbnailUrl };
+  }, [catalog, resumableCourse]);
 
   const goToContinue = () => {
     if (!resumableCourse) return;
@@ -298,177 +324,205 @@ function MaterialsTopPage() {
                  1440px では横に伸びきって間延びしていた
                ・「ほかに学習中」は3列グリッドで、1〜2件だと列が空いて
                  スカスカに見えていた（レビュー指摘）
-               左はサムネイル＋情報を横に組んだ低いヒーロー、右は縦積みの一覧にすることで、
-               どちらも件数に関係なく密度が保てる。
+            🔴 幅は「左を固定・右を可変」にする。再開できるコースは常に1本なので
+               左に必要な幅は決まっているが、右は並行受講の本数で必要な幅が変わる。
+               逆にすると（左 flex:1・右 340px 固定）右が1列しか組めず、
+               受講本数が増えたぶんだけ右だけが下に伸びて、左と釣り合わなくなる。
             🔴 左のヒーローは高さを伸ばさない。ここが高いとカタログがファーストビューから
                落ちる。アートを全幅バナーにしたり、行を増やしたりしないこと。
             🔴 片方が無いときは残った方を全幅にする（空の列を残さない）。
             ============================================================ */}
         {(resumableCourse || otherActive.length > 0) && (
           <div style={{ display: 'flex', gap: 20, alignItems: 'flex-start', flexWrap: 'wrap' }}>
-            {resumableCourse && (
-              <div
+            {resumableCourse && resumeArt && (
+              <section
                 style={{
-                  flex: 1, minWidth: 0,
-                  background: t.color.bg.card, border: `1px solid ${t.color.border.card}`,
-                  borderRadius: t.radius.card, boxShadow: t.shadow.card,
-                  padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 14,
+                  // 460px は「サムネ152＋余白＋単元名が2行に折れない」最小幅。SP では
+                  // maxWidth が勝って全幅に戻る（width だけだと 375px 幅で溢れる）。
+                  ...(otherActive.length > 0 ? { width: 460, maxWidth: '100%', flexShrink: 0 } : { flex: 1, minWidth: 0 }),
+                  display: 'flex', flexDirection: 'column', gap: 12,
                 }}
               >
-                {/* 🔴 アートは全幅200pxのバナーではなく、左に置く小さめのサムネイルにする。
-                       全幅バナー＋縦積み（情報／次に学ぶ／CTA）だと、1コース分の再開動線だけで
-                       ファーストビューをほぼ使い切ってしまい、下のカタログが見えなかった。
-                       アートに情報は無いので、縮めても失うものはない。 */}
-                <div style={{ display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap' }}>
-                  <img
-                    src={`${process.env.PUBLIC_URL}/images/materials/hero-art.png`}
-                    alt=""
-                    style={{ width: 184, height: 112, flexShrink: 0, objectFit: 'cover', borderRadius: t.radius.inner, display: 'block' }}
-                  />
+                {/* 見出しは右の「ほかに学習中」と同じ組み。2つのカードが同じ高さから始まる。
+                    かつてカード内に赤い「続きから学ぶ」ラベルを置いていたが、下の CTA と
+                    同じ言葉が2回出るので、見出しに「前回学習したもの」として1回だけ出す。 */}
+                <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>前回学習したもの</div>
 
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.bold, color: t.color.primary, marginBottom: 4, letterSpacing: t.font.letterSpacingWide }}>
-                      続きから学ぶ
-                    </div>
-                    {/* 主役はコース。レッスン名は下の「次に学ぶ」が持つので、ここでは繰り返さない。
-                        次のレッスンが取れなかったときだけ、続きの位置をここに出してから畳む。 */}
-                    <div style={{ fontSize: 'var(--dc-fs-title)', fontWeight: t.font.weight.bold, letterSpacing: '-.01em', lineHeight: 'var(--dc-lh-heading)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {resumableCourse.title}
-                    </div>
-                    <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, marginTop: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {/* 全レッスン数は右の「4 / 9 レッスン」が持つので、ここでは繰り返さない */}
-                      {nextLesson
-                        ? nextLesson.sectionName
-                        : [resumableCourse.currentLesson, resumableCourse.currentChapter].filter(Boolean).join('・')}
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 10, flexWrap: 'wrap' }}>
-                      <div
-                        role="progressbar"
-                        aria-valuenow={resumableCourse.progress ?? 0}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                        aria-valuetext={resumeLessons?.full}
-                        style={{ flex: 1, height: 7, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}
-                      >
-                        <div style={{ width: `${resumableCourse.progress ?? 0}%`, height: '100%', borderRadius: t.radius.pill, background: t.color.primary }} />
-                      </div>
-                      {/* 「このコース」を必ず付ける。見出し右の「受講中コース全体」の分数と
-                          分母が違うので、どちらを数えた分数なのかを数字の隣で言い切る。
-                          レッスン総数が取れないコースだけ、従来どおり％に落とす。 */}
-                      <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.muted, flexShrink: 0 }}>
-                        このコース{' '}
-                        {resumeLessons ? (
-                          <>
-                            <span style={{ fontWeight: t.font.weight.bold, color: t.color.text.primary }}>{resumeLessons.short}</span>
-                            {' '}{LEARNING_HIERARCHY.lesson}
-                          </>
-                        ) : (
-                          <span style={{ fontWeight: t.font.weight.bold, color: t.color.text.primary }}>{resumableCourse.progress ?? 0}%</span>
-                        )}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <div
+                  style={{
+                    background: t.color.bg.card, border: `1px solid ${t.color.border.card}`,
+                    borderRadius: t.radius.card, boxShadow: t.shadow.card,
+                    padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 14,
+                  }}
+                >
+                  {/* 🔴 アートは全幅200pxのバナーではなく、左に置く小さめのサムネイルにする。
+                         全幅バナー＋縦積み（情報／次に学ぶ／CTA）だと、1コース分の再開動線だけで
+                         ファーストビューをほぼ使い切ってしまい、下のカタログが見えなかった。
+                      🔴 中身は共通の飾り絵（hero-art.png）ではなくコース自身の絵柄にした。
+                         文字組みサムネがコース名を持つので、本文側からコース名の行を落とせる。 */}
+                  <div style={{ display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap' }}>
+                    {/* 152px は文字組みサムネ（画像を持たないコース）でコース名が
+                        2行に収まる下限。これ以上縮めるなら titleSize も下げること。 */}
+                    <CourseArt
+                      course={resumeArt}
+                      titleSize="var(--dc-fs-body)"
+                      style={{ width: 152, height: 92, flexShrink: 0, borderRadius: t.radius.inner }}
+                    />
 
-                {/* 「次に学ぶ」と CTA は同じ行に置く。何を開くのかとその開くボタンは隣同士が読みやすく、
-                    行を分けていた頃より2段ぶん低くなる。狭いときは flexWrap で素直に折り返す。 */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                  {nextLesson && (
-                    <div
-                      style={{
-                        flex: 1, minWidth: 240,
-                        background: t.color.primarySoft, borderRadius: t.radius.inner, padding: '10px 14px',
-                        display: 'flex', alignItems: 'center', gap: 10,
-                      }}
-                    >
-                      <span
-                        className="flex items-center justify-center flex-shrink-0"
-                        style={{ width: 30, height: 30, borderRadius: '50%', background: t.color.bg.card }}
-                        aria-hidden
-                      >
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill={t.color.primary}><path d="M9 6.5v11l9-5.5z" /></svg>
-                      </span>
-                      <div style={{ minWidth: 0 }}>
-                        <div style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.muted }}>次に学ぶ</div>
-                        <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.semibold, lineHeight: 'var(--dc-lh-ui)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {nextLesson.name}
-                          <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: t.color.text.muted, marginLeft: 8 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      {/* 画像サムネのコースだけ、絵柄がコース名を持たない。そのときだけ補う
+                          （CourseTile がサムネ下でコース名を出し分けているのと同じ判断）。 */}
+                      {resumeArt.thumbnailUrl && (
+                        <div style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: t.color.text.subtle, marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {resumeArt.title}
+                        </div>
+                      )}
+                      {/* 主役は「どこまで進んだか」＝単元名。コース名はサムネが持つので繰り返さない。
+                          右に「Lesson 2・12分」を添える。かつては下にピンクの「次に学ぶ」ブロックを
+                          置いていたが、単元名のすぐ横で足りる情報のためにカード1段を使っていた。
+                          🔴 単元名は1行 ellipsis にしない。サムネが 184px を占める SP 幅では
+                             「基礎を…」で切れて読めなくなる（実測）。2行まで許す。 */}
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
+                        <div
+                          style={{
+                            fontSize: 'var(--dc-fs-title)', fontWeight: t.font.weight.bold, letterSpacing: '-.01em', lineHeight: 'var(--dc-lh-heading)',
+                            display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2, overflow: 'hidden',
+                          }}
+                        >
+                          {nextLesson?.sectionName || resumableCourse.currentChapter || resumableCourse.title}
+                        </div>
+                        {nextLesson && (
+                          <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: t.color.text.muted, flexShrink: 0 }}>
                             {[`Lesson ${nextLesson.index}`, nextLesson.minutes && `${nextLesson.minutes}分`].filter(Boolean).join('・')}
                           </span>
+                        )}
+                      </div>
+                      {/* 左カラムが 460px 固定になったので、バーは幅なりで伸びきらない
+                          （全幅だった頃は塗りと右端の分数が離れすぎて読み合わせられなかった）。 */}
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 10, flexWrap: 'wrap' }}>
+                        <div
+                          role="progressbar"
+                          aria-valuenow={resumableCourse.progress ?? 0}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                          aria-valuetext={resumeLessons?.full}
+                          style={{ flex: 1, height: 7, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}
+                        >
+                          <div style={{ width: `${resumableCourse.progress ?? 0}%`, height: '100%', borderRadius: t.radius.pill, background: t.color.primary }} />
                         </div>
+                        {/* 「このコース」を必ず付ける。見出し右の「受講中コース全体」の分数と
+                            分母が違うので、どちらを数えた分数なのかを数字の隣で言い切る。
+                            レッスン総数が取れないコースだけ、従来どおり％に落とす。 */}
+                        <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.muted, flexShrink: 0 }}>
+                          このコース{' '}
+                          {resumeLessons ? (
+                            <>
+                              <span style={{ fontWeight: t.font.weight.bold, color: t.color.text.primary }}>{resumeLessons.short}</span>
+                              {' '}{LEARNING_HIERARCHY.lesson}
+                            </>
+                          ) : (
+                            <span style={{ fontWeight: t.font.weight.bold, color: t.color.text.primary }}>{resumableCourse.progress ?? 0}%</span>
+                          )}
+                        </span>
                       </div>
                     </div>
-                  )}
+                  </div>
 
-                  <button
-                    onClick={goToContinue}
-                    className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    style={{ background: t.color.primary, color: '#fff', borderRadius: t.radius.button, padding: '11px 24px', fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
-                  >
-                    続きから学ぶ
-                  </button>
-                  <button
-                    onClick={() => navigate(`/course/${resumableCourse.id}/curriculum`)}
-                    className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    style={{ background: t.color.bg.card, color: t.color.primary, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.button, padding: '10px 20px', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
-                  >
-                    コース目次を見る
-                  </button>
+                  {/* CTA 行。狭いときは flexWrap で素直に折り返す。 */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                    <button
+                      onClick={goToContinue}
+                      className="appearance-none border-0 outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                      style={{ background: t.color.primary, color: '#fff', borderRadius: t.radius.button, padding: '11px 24px', fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
+                    >
+                      続きから学ぶ
+                    </button>
+                    <button
+                      onClick={() => navigate(`/course/${resumableCourse.id}/curriculum`)}
+                      className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                      style={{ background: t.color.bg.card, color: t.color.primary, border: `1px solid ${t.color.primaryBorder}`, borderRadius: t.radius.button, padding: '10px 20px', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, fontFamily: 'inherit', whiteSpace: 'nowrap', cursor: 'pointer' }}
+                    >
+                      コース目次を見る
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </section>
             )}
 
             {/* ほかに学習中。ヒーローに出せるのは1コースだけなので、
                 並行して進めているコースだけをここで拾う（修了済みは出さない）。 */}
             {otherActive.length > 0 && (
-              <section
-                style={{
-                  ...(resumableCourse ? { width: 340, flexShrink: 0 } : { flex: 1, minWidth: 0 }),
-                  display: 'flex', flexDirection: 'column', gap: 12,
-                }}
-              >
-                <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ほかに学習中</div>
-                {otherActive.map((c) => {
-                  const lessons = lessonProgressFromPercent(c.progress, c.totalLessons);
-                  return (
-                    <div
-                      key={c.id}
-                      onClick={() => navigate(`/course/${c.id}/curriculum`)}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/course/${c.id}/curriculum`); } }}
-                      role="button"
-                      tabIndex={0}
-                      className="cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                      style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.tile, boxShadow: t.shadow.card, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 12, boxSizing: 'border-box' }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                        <CourseThumb categoryName={c.categoryName ?? ''} size={56} radius={14} />
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          {c.categoryName && (
-                            <div style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: t.color.text.subtle, marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                              {c.categoryName}
-                            </div>
-                          )}
-                          <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.semibold, lineHeight: 'var(--dc-lh-ui)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              <section style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {/* 見出しに件数を出す。畳んでいるときに「これで全部」と読み違えないため */}
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 8 }}>
+                  <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ほかに学習中</div>
+                  {otherActive.length > OTHER_ACTIVE_VISIBLE && (
+                    <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.muted }}>{otherActive.length} コース</span>
+                  )}
+                </div>
+                {/* 🔴 1コース＝1行の一覧にする。カード＋サムネで組むと1件あたり
+                       約110px を使い、並行受講が増えるほどここだけが下に伸びて
+                       左のヒーロー（約210px）と釣り合わなくなる。行なら1件44px で、
+                       3件でもヒーローより低い。ここは「並行して何を進めているか」の
+                       早見なので、絵は要らず、名前と残りが分かれば足りる。 */}
+                <div style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.tile, boxShadow: t.shadow.card, overflow: 'hidden' }}>
+                  {(showAllActive ? otherActive : otherActive.slice(0, OTHER_ACTIVE_VISIBLE)).map((c, i) => {
+                    const lessons = lessonProgressFromPercent(c.progress, c.totalLessons);
+                    return (
+                      <div
+                        key={c.id}
+                        onClick={() => navigate(`/course/${c.id}/curriculum`)}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); navigate(`/course/${c.id}/curriculum`); } }}
+                        role="button"
+                        tabIndex={0}
+                        className="cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: 12, padding: '11px 16px',
+                          // 行の区切りは枠線1本。カードを並べるより境目が静かで、高さも食わない
+                          borderTop: i === 0 ? undefined : `1px solid ${t.color.border.card}`,
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flex: 1, minWidth: 0 }}>
+                          <span style={{ fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, lineHeight: 'var(--dc-lh-ui)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                             {c.title}
-                          </div>
+                          </span>
+                          {/* サムネを外したので、領域はここで文字として持つ */}
+                          {c.categoryName && (
+                            <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle, flexShrink: 0 }}>{c.categoryName}</span>
+                          )}
                         </div>
-                      </div>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <div style={{ flex: 1, height: 6, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}>
+                        <div style={{ width: 96, height: 6, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden', flexShrink: 0 }}>
                           <div style={{ width: `${c.progress ?? 0}%`, height: '100%', borderRadius: t.radius.pill, background: t.color.primary }} />
                         </div>
                         <span
                           title={lessons?.full}
-                          style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: t.color.text.muted, flexShrink: 0 }}
+                          style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: t.color.text.muted, flexShrink: 0, minWidth: 34, textAlign: 'right' }}
                         >
                           {lessons ? lessons.short : `${c.progress ?? 0}%`}
                         </span>
-                        <span style={{ fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, color: t.color.primary, flexShrink: 0 }}>続きから →</span>
+                        <ChevronRight size={15} style={{ color: t.color.primary, flexShrink: 0 }} aria-hidden />
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+
+                {/* 畳んだぶんの開閉。飛び先を持たない「もっと見る」にはしない
+                    （この画面がコース一覧そのものなので、送る先が無い）。 */}
+                {otherActive.length > OTHER_ACTIVE_VISIBLE && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAllActive((v) => !v)}
+                    aria-expanded={showAllActive}
+                    className="appearance-none outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                    style={{
+                      background: 'transparent', border: 0, padding: '2px 4px', alignSelf: 'flex-start',
+                      color: t.color.primary, fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, cursor: 'pointer',
+                    }}
+                  >
+                    {showAllActive ? '畳む' : `ほか ${otherActive.length - OTHER_ACTIVE_VISIBLE} コースを表示`}
+                  </button>
+                )}
               </section>
             )}
           </div>
@@ -565,14 +619,17 @@ function MaterialsTopPage() {
 
         {/* ⑤ 領域から探す。
             ============================================================
-            🔴 ここは「コースの一覧」ではなく「領域の地図」。
-               55コースを1画面に並べると、初めて見た人に構造が伝わらない
-               （商談・初回セッションで見せたときに何がどこにあるか読めない）。
-               まず領域が family ごとに並び、選んだ先（/courses/category/:code）で
-               絞り込み・並び替えのある一覧に入る、の2段にしている。
-            🔴 グループ見出しは family（5つ）。10領域に10個の見出しを立てると
-               見出しだけで画面が埋まる。色・図形サムネも family 単位なので、
-               見出しの色と下のカードの帯が一致する。
+            🔴 かつてここは「領域の地図」（領域カードだけを並べ、コースは
+               /courses/category/:code の先で見せる2段構え）だった。やめた理由:
+               コースが1枚も見えないので、何を学べるところなのかが伝わらなかった。
+               いまは領域をブロックにして、その場でコースを並べる。
+            🔴 グループ見出し（family = キャリア/制作/構築/グロース/AI）は廃止した。
+               「コースの多い領域から先に見せる」ためには family の並びが邪魔になる。
+               領域の色・図形サムネは今も family 単位なので、色の手がかりは残っている。
+            🔴 並びはコース数の降順。同数のときは courseTaxonomy の宣言順を保つ
+               （sort は安定なので、areaCards の順序がそのまま効く）。
+            🔴 コースが多い領域は AREA_PREVIEW_LIMIT 件で畳む。畳まないと
+               Webデザイン（21コース）だけで画面が埋まり、下の領域に到達しない。
             🔴 コースが1本しかない領域は、領域ページを飛ばして直接コーストップへ。
                カード1枚だけの一覧を作らない（10領域のうち3つが該当）。
             ============================================================ */}
@@ -586,91 +643,65 @@ function MaterialsTopPage() {
             </span>
           </div>
 
-          {areaGroups.length === 0 ? (
+          {sortedAreas.length === 0 ? (
             <p style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, margin: 0 }}>
               コースを読み込んでいます…
             </p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              {areaGroups.map((group) => (
-                <section key={group.family} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span
-                      aria-hidden
-                      style={{
-                        width: 3,
-                        height: 15,
-                        borderRadius: 2,
-                        background: group.color,
-                        flexShrink: 0,
-                      }}
-                    />
-                    <h3 style={{ margin: 0, fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.bold }}>
-                      {group.label}
-                    </h3>
-                    <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle }}>
-                      {group.areas.length} {LEARNING_HIERARCHY.area}
-                    </span>
-                  </div>
+              {sortedAreas.map((a) => {
+                const expanded = openAreas.has(a.name);
+                const foldable = a.courses.length > AREA_PREVIEW_LIMIT;
+                const shown = foldable && !expanded ? a.courses.slice(0, AREA_PREVIEW_LIMIT) : a.courses;
+                const accent = categoryColor(a.name);
 
-                  <div className="wc-area-cards">
-                    {group.areas.map((a) => (
-                      <button
-                        key={a.name}
-                        type="button"
-                        onClick={() => openArea(a)}
-                        className="wc-area-card appearance-none outline-none cursor-pointer text-left focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 12,
-                          padding: '14px 16px',
-                          background: t.color.bg.card,
-                          border: `1px solid ${t.color.border.card}`,
-                          borderRadius: t.radius.card,
-                          fontFamily: 'inherit',
-                          color: t.color.text.primary,
-                        }}
-                      >
-                        <CourseThumb categoryName={a.name} size={44} radius={12} />
-                        <span style={{ minWidth: 0, flex: 1 }}>
-                          <span
-                            style={{
-                              display: 'flex',
-                              alignItems: 'baseline',
-                              gap: 8,
-                              flexWrap: 'wrap',
-                              fontSize: 'var(--dc-fs-lead)',
-                              fontWeight: t.font.weight.semibold,
-                            }}
-                          >
-                            {a.name}
-                            <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: 400, color: t.color.text.subtle }}>
-                              {a.count} {LEARNING_HIERARCHY.course}
-                            </span>
+                return (
+                  <section
+                    key={a.name}
+                    style={{
+                      // ブロックの左に領域色の帯を通す。まとまりの境目はここで見せるので、
+                      // 中のコースタイルには枠を足さない（枠の入れ子でうるさくなる）
+                      borderLeft: `3px solid ${accent}`,
+                      borderRadius: t.radius.card,
+                      background: t.color.bg.card,
+                      border: `1px solid ${t.color.border.card}`,
+                      borderLeftWidth: 3,
+                      borderLeftColor: accent,
+                      boxShadow: t.shadow.card,
+                      padding: '18px 20px 20px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 14,
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+                      <CourseThumb categoryName={a.name} size={44} radius={12} />
+
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        {/* 領域名は地図時代の --dc-fs-lead から一段上げる。
+                            ブロックの中にコースタイルが並ぶので、同じ大きさだと
+                            どこからどこまでが1つの領域なのか読めない。 */}
+                        <h3
+                          style={{
+                            margin: 0,
+                            display: 'flex',
+                            alignItems: 'baseline',
+                            gap: 10,
+                            flexWrap: 'wrap',
+                            fontSize: 'var(--dc-fs-title)',
+                            fontWeight: t.font.weight.bold,
+                            letterSpacing: '-.01em',
+                            lineHeight: 'var(--dc-lh-heading)',
+                          }}
+                        >
+                          {a.name}
+                          <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: 400, color: t.color.text.subtle }}>
+                            {a.count} {LEARNING_HIERARCHY.course}
                           </span>
-                          {a.description && (
-                            <span
-                              style={{
-                                display: 'block',
-                                marginTop: 3,
-                                fontSize: 'var(--dc-fs-caption)',
-                                color: t.color.text.muted,
-                                lineHeight: 'var(--dc-lh-ui)',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                whiteSpace: 'nowrap',
-                              }}
-                            >
-                              {a.description}
-                            </span>
-                          )}
-                          {/* 受講中があれば出す。「どこまで手を付けたか」が地図の上で分かる */}
+                          {/* 受講中があれば出す。「どこまで手を付けたか」が並びの上で分かる */}
                           {a.inProgress > 0 && (
                             <span
                               style={{
-                                display: 'inline-block',
-                                marginTop: 5,
                                 padding: '2px 8px',
                                 borderRadius: 999,
                                 background: t.color.primarySoft,
@@ -682,13 +713,75 @@ function MaterialsTopPage() {
                               学習中 {a.inProgress}
                             </span>
                           )}
-                        </span>
-                        <ChevronRight size={16} aria-hidden style={{ color: t.color.text.subtle, flexShrink: 0 }} />
+                        </h3>
+                        {a.description && (
+                          <p
+                            style={{
+                              margin: '3px 0 0',
+                              fontSize: 'var(--dc-fs-caption)',
+                              color: t.color.text.muted,
+                              lineHeight: 'var(--dc-lh-ui)',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {a.description}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* 🔴 見出し右の「この学習領域をすべて見る」は置かない。
+                             ブロックの中にその領域のコースが全部（8件超は「すべて見る」で）
+                             並んでいるので、行き先が同じ一覧の別ページになるだけだった。
+                             押す先はコースタイル1種類に絞る。 */}
+                    </div>
+
+                    <div className="wc-area-grid grid" style={{ gap: 14 }}>
+                      {shown.map((c) => (
+                        <CourseTile
+                          key={c.id}
+                          course={c}
+                          onClick={() => navigate(`/course/${c.id}/curriculum`)}
+                        />
+                      ))}
+                    </div>
+
+                    {foldable && (
+                      <button
+                        type="button"
+                        onClick={() => toggleArea(a.name)}
+                        aria-expanded={expanded}
+                        className="appearance-none outline-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 6,
+                          width: '100%',
+                          minHeight: 40,
+                          background: 'transparent',
+                          border: `1px solid ${t.color.border.card}`,
+                          borderRadius: t.radius.button,
+                          fontFamily: 'inherit',
+                          fontSize: 'var(--dc-fs-body)',
+                          fontWeight: t.font.weight.bold,
+                          color: t.color.primary,
+                        }}
+                      >
+                        {expanded
+                          ? '閉じる'
+                          : `すべて見る（${a.count} ${LEARNING_HIERARCHY.course}）`}
+                        <ChevronDown
+                          size={14}
+                          aria-hidden
+                          style={{ transform: expanded ? 'rotate(180deg)' : 'none' }}
+                        />
                       </button>
-                    ))}
-                  </div>
-                </section>
-              ))}
+                    )}
+                  </section>
+                );
+              })}
             </div>
           )}
         </section>

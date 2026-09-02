@@ -158,11 +158,24 @@ const resumeCourses: ResumeCourse[] = [
 /**
  * 受講中のコース。名前・説明・レッスン数はすべてカタログから引く。
  * 別の名前・別のレッスン数を書くと、同じ画面に同じコースが2つの姿で出る。
- * 3件は別々の学習領域から選び、「ほかに学習中」の行で複数のサムネ図形が出るようにする。
+ *
+ * 🔴 学習中（0 < progress < 100）を複数そろえる。学習トップの「ほかに学習中」は
+ *    「続きから学ぶコース」と修了済みを除いた残りを出すので、以前の3件では
+ *    実質1件しか並ばず、列が空いてレイアウトの確認ができなかった。
+ *    領域もばらけさせて、サムネ図形が複数出るようにしている。
+ * 🔴 studyActivitySeed.ts が使う4コース（design-basics / html-css / banner-dojo /
+ *    capcut）は必ずこの一覧に入れておく。学習記録の「教材別の累計」は学習
+ *    アクティビティ側から集計するので、受講していないコースに学習時間だけが
+ *    立っている状態になると画面が食い違う。
  */
 const userCourses = [
   { id: RESUME_COURSE_ID, progress: resumeProgress, durationminutes: resumeTotalMinutes },
   { id: COURSE_ID['html-css'], progress: 10, durationminutes: 40 },
+  { id: COURSE_ID['banner-dojo'], progress: 45, durationminutes: 180 },
+  { id: COURSE_ID.figma, progress: 62, durationminutes: 70 },
+  { id: COURSE_ID.instagram, progress: 35, durationminutes: 120 },
+  { id: COURSE_ID['ai-design'], progress: 18, durationminutes: 100 },
+  { id: COURSE_ID.seo, progress: 80, durationminutes: 100 },
   { id: COURSE_ID.capcut, progress: 100, durationminutes: 20 },
 ].map((enrolled) => {
   const c = courseInCatalog(enrolled.id);

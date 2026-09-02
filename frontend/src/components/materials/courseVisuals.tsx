@@ -1,3 +1,4 @@
+import type { CSSProperties, ReactNode } from 'react';
 import { t } from '../../theme/tokens';
 import { familyOf } from '../../constants/courseTaxonomy';
 
@@ -131,4 +132,57 @@ const THUMB_THEMES = ['red', 'dark', 'cream'] as const;
  */
 export function thumbTheme(courseId: number) {
   return t.color.thumb[THUMB_THEMES[Math.floor(Math.abs(courseId) / 3) % THUMB_THEMES.length]];
+}
+
+/**
+ * コース1本の絵柄。画像を持つコースは画像、無ければ領域名＋コース名を大きく組む。
+ *
+ * 🔴 コース名を絵柄の中に組むのはただの装飾ではない。呼び出し側は
+ *    「サムネがコース名を持っているか」で本文側のコース名を出し分けており
+ *    （CourseTile / MaterialsTopPage の「前回学習したもの」）、同じ名前が
+ *    上下に2回並ぶのを避けている。文字を消すとこの前提が崩れる。
+ *
+ * 枠の大きさ・角丸は呼び出し側が style で決める（一覧は 16:9、ヒーローは固定サイズ）。
+ * バッジなど絵柄の上に重ねるものは children で渡す（内側は position:relative）。
+ */
+export function CourseArt({
+  course,
+  titleSize = 'var(--dc-fs-title)',
+  style,
+  children,
+}: {
+  course: Pick<GalleryCourse, 'id' | 'title' | 'categoryName' | 'thumbnailUrl'>;
+  /** 文字組みサムネのコース名の大きさ。小さい枠に置くときだけ下げる */
+  titleSize?: string;
+  style?: CSSProperties;
+  children?: ReactNode;
+}) {
+  const theme = thumbTheme(course.id);
+
+  return (
+    <div style={{ position: 'relative', background: theme.bg, overflow: 'hidden', ...style }}>
+      {course.thumbnailUrl ? (
+        <img
+          src={course.thumbnailUrl}
+          alt=""
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        />
+      ) : (
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 16px', boxSizing: 'border-box' }}>
+          <div style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: t.font.weight.semibold, color: theme.sub, letterSpacing: '.04em' }}>
+            {course.categoryName}
+          </div>
+          <div
+            style={{
+              fontSize: titleSize, fontWeight: t.font.weight.bold, color: theme.fg, lineHeight: 'var(--dc-lh-heading)', letterSpacing: '-.01em',
+              display: '-webkit-box', WebkitBoxOrient: 'vertical', WebkitLineClamp: 2, overflow: 'hidden',
+            }}
+          >
+            {course.title}
+          </div>
+        </div>
+      )}
+      {children}
+    </div>
+  );
 }

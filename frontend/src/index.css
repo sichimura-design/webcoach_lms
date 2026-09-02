@@ -1565,40 +1565,38 @@ body.learning-immersive {
   }
 }
 
-/* 学習トップの「領域から探す」。
-   🔴 かつては「1440pxキャンバス内なので固定3列で足りる」と固定していたが、
-      MaterialsTopPage の useScaleToFit（transform:scale で全体を縮める方式）を
-      やめたので、狭い幅は列数で受けることになった。しきい値は
-      .wc-area-grid（領域ページ側の同種グリッド）と揃えている。 */
-.wc-area-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
+/* 学習トップの「領域から探す」は、領域カードの地図をやめて
+   「領域ブロック＋その領域のコース一覧」になった（MaterialsTopPage ⑤）。
+   コースのグリッドは領域ページと同じ .wc-area-grid を使い回すので、
+   かつてここにあった .wc-area-cards（領域カード3列）は削除した。
 
-@media (max-width: 1100px) {
-  .wc-area-cards {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 720px) {
-  .wc-area-cards {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* サイドバー展開中は本文が 152px（224 − 72）細くなるぶんを補う
-   （.mypage-rank-split などと同じ理由・同じ足し方） */
+   ただし学習トップのブロックは左右に 20px のパディングを持つぶん、
+   領域ページより1列ぶん早く詰まる。サイドバー展開中（本文が
+   152px = 224 − 72 細くなる）はそこにさらに乗るので、1段落とす
+   （.mypage-rank-split などと同じ理由・同じ足し方）。 */
 @media (max-width: 1252px) {
-  body.sidebar-expanded .wc-area-cards {
+  body.sidebar-expanded .wc-area-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1000px) {
+  body.sidebar-expanded .wc-area-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* サイドバー展開中は本文が 152px 細くなる。フォルダ列 248px も引かれるので、
+   1279 + 152 = 1431px 以下で先に2列へ落とす（.wc-area-cards と同じ足し方） */
+@media (max-width: 1431px) {
+  body.sidebar-expanded .notes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 1279px) {
   .notes-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
