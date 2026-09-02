@@ -1,5 +1,6 @@
 import { useRef, useState, type CSSProperties } from 'react';
-import { ArrowUp, ChevronDown, HelpCircle, History, ImagePlus, Sparkles, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowUp, HelpCircle, History, ImagePlus, Sparkles, X } from 'lucide-react';
 import {
   AiSkillId,
   AI_SKILL_CATEGORY_LABEL,
@@ -8,7 +9,7 @@ import {
   ConcreteAiSkillId,
   skillsInCategory,
 } from '../../types/aiSkill';
-import SkillSelector from '../learning/SkillSelector';
+import SkillPlusMenu from '../learning/SkillPlusMenu';
 import { AI_SKILL_ICON } from './aiSkillIcons';
 
 /**
@@ -22,6 +23,8 @@ import { AI_SKILL_ICON } from './aiSkillIcons';
  *   ・機能を見て選びたい人         → 下のグリッドから直接選ぶ
  * どちらから入っても同じAIワークスペースの中で続くので、
  * カードを押しても別ページ・別タブへは飛ばさない（要件§「AIアプリを選択した後の画面」）。
+ * 🔴 これは「起動の導線」の話。カード下の「詳しく見る」だけは説明を読むための
+ *    別導線で、子ページ /ai-coach/apps/:appId へ飛ぶ（起動はしない）。
  *
  * 1a に合わせて外したもの:
  *   ・「続きから」チップ … 履歴と役割が重なる。右上の「履歴」に寄せた
@@ -64,20 +67,7 @@ export function AiCoachHome({
   const [image, setImage] = useState<string | null>(null);
   const [skillId, setSkillId] = useState<AiSkillId>('auto');
   const fileInputRef = useRef<HTMLInputElement>(null);
-  /**
-   * 説明を開いているアプリ。
-   * 🔴 既定は全部たたむ。カードは「名前＋サムネイル」だけの1行にして、
-   *    11枚を一覧として読めるようにするのがこの画面の狙い（説明を全部載せると壁になる）。
-   *    複数同時に開けてよい（見比べる操作を邪魔しない）。
-   */
-  const [openDetails, setOpenDetails] = useState<Set<ConcreteAiSkillId>>(new Set());
-
-  const toggleDetails = (id: ConcreteAiSkillId) =>
-    setOpenDetails((prev) => {
-      const next = new Set(prev);
-      if (!next.delete(id)) next.add(id);
-      return next;
-    });
+  const navigate = useNavigate();
 
   const attachImage = (file: File) => {
     if (!file.type.startsWith('image/')) return;
@@ -99,8 +89,10 @@ export function AiCoachHome({
       {/* 1a はコンテンツ幅いっぱい（padding 20px 40px 48px）で6枚を3列に並べる。
           --wc-page-x を既定の clamp(20px,5vw,64px) から 40px に落として合わせ、
           4Kでカードが伸び切らないよう max だけ持たせている。 */}
+      {/* wc-ai-enter … 開いた瞬間にヒーロー→入力欄→一覧の順で入る（index.css）。
+          「AIコーチが起動した」ことが動きで分かるようにするためのもの。 */}
       <div
-        className="wc-page"
+        className="wc-page wc-ai-enter"
         style={
           {
             '--wc-page-max': '1180px',
@@ -159,7 +151,7 @@ export function AiCoachHome({
 
         {/* ── 大きな入力欄（AIコーチ兼ルーター）── */}
         {/* 🔴 overflow:hidden を付けないこと。
-            ツール行の SkillSelector は position:absolute のリストを下へ開くので、
+            ツール行の SkillPlusMenu は position:absolute のリストを下へ開くので、
             ここで切ると「おまかせ」の選択肢がカードに食われて数pxしか見えなくなる。
             角丸からの飛び出しは textarea 側を透明＋上だけ角丸にして防いでいる。 */}
         <div
@@ -270,7 +262,7 @@ export function AiCoachHome({
               onClick={() => fileInputRef.current?.click()}
               aria-label="画像を添付する"
               title="画像を添付する"
-              className="grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+              className="wc-ai-icon-btn grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
               style={{
                 width: 32,
                 height: 32,
@@ -284,8 +276,9 @@ export function AiCoachHome({
             >
               <ImagePlus size={15} />
             </button>
-            {/* 「AI選択できる？」への答え。既定は自動で、ここから明示的に選べる */}
-            <SkillSelector value={skillId} onChange={setSkillId} />
+            {/* 「AI選択できる？」への答え。既定は自動で、ここから明示的に選べる。
+                ここは入力欄がページ上部にあるので、リストは下へ開かせる。 */}
+            <SkillPlusMenu value={skillId} onChange={setSkillId} direction="down" />
             <span style={{ fontSize: 12, color: 'var(--dc-text-subtle)' }}>Ctrl+Enter で送信</span>
             <div style={{ flex: 1 }} />
             <button
@@ -293,7 +286,7 @@ export function AiCoachHome({
               onClick={submit}
               disabled={!canSubmit}
               aria-label="AIコーチに送信"
-              className="grid place-items-center disabled:opacity-40"
+              className="wc-ai-send grid place-items-center disabled:opacity-40 focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
               style={{
                 width: 44,
                 height: 44,
@@ -344,20 +337,20 @@ export function AiCoachHome({
   );
 
   /**
-   * アプリ1枚。既定は「サムネイル＋名前」の1行で、説明はシェブロンで開く。
+   * アプリ1枚。サムネイル → 名前 → 短い説明 → 「詳しく見る」の縦組み。
    *
-   * 🔴 器は <div>。カード全体を <button> にすると、中に置く開閉ボタンが
+   * 🔴 器は <div>。カード全体を <button> にすると、中に置く「詳しく見る」が
    *    button の入れ子（不正なHTML／キーボード操作が壊れる）になる。
-   *    代わりに「本体ボタン（押すと始まる）」と「開閉ボタン」の2つを並べ、
+   *    代わりに「本体ボタン（押すと始まる）」と「詳しく見る」の2つを並べ、
    *    押した先が違うことをホバーの地色で見せる。
-   * 🔴 本体ボタンは1クリックでそのモードに入る。ここを2クリック（開いてから始める）に
-   *    しないこと。アプリを選ぶ人はカードの名前だけで選んでいる。
+   * 🔴 本体ボタンは1クリックでそのモードに入る。ここを2クリック（説明を読んでから始める）に
+   *    しないこと。アプリを選ぶ人はカードの絵と名前だけで選んでいる。
+   * 🔴 長い手順や対話例はここに載せない。カードに収まらないので子ページ
+   *    （/ai-coach/apps/:appId）が受け持つ。
    */
   function renderCard(id: ConcreteAiSkillId) {
     const meta = AI_SKILL_META[id];
     const Icon = AI_SKILL_ICON[meta.icon];
-    const open = openDetails.has(id);
-    const detailsId = `ai-app-details-${id}`;
 
     return (
       <div
@@ -371,115 +364,89 @@ export function AiCoachHome({
           overflow: 'hidden',
         }}
       >
-        <div className="flex items-stretch">
-          <button
-            type="button"
-            onClick={() => onSelectSkill(id)}
-            className="ai-home-app-start flex items-center text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-            style={{
-              flex: 1,
-              minWidth: 0,
-              gap: 12,
-              padding: '14px 8px 14px 16px',
-              border: 0,
-              background: 'transparent',
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-            }}
-          >
-            <span
-              aria-hidden
-              className="grid place-items-center flex-shrink-0"
-              style={{
-                width: 36,
-                height: 36,
-                borderRadius: 'var(--dc-radius-md)',
-                background: 'var(--dc-soft-100)',
-                color: 'var(--dc-primary)',
-              }}
-            >
-              <Icon size={18} />
-            </span>
+        <button
+          type="button"
+          onClick={() => onSelectSkill(id)}
+          className="ai-home-app-start text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            minWidth: 0,
+            padding: 0,
+            border: 0,
+            background: 'transparent',
+            cursor: 'pointer',
+            fontFamily: 'inherit',
+          }}
+        >
+          <span className="ai-home-app-thumb">
+            {meta.thumbnail ? (
+              <img src={`${process.env.PUBLIC_URL}/${meta.thumbnail}`} alt="" />
+            ) : (
+              // 画像が未登録のアプリ。枠を空けずにアイコンで埋める
+              <span
+                aria-hidden
+                className="grid place-items-center"
+                style={{ width: '100%', height: '100%', color: 'var(--dc-primary)' }}
+              >
+                <Icon size={32} strokeWidth={1.5} />
+              </span>
+            )}
+          </span>
+
+          <span style={{ display: 'block', padding: '12px 16px 14px' }}>
             <span
               className="truncate"
-              style={{ fontSize: 14.5, fontWeight: 700, color: 'var(--dc-text)' }}
+              style={{ display: 'block', fontSize: 14.5, fontWeight: 700, color: 'var(--dc-text)' }}
             >
               {meta.shortLabel}
             </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => toggleDetails(id)}
-            aria-expanded={open}
-            aria-controls={detailsId}
-            aria-label={`${meta.shortLabel}の説明を${open ? '閉じる' : '開く'}`}
-            className="grid place-items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD] hover:bg-[#FDF7F3]"
-            style={{
-              width: 44,
-              flex: 'none',
-              border: 0,
-              borderLeft: '1px solid var(--dc-border)',
-              background: 'transparent',
-              color: 'var(--dc-text-subtle)',
-              cursor: 'pointer',
-            }}
-          >
-            <ChevronDown
-              size={16}
+            <span
               style={{
-                transform: open ? 'rotate(180deg)' : 'none',
-                transition: 'transform 160ms var(--dc-ease)',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+                overflow: 'hidden',
+                marginTop: 4,
+                fontSize: 12,
+                lineHeight: 1.7,
+                color: 'var(--dc-text-muted)',
               }}
-            />
-          </button>
-        </div>
-
-        {open && (
-          <div
-            id={detailsId}
-            style={{
-              padding: '0 16px 16px',
-              borderTop: '1px solid var(--dc-border)',
-              paddingTop: 12,
-            }}
-          >
-            <p style={{ margin: 0, fontSize: 12.5, lineHeight: 1.7, color: 'var(--dc-text-muted)' }}>
+            >
               {meta.description}
-            </p>
-            {/* 何を入力すればいいか・どんな場面か。名前だけでは選べない人向けの手がかり */}
-            <p
-              style={{
-                margin: '8px 0 0',
-                fontSize: 11.5,
-                lineHeight: 1.7,
-                color: 'var(--dc-text-subtle)',
-              }}
-            >
-              <span style={{ color: 'var(--dc-primary)', fontWeight: 700 }}>入力するもの：</span>
-              {meta.inputHint}
-            </p>
-            <p
-              style={{
-                margin: '4px 0 0',
-                fontSize: 11.5,
-                lineHeight: 1.7,
-                color: 'var(--dc-text-subtle)',
-              }}
-            >
-              <span style={{ color: 'var(--dc-primary)', fontWeight: 700 }}>こんなときに：</span>
-              {meta.useCase}
-            </p>
-          </div>
-        )}
+            </span>
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => navigate(`/ai-coach/apps/${id}`)}
+          className="ai-home-app-doc text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+          style={{
+            border: 0,
+            borderTop: '1px solid var(--dc-border)',
+            background: 'transparent',
+            padding: '10px 16px',
+            fontFamily: 'inherit',
+            fontSize: 12,
+            fontWeight: 700,
+            color: 'var(--dc-primary)',
+            cursor: 'pointer',
+          }}
+        >
+          詳しく見る →
+        </button>
       </div>
     );
   }
 }
 
 /** 右上のチップ（ヘルプ・履歴）。1a の h34 / r12 / 12.5px */
+// 押した手応え（transition と active の沈み込み）はAIコーチ全体で揃えている。
+// 背景色だけは既存の #FDF7F3 を保つため .wc-ai-chip ではなく Tailwind のまま。
 const CHIP_CLASS =
-  'inline-flex items-center hover:bg-[#FDF7F3] focus-visible:ring-2 focus-visible:ring-[#F6B9BD]';
+  'inline-flex items-center transition-colors duration-150 hover:bg-[#FDF7F3] active:translate-y-px motion-reduce:transition-none motion-reduce:active:translate-y-0 focus-visible:ring-2 focus-visible:ring-[#F6B9BD]';
 
 const chipStyle: CSSProperties = {
   gap: 6,

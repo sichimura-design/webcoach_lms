@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Sparkles, X } from 'lucide-react';
+import { Maximize2, Sparkles, X } from 'lucide-react';
 import { color } from '../../theme/webcoachTheme';
 import { useLessonAi, LessonAiMessage } from '../../hooks/useLessonAi';
 import { useNoteCapture } from '../../hooks/useNoteCapture';
@@ -145,13 +145,14 @@ export function GlobalAiCoachDrawer() {
 
   return (
     <div
-      className="fixed right-0 top-0 h-full w-full sm:w-[420px] z-50 flex flex-col"
+      // wc-drawer-right … 右から滑り込む（index.css）。以前は瞬間表示だった
+      className="wc-drawer-right fixed right-0 top-0 h-full w-full sm:w-[420px] z-50 flex flex-col"
       style={{ background: color.surface, boxShadow: '-8px 0 32px rgba(33,42,57,.16)' }}
     >
       <div
         className="flex items-center"
         style={{
-          gap: 8,
+          gap: 6,
           minHeight: 48,
           padding: '0 14px',
           borderBottom: `1px solid ${color.border}`,
@@ -159,16 +160,35 @@ export function GlobalAiCoachDrawer() {
         }}
       >
         <strong style={{ fontSize: 13, fontWeight: 800, color: color.text }}>AIコーチに相談</strong>
+        {/* 「広い画面で続ける」。文字のボタンは会話の上でかさばるので、
+            器のバーにアイコンだけ置く（AiCoachPane 側からは外した） */}
         <button
           type="button"
-          onClick={() => setDrawerOpen(false)}
-          aria-label="閉じる"
+          onClick={handleExpand}
+          aria-label="広い画面で続ける"
+          title="いまの会話・画像・モードを引き継いで広い画面で続けます"
+          className="wc-ai-icon-btn grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
           style={{
             marginLeft: 'auto',
             width: 30,
             height: 30,
-            display: 'grid',
-            placeItems: 'center',
+            border: `1px solid ${color.borderStrong}`,
+            borderRadius: 8,
+            background: color.surface,
+            color: color.iconMuted,
+            cursor: 'pointer',
+          }}
+        >
+          <Maximize2 size={14} />
+        </button>
+        <button
+          type="button"
+          onClick={() => setDrawerOpen(false)}
+          aria-label="閉じる"
+          className="wc-ai-icon-btn grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+          style={{
+            width: 30,
+            height: 30,
             border: `1px solid ${color.borderStrong}`,
             borderRadius: 8,
             background: color.surface,
@@ -184,7 +204,6 @@ export function GlobalAiCoachDrawer() {
         <AiCoachPane
           ai={ai}
           variant="panel"
-          onExpand={handleExpand}
           onOpenWide={handleOpenWide}
           onSaveAnswer={(message) => void handleSaveAnswer(message)}
           onAppendToMemo={notSupported}

@@ -9,15 +9,15 @@ import { AI_SKILL_ICON } from './aiSkillIcons';
  * 別ページを開いたようには見せない。出すのは
  *   ・AIコーチへ戻る導線
  *   ・いまどの機能を使っているか（機能名＋1行説明）
- *   ・AIがいま参照しているもの
  *   ・その機能に必要な入力（画像が要るモードだけ）
- * の4つに限る。裏で専用プロンプトやモデルを使っていても、ユーザーには
+ * の3つに限る。裏で専用プロンプトやモデルを使っていても、ユーザーには
  * 「AIコーチの◯◯機能を使っている」という見え方にする。
+ *
+ * 🔴 かつてここにあった「参照中」のチップ行は削除した。常設する情報ではなく、
+ *    回答の中に「◯◯を参照して回答しています」と書けば足りる（AiCoachPane の ReferenceNote）。
  */
 interface SkillModeHeaderProps {
   skillId: ConcreteAiSkillId;
-  /** ヘッダーに並べる参照中のもの（教材見出し・課題の評価基準・添付画像など） */
-  references: string[];
   /** 添付済みの画像。画像が必要なモードで未添付なら添付を促す */
   image: string | null;
   /** AIコーチ（汎用チャット）へ戻る */
@@ -33,7 +33,6 @@ interface SkillModeHeaderProps {
 
 export function SkillModeHeader({
   skillId,
-  references,
   image,
   onBack,
   onOpenLesson,
@@ -51,7 +50,7 @@ export function SkillModeHeader({
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center"
+          className="wc-ai-chip inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
           style={{
             gap: 4,
             height: 28,
@@ -60,6 +59,7 @@ export function SkillModeHeader({
             borderRadius: 8,
             background: color.surface,
             color: color.textMuted,
+            fontFamily: 'inherit',
             fontSize: 10.5,
             fontWeight: 700,
             cursor: 'pointer',
@@ -86,7 +86,7 @@ export function SkillModeHeader({
           <button
             type="button"
             onClick={onOpenLesson}
-            className="inline-flex items-center"
+            className="wc-ai-chip inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={{
               gap: 4,
               height: 28,
@@ -95,6 +95,7 @@ export function SkillModeHeader({
               borderRadius: 8,
               background: color.surface,
               color: color.primary,
+              fontFamily: 'inherit',
               fontSize: 10.5,
               fontWeight: 700,
               cursor: 'pointer',
@@ -112,7 +113,7 @@ export function SkillModeHeader({
             aria-pressed={referenceOpen}
             aria-label="参照情報の表示を切り替える"
             title="参照情報"
-            className="grid place-items-center"
+            className="wc-ai-icon-btn grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={{
               width: 28,
               height: 28,
@@ -132,32 +133,6 @@ export function SkillModeHeader({
       <p style={{ margin: '7px 0 0', fontSize: 11.5, lineHeight: 1.7, color: color.textSecondary }}>
         {meta.modeLead}
       </p>
-
-      {references.length > 0 && (
-        <div className="flex flex-wrap items-center" style={{ gap: 5, marginTop: 7 }}>
-          <span style={{ fontSize: 9.5, color: color.textFaint, flexShrink: 0 }}>参照中</span>
-          {references.map((ref) => (
-            <span
-              key={ref}
-              title={ref}
-              style={{
-                maxWidth: 220,
-                padding: '3px 8px',
-                borderRadius: 999,
-                background: color.primarySoft,
-                color: color.primary,
-                fontSize: 9.5,
-                fontWeight: 700,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {ref}
-            </span>
-          ))}
-        </div>
-      )}
 
       {/* 必要な入力。押すまで何も起きないので、先に何を渡すかだけを示す */}
       {needsImage && (
@@ -183,7 +158,7 @@ export function SkillModeHeader({
           <button
             type="button"
             onClick={onRequestImage}
-            className="inline-flex items-center"
+            className="wc-ai-send inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={{
               gap: 5,
               height: 30,
@@ -192,6 +167,7 @@ export function SkillModeHeader({
               borderRadius: 9,
               background: color.primary,
               color: '#fff',
+              fontFamily: 'inherit',
               fontSize: 11,
               fontWeight: 700,
               cursor: 'pointer',

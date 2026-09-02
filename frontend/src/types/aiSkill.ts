@@ -94,6 +94,13 @@ export interface AiSkillMeta {
   cta: string;
   category: AiSkillCategory;
   icon: AiSkillIconKey;
+  /**
+   * 一覧カードのサムネイル画像。public/ 起点の相対パス（例 'images/ai-apps/design-review.png'）。
+   * 🔴 参照するときは必ず process.env.PUBLIC_URL を前置する。dev プレビューは
+   *    /branches/<slug>/ のサブパス配信なので、先頭 / から書くと 404 になる。
+   * 未設定なら icon のフォールバックを出すので、画像が揃うまで空のままでよい。
+   */
+  thumbnail?: string;
   /** カードの説明＝何ができるか（1〜2文） */
   description: string;
   /** カードの補助＝何を入力するか */

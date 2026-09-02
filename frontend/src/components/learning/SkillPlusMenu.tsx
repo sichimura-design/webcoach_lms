@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown, Check } from 'lucide-react';
+import { Check, Plus } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import {
   AiSkillId,
@@ -11,20 +11,34 @@ import {
 } from '../../types/aiSkill';
 
 /**
- * AIコーチのモードセレクタ（仕様§7）。
+ * AIアプリ（モード）の選択口。入力欄の「＋」1つに集約したもの。
+ *
+ * 🔴 かつてはヘッダーの `おまかせ ▾` ピル（SkillSelector）と、入力欄の上の
+ *    機能一覧（AiSkillDock）の2つがあり、さらにヘッダー自体が器のバーと二重だった。
+ *    「押せるところ・選べるものが多すぎる」というレビュー指摘で、
+ *    **選択口はこの＋ボタン1つだけ**に統合した。
  *
  * 通常はここを触らせない。既定は「おまかせ」で、内容に応じてAIコーチが提案する。
  * ただし目的が明確なユーザー（「文章を直したい」だけの人）に毎回提案を待たせるのは
- * 遠回りなので、直接指定できる口を1つ用意しておく。
- * だから見た目は控えめなピル1つに留め、選択肢を常時展開しない。
+ * 遠回りなので、直接指定できる口を1つ残しておく。だからラベルを持たないアイコンにする。
+ *
+ * 🔴 既定ではリストを**上**へ開く。この＋は画面下端の入力欄にあるので、下に開くと切れる。
+ *    AI専用ページのホームだけは入力欄がページ上部にあるので down を渡す。
  */
-interface SkillSelectorProps {
+interface SkillPlusMenuProps {
   value: AiSkillId;
   onChange: (skillId: AiSkillId) => void;
   disabled?: boolean;
+  /** リストを開く向き。既定は上（会話画面の入力欄は画面下端にあるため） */
+  direction?: 'up' | 'down';
 }
 
-export function SkillSelector({ value, onChange, disabled = false }: SkillSelectorProps) {
+export function SkillPlusMenu({
+  value,
+  onChange,
+  disabled = false,
+  direction = 'up',
+}: SkillPlusMenuProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +71,7 @@ export function SkillSelector({ value, onChange, disabled = false }: SkillSelect
         onChange(id);
         setOpen(false);
       }}
-      className="flex items-center"
+      className="wc-ai-menu-item flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
       style={{
         gap: 7,
         width: '100%',
@@ -66,6 +80,7 @@ export function SkillSelector({ value, onChange, disabled = false }: SkillSelect
         borderRadius: 8,
         background: value === id ? color.primaryTint : 'transparent',
         color: value === id ? color.primary : color.textBody,
+        fontFamily: 'inherit',
         fontSize: 11.5,
         fontWeight: value === id ? 700 : 500,
         textAlign: 'left',
@@ -85,36 +100,38 @@ export function SkillSelector({ value, onChange, disabled = false }: SkillSelect
         disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="AIコーチのモードを選ぶ"
-        className="inline-flex items-center disabled:opacity-50"
+        // ラベルを持たないので、いまのモードは読み上げとツールチップで伝える
+        aria-label={
+          active ? `AIアプリを選ぶ（いま: ${AI_SKILL_MODE_LABEL[value]}）` : 'AIアプリを選ぶ'
+        }
+        title={active ? `${AI_SKILL_MODE_LABEL[value]}（AIアプリを選ぶ）` : 'AIアプリを選ぶ'}
+        className="wc-ai-icon-btn grid place-items-center disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
         style={{
-          gap: 4,
-          height: 26,
-          padding: '0 9px',
-          borderRadius: 999,
-          border: `1px solid ${active ? color.primaryBorder : color.borderStrong}`,
-          background: active ? color.primarySoft : color.surface,
-          color: active ? color.primary : color.textMuted,
-          fontSize: 10,
-          fontWeight: 700,
+          width: 30,
+          height: 30,
+          border: 0,
+          borderRadius: 8,
+          // 専門モードに入っているあいだだけ色を持たせる。
+          // ラベルが無いので、色が唯一の「いま切り替わっている」印になる。
+          background: active ? color.primarySoft : color.hoverBg,
+          color: active ? color.primary : color.iconMuted,
           cursor: disabled ? 'default' : 'pointer',
-          whiteSpace: 'nowrap',
         }}
       >
-        {AI_SKILL_MODE_LABEL[value]}
-        <ChevronDown size={11} />
+        <Plus size={16} />
       </button>
 
       {open && (
         <div
           role="listbox"
+          className="wc-ai-menu"
           style={{
             position: 'absolute',
-            top: 30,
+            ...(direction === 'up' ? { bottom: 36 } : { top: 36 }),
             left: 0,
             zIndex: 60,
             minWidth: 224,
-            maxHeight: 340,
+            maxHeight: 'min(340px, 50vh)',
             overflowY: 'auto',
             padding: 5,
             border: `1px solid ${color.borderStrong}`,
@@ -159,4 +176,4 @@ export function SkillSelector({ value, onChange, disabled = false }: SkillSelect
   );
 }
 
-export default SkillSelector;
+export default SkillPlusMenu;

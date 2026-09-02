@@ -522,25 +522,27 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
           教材に入ったらLMSの外枠は不要、というレビュー方針。
           サイドバーの余白は AppHeader 自身の effect が付けているので、
           描かなければ自動的に消える。 */}
+      {/* 🔴 上部バーはこのシェルの全幅ではなく、本文カラム（.wc-lesson-main）の中に置く。
+             全幅に渡していたころは、1280px以上でドッキングしたAIコーチが
+             「ヘッダーの下から」始まっていた。AIコーチの上にレッスンのバーは要らない、
+             というレビュー指摘への対応（1280px未満はパネルが position:fixed で
+             もともと全高なので、見た目は変わらない）。 */}
       <div
         className="wc-learning-shell"
         // 読み幅の切替をCSS側で拾うための印。パネルが並んでいる間だけ本文を狭める
         data-support-open={support.open ? 'true' : 'false'}
-        style={{ display: 'grid', gridTemplateRows: '64px minmax(0, 1fr)' }}
       >
-        <LessonTopBar
-          courseName={outline?.courseName ?? doc?.courseName ?? ''}
-          lessonTitle={doc?.title ?? ''}
-          lessonIndex={lessonIndex > 0 ? lessonIndex : null}
-          lessonTotal={flatLessons.length}
-          courseId={courseId}
-          lessonId={doc?.lessonId ?? null}
-          onBackToCourse={onBack}
-        />
+        <div className="wc-lesson-main">
+          <LessonTopBar
+            courseName={outline?.courseName ?? doc?.courseName ?? ''}
+            lessonTitle={doc?.title ?? ''}
+            lessonIndex={lessonIndex > 0 ? lessonIndex : null}
+            lessonTotal={flatLessons.length}
+            courseId={courseId}
+            lessonId={doc?.lessonId ?? null}
+            onBackToCourse={onBack}
+          />
 
-        {/* 本文とサポートパネルの横並び。1280px未満ではパネルが position:fixed に
-            なるので、この行は本文だけが占める（index.css 参照） */}
-        <div className="wc-lesson-body">
           {/* 目次の列は無くなったので、本文が唯一のスクロールコンテナ */}
           {/* 左右のガターはここが持つ。本文カードの幅は LessonArticle 側の
               --wc-reading-max が「カードの外寸」として決めるので、
@@ -597,39 +599,40 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
               />
             )}
           </main>
-
-          {/* ── AI／メモのパネル。1280px以上では本文と並ぶドッキング型、
-                それ未満は右からのドロワー、SPはボトムシート（index.css で分岐）── */}
-          {support.open && (
-            <SupportPanel
-              tab={support.tab}
-              onTabChange={(tab) => setSupport({ open: true, tab })}
-              onClose={closeSupport}
-              width={supportWidth}
-              onWidthChange={setSupportWidth}
-              aiPane={
-                <AiCoachPane
-                  ai={ai}
-                  onSaveAnswer={handleSaveAnswer}
-                  onAppendToMemo={handleAppendToMemo}
-                  onJumpToBlock={jumpToBlock}
-                  disabled={!selectionEnabled}
-                  onExpand={handleExpandToAiPage}
-                  onOpenWide={handleOpenWideWithSkill}
-                />
-              }
-              memoPane={
-                <MemoPane
-                  notes={notes}
-                  lessonTitle={doc?.title ?? ''}
-                  relatedNotes={relatedNotes.items}
-                  onKeepDraft={handleKeepDraft}
-                  onOpenNote={handleOpenNote}
-                />
-              }
-            />
-          )}
         </div>
+
+        {/* ── AI／メモのパネル。1280px以上では本文と並ぶドッキング型、
+              それ未満は右からのドロワー、SPはボトムシート（index.css で分岐）──
+            シェルの直下に置くので、ドッキング時はビューポートの最上部から始まる。 */}
+        {support.open && (
+          <SupportPanel
+            tab={support.tab}
+            onTabChange={(tab) => setSupport({ open: true, tab })}
+            onClose={closeSupport}
+            width={supportWidth}
+            onWidthChange={setSupportWidth}
+            onExpand={handleExpandToAiPage}
+            aiPane={
+              <AiCoachPane
+                ai={ai}
+                onSaveAnswer={handleSaveAnswer}
+                onAppendToMemo={handleAppendToMemo}
+                onJumpToBlock={jumpToBlock}
+                disabled={!selectionEnabled}
+                onOpenWide={handleOpenWideWithSkill}
+              />
+            }
+            memoPane={
+              <MemoPane
+                notes={notes}
+                lessonTitle={doc?.title ?? ''}
+                relatedNotes={relatedNotes.items}
+                onKeepDraft={handleKeepDraft}
+                onOpenNote={handleOpenNote}
+              />
+            }
+          />
+        )}
       </div>
 
       {/* ── 右下の常設アクション。教材を読みながらAI・メモへ入る唯一の入口 ──

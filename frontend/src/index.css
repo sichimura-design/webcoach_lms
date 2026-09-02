@@ -612,18 +612,25 @@ body.learning-workspace {
   overflow: hidden;
 }
 
+/* 本文カラムとサポートパネルの横並び。1280px未満ではパネルが position:fixed に
+   なる＝フロー外なので、本文カラムが全幅を占めることになる。 */
 .wc-learning-shell {
   height: 100dvh;
+  display: flex;
+  min-height: 0;
   /* 本文カラムの読み幅。LessonArticle がこの変数を読む。
      サポートパネルを横に並べたときだけ狭める（下のメディアクエリ） */
   --wc-reading-max: 1040px;
 }
 
-/* 本文とサポートパネルの横並び。1280px未満ではパネルが position:fixed に
-   なる＝フロー外なので、この行は本文だけが占めることになる。 */
-.wc-lesson-body {
-  display: flex;
-  min-height: 0;
+/* 🔴 上部バー（LessonTopBar）はシェルの全幅ではなく、この本文カラムの中だけに乗せる。
+      全幅に渡していたころは、ドッキングしたAIコーチがバーの下から始まっていた。
+      AIコーチの上にレッスンのバーは要らない、というレビュー指摘への対応。 */
+.wc-lesson-main {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-rows: 64px minmax(0, 1fr);
 }
 
 /* SPは下部ナビ（h-16 = 64px）ぶんを差し引く */
@@ -703,6 +710,11 @@ body.learning-immersive {
   .wc-lesson-support-resizer {
     display: flex;
   }
+  /* 並ぶときは「本文が押しのけられる」動きになるので、
+     オーバーレイ用のスライドインは打ち消す（二重に動いて見える） */
+  .wc-lesson-support.wc-drawer-right {
+    animation: none;
+  }
 }
 
 @media (max-width: 767px) {
@@ -720,6 +732,10 @@ body.learning-immersive {
     border-top-left-radius: 18px;
     border-top-right-radius: 18px;
     box-shadow: 0 -10px 30px rgba(190, 60, 70, .10);
+  }
+  /* SPはボトムシート。右からではなく下から出す */
+  .wc-lesson-support.wc-drawer-right {
+    animation: wcSlideInUp 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 }
 
@@ -846,6 +862,12 @@ body.learning-immersive {
 @keyframes wcSlideInRight {
   from { transform: translateX(16px); opacity: 0; }
   to   { transform: translateX(0); opacity: 1; }
+}
+
+/* 下から出るシート（SPのAI/メモパネル）。右からのスライドと使い分ける */
+@keyframes wcSlideInUp {
+  from { transform: translateY(14px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
 }
 
 .wc-drawer-scrim {
@@ -1700,26 +1722,32 @@ body.learning-immersive {
 }
 
 /* ─── AIコーチ(/ai-coach) ─────────────────── */
-/* ホームの「AIアプリでできること」3列グリッド（デザイン 1a）。
-   1a は 1280px で3列。狭い画面では2列→1列に落とす。
+/* ホームの「AIアプリでできること」グリッド。
+   カードがサムネイル付きの縦組みになったので、1行に置ける枚数を1つ増やして
+   4列を基準にする（16:9のサムネは3列だと1枚が大きすぎて、1カテゴリで
+   ファーストビューを使い切ってしまう）。狭い画面では3→2→1列に落とす。
    カテゴリ（学習／制作／キャリア／そのほか）ごとにこのグリッドを1つ使う。 */
-/* 🔴 align-items は start。stretch にすると、1枚の説明を開いた行の
-   他のカードまで一緒に伸びて空白の箱になる。 */
+/* 🔴 align-items は stretch のまま。カードは説明の行数で高さが変わるので、
+   揃えないと同じ行のカードで「詳しく見る」の位置がばらつく。 */
 .ai-home-apps {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
-  align-items: start;
 }
 
+@media (max-width: 1279px) {
+  .ai-home-apps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 @media (max-width: 1023px) {
   .ai-home-apps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 767px) {
+@media (max-width: 639px) {
   .ai-home-apps { grid-template-columns: 1fr; }
 }
 
 .ai-home-app-card {
+  display: flex;
+  flex-direction: column;
   transition: transform 160ms var(--dc-ease), box-shadow 160ms var(--dc-ease);
 }
 
@@ -1728,10 +1756,30 @@ body.learning-immersive {
   box-shadow: 0 4px 16px -8px rgba(60, 48, 32, .2);
 }
 
-/* カードは「本体（押すと始まる）」と「開閉」の2つのボタンに割れているので、
+/* カードは「本体（押すと始まる）」と「詳しく見る」の2つの押し場所に割れているので、
    どちらを押すことになるかを地色で見せる。 */
 .ai-home-app-start:hover {
   background: #fdf7f3;
+}
+
+/* サムネイルは 16:9。画像が未登録のアプリはアイコンのフォールバックが入る */
+.ai-home-app-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--dc-soft-100);
+}
+
+.ai-home-app-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ai-home-app-doc:hover {
+  text-decoration: underline;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1782,4 +1830,178 @@ body.learning-immersive {
   --border: 0 0% 14.9%;
   --input: 0 0% 14.9%;
   --ring: 0 0% 83.1%;
+}
+
+/* ─── AIコーチの手ざわり（教材パネル／常駐ドロワー／AI専用ページ共通）───────
+   このアプリのモーション語彙（--dc-ease・120ms・fadeInUp）はもともと index.css に
+   あったのに、AIコーチ配下のファイルだけが1つも使っていなかった。
+   「サイドバーからページを開くときより動きがチープ」というレビュー指摘はそれが原因。
+
+   🔴 AIコーチのボタンはすべてインライン style で書かれているため、
+      .ct-row と同じ理由で :hover / :active をここに出すしかない
+      （インライン style は擬似クラスを持てず、Tailwind の hover: より優先される）。
+      色の値は inline 側と重複させず、ここは「変化ぶん」だけを書く。 */
+
+/* チップ・小さめのボタン（質問例／教材ジャンプ／回答下のアクション／モードの選択肢） */
+.wc-ai-chip {
+  transition:
+    background-color 120ms var(--dc-ease),
+    border-color 120ms var(--dc-ease),
+    transform 120ms var(--dc-ease);
+}
+
+.wc-ai-chip:hover:not(:disabled) {
+  background-color: #FAF7F7;
+  border-color: #E6DFDF;
+}
+
+/* 押した瞬間に1px沈む。クリックが「入った」ことを目で確かめられるようにする */
+.wc-ai-chip:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* 30px前後のアイコンボタン（＋／画像添付／拡大／閉じる／参照情報） */
+.wc-ai-icon-btn {
+  transition:
+    background-color 120ms var(--dc-ease),
+    border-color 120ms var(--dc-ease),
+    color 120ms var(--dc-ease),
+    transform 120ms var(--dc-ease);
+}
+
+.wc-ai-icon-btn:hover:not(:disabled) {
+  background-color: #F5EFEF;
+  color: #6b6365;
+}
+
+.wc-ai-icon-btn:active:not(:disabled) {
+  transform: scale(.94);
+}
+
+/* 送信ボタン（赤ベタ）。無効のときは何も起きない */
+.wc-ai-send {
+  transition:
+    background-color 120ms var(--dc-ease),
+    transform 120ms var(--dc-ease);
+}
+
+.wc-ai-send:hover:not(:disabled) {
+  background-color: #B50829;
+}
+
+.wc-ai-send:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.wc-ai-send:disabled {
+  transform: none;
+}
+
+/* 開いた瞬間に中身が順に入る（AIコーチが「起動した」ことを動きで示す）。
+   CSSアニメーションはマウント時に1回だけ走るので、会話中に再生されることはない。 */
+/* 🔴 fill-mode は both ではなく backwards。both だと再生後も transform が残り続け、
+      その要素が position:fixed の子の包含ブロックになってしまう（＋文字が滲む）。
+      終わりの状態は素の状態と同じなので、遅延中だけ from を保てば足りる。 */
+.wc-ai-enter > * {
+  animation: fadeInUp 220ms var(--dc-ease) backwards;
+}
+
+.wc-ai-enter > *:nth-child(2) { animation-delay: 40ms; }
+.wc-ai-enter > *:nth-child(3) { animation-delay: 80ms; }
+/* 4つ目以降は同時。段差を無限に伸ばすと最後の要素がいつまでも出てこない */
+.wc-ai-enter > *:nth-child(n + 4) { animation-delay: 120ms; }
+
+/* 発言・回答の1件。積まれるときに下からそっと入る */
+.wc-ai-msg {
+  animation: fadeInUp 180ms var(--dc-ease);
+}
+
+/* 回答下のアクション（コピー／保存／メモに追加）。
+   毎回3つ並ぶと本文が読みにくいので、ホバーとフォーカスのときだけ出す。
+   🔴 display / visibility ではなく opacity で消すこと。ボタンをフォーカス可能なまま
+      残さないと、キーボードだけの人が保存に辿り着けなくなる。
+      高さは常に確保されるので、ホバーで回答がガタつくこともない。 */
+.wc-ai-answer-actions {
+  opacity: 0;
+  transition: opacity 150ms var(--dc-ease);
+}
+
+.wc-ai-answer:hover .wc-ai-answer-actions,
+.wc-ai-answer:focus-within .wc-ai-answer-actions {
+  opacity: 1;
+}
+
+/* ホバーできない端末で隠すと、押す方法が無くなる */
+@media (hover: none) {
+  .wc-ai-answer-actions {
+    opacity: 1;
+  }
+}
+
+/* 思考中のスケルトン（AiThinkingBubble）。回答が来る前に回答の「形」を置く */
+.wc-skel {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #F2EDED 25%, #FBF7F7 37%, #F2EDED 63%);
+  background-size: 400% 100%;
+  animation: wcShimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes wcShimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* 思考中の3点。遅延をずらして順に打たせる。
+   🔴 既存の wcPulse（scale 1→1.06）は流用しない。5pxの点では拡大がまったく見えず、
+      止まっているように映る。濃さと高さで打たせる。 */
+@keyframes wcThinkDot {
+  0%, 100% { opacity: .3; transform: translateY(0); }
+  50%      { opacity: 1;  transform: translateY(-2px); }
+}
+
+.wc-think-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #D60934;
+  animation: wcThinkDot 1s ease-in-out infinite;
+}
+
+.wc-think-dots .wc-think-dot:nth-child(2) { animation-delay: 160ms; }
+.wc-think-dots .wc-think-dot:nth-child(3) { animation-delay: 320ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-ai-chip,
+  .wc-ai-icon-btn,
+  .wc-ai-send,
+  .wc-ai-answer-actions {
+    transition: none;
+  }
+
+  .wc-ai-chip:active,
+  .wc-ai-icon-btn:active,
+  .wc-ai-send:active {
+    transform: none;
+  }
+
+  /* 🔴 animation を切るだけでなく opacity も戻すこと。
+        fadeInUp は from で opacity:0 なので、戻し忘れると
+        この設定の人に中身が丸ごと見えなくなる。 */
+  .wc-ai-enter > *,
+  .wc-ai-msg {
+    animation: none;
+    opacity: 1;
+  }
+
+  /* スケルトンは光を止めるだけで、面としては残す。
+     消すと「待っている」ことまで伝わらなくなる。
+     点も動かさないが、薄いままにしないよう不透明度は戻す。 */
+  .wc-skel,
+  .wc-think-dot {
+    animation: none;
+  }
+
+  .wc-think-dot {
+    opacity: .55;
+  }
 }

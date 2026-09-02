@@ -10,13 +10,11 @@ import { useAiCoachStore } from '../../store/aiCoachStore';
 import { bffClient } from '../../services/bffClient';
 import { LessonBlock } from '../../types/lesson';
 import { NoteSourceRef } from '../../types/notes';
-import { AI_SKILL_META, ConcreteAiSkillId, isSpecialistSkill } from '../../types/aiSkill';
+import { AiSkillId, AI_SKILL_META, ConcreteAiSkillId, isSpecialistSkill } from '../../types/aiSkill';
 import AiCoachPane from '../learning/AiCoachPane';
-import SkillSelector from '../learning/SkillSelector';
 import NoteTargetPicker from '../notes/NoteTargetPicker';
 import ReferencePanel from './ReferencePanel';
 import SkillModeHeader from './SkillModeHeader';
-import AiSkillDock from './AiSkillDock';
 
 /**
  * AI専用ページの「会話している状態」（要件§「画面は3つの状態に分ける」2・3）。
@@ -29,9 +27,10 @@ import AiSkillDock from './AiSkillDock';
  * ここで別のチャットUIを作らないのが要点で、作ると挙動が2系統に分かれて必ずズレる。
  * 状態の違いはヘッダー（headerSlot）の差し替えで表す。
  *
- * 入力欄の上の AiSkillDock は**両方の状態で出す**。全11アプリはそこから
- * その場で展開できるので、一覧のためにこの画面を離れる必要はない。
- * 専門モードで隠すと、別のアプリへ移る道がホーム経由だけになってしまう。
+ * 🔴 かつて入力欄の上に置いていた機能一覧（AiSkillDock）は廃止し、
+ *    入力欄の＋メニュー（SkillPlusMenu）に統合した。「押せるところが多すぎる」という
+ *    レビュー指摘への対応。全11アプリへはその＋から**両方の状態で**移れるので、
+ *    別のアプリへ行くのにホームへ戻る必要はない、という Dock の役割は保たれている。
  *
  * ホーム状態は AiCoachHome にあり、セッションが無いあいだは
  * このコンポーネント自体を描かない（会話が始まる前に空のセッションを作らないため）。
@@ -281,6 +280,19 @@ export function AiCoachSessionView({
     [ai.skillId, appendMessage, createSkillSession, latestImage, onOpenSession, session, sessionId]
   );
 
+  /**
+   * 入力欄の＋メニューでAIアプリを選んだとき。
+   * 「おまかせ」に戻すのはこの会話のモードを変えるだけ、
+   * 具体的なアプリを選んだら専門セッションを作る（＝旧 AiSkillDock と同じ挙動）。
+   */
+  const handlePickSkill = useCallback(
+    (skillId: AiSkillId) => {
+      if (skillId === 'auto') ai.selectSkill('auto');
+      else startSkillSession(skillId as ConcreteAiSkillId);
+    },
+    [ai, startSkillSession]
+  );
+
   /** 専門モードから抜ける。親会話があればそこへ、無ければホームへ */
   const backToCoach = useCallback(() => {
     if (session?.parentId) onOpenSession(session.parentId);
@@ -303,7 +315,6 @@ export function AiCoachSessionView({
     inSkillMode && meta ? (
       <SkillModeHeader
         skillId={ai.skillId as ConcreteAiSkillId}
-        references={ai.references}
         image={ai.image ?? latestImage}
         onBack={backToCoach}
         onOpenLesson={courseId && lessonId && !collapseIsThisLesson ? () => openLesson() : undefined}
@@ -338,7 +349,6 @@ export function AiCoachSessionView({
             <Home size={13} style={{ color: color.iconMuted }} />
             <strong style={{ ...font.label, fontWeight: 800 }}>AIコーチ</strong>
           </button>
-          <SkillSelector value={ai.skillId} onChange={ai.selectSkill} disabled={ai.loading} />
           <span
             style={{
               minWidth: 0,
@@ -359,7 +369,7 @@ export function AiCoachSessionView({
               aria-pressed={referenceOpen}
               aria-label="参照情報の表示を切り替える"
               title="参照情報"
-              className="grid place-items-center"
+              className="wc-ai-icon-btn grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
               style={{
                 width: 28,
                 height: 28,
@@ -375,31 +385,6 @@ export function AiCoachSessionView({
             </button>
           )}
         </div>
-        {ai.references.length > 0 && (
-          <div className="flex flex-wrap items-center" style={{ gap: 5, marginTop: 7 }}>
-            <span style={{ fontSize: 9.5, color: color.textFaint, flexShrink: 0 }}>現在参照中</span>
-            {ai.references.map((ref) => (
-              <span
-                key={ref}
-                title={ref}
-                style={{
-                  maxWidth: 220,
-                  padding: '3px 8px',
-                  borderRadius: 999,
-                  background: color.primarySoft,
-                  color: color.primary,
-                  fontSize: 9.5,
-                  fontWeight: 700,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {ref}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
     );
 
@@ -436,16 +421,9 @@ export function AiCoachSessionView({
           onJumpToBlock={openLesson}
           disabled={!ai.context.structured}
           headerSlot={headerSlot}
+          onPickSkill={handlePickSkill}
           quickPrompts={meta?.quickActions}
           placeholder={meta?.placeholder}
-          footerSlot={
-            /* key でセッションを移ったら展開を畳む（前の会話の open を持ち越さない） */
-            <AiSkillDock
-              key={sessionId}
-              onSelectSkill={startSkillSession}
-              activeSkillId={inSkillMode ? (ai.skillId as ConcreteAiSkillId) : null}
-            />
-          }
         />
       </div>
 

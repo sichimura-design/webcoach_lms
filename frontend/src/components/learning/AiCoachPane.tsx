@@ -1,18 +1,14 @@
 import { useRef } from 'react';
-import { AlertTriangle, Copy, ImagePlus, Maximize2, Send, Star, StickyNote, X } from 'lucide-react';
+import { AlertTriangle, Copy, ImagePlus, Send, Star, StickyNote, X } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import { LessonAiMessage, UseLessonAi } from '../../hooks/useLessonAi';
 import { LessonAiResponse } from '../../types/lesson';
-import {
-  AiSkillId,
-  AI_SKILL_META,
-  AI_SKILL_PREFER_WIDE,
-  isSpecialistSkill,
-} from '../../types/aiSkill';
+import { AiSkillId, AI_SKILL_META, isSpecialistSkill } from '../../types/aiSkill';
 import MarkdownRenderer from '../MarkdownRenderer';
-import SkillSelector from './SkillSelector';
+import SkillPlusMenu from './SkillPlusMenu';
 import SkillProposalCard from './SkillProposalCard';
 import SkillResultView from './SkillResultView';
+import AiThinkingBubble from './AiThinkingBubble';
 
 /**
  * AIコーチ本体。レッスンページの右パネルと、AI専用ページの中央の両方で使う。
@@ -22,9 +18,19 @@ import SkillResultView from './SkillResultView';
  * 教材の内容であるかのように見せず、一般的な補足であることを明示する。
  *
  * 専門モード（仕様§3）に入っても、ユーザーから見えるのは
- * 「AIコーチのヘッダーが変わって、参照中のものが増えた」だけ。
+ * 「AIコーチの入力欄の＋が色付いて、参照するものが増えた」だけ。
  * 別のアプリを開いた感覚にさせないことがこの画面の設計意図。
  * 裏で何が呼ばれているかは types/aiSkill.ts のラベル群より先には出さない。
+ *
+ * 【この画面から「押せるもの」を減らした経緯】
+ * 以前はここが独自のヘッダー（AIコーチ／モードセレクタ／広い画面で続ける／現在参照中）を
+ * 持っていたが、器（教材のサポートパネル・常駐ドロワー）にも上部バーがあるため
+ * 同じ役割のバーが2段になっていた。レビュー指摘を受けて:
+ *   ・既定ヘッダーは廃止し、headerSlot が渡されたときだけ描く（＝AI専用ページのみ）
+ *   ・モード選択は入力欄の＋1つ（SkillPlusMenu）に集約
+ *   ・「広い画面で続ける」はアイコンにして器の上部バーへ移した
+ *   ・「現在参照中」の常設をやめ、回答の中に「◯◯を参照して回答しています」と書く
+ *   ・質問例のチップは会話が始まる前だけ出す
  */
 interface AiCoachPaneProps {
   ai: UseLessonAi;
@@ -37,16 +43,22 @@ interface AiCoachPaneProps {
    * page  … AI専用ページ。作業領域として広く使い、本文幅を制限して読みやすくする
    */
   variant?: 'panel' | 'page';
-  /** 「広い画面で続ける」導線。AI専用ページ側では渡さない */
-  onExpand?: () => void;
   /**
-   * ヘッダーの中身を差し替える。
+   * ヘッダーの中身。
    * AI専用ページは状態（メインチャット／専門モード）ごとにヘッダーが変わるので、
-   * ここに外から差し込む。渡さなければ従来のヘッダー（AIコーチ＋モードセレクタ）。
+   * ここに外から差し込む。
+   *
+   * 🔴 渡さなければヘッダーそのものを描かない。教材のサポートパネルと常駐ドロワーは
+   *    器の側に上部バー（タブ／見出し＋閉じる）を持っているので、
+   *    ここでも描くとバーが2段になる。
    */
   headerSlot?: React.ReactNode;
-  /** 入力欄の上（きっかけチップの上）に差し込む領域。機能一覧や必要な入力を出す */
-  footerSlot?: React.ReactNode;
+  /**
+   * ＋メニューでAIアプリを選んだときの処理。
+   * 省略するとその会話のモードを切り替えるだけ（教材パネル・常駐ドロワー）。
+   * AI専用ページは専門セッションを作るので、そちら側の処理を渡す。
+   */
+  onPickSkill?: (skillId: AiSkillId) => void;
   /** きっかけチップの差し替え。専門モードではその機能のクイックアクションを出す */
   quickPrompts?: string[];
   /** 入力欄のプレースホルダの差し替え */
@@ -96,6 +108,36 @@ function AnswerSection({ label, body }: { label: string; body: string }) {
   );
 }
 
+/**
+ * 「◯◯を参照して回答しています」の1行。
+ *
+ * 🔴 かつてはヘッダーに「現在参照中」として常設していた。常に見えている必要はなく、
+ *    知りたいのは「この回答が何を見て書かれたか」だけ、というレビュー指摘で回答の中へ移した。
+ *    出どころは送信時にメッセージへ焼き付けた references（AiCoachMessage 参照）。
+ *    古い会話には無いので、そのときは回答の sources から作る。
+ *    どちらも無ければ何も出さない（教材と関係ない相談では言うことが無い）。
+ */
+function ReferenceNote({ message }: { message: LessonAiMessage }) {
+  const labels =
+    message.references && message.references.length > 0
+      ? message.references
+      : (message.answer?.sources ?? message.skillResult?.sources ?? []).map((s) => s.heading);
+  if (labels.length === 0) return null;
+
+  return (
+    <p
+      style={{
+        margin: '8px 0 0',
+        fontSize: 9.5,
+        lineHeight: 1.7,
+        color: color.textFaint,
+      }}
+    >
+      {labels.map((label) => `「${label}」`).join('')}を参照して回答しています
+    </p>
+  );
+}
+
 function AiAvatar() {
   return (
     <div
@@ -125,9 +167,8 @@ export function AiCoachPane({
   onJumpToBlock,
   disabled,
   variant = 'panel',
-  onExpand,
   headerSlot,
-  footerSlot,
+  onPickSkill,
   quickPrompts,
   placeholder,
   onOpenWide,
@@ -153,84 +194,31 @@ export function AiCoachPane({
   const contentWidth = wide ? 760 : undefined;
   // 専門モードに入っているときだけ、その機能の説明・入力の案内を使う
   const specialistMeta = isSpecialistSkill(ai.skillId) ? AI_SKILL_META[ai.skillId] : null;
-  // 専門モードで作業が続くときだけ拡大を勧める（要件§6の使い分け）
-  const highlightExpand = AI_SKILL_PREFER_WIDE[ai.skillId];
+  // 会話が始まる前だけ出すもの（空状態の案内・質問例）。始まったら邪魔になる
+  const beforeFirstMessage = ai.messages.length === 0;
 
+  // wc-ai-enter … 開いた瞬間に中身が上へ少しずつ入る（index.css）。
+  // CSSアニメーションはマウント時に1回だけ走るので、会話中にちらつくことはない。
   return (
-    <section className="flex flex-col" style={{ minHeight: 0, height: '100%', overflow: 'hidden' }}>
-      {/* ── ヘッダー：モードと、いま参照しているもの ── */}
-      <div
-        style={{
-          padding: wide ? '11px 20px' : '9px 14px',
-          borderBottom: `1px solid ${color.border}`,
-          background: color.surface,
-          flexShrink: 0,
-        }}
-      >
-        {headerSlot ? (
-          <div style={{ maxWidth: contentWidth, margin: wide ? '0 auto' : undefined }}>{headerSlot}</div>
-        ) : (
-        <>
-        <div className="flex items-center" style={{ gap: 8 }}>
-          <strong style={{ ...font.label, fontWeight: 800, color: color.text, flexShrink: 0 }}>
-            AIコーチ
-          </strong>
-          <SkillSelector value={ai.skillId} onChange={ai.selectSkill} disabled={ai.loading} />
-          <div style={{ flex: 1 }} />
-          {onExpand && (
-            <button
-              type="button"
-              onClick={onExpand}
-              title="いまの会話・レッスン・画像・モードを引き継いで広い画面で続けます"
-              className="inline-flex items-center"
-              style={{
-                gap: 4,
-                height: 26,
-                padding: '0 9px',
-                borderRadius: 8,
-                border: `1px solid ${highlightExpand ? color.primaryBorder : color.borderStrong}`,
-                background: highlightExpand ? color.primarySoft : color.surface,
-                color: highlightExpand ? color.primary : color.textMuted,
-                fontSize: 10,
-                fontWeight: 700,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                flexShrink: 0,
-              }}
-            >
-              <Maximize2 size={11} /> 広い画面で続ける
-            </button>
-          )}
-        </div>
-
-        {ai.references.length > 0 && (
-          <div className="flex flex-wrap items-center" style={{ gap: 5, marginTop: 7 }}>
-            <span style={{ fontSize: 9.5, color: color.textFaint, flexShrink: 0 }}>現在参照中</span>
-            {ai.references.map((ref) => (
-              <span
-                key={ref}
-                title={ref}
-                style={{
-                  maxWidth: 190,
-                  padding: '3px 8px',
-                  borderRadius: 999,
-                  background: color.primarySoft,
-                  color: color.primary,
-                  fontSize: 9.5,
-                  fontWeight: 700,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {ref}
-              </span>
-            ))}
+    <section
+      className="wc-ai-enter flex flex-col"
+      style={{ minHeight: 0, height: '100%', overflow: 'hidden' }}
+    >
+      {/* ── ヘッダー：渡されたときだけ。器のバーと二重にしない ── */}
+      {headerSlot && (
+        <div
+          style={{
+            padding: wide ? '11px 20px' : '9px 14px',
+            borderBottom: `1px solid ${color.border}`,
+            background: color.surface,
+            flexShrink: 0,
+          }}
+        >
+          <div style={{ maxWidth: contentWidth, margin: wide ? '0 auto' : undefined }}>
+            {headerSlot}
           </div>
-        )}
-        </>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* ── 会話 ── */}
       <div
@@ -243,8 +231,8 @@ export function AiCoachPane({
         }}
       >
         <div style={{ maxWidth: contentWidth, margin: wide ? '0 auto' : undefined }}>
-          {ai.messages.length === 0 && (
-            <div className="flex" style={{ gap: 8 }}>
+          {beforeFirstMessage && (
+            <div className="wc-ai-msg flex" style={{ gap: 8 }}>
               <AiAvatar />
               <div
                 style={{
@@ -338,7 +326,11 @@ export function AiCoachPane({
 
             if (message.role === 'user') {
               return (
-                <div key={message.id} className="flex justify-end" style={{ marginBottom: 14 }}>
+                <div
+                  key={message.id}
+                  className="wc-ai-msg flex justify-end"
+                  style={{ marginBottom: 14 }}
+                >
                   <div
                     style={{
                       maxWidth: '90%',
@@ -385,9 +377,10 @@ export function AiCoachPane({
 
             // ── AIコーチの回答（通常回答 または 専門モードの結果） ──
             return (
-              <div key={message.id} className="flex" style={{ gap: 8, marginBottom: 14 }}>
+              <div key={message.id} className="wc-ai-msg flex" style={{ gap: 8, marginBottom: 14 }}>
                 <AiAvatar />
                 <div
+                  className="wc-ai-answer"
                   style={{
                     maxWidth: '90%',
                     padding: '11px 12px',
@@ -455,23 +448,24 @@ export function AiCoachPane({
                         <AnswerSection label="教材外の一般的な補足" body={message.answer.generalNote} />
                       )}
 
+                      {/* 見出しラベルは ReferenceNote が文章で言うので付けない。
+                          ここに残すのは教材へ飛べるチップだけ。 */}
                       {message.answer.sources.length > 0 && (
                         <div className="flex flex-wrap" style={{ gap: 5, marginTop: 8 }}>
-                          <span style={{ fontSize: 9.5, color: color.textFaint, alignSelf: 'center' }}>
-                            参照した教材箇所
-                          </span>
                           {message.answer.sources.map((source) => (
                             <button
                               key={source.blockId}
                               type="button"
                               onClick={() => onJumpToBlock(source.blockId)}
                               title="この教材箇所へ移動"
+                              className="wc-ai-chip focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                               style={{
                                 border: `1px solid ${color.primaryBorder}`,
                                 borderRadius: 999,
                                 background: color.hoverBgTint,
                                 color: color.primary,
                                 padding: '4px 8px',
+                                fontFamily: 'inherit',
                                 fontSize: 9.5,
                                 fontWeight: 700,
                                 cursor: 'pointer',
@@ -484,6 +478,8 @@ export function AiCoachPane({
                       )}
                     </>
                   )}
+
+                  <ReferenceNote message={message} />
 
                   {/* 要件§4-2: 回答の下に控えめに専門モードを提案する */}
                   {message.suggestion && message.suggestion.strength !== 'none' && (
@@ -500,12 +496,17 @@ export function AiCoachPane({
                     />
                   )}
 
-                  <div className="flex flex-wrap" style={{ gap: 5, marginTop: 9 }}>
+                  {/* 回答ごとに3つ並ぶと本文が読みにくいので、ホバー／フォーカスで出す。
+                      ホバーできない端末では常に出る（index.css の @media (hover: none)）。 */}
+                  <div
+                    className="wc-ai-answer-actions flex flex-wrap"
+                    style={{ gap: 5, marginTop: 9 }}
+                  >
                     {message.answer && (
                       <button
                         type="button"
                         onClick={() => navigator.clipboard?.writeText(answerToPlainText(message.answer!))}
-                        className="inline-flex items-center"
+                        className="wc-ai-chip inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                         style={actionButtonStyle}
                       >
                         <Copy size={11} /> コピー
@@ -514,7 +515,7 @@ export function AiCoachPane({
                     <button
                       type="button"
                       onClick={() => onSaveAnswer(message)}
-                      className="inline-flex items-center"
+                      className="wc-ai-chip inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                       style={actionButtonStyle}
                     >
                       <Star size={11} /> 保存
@@ -522,7 +523,7 @@ export function AiCoachPane({
                     <button
                       type="button"
                       onClick={() => onAppendToMemo(message)}
-                      className="inline-flex items-center"
+                      className="wc-ai-chip inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                       style={actionButtonStyle}
                     >
                       <StickyNote size={11} /> メモに追加
@@ -533,78 +534,58 @@ export function AiCoachPane({
             );
           })}
 
-          {ai.loading && (
-            <div className="flex" style={{ gap: 8 }}>
-              <AiAvatar />
-              <div
-                style={{
-                  padding: '11px 12px',
-                  border: `1px solid ${color.border}`,
-                  borderRadius: 12,
-                  background: color.surface,
-                  fontSize: 11.5,
-                  color: color.textMuted,
-                }}
-              >
-                {specialistMeta
-                  ? `${specialistMeta.shortLabel}を進めています…`
-                  : '教材の該当箇所と照合しています…'}
-              </div>
-            </div>
-          )}
+          {ai.loading && <AiThinkingBubble skillId={ai.skillId} />}
           <div ref={ai.scrollAnchorRef} />
         </div>
       </div>
 
-      {/* ── 機能一覧・必要な入力（AI専用ページの状態ごとの領域）── */}
-      {footerSlot && (
+      {/* ── きっかけチップ ──
+          🔴 会話が始まる前だけ。書き出しに困っている人を助けるためのもので、
+             回答が並び始めたあとも出し続けると、ただ押せるものが増えるだけになる。 */}
+      {beforeFirstMessage && (
         <div
           style={{
-            padding: wide ? '10px 20px 0' : '8px 12px 0',
+            padding: wide ? '8px 20px 4px' : '8px 12px 4px',
             background: color.surface,
             flexShrink: 0,
           }}
         >
-          <div style={{ maxWidth: contentWidth, margin: wide ? '0 auto' : undefined }}>{footerSlot}</div>
+          <div
+            className="flex"
+            style={{
+              gap: 6,
+              overflowX: 'auto',
+              maxWidth: contentWidth,
+              margin: wide ? '0 auto' : undefined,
+            }}
+          >
+            {(quickPrompts ?? (ai.image ? IMAGE_PROMPTS : QUICK_PROMPTS)).map((prompt) => (
+              <button
+                key={prompt}
+                type="button"
+                disabled={ai.loading || !!ai.pendingProposal}
+                onClick={() => void ai.send(prompt)}
+                className="wc-ai-chip disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                style={{
+                  flex: '0 0 auto',
+                  height: 28,
+                  padding: '0 10px',
+                  border: `1px solid ${color.border}`,
+                  borderRadius: 999,
+                  background: color.surface,
+                  color: color.textMuted,
+                  fontFamily: 'inherit',
+                  fontSize: 10,
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {prompt}
+              </button>
+            ))}
+          </div>
         </div>
       )}
-
-      {/* ── きっかけチップ ── */}
-      <div style={{ padding: wide ? '8px 20px 4px' : '8px 12px 4px', background: color.surface, flexShrink: 0 }}>
-        <div
-          className="flex"
-          style={{
-            gap: 6,
-            overflowX: 'auto',
-            maxWidth: contentWidth,
-            margin: wide ? '0 auto' : undefined,
-          }}
-        >
-          {(quickPrompts ?? (ai.image ? IMAGE_PROMPTS : QUICK_PROMPTS)).map((prompt) => (
-            <button
-              key={prompt}
-              type="button"
-              disabled={ai.loading || !!ai.pendingProposal}
-              onClick={() => void ai.send(prompt)}
-              className="disabled:opacity-50"
-              style={{
-                flex: '0 0 auto',
-                height: 28,
-                padding: '0 10px',
-                border: `1px solid ${color.border}`,
-                borderRadius: 999,
-                background: color.surface,
-                color: color.textMuted,
-                fontSize: 10,
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {prompt}
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* ── 引用中の教材文 ── */}
       {ai.quote && (
@@ -703,12 +684,14 @@ export function AiCoachPane({
               上の確認に答えると続けられます。
             </p>
           )}
+          {/* 🔴 overflow:hidden を付けない。＋メニューが absolute で上へ開くので切れる
+                （AiCoachHome の入力欄にも同じ注意書きがある）。
+                textarea の角は自前で丸めているので、はみ出しの心配はない。 */}
           <div
             style={{
               border: `1px solid ${color.borderStrong}`,
               borderRadius: 12,
               background: color.surface,
-              overflow: 'hidden',
             }}
           >
             <textarea
@@ -736,6 +719,9 @@ export function AiCoachPane({
                 maxHeight: wide ? 200 : 120,
                 resize: 'vertical',
                 border: 0,
+                // 器の overflow:hidden を外したぶん、角は自分で丸める
+                borderRadius: '12px 12px 0 0',
+                background: 'transparent',
                 padding: '10px 11px 4px',
                 color: color.text,
                 outline: 'none',
@@ -756,16 +742,22 @@ export function AiCoachPane({
                   e.target.value = '';
                 }}
               />
+              {/* AIアプリ（モード）の選択口はここ1つだけ。
+                  かつてのヘッダーのモードセレクタと入力欄上の機能一覧をこれに統合した。 */}
+              <SkillPlusMenu
+                value={ai.skillId}
+                onChange={onPickSkill ?? ai.selectSkill}
+                disabled={ai.loading}
+              />
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 aria-label="画像を添付"
                 title="画像を添付"
+                className="wc-ai-icon-btn grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                 style={{
                   width: 30,
                   height: 30,
-                  display: 'grid',
-                  placeItems: 'center',
                   border: 0,
                   borderRadius: 8,
                   background: color.hoverBg,
@@ -782,7 +774,7 @@ export function AiCoachPane({
                 type="button"
                 onClick={() => void ai.send()}
                 disabled={!canSend}
-                className="inline-flex items-center disabled:opacity-50"
+                className="wc-ai-send inline-flex items-center disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                 style={{
                   marginLeft: 'auto',
                   gap: 5,
@@ -792,6 +784,7 @@ export function AiCoachPane({
                   borderRadius: 8,
                   background: color.primary,
                   color: '#fff',
+                  fontFamily: 'inherit',
                   fontSize: 11.5,
                   fontWeight: 700,
                   cursor: canSend ? 'pointer' : 'default',
@@ -815,6 +808,7 @@ const actionButtonStyle: React.CSSProperties = {
   borderRadius: 7,
   background: color.surface,
   color: color.textMuted,
+  fontFamily: 'inherit',
   fontSize: 9.5,
   cursor: 'pointer',
 };

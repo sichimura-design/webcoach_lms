@@ -53,6 +53,15 @@ export interface AiCoachMessage {
   skillResult?: AiSkillResponse;
   /** assistant のとき: 回答の下に控えめに出す提案（仕様§4-2） */
   suggestion?: SkillSuggestion | null;
+  /**
+   * assistant のとき: この回答が参照したもの（教材の見出し・課題の評価基準・添付画像など）。
+   *
+   * かつてはヘッダーに「現在参照中」として常設していたが、常に出しておく情報ではない
+   * というレビュー指摘で回答の中へ移した。ヘッダー表示なら「いま」の値でよかったが、
+   * 回答に添えるなら**その回答を作ったときの値**でなければ嘘になるので、
+   * 送信のたびにメッセージへ焼き付ける。
+   */
+  references?: string[];
   /** proposal のとき: 確認カードの内容と決着 */
   proposal?: SkillSuggestion;
   resolution?: ProposalResolution;
