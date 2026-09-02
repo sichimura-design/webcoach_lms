@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Clock, Flame, Plus } from 'lucide-react';
+import { Clock, Flame } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { AppFooter, AppHeader, ConfirmDialog } from '../shared';
 import { useStudyStats } from '../../hooks/useStudyStats';
-import { useStudyActivities } from '../../hooks/useStudyActivities';
 import { useStudyActivityEditor } from '../../hooks/useStudyActivityEditor';
 import { useMonthActivities } from '../../hooks/useMonthActivities';
 import { useGoalDeclaration } from '../../hooks/useGoalDeclaration';
@@ -23,7 +22,6 @@ import bffClient from '../../services/bffClient';
 import SessionReview from '../coaching/SessionReview';
 import type { CoachingSessionDetail, CoachingSessionSummary } from '../../types/coaching';
 import { formatDayLabel, formatTime } from '../focus/focusFormat';
-import StudyLogList from './StudyLogList';
 import StudyRecordPanel from './StudyRecordPanel';
 import StudySummaryStrip from './StudySummaryStrip';
 import StudyCalendarCard from './StudyCalendarCard';
@@ -56,10 +54,13 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  *   ① 総まとめ（KPI×4 ＋ 教材別の累計）
  *   ② 学習カレンダー ｜ その日の詳細
  *   ③ 学習の推移（期間タブ／棒グラフ）
- *   ④ 学習履歴（全件・ページング・編集／削除／手動追加）
- *   ⑤ 目標宣言と振り返り
- *   ⑥ コーチング記録（過去のコーチングはここにためる）
- *   ⑦ 学習時間ランキング ｜ ストリークランキング
+ *   ④ 目標宣言と振り返り
+ *   ⑤ コーチング記録（過去のコーチングはここにためる）
+ *   ⑥ 学習時間ランキング ｜ ストリークランキング
+ *
+ * 🔴 全期間の記録を縦に並べる「学習履歴」セクションは廃止した。同じ記録を
+ *    ② のカレンダー＋日別パネルが日単位で見せており、下に同じ行を全期間ぶん
+ *    並べ直しているだけだった。記録の編集・削除・手動追加はすべて日別パネルが持つ。
  *
  * 🔴 ランキング（他人との比較）を最下段に置いている。カレンダーを主役にした結果、
  *    上から「自分の記録」を掘っていく並びになったので、その途中を他人の話で
@@ -98,8 +99,6 @@ function StudyLogPage() {
   const time = useStudyRanking(userId, timePeriod);
   const streak = useStreakRanking(userId, streakPeriod);
 
-  // 履歴は全期間。件数が多いので useStudyActivities のページングに任せる
-  const list = useStudyActivities(userId);
   const editor = useStudyActivityEditor(userId);
   const goals = useGoalDeclaration(userId);
 
@@ -365,6 +364,7 @@ function StudyLogPage() {
               />
               <DayDetailPanel
                 date={selectedDate}
+                todayKey={todayKey}
                 activities={dayActivities}
                 coachingSessions={daySessions}
                 loading={month.loading}
@@ -380,45 +380,7 @@ function StudyLogPage() {
             {/* ③ 推移 */}
             <StudyRecordPanel stats={stats} loading={statsLoading} />
 
-            {/* ④ 学習履歴 */}
-            <section style={cardStyle}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                <h2 style={{ margin: 0, flex: 1, fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)' }}>
-                  学習履歴
-                  <span className="dc-num" style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)', marginLeft: 10 }}>
-                    {list.total}件
-                  </span>
-                </h2>
-                <button
-                  type="button"
-                  onClick={() => setEditTarget({ mode: 'create', date: todayKey })}
-                  className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 5,
-                    minHeight: 34, padding: '0 14px', borderRadius: 9999,
-                    border: '1px solid var(--dc-border-strong)', background: 'var(--dc-surface)',
-                    fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)', fontWeight: 700,
-                    color: 'var(--dc-text-body)', cursor: 'pointer',
-                  }}
-                >
-                  <Plus size={14} strokeWidth={2} aria-hidden="true" />
-                  手動で記録を追加
-                </button>
-              </div>
-              <StudyLogList
-                activities={list.items}
-                loading={list.loading}
-                loadingMore={list.loadingMore}
-                hasMore={list.hasMore}
-                error={list.error}
-                busy={editor.saving}
-                onLoadMore={list.loadMore}
-                onEdit={(activity) => setEditTarget({ mode: 'edit', activity })}
-                onDelete={setDeleteTarget}
-              />
-            </section>
-
-            {/* ⑤ 目標宣言 */}
+            {/* ④ 目標宣言 */}
             <GoalDeclarationCard
               items={goals.items}
               active={goals.active}
@@ -431,14 +393,14 @@ function StudyLogPage() {
               onView={(d) => patchParams({ goal: d.id })}
             />
 
-            {/* ⑥ コーチング記録 */}
+            {/* ⑤ コーチング記録 */}
             <CoachingRecordsCard
               sessions={pastSessions}
               loading={coachingLoading}
               onOpen={showSession}
             />
 
-            {/* ⑦ ランキング */}
+            {/* ⑥ ランキング */}
             <div className="studylog-rank-grid">
               <RankingListCard
                 title="学習時間ランキング"

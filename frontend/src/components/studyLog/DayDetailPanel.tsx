@@ -21,6 +21,13 @@ import StudyLogRow, { EmptyStudyLog } from './StudyLogRow';
 interface DayDetailPanelProps {
   /** 選択中の日（YYYY-MM-DD）。null なら「日付を選んでください」 */
   date: string | null;
+  /**
+   * 日付未選択のときに「記録を追加」が使う日（＝今日）。
+   * 🔴 未選択の状態にも追加ボタンを置くための引数。学習履歴セクションを廃止して
+   *    「手動で記録を追加」の入口がこのパネルだけになったので、日を選ばないと
+   *    1件も足せない状態にしない。
+   */
+  todayKey: string;
   /** その日の学習記録（新しい順） */
   activities: StudyActivity[];
   /** その日のコーチング */
@@ -42,8 +49,27 @@ const CARD: React.CSSProperties = {
   padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
 };
 
+/** 記録を追加するボタン。日を選んでいる時（この日）といない時（今日）で共用する */
+const ADD_BUTTON: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 6,
+  width: '100%',
+  marginTop: 16,
+  minHeight: 40,
+  borderRadius: 9999,
+  border: '1px solid var(--dc-border-strong)',
+  background: 'var(--dc-surface)',
+  fontFamily: 'inherit',
+  fontSize: 'var(--dc-fs-body)',
+  fontWeight: 700,
+  color: 'var(--dc-text-body)',
+};
+
 export function DayDetailPanel({
   date,
+  todayKey,
   activities,
   coachingSessions,
   loading,
@@ -54,6 +80,20 @@ export function DayDetailPanel({
   onAdd,
   onClose,
 }: DayDetailPanelProps) {
+  /** 記録の追加モーダルを開くボタン。日を選んでいなければ今日で開く */
+  const addButton = (targetDate: string, label: string) => (
+    <button
+      type="button"
+      onClick={() => onAdd(targetDate)}
+      disabled={busy}
+      className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      style={{ ...ADD_BUTTON, cursor: busy ? 'default' : 'pointer', opacity: busy ? 0.6 : 1 }}
+    >
+      <Plus size={15} strokeWidth={2} aria-hidden="true" />
+      {label}
+    </button>
+  );
+
   if (!date) {
     return (
       <section style={CARD} aria-label="選んだ日の学習内容">
@@ -67,6 +107,7 @@ export function DayDetailPanel({
         >
           カレンダーの日付を選ぶと、その日に学習した教材と時間、受けたコーチングがここに出ます。
         </p>
+        {addButton(todayKey, '今日の記録を追加')}
       </section>
     );
   }
@@ -190,35 +231,8 @@ export function DayDetailPanel({
         </div>
       )}
 
-      {/* 履歴カード側の「＋ 手動で記録を追加」と同じモーダルを開くショートカット。
-          こちらは選んだ日が入った状態で開く（入力面は1つのまま） */}
-      <button
-        type="button"
-        onClick={() => onAdd(date)}
-        disabled={busy}
-        className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 6,
-          width: '100%',
-          marginTop: 16,
-          minHeight: 40,
-          borderRadius: 9999,
-          border: '1px solid var(--dc-border-strong)',
-          background: 'var(--dc-surface)',
-          fontFamily: 'inherit',
-          fontSize: 'var(--dc-fs-body)',
-          fontWeight: 700,
-          color: 'var(--dc-text-body)',
-          cursor: busy ? 'default' : 'pointer',
-          opacity: busy ? 0.6 : 1,
-        }}
-      >
-        <Plus size={15} strokeWidth={2} aria-hidden="true" />
-        この日の記録を追加
-      </button>
+      {/* 記録の手動追加はこのパネルが唯一の入口。選んだ日が入った状態で開く */}
+      {addButton(date, 'この日の記録を追加')}
     </section>
   );
 }
