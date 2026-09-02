@@ -4,6 +4,7 @@ import { color, font } from '../../theme/webcoachTheme';
 import { useToast } from '../../contexts/ToastContext';
 import { useLessonDoc } from '../../hooks/useLessonDoc';
 import { useLessonCompletion } from '../../hooks/useLessonCompletion';
+import { useLessonCheer } from '../../hooks/useLessonCheer';
 import { useLessonAi, LessonAiMessage, LessonAiQuote } from '../../hooks/useLessonAi';
 import { useNotes } from '../../hooks/useNotes';
 import { useNoteCapture, BackTo } from '../../hooks/useNoteCapture';
@@ -161,6 +162,19 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
    *    次へ進む動線は達成カードの中の「次のレッスンへ」が持つ。
    */
   const completion = useLessonCompletion(courseId, doc?.lessonId ?? null, allLessonIds);
+
+  /**
+   * 完了時のAIコーチのひと言。
+   * 「このレッスンで何回聞いたか」だけは画面しか知らないので数えて渡す
+   * （進捗・単元・ノート・連続日数はサーバ側が自分で見る）。
+   */
+  const askedCount = useMemo(() => ai.messages.filter((m) => m.role === 'user').length, [ai.messages]);
+  const { cheer, loading: cheerLoading } = useLessonCheer(
+    courseId,
+    doc?.lessonId ?? null,
+    completion.isCompleted,
+    askedCount
+  );
 
   /**
    * ページスクロールを止め、LMSのシェル（サイドバー・SP下部ナビ）ぶんの余白も消す。
@@ -592,6 +606,8 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
                 isCompleted={completion.isCompleted}
                 completing={completion.completing}
                 nextMeta={nextMeta}
+                cheer={cheer}
+                cheerLoading={cheerLoading}
                 onComplete={handleComplete}
                 onUndoComplete={() => void completion.toggleComplete(false)}
                 onNavigate={navigateToLesson}

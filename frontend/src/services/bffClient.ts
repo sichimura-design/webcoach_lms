@@ -57,6 +57,8 @@ import {
 import {
   LessonAiRequest,
   LessonAiResponse,
+  LessonCheerRequest,
+  LessonCheerResponse,
   LessonDoc,
   LessonOutline,
 } from '../types/lesson';
@@ -1260,6 +1262,19 @@ class BFFClient {
    */
   async askLessonAi(request: LessonAiRequest): Promise<LessonAiResponse> {
     const response = await this.api.post('/webcoach/lesson-ai', request);
+    return response.data;
+  }
+
+  /**
+   * レッスンを完了したときのAIコーチのひと言
+   * POST /api/webcoach/lesson-cheer
+   *
+   * 実BFFには未実装。mocks/lessonHandlers.ts のMSWモックが応答する。
+   * 文面はサーバ側が進捗・単元・ノート・連続日数から組む（フロントは組み立てない）。
+   * 落ちたら画面は従来の固定文に戻すだけなので、失敗しても学習は止まらない。
+   */
+  async getLessonCheer(request: LessonCheerRequest): Promise<LessonCheerResponse> {
+    const response = await this.api.post('/webcoach/lesson-cheer', request);
     return response.data;
   }
 
