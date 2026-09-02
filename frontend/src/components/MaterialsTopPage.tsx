@@ -534,9 +534,6 @@ function MaterialsTopPage() {
         <section style={{ background: t.color.primarySoft, borderRadius: t.radius.tile, padding: '18px 24px', display: 'flex', alignItems: 'center', gap: 18, flexWrap: 'wrap' }}>
           <div style={{ width: 200, minWidth: 0 }}>
             <div style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>ぴったりの教材をさがす</div>
-            <div style={{ fontSize: 'var(--dc-fs-body)', color: t.color.text.muted, marginTop: 2, lineHeight: 'var(--dc-lh-prose)' }}>
-              学びたいこと・つまずいていることから、AIが教材をおすすめ
-            </div>
           </div>
 
           {/* 🔴 入力欄を伸ばしきらない。flex:1 のまま width:100% にすると 1440px 幅で
