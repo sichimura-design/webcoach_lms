@@ -7,12 +7,14 @@ import { useMypageData } from '../hooks/useMypageData';
 import { useLearningSummary } from '../hooks/useLearningSummary';
 import { useStudyStats } from '../hooks/useStudyStats';
 import { useWeeklyGoal } from '../hooks/useWeeklyGoal';
+import { useGoalDeclaration } from '../hooks/useGoalDeclaration';
 import { useProgressionStore } from '../store/progressionStore';
 import { useRecentCourseStore } from '../store/recentCourseStore';
 import { EXP_RULES } from '../utils/progression';
 import MypageGreeting from './mypage/MypageGreeting';
 import ResumeStudyCard from './mypage/ResumeStudyCard';
 import CoachingTaskCard from './mypage/CoachingTaskCard';
+import MypageGoalDeclarationCard from './mypage/GoalDeclarationCard';
 import StudyDashboardCard from './mypage/StudyDashboardCard';
 import WeeklyGoalModal from './mypage/WeeklyGoalModal';
 import { Course } from '../types/mypage';
@@ -29,9 +31,15 @@ import { Course } from '../types/mypage';
  * 【構成】8a は「今やること」と「積み上がり」の2段構え
  *   ① 挨拶（日付＋名前＋きらめき。カードなし・地色に直置き）
  *   ② 上段2カラム: 左＝続きから学習、右＝次回コーチングまでのタスク
- *   ③ 下段1枚: 学習状況ダッシュボード（連続日数・総学習時間・修了レッスン数・
+ *   ③ 目標宣言（全幅・表示のみ。編集は /study-log）
+ *   ④ 下段1枚: 学習状況ダッシュボード（連続日数・総学習時間・修了レッスン数・
  *      今週の学習時間ゲージ・今週の目標グラフ）
- *   ④ フッター
+ *   ⑤ フッター
+ *
+ * 🔴 ③を②と④の間に置いているのは「今やること（CTA）→ 何のために（宣言）→
+ *    積み上がり（ダッシュボード）」の順で読ませるため。②に3枚目として入れると
+ *    1fr/1.15fr に収まらず、1023px で3段になって最初のCTAが遠のく。
+ *    ①の下に置くと、文章のカードが最初に来て Primary CTA が折り返しで画面外に落ちる。
  *
  * 🔴 8a で「学習時間チャレンジ」「みんなのランキング」を外した。
  *    順位の掘り下げは /study-log が受け持つ。5a に戻すときは
@@ -73,6 +81,10 @@ function MyPage() {
   const { stats: studyStats, loading: studyStatsLoading } = useStudyStats(user?.userid);
   const learningSummary = useLearningSummary(learningCourses, studyStats);
   const primaryCourse = learningCourses[0];
+
+  // 目標宣言（受講生が自分の言葉で書く期間つきの宣言）。ここは表示だけで、
+  // 書くのも直すのも /study-log 側（同じデータの編集入口を2箇所に置かない）。
+  const declarations = useGoalDeclaration(user?.userid);
 
   // 今週の学習時間の目標（8a）。プロフィールに持たせている
   const { goalMinutes, saving: goalSaving, save: saveGoal } = useWeeklyGoal(
@@ -177,6 +189,13 @@ function MyPage() {
           />
           <CoachingTaskCard userId={user?.userid} />
         </div>
+
+        <MypageGoalDeclarationCard
+          declaration={declarations.active}
+          pendingReflection={declarations.pendingReflection[0] ?? null}
+          loading={declarations.loading}
+          unavailable={declarations.unavailable}
+        />
 
         <StudyDashboardCard
           stats={studyStats}
