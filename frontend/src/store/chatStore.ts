@@ -1,13 +1,17 @@
 import { create } from 'zustand';
 import { ChatMessage } from '../hooks/useAiChat';
 
-const INITIAL_MESSAGE: ChatMessage = {
-  id: '1',
-  role: 'assistant',
-  content: 'こんにちは！WEBCOACH AI学習アシスタントです。学習に関する質問や、コースのおすすめ、キャリアパスについてなど、お気軽にご相談ください。',
-  timestamp: new Date(),
-};
-
+/**
+ * AIコーチの会話。
+ *
+ * ヘッダーのドロワーと教材ページのサイドバーが同じここを見るので、
+ * どちらから聞いても会話は1本に繋がる。
+ *
+ * 🔴 以前は定型のあいさつ1通を messages の初期値に入れていた。
+ *    それだと「消せない1通目」として履歴に残り続け、しかも最初に何を
+ *    聞けばいいのかの手がかりにはならなかった。
+ *    案内文とサジェストは表示側（ChatMessageList の空の状態）が持つ。
+ */
 interface ChatState {
   chatOpen: boolean;
   messages: ChatMessage[];
@@ -17,7 +21,7 @@ interface ChatState {
 
 export const useChatStore = create<ChatState>((set) => ({
   chatOpen: false,
-  messages: [INITIAL_MESSAGE],
+  messages: [],
   setChatOpen: (open) => set({ chatOpen: open }),
   addMessage: (message) => set((state) => ({ messages: [...state.messages, message] })),
 }));
