@@ -1,6 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { bffClient } from '../services/bffClient';
 import { useChatStore } from '../store/chatStore';
+import {
+  ChatImageAttachment,
+  chatImageErrorMessage,
+  prepareChatImage,
+} from '../utils/chatImage';
 
 export interface ChatMessage {
   id: string;
@@ -10,6 +15,8 @@ export interface ChatMessage {
   // 添付画像の表示用データURI。このブラウザセッション内のstateにのみ保持し、
   // サーバー側には保存しない（リロード/別セッションでは消える想定）。
   imageDataUrl?: string;
+  /** 添付画像の代替テキスト。拡大表示のラベルにも使う */
+  imageAlt?: string;
   sources?: Array<{
     chunk_index: number;
     module_name: string;
@@ -19,55 +26,62 @@ export interface ChatMessage {
   }>;
 }
 
-const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
+/**
+ * 添付待ちの画像。
+ * 形式・サイズの検証と縮小は utils/chatImage.ts が持つ。
+ */
+export type PendingImage = ChatImageAttachment;
 
-export interface PendingImage {
-  dataUrl: string;
-  mediaType: string;
-}
+/** パネル・ドロワーに渡すためのフックの戻り値型 */
+export type UseAiChat = ReturnType<typeof useAiChat>;
 
 export function useAiChat() {
   const { messages, addMessage } = useChatStore();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [pendingImage, setPendingImage] = useState<PendingImage | null>(null);
+  const [imagePreparing, setImagePreparing] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  // 続けて貼り付けたときに、遅れて終わった前の処理で上書きされないようにする
+  const selectSeqRef = useRef(0);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, [messages]);
+    // loading も見る。返答待ちの表示が出たときにそこまでスクロールさせる
+  }, [messages, loading]);
 
-  const handleImageSelect = (file: File) => {
+  const handleImageSelect = async (file: File) => {
+    const seq = ++selectSeqRef.current;
     setImageError(null);
+    setImagePreparing(true);
 
-    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      setImageError('対応していない画像形式です（JPEG/PNG/WebP/GIFのみ）');
-      return;
-    }
-    if (file.size > MAX_IMAGE_SIZE_BYTES) {
-      setImageError('画像サイズが大きすぎます（上限5MB）');
-      return;
-    }
+    const result = await prepareChatImage(file);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setPendingImage({ dataUrl: reader.result as string, mediaType: file.type });
-    };
-    reader.onerror = () => {
-      setImageError('画像の読み込みに失敗しました');
-    };
-    reader.readAsDataURL(file);
+    if (seq !== selectSeqRef.current) return; // もっと新しい選択がある
+    setImagePreparing(false);
+
+    if (result.ok) {
+      setPendingImage(result.image);
+    } else {
+      setImageError(chatImageErrorMessage(result.code));
+    }
   };
 
   const clearPendingImage = () => {
+    selectSeqRef.current++; // 処理中のものが後から入ってこないように
     setPendingImage(null);
+    setImagePreparing(false);
     setImageError(null);
   };
 
+  const dismissImageError = () => setImageError(null);
+
+  /** 送信できる状態か。2つの入り口で同じ判定を使う */
+  const canSend = (input.trim().length > 0 || !!pendingImage) && !loading && !imagePreparing;
+
   const sendMessage = async () => {
-    if ((!input.trim() && !pendingImage) || loading) return;
+    if (!canSend) return;
 
     const messageText = input.trim() || 'この画像について教えてください。';
 
@@ -77,13 +91,13 @@ export function useAiChat() {
       content: messageText,
       timestamp: new Date(),
       imageDataUrl: pendingImage?.dataUrl,
+      imageAlt: pendingImage?.fileName,
     };
 
     addMessage(userMessage);
     const currentImage = pendingImage;
     setInput('');
-    setPendingImage(null);
-    setImageError(null);
+    clearPendingImage();
     setLoading(true);
 
     try {
@@ -130,10 +144,10 @@ export function useAiChat() {
    * 入力欄の Enter を送信に割り当てる。onKeyDown に渡すこと。
    *
    * 🔴 IME で変換中の Enter は「変換の確定」であって送信ではない。
-   *    ここを見ていないと「がぞう」と打って確定した瞬間に、書きかけのまま飛ぶ。
+   *    ここを見ていないと「がぞう」と打って確定した瞬間に書きかけのまま飛ぶ。
    *    isComposing を持たない環境（古い Safari / 一部の Android IME）は
    *    keyCode 229 で来るので両方見る。
-   *    onKeyPress では変換中のイベントを取れないので onKeyDown を使う。
+   *    onKeyPress では composing 中のイベントが取れないので onKeyDown を使う。
    */
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key !== 'Enter') return;
@@ -157,9 +171,12 @@ export function useAiChat() {
     messagesEndRef,
     sendMessage,
     handleKeyDown,
+    canSend,
     pendingImage,
+    imagePreparing,
     imageError,
     handleImageSelect,
     clearPendingImage,
+    dismissImageError,
   };
 }
