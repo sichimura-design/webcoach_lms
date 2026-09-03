@@ -49,6 +49,16 @@ export const color = {
 
   // status
   online: '#34C759',
+
+  /**
+   * 保存・完了（Success）。
+   * 🔴 上の online（#34C759）とは役割が別。あちらは「在席中」を示すドットの色で、
+   *    こちらは「保存できた・完了した」を示す色。混ぜないこと。
+   * 🔴 白地に対するコントラストは約3.4:1で、小さい文字には足りない。
+   *    アイコンの色としてだけ使い、文言は textMuted のままにする。
+   */
+  success: '#0E9F6E',
+  successSurface: '#E8F8F1',
 } as const;
 
 export const gradient = {

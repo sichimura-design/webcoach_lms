@@ -4,6 +4,7 @@ import { bffClient } from '../services/bffClient';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { useAiChat } from '../hooks/useAiChat';
+import { useStudyNote } from '../hooks/useStudyNote';
 import {
   FileText,
   ArrowLeft,
@@ -13,13 +14,14 @@ import {
   RotateCcw,
   ExternalLink,
   Menu,
-  Bot,
-  StickyNote,
 } from 'lucide-react';
 import Encoding from 'encoding-japanese';
 import MarkdownRenderer from './MarkdownRenderer';
 import { AppHeader } from './shared';
 import { AiCoachPanel } from './course/AiCoachPanel';
+import { MemoPanel } from './course/MemoPanel';
+import { StudyNoteDialog } from './course/StudyNoteDialog';
+import { SupportTabs, SupportTabKey } from './course/SupportTabs';
 
 interface CourseContentPageProps {
   courseId: number;
@@ -287,46 +289,16 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // 右サイドバー タブ（AIコーチ／メモ）
-  const [sidebarTab, setSidebarTab] = useState<'ai' | 'memo'>('ai');
+  const [sidebarTab, setSidebarTab] = useState<SupportTabKey>('ai');
 
-  // 学習メモ
-  const [memoContent, setMemoContent] = useState('');
-  const [memoStatus, setMemoStatus] = useState<'idle' | 'loading' | 'saving' | 'saved'>('idle');
-  const memoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const memoLoadedKeyRef = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (!selectedModule || !user) return;
-    const key = `${courseId}:${selectedModule.id}`;
-    memoLoadedKeyRef.current = key;
-    setMemoStatus('loading');
-    bffClient.getStudyNote(user.userid, courseId, selectedModule.id)
-      .then(note => {
-        if (memoLoadedKeyRef.current === key) {
-          setMemoContent(note.content);
-          setMemoStatus('idle');
-        }
-      })
-      .catch(() => {
-        if (memoLoadedKeyRef.current === key) {
-          setMemoStatus('idle');
-        }
-      });
-  }, [selectedModule?.id, courseId, user]);
-
-  const handleMemoChange = (value: string) => {
-    setMemoContent(value);
-    if (!selectedModule || !user) return;
-    const targetCourseId = courseId;
-    const targetCmid = selectedModule.id;
-    if (memoSaveTimer.current) clearTimeout(memoSaveTimer.current);
-    memoSaveTimer.current = setTimeout(() => {
-      setMemoStatus('saving');
-      bffClient.updateStudyNote(user.userid, targetCourseId, targetCmid, { content: value })
-        .then(() => setMemoStatus('saved'))
-        .catch(() => setMemoStatus('idle'));
-    }, 500);
-  };
+  // 学習メモ。読み込み・デバウンス保存・書き切り・失敗時の扱いは useStudyNote が持つ
+  const note = useStudyNote({
+    userId: user?.userid,
+    courseId,
+    cmid: selectedModule?.id ?? null,
+    onSaveError: message => showToast(message, 'error'),
+  });
+  const [memoExpanded, setMemoExpanded] = useState(false);
 
   // アクティビティ完了
   const [completing, setCompleting] = useState(false);
@@ -658,41 +630,68 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   };
 
   // ─── 右サイドバー（AIコーチ／メモ タブ） ─────
-  const renderSupportPanel = (mobile: boolean) => (
-    <div className={mobile ? 'bg-white rounded-2xl shadow-sm overflow-hidden' : ''}>
-      <div className="flex items-center gap-1.5 px-4 pt-3 pb-2 bg-brand-bg">
-        <button
-          onClick={() => setSidebarTab('ai')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
-            sidebarTab === 'ai' ? 'bg-brand-gradient text-white' : 'text-brand-muted hover:bg-white'
-          }`}
-        >
-          <Bot className="w-3.5 h-3.5" />
-          AIコーチ
-        </button>
-        <button
-          onClick={() => setSidebarTab('memo')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
-            sidebarTab === 'memo' ? 'bg-brand-gradient text-white' : 'text-brand-muted hover:bg-white'
-          }`}
-        >
-          <StickyNote className="w-3.5 h-3.5" />
-          メモ
-        </button>
-      </div>
-      {sidebarTab === 'ai' ? (
-        <AiCoachPanel ai={ai} />
-      ) : (
-        <MemoPanel
-          content={memoContent}
-          status={memoStatus}
-          onChange={handleMemoChange}
-          lessonTitle={selectedModule?.name}
-          mobile={mobile}
+  //
+  // 🔴 両方をマウントしたままにして display で出し入れする。三項演算子で
+  //    片方を捨てると、タブを往復するだけで入力中の高さや添付のプレビューが消える。
+  //    ただし display:none では scrollTop が保たれないので、再表示のたびに
+  //    最新へ戻す（active を渡している先で面倒を見る）。
+  //
+  // この関数はデスクトップとモバイルで2回呼ばれる。隠れている側が
+  // 勝手にスクロールし直さないよう、active には表示条件も混ぜる。
+  const renderSupportPanel = (mobile: boolean) => {
+    const visible = mobile ? sidebarOpen : true;
+    const prefix = mobile ? 'support-sp' : 'support-pc';
+    return (
+      <div
+        className="flex flex-col"
+        style={{
+          minHeight: 0,
+          flex: mobile ? undefined : 1,
+          background: '#FFFFFF',
+          borderRadius: mobile ? 16 : 0,
+          overflow: 'hidden',
+        }}
+      >
+        <SupportTabs
+          tab={sidebarTab}
+          onChange={setSidebarTab}
+          hasNote={note.hasNote}
+          panelIdPrefix={prefix}
         />
-      )}
-    </div>
-  );
+        <div
+          role="tabpanel"
+          id={`${prefix}-panel-ai`}
+          aria-labelledby={`${prefix}-tab-ai`}
+          style={{
+            flex: 1,
+            minHeight: 0,
+            display: sidebarTab === 'ai' ? 'flex' : 'none',
+            flexDirection: 'column',
+          }}
+        >
+          <AiCoachPanel ai={ai} active={visible && sidebarTab === 'ai'} fill={!mobile} />
+        </div>
+        <div
+          role="tabpanel"
+          id={`${prefix}-panel-memo`}
+          aria-labelledby={`${prefix}-tab-memo`}
+          style={{
+            flex: 1,
+            minHeight: 0,
+            display: sidebarTab === 'memo' ? 'flex' : 'none',
+            flexDirection: 'column',
+          }}
+        >
+          <MemoPanel
+            note={note}
+            lessonTitle={selectedModule?.name}
+            onExpand={() => setMemoExpanded(true)}
+            fill={!mobile}
+          />
+        </div>
+      </div>
+    );
+  };
 
   // ─── ローディング / エラー ────────────────
   if (loading) {
@@ -889,10 +888,28 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
           </div>
         </div>
 
-        {/* 右サイドバー（デスクトップ） */}
-        <div className="hidden lg:flex flex-col gap-0 w-80 flex-shrink-0 sticky top-[160px] rounded-3xl overflow-y-auto" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6', maxHeight: 'calc(100vh - 170px)' }}>
-          <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} />
-          <div className="border-t border-brand-border">
+        {/*
+          右サイドバー（デスクトップ）。
+          🔴 以前はここ自体が overflow-y-auto で、中のAIコーチも maxHeight 280px で
+             別にスクロールする二重スクロールだった。どちらを動かしているのか
+             分からなくなるので、外側のスクロールをやめて flex で高さを配り、
+             目次は自分の中で、サポートパネルは残り高さの中で収まるようにする。
+        */}
+        <div
+          className="hidden lg:flex flex-col gap-0 w-80 flex-shrink-0 sticky top-[160px] rounded-3xl overflow-hidden"
+          style={{
+            boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
+            border: '1px solid #F0EAE6',
+            height: 'calc(100vh - 170px)',
+          }}
+        >
+          <div style={{ flexShrink: 0 }}>
+            <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} />
+          </div>
+          <div
+            className="border-t border-brand-border flex flex-col"
+            style={{ flex: 1, minHeight: 0 }}
+          >
             {renderSupportPanel(false)}
           </div>
         </div>
@@ -921,6 +938,19 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
             {renderSupportPanel(true)}
           </div>
         </div>
+      )}
+
+      {/*
+        メモの全画面。
+        🔴 ここ（ページ直下）に1つだけ置く。renderSupportPanel はデスクトップと
+           モバイルで2回走るので、あちらに入れると重なって2枚出る。
+      */}
+      {memoExpanded && (
+        <StudyNoteDialog
+          note={note}
+          lessonTitle={selectedModule?.name}
+          onClose={() => setMemoExpanded(false)}
+        />
       )}
     </div>
   );
@@ -980,43 +1010,6 @@ function TocPanel({ pageToc, onTocItemClick, mobile = false }: TocPanelProps) {
               このコンテンツに<br />目次はありません
             </p>
           </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-interface MemoPanelProps {
-  content: string;
-  status: 'idle' | 'loading' | 'saving' | 'saved';
-  onChange: (value: string) => void;
-  lessonTitle?: string;
-  mobile?: boolean;
-}
-
-function MemoPanel({ content, status, onChange, lessonTitle, mobile = false }: MemoPanelProps) {
-  const statusLabel =
-    status === 'saving' ? '保存中…' : status === 'saved' ? '自動保存済み' : '自動保存';
-
-  return (
-    <div className={`bg-white ${mobile ? 'rounded-2xl shadow-sm' : ''} overflow-hidden`}>
-      <div className="flex items-center justify-between px-6 py-4 bg-brand-bg border-b border-brand-border">
-        <div className="flex items-center gap-2">
-          <StickyNote className="w-5 h-5 text-brand" />
-          <span className="font-bold text-brand-muted" style={{ fontSize: '15px' }}>メモ</span>
-        </div>
-        <span className="text-xs text-brand-subtle">{statusLabel}</span>
-      </div>
-      <div className="px-6 py-5" style={{ background: '#fafafa' }}>
-        <textarea
-          value={content}
-          onChange={e => onChange(e.target.value)}
-          placeholder="教材を見ながら、気づいたこと・試したいことを書く…"
-          className="w-full bg-white rounded-2xl px-4 py-3 text-sm text-brand-text outline-none border border-brand-border resize-none"
-          style={{ minHeight: '220px' }}
-        />
-        {lessonTitle && (
-          <p className="mt-2 text-xs text-brand-subtle">「{lessonTitle}」に保存</p>
         )}
       </div>
     </div>
