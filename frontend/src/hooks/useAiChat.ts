@@ -126,11 +126,27 @@ export function useAiChat() {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+  /**
+   * 入力欄の Enter を送信に割り当てる。onKeyDown に渡すこと。
+   *
+   * 🔴 IME で変換中の Enter は「変換の確定」であって送信ではない。
+   *    ここを見ていないと「がぞう」と打って確定した瞬間に、書きかけのまま飛ぶ。
+   *    isComposing を持たない環境（古い Safari / 一部の Android IME）は
+   *    keyCode 229 で来るので両方見る。
+   *    onKeyPress では変換中のイベントを取れないので onKeyDown を使う。
+   */
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (e.nativeEvent.isComposing || e.keyCode === 229) return;
+    // Ctrl/⌘+Enter は「確実に送る」手段として残す（変換中の判定より後に置く）
+    if (e.ctrlKey || e.metaKey) {
       e.preventDefault();
-      sendMessage();
+      void sendMessage();
+      return;
     }
+    if (e.shiftKey || e.altKey) return; // 改行
+    e.preventDefault();
+    void sendMessage();
   };
 
   return {
@@ -140,7 +156,7 @@ export function useAiChat() {
     loading,
     messagesEndRef,
     sendMessage,
-    handleKeyPress,
+    handleKeyDown,
     pendingImage,
     imageError,
     handleImageSelect,

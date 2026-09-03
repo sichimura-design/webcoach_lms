@@ -28,7 +28,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
 
   const { chatOpen, setChatOpen } = useChatStore();
   const {
-    messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyPress,
+    messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyDown,
     pendingImage, imageError, handleImageSelect, clearPendingImage,
   } = useAiChat();
   const chatImageInputRef = useRef<HTMLInputElement>(null);
@@ -627,7 +627,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyDown}
                 placeholder="質問を入力してください..."
                 disabled={loading}
                 rows={1}

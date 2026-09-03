@@ -286,7 +286,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   // AI コーチ
   const {
     messages: aiMessages, input: aiQuestion, setInput: setAiQuestion, loading: aiLoading,
-    messagesEndRef: chatEndRef, sendMessage: sendAiMessage, handleKeyPress: handleAiKeyPress,
+    messagesEndRef: chatEndRef, sendMessage: sendAiMessage, handleKeyDown: handleAiKeyDown,
     pendingImage: aiPendingImage, imageError: aiImageError, handleImageSelect: handleAiImageSelect,
     clearPendingImage: clearAiPendingImage,
   } = useAiChat();
@@ -696,7 +696,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
           aiLoading={aiLoading}
           aiQuestion={aiQuestion}
           setAiQuestion={setAiQuestion}
-          handleAiKeyPress={handleAiKeyPress}
+          handleAiKeyDown={handleAiKeyDown}
           onSend={handleAiQuestion}
           chatEndRef={chatEndRef}
           pendingImage={aiPendingImage}
@@ -1014,7 +1014,7 @@ interface AiCoachPanelProps {
   aiLoading: boolean;
   aiQuestion: string;
   setAiQuestion: (v: string) => void;
-  handleAiKeyPress: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  handleAiKeyDown: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
   onSend: () => void;
   chatEndRef: React.RefObject<HTMLDivElement>;
   pendingImage: PendingImage | null;
@@ -1025,7 +1025,7 @@ interface AiCoachPanelProps {
 }
 
 function AiCoachPanel({
-  aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, chatEndRef,
+  aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyDown, onSend, chatEndRef,
   pendingImage, imageError, onImageSelect, onClearImage, mobile = false,
 }: AiCoachPanelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -1116,7 +1116,7 @@ function AiCoachPanel({
               e.target.style.height = 'auto';
               e.target.style.height = `${e.target.scrollHeight}px`;
             }}
-            onKeyDown={handleAiKeyPress}
+            onKeyDown={handleAiKeyDown}
             onPaste={e => {
               const items = e.clipboardData?.items;
               if (!items) return;
