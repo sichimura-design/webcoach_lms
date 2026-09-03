@@ -337,3 +337,84 @@ body.learning-workspace {
   --input: 0 0% 14.9%;
   --ring: 0 0% 83.1%;
 }
+
+/* ─── AIチャット（ドロワー / 教材ページのAIコーチパネル）─────────
+   inline style では :hover と ::before が書けないので、その差分だけをここに置く。
+   色は theme/webcoachTheme.ts の値に合わせている（primary #E0213A）。 */
+
+/* 右から滑り込むドロワーと、その背後のスクリム */
+@keyframes wcSlideInRight {
+  from { transform: translateX(16px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+@keyframes wcFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.wc-drawer-right { animation: wcSlideInRight .22s cubic-bezier(.2, .8, .2, 1) both; }
+.wc-drawer-scrim { animation: wcFadeIn .18s ease both; }
+
+/* メッセージ1件の出現。既存の fadeInUp を使う */
+.wc-ai-msg { animation: fadeInUp .2s ease both; }
+
+/* アイコンボタン（添付・閉じる・拡大） */
+.wc-ai-icon-btn { transition: background-color .12s ease, color .12s ease; }
+.wc-ai-icon-btn:hover:not(:disabled) { background: #FAF7F7; color: #E0213A; }
+
+/* 送信ボタン */
+.wc-ai-send { transition: background-color .12s ease, opacity .12s ease; }
+.wc-ai-send:hover:not(:disabled) { background: #C4102A; }
+
+/* 質問サジェストのチップ */
+.wc-ai-chip { transition: background-color .12s ease, border-color .12s ease; }
+.wc-ai-chip:hover { background: #FFF6F7; border-color: #F3C3C9; }
+
+/* 回答が来る前に、回答の「形」を置くスケルトン */
+.wc-skel {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #F2EDED 25%, #FBF7F7 37%, #F2EDED 63%);
+  background-size: 400% 100%;
+  animation: wcShimmer 1.4s ease-in-out infinite;
+}
+@keyframes wcShimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* 考え中の3点。
+   🔴 既存の wcPulse（scale 1→1.06）は流用しない。5pxの点では拡大がまったく見えず、
+      止まっているように映る。濃さと高さで打たせる。 */
+@keyframes wcThinkDot {
+  0%, 100% { opacity: .3; transform: translateY(0); }
+  50%      { opacity: 1;  transform: translateY(-2px); }
+}
+.wc-think-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #E0213A;
+  animation: wcThinkDot 1s ease-in-out infinite;
+}
+.wc-think-dots .wc-think-dot:nth-child(2) { animation-delay: 160ms; }
+.wc-think-dots .wc-think-dot:nth-child(3) { animation-delay: 320ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-drawer-right,
+  .wc-drawer-scrim,
+  .wc-ai-msg,
+  .wc-skel,
+  .wc-think-dot {
+    animation: none;
+  }
+  /* 🔴 opacity を戻すのを忘れないこと。fadeInUp は opacity:0 始まりなので、
+        アニメーションを止めるだけだとメッセージが見えなくなる。 */
+  .wc-drawer-right,
+  .wc-drawer-scrim,
+  .wc-ai-msg {
+    opacity: 1;
+    transform: none;
+  }
+  /* 動きは止めるが「待っている」ことは伝えたいので、面としては残す */
+  .wc-skel { background: #F2EDED; }
+  .wc-think-dot { opacity: .55; }
+}
