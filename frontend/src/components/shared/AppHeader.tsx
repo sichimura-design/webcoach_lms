@@ -1,13 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Send, X, User, Home, BookOpen, Sparkles, ShieldCheck, BookMarked, HelpCircle, FileText, ChevronRight, ChevronsLeft, ChevronsRight, Video, Paperclip, ImageOff } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import { Bell, Home, BookOpen, Sparkles, ShieldCheck, BookMarked, HelpCircle, FileText, ChevronRight, ChevronsLeft, ChevronsRight, Video } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNotificationStore } from '../../store/notificationStore';
 import { useNewContentNotification } from '../../hooks/useNewContentNotification';
 import { useAiChat } from '../../hooks/useAiChat';
 import { useChatStore } from '../../store/chatStore';
+import { AiChatDrawer } from '../chat';
 import { withCfToken } from '../profile/AvatarPicker';
 
 interface AppHeaderProps {
@@ -27,11 +26,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const resolvedAvatarUrl = avatarUrl ?? (ctxAvatarUrl ? withCfToken(ctxAvatarUrl, contentToken) : undefined);
 
   const { chatOpen, setChatOpen } = useChatStore();
-  const {
-    messages, input, setInput, loading, messagesEndRef, sendMessage, handleKeyDown,
-    pendingImage, imageError, handleImageSelect, clearPendingImage,
-  } = useAiChat();
-  const chatImageInputRef = useRef<HTMLInputElement>(null);
+  const ai = useAiChat();
 
   const { items: notificationItems, markAllRead } = useNotificationStore();
   const [notifOpen, setNotifOpen] = useState(false);
@@ -465,185 +460,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         </div>
       </nav>
 
-      {/* AI Chat Drawer */}
-      {chatOpen && (
-        <div className="fixed right-0 top-0 h-full w-full sm:w-[400px] bg-white z-50 flex flex-col shadow-xl">
-          {/* Header */}
-          <div className="p-4 bg-gradient-to-r from-[#E86D78] to-[#FA9262] text-white flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-5 h-5 object-contain" />
-              <span className="font-bold text-lg">AIコーチに相談</span>
-            </div>
-            <button
-              onClick={() => setChatOpen(false)}
-              className="p-1 hover:bg-white/20 rounded"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex gap-3 ${message.role === 'user' ? 'flex-row-reverse' : ''}`}
-              >
-                <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    message.role === 'user' ? 'bg-blue-500' : 'bg-brand'
-                  }`}
-                >
-                  {message.role === 'user' ? (
-                    <User className="w-4 h-4 text-white" />
-                  ) : (
-                    <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-4 h-4 object-contain" />
-                  )}
-                </div>
-                <div className="max-w-[85%] sm:max-w-[75%] flex flex-col gap-1">
-                  <div
-                    className={`p-3 rounded-lg ${
-                      message.role === 'user' ? 'bg-blue-100' : 'bg-white'
-                    } shadow-sm`}
-                  >
-                    {message.imageDataUrl && (
-                      <img
-                        src={message.imageDataUrl}
-                        alt="添付画像"
-                        className="max-w-full max-h-48 rounded-lg mb-2 object-contain"
-                      />
-                    )}
-                    {message.role === 'assistant' ? (
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        children={message.content.replace(/^(✅[^\n-]*?) - (.+)$/gm, '$1\n$2')}
-                        components={{
-                          h1: ({ children }) => <p className="text-base font-bold text-brand-text mt-3 mb-2">{children}</p>,
-                          h2: ({ children }) => <p className="text-sm font-bold text-brand-text mt-3 mb-2">{children}</p>,
-                          h3: ({ children }) => <p className="text-sm font-semibold text-brand-text mt-2 mb-1">{children}</p>,
-                          p: ({ children }) => <p className="text-sm leading-relaxed mb-2 last:mb-0" style={{ whiteSpace: 'pre-line' }}>{children}</p>,
-                          strong: ({ children }) => <strong className="font-bold text-brand-text">{children}</strong>,
-                          em: ({ children }) => <em className="italic">{children}</em>,
-                          ul: ({ children }) => <ul style={{ listStyleType: 'disc', paddingLeft: '1.25rem', margin: '0.25rem 0' }} className="text-sm">{children}</ul>,
-                          ol: ({ children }) => <ol style={{ listStyleType: 'decimal', paddingLeft: '1.25rem', margin: '0.25rem 0' }} className="text-sm">{children}</ol>,
-                          li: ({ children }) => <li style={{ listStyleType: 'inherit' }} className="text-sm leading-relaxed mb-0.5">{children}</li>,
-                          code: ({ children, className }) => className ? (
-                            <code className="block bg-gray-100 rounded p-2 text-xs font-mono my-1 overflow-x-auto">{children}</code>
-                          ) : (
-                            <code className="bg-gray-100 rounded px-1 text-xs font-mono">{children}</code>
-                          ),
-                          hr: () => <hr className="my-2 border-gray-200" />,
-                        }}
-                      />
-                    ) : (
-                      <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                    )}
-                    <p className="text-xs text-gray-400 mt-2">
-                      {message.timestamp.toLocaleTimeString('ja-JP', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </p>
-                  </div>
-
-                  {/* 参照元情報 */}
-                  {message.sources && message.sources.length > 0 && (
-                    <div className="pl-1">
-                      <p className="text-xs text-gray-500 font-bold mb-1">参照元</p>
-                      <div className="space-y-1">
-                        {message.sources.map((source, index) => (
-                          <div
-                            key={index}
-                            className="p-2 bg-gray-100 border border-gray-200 rounded text-xs"
-                          >
-                            <p className="font-bold">
-                              {source.module_name}
-                              {source.filename && ` - ${source.filename}`}
-                            </p>
-                            <p className="text-gray-500">
-                              {source.section_name} | 類似度: {(source.similarity * 100).toFixed(1)}%
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-            {loading && (
-              <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-full bg-brand flex items-center justify-center">
-                  <img src={`${process.env.PUBLIC_URL}/teleoperation-icon.png`} alt="AIコーチ" className="w-4 h-4 object-contain" />
-                </div>
-                <div className="p-3 bg-white rounded-lg shadow-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-brand border-t-transparent rounded-full animate-spin" />
-                    <span className="text-sm text-gray-500">考え中...</span>
-                  </div>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input Area */}
-          <div className="p-4 bg-white border-t">
-            {pendingImage && (
-              <div className="mb-2 flex items-center gap-2">
-                <img src={pendingImage.dataUrl} alt="添付予定の画像" className="w-14 h-14 rounded-lg object-cover border border-gray-200" />
-                <button
-                  onClick={clearPendingImage}
-                  className="p-1 text-gray-400 hover:text-gray-600"
-                  title="画像を取り消す"
-                >
-                  <ImageOff className="w-4 h-4" />
-                </button>
-              </div>
-            )}
-            {imageError && (
-              <p className="text-xs text-red-500 mb-2">{imageError}</p>
-            )}
-            <div className="flex gap-2">
-              <input
-                ref={chatImageInputRef}
-                type="file"
-                accept="image/jpeg,image/png,image/webp,image/gif"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) handleImageSelect(file);
-                  e.target.value = '';
-                }}
-              />
-              <button
-                onClick={() => chatImageInputRef.current?.click()}
-                disabled={loading}
-                className="p-2 text-gray-500 hover:text-brand hover:bg-gray-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex-shrink-0"
-                title="画像を添付"
-              >
-                <Paperclip className="w-5 h-5" />
-              </button>
-              <textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="質問を入力してください..."
-                disabled={loading}
-                rows={1}
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent disabled:bg-gray-100"
-              />
-              <button
-                onClick={sendMessage}
-                disabled={(!input.trim() && !pendingImage) || loading}
-                className="p-2 bg-brand text-white rounded-lg hover:bg-brand/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-              >
-                <Send className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* AIコーチのチャット（右から出るドロワー） */}
+      <AiChatDrawer ai={ai} open={chatOpen} onClose={() => setChatOpen(false)} />
     </>
   );
 }
