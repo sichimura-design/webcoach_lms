@@ -116,7 +116,10 @@ export function StudyLogRow({ activity, timeOnly, onEdit, onDelete, busy = false
       className="studylog-row"
       style={{
         display: 'flex',
-        alignItems: 'center',
+        // 🔴 center にしない。「学習した内容」が入ると行が3〜4段になり、
+        //    右端の学習時間が本文の途中の高さに来て、どの行の数字か読めなくなる。
+        //    上揃えにして アイコン・教材名・時間 を同じ高さに並べる。
+        alignItems: 'flex-start',
         gap: 12,
         padding: '10px 12px',
         borderRadius: 'var(--dc-radius-md)',
@@ -174,11 +177,33 @@ export function StudyLogRow({ activity, timeOnly, onEdit, onDelete, busy = false
           </div>
         )}
 
-        {session.memo && (
+        {/* 終了カードの「学習した内容」。ここに出さないと、書いた本人が
+            編集モーダルを開くまで二度と読めない（保存はされているのに読めない状態だった）。
+            500字まで入るので2行で切り、全文は「この記録を編集」で読ませる。 */}
+        {session.contentNote && (
           <div
             style={{
               fontSize: 'var(--dc-fs-caption)',
               color: 'var(--dc-text-body)',
+              marginTop: 4,
+              lineHeight: 'var(--dc-lh-ui)',
+              overflowWrap: 'anywhere',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}
+          >
+            {session.contentNote}
+          </div>
+        )}
+
+        {/* 一言メモは「学習した内容」の添え物なので、両方あるときに主従が付くよう一段薄く */}
+        {session.memo && (
+          <div
+            style={{
+              fontSize: 'var(--dc-fs-caption)',
+              color: 'var(--dc-text-subtle)',
               marginTop: 4,
               lineHeight: 'var(--dc-lh-ui)',
               overflowWrap: 'anywhere',
