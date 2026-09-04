@@ -41,10 +41,12 @@ export function ChatComposer({ ai, variant, placeholder, onZoom }: ChatComposerP
     !!dt && Array.prototype.indexOf.call(dt.types, 'Files') >= 0;
 
   const accept = ALLOWED_CHAT_IMAGE_TYPES.join(',');
+  // 400pxのドロワーでも1行に収まる長さにする。入り切らないと最後の数文字だけが
+  // 2行目に落ちて、折り返しの事故に見える
   const hint =
     variant === 'drawer'
-      ? 'Enterで送信 / Shift+Enterで改行 / 画像は貼り付け・ドラッグ＆ドロップにも対応'
-      : 'Enterで送信 / 画像は貼り付けでも添付できます';
+      ? 'Enterで送信 / Shift+Enterで改行 / 画像は貼り付け・ドロップ可'
+      : 'Enterで送信 / 画像は貼り付け・ドロップ可';
 
   return (
     <div

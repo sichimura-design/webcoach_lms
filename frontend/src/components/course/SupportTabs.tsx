@@ -50,7 +50,6 @@ export function SupportTabs({ tab, onChange, hasNote, panelIdPrefix }: SupportTa
     } else if (e.key === 'End') {
       e.preventDefault();
       const last = TABS[TABS.length - 1];
-      e.preventDefault();
       onChange(last.key);
       refs.current[last.key]?.focus();
     }

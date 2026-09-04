@@ -31,9 +31,14 @@ export function useAutoGrowTextarea(
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const previous = el.style.height;
     // いったん auto に戻さないと、縮んだときに前回の高さが残る
     el.style.height = 'auto';
-    el.style.height = `${el.scrollHeight}px`;
+    const measured = el.scrollHeight;
+    // 🔴 display:none の中にいると 0 が返る。0 を入れると、表示に戻ったときに
+    //    高さ0のまま潰れる（値が変わらないので測り直しも走らない）。
+    //    測れなかったときは前の値のままにしておく。
+    el.style.height = measured > 0 ? `${measured}px` : previous;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, ...deps]);
 

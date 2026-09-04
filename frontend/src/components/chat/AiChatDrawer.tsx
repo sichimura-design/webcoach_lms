@@ -65,13 +65,26 @@ export function AiChatDrawer({ ai, open, onClose }: AiChatDrawerProps) {
 
   if (!open) return null;
 
-  /** Tab が背後のページへ抜けないよう、前後の見えない番兵で折り返す */
+  /**
+   * Tab が背後のページへ抜けないよう、前後の見えない番兵で折り返す。
+   *
+   * 🔴 番兵自身と、隠してあるファイル選択 input を候補から外す。
+   *    番兵を含めてしまうと「番兵→番兵」で堂々巡りになり、
+   *    display:none の要素を focus() しても何も起きないので、
+   *    そこが先頭に来た瞬間にフォーカスが外へ逃げる。
+   */
   const wrapFocus = (to: 'first' | 'last') => () => {
-    const focusables = panelRef.current?.querySelectorAll<HTMLElement>(
-      'button:not(:disabled), textarea:not(:disabled), a[href], input:not(:disabled), [tabindex]:not([tabindex="-1"])'
-    );
-    if (!focusables || focusables.length === 0) return;
-    const target = to === 'first' ? focusables[0] : focusables[focusables.length - 1];
+    const root = panelRef.current;
+    if (!root) return;
+    const candidates = Array.prototype.slice
+      .call(
+        root.querySelectorAll<HTMLElement>(
+          'button:not(:disabled), textarea:not(:disabled), a[href], input:not(:disabled), select:not(:disabled)'
+        )
+      )
+      .filter((el: HTMLElement) => el.offsetParent !== null || el === document.activeElement);
+    if (candidates.length === 0) return;
+    const target = to === 'first' ? candidates[0] : candidates[candidates.length - 1];
     target.focus();
   };
 
@@ -99,7 +112,7 @@ export function AiChatDrawer({ ai, open, onClose }: AiChatDrawerProps) {
           outline: 'none',
         }}
       >
-        <div tabIndex={0} aria-hidden onFocus={wrapFocus('last')} />
+        <div tabIndex={0} aria-hidden data-focus-sentinel onFocus={wrapFocus('last')} />
 
         <div
           className="flex items-center"
@@ -157,7 +170,7 @@ export function AiChatDrawer({ ai, open, onClose }: AiChatDrawerProps) {
           onZoom={zoom.open}
         />
 
-        <div tabIndex={0} aria-hidden onFocus={wrapFocus('first')} />
+        <div tabIndex={0} aria-hidden data-focus-sentinel onFocus={wrapFocus('first')} />
       </div>
 
       {zoom.zoom && (
