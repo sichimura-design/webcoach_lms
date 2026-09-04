@@ -321,7 +321,12 @@ export function StudyDashboardCard({
                     {/* 🔴 丸は列幅に追従させる（最大34px）。26px 固定にすると、
                            スマホ幅で1列が33px前後まで落ちたときに隣とぶつかる。
                         🔴 margin:'auto 0' が余り高さの受け皿。箱が引き伸ばされたとき
-                           丸が上下の中央に寄り、下だけに白が残るのを防ぐ。 */}
+                           丸が上下の中央に寄り、下だけに白が残るのを防ぐ。
+                        🔴 学習した日は今日もそれ以前も「赤ベタ＋白い炎」で統一する。
+                           かつては今日だけ赤ベタ、過去は薄いピンク(#FDECEC)＋赤い炎に
+                           していたが、薄ピンクと未学習の白丸の差が弱く、
+                           1行のうちどれが学習した日なのか読み取れなかった。
+                           今日は丸の色ではなく「今日」ラベル・太字・影で示す。 */}
                     <span
                       style={{
                         width: '100%',
@@ -331,7 +336,7 @@ export function StudyDashboardCard({
                         borderRadius: 9999,
                         display: 'grid',
                         placeItems: 'center',
-                        background: d.isToday && on ? 'var(--dc-primary)' : on ? '#FDECEC' : 'transparent',
+                        background: on ? 'var(--dc-primary)' : 'transparent',
                         border: d.isFuture
                           ? '2px dashed #E5DED3'
                           : on
@@ -340,13 +345,7 @@ export function StudyDashboardCard({
                         boxShadow: d.isToday && on ? '0 4px 10px -4px rgba(160,8,36,.5)' : undefined,
                       }}
                     >
-                      {on && (
-                        <Flame
-                          size={14}
-                          fill={d.isToday ? '#fff' : 'var(--dc-primary)'}
-                          strokeWidth={0}
-                        />
-                      )}
+                      {on && <Flame size={14} fill="#fff" strokeWidth={0} />}
                     </span>
                     {/* 🔴 まだ来ていない日に「0分」を出さない（このファイル冒頭の方針）。
                            起きていない不足を先に見せることになるので、来ていないことが
