@@ -106,9 +106,18 @@ import {
   NoteFolderCreateInput,
   NoteFolderUpdateInput,
   NoteListQuery,
+  NoteOrigin,
+  NoteSort,
+  NoteSourceRef,
   NoteSummary,
   NoteUpdateInput,
 } from '../types/notes';
+import {
+  blockCountOf,
+  excerptFromMarkdown,
+  parseNoteMarkdown,
+  serializeNoteMarkdown,
+} from '../utils/noteMarkdown';
 import {
   CheckinAnswers,
   CheckinPrompt,
@@ -137,6 +146,88 @@ const BFF_BASE_URL = process.env.REACT_APP_BFF_URL
 // 本番は PUBLIC_URL が空なので従来どおり '/login'、dev プレビューでは
 // '/branches/<slug>/login' になる。
 const LOGIN_PATH = `${process.env.PUBLIC_URL || ''}/login`;
+
+// ==================== マイノートの実API変換ヘルパー ====================
+// 実API（webcoach_my_note）の行と、UI側の型（Note / NoteSummary）の橋渡し。
+
+/**
+ * 出どころのバッジ。実APIは from_ai / from_coaching の2フラグ＋cmid で持つので、
+ * UIの排他的な4値へ畳む。
+ * 🔴 両方立っている行があり得るため、優先順位を決めてある（coaching > ai > 教材 > 自分）。
+ */
+function originOf(row: MyNote): NoteOrigin {
+  if (row.from_coaching === 1) return 'coaching';
+  if (row.from_ai === 1) return 'ai';
+  if (row.cmid !== null) return 'material';
+  return 'self';
+}
+
+/**
+ * ノートの出どころ（メタ行「コース名 / レッスン名」の元）。
+ * 🔴 実APIは courseid / cmid しか持たない。表示名は保存していないので空で返す。
+ *    名前を出したい場合は呼び出し側でコース情報から引くこと。
+ */
+function sourceOf(row: MyNote): NoteSourceRef | null {
+  if (row.courseid === null && row.cmid === null) return null;
+  return {
+    courseId: row.courseid ?? 0,
+    courseName: '',
+    lessonId: row.cmid ?? 0,
+    lessonTitle: '',
+    heading: null,
+    blockId: null,
+    offset: null,
+  };
+}
+
+/** 一覧の並び替え。MSWの sortNotes と同じ順序にしてある */
+function sortNoteRows(rows: MyNote[], sort: NoteSort): MyNote[] {
+  const copy = [...rows];
+  if (sort === 'title') return copy.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
+  if (sort === 'created') return copy.sort((a, b) => b.created_at.localeCompare(a.created_at));
+  if (sort === 'createdAsc') return copy.sort((a, b) => a.created_at.localeCompare(b.created_at));
+  if (sort === 'updatedAsc') return copy.sort((a, b) => a.updated_at.localeCompare(b.updated_at));
+  return copy.sort((a, b) => b.updated_at.localeCompare(a.updated_at));
+}
+
+/** 追加リクエストからブロックを組む。IDは本文に持てないので描画用に振る */
+function buildBlockFromInput(input: NoteBlockInput, index: number): NoteBlock {
+  const at = new Date().toISOString();
+  const base = { id: `blk_${index}`, createdAt: at, updatedAt: at };
+
+  if (input.kind === 'clip') return { ...base, kind: 'clip', text: input.text, source: input.source };
+  if (input.kind === 'answer') {
+    return {
+      ...base,
+      kind: 'answer',
+      question: input.question,
+      answer: input.answer,
+      selectedText: input.selectedText ?? null,
+      image: input.image ?? null,
+      source: input.source ?? null,
+    };
+  }
+  if (input.kind === 'image') {
+    return {
+      ...base,
+      kind: 'image',
+      imageId: input.imageId,
+      alt: input.alt ?? '',
+      caption: input.caption ?? null,
+    };
+  }
+  return { ...base, kind: 'text', text: input.text ?? '' };
+}
+
+/** ブロックの部分更新。種別ごとに書き換えられる項目だけ当てる */
+function applyBlockPatch(block: NoteBlock, patch: NoteBlockPatch): NoteBlock {
+  const updatedAt = new Date().toISOString();
+  if (block.kind === 'text' && patch.text !== undefined) return { ...block, text: patch.text, updatedAt };
+  if (block.kind === 'clip' && patch.text !== undefined) return { ...block, text: patch.text, updatedAt };
+  if (block.kind === 'answer' && patch.answer !== undefined) return { ...block, answer: patch.answer, updatedAt };
+  if (block.kind === 'image' && patch.caption !== undefined) return { ...block, caption: patch.caption, updatedAt };
+  return block;
+}
 
 class BFFClient {
   private api: AxiosInstance;
@@ -1747,98 +1838,254 @@ class BFFClient {
   }
 
   // ==================== マイノート（自由帳） ====================
-  // 実BFFには未実装。すべて mocks/noteHandlers.ts のMSWモックが応答する。
-  // 器（Note）と中身（NoteBlock）に分かれているので、一覧は軽量な NoteSummary を返す。
+  // 実API `/api/my-note/*`（webcoach_my_note / webcoach_my_note_folder）に載せている。
+  //
+  // 🔴 UI側の型（Note / NoteBlock）は変えていない。実APIは本文を Markdown の1列で持つので、
+  //    ここで blocks[] ⇔ Markdown を変換する（utils/noteMarkdown.ts）。
+  // 🔴 実APIは userid をパスに要る。UIのフック・コンポーネントを触らずに済ませるため、
+  //    ここで現在ユーザーのMoodle IDを解決してキャッシュする。
+  // 🔴 一覧は絞り込み・並び替え・全文検索をクライアント側で行う。実APIが本文ごと返すため
+  //    追加のリクエストが要らず、MSWのときと同じ見え方になる。
 
-  /** GET /api/webcoach/notes?q=&sort=&favorite=&lessonId= */
+  /** 現在ユーザーのMoodle ID。ノート系APIのパスに要るので一度だけ解決して使い回す */
+  private moodleUserIdPromise: Promise<number> | null = null;
+
+  private async getMoodleUserId(): Promise<number> {
+    if (!this.moodleUserIdPromise) {
+      this.moodleUserIdPromise = this.getUserInfo()
+        .then((info) => info.moodle.id)
+        .catch((e) => {
+          // 失敗を握り続けると以降ずっとノートが開けなくなる。次回やり直せるようにする
+          this.moodleUserIdPromise = null;
+          throw e;
+        });
+    }
+    return this.moodleUserIdPromise;
+  }
+
+  /** 実APIのノート → UIのNote（本文をブロックへ展開する） */
+  private toNote(row: MyNote): Note {
+    return {
+      id: String(row.noteid),
+      title: row.title,
+      blocks: parseNoteMarkdown(row.contents, row.updated_at),
+      favorite: row.favorite === 1,
+      origin: originOf(row),
+      folderId: row.folder_id === null ? null : String(row.folder_id),
+      source: sourceOf(row),
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    };
+  }
+
+  /** 一覧用の軽量表現。本文は持たせず、書き出しと件数だけにする */
+  private toSummary(row: MyNote): NoteSummary {
+    return {
+      id: String(row.noteid),
+      title: row.title,
+      favorite: row.favorite === 1,
+      origin: originOf(row),
+      folderId: row.folder_id === null ? null : String(row.folder_id),
+      blockCount: blockCountOf(row.contents),
+      excerpt: excerptFromMarkdown(row.contents),
+      source: sourceOf(row),
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
+    };
+  }
+
+  private toFolder(row: MyNoteFolder): NoteFolder {
+    return { id: String(row.folder_id), name: row.name, createdAt: row.created_at };
+  }
+
+  /** ノート1件を生で取る（ブロック操作の read-modify-write に使う） */
+  private async fetchNoteRow(id: string): Promise<MyNote> {
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.get(`/my-note/notes/${userId}/${id}`);
+    return response.data;
+  }
+
+  /** ブロック配列を書き戻す */
+  private async saveBlocks(id: string, blocks: NoteBlock[]): Promise<Note> {
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.put(`/my-note/notes/${userId}/${id}`, {
+      contents: serializeNoteMarkdown(blocks),
+    });
+    return this.toNote(response.data);
+  }
+
+  /** GET /api/my-note/notes/{userid} — 絞り込みと並び替えはクライアント側 */
   async listNotes(query: NoteListQuery = {}): Promise<NoteSummary[]> {
-    const response = await this.api.get('/webcoach/notes', { params: query });
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const params = query.lessonId !== undefined ? { cmid: query.lessonId } : undefined;
+    const response = await this.api.get(`/my-note/notes/${userId}`, { params });
+    const rows: MyNote[] = response.data;
+
+    const q = (query.q ?? '').trim().toLowerCase();
+    const filtered = rows.filter((row) => {
+      if (query.favorite && row.favorite !== 1) return false;
+      // coachingSessionId は列が無いため「コーチング由来か」までしか絞れない
+      if (query.coachingSessionId !== undefined && row.from_coaching !== 1) return false;
+      if (!q) return true;
+      return `${row.title}\n${row.contents}`.toLowerCase().includes(q);
+    });
+
+    return sortNoteRows(filtered, query.sort ?? 'updated').map((row) => this.toSummary(row));
   }
 
-  /** GET /api/webcoach/notes/{id} — ブロック込みの1件 */
+  /** GET /api/my-note/notes/{userid}/{noteid} */
   async getNote(id: string): Promise<Note> {
-    const response = await this.api.get(`/webcoach/notes/${id}`);
-    return response.data;
+    return this.toNote(await this.fetchNoteRow(id));
   }
 
-  /** POST /api/webcoach/notes */
+  /** POST /api/my-note/notes/{userid} */
   async createNote(body: NoteCreateInput = {}): Promise<Note> {
-    const response = await this.api.post('/webcoach/notes', body);
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.post(`/my-note/notes/${userId}`, {
+      title: body.title ?? '無題のノート',
+      contents: '',
+      folder_id: body.folderId === undefined || body.folderId === null ? null : Number(body.folderId),
+      courseid: body.source?.courseId ?? null,
+      cmid: body.source?.lessonId ?? null,
+      from_ai: body.origin === 'ai' ? 1 : 0,
+      from_coaching: body.origin === 'coaching' || body.coachingSessionId != null ? 1 : 0,
+    });
+    return this.toNote(response.data);
   }
 
-  /** PATCH /api/webcoach/notes/{id} — タイトル・お気に入り・フォルダ移動 */
+  /** PUT /api/my-note/notes/{userid}/{noteid} — タイトル・お気に入り・フォルダ移動 */
   async updateNote(id: string, body: NoteUpdateInput): Promise<Note> {
-    const response = await this.api.patch(`/webcoach/notes/${id}`, body);
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const payload: Record<string, unknown> = {};
+    if (body.title !== undefined) payload.title = body.title;
+    if (body.favorite !== undefined) payload.favorite = body.favorite ? 1 : 0;
+    // null を明示的に送ると未整理へ移す。キー自体を送らなければ変更しない
+    if (body.folderId !== undefined) {
+      payload.folder_id = body.folderId === null ? null : Number(body.folderId);
+    }
+    const response = await this.api.put(`/my-note/notes/${userId}/${id}`, payload);
+    return this.toNote(response.data);
   }
 
-  /** DELETE /api/webcoach/notes/{id} */
+  /** DELETE /api/my-note/notes/{userid}/{noteid} */
   async deleteNote(id: string): Promise<void> {
-    await this.api.delete(`/webcoach/notes/${id}`);
+    const userId = await this.getMoodleUserId();
+    await this.api.delete(`/my-note/notes/${userId}/${id}`);
   }
 
   /**
-   * POST /api/webcoach/notes/{id}/blocks — 本文・クリップ・AI回答・画像の追加
-   * index を渡すとその位置に差し込む（省略時は末尾）。
+   * ブロックの追加。実APIはブロック単位の口を持たないので、
+   * 本文を読み直して差し込み、丸ごと書き戻す。
    */
   async appendNoteBlock(
     noteId: string,
     input: NoteBlockInput & NoteBlockInsert
   ): Promise<NoteBlock> {
-    const response = await this.api.post(`/webcoach/notes/${noteId}/blocks`, input);
-    return response.data;
+    const row = await this.fetchNoteRow(noteId);
+    const blocks = parseNoteMarkdown(row.contents, row.updated_at);
+    const block = buildBlockFromInput(input, blocks.length);
+    const at = input.index;
+    if (typeof at === 'number' && at >= 0 && at < blocks.length) blocks.splice(at, 0, block);
+    else blocks.push(block);
+    await this.saveBlocks(noteId, blocks);
+    return block;
   }
 
-  /** PATCH /api/webcoach/notes/{id}/blocks/{blockId} — 本文の書き換え、または index で並べ替え */
+  /** ブロックの書き換え、または index による並べ替え */
   async updateNoteBlock(noteId: string, blockId: string, patch: NoteBlockPatch): Promise<NoteBlock> {
-    const response = await this.api.patch(`/webcoach/notes/${noteId}/blocks/${blockId}`, patch);
-    return response.data;
+    const row = await this.fetchNoteRow(noteId);
+    const blocks = parseNoteMarkdown(row.contents, row.updated_at);
+    const at = blocks.findIndex((b) => b.id === blockId);
+    if (at < 0) throw new Error(`note block not found: ${blockId}`);
+
+    const updated = applyBlockPatch(blocks[at], patch);
+    blocks[at] = updated;
+
+    if (typeof patch.index === 'number') {
+      const to = Math.max(0, Math.min(blocks.length - 1, patch.index));
+      const [moved] = blocks.splice(at, 1);
+      blocks.splice(to, 0, moved);
+    }
+
+    await this.saveBlocks(noteId, blocks);
+    return updated;
   }
 
-  /** DELETE /api/webcoach/notes/{id}/blocks/{blockId} */
+  /** ブロックの削除 */
   async deleteNoteBlock(noteId: string, blockId: string): Promise<void> {
-    await this.api.delete(`/webcoach/notes/${noteId}/blocks/${blockId}`);
+    const row = await this.fetchNoteRow(noteId);
+    const blocks = parseNoteMarkdown(row.contents, row.updated_at);
+    await this.saveBlocks(
+      noteId,
+      blocks.filter((b) => b.id !== blockId)
+    );
   }
 
   /**
-   * GET /api/webcoach/note-clips?lessonId=
-   * 教材本文のハイライト復元用。これが無いと、<mark> を当てるためだけに
-   * 全ノートの全ブロックを取りに行くことになる。
+   * 教材画面が引く、そのレッスン由来のクリップ一覧。
+   * 実APIは cmid でノート単位に引けるので、そのノートの本文からクリップを拾い直す。
+   * 🔴 取り込み位置（教材ブロックID・オフセット）は保存していないため、
+   *    教材本文のハイライト復元はできない。返すのは「どのノートのどの引用か」まで。
    */
   async listNoteClips(lessonId: number): Promise<NoteClipRef[]> {
-    const response = await this.api.get('/webcoach/note-clips', { params: { lessonId } });
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.get(`/my-note/notes/${userId}`, { params: { cmid: lessonId } });
+    const rows: MyNote[] = response.data;
+
+    const clips: NoteClipRef[] = [];
+    for (const row of rows) {
+      for (const block of parseNoteMarkdown(row.contents, row.updated_at)) {
+        if (block.kind !== 'clip' || block.source.lessonId !== lessonId) continue;
+        clips.push({
+          noteId: String(row.noteid),
+          noteTitle: row.title,
+          blockId: block.id,
+          sourceBlockId: '',
+          text: block.text,
+          offset: null,
+        });
+      }
+    }
+    return clips;
   }
 
-  // --- フォルダ（デザイン『マイノート 改善案』の左列）。実BFFには無く、noteHandlers.ts が応答する ---
+  // --- フォルダ（一覧の左列）---
 
-  /** GET /api/webcoach/note-folders — 作成順 */
+  /** GET /api/my-note/folders/{userid} — 作成順 */
   async listNoteFolders(): Promise<NoteFolder[]> {
-    const response = await this.api.get('/webcoach/note-folders');
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.get(`/my-note/folders/${userId}`);
+    const rows: MyNoteFolder[] = response.data;
+    return [...rows]
+      .sort((a, b) => a.created_at.localeCompare(b.created_at))
+      .map((row) => this.toFolder(row));
   }
 
-  /** POST /api/webcoach/note-folders */
+  /** POST /api/my-note/folders/{userid} */
   async createNoteFolder(body: NoteFolderCreateInput): Promise<NoteFolder> {
-    const response = await this.api.post('/webcoach/note-folders', body);
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.post(`/my-note/folders/${userId}`, { name: body.name });
+    return this.toFolder(response.data);
   }
 
-  /** PATCH /api/webcoach/note-folders/{id} — 名前の変更 */
+  /** PUT /api/my-note/folders/{userid}/{folderId} — 名前の変更 */
   async updateNoteFolder(id: string, body: NoteFolderUpdateInput): Promise<NoteFolder> {
-    const response = await this.api.patch(`/webcoach/note-folders/${id}`, body);
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const response = await this.api.put(`/my-note/folders/${userId}/${id}`, { name: body.name });
+    return this.toFolder(response.data);
   }
 
   /**
-   * DELETE /api/webcoach/note-folders/{id}
-   * 中のノートは消さず未整理へ移す。moved はその件数（トーストに出す）。
+   * DELETE /api/my-note/folders/{userid}/{folderId}
+   * 中のノートは消えず、DBの外部キー（ON DELETE SET NULL）で未整理へ移る。
+   * moved はトーストに出す件数で、消す前に数えておく。
    */
   async deleteNoteFolder(id: string): Promise<{ moved: number }> {
-    const response = await this.api.delete(`/webcoach/note-folders/${id}`);
-    return response.data;
+    const userId = await this.getMoodleUserId();
+    const before = await this.api.get(`/my-note/notes/${userId}`, { params: { folder_id: Number(id) } });
+    const moved = Array.isArray(before.data) ? before.data.length : 0;
+    await this.api.delete(`/my-note/folders/${userId}/${id}`);
+    return { moved };
   }
 
   /**
