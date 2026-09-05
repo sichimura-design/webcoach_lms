@@ -6,7 +6,9 @@ import { Button } from '../ui/button';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
 
-type Provider = 'zoom' | 'google';
+// Google Meetはコーチ個別OAuthではなく、会社共有のOrganizerアカウントを管理者が
+// 一度だけ接続するOrganizer中心モデルに移行したため、コーチ向け連携先ではない。
+type Provider = 'zoom';
 
 interface IntegrationInfo {
   provider: string;
@@ -19,10 +21,6 @@ const PROVIDER_META: Record<Provider, { label: string; description: string }> = 
   zoom: {
     label: 'Zoom',
     description: 'Zoomと連携すると、コーチングで利用したミーティングの情報を取得できるようになります。',
-  },
-  google: {
-    label: 'Google Meet',
-    description: 'Google Meetと連携すると、コーチングで利用したミーティングの情報を取得できるようになります。',
   },
 };
 

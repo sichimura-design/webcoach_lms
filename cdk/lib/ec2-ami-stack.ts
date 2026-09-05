@@ -129,6 +129,27 @@ export class Ec2AmiStack extends cdk.Stack {
       resources: [`arn:aws:s3:::${recordingsBucketName}`],
     }));
 
+    // Difyアプリ連携用のAPIキー（api-server/agents/tools_langchain.py）
+    // NOTE: このstatementはdev/kanegae分岐後に直接付与されており、これまでこのファイルに
+    // 未反映だった（cdk diffで検出、削除しないよう復元）
+    role.addToPolicy(new iam.PolicyStatement({
+      sid: 'DifyCredentialsSecretAccess',
+      actions: ['secretsmanager:GetSecretValue'],
+      resources: [
+        `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${envName}/moodle/dify-credentials-*`,
+      ],
+    }));
+
+    // Organizer中心モデルのGoogle Meet連携用（OrganizerCredentialsStore.js / environment.js）
+    role.addToPolicy(new iam.PolicyStatement({
+      sid: 'GoogleMeetIntegrationSecretsAccess',
+      actions: ['secretsmanager:GetSecretValue', 'secretsmanager:PutSecretValue'],
+      resources: [
+        `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${envName}/moodle/organizer-google-credentials-*`,
+        `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${envName}/moodle/LMS_google-oauth-client-*`,
+      ],
+    }));
+
     // ========================================
     // User Data (Docker起動のみ)
     // ========================================

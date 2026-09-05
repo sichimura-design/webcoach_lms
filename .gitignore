@@ -80,3 +80,6 @@ sql/
 
 # RDS migration
 rds-migration/
+
+# Local-only fallback credential store (no AWS Secrets Manager configured)
+bff-server/.local-secrets/

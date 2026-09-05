@@ -11,7 +11,7 @@ const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 
 // Configuration
-const { config, validateEnvironment } = require('./config/environment');
+const { config, validateEnvironment, loadGoogleOAuthClientCredentials } = require('./config/environment');
 
 // Utilities
 const logger = require('./utils/logger');
@@ -221,8 +221,8 @@ app.use((req, res) => {
 
 if (require.main === module) {
   // Initialize service account and start server
-  authService
-    .initializeServiceAccount()
+  loadGoogleOAuthClientCredentials()
+    .then(() => authService.initializeServiceAccount())
     .then(() => {
       // Start token refresh
       authService.startTokenRefresh();
