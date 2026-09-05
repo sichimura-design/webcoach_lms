@@ -205,3 +205,40 @@ export interface LessonAiResponse {
    */
   suggestion?: SkillSuggestion | null;
 }
+
+// ---- レッスン完了時のひと言 -------------------------------------------------
+
+/**
+ * レッスンを完了したときにAIコーチが返すひと言のリクエスト。
+ *
+ * 進捗・単元の位置・ノート件数・連続学習日数はサーバ側が持っているので送らない。
+ * クライアントしか知らないのは「このレッスンでAIコーチに何回聞いたか」だけ。
+ */
+export interface LessonCheerRequest {
+  courseId: number;
+  lessonId: number;
+  /** このレッスンを開いている間にAIコーチへ投げた質問数 */
+  askedCount: number;
+}
+
+/**
+ * ひと言の段。同じ調子で毎回ほめると価値が下がるので、
+ * 達成の大きさで4段に分ける（UI側は tier で見せ方の強さを変える）。
+ *
+ * milestone … 単元を完走した／コースを50%・100%まで進めた
+ * streak    … 連続学習日数が伸びている
+ * effort    … このレッスンでノートを取った・AIコーチに質問した
+ * plain     … 上に当たらない通常回。短く事実だけ言う
+ */
+export type LessonCheerTier = 'milestone' | 'streak' | 'effort' | 'plain';
+
+export interface LessonCheerResponse {
+  tier: LessonCheerTier;
+  /**
+   * 節目だけ付く短い見出し（例「単元クリア」）。
+   * plain / effort では null。UI はこれが有る回だけ強く飾る。
+   */
+  headline: string | null;
+  /** コーチのひと言。1〜2文 */
+  message: string;
+}

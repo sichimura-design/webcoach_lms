@@ -9,14 +9,13 @@
  * 「リンクを貼る」「参加する」「確認して確定する」の3つだけに収めている。
  */
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { AppHeader } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import bffClient from '../services/bffClient';
 import { color, font } from '../theme/webcoachTheme';
 import CoachingHeroCard from './coaching/CoachingHeroCard';
-import CoachingHistoryList from './coaching/CoachingHistoryList';
 import ConsentModal from './coaching/ConsentModal';
 import ImportRecordCard from './coaching/ImportRecordCard';
 import LastSessionCard from './coaching/LastSessionCard';
@@ -455,11 +454,8 @@ export default function CoachingNotesPage() {
       >
         <div>
           <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.3, color: C.ink }}>
-            コーチング
+            コーチング記録
           </h1>
-          <p style={{ margin: '6px 0 0', fontSize: 13, color: C.muted }}>
-            コーチと決めたことを実行に移し、積み上がった変化をふりかえる場所です。
-          </p>
         </div>
 
         {loading ? (
@@ -506,7 +502,21 @@ export default function CoachingNotesPage() {
               />
             </div>
 
-            <CoachingHistoryList sessions={pastSessions} onOpen={openSession} />
+            {/* 過去の記録は学習記録ページ（/study-log）にためる。ここに残すのは前回分だけ、
+                という切り分けにしたので、一覧は持たずに置き場所への導線だけ出す。 */}
+            {pastSessions.length > 0 && (
+              <Link
+                to="/study-log"
+                style={{
+                  ...font.link,
+                  color: C.brand,
+                  alignSelf: 'flex-start',
+                  textDecoration: 'none',
+                }}
+              >
+                これまでのコーチング記録をすべて見る（{pastSessions.length}件） →
+              </Link>
+            )}
           </>
         ) : mode.kind === 'recording' ? (
           <>
@@ -535,15 +545,7 @@ export default function CoachingNotesPage() {
         ) : (
           <>
             {backLink}
-            <SessionReview
-              session={mode.session}
-              userId={userId}
-              onReflected={(updated) => {
-                showSession({ kind: 'review', session: updated });
-                void reload();
-              }}
-              onDeleted={backToList}
-            />
+            <SessionReview session={mode.session} onDeleted={backToList} />
           </>
         )}
 

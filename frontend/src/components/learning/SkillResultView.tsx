@@ -223,18 +223,20 @@ export function SkillResultView({
         <span style={{ fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>{result.next}</span>
       </div>
 
+      {/* 「参照した教材箇所」という見出しは付けない。
+          AiCoachPane の ReferenceNote が「◯◯を参照して回答しています」と文章で言うので、
+          ここに残すのは教材へ飛べるチップだけにする。 */}
       {result.sources.length > 0 && (
         <div className="flex flex-wrap" style={{ gap: 5, marginTop: 8 }}>
-          <span style={{ fontSize: 9.5, color: color.textFaint, alignSelf: 'center' }}>
-            参照した教材箇所
-          </span>
           {result.sources.map((source) => (
             <button
               key={source.blockId}
               type="button"
               onClick={() => onJumpToBlock(source.blockId)}
               title="この教材箇所へ移動"
+              className="wc-ai-chip focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
               style={{
+                fontFamily: 'inherit',
                 border: `1px solid ${color.primaryBorder}`,
                 borderRadius: 999,
                 background: color.hoverBgTint,

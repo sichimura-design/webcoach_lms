@@ -44,9 +44,16 @@ import {
   StudyActivity,
   StudyActivityInput,
   StudyActivityPage,
+  StudyActivityPatch,
   StudyActivityQuery,
   StudyStatsSummary,
 } from '../types/studyActivity';
+import {
+  GoalDeclaration,
+  GoalDeclarationInput,
+  GoalDeclarationPatch,
+  GoalDeclarationQuery,
+} from '../types/goalDeclaration';
 import {
   FocusBoothMember,
   FocusBoothPulse,
@@ -73,6 +80,8 @@ import {
 import {
   LessonAiRequest,
   LessonAiResponse,
+  LessonCheerRequest,
+  LessonCheerResponse,
   LessonDoc,
   LessonOutline,
 } from '../types/lesson';
@@ -86,6 +95,9 @@ import {
   NoteBlockPatch,
   NoteClipRef,
   NoteCreateInput,
+  NoteFolder,
+  NoteFolderCreateInput,
+  NoteFolderUpdateInput,
   NoteListQuery,
   NoteSummary,
   NoteUpdateInput,
@@ -781,8 +793,29 @@ class BFFClient {
    * GET /api/webcoach/study-stats/{userId}?days=35
    * 画面はこれ1本で描けるようにしてある（リクエストを増やさない）。
    */
-  async getStudyStatsSummary(userId: number, days = 35): Promise<StudyStatsSummary> {
+  async getStudyStatsSummary(userId: number, days: number | 'all' = 35): Promise<StudyStatsSummary> {
     const response = await this.api.get(`/webcoach/study-stats/${userId}`, { params: { days } });
+    return response.data;
+  }
+
+  /**
+   * 学習記録を1件編集する（時間・教材・メモ・達成度・日付）
+   * PATCH /api/webcoach/study-activities/{userId}/{activityId}
+   *
+   * タイマーの止め忘れ・付け忘れを後から直すための口。
+   * 🔴 measuredSeconds など「実際に起きたこと」の項目は送れない（StudyActivityPatch 参照）。
+   * 🔴 検証は送る前に utils/studyStats.ts の validateActivityPatch で済ませる。
+   *    サーバ役（MSW）も同じ関数を使うので、400 の文言は画面と同じものが返る。
+   */
+  async updateStudyActivity(
+    userId: number,
+    activityId: string,
+    patch: StudyActivityPatch
+  ): Promise<StudyActivity> {
+    const response = await this.api.patch(
+      `/webcoach/study-activities/${userId}/${activityId}`,
+      patch
+    );
     return response.data;
   }
 
@@ -828,6 +861,58 @@ class BFFClient {
       null,
       { params: { seed } }
     );
+    return response.data;
+  }
+
+  // ==================== 目標宣言 ====================
+  // 受講生が自分の言葉で書く、期間つきの意思表明と振り返り（学習管理シートの目標宣言欄）。
+  // 🔴 実BFFには存在しない。すべて mocks/goalDeclarationHandlers.ts が応答する。
+  //    モックOFF（本番）では 404 になるので、呼び出し側は「取得できない = カードを出さない」
+  //    に縮退させる（hooks/useGoalDeclaration.ts の unavailable を参照）。
+  // 🔴 コーチが決める next-coaching-goals（上）とは別データ。書き手が違うので統合しないこと。
+
+  /** GET /api/webcoach/goal-declarations/{userId}?status&limit */
+  async getGoalDeclarations(
+    userId: number,
+    query: GoalDeclarationQuery = {}
+  ): Promise<GoalDeclaration[]> {
+    const response = await this.api.get(`/webcoach/goal-declarations/${userId}`, { params: query });
+    return response.data;
+  }
+
+  /** POST /api/webcoach/goal-declarations/{userId}（id はクライアント生成＝冪等） */
+  async createGoalDeclaration(
+    userId: number,
+    input: GoalDeclarationInput
+  ): Promise<GoalDeclaration> {
+    const response = await this.api.post(`/webcoach/goal-declarations/${userId}`, input);
+    return response.data;
+  }
+
+  /** PATCH /api/webcoach/goal-declarations/{userId}/{id}（編集・振り返りの保存） */
+  async updateGoalDeclaration(
+    userId: number,
+    declarationId: string,
+    patch: GoalDeclarationPatch
+  ): Promise<GoalDeclaration> {
+    const response = await this.api.patch(
+      `/webcoach/goal-declarations/${userId}/${declarationId}`,
+      patch
+    );
+    return response.data;
+  }
+
+  /** DELETE /api/webcoach/goal-declarations/{userId}/{id} */
+  async deleteGoalDeclaration(userId: number, declarationId: string): Promise<void> {
+    await this.api.delete(`/webcoach/goal-declarations/${userId}/${declarationId}`);
+  }
+
+  /**
+   * 【モック確認用】目標宣言を初期の3件（進行中・達成・未達）に戻す。
+   * 実BFF実装時に持っていく想定ではない。
+   */
+  async resetGoalDeclarations(userId: number): Promise<{ ok: boolean; count: number }> {
+    const response = await this.api.post(`/webcoach/goal-declarations/${userId}/reset`);
     return response.data;
   }
 
@@ -1512,6 +1597,19 @@ class BFFClient {
   }
 
   /**
+   * レッスンを完了したときのAIコーチのひと言
+   * POST /api/webcoach/lesson-cheer
+   *
+   * 実BFFには未実装。mocks/lessonHandlers.ts のMSWモックが応答する。
+   * 文面はサーバ側が進捗・単元・ノート・連続日数から組む（フロントは組み立てない）。
+   * 落ちたら画面は従来の固定文に戻すだけなので、失敗しても学習は止まらない。
+   */
+  async getLessonCheer(request: LessonCheerRequest): Promise<LessonCheerResponse> {
+    const response = await this.api.post('/webcoach/lesson-cheer', request);
+    return response.data;
+  }
+
+  /**
    * AIコーチの専門モードを実行する（項目別添削・文章改善など）
    * POST /api/webcoach/ai-skill
    *
@@ -1565,7 +1663,7 @@ class BFFClient {
     return response.data;
   }
 
-  /** PATCH /api/webcoach/notes/{id} — タイトル・お気に入り */
+  /** PATCH /api/webcoach/notes/{id} — タイトル・お気に入り・フォルダ移動 */
   async updateNote(id: string, body: NoteUpdateInput): Promise<Note> {
     const response = await this.api.patch(`/webcoach/notes/${id}`, body);
     return response.data;
@@ -1588,7 +1686,7 @@ class BFFClient {
     return response.data;
   }
 
-  /** PATCH /api/webcoach/notes/{id}/blocks/{blockId} */
+  /** PATCH /api/webcoach/notes/{id}/blocks/{blockId} — 本文の書き換え、または index で並べ替え */
   async updateNoteBlock(noteId: string, blockId: string, patch: NoteBlockPatch): Promise<NoteBlock> {
     const response = await this.api.patch(`/webcoach/notes/${noteId}/blocks/${blockId}`, patch);
     return response.data;
@@ -1606,6 +1704,35 @@ class BFFClient {
    */
   async listNoteClips(lessonId: number): Promise<NoteClipRef[]> {
     const response = await this.api.get('/webcoach/note-clips', { params: { lessonId } });
+    return response.data;
+  }
+
+  // --- フォルダ（デザイン『マイノート 改善案』の左列）。実BFFには無く、noteHandlers.ts が応答する ---
+
+  /** GET /api/webcoach/note-folders — 作成順 */
+  async listNoteFolders(): Promise<NoteFolder[]> {
+    const response = await this.api.get('/webcoach/note-folders');
+    return response.data;
+  }
+
+  /** POST /api/webcoach/note-folders */
+  async createNoteFolder(body: NoteFolderCreateInput): Promise<NoteFolder> {
+    const response = await this.api.post('/webcoach/note-folders', body);
+    return response.data;
+  }
+
+  /** PATCH /api/webcoach/note-folders/{id} — 名前の変更 */
+  async updateNoteFolder(id: string, body: NoteFolderUpdateInput): Promise<NoteFolder> {
+    const response = await this.api.patch(`/webcoach/note-folders/${id}`, body);
+    return response.data;
+  }
+
+  /**
+   * DELETE /api/webcoach/note-folders/{id}
+   * 中のノートは消さず未整理へ移す。moved はその件数（トーストに出す）。
+   */
+  async deleteNoteFolder(id: string): Promise<{ moved: number }> {
+    const response = await this.api.delete(`/webcoach/note-folders/${id}`);
     return response.data;
   }
 

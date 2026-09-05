@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react';
-import { ChevronRight, NotebookPen, Sparkles } from 'lucide-react';
+import { ChevronRight, Maximize2, NotebookPen, Sparkles } from 'lucide-react';
 import { color } from '../../theme/webcoachTheme';
 
 /**
@@ -35,6 +35,14 @@ interface SupportPanelProps {
   onWidthChange: (width: number) => void;
   aiPane: React.ReactNode;
   memoPane: React.ReactNode;
+  /**
+   * 「広い画面で続ける」。AIタブでだけ出す（メモには拡大先が無い）。
+   *
+   * 🔴 以前は AiCoachPane が自前のヘッダーに文字ボタンとして持っていたが、
+   *    この器にもタブ行があるためバーが2段になっていた。器が1本持つ形に寄せ、
+   *    「アイコンだけで分かる」というレビュー指摘に合わせてラベルは落とした。
+   */
+  onExpand?: () => void;
 }
 
 const TABS: { key: SupportTab; label: string; Icon: typeof Sparkles }[] = [
@@ -52,6 +60,7 @@ export function SupportPanel({
   onWidthChange,
   aiPane,
   memoPane,
+  onExpand,
 }: SupportPanelProps) {
   // ドラッグ中の値は ref で持つ。state 更新の反映待ちで基準がずれるのを避ける
   const dragRef = useRef<{ startX: number; startWidth: number } | null>(null);
@@ -98,13 +107,16 @@ export function SupportPanel({
           ドッキング時（1280px以上）は本文と並ぶので CSS 側で display:none にする */}
       <div
         role="presentation"
-        className="wc-lesson-support-backdrop"
+        className="wc-lesson-support-backdrop wc-drawer-scrim"
         onClick={onClose}
         style={{ position: 'fixed', inset: 0, zIndex: 70, background: 'rgba(28,34,44,.22)' }}
       />
 
       <aside
-        className="wc-lesson-support"
+        // wc-drawer-right … オーバーレイのときに右から滑り込む。
+        // ドッキング（1280px以上）ではレイアウトが押し広がる動きになるので、
+        // index.css 側でこのアニメーションを打ち消している。
+        className="wc-lesson-support wc-drawer-right"
         role="dialog"
         aria-label="AIコーチとメモ"
         style={{
@@ -179,6 +191,28 @@ export function SupportPanel({
           </div>
 
           <div style={{ flex: 1 }} />
+
+          {tab === 'ai' && onExpand && (
+            <button
+              type="button"
+              onClick={onExpand}
+              aria-label="広い画面で続ける"
+              title="いまの会話・レッスン・画像・モードを引き継いで広い画面で続けます"
+              className="wc-ai-icon-btn grid place-items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+              style={{
+                width: 30,
+                height: 30,
+                border: `1px solid ${color.borderSoft}`,
+                borderRadius: 8,
+                background: color.surface,
+                color: color.textMuted,
+                cursor: 'pointer',
+                flexShrink: 0,
+              }}
+            >
+              <Maximize2 size={14} />
+            </button>
+          )}
 
           <button
             type="button"

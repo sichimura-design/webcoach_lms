@@ -2,9 +2,10 @@
  * MSW: 学習アクティビティ（集中ブースのタイマー記録・統計・ストリーク）
  * ============================================================
  * 対応エンドポイント（すべて実BFFには存在しない。バックエンド変更禁止のためモックで提供）
- *   POST   /api/webcoach/study-activities/:userid            記録する（id で冪等）
+ *   POST   /api/webcoach/study-activities/:userid            記録する（id で冪等・手動追加も同じ口）
  *   GET    /api/webcoach/study-activities/:userid            履歴（新しい順・ページング）
- *   GET    /api/webcoach/study-stats/:userid?days=35         今日/今週/今月・ストリーク・日別・教材別
+ *   GET    /api/webcoach/study-stats/:userid?days=35|all     今日/今週/今月・ストリーク・日別・月別・教材別
+ *   PATCH  /api/webcoach/study-activities/:userid/:activityId 1件編集（時間・教材・メモ・日付）
  *   DELETE /api/webcoach/study-activities/:userid/:activityId 1件削除
  *   POST   /api/webcoach/study-activities/:userid/reset       🔴モック確認用（シード再生成）
  *   GET    /api/webcoach/study-ranking/:userid?period=week|month    学習時間ランキング
@@ -29,6 +30,7 @@ import {
   StudyActivity,
   StudyActivityInput,
   StudyActivityPage,
+  StudyActivityPatch,
 } from '../types/studyActivity';
 import { StreakInfo } from '../types/mypage';
 import {
@@ -40,6 +42,7 @@ import {
   StudyRankingPeriod,
 } from '../types/focusBooth';
 import {
+  applyActivityPatch,
   clampText,
   computeStreak,
   monthStartOf,
@@ -49,6 +52,7 @@ import {
   summarize,
   toLocalDateKey,
   toStreakInfo,
+  validateActivityPatch,
   weekStartOf,
 } from '../utils/studyStats';
 import { SEED_ID_PREFIX, buildSeedActivities, describeSeed } from './studyActivitySeed';
@@ -60,6 +64,9 @@ const STORE_KEY = 'webcoach-study-activities';
 const MAX_ACTIVITIES = 1000;
 
 const DEFAULT_STATS_DAYS = 35;
+
+/** days に数値で上限を超える値が来たときの天井（≒3年）。days=all はこの制限を受けない */
+const MAX_STATS_DAYS = 1200;
 const DEFAULT_PAGE_LIMIT = 30;
 
 /** handlers.ts の journey ハンドラが同じ値を返せるようにするための既定ユーザー */
@@ -257,13 +264,23 @@ export const studyActivityHandlers = [
     return HttpResponse.json({ ok: true, count: store.activities.length });
   }),
 
-  // 今日/今週/今月・ストリーク・日別・教材別・最近の履歴をまとめて返す。
+  // 今日/今週/今月・ストリーク・日別・月別・教材別・最近の履歴をまとめて返す。
   // 画面はこれ1本で描けるようにしてある（リクエストを増やさない）。
+  //
+  // 🔴 days=all は「最初の記録の日から今日まで」。/study-log がこれで呼び、
+  //    カレンダーの月送りも期間タブも全部この1回の応答から切り出す。
+  //    日数で切ると「タブを切り替えるたびに読み込み中へ戻る」が復活する。
   http.get('*/api/webcoach/study-stats/:userid', async ({ params, request }) => {
     await delay();
     const userId = userIdOf(params);
-    const daysParam = Number(new URL(request.url).searchParams.get('days'));
-    const days = Number.isFinite(daysParam) && daysParam > 0 ? Math.min(daysParam, 400) : DEFAULT_STATS_DAYS;
+    const raw = new URL(request.url).searchParams.get('days');
+    const daysParam = Number(raw);
+    const days: number | 'all' =
+      raw === 'all'
+        ? 'all'
+        : Number.isFinite(daysParam) && daysParam > 0
+          ? Math.min(daysParam, MAX_STATS_DAYS)
+          : DEFAULT_STATS_DAYS;
     return HttpResponse.json(summarize(activitiesOf(userId), new Date(), days));
   }),
 
@@ -306,7 +323,13 @@ export const studyActivityHandlers = [
         goalText: clampText(input.session.goalText),
         contentNote: clampText(input.session.contentNote),
         memo: clampText(input.session.memo),
-        weeklyTotalMinutesAtEnd: weekBefore + input.session.durationMinutes,
+        // 🔴 手動追加には今週の累計スナップショットを付けない。
+        //    過去日の記録に「記録した時点の今週の累計」を書くのは事実として誤り
+        //    （表示用のスナップショットで集計には使わないので、無くて困らない）。
+        weeklyTotalMinutesAtEnd:
+          input.session.entrySource === 'manual'
+            ? undefined
+            : weekBefore + input.session.durationMinutes,
       },
       social: {
         visibility: input.visibility ?? 'private',
@@ -349,6 +372,33 @@ export const studyActivityHandlers = [
       hasMore: offset + limit < sorted.length,
     };
     return HttpResponse.json(page);
+  }),
+
+  // 保存済みの記録を後から直す（タイマーの止め忘れ・付け忘れの訂正）。
+  // 🔴 検証も適用も utils/studyStats.ts の純関数に委ねる。ここに条件を書かないこと。
+  //    画面も同じ関数で送信前に検証するので、文言が2種類にならない。
+  http.patch('*/api/webcoach/study-activities/:userid/:activityId', async ({ params, request }) => {
+    await delay(250);
+    const userId = userIdOf(params);
+
+    let patch: StudyActivityPatch;
+    try {
+      patch = (await request.json()) as StudyActivityPatch;
+    } catch {
+      return HttpResponse.json({ error: 'invalid body' }, { status: 400 });
+    }
+
+    const store = readStore(userId);
+    const index = store.activities.findIndex((a) => a.id === params.activityId);
+    if (index < 0) return HttpResponse.json({ error: 'not found' }, { status: 404 });
+
+    const invalid = validateActivityPatch(store.activities[index], patch);
+    if (invalid) return HttpResponse.json({ error: invalid }, { status: 400 });
+
+    const next = applyActivityPatch(store.activities[index], patch);
+    store.activities[index] = next;
+    writeStore(store);
+    return HttpResponse.json(next);
   }),
 
   http.delete('*/api/webcoach/study-activities/:userid/:activityId', async ({ params }) => {

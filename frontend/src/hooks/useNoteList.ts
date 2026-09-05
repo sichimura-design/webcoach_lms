@@ -67,7 +67,48 @@ export function useNoteList({ lessonId }: UseNoteListOptions = {}) {
     [reload]
   );
 
-  return { items, loading, error, query, setQuery, sort, setSort, reload, create, remove };
+  /**
+   * フォルダへ移す（カードのドラッグ＆ドロップ）。
+   * 先に手元の一覧を書き換え、成功しても全体を取り直さない。移動では updatedAt が
+   * 動かないので並びは変わらず、取り直すとドロップ直後にグリッドがちらつくだけ。
+   * 失敗したら取り直して巻き戻し、呼び出し側にトーストを出させる。
+   */
+  const moveToFolder = useCallback(
+    async (id: string, folderId: string | null) => {
+      setItems((prev) => prev.map((n) => (n.id === id ? { ...n, folderId } : n)));
+      try {
+        await bffClient.updateNote(id, { folderId });
+      } catch (e) {
+        await reload();
+        throw e;
+      }
+    },
+    [reload]
+  );
+
+  /**
+   * ノート面（useNote）で変えたものを一覧にも映す。サーバには送らない。
+   * ノート面を開いている間もフォルダ列の件数は見えているので、重要やフォルダを
+   * 変えた瞬間に数字が動かないと「押せていない」ように見える。
+   */
+  const patchItem = useCallback((id: string, patch: Partial<Pick<NoteSummary, 'title' | 'favorite' | 'folderId'>>) => {
+    setItems((prev) => prev.map((n) => (n.id === id ? { ...n, ...patch } : n)));
+  }, []);
+
+  return {
+    items,
+    loading,
+    error,
+    query,
+    setQuery,
+    sort,
+    setSort,
+    reload,
+    create,
+    remove,
+    moveToFolder,
+    patchItem,
+  };
 }
 
 export default useNoteList;

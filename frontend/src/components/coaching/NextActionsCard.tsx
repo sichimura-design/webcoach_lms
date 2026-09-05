@@ -500,19 +500,39 @@ export function NextActionsCard({
                   {g.description}
                 </span>
                 {isDone ? (
+                  /* 🔴 「完了」と「未完了に戻す」を同じグリッドセルに重ねて置く。
+                        行にホバー/フォーカスすると入れ替わる（CSS は .cg-undopill）。
+                        重ねるのは幅を広い方で固定するため。片方だけ描くと
+                        文字数の差でピルの幅が変わり、行が横に伸び縮みして落ち着かない。 */
                   <span
+                    className="cg-undopill"
                     title="クリックで未完了に戻す"
                     style={{
+                      display: 'grid',
+                      placeItems: 'center',
                       fontSize: 11.5,
                       fontWeight: 700,
                       color: C.ok,
                       background: C.okSoft,
+                      // 未完了側の「完了にする」ピルと同じ外寸にして、
+                      // トグルしても行の高さが動かないようにする
+                      border: '1px solid transparent',
                       borderRadius: 9999,
                       padding: '4px 11px',
                       flex: 'none',
                     }}
                   >
-                    完了
+                    <span style={{ gridArea: '1 / 1' }}>完了</span>
+                    {/* 見た目の入れ替えなので、読み上げは「完了」だけに任せる
+                        （操作可能なことは行の aria-pressed が伝えている） */}
+                    <span
+                      aria-hidden
+                      className="flex items-center"
+                      style={{ gridArea: '1 / 1', gap: 4, whiteSpace: 'nowrap' }}
+                    >
+                      <RotateCcw size={11} strokeWidth={2.5} />
+                      未完了に戻す
+                    </span>
                   </span>
                 ) : (
                   <span

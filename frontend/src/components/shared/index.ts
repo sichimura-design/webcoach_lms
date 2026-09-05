@@ -15,3 +15,4 @@ export { default as StudySessionFinishHost } from './StudySessionFinishHost';
 export { default as ResumeStudyHost } from './ResumeStudyHost';
 export { default as LearningBreadcrumb } from './LearningBreadcrumb';
 export type { Crumb } from './LearningBreadcrumb';
+export { default as ConfirmDialog } from './ConfirmDialog';

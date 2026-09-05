@@ -69,11 +69,9 @@ export interface UseLessonAi {
   /** 提案を断り、通常のAIコーチとして回答する */
   dismissProposal: (messageId: string) => Promise<void>;
 
-  /** 現在参照している見出し（AIヘッダーの表示用） */
+  /** 現在参照している見出し（スクロール追従で更新される） */
   contextHeading: string | null;
   setContextHeading: (heading: string | null) => void;
-  /** 参照中として並べるラベル（見出し／課題の評価基準／添付画像） */
-  references: string[];
   context: AiCoachContext;
   scrollAnchorRef: React.RefObject<HTMLDivElement>;
 }
@@ -181,6 +179,25 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
 
   const clearImage = useCallback(() => setImageInStore(sessionId, null), [setImageInStore, sessionId]);
 
+  /**
+   * この回答が参照するもの（教材の見出し／課題の評価基準／添付画像／引用）。
+   *
+   * かつてはヘッダーの「現在参照中」に並べていたが、常設をやめて回答へ添える形にした
+   * （AiCoachMessage.references のコメント参照）。そのため回答を積む useCallback より
+   * 前で定義しておく必要がある。
+   */
+  const references = useMemo(() => {
+    const refs: string[] = [];
+    const heading = context.heading ?? context.lessonTitle;
+    if (heading) refs.push(heading);
+    if (skillId === 'design-review' && context.taskHeading) {
+      refs.push(`${context.taskHeading}の評価基準`);
+    }
+    if (session?.image) refs.push('添付画像');
+    if (session?.quote) refs.push('選択した教材本文');
+    return refs;
+  }, [context, session?.image, session?.quote, skillId]);
+
   const buildRequest = useCallback(
     (
       question: string,
@@ -257,6 +274,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
             },
             suggestion:
               localSuggestion && localSuggestion.strength !== 'none' ? localSuggestion : null,
+            references,
             createdAt: new Date().toISOString(),
           });
         } catch {
@@ -281,6 +299,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           // 仕様§4-2: 回答の下に控えめに提案する。'none' は捨てる。
           suggestion:
             answer.suggestion && answer.suggestion.strength !== 'none' ? answer.suggestion : null,
+          references,
           createdAt: new Date().toISOString(),
         });
       } catch {
@@ -293,7 +312,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         });
       }
     },
-    [appendMessage, buildRequest, sessionId]
+    [appendMessage, buildRequest, references, sessionId]
   );
 
   /** 専門モードを実行する（裏でDifyアプリが呼ばれる箇所） */
@@ -320,6 +339,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
           role: 'assistant',
           content: '',
           skillResult,
+          references,
           createdAt: new Date().toISOString(),
         });
       } catch {
@@ -332,7 +352,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         });
       }
     },
-    [appendMessage, context, messages, runLessonAi, sessionId]
+    [appendMessage, context, messages, references, runLessonAi, sessionId]
   );
 
   /** 未回答の確認カードを探す。最後の1件だけを見る */
@@ -533,19 +553,6 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     [buildRequest]
   );
 
-  /** ヘッダーの「現在参照中」に並べるラベル（仕様§3・§7） */
-  const references = useMemo(() => {
-    const refs: string[] = [];
-    const heading = context.heading ?? context.lessonTitle;
-    if (heading) refs.push(heading);
-    if (skillId === 'design-review' && context.taskHeading) {
-      refs.push(`${context.taskHeading}の評価基準`);
-    }
-    if (session?.image) refs.push('添付画像');
-    if (session?.quote) refs.push('選択した教材本文');
-    return refs;
-  }, [context, session?.image, session?.quote, skillId]);
-
   return {
     sessionId,
     messages,
@@ -567,7 +574,6 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
     dismissProposal,
     contextHeading: context.heading,
     setContextHeading,
-    references,
     context,
     scrollAnchorRef,
   };

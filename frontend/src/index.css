@@ -507,8 +507,19 @@ h1, h2, h3 {
   background: var(--dc-soft-100);
 }
 
+/* カード内のテキストリンク（「編集する ›」など）。塗りボタンを増やさずに
+   操作の在りかを示すために使う。インライン style では :hover が書けないので
+   ここに出している（.dc-cta-* と同じ理由）。 */
+.dc-link-primary:hover {
+  color: var(--dc-primary-hover);
+  text-decoration: underline;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .ct-row {
+  .ct-row,
+  .studylog-cal-cell,
+  .studylog-row,
+  .studylog-row-actions {
     transition: none;
   }
 }
@@ -593,6 +604,37 @@ h1, h2, h3 {
   }
 }
 
+/* 修了したコース。一覧には残すが、まだやっていないコースより一段沈める。
+   ホバー・フォーカスでは元に戻す（見返すために押す先なので、押せないようには見せない）。
+   opacity をタイル全体に掛けるとバッジの文字コントラストまで落ちるので、
+   彩度を抜くのはサムネだけにして、本体は控えめな opacity に留める。 */
+.course-tile.is-done {
+  opacity: 0.72;
+  transition: opacity 120ms var(--dc-ease);
+}
+
+.course-tile.is-done > :first-child {
+  filter: grayscale(0.7);
+  transition: filter 120ms var(--dc-ease);
+}
+
+.course-tile.is-done:hover,
+.course-tile.is-done:focus-visible {
+  opacity: 1;
+}
+
+.course-tile.is-done:hover > :first-child,
+.course-tile.is-done:focus-visible > :first-child {
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .course-tile.is-done,
+  .course-tile.is-done > :first-child {
+    transition: none;
+  }
+}
+
 /* ─── 教材学習ワークスペース（/course/:courseId）───────────
    教材・目次・AI/メモをビューポート内で並列表示する画面。
    ページ全体はスクロールさせず、本文カラムだけをスクロールさせる。
@@ -601,18 +643,25 @@ body.learning-workspace {
   overflow: hidden;
 }
 
+/* 本文カラムとサポートパネルの横並び。1280px未満ではパネルが position:fixed に
+   なる＝フロー外なので、本文カラムが全幅を占めることになる。 */
 .wc-learning-shell {
   height: 100dvh;
+  display: flex;
+  min-height: 0;
   /* 本文カラムの読み幅。LessonArticle がこの変数を読む。
      サポートパネルを横に並べたときだけ狭める（下のメディアクエリ） */
   --wc-reading-max: 1040px;
 }
 
-/* 本文とサポートパネルの横並び。1280px未満ではパネルが position:fixed に
-   なる＝フロー外なので、この行は本文だけが占めることになる。 */
-.wc-lesson-body {
-  display: flex;
-  min-height: 0;
+/* 🔴 上部バー（LessonTopBar）はシェルの全幅ではなく、この本文カラムの中だけに乗せる。
+      全幅に渡していたころは、ドッキングしたAIコーチがバーの下から始まっていた。
+      AIコーチの上にレッスンのバーは要らない、というレビュー指摘への対応。 */
+.wc-lesson-main {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-rows: 64px minmax(0, 1fr);
 }
 
 /* SPは下部ナビ（h-16 = 64px）ぶんを差し引く */
@@ -692,6 +741,11 @@ body.learning-immersive {
   .wc-lesson-support-resizer {
     display: flex;
   }
+  /* 並ぶときは「本文が押しのけられる」動きになるので、
+     オーバーレイ用のスライドインは打ち消す（二重に動いて見える） */
+  .wc-lesson-support.wc-drawer-right {
+    animation: none;
+  }
 }
 
 @media (max-width: 767px) {
@@ -709,6 +763,10 @@ body.learning-immersive {
     border-top-left-radius: 18px;
     border-top-right-radius: 18px;
     box-shadow: 0 -10px 30px rgba(190, 60, 70, .10);
+  }
+  /* SPはボトムシート。右からではなく下から出す */
+  .wc-lesson-support.wc-drawer-right {
+    animation: wcSlideInUp 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 }
 
@@ -835,6 +893,12 @@ body.learning-immersive {
 @keyframes wcSlideInRight {
   from { transform: translateX(16px); opacity: 0; }
   to   { transform: translateX(0); opacity: 1; }
+}
+
+/* 下から出るシート（SPのAI/メモパネル）。右からのスライドと使い分ける */
+@keyframes wcSlideInUp {
+  from { transform: translateY(14px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
 }
 
 .wc-drawer-scrim {
@@ -1021,12 +1085,73 @@ body.learning-immersive {
   align-items: start;
 }
 
+/* 学習カレンダー ｜ 選んだ日の詳細。
+   詳細側は 320〜380px の固定寄り（中は1行1記録なので、広げても情報は増えない）。
+   🔴 折り返すしきい値は .studylog-rank-grid と揃える。同じ画面の上下で
+      折り返す幅が違うと、中間の幅で片方だけ1カラムになって崩れて見える。 */
+.studylog-calendar-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  gap: var(--dc-sp-gap);
+  align-items: start;
+}
+
+/* 期間タブが5つ（1週間/30日間/3ヶ月/6ヶ月/月別）あるので折り返せるようにする */
+.studylog-range-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* 🔴 カレンダーのセルのホバーを background で書かない。
+      濃淡ヒートマップの段階と混ざって、何段目のセルか読めなくなる。 */
+.studylog-cal-cell {
+  transition: box-shadow 120ms var(--dc-ease);
+}
+
+.studylog-cal-cell:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 2px var(--dc-soft-200);
+}
+
+/* 学習記録の1行。操作はホバー／フォーカスで出す（並んだ行にボタンが増えると
+   記録そのものが読みにくくなるため）。 */
+.studylog-row {
+  transition: border-color 120ms var(--dc-ease);
+}
+
+.studylog-row:hover {
+  border-color: var(--dc-soft-200);
+}
+
+.studylog-row-actions {
+  opacity: 0;
+  transition: opacity 120ms var(--dc-ease);
+}
+
+.studylog-row:hover .studylog-row-actions,
+.studylog-row:focus-within .studylog-row-actions {
+  opacity: 1;
+}
+
+/* 🔴 タッチ端末ではホバーが無いので常に出す。出さないと編集も削除もできない */
+@media (hover: none) {
+  .studylog-row-actions {
+    opacity: 1;
+  }
+}
+
+/* 過去の目標宣言の行 */
+.studylog-goal-row:hover {
+  background: var(--dc-soft-100);
+}
+
 @media (max-width: 1023px) {
   .studylog-kpi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .studylog-rank-grid {
+  .studylog-rank-grid,
+  .studylog-calendar-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1045,16 +1170,218 @@ body.learning-immersive {
   }
 
   body.sidebar-expanded .studylog-rank-grid,
+  body.sidebar-expanded .studylog-calendar-grid,
   body.sidebar-expanded .mypage-3d-grid {
     grid-template-columns: 1fr;
   }
 }
 
 /* ─── マイノート(/notes) ───────────────────────
-   デザイン『マイノート 3案』1a。1440px 固定キャンバスの transform:scale をやめ、
-   マイページと同じ可変幅にした。padding は 1a の main と同値。 */
+   デザイン『マイノート 改善案』。左にフォルダ列（248px）、右に一覧／ノート面。
+   値はアートボード（design-canvas/screens/NotesImproved.dc.html）と同値。
+
+   🔴 切り替わる・hover する見た目はここ（クラス）に置く。インライン style は
+      :hover を持てず、インラインの display は CSS から上書きできない。 */
+.notes-shell {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+/* フォルダ列。本文がスクロールしても列は画面に留まる */
+.notes-folder-col {
+  width: 248px;
+  flex: none;
+  box-sizing: border-box;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: 100vh;
+  overflow-y: auto;
+  background: #FFFDFA;
+  border-right: 1px solid var(--dc-border);
+  padding: 24px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notes-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .notes-main {
-  padding: 32px 32px 28px;
+  padding: 24px 28px 28px;
+}
+
+/* フォルダ列の1行。行全体（__main）と右端の ⋮（__more）が別のボタンなので、
+   行は div にして hover の地色だけをここで持つ */
+.notes-folder-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  border-radius: 8px;
+  color: var(--dc-text-body);
+}
+
+.notes-folder-row:hover {
+  background: #F4EFE8;
+}
+
+.notes-folder-row.is-active {
+  background: var(--dc-soft-100);
+  color: var(--dc-primary-deep);
+}
+
+.notes-folder-row.is-active .notes-folder-row__main {
+  font-weight: 700;
+}
+
+/* ドラッグ中のカードが上に乗っている行 */
+.notes-folder-row.is-drop-target {
+  outline: 2px solid var(--dc-primary);
+  outline-offset: -2px;
+  background: var(--dc-soft-100);
+}
+
+.notes-folder-row__main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 10px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+}
+
+.notes-folder-row__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notes-folder-row__count {
+  margin-left: auto;
+  font-size: 11.5px;
+  color: var(--dc-text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ⋮ は hover / フォーカス中だけ出す。常時出すと列が操作パネルに見える */
+.notes-folder-row__more {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-right: 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dc-text-subtle);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+
+.notes-folder-row:hover .notes-folder-row__more,
+.notes-folder-row:focus-within .notes-folder-row__more,
+.notes-folder-row__more[aria-expanded="true"] {
+  opacity: 1;
+}
+
+.notes-folder-row__more:hover {
+  background: #EDE6DC;
+  color: var(--dc-text-body);
+}
+
+/* 狭い画面（1023px 以下）ではフォルダ列の代わりに横並びのピル */
+.notes-folder-strip {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+
+.notes-folder-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--dc-border-strong);
+  border-radius: 9999px;
+  background: var(--dc-surface);
+  color: var(--dc-text-body);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notes-folder-pill.is-active {
+  background: var(--dc-soft-100);
+  border-color: var(--dc-soft-200);
+  color: var(--dc-primary-deep);
+  font-weight: 700;
+}
+
+/* 種類チップ（自分のメモ／教材／AIコーチ／コーチング） */
+.notes-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--dc-border-strong);
+  border-radius: 9999px;
+  background: var(--dc-surface);
+  color: var(--dc-text-body);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notes-chip:hover {
+  background: var(--dc-soft-100);
+}
+
+.notes-chip.is-active {
+  background: var(--dc-primary);
+  border-color: var(--dc-primary);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* 検索欄の文字サイズ。16px 未満だと iOS が入力時にページを拡大するので、
+   スマホ幅は 16px を守り、デザイン値の 13px は広い画面だけに当てる */
+.notes-search-input {
+  font-size: 16px;
+}
+
+@media (min-width: 1024px) {
+  .notes-search-input {
+    font-size: 13px;
+  }
 }
 
 /* ノート一覧のカードグリッド。列数は画面幅で落とす（.mypage-3d-grid と同じ方針）。
@@ -1062,24 +1389,199 @@ body.learning-immersive {
    ノート面が /notes?note= の全幅表示に移ったので削除した。 */
 .notes-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
   align-items: stretch;
 }
 
-/* 領域ページ（/courses/category/:code）のコースタイル。
-   学習トップの 4列固定と違い、ここは流動レイアウトなので幅で折り返す。 */
-.wc-area-grid {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-@media (max-width: 1100px) {
-  .wc-area-grid {
-    grid-template-columns: repeat(3, 1fr);
+/* カードはフォルダへドラッグできる。掴めることはポインタで示す（タッチには出ない） */
+@media (pointer: fine) {
+  .notes-card {
+    cursor: grab;
   }
 }
 
-@media (max-width: 860px) {
+.notes-card.is-dragging {
+  opacity: .5;
+}
+
+/* ドロップダウン／ポップオーバー共通 */
+.notes-menu {
+  position: absolute;
+  z-index: 30;
+  min-width: 180px;
+  padding: 6px;
+  background: var(--dc-surface);
+  border: 1px solid var(--dc-border);
+  border-radius: var(--dc-radius-md);
+  box-shadow: var(--dc-shadow-float);
+}
+
+.notes-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dc-text-body);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notes-menu-item:hover {
+  background: var(--dc-sunken);
+}
+
+.notes-menu-item.is-selected {
+  background: var(--dc-soft-100);
+  color: var(--dc-primary);
+}
+
+.notes-menu-item.is-danger {
+  color: var(--dc-primary);
+}
+
+/* ノート面の上部バー・ツールバーの角丸ボタン */
+.notes-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--dc-border-strong);
+  border-radius: 8px;
+  background: var(--dc-surface);
+  color: var(--dc-text-body);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notes-tool:hover {
+  background: #FAF7F3;
+}
+
+/* 「重要」が付いている状態 */
+.notes-tool.is-on {
+  background: var(--dc-soft-100);
+  border-color: var(--dc-soft-200);
+  color: var(--dc-primary-deep);
+}
+
+.notes-tool--light {
+  font-weight: 500;
+}
+
+/* 本文のブロック行。hover で左に ⠿ と ＋ が出る */
+.notes-block {
+  position: relative;
+  padding: 4px 0 4px 34px;
+  border-radius: 6px;
+}
+
+.notes-block:hover {
+  background: #FCF9F5;
+}
+
+.notes-block.is-dragging {
+  opacity: .45;
+}
+
+/* opacity で出し入れする（display だとキーボードで届かない） */
+.notes-block-grip {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+
+.notes-block:hover .notes-block-grip,
+.notes-block:focus-within .notes-block-grip,
+.notes-block-grip.is-open {
+  opacity: 1;
+}
+
+.notes-grip-btn {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #C9BFB2;
+  cursor: pointer;
+}
+
+.notes-grip-btn:hover {
+  background: #F1EBE3;
+  color: var(--dc-text-muted);
+}
+
+.notes-grip-btn--drag {
+  cursor: grab;
+}
+
+/* ドロップ位置の線 */
+.notes-block.is-drop-before::before,
+.notes-block.is-drop-after::after {
+  content: '';
+  position: absolute;
+  left: 34px;
+  right: 0;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--dc-primary);
+}
+
+.notes-block.is-drop-before::before {
+  top: -2px;
+}
+
+.notes-block.is-drop-after::after {
+  bottom: -2px;
+}
+
+/* チェックリスト（noteText.tsx の `- [ ] `） */
+.notes-checklist {
+  list-style: none;
+}
+
+.notes-checklist input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--dc-primary);
+}
+
+.notes-checklist .is-done > span {
+  text-decoration: line-through;
+  color: var(--dc-text-subtle);
+}
+
+/* コースタイルのグリッド。学習トップの領域ブロックと領域ページ
+   （/courses/category/:code）が共有する。
+   🔴 3列まで。4列だと1枚が約330pxまで縮み、8枚並ぶと絵柄も文字も細切れの
+      パッチワークに見えていた。3列なら1枚約440pxで、タイル内の文字を削った
+      ぶんが絵柄として効く。 */
+.wc-area-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 900px) {
   .wc-area-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1091,40 +1593,31 @@ body.learning-immersive {
   }
 }
 
-/* 学習トップの「領域から探す」。
-   🔴 かつては「1440pxキャンバス内なので固定3列で足りる」と固定していたが、
-      MaterialsTopPage の useScaleToFit（transform:scale で全体を縮める方式）を
-      やめたので、狭い幅は列数で受けることになった。しきい値は
-      .wc-area-grid（領域ページ側の同種グリッド）と揃えている。 */
-.wc-area-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
+/* 学習トップの「領域から探す」は、領域カードの地図をやめて
+   「領域ブロック＋その領域のコース一覧」になった（MaterialsTopPage ⑤）。
+   コースのグリッドは領域ページと同じ .wc-area-grid を使い回すので、
+   かつてここにあった .wc-area-cards（領域カード3列）は削除した。
 
-@media (max-width: 1100px) {
-  .wc-area-cards {
+   サイドバー展開中は本文が 152px（= 224 − 72）細くなるので、その分を足した
+   幅で先に1段落とす（.mypage-rank-split などと同じ理由・同じ足し方）。
+   900 + 152 = 1052px。 */
+@media (max-width: 1052px) {
+  body.sidebar-expanded .wc-area-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 720px) {
-  .wc-area-cards {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* サイドバー展開中は本文が 152px（224 − 72）細くなるぶんを補う
-   （.mypage-rank-split などと同じ理由・同じ足し方） */
-@media (max-width: 1252px) {
-  body.sidebar-expanded .wc-area-cards {
-    grid-template-columns: repeat(2, 1fr);
+/* サイドバー展開中は本文が 152px 細くなる。フォルダ列 248px も引かれるので、
+   1279 + 152 = 1431px 以下で先に2列へ落とす（.wc-area-cards と同じ足し方） */
+@media (max-width: 1431px) {
+  body.sidebar-expanded .notes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 1279px) {
   .notes-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -1226,6 +1719,34 @@ body.learning-immersive {
   border-color: #0e9f6e;
 }
 
+/* 完了済みの「完了」ピル。
+   行全体がクリックでトグルできるのに、完了行だけ静的なステータス表示に見えて
+   「押せば戻せる」ことが伝わっていなかった。行にホバー／フォーカスしたときだけ
+   「未完了に戻す」に入れ替えて、未完了側の「完了にする」ピルと対にする。
+
+   ピルの中は2つの文言を同じグリッドセルに重ねてあるので（NextActionsCard.tsx）、
+   入れ替えても幅は広い方のまま変わらない。ホバーの起点はピルではなく行:
+   行のどこにマウスが乗ってもクリックでトグルされるため、ピルの上だけ反応させると
+   「ピルを狙って押すもの」と誤解させる。 */
+.cg-undopill > :nth-child(2) {
+  visibility: hidden;
+}
+
+.cg-row:hover .cg-undopill > :first-child,
+.cg-row:focus-visible .cg-undopill > :first-child {
+  visibility: hidden;
+}
+
+.cg-row:hover .cg-undopill > :nth-child(2),
+.cg-row:focus-visible .cg-undopill > :nth-child(2) {
+  visibility: visible;
+}
+
+.cg-row:hover .cg-undopill,
+.cg-row:focus-visible .cg-undopill {
+  border-color: #a8dfc9;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cg-row {
     transition: none;
@@ -1248,26 +1769,32 @@ body.learning-immersive {
 }
 
 /* ─── AIコーチ(/ai-coach) ─────────────────── */
-/* ホームの「AIアプリでできること」3列グリッド（デザイン 1a）。
-   1a は 1280px で3列。狭い画面では2列→1列に落とす。
+/* ホームの「AIアプリでできること」グリッド。
+   カードがサムネイル付きの縦組みになったので、1行に置ける枚数を1つ増やして
+   4列を基準にする（16:9のサムネは3列だと1枚が大きすぎて、1カテゴリで
+   ファーストビューを使い切ってしまう）。狭い画面では3→2→1列に落とす。
    カテゴリ（学習／制作／キャリア／そのほか）ごとにこのグリッドを1つ使う。 */
-/* 🔴 align-items は start。stretch にすると、1枚の説明を開いた行の
-   他のカードまで一緒に伸びて空白の箱になる。 */
+/* 🔴 align-items は stretch のまま。カードは説明の行数で高さが変わるので、
+   揃えないと同じ行のカードで「詳しく見る」の位置がばらつく。 */
 .ai-home-apps {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
-  align-items: start;
 }
 
+@media (max-width: 1279px) {
+  .ai-home-apps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 @media (max-width: 1023px) {
   .ai-home-apps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-@media (max-width: 767px) {
+@media (max-width: 639px) {
   .ai-home-apps { grid-template-columns: 1fr; }
 }
 
 .ai-home-app-card {
+  display: flex;
+  flex-direction: column;
   transition: transform 160ms var(--dc-ease), box-shadow 160ms var(--dc-ease);
 }
 
@@ -1276,10 +1803,30 @@ body.learning-immersive {
   box-shadow: 0 4px 16px -8px rgba(60, 48, 32, .2);
 }
 
-/* カードは「本体（押すと始まる）」と「開閉」の2つのボタンに割れているので、
+/* カードは「本体（押すと始まる）」と「詳しく見る」の2つの押し場所に割れているので、
    どちらを押すことになるかを地色で見せる。 */
 .ai-home-app-start:hover {
   background: #fdf7f3;
+}
+
+/* サムネイルは 16:9。画像が未登録のアプリはアイコンのフォールバックが入る */
+.ai-home-app-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--dc-soft-100);
+}
+
+.ai-home-app-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ai-home-app-doc:hover {
+  text-decoration: underline;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1342,4 +1889,178 @@ body.learning-immersive {
   grid-template-columns: 660px 1fr;
   gap: 18px;
   align-items: start;
+}
+
+/* ─── AIコーチの手ざわり（教材パネル／常駐ドロワー／AI専用ページ共通）───────
+   このアプリのモーション語彙（--dc-ease・120ms・fadeInUp）はもともと index.css に
+   あったのに、AIコーチ配下のファイルだけが1つも使っていなかった。
+   「サイドバーからページを開くときより動きがチープ」というレビュー指摘はそれが原因。
+
+   🔴 AIコーチのボタンはすべてインライン style で書かれているため、
+      .ct-row と同じ理由で :hover / :active をここに出すしかない
+      （インライン style は擬似クラスを持てず、Tailwind の hover: より優先される）。
+      色の値は inline 側と重複させず、ここは「変化ぶん」だけを書く。 */
+
+/* チップ・小さめのボタン（質問例／教材ジャンプ／回答下のアクション／モードの選択肢） */
+.wc-ai-chip {
+  transition:
+    background-color 120ms var(--dc-ease),
+    border-color 120ms var(--dc-ease),
+    transform 120ms var(--dc-ease);
+}
+
+.wc-ai-chip:hover:not(:disabled) {
+  background-color: #FAF7F7;
+  border-color: #E6DFDF;
+}
+
+/* 押した瞬間に1px沈む。クリックが「入った」ことを目で確かめられるようにする */
+.wc-ai-chip:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* 30px前後のアイコンボタン（＋／画像添付／拡大／閉じる／参照情報） */
+.wc-ai-icon-btn {
+  transition:
+    background-color 120ms var(--dc-ease),
+    border-color 120ms var(--dc-ease),
+    color 120ms var(--dc-ease),
+    transform 120ms var(--dc-ease);
+}
+
+.wc-ai-icon-btn:hover:not(:disabled) {
+  background-color: #F5EFEF;
+  color: #6b6365;
+}
+
+.wc-ai-icon-btn:active:not(:disabled) {
+  transform: scale(.94);
+}
+
+/* 送信ボタン（赤ベタ）。無効のときは何も起きない */
+.wc-ai-send {
+  transition:
+    background-color 120ms var(--dc-ease),
+    transform 120ms var(--dc-ease);
+}
+
+.wc-ai-send:hover:not(:disabled) {
+  background-color: #B50829;
+}
+
+.wc-ai-send:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.wc-ai-send:disabled {
+  transform: none;
+}
+
+/* 開いた瞬間に中身が順に入る（AIコーチが「起動した」ことを動きで示す）。
+   CSSアニメーションはマウント時に1回だけ走るので、会話中に再生されることはない。 */
+/* 🔴 fill-mode は both ではなく backwards。both だと再生後も transform が残り続け、
+      その要素が position:fixed の子の包含ブロックになってしまう（＋文字が滲む）。
+      終わりの状態は素の状態と同じなので、遅延中だけ from を保てば足りる。 */
+.wc-ai-enter > * {
+  animation: fadeInUp 220ms var(--dc-ease) backwards;
+}
+
+.wc-ai-enter > *:nth-child(2) { animation-delay: 40ms; }
+.wc-ai-enter > *:nth-child(3) { animation-delay: 80ms; }
+/* 4つ目以降は同時。段差を無限に伸ばすと最後の要素がいつまでも出てこない */
+.wc-ai-enter > *:nth-child(n + 4) { animation-delay: 120ms; }
+
+/* 発言・回答の1件。積まれるときに下からそっと入る */
+.wc-ai-msg {
+  animation: fadeInUp 180ms var(--dc-ease);
+}
+
+/* 回答下のアクション（コピー／保存／メモに追加）。
+   毎回3つ並ぶと本文が読みにくいので、ホバーとフォーカスのときだけ出す。
+   🔴 display / visibility ではなく opacity で消すこと。ボタンをフォーカス可能なまま
+      残さないと、キーボードだけの人が保存に辿り着けなくなる。
+      高さは常に確保されるので、ホバーで回答がガタつくこともない。 */
+.wc-ai-answer-actions {
+  opacity: 0;
+  transition: opacity 150ms var(--dc-ease);
+}
+
+.wc-ai-answer:hover .wc-ai-answer-actions,
+.wc-ai-answer:focus-within .wc-ai-answer-actions {
+  opacity: 1;
+}
+
+/* ホバーできない端末で隠すと、押す方法が無くなる */
+@media (hover: none) {
+  .wc-ai-answer-actions {
+    opacity: 1;
+  }
+}
+
+/* 思考中のスケルトン（AiThinkingBubble）。回答が来る前に回答の「形」を置く */
+.wc-skel {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #F2EDED 25%, #FBF7F7 37%, #F2EDED 63%);
+  background-size: 400% 100%;
+  animation: wcShimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes wcShimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+/* 思考中の3点。遅延をずらして順に打たせる。
+   🔴 既存の wcPulse（scale 1→1.06）は流用しない。5pxの点では拡大がまったく見えず、
+      止まっているように映る。濃さと高さで打たせる。 */
+@keyframes wcThinkDot {
+  0%, 100% { opacity: .3; transform: translateY(0); }
+  50%      { opacity: 1;  transform: translateY(-2px); }
+}
+
+.wc-think-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #D60934;
+  animation: wcThinkDot 1s ease-in-out infinite;
+}
+
+.wc-think-dots .wc-think-dot:nth-child(2) { animation-delay: 160ms; }
+.wc-think-dots .wc-think-dot:nth-child(3) { animation-delay: 320ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-ai-chip,
+  .wc-ai-icon-btn,
+  .wc-ai-send,
+  .wc-ai-answer-actions {
+    transition: none;
+  }
+
+  .wc-ai-chip:active,
+  .wc-ai-icon-btn:active,
+  .wc-ai-send:active {
+    transform: none;
+  }
+
+  /* 🔴 animation を切るだけでなく opacity も戻すこと。
+        fadeInUp は from で opacity:0 なので、戻し忘れると
+        この設定の人に中身が丸ごと見えなくなる。 */
+  .wc-ai-enter > *,
+  .wc-ai-msg {
+    animation: none;
+    opacity: 1;
+  }
+
+  /* スケルトンは光を止めるだけで、面としては残す。
+     消すと「待っている」ことまで伝わらなくなる。
+     点も動かさないが、薄いままにしないよう不透明度は戻す。 */
+  .wc-skel,
+  .wc-think-dot {
+    animation: none;
+  }
+
+  .wc-think-dot {
+    opacity: .55;
+  }
 }

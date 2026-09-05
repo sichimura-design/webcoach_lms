@@ -16,12 +16,15 @@ import {
   areaByCode,
   courseKindOf,
 } from '../../constants/courseTaxonomy';
+import { ALL, selectStyle } from './courseFilters';
 
 /**
  * 学習領域のコース一覧（/courses/category/:categoryId）。
  *
- * 学習トップは「領域が並ぶ構造の地図」に寄せたので、絞り込み・並び替えのある
- * 一覧はこちらが受け持つ。＝「まず領域を選んで、その中から選ぶ」の2段。
+ * 🔴 絞り込みの分担: 学習トップは「領域」と「受講状況」の2軸だけを持ち、
+ *    「種類（基礎/実践課題）」と「並び替え」はこの画面だけが持つ。
+ *    領域を選んだあとにしか意味を持たない軸を、10領域が並ぶトップに出さない。
+ *    select の見た目と受講状況の判定は materials/courseFilters.ts で共有する。
  *
  * 🔴 旧 CategoryDetailPage の作り直し。あちらは 7色のハードコードを
  *    categoryId % 7 で回し、廃止済みの難易度（基礎/応用/発展）に依存していた。
@@ -31,8 +34,6 @@ import {
  * 備えて、codeで引けなければ領域名そのものとしても解釈する。
  */
 
-const ALL = 'すべて';
-
 const KINDS: readonly CourseKind[] = [COURSE_KIND.basic, COURSE_KIND.practice];
 
 const SORTS = [
@@ -41,23 +42,6 @@ const SORTS = [
   { key: 'short', label: 'レッスン数が少ない順' },
 ] as const;
 type SortKey = typeof SORTS[number]['key'];
-
-/** 学習トップと同じ素の select。角丸は control(9px) で「その場で絞る」側の形 */
-const selectStyle: React.CSSProperties = {
-  appearance: 'none',
-  WebkitAppearance: 'none',
-  background: `${t.color.bg.card} no-repeat right 12px center`,
-  backgroundImage:
-    'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%238A8082\' stroke-width=\'2.2\' stroke-linecap=\'round\'><path d=\'m6 9 6 6 6-6\'/></svg>")',
-  border: `1px solid ${t.color.border.card}`,
-  borderRadius: t.radius.control,
-  padding: '7px 30px 7px 14px',
-  fontSize: 'var(--dc-fs-body)',
-  fontFamily: 'inherit',
-  color: t.color.text.primary,
-  cursor: 'pointer',
-  outline: 'none',
-};
 
 function AreaCoursesPage() {
   const navigate = useNavigate();

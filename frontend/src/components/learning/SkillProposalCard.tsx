@@ -122,7 +122,7 @@ export function SkillProposalCard({
           <button
             type="button"
             onClick={onRequestImage}
-            className="inline-flex items-center"
+            className="wc-ai-send inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={primaryStyle}
           >
             <ImagePlus size={12} /> 画像を添付する
@@ -132,7 +132,7 @@ export function SkillProposalCard({
             type="button"
             onClick={onAccept}
             disabled={disabled}
-            className="inline-flex items-center disabled:opacity-50"
+            className="wc-ai-send inline-flex items-center disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={primaryStyle}
           >
             {variant === 'confirm' ? `${name}を開始` : AI_SKILL_CTA[suggestion.skillId]}
@@ -144,7 +144,7 @@ export function SkillProposalCard({
             onClick={() => onOpenWide?.(suggestion.skillId)}
             disabled={disabled}
             title="いまの教材・課題基準・添付画像・会話を引き継いで、広い画面で開きます"
-            className="inline-flex items-center disabled:opacity-50"
+            className="wc-ai-chip inline-flex items-center disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={{ ...ghostStyle, gap: 4, borderColor: color.primaryBorder, color: color.primary }}
           >
             <Maximize2 size={11} /> 広い画面で開く
@@ -154,6 +154,7 @@ export function SkillProposalCard({
           type="button"
           onClick={onDismiss}
           disabled={disabled}
+          className="wc-ai-chip disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
           style={ghostStyle}
         >
           {variant === 'confirm' ? 'このまま質問する' : '今はしない'}
@@ -179,6 +180,7 @@ const primaryStyle: React.CSSProperties = {
   borderRadius: 8,
   background: color.primary,
   color: '#fff',
+  fontFamily: 'inherit',
   fontSize: 11,
   fontWeight: 700,
   cursor: 'pointer',
@@ -191,6 +193,7 @@ const ghostStyle: React.CSSProperties = {
   borderRadius: 8,
   background: color.surface,
   color: color.textMuted,
+  fontFamily: 'inherit',
   fontSize: 11,
   fontWeight: 700,
   cursor: 'pointer',

@@ -1,10 +1,12 @@
 /**
  * frontend/src/mocks/noteMigration.ts
- * ノートの保存形式 v1 → v2 → v3 移行と、空のときのデモシード。
+ * ノートの保存形式 v1 → v2 → v3 → v4 → v5 移行と、空のときのデモシード。
  *
  * v1: { notes: NoteItem[]; memos } … メモ/クリップ/AI回答が時系列に並ぶ平坦な履歴
  * v2: { schemaVersion: 2; notes: Note[]; memos } … 器（Note）＋中身（NoteBlock）
  * v3: v2 ＋ Note.origin（出どころ）… 一覧の出どころバッジと絞り込みチップの根拠
+ * v4: v3 ＋ Note.coachingSessionId … コーチング記録の「自分のメモ」がどの回のノートかを引く
+ * v5: v4 ＋ folders / Note.folderId … デザイン『マイノート 改善案』の左列（フォルダ）
  *
  * 🔴 memos（レッスン別の下書き）は触らない。下書きはノートではないし、
  *    MemoPane の自動保存がそこを読み書きしている。
@@ -12,6 +14,7 @@
 import {
   Note,
   NoteBlock,
+  NoteFolder,
   NoteOrigin,
   NoteSourceRef,
 } from '../types/notes';
@@ -37,9 +40,11 @@ interface LegacyNoteItem {
   createdAt: string;
 }
 
-export interface NoteStoreV3 {
-  schemaVersion: 3;
+export interface NoteStoreV5 {
+  schemaVersion: 5;
   notes: Note[];
+  /** ユーザーが作ったフォルダ。ノート側は folderId で参照する（未整理は null） */
+  folders: NoteFolder[];
   memos: Record<string, { text: string; updatedAt: string }>;
   /**
    * デモノートを一度でも置いたか。
@@ -68,10 +73,52 @@ export function inferOrigin(note: Note): NoteOrigin {
   return 'self';
 }
 
-/** origin を持たないノートに推定値を入れて返す */
-function withOrigin(note: Omit<Note, 'origin'> & { origin?: NoteOrigin }): Note {
+/** origin を持たないノートに推定値を入れ、フォルダ未指定は未整理（null）にして返す */
+function withOrigin(
+  note: Omit<Note, 'origin' | 'folderId'> & { origin?: NoteOrigin; folderId?: string | null }
+): Note {
   const filled = note as Note;
-  return { ...filled, origin: note.origin ?? inferOrigin(filled) };
+  return { ...filled, origin: note.origin ?? inferOrigin(filled), folderId: note.folderId ?? null };
+}
+
+/**
+ * デモ用のフォルダ。ID を固定にしてあるのは、シードノートの folderId と
+ * 突き合わせるため（buildSeedNotes と buildSeedFolders を別々に呼んでも合う）。
+ * 名前と件数はデザイン『マイノート 改善案』の左列そのまま。
+ */
+type SeedFolderKey = 'design' | 'work' | 'coach';
+
+export const SEED_FOLDER_ID: Record<SeedFolderKey, string> = {
+  design: 'folder-seed-design',
+  work: 'folder-seed-work',
+  coach: 'folder-seed-coach',
+};
+
+const SEED_FOLDER_NAME: Record<SeedFolderKey, string> = {
+  design: 'デザイン基礎',
+  work: '案件・ポートフォリオ',
+  coach: 'コーチング記録',
+};
+
+export function buildSeedFolders(now: Date): NoteFolder[] {
+  const keys: SeedFolderKey[] = ['design', 'work', 'coach'];
+  return keys.map((key, i) => ({
+    id: SEED_FOLDER_ID[key],
+    name: SEED_FOLDER_NAME[key],
+    // 作成順に並ぶので、列の順序どおり少しずつ時刻をずらす
+    createdAt: new Date(now.getTime() - (keys.length - i) * 60_000).toISOString(),
+  }));
+}
+
+/**
+ * 出どころから既定のフォルダを決める。教材のノートはデザイン基礎、
+ * コーチングのまとめはコーチング記録、自分のメモとAI回答は未整理に残す
+ * （「とりあえず保存」の行き先が空でないほうが、未整理の意味が伝わる）。
+ */
+function defaultFolderFor(origin: NoteOrigin): SeedFolderKey | null {
+  if (origin === 'material') return 'design';
+  if (origin === 'coaching') return 'coach';
+  return null;
 }
 
 function sourceOf(item: LegacyNoteItem): NoteSourceRef {
@@ -151,6 +198,8 @@ export function migrateLegacyNotes(legacy: LegacyNoteItem[]): Note[] {
 
   if (orphans.length > 0) {
     const sorted = [...orphans].sort(asc);
+    // このタイトルの「未整理」は v1 の行き先ノートで、フォルダ列の「未整理」
+    //（folderId=null）とは無関係。名前が同じだけ。
     notes.push(
       withOrigin({
         id: nextId('note'),
@@ -183,19 +232,31 @@ interface SeedCard {
   text: string;
   /** 1a で「重要」バッジが付いていたカード */
   favorite?: boolean;
+  /**
+   * どのコーチング回で取ったノートか。coachingHandlers.ts のシード
+   * （1002＝第3回 / 1001＝第2回）に合わせてある。
+   * コーチング記録の「自分のメモ」がこのIDで自分の回のノートを引くので、
+   * あちらのセッションIDを動かしたらここも直すこと（0件表示になる）。
+   */
+  coachingSessionId?: number;
+  /**
+   * 入れるフォルダ。省略時は defaultFolderFor(origin)。
+   * デザイン『マイノート 改善案』の12枚で 案件・ポートフォリオ に入っていたものだけ明示する。
+   */
+  folder?: SeedFolderKey | null;
 }
 
 const SEED_CARDS: SeedCard[] = [
-  { daysAgo: 0, origin: 'coaching', favorite: true, title: '8/19 コーチングまとめ', text: 'ターゲットの課題に寄り添ったメッセージ設計が重要。特に「誰に」「どんな価値を」「どう届けるか」の3点を明確にする。' },
+  { daysAgo: 0, origin: 'coaching', favorite: true, coachingSessionId: 1002, title: '8/19 コーチングまとめ', text: 'ターゲットの課題に寄り添ったメッセージ設計が重要。特に「誰に」「どんな価値を」「どう届けるか」の3点を明確にする。' },
   { daysAgo: 1, origin: 'material', favorite: true, title: 'バナー改善の3ポイント', text: '視線の流れ（Zの法則）を意識して、伝えたい情報を優先順位で整理する。余白の使い方とコントラストを意識。' },
-  { daysAgo: 2, origin: 'material', title: 'LPファーストビュー設計', text: '最初の3秒で「誰の」「どんな悩みを」「どう解決できるか」を伝える。視線を集めるキャッチコピーとビジュアルが鍵。' },
-  { daysAgo: 2, origin: 'ai', favorite: true, title: 'AI回答：応募文の改善ポイント', text: '強みの根拠が具体的で良いです。成果を数字で示すと、説得力がさらに高まります。まずは「結論→根拠→再現性」の順で整理しましょう。' },
-  { daysAgo: 3, origin: 'coaching', title: 'キャリアの方向性メモ', text: 'やりたいこと×得意なこと×価値を届けたいことの重なる領域を軸に考える。小さく試して検証していくことが大切。' },
+  { daysAgo: 2, origin: 'material', folder: 'work', title: 'LPファーストビュー設計', text: '最初の3秒で「誰の」「どんな悩みを」「どう解決できるか」を伝える。視線を集めるキャッチコピーとビジュアルが鍵。' },
+  { daysAgo: 2, origin: 'ai', favorite: true, folder: 'work', title: 'AI回答：応募文の改善ポイント', text: '強みの根拠が具体的で良いです。成果を数字で示すと、説得力がさらに高まります。まずは「結論→根拠→再現性」の順で整理しましょう。' },
+  { daysAgo: 3, origin: 'coaching', coachingSessionId: 1002, title: 'キャリアの方向性メモ', text: 'やりたいこと×得意なこと×価値を届けたいことの重なる領域を軸に考える。小さく試して検証していくことが大切。' },
   { daysAgo: 3, origin: 'material', title: '余白の使い方Tips', text: '要素間より外側の余白を広く。グループの関係は余白の差で伝わる。詰まって見えたらまず外側を広げる。' },
   { daysAgo: 4, origin: 'ai', favorite: true, title: 'AI回答：フォント選びの基準', text: 'まず可読性、次に世界観。見出しと本文で役割を分け、使うフォントは2種類までに絞ると整います。' },
   { daysAgo: 4, origin: 'material', title: 'デザイン4大原則の要点', text: '近接・整列・反復・コントラスト。迷ったら整列から見直すと、崩れの原因が見つかりやすい。' },
   { daysAgo: 5, origin: 'self', title: '参考バナーの共通点メモ', text: '目を引くバナーは色数が3色以内。メインコピーが全体の1/3以上の面積を占めている。' },
-  { daysAgo: 7, origin: 'coaching', favorite: true, title: '8/12 コーチングまとめ', text: 'Zの法則を意識した構成に改善できた。配色の目的とトーンの統一が次回までの課題。' },
+  { daysAgo: 7, origin: 'coaching', favorite: true, coachingSessionId: 1001, title: '8/12 コーチングまとめ', text: 'Zの法則を意識した構成に改善できた。配色の目的とトーンの統一が次回までの課題。' },
   { daysAgo: 7, origin: 'self', title: 'Figmaショートカット集', text: 'オートレイアウトはShift+A、コンポーネント化はCtrl+Alt+K。Enterで子要素に潜れる。' },
   { daysAgo: 8, origin: 'ai', title: 'AI回答：バナーの文字量', text: '訴求ポイントを1つに絞り、10〜20文字程度に。視線の流れを意識して簡潔に伝えましょう。' },
   { daysAgo: 9, origin: 'material', title: '配色ツールの使い分け', text: 'ベースカラーはブランドから、アクセントは補色から。迷ったらトーンを揃えて彩度だけ変える。' },
@@ -265,6 +326,9 @@ const DUMMY_ORIGINS: NoteOrigin[] = [
   'material', 'ai', 'self', 'material', 'coaching', 'ai', 'material', 'self', 'ai', 'material',
 ];
 
+/** フォルダの出方。未整理を厚めにして、フォルダ列の「未整理」が空にならないようにする */
+const DUMMY_FOLDERS: (SeedFolderKey | null)[] = ['design', null, 'work', 'design', null, 'coach', null];
+
 /**
  * ページ送りの確認用に、ダミーノートを指定件数だけ作る。
  *
@@ -272,6 +336,10 @@ const DUMMY_ORIGINS: NoteOrigin[] = [
  * @param now      基準時刻
  * @param startDay 何日前から並べ始めるか（既存のデモノートより古い側に置く）
  */
+function folderIdOf(key: SeedFolderKey | null | undefined): string | null {
+  return key ? SEED_FOLDER_ID[key] : null;
+}
+
 export function buildDummyNotes(count: number, now: Date, startDay = 0): Note[] {
   const notes: Note[] = [];
   for (let i = 0; i < count; i += 1) {
@@ -285,6 +353,7 @@ export function buildDummyNotes(count: number, now: Date, startDay = 0): Note[] 
       title: `${topic}${DUMMY_LENSES[lensIndex]}`,
       favorite: i % 7 === 3,
       origin: DUMMY_ORIGINS[i % DUMMY_ORIGINS.length],
+      folderId: folderIdOf(DUMMY_FOLDERS[i % DUMMY_FOLDERS.length]),
       source: null,
       createdAt: stamp,
       updatedAt: stamp,
@@ -355,6 +424,7 @@ function buildCuratedNotes(now: Date): Note[] {
       title: 'バナー制作の学び',
       favorite: true,
       origin: 'material',
+      folderId: SEED_FOLDER_ID.design,
       source,
       createdAt: iso(60 * 26),
       updatedAt: iso(35),
@@ -400,6 +470,7 @@ function buildCuratedNotes(now: Date): Note[] {
       title: '配色ルールまとめ',
       favorite: false,
       origin: 'material',
+      folderId: SEED_FOLDER_ID.design,
       source: {
         ...source,
         // 手書きの配色ショーケースレッスン（lessonHandlers.ts の COLOR_LESSON）を指す。
@@ -431,6 +502,7 @@ function buildCuratedNotes(now: Date): Note[] {
       title: 'ポートフォリオ改善案',
       favorite: false,
       origin: 'self',
+      folderId: SEED_FOLDER_ID.work,
       source: null,
       createdAt: iso(60 * 74),
       updatedAt: iso(60 * 70),
@@ -451,7 +523,9 @@ function buildCuratedNotes(now: Date): Note[] {
         title: card.title,
         favorite: card.favorite ?? false,
         origin: card.origin,
+        folderId: folderIdOf(card.folder !== undefined ? card.folder : defaultFolderFor(card.origin)),
         source: null,
+        coachingSessionId: card.coachingSessionId ?? null,
         createdAt: stamp,
         updatedAt: stamp,
         blocks: [
@@ -473,13 +547,50 @@ function buildCuratedNotes(now: Date): Note[] {
  * 🔴 保存できなかったときに黙って諦めると、書いたノートが次のリクエストで
  *    消えて「読み込めない」ように見える。保存だけ諦めて、その場では動かす。
  */
-let fallbackStore: NoteStoreV3 | null = null;
+let fallbackStore: NoteStoreV5 | null = null;
 
-/** localStorage から読む。v1・v2 なら移行し、空ならシードを置く */
-export function readNoteStore(): NoteStoreV3 {
+/**
+ * v3 までのノートに coachingSessionId を後付けする。
+ * 作成時の文脈は残っていないので、シードのタイトルと突き合わせて埋める
+ * （デモノート以外は紐づけようがないので null のまま）。
+ */
+function backfillCoachingSessionIds(notes: Note[]): Note[] {
+  const byTitle = new Map(
+    SEED_CARDS.filter((c) => c.coachingSessionId).map((c) => [c.title, c.coachingSessionId!]),
+  );
+  return notes.map((n) =>
+    n.coachingSessionId === undefined
+      ? { ...n, coachingSessionId: byTitle.get(n.title) ?? null }
+      : n,
+  );
+}
+
+/**
+ * v4 までのノートにフォルダを後付けする（v5）。
+ *
+ * デモノート（シードのタイトルと一致するもの）はシードと同じフォルダに入れ、
+ * デモフォルダ3つを置く。それ以外＝ユーザーが自分で書いたノートは未整理（null）に
+ * 置くだけで、フォルダは捏造しない。デモが1枚も無いストアにはフォルダも置かない。
+ */
+function backfillFolders(notes: Note[], now: Date): { notes: Note[]; folders: NoteFolder[] } {
+  const byTitle = new Map<string, string | null>();
+  for (const seed of buildSeedNotes(now, DEFAULT_SEED_COUNT)) byTitle.set(seed.title, seed.folderId);
+
+  let matched = false;
+  const filled = notes.map((n) => {
+    if (n.folderId !== undefined) return n;
+    const fromSeed = byTitle.get(n.title);
+    if (fromSeed !== undefined) matched = true;
+    return { ...n, folderId: fromSeed ?? null };
+  });
+  return { notes: filled, folders: matched ? buildSeedFolders(now) : [] };
+}
+
+/** localStorage から読む。v1〜v4 なら移行し、空ならシードを置く */
+export function readNoteStore(): NoteStoreV5 {
   if (fallbackStore) return fallbackStore;
 
-  const empty: NoteStoreV3 = { schemaVersion: 3, notes: [], memos: {} };
+  const empty: NoteStoreV5 = { schemaVersion: 5, notes: [], folders: [], memos: {} };
   let parsed: any = null;
   try {
     const raw = localStorage.getItem(NOTES_KEY);
@@ -489,8 +600,10 @@ export function readNoteStore(): NoteStoreV3 {
   }
 
   const memos = parsed?.memos && typeof parsed.memos === 'object' ? parsed.memos : {};
+  const now = new Date();
 
-  if (parsed?.schemaVersion === 3 && Array.isArray(parsed.notes)) {
+  if (parsed?.schemaVersion === 5 && Array.isArray(parsed.notes)) {
+    const folders: NoteFolder[] = Array.isArray(parsed.folders) ? parsed.folders : [];
     // 🔴 「置かれないままの0件」はここで直す。デモを一度も置いていないのに
     //    0件で保存されているブラウザは、以後いくら開き直しても真っ白のまま
     //    （＝ノートが全然読み込めない）になる。seeded が立っていれば、
@@ -498,11 +611,12 @@ export function readNoteStore(): NoteStoreV3 {
     if (parsed.notes.length > 0 || parsed.seeded === true) {
       // 1枚でもあるストアは「出来上がっている」ので印を立てておく。
       // こうしておくと、このあと全部消しても勝手にデモが戻ってこない。
-      return { schemaVersion: 3, notes: parsed.notes, memos, seeded: true };
+      return { schemaVersion: 5, notes: parsed.notes, folders, memos, seeded: true };
     }
-    const reseeded: NoteStoreV3 = {
-      schemaVersion: 3,
-      notes: buildSeedNotes(new Date()),
+    const reseeded: NoteStoreV5 = {
+      schemaVersion: 5,
+      notes: buildSeedNotes(now),
+      folders: buildSeedFolders(now),
       memos,
       seeded: true,
     };
@@ -512,29 +626,54 @@ export function readNoteStore(): NoteStoreV3 {
     return reseeded;
   }
 
-  // v2 → v3。器はそのまま、出どころだけを中身から推定して足す
-  if (parsed?.schemaVersion === 2 && Array.isArray(parsed.notes)) {
-    const notes = (parsed.notes as Note[]).map((note) => withOrigin(note));
-    const upgraded: NoteStoreV3 = { schemaVersion: 3, notes, memos, seeded: true };
+  // v4 → v5。フォルダ列を足す（デモノートはシードと同じフォルダへ、それ以外は未整理）
+  if (parsed?.schemaVersion === 4 && Array.isArray(parsed.notes)) {
+    const { notes, folders } = backfillFolders(parsed.notes as Note[], now);
+    const upgraded: NoteStoreV5 = { schemaVersion: 5, notes, folders, memos, seeded: true };
     writeNoteStore(upgraded);
     // eslint-disable-next-line no-console
-    console.info(`[MSW] ノートに出どころを付けました（v2 → v3）: ${notes.length}ノート`);
+    console.info(`[MSW] ノートにフォルダを付けました（v4 → v5）: ${notes.length}ノート / ${folders.length}フォルダ`);
+    return upgraded;
+  }
+
+  // v3 → v5。コーチング回への紐づけをシードのタイトルから後付けし、フォルダも足す
+  if (parsed?.schemaVersion === 3 && Array.isArray(parsed.notes)) {
+    const { notes, folders } = backfillFolders(backfillCoachingSessionIds(parsed.notes as Note[]), now);
+    const upgraded: NoteStoreV5 = { schemaVersion: 5, notes, folders, memos, seeded: true };
+    writeNoteStore(upgraded);
+    // eslint-disable-next-line no-console
+    console.info(`[MSW] ノートにコーチング回の紐づけとフォルダを付けました（v3 → v5）: ${notes.length}ノート`);
+    return upgraded;
+  }
+
+  // v2 → v5。器はそのまま、出どころを中身から推定して足す
+  if (parsed?.schemaVersion === 2 && Array.isArray(parsed.notes)) {
+    const { notes, folders } = backfillFolders(
+      backfillCoachingSessionIds((parsed.notes as Note[]).map((note) => withOrigin(note))),
+      now
+    );
+    const upgraded: NoteStoreV5 = { schemaVersion: 5, notes, folders, memos, seeded: true };
+    writeNoteStore(upgraded);
+    // eslint-disable-next-line no-console
+    console.info(`[MSW] ノートに出どころを付けました（v2 → v5）: ${notes.length}ノート`);
     return upgraded;
   }
 
   // v1（schemaVersion 無し）か、まったくの空
   const legacy: LegacyNoteItem[] = Array.isArray(parsed?.notes) ? parsed.notes : [];
-  const notes = legacy.length > 0 ? migrateLegacyNotes(legacy) : buildSeedNotes(new Date());
-  const migrated: NoteStoreV3 = { schemaVersion: 3, notes, memos, seeded: true };
+  const notes = legacy.length > 0 ? migrateLegacyNotes(legacy) : buildSeedNotes(now);
+  // v1 の移行分はユーザーの記録なのでフォルダを捏造しない。デモを置く場合だけデモフォルダも置く
+  const folders = legacy.length > 0 ? [] : buildSeedFolders(now);
+  const migrated: NoteStoreV5 = { schemaVersion: 5, notes, folders, memos, seeded: true };
   writeNoteStore(migrated);
   if (legacy.length > 0) {
     // eslint-disable-next-line no-console
-    console.info(`[MSW] ノートを v3 へ移行しました: ${legacy.length}件 → ${notes.length}ノート`);
+    console.info(`[MSW] ノートを v5 へ移行しました: ${legacy.length}件 → ${notes.length}ノート`);
   }
   return { ...empty, ...migrated };
 }
 
-export function writeNoteStore(store: NoteStoreV3): void {
+export function writeNoteStore(store: NoteStoreV5): void {
   try {
     localStorage.setItem(NOTES_KEY, JSON.stringify(store));
     fallbackStore = null; // 保存できたので退避先は要らない

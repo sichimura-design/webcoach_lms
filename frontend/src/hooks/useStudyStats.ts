@@ -128,7 +128,15 @@ export interface UseStudyStatsResult {
   reload: () => void;
 }
 
-export function useStudyStats(userId: number | undefined, days = 35): UseStudyStatsResult {
+/**
+ * @param days 'all' なら最初の記録の日から今日まで。/study-log はこれで呼び、
+ *   カレンダーの月送り・期間タブ・月別グラフを1回の応答から切り出す。
+ *   マイページは既定の 35 のまま（必要なのは直近だけなので広げない）。
+ */
+export function useStudyStats(
+  userId: number | undefined,
+  days: number | 'all' = 35
+): UseStudyStatsResult {
   const [stats, setStats] = useState<StudyStatsSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [unavailable, setUnavailable] = useState(false);

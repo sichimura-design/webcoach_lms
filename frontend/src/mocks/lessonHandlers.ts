@@ -35,10 +35,14 @@ import {
   LessonAiResponse,
   LessonBlock,
   LessonBlockKind,
+  LessonCheerRequest,
+  LessonCheerResponse,
   LessonDoc,
   LessonOutline,
+  OutlineLesson,
 } from '../types/lesson';
 import { readNoteStore, writeNoteStore } from './noteMigration';
+import { currentStreakInfo } from './studyActivityHandlers';
 import {
   findMigratedLesson,
   isMigratedCourse,
@@ -688,6 +692,182 @@ function buildBriefAnswer(req: LessonAiRequest): LessonAiResponse {
   };
 }
 
+// ---- レッスン完了時のひと言 -------------------------------------------------
+//
+// 文章ベースの教材はレッスンの区切りが薄く、10本目でも1本目と同じ重さになっていた。
+// 完了直後にAIコーチが一言添えて、そこに抑揚を作る。
+//
+// 🔴 定型文の配列からランダムに1本選ぶ、はやらない。それは変化して見えて実際には
+//    毎回同じ重さで、「メリハリがない」という指摘そのものを直さない。
+//    ここでは実データ（単元の位置・完了本数・ノート・連続日数）で段を決め、
+//    その段の文にだけ実数を差し込む。
+// 🔴 乱数を使わず、同じ状況なら必ず同じ文を返す。完了を取り消してもう一度完了した
+//    ときに文が変わると、その一言が「その場の飾り」だと分かってしまう。
+// 🔴 通常回（plain）ではほめない。毎回ほめると節目の祝いが効かなくなるので、
+//    残り本数と次のレッスン名を言うだけに留める。
+
+/** ひと言を組むために集めた実データ */
+interface CheerFacts {
+  courseName: string;
+  sectionName: string;
+  /** この単元の完了本数 / 総数（今回の1本を含む） */
+  sectionDone: number;
+  sectionTotal: number;
+  /** コース全体の完了本数 / 総数（今回の1本を含む） */
+  courseDone: number;
+  courseTotal: number;
+  nextTitle: string | null;
+  /** このレッスンから取ったクリップ・AI回答の件数 */
+  clips: number;
+  /** このレッスンのメモ下書きの文字数 */
+  memoChars: number;
+  streakDays: number;
+  askedCount: number;
+}
+
+/**
+ * このレッスンに紐づくノート活動。
+ * ノートストア（localStorage）が正なので、クライアントの申告は使わない。
+ */
+function lessonNoteActivity(lessonId: number): { clips: number; memoChars: number } {
+  const store = readNoteStore();
+  let clips = 0;
+  for (const note of store.notes) {
+    for (const block of note.blocks) {
+      if (block.kind === 'clip' && block.source.lessonId === lessonId) clips += 1;
+      if (block.kind === 'answer' && block.source?.lessonId === lessonId) clips += 1;
+    }
+  }
+  return { clips, memoChars: (store.memos[String(lessonId)]?.text ?? '').trim().length };
+}
+
+function collectCheerFacts(
+  courseId: number,
+  lessonId: number,
+  askedCount: number
+): CheerFacts | null {
+  const outline = buildOutline(courseId);
+  const section = outline.sections.find((s) => s.lessons.some((l) => l.lessonId === lessonId));
+  if (!section) return null;
+
+  const flat = outline.sections.flatMap((s) => s.lessons);
+  const index = flat.findIndex((l) => l.lessonId === lessonId);
+  // 完了直後に呼ばれるが、目次がまだ追いついていない可能性を潰すために
+  // 今回のレッスンは必ず完了として数える。
+  const isDone = (l: OutlineLesson) => l.state === 'done' || l.lessonId === lessonId;
+
+  const { clips, memoChars } = lessonNoteActivity(lessonId);
+  return {
+    courseName: outline.courseName,
+    sectionName: section.name,
+    sectionDone: section.lessons.filter(isDone).length,
+    sectionTotal: section.lessons.length,
+    courseDone: flat.filter(isDone).length,
+    courseTotal: flat.length,
+    nextTitle: index >= 0 && index < flat.length - 1 ? flat[index + 1].title : null,
+    clips,
+    memoChars,
+    streakDays: currentStreakInfo().days,
+    askedCount: Math.max(0, Math.floor(askedCount)),
+  };
+}
+
+/**
+ * 連続日数に触れる回。
+ * 毎回言うと「5日連続」が背景になって効かないので、区切りの日数だけに絞る
+ * （3・5・7日、その後は7日ごと）。
+ */
+function isStreakMilestone(days: number): boolean {
+  return days === 3 || days === 5 || days === 7 || (days > 7 && days % 7 === 0);
+}
+
+function buildCheer(facts: CheerFacts): LessonCheerResponse {
+  const remainInCourse = facts.courseTotal - facts.courseDone;
+  const remainInSection = facts.sectionTotal - facts.sectionDone;
+
+  // ── 節目 ──────────────────────────────────────────────
+  if (facts.courseDone === facts.courseTotal) {
+    return {
+      tier: 'milestone',
+      headline: 'コース完走',
+      message: `「${facts.courseName}」全${facts.courseTotal}レッスンを走り切りました。ここで身につけた判断基準は、次のコースでもそのまま土台になります。`,
+    };
+  }
+  if (remainInSection === 0) {
+    return {
+      tier: 'milestone',
+      headline: '単元クリア',
+      message: `単元「${facts.sectionName}」を完走です。${facts.sectionTotal}本かけて扱ってきた内容が、ここでひとまとまりになりました。`,
+    };
+  }
+  // ちょうど半分を越えた1本だけ。以降の回で毎回言わないよう、越えた瞬間で判定する
+  const half = facts.courseTotal / 2;
+  if (facts.courseDone >= half && facts.courseDone - 1 < half) {
+    return {
+      tier: 'milestone',
+      headline: '折り返し',
+      message: `「${facts.courseName}」はこれで折り返しです。残り${remainInCourse}本。ここまで来た人はたいてい最後まで行きます。`,
+    };
+  }
+
+  // ── 手応え（このレッスンで実際にやったこと）────────────
+  const hasRecord = facts.clips > 0 || facts.memoChars >= 20;
+  if (facts.askedCount > 0 && hasRecord) {
+    return {
+      tier: 'effort',
+      headline: null,
+      message: `${facts.askedCount}回質問して、手元にも記録を残しながら読み切りましたね。この進め方だと次に思い出せます。`,
+    };
+  }
+  if (facts.askedCount > 0) {
+    return {
+      tier: 'effort',
+      headline: null,
+      message: `${facts.askedCount}回質問しながら読み切りましたね。分からないところを流さないのが、いちばん効く進め方です。`,
+    };
+  }
+  if (facts.clips > 0) {
+    return {
+      tier: 'effort',
+      headline: null,
+      message: `${facts.clips}件クリップしながら読み進めましたね。あとで見返せる形が残っています。`,
+    };
+  }
+  if (facts.memoChars >= 20) {
+    return {
+      tier: 'effort',
+      headline: null,
+      message: '自分の言葉でメモを残しながら進めましたね。読んだだけのときより、手を動かすときに出てきます。',
+    };
+  }
+
+  // ── 積み上げ（連続日数の区切り）─────────────────────────
+  if (isStreakMilestone(facts.streakDays)) {
+    return {
+      tier: 'streak',
+      headline: `${facts.streakDays}日連続`,
+      message:
+        facts.streakDays >= 7
+          ? `${facts.streakDays}日続いています。ここまで来ると、やらない日のほうが落ち着かないはずです。`
+          : `${facts.streakDays}日続いています。この辺りを越えると、続けるほうが楽になります。`,
+    };
+  }
+
+  // ── 通常回。ほめずに事実だけ ───────────────────────────
+  if (facts.nextTitle) {
+    return {
+      tier: 'plain',
+      headline: null,
+      message: `1本読み切りました。単元「${facts.sectionName}」はあと${remainInSection}本、次は「${facts.nextTitle}」です。`,
+    };
+  }
+  return {
+    tier: 'plain',
+    headline: null,
+    message: `最後のレッスンまで来ました。未完了が${remainInCourse}本残っているので、目次から拾っていきましょう。`,
+  };
+}
+
 // ---- ハンドラ --------------------------------------------------------------
 // レッスン単位の下書き（memos）は noteMigration.ts のストアに同居している。
 // ノート本体と同じ localStorage キーなので、読み書きの入口も共有する。
@@ -727,6 +907,26 @@ export const lessonHandlers = [
     // 実際のLLM呼び出しに近い体感にするため、わずかに遅延させる
     await new Promise((resolve) => setTimeout(resolve, req?.mode === 'brief' ? 260 : 620));
     return HttpResponse.json(answer);
+  }),
+
+  // 完了時のAIコーチのひと言
+  http.post('*/api/webcoach/lesson-cheer', async ({ request }) => {
+    let req: LessonCheerRequest | null = null;
+    try {
+      req = (await request.json()) as LessonCheerRequest;
+    } catch {
+      /* ignore */
+    }
+    if (!req || !Number.isFinite(req.courseId) || !Number.isFinite(req.lessonId)) {
+      return new HttpResponse(null, { status: 400 });
+    }
+    const facts = collectCheerFacts(req.courseId, req.lessonId, req.askedCount ?? 0);
+    if (!facts) return new HttpResponse(null, { status: 404 });
+
+    // lesson-ai より短くする。祝う面の手前で待たされると熱が冷める
+    await new Promise((resolve) => setTimeout(resolve, 240));
+    const cheer: LessonCheerResponse = buildCheer(facts);
+    return HttpResponse.json(cheer);
   }),
 
   // レッスン単位のメモ（自動保存）

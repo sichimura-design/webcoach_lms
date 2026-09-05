@@ -24,6 +24,8 @@ const OUT_ROOT = path.resolve(__dirname, '../_capture');
 
 /** モック認証のログイン済みフラグ（src/mocks/mockAuth.ts の LOGGED_IN_KEY） */
 const LOGGED_IN_KEY = 'webcoach-mock-logged-in';
+/** 学習タイマーの永続ストア（src/store/studyTimerStore.ts の persist name）。打診の抑止に使う */
+const STUDY_TIMER_KEY = 'webcoach-study-timer';
 
 /**
  * 対象画面。id は frontend/docs/ui-review/screen-inventory.csv の画面ID に合わせる。
@@ -52,11 +54,33 @@ const SCREENS = [
   { id: 'STU-03', route: '/courses', widths: [1520, 375], settle: 5000 },
   { id: 'STU-04', route: '/course/1/curriculum', settle: 1800 },
   { id: 'STU-05', route: '/course/1', widths: [1440, 375], settle: 2500 },
-  { id: 'STU-06', route: '/notes', settle: 1800 },
+  { id: 'STU-06', route: '/notes', settle: 2500 },
+  // ノートを開いた状態（編集UI）。ここの操作性を作り直したいので状態を押さえておく
+  {
+    id: 'STU-06-note', route: '/notes', settle: 2500,
+    clicks: [
+      'article[aria-label="8/19 コーチングまとめを開く"]',
+    ],
+  },
+  // 新規作成の直後（空のノート）。文言は「新しいノートを作成」→「新しいノート」に変わった
+  {
+    id: 'STU-06-new', route: '/notes', settle: 2500,
+    clicks: [
+      'button:has-text("新しいノート")',
+    ],
+  },
   { id: 'STU-07', route: '/coaching', widths: [1440, 375], settle: 2000 },
+  // コーチングの記録（公開済みセッションを開いた状態）。
+  // 1002 は mocks/coachingHandlers.ts の seedAll で「第3回コーチング・published・反映済み」。
+  {
+    id: 'STU-07-session', route: '/coaching?session=1002', widths: [1440, 375], settle: 3000,
+  },
   { id: 'STU-08', route: '/learning-plan', settle: 1500 },
   { id: 'STU-09', route: '/learning-plan/setup', settle: 1500 },
-  { id: 'STU-10', route: '/ai-coach', settle: 2000 },
+  // aa の fadeInUp で、カード一覧が 120ms 遅れて入る。settle が短いと撮り逃す
+  { id: 'STU-10', route: '/ai-coach', settle: 5000 },
+  // AIアプリの詳細（新ルート）。原稿が無いので本文は「準備中」1行
+  { id: 'STU-10-app', route: '/ai-coach/apps/design-review', settle: 3000 },
   { id: 'STU-11', route: '/account-settings', settle: 1500 },
   { id: 'STU-12', route: '/profile', settle: 1500 },
   { id: 'STU-13a', route: '/help/manual', settle: 1200 },
@@ -286,10 +310,20 @@ async function loadScreen(page, screen) {
 
   // 状態違い（サイドバー展開・ドロワーが開いた状態など）を撮るためのクリック。
   // 押せなかったら黙って通り過ぎず、その場で落とす（撮れたことにするのがいちばん困る）。
+  // 出たり出なかったりするもの（学習セッションの記録ダイアログなど）は optional にする。
   for (const step of screen.clicks || []) {
-    const target = page.locator(step).first();
-    await target.waitFor({ state: 'visible', timeout: 5000 });
-    await target.click();
+    const selector = typeof step === 'string' ? step : step.selector;
+    const optional = typeof step === 'object' && step.optional;
+    const target = page.locator(selector).first();
+    try {
+      await target.waitFor({ state: 'visible', timeout: optional ? 2500 : 5000 });
+    } catch (e) {
+      if (optional) continue;
+      throw new Error(`クリック対象が出てこない: ${selector}`);
+    }
+    // force は「重なりの判定を飛ばして、その要素をそのまま押す」。
+    // 学習セッションの打診ダイアログは背面レイヤーがクリックを吸うので、これが要る。
+    await target.click({ force: typeof step === 'object' && !!step.force });
     // 開閉のアニメーション（framer-motion）が終わるまで待つ
     await page.waitForTimeout(900);
   }
@@ -306,15 +340,32 @@ async function captureOne(context, screen, width) {
   await page.setViewportSize({ width, height: 900 });
 
   await page.addInitScript(
-    ({ key, loggedIn }) => {
+    ({ key, loggedIn, timerKey }) => {
       try {
         if (loggedIn) localStorage.setItem(key, '1');
         else localStorage.removeItem(key);
+
+        /*
+         * 学習セッションの打診ダイアログ（StudySessionHost）を出さないようにする。
+         * 学習ページを開くたびに「コーチングの時間を記録しますか？」が画面を覆い、
+         * 「あとで」を押しても別カテゴリに移るとまた出るので、クリックで消すのは当てにならない。
+         * 判定は「今日すでに PROMPT_DECLINE_LIMIT(3) 回断ったか」なので、
+         * その状態を先に書いておく（studyTimerStore の persist 形式）。
+         */
+        const d = new Date();
+        const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        const counts = { material: 3, ai: 3, coaching: 3, review: 3, other: 3 };
+        const prev = JSON.parse(localStorage.getItem(timerKey) || '{}');
+        localStorage.setItem(timerKey, JSON.stringify({
+          ...prev,
+          version: 3,
+          state: { ...(prev.state || {}), promptDeclinedOn: today, promptDeclineCounts: counts },
+        }));
       } catch {
         /* localStorage 不可の環境では何もしない */
       }
     },
-    { key: LOGGED_IN_KEY, loggedIn: screen.loggedIn !== false },
+    { key: LOGGED_IN_KEY, loggedIn: screen.loggedIn !== false, timerKey: STUDY_TIMER_KEY },
   );
 
   // 開発サーバは編集のたびに再コンパイルするので、たまたまエラー中／認証チェックが
@@ -346,8 +397,13 @@ async function captureOne(context, screen, width) {
   // 開発サーバが編集で再コンパイル中だと、正常に撮れた直後の実行がこれを踏むことがある。
   const stem = path.join(outDir, overlay && !screen.knownBroken ? `${width}.BROKEN` : String(width));
 
-  await page.screenshot({ path: `${stem}.png`, fullPage: true });
-
+  /*
+   * 🔴 採寸はスクリーンショットより先にやる。
+   * fullPage スクショは撮るあいだビューポートをページ全体の高さに変えるので、
+   * そのあとで測るとスクロールバーの有無が変わった状態の値を拾ってしまう
+   * （実際、マイページの本文が x=72 ではなく x=66 で記録され、アートボードのほうが
+   *   正しいのに 8px ズレていると誤検知した）。
+   */
   const html = await page.evaluate(() => {
     const r = document.getElementById('root');
     return r ? r.outerHTML : '<!-- #root not found -->';
@@ -359,6 +415,8 @@ async function captureOne(context, screen, width) {
 
   const tokens = await page.evaluate(collectTokens);
   fs.writeFileSync(`${stem}.tokens.json`, JSON.stringify(tokens, null, 2), 'utf8');
+
+  await page.screenshot({ path: `${stem}.png`, fullPage: true });
 
   // 画面が本当に出ているかの自己チェック。未ログインへ弾かれた等をここで気づけるようにする
   const title = await page.evaluate(() => {

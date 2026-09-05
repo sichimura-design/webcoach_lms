@@ -16,6 +16,7 @@ import MaterialsTopPage from '../components/MaterialsTopPage';
 import AreaCoursesPage from '../components/materials/AreaCoursesPage';
 import LearningCoursesPage from '../components/LearningCoursesPage';
 import AiCoachPage from '../components/aicoach/AiCoachPage';
+import AiAppDetailPage from '../components/aicoach/AiAppDetailPage';
 import BadgesPage from '../components/BadgesPage';
 import ContentListPage from '../components/ContentListPage';
 import CourseContentPage from '../components/CourseContentPage';
@@ -405,6 +406,18 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <CoursesWrapper />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* AIアプリの詳しい解説。/ai-coach より先に置く（より具体的なパスが先）。
+          🔴 起動の導線ではない。アプリを選んだときは今まで通り /ai-coach の中で
+             モードが切り替わるだけで、このページには来ない。 */}
+      <Route
+        path="/ai-coach/apps/:appId"
+        element={
+          <ProtectedRoute>
+            <AiAppDetailPage />
           </ProtectedRoute>
         }
       />
