@@ -55,6 +55,8 @@ from .common import (
     LoginStreakResponse,
     CoachingRecordingResponse,
     CoachingNoteResponse,
+    MyNoteFolderResponse,
+    MyNoteResponse,
 )
 
 __all__ = [
@@ -101,6 +103,8 @@ __all__ = [
     "LoginStreakResponse",
     "CoachingRecordingResponse",
     "CoachingNoteResponse",
+    "MyNoteFolderResponse",
+    "MyNoteResponse",
     # Study Activity (集中ブース)
     "StudySessionResponse",
     "ActiveStudySessionResponse",

@@ -144,3 +144,39 @@ class CoachingRecordingUpsert(BaseModel):
     s3_key: str = Field(..., description="保存先S3オブジェクトキー")
     external_recording_id: Optional[str] = Field(None, description="取得元サービス側の録画ID")
     status: str = Field("completed", pattern="^(pending|downloading|completed|failed)$", description="取得処理の状態")
+
+
+class MyNoteFolderCreate(BaseModel):
+    """マイノートフォルダ作成リクエスト"""
+    name: str = Field(..., max_length=255, description="フォルダ名")
+    parent_folder_id: Optional[int] = Field(None, description="親フォルダID（未指定はルート直下）")
+
+
+class MyNoteFolderUpdate(BaseModel):
+    """マイノートフォルダ更新リクエスト（リネーム・移動）"""
+    name: Optional[str] = Field(None, max_length=255, description="フォルダ名")
+    parent_folder_id: Optional[int] = Field(None, description="移動先の親フォルダID（nullを明示的に渡すとルート直下へ移動）")
+
+
+class MyNoteCreate(BaseModel):
+    """マイノート作成リクエスト"""
+    title: str = Field(..., max_length=255, description="タイトル")
+    contents: str = Field("", description="Markdown形式の本文")
+    folder_id: Optional[int] = Field(None, description="所属フォルダID（未指定はルート直下）")
+    courseid: Optional[int] = Field(None, description="関連コースID（任意）")
+    cmid: Optional[int] = Field(None, description="関連レッスンID（MoodleコースモジュールID、任意）")
+    favorite: int = Field(0, ge=0, le=1, description="重要ラベル（0/1）")
+    from_ai: int = Field(0, ge=0, le=1, description="AIコーチの回答から作られたか（0/1）")
+    from_coaching: int = Field(0, ge=0, le=1, description="コーチングから作られたか（0/1）")
+
+
+class MyNoteUpdate(BaseModel):
+    """マイノート更新リクエスト"""
+    title: Optional[str] = Field(None, max_length=255, description="タイトル")
+    contents: Optional[str] = Field(None, description="Markdown形式の本文")
+    folder_id: Optional[int] = Field(None, description="移動先フォルダID（nullを明示的に渡すとルート直下へ移動）")
+    courseid: Optional[int] = Field(None, description="関連コースID")
+    cmid: Optional[int] = Field(None, description="関連レッスンID（MoodleコースモジュールID）")
+    favorite: Optional[int] = Field(None, ge=0, le=1, description="重要ラベル（0/1）")
+    from_ai: Optional[int] = Field(None, ge=0, le=1, description="AIコーチの回答から作られたか（0/1）")
+    from_coaching: Optional[int] = Field(None, ge=0, le=1, description="コーチングから作られたか（0/1）")

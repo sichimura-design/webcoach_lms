@@ -13,7 +13,7 @@ from slowapi.errors import RateLimitExceeded
 from database import engine, Base
 
 # Import routers
-from routers import health, courses, profiles, webcoach, badges, roadmaps, roadmap, ai, ai_langgraph, admin, tags, faiss_ingest, coaching, integrations, recordings, study, notes
+from routers import health, courses, profiles, webcoach, badges, roadmaps, roadmap, ai, ai_langgraph, admin, tags, faiss_ingest, coaching, integrations, recordings, study, notes, my_note
 
 # Load environment variables
 load_dotenv()
@@ -71,6 +71,7 @@ app.include_router(recordings.router)  # コーチング録画メタデータ
 app.include_router(notes.router)  # AIコーチングノート
 app.include_router(study.router)  # 集中ブース学習セッション記録
 app.include_router(roadmap.router)  # キャリアロードマップ(フェーズ制・スキル別テンプレート)
+app.include_router(my_note.router)  # マイノート(フォルダ入れ子対応)
 
 
 # ==========================================

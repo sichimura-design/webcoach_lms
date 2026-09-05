@@ -163,6 +163,73 @@ export interface UpdateStudyNoteRequest {
   content: string;
 }
 
+// WebCoach MyNote（教材に紐づかない自由記述のノート。フォルダは入れ子対応）
+export interface MyNoteFolder {
+  folder_id: number;
+  mdl_user_id: number;
+  name: string;
+  parent_folder_id: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateMyNoteFolderRequest {
+  name: string;
+  parent_folder_id?: number | null;
+}
+
+export interface UpdateMyNoteFolderRequest {
+  name?: string;
+  parent_folder_id?: number | null;
+}
+
+export interface MyNote {
+  noteid: number;
+  mdl_user_id: number;
+  folder_id: number | null;
+  courseid: number | null;
+  /** 関連レッスン（MoodleコースモジュールID）。教材画面からの逆引きに使う */
+  cmid: number | null;
+  /** 重要ラベル（0/1） */
+  favorite: number;
+  /** AIコーチの回答から作られたか（0/1） */
+  from_ai: number;
+  /** コーチングから作られたか（0/1） */
+  from_coaching: number;
+  title: string;
+  contents: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateMyNoteRequest {
+  title: string;
+  contents?: string;
+  folder_id?: number | null;
+  courseid?: number | null;
+  cmid?: number | null;
+  favorite?: number;
+  from_ai?: number;
+  from_coaching?: number;
+}
+
+export interface UpdateMyNoteRequest {
+  title?: string;
+  contents?: string;
+  folder_id?: number | null;
+  courseid?: number | null;
+  cmid?: number | null;
+  favorite?: number;
+  from_ai?: number;
+  from_coaching?: number;
+}
+
+/** マイノート一覧の絞り込み。folderId=0 はルート直下のみ、cmid はその教材のノートのみ */
+export interface MyNoteListQuery {
+  folderId?: number;
+  cmid?: number;
+}
+
 // WebCoach CoachingSchedule
 export type CoachingScheduleStatus = 'completed' | 'interrupted' | 'rescheduled';
 
