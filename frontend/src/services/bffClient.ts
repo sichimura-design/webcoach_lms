@@ -11,6 +11,13 @@ import {
   UpdateResumeCourseRequest,
   StudyNote,
   UpdateStudyNoteRequest,
+  MyNoteFolder,
+  CreateMyNoteFolderRequest,
+  UpdateMyNoteFolderRequest,
+  MyNote,
+  CreateMyNoteRequest,
+  UpdateMyNoteRequest,
+  MyNoteListQuery,
   CoachingSchedule,
   CreateCoachingScheduleRequest,
   UpdateCoachingScheduleRequest,
@@ -467,6 +474,104 @@ class BFFClient {
       data
     );
     return response.data;
+  }
+
+  /**
+   * マイノートフォルダ一覧取得（フラット。ツリー化はフロント側でparent_folder_idから行う）
+   * GET /api/my-note/folders/{userid}
+   */
+  async getMyNoteFolders(userId: number): Promise<MyNoteFolder[]> {
+    const response = await this.api.get(`/my-note/folders/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * マイノートフォルダ作成
+   * POST /api/my-note/folders/{userid}
+   */
+  async createMyNoteFolder(
+    userId: number,
+    data: CreateMyNoteFolderRequest
+  ): Promise<MyNoteFolder> {
+    const response = await this.api.post(`/my-note/folders/${userId}`, data);
+    return response.data;
+  }
+
+  /**
+   * マイノートフォルダ更新（リネーム・移動）
+   * PUT /api/my-note/folders/{userid}/{folderId}
+   */
+  async updateMyNoteFolder(
+    userId: number,
+    folderId: number,
+    data: UpdateMyNoteFolderRequest
+  ): Promise<MyNoteFolder> {
+    const response = await this.api.put(`/my-note/folders/${userId}/${folderId}`, data);
+    return response.data;
+  }
+
+  /**
+   * マイノートフォルダ削除
+   * DELETE /api/my-note/folders/{userid}/{folderId}
+   */
+  async deleteMyNoteFolder(userId: number, folderId: number): Promise<void> {
+    await this.api.delete(`/my-note/folders/${userId}/${folderId}`);
+  }
+
+  /**
+   * マイノート一覧取得
+   * folderId を指定するとそのフォルダ直下のみ（0はルート直下のみ）、
+   * cmid を指定するとその教材に紐づくノートのみを返す。
+   * GET /api/my-note/notes/{userid}
+   */
+  async getMyNotes(userId: number, query: MyNoteListQuery = {}): Promise<MyNote[]> {
+    const params: Record<string, number> = {};
+    if (query.folderId !== undefined) params.folder_id = query.folderId;
+    if (query.cmid !== undefined) params.cmid = query.cmid;
+
+    const response = await this.api.get(`/my-note/notes/${userId}`, {
+      params: Object.keys(params).length > 0 ? params : undefined,
+    });
+    return response.data;
+  }
+
+  /**
+   * マイノート作成
+   * POST /api/my-note/notes/{userid}
+   */
+  async createMyNote(userId: number, data: CreateMyNoteRequest): Promise<MyNote> {
+    const response = await this.api.post(`/my-note/notes/${userId}`, data);
+    return response.data;
+  }
+
+  /**
+   * マイノート取得
+   * GET /api/my-note/notes/{userid}/{noteId}
+   */
+  async getMyNote(userId: number, noteId: number): Promise<MyNote> {
+    const response = await this.api.get(`/my-note/notes/${userId}/${noteId}`);
+    return response.data;
+  }
+
+  /**
+   * マイノート更新
+   * PUT /api/my-note/notes/{userid}/{noteId}
+   */
+  async updateMyNote(
+    userId: number,
+    noteId: number,
+    data: UpdateMyNoteRequest
+  ): Promise<MyNote> {
+    const response = await this.api.put(`/my-note/notes/${userId}/${noteId}`, data);
+    return response.data;
+  }
+
+  /**
+   * マイノート削除
+   * DELETE /api/my-note/notes/{userid}/{noteId}
+   */
+  async deleteMyNote(userId: number, noteId: number): Promise<void> {
+    await this.api.delete(`/my-note/notes/${userId}/${noteId}`);
   }
 
   /**

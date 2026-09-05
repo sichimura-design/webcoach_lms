@@ -394,3 +394,49 @@ class WebCoachRoadmapAnswer(Base):
     question_no = Column(SmallInteger, primary_key=True, nullable=False, comment='質問番号')
     answer = Column(SmallInteger, nullable=False, comment='解答の選択肢')
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), comment='回答日時')
+
+
+class WebCoachMyNoteFolder(Base):
+    """
+    WebCoach: マイノートのフォルダ（入れ子対応）
+    """
+    __tablename__ = "webcoach_my_note_folder"
+
+    folder_id = Column(BigInteger, primary_key=True, autoincrement=True)
+    mdl_user_id = Column(BigInteger, nullable=False, comment='MoodleユーザーID')
+    name = Column(String(255), nullable=False, comment='フォルダ名')
+    parent_folder_id = Column(BigInteger, nullable=True, comment='親フォルダ（NULLはルート直下）')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+    __table_args__ = (
+        Index('idx_my_note_folder_user', 'mdl_user_id'),
+        Index('idx_my_note_folder_parent', 'parent_folder_id'),
+    )
+
+
+class WebCoachMyNote(Base):
+    """
+    WebCoach: マイノート本体（教材に紐づかない自由記述のノート。本文はMarkdown）
+    """
+    __tablename__ = "webcoach_my_note"
+
+    noteid = Column(BigInteger, primary_key=True, autoincrement=True)
+    mdl_user_id = Column(BigInteger, nullable=False, comment='MoodleユーザーID')
+    folder_id = Column(BigInteger, nullable=True, comment='所属フォルダ（NULLはルート直下）')
+    courseid = Column(BigInteger, nullable=True, comment='関連コース（任意）')
+    cmid = Column(BigInteger, nullable=True, comment='関連レッスン（Moodleコースモジュール(教材)ID）。教材画面からの逆引き用')
+    favorite = Column(SmallInteger, nullable=False, default=0, comment='重要ラベル')
+    from_ai = Column(SmallInteger, nullable=False, default=0, comment='AIコーチの回答から作られたか')
+    from_coaching = Column(SmallInteger, nullable=False, default=0, comment='コーチングから作られたか')
+    title = Column(String(255), nullable=False, comment='タイトル')
+    contents = Column(Text, nullable=False, comment='Markdown形式の本文')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+    __table_args__ = (
+        Index('idx_my_note_user', 'mdl_user_id'),
+        Index('idx_my_note_folder', 'folder_id'),
+        Index('idx_my_note_course', 'courseid'),
+        Index('idx_my_note_cmid', 'cmid'),
+    )

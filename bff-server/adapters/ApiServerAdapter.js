@@ -975,6 +975,142 @@ class ApiServerAdapter {
     );
     return response.data;
   }
+
+  // ==================== MY NOTE ====================
+
+  /**
+   * List my note folders (flat list, tree built client-side)
+   */
+  async listMyNoteFolders(userid) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/my-note/folders/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Create a my note folder
+   */
+  async createMyNoteFolder(userid, data) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/my-note/folders/${userid}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update (rename/move) a my note folder
+   */
+  async updateMyNoteFolder(userid, folderId, data) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/my-note/folders/${userid}/${folderId}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Delete a my note folder
+   */
+  async deleteMyNoteFolder(userid, folderId) {
+    await axios.delete(
+      `${this.apiServerUrl}/api/my-note/folders/${userid}/${folderId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+  }
+
+  /**
+   * List my notes
+   * folderId: 0 means root-level only. cmid filters by material (lesson).
+   */
+  async listMyNotes(userid, { folderId, cmid } = {}) {
+    const params = {};
+    if (folderId !== undefined) params.folder_id = folderId;
+    if (cmid !== undefined) params.cmid = cmid;
+
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/my-note/notes/${userid}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        params: Object.keys(params).length > 0 ? params : undefined,
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Create a my note
+   */
+  async createMyNote(userid, data) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/my-note/notes/${userid}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get a my note
+   */
+  async getMyNote(userid, noteId) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/my-note/notes/${userid}/${noteId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update a my note
+   */
+  async updateMyNote(userid, noteId, data) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/my-note/notes/${userid}/${noteId}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Delete a my note
+   */
+  async deleteMyNote(userid, noteId) {
+    await axios.delete(
+      `${this.apiServerUrl}/api/my-note/notes/${userid}/${noteId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+  }
 }
 
 // Create singleton instance

@@ -15,6 +15,7 @@ from .webcoach import (
     WebCoachStudyNote,
     WebCoachCoachingSchedule,
     WebCoachCoachingRecording,
+    WebCoachCoachingNote,
     WebCoachRoadmapSkill,
     WebCoachRoadmapPhase,
     WebCoachRoadmapTodo,
@@ -22,6 +23,8 @@ from .webcoach import (
     WebCoachRoadmapProgress,
     WebCoachRoadmapQuestion,
     WebCoachRoadmapAnswer,
+    WebCoachMyNoteFolder,
+    WebCoachMyNote,
 )
 from .webcoach_normalized import (
     WebCoachImage,
@@ -48,6 +51,7 @@ __all__ = [
     "WebCoachStudyNote",
     "WebCoachCoachingSchedule",
     "WebCoachCoachingRecording",
+    "WebCoachCoachingNote",
     "WebCoachRoadmapSkill",
     "WebCoachRoadmapPhase",
     "WebCoachRoadmapTodo",
@@ -55,6 +59,8 @@ __all__ = [
     "WebCoachRoadmapProgress",
     "WebCoachRoadmapQuestion",
     "WebCoachRoadmapAnswer",
+    "WebCoachMyNoteFolder",
+    "WebCoachMyNote",
     "MoodleTag",
     "MoodleTagInstance",
     "MoodleCourse",

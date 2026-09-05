@@ -28,6 +28,8 @@ from entities import (
     WebCoachRoadmapProgress,
     WebCoachRoadmapQuestion,
     WebCoachRoadmapAnswer,
+    WebCoachMyNoteFolder,
+    WebCoachMyNote,
 )
 from dto.request import (
     CourseAccessCreate,
@@ -384,6 +386,289 @@ def upsert_study_note(
 
     db.flush()
     return existing
+
+
+def create_my_note_folder(
+    db: Session,
+    mdl_user_id: int,
+    name: str,
+    parent_folder_id: Optional[int] = None
+) -> WebCoachMyNoteFolder:
+    """
+    WebCoach: マイノートフォルダを作成
+
+    Raises:
+        ValueError: parent_folder_idが本人所有のフォルダでない場合
+    """
+    if parent_folder_id is not None:
+        _get_owned_my_note_folder_or_raise(db, mdl_user_id, parent_folder_id)
+
+    folder = WebCoachMyNoteFolder(
+        mdl_user_id=mdl_user_id,
+        name=name,
+        parent_folder_id=parent_folder_id,
+    )
+    db.add(folder)
+    db.flush()
+    return folder
+
+
+def get_my_note_folder(
+    db: Session,
+    mdl_user_id: int,
+    folder_id: int
+) -> Optional[WebCoachMyNoteFolder]:
+    """
+    WebCoach: マイノートフォルダを取得（本人所有のもののみ）
+    """
+    return db.query(WebCoachMyNoteFolder).filter(
+        WebCoachMyNoteFolder.folder_id == folder_id,
+        WebCoachMyNoteFolder.mdl_user_id == mdl_user_id,
+    ).first()
+
+
+def list_my_note_folders(
+    db: Session,
+    mdl_user_id: int
+) -> List[WebCoachMyNoteFolder]:
+    """
+    WebCoach: マイノートフォルダ一覧を取得（フラット。ツリー化はフロント側でparent_folder_idから行う）
+    """
+    return db.query(WebCoachMyNoteFolder).filter(
+        WebCoachMyNoteFolder.mdl_user_id == mdl_user_id,
+    ).order_by(WebCoachMyNoteFolder.name).all()
+
+
+def _is_same_or_descendant_folder(
+    db: Session,
+    mdl_user_id: int,
+    ancestor_folder_id: int,
+    candidate_folder_id: int
+) -> bool:
+    """candidate_folder_idがancestor_folder_id自身、またはその子孫かどうか"""
+    if candidate_folder_id == ancestor_folder_id:
+        return True
+
+    current = get_my_note_folder(db, mdl_user_id, candidate_folder_id)
+    while current is not None and current.parent_folder_id is not None:
+        if current.parent_folder_id == ancestor_folder_id:
+            return True
+        current = get_my_note_folder(db, mdl_user_id, current.parent_folder_id)
+
+    return False
+
+
+def _get_owned_my_note_folder_or_raise(
+    db: Session,
+    mdl_user_id: int,
+    folder_id: int
+) -> WebCoachMyNoteFolder:
+    folder = get_my_note_folder(db, mdl_user_id, folder_id)
+    if not folder:
+        raise ValueError(f"Folder not found or not owned by user: folder_id={folder_id}")
+    return folder
+
+
+def update_my_note_folder(
+    db: Session,
+    mdl_user_id: int,
+    folder_id: int,
+    name: Optional[str] = None,
+    parent_folder_id: Optional[int] = None,
+    parent_folder_id_provided: bool = False
+) -> Optional[WebCoachMyNoteFolder]:
+    """
+    WebCoach: マイノートフォルダを更新（リネーム・移動）
+
+    Args:
+        parent_folder_id_provided: parent_folder_idをリクエストで明示的に指定したか
+            （Falseなら親フォルダは変更しない。Trueかつparent_folder_id=Noneでルート直下へ移動）
+
+    Raises:
+        ValueError: 移動先が自分自身または自分の子孫フォルダの場合、
+            または指定した親フォルダが本人所有でない場合
+    """
+    folder = get_my_note_folder(db, mdl_user_id, folder_id)
+    if not folder:
+        return None
+
+    if name is not None:
+        folder.name = name
+
+    if parent_folder_id_provided:
+        if parent_folder_id is not None:
+            if _is_same_or_descendant_folder(db, mdl_user_id, folder_id, parent_folder_id):
+                raise ValueError("フォルダを自分自身または子孫フォルダの下には移動できません")
+            _get_owned_my_note_folder_or_raise(db, mdl_user_id, parent_folder_id)
+        folder.parent_folder_id = parent_folder_id
+
+    db.flush()
+    return folder
+
+
+def delete_my_note_folder(
+    db: Session,
+    mdl_user_id: int,
+    folder_id: int
+) -> bool:
+    """
+    WebCoach: マイノートフォルダを削除
+    （子フォルダはDB制約でカスケード削除、直属のノートはfolder_id=NULLとしてルート直下へ移動）
+    """
+    folder = get_my_note_folder(db, mdl_user_id, folder_id)
+    if not folder:
+        return False
+
+    db.delete(folder)
+    db.flush()
+    return True
+
+
+def create_my_note(
+    db: Session,
+    mdl_user_id: int,
+    title: str,
+    contents: str = "",
+    folder_id: Optional[int] = None,
+    courseid: Optional[int] = None,
+    cmid: Optional[int] = None,
+    favorite: int = 0,
+    from_ai: int = 0,
+    from_coaching: int = 0
+) -> WebCoachMyNote:
+    """
+    WebCoach: マイノートを作成
+
+    Raises:
+        ValueError: folder_idが本人所有のフォルダでない場合
+    """
+    if folder_id is not None:
+        _get_owned_my_note_folder_or_raise(db, mdl_user_id, folder_id)
+
+    note = WebCoachMyNote(
+        mdl_user_id=mdl_user_id,
+        folder_id=folder_id,
+        courseid=courseid,
+        cmid=cmid,
+        favorite=favorite,
+        from_ai=from_ai,
+        from_coaching=from_coaching,
+        title=title,
+        contents=contents,
+    )
+    db.add(note)
+    db.flush()
+    return note
+
+
+def get_my_note(
+    db: Session,
+    mdl_user_id: int,
+    noteid: int
+) -> Optional[WebCoachMyNote]:
+    """
+    WebCoach: マイノートを取得（本人所有のもののみ）
+    """
+    return db.query(WebCoachMyNote).filter(
+        WebCoachMyNote.noteid == noteid,
+        WebCoachMyNote.mdl_user_id == mdl_user_id,
+    ).first()
+
+
+def list_my_notes(
+    db: Session,
+    mdl_user_id: int,
+    folder_id: Optional[int] = None,
+    folder_id_provided: bool = False,
+    cmid: Optional[int] = None
+) -> List[WebCoachMyNote]:
+    """
+    WebCoach: マイノート一覧を取得
+
+    Args:
+        folder_id_provided: folder_idで絞り込むか
+            （Falseなら全件、Trueかつfolder_id=Noneならルート直下のみ）
+        cmid: 指定するとその教材に紐づくノートのみ（教材画面からの逆引き）
+    """
+    query = db.query(WebCoachMyNote).filter(WebCoachMyNote.mdl_user_id == mdl_user_id)
+
+    if folder_id_provided:
+        query = query.filter(WebCoachMyNote.folder_id == folder_id)
+
+    if cmid is not None:
+        query = query.filter(WebCoachMyNote.cmid == cmid)
+
+    return query.order_by(desc(WebCoachMyNote.updated_at)).all()
+
+
+def update_my_note(
+    db: Session,
+    mdl_user_id: int,
+    noteid: int,
+    title: Optional[str] = None,
+    contents: Optional[str] = None,
+    folder_id: Optional[int] = None,
+    folder_id_provided: bool = False,
+    courseid: Optional[int] = None,
+    courseid_provided: bool = False,
+    cmid: Optional[int] = None,
+    cmid_provided: bool = False,
+    favorite: Optional[int] = None,
+    from_ai: Optional[int] = None,
+    from_coaching: Optional[int] = None
+) -> Optional[WebCoachMyNote]:
+    """
+    WebCoach: マイノートを更新
+    """
+    note = get_my_note(db, mdl_user_id, noteid)
+    if not note:
+        return None
+
+    if title is not None:
+        note.title = title
+
+    if contents is not None:
+        note.contents = contents
+
+    if folder_id_provided:
+        if folder_id is not None:
+            _get_owned_my_note_folder_or_raise(db, mdl_user_id, folder_id)
+        note.folder_id = folder_id
+
+    if courseid_provided:
+        note.courseid = courseid
+
+    if cmid_provided:
+        note.cmid = cmid
+
+    if favorite is not None:
+        note.favorite = favorite
+
+    if from_ai is not None:
+        note.from_ai = from_ai
+
+    if from_coaching is not None:
+        note.from_coaching = from_coaching
+
+    db.flush()
+    return note
+
+
+def delete_my_note(
+    db: Session,
+    mdl_user_id: int,
+    noteid: int
+) -> bool:
+    """
+    WebCoach: マイノートを削除
+    """
+    note = get_my_note(db, mdl_user_id, noteid)
+    if not note:
+        return False
+
+    db.delete(note)
+    db.flush()
+    return True
 
 
 def get_webcoach_user_profile(

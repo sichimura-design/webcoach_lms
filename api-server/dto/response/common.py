@@ -163,6 +163,36 @@ class CoachingRecordingResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class MyNoteFolderResponse(BaseModel):
+    """マイノートフォルダレスポンス"""
+    folder_id: int
+    mdl_user_id: int
+    name: str
+    parent_folder_id: Optional[int] = None
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class MyNoteResponse(BaseModel):
+    """マイノートレスポンス"""
+    noteid: int
+    mdl_user_id: int
+    folder_id: Optional[int] = None
+    courseid: Optional[int] = None
+    cmid: Optional[int] = None
+    favorite: int
+    from_ai: int
+    from_coaching: int
+    title: str
+    contents: str
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class LoginStreakResponse(BaseModel):
     """継続ログイン日数レスポンス"""
     userid: int
