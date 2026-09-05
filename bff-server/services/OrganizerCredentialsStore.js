@@ -25,8 +25,6 @@ const logger = require('../utils/logger');
 
 const LOCAL_CREDENTIALS_PATH = path.join(__dirname, '..', '.local-secrets', 'organizer-google-credentials.json');
 
-let cache = null;
-
 function readLocalFile() {
   try {
     return JSON.parse(fs.readFileSync(LOCAL_CREDENTIALS_PATH, 'utf8'));
@@ -43,20 +41,20 @@ function writeLocalFile(credentials) {
 class OrganizerCredentialsStore {
   /**
    * Load the current Organizer Google credentials, or null if never connected.
+   *
+   * Always reads through to Secrets Manager (no in-process cache) — this is a
+   * low-frequency, admin-only path, and caching previously left the status
+   * endpoint (and any horizontally-scaled instance) showing stale data after
+   * the secret changed underneath a running process.
    */
   async load() {
-    if (cache) {
-      return cache;
-    }
-
     if (config.organizerGoogleCredentialsSecretId) {
       try {
         const client = getSecretsManagerClient();
         const response = await client.send(new GetSecretValueCommand({
           SecretId: config.organizerGoogleCredentialsSecretId,
         }));
-        cache = JSON.parse(response.SecretString);
-        return cache;
+        return JSON.parse(response.SecretString);
       } catch (err) {
         if (err instanceof ResourceNotFoundException) {
           return null;
@@ -66,8 +64,7 @@ class OrganizerCredentialsStore {
       }
     }
 
-    cache = readLocalFile();
-    return cache;
+    return readLocalFile();
   }
 
   /**
@@ -75,8 +72,6 @@ class OrganizerCredentialsStore {
    * and again whenever the access token is refreshed).
    */
   async save(credentials) {
-    cache = credentials;
-
     if (config.organizerGoogleCredentialsSecretId) {
       const client = getSecretsManagerClient();
       await client.send(new PutSecretValueCommand({
@@ -92,11 +87,6 @@ class OrganizerCredentialsStore {
       'credentials were written to a local file only, not AWS Secrets Manager. ' +
       'Set the env var for dev/uat/prod use.'
     );
-  }
-
-  /** Invalidate the in-process cache (mainly for tests). */
-  clearCache() {
-    cache = null;
   }
 }
 
