@@ -951,7 +951,6 @@ export const lessonHandlers = [
     return HttpResponse.json({ text, updatedAt });
   }),
 
-  // マイノート（/webcoach/notes 系）は mocks/noteHandlers.ts に分離した。
-  // このファイルは既に36KBあり、ノートは器＋ブロックのCRUDで独立した関心事のため。
+  // マイノートは実API（/api/my-note/*）へ移行したため、モックは廃止した。
   // レッスン単位の下書き（lesson-notes）は教材本文と対なのでここに残す。
 ];

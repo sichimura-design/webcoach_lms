@@ -26,7 +26,6 @@ import type {
 import type { FocusBoothMember } from '../types/focusBooth';
 import { coachingHandlers } from './coachingHandlers';
 import { buildCourseStructure, courseLessonCount, isLessonDone, lessonHandlers, setLessonDone } from './lessonHandlers';
-import { noteHandlers } from './noteHandlers';
 import { learningPlanHandlers } from './learningPlanHandlers';
 import { aiSkillHandlers } from './aiSkillHandlers';
 import { currentStreakInfo, studyActivityHandlers } from './studyActivityHandlers';
@@ -779,7 +778,6 @@ export const handlers = [
   // 教材目次・構造化教材・教材準拠のAI回答・メモ/クリップ/保存回答。
   // 量が多いので lessonHandlers.ts に分離している。
   ...lessonHandlers,
-  ...noteHandlers,
 
   // ==================== AIコーチの専門モード ====================
   // 従来「AIアプリ」として別タブで開いていたものを、AIコーチの専門モードとして内包する。

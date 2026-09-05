@@ -8,8 +8,9 @@
  * その中に文章・クリップ・AI回答を自由に追加して、自分なりの学習ノートを
  * 育てていけるものにする」。器（Note）と中身（NoteBlock）に分けたのはそのため。
  *
- * 実BFFには存在せず、MSW（mocks/noteHandlers.ts）が localStorage を裏に置いて
- * 永続化している。実API化するときはハンドラを削除するだけで済むようにしてある。
+ * 実API `/api/my-note/*`（webcoach_my_note）に載っている。実APIは本文をMarkdownの
+ * 1列で持つため、この型との相互変換は services/bffClient.ts が
+ * utils/noteMarkdown.ts を通して行う。MSWのモックは廃止した。
  */
 
 /**

@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowUpDown, ChevronDown, Plus, Search } from 'lucide-react';
 import { AppFooter, AppHeader } from '../shared';
-import { MOCKS_ENABLED } from '../../mocks/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import { useDismissable } from '../../hooks/useDismissable';
@@ -53,13 +52,6 @@ import { countByFolder, filterLabel, folderNameOf } from './folderRows';
 
 /** 1ページの件数。3列 × 8行 */
 const PAGE_SIZE = 24;
-
-/**
- * デモデータの件数を差し替える開発用パネル（モック時のみ）。
- * ページ送りの操作性は件数を変えないと確かめられないため。
- * 本番ビルドでは MOCKS_ENABLED が false なので読み込まれない。
- */
-const NotesDevPanel = React.lazy(() => import('../dev/NotesDevPanel'));
 
 const SORTS: NoteSort[] = ['updated', 'updatedAsc', 'created', 'createdAsc', 'title'];
 
@@ -599,19 +591,6 @@ export function MyNotesPage() {
         </div>
       </div>
 
-      {MOCKS_ENABLED && (
-        <React.Suspense fallback={null}>
-          <NotesDevPanel
-            pageSize={PAGE_SIZE}
-            total={list.items.length}
-            onDone={async () => {
-              setPage(1);
-              select(null);
-              await Promise.all([list.reload(), folderApi.reload()]);
-            }}
-          />
-        </React.Suspense>
-      )}
     </div>
   );
 }
