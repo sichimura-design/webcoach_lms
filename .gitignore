@@ -139,3 +139,6 @@ poc/
 
 # Claude Design のキャンバス下書き
 *.dc.html
+
+# Local-only fallback credential store (no AWS Secrets Manager configured)
+bff-server/.local-secrets/

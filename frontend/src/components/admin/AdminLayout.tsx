@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { Bot, BrainCircuit, FolderOpen, ImageUp, KeyRound, PlusCircle, UserCircle2, Users, Link2, Video } from 'lucide-react';
+import { Bot, BrainCircuit, FolderOpen, ImageUp, KeyRound, PlusCircle, UserCircle2, Users, Link2, Video, Settings } from 'lucide-react';
 import { AppHeader } from '../shared/AppHeader';
 
 const sidebarItems = [
@@ -16,6 +16,7 @@ const sidebarItems = [
   { to: '/admin/ai-applications', label: 'AIアプリ登録', icon: Bot },
   { to: '/admin/avatars', label: 'アバター登録', icon: UserCircle2 },
   { to: '/admin/vector-data', label: 'Vectorデータ設定', icon: BrainCircuit },
+  { to: '/admin/settings', label: '連携設定', icon: Settings },
 ];
 
 export const AdminLayout: React.FC = () => {

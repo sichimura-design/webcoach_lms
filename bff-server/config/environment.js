@@ -43,11 +43,28 @@ const config = {
   zoomRedirectUri: process.env.ZOOM_REDIRECT_URI,
   zoomOAuthScopes: process.env.ZOOM_OAUTH_SCOPES || 'user:read',
 
-  // Google OAuth (individual coach connect flow)
+  // Google OAuth — Organizer-centric model: a single company-shared Google
+  // Workspace account authorizes once; the resulting refresh token is then
+  // used to call the Meet API for every coach's meetings. This is NOT a
+  // per-coach connect flow (see IntegrationService.buildOrganizerAuthorizeUrl).
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   googleRedirectUri: process.env.GOOGLE_REDIRECT_URI,
-  googleOAuthScopes: process.env.GOOGLE_OAUTH_SCOPES || 'https://www.googleapis.com/auth/userinfo.email',
+  googleOAuthScopes: process.env.GOOGLE_OAUTH_SCOPES ||
+    'https://www.googleapis.com/auth/userinfo.email ' +
+    'https://www.googleapis.com/auth/meetings.space.created ' +
+    'https://www.googleapis.com/auth/meetings.space.readonly',
+
+  // Organizer Google credentials storage (written after the OAuth callback, read before each Meet API call).
+  //   set   -> AWS Secrets Manager secret name/ARN (dev/uat/prod)
+  //   unset -> falls back to a local gitignored file, local development only
+  organizerGoogleCredentialsSecretId: process.env.ORGANIZER_GOOGLE_CREDENTIALS_SECRET_ID,
+
+  // Google OAuth Client ID/Secret storage. When set, these override
+  // GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET above at startup (see
+  // loadGoogleOAuthClientCredentials below) with values pulled from a
+  // Secrets Manager secret {"client_id": "...", "client_secret": "..."}.
+  googleOAuthClientSecretId: process.env.GOOGLE_OAUTH_CLIENT_SECRET_ID,
 
   // OAuth state signing (CSRF protection) and token encryption at rest
   integrationStateSecret: process.env.INTEGRATION_STATE_SECRET,
@@ -109,7 +126,33 @@ function validateEnvironment() {
   console.log('   NODE_ENV:', config.nodeEnv);
 }
 
+/**
+ * If GOOGLE_OAUTH_CLIENT_SECRET_ID is set, fetch {client_id, client_secret}
+ * from AWS Secrets Manager and use them in place of the plain
+ * GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET env vars. No-op otherwise.
+ * Must be awaited before the server starts accepting requests.
+ */
+async function loadGoogleOAuthClientCredentials() {
+  if (!config.googleOAuthClientSecretId) {
+    return;
+  }
+
+  const { getSecretsManagerClient } = require('./clients');
+  const { GetSecretValueCommand } = require('@aws-sdk/client-secrets-manager');
+
+  const client = getSecretsManagerClient();
+  const response = await client.send(new GetSecretValueCommand({
+    SecretId: config.googleOAuthClientSecretId,
+  }));
+  const credentials = JSON.parse(response.SecretString);
+
+  config.googleClientId = credentials.client_id;
+  config.googleClientSecret = credentials.client_secret;
+  console.log('✅ Loaded Google OAuth client credentials from Secrets Manager:', config.googleOAuthClientSecretId);
+}
+
 module.exports = {
   config,
-  validateEnvironment
+  validateEnvironment,
+  loadGoogleOAuthClientCredentials
 };
