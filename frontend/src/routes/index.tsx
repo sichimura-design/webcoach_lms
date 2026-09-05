@@ -24,6 +24,7 @@ import { AdminImageUploadPage } from '../components/admin/AdminImageUploadPage';
 import { AdminVectorPage } from '../components/admin/AdminVectorPage';
 import { AdminStudentsPage } from '../components/admin/AdminStudentsPage';
 import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage';
+import { AdminSettingsPage } from '../components/admin/AdminSettingsPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
 import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
 import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
@@ -367,6 +368,7 @@ function AppRoutes() {
         <Route path="avatars" element={<AdminCsvPage key="avatars" dataType="avatars" />} />
         <Route path="vector-data" element={<AdminVectorPage />} />
         <Route path="coach-mapping" element={<AdminCoachMappingPage />} />
+        <Route path="settings" element={<AdminSettingsPage />} />
       </Route>
 
       <Route
