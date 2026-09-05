@@ -1558,6 +1558,30 @@ class BFFClient {
   }
 
   /**
+   * Organizer（会社共有Googleアカウント）の連携状態取得（管理者のみ）
+   * GET /api/integrations/organizer/status
+   */
+  async getOrganizerIntegrationStatus(): Promise<{
+    provider: string;
+    connected: boolean;
+    providerAccountEmail?: string | null;
+    expiresAt?: string;
+    connectedAt?: string;
+  }> {
+    const response = await this.api.get('/integrations/organizer/status');
+    return response.data;
+  }
+
+  /**
+   * Organizer Google Meet連携の認可URL取得（管理者のみ）
+   * GET /api/integrations/organizer/{provider}/authorize
+   */
+  async getOrganizerIntegrationAuthorizeUrl(provider: 'google'): Promise<{ authorizeUrl: string }> {
+    const response = await this.api.get(`/integrations/organizer/${provider}/authorize`);
+    return response.data;
+  }
+
+  /**
    * コース画像取得（Base64）
    * GET /api/moodle/course-image?path={relativePath}
    * @param imageUrl - Moodleの画像URL（フルURLまたは相対パス）
