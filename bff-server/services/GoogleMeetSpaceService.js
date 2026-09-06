@@ -33,11 +33,19 @@ class GoogleMeetSpaceService {
       {
         config: {
           accessType: 'TRUSTED',
-          moderation: 'ON',
-          // Without this, transcription must be started manually by a host
-          // during the call — since the coach isn't a co-host (see the
-          // spaces.members.create failure below), nobody present would
-          // otherwise have the privilege to start it.
+          // Moderation OFF (not ON) is deliberate: with it ON, only a host/
+          // co-host can start transcription, and the coach can't be made a
+          // co-host (spaces.members.create needs Developer Preview Program
+          // access — see the try/catch below), while the Organizer who does
+          // hold host rights never actually joins the call. With moderation
+          // OFF, any participant — the coach — can start transcription
+          // themselves. Trade-off: the client gets the same controls too.
+          moderation: 'OFF',
+          // autoTranscriptionGeneration alone isn't enough on its own to start
+          // transcription without a host/co-host present (confirmed by an
+          // empty transcripts list on a real test call) — kept anyway in case
+          // it matters once co-host access is available, but for now someone
+          // still needs to click "Start transcript" during the call.
           artifactConfig: {
             transcriptionConfig: { autoTranscriptionGeneration: 'ON' },
           },
