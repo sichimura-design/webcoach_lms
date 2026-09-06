@@ -55,11 +55,15 @@ class GoogleMeetSpaceService {
         { headers: authHeader, timeout: 10000 }
       );
     } catch (err) {
-      // The Space itself was created successfully; failing to add a co-host
-      // shouldn't block booking creation — the coach can still join as a
-      // regular (non-host) participant, just without host controls.
-      logger.error(
-        `[GoogleMeetSpace] Failed to add coach ${coachUserId} as co-host on ${spaceName}:`,
+      // Known, expected failure as of 2026-09: spaces.members.create is part of
+      // Google's Workspace Developer Preview Program, which this project has not
+      // been accepted into (Google returns 404 "Method not found", not a data
+      // error). Not fatal — the Space itself was already created successfully,
+      // and transcript retrieval only needs the Organizer's own token, not a
+      // co-hosted coach. The coach still joins as a regular participant.
+      logger.warn(
+        `[GoogleMeetSpace] Could not add coach ${coachUserId} as co-host on ${spaceName} ` +
+        `(spaces.members.create likely requires Developer Preview Program access):`,
         err.response?.data || err.message
       );
     }
