@@ -34,6 +34,13 @@ class GoogleMeetSpaceService {
         config: {
           accessType: 'TRUSTED',
           moderation: 'ON',
+          // Without this, transcription must be started manually by a host
+          // during the call — since the coach isn't a co-host (see the
+          // spaces.members.create failure below), nobody present would
+          // otherwise have the privilege to start it.
+          artifactConfig: {
+            transcriptionConfig: { autoTranscriptionGeneration: 'ON' },
+          },
         },
       },
       { headers: authHeader, timeout: 10000 }
