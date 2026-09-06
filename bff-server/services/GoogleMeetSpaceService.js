@@ -44,10 +44,12 @@ class GoogleMeetSpaceService {
 
     try {
       const coachEmail = await this._getCoachEmail(coachUserId);
+      // `email` is the input field for who to add; `user` is an output-only
+      // resource identifier — setting both is rejected by the API.
       await axios.post(
         `${MEET_API_BETA_BASE}/${spaceName}/members`,
         {
-          user: { email: coachEmail },
+          email: coachEmail,
           role: 'COHOST',
         },
         { headers: authHeader, timeout: 10000 }
