@@ -1977,6 +1977,37 @@ def create_coaching_schedule(
     return schedule
 
 
+def get_pending_google_meet_schedules(
+    db: Session,
+    lookback_days: int = 30,
+) -> List[WebCoachCoachingSchedule]:
+    """
+    Google Meetで自動発行された予約のうち、まだ議事録(transcript)を
+    取得していないものを全ユーザー横断で取得します(定期同期処理向け)。
+
+    Args:
+        db: Database session
+        lookback_days: 何日前までの予約を対象にするか(古い予約を無限に
+            チェックし続けないための範囲制限)
+
+    Returns:
+        List[WebCoachCoachingSchedule]
+    """
+    since = date.today() - timedelta(days=lookback_days)
+
+    transcript_exists = db.query(WebCoachCoachingRecording.id).filter(
+        WebCoachCoachingRecording.coaching_schedule_id == WebCoachCoachingSchedule.id,
+        WebCoachCoachingRecording.recording_type == 'transcript',
+    ).exists()
+
+    return db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.meeting_provider == 'google_meet',
+        WebCoachCoachingSchedule.meet_space_name.isnot(None),
+        WebCoachCoachingSchedule.coaching_date >= since,
+        ~transcript_exists,
+    ).order_by(WebCoachCoachingSchedule.coaching_date).all()
+
+
 def get_coaching_schedules(
     db: Session,
     mdl_user_id: int,

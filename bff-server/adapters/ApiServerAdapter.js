@@ -886,6 +886,49 @@ class ApiServerAdapter {
   }
 
   /**
+   * Generate (and save as ai_suggested) an AI coaching note from transcript entries
+   */
+  async generateCoachingNote(coachingScheduleId, transcriptEntries) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/coaching/notes/${coachingScheduleId}/generate`,
+      { transcript_entries: transcriptEntries },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 30000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Coaching schedules using Google Meet with no transcript recorded yet
+   * (internal — used by TranscriptSyncService's periodic poll)
+   */
+  async getPendingGoogleMeetSchedules() {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/coaching/schedule/pending-google-meet-sync`,
+      { timeout: 10000 }
+    );
+    return response.data;
+  }
+
+  /**
+   * Save (upsert) recording/transcript metadata for a coaching schedule.
+   * The actual file must already be uploaded to S3 before calling this.
+   */
+  async upsertCoachingRecording(coachingScheduleId, recordingType, data) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/coaching/recordings/${coachingScheduleId}/${recordingType}`,
+      data,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Create coach-student mapping
    */
   async createCoachStudentMapping(coachUserId, studentUserId) {

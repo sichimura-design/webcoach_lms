@@ -31,6 +31,15 @@ const config = {
   s3BucketName: process.env.S3_BUCKET_NAME || '',
   cloudFrontDomain: process.env.CLOUDFRONT_DOMAIN || '',
 
+  // Coaching recordings (video/audio/transcript files; metadata in
+  // webcoach_coaching_recording, actual files here)
+  recordingsBucketName: process.env.RECORDINGS_BUCKET_NAME || '',
+
+  // Periodic Google Meet transcript sync (see TranscriptSyncService). Disabled
+  // by default so local dev / tests don't need Organizer credentials configured.
+  transcriptSyncEnabled: process.env.TRANSCRIPT_SYNC_ENABLED === 'true',
+  transcriptSyncIntervalMinutes: parseInt(process.env.TRANSCRIPT_SYNC_INTERVAL_MINUTES || '15', 10),
+
   // Content Token
   contentTokenSecret: process.env.CONTENT_TOKEN_SECRET,
 

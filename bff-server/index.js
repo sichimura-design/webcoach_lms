@@ -18,6 +18,7 @@ const logger = require('./utils/logger');
 
 // Services
 const authService = require('./services/AuthService');
+const transcriptSyncService = require('./services/TranscriptSyncService');
 
 // Middleware
 const { cookieLogging, auditLogging, rawBodyLogging } = require('./middleware/logging');
@@ -230,6 +231,17 @@ if (require.main === module) {
     .then(() => {
       // Start token refresh
       authService.startTokenRefresh();
+
+      // Start periodic Google Meet transcript sync (see TranscriptSyncService)
+      if (config.transcriptSyncEnabled) {
+        const intervalMs = config.transcriptSyncIntervalMinutes * 60 * 1000;
+        setInterval(() => {
+          transcriptSyncService.syncPendingTranscripts().catch(err => {
+            logger.error('[TranscriptSync] Periodic sync failed:', err.message);
+          });
+        }, intervalMs);
+        logger.log(`Transcript sync: enabled (every ${config.transcriptSyncIntervalMinutes} min)`);
+      }
 
       // Start HTTP server
       app.listen(PORT, () => {

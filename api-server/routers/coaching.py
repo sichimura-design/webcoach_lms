@@ -21,6 +21,7 @@ from crud import (
     get_coaching_schedules,
     update_coaching_schedule,
     delete_coaching_schedule,
+    get_pending_google_meet_schedules,
 )
 
 logger = logging.getLogger(__name__)
@@ -319,6 +320,32 @@ def get_coaching_schedule_list(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to get coaching schedules"
+        )
+
+
+@router.get(
+    "/schedule/pending-google-meet-sync",
+    response_model=List[CoachingScheduleResponse],
+    summary="議事録未取得のGoogle Meet予約一覧を取得(全ユーザー横断、定期同期処理向け)"
+)
+def get_pending_google_meet_sync_endpoint(
+    db: Session = Depends(get_db)
+):
+    """
+    meeting_provider=google_meetの予約のうち、まだwebcoach_coaching_recording
+    にtranscriptレコードが無いものを取得します。bff-server側の定期同期処理
+    (TranscriptSyncService)専用の内部エンドポイントです。
+
+    Returns:
+        未同期のコーチングスケジュール一覧
+    """
+    try:
+        return get_pending_google_meet_schedules(db)
+    except Exception as e:
+        logger.error(f"Failed to get pending Google Meet schedules: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get pending Google Meet schedules"
         )
 
 
