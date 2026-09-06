@@ -296,6 +296,37 @@ def restore_mapping(
 # ==========================================
 
 @router.get(
+    "/schedule/pending-google-meet-sync",
+    response_model=List[CoachingScheduleResponse],
+    summary="議事録未取得のGoogle Meet予約一覧を取得(全ユーザー横断、定期同期処理向け)"
+)
+def get_pending_google_meet_sync_endpoint(
+    db: Session = Depends(get_db)
+):
+    """
+    meeting_provider=google_meetの予約のうち、まだwebcoach_coaching_recording
+    にtranscriptレコードが無いものを取得します。bff-server側の定期同期処理
+    (TranscriptSyncService)専用の内部エンドポイントです。
+
+    NOTE: この定義は /schedule/{userid} より前に置くこと。FastAPIは型注釈
+    (userid: int)をルーティング時ではなくマッチ後の値変換時にしか見ないため、
+    後ろに置くと "pending-google-meet-sync" が {userid} にマッチして
+    int変換失敗の422になってしまう(実機で発生済み)。
+
+    Returns:
+        未同期のコーチングスケジュール一覧
+    """
+    try:
+        return get_pending_google_meet_schedules(db)
+    except Exception as e:
+        logger.error(f"Failed to get pending Google Meet schedules: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get pending Google Meet schedules"
+        )
+
+
+@router.get(
     "/schedule/{userid}",
     response_model=List[CoachingScheduleResponse],
     summary="コーチングスケジュール一覧取得"
@@ -320,32 +351,6 @@ def get_coaching_schedule_list(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to get coaching schedules"
-        )
-
-
-@router.get(
-    "/schedule/pending-google-meet-sync",
-    response_model=List[CoachingScheduleResponse],
-    summary="議事録未取得のGoogle Meet予約一覧を取得(全ユーザー横断、定期同期処理向け)"
-)
-def get_pending_google_meet_sync_endpoint(
-    db: Session = Depends(get_db)
-):
-    """
-    meeting_provider=google_meetの予約のうち、まだwebcoach_coaching_recording
-    にtranscriptレコードが無いものを取得します。bff-server側の定期同期処理
-    (TranscriptSyncService)専用の内部エンドポイントです。
-
-    Returns:
-        未同期のコーチングスケジュール一覧
-    """
-    try:
-        return get_pending_google_meet_schedules(db)
-    except Exception as e:
-        logger.error(f"Failed to get pending Google Meet schedules: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to get pending Google Meet schedules"
         )
 
 
