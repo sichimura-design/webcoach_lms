@@ -65,7 +65,11 @@ class TranscriptSyncService {
       timeout: 10000,
     });
     const transcript = (transcriptsRes.data.transcripts || [])[0];
-    if (!transcript || transcript.state !== 'ENDED') {
+    // Transcript.state lifecycle: STARTED -> ENDED -> FILE_GENERATED. Only
+    // FILE_GENERATED means the file is actually ready to read (confirmed via
+    // a real test call — the same transcript that returned entries while
+    // still ENDED had moved to FILE_GENERATED minutes later).
+    if (!transcript || transcript.state !== 'FILE_GENERATED') {
       return; // Google hasn't finished generating the transcript yet — retry next poll
     }
 
