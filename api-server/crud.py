@@ -1933,6 +1933,8 @@ def create_coaching_schedule(
     coach_user_id: int,
     coaching_date,
     meeting_url: str,
+    meeting_provider: Optional[str] = None,
+    meet_space_name: Optional[str] = None,
     coaching_summary: Optional[str] = None,
     todo: Optional[str] = None,
 ) -> WebCoachCoachingSchedule:
@@ -1945,6 +1947,8 @@ def create_coaching_schedule(
         coach_user_id: コーチのMoodleユーザーID
         coaching_date: 実施日
         meeting_url: ミーティングURL
+        meeting_provider: ミーティングURLの発行元 (google_meet=システム自動発行, None=手動入力)
+        meet_space_name: Google Meet APIのSpaceリソース名
         coaching_summary: コーチング内容の要約
         todo: 次回までのTODO
 
@@ -1963,6 +1967,8 @@ def create_coaching_schedule(
         coaching_no=next_no,
         coaching_date=coaching_date,
         meeting_url=meeting_url,
+        meeting_provider=meeting_provider,
+        meet_space_name=meet_space_name,
         coaching_summary=coaching_summary,
         todo=todo,
     )

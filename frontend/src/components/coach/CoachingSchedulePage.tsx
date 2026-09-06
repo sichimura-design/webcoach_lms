@@ -40,6 +40,7 @@ interface ScheduleFormState {
   coaching_date: string;
   status: CoachingScheduleStatus | '';
   meeting_url: string;
+  meeting_provider: 'google_meet' | '';
   coaching_summary: string;
   todo: string;
 }
@@ -47,6 +48,7 @@ interface ScheduleFormState {
 const emptyForm: ScheduleFormState = {
   coaching_date: new Date().toISOString().slice(0, 10),
   status: '',
+  meeting_provider: '',
   meeting_url: '',
   coaching_summary: '',
   todo: '',
@@ -145,7 +147,8 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       await bffClient.createCoachingSchedule(studentId, {
         coach_user_id: user.userid,
         coaching_date: addForm.coaching_date,
-        meeting_url: addForm.meeting_url,
+        meeting_url: addForm.meeting_provider === 'google_meet' ? '' : addForm.meeting_url,
+        meeting_provider: addForm.meeting_provider || null,
         coaching_summary: addForm.coaching_summary || null,
         todo: addForm.todo || null,
       });
@@ -165,6 +168,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       coaching_date: schedule.coaching_date,
       status: schedule.status || '',
       meeting_url: schedule.meeting_url,
+      meeting_provider: schedule.meeting_provider || '',
       coaching_summary: schedule.coaching_summary || '',
       todo: schedule.todo || '',
     });
@@ -287,7 +291,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
 
         {showAddForm && (
           <div style={{ ...t.card, padding: 20 }}>
-            <ScheduleForm form={addForm} onChange={setAddForm} />
+            <ScheduleForm form={addForm} onChange={setAddForm} allowProviderChange />
             <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
               <button type="button" style={smallPrimaryButton} onClick={handleCreate} disabled={saving}>
                 {saving ? '保存中...' : '記録する'}
@@ -455,10 +459,13 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
 function ScheduleForm({
   form,
   onChange,
+  allowProviderChange = false,
 }: {
   form: ScheduleFormState;
   onChange: (form: ScheduleFormState) => void;
+  allowProviderChange?: boolean;
 }) {
+  const isGoogleMeet = form.meeting_provider === 'google_meet';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
@@ -473,13 +480,29 @@ function ScheduleForm({
         </div>
         <div style={{ flex: 2, minWidth: 220 }}>
           <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>ミーティングURL</label>
-          <input
-            type="url"
-            value={form.meeting_url}
-            onChange={e => onChange({ ...form, meeting_url: e.target.value })}
-            placeholder="https://..."
-            style={inputStyle}
-          />
+          {allowProviderChange && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, fontSize: 12, color: color.textSubtle }}>
+              <input
+                type="checkbox"
+                checked={isGoogleMeet}
+                onChange={e => onChange({ ...form, meeting_provider: e.target.checked ? 'google_meet' : '', meeting_url: '' })}
+              />
+              Google Meetを自動発行する
+            </label>
+          )}
+          {isGoogleMeet ? (
+            <div style={{ ...inputStyle, color: color.textSubtle, display: 'flex', alignItems: 'center' }}>
+              作成時に自動的にGoogle MeetのURLを発行します
+            </div>
+          ) : (
+            <input
+              type="url"
+              value={form.meeting_url}
+              onChange={e => onChange({ ...form, meeting_url: e.target.value })}
+              placeholder="https://..."
+              style={inputStyle}
+            />
+          )}
         </div>
         <div style={{ flex: 1, minWidth: 140 }}>
           <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>実施結果</label>

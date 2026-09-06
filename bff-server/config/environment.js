@@ -53,7 +53,10 @@ const config = {
   googleOAuthScopes: process.env.GOOGLE_OAUTH_SCOPES ||
     'https://www.googleapis.com/auth/userinfo.email ' +
     'https://www.googleapis.com/auth/meetings.space.created ' +
-    'https://www.googleapis.com/auth/meetings.space.readonly',
+    'https://www.googleapis.com/auth/meetings.space.readonly ' +
+    // Needed to add the coach as a co-host on a created Space
+    // (spaces.members.create) — see GoogleMeetSpaceService.
+    'https://www.googleapis.com/auth/meetings.space.settings',
 
   // Organizer Google credentials storage (written after the OAuth callback, read before each Meet API call).
   //   set   -> AWS Secrets Manager secret name/ARN (dev/uat/prod)

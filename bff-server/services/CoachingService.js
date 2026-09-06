@@ -4,6 +4,7 @@
  */
 
 const apiServerAdapter = require('../adapters/ApiServerAdapter');
+const googleMeetSpaceService = require('./GoogleMeetSpaceService');
 const { isFlagTrue } = require('../utils/flagValidation');
 
 class CoachingService {
@@ -40,11 +41,23 @@ class CoachingService {
   }
 
   /**
-   * Create coaching schedule
+   * Create coaching schedule.
+   *
+   * When data.meeting_provider === 'google_meet', a fresh Meet Space is created
+   * for this specific booking (1 schedule = 1 Space) and its URL/resource name
+   * override whatever meeting_url the caller sent. Any other value (or none)
+   * keeps the existing manual-URL flow (Zoom, etc.) unchanged.
    */
   async createCoachingSchedule(userid, data) {
     console.log(`[Coaching] Creating coaching schedule for user ${userid}`);
-    return await apiServerAdapter.createCoachingSchedule(userid, data);
+
+    let payload = data;
+    if (data.meeting_provider === 'google_meet') {
+      const { meetingUri, spaceName } = await googleMeetSpaceService.createSpaceForSchedule(data.coach_user_id);
+      payload = { ...data, meeting_url: meetingUri, meet_space_name: spaceName };
+    }
+
+    return await apiServerAdapter.createCoachingSchedule(userid, payload);
   }
 
   /**

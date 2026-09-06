@@ -294,6 +294,46 @@ class IntegrationService {
   }
 
   /**
+   * Return a valid (non-expired) Organizer access token, refreshing it via the
+   * stored refresh_token first if needed. Used by GoogleMeetSpaceService before
+   * every Meet API call — the Organizer never re-authenticates interactively.
+   */
+  async getValidOrganizerAccessToken(provider) {
+    const credentials = await organizerCredentialsStore.load();
+    if (!credentials || credentials.provider !== provider) {
+      throw new Error(`Organizer ${provider} account is not connected`);
+    }
+
+    const expiresAt = new Date(credentials.expires_at).getTime();
+    const EXPIRY_BUFFER_MS = 60 * 1000;
+    if (expiresAt - Date.now() > EXPIRY_BUFFER_MS) {
+      return credentials.access_token;
+    }
+
+    logger.log(`[Integration] Refreshing expired Organizer ${provider} access token`);
+    const providerConfig = this._getProviderConfig(provider);
+    const params = new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: credentials.refresh_token,
+      client_id: providerConfig.clientId(),
+      client_secret: providerConfig.clientSecret(),
+    });
+
+    const response = await axios.post(providerConfig.tokenUrl, params.toString(), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      timeout: 10000,
+    });
+
+    const updated = {
+      ...credentials,
+      access_token: response.data.access_token,
+      expires_at: new Date(Date.now() + (response.data.expires_in || 3600) * 1000).toISOString(),
+    };
+    await organizerCredentialsStore.save(updated);
+    return updated.access_token;
+  }
+
+  /**
    * Get the Organizer's connection status (no tokens included).
    */
   async getOrganizerStatus(provider) {

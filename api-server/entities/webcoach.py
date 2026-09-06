@@ -244,6 +244,8 @@ class WebCoachCoachingSchedule(Base):
     coaching_date = Column(Date, nullable=False, comment='実施日')
     status = Column(String(32), nullable=True, comment='コーチング実施結果 (completed=終了, interrupted=中断, rescheduled=リスケ)')
     meeting_url = Column(String(1024), nullable=False)
+    meeting_provider = Column(String(32), nullable=True, comment='ミーティングURLの発行元 (google_meet=システム自動発行, NULL=手動入力)')
+    meet_space_name = Column(String(255), nullable=True, comment='Google Meet APIのSpaceリソース名 (例: spaces/aBcD1234)。議事録取得時にConference Recordを検索するための内部ID')
     coaching_summary = Column(Text, nullable=True, comment='コーチング内容の要約')
     todo = Column(Text, nullable=True, comment='次回までのTODO')
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())

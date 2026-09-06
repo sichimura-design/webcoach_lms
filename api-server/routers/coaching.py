@@ -350,6 +350,8 @@ def create_coaching_schedule_endpoint(
             coach_user_id=data.coach_user_id,
             coaching_date=data.coaching_date,
             meeting_url=data.meeting_url,
+            meeting_provider=data.meeting_provider,
+            meet_space_name=data.meet_space_name,
             coaching_summary=data.coaching_summary,
             todo=data.todo,
         )

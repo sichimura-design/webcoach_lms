@@ -79,6 +79,8 @@ class CoachingScheduleResponse(BaseModel):
     coaching_date: date
     status: Optional[str] = None
     meeting_url: str
+    meeting_provider: Optional[str] = None
+    meet_space_name: Optional[str] = None
     coaching_summary: Optional[str] = None
     todo: Optional[str] = None
     created_at: datetime

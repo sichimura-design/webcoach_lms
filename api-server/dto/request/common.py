@@ -71,6 +71,8 @@ class CoachingScheduleCreate(BaseModel):
     coach_user_id: int = Field(..., description="コーチのMoodleユーザーID")
     coaching_date: date = Field(..., description="実施日")
     meeting_url: str = Field(..., max_length=1024, description="ミーティングURL")
+    meeting_provider: Optional[str] = Field(None, max_length=32, description="ミーティングURLの発行元 (google_meet=システム自動発行, 未指定=手動入力)")
+    meet_space_name: Optional[str] = Field(None, max_length=255, description="Google Meet APIのSpaceリソース名")
     coaching_summary: Optional[str] = Field(None, description="コーチング内容の要約")
     todo: Optional[str] = Field(None, description="次回までのTODO")
 
