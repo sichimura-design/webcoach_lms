@@ -2,7 +2,7 @@
  * 次回コーチングカード（マイページ用）。
  *
  * 表現する状態（仕様§19）:
- *   会議リンク未登録 / 登録済み / コーチ未連携 / 記録中 / AI生成中 / AIノート完成
+ *   会議リンク未登録 / 登録済み / コーチ未連携 / 記録中 / AI生成中 / コーチング記録の完成
  *
  * ボタン名を「録音を開始」にしないのは意図的。
  * 実際に録音するのは受講生の端末ではなく、コーチの認証済み権限を使った会議側の記録機能なので、
@@ -144,7 +144,7 @@ export function NextCoachingCard({
               }}
             />
             <div>
-              <p style={{ ...font.rowTitle, color: color.primary, margin: 0 }}>AIコーチングノート記録中</p>
+              <p style={{ ...font.rowTitle, color: color.primary, margin: 0 }}>コーチングを記録中</p>
               <p style={{ ...font.caption, color: color.textBody, margin: '4px 0 0', lineHeight: 1.8 }}>
                 コーチング終了後、内容を自動で整理します。
               </p>
@@ -177,7 +177,7 @@ export function NextCoachingCard({
             <Sparkles className="w-4 h-4" style={{ color: '#2F7F5B', flexShrink: 0, marginTop: 2 }} />
             <div>
               <p style={{ ...font.rowTitle, color: '#246145', margin: 0 }}>
-                AIコーチングノートが完成しました
+                コーチング記録ができました
               </p>
               <p style={{ ...font.caption, color: '#3E7A5F', margin: '4px 0 0', lineHeight: 1.8 }}>
                 今回話した内容と、次回までに進めることを確認してください。
@@ -185,7 +185,7 @@ export function NextCoachingCard({
             </div>
           </div>
           <button type="button" onClick={open} style={{ ...DC_SECONDARY_BUTTON, marginTop: 14 }}>
-            ノートを確認する
+            記録を確認する
           </button>
         </section>
       );
@@ -243,10 +243,10 @@ export function NextCoachingCard({
           <Loader2 className="w-4 h-4 animate-spin" style={{ color: color.primary, flexShrink: 0, marginTop: 2 }} />
           <div>
             <p style={{ ...font.rowTitle, color: color.text, margin: 0 }}>
-              AIコーチングノートを作成しています
+              記録から要約を作成しています
             </p>
             <p style={{ ...font.caption, color: color.textMuted, margin: '4px 0 0', lineHeight: 1.8 }}>
-              コーチング内容から、要約・決定事項・次回までのタスクを整理しています。
+              コーチング内容から、要約・決定事項・次回までの目標を整理しています。
             </p>
           </div>
         </div>
@@ -325,7 +325,7 @@ export function NextCoachingCard({
         style={{ ...DC_SECONDARY_BUTTON, marginTop: 16, opacity: starting ? 0.6 : 1 }}
       >
         <Sparkles className="w-4 h-4" />
-        {starting ? '準備しています…' : 'AIノートを開始して参加'}
+        {starting ? '準備しています…' : 'コーチングに参加する'}
       </button>
 
       <button

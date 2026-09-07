@@ -251,23 +251,124 @@ h1, h2, h3 {
   }
 }
 
-/* ─── トップページ 8a ───────────────────────
-   上段は「続きから学習」と「次回コーチングまでのタスク」の2枚。
-   デザインは 1fr / 1.15fr。タスク側のほうが行数で伸びるので余りを右に渡す。
+/* ─── トップページ 8a 上段（4枠・2行）───────────────
+   1行目: 挨拶（地色に直置き）｜あなたの目標
+   2行目: 続きから学習          ｜次回コーチングまでの目標
+   DOM 順（MyPage.tsx）に自動配置させているだけで、行の指定は持たない。
+
+   🔴 1.15fr / 1fr。元は逆（左が狭い）だったが、主 CTA「続きから学習する」と
+      レッスン名を載せている左を広く取る。右のタスクは1行が短く、
+      3件（MAX_ROWS）しか出さないので狭くても折り返さない。
+   🔴 目標カードを1行目の右に入れているのは、挨拶の右が丸ごと空いていたから。
+      2列を共有するので目標カードの端が下のタスクカードと揃う。
+      全幅の帯（旧レイアウト）に戻さないこと。1段ぶん縦が伸びる。
    align-items:stretch で2枚の丈を揃える（カード側が height:100% を持つ）。 */
 .mypage-8a-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: var(--dc-sp-gap);
   align-items: stretch;
   margin-bottom: var(--dc-sp-gap);
 }
 
+/* 目標カードの入れ物。1カラムに落ちたときの並べ替えのためだけにある */
+.mypage-8a-goal {
+  min-width: 0;
+}
+
 /* 🔴 しきい値は .mypage-3d-grid（1023px）と揃える。同じ画面の上下で
-   折り返す幅が違うと、中間の幅で片方だけ1カラムになって崩れて見える。 */
+   折り返す幅が違うと、中間の幅で片方だけ1カラムになって崩れて見える。
+   🔴 1カラムでは目標カードだけ order で最後へ送る（挨拶→続きから→タスク→目標）。
+      文章のカードを主 CTA より先に置くと、「続きから学習する」が
+      折り返しで画面外に落ちるため。order を外さないこと。 */
 @media (max-width: 1023px) {
   .mypage-8a-grid {
     grid-template-columns: 1fr;
+  }
+
+  .mypage-8a-goal {
+    order: 1;
+  }
+}
+
+/* ─── 「次回コーチングまでの目標」の一覧（CoachingTaskCard）─────────
+   🔴 件数でカードの丈を変えない。中身を position:absolute で浮かせて
+      高さに効かないようにし、溢れたぶんはこの中でスクロールさせる。
+      外枠の min-height（LIST_MIN_H）が最低の丈で、左の「続きから学習」が
+      それより高いときは stretch のぶんだけ伸びて、そのぶん多く見える。 */
+.mypage-task-listbox {
+  position: relative;
+  flex: 1;
+  /* 中身は浮いていて高さを持たないので、これがカードの最低の丈になる。
+     3行ぶん＝これまで出していた件数の丈で、隣が高いときは stretch でもっと見える */
+  min-height: 210px;
+}
+
+.mypage-task-list {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* 右はスクロールバーの逃げ。上下はフォーカスリングが切れないための余白 */
+  padding: 3px 8px 3px 0;
+  scrollbar-width: thin;
+}
+
+/* 並べ替えの ↑↓。行に触れるまで出さない（3件のときは並べ替える必要がない）。
+   opacity で出し入れするのは、display だとキーボードで届かないため */
+.mypage-task-move {
+  opacity: 0;
+  transition: opacity .12s ease;
+}
+
+.mypage-task-row:hover .mypage-task-move,
+.mypage-task-row:focus-within .mypage-task-move {
+  opacity: 1;
+}
+
+/* hover が無い端末（タッチ）では出しっぱなし。触れる手段がなくなるため */
+@media (hover: none) {
+  .mypage-task-move {
+    opacity: 1;
+  }
+}
+
+.mypage-task-move-btn {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #C9BFB2;
+  cursor: pointer;
+}
+
+.mypage-task-move-btn:hover:not(:disabled) {
+  background: #F1EBE3;
+  color: var(--dc-text-muted);
+}
+
+.mypage-task-move-btn:disabled {
+  opacity: .3;
+  cursor: default;
+}
+
+/* 1カラムに落ちたら中スクロールをやめて全件そのまま並べる。丈を合わせる相手が
+   隣にいないので縮める理由が無く、狭い画面で入れ子のスクロールを作ると
+   ページのスクロールと取り合いになる。しきい値は .mypage-8a-grid と揃える */
+@media (max-width: 1023px) {
+  .mypage-task-listbox {
+    min-height: 0;
+  }
+
+  .mypage-task-list {
+    position: static;
+    overflow: visible;
   }
 }
 
@@ -412,6 +513,12 @@ h1, h2, h3 {
 @media (max-width: 1175px) {
   body.sidebar-expanded .mypage-8a-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* 1カラム版と同じ並べ替え（目標を最後に）。上の 1023px ブロックでは
+     まだ2列なので、こちらにも書かないと目標が挨拶の右に残ってしまう */
+  body.sidebar-expanded .mypage-8a-goal {
+    order: 1;
   }
 }
 
@@ -684,13 +791,13 @@ body.learning-immersive {
   }
 }
 
-/* 右下の常設ピル（AIに聞く／メモする） */
+/* 右下の常設ピル（AIに聞く／マイノートに残す） */
 .wc-lesson-fab {
   right: 24px;
   bottom: 24px;
 }
 
-/* AI／メモのパネル。狭い画面は右からのドロワー、SPはボトムシート。
+/* AI／マイノートのパネル。狭い画面は右からのドロワー、SPはボトムシート。
    JSの幅判定をやめてここで分けている（1024pxちょうどで跳ねる問題も消える）。 */
 .wc-lesson-support {
   position: fixed;
@@ -895,7 +1002,7 @@ body.learning-immersive {
   to   { transform: translateX(0); opacity: 1; }
 }
 
-/* 下から出るシート（SPのAI/メモパネル）。右からのスライドと使い分ける */
+/* 下から出るシート（SPのAI/マイノートパネル）。右からのスライドと使い分ける */
 @keyframes wcSlideInUp {
   from { transform: translateY(14px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
@@ -1343,7 +1450,7 @@ body.learning-immersive {
   font-weight: 700;
 }
 
-/* 種類チップ（自分のメモ／教材／AIコーチ／コーチング） */
+/* 種類チップ（自分のノート／教材／AIコーチ／コーチング） */
 .notes-chip {
   display: inline-flex;
   align-items: center;
@@ -1724,7 +1831,7 @@ body.learning-immersive {
    「押せば戻せる」ことが伝わっていなかった。行にホバー／フォーカスしたときだけ
    「未完了に戻す」に入れ替えて、未完了側の「完了にする」ピルと対にする。
 
-   ピルの中は2つの文言を同じグリッドセルに重ねてあるので（NextActionsCard.tsx）、
+   ピルの中は2つの文言を同じグリッドセルに重ねてあるので（NextGoalsCard.tsx）、
    入れ替えても幅は広い方のまま変わらない。ホバーの起点はピルではなく行:
    行のどこにマウスが乗ってもクリックでトグルされるため、ピルの上だけ反応させると
    「ピルを狙って押すもの」と誤解させる。 */
@@ -1963,7 +2070,7 @@ body.learning-immersive {
   animation: fadeInUp 180ms var(--dc-ease);
 }
 
-/* 回答下のアクション（コピー／保存／メモに追加）。
+/* 回答下のアクション（コピー／マイノートに残す／下書きに追加）。
    毎回3つ並ぶと本文が読みにくいので、ホバーとフォーカスのときだけ出す。
    🔴 display / visibility ではなく opacity で消すこと。ボタンをフォーカス可能なまま
       残さないと、キーボードだけの人が保存に辿り着けなくなる。

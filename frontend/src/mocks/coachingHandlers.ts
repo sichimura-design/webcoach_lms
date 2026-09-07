@@ -1,11 +1,11 @@
 /**
- * AIコーチングノート用の MSW ハンドラ。
+ * コーチング記録用の MSW ハンドラ。
  * ============================================================
  * 実BFFにはこの機能のAPIが一切存在しないため、全項目をここでモックする。
  * handlers.ts が肥大化するので別ファイルに切り出し、`coachingHandlers` を spread して合流させる。
  *
  * 再現している体験:
- *   コーチから届いたリンクを貼る → LMSからコーチングに参加する → 終了後にノートとタスクが完成している
+ *   コーチから届いたリンクを貼る → LMSからコーチングに参加する → 終了後にコーチング記録と目標が揃っている
  *
  * 主な状態:
  *   会議リンク未登録 → 登録済み → 記録中 → AI生成中 → 確認待ち → 確定済み
@@ -249,7 +249,7 @@ function buildSummary(segments: TranscriptSegment[], sessionId: number): Coachin
     nextSessionAgenda: ['ポートフォリオを作るサービスの決定'],
     referencedContext: [
       '今回の文字起こし',
-      '前回のコーチングノート（第3回）',
+      '前回のコーチング記録（第3回）',
       '前回設定した目標 3件',
       '受講中の教材「Webデザイン基礎」の進捗',
       '提出済み課題 2件',
@@ -338,7 +338,7 @@ function seedAll(): void {
 
   const s2 = seedSession(1002, recent.date, '第3回コーチング', {
     status: 'published',
-    step: '目標とタスクを確定しました',
+    step: '目標を確定しました',
     progress: 100,
     studentMemo: '余白の取り方は次のバナーで意識する。',
     reflectedGoalIds: ['goal_1002_1', 'task_1002_1', 'task_1002_2'],
@@ -346,7 +346,7 @@ function seedAll(): void {
   });
   const s1 = seedSession(1001, older.date, '第2回コーチング', {
     status: 'published',
-    step: '目標とタスクを確定しました',
+    step: '目標を確定しました',
     progress: 100,
     source: 'pasted_text',
     importedFrom: 'manual',
@@ -444,7 +444,7 @@ function advance(session: CoachingSessionDetail): CoachingSessionDetail {
 
   delete generationStartedAt[session.id];
   session.status = 'review_required';
-  session.step = 'AIコーチングノートが完成しました';
+  session.step = 'コーチング記録ができました';
   session.progress = 100;
   if (!session.summary) session.summary = buildSummary(session.segments, session.id);
   syncNextCoachingActive(session);
@@ -592,7 +592,7 @@ function buildReadiness(): AutoImportReadiness {
   if (!connection || connection.status === 'not_connected' || connection.status === 'revoked' || connection.status === 'expired') {
     issues.push({
       code: 'coach_not_connected',
-      message: `${nextCoaching.coach}のAIコーチングノート設定が完了していません。コーチングには参加できますが、録音・文字起こしが利用できない可能性があります。`,
+      message: `${nextCoaching.coach}のコーチング記録の連携設定が完了していません。コーチングには参加できますが、録音・文字起こしが利用できない可能性があります。`,
     });
   } else if (connection.status === 'plan_unsupported') {
     issues.push({
@@ -898,7 +898,7 @@ export const coachingHandlers = [
     return HttpResponse.json(consent);
   }),
 
-  // --- AIノートを開始して参加する ---
+  // --- コーチングに参加する ---
   http.post('*/api/webcoach/coaching-sessions/:userid/start', () => {
     if (!nextCoaching.meetingLink) {
       return HttpResponse.json({ error: '会議リンクが登録されていません' }, { status: 409 });
@@ -924,7 +924,7 @@ export const coachingHandlers = [
       source: readiness.ready ? 'auto_recording' : null,
       importedFrom: readiness.ready ? 'auto' : null,
       status: 'recording',
-      step: 'AIコーチングノート記録中',
+      step: 'コーチングを記録中',
       progress: 0,
       hasAudio: readiness.ready,
     };
@@ -1003,7 +1003,7 @@ export const coachingHandlers = [
       session.status = 'failed';
       session.step = '';
       session.progress = 0;
-      session.error = '内容が読み取れませんでした。もう少し詳しくメモを入力してください。';
+      session.error = '内容が読み取れませんでした。もう少し詳しく内容を入力してください。';
       return HttpResponse.json(session);
     }
 
@@ -1047,12 +1047,12 @@ export const coachingHandlers = [
     session.reflectedGoalIds = Array.from(new Set([...session.reflectedGoalIds, ...goalIds]));
     session.reflectedAt = new Date().toISOString();
     session.status = 'published';
-    session.step = '目標とタスクを確定しました';
+    session.step = '目標を確定しました';
     session.progress = 100;
     syncNextCoachingActive(session);
 
     // 🔴 確定した目標を「次回コーチングまでの目標」へ反映する。
-    //    ここを繋がないと、コーチングノートで確定してもマイページには何も出ない
+    //    ここを繋がないと、コーチング記録で確定してもマイページには何も出ない
     //    （以前は別データだったため実際にそうなっていた）。
     //    候補IDで冪等にしているので、同じ目標を二重に取り込むことはない。
     const confirmed = [...(session.summary?.goals ?? []), ...(session.summary?.tasks ?? [])]

@@ -36,7 +36,7 @@ interface SupportPanelProps {
   aiPane: React.ReactNode;
   memoPane: React.ReactNode;
   /**
-   * 「広い画面で続ける」。AIタブでだけ出す（メモには拡大先が無い）。
+   * 「広い画面で続ける」。AIタブでだけ出す（マイノートには拡大先が無い）。
    *
    * 🔴 以前は AiCoachPane が自前のヘッダーに文字ボタンとして持っていたが、
    *    この器にもタブ行があるためバーが2段になっていた。器が1本持つ形に寄せ、
@@ -47,7 +47,7 @@ interface SupportPanelProps {
 
 const TABS: { key: SupportTab; label: string; Icon: typeof Sparkles }[] = [
   { key: 'ai', label: 'AIコーチ', Icon: Sparkles },
-  { key: 'notes', label: 'メモ', Icon: NotebookPen },
+  { key: 'notes', label: 'マイノート', Icon: NotebookPen },
 ];
 
 const clampWidth = (value: number) => Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, value));
@@ -118,7 +118,7 @@ export function SupportPanel({
         // index.css 側でこのアニメーションを打ち消している。
         className="wc-lesson-support wc-drawer-right"
         role="dialog"
-        aria-label="AIコーチとメモ"
+        aria-label="AIコーチとマイノート"
         style={{
           // ドッキング時の幅。CSS変数にしておくと、オーバーレイ時は
           // CSS の固定幅がそのまま効く（!important が要らない）

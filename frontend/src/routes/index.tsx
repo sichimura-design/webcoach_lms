@@ -4,7 +4,7 @@ import LoginPage from '../components/LoginPage';
 import PasswordResetPage from '../components/PasswordResetPage';
 import MyPage from '../components/MyPage';
 import StudyLogPage from '../components/studyLog/StudyLogPage';
-import CoachingNotesPage from '../components/CoachingNotesPage';
+import CoachingPage from '../components/CoachingPage';
 import LearningPlanPage from '../components/learningPlan/LearningPlanPage';
 import LearningPlanSetupPage from '../components/learningPlan/LearningPlanSetupPage';
 import ConnectCoachPage from '../components/ConnectCoachPage';
@@ -270,7 +270,7 @@ function AppRoutes() {
         path="/coaching"
         element={
           <ProtectedRoute>
-            <CoachingNotesPage />
+            <CoachingPage />
           </ProtectedRoute>
         }
       />

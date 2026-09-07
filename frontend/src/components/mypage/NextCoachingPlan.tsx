@@ -6,17 +6,17 @@ import { useNextCoachingPlan } from '../../hooks/useNextCoachingPlan';
  * 次回コーチングまでの目標（マイページ右カラム）。
  * claude.ai/design『マイページ 3d.dc.html』準拠。
  *
- * 目標の出どころはコーチング記録。コーチングノートで「確定」した目標が
+ * 目標の出どころはコーチング記録。コーチング記録で「確定」した目標が
  * そのままここに載る（モックでは mocks/coachingGoalsStore.ts が両者をつないでいる）。
  *
- * 🔴 このカードは表示専用。編集UIは components/CoachingNotesPage.tsx の「次回までの目標」。
+ * 🔴 このカードは表示専用。編集UIは components/CoachingPage.tsx の「次回までの目標」。
  *    フッターの導線は1つだけ（かつて入口が3つ並んで何ができるか分からなかったレビュー指摘）。
  *
  * 🔴 進捗はリングではなくバー。デザインが横長の細いカードになり、
  *    リング（直径46px）を置くとヘッダ行が2段に割れるため。
  *
  * 🔴 表示は最大 VISIBLE_LIMIT 件。目標が増えるたびに縦に伸びて
- *    右カラム全体のバランスが崩れるので、残りはコーチングページで見せる。
+ *    右カラム全体のバランスが崩れるので、残りはコーチング画面で見せる。
  */
 interface NextCoachingPlanProps {
   userId: number | undefined;

@@ -1,8 +1,8 @@
 /**
- * コーチングページ（受講生側）。
+ * コーチング画面（受講生側）。
  *
  * 目指す体験:
- *   コーチから届いたリンクを貼る → LMSからコーチングに参加する → 終了後にノートとタスクが完成している
+ *   コーチから届いたリンクを貼る → LMSからコーチングに参加する → 終了後にコーチング記録と目標が揃っている
  *
  * 受講生は Google / Zoom のアカウント連携をしない。録画・文字起こしは
  * コーチの認証済み権限で行われるので、受講生の操作は
@@ -19,7 +19,7 @@ import CoachingHeroCard from './coaching/CoachingHeroCard';
 import ConsentModal from './coaching/ConsentModal';
 import ImportRecordCard from './coaching/ImportRecordCard';
 import LastSessionCard from './coaching/LastSessionCard';
-import NextActionsCard, { type GoalDraftRow } from './coaching/NextActionsCard';
+import NextGoalsCard, { type GoalDraftRow } from './coaching/NextGoalsCard';
 import ProcessingStatus from './coaching/ProcessingStatus';
 import RecordingStatus from './coaching/RecordingStatus';
 import SessionReview from './coaching/SessionReview';
@@ -74,7 +74,7 @@ function TimelineNode({ label, accent, last }: { label: string; accent?: boolean
   );
 }
 
-export default function CoachingNotesPage() {
+export default function CoachingPage() {
   const { user } = useAuth();
   const { showToast } = useToast();
   const userId = user?.userid;
@@ -171,7 +171,7 @@ export default function CoachingNotesPage() {
   // 🔴 この編集UIはもともとマイページの「次回コーチングまでの目標」カードにあった。
   //    マイページ側に「編集」「続ける」「コーチング記録を取り込む」と入口が散らばっていて
   //    どれが何をするのか分からない、というレビュー指摘を受け、
-  //    目標に対する操作はこのコーチングページに集約した。
+  //    目標に対する操作はこのコーチング画面に集約した。
   //    マイページのカードは表示専用で、「編集」「詳しく」ともにここへ飛ばす。
   //
   // 編集は「編集モードに入って、まとめて保存」。1文字ごとに保存すると
@@ -432,7 +432,7 @@ export default function CoachingNotesPage() {
         alignSelf: 'flex-start',
       }}
     >
-      ← コーチング一覧に戻る
+      ← 戻る
     </button>
   );
 
@@ -454,7 +454,7 @@ export default function CoachingNotesPage() {
       >
         <div>
           <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.3, color: C.ink }}>
-            コーチング記録
+            コーチング
           </h1>
         </div>
 
@@ -486,7 +486,7 @@ export default function CoachingNotesPage() {
               )}
 
               <TimelineNode label={'次回\nまで'} accent last />
-              <NextActionsCard
+              <NextGoalsCard
                 goals={goals}
                 editing={editingGoals}
                 draft={goalDraft}

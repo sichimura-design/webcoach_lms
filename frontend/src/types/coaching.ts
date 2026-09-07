@@ -1,13 +1,13 @@
 /**
- * AIコーチングノート関連の型。
+ * コーチング記録関連の型。
  * 実BFFには存在しない新機能。すべてモック（MSW）で返す。
  *
  * 体験の骨子:
- *   コーチから届いたリンクを貼る → LMSからコーチングに参加する → 終了後にノートとタスクが完成している
+ *   コーチから届いたリンクを貼る → LMSからコーチングに参加する → 終了後にコーチング記録と目標が揃っている
  *
  * 設計の要点:
  *  - 録画・文字起こしは**コーチの認証済み権限**で行う。受講生はアカウント連携をしない。
- *    そのため受講生側のボタンは「録音を開始」ではなく「AIノートを開始して参加」と表現する。
+ *    そのため受講生側のボタンは「録音を開始」ではなく「コーチングに参加する」と表現する。
  *  - 受講生に入力させるのは会議リンクだけ。日時・コーチ名・サービス種別は貼り付けた文面から自動判定する。
  *  - AIが抽出した目標・タスクは、受講生が確認して確定するまで反映しない（GoalState）。
  *  - AI出力は構造化し、各項目に根拠となる発言ID（sourceSegmentIds）を紐づける。
@@ -45,13 +45,13 @@ export type RecordingSource =
   | 'auto_recording'      // コーチの Zoom / Meet 連携から自動取得
   | 'provider_transcript' // 文字起こしファイル（VTT/SRT/TXT）を手動で取り込み
   | 'uploaded_audio'      // 音声・動画ファイルを手動で取り込み
-  | 'pasted_text';        // テキスト・メモを手動で入力
+  | 'pasted_text';        // 話した内容のテキストを手動で入力
 
 export const RECORDING_SOURCE_LABEL: Record<RecordingSource, string> = {
   auto_recording: '自動取得',
   provider_transcript: '文字起こしファイル',
   uploaded_audio: '録音・動画ファイル',
-  pasted_text: 'テキスト・メモ',
+  pasted_text: 'テキスト入力',
 };
 
 /** 記録が自動で届いたのか、受講生が手で取り込んだのか */
@@ -108,7 +108,7 @@ export const GOAL_STATE_LABEL: Record<GoalState, string> = {
 };
 
 /**
- * 次回までの目標・タスクの候補。
+ * 次回までの目標の候補（goals / tasks 共通）。
  * 会話から読み取れない項目は AI に補完させず null のままにして、受講生に入力してもらう。
  */
 export interface GoalCandidate {
@@ -154,9 +154,13 @@ export interface CoachingAiSummary {
   coachFeedback: Evidenced[];
   /** 決まったこと（会話内で合意された内容） */
   decisions: Evidenced[];
-  /** 次回までの目標 */
+  /**
+   * 次回までの目標（大きな狙い）。
+   * 🔴 UIでは goals / tasks をまとめて「次回までの目標」と呼ぶ。この2分割は
+   *    BFF契約側の語彙なので、画面に「タスク」という語を出さないこと。
+   */
   goals: GoalCandidate[];
-  /** 次回までのタスク（具体的な行動） */
+  /** 次回までの目標のうち、具体的な行動にあたるもの */
   tasks: GoalCandidate[];
   /** 次回確認すること */
   nextSessionAgenda: string[];

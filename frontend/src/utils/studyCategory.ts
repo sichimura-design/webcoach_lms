@@ -57,7 +57,7 @@ export function categoryOfPath(pathname: string, _hints?: CategoryHints): StudyC
  *
  * 🔴 教材カタログ（/courses）とコーストップ（/course/:id/curriculum）は入れない。
  *    探している・目次を見ているだけの人に毎回ポップを出すと鬱陶しいだけになる。
- *    実際に本文・相談・面談・ノートを開いた瞬間だけに絞る。
+ *    実際に本文・相談・コーチング・ノートを開いた瞬間だけに絞る。
  */
 export function isStudyEntryPath(pathname: string): boolean {
   return (

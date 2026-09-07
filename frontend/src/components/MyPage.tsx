@@ -29,17 +29,22 @@ import { Course } from '../types/mypage';
  *    学習コンテンツは今も scale 方式なので、あちらと作りが違う点に注意。
  *
  * 【構成】8a は「今やること」と「積み上がり」の2段構え
- *   ① 挨拶（日付＋名前＋きらめき。カードなし・地色に直置き）
- *   ② 上段2カラム: 左＝続きから学習、右＝次回コーチングまでのタスク
- *   ③ 目標宣言（全幅・表示のみ。編集は /study-log）
- *   ④ 下段1枚: 学習状況ダッシュボード（連続日数・総学習時間・修了レッスン数・
+ *   ① 上段グリッド（.mypage-8a-grid・2列×2行）
+ *        1行目: 挨拶（日付＋名前。カードなし・地色に直置き）｜目標宣言
+ *        2行目: 続きから学習                              ｜次回コーチングまでのタスク
+ *      目標宣言は表示のみ（書くのも直すのも /study-log）。
+ *   ② 下段1枚: 学習状況ダッシュボード（連続日数・総学習時間・修了レッスン数・
  *      今週の学習時間ゲージ・今週の目標グラフ）
- *   ⑤ フッター
+ *   ③ フッター
  *
- * 🔴 ③を②と④の間に置いているのは「今やること（CTA）→ 何のために（宣言）→
- *    積み上がり（ダッシュボード）」の順で読ませるため。②に3枚目として入れると
- *    1fr/1.15fr に収まらず、1023px で3段になって最初のCTAが遠のく。
- *    ①の下に置くと、文章のカードが最初に来て Primary CTA が折り返しで画面外に落ちる。
+ * 🔴 目標宣言を挨拶の右に置いているのは、挨拶の行の右が丸ごと空いていたから。
+ *    ここなら縦が増えず、Primary CTA も下がらない。
+ *    - 2行目の3枚目にしないこと。1.15fr/1fr に収まらず、1023px で3段になって
+ *      最初のCTAが遠のく。
+ *    - 挨拶の下の全幅の帯に戻さないこと（旧レイアウト）。文章のカードが
+ *      先に来て Primary CTA が折り返しで画面外に落ちる。1段ぶん縦も伸びる。
+ *    - 1カラムに落ちる幅では index.css の order で目標を最後へ送っている
+ *      （挨拶→続きから→タスク→目標）。DOM 順を頼りにしないこと。
  *
  * 🔴 8a で「学習時間チャレンジ」「みんなのランキング」を外した。
  *    順位の掘り下げは /study-log が受け持つ。5a に戻すときは
@@ -179,23 +184,32 @@ function MyPage() {
         className="dc-page-main flex flex-col"
         style={{ flex: 1, padding: 'var(--dc-sp-page-y) var(--dc-sp-page-x) calc(var(--dc-sp-page-y) * 0.8)', color: 'var(--dc-text)' }}
       >
-        <MypageGreeting name={avatarName} />
-
+        {/* 🔴 4枠の順番＝グリッドの自動配置。入れ替えると行が崩れる。
+               目標だけ入れ物の div で包んでいるのは、1カラム時に order で
+               最後へ送るため（続きから／タスクは丈を揃える stretch を
+               壊さないよう、直接の grid item のままにしてある）。 */}
         <div className="mypage-8a-grid">
+          <MypageGreeting name={avatarName} />
+
+          <div className="mypage-8a-goal">
+            <MypageGoalDeclarationCard
+              declaration={declarations.active}
+              pendingReflection={declarations.pendingReflection[0] ?? null}
+              loading={declarations.loading}
+              unavailable={declarations.unavailable}
+            />
+          </div>
+
           <ResumeStudyCard
             course={primaryCourse}
+            // サムネの絵柄用。resumecourse は領域名もコース画像も返さないので、
+            // 同じコースの受講中一覧（/moodle/courses）側の姿を添える
+            known={activeCourses.find((c) => c.id === primaryCourse?.id)}
             onOpenLesson={openLesson}
             onOpenCurriculum={openCurriculum}
           />
           <CoachingTaskCard userId={user?.userid} />
         </div>
-
-        <MypageGoalDeclarationCard
-          declaration={declarations.active}
-          pendingReflection={declarations.pendingReflection[0] ?? null}
-          loading={declarations.loading}
-          unavailable={declarations.unavailable}
-        />
 
         <StudyDashboardCard
           stats={studyStats}

@@ -1,5 +1,5 @@
 /**
- * コーチング終了後、AIノートを生成している間の進捗表示。
+ * コーチング終了後、記録から要約を作っている間の進捗表示。
  * セッション詳細を1秒間隔でポーリングし、状態の遷移を段階リストで見せる。
  *
  * 本番では 録画取得 → 文字起こし → 要約 がそれぞれ別ワーカーで走るため、
@@ -98,10 +98,10 @@ export function ProcessingStatus({ session, onDone, onFallback }: ProcessingStat
   return (
     <section style={{ ...t.card, padding: 24 }}>
       <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 4px' }}>
-        AIコーチングノートを作成しています
+        記録から要約を作成しています
       </h2>
       <p style={{ ...font.meta, color: color.textMuted, margin: '0 0 18px', lineHeight: 1.8 }}>
-        コーチング内容から、要約・決定事項・次回までのタスクを整理しています。
+        コーチング内容から、要約・決定事項・次回までの目標を整理しています。
       </p>
 
       <div style={{ height: 6, background: color.trackBg, borderRadius: 999, overflow: 'hidden', marginBottom: 18 }}>

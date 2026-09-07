@@ -5,7 +5,7 @@
  * v1: { notes: NoteItem[]; memos } … メモ/クリップ/AI回答が時系列に並ぶ平坦な履歴
  * v2: { schemaVersion: 2; notes: Note[]; memos } … 器（Note）＋中身（NoteBlock）
  * v3: v2 ＋ Note.origin（出どころ）… 一覧の出どころバッジと絞り込みチップの根拠
- * v4: v3 ＋ Note.coachingSessionId … コーチング記録の「自分のメモ」がどの回のノートかを引く
+ * v4: v3 ＋ Note.coachingSessionId … コーチング記録の「マイノート」欄がどの回のノートかを引く
  * v5: v4 ＋ folders / Note.folderId … デザイン『マイノート 改善案』の左列（フォルダ）
  *
  * 🔴 memos（レッスン別の下書き）は触らない。下書きはノートではないし、
@@ -112,7 +112,7 @@ export function buildSeedFolders(now: Date): NoteFolder[] {
 
 /**
  * 出どころから既定のフォルダを決める。教材のノートはデザイン基礎、
- * コーチングのまとめはコーチング記録、自分のメモとAI回答は未整理に残す
+ * コーチングのまとめはコーチング記録、自分で書いたノートとAI回答は未整理に残す
  * （「とりあえず保存」の行き先が空でないほうが、未整理の意味が伝わる）。
  */
 function defaultFolderFor(origin: NoteOrigin): SeedFolderKey | null {
@@ -235,7 +235,7 @@ interface SeedCard {
   /**
    * どのコーチング回で取ったノートか。coachingHandlers.ts のシード
    * （1002＝第3回 / 1001＝第2回）に合わせてある。
-   * コーチング記録の「自分のメモ」がこのIDで自分の回のノートを引くので、
+   * コーチング記録の「マイノート」欄がこのIDで自分の回のノートを引くので、
    * あちらのセッションIDを動かしたらここも直すこと（0件表示になる）。
    */
   coachingSessionId?: number;
@@ -247,7 +247,7 @@ interface SeedCard {
 }
 
 const SEED_CARDS: SeedCard[] = [
-  { daysAgo: 0, origin: 'coaching', favorite: true, coachingSessionId: 1002, title: '8/19 コーチングまとめ', text: 'ターゲットの課題に寄り添ったメッセージ設計が重要。特に「誰に」「どんな価値を」「どう届けるか」の3点を明確にする。' },
+  { daysAgo: 0, origin: 'coaching', favorite: true, coachingSessionId: 1002, title: '8/19 コーチング記録', text: 'ターゲットの課題に寄り添ったメッセージ設計が重要。特に「誰に」「どんな価値を」「どう届けるか」の3点を明確にする。' },
   { daysAgo: 1, origin: 'material', favorite: true, title: 'バナー改善の3ポイント', text: '視線の流れ（Zの法則）を意識して、伝えたい情報を優先順位で整理する。余白の使い方とコントラストを意識。' },
   { daysAgo: 2, origin: 'material', folder: 'work', title: 'LPファーストビュー設計', text: '最初の3秒で「誰の」「どんな悩みを」「どう解決できるか」を伝える。視線を集めるキャッチコピーとビジュアルが鍵。' },
   { daysAgo: 2, origin: 'ai', favorite: true, folder: 'work', title: 'AI回答：応募文の改善ポイント', text: '強みの根拠が具体的で良いです。成果を数字で示すと、説得力がさらに高まります。まずは「結論→根拠→再現性」の順で整理しましょう。' },
@@ -256,22 +256,22 @@ const SEED_CARDS: SeedCard[] = [
   { daysAgo: 4, origin: 'ai', favorite: true, title: 'AI回答：フォント選びの基準', text: 'まず可読性、次に世界観。見出しと本文で役割を分け、使うフォントは2種類までに絞ると整います。' },
   { daysAgo: 4, origin: 'material', title: 'デザイン4大原則の要点', text: '近接・整列・反復・コントラスト。迷ったら整列から見直すと、崩れの原因が見つかりやすい。' },
   { daysAgo: 5, origin: 'self', title: '参考バナーの共通点メモ', text: '目を引くバナーは色数が3色以内。メインコピーが全体の1/3以上の面積を占めている。' },
-  { daysAgo: 7, origin: 'coaching', favorite: true, coachingSessionId: 1001, title: '8/12 コーチングまとめ', text: 'Zの法則を意識した構成に改善できた。配色の目的とトーンの統一が次回までの課題。' },
+  { daysAgo: 7, origin: 'coaching', favorite: true, coachingSessionId: 1001, title: '8/12 コーチング記録', text: 'Zの法則を意識した構成に改善できた。配色の目的とトーンの統一が次回までの課題。' },
   { daysAgo: 7, origin: 'self', title: 'Figmaショートカット集', text: 'オートレイアウトはShift+A、コンポーネント化はCtrl+Alt+K。Enterで子要素に潜れる。' },
   { daysAgo: 8, origin: 'ai', title: 'AI回答：バナーの文字量', text: '訴求ポイントを1つに絞り、10〜20文字程度に。視線の流れを意識して簡潔に伝えましょう。' },
   { daysAgo: 9, origin: 'material', title: '配色ツールの使い分け', text: 'ベースカラーはブランドから、アクセントは補色から。迷ったらトーンを揃えて彩度だけ変える。' },
-  { daysAgo: 14, origin: 'coaching', title: '8/5 コーチングまとめ', text: '「まず1案を最後まで通す」進め方に切り替える。完成の形を作ってから磨く習慣をつける。' },
+  { daysAgo: 14, origin: 'coaching', title: '8/5 コーチング記録', text: '「まず1案を最後まで通す」進め方に切り替える。完成の形を作ってから磨く習慣をつける。' },
   { daysAgo: 15, origin: 'self', title: '制作時間の記録', text: 'バナー1案に4時間かかった。ラフに1時間以上使いすぎ。次は30分でラフを固める。' },
   { daysAgo: 16, origin: 'ai', favorite: true, title: 'AI回答：提案文の構成', text: '結論→根拠→再現性の順で。実績は数字で示すと、相手が判断しやすくなります。' },
   { daysAgo: 17, origin: 'material', title: 'Zの法則と視線誘導', text: '視線は左上→右上→左下→右下。一番伝えたい情報は視線の起点か終点に置く。' },
   { daysAgo: 18, origin: 'material', title: '写真素材の選び方', text: '被写体の視線の先に余白を作ると自然。文字を載せる前提なら、背景がシンプルなものを選ぶ。' },
   { daysAgo: 20, origin: 'self', title: '課題の振り返り', text: 'コントラスト不足の指摘が2回続いた。文字と背景の明度差を先にチェックする癖をつける。' },
-  { daysAgo: 21, origin: 'coaching', title: '7/29 コーチングまとめ', text: 'ポートフォリオの構成案を確認。作品ごとに「自分の役割」を明記する方針に決定。' },
+  { daysAgo: 21, origin: 'coaching', title: '7/29 コーチング記録', text: 'ポートフォリオの構成案を確認。作品ごとに「自分の役割」を明記する方針に決定。' },
   { daysAgo: 22, origin: 'ai', favorite: true, title: 'AI回答：配色の比率', text: 'ベース70%・メイン25%・アクセント5%が基本。アクセントは1色に絞ると引き締まります。' },
   { daysAgo: 24, origin: 'material', title: '見出しデザインの型', text: 'サイズ差・太さ・色の3つでコントラストをつける。装飾は最後、まず階層を作る。' },
   { daysAgo: 26, origin: 'self', title: '気になったLPメモ', text: 'ファーストビューに実績数字を置くLPが多い。「誰の悩みをどう解決するか」が3秒で分かる。' },
   { daysAgo: 28, origin: 'material', title: 'ハンズオン①の気づき', text: '手を動かすと理解が変わる。参考デザインの模写は、意図を言葉にしながらやると効果的。' },
-  { daysAgo: 35, origin: 'coaching', title: '7/15 コーチングまとめ', text: '学習ペースは週5時間を維持。基礎コース修了後は実践課題に進むことを確認した。' },
+  { daysAgo: 35, origin: 'coaching', title: '7/15 コーチング記録', text: '学習ペースは週5時間を維持。基礎コース修了後は実践課題に進むことを確認した。' },
 ];
 
 /**

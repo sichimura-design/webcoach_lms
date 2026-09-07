@@ -8,8 +8,15 @@ import { toLocalDateKey } from '../../utils/studyStats';
 /**
  * トップページの目標宣言カード（表示専用）。
  * ============================================================
- * 「今やること（続きから学習）→ 何のために（この宣言）→ 積み上がり（ダッシュボード）」
- * の順で読めるよう、8a グリッドと学習状況ダッシュボードの間に全幅で置く。
+ * 置き場所は上段グリッド（.mypage-8a-grid）の右上＝挨拶の右。
+ * 挨拶の行の右が空いていたのでそこを埋めている。下の
+ * 「次回コーチングまでの目標」と列を共有するので左右の端が揃う。
+ * 🔴 全幅の帯（旧レイアウト）に戻さないこと。理由は MyPage.tsx の 🔴 に書いた。
+ *
+ * 🔴 目標文は lead(16px)。title(20px) に戻さないこと。左隣の
+ *    ResumeStudyCard がレッスン名を title で出しているので、横並びで
+ *    20px が2つになると上段の主役が分からなくなる（index.css の
+ *    --dc-fs-title の注記）。
  *
  * 🔴 Primary CTA を増やさない（DESIGN §15-5）。マイページで塗りボタンなのは
  *    ResumeStudyCard の「続きから学習する」だけ。ここはテキストリンクにする。
@@ -22,7 +29,7 @@ import { toLocalDateKey } from '../../utils/studyStats';
  * 🔴 期間の経過をバーで出さない。「あと12日」のテキストのみ。
  *    バーにすると達成度%に読める（学習効果の数値化はしない規約）。
  *
- * CoachingTaskCard（次回コーチングまでのタスク）との見分け:
+ * CoachingTaskCard（次回コーチングまでの目標）との見分け:
  *   位置が別段／中身が1文の引用体（左4pxの縦罫＋20px）vs チェック付き複数行。
  *   かつては「目標宣言は学習記録ページで編集できます。」の脚注でも見分けさせて
  *   いたが、見出し右の「編集する ›」が同じ場所へ送るので二重だった。
@@ -43,7 +50,7 @@ const CARD_STYLE: CSSProperties = {
   borderRadius: 'var(--dc-radius-lg)',
   boxShadow: 'var(--dc-shadow-card)',
   padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
-  marginBottom: 'var(--dc-sp-gap)',
+  /* 🔴 下余白を持たない。間隔は .mypage-8a-grid の gap が持つ */
 };
 
 const linkStyle: CSSProperties = {
@@ -51,6 +58,8 @@ const linkStyle: CSSProperties = {
   border: 'none',
   padding: 0,
   flex: 'none',
+  /* 狭い幅で見出し行から折り返したとき、左端に取り残されず右に寄る */
+  marginLeft: 'auto',
   fontFamily: 'inherit',
   fontSize: 'var(--dc-fs-body)',
   fontWeight: 700,
@@ -93,7 +102,14 @@ export function MypageGoalDeclarationCard({
       >
         <Flag size={16} strokeWidth={1.75} />
       </span>
-      <h2 style={{ margin: 0, flex: 1, fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)' }}>
+      {/* 🔴 whiteSpace:nowrap。見出しが「あなた／の目標」と2行に割れるより、
+             flexWrap で右の「〇月〇日まで」「編集する ›」が次の行に落ちるほうがよい */}
+      <h2
+        style={{
+          margin: 0, flex: 1, whiteSpace: 'nowrap',
+          fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)',
+        }}
+      >
         あなたの目標
       </h2>
       {target && (
@@ -158,7 +174,7 @@ export function MypageGoalDeclarationCard({
           margin: 0,
           paddingLeft: 12,
           borderLeft: '4px solid var(--dc-primary)',
-          fontSize: 'var(--dc-fs-title)',
+          fontSize: 'var(--dc-fs-lead)',
           fontWeight: 700,
           lineHeight: 'var(--dc-lh-heading)',
           color: 'var(--dc-text)',

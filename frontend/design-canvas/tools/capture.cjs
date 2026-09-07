@@ -59,7 +59,7 @@ const SCREENS = [
   {
     id: 'STU-06-note', route: '/notes', settle: 2500,
     clicks: [
-      'article[aria-label="8/19 コーチングまとめを開く"]',
+      'article[aria-label="8/19 コーチング記録を開く"]',
     ],
   },
   // 新規作成の直後（空のノート）。文言は「新しいノートを作成」→「新しいノート」に変わった
@@ -70,7 +70,7 @@ const SCREENS = [
     ],
   },
   { id: 'STU-07', route: '/coaching', widths: [1440, 375], settle: 2000 },
-  // コーチングの記録（公開済みセッションを開いた状態）。
+  // コーチング記録（公開済みセッションを開いた状態）。
   // 1002 は mocks/coachingHandlers.ts の seedAll で「第3回コーチング・published・反映済み」。
   {
     id: 'STU-07-session', route: '/coaching?session=1002', widths: [1440, 375], settle: 3000,

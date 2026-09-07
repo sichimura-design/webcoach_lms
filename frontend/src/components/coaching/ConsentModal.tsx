@@ -17,7 +17,7 @@ const WHAT_WE_DO = [
   '会話の録音',
   '文字起こし',
   'AIによる要約',
-  '次回までの目標・タスクの整理',
+  '次回までの目標の整理',
 ];
 
 export function ConsentModal({ onAgree, onClose }: ConsentModalProps) {
@@ -65,7 +65,7 @@ export function ConsentModal({ onAgree, onClose }: ConsentModalProps) {
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <Sparkles className="w-5 h-5" style={{ color: color.primary }} />
             <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>
-              AIコーチングノートを開始します
+              コーチングの記録を開始します
             </h2>
           </div>
           <button

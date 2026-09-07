@@ -82,7 +82,7 @@ export function NotesDevPanel({ pageSize, total, onDone }: NotesDevPanelProps) {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-        <strong style={{ fontSize: 12.5 }}>ノートのデモデータ（開発用）</strong>
+        <strong style={{ fontSize: 12.5 }}>マイノートのデモデータ（開発用）</strong>
         <button
           type="button"
           aria-label="閉じる"

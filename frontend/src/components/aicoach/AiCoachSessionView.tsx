@@ -223,12 +223,12 @@ export function AiCoachSessionView({
   const handleAppendToMemo = useCallback(
     (message: LessonAiMessage) => {
       if (!lessonId) {
-        showToast('教材に紐づく相談だけメモへ追加できます', 'error');
+        showToast('教材に紐づく相談だけ下書きに追加できます', 'error');
         return;
       }
       const { question } = questionFor(message);
       notes.appendToMemo(question, answerToText(message));
-      showToast('AI回答をメモへ追加しました', 'success');
+      showToast('AI回答を下書きに追加しました', 'success');
     },
     [answerToText, lessonId, notes, questionFor, showToast]
   );

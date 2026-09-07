@@ -124,7 +124,7 @@ export function CoachingHeroCard({
             <StatusBanner
               tone={TONE.brand}
               icon={<span style={{ width: 9, height: 9, borderRadius: '50%', background: C.brand, display: 'block', marginTop: 3, animation: 'coaching-blink 1.4s ease-in-out infinite' }} />}
-              title="AIコーチングノート記録中"
+              title="コーチングを記録中"
               body="コーチング終了後、内容を自動で整理します。"
             />
             <button type="button" className="cg-btn-primary" onClick={open} style={PRIMARY_BUTTON}>
@@ -141,11 +141,11 @@ export function CoachingHeroCard({
             <StatusBanner
               tone={TONE.ok}
               icon={<Sparkles size={15} color="#2F7F5B" />}
-              title="AIコーチングノートが完成しました"
+              title="コーチング記録ができました"
               body="今回話した内容と、次回までに進めることを確認してください。"
             />
             <button type="button" className="cg-btn-primary" onClick={open} style={PRIMARY_BUTTON}>
-              ノートを確認する
+              記録を確認する
             </button>
           </>
         );
@@ -173,8 +173,8 @@ export function CoachingHeroCard({
           <StatusBanner
             tone={TONE.neutral}
             icon={<Loader2 size={15} color={C.brand} className="animate-spin" />}
-            title="AIコーチングノートを作成しています"
-            body="要約・決定事項・次回までのタスクを整理しています。"
+            title="記録から要約を作成しています"
+            body="要約・決定事項・次回までの目標を整理しています。"
           />
           <button type="button" className="cg-btn-primary" onClick={open} style={PRIMARY_BUTTON}>
             進捗を見る

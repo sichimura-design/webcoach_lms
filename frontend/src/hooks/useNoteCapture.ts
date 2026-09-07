@@ -103,12 +103,12 @@ export function useNoteCapture() {
         // 🔴 ここで遷移しない。保存しても教材のページはそのままにして、
         //    見たい人だけがトーストから移動する。
         showToast(`「${note.title}」に追加しました`, 'success', {
-          action: { label: 'ノートを見る', onClick: () => openNotes(noteId, backTo) },
+          action: { label: 'マイノートを見る', onClick: () => openNotes(noteId, backTo) },
         });
         return noteId;
       } catch {
         forget(noteId);
-        showToast('ノートに追加できませんでした', 'error');
+        showToast('マイノートに追加できませんでした', 'error');
         return null;
       }
     },

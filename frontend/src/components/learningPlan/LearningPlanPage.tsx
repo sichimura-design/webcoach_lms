@@ -7,7 +7,7 @@
  * コーチングの場では受講生がこの画面を共有し、2人で見ながら調整する想定。
  *
  * ダイアログ primitive を現行コードで使っていないため、
- * CoachingNotesPage.tsx と同じく Mode 判別ユニオンで1ページ内を切り替える。
+ * CoachingPage.tsx と同じく Mode 判別ユニオンで1ページ内を切り替える。
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -109,7 +109,7 @@ export default function LearningPlanPage() {
 
   // マイルストーンの取り回し（今月やること／残りのマイルストーン）はこの画面から外した。
   // ロードマップは中長期の地図に特化し、細かな行動は /coaching の
-  // 「次回までのアクション」が持つ、という役割分担にしたため。
+  // 「次回までの目標」が持つ、という役割分担にしたため。
   // plan.phases[].milestones はデータとしては残っていて、編集モードでは今も使う。
 
   const openEditor = useCallback(() => {
@@ -311,7 +311,7 @@ export default function LearningPlanPage() {
   //
   // この画面が答えるのは次の5つだけに絞ってある:
   //   最終ゴール → 全体の道筋 → 今ここ → 今のフェーズの目的 → 次のステップ
-  // 具体的な行動・短期目標は /coaching の「次回までのアクション」が持つ。
+  // 具体的な行動・短期目標は /coaching の「次回までの目標」が持つ。
   // 役割を混ぜると運用が複雑になる、というレビュー指摘に沿った分担。
   return shell(
     <>
