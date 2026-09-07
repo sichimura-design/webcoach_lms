@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { ArrowDown, ArrowUp, GripVertical, Heading, Image as ImageIcon, List, ListChecks, Plus, Trash2, Type } from 'lucide-react';
-import { useDismissable } from '../../hooks/useDismissable';
 import { NOTE_BLOCK_DRAG_TYPE, hasBlockDrag } from './folderRows';
+import { AnchoredMenu } from './AnchoredMenu';
 import { INSERT_LABEL, InsertKind } from './NoteEditorToolbar';
 
 /**
@@ -60,11 +60,13 @@ export function NoteBlockRow({
 }: NoteBlockRowProps) {
   const [plusOpen, setPlusOpen] = useState(false);
   const [gripOpen, setGripOpen] = useState(false);
-  const plusRef = useRef<HTMLDivElement>(null);
-  const gripRef = useRef<HTMLDivElement>(null);
+  // メニューはポータルで出す（紙の overflow:hidden に切られないため）。
+  // 位置の基準はボタン自身なので、ref はボタンに付ける。
+  const plusRef = useRef<HTMLButtonElement>(null);
+  const gripRef = useRef<HTMLButtonElement>(null);
   const rowRef = useRef<HTMLDivElement>(null);
-  useDismissable(plusRef, plusOpen, () => setPlusOpen(false));
-  useDismissable(gripRef, gripOpen, () => setGripOpen(false));
+  const closePlus = useCallback(() => setPlusOpen(false), []);
+  const closeGrip = useCallback(() => setGripOpen(false), []);
 
   const positionOf = (e: React.DragEvent): DropPosition => {
     const rect = rowRef.current?.getBoundingClientRect();
@@ -107,8 +109,9 @@ export function NoteBlockRow({
     >
       <span className={`notes-block-grip ${plusOpen || gripOpen ? 'is-open' : ''}`}>
         {!tail && (
-          <div ref={gripRef} style={{ position: 'relative' }}>
+          <div style={{ position: 'relative' }}>
             <button
+              ref={gripRef}
               type="button"
               className="notes-grip-btn notes-grip-btn--drag focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
               aria-label="このブロックを動かす"
@@ -127,52 +130,51 @@ export function NoteBlockRow({
             >
               <GripVertical size={14} />
             </button>
-            {gripOpen && (
-              <div role="menu" className="notes-menu" style={{ top: 24, left: 0, minWidth: 170 }}>
-                <button
-                  type="button"
-                  role="menuitem"
-                  className="notes-menu-item"
-                  disabled={index === 0}
-                  style={index === 0 ? { opacity: 0.4, cursor: 'default' } : undefined}
-                  onClick={() => {
-                    setGripOpen(false);
-                    onMove?.(index, index - 1);
-                  }}
-                >
-                  <ArrowUp size={14} /> 上に移動
-                </button>
-                <button
-                  type="button"
-                  role="menuitem"
-                  className="notes-menu-item"
-                  disabled={index >= total - 1}
-                  style={index >= total - 1 ? { opacity: 0.4, cursor: 'default' } : undefined}
-                  onClick={() => {
-                    setGripOpen(false);
-                    onMove?.(index, index + 1);
-                  }}
-                >
-                  <ArrowDown size={14} /> 下に移動
-                </button>
-                <button
-                  type="button"
-                  role="menuitem"
-                  className="notes-menu-item is-danger"
-                  onClick={() => {
-                    setGripOpen(false);
-                    onRemove?.();
-                  }}
-                >
-                  <Trash2 size={14} /> 削除
-                </button>
-              </div>
-            )}
+            <AnchoredMenu anchorRef={gripRef} open={gripOpen} onClose={closeGrip} minWidth={170}>
+              <button
+                type="button"
+                role="menuitem"
+                className="notes-menu-item"
+                disabled={index === 0}
+                style={index === 0 ? { opacity: 0.4, cursor: 'default' } : undefined}
+                onClick={() => {
+                  setGripOpen(false);
+                  onMove?.(index, index - 1);
+                }}
+              >
+                <ArrowUp size={14} /> 上に移動
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                className="notes-menu-item"
+                disabled={index >= total - 1}
+                style={index >= total - 1 ? { opacity: 0.4, cursor: 'default' } : undefined}
+                onClick={() => {
+                  setGripOpen(false);
+                  onMove?.(index, index + 1);
+                }}
+              >
+                <ArrowDown size={14} /> 下に移動
+              </button>
+              <button
+                type="button"
+                role="menuitem"
+                className="notes-menu-item is-danger"
+                onClick={() => {
+                  setGripOpen(false);
+                  onRemove?.();
+                }}
+              >
+                <Trash2 size={14} /> 削除
+              </button>
+            </AnchoredMenu>
           </div>
         )}
 
-        <div ref={plusRef} style={{ position: 'relative' }}>
+        <div style={{ position: 'relative' }}>
           <button
+            ref={plusRef}
             type="button"
             className="notes-grip-btn focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
             style={{ color: '#9E9E9E' }}
@@ -183,25 +185,23 @@ export function NoteBlockRow({
           >
             <Plus size={14} />
           </button>
-          {plusOpen && (
-            <div role="menu" className="notes-menu" style={{ top: 24, left: 0, minWidth: 190 }}>
-              {INSERT_ITEMS.map((item) => (
-                <button
-                  key={item.kind}
-                  type="button"
-                  role="menuitem"
-                  className="notes-menu-item"
-                  onClick={() => {
-                    setPlusOpen(false);
-                    onInsert(item.kind, index);
-                  }}
-                >
-                  <span style={{ color: 'var(--dc-primary)', display: 'flex' }}>{item.icon}</span>
-                  {INSERT_LABEL[item.kind]}
-                </button>
-              ))}
-            </div>
-          )}
+          <AnchoredMenu anchorRef={plusRef} open={plusOpen} onClose={closePlus} minWidth={190}>
+            {INSERT_ITEMS.map((item) => (
+              <button
+                key={item.kind}
+                type="button"
+                role="menuitem"
+                className="notes-menu-item"
+                onClick={() => {
+                  setPlusOpen(false);
+                  onInsert(item.kind, index);
+                }}
+              >
+                <span style={{ color: 'var(--dc-primary)', display: 'flex' }}>{item.icon}</span>
+                {INSERT_LABEL[item.kind]}
+              </button>
+            ))}
+          </AnchoredMenu>
         </div>
       </span>
 

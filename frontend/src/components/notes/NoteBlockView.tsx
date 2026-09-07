@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Check, ExternalLink } from 'lucide-react';
+import { BookOpen, Check } from 'lucide-react';
 import { color, font, radius } from '../../theme/webcoachTheme';
 import { NoteBlock, NoteBlockPatch, NoteSourceRef } from '../../types/notes';
-import { getNoteImageUrl } from '../../utils/noteImageStore';
+import { useNoteImageUrl } from '../../hooks/useNoteImageUrl';
 import { renderNoteText, toggleTaskLine, NOTE_SYNTAX_HINT } from './noteText';
 
 /**
@@ -65,7 +65,8 @@ function SourceLine({
         }}
       >
         {sourceLabel(source)}
-        <ExternalLink size={11} style={{ flexShrink: 0 }} />
+        {/* 押すと引用モーダルでこの箇所が開く。画面は移動しないので ↗ は使わない */}
+        <BookOpen size={11} style={{ flexShrink: 0 }} />
       </button>
       <span style={{ flex: 1 }} />
       <span style={{ ...font.caption, color: color.textFaint, whiteSpace: 'nowrap' }}>{time}</span>
@@ -75,34 +76,13 @@ function SourceLine({
 
 /**
  * IndexedDB に置いた画像を表示する。
- * 🔴 objectURL は使い終わりに revoke する。ノート面を開き閉じするたびに
- *    作りっぱなしにすると、そのタブが画像を掴んだままになる。
+ * objectURL の生成・revoke は useNoteImageUrl に持たせてある（一覧カードの
+ * サムネイルと同じロジックを2箇所に書き写さないため）。
  */
 function NoteImage({ imageId, alt }: { imageId: string; alt: string }) {
-  const [url, setUrl] = useState<string | null>(null);
-  const [missing, setMissing] = useState(false);
+  const { url, status } = useNoteImageUrl(imageId);
 
-  useEffect(() => {
-    let revoked = false;
-    let current: string | null = null;
-    setMissing(false);
-    void getNoteImageUrl(imageId).then((next) => {
-      if (revoked) {
-        if (next) URL.revokeObjectURL(next);
-        return;
-      }
-      current = next;
-      setUrl(next);
-      if (!next) setMissing(true);
-    });
-    return () => {
-      revoked = true;
-      if (current) URL.revokeObjectURL(current);
-      setUrl(null);
-    };
-  }, [imageId]);
-
-  if (missing) {
+  if (status === 'missing') {
     return (
       <div
         style={{

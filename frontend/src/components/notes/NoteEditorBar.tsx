@@ -37,6 +37,12 @@ interface NoteEditorBarProps {
   onMoveToFolder: (folderId: string | null) => void;
   onToggleFavorite: () => void;
   onDelete: () => void;
+  /**
+   * 「速記メモを小窓で開く」。中身は MyNotesPage が渡す。
+   * ここに置くのは並びだけで、転記先の決定も下書きも持たせない
+   * （このバーは note が消えると一緒に消えるので、小窓の寿命を預けられない）。
+   */
+  quickMemo?: React.ReactNode;
 }
 
 /** ② 保存先のピル。押すと 未整理＋フォルダ の一覧が開く */
@@ -177,6 +183,7 @@ export function NoteEditorBar({
   onMoveToFolder,
   onToggleFavorite,
   onDelete,
+  quickMemo,
 }: NoteEditorBarProps) {
   const [moreOpen, setMoreOpen] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
@@ -223,6 +230,8 @@ export function NoteEditorBar({
       <FolderPill folderId={note.folderId} folders={folders} onPick={onMoveToFolder} />
 
       <span style={{ flex: 1 }} />
+
+      {quickMemo}
 
       <SaveStatus saveState={saveState} fallbackAt={note.updatedAt} />
 

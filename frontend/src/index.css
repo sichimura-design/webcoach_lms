@@ -1530,6 +1530,28 @@ body.learning-immersive {
   opacity: .5;
 }
 
+/* カード左のサムネイル（中に画像ブロックがあるノートだけ付く）。
+   正方形を保つのが要点。高さを内容に任せると、抜粋の行数でカードごとに
+   絵の大きさが変わって一覧が騒がしくなる。 */
+.notes-card__thumb {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--dc-radius-md);
+}
+
+/* 1列表示ではカードの幅いっぱいに文字を使いたいので、絵を一段小さくする */
+@media (max-width: 767px) {
+  .notes-card__thumb {
+    width: 56px;
+    height: 56px;
+  }
+}
+
 /* ドロップダウン／ポップオーバー共通 */
 .notes-menu {
   position: absolute;
@@ -1573,6 +1595,30 @@ body.learning-immersive {
   color: var(--dc-primary);
 }
 
+/* 並べ替えの切り替え。枠を持たせず、文字だけで押せることを伝える */
+.notes-sort-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--dc-text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notes-sort-trigger:hover,
+.notes-sort-trigger.is-open {
+  background: var(--dc-sunken);
+  color: var(--dc-text-body);
+}
+
 /* ノート面の上部バー・ツールバーの角丸ボタン */
 .notes-tool {
   display: inline-flex;
@@ -1604,6 +1650,26 @@ body.learning-immersive {
 
 .notes-tool--light {
   font-weight: 500;
+}
+
+/* 教材から引用するモーダル（QuoteFromLessonModal）。
+   狭い画面では中央の箱ではなく全画面にする。教材の本文を読む面なので、
+   周りに余白を残すと1画面に入る行数が足りない。
+
+   🔴 !important は必須。padding / maxWidth / height / borderRadius は
+      QuoteFromLessonModal 側がインラインで持っており、インラインの方が強い。
+      （!important 無しの同じブロックを二重に書いていて、後ろのぶんは
+        丸ごと効いていなかった） */
+@media (max-width: 767px) {
+  .notes-quote-overlay {
+    padding: 0 !important;
+  }
+
+  .notes-quote-panel {
+    height: 100% !important;
+    max-width: none !important;
+    border-radius: 0 !important;
+  }
 }
 
 /* 本文のブロック行。hover で左に ⠿ と ＋ が出る */

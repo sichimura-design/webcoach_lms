@@ -23,6 +23,8 @@ interface NoteGridProps {
   /** 種類チップや検索語が掛かっているか。空フォルダの文言を出すかどうかの判定 */
   hasOtherFilters: boolean;
   onOpen: (id: string) => void;
+  /** カード右上の★ */
+  onToggleFavorite: (id: string, favorite: boolean) => void;
   onCreate: () => void;
   onClearFilters: () => void;
 }
@@ -35,6 +37,7 @@ export function NoteGrid({
   filter,
   hasOtherFilters,
   onOpen,
+  onToggleFavorite,
   onCreate,
   onClearFilters,
 }: NoteGridProps) {
@@ -93,7 +96,7 @@ export function NoteGrid({
         <EmptyState
           icon={<Star size={26} style={{ color: 'var(--dc-primary)' }} />}
           title="重要にしたノートはありません"
-          body="ノートを開いて「重要にする」を押すと、ここに集まります。"
+          body="一覧のカード右上の★を押すと、ここに集まります。"
           action={null}
         />
       );
@@ -130,7 +133,13 @@ export function NoteGrid({
   return (
     <div className="notes-grid">
       {items.map((note) => (
-        <NoteCard key={note.id} note={note} folderName={folderNameOf(note.folderId, folders)} onOpen={onOpen} />
+        <NoteCard
+          key={note.id}
+          note={note}
+          folderName={folderNameOf(note.folderId, folders)}
+          onOpen={onOpen}
+          onToggleFavorite={onToggleFavorite}
+        />
       ))}
     </div>
   );

@@ -11,6 +11,9 @@ import { useNote } from '../../hooks/useNote';
 import { useNoteFolders } from '../../hooks/useNoteFolders';
 import { useNoteList } from '../../hooks/useNoteList';
 import { BackTo } from '../../hooks/useNoteCapture';
+import { bffClient } from '../../services/bffClient';
+import { noteDraftKey } from '../../utils/quickMemoDraft';
+import { QuickMemoButton, QuickMemoError, useQuickMemoWindow } from '../quickMemo/QuickMemoLauncher';
 import {
   NOTE_ORIGIN_LABEL,
   NOTE_SORT_LABEL,
@@ -36,7 +39,8 @@ import { countByFolder, filterLabel, folderNameOf } from './folderRows';
  *
  * 【構成】
  *   左＝フォルダ列（自分で決める入れ物。すべて／重要／フォルダ…／未整理）
- *   右＝一覧（パンくず・検索・種類チップ・カードグリッド）か、ノート面（上部バー＋紙）
+ *   右＝一覧（見出し＝現在のフォルダ名・検索・種類チップ・カードグリッド）か、
+ *       ノート面（上部バー＋紙）
  * フォルダと「種類」（出どころ）は別の軸として掛け合わさる。種類は自動で付くラベル、
  * フォルダは手で選ぶ置き場所。未整理は「とりあえず保存」の行き先で、取り込んだものは
  * まずそこに入る。
@@ -61,7 +65,7 @@ const PAGE_SIZE = 24;
  */
 const NotesDevPanel = React.lazy(() => import('../dev/NotesDevPanel'));
 
-const SORTS: NoteSort[] = ['updated', 'updatedAsc', 'created', 'createdAsc', 'title'];
+const SORTS: NoteSort[] = ['updated', 'updatedAsc', 'title'];
 
 /** 種類チップの並び。「すべて」を先頭に置く */
 const ORIGIN_CHIPS: NoteOrigin[] = ['self', 'material', 'ai', 'coaching'];
@@ -199,7 +203,12 @@ export function MyNotesPage() {
     setFolder({ kind: 'all' });
   };
 
-  /** クリップ・AI回答から元のレッスンへ。?block= で保存した箇所まで戻す */
+  /**
+   * 元のレッスンを **教材ページで** 開く。上部バーの「『◯◯』に戻る」だけが使う。
+   * ノート本文の出どころ行と「教材から引用」は、遷移ではなく引用モーダルを開く
+   * （NoteEditor / QuoteFromLessonModal）。ここは「教材を読みに行く」という
+   * はっきりした意思表示なので遷移のままにしてある。
+   */
   const openSource = (source: NoteSourceRef, blockId: string | null) => {
     const params = new URLSearchParams({ module: String(source.lessonId) });
     if (source.blockId) params.set('block', source.blockId);
@@ -258,6 +267,19 @@ export function MyNotesPage() {
     }
   };
 
+  /**
+   * 一覧のカードの★。開かずに付け外しできるようにした唯一の操作。
+   * 成功時はトーストを出さない。★の見た目とフォルダ列「重要」の件数がその場で
+   * 動くので結果は見えており、連打すると重なって邪魔になる。
+   */
+  const toggleFavoriteInList = async (id: string, favorite: boolean) => {
+    try {
+      await list.toggleFavorite(id, favorite);
+    } catch {
+      showToast('重要を変更できませんでした', 'error');
+    }
+  };
+
   /** ノート面の「重要」。フォルダ列の「重要」の件数も同時に動かす */
   const toggleFavoriteInEditor = async () => {
     if (!detail.note) return;
@@ -273,7 +295,7 @@ export function MyNotesPage() {
   };
 
   const hasOtherFilters = origin !== 'all' || list.query.trim() !== '';
-  const crumb = filterLabel(filter, folders);
+  const currentFolderLabel = filterLabel(filter, folders);
 
   const backToSource = backTo
     ? { label: backTo.label, onClick: () => navigate(backTo.to) }
@@ -283,6 +305,61 @@ export function MyNotesPage() {
         onClick: () => openSource(detail.note!.source!, null),
       }
     : null;
+
+  /*
+   * ── 速記メモの小窓（Document Picture-in-Picture）──
+   * 教材の動画や会議を見ながら、このノートに書き足すための常時最前面の小窓。
+   *
+   * 🔴 小窓を持つのはこのページで、ボタンだけを上部バーに置く。
+   *    バーは detail.note が消えると一緒に消えるので、そこに小窓を持たせると
+   *    一覧へ戻っただけで小窓が落ちる。
+   * 🔴 転記先は開いた時点のノートに固定する。開いたまま一覧へ戻ったり別のノートを
+   *    開いたりしても、書いていた分は書き始めたノートへ入るようにするため。
+   * 🔴 追加は detail.addBlock ではなく bffClient を直に呼ぶ。addBlock は noteId が
+   *    外れると if (!noteId) return null で例外も出さずに捨てる（useNote.ts:127）。
+   */
+  const [pinnedNote, setPinnedNote] = useState<{ id: string; title: string } | null>(null);
+  const memoTarget =
+    pinnedNote ?? (detail.note ? { id: detail.note.id, title: detail.note.title } : null);
+
+  const commitQuickMemo = async (text: string) => {
+    if (!memoTarget) throw new QuickMemoError('追加先のノートが分かりません。');
+    await bffClient.appendNoteBlock(memoTarget.id, { kind: 'text', text });
+    if (selectedId === memoTarget.id) {
+      await detail.reload();
+    } else {
+      // 一覧に戻っていた／別のノートを開いていた。どこに入ったのかを言って出口を作る
+      void list.reload();
+      showToast(`「${memoTarget.title}」に追加しました`, 'success', {
+        action: { label: 'このノートを開く', onClick: () => select(memoTarget.id) },
+      });
+    }
+  };
+
+  const memoWindow = useQuickMemoWindow({
+    draftKey: memoTarget ? noteDraftKey(memoTarget.id) : '',
+    targetLabel: memoTarget?.title || '無題のノート',
+    windowTitle: '速記メモ — WEBCOACH',
+    onCommit: commitQuickMemo,
+  });
+
+  // 閉じたら固定を解く。次に開くときの宛先は、そのとき開いているノート。
+  // 「開いた直後の再描画」で解いてしまわないよう、開いていた事実を覚えてから判定する
+  const memoWasOpen = useRef(false);
+  useEffect(() => {
+    if (memoWindow.isOpen) memoWasOpen.current = true;
+    else if (memoWasOpen.current) {
+      memoWasOpen.current = false;
+      setPinnedNote(null);
+    }
+  }, [memoWindow.isOpen]);
+
+  const handleQuickMemo = () => {
+    if (!memoWindow.isOpen && detail.note) {
+      setPinnedNote({ id: detail.note.id, title: detail.note.title });
+    }
+    void memoWindow.toggle();
+  };
 
   return (
     <div className="wc-warm min-h-screen flex flex-col" style={{ background: 'var(--dc-bg)' }}>
@@ -320,6 +397,16 @@ export function MyNotesPage() {
                       onMoveToFolder={(folderId) => void moveNote(detail.note!.id, folderId, true)}
                       onToggleFavorite={() => void toggleFavoriteInEditor()}
                       onDelete={() => void handleDelete(detail.note!.id, detail.note!.title)}
+                      quickMemo={
+                        memoWindow.supported ? (
+                          <QuickMemoButton
+                            isOpen={memoWindow.isOpen}
+                            hasDraft={memoWindow.hasDraft}
+                            onClick={handleQuickMemo}
+                            className="notes-tool focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                          />
+                        ) : null
+                      }
                     />
                     <div style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}>
                       <NoteEditor
@@ -329,7 +416,6 @@ export function MyNotesPage() {
                         onPatchBlock={detail.patchBlock}
                         onMoveBlock={detail.moveBlock}
                         onRemoveBlock={detail.removeBlock}
-                        onOpenSource={openSource}
                         onError={(message) => showToast(message, 'error')}
                       />
                     </div>
@@ -382,48 +468,21 @@ export function MyNotesPage() {
                   <NoteFolderStrip folders={folders} counts={counts} active={filter} onSelect={setFolder} />
                 )}
 
-                {/* ── パンくず＋見出し、検索、新規作成 ── */}
+                {/* ── 見出し（＝いま見ているフォルダ名）、検索、新規作成 ── */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                   <div style={{ flex: '1 1 200px', minWidth: 0 }}>
-                    <nav
-                      aria-label="現在の場所"
-                      style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: 'var(--dc-text-muted)' }}
-                    >
-                      {crumb ? (
-                        <>
-                          <button
-                            type="button"
-                            onClick={() => setFolder({ kind: 'all' })}
-                            className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                            style={{
-                              padding: 0,
-                              border: 0,
-                              background: 'none',
-                              color: 'inherit',
-                              fontFamily: 'inherit',
-                              fontSize: 'inherit',
-                              cursor: 'pointer',
-                            }}
-                          >
-                            マイノート
-                          </button>
-                          <span style={{ color: 'var(--dc-text-subtle)' }}>›</span>
-                          <span style={{ color: 'var(--dc-text)', fontWeight: 700 }}>{crumb}</span>
-                        </>
-                      ) : (
-                        <span>マイノート</span>
-                      )}
-                    </nav>
+                    {/* 🔴 階層は「すべて／フォルダ」の一段だけ。パンくずは置かず、
+                           見出しそのものを現在地にする。 */}
                     <h1
                       style={{
-                        margin: '6px 0 0',
+                        margin: 0,
                         fontSize: 22,
                         lineHeight: 1.35,
                         fontWeight: 700,
                         letterSpacing: '-.01em',
                       }}
                     >
-                      マイノート
+                      {currentFolderLabel ?? 'マイノート'}
                     </h1>
                   </div>
 
@@ -507,27 +566,11 @@ export function MyNotesPage() {
                       aria-haspopup="menu"
                       aria-expanded={sortOpen}
                       onClick={() => setSortOpen((v) => !v)}
-                      className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 6,
-                        height: 30,
-                        padding: '0 12px',
-                        border: '1px solid var(--dc-border-strong)',
-                        borderRadius: 9999,
-                        background: sortOpen ? 'var(--dc-sunken)' : 'var(--dc-surface)',
-                        color: 'var(--dc-text-body)',
-                        fontFamily: 'inherit',
-                        fontSize: 12,
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                        whiteSpace: 'nowrap',
-                      }}
+                      className={`notes-sort-trigger focus-visible:ring-2 focus-visible:ring-[#F6B9BD] ${sortOpen ? 'is-open' : ''}`}
                     >
-                      <ArrowUpDown size={13} style={{ color: 'var(--dc-text-muted)' }} />
+                      <ArrowUpDown size={13} />
                       {NOTE_SORT_LABEL[list.sort]}
-                      <ChevronDown size={13} style={{ color: 'var(--dc-text-muted)' }} />
+                      <ChevronDown size={13} />
                     </button>
 
                     {sortOpen && (
@@ -575,6 +618,7 @@ export function MyNotesPage() {
                       filter={filter}
                       hasOtherFilters={hasOtherFilters}
                       onOpen={select}
+                      onToggleFavorite={(id, favorite) => void toggleFavoriteInList(id, favorite)}
                       onCreate={handleCreate}
                       onClearFilters={clearFilters}
                     />
@@ -612,6 +656,9 @@ export function MyNotesPage() {
           />
         </React.Suspense>
       )}
+
+      {/* 小窓の中身。ノート面を閉じても残るよう、バーではなくページの直下で描く */}
+      {memoWindow.portal}
     </div>
   );
 }

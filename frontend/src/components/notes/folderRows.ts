@@ -41,7 +41,7 @@ export function folderNameOf(folderId: string | null, folders: NoteFolder[]): st
   return folders.find((f) => f.id === folderId)?.name ?? null;
 }
 
-/** パンくず・フォルダピルに出す名前。all は「マイノート」だけなので null */
+/** 見出し・フォルダピルに出す名前。all は「マイノート」だけなので null */
 export function filterLabel(filter: NoteFolderFilter, folders: NoteFolder[]): string | null {
   if (filter.kind === 'all') return null;
   if (filter.kind === 'favorite') return FAVORITE_LABEL;

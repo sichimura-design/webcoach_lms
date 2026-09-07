@@ -34,13 +34,13 @@ export const NOTE_BLOCK_LABEL: Record<NoteBlockKind, string> = {
  * self     … 「新しいノートを作成」から自分で作った
  * material … 教材（レッスン）から作られた
  * ai       … AIコーチの回答を残すために作られた
- * coaching … 面談のまとめ。coachingSessionId でどの回のものかが分かる
+ * coaching … コーチングのまとめ。coachingSessionId でどの回のものかが分かる
  *             （ノート作成の導線自体はまだ無く、シードで入っているだけ）
  */
 export type NoteOrigin = 'self' | 'material' | 'ai' | 'coaching';
 
 export const NOTE_ORIGIN_LABEL: Record<NoteOrigin, string> = {
-  self: '自分のメモ',
+  self: '自分のノート',
   material: '教材',
   ai: 'AIコーチ',
   coaching: 'コーチング',
@@ -141,7 +141,7 @@ export interface Note {
   source: NoteSourceRef | null;
   /**
    * このノートを取ったコーチング回（CoachingSessionDetail.id）。
-   * コーチング記録の「自分のメモ」がこれで自分の回のノートを引く。
+   * コーチング記録の「マイノート」欄がこれで自分の回のノートを引く。
    * source は教材（courseId / lessonId）専用なので、そちらには相乗りできない。
    */
   coachingSessionId?: number | null;
@@ -159,6 +159,15 @@ export interface NoteSummary {
   blockCount: number;
   /** 一覧カードに出す本文の書き出し */
   excerpt: string;
+  /**
+   * 一覧カードのサムネイル。中にある最初の画像ブロックの imageId（無ければ null）。
+   * 制作物を貼ったノートを一覧で見分けるために持つ。
+   *
+   * 🔴 answer ブロックの添付画像（NoteAnswerBlock.image）は載せない。あれは dataURL で、
+   *    一覧レスポンスに入れると1件で数百KBになり listNotes が重くなる。
+   *    実APIになったら imageId をサーバのURLに置き換える（NoteImageBlock と同じ扱い）。
+   */
+  thumbnailImageId?: string | null;
   source: NoteSourceRef | null;
   coachingSessionId?: number | null;
   createdAt: string;
@@ -168,15 +177,14 @@ export interface NoteSummary {
 /**
  * 一覧の並び順。
  * 🔴 昇順（古い順）を必ず持たせる。「最初に書いたノートから読み返す」は
- *    振り返りの基本動作で、降順3種だけでは辿れない。
+ *    振り返りの基本動作で、新しい順だけでは辿れない。
+ *    作成日時の並びは更新日時とほぼ同じ結果になり選択肢を増やすだけなので持たない。
  */
-export type NoteSort = 'updated' | 'updatedAsc' | 'created' | 'createdAsc' | 'title';
+export type NoteSort = 'updated' | 'updatedAsc' | 'title';
 
 export const NOTE_SORT_LABEL: Record<NoteSort, string> = {
   updated: '更新が新しい順',
   updatedAsc: '更新が古い順',
-  created: '作成が新しい順',
-  createdAsc: '作成が古い順',
   title: 'タイトル順',
 };
 
@@ -187,7 +195,7 @@ export interface NoteListQuery {
   favorite?: boolean;
   /** そのレッスンから触ったノートだけを引く（教材画面のメモ欄が使う） */
   lessonId?: number;
-  /** そのコーチング回のノートだけを引く（コーチング記録の「自分のメモ」が使う） */
+  /** そのコーチング回のノートだけを引く（コーチング記録の「マイノート」欄が使う） */
   coachingSessionId?: number;
 }
 

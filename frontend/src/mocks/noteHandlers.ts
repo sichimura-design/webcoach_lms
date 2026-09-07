@@ -25,8 +25,8 @@
  *     全ノートの全ブロックを取りに行くのを避けるため。パスが notes/:id と別なので取り違えは起きないが、
  *     読む順が分かるように notes 系より先に登録する。
  *   ・ブロックを足す・直すたびにノートの updatedAt を上げる。一覧の並び順の根拠になる。
- *     🔴 フォルダの移動と並べ替えは上げない。整理しただけでカードが並び替わると、
- *        ドロップした先でカードが逃げる。
+ *     🔴 フォルダの移動・並べ替え・重要の切り替えは上げない。整理しただけでカードが
+ *        並び替わると、ドロップした先や★を押した先でカードが逃げる。
  * ============================================================
  */
 import { http, HttpResponse } from 'msw';
@@ -83,6 +83,15 @@ function excerptOf(note: Note): string {
   return '';
 }
 
+/**
+ * 一覧カードのサムネイル。中にある最初の画像ブロック1枚だけを指す。
+ * 🔴 answer ブロックの添付画像（dataURL）は返さない。一覧レスポンスが重くなる。
+ */
+function thumbnailOf(note: Note): string | null {
+  const block = note.blocks.find((b) => b.kind === 'image');
+  return block && block.kind === 'image' ? block.imageId : null;
+}
+
 function toSummary(note: Note): NoteSummary {
   return {
     id: note.id,
@@ -92,6 +101,7 @@ function toSummary(note: Note): NoteSummary {
     folderId: note.folderId ?? null,
     blockCount: note.blocks.length,
     excerpt: excerptOf(note),
+    thumbnailImageId: thumbnailOf(note),
     source: note.source,
     coachingSessionId: note.coachingSessionId ?? null,
     createdAt: note.createdAt,
@@ -124,8 +134,6 @@ function touchesLesson(note: Note, lessonId: number): boolean {
 function sortNotes(notes: Note[], sort: NoteSort): Note[] {
   const copy = [...notes];
   if (sort === 'title') return copy.sort((a, b) => a.title.localeCompare(b.title, 'ja'));
-  if (sort === 'created') return copy.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-  if (sort === 'createdAsc') return copy.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
   if (sort === 'updatedAsc') return copy.sort((a, b) => a.updatedAt.localeCompare(b.updatedAt));
   return copy.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
@@ -346,7 +354,7 @@ export const noteHandlers = [
       blocks: [],
       favorite: false,
       // 出どころは「どこで作ったか」で一度決まる。指定が無ければ
-      // レッスンの文脈を持って来たかどうかで 教材 / 自分のメモ に振る
+      // レッスンの文脈を持って来たかどうかで 教材 / 自分のノート に振る
       origin: body.origin ?? (body.source ? 'material' : 'self'),
       folderId,
       source: body.source ?? null,
@@ -380,8 +388,9 @@ export const noteHandlers = [
         return HttpResponse.json({ error: 'folder not found' }, { status: 400 });
       }
     }
-    // 中身を変えず置き場所だけ動かすときは updatedAt を進めない（一覧の並びを崩さない）
-    const editsContent = typeof body.title === 'string' || typeof body.favorite === 'boolean';
+    // 中身を変えないもの（置き場所・重要）では updatedAt を進めない（一覧の並びを崩さない）。
+    // 一覧のカードから★を押せるようにしたので、押した端からカードが先頭へ飛ぶのを避ける
+    const editsContent = typeof body.title === 'string';
     const note = updateNote(
       String(params.id),
       (n) => {

@@ -86,7 +86,22 @@ function moodleToDoc(
   };
 }
 
-export function useLessonDoc(courseId: number, lessonId: number | null): UseLessonDoc {
+export interface UseLessonDocOptions {
+  /**
+   * 「最近開いた教材」に残すか。既定 true。
+   * マイノートの引用モーダルのように「読みに来たのではなく、数行引きに来ただけ」の
+   * 呼び出しは false にする（MyPage の『前回の続き』や集中ブースの候補が
+   * ノートを書いただけで書き換わってしまうため）。
+   */
+  trackRecent?: boolean;
+}
+
+export function useLessonDoc(
+  courseId: number,
+  lessonId: number | null,
+  options: UseLessonDocOptions = {}
+): UseLessonDoc {
+  const { trackRecent = true } = options;
   const [outline, setOutline] = useState<LessonOutline | null>(null);
   const [doc, setDoc] = useState<LessonDoc | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
@@ -164,7 +179,7 @@ export function useLessonDoc(courseId: number, lessonId: number | null): UseLess
   // /webcoach/resumecourse はレッスンを完了したときだけ更新されるので、
   // 「開いただけのレッスン」を覚えている場所が別に必要だった（端末ごとの履歴）。
   useEffect(() => {
-    if (!doc) return;
+    if (!doc || !trackRecent) return;
     useRecentCourseStore.getState().touch({
       courseId: doc.courseId,
       courseTitle: doc.courseName,
@@ -172,7 +187,7 @@ export function useLessonDoc(courseId: number, lessonId: number | null): UseLess
       lessonTitle: doc.title,
       progressPercent: outline?.progressPercent,
     });
-  }, [doc, outline?.progressPercent]);
+  }, [doc, outline?.progressPercent, trackRecent]);
 
   const allLessonIds = (outline?.sections ?? []).flatMap((s) => s.lessons.map((l) => l.lessonId));
 

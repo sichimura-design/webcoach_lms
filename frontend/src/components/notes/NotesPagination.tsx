@@ -42,9 +42,7 @@ export function NotesPagination({ page, pageCount, total, from, to, onChange }: 
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <Arrow label="前のページ" disabled={page <= 1} onClick={() => onChange(page - 1)}>
-          ‹
-        </Arrow>
+        <Arrow label="前のページ" direction="prev" disabled={page <= 1} onClick={() => onChange(page - 1)} />
 
         {pages.map((n) => {
           const current = n === page;
@@ -69,9 +67,7 @@ export function NotesPagination({ page, pageCount, total, from, to, onChange }: 
           );
         })}
 
-        <Arrow label="次のページ" disabled={page >= pageCount} onClick={() => onChange(page + 1)}>
-          ›
-        </Arrow>
+        <Arrow label="次のページ" direction="next" disabled={page >= pageCount} onClick={() => onChange(page + 1)} />
       </div>
 
       <span
@@ -84,16 +80,20 @@ export function NotesPagination({ page, pageCount, total, from, to, onChange }: 
   );
 }
 
+/**
+ * ‹ › の文字グリフだと線が細くて番号の丸に埋もれるので、
+ * 太さを指定できる SVG のシェブロンにしている。
+ */
 function Arrow({
   label,
+  direction,
   disabled,
   onClick,
-  children,
 }: {
   label: string;
+  direction: 'prev' | 'next';
   disabled: boolean;
   onClick: () => void;
-  children: React.ReactNode;
 }) {
   return (
     <button
@@ -110,7 +110,19 @@ function Arrow({
         cursor: disabled ? 'not-allowed' : 'pointer',
       }}
     >
-      {children}
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        {direction === 'prev' ? <polyline points="15 5 8 12 15 19" /> : <polyline points="9 5 16 12 9 19" />}
+      </svg>
     </button>
   );
 }

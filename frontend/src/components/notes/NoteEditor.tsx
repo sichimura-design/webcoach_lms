@@ -5,6 +5,7 @@ import { NOTE_IMAGE_ACCEPT, NOTE_IMAGE_MAX_BYTES, putNoteImage } from '../../uti
 import NoteBlockView from './NoteBlockView';
 import { DropPosition, NoteBlockRow } from './NoteBlockRow';
 import { InsertKind, NoteEditorToolbar, TEXT_PREFIX } from './NoteEditorToolbar';
+import QuoteFromLessonModal, { QuoteTarget } from './QuoteFromLessonModal';
 
 /**
  * ノート面（デザイン『マイノート 改善案』⑤⑥⑦）。
@@ -14,9 +15,11 @@ import { InsertKind, NoteEditorToolbar, TEXT_PREFIX } from './NoteEditorToolbar'
  *    「＋ 画像・見出し・箇条書きを追加」が1つあるだけで、ノートを作る中身の操作が
  *    画面から読み取れなかった（レビュー指摘）。ツールバーは本文より上に置くが、
  *    ボタンは「足す」だけに絞り、タイトルと本文の間で完結させる。
- * 🔴「クリップを追加」「AI回答を追加」のボタンは置かない。この画面には素材が無く、
- *    以前はトーストを出して教材ページへ強制遷移していた。ツールバーの「教材から引用」は
- *    やり方の説明を出すだけで、勝手に画面を移動しない（NoteEditorToolbar）。
+ * 🔴「クリップを追加」「AI回答を追加」のボタンは置かない。素材はこの画面には無い。
+ *    ツールバーの「教材から引用」は、教材を **モーダル** で開いてその場で引く
+ *    （QuoteFromLessonModal）。押しても画面は /notes のまま動かない。
+ *    以前はトーストを出して教材ページへ飛ばしていて、飛んだ先から書きかけのノートへ
+ *    どう戻るのかが分からなかった。
  *
  * 重要・削除・保存先・保存状態は上部バー（NoteEditorBar）にある。紙の中は書く場所だけ。
  */
@@ -28,7 +31,6 @@ interface NoteEditorProps {
   onPatchBlock: (blockId: string, patch: NoteBlockPatch) => void;
   onMoveBlock: (blockId: string, toIndex: number) => void;
   onRemoveBlock: (blockId: string) => void;
-  onOpenSource: (source: NoteSourceRef, blockId: string | null) => void;
   /** 画像の取り込みに失敗したときの通知 */
   onError: (message: string) => void;
 }
@@ -40,7 +42,6 @@ export function NoteEditor({
   onPatchBlock,
   onMoveBlock,
   onRemoveBlock,
-  onOpenSource,
   onError,
 }: NoteEditorProps) {
   const [titleDraft, setTitleDraft] = useState(note.title);
@@ -66,6 +67,14 @@ export function NoteEditor({
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [dropAt, setDropAt] = useState<{ index: number; position: DropPosition } | null>(null);
 
+  /**
+   * 教材の引用モーダル。ツールバーの「教材から引用」と、クリップ／AI回答の
+   * 出どころ行の両方から開く。どちらも「教材を見に行く」操作で、ノートを離れる理由がない。
+   */
+  const [quote, setQuote] = useState<{ initial: QuoteTarget | null; focusBlockId: string | null } | null>(
+    null
+  );
+
   const isEmptyNote = note.blocks.length === 0;
 
   useEffect(() => {
@@ -75,6 +84,8 @@ export function NoteEditor({
     setAutoEditId(null);
     setDragIndex(null);
     setDropAt(null);
+    // 別のノートに切り替わったら、前のノート向けに開いていた引用モーダルは閉じる
+    setQuote(null);
   }, [note.id, note.title]);
 
   // 新規ノートは開いた瞬間から書ける（＝まっさらに書き始められる）
@@ -146,6 +157,22 @@ export function NoteEditor({
     if (to === from) return;
     onMoveBlock(note.blocks[from].id, to);
   };
+
+  /**
+   * クリップ・AI回答の「出どころ」行から、引用元の教材を見に行く。
+   * 遷移ではなく引用モーダルを開き、保存した箇所まで送る。
+   * 見ながらそのまま続きを引けるので、確認と引用が同じ操作になる。
+   */
+  const handleOpenSource = (source: NoteSourceRef, blockId: string | null) => {
+    setQuote({
+      initial: { courseId: source.courseId, lessonId: source.lessonId },
+      focusBlockId: source.blockId ?? blockId,
+    });
+  };
+
+  /** モーダルからのクリップ。ノートの末尾に足す */
+  const handleQuoteClip = async ({ text, source }: { text: string; source: NoteSourceRef }) =>
+    !!(await onAddBlock({ kind: 'clip', text, source }));
 
   return (
     <section
@@ -222,10 +249,14 @@ export function NoteEditor({
       {/* ⑥ 常設のツールバー */}
       <NoteEditorToolbar
         onInsert={(kind) => pickInsert(kind)}
-        sourceLesson={
-          note.source
-            ? { label: note.source.lessonTitle, onOpen: () => onOpenSource(note.source!, null) }
-            : null
+        onQuote={() =>
+          setQuote({
+            // 教材から作られたノートは元レッスンを開く。そうでなければモーダル側で選ばせる
+            initial: note.source
+              ? { courseId: note.source.courseId, lessonId: note.source.lessonId }
+              : null,
+            focusBlockId: null,
+          })
         }
       />
 
@@ -260,7 +291,7 @@ export function NoteEditor({
               block={block}
               autoEdit={block.id === autoEditId}
               onPatch={onPatchBlock}
-              onOpenSource={onOpenSource}
+              onOpenSource={handleOpenSource}
             />
           </NoteBlockRow>
         ))}
@@ -287,7 +318,7 @@ export function NoteEditor({
                   commitTail();
                 }
               }}
-              placeholder={isEmptyNote ? 'ここに入力して、自由にメモを書いていきましょう…' : '続きを書く…'}
+              placeholder={isEmptyNote ? 'ここに入力して、自由に書いていきましょう…' : '続きを書く…'}
               rows={Math.max(2, tail.split('\n').length)}
               style={{
                 width: '100%',
@@ -342,6 +373,17 @@ export function NoteEditor({
           </div>
         )}
       </div>
+
+      {/* 教材から引用。追加先はこのノートで確定しているので、保存先の選び直しは出さない */}
+      {quote && (
+        <QuoteFromLessonModal
+          note={note}
+          initial={quote.initial}
+          focusBlockId={quote.focusBlockId}
+          onClip={handleQuoteClip}
+          onClose={() => setQuote(null)}
+        />
+      )}
     </section>
   );
 }

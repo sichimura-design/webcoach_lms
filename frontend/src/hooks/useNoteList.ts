@@ -40,7 +40,7 @@ export function useNoteList({ lessonId }: UseNoteListOptions = {}) {
       setError(null);
     } catch {
       if (seq !== reqRef.current) return;
-      setError('ノートを読み込めませんでした');
+      setError('マイノートを読み込めませんでした');
     } finally {
       if (seq === reqRef.current) setLoading(false);
     }
@@ -87,6 +87,24 @@ export function useNoteList({ lessonId }: UseNoteListOptions = {}) {
   );
 
   /**
+   * 一覧のカードの★。moveToFolder と同じで、先に手元を書き換えてから送る。
+   * 重要の切り替えでは updatedAt が動かない（mocks/noteHandlers.ts）ので並びは変わらず、
+   * 取り直すとグリッドがちらつくだけなので成功時は再取得しない。
+   */
+  const toggleFavorite = useCallback(
+    async (id: string, favorite: boolean) => {
+      setItems((prev) => prev.map((n) => (n.id === id ? { ...n, favorite } : n)));
+      try {
+        await bffClient.updateNote(id, { favorite });
+      } catch (e) {
+        await reload();
+        throw e;
+      }
+    },
+    [reload]
+  );
+
+  /**
    * ノート面（useNote）で変えたものを一覧にも映す。サーバには送らない。
    * ノート面を開いている間もフォルダ列の件数は見えているので、重要やフォルダを
    * 変えた瞬間に数字が動かないと「押せていない」ように見える。
@@ -107,6 +125,7 @@ export function useNoteList({ lessonId }: UseNoteListOptions = {}) {
     create,
     remove,
     moveToFolder,
+    toggleFavorite,
     patchItem,
   };
 }
