@@ -886,7 +886,9 @@ body.learning-immersive {
 
 @media (max-width: 900px) {
   .wc-lesson-wordmark { display: none; }
-  .wc-lesson-progress-bar { display: none; }
+  /* !important は必須。中身は shared/LessonProgressBar で、ステップ型のときに
+     display:flex をインラインで持つ（インラインの方が強いので !important 無しでは消えない）。 */
+  .wc-lesson-progress-bar { display: none !important; }
   .wc-lesson-progress-strip { display: block; }
   /* パンくずはレッスン名だけ残す。狭い画面で残すべきは「いま読んでいるもの」 */
   .wc-lesson-crumb-course { display: none; }
@@ -895,6 +897,22 @@ body.learning-immersive {
 @media (max-width: 600px) {
   .wc-lesson-backlabel { display: none; }
   .wc-lesson-progress-label { display: none; }
+}
+
+/* 教材ヘッダー（LessonArticle）。既定は左にカバー画像・右にテキストの2カラム。
+   狭い画面ではカバーを上に積んで全幅にする。横に並べたままだと画像もテキストも
+   痩せて、375px では文字が2〜3語で折り返してしまう。 */
+@media (max-width: 640px) {
+  .wc-lesson-hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  /* !important は必須。幅は LessonArticle 側がインラインで持っており
+     （min(288px, 38%)）、インラインの方が強いので !important 無しでは効かない。
+     .wc-lesson-progress-bar と同じ事情。 */
+  .wc-lesson-hero-cover {
+    width: 100% !important;
+  }
 }
 
 /* 教材本文のタイポグラフィ。既存の .moodle-content とは別系統にして衝突を避ける。
@@ -1681,9 +1699,13 @@ body.learning-immersive {
 
 /* コースタイルのグリッド。学習トップの領域ブロックと領域ページ
    （/courses/category/:code）が共有する。
-   🔴 3列まで。4列だと1枚が約330pxまで縮み、8枚並ぶと絵柄も文字も細切れの
-      パッチワークに見えていた。3列なら1枚約440pxで、タイル内の文字を削った
-      ぶんが絵柄として効く。 */
+   🔴 揃えているのは列数ではなく「1枚の実寸（約330px）」。本文の最大幅が
+      2画面で違う（学習トップ 1440px / 領域ページは --wc-page-max 1140px ＝
+      中身 1012px）ので、同じ大きさのタイルを並べると列数は自然と変わる。
+      領域ページはここの3列で1枚 328px。学習トップだけ 1280px 以上で
+      .wc-area-grid--wide が4列に上書きして 313〜330px にする。
+   🔴 領域ページを4列にはしない。中身 1012px を4つに割ると1枚 242px で、
+      絵柄が帯になり文字組みサムネのコース名も入らない。 */
 .wc-area-grid {
   grid-template-columns: repeat(3, 1fr);
 }
@@ -1700,6 +1722,17 @@ body.learning-immersive {
   }
 }
 
+/* 「ほかに学習中」の行に出る領域名。狭い幅では畳む。
+   🔴 この span は flexShrink:0 なので、残す限り縮まず、削れるのはコース名側だけ。
+      1行の中身は サムネ40 + コース名 + 領域名 + 進捗バー96 + 「1/7」+ ›。
+      375px だと名前と領域名に残るのが約70pxで、コース名がほぼ読めなくなる。
+      領域の手がかりは左のサムネの色と図形が持つので、文字の方を落とす。 */
+@media (max-width: 767px) {
+  .wc-active-row-area {
+    display: none;
+  }
+}
+
 /* 学習トップの「領域から探す」は、領域カードの地図をやめて
    「領域ブロック＋その領域のコース一覧」になった（MaterialsTopPage ⑤）。
    コースのグリッドは領域ページと同じ .wc-area-grid を使い回すので、
@@ -1707,16 +1740,54 @@ body.learning-immersive {
 
    サイドバー展開中は本文が 152px（= 224 − 72）細くなるので、その分を足した
    幅で先に1段落とす（.mypage-rank-split などと同じ理由・同じ足し方）。
-   900 + 152 = 1052px。 */
-@media (max-width: 1052px) {
+   900 + 152 = 1052px。
+
+   🔴 min-width: 640px を外さないこと。body.sidebar-expanded .wc-area-grid（0,2,1）は
+      .wc-area-grid（0,1,0）より強いので、ガードが無いと 560px 以下の1列指定まで
+      これが上書きし、375px でサイドバーを開いていた人だけ2列（1枚161px）になる
+      ＝コース名も切れる。サイドバーのオフセット自体が @media (min-width: 640px) の
+      中でしか効かない（＝それ未満では本文が細くならない）ので、640px が正しい値。 */
+@media (min-width: 640px) and (max-width: 1052px) {
   body.sidebar-expanded .wc-area-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
+/* 学習トップ（MaterialsTopPage）の領域ブロックだけ4列にする修飾クラス。
+   ============================================================
+   🔴 min-width で足す。上の .wc-area-grid の段組み（3 → 2 → 1）は max-width の
+      連鎖で、そこに max-width を1本割り込ませると順序依存が増えるうえ、
+      body.sidebar-expanded .wc-area-grid（0,2,1）が 560px 以下の1列指定を
+      上書きしている既存の穴まで広がる。1280px 以上でしか発火しない形にすれば、
+      狭い側の段組みには1行も届かない。
+   🔴 4列にできるのは学習トップだけ。共有クラス側に4列を持たせると本文 1012px の
+      領域ページが1枚 242px になる（上のコメント参照）。
+   🔴 4→3 の境目は「1枚 273px」が下限。学習トップは maxWidth 1440・左右
+      clamp(20px,2.53vw,42px)・gap 14 なので、1280px で 275px、1920px で 328px。
+      かつて 1100px まで4列で粘っていた版（98f5202 以前）は1枚 232px まで縮み、
+      絵柄も文字も細切れに見えていた。ここを下げ直さないこと。
+   🔴 サイドバー展開中は本文が 152px 細くなるので 1280 + 152 = 1432px 未満で3列に
+      戻す（1431px 以下。.notes-grid と同じ足し方）。展開時の4列の最小は 273px。
+   ============================================================ */
+@media (min-width: 1280px) {
+  .wc-area-grid--wide {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1431px) {
+  body.sidebar-expanded .wc-area-grid--wide {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
 /* サイドバー展開中は本文が 152px 細くなる。フォルダ列 248px も引かれるので、
-   1279 + 152 = 1431px 以下で先に2列へ落とす（.wc-area-cards と同じ足し方） */
-@media (max-width: 1431px) {
+   1279 + 152 = 1431px 以下で先に2列へ落とす（.wc-area-cards と同じ足し方）。
+
+   🔴 min-width: 768px を外さないこと。この指定（0,2,1）は .notes-grid（0,1,0）より
+      強いので、ガードが無いと 767px 以下の1列指定まで上書きし、375px でサイドバーを
+      開いていた人だけ2列になる。下限は「素のグリッドが複数列である幅」＝768px。 */
+@media (min-width: 768px) and (max-width: 1431px) {
   body.sidebar-expanded .notes-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

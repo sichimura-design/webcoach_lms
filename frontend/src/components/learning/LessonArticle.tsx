@@ -2,6 +2,9 @@ import { RefObject, useEffect } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, Check, Clock, List, Sparkles } from 'lucide-react';
 import { color, font, radius, shadow } from '../../theme/webcoachTheme';
 import { LessonCheerResponse, LessonDoc } from '../../types/lesson';
+// バレル（shared/index.ts）を経由せず直に import する。保護URLのトークン付与・
+// 読み込み失敗時のフォールバックまで CourseImage が持っているので自作しない。
+import { CourseImage } from '../shared/CourseImage';
 import { MATERIAL_FORMAT_LABEL } from '../../constants/learningTaxonomy';
 import type { LearningType } from '../../constants/learningTaxonomy';
 import LessonBlockView from './LessonBlockView';
@@ -373,53 +376,88 @@ export function LessonArticle({
           padding: 'clamp(24px, 4vw, 48px)',
         }}
       >
-        {/* ── ヘッダー：タイトル・リード ──
+        {/* ── ヘッダー：カバー画像・タイトル・リード ──
             🔴 タイトルの上に学習タイプ（演習／基礎知識…）の eyebrow を出していたが撤去した。
-               受講生が読むのはレッスン名で、分類名は選ぶ判断に使われていなかった。 */}
-        <header style={{ textAlign: 'center', marginBottom: 40 }}>
-          <h1
+               受講生が読むのはレッスン名で、分類名は選ぶ判断に使われていなかった。
+            🔴 中央寄せ＋タイトル下の赤線だった構成をやめ、左にカバー画像・右にテキストの
+               2カラムにした。教材が読み物として素っ気なく見えるという指摘への対応で、
+               「ここから本文が始まる」合図は赤線ではなく絵が担う。
+               狭い画面での縦積みは index.css の .wc-lesson-hero が持つ（JSで幅を測らない）。 */}
+        <header
+          className="wc-lesson-hero"
+          style={{ display: 'flex', alignItems: 'center', gap: 24, textAlign: 'left', marginBottom: 40 }}
+        >
+          {/* カバーの枠。大きさ・角丸・切り抜きはここが持ち、中身（画像 or フォールバック）を
+              CourseImage に任せる。CourseImage は画像とフォールバックの両方に style を
+              当てるので、枠1つで両方の状態が同じ寸法に収まる。
+              🔴 画像が無くても必ず描く。有無でレイアウトを2種類持つと保守が倍になるうえ、
+                 フォールバックはコース一覧のカードと同じ絵柄なので未完成には見えない。 */}
+          <div
+            className="wc-lesson-hero-cover"
             style={{
-              margin: 0,
-              fontSize: 'clamp(24px, 3.4vw, 38px)',
-              fontWeight: 900,
-              lineHeight: 1.35,
-              letterSpacing: '-.02em',
-              color: color.text,
+              width: 'min(288px, 38%)',
+              aspectRatio: '16 / 10',
+              flex: 'none',
+              borderRadius: radius.sm,
+              overflow: 'hidden',
+              border: `1px solid ${color.border}`,
+              // 中身（img でもフォールバックの div でも）をこの枠いっぱいに伸ばす
+              display: 'flex',
             }}
           >
-            {doc.title}
-          </h1>
+            {/* コース名は焼き込まない（hideFallbackText）。レッスン名はすぐ右にあり、
+                コース名は上のパンくずに既に出ているため。装飾なので alt は空。
+                🔴 style に display を渡さないこと。CourseImage はフォールバックの
+                   中央寄せを className の flex でやっているので、display を上書きすると
+                   アイコンが左上に寄る。伸ばすのは上の枠の flex に任せる。 */}
+            <CourseImage
+              imageUrl={doc.coverImageUrl}
+              alt=""
+              hideFallbackText
+              style={{ width: '100%', height: '100%' }}
+            />
+          </div>
 
-          {/* タイトル下の短い赤線。ここから本文が始まる合図 */}
-          <span
-            aria-hidden
-            style={{ display: 'block', width: 48, height: 3, borderRadius: 2, background: color.primary, margin: '18px auto 0' }}
-          />
-
-          {doc.lead && (
-            <p
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h1
               style={{
-                margin: '20px auto 0',
-                maxWidth: 640,
-                color: color.textMuted,
-                fontSize: 14,
-                lineHeight: 2,
+                margin: 0,
+                // 2カラムになって列が狭くなったので、中央寄せ時（最大38px）より一段下げる
+                fontSize: 'clamp(22px, 2.6vw, 30px)',
+                fontWeight: 900,
+                lineHeight: 1.35,
+                letterSpacing: '-.02em',
+                color: color.text,
               }}
             >
-              {doc.lead}
-            </p>
-          )}
+              {doc.title}
+            </h1>
 
-          <div
-            className="flex items-center justify-center flex-wrap"
-            style={{ gap: 14, marginTop: 18, ...font.caption, color: color.textFaint }}
-          >
-            {doc.materialFormat && <span>{MATERIAL_FORMAT_LABEL[doc.materialFormat]}教材</span>}
-            {doc.estimatedMinutes > 0 && (
-              <span className="inline-flex items-center" style={{ gap: 4 }}>
-                <Clock size={12} /> 読了目安 {doc.estimatedMinutes}分
-              </span>
+            {doc.lead && (
+              <p
+                style={{
+                  // 折り返し幅は列が決めるので maxWidth は持たせない
+                  margin: '14px 0 0',
+                  color: color.textMuted,
+                  fontSize: 14,
+                  lineHeight: 2,
+                }}
+              >
+                {doc.lead}
+              </p>
             )}
+
+            <div
+              className="flex items-center flex-wrap"
+              style={{ gap: 14, marginTop: 18, ...font.caption, color: color.textFaint }}
+            >
+              {doc.materialFormat && <span>{MATERIAL_FORMAT_LABEL[doc.materialFormat]}教材</span>}
+              {doc.estimatedMinutes > 0 && (
+                <span className="inline-flex items-center" style={{ gap: 4 }}>
+                  <Clock size={12} /> 読了目安 {doc.estimatedMinutes}分
+                </span>
+              )}
+            </div>
           </div>
         </header>
 

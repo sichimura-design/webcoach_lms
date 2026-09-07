@@ -51,7 +51,9 @@ function moodleToDoc(
   module: MoodleModule,
   flat: MoodleModule[],
   courseId: number,
-  courseName: string
+  courseName: string,
+  /** 親コースの画像（Moodle の courseimage）。ヘッダーのカバーに使う */
+  coverImageUrl?: string
 ): LessonDoc {
   const index = flat.findIndex((m) => m.id === module.id);
   const html = module.content ?? module.description ?? '';
@@ -63,6 +65,7 @@ function moodleToDoc(
     lead: '',
     goals: [],
     estimatedMinutes: 0,
+    coverImageUrl,
     // 1ブロック。Moodle HTML は構造が保証されないため分割せず、そのまま iframe に渡す。
     blocks: [
       {
@@ -136,9 +139,12 @@ export function useLessonDoc(courseId: number, lessonId: number | null): UseLess
           const target = (lessonId && flat.find((m) => m.id === lessonId)) || flat[0];
           if (!target) throw new Error('コースコンテンツが空です');
 
-          const name = courses.find((c: any) => c.id === courseId)?.fullname ?? '';
+          // コース一覧はここで既に取っている。ヘッダーのカバー画像もこの1回から拾い、
+          // 画像のためだけのリクエストを増やさない。
+          const course = courses.find((c: any) => c.id === courseId);
+          const name = course?.fullname ?? '';
           setOutline(moodleToOutline(list, name, courseId, target.id));
-          setDoc(moodleToDoc(target, flat, courseId, name));
+          setDoc(moodleToDoc(target, flat, courseId, name, course?.courseimage));
           const video = target.contents?.find((c) => isVideoFile(c.filename));
           setVideoUrl(video?.fileurl ?? null);
           setLoading(false);

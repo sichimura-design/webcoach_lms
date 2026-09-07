@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAsyncData } from '../hooks/useAsyncData';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Check, Clock, Play } from 'lucide-react';
+import { Check, Clock, Play, Search } from 'lucide-react';
 import { bffClient } from '../services/bffClient';
 import { AppFooter, AppHeader, LearningBreadcrumb } from './shared';
+import LessonProgressBar from './shared/LessonProgressBar';
+import CourseSearchPanel from './learning/CourseSearchPanel';
 import { useAuth } from '../contexts/AuthContext';
 import { formatMinutesHM } from '../utils/studyStats';
 import { lessonProgressOf } from '../utils/lessonProgress';
@@ -207,6 +209,8 @@ export default function CourseTopPage() {
   const courseIdNum = parseInt(courseId || '0', 10);
 
   const [completedIds, setCompletedIds] = useState<Set<number>>(new Set());
+  /** 教材内検索のパネル。開いているかだけを持ち、中身はパネル側に閉じている */
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const { data, loading, error } = useAsyncData(
     () => Promise.all([
@@ -329,17 +333,19 @@ export default function CourseTopPage() {
             <span style={{ fontSize: 13, color: 'var(--dc-text-muted)' }}>
               残り {lessons.total - lessons.done} {LEARNING_HIERARCHY.lesson}
             </span>
-            <div
-              role="progressbar"
-              aria-valuenow={progressPercent}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuetext={lessons.full}
+            {/* レッスン数で区切ったステップ型（shared/LessonProgressBar.tsx）。
+                左の「残り N レッスン」と空きマスの数が一致する。
+                レッスンが多いコースは自動でベタ塗りに落ちる（幅160pxなので細切れにしない） */}
+            <LessonProgressBar
+              done={lessons.done}
+              total={lessons.total}
+              percent={progressPercent}
+              height={8}
+              trackColor="var(--dc-soft-200)"
               aria-label="コースの進捗"
-              style={{ width: 160, height: 8, borderRadius: 9999, background: 'var(--dc-soft-200)', overflow: 'hidden', flex: 'none' }}
-            >
-              <div style={{ width: `${progressPercent}%`, height: '100%', borderRadius: 9999, background: 'var(--dc-primary)' }} />
-            </div>
+              aria-valuetext={lessons.full}
+              style={{ width: 160, flex: 'none' }}
+            />
             {/* ％は母数を掛け直さないと残り本数が出ないので、分数で見せる */}
             <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--dc-primary)' }}>
               <span className="dc-num">{lessons.short}</span>{' '}
@@ -422,7 +428,28 @@ export default function CourseTopPage() {
         <div style={CARD}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
             <div style={{ fontSize: 20, fontWeight: 700 }}>カリキュラム</div>
-            {sections.length > 0 && <Legend />}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+              {/* 教材内検索の入口。探す対象（このコースのレッスン群）のすぐ上に置く。
+                  ページ最上部のヘッダー行は進捗の表示に徹していて、押せるものを置かない */}
+              {sections.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSearchOpen(true)}
+                  className={`inline-flex items-center ${FOCUS_RING}`}
+                  style={{
+                    gap: 6, flex: 'none',
+                    border: '1px solid var(--dc-border-strong)', borderRadius: 9999,
+                    background: 'var(--dc-surface)', padding: '6px 14px',
+                    fontFamily: 'inherit', fontSize: 12.5, fontWeight: 700,
+                    color: 'var(--dc-text-body)', cursor: 'pointer',
+                  }}
+                >
+                  <Search size={14} aria-hidden />
+                  教材の中を検索
+                </button>
+              )}
+              {sections.length > 0 && <Legend />}
+            </div>
           </div>
 
           {sections.length === 0 ? (
@@ -619,6 +646,21 @@ export default function CourseTopPage() {
       </main>
 
       <AppFooter style={{ padding: '32px 0 24px' }} />
+
+      {/* 教材内検索。結果を押したらそのレッスンの該当ブロックまで開く。
+          ?block= は教材ページ側の復帰処理（LearningWorkspacePage）が拾って
+          スクロール＋フラッシュしたあとURLから消す（マイノートからの復帰と同じ経路） */}
+      {searchOpen && (
+        <CourseSearchPanel
+          courseId={courseIdNum}
+          courseName={course?.fullname}
+          onClose={() => setSearchOpen(false)}
+          onJump={({ lessonId, blockId }) => {
+            setSearchOpen(false);
+            navigate(`/course/${courseIdNum}?module=${lessonId}&block=${encodeURIComponent(blockId)}`);
+          }}
+        />
+      )}
     </div>
   );
 }

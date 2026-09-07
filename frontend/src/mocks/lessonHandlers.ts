@@ -52,6 +52,8 @@ import {
 } from './migratedMaterials';
 import { LearningType } from '../constants/learningTaxonomy';
 import { COURSE_ID_BY_SLUG, courseById } from '../constants/courseTaxonomy';
+// サムネイルの表だけを持つ葉モジュール。courseCatalog.ts を直に import すると循環する
+import { courseThumbnailUrl } from './courseThumbnails';
 import { SkillSuggestion } from '../types/aiSkill';
 import { detectSkill } from '../utils/aiSkillRouting';
 
@@ -192,6 +194,16 @@ function courseName(courseId: number): string {
   // カタログのコース名（「AI×デザイン」）は微妙に違うことがあり、一覧のタイルと
   // 教材ページで別名が出ると同じコースが2つあるように見えるため。
   return courseById(courseId)?.name ?? migratedCourseName(courseId) ?? `コース ${courseId}`;
+}
+
+/**
+ * 教材ヘッダーに出す親コースの画像。未登録なら undefined（画面側がフォールバックを描く）。
+ *
+ * courseCatalog.ts の courseimage と同じ表を引く。カタログを直に import すると
+ * 循環するので、表だけを切り出した courseThumbnails.ts を経由する。
+ */
+function courseCoverUrl(courseId: number): string | undefined {
+  return courseThumbnailUrl(courseById(courseId)?.slug);
 }
 
 /**
@@ -435,6 +447,14 @@ function findLessonPosition(courseId: number, lessonId: number) {
 
 /** aiSkillHandlers.ts からもレッスン本文を引くため export する */
 export function buildLessonDoc(courseId: number, lessonId: number): LessonDoc | null {
+  const doc = buildLessonDocBody(courseId, lessonId);
+  if (!doc) return null;
+  // カバー画像は「親コースの画像」なので、移行教材・ショーケース・汎用のどれでも同じ。
+  // 3つの組み立て先に書き散らさず、唯一の出口であるここで一度だけ付ける。
+  return { ...doc, coverImageUrl: courseCoverUrl(courseId) };
+}
+
+function buildLessonDocBody(courseId: number, lessonId: number): LessonDoc | null {
   // 移行済みコースは Clipkit 由来の実教材をそのまま返す。
   const migrated = findMigratedLesson(courseId, lessonId);
   if (migrated) return migrated;
@@ -490,7 +510,16 @@ export function isLessonDone(lessonId: number): boolean {
   return override !== undefined ? override : lessonId % 2 === 0;
 }
 
-function buildOutline(courseId: number): LessonOutline {
+/**
+ * コースの目次。移行済み教材があればそれを正とする。
+ *
+ * export しているのは、これが「そのコースに実在するレッスンの一覧」を返す
+ * 唯一の関数だから。handlers.ts の buildSections（カリキュラム画面）と
+ * lessonSearch.ts（教材内検索）が、汎用コースと移行コースを区別せずに
+ * レッスンを列挙するために通る。buildCourseStructure を直に使うと
+ * 移行コースで汎用の9レッスンが返り、実教材に辿り着けない。
+ */
+export function buildOutline(courseId: number): LessonOutline {
   const migrated = migratedOutline(courseId, isLessonDone);
   if (migrated) return migrated;
 

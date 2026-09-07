@@ -19,6 +19,7 @@ import { ClipAnchor } from './clipHighlight';
 import LessonTopBar from './LessonTopBar';
 import LessonArticle from './LessonArticle';
 import LessonFloatingActions from './LessonFloatingActions';
+import CourseSearchPanel, { type CourseSearchJump } from './CourseSearchPanel';
 import SupportPanel, { SupportTab } from './SupportPanel';
 import AiCoachPane from './AiCoachPane';
 import MemoPane from './MemoPane';
@@ -80,6 +81,8 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
    */
   const [supportWidth, setSupportWidth] = useState(400);
   const [flashBlockId, setFlashBlockId] = useState<string | null>(null);
+  /** 教材内検索。読みながら「あの説明どこだっけ」を引くための一時的な面 */
+  const [searchOpen, setSearchOpen] = useState(false);
   const [explainState, setExplainState] = useState<
     { anchor: { top: number; left: number }; quote: LessonAiQuote; text: string | null } | null
   >(null);
@@ -218,7 +221,37 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     window.setTimeout(() => setFlashBlockId((id) => (id === blockId ? null : id)), 1400);
   }, []);
 
-  // ── マイノートから ?block= 付きで戻ってきたときの復帰 ──
+  /**
+   * 教材内検索の結果を押したとき。
+   * 同じレッスンの中ならURLを触らずその場で飛ぶ（再取得もスクロールのリセットも起きない）。
+   * 別レッスンなら ?module= を差し替え、着地は下の ?block= 復帰処理に任せる。
+   */
+  const handleSearchJump = useCallback(
+    ({ lessonId: targetId, blockId }: CourseSearchJump) => {
+      setSearchOpen(false);
+      if (targetId === doc?.lessonId) jumpToBlock(blockId);
+      else navigateToLesson(targetId, blockId);
+    },
+    [doc?.lessonId, jumpToBlock, navigateToLesson]
+  );
+
+  // ── Ctrl+K / ⌘K で教材内検索。読みながら引けることがこの機能の要点 ──
+  useEffect(() => {
+    // 縮退モード（Moodleフォールバック）の本文は iframe の中でブロックIDも無いので検索できない
+    if (!selectionEnabled) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      // 🔴 IME変換中は横取りしない。日本語入力の確定操作を壊す
+      if (e.isComposing || e.keyCode === 229) return;
+      if (!(e.metaKey || e.ctrlKey) || (e.key !== 'k' && e.key !== 'K')) return;
+      // Firefox の Ctrl+K はブラウザの検索バー。開かせない
+      e.preventDefault();
+      setSearchOpen((v) => !v);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [selectionEnabled]);
+
+  // ── マイノート・教材内検索から ?block= 付きで来たときの復帰 ──
   const pendingBlock = searchParams.get('block');
   useEffect(() => {
     if (!pendingBlock || !doc || loading) return;
@@ -308,7 +341,7 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
     });
   }, [selection, doc, sourceOf, capture, clearSelection, backToLesson]);
 
-  // ── AI回答の保存／メモ追加 ──
+  // ── AI回答をマイノートに残す／下書きに追加 ──
   const questionFor = useCallback(
     (message: LessonAiMessage): { question: string; quote: string | null; image: string | null } => {
       const index = ai.messages.findIndex((m) => m.id === message.id);
@@ -398,8 +431,8 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
   }, [notes, doc, sourceOf, capture, backToLesson]);
 
   /**
-   * メモ欄の「このレッスンのノート」からノートを開く。
-   * 戻り先を預けるので、向こう側に「〜に戻る」が出る（メモ欄を開いた状態で戻る）。
+   * マイノート欄の「このレッスンのノート」からノートを開く。
+   * 戻り先を預けるので、向こう側に「〜に戻る」が出る（マイノート欄を開いた状態で戻る）。
    */
   const handleOpenNote = useCallback(
     (noteId: string) => {
@@ -413,7 +446,7 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
       const { question } = questionFor(message);
       notes.appendToMemo(question, answerToText(message));
       openSupport('notes');
-      showToast('AI回答をメモへ追加しました', 'success');
+      showToast('AI回答を下書きに追加しました', 'success');
     },
     [questionFor, notes, answerToText, openSupport, showToast]
   );
@@ -655,9 +688,22 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
           パネルが開いている間は引っ込むので、パネルと重なることはない */}
       {!loading && !error && doc && (
         <LessonFloatingActions
-          hidden={support.open || !!selection || !!explainState}
+          hidden={support.open || searchOpen || !!selection || !!explainState}
           onOpenAi={() => openSupport('ai')}
           onOpenMemo={() => openSupport('notes')}
+          // 縮退モードでは本文が iframe の中で検索できないので入口ごと出さない
+          onOpenSearch={selectionEnabled ? () => setSearchOpen(true) : undefined}
+        />
+      )}
+
+      {/* 教材内検索。Ctrl+K か右下の虫眼鏡から開く */}
+      {searchOpen && doc && (
+        <CourseSearchPanel
+          courseId={courseId}
+          courseName={outline?.courseName ?? doc.courseName}
+          currentLessonId={doc.lessonId}
+          onClose={() => setSearchOpen(false)}
+          onJump={handleSearchJump}
         />
       )}
 

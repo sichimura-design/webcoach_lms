@@ -5,6 +5,8 @@ import { Course } from '../../types/mypage';
 import { lessonProgressFromPercent } from '../../utils/lessonProgress';
 import { formatMinutesHM } from '../../utils/studyStats';
 import { splitLesson } from './ContinueLearningHero';
+import LessonProgressBar from '../shared/LessonProgressBar';
+import { ResumeArt, courseArtOf } from '../materials/courseVisuals';
 
 /**
  * 続きから学習（マイページ左上）。claude.ai/design『トップページ 3案』8a 準拠。
@@ -22,6 +24,12 @@ import { splitLesson } from './ContinueLearningHero';
 interface ResumeStudyCardProps {
   /** 続きから学ぶコース。受講中のコースが無いときは undefined */
   course?: Course;
+  /**
+   * 同じコースの受講中一覧（/moodle/courses）側の姿。
+   * 🔴 /webcoach/resumecourse は領域名もコース画像も返さないので、サムネの絵柄は
+   *    こちらを正典にする。渡さなくても図形／文字組みには落ちる。
+   */
+  known?: Course;
   /** 続きから学習する（没入型レッスンへ） */
   onOpenLesson: () => void;
   /** レッスンを選び直す（コース目次へ） */
@@ -39,11 +47,17 @@ const CARD_STYLE: CSSProperties = {
   flexDirection: 'column',
 };
 
-export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: ResumeStudyCardProps) {
+export function ResumeStudyCard({ course, known, onOpenLesson, onOpenCurriculum }: ResumeStudyCardProps) {
   const navigate = useNavigate();
   const { no, name } = splitLesson(course?.currentLesson);
   const lessons = lessonProgressFromPercent(course?.progress, course?.totalLessons);
   const pct = Math.min(100, Math.max(0, course?.progress ?? 0));
+  // サムネの絵柄。領域名（地色と図形を決める）とコース画像の正典は courseArtOf 側
+  const art = course ? courseArtOf(course, known) : undefined;
+  // 絵柄が文字組み（画像なし）のときはサムネ側がコース名を持つ。本文にも出すと
+  // 同じ名前が2回並ぶので、画像があるときだけ本文のコース名行を出す。
+  // 単元名が無いときは下の見出しが course.title に倒れるので、そのときも出さない
+  const showCourseTitle = !!art?.thumbnailUrl && !!name;
 
   return (
     <section style={CARD_STYLE}>
@@ -70,40 +84,32 @@ export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: Resu
       {course ? (
         <>
           <div style={{ display: 'flex', gap: 18, alignItems: 'center', marginBottom: 18 }}>
-            <div
-              style={{
-                width: 150,
-                height: 100,
-                flex: 'none',
-                borderRadius: 'var(--dc-radius-md)',
-                overflow: 'hidden',
-                background: 'var(--dc-badge-pink)',
-              }}
-            >
-              {course.thumbnailUrl && (
-                <img
-                  src={course.thumbnailUrl}
-                  alt=""
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                />
-              )}
-            </div>
+            {/* 🔴 学習トップの「前回学習したもの」と同じ絵柄・同じ寸法（ResumeArt）。
+                   以前はここに 150×100 の枠を --dc-badge-pink 直指定で置いていたが、
+                   モックにも resumecourse にもコース画像が無いため空のピンク矩形に
+                   見えていた。地色は領域ごとの淡いトーン（categoryTint）に変わる。 */}
+            <ResumeArt course={courseArtOf(course, known)} />
 
-            <div style={{ minWidth: 0 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
               {/* コース名は「どのコースの続きか」の識別に必要なので caption(12px) には落とさない。
-                  溢れは ellipsis で処理しているので nowrap のままで安全。 */}
-              <div
-                style={{
-                  fontSize: 'var(--dc-fs-body)',
-                  color: 'var(--dc-text-subtle)',
-                  marginBottom: 6,
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {course.title}
-              </div>
+                  溢れは ellipsis で処理しているので nowrap のままで安全。
+                  🔴 出すのは画像サムネのコースだけ。画像を持たないコースはサムネが
+                     コース名を大きく組むので、ここにも出すと同じ名前が2回並ぶ
+                     （CourseArt / 学習トップの「前回学習したもの」と同じ判断）。 */}
+              {showCourseTitle && (
+                <div
+                  style={{
+                    fontSize: 'var(--dc-fs-body)',
+                    color: 'var(--dc-text-subtle)',
+                    marginBottom: 6,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {course.title}
+                </div>
+              )}
               {/* レッスン名がこのカードで一番大きい文字。カード見出しの「続きから学習」より
                   大きくするのは、ラベルより中身のコンテンツ名を先に読ませたいため。 */}
               <div
@@ -158,22 +164,15 @@ export function ResumeStudyCard({ course, onOpenLesson, onOpenCurriculum }: Resu
             )}
           </div>
 
-          <div
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={Math.round(pct)}
+          {/* レッスン数で区切ったステップ型（shared/LessonProgressBar.tsx）。
+              空きマスの数がそのまま残り本数になるので、上の「5/11 レッスン」と読み合わせられる */}
+          <LessonProgressBar
+            done={lessons?.done}
+            total={lessons?.total}
+            percent={pct}
             aria-valuetext={lessons ? lessons.full : `${Math.round(pct)}％完了`}
-            style={{
-              height: 7,
-              borderRadius: 9999,
-              background: 'var(--dc-progress-track)',
-              overflow: 'hidden',
-              marginBottom: 20,
-            }}
-          >
-            <div style={{ width: `${pct}%`, height: '100%', borderRadius: 9999, background: 'var(--dc-primary)' }} />
-          </div>
+            style={{ marginBottom: 20 }}
+          />
 
           <button
             type="button"

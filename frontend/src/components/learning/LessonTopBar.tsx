@@ -1,6 +1,7 @@
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { color, font } from '../../theme/webcoachTheme';
 import LessonMiniTimer from './LessonMiniTimer';
+import LessonProgressBar from '../shared/LessonProgressBar';
 
 /**
  * 教材画面の上部バー。
@@ -131,21 +132,21 @@ export function LessonTopBar({
               <span className="wc-lesson-progress-label">レッスン </span>
               {lessonIndex} / {lessonTotal}
             </span>
-            <span
-              aria-hidden
+            {/* レッスン数で区切ったステップ型（shared/LessonProgressBar.tsx）。
+                左の「1 / 7」と分割数が一致するので、長さと数字が同じことを言う。
+                本数が多いコースは自動でベタ塗りに落ちる（幅120pxなので細切れにしない） */}
+            <LessonProgressBar
+              done={lessonIndex ?? 0}
+              total={lessonTotal}
+              percent={positionPercent}
+              height={5}
+              maxSteps={10}
               className="wc-lesson-progress-bar"
-              style={{ width: 120, height: 5, borderRadius: 999, background: color.trackBg, overflow: 'hidden' }}
-            >
-              <span
-                style={{
-                  display: 'block',
-                  width: `${positionPercent}%`,
-                  height: '100%',
-                  borderRadius: 999,
-                  background: color.primary,
-                }}
-              />
-            </span>
+              trackColor={color.trackBg}
+              fillColor={color.primary}
+              decorative
+              style={{ width: 120, flex: 'none' }}
+            />
           </>
         )}
 

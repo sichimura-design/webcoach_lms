@@ -25,7 +25,8 @@ import type {
 } from '../types/api';
 import type { FocusBoothMember } from '../types/focusBooth';
 import { coachingHandlers } from './coachingHandlers';
-import { buildCourseStructure, courseLessonCount, isLessonDone, lessonHandlers, setLessonDone } from './lessonHandlers';
+import { buildCourseStructure, buildOutline, courseLessonCount, isLessonDone, lessonHandlers, setLessonDone } from './lessonHandlers';
+import { MIGRATED_COURSE_IDS, isMigratedCourse } from './migratedMaterials';
 import { noteHandlers } from './noteHandlers';
 import { learningPlanHandlers } from './learningPlanHandlers';
 import { aiSkillHandlers } from './aiSkillHandlers';
@@ -35,6 +36,7 @@ import { STUDY_PEERS } from './studyPeers';
 import { listGoals, replaceGoals } from './coachingGoalsStore';
 import { buildNextCourses } from '../utils/nextCourseRecommend';
 import { searchMaterials } from './materialSearch';
+import { searchInCourse } from './lessonSearch';
 import { COURSE_ID, catalog, categories, courseInCatalog } from './courseCatalog';
 
 // ---- 固定モックデータ（型に沿った最小限） ----------------------------------
@@ -59,7 +61,9 @@ const userInfo: UserInfo = {
 
 const profile: Profile = {
   mdl_user_id: MOCK_USER_ID,
-  nick_name: 'モックさん',
+  // 🔴 「さん」を含めない。挨拶（MypageGreeting）が「〇〇さん、こんにちは」と
+  //    敬称を足すので、ここに入れると「モックさんさん」と二重になる
+  nick_name: 'モック',
   self_intro: 'これはモック環境のプロフィールです。',
   target_job: 'Webデザイナー',
   ideal_career: 'フリーランスで自由に働く',
@@ -130,6 +134,25 @@ const resumeProgress = Math.round((RESUME_DONE_COUNT / resumeLessons.length) * 1
 const resumeTotalMinutes = resumeLessons.reduce((n, l) => n + l.minutes, 0);
 const resumeRemainingMinutes = resumeLessons.slice(RESUME_DONE_COUNT).reduce((n, l) => n + l.minutes, 0);
 
+/**
+ * 移行済みコース（Clipkit 由来の実教材）の完了状態。
+ *
+ * 🔴 明示的に seed する。lessonHandlers.isLessonDone の既定は「偶数IDは完了」で、
+ *    これは汎用レッスンのID（courseId*1000+nn）を前提にした値。移行教材の
+ *    レッスンIDは 1〜25 と小さいので、そのまま当てると 2,4,6… の12本が完了になり
+ *    「1本目が未完了なのに後半に✓が飛び飛びで散る」という読めない並びになる。
+ *    resumeLessons と同じく、前から N 本完了で揃える。
+ */
+const MIGRATED_DONE_COUNT = 4;
+
+const migratedProgress = new Map<number, number>();
+MIGRATED_COURSE_IDS.forEach((courseId) => {
+  const lessons = buildOutline(courseId).sections.flatMap((s) => s.lessons);
+  lessons.forEach((l, i) => setLessonDone(l.lessonId, i < MIGRATED_DONE_COUNT));
+  const done = Math.min(MIGRATED_DONE_COUNT, lessons.length);
+  migratedProgress.set(courseId, lessons.length ? Math.round((done / lessons.length) * 100) : 0);
+});
+
 /** コース名はカタログから引く。フィクスチャにコース名を書き写すと一覧と食い違う */
 const catalogName = (id: number): string => courseInCatalog(id)?.fullname ?? '';
 
@@ -174,7 +197,9 @@ const userCourses = [
   { id: COURSE_ID['banner-dojo'], progress: 45, durationminutes: 180 },
   { id: COURSE_ID.figma, progress: 62, durationminutes: 70 },
   { id: COURSE_ID.instagram, progress: 35, durationminutes: 120 },
-  { id: COURSE_ID['ai-design'], progress: 18, durationminutes: 100 },
+  // 🔴 進捗は手書きしない。移行コースは完了状態を上で seed しているので、
+  //    そこから導出しないとタイルの％とカリキュラム画面の完了数が食い違う
+  { id: COURSE_ID['ai-design'], progress: migratedProgress.get(COURSE_ID['ai-design']) ?? 0, durationminutes: 100 },
   { id: COURSE_ID.seo, progress: 80, durationminutes: 100 },
   { id: COURSE_ID.capcut, progress: 100, durationminutes: 20 },
 ].map((enrolled) => {
@@ -185,6 +210,10 @@ const userCourses = [
     displayname: c?.fullname ?? '',
     summary: c?.summary ?? '',
     categoryname: c?.categoryname ?? '',
+    // コース画像もカタログから引く（courseCatalog.ts の COURSE_THUMBNAILS が正典）。
+    // マイページの「続きから学習」のサムネはこの一覧を通るので、ここで貼らないと
+    // 画像を登録しても学習トップだけに出てマイページには出ない
+    ...(c?.courseimage ? { courseimage: c.courseimage } : {}),
     progress: enrolled.progress,
     durationminutes: enrolled.durationminutes,
     totallessons: courseLessonCount(enrolled.id),
@@ -211,7 +240,42 @@ const MODULE_DESCRIPTIONS: Record<string, string> = {
   'まとめと次にやること': '<h2>まとめ</h2><p>お疲れさまでした。学んだことを振り返り、次のコースへ進みましょう。</p>',
 };
 
+/**
+ * カリキュラム画面（/course/:id/curriculum）へ返すコース構成。
+ *
+ * 🔴 移行済み教材（Clipkit 由来の実教材）は buildCourseStructure が知らない。
+ *    ここで分岐しないと、同じコースなのに
+ *      カリキュラム画面 … 汎用9レッスン
+ *      レッスン本文の目次 … 実25レッスン（buildOutline → migratedOutline）
+ *      コース一覧の「全Nレッスン」 … 実25レッスン（courseLessonCount）
+ *    と3箇所のうちカリキュラムだけがズレる。さらにカリキュラムから開いた
+ *    ?module=<汎用ID> は移行教材に無いIDなので、汎用の作り文が表示されていた。
+ *    レッスンの一覧は buildOutline を単一の情報源にして揃える。
+ */
 function buildSections(courseId: number) {
+  if (isMigratedCourse(courseId)) {
+    return buildOutline(courseId).sections.map((section) => ({
+      id: section.id,
+      name: section.name,
+      visible: true,
+      // 移行教材に単元の概要は無い。画面でも描いていないので空でよい
+      summary: '',
+      modules: section.lessons.map((lesson) => ({
+        id: lesson.lessonId,
+        name: lesson.title,
+        modname: 'page',
+        // 学習タイプは移行データが持たない。付けなければチップが出ないだけ
+        ...(lesson.learningType ? { learningtype: lesson.learningType } : {}),
+        durationminutes: lesson.minutes,
+        // MODULE_DESCRIPTIONS は汎用レッスン名がキーなので引かない。
+        // 本文は /webcoach/courses/:id/lessons/:id が実教材を返す
+        description: '',
+        completion: 1,
+        completiondata: { state: 0 },
+      })),
+    }));
+  }
+
   return buildCourseStructure(courseId).map((section) => ({
     id: section.id,
     name: section.name,
@@ -258,7 +322,7 @@ const studentsStore = [
   { id: 505, username: 'ito_ayumi', email: 'ito@example.com', firstname: '歩美', lastname: '伊藤', fullname: '伊藤 歩美', lastaccess: now - 5 * 3600, firstaccess: now - 130 * 86400, suspended: false, auth: 'manual', inactive_over_month: false, new_user: false },
 ].map((s) => ({ ...s, lastaccess_formatted: formatLastAccess(s.lastaccess) }));
 
-// 次回コーチングまでの目標（セッション内で保持：AI細分化やコーチングページからの生成を
+// 次回コーチングまでの目標（セッション内で保持：AI細分化やコーチング画面からの生成を
 // マイページに反映させるため、GET/PUT で同じストアを読み書きする）
 // マイページ側は読み取り専用表示のため、コーチが前回のコーチングで設定した内容として初期値を持たせる
 // （journeyの現在地=「バナー100本道場」と揃えてある）
@@ -515,6 +579,13 @@ export const handlers = [
   http.get('*/api/moodle/courses/:courseid/contents', ({ params }) =>
     HttpResponse.json(buildSections(Number(params.courseid)))
   ),
+  // コース内の教材本文の単語検索。判定は lessonSearch.ts に置いてある
+  // （実BFFが同じ形を返すようになったら、このハンドラだけ落とせばよい）。
+  // 遅延は入れない。検索は打鍵に追従してほしいもので、待たせる体感を再現する意味がない
+  http.get('*/api/webcoach/courses/:courseId/search', ({ params, request }) => {
+    const q = new URL(request.url).searchParams.get('q') ?? '';
+    return HttpResponse.json(searchInCourse(Number(params.courseId), q));
+  }),
   // アクティビティ完了状態（既定は cmid が偶数なら完了済み。トグル結果はそれを上書きする）
   http.get('*/api/moodle/activities/:cmid/completion', ({ params }) =>
     HttpResponse.json({ state: isLessonDone(Number(params.cmid)) ? 1 : 0 })
@@ -542,7 +613,7 @@ export const handlers = [
   http.get('*/api/moodle/courses', () => HttpResponse.json(catalog)),
   http.get('*/api/moodle/categories', () => HttpResponse.json(categories)),
   http.get('*/api/webcoach/recomendbadge/:userid', () => HttpResponse.json([])),
-  // 次回コーチングまでの目標。コーチングノートで確定した目標もここに載る
+  // 次回コーチングまでの目標。コーチング記録で確定した目標もここに載る
   // （反映は coachingHandlers.ts の confirm-goals → coachingGoalsStore.reflectCandidates）。
   http.get('*/api/webcoach/next-coaching-goals/:userid', () => HttpResponse.json(listGoals())),
   http.put('*/api/webcoach/next-coaching-goals/:userid', async ({ request }) => {
@@ -771,7 +842,7 @@ export const handlers = [
   // 実BFFには /api/admin/students が存在しないため、コーチ側の受講生一覧・詳細ページ用にモックする
   http.get('*/api/admin/students', () => HttpResponse.json({ students: studentsStore })),
 
-  // ==================== AIコーチングノート ====================
+  // ==================== コーチング記録 ====================
   // 取り込み・非同期処理・要約・目標確定。量が多いので coachingHandlers.ts に分離している。
   ...coachingHandlers,
 

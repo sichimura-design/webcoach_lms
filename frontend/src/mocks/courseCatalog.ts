@@ -14,6 +14,8 @@
 import type { Category } from '../types/api';
 import { AREA_COURSES, COURSES, COURSE_ID_BY_SLUG, COURSE_KIND, courseKindOf } from '../constants/courseTaxonomy';
 import { courseLessonCount } from './lessonHandlers';
+// サムネイルの登録表。教材API（lessonHandlers.ts）とも共有するので葉モジュールに置いてある
+import { courseThumbnailUrl } from './courseThumbnails';
 
 export type MockCourse = {
   id: number; fullname: string; shortname: string;
@@ -107,28 +109,13 @@ const DETAILS: Record<string, { summary: string; duration: string; purposes: str
 };
 
 /**
- * コースのサムネイル画像。キーは courseTaxonomy の slug、値は
- * frontend/public/images/courses/ 配下のファイル名。
- *
- * 実BFF（Moodle）は courseimage に保護URLを返すが、モックには画像が無いので
- * ここで public の静的ファイルに差し替える。**未登録のコースは文字組みサムネ**
- * （CourseTile / CourseArt のフォールバック）になるので、1枚ずつ足していける。
- *
- * 🔴 リテラルのコースIDをキーにしないこと。ID は領域code*100+連番で採番されるので、
- *    領域内の並びを1つ変えると全部ずれる。slug は動かない。
- */
-const COURSE_THUMBNAILS: Record<string, string> = {
-  // 画像が届いたらここに追記する（例: 'design-basics': 'design-basics.png'）
-};
-
-/**
  * カタログ本体。tags（＝種類）は courseKindOf から機械的に決める。
  * 手で「基礎知識」「実践課題」を振らないので、コースを足しても未分類が出ない。
  */
 export const catalog: MockCourse[] = COURSES.map((course) => {
   const detail = DETAILS[course.slug];
   const kind = courseKindOf({ fullname: course.name });
-  const thumbnail = COURSE_THUMBNAILS[course.slug];
+  const thumbnail = courseThumbnailUrl(course.slug);
   return {
     id: course.id,
     fullname: course.name,
@@ -136,8 +123,7 @@ export const catalog: MockCourse[] = COURSES.map((course) => {
     categoryid: Math.floor(course.id / 100),
     categoryname: course.areaName,
     summary: detail?.summary ?? '',
-    // サブパス配信（dev プレビューの /branches/<slug>/）でも壊れないよう PUBLIC_URL 起点にする
-    ...(thumbnail ? { courseimage: `${process.env.PUBLIC_URL}/images/courses/${thumbnail}` } : {}),
+    ...(thumbnail ? { courseimage: thumbnail } : {}),
     tags: [{ rawname: kind === COURSE_KIND.practice ? COURSE_KIND.practice : '基礎知識' }],
     duration: detail?.duration ?? '60分',
     lessoncount: courseLessonCount(course.id),

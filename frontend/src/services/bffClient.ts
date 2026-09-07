@@ -62,6 +62,7 @@ import {
   LessonDoc,
   LessonOutline,
 } from '../types/lesson';
+import type { LessonSearchResponse } from '../types/lessonSearch';
 import { AiSkillRequest, AiSkillResponse } from '../types/aiSkill';
 import { MaterialSearchResult } from '../types/courses';
 import {
@@ -695,7 +696,7 @@ class BFFClient {
     return response.data;
   }
 
-  // ==================== AIコーチングノート ====================
+  // ==================== コーチング記録 ====================
   // 実BFFには存在しない新機能。すべて MSW モックで応答する。
 
   /**
@@ -732,7 +733,7 @@ class BFFClient {
   }
 
   /**
-   * AIノートを開始してコーチングに参加する
+   * 記録を開始してコーチングに参加する
    * POST /api/webcoach/coaching-sessions/{userid}/start
    *
    * 受講生の端末で録音を始めるものではない。コーチの認証済み権限を使って
@@ -1253,6 +1254,20 @@ class BFFClient {
    */
   async getLessonDoc(courseId: number, lessonId: number): Promise<LessonDoc> {
     const response = await this.api.get(`/webcoach/courses/${courseId}/lessons/${lessonId}`);
+    return response.data;
+  }
+
+  /**
+   * コース内の教材本文を単語検索する（モック専用API）。
+   * GET /api/webcoach/courses/{courseId}/search?q=...
+   *
+   * 実BFFには未実装なので、モックOFF（本番）では失敗する。
+   * 呼び出し側で catch して、この機能だけを畳むこと。
+   */
+  async searchInCourse(courseId: number, query: string): Promise<LessonSearchResponse> {
+    const response = await this.api.get(`/webcoach/courses/${courseId}/search`, {
+      params: { q: query },
+    });
     return response.data;
   }
 

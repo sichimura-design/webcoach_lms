@@ -2,8 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { AppHeader } from './shared';
+import LessonProgressBar from './shared/LessonProgressBar';
 import { CourseTile } from './materials/CourseTile';
-import { CourseArt } from './materials/courseVisuals';
+import { CourseThumb, ResumeArt, courseArtOf } from './materials/courseVisuals';
 import { buildCatalog, type CatalogCourse } from './materials/catalogCourse';
 import { useAuth } from '../contexts/AuthContext';
 import { useMypageData } from '../hooks/useMypageData';
@@ -80,12 +81,15 @@ const SEARCH_EXAMPLES = ['配色が苦手', 'バナーを作りたい', '次に�
 const OTHER_ACTIVE_VISIBLE = 3;
 
 /**
- * 領域ブロックに畳まずに出すコース数。3列グリッドなので3行ぶん。
+ * 領域ブロックに畳まずに出すコース数。基準幅（1280px 以上の4列）で2行ぶん
+ * （列数は index.css の .wc-area-grid--wide が持つ。列数を変えたらここも揃える。
+ *  狭い画面では3列=3+3+2 や2列=4行になるが、畳む件数は幅で変えない）。
  * 10領域のうち畳まれるのは Webデザイン(13)・Webマーケティング(11) の2つだけで、
- * 残り8領域（Web制作8・動画編集7・SNS運用6・Web×AI5 …）はそのまま全部出る。
+ * 残り8領域（Web制作8・動画編集7・SNS運用6・Web×AI5 …）はそのまま全部出る
+ * （Web制作はちょうど8なので、判定が > の分だけ畳まれない側に入る）。
  * ここを下げると畳まれる領域が増えて、開く操作ばかりの画面になる。
  */
-const AREA_PREVIEW_LIMIT = 9;
+const AREA_PREVIEW_LIMIT = 8;
 
 /*
  * 絞り込みの分担。
@@ -288,16 +292,14 @@ function MaterialsTopPage() {
 
   /**
    * ヒーローのサムネに使うコースの姿。
-   * 🔴 resumecourse は領域名もコース画像も返さないので、カタログ側を正典にする
-   *    （mypageApi が入れている categoryName:'カテゴリ' はプレースホルダで、
-   *      そのまま渡すと文字組みサムネに「カテゴリ」と印字されてしまう）。
+   * 🔴 resumecourse は領域名もコース画像も返さないので、カタログ側を正典にする。
+   *    プレースホルダ（categoryName:'カテゴリ'）を捨てる判断は courseArtOf 側にある
+   *    ので、カタログの到着前でも領域名は taxonomy から埋まる。
    */
-  const resumeArt = useMemo(() => {
-    if (!resumableCourse) return undefined;
-    const known = catalog.find((c) => c.id === resumableCourse.id);
-    // カタログの到着前でも絵柄を出す。領域名は分からないので空に倒す
-    return known ?? { id: resumableCourse.id, title: resumableCourse.title, categoryName: '', thumbnailUrl: resumableCourse.thumbnailUrl };
-  }, [catalog, resumableCourse]);
+  const resumeArt = useMemo(
+    () => (resumableCourse ? courseArtOf(resumableCourse, catalog.find((c) => c.id === resumableCourse.id)) : undefined),
+    [catalog, resumableCourse],
+  );
 
   const goToContinue = () => {
     if (!resumableCourse) return;
@@ -424,17 +426,10 @@ function MaterialsTopPage() {
                       🔴 中身は共通の飾り絵（hero-art.png）ではなくコース自身の絵柄にした。
                          文字組みサムネがコース名を持つので、本文側からコース名の行を落とせる。 */}
                   <div style={{ display: 'flex', gap: 18, alignItems: 'center', flexWrap: 'wrap' }}>
-                    {/* 152px は文字組みサムネ（画像を持たないコース）でコース名が
-                        2行に収まる下限。カードが横に伸びたので比率（5:3）を保ったまま
-                        180px に上げてある。これ以上縮めるなら titleSize も下げること。
-                        🔴 min(180px, 42vw) で狭い幅だけ縮める。375px で 180px 固定にすると
-                           右の「このコース 1 / 7 レッスン」（縮まない）が入る幅を食って、
-                           ページが3pxだけ横スクロールする。 */}
-                    <CourseArt
-                      course={resumeArt}
-                      titleSize="var(--dc-fs-body)"
-                      style={{ width: 'min(180px, 42vw)', aspectRatio: '5 / 3', flexShrink: 0, borderRadius: t.radius.inner }}
-                    />
+                    {/* 寸法（min(180px, 42vw) / 5:3）とその理由は ResumeArt 側にまとめた。
+                        マイページの「続きから学習」と同じ大きさに保つため、数字を
+                        2画面に散らさず courseVisuals.tsx の1か所で持つ。 */}
+                    <ResumeArt course={resumeArt} />
 
                     <div style={{ flex: 1, minWidth: 0 }}>
                       {/* 画像サムネのコースだけ、絵柄がコース名を持たない。そのときだけ補う
@@ -467,16 +462,17 @@ function MaterialsTopPage() {
                       {/* 左カラムが 460px 固定になったので、バーは幅なりで伸びきらない
                           （全幅だった頃は塗りと右端の分数が離れすぎて読み合わせられなかった）。 */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 10, flexWrap: 'wrap' }}>
-                        <div
-                          role="progressbar"
-                          aria-valuenow={resumableCourse.progress ?? 0}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
+                        {/* レッスン数で区切ったステップ型（shared/LessonProgressBar.tsx）。
+                            空きマスの数が右隣の分数の「残り本数」と一致する */}
+                        <LessonProgressBar
+                          done={resumeLessons?.done}
+                          total={resumeLessons?.total}
+                          percent={resumableCourse.progress ?? 0}
                           aria-valuetext={resumeLessons?.full}
-                          style={{ flex: 1, height: 7, borderRadius: t.radius.pill, background: t.color.progressTrack, overflow: 'hidden' }}
-                        >
-                          <div style={{ width: `${resumableCourse.progress ?? 0}%`, height: '100%', borderRadius: t.radius.pill, background: t.color.primary }} />
-                        </div>
+                          trackColor={t.color.progressTrack}
+                          fillColor={t.color.primary}
+                          style={{ flex: 1 }}
+                        />
                         {/* 「このコース」を必ず付ける。見出し右の「受講中コース全体」の分数と
                             分母が違うので、どちらを数えた分数なのかを数字の隣で言い切る。
                             レッスン総数が取れないコースだけ、従来どおり％に落とす。 */}
@@ -520,11 +516,12 @@ function MaterialsTopPage() {
                 並行して進めているコースだけをここで拾う（修了済みは出さない）。 */}
             {otherActive.length > 0 && (
               <section style={{ flex: '1 1 400px', minWidth: 0 }}>
-                {/* 🔴 1コース＝1行の一覧にする。カード＋サムネで組むと1件あたり
+                {/* 🔴 1コース＝1行の一覧にする。以前ここをカードで組んだときは1件あたり
                        約110px を使い、並行受講が増えるほどここだけが下に伸びて
-                       左のヒーロー（約210px）と釣り合わなくなる。行なら1件44px で、
-                       3件でもヒーローより低い。ここは「並行して何を進めているか」の
-                       早見なので、絵は要らず、名前と残りが分かれば足りる。 */}
+                       左のヒーロー（約250px）と釣り合わなくなった。高さを食っていたのは
+                       カードで、行に 40px のサムネを置く増分は12px/行しかない。
+                    🔴 サムネは40pxまで。参照デザインの56pxだと1行72pxになり、
+                       3件でも右カードが左ヒーローより50px以上高くなって同じ轍を踏む。 */}
                 <div style={{ background: t.color.bg.card, border: `1px solid ${t.color.border.card}`, borderRadius: t.radius.tile, boxShadow: t.shadow.card, overflow: 'hidden' }}>
                   {/* 見出しはカードの中の1行目。件数も出すのは、畳んでいるときに
                       「これで全部」と読み違えないため。
@@ -544,6 +541,11 @@ function MaterialsTopPage() {
 
                   {(showAllActive ? otherActive : otherActive.slice(0, OTHER_ACTIVE_VISIBLE)).map((c, i) => {
                     const lessons = lessonProgressFromPercent(c.progress, c.totalLessons);
+                    // 絵柄はカタログを正典にする（コース画像はカタログ経由でしか来ない）。
+                    // 領域名は絵柄の地色と図形も決めるので、BFF が返さないときは
+                    // taxonomy から引く（courseArtOf → areaNameOf）
+                    const art = courseArtOf(c, catalog.find((k) => k.id === c.id));
+                    const area = art.categoryName;
                     return (
                       <div
                         key={c.id}
@@ -553,18 +555,23 @@ function MaterialsTopPage() {
                         tabIndex={0}
                         className="cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                         style={{
-                          display: 'flex', alignItems: 'center', gap: 12, padding: '11px 16px',
+                          display: 'flex', alignItems: 'center', gap: 12, padding: '8px 16px',
                           // 行の区切りは枠線1本。カードを並べるより境目が静かで、高さも食わない
                           borderTop: i === 0 ? undefined : `1px solid ${t.color.border.card}`,
                         }}
                       >
+                        {/* コース名の左のサムネ。画像を持つコースは画像、無ければ領域の図形 */}
+                        <CourseThumb categoryName={area} thumbnailUrl={art.thumbnailUrl} size={40} radius={12} />
+
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flex: 1, minWidth: 0 }}>
                           <span style={{ fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, lineHeight: 'var(--dc-lh-ui)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                             {c.title}
                           </span>
-                          {/* サムネを外したので、領域はここで文字として持つ */}
-                          {c.categoryName && (
-                            <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle, flexShrink: 0 }}>{c.categoryName}</span>
+                          {/* 領域名は文字でも持つ。サムネの図形は family（5種）までしか
+                              語らないので、10領域の区別は文字が担う。狭い幅では
+                              サムネの色に任せて畳む（index.css の .wc-active-row-area） */}
+                          {area && (
+                            <span className="wc-active-row-area" style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle, flexShrink: 0 }}>{area}</span>
                           )}
                         </div>
 
@@ -878,7 +885,10 @@ function MaterialsTopPage() {
                              出さない。真下にコースが並ぶので、何を学べるかはコース名が語る。 */}
                     </div>
 
-                    <div className="wc-area-grid grid" style={{ gap: 14 }}>
+                    {/* --wide は「1280px 以上で4列」の修飾クラス（index.css）。
+                        素の .wc-area-grid（3列）は本文が細い領域ページと共有していて、
+                        あちらは3列で1枚 328px＝ここの4列と同じ大きさになる。 */}
+                    <div className="wc-area-grid wc-area-grid--wide grid" style={{ gap: 14 }}>
                       {shown.map((c) => (
                         <CourseTile
                           key={c.id}

@@ -195,7 +195,10 @@ function AreaCoursesPage() {
                   </span>
                 )}
               </div>
-              <div style={{ display: 'flex', gap: 10 }}>
+              {/* 🔴 折り返せるようにしておく。2つ並ぶと実測 424px あり、375px では
+                     入らない（外側の行だけ wrap でも、この内側が縮まないので
+                     ページごと横スクロールしていた）。 */}
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', minWidth: 0, maxWidth: '100%' }}>
                 {hasPractice && (
                   <select aria-label="種類" value={kind} onChange={(e) => setKind(e.target.value)} style={selectStyle}>
                     <option value={ALL}>種類：すべて</option>
