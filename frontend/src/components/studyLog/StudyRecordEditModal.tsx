@@ -48,7 +48,15 @@ interface StudyRecordEditModalProps {
   saving: boolean;
   /** 送信に失敗した理由。フックが持っている文言をそのまま出す */
   error: string | null;
-  onSave: (value: StudyActivityPatch | Omit<ManualStudyEntryInput, 'id'>) => Promise<void>;
+  /**
+   * 保存する。keepInMyNotes が true なら、保存のあとに同じ内容をマイノートへ
+   * 1件のノートとして残す（作るのは呼び出し側 = StudyLogPage）。
+   * mode='create' のときだけ立つ。
+   */
+  onSave: (
+    value: StudyActivityPatch | Omit<ManualStudyEntryInput, 'id'>,
+    options?: { keepInMyNotes?: boolean }
+  ) => Promise<void>;
   onClose: () => void;
 }
 
@@ -102,6 +110,13 @@ export function StudyRecordEditModal({
   const [contentNote, setContentNote] = useState(activity?.session.contentNote ?? '');
   const [memo, setMemo] = useState(activity?.session.memo ?? '');
   const [achievement, setAchievement] = useState<Achievement | null>(activity?.session.achievement ?? null);
+  /**
+   * 書いた内容をマイノートにも残すか。既定はOFF。
+   * 🔴 mode='create'（手動追加）でだけ出す。編集は同じ記録を何度でも保存できるので、
+   *    そのたびにノートが増えてしまう（同じ内容のノートが並ぶ）。
+   *    既存の記録をあとからマイノートへ移す導線は、要望が出てから別に考える。
+   */
+  const [keepInMyNotes, setKeepInMyNotes] = useState(false);
 
   const measuredMinutes = activity ? Math.round(activity.session.measuredSeconds / 60) : 0;
   const manual = activity ? isManualEntry(activity) : true;
@@ -140,7 +155,9 @@ export function StudyRecordEditModal({
         memo: memo.trim() || null,
         achievement,
       };
-      await onSave(input);
+      // 本文が空のときは残すものが無いのでノートを作らない
+      const hasText = Boolean(contentNote.trim() || memo.trim());
+      await onSave(input, { keepInMyNotes: keepInMyNotes && hasText });
     }
   };
 
@@ -331,7 +348,7 @@ export function StudyRecordEditModal({
           />
         </Field>
 
-        <Field label="メモ（任意）">
+        <Field label="一言メモ（任意）">
           <textarea
             value={memo}
             maxLength={TEXT_MAX_LENGTH}
@@ -372,6 +389,53 @@ export function StudyRecordEditModal({
             })}
           </div>
         </div>
+
+        {/* マイノートにも残す。手動追加のときだけ（編集で出すと保存のたびに増える） */}
+        {mode === 'create' && (
+          <label
+            style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 10,
+              marginBottom: 18,
+              padding: '11px 13px',
+              border: `1px solid ${keepInMyNotes ? 'var(--dc-primary)' : 'var(--dc-border-strong)'}`,
+              borderRadius: 'var(--dc-radius-md)',
+              background: keepInMyNotes ? 'var(--dc-soft-100)' : 'var(--dc-surface)',
+              cursor: 'pointer',
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={keepInMyNotes}
+              onChange={(e) => setKeepInMyNotes(e.target.checked)}
+              style={{ width: 16, height: 16, marginTop: 2, accentColor: 'var(--dc-primary)', flexShrink: 0 }}
+            />
+            <span style={{ minWidth: 0 }}>
+              <span
+                style={{
+                  display: 'block',
+                  fontSize: 'var(--dc-fs-body)',
+                  fontWeight: 700,
+                  color: 'var(--dc-text)',
+                }}
+              >
+                マイノートにも残す
+              </span>
+              <span
+                style={{
+                  display: 'block',
+                  marginTop: 2,
+                  fontSize: 'var(--dc-fs-caption)',
+                  color: 'var(--dc-text-muted)',
+                  lineHeight: 'var(--dc-lh-ui)',
+                }}
+              >
+                学習した内容と一言メモを、マイノートに1件のノートとして残します。
+              </span>
+            </span>
+          </label>
+        )}
 
         {error && (
           <p

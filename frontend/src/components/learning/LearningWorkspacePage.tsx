@@ -146,14 +146,36 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
   const selectionEnabled = doc?.source === 'structured';
   const { selection, clear: clearSelection } = useTextSelection(articleRef, selectionEnabled);
 
+  /**
+   * 「いま自分で完了ボタンを押した」レッスン。紙吹雪を撃つかどうかの判断だけに使う。
+   *
+   * 🔴 completion.isCompleted の false→true では代用できない。完了状態はレッスンを
+   *    開いた直後に非同期で取りに行くので（useLessonCompletion）、完了済みのレッスンを
+   *    開き直しただけでも false→true に変わり、毎回祝ってしまう。
+   *    押した本人の操作だけを覚えておく。
+   */
+  const [celebrateLessonId, setCelebrateLessonId] = useState<number | null>(null);
+
+  /**
+   * レッスンを切り替える。
+   *
+   * @param anchorBlockId 着地したいブロック。渡すと ?block= に載せ、下の復帰処理が
+   *   本文の描画後にそこへスクロールして光らせる（教材内検索から使う）。
+   *   渡さないときは従来どおり先頭から読み始める。
+   */
   const navigateToLesson = useCallback(
-    (nextLessonId: number) => {
+    (nextLessonId: number, anchorBlockId?: string) => {
       setLessonId(nextLessonId);
+      // 祝いは押した直後の1回だけ。戻ってきたときに紙吹雪が再演されないよう、
+      // レッスンを移った時点で忘れる
+      setCelebrateLessonId(null);
       const next = new URLSearchParams(searchParams);
       next.set('module', String(nextLessonId));
-      next.delete('block');
+      if (anchorBlockId) next.set('block', anchorBlockId);
+      else next.delete('block');
       setSearchParams(next, { replace: true });
-      scrollRef.current?.scrollTo({ top: 0 });
+      // 飛び先があるなら先頭へ戻さない。戻すと直後のジャンプと打ち消し合う
+      if (!anchorBlockId) scrollRef.current?.scrollTo({ top: 0 });
     },
     [searchParams, setSearchParams]
   );
@@ -496,8 +518,17 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
    * 次へ進むのはそのカードの中の「次のレッスンへ」（onNavigate）が担うため、
    * このボタン自体が完了済みの状態では描かれない。
    */
-  const handleComplete = useCallback(() => {
-    void completion.toggleComplete(true);
+  const handleComplete = useCallback(async () => {
+    const id = doc?.lessonId ?? null;
+    await completion.toggleComplete(true);
+    // 失敗しても toggleComplete は toast を出して静かに返る（isCompleted は false のまま）。
+    // 祝う面が出ていないところで紙吹雪だけ弾けないよう、達成カード側でも isCompleted を見る。
+    if (id) setCelebrateLessonId(id);
+  }, [completion, doc?.lessonId]);
+
+  const handleUndoComplete = useCallback(() => {
+    setCelebrateLessonId(null);
+    void completion.toggleComplete(false);
   }, [completion]);
 
   // ── Esc でオーバーレイを閉じる（PC/SPで挙動を分けない）──
@@ -641,8 +672,9 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
                 nextMeta={nextMeta}
                 cheer={cheer}
                 cheerLoading={cheerLoading}
+                celebrate={celebrateLessonId === doc.lessonId && completion.isCompleted}
                 onComplete={handleComplete}
-                onUndoComplete={() => void completion.toggleComplete(false)}
+                onUndoComplete={handleUndoComplete}
                 onNavigate={navigateToLesson}
                 onBackToCourse={onBack}
               />

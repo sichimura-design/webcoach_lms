@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Clock, Flame } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../contexts/ToastContext';
 import { AppFooter, AppHeader, ConfirmDialog } from '../shared';
 import { useStudyStats } from '../../hooks/useStudyStats';
 import { useStudyActivityEditor } from '../../hooks/useStudyActivityEditor';
@@ -17,6 +18,7 @@ import {
 } from '../../types/studyActivity';
 import { GoalDeclarationInput, GoalDeclarationPatch } from '../../types/goalDeclaration';
 import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
+import { createNoteFromStudyRecord } from '../../utils/studyRecordNote';
 import { RankingRowItem } from '../shared/RankingRow';
 import bffClient from '../../services/bffClient';
 import SessionReview from '../coaching/SessionReview';
@@ -90,6 +92,8 @@ type EditTarget =
 function StudyLogPage() {
   const { user } = useAuth();
   const userId = user?.userid;
+  const { showToast } = useToast();
+  const navigate = useNavigate();
 
   // 受講開始日〜今日。カレンダーの月送りと期間タブが同じ配列を使う
   const { stats, loading: statsLoading, unavailable } = useStudyStats(userId, 'all');
@@ -201,7 +205,10 @@ function StudyLogPage() {
 
   // --- 記録の編集 -----------------------------------------------------------
 
-  const saveRecord = async (value: StudyActivityPatch | Omit<ManualStudyEntryInput, 'id'>) => {
+  const saveRecord = async (
+    value: StudyActivityPatch | Omit<ManualStudyEntryInput, 'id'>,
+    options?: { keepInMyNotes?: boolean }
+  ) => {
     if (!editTarget) return;
     try {
       if (editTarget.mode === 'edit') {
@@ -212,6 +219,29 @@ function StudyLogPage() {
       setEditTarget(null);
     } catch {
       // 文言は editor.error に入っている。モーダルは開いたままにして直させる
+      return;
+    }
+
+    // 🔴 記録が残ったあとに作る。ここが失敗しても記録は成立しているので、
+    //    保存自体を失敗扱いにしない（StudySessionFinishHost と同じ作法）。
+    if (!options?.keepInMyNotes) return;
+    const input = value as Omit<ManualStudyEntryInput, 'id'>;
+    try {
+      const noteId = await createNoteFromStudyRecord({
+        localDate: input.localDate,
+        minutes: input.durationMinutes,
+        course: input.course,
+        // 手動追加にはその回の学習目標が無い（集中ブースで立てるもの）
+        goalText: '',
+        contentNote: input.contentNote ?? '',
+        memo: input.memo ?? '',
+        achievement: input.achievement ?? null,
+      });
+      showToast('マイノートに残しました', 'success', {
+        action: { label: 'マイノートを見る', onClick: () => navigate(`/notes?note=${noteId}`) },
+      });
+    } catch {
+      showToast('学習記録は残りましたが、マイノートに残せませんでした', 'error');
     }
   };
 

@@ -732,8 +732,16 @@ function buildBriefAnswer(req: LessonAiRequest): LessonAiResponse {
 //    その段の文にだけ実数を差し込む。
 // 🔴 乱数を使わず、同じ状況なら必ず同じ文を返す。完了を取り消してもう一度完了した
 //    ときに文が変わると、その一言が「その場の飾り」だと分かってしまう。
-// 🔴 通常回（plain）ではほめない。毎回ほめると節目の祝いが効かなくなるので、
-//    残り本数と次のレッスン名を言うだけに留める。
+// 🔴 温度は全体で1段高く取る。以前は「毎回ほめると節目が効かなくなる」という理由で
+//    通常回を事実だけの冷たい文にしていたが、実際に出してみると淡々としすぎていて
+//    「ストイックな人しか続かない」という指摘になった。
+//    通常回にも短いねぎらいを1言添える。ただし**段差は残す**:
+//      節目 … 素直に喜ぶ（絵文字は節目だけ・1文に1つまで）
+//      手応え … やったことを名指しでほめる
+//      通常 … ねぎらい1言 + 事実（残り本数・次のレッスン）
+//    ここを平らにする（通常回まで大げさにする）と、節目の祝いがまた効かなくなる。
+// 🔴 headline は達成バッジ（LessonArticle の AchievementBadge）に単独で出る。
+//    「5日連続で学習中」のように、それだけ読んで自分の記録だと分かる言い方にすること。
 
 /** ひと言を組むために集めた実データ */
 interface CheerFacts {
@@ -819,14 +827,14 @@ function buildCheer(facts: CheerFacts): LessonCheerResponse {
     return {
       tier: 'milestone',
       headline: 'コース完走',
-      message: `「${facts.courseName}」全${facts.courseTotal}レッスンを走り切りました。ここで身につけた判断基準は、次のコースでもそのまま土台になります。`,
+      message: `やりました🎉 「${facts.courseName}」全${facts.courseTotal}レッスン、走り切りましたね。ここで身につけた判断基準は、次のコースでもそのまま土台になります。本当におつかれさまでした！`,
     };
   }
   if (remainInSection === 0) {
     return {
       tier: 'milestone',
       headline: '単元クリア',
-      message: `単元「${facts.sectionName}」を完走です。${facts.sectionTotal}本かけて扱ってきた内容が、ここでひとまとまりになりました。`,
+      message: `単元「${facts.sectionName}」を完走です🎉 ${facts.sectionTotal}本かけて扱ってきた内容が、ここでひとまとまりになりました。いいペースです、この勢いで続けましょう！`,
     };
   }
   // ちょうど半分を越えた1本だけ。以降の回で毎回言わないよう、越えた瞬間で判定する
@@ -834,8 +842,8 @@ function buildCheer(facts: CheerFacts): LessonCheerResponse {
   if (facts.courseDone >= half && facts.courseDone - 1 < half) {
     return {
       tier: 'milestone',
-      headline: '折り返し',
-      message: `「${facts.courseName}」はこれで折り返しです。残り${remainInCourse}本。ここまで来た人はたいてい最後まで行きます。`,
+      headline: 'コースの折り返し',
+      message: `「${facts.courseName}」はこれで折り返しです✨ 残り${remainInCourse}本。ここまで来た人はたいてい最後まで行きます。あなたなら大丈夫です！`,
     };
   }
 
@@ -845,28 +853,28 @@ function buildCheer(facts: CheerFacts): LessonCheerResponse {
     return {
       tier: 'effort',
       headline: null,
-      message: `${facts.askedCount}回質問して、手元にも記録を残しながら読み切りましたね。この進め方だと次に思い出せます。`,
+      message: `すごい、${facts.askedCount}回質問して、手元にも記録を残しながら読み切りましたね！この進め方だと次に必ず思い出せます。`,
     };
   }
   if (facts.askedCount > 0) {
     return {
       tier: 'effort',
       headline: null,
-      message: `${facts.askedCount}回質問しながら読み切りましたね。分からないところを流さないのが、いちばん効く進め方です。`,
+      message: `${facts.askedCount}回質問しながら読み切りましたね、いいですね！分からないところを流さないのが、いちばん効く進め方です。`,
     };
   }
   if (facts.clips > 0) {
     return {
       tier: 'effort',
       headline: null,
-      message: `${facts.clips}件クリップしながら読み進めましたね。あとで見返せる形が残っています。`,
+      message: `${facts.clips}件クリップしながら読み進めましたね！あとで見返せる形がちゃんと残っています。`,
     };
   }
   if (facts.memoChars >= 20) {
     return {
       tier: 'effort',
       headline: null,
-      message: '自分の言葉でメモを残しながら進めましたね。読んだだけのときより、手を動かすときに出てきます。',
+      message: '自分の言葉で書き残しながら進めましたね、えらいです！読んだだけのときより、手を動かすときに出てきます。',
     };
   }
 
@@ -874,26 +882,26 @@ function buildCheer(facts: CheerFacts): LessonCheerResponse {
   if (isStreakMilestone(facts.streakDays)) {
     return {
       tier: 'streak',
-      headline: `${facts.streakDays}日連続`,
+      headline: `${facts.streakDays}日連続で学習中`,
       message:
         facts.streakDays >= 7
-          ? `${facts.streakDays}日続いています。ここまで来ると、やらない日のほうが落ち着かないはずです。`
-          : `${facts.streakDays}日続いています。この辺りを越えると、続けるほうが楽になります。`,
+          ? `${facts.streakDays}日続いています、すごいことですよ！ここまで来ると、やらない日のほうが落ち着かないはずです。`
+          : `${facts.streakDays}日続いています、その調子です！この辺りを越えると、続けるほうがぐっと楽になります。`,
     };
   }
 
-  // ── 通常回。ほめずに事実だけ ───────────────────────────
+  // ── 通常回。ねぎらい1言 + 事実（節目より熱くしない）─────
   if (facts.nextTitle) {
     return {
       tier: 'plain',
       headline: null,
-      message: `1本読み切りました。単元「${facts.sectionName}」はあと${remainInSection}本、次は「${facts.nextTitle}」です。`,
+      message: `おつかれさまです、1本読み切りましたね。単元「${facts.sectionName}」はあと${remainInSection}本、次は「${facts.nextTitle}」です。`,
     };
   }
   return {
     tier: 'plain',
     headline: null,
-    message: `最後のレッスンまで来ました。未完了が${remainInCourse}本残っているので、目次から拾っていきましょう。`,
+    message: `おつかれさまです、最後のレッスンまで来ました。未完了が${remainInCourse}本残っているので、目次から拾っていきましょう。`,
   };
 }
 

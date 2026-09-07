@@ -1,10 +1,12 @@
-import { RefObject, useEffect } from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, Check, Clock, List, Sparkles } from 'lucide-react';
+import { RefObject, useEffect, useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight, BookOpen, Check, Clock, Flame, List, Sparkles, Trophy } from 'lucide-react';
 import { color, font, radius, shadow } from '../../theme/webcoachTheme';
 import { LessonCheerResponse, LessonDoc } from '../../types/lesson';
+import AiCoachFace from '../shared/AiCoachFace';
 // バレル（shared/index.ts）を経由せず直に import する。保護URLのトークン付与・
 // 読み込み失敗時のフォールバックまで CourseImage が持っているので自作しない。
 import { CourseImage } from '../shared/CourseImage';
+import LessonCompleteConfetti from './LessonCompleteConfetti';
 import { MATERIAL_FORMAT_LABEL } from '../../constants/learningTaxonomy';
 import type { LearningType } from '../../constants/learningTaxonomy';
 import LessonBlockView from './LessonBlockView';
@@ -44,6 +46,13 @@ interface LessonArticleProps {
   /** 完了時のAIコーチのひと言。取得できなければ null（固定文にフォールバック） */
   cheer?: LessonCheerResponse | null;
   cheerLoading?: boolean;
+  /**
+   * 「いま自分で完了ボタンを押した」ときだけ true。紙吹雪を撃つかどうかの判断に使う。
+   * 🔴 isCompleted の false→true では判断できない。完了状態はレッスンを開いた直後に
+   *    非同期で取りに行く（hooks/useLessonCompletion.ts）ので、完了済みのレッスンを
+   *    開き直しただけでも false→true に変わり、毎回祝ってしまう。
+   */
+  celebrate?: boolean;
   onComplete: () => void;
   onUndoComplete: () => void;
   onNavigate: (lessonId: number) => void;
@@ -94,24 +103,33 @@ const primarySmButton: React.CSSProperties = {
  *    代わりに「レッスン」を表すアイコンのタイルにして、意図的な絵だと分かる形にする。
  *    サムネイル画像が取れるようになったらここを <img> に差し替える。
  */
-function NextThumb() {
+function NextThumb({ compact }: { compact?: boolean }) {
   return (
     <div
       aria-hidden
       className="grid place-items-center"
       style={{
-        width: 148,
-        height: 92,
+        width: compact ? 104 : 148,
+        height: compact ? 68 : 92,
         flex: 'none',
         background: color.hoverBgTint,
         border: `1px solid ${color.primaryBorderSoft}`,
         borderRadius: radius.sm,
       }}
     >
-      <BookOpen size={26} strokeWidth={1.5} style={{ color: color.primaryBorder }} />
+      <BookOpen size={compact ? 22 : 26} strokeWidth={1.5} style={{ color: color.primaryBorder }} />
     </div>
   );
 }
+
+/**
+ * 達成カードの内側に並べるブロックの幅。
+ *
+ * 🔴 バッジ・コーチのひと言・次のレッスンの3つで必ず共有する。以前はひと言だけ
+ *    520px で中央、次のレッスンはカードの内寸フル幅だったため、中央寄せの見出しに対して
+ *    次のレッスンだけ左に張り出し、「枠に対して左に寄りすぎ」に見えていた。
+ */
+const INNER_MAX = 560;
 
 /**
  * 「次のレッスン」カード。未完了（終了カードの下）と完了済み（達成カードの中）の
@@ -149,19 +167,22 @@ function NextUpCard({
     <div
       className="flex items-center"
       style={{
-        gap: 20,
+        gap: nested ? 16 : 20,
         textAlign: 'left',
-        padding: 20,
+        padding: nested ? 16 : 20,
         background: color.surface,
         border: `1px solid ${color.border}`,
         borderRadius: nested ? radius.nav : radius.lg,
         boxShadow: nested ? 'none' : shadow.soft,
         flexWrap: 'wrap',
+        // 達成カードの中では、ひと言・バッジと同じ幅の柱に揃える
+        maxWidth: nested ? INNER_MAX : undefined,
+        margin: nested ? '0 auto' : undefined,
       }}
     >
-      <NextThumb />
+      <NextThumb compact={nested} />
 
-      <div style={{ flex: 1, minWidth: 220 }}>
+      <div style={{ flex: 1, minWidth: 200 }}>
         <div className="flex items-center" style={{ gap: 6, ...font.chip, color: color.textMuted, marginBottom: 6 }}>
           {next ? <BookOpen size={13} /> : <List size={13} />}
           {next ? '次のレッスン' : 'このコースの最後のレッスンです'}
@@ -219,6 +240,39 @@ function NextUpCard({
 }
 
 /**
+ * 「自分が達成したこと」を言い切るバッジ。
+ *
+ * 🔴 これはコーチのひと言の外に置くこと。以前は headline（「5日連続」など）を
+ *    AIカードの中のチップとして出していたが、AIの発言に付いたラベルに見えて
+ *    「自分が積み上げた記録」だと伝わっていなかった。
+ *    達成 = 自分のもの、ひと言 = コーチのもの、と面を分けて置く。
+ */
+function AchievementBadge({ cheer }: { cheer: LessonCheerResponse }) {
+  if (!cheer.headline) return null;
+  const Icon = cheer.tier === 'streak' ? Flame : Trophy;
+
+  return (
+    <div
+      className="inline-flex items-center"
+      style={{
+        gap: 7,
+        marginBottom: 14,
+        padding: '6px 14px',
+        borderRadius: 999,
+        background: color.surface,
+        border: `1.5px solid ${color.success}`,
+        color: color.success,
+        ...font.chip,
+        fontWeight: 900,
+      }}
+    >
+      <Icon size={14} strokeWidth={2.5} />
+      {cheer.headline}
+    </div>
+  );
+}
+
+/**
  * 達成カードの中に置くAIコーチのひと言。
  *
  * ここは以前「よく頑張りました！この調子で、次のレッスンに進みましょう。」の
@@ -227,84 +281,68 @@ function NextUpCard({
  * 完了時の実データからコーチが一言添える形にした。
  *
  * 🔴 文面はサーバ（mocks/lessonHandlers.ts）が組む。ここは描くだけ。
- *    節目（headline あり）だけ強く飾り、通常回は静かに出す。
- * 🔴 取得できないときは呼び出し側が従来の固定文を出す。ここは何も描かない。
+ * 🔴 顔と「AIコーチ」の名前を必ず出す。赤い「AI」の2文字だけだったころは
+ *    誰の言葉なのか伝わっていなかった。顔は AI チャットの回答と同じもの。
+ * 🔴 cheer が取れないときの固定文もこの器に入れる。実BFFにこのAPIは無いので
+ *    本番は常にそちらの経路になる。器を分けると本番だけ顔が消える。
  */
-function CoachCheer({ cheer, loading }: { cheer: LessonCheerResponse | null; loading: boolean }) {
-  // 節目のときだけ枠を強める。毎回同じ強さで飾ると、祝いが効かなくなる
-  const isMilestone = !!cheer?.headline;
-
+function CoachCheer({
+  message,
+  loading,
+}: {
+  message: string | null;
+  loading: boolean;
+}) {
   return (
     <div
+      className="flex"
       style={{
-        display: 'flex',
-        gap: 11,
+        gap: 12,
         textAlign: 'left',
-        maxWidth: 520,
-        margin: '0 auto 24px',
-        padding: '13px 15px',
-        background: color.surface,
-        border: `1px solid ${isMilestone ? color.success : color.border}`,
-        borderRadius: radius.md,
+        alignItems: 'flex-start',
+        maxWidth: INNER_MAX,
+        margin: '0 auto 16px',
       }}
     >
-      <span
-        aria-hidden
-        style={{
-          width: 26,
-          height: 26,
-          display: 'grid',
-          placeItems: 'center',
-          flexShrink: 0,
-          borderRadius: 8,
-          background: color.primary,
-          color: '#fff',
-          fontSize: 9,
-          fontWeight: 900,
-        }}
-      >
-        AI
-      </span>
+      <AiCoachFace size={44} mood="cheer" />
+
       <div style={{ minWidth: 0, flex: 1 }}>
-        {/* 読み上げには「AIコーチからのひと言」と伝える。アバターは装飾なので aria-hidden */}
-        <span className="sr-only">AIコーチからのひと言</span>
-        {loading || !cheer ? (
-          /* 読み込み中。骨格だけ出して高さを確保し、文が入った瞬間に
-             カードの丈が飛ばないようにする */
-          <span
-            aria-hidden
-            style={{
-              display: 'block',
-              width: '72%',
-              height: 12,
-              borderRadius: 999,
-              margin: '5px 0',
-              background: color.trackBg,
-            }}
-          />
-        ) : (
-          <>
-            {cheer.headline && (
-              <span
-                style={{
-                  display: 'inline-block',
-                  marginBottom: 6,
-                  padding: '2px 9px',
-                  borderRadius: 999,
-                  background: color.successSurface,
-                  color: color.success,
-                  ...font.chip,
-                  fontWeight: 900,
-                }}
-              >
-                {cheer.headline}
-              </span>
-            )}
+        <div
+          className="flex items-center"
+          style={{ gap: 5, marginBottom: 4, ...font.chip, color: color.textMuted }}
+        >
+          <Sparkles size={12} style={{ color: color.primary }} />
+          AIコーチ
+        </div>
+        <div
+          style={{
+            padding: '11px 14px',
+            background: color.surface,
+            border: `1px solid ${color.border}`,
+            borderRadius: radius.md,
+            borderTopLeftRadius: 4,
+          }}
+        >
+          {loading || !message ? (
+            /* 読み込み中。骨格だけ出して高さを確保し、文が入った瞬間に
+               カードの丈が飛ばないようにする */
+            <span
+              aria-hidden
+              style={{
+                display: 'block',
+                width: '72%',
+                height: 12,
+                borderRadius: 999,
+                margin: '5px 0',
+                background: color.trackBg,
+              }}
+            />
+          ) : (
             <p style={{ margin: 0, ...font.label, lineHeight: 1.9, color: color.textBody }}>
-              {cheer.message}
+              {message}
             </p>
-          </>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
@@ -321,12 +359,47 @@ export function LessonArticle({
   nextMeta,
   cheer = null,
   cheerLoading = false,
+  celebrate = false,
   onComplete,
   onUndoComplete,
   onNavigate,
   onBackToCourse,
 }: LessonArticleProps) {
   const isFallback = doc.source === 'moodle-fallback';
+
+  /**
+   * 紙吹雪。押した瞬間に1波、節目のひと言が届いたら大きい2波目を撃つ。
+   *
+   * ひと言は 240ms ほど遅れて返る。1波目を待たせると押した手応えが遅れるので、
+   * 先に普通の大きさで撃ち、節目だと分かってからもう一度大きく撃つ。
+   * バッジが現れるのと同じ間になるので、「まだ何かある」に見える。
+   */
+  const [burst, setBurst] = useState<{ key: number; big: boolean } | null>(null);
+  const celebratedRef = useRef(false);
+
+  useEffect(() => {
+    if (!celebrate) {
+      // 完了を取り消した／別のレッスンへ移った。次の完了でまた撃てるように戻す
+      celebratedRef.current = false;
+      setBurst(null);
+      return;
+    }
+    if (celebratedRef.current) return;
+    celebratedRef.current = true;
+    setBurst({ key: Date.now(), big: false });
+  }, [celebrate]);
+
+  // 節目（headline がある回）だけ2波目。同じ完了で一度きり
+  const bigBurstRef = useRef(false);
+  useEffect(() => {
+    if (!celebrate || !cheer?.headline) {
+      if (!celebrate) bigBurstRef.current = false;
+      return;
+    }
+    if (bigBurstRef.current) return;
+    bigBurstRef.current = true;
+    setBurst({ key: Date.now(), big: true });
+  }, [celebrate, cheer?.headline]);
 
   // 保存済みクリップを本文へ当て直す。ブロックが差し替わるたびに再適用する。
   useEffect(() => {
@@ -511,7 +584,7 @@ export function LessonArticle({
               }}
             >
               <Sparkles size={13} style={{ color: color.primary, flexShrink: 0 }} />
-              分からない文章はドラッグで選択すると、解説・AIへの質問・クリップができます。右下からAI・メモも開けます
+              分からない文章はドラッグで選択すると、解説・AIへの質問・クリップができます。右下からAI・マイノートも開けます
             </div>
           )}
 
@@ -653,7 +726,10 @@ export function LessonArticle({
             {isCompleted && (
               <>
                 <div
+                  className={celebrate ? 'wc-lesson-done-pop' : undefined}
                   style={{
+                    position: 'relative',
+                    overflow: 'hidden',
                     background: color.successSurface,
                     border: `1px solid ${color.success}`,
                     borderRadius: radius.lg,
@@ -661,6 +737,9 @@ export function LessonArticle({
                     textAlign: 'center',
                   }}
                 >
+                  {/* 紙吹雪はこのカードの中だけで弾ける。画面全体を覆う祝いにはしない */}
+                  {burst && <LessonCompleteConfetti burstKey={burst.key} big={burst.big} />}
+
                   <div className="inline-flex items-center" style={{ gap: 12, marginBottom: 10 }}>
                     <span
                       aria-hidden
@@ -680,18 +759,25 @@ export function LessonArticle({
                       background: color.success, margin: '0 auto 16px',
                     }}
                   />
+
+                  {/* 自分が積み上げた記録。節目の回だけ出る */}
+                  {cheer && <AchievementBadge cheer={cheer} />}
+
                   {/* AIコーチのひと言。取得できないときだけ従来の固定文に落とす。
                       🔴 祝う面が空欄になるより決まり文句が出るほうがましなので、
                          フォールバックは必ず残す（実BFFにこのAPIは無い＝本番はこの経路）。 */}
-                  {cheer || cheerLoading ? (
-                    <CoachCheer cheer={cheer} loading={cheerLoading} />
-                  ) : (
-                    <p style={{ margin: '0 0 24px', ...font.label, lineHeight: 1.9, color: color.textBody }}>
-                      {doc.next
-                        ? 'よく頑張りました！この調子で、次のレッスンに進みましょう。'
-                        : 'よく頑張りました！これでこのコースのレッスンはすべて終わりです。'}
-                    </p>
-                  )}
+                  <CoachCheer
+                    loading={cheerLoading}
+                    message={
+                      cheer?.message ??
+                      (cheerLoading
+                        ? null
+                        : doc.next
+                          ? 'おつかれさまです、1本やり切りましたね！この調子で次のレッスンへいきましょう。'
+                          : 'おつかれさまです！これでこのコースのレッスンはすべて終わりです。よくここまで走り切りました。')
+                    }
+                  />
+
                   {/* 達成カードの中に次の一手を入れる（2a の組み方）。
                       祝う面と次へ進む面を分けると、演出が2つ並んで安っぽくなる */}
                   <NextUpCard

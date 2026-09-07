@@ -9,7 +9,7 @@ import {
   StudyFinishDraft,
 } from '../../types/studyActivity';
 import { MAX_ADJUST_EXTRA_MINUTES, displaySegments, formatMinutesHM } from '../../utils/studyStats';
-import { formatSessionRange } from './focusFormat';
+import { formatDayLabel, formatSessionRange } from './focusFormat';
 
 /**
  * 学習終了時の記録カード。
@@ -25,7 +25,15 @@ interface FinishSessionModalProps {
   weekTotalMinutes: number;
   /** 記録後のストリーク日数。分かる場合だけ完了画面に出す */
   streakDays?: number;
-  onRecord: (patch: Partial<StudyFinishDraft>) => Promise<void>;
+  /**
+   * 記録する。keepInMyNotes が true なら、記録のあとに同じ内容を
+   * マイノートへ1件のノートとして残す（作るのは呼び出し側 = StudySessionFinishHost）。
+   * 🔴 ここで bffClient を触らない。このモーダルは受け取った下書きを描くだけに保つ。
+   */
+  onRecord: (
+    patch: Partial<StudyFinishDraft>,
+    options?: { keepInMyNotes?: boolean }
+  ) => Promise<void>;
   onDismiss: () => void;
 }
 
@@ -110,7 +118,13 @@ export function FinishSessionModal({
   const [contentNote, setContentNote] = useState(draft.contentNote);
   const [memo, setMemo] = useState(draft.memo);
   const [achievement, setAchievement] = useState<Achievement | null>(draft.achievement);
+  /** 書いた内容をマイノートにも残すか。既定はOFF（＝今までと同じ挙動） */
+  const [keepInMyNotes, setKeepInMyNotes] = useState(false);
   const [saving, setSaving] = useState(false);
+  /** 完了画面で読み返してもらう、実際に記録した文。「そのまま記録」なら空 */
+  const [savedText, setSavedText] = useState('');
+  /** 完了画面で「マイノートにも残しました」を出すか。記録した時点の選択で固定する */
+  const [savedToMyNotes, setSavedToMyNotes] = useState(false);
 
   const { snapshot } = draft;
   const maxMinutes = measuredMinutes + MAX_ADJUST_EXTRA_MINUTES;
@@ -128,14 +142,21 @@ export function FinishSessionModal({
 
   const record = async (withDetail: boolean) => {
     if (saving) return;
+    // 「そのまま記録」には残す本文が無いので、マイノートにも作らない
+    const keep = withDetail && keepInMyNotes;
     setSaving(true);
-    await onRecord({
-      actualMinutes: minutes,
-      contentNote: withDetail ? contentNote : '',
-      memo: withDetail ? memo : '',
-      achievement: withDetail ? achievement : null,
-    });
+    await onRecord(
+      {
+        actualMinutes: minutes,
+        contentNote: withDetail ? contentNote : '',
+        memo: withDetail ? memo : '',
+        achievement: withDetail ? achievement : null,
+      },
+      { keepInMyNotes: keep }
+    );
     setSaving(false);
+    setSavedText(withDetail ? contentNote.trim() || memo.trim() : '');
+    setSavedToMyNotes(keep);
     setStep('done');
   };
 
@@ -400,12 +421,20 @@ export function FinishSessionModal({
                 style={{
                   ...t.chip,
                   display: 'inline-flex',
-                  marginBottom: 16,
+                  marginBottom: 8,
                 }}
               >
                 {formatMinutesHM(minutes)}
                 {snapshot.course ? ` ・ ${snapshot.course.courseTitle}` : ' ・ 教材の指定なし'}
               </div>
+
+              {/* 🔴 行き先を必ず名指しする。書いた内容がマイノートに入ると思って探し、
+                  見つからないという声があった。冗長に見えても消さないこと。
+                  以前は「マイノートには入りません」で打ち切っていたが、下の
+                  「マイノートにも残す」で実際に入れられるようになったので言い換えた。 */}
+              <p style={{ ...font.caption, color: color.textMuted, margin: '0 0 16px' }}>
+                ここに書いた内容は、サイドバーの「記録」（学習記録）に残ります。マイノートにも残したいときは、下のチェックを入れてください。
+              </p>
 
               <label style={{ display: 'block', marginBottom: 16 }}>
                 <span style={{ ...font.label, color: color.textSubtle }}>学習した内容（任意）</span>
@@ -429,7 +458,9 @@ export function FinishSessionModal({
               </label>
 
               <div style={{ marginBottom: 6 }}>
-                <span style={{ ...font.label, color: color.textSubtle }}>達成度（任意）</span>
+                {/* 「達成度」ではなく「手応え」。ラベルが もう少し／できた／バッチリ という
+                    自己申告の感覚で、達成率ではない（StudyRecordEditModal と同じ語に揃えてある） */}
+                <span style={{ ...font.label, color: color.textSubtle }}>手応え（任意）</span>
                 <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
                   {ACHIEVEMENTS.map((v) => {
                     const active = achievement === v;
@@ -460,6 +491,37 @@ export function FinishSessionModal({
                   今日の自分の感じ方を記録するだけの項目です。
                 </p>
               </div>
+
+              {/* マイノートにも残す。学習記録とマイノートは別物なので、
+                  勝手に両方へ書かず本人に選ばせる（既定はOFF＝従来の挙動） */}
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 10,
+                  marginTop: 18,
+                  padding: '12px 14px',
+                  border: `1px solid ${keepInMyNotes ? color.primaryBorder : color.border}`,
+                  borderRadius: radius.md,
+                  background: keepInMyNotes ? color.pageBg : color.surface,
+                  cursor: 'pointer',
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={keepInMyNotes}
+                  onChange={(e) => setKeepInMyNotes(e.target.checked)}
+                  style={{ width: 16, height: 16, marginTop: 2, accentColor: color.primary, flexShrink: 0 }}
+                />
+                <span style={{ minWidth: 0 }}>
+                  <span style={{ ...font.rowTitle, color: color.text, display: 'block' }}>
+                    マイノートにも残す
+                  </span>
+                  <span style={{ ...font.caption, color: color.textMuted, display: 'block', marginTop: 2 }}>
+                    学習した内容と一言メモを、マイノートに1件のノートとして残します。あとから書き足せます。
+                  </span>
+                </span>
+              </label>
 
               <div style={{ display: 'flex', gap: 10, marginTop: 18 }}>
                 <button
@@ -494,9 +556,31 @@ export function FinishSessionModal({
             <>
               <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start', marginBottom: 16 }}>
                 <Check className="w-5 h-5" style={{ color: '#2F7F5B', flexShrink: 0, marginTop: 2 }} />
-                <p style={{ ...font.meta, color: color.textBody, margin: 0, lineHeight: 1.9 }}>
-                  おつかれさまでした。学習記録に残しました。
-                </p>
+                <div style={{ minWidth: 0 }}>
+                  <p style={{ ...font.meta, color: color.textBody, margin: 0, lineHeight: 1.9 }}>
+                    おつかれさまでした。{formatDayLabel(`${snapshot.localDate}T00:00:00`)}の学習記録に残しました。
+                    {savedToMyNotes && 'マイノートにも1件残しました。'}
+                  </p>
+                  {/* 書いた内容をそのまま返す。「確かに残った」を目で確かめられないと、
+                      どこへ行ったのか分からず不安になる（実際にそういう声があった）。 */}
+                  {savedText && (
+                    <p
+                      style={{
+                        ...font.caption,
+                        color: color.textMuted,
+                        margin: '6px 0 0',
+                        lineHeight: 1.8,
+                        overflowWrap: 'anywhere',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}
+                    >
+                      「{savedText}」
+                    </p>
+                  )}
+                </div>
               </div>
               <div
                 style={{
@@ -525,12 +609,14 @@ export function FinishSessionModal({
                   type="button"
                   onClick={() => {
                     onDismiss();
-                    navigate('/study-log');
+                    // ?date= を付けないと日別パネルが未選択のまま開き、いま記録したものが
+                    // 画面に出ない（StudyLogPage が同じ形式のクエリを解釈する）
+                    navigate(`/study-log?date=${snapshot.localDate}`);
                   }}
                   className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                   style={{ ...t.ghostButton, flex: 1, cursor: 'pointer' }}
                 >
-                  学習履歴を見る
+                  学習記録を見る
                 </button>
                 <button
                   type="button"

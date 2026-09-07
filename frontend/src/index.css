@@ -1041,6 +1041,61 @@ body.learning-immersive {
   }
 }
 
+/* ─── レッスン完了の祝い（LessonArticle の達成カード）─────────
+   完了ボタンを押した瞬間の「やり切った」を出すためのひと組。
+   達成カードが跳ねて出る → その中で紙吹雪が弾ける → コーチの顔が遅れて跳ねる。
+
+   🔴 紙吹雪の粒は prefers-reduced-motion のとき animation: none で止めてはいけない。
+      止めると散る前の粒が中央に固まったまま残る。JS側（LessonCompleteConfetti）が
+      そもそも描かないので、ここには粒の打ち消しを書かない。 */
+@keyframes wcPopIn {
+  0%   { opacity: 0; transform: scale(.94) translateY(6px); }
+  60%  { opacity: 1; transform: scale(1.012) translateY(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* 中央から上へ弾けて落ちる紙吹雪の粒。
+   飛ぶ先・回転・速さは1粒ずつ違うので、JS がインラインの CSS 変数で渡す。
+   🔴 45% の山（--wc-cf-up）を必ず経由させる。始点から終点へ直線で動かすと
+      「弾けた」ではなく「流れ落ちた」に見える。 */
+@keyframes wcConfettiBurst {
+  0%   { opacity: 0; transform: translate(0, 0) scale(.4) rotate(0deg); }
+  12%  { opacity: 1; }
+  45%  {
+    transform: translate(var(--wc-cf-mx), var(--wc-cf-up)) scale(1)
+      rotate(calc(var(--wc-cf-rot) * 0.45));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--wc-cf-x), var(--wc-cf-y)) scale(1) rotate(var(--wc-cf-rot));
+  }
+}
+
+/* 🔴 イージングは var(--dc-ease) で書かない。あの変数は :root ではなく .wc-warm に
+      置かれていて、教材ページはそのスコープの外にある。未定義の var が混ざると
+      animation ショートハンド全体が無効になり、アニメーションが丸ごと消える
+      （.wc-drawer-right など既存の指定もリテラルで書いてある）。 */
+.wc-lesson-done-pop {
+  animation: wcPopIn 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.wc-ai-face-pop {
+  animation: wcPopIn 380ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms both;
+}
+
+.wc-confetti-piece {
+  animation-name: wcConfettiBurst;
+  animation-timing-function: cubic-bezier(0.15, 0.6, 0.35, 1);
+  animation-fill-mode: both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-lesson-done-pop,
+  .wc-ai-face-pop {
+    animation: none;
+  }
+}
+
 /* おすすめレッスンホイールの回転リング演出 */
 @keyframes spinSlow {
   from { transform: rotate(0deg); }

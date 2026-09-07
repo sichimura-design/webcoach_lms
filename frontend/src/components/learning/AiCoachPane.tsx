@@ -6,6 +6,7 @@ import { LessonAiResponse } from '../../types/lesson';
 import { AiSkillId, AI_SKILL_META, isSpecialistSkill } from '../../types/aiSkill';
 import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
 import MarkdownRenderer from '../MarkdownRenderer';
+import AiCoachFace from '../shared/AiCoachFace';
 import SkillPlusMenu from './SkillPlusMenu';
 import SkillProposalCard from './SkillProposalCard';
 import SkillResultView from './SkillResultView';
@@ -139,26 +140,13 @@ function ReferenceNote({ message }: { message: LessonAiMessage }) {
   );
 }
 
+/**
+ * 回答の左に置くAIコーチの顔。
+ * 以前は赤地に「AI」の2文字だったが、完了カードのひと言と同じ顔に揃えた
+ * （shared/AiCoachFace.tsx の 🔴 を参照）。
+ */
 function AiAvatar() {
-  return (
-    <div
-      aria-hidden
-      style={{
-        width: 27,
-        height: 27,
-        display: 'grid',
-        placeItems: 'center',
-        borderRadius: 8,
-        background: color.primary,
-        color: '#fff',
-        fontSize: 9,
-        fontWeight: 900,
-        flexShrink: 0,
-      }}
-    >
-      AI
-    </div>
-  );
+  return <AiCoachFace size={27} mood="talk" />;
 }
 
 export function AiCoachPane({
@@ -499,7 +487,11 @@ export function AiCoachPane({
                   )}
 
                   {/* 回答ごとに3つ並ぶと本文が読みにくいので、ホバー／フォーカスで出す。
-                      ホバーできない端末では常に出る（index.css の @media (hover: none)）。 */}
+                      ホバーできない端末では常に出る（index.css の @media (hover: none)）。
+
+                      🔴 行き先が違うので言葉も分ける。
+                        ・マイノートに残す … ピッカーでノートを選んで保存（＝/notes に入る）
+                        ・下書きに追加     … マイノート欄の下書き（まだノートではない）に足す */}
                   <div
                     className="wc-ai-answer-actions flex flex-wrap"
                     style={{ gap: 5, marginTop: 9 }}
@@ -520,7 +512,7 @@ export function AiCoachPane({
                       className="wc-ai-chip inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                       style={actionButtonStyle}
                     >
-                      <Star size={11} /> 保存
+                      <Star size={11} /> マイノートに残す
                     </button>
                     <button
                       type="button"
@@ -528,7 +520,7 @@ export function AiCoachPane({
                       className="wc-ai-chip inline-flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                       style={actionButtonStyle}
                     >
-                      <StickyNote size={11} /> メモに追加
+                      <StickyNote size={11} /> 下書きに追加
                     </button>
                   </div>
                 </div>

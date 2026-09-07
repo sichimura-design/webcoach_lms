@@ -13,6 +13,8 @@ export { ErrorBoundary } from './ErrorBoundary';
 export { DataRenderer } from './DataRenderer';
 export { AppIcon } from './AppIcon';
 export { default as CharacterAvatar } from './CharacterAvatar';
+export { default as AiCoachFace } from './AiCoachFace';
+export type { AiCoachMood } from './AiCoachFace';
 export { default as StudySessionHost } from './StudySessionHost';
 export { default as StudySessionFinishHost } from './StudySessionFinishHost';
 export { default as ResumeStudyHost } from './ResumeStudyHost';

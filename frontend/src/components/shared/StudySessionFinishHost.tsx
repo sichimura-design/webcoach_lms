@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { useToast } from '../../contexts/ToastContext';
 import { useStudyTimerStore } from '../../store/studyTimerStore';
 import { useStudySession } from '../../hooks/useStudySession';
 import { useStudyStats } from '../../hooks/useStudyStats';
 import { StudyFinishDraft } from '../../types/studyActivity';
+import { createNoteFromStudyRecord } from '../../utils/studyRecordNote';
 import FinishSessionModal from '../focus/FinishSessionModal';
 
 /**
@@ -34,6 +37,8 @@ function FinishCard({
 }) {
   const { commitFinish } = useStudySession(userId);
   const { stats } = useStudyStats(userId);
+  const { showToast } = useToast();
+  const navigate = useNavigate();
 
   // 🔴 記録前の今週累計をマウント時に固定する。
   //    記録すると再取得が走って今週の値に今回分が含まれるため、
@@ -51,9 +56,29 @@ function FinishCard({
       draft={draft}
       weekTotalMinutes={(baseWeekMinutes ?? 0) + (recordedMinutes ?? draft.actualMinutes)}
       streakDays={stats?.streak.currentDays}
-      onRecord={async (patch) => {
+      onRecord={async (patch, options) => {
         setRecordedMinutes(patch.actualMinutes ?? draft.actualMinutes);
         await commitFinish(patch);
+
+        // 🔴 記録の保存が済んだあとに作る。ここで失敗しても学習記録は成立して
+        //    いるので、記録自体を失敗扱いにしない（トーストで伝えるだけ）。
+        if (!options?.keepInMyNotes) return;
+        try {
+          const noteId = await createNoteFromStudyRecord({
+            localDate: draft.snapshot.localDate,
+            minutes: patch.actualMinutes ?? draft.actualMinutes,
+            course: draft.snapshot.course,
+            goalText: draft.goalText,
+            contentNote: patch.contentNote ?? '',
+            memo: patch.memo ?? '',
+            achievement: patch.achievement ?? null,
+          });
+          showToast('マイノートに残しました', 'success', {
+            action: { label: 'マイノートを見る', onClick: () => navigate(`/notes?note=${noteId}`) },
+          });
+        } catch {
+          showToast('学習記録は残りましたが、マイノートに残せませんでした', 'error');
+        }
       }}
       onDismiss={onClosed}
     />
