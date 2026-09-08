@@ -248,7 +248,7 @@ export const noteHandlers = [
     return HttpResponse.json(refs);
   }),
 
-  // --- フォルダ（デザイン『マイノート 改善案』の左列）------------------------
+  // --- フォルダ（マイノートの上部バーのパネル）--------------------------------
   http.get('*/api/webcoach/note-folders', () => {
     const folders = [...readNoteStore().folders].sort((a, b) => a.createdAt.localeCompare(b.createdAt));
     return HttpResponse.json(folders);

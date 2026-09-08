@@ -14,7 +14,12 @@ import { createPortal } from 'react-dom';
  *   ・position:fixed ＋ ボタンの矩形から座標を出す（親の overflow に切られない）
  *   ・下に入らなければ上に開く（フリップ）
  *   ・それでも入らないときは残り高さいっぱいに縮め、メニューの中でスクロールさせる
- *   ・スクロール／リサイズで座標を取り直す（ボタンに付いて動く）
+ *   ・スクロール／リサイズ／**中身の高さが変わったら**座標を取り直す
+ *
+ * 🔴 中身の高さは ResizeObserver で見る。以前は useLayoutEffect の依存に children を
+ *    入れていたが、中身が自分の state で伸び縮みする使い方（フォルダのパネルで
+ *    名前の入力欄が生える・行が消える）では children の同一性が変わらず測り直さない。
+ *    上に開いていた場合、top は古い高さから逆算した値なのでボタンから浮いて残る。
  *
  * 閉じる操作もここで持つ。ポータルは anchor の DOM の外に出るので、
  * useDismissable の「ref の外側なら閉じる」だと、項目を押した瞬間に
@@ -31,6 +36,13 @@ interface AnchoredMenuProps {
   /** role="menu" 以外にしたいとき（説明ポップオーバーなど） */
   role?: string;
   ariaLabel?: string;
+  /**
+   * 開いたら中へフォーカスを入れ、閉じたらボタンへ返す。
+   * role="dialog" で使うときは付ける（入れないと Tab がパネルを飛び越し、
+   * 読み上げにも存在が伝わらない）。role="menu" の項目1個ずつを選ぶ使い方では
+   * 既定の off のまま（ポインタ操作の途中でフォーカスが動くと落ち着かない）。
+   */
+  manageFocus?: boolean;
   children: React.ReactNode;
 }
 
@@ -52,6 +64,7 @@ export function AnchoredMenu({
   minWidth,
   role = 'menu',
   ariaLabel,
+  manageFocus = false,
   children,
 }: AnchoredMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -101,7 +114,18 @@ export function AnchoredMenu({
       return;
     }
     measure();
-  }, [open, measure, children]);
+  }, [open, measure]);
+
+  // 開いたら中へフォーカスを入れ、閉じたらボタンへ返す（manageFocus のときだけ）
+  useEffect(() => {
+    if (!open || !manageFocus) return;
+    const anchor = anchorRef.current;
+    menuRef.current?.focus();
+    return () => {
+      // 閉じた先が別の入力ならそこを尊重する。行方不明（body）のときだけ引き戻す
+      if (document.activeElement === document.body) anchor?.focus();
+    };
+  }, [open, manageFocus, anchorRef]);
 
   useEffect(() => {
     if (!open) return;
@@ -110,6 +134,11 @@ export function AnchoredMenu({
     const onScrollOrResize = () => measure();
     window.addEventListener('scroll', onScrollOrResize, true);
     window.addEventListener('resize', onScrollOrResize);
+
+    // 中身が伸び縮みしたら測り直す（入力欄が生える・行が増減する）
+    const menu = menuRef.current;
+    const observer = menu ? new ResizeObserver(() => measure()) : null;
+    if (menu && observer) observer.observe(menu);
 
     const onPointerDown = (e: MouseEvent) => {
       const target = e.target as Node;
@@ -124,6 +153,7 @@ export function AnchoredMenu({
     document.addEventListener('keydown', onKeyDown);
 
     return () => {
+      observer?.disconnect();
       window.removeEventListener('scroll', onScrollOrResize, true);
       window.removeEventListener('resize', onScrollOrResize);
       document.removeEventListener('mousedown', onPointerDown);
@@ -138,6 +168,8 @@ export function AnchoredMenu({
       ref={menuRef}
       role={role}
       aria-label={ariaLabel}
+      // フォーカスを受けられるようにする（キーボードの Tab 順には入れない）
+      tabIndex={manageFocus ? -1 : undefined}
       /*
        * 🔴 wc-warm を自分で被る。--dc-* は :root ではなくスコープクラス
        *    （.mypage-3d / .wc-warm）に載っているので、body 直下に出した瞬間に
@@ -153,6 +185,8 @@ export function AnchoredMenu({
         minWidth,
         maxHeight: placement?.maxHeight,
         overflowY: 'auto',
+        // 箱そのものは押せる面ではないので、フォーカスを入れても枠は出さない
+        outline: 'none',
         // モーダル（60〜90）より下、ページ本体・ヘッダー（45）より上
         zIndex: 60,
       }}

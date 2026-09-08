@@ -2,13 +2,11 @@ import type { DragEvent } from 'react';
 import { NoteFolder, NoteFolderFilter, NoteSummary } from '../../types/notes';
 
 /**
- * フォルダ列（NoteFolderColumn）と狭い画面の横並び（NoteFolderStrip）が共有する
- * 計算と定数。見た目は別々でも、行の並びと件数の数え方は1つにしておく。
+ * フォルダの行（バーのボタン・パネルの行・カード下部の移動先）が共有する計算と定数。
+ * 出す場所は別々でも、並びとラベル、件数の数え方は1つにしておく。
  */
 
-/** カードを掴んだときの dataTransfer の型。フォルダ行はこれが乗っているときだけ受ける */
-export const NOTE_DRAG_TYPE = 'application/x-wc-note';
-/** ノート面のブロックを掴んだとき（⠿）。カードのドラッグと取り違えないよう別の型 */
+/** ノート面のブロックを掴んだとき（⠿）の dataTransfer の型 */
 export const NOTE_BLOCK_DRAG_TYPE = 'application/x-wc-note-block';
 
 export const INBOX_LABEL = '未整理';
@@ -41,7 +39,7 @@ export function folderNameOf(folderId: string | null, folders: NoteFolder[]): st
   return folders.find((f) => f.id === folderId)?.name ?? null;
 }
 
-/** 見出し・フォルダピルに出す名前。all は「マイノート」だけなので null */
+/** パンくずの現在地に出す名前。all は「すべて」を呼び出し側が入れるので null */
 export function filterLabel(filter: NoteFolderFilter, folders: NoteFolder[]): string | null {
   if (filter.kind === 'all') return null;
   if (filter.kind === 'favorite') return FAVORITE_LABEL;
@@ -55,10 +53,6 @@ export function sameFilter(a: NoteFolderFilter, b: NoteFolderFilter): boolean {
 }
 
 /** dragover の時点では中身は読めないが型は読めるので、それで判定する */
-export function hasNoteDrag(e: DragEvent): boolean {
-  return Array.from(e.dataTransfer.types).includes(NOTE_DRAG_TYPE);
-}
-
 export function hasBlockDrag(e: DragEvent): boolean {
   return Array.from(e.dataTransfer.types).includes(NOTE_BLOCK_DRAG_TYPE);
 }

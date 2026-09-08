@@ -3,7 +3,7 @@ import bffClient from '../services/bffClient';
 import { NoteFolder } from '../types/notes';
 
 /**
- * マイノートのフォルダ一覧（デザイン『マイノート 改善案』の左列）。
+ * マイノートのフォルダ一覧（一覧の上部バー「フォルダを開く」のパネル）。
  *
  * 件数はここでは持たない。ノート一覧（useNoteList）は全件を手元に持っているので、
  * 画面側が items から数えるほうが、絞り込みと常に同じ数になる。

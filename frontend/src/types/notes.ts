@@ -229,7 +229,7 @@ export interface NoteFolderUpdateInput {
 }
 
 /**
- * 一覧の左列で選ぶ「どこを見ているか」。
+ * 一覧の上部バーで選ぶ「どこを見ているか」。
  * all/favorite は集計ビュー、inbox は folderId=null、folder は1フォルダ。
  * URL の ?folder= に載せる（all は省略、favorite は star）。
  */

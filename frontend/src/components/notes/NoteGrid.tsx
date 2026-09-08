@@ -1,7 +1,9 @@
-import { FolderOpen, Inbox, NotebookPen, Plus, SearchX, Star } from 'lucide-react';
+import { useCallback, useRef, useState } from 'react';
+import { Folder, FolderOpen, Inbox, NotebookPen, Plus, SearchX, Star } from 'lucide-react';
 import { NoteFolder, NoteFolderFilter, NoteSummary } from '../../types/notes';
+import AnchoredMenu from './AnchoredMenu';
 import NoteCard from './NoteCard';
-import { folderNameOf } from './folderRows';
+import { INBOX_LABEL, folderNameOf } from './folderRows';
 
 /**
  * 一覧のカードグリッド。3列 → 2列 → 1列は index.css の .notes-grid。
@@ -12,6 +14,11 @@ import { folderNameOf } from './folderRows';
  *   ・開いたフォルダが空   … このフォルダにノートを作る（改善案で追加した文言）
  *   ・未整理が空／重要が空 … 説明だけ。作らせない
  *   ・絞り込んで0枚         … 条件をクリア
+ *
+ * カードの「移動先」メニューはここが1つだけ持つ。
+ * 🔴 カードの中に置いてはいけない。createPortal のイベントは DOM ではなく React の
+ *    ツリーを伝播するので、NoteCard の中から AnchoredMenu を描くと、メニュー項目の
+ *    クリックがカードの onClick（＝ノートを開く）まで届く。
  */
 interface NoteGridProps {
   items: NoteSummary[];
@@ -25,6 +32,8 @@ interface NoteGridProps {
   onOpen: (id: string) => void;
   /** カード右上の★ */
   onToggleFavorite: (id: string, favorite: boolean) => void;
+  /** カード下部のフォルダ名から選んだ移動先。null は未整理 */
+  onMove: (id: string, folderId: string | null) => void;
   onCreate: () => void;
   onClearFilters: () => void;
 }
@@ -38,9 +47,24 @@ export function NoteGrid({
   hasOtherFilters,
   onOpen,
   onToggleFavorite,
+  onMove,
   onCreate,
   onClearFilters,
 }: NoteGridProps) {
+  /** どのカードの移動先メニューが開いているか。anchor は押されたボタンそのもの */
+  const [moveFor, setMoveFor] = useState<{ noteId: string; folderId: string | null } | null>(null);
+  const anchorRef = useRef<HTMLElement | null>(null);
+  const closeMove = useCallback(() => setMoveFor(null), []);
+
+  const requestMove = (noteId: string, folderId: string | null, anchor: HTMLElement) => {
+    // 同じカードをもう一度押したら閉じる
+    setMoveFor((prev) => {
+      if (prev?.noteId === noteId) return null;
+      anchorRef.current = anchor;
+      return { noteId, folderId };
+    });
+  };
+
   if (loading && items.length === 0) {
     return (
       <div className="notes-grid" aria-busy="true">
@@ -72,11 +96,13 @@ export function NoteGrid({
       );
     }
     if (!hasOtherFilters && filter.kind === 'folder') {
+      // 🔴 「カードから移せます」だけでは足りない。いま開いているのが空のフォルダなので、
+      //    この画面には移動元のカードが1枚も無い。戻る場所まで言う。
       return (
         <EmptyState
           icon={<FolderOpen size={26} style={{ color: 'var(--dc-primary)' }} />}
           title="このフォルダにはまだノートがありません"
-          body="ここで作るか、一覧のカードをこのフォルダへドラッグして入れられます。"
+          body="ここで作るか、「すべてのノート」に戻って、カード下のフォルダ名から移せます。"
           action={<PrimaryAction onClick={onCreate} />}
         />
       );
@@ -131,17 +157,52 @@ export function NoteGrid({
   }
 
   return (
-    <div className="notes-grid">
-      {items.map((note) => (
-        <NoteCard
-          key={note.id}
-          note={note}
-          folderName={folderNameOf(note.folderId, folders)}
-          onOpen={onOpen}
-          onToggleFavorite={onToggleFavorite}
-        />
-      ))}
-    </div>
+    <>
+      <div className="notes-grid">
+        {items.map((note) => (
+          <NoteCard
+            key={note.id}
+            note={note}
+            folderName={folderNameOf(note.folderId, folders)}
+            menuOpen={moveFor?.noteId === note.id}
+            onOpen={onOpen}
+            onToggleFavorite={onToggleFavorite}
+            onRequestMove={requestMove}
+          />
+        ))}
+      </div>
+
+      <AnchoredMenu anchorRef={anchorRef} open={moveFor !== null} onClose={closeMove} minWidth={220}>
+        <div
+          style={{
+            padding: '4px 10px 6px',
+            fontSize: 11,
+            fontWeight: 700,
+            color: 'var(--dc-text-subtle)',
+            letterSpacing: '.04em',
+          }}
+        >
+          移動先
+        </div>
+        {[{ id: null as string | null, name: INBOX_LABEL }, ...folders].map((f) => (
+          <button
+            key={f.id ?? 'inbox'}
+            type="button"
+            role="menuitemradio"
+            aria-checked={f.id === moveFor?.folderId}
+            className={`notes-menu-item ${f.id === moveFor?.folderId ? 'is-selected' : ''}`}
+            onClick={() => {
+              const target = moveFor;
+              closeMove();
+              if (target && f.id !== target.folderId) onMove(target.noteId, f.id);
+            }}
+          >
+            {f.id === null ? <Inbox size={14} /> : <Folder size={14} />}
+            {f.name}
+          </button>
+        ))}
+      </AnchoredMenu>
+    </>
   );
 }
 

@@ -601,6 +601,108 @@ h1, h2, h3 {
   border-color: var(--dc-primary);
 }
 
+/* ─── コーチ画面（受講生一覧・連携設定）─────────────────
+   擬似テーブルの行と設定行。ホバーは .ct-row と同じ理由でここに出している
+   （インライン style は :hover を持てない）。
+   🔴 狭い幅で必ず縦積みに落とす。列幅を固定した1行のままだと 375px で
+      氏名が1文字ずつ折り返し、3列目のボタンが画面外に出る。 */
+.coach-row {
+  display: flex;
+  align-items: center;
+  transition: background-color 120ms var(--dc-ease);
+}
+
+.coach-row:hover {
+  background: var(--dc-soft-100);
+}
+
+/* 列見出しの行。display をここに持つのは、狭い幅で display:none に
+   落とすため（インライン style だとメディアクエリで戻せない）。 */
+.coach-table-head {
+  display: flex;
+  align-items: center;
+}
+
+/* 左（アバター＋受講ID・氏名）と右（最終ログイン＋操作）の2グループ */
+.coach-row-main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.coach-row-meta {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.coach-col-access {
+  width: 132px;
+  flex: none;
+}
+
+.coach-col-action {
+  width: 152px;
+  flex: none;
+  text-align: right;
+}
+
+/* 連携設定の1行（アイコン＋説明＋ボタン） */
+.coach-setting-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.coach-setting-row > .coach-setting-action {
+  flex: none;
+}
+
+@media (max-width: 640px) {
+  /* 縦積みにすると列の対応が消えるので、見出し行そのものを畳む */
+  .coach-table-head {
+    display: none;
+  }
+
+  .coach-row {
+    flex-wrap: wrap;
+    row-gap: 12px;
+  }
+
+  .coach-row-main,
+  .coach-row-meta {
+    flex: 1 1 100%;
+  }
+
+  /* アバター（40px）＋ gap（14px）のぶん字下げして、氏名の下に揃える */
+  .coach-row-meta {
+    justify-content: space-between;
+    padding-left: 54px;
+  }
+
+  .coach-col-access,
+  .coach-col-action {
+    width: auto;
+    text-align: left;
+  }
+
+  .coach-setting-row {
+    flex-wrap: wrap;
+  }
+
+  .coach-setting-row > .coach-setting-action {
+    flex: 1 1 100%;
+  }
+
+  /* ボタンは幅いっぱいに伸ばす。半端な幅で残ると押しにくい */
+  .coach-setting-row > .coach-setting-action > * {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* .dc-cta-* はコーストップ以外（マイページ 5a・学習記録 4a）も使う共通名。
    中身は同じなのでセレクタだけ足している。 */
 .ct-btn-primary:hover,
@@ -624,6 +726,7 @@ h1, h2, h3 {
 
 @media (prefers-reduced-motion: reduce) {
   .ct-row,
+  .coach-row,
   .studylog-cal-cell,
   .studylog-row,
   .studylog-row-actions {
@@ -1239,7 +1342,7 @@ body.learning-immersive {
   flex-wrap: nowrap;
 }
 
-/* ─── 学習記録・ランキング(/study-log) ─────────────
+/* ─── 学習記録(/study-log) ─────────────────────
    デザイン『トップページ 3案』4a。マイページと同じ fr ベースの流動レイアウトへ移行した。
 
    🔴 かつてここにあった .studylog-main / .studylog-summary-row（1440px 固定キャンバスを
@@ -1257,17 +1360,9 @@ body.learning-immersive {
   gap: calc(var(--dc-sp-gap) * 0.55);
 }
 
-/* 学習時間ランキングとストリークランキングの2枚並び */
-.studylog-rank-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--dc-sp-gap);
-  align-items: start;
-}
-
 /* 学習カレンダー ｜ 選んだ日の詳細。
    詳細側は 320〜380px の固定寄り（中は1行1記録なので、広げても情報は増えない）。
-   🔴 折り返すしきい値は .studylog-rank-grid と揃える。同じ画面の上下で
+   🔴 折り返すしきい値は .studylog-kpi-grid と揃える。同じ画面の上下で
       折り返す幅が違うと、中間の幅で片方だけ1カラムになって崩れて見える。 */
 .studylog-calendar-grid {
   display: grid;
@@ -1330,7 +1425,6 @@ body.learning-immersive {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .studylog-rank-grid,
   .studylog-calendar-grid {
     grid-template-columns: 1fr;
   }
@@ -1349,7 +1443,6 @@ body.learning-immersive {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  body.sidebar-expanded .studylog-rank-grid,
   body.sidebar-expanded .studylog-calendar-grid,
   body.sidebar-expanded .mypage-3d-grid {
     grid-template-columns: 1fr;
@@ -1357,36 +1450,13 @@ body.learning-immersive {
 }
 
 /* ─── マイノート(/notes) ───────────────────────
-   デザイン『マイノート 改善案』。左にフォルダ列（248px）、右に一覧／ノート面。
-   値はアートボード（design-canvas/screens/NotesImproved.dc.html）と同値。
+   一覧の上にフォルダのバー（NoteFolderBar）、その下に検索・種類チップ・カードグリッド。
+   もとは左に 248px のフォルダ列（NoteFolderColumn）を立てていた。アートボード
+   （design-canvas/screens/NotesImproved.dc.html）はまだその形なので、
+   カード・チップ・メニューの値は同値、レイアウトだけが別物になっている。
 
    🔴 切り替わる・hover する見た目はここ（クラス）に置く。インライン style は
       :hover を持てず、インラインの display は CSS から上書きできない。 */
-.notes-shell {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  align-items: stretch;
-}
-
-/* フォルダ列。本文がスクロールしても列は画面に留まる */
-.notes-folder-col {
-  width: 248px;
-  flex: none;
-  box-sizing: border-box;
-  position: sticky;
-  top: 0;
-  align-self: flex-start;
-  height: 100vh;
-  overflow-y: auto;
-  background: #FFFDFA;
-  border-right: 1px solid var(--dc-border);
-  padding: 24px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
 .notes-content {
   flex: 1;
   min-width: 0;
@@ -1398,8 +1468,8 @@ body.learning-immersive {
   padding: 24px 28px 28px;
 }
 
-/* フォルダ列の1行。行全体（__main）と右端の ⋮（__more）が別のボタンなので、
-   行は div にして hover の地色だけをここで持つ */
+/* フォルダのパネルの1行。行全体（__main）と右端の鉛筆・ゴミ箱（__more）が
+   別のボタンなので、行は div にして hover の地色だけをここで持つ */
 .notes-folder-row {
   position: relative;
   display: flex;
@@ -1420,13 +1490,6 @@ body.learning-immersive {
 
 .notes-folder-row.is-active .notes-folder-row__main {
   font-weight: 700;
-}
-
-/* ドラッグ中のカードが上に乗っている行 */
-.notes-folder-row.is-drop-target {
-  outline: 2px solid var(--dc-primary);
-  outline-offset: -2px;
-  background: var(--dc-soft-100);
 }
 
 .notes-folder-row__main {
@@ -1462,10 +1525,12 @@ body.learning-immersive {
   font-variant-numeric: tabular-nums;
 }
 
-/* ⋮ は hover / フォーカス中だけ出す。常時出すと列が操作パネルに見える */
+/* 鉛筆・ゴミ箱は hover / フォーカス中だけ出す。常時出すとパネルが操作盤に見える。
+   .is-shown は行の外で使うもの（パネルの ✕、名前入力の ✓） */
 .notes-folder-row__more {
   display: grid;
   place-items: center;
+  flex: none;
   width: 26px;
   height: 26px;
   margin-right: 6px;
@@ -1480,6 +1545,7 @@ body.learning-immersive {
 
 .notes-folder-row:hover .notes-folder-row__more,
 .notes-folder-row:focus-within .notes-folder-row__more,
+.notes-folder-row__more.is-shown,
 .notes-folder-row__more[aria-expanded="true"] {
   opacity: 1;
 }
@@ -1489,22 +1555,53 @@ body.learning-immersive {
   color: var(--dc-text-body);
 }
 
-/* 狭い画面（1023px 以下）ではフォルダ列の代わりに横並びのピル */
-.notes-folder-strip {
+.notes-folder-row__more.is-danger:hover {
+  color: var(--dc-primary);
+}
+
+/* 🔴 hover を持たない端末では常に出す。ここがフォルダの名前変更・削除の唯一の入口で、
+      出さないとタッチでは永久に押せない（旧フォルダ列は 1024px 以上専用だった）。 */
+@media (hover: none) {
+  .notes-folder-row__more {
+    opacity: 1;
+  }
+}
+
+/* 狭い画面では行と的を大きくする（26px の的が2つ隣り合うと押し間違える） */
+@media (max-width: 767px) {
+  .notes-folder-row {
+    height: 44px;
+  }
+
+  .notes-folder-row__more {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* 一覧の上に立つフォルダのバー。折り返さずに横へスクロールさせる
+   （wrap を入れると overflow-x が死んで、フォルダ名の長いトリガーが行を占領する） */
+.notes-folder-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  /* 上下の余白は「スクロールで画面の上端に張り付いたとき」の見え方で決めている。
+     4px しか無いと、下から上がってきたカードの文字がボタンにくっついて見える。 */
+  padding: 8px 0 12px;
+  background: var(--dc-bg);
   scrollbar-width: thin;
 }
 
-.notes-folder-pill {
+.notes-folder-bar__item {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   flex: none;
-  height: 30px;
-  padding: 0 12px;
+  height: 32px;
+  padding: 0 14px;
   border: 1px solid var(--dc-border-strong);
   border-radius: 9999px;
   background: var(--dc-surface);
@@ -1516,15 +1613,35 @@ body.learning-immersive {
   white-space: nowrap;
 }
 
-.notes-folder-pill.is-active {
+.notes-folder-bar__item:hover {
+  background: var(--dc-soft-100);
+}
+
+.notes-folder-bar__item.is-active {
   background: var(--dc-soft-100);
   border-color: var(--dc-soft-200);
   color: var(--dc-primary-deep);
   font-weight: 700;
 }
 
-/* 種類チップ（自分のノート／教材／AIコーチ／コーチング） */
-.notes-chip {
+.notes-folder-bar__item.is-trigger.is-open {
+  background: var(--dc-sunken);
+}
+
+/* フォルダ名は最大40字。トリガーが伸びきらないよう切る */
+.notes-folder-bar__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 240px;
+}
+
+/* 種類チップ（自分のノート／教材／AIコーチ／コーチング）
+   .coach-chip はコーチ画面（受講生一覧の絞り込み）が使う同じピル。
+   中身は同じなのでセレクタだけ足している（.dc-cta-* と同じやり方）。
+   別に定義すると、片方だけ手が入って2種類のピルに分かれるため。 */
+.notes-chip,
+.coach-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1541,11 +1658,13 @@ body.learning-immersive {
   white-space: nowrap;
 }
 
-.notes-chip:hover {
+.notes-chip:hover,
+.coach-chip:hover {
   background: var(--dc-soft-100);
 }
 
-.notes-chip.is-active {
+.notes-chip.is-active,
+.coach-chip.is-active {
   background: var(--dc-primary);
   border-color: var(--dc-primary);
   color: #fff;
@@ -1566,7 +1685,8 @@ body.learning-immersive {
 
 /* ノート一覧のカードグリッド。列数は画面幅で落とす（.mypage-3d-grid と同じ方針）。
    以前の .notes-2col（左＝一覧／右＝ノート面）は、一覧がグリッドになり
-   ノート面が /notes?note= の全幅表示に移ったので削除した。 */
+   ノート面が /notes?note= の全幅表示に移ったので削除した。
+   フォルダ列（248px）が無くなって本文が広がったので、閾値は下記のとおり下げてある。 */
 .notes-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1574,15 +1694,39 @@ body.learning-immersive {
   align-items: stretch;
 }
 
-/* カードはフォルダへドラッグできる。掴めることはポインタで示す（タッチには出ない） */
-@media (pointer: fine) {
-  .notes-card {
-    cursor: grab;
+/* 広い画面では4列。3列のままだと1枚が 560px を超えて、抜粋3行に対して横長すぎる */
+@media (min-width: 1700px) {
+  .notes-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
-.notes-card.is-dragging {
-  opacity: .5;
+/* カード全体が「開く」ボタン。以前は掴んでフォルダ列へ運べたので cursor: grab だった */
+.notes-card {
+  cursor: pointer;
+}
+
+/* カード下部の「入っているフォルダ」。押すと移動先が開く。
+   枠は持たせず、hover と開いている間だけ地色を出す（一覧を騒がしくしないため） */
+.notes-card__folder {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  height: 24px;
+  margin-left: -6px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.notes-card__folder:hover,
+.notes-card__folder.is-open {
+  background: var(--dc-sunken);
 }
 
 /* カード左のサムネイル（中に画像ブロックがあるノートだけ付く）。
@@ -1902,19 +2046,21 @@ body.learning-immersive {
   }
 }
 
-/* サイドバー展開中は本文が 152px 細くなる。フォルダ列 248px も引かれるので、
-   1279 + 152 = 1431px 以下で先に2列へ落とす（.wc-area-cards と同じ足し方）。
+/* サイドバー展開中は本文が 152px 細くなるので、素の 2列落ち（1023px 以下）より
+   152px 手前で落とす（1023 + 152 = 1175px 以下。.wc-area-cards と同じ足し方）。
 
    🔴 min-width: 768px を外さないこと。この指定（0,2,1）は .notes-grid（0,1,0）より
       強いので、ガードが無いと 767px 以下の1列指定まで上書きし、375px でサイドバーを
       開いていた人だけ2列になる。下限は「素のグリッドが複数列である幅」＝768px。 */
-@media (min-width: 768px) and (max-width: 1431px) {
+@media (min-width: 768px) and (max-width: 1175px) {
   body.sidebar-expanded .notes-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 1279px) {
+/* フォルダ列（248px）が消えて本文がその分広がったので、2列に落とす境目も
+   248px ぶん下げた（1279 → 1023）。1024px で1枚 320px 前後。 */
+@media (max-width: 1023px) {
   .notes-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }

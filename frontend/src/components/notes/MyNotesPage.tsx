@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowUpDown, ChevronDown, Plus, Search } from 'lucide-react';
-import { AppFooter, AppHeader } from '../shared';
+import { ArrowUpDown, ChevronDown, Home, Plus, Search } from 'lucide-react';
+import { AppFooter, AppHeader, LearningBreadcrumb } from '../shared';
 import { MOCKS_ENABLED } from '../../mocks/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import { useDismissable } from '../../hooks/useDismissable';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
 import { useNote } from '../../hooks/useNote';
 import { useNoteFolders } from '../../hooks/useNoteFolders';
 import { useNoteList } from '../../hooks/useNoteList';
@@ -28,8 +27,7 @@ import {
 } from '../../types/notes';
 import NoteEditor from './NoteEditor';
 import NoteEditorBar from './NoteEditorBar';
-import NoteFolderColumn from './NoteFolderColumn';
-import NoteFolderStrip from './NoteFolderStrip';
+import NoteFolderBar from './NoteFolderBar';
 import NoteGrid from './NoteGrid';
 import NotesPagination from './NotesPagination';
 import { countByFolder, filterLabel, folderNameOf } from './folderRows';
@@ -38,9 +36,12 @@ import { countByFolder, filterLabel, folderNameOf } from './folderRows';
  * マイノート（/notes）。デザイン『マイノート 改善案』を実装したもの。
  *
  * 【構成】
- *   左＝フォルダ列（自分で決める入れ物。すべて／重要／フォルダ…／未整理）
- *   右＝一覧（見出し＝現在のフォルダ名・検索・種類チップ・カードグリッド）か、
- *       ノート面（上部バー＋紙）
+ *   一覧 … 見出し＋パンくず ／ フォルダのバー（NoteFolderBar）／ 検索・種類チップ ／
+ *          カードグリッド
+ *   ノート面 … 上部バー＋紙（?note=<id> のとき。フォルダのバーは出さない）
+ * 以前は左に 248px のフォルダ列（NoteFolderColumn）を立てていたが、フォルダを
+ * 上部のバー＋パネルに集約して本文にその幅を返した。フォルダの数が増えても
+ * バーが押し出されないよう、フォルダ自体はパネルの中に置いてある。
  * フォルダと「種類」（出どころ）は別の軸として掛け合わさる。種類は自動で付くラベル、
  * フォルダは手で選ぶ置き場所。未整理は「とりあえず保存」の行き先で、取り込んだものは
  * まずそこに入る。
@@ -88,9 +89,6 @@ export function MyNotesPage() {
   const list = useNoteList();
   const folderApi = useNoteFolders();
   const { folders } = folderApi;
-
-  // 1023px 以下はフォルダ列を畳んで横並びのピルにする（HTML5 のドラッグも効かない幅）
-  const narrow = useMediaQuery('(max-width: 1023px)');
 
   // 選択中のノートとフォルダはURLに持つ。教材画面の取り込みトーストから
   // /notes?note=<id> で直接開けるようにするため（ルート定義は増やさない）。
@@ -236,8 +234,17 @@ export function MyNotesPage() {
   };
 
   const handleDeleteFolder = async (folder: NoteFolder) => {
+    /*
+     * 🔴 件数は検索語でスコープされている（countByFolder は検索済みの items を数える）。
+     *    検索中に「中のノート 2件」と出しても実際は15件動くので、そのときは数を言わない。
+     */
     const n = counts.byFolder[folder.id] ?? 0;
-    const body = n > 0 ? `\n中のノート ${n}件 は未整理に移ります。` : '';
+    const searching = list.query.trim() !== '';
+    const body = searching
+      ? '\n中のノートは未整理に移ります。'
+      : n > 0
+      ? `\n中のノート ${n}件 は未整理に移ります。`
+      : '';
     if (!window.confirm(`フォルダ「${folder.name}」を削除しますか？${body}`)) return;
     try {
       const { moved } = await folderApi.remove(folder.id);
@@ -250,7 +257,7 @@ export function MyNotesPage() {
     }
   };
 
-  /** カードをフォルダ行に落とした／ノート面のピルで選んだ */
+  /** カードのフォルダ名から選んだ（viaEditor=false）／ノート面のピルで選んだ（true） */
   const moveNote = async (noteId: string, folderId: string | null, viaEditor: boolean) => {
     const target = folderNameOf(folderId, folders) ?? '未整理';
     try {
@@ -269,7 +276,7 @@ export function MyNotesPage() {
 
   /**
    * 一覧のカードの★。開かずに付け外しできるようにした唯一の操作。
-   * 成功時はトーストを出さない。★の見た目とフォルダ列「重要」の件数がその場で
+   * 成功時はトーストを出さない。★の見た目とバーの「重要」の件数がその場で
    * 動くので結果は見えており、連打すると重なって邪魔になる。
    */
   const toggleFavoriteInList = async (id: string, favorite: boolean) => {
@@ -280,7 +287,7 @@ export function MyNotesPage() {
     }
   };
 
-  /** ノート面の「重要」。フォルダ列の「重要」の件数も同時に動かす */
+  /** ノート面の「重要」。バーの「重要」の件数も同時に動かす */
   const toggleFavoriteInEditor = async () => {
     if (!detail.note) return;
     const next = !detail.note.favorite;
@@ -365,282 +372,307 @@ export function MyNotesPage() {
     <div className="wc-warm min-h-screen flex flex-col" style={{ background: 'var(--dc-bg)' }}>
       <AppHeader userName={user?.username || 'User'} />
 
-      <div className="notes-shell">
-        {!narrow && (
-          <NoteFolderColumn
-            folders={folders}
-            counts={counts}
-            active={filter}
-            onSelect={setFolder}
-            onCreate={handleCreateFolder}
-            onRename={handleRenameFolder}
-            onDelete={(folder) => void handleDeleteFolder(folder)}
-            onDropNote={(noteId, folderId) => void moveNote(noteId, folderId, false)}
-          />
-        )}
-
-        <div className="notes-content">
-          <main className="notes-main flex flex-col" style={{ flex: 1, gap: 20, color: 'var(--dc-text)' }}>
-            {selectedId ? (
-              /* ── ノート面。一覧から1枚を開いた状態 ──
-                 🔴 紙をページの高さいっぱいに伸ばす。伸ばさないと、書きかけの
-                    空ノートの下にフッターまでの空白が残って落ち着かない。 */
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14, flex: 1, minHeight: 0 }}>
-                {detail.note ? (
-                  <>
-                    <NoteEditorBar
+      <div className="notes-content">
+        <main className="notes-main flex flex-col" style={{ flex: 1, gap: 20, color: 'var(--dc-text)' }}>
+          {selectedId ? (
+            /* ── ノート面。一覧から1枚を開いた状態 ──
+               🔴 紙をページの高さいっぱいに伸ばす。伸ばさないと、書きかけの
+                  空ノートの下にフッターまでの空白が残って落ち着かない。 */
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, flex: 1, minHeight: 0 }}>
+              {detail.note ? (
+                <>
+                  <NoteEditorBar
+                    note={detail.note}
+                    folders={folders}
+                    saveState={detail.saveState}
+                    onBack={() => select(null)}
+                    backToSource={backToSource}
+                    onMoveToFolder={(folderId) => void moveNote(detail.note!.id, folderId, true)}
+                    onToggleFavorite={() => void toggleFavoriteInEditor()}
+                    onDelete={() => void handleDelete(detail.note!.id, detail.note!.title)}
+                    quickMemo={
+                      memoWindow.supported ? (
+                        <QuickMemoButton
+                          isOpen={memoWindow.isOpen}
+                          hasDraft={memoWindow.hasDraft}
+                          onClick={handleQuickMemo}
+                          className="notes-tool focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                        />
+                      ) : null
+                    }
+                  />
+                  <div style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <NoteEditor
                       note={detail.note}
-                      folders={folders}
-                      saveState={detail.saveState}
-                      onBack={() => select(null)}
-                      backToSource={backToSource}
-                      onMoveToFolder={(folderId) => void moveNote(detail.note!.id, folderId, true)}
-                      onToggleFavorite={() => void toggleFavoriteInEditor()}
-                      onDelete={() => void handleDelete(detail.note!.id, detail.note!.title)}
-                      quickMemo={
-                        memoWindow.supported ? (
-                          <QuickMemoButton
-                            isOpen={memoWindow.isOpen}
-                            hasDraft={memoWindow.hasDraft}
-                            onClick={handleQuickMemo}
-                            className="notes-tool focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                          />
-                        ) : null
-                      }
-                    />
-                    <div style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                      <NoteEditor
-                        note={detail.note}
-                        onRename={renameInEditor}
-                        onAddBlock={detail.addBlock}
-                        onPatchBlock={detail.patchBlock}
-                        onMoveBlock={detail.moveBlock}
-                        onRemoveBlock={detail.removeBlock}
-                        onError={(message) => showToast(message, 'error')}
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => select(null)}
-                      className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                      style={{
-                        alignSelf: 'flex-start',
-                        padding: '6px 10px 6px 4px',
-                        border: 0,
-                        borderRadius: 8,
-                        background: 'none',
-                        color: 'var(--dc-primary)',
-                        fontFamily: 'inherit',
-                        fontSize: 13,
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      ‹ マイノートに戻る
-                    </button>
-                    <div
-                      style={{
-                        maxWidth: 900,
-                        padding: '60px 30px',
-                        background: 'var(--dc-surface)',
-                        border: '1px solid var(--dc-border)',
-                        borderRadius: 'var(--dc-radius-lg)',
-                        boxShadow: 'var(--dc-shadow-card)',
-                        textAlign: 'center',
-                        fontSize: 13.5,
-                        lineHeight: 1.9,
-                        color: 'var(--dc-text-muted)',
-                      }}
-                    >
-                      {detail.loading
-                        ? '読み込んでいます…'
-                        : 'このノートは見つかりませんでした。一覧から選び直してください。'}
-                    </div>
-                  </>
-                )}
-              </div>
-            ) : (
-              <>
-                {narrow && (
-                  <NoteFolderStrip folders={folders} counts={counts} active={filter} onSelect={setFolder} />
-                )}
-
-                {/* ── 見出し（＝いま見ているフォルダ名）、検索、新規作成 ── */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                  <div style={{ flex: '1 1 200px', minWidth: 0 }}>
-                    {/* 🔴 階層は「すべて／フォルダ」の一段だけ。パンくずは置かず、
-                           見出しそのものを現在地にする。 */}
-                    <h1
-                      style={{
-                        margin: 0,
-                        fontSize: 22,
-                        lineHeight: 1.35,
-                        fontWeight: 700,
-                        letterSpacing: '-.01em',
-                      }}
-                    >
-                      {currentFolderLabel ?? 'マイノート'}
-                    </h1>
-                  </div>
-
-                  {/* 🔴 検索欄は幅いっぱいにしない。左端の入力から右端のボタンまで
-                         視線が横断してしまう。 */}
-                  <div style={{ position: 'relative', flex: '0 1 300px', minWidth: 160 }}>
-                    <Search
-                      size={17}
-                      style={{
-                        position: 'absolute',
-                        left: 13,
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        color: 'var(--dc-text-muted)',
-                      }}
-                    />
-                    <input
-                      value={list.query}
-                      onChange={(e) => changeFilter(() => list.setQuery(e.target.value))}
-                      placeholder="タイトルや内容で検索"
-                      aria-label="ノートを検索"
-                      className="notes-search-input"
-                      style={{
-                        width: '100%',
-                        boxSizing: 'border-box',
-                        height: 42,
-                        padding: '0 14px 0 38px',
-                        border: '1px solid var(--dc-border-strong)',
-                        borderRadius: 'var(--dc-radius-md)',
-                        background: 'var(--dc-surface)',
-                        fontFamily: 'inherit',
-                        color: 'var(--dc-text)',
-                        outline: 'none',
-                      }}
+                      onRename={renameInEditor}
+                      onAddBlock={detail.addBlock}
+                      onPatchBlock={detail.patchBlock}
+                      onMoveBlock={detail.moveBlock}
+                      onRemoveBlock={detail.removeBlock}
+                      onError={(message) => showToast(message, 'error')}
                     />
                   </div>
-
+                </>
+              ) : (
+                <>
                   <button
                     type="button"
-                    onClick={handleCreate}
+                    onClick={() => select(null)}
                     className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                     style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 8,
-                      flex: 'none',
-                      height: 42,
-                      padding: '0 20px',
+                      alignSelf: 'flex-start',
+                      padding: '6px 10px 6px 4px',
                       border: 0,
-                      borderRadius: 'var(--dc-radius-md)',
-                      background: 'var(--dc-primary)',
-                      color: '#FFFFFF',
+                      borderRadius: 8,
+                      background: 'none',
+                      color: 'var(--dc-primary)',
                       fontFamily: 'inherit',
-                      fontSize: 13.5,
+                      fontSize: 13,
                       fontWeight: 700,
                       cursor: 'pointer',
                     }}
                   >
-                    <Plus size={16} /> 新しいノート
+                    ‹ マイノートに戻る
                   </button>
-                </div>
-
-                {/* ── 種類の絞り込み。フォルダとは別の軸だと分かるよう見出しを付ける ── */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--dc-text-subtle)', marginRight: 2 }}>
-                    種類
-                  </span>
-                  <Chip active={origin === 'all'} onClick={() => changeFilter(() => setOrigin('all'))}>
-                    すべて
-                  </Chip>
-                  {ORIGIN_CHIPS.map((o) => (
-                    <Chip key={o} active={origin === o} onClick={() => changeFilter(() => setOrigin(o))}>
-                      {NOTE_ORIGIN_LABEL[o]}
-                    </Chip>
-                  ))}
-
-                  {/* ── 並び替え。現在の並び順を文字で出す ── */}
-                  <div ref={sortRef} style={{ position: 'relative', marginLeft: 'auto' }}>
-                    <button
-                      type="button"
-                      aria-haspopup="menu"
-                      aria-expanded={sortOpen}
-                      onClick={() => setSortOpen((v) => !v)}
-                      className={`notes-sort-trigger focus-visible:ring-2 focus-visible:ring-[#F6B9BD] ${sortOpen ? 'is-open' : ''}`}
-                    >
-                      <ArrowUpDown size={13} />
-                      {NOTE_SORT_LABEL[list.sort]}
-                      <ChevronDown size={13} />
-                    </button>
-
-                    {sortOpen && (
-                      <div role="menu" className="notes-menu" style={{ top: 36, right: 0 }}>
-                        {SORTS.map((s) => (
-                          <button
-                            key={s}
-                            type="button"
-                            role="menuitemradio"
-                            aria-checked={list.sort === s}
-                            className={`notes-menu-item ${list.sort === s ? 'is-selected' : ''}`}
-                            onClick={() => {
-                              changeFilter(() => list.setSort(s));
-                              setSortOpen(false);
-                            }}
-                          >
-                            {NOTE_SORT_LABEL[s]}
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {list.error ? (
                   <div
                     style={{
-                      padding: 24,
+                      maxWidth: 900,
+                      padding: '60px 30px',
                       background: 'var(--dc-surface)',
                       border: '1px solid var(--dc-border)',
                       borderRadius: 'var(--dc-radius-lg)',
+                      boxShadow: 'var(--dc-shadow-card)',
+                      textAlign: 'center',
                       fontSize: 13.5,
+                      lineHeight: 1.9,
                       color: 'var(--dc-text-muted)',
                     }}
                   >
-                    {list.error}
+                    {detail.loading
+                      ? '読み込んでいます…'
+                      : 'このノートは見つかりませんでした。一覧から選び直してください。'}
                   </div>
-                ) : (
-                  <>
-                    <NoteGrid
-                      items={paged}
-                      loading={list.loading}
-                      totalCount={list.items.length}
-                      folders={folders}
-                      filter={filter}
-                      hasOtherFilters={hasOtherFilters}
-                      onOpen={select}
-                      onToggleFavorite={(id, favorite) => void toggleFavoriteInList(id, favorite)}
-                      onCreate={handleCreate}
-                      onClearFilters={clearFilters}
+                </>
+              )}
+            </div>
+          ) : (
+            <>
+              {/* ── 見出し＋パンくず、検索、新規作成 ── */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: '1 1 200px', minWidth: 0 }}>
+                  {/* 🔴 以前は見出しそのものを現在地（フォルダ名）にしてパンくずを置かなかった。
+                         現在地はフォルダのバーが持つようになったので、見出しは画面名に戻し、
+                         いまどのフォルダを見ているかはパンくずで言う。 */}
+                  <h1
+                    style={{
+                      margin: 0,
+                      fontSize: 22,
+                      lineHeight: 1.35,
+                      fontWeight: 700,
+                      letterSpacing: '-.01em',
+                    }}
+                  >
+                    マイノート
+                  </h1>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
+                    <button
+                      type="button"
+                      title="マイページ"
+                      aria-label="マイページ"
+                      onClick={() => navigate('/mypage')}
+                      className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                      style={{
+                        display: 'inline-flex',
+                        padding: 2,
+                        border: 0,
+                        borderRadius: 6,
+                        background: 'none',
+                        color: 'var(--dc-text-subtle)',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <Home size={14} />
+                    </button>
+                    <span aria-hidden style={{ color: 'var(--dc-border-strong)' }}>
+                      │
+                    </span>
+                    <LearningBreadcrumb
+                      items={[
+                        { label: 'マイノート', onClick: () => setFolder({ kind: 'all' }) },
+                        { label: currentFolderLabel ?? 'すべて' },
+                      ]}
+                      style={{ fontSize: 12.5 }}
                     />
+                  </div>
+                </div>
 
-                    {filtered.length > 0 && (
-                      <NotesPagination
-                        page={page}
-                        pageCount={pageCount}
-                        total={filtered.length}
-                        from={from + 1}
-                        to={from + paged.length}
-                        onChange={setPage}
-                      />
-                    )}
-                  </>
-                )}
-              </>
-            )}
-          </main>
+                {/* 🔴 検索欄は幅いっぱいにしない。左端の入力から右端のボタンまで
+                       視線が横断してしまう。 */}
+                <div style={{ position: 'relative', flex: '0 1 300px', minWidth: 160 }}>
+                  <Search
+                    size={17}
+                    style={{
+                      position: 'absolute',
+                      left: 13,
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      color: 'var(--dc-text-muted)',
+                    }}
+                  />
+                  <input
+                    value={list.query}
+                    onChange={(e) => changeFilter(() => list.setQuery(e.target.value))}
+                    placeholder="タイトルや内容で検索"
+                    aria-label="ノートを検索"
+                    className="notes-search-input"
+                    style={{
+                      width: '100%',
+                      boxSizing: 'border-box',
+                      height: 42,
+                      padding: '0 14px 0 38px',
+                      border: '1px solid var(--dc-border-strong)',
+                      borderRadius: 'var(--dc-radius-md)',
+                      background: 'var(--dc-surface)',
+                      fontFamily: 'inherit',
+                      color: 'var(--dc-text)',
+                      outline: 'none',
+                    }}
+                  />
+                </div>
 
-          <AppFooter style={{ padding: '32px 0 24px' }} />
-        </div>
+                <button
+                  type="button"
+                  onClick={handleCreate}
+                  className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 8,
+                    flex: 'none',
+                    height: 42,
+                    padding: '0 20px',
+                    border: 0,
+                    borderRadius: 'var(--dc-radius-md)',
+                    background: 'var(--dc-primary)',
+                    color: '#FFFFFF',
+                    fontFamily: 'inherit',
+                    fontSize: 13.5,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Plus size={16} /> 新しいノート
+                </button>
+              </div>
+
+              {/* ── フォルダ（自分で決める入れ物）。以前の左フォルダ列の置き換え ── */}
+              <NoteFolderBar
+                folders={folders}
+                counts={counts}
+                active={filter}
+                loading={folderApi.loading}
+                onSelect={setFolder}
+                onCreate={handleCreateFolder}
+                onRename={handleRenameFolder}
+                onDelete={(folder) => void handleDeleteFolder(folder)}
+              />
+
+              {/* ── 種類の絞り込み。フォルダとは別の軸だと分かるよう見出しを付ける ── */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                <span style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--dc-text-subtle)', marginRight: 2 }}>
+                  種類
+                </span>
+                <Chip active={origin === 'all'} onClick={() => changeFilter(() => setOrigin('all'))}>
+                  すべて
+                </Chip>
+                {ORIGIN_CHIPS.map((o) => (
+                  <Chip key={o} active={origin === o} onClick={() => changeFilter(() => setOrigin(o))}>
+                    {NOTE_ORIGIN_LABEL[o]}
+                  </Chip>
+                ))}
+
+                {/* ── 並び替え。現在の並び順を文字で出す ── */}
+                <div ref={sortRef} style={{ position: 'relative', marginLeft: 'auto' }}>
+                  <button
+                    type="button"
+                    aria-haspopup="menu"
+                    aria-expanded={sortOpen}
+                    onClick={() => setSortOpen((v) => !v)}
+                    className={`notes-sort-trigger focus-visible:ring-2 focus-visible:ring-[#F6B9BD] ${sortOpen ? 'is-open' : ''}`}
+                  >
+                    <ArrowUpDown size={13} />
+                    {NOTE_SORT_LABEL[list.sort]}
+                    <ChevronDown size={13} />
+                  </button>
+
+                  {sortOpen && (
+                    <div role="menu" className="notes-menu" style={{ top: 36, right: 0 }}>
+                      {SORTS.map((s) => (
+                        <button
+                          key={s}
+                          type="button"
+                          role="menuitemradio"
+                          aria-checked={list.sort === s}
+                          className={`notes-menu-item ${list.sort === s ? 'is-selected' : ''}`}
+                          onClick={() => {
+                            changeFilter(() => list.setSort(s));
+                            setSortOpen(false);
+                          }}
+                        >
+                          {NOTE_SORT_LABEL[s]}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {list.error ? (
+                <div
+                  style={{
+                    padding: 24,
+                    background: 'var(--dc-surface)',
+                    border: '1px solid var(--dc-border)',
+                    borderRadius: 'var(--dc-radius-lg)',
+                    fontSize: 13.5,
+                    color: 'var(--dc-text-muted)',
+                  }}
+                >
+                  {list.error}
+                </div>
+              ) : (
+                <>
+                  <NoteGrid
+                    items={paged}
+                    loading={list.loading}
+                    totalCount={list.items.length}
+                    folders={folders}
+                    filter={filter}
+                    hasOtherFilters={hasOtherFilters}
+                    onOpen={select}
+                    onToggleFavorite={(id, favorite) => void toggleFavoriteInList(id, favorite)}
+                    onMove={(id, folderId) => void moveNote(id, folderId, false)}
+                    onCreate={handleCreate}
+                    onClearFilters={clearFilters}
+                  />
+
+                  {filtered.length > 0 && (
+                    <NotesPagination
+                      page={page}
+                      pageCount={pageCount}
+                      total={filtered.length}
+                      from={from + 1}
+                      to={from + paged.length}
+                      onChange={setPage}
+                    />
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </main>
+
+        <AppFooter style={{ padding: '32px 0 24px' }} />
       </div>
 
       {MOCKS_ENABLED && (

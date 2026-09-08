@@ -128,7 +128,7 @@ function FolderPill({
           {folders.map((f) => item(f.id, f.name, <Folder size={14} />))}
           {folders.length === 0 && (
             <p style={{ margin: '4px 10px 6px', fontSize: 12, lineHeight: 1.7, color: 'var(--dc-text-subtle)' }}>
-              フォルダは一覧の左列で作れます。
+              一覧に戻って「フォルダを開く」から作れます。
             </p>
           )}
         </div>

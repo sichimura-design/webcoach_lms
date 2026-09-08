@@ -6,7 +6,7 @@
  * v2: { schemaVersion: 2; notes: Note[]; memos } … 器（Note）＋中身（NoteBlock）
  * v3: v2 ＋ Note.origin（出どころ）… 一覧の出どころバッジと絞り込みチップの根拠
  * v4: v3 ＋ Note.coachingSessionId … コーチング記録の「マイノート」欄がどの回のノートかを引く
- * v5: v4 ＋ folders / Note.folderId … デザイン『マイノート 改善案』の左列（フォルダ）
+ * v5: v4 ＋ folders / Note.folderId … マイノートのフォルダ
  *
  * 🔴 memos（レッスン別の下書き）は触らない。下書きはノートではないし、
  *    MemoPane の自動保存がそこを読み書きしている。
@@ -84,7 +84,7 @@ function withOrigin(
 /**
  * デモ用のフォルダ。ID を固定にしてあるのは、シードノートの folderId と
  * 突き合わせるため（buildSeedNotes と buildSeedFolders を別々に呼んでも合う）。
- * 名前と件数はデザイン『マイノート 改善案』の左列そのまま。
+ * 名前と件数はデザイン『マイノート 改善案』のフォルダ一覧そのまま。
  */
 type SeedFolderKey = 'design' | 'work' | 'coach';
 
@@ -198,7 +198,7 @@ export function migrateLegacyNotes(legacy: LegacyNoteItem[]): Note[] {
 
   if (orphans.length > 0) {
     const sorted = [...orphans].sort(asc);
-    // このタイトルの「未整理」は v1 の行き先ノートで、フォルダ列の「未整理」
+    // このタイトルの「未整理」は v1 の行き先ノートで、フォルダの「未整理」
     //（folderId=null）とは無関係。名前が同じだけ。
     notes.push(
       withOrigin({
@@ -326,7 +326,7 @@ const DUMMY_ORIGINS: NoteOrigin[] = [
   'material', 'ai', 'self', 'material', 'coaching', 'ai', 'material', 'self', 'ai', 'material',
 ];
 
-/** フォルダの出方。未整理を厚めにして、フォルダ列の「未整理」が空にならないようにする */
+/** フォルダの出方。未整理を厚めにして、バーの「未整理」が空にならないようにする */
 const DUMMY_FOLDERS: (SeedFolderKey | null)[] = ['design', null, 'work', 'design', null, 'coach', null];
 
 /**
@@ -626,7 +626,7 @@ export function readNoteStore(): NoteStoreV5 {
     return reseeded;
   }
 
-  // v4 → v5。フォルダ列を足す（デモノートはシードと同じフォルダへ、それ以外は未整理）
+  // v4 → v5。フォルダを足す（デモノートはシードと同じフォルダへ、それ以外は未整理）
   if (parsed?.schemaVersion === 4 && Array.isArray(parsed.notes)) {
     const { notes, folders } = backfillFolders(parsed.notes as Note[], now);
     const upgraded: NoteStoreV5 = { schemaVersion: 5, notes, folders, memos, seeded: true };
