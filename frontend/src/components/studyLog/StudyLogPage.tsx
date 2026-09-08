@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Clock, Flame } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
 import { AppFooter, AppHeader, ConfirmDialog } from '../shared';
@@ -8,8 +7,6 @@ import { useStudyStats } from '../../hooks/useStudyStats';
 import { useStudyActivityEditor } from '../../hooks/useStudyActivityEditor';
 import { useMonthActivities } from '../../hooks/useMonthActivities';
 import { useGoalDeclaration } from '../../hooks/useGoalDeclaration';
-import { useStreakRanking, useStudyRanking } from '../../hooks/useRankings';
-import { StreakRankingPeriod, StudyRankingPeriod } from '../../types/focusBooth';
 import {
   ManualStudyEntryInput,
   StudyActivity,
@@ -19,7 +16,6 @@ import {
 import { GoalDeclarationInput, GoalDeclarationPatch } from '../../types/goalDeclaration';
 import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
 import { createNoteFromStudyRecord } from '../../utils/studyRecordNote';
-import { RankingRowItem } from '../shared/RankingRow';
 import bffClient from '../../services/bffClient';
 import SessionReview from '../coaching/SessionReview';
 import type { CoachingSessionDetail, CoachingSessionSummary } from '../../types/coaching';
@@ -31,13 +27,12 @@ import DayDetailPanel from './DayDetailPanel';
 import StudyRecordEditModal from './StudyRecordEditModal';
 import GoalDeclarationCard from './GoalDeclarationCard';
 import GoalDeclarationModal from './GoalDeclarationModal';
-import RankingListCard from './RankingListCard';
 import CoachingRecordsCard from './CoachingRecordsCard';
 
 /**
- * 学習記録・ランキング（/study-log）。
+ * 学習記録（/study-log）。
  *
- * マイページのストリークカード・学習記録カード・みんなのランキングの
+ * マイページのストリークカード・学習記録カードの
  * 「詳しく見る／もっと見る」がすべてここに着地する。
  *
  * 【レイアウト方式】
@@ -58,15 +53,14 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  *   ③ 学習の推移（期間タブ／棒グラフ）
  *   ④ 目標宣言と振り返り
  *   ⑤ コーチング記録（過去のコーチングはここにためる）
- *   ⑥ 学習時間ランキング ｜ ストリークランキング
  *
  * 🔴 全期間の記録を縦に並べる「学習履歴」セクションは廃止した。同じ記録を
  *    ② のカレンダー＋日別パネルが日単位で見せており、下に同じ行を全期間ぶん
  *    並べ直しているだけだった。記録の編集・削除・手動追加はすべて日別パネルが持つ。
  *
- * 🔴 ランキング（他人との比較）を最下段に置いている。カレンダーを主役にした結果、
- *    上から「自分の記録」を掘っていく並びになったので、その途中を他人の話で
- *    割らないようにするため。
+ * 🔴 最下段にあった「学習時間ランキング」「ストリークランキング」（他人との比較）は
+ *    受講生の画面から外した。このページは自分の記録だけを扱う。
+ *    順位を返す API（getStudyRanking / getStreakRanking）とそのモックは残してある。
  *
  * 【コーチング記録】
  * 🔴 /coaching は「次の1回」の画面で、残すのは前回分だけ。過去の積み上がりはここが持つ。
@@ -97,11 +91,6 @@ function StudyLogPage() {
 
   // 受講開始日〜今日。カレンダーの月送りと期間タブが同じ配列を使う
   const { stats, loading: statsLoading, unavailable } = useStudyStats(userId, 'all');
-
-  const [timePeriod, setTimePeriod] = useState<StudyRankingPeriod>('week');
-  const [streakPeriod, setStreakPeriod] = useState<StreakRankingPeriod>('month');
-  const time = useStudyRanking(userId, timePeriod);
-  const streak = useStreakRanking(userId, streakPeriod);
 
   const editor = useStudyActivityEditor(userId);
   const goals = useGoalDeclaration(userId);
@@ -287,24 +276,6 @@ function StudyLogPage() {
     }
   };
 
-  // --- ランキング -----------------------------------------------------------
-
-  const timeItems: RankingRowItem[] = (time.ranking?.entries ?? []).map((e) => ({
-    rank: e.rank,
-    nickname: e.isMe ? 'あなた' : e.nickname,
-    avatarEmoji: e.avatarEmoji,
-    value: formatMinutesHM(e.minutes),
-    isMe: e.isMe,
-  }));
-
-  const streakItems: RankingRowItem[] = (streak.ranking?.entries ?? []).map((e) => ({
-    rank: e.rank,
-    nickname: e.isMe ? 'あなた' : e.nickname,
-    avatarEmoji: e.avatarEmoji,
-    value: `${e.days}日`,
-    isMe: e.isMe,
-  }));
-
   const cardStyle: React.CSSProperties = {
     background: 'var(--dc-surface)',
     border: '1px solid var(--dc-border)',
@@ -350,7 +321,7 @@ function StudyLogPage() {
           <div style={{ marginBottom: 22 }}>
             <h1
               style={{
-                margin: '0 0 8px',
+                margin: 0,
                 fontSize: 'var(--dc-fs-display)',
                 lineHeight: 'var(--dc-lh-heading)',
                 fontWeight: 700,
@@ -358,11 +329,8 @@ function StudyLogPage() {
                 color: 'var(--dc-text)',
               }}
             >
-              学習記録・ランキング
+              学習記録
             </h1>
-            <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-body)' }}>
-              いつ何をどれだけ学習したかと、これまでの積み上がりを確認できます。
-            </p>
           </div>
         )}
 
@@ -429,51 +397,6 @@ function StudyLogPage() {
               loading={coachingLoading}
               onOpen={showSession}
             />
-
-            {/* ⑥ ランキング */}
-            <div className="studylog-rank-grid">
-              <RankingListCard
-                title="学習時間ランキング"
-                icon={<Clock size={16} strokeWidth={1.75} />}
-                iconBackground="var(--dc-soft-100)"
-                iconColor="var(--dc-primary)"
-                periods={[
-                  { key: 'week', label: '週間' },
-                  { key: 'month', label: '月間' },
-                ]}
-                activePeriod={timePeriod}
-                onPeriodChange={(k) => setTimePeriod(k as StudyRankingPeriod)}
-                items={timeItems}
-                footer={
-                  time.ranking
-                    ? `${time.ranking.periodLabel}・${time.ranking.participantCount}人中 ${time.ranking.me.rank}位`
-                    : undefined
-                }
-                loading={time.loading}
-                failed={time.failed}
-              />
-
-              <RankingListCard
-                title="ストリークランキング"
-                icon={<Flame size={16} strokeWidth={1.75} />}
-                iconBackground="var(--dc-gold-surface)"
-                iconColor="var(--dc-gold)"
-                periods={[
-                  { key: 'month', label: '月間' },
-                  { key: 'total', label: '累計' },
-                ]}
-                activePeriod={streakPeriod}
-                onPeriodChange={(k) => setStreakPeriod(k as StreakRankingPeriod)}
-                items={streakItems}
-                footer={
-                  streak.ranking
-                    ? `${streak.ranking.periodLabel}の学習日数・${streak.ranking.participantCount}人中 ${streak.ranking.me.rank}位`
-                    : undefined
-                }
-                loading={streak.loading}
-                failed={streak.failed}
-              />
-            </div>
           </div>
         )}
 
