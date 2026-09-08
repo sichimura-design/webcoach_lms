@@ -39,14 +39,6 @@ export function folderNameOf(folderId: string | null, folders: NoteFolder[]): st
   return folders.find((f) => f.id === folderId)?.name ?? null;
 }
 
-/** パンくずの現在地に出す名前。all は「すべて」を呼び出し側が入れるので null */
-export function filterLabel(filter: NoteFolderFilter, folders: NoteFolder[]): string | null {
-  if (filter.kind === 'all') return null;
-  if (filter.kind === 'favorite') return FAVORITE_LABEL;
-  if (filter.kind === 'inbox') return INBOX_LABEL;
-  return folderNameOf(filter.id, folders) ?? '（削除されたフォルダ）';
-}
-
 export function sameFilter(a: NoteFolderFilter, b: NoteFolderFilter): boolean {
   if (a.kind !== b.kind) return false;
   return a.kind !== 'folder' || b.kind !== 'folder' || a.id === b.id;
