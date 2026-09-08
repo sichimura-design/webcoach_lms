@@ -33,6 +33,8 @@ import { AdminStudentsPage } from '../components/admin/AdminStudentsPage';
 import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage';
 import { AdminCoachIntegrationsPage } from '../components/admin/AdminCoachIntegrationsPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
+import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
+import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
 import { useAuth } from '../contexts/AuthContext';
 import { useAiCoachExpandOriginCleanup } from '../hooks/useAiCoachExpandOriginCleanup';
 import { useNavigationStore } from '../store/navigationStore';
@@ -51,15 +53,29 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
+/**
+ * ルートガードが認証待ちのあいだ出すスピナー。
+ * 🔴 3つのガードに同じものがコピペされていて、色がサーモン #E86D78（旧コーチ画面と
+ *    同じ、どのトークンにも属さない値）だった。ログイン直後に必ず一瞬見える面なので
+ *    ブランド赤（--dc-primary）に寄せ、1箇所に括った。
+ *    地色は .wc-warm を付けて --dc-bg（暖色クリーム）に合わせる。
+ */
+function RouteLoading() {
+  return (
+    <div className="wc-warm min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
+      <span
+        className="w-8 h-8 rounded-full animate-spin"
+        style={{ border: '3px solid var(--dc-primary)', borderTopColor: 'transparent' }}
+      />
+    </div>
+  );
+}
+
 function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
-        <span className="w-8 h-8 border-3 border-[#E86D78] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <RouteLoading />;
   }
 
   if (!user) {
@@ -73,11 +89,7 @@ function AdminRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
-        <span className="w-8 h-8 border-3 border-[#E86D78] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <RouteLoading />;
   }
 
   if (!user) {
@@ -95,11 +107,7 @@ function CoachRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
-        <span className="w-8 h-8 border-3 border-[#E86D78] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <RouteLoading />;
   }
 
   if (!user) {
@@ -201,6 +209,11 @@ function CourseContentWrapper() {
 
 function BadgesPageWrapper() {
   return <BadgesPage />;
+}
+
+function CoachingScheduleWrapper() {
+  const { studentId } = useParams<{ studentId: string }>();
+  return <CoachingSchedulePage studentId={parseInt(studentId || '0', 10)} />;
 }
 
 function AppRoutes() {
@@ -484,6 +497,24 @@ function AppRoutes() {
         element={
           <CoachRoute>
             <CoachStudentsPage />
+          </CoachRoute>
+        }
+      />
+
+      <Route
+        path="/coach/schedule/:studentId"
+        element={
+          <CoachRoute>
+            <CoachingScheduleWrapper />
+          </CoachRoute>
+        }
+      />
+
+      <Route
+        path="/coach/settings"
+        element={
+          <CoachRoute>
+            <CoachSettingsPage />
           </CoachRoute>
         }
       />

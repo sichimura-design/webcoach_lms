@@ -89,6 +89,16 @@ const SCREENS = [
   // 通さず process.env.REACT_APP_BFF_URL を直接読んでいて、モックでは未設定のため throw する。
   // MSW にリクエストが届かないので、キャプチャからは実際の見た目を取れない。
   { id: 'STU-14', route: '/badges', settle: 1500, knownBroken: 'モックでは REACT_APP_BFF_URL 未設定で必ずエラー画面になる' },
+
+  // コーチ画面。受講生画面とトークンが揃っているかを並べて見るために台帳に入れてある。
+  // 擬似ユーザーは admin + coach 両方に属するので、そのまま到達できる。
+  { id: 'CCH-01', route: '/coach/students', widths: [1440, 375], settle: 1500 },
+  { id: 'CCH-02', route: '/coach/schedule/501', widths: [1440, 375], settle: 1500 },
+  // AIノートのアコーディオンを開いた状態。ステータスチップと8フィールドの編集UIが出る
+  { id: 'CCH-02-note', route: '/coach/schedule/501', settle: 1500, clicks: ['button:has-text("AIコーチングノート")'] },
+  // 新規記録フォームを開いた状態。入力欄・プルダウン・チェックボックスの見た目を押さえる
+  { id: 'CCH-02-form', route: '/coach/schedule/501', settle: 1500, clicks: ['button:has-text("新しいセッションを記録")'] },
+  { id: 'CCH-03', route: '/coach/settings', widths: [1440, 375], settle: 1500 },
 ];
 
 /** 見た目に効く CSS プロパティだけを拾う（全部だと JSON が読めない大きさになる） */

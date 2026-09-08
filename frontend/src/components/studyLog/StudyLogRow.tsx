@@ -28,6 +28,14 @@ interface StudyLogRowProps {
   activity: StudyActivity;
   /** 日付グループの中で使うときは時刻だけ出す（日付は見出しにあるので重複させない） */
   timeOnly?: boolean;
+  /**
+   * 分数を出さない。
+   * 🔴 日別詳細で使う。時間の計上単位は「その日の合計」1つだけにする方針なので、
+   *    記録1件ごとの学習時間と、カテゴリ別の内訳（「教材30分・復習15分」）を隠す。
+   *    教材名の隣に分数が並ぶと「教材ごとの学習時間」として読まれてしまう。
+   *    合計はパネル上部の1箇所が持つ。
+   */
+  hideMinutes?: boolean;
   /** 未指定なら操作列そのものを出さない（読み取り専用の場所で使うため） */
   onEdit?: (activity: StudyActivity) => void;
   onDelete?: (activity: StudyActivity) => void;
@@ -91,12 +99,19 @@ function iconButton(
   );
 }
 
-export function StudyLogRow({ activity, timeOnly, onEdit, onDelete, busy = false }: StudyLogRowProps) {
+export function StudyLogRow({
+  activity,
+  timeOnly,
+  hideMinutes = false,
+  onEdit,
+  onDelete,
+  busy = false,
+}: StudyLogRowProps) {
   const { session, course } = activity;
   const manual = isManualEntry(activity);
   const edited = isEditedEntry(activity);
   // 内訳は2種類以上あるときだけ。1行しかないなら学習時間と同じことを2回言うことになる
-  const breakdown = displaySegments(session.segments ?? [], session.durationMinutes);
+  const breakdown = hideMinutes ? [] : displaySegments(session.segments ?? [], session.durationMinutes);
 
   const meta = [
     // 手動記録に「21:05」と出すと計測したように見えるので、時刻は出さない
@@ -214,17 +229,19 @@ export function StudyLogRow({ activity, timeOnly, onEdit, onDelete, busy = false
         )}
       </div>
 
-      <span
-        className="dc-num"
-        style={{
-          fontSize: 'var(--dc-fs-body)',
-          fontWeight: 700,
-          color: 'var(--dc-text-body)',
-          flex: 'none',
-        }}
-      >
-        {formatMinutesHM(session.durationMinutes)}
-      </span>
+      {!hideMinutes && (
+        <span
+          className="dc-num"
+          style={{
+            fontSize: 'var(--dc-fs-body)',
+            fontWeight: 700,
+            color: 'var(--dc-text-body)',
+            flex: 'none',
+          }}
+        >
+          {formatMinutesHM(session.durationMinutes)}
+        </span>
+      )}
 
       {showActions && (
         // ホバー／フォーカスで出す。タッチ端末では常時表示（index.css の .studylog-row-actions）

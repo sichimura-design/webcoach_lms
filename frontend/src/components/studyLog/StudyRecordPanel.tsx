@@ -147,7 +147,7 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
             color: 'var(--dc-text)', whiteSpace: 'nowrap',
           }}
         >
-          学習の推移
+          学習時間の推移
         </h2>
         {/* タブが5つになったので折り返せるようにする（.studylog-range-tabs） */}
         <div className="studylog-range-tabs" role="tablist" aria-label="集計期間">
@@ -195,17 +195,23 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
         </div>
 
         {showDelta && !loading && (
+          /*
+           * 前期間比。
+           * 🔴 0 を増加として出さない。以前は delta >= 0 で緑＋↑ だったため、
+           *    前の期間とまったく同じ（差 0分）でも「増えた」に見えていた。
+           *    0 は中立色で「±0分」と出す。
+           */
           <span
             className="dc-num"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 4,
               borderRadius: 9999, padding: '3px 9px',
               fontSize: 'var(--dc-fs-caption)', fontWeight: 700, whiteSpace: 'nowrap',
-              background: delta >= 0 ? 'var(--dc-success-surface)' : 'var(--dc-sunken)',
-              color: delta >= 0 ? 'var(--dc-success)' : 'var(--dc-text-muted)',
+              background: delta > 0 ? 'var(--dc-success-surface)' : 'var(--dc-sunken)',
+              color: delta > 0 ? 'var(--dc-success)' : 'var(--dc-text-muted)',
             }}
           >
-            {delta >= 0 ? '↑' : '↓'} {formatMinutesHM(Math.abs(delta))}
+            {delta === 0 ? '±' : delta > 0 ? '↑' : '↓'} {formatMinutesHM(Math.abs(delta))}
           </span>
         )}
       </div>
@@ -341,7 +347,13 @@ export function StudyRecordPanel({ stats, loading }: StudyRecordPanelProps) {
                   fontSize: 'var(--dc-fs-caption)',
                   fontWeight: b.isToday ? 700 : 400,
                   color: b.isToday ? 'var(--dc-primary)' : 'var(--dc-text-muted)',
-                  whiteSpace: 'nowrap', overflow: 'hidden',
+                  /*
+                   * 🔴 overflow: hidden にしない。ラベルは間引いて数本に1つしか出さないので
+                   *    （30日タブは5日おき）、隣の列は空いている。列の幅で切ると
+                   *    1024px を下回ったあたりで「8/10」が「8/1」に見えるようになり、
+                   *    日付を読み違える。はみ出させて中央寄せのままにする。
+                   */
+                  whiteSpace: 'nowrap', overflow: 'visible',
                 }}
               >
                 {b.x}

@@ -190,6 +190,14 @@ export type SessionVisibility = 'private' | 'shared_with_coach';
 export interface CoachingSessionDetail {
   id: number;
   date: string;          // YYYY-MM-DD
+  /**
+   * 実施した時間帯 'HH:mm'。
+   * 🔴 任意。実BFF（FastAPI）はこの2項目を返さないので、無いことを正常として扱う
+   *    （学習の記録の日別詳細では、無ければ時刻の行を出さないだけにする）。
+   *    date から時刻を起こさないこと。date は日付だけで時刻を持たない。
+   */
+  startTime?: string | null;
+  endTime?: string | null;
   title: string;
   coach: string;
   coachId: number;
@@ -216,6 +224,9 @@ export interface CoachingSessionDetail {
 export interface CoachingSessionSummary {
   id: number;
   date: string;
+  /** 実施した時間帯 'HH:mm'。任意（CoachingSessionDetail と同じ扱い） */
+  startTime?: string | null;
+  endTime?: string | null;
   title: string;
   coach: string;
   summary: string;

@@ -5,7 +5,6 @@ import {
   GoalDeclaration,
 } from '../../types/goalDeclaration';
 import {
-  daysLeft,
   declarationMinutes,
   declarationPhase,
   declarationStudyDays,
@@ -13,10 +12,15 @@ import {
 import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
 
 /**
- * 目標宣言と振り返りの積み上がり（/study-log）。
+ * 目標宣言の振り返りと過去分の積み上がり（/study-log の下部）。
  * ============================================================
  * 編集の主戦場はここ。マイページ側は表示だけで、押すとここへ来る
  * （同じデータの編集入口を2箇所に置かない）。
+ *
+ * 🔴 進行中の宣言はここに出さない。GoalDeclarationBar（カレンダーの上の横長バー）が持つ。
+ *    「今この期間に何をやると決めたか」は画面を開いた瞬間に読ませたいので上に出し、
+ *    ここは「終わった期間を振り返る／過去を辿る」場所に役割を絞った。
+ *    active は受け取り続けるが、これは「これまでの宣言」から現行分を除くために使う。
  *
  * 🔴 期間の経過をバーで出さない。「9月30日まで（あと12日）」の文字だけにする。
  *    経過バーを置くと達成度%に読めてしまい、学習効果を数値化した指標を
@@ -35,7 +39,6 @@ interface GoalDeclarationCardProps {
   daily: StudyDayTotal[];
   loading: boolean;
   onCreate: () => void;
-  onEdit: (declaration: GoalDeclaration) => void;
   onReview: (declaration: GoalDeclaration) => void;
   onView: (declaration: GoalDeclaration) => void;
 }
@@ -83,7 +86,6 @@ export function GoalDeclarationCard({
   daily,
   loading,
   onCreate,
-  onEdit,
   onReview,
   onView,
 }: GoalDeclarationCardProps) {
@@ -105,7 +107,7 @@ export function GoalDeclarationCard({
           <Flag size={16} strokeWidth={1.75} />
         </span>
         <h2 style={{ margin: 0, flex: 1, fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)' }}>
-          目標宣言と振り返り
+          目標宣言の振り返り
         </h2>
         <button
           type="button"
@@ -127,49 +129,13 @@ export function GoalDeclarationCard({
       {loading ? (
         <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)' }}>読み込み中…</p>
       ) : items.length === 0 ? (
+        // 🔴 「宣言がありません」はカレンダー上部のバーが言うので、ここでは繰り返さない。
+        //    このカードは「終わった期間」の置き場だと分かる文言にする。
         <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)', lineHeight: 'var(--dc-lh-prose)' }}>
-          まだ宣言がありません。「この2週間で何をやり切るか」を1文で書いておくと、
-          期間が終わったときに振り返りとして積み上がります。
+          期間が終わった宣言と、その振り返りがここに積み上がります。
         </p>
       ) : (
         <>
-          {/* 進行中 */}
-          {active && (
-            <div style={{ marginBottom: past.length || pendingReflection.length ? 18 : 0 }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: 700, color: 'var(--dc-primary)' }}>
-                  {GOAL_DECLARATION_STATUS_LABEL.active}
-                </span>
-                <span className="dc-num" style={{ flex: 1, fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)' }}>
-                  {md(active.periodFrom)}〜{md(active.periodTo)}
-                  {`（あと${daysLeft(active, todayKey)}日）`}
-                </span>
-                {linkButton('編集する ›', () => onEdit(active))}
-              </div>
-
-              {/* 宣言文は左の縦罫つきの引用体。コーチが決めたタスク一覧と見た目で区別する */}
-              <p
-                style={{
-                  margin: 0,
-                  paddingLeft: 12,
-                  borderLeft: '4px solid var(--dc-primary)',
-                  fontSize: 'var(--dc-fs-title)',
-                  fontWeight: 700,
-                  lineHeight: 'var(--dc-lh-heading)',
-                  color: 'var(--dc-text)',
-                  overflowWrap: 'anywhere',
-                }}
-              >
-                {active.text}
-              </p>
-
-              <p className="dc-num" style={{ margin: '10px 0 0', fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)' }}>
-                この期間の学習 {formatMinutesHM(declarationMinutes(active, daily))} ・
-                {` ${declarationStudyDays(active, daily)}日`}
-              </p>
-            </div>
-          )}
-
           {/* 期間が終わったのに振り返りがまだのもの。放置を拾えるように上に出す */}
           {pendingReflection.map((d) => (
             <div
@@ -193,6 +159,14 @@ export function GoalDeclarationCard({
               </div>
               <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text)', overflowWrap: 'anywhere' }}>
                 {d.text}
+              </p>
+              {/* 振り返りを書くときの手がかり。宣言に対する達成率ではなく、その期間の事実 */}
+              <p
+                className="dc-num"
+                style={{ margin: '8px 0 0', fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)' }}
+              >
+                この期間の学習 {formatMinutesHM(declarationMinutes(d, daily))} ・
+                {` ${declarationStudyDays(d, daily)}日`}
               </p>
             </div>
           ))}

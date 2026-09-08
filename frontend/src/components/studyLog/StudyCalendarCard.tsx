@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarDays, MessageSquare } from 'lucide-react';
+import { CalendarDays, Headphones } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { StudyDayTotal } from '../../types/studyActivity';
 import {
@@ -28,6 +28,11 @@ import {
  * 🔴 色だけで情報を伝えない（design-token-spec.md）。
  *    濃淡に加えて、段階ドット（1〜4個）・日付の数字・aria-label の文言・
  *    凡例の分数表記の4つで同じことを伝えている。どれか1つでも読めれば分かる。
+ *
+ * 🔴 「選択中」と「今日」を同じ記号で表さない。
+ *    選択中は赤い枠（＋内側の細い白枠）、今日はセル下端の点にしている。
+ *    どちらも枠にすると、今日を選んだときに2つが重なって区別が付かなくなる。
+ *    形のほかに aria-pressed / aria-current="date" / label の文言でも伝える。
  *    セルに「45分」と文字で入れないのは、--dc-sz-cell の下限が 38px で
  *    12px×4文字が溢れるため（12px未満は作らない規約がある）。
  *
@@ -50,6 +55,8 @@ interface StudyCalendarCardProps {
   loading: boolean;
   onMonthChange: (monthKey: string) => void;
   onSelectDate: (date: string | null) => void;
+  /** 「今日」ボタン。表示月を今月に戻して今日を選ぶ（呼び出し側で両方やる） */
+  onSelectToday: () => void;
 }
 
 const WEEKDAYS = [
@@ -110,6 +117,7 @@ export function StudyCalendarCard({
   loading,
   onMonthChange,
   onSelectDate,
+  onSelectToday,
 }: StudyCalendarCardProps) {
   const todayKey = toLocalDateKey(new Date());
 
@@ -307,6 +315,27 @@ export function StudyCalendarCard({
             {title}
           </span>
           {navButton('次の月へ', '›', canGoForward, () => onMonthChange(shiftMonth(monthKey, 1)))}
+          {/* 遡ったあとに戻る手段。月を今月へ戻して今日を選ぶところまでやる */}
+          <button
+            type="button"
+            onClick={onSelectToday}
+            className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+            style={{
+              minHeight: 24,
+              padding: '0 10px',
+              borderRadius: 9999,
+              border: '1px solid var(--dc-border-strong)',
+              background: '#fff',
+              fontFamily: 'inherit',
+              fontSize: 'var(--dc-fs-caption)',
+              fontWeight: 700,
+              color: 'var(--dc-text-body)',
+              whiteSpace: 'nowrap',
+              cursor: 'pointer',
+            }}
+          >
+            今日
+          </button>
         </div>
       </div>
 
@@ -372,12 +401,12 @@ export function StudyCalendarCard({
                     cursor: c.isFuture ? 'default' : 'pointer',
                     background: c.isFuture ? 'transparent' : c.under ? 'var(--dc-sunken)' : heat.background,
                     border: selected
-                      ? '2px solid var(--dc-text)'
-                      : c.isToday
-                        ? '2px solid var(--dc-primary)'
-                        : c.isFuture
-                          ? '1px dashed var(--dc-idle-dash)'
-                          : `1px solid ${c.under ? 'var(--dc-border)' : heat.border}`,
+                      ? '2px solid var(--dc-primary)'
+                      : c.isFuture
+                        ? '1px dashed var(--dc-idle-dash)'
+                        : `1px solid ${c.under ? 'var(--dc-border)' : heat.border}`,
+                    // 内側に地の色の細い枠を挟んで、濃い段（L3/L4）でも赤枠が沈まないようにする
+                    boxShadow: selected ? 'inset 0 0 0 2px var(--dc-surface)' : undefined,
                   }}
                 >
                   <span
@@ -408,20 +437,28 @@ export function StudyCalendarCard({
                   {c.coaching && (
                     /*
                      * 段階ドット（四角）と形を変える。濃淡の一部に読まれないように。
-                     * 🔴 11px より大きくしない。狭い画面では升目が 37px しかなく、
-                     *    中央の日付（2桁で約13px）にマークが重なって数字が読めなくなる。
+                     * 🔴 大きさは index.css の .studylog-cal-coaching が持つ（インラインで書かない）。
+                     *    狭い画面では升目が 38px しかなく、中央の日付（2桁で約13px）に
+                     *    マークが重なって数字が読めなくなる。広い画面（升目 50px）でだけ
+                     *    大きくしたいので、メディアクエリのあるクラス側で持つ
+                     *    （インライン style にメディアクエリは書けない）。
+                     *    size は指定しない。svg の寸法もクラスが決める。
                      */
+                    <span aria-hidden="true" className="studylog-cal-coaching">
+                      <Headphones strokeWidth={2.75} />
+                    </span>
+                  )}
+
+                  {/* 今日。選択中の赤枠と competing しないよう、枠ではなく下端の点で示す */}
+                  {c.isToday && (
                     <span
                       aria-hidden="true"
                       style={{
-                        position: 'absolute', top: 1, right: 1,
-                        width: 11, height: 11, borderRadius: 9999,
-                        background: 'var(--dc-gold-surface)', color: 'var(--dc-gold)',
-                        display: 'grid', placeItems: 'center',
+                        position: 'absolute', bottom: 3, left: '50%', transform: 'translateX(-50%)',
+                        width: 4, height: 4, borderRadius: 9999,
+                        background: onDark ? '#fff' : 'var(--dc-primary)',
                       }}
-                    >
-                      <MessageSquare size={8} strokeWidth={2.75} />
-                    </span>
+                    />
                   )}
                 </button>
               </span>
@@ -460,12 +497,16 @@ export function StudyCalendarCard({
           <span>{STUDY_DAY_MIN_MINUTES}分未満</span>
         </span>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-          <MessageSquare size={12} strokeWidth={2.5} color="var(--dc-gold)" aria-hidden="true" />
-          <span>コーチング</span>
+          <Headphones size={12} strokeWidth={2.5} color="var(--dc-gold)" aria-hidden="true" />
+          <span>コーチングあり</span>
+        </span>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+          <span aria-hidden="true" style={{ width: 4, height: 4, borderRadius: 9999, background: 'var(--dc-primary)' }} />
+          <span>今日</span>
         </span>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
           <span aria-hidden="true" style={{ width: 14, height: 14, borderRadius: 5, border: '2px solid var(--dc-primary)' }} />
-          <span>今日</span>
+          <span>選択中</span>
         </span>
       </div>
     </section>

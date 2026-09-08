@@ -25,6 +25,7 @@ import type {
 } from '../types/api';
 import type { FocusBoothMember } from '../types/focusBooth';
 import { coachingHandlers } from './coachingHandlers';
+import { coachScheduleHandlers } from './coachScheduleHandlers';
 import { buildCourseStructure, buildOutline, courseLessonCount, isLessonDone, lessonHandlers, setLessonDone } from './lessonHandlers';
 import { MIGRATED_COURSE_IDS, isMigratedCourse } from './migratedMaterials';
 import { noteHandlers } from './noteHandlers';
@@ -715,6 +716,25 @@ export const handlers = [
     });
   }),
 
+  // ==================== 受講の期間（受講開始日・卒業予定日） ====================
+  // 学習の記録（/study-log）のヘッダーが「卒業予定 …（あと N 日）」に使う。
+  // 🔴 固定の日付を書かない。今日からの相対で返す（seed が日付依存で腐らない）。
+  //    他の seed（coachingHandlers の pastSessionDate / goalDeclarationHandlers の dayKey）と同じ作法。
+  // 🔴 卒業45日前のリボンが常時出てしまわないよう、余裕のある日数にしておく。
+  //    リボンの表示を確認したいときはここの日数を 30 などに下げる。
+  http.get('*/api/webcoach/enrollment/:userid', () => {
+    const shift = (days: number): string => {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      // toISOString は UTC に寄るので、端末ローカル日で組む（localDate と同じキー空間）
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    };
+    return HttpResponse.json({
+      startDate: shift(-95),
+      graduationDate: shift(85),
+    });
+  }),
+
   // ==================== 学習ジャーニー（ゲーム風ロードマップ＋今日のクエスト＋ストリーク） ====================
   http.get('*/api/webcoach/journey/:userid', () => {
     // 学習アクティビティを単一の正とし、ここでは導出のみ行う（別々に持って乖離させない）
@@ -845,6 +865,11 @@ export const handlers = [
   // ==================== コーチング記録 ====================
   // 取り込み・非同期処理・要約・目標確定。量が多いので coachingHandlers.ts に分離している。
   ...coachingHandlers,
+
+  // ==================== コーチ画面: スケジュール / AIノート / Zoom連携 ====================
+  // 上の coachingHandlers は受講生側の /coaching が使う系統。こちらはコーチ画面
+  // （/coach/schedule/:studentId、/coach/settings）専用で、coachScheduleHandlers.ts に分離している。
+  ...coachScheduleHandlers,
 
   // ==================== 教材学習ワークスペース ====================
   // 教材目次・構造化教材・教材準拠のAI回答・メモ/クリップ/保存回答。
