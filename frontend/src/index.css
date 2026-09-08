@@ -729,7 +729,8 @@ h1, h2, h3 {
   .coach-row,
   .studylog-cal-cell,
   .studylog-row,
-  .studylog-row-actions {
+  .studylog-row-actions,
+  .studylog-coaching-row {
     transition: none;
   }
 }
@@ -1360,13 +1361,17 @@ body.learning-immersive {
   gap: calc(var(--dc-sp-gap) * 0.55);
 }
 
-/* 学習カレンダー ｜ 選んだ日の詳細。
-   詳細側は 320〜380px の固定寄り（中は1行1記録なので、広げても情報は増えない）。
+/* 学習カレンダー ｜ 選んだ日の記録。
+   広い画面ではほぼ 1:1。
+   🔴 かつて詳細側を 320〜380px の固定寄りにしていた（中は1行1記録なので広げても
+      情報が増えない、という理由）。日別パネルが「合計の学習時間」「学んだ教材」
+      「コーチング」の3節を持つようになり、380px では合計の大きな数字と
+      編集ボタンが同じ行に収まらなくなったので 1fr に開いた。
    🔴 折り返すしきい値は .studylog-kpi-grid と揃える。同じ画面の上下で
       折り返す幅が違うと、中間の幅で片方だけ1カラムになって崩れて見える。 */
 .studylog-calendar-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
   gap: var(--dc-sp-gap);
   align-items: start;
 }
@@ -1386,6 +1391,42 @@ body.learning-immersive {
 
 .studylog-cal-cell:hover:not(:disabled) {
   box-shadow: inset 0 0 0 2px var(--dc-soft-200);
+}
+
+/* コーチングを受けた日のマーク（升目の右上）。
+   🔴 狭い画面で大きくしない。--dc-sz-cell の下限は 38px で、中央の日付（2桁で約13px）に
+      重なって数字が読めなくなる。升目が広がる 1024px 以上でだけ一段大きくする。
+   🔴 学習時間の赤い濃淡と混ざらないよう、オレンジ側（--dc-gold）で通す。 */
+.studylog-cal-coaching {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: var(--dc-gold-surface);
+  color: var(--dc-gold);
+  display: grid;
+  place-items: center;
+}
+
+.studylog-cal-coaching > svg {
+  width: 9px;
+  height: 9px;
+}
+
+@media (min-width: 1024px) {
+  .studylog-cal-coaching {
+    top: 3px;
+    right: 3px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .studylog-cal-coaching > svg {
+    width: 11px;
+    height: 11px;
+  }
 }
 
 /* 学習記録の1行。操作はホバー／フォーカスで出す（並んだ行にボタンが増えると
@@ -1418,6 +1459,18 @@ body.learning-immersive {
 /* 過去の目標宣言の行 */
 .studylog-goal-row:hover {
   background: var(--dc-soft-100);
+}
+
+/* 日別詳細のコーチング1件。押すと ?session= でその記録が開く */
+.studylog-coaching-row {
+  transition: border-color 120ms var(--dc-ease), background-color 120ms var(--dc-ease);
+}
+
+.studylog-coaching-row:hover {
+  /* 🔴 赤系（--dc-soft-100）にしない。コーチングはオレンジ側の系統で、
+        学習時間の赤い濃淡と混ぜないのがこの画面の約束。 */
+  border-color: var(--dc-gold-border);
+  background: var(--dc-gold-surface);
 }
 
 @media (max-width: 1023px) {

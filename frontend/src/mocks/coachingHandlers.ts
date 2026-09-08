@@ -340,6 +340,9 @@ function seedAll(): void {
     status: 'published',
     step: '目標を確定しました',
     progress: 100,
+    // 実施した時間帯。実BFFは返さない項目なので、モックだけが持つ
+    startTime: '19:00',
+    endTime: '20:00',
     studentMemo: '余白の取り方は次のバナーで意識する。',
     reflectedGoalIds: ['goal_1002_1', 'task_1002_1', 'task_1002_2'],
     reflectedAt: recent.reflectedAt,
@@ -350,6 +353,8 @@ function seedAll(): void {
     progress: 100,
     source: 'pasted_text',
     importedFrom: 'manual',
+    startTime: '19:00',
+    endTime: '20:00',
     reflectedGoalIds: ['goal_1001_1'],
     reflectedAt: older.reflectedAt,
   });
@@ -629,6 +634,8 @@ function toSummaryRow(s: CoachingSessionDetail): CoachingSessionSummary {
   return {
     id: s.id,
     date: s.date,
+    startTime: s.startTime ?? null,
+    endTime: s.endTime ?? null,
     title: s.title,
     coach: s.coach,
     summary: s.summary?.sessionSummary ?? '（まだ記録が取り込まれていません）',

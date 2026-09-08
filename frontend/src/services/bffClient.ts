@@ -37,6 +37,7 @@ import {
   GoalDeclarationPatch,
   GoalDeclarationQuery,
 } from '../types/goalDeclaration';
+import { Enrollment } from '../types/enrollment';
 import {
   FocusBoothMember,
   FocusBoothPulse,
@@ -690,6 +691,17 @@ class BFFClient {
    */
   async resetGoalDeclarations(userId: number): Promise<{ ok: boolean; count: number }> {
     const response = await this.api.post(`/webcoach/goal-declarations/${userId}/reset`);
+    return response.data;
+  }
+
+  // ==================== 受講の期間（受講開始日・卒業予定日） ====================
+  // 🔴 実BFFには存在しない。mocks/handlers.ts の MSW モックだけが応答する。
+  //    モックOFF（本番）では取得に失敗するので、呼び出し側は
+  //    「取れない = 卒業予定を出さない」に縮退させる（hooks/useEnrollment.ts）。
+
+  /** GET /api/webcoach/enrollment/{userId} */
+  async getEnrollment(userId: number): Promise<Enrollment> {
+    const response = await this.api.get(`/webcoach/enrollment/${userId}`);
     return response.data;
   }
 

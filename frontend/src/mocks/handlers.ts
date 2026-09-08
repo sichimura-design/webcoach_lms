@@ -716,6 +716,25 @@ export const handlers = [
     });
   }),
 
+  // ==================== 受講の期間（受講開始日・卒業予定日） ====================
+  // 学習の記録（/study-log）のヘッダーが「卒業予定 …（あと N 日）」に使う。
+  // 🔴 固定の日付を書かない。今日からの相対で返す（seed が日付依存で腐らない）。
+  //    他の seed（coachingHandlers の pastSessionDate / goalDeclarationHandlers の dayKey）と同じ作法。
+  // 🔴 卒業45日前のリボンが常時出てしまわないよう、余裕のある日数にしておく。
+  //    リボンの表示を確認したいときはここの日数を 30 などに下げる。
+  http.get('*/api/webcoach/enrollment/:userid', () => {
+    const shift = (days: number): string => {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      // toISOString は UTC に寄るので、端末ローカル日で組む（localDate と同じキー空間）
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    };
+    return HttpResponse.json({
+      startDate: shift(-95),
+      graduationDate: shift(85),
+    });
+  }),
+
   // ==================== 学習ジャーニー（ゲーム風ロードマップ＋今日のクエスト＋ストリーク） ====================
   http.get('*/api/webcoach/journey/:userid', () => {
     // 学習アクティビティを単一の正とし、ここでは導出のみ行う（別々に持って乖離させない）
