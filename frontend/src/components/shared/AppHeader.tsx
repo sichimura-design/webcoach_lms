@@ -22,7 +22,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, avatarUrl: ctxAvatarUrl, nickName: ctxNickName, contentToken } = useAuth();
-  const isStudentsPage = location.pathname.startsWith('/coach/students');
+  const isStudentsPage = location.pathname.startsWith('/coach/students') || location.pathname.startsWith('/coach/schedule');
+  const isCoachSettings = location.pathname.startsWith('/coach/settings');
 
   const resolvedUserName = userName ?? ctxNickName ?? user?.username ?? 'User';
   // avatarUrl は呼び出し元が既にcf_token付与済みの前提。ctxAvatarUrlはcontextの生URLなのでここで付与する
@@ -189,11 +190,21 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     { label: '記録', icon: CalendarDays, path: '/study-log', active: isStudyLog },
   ];
   const learnItems = navItems;
-  const manageItems = user?.isAdmin
-    ? [{ label: '管理', icon: ShieldCheck, path: '/admin', active: isAdmin }]
-    : user?.isCoach
-    ? [{ label: '受講生一覧', icon: BookOpen, path: '/coach/students', active: isStudentsPage }]
-    : [];
+  /*
+   * 管理・コーチ項目。
+   * 🔴 admin と coach を排他にしない。以前は isAdmin を先に見て早期に返していたため、
+   *    admin かつ coach の人（運営がコーチも持つ運用、モックの擬似ユーザーもこれ）には
+   *    コーチ画面への導線が1本も出なかった。両方持っているなら両方出す。
+   */
+  const manageItems = [
+    ...(user?.isAdmin ? [{ label: '管理', icon: ShieldCheck, path: '/admin', active: isAdmin }] : []),
+    ...(user?.isCoach
+      ? [
+          { label: '受講生一覧', icon: UserRound, path: '/coach/students', active: isStudentsPage },
+          { label: '連携設定', icon: Settings, path: '/coach/settings', active: isCoachSettings },
+        ]
+      : []),
+  ];
 
   // キーボードフォーカス時の共通フィードバック（色だけに依存しないよう ring + 背景色の両方を使う）
   const focusRing = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD] focus-visible:ring-offset-0';

@@ -16,6 +16,11 @@ import {
   UpdateDBRequest,
   UpdateDBResponse,
   HealthResponse,
+  CoachingSchedule,
+  CreateCoachingScheduleRequest,
+  UpdateCoachingScheduleRequest,
+  CoachingNote,
+  UpdateCoachingNoteRequest,
 } from '../types/api';
 import { CoachingGoalApi, CoachingGoalUpdateItem, DailyTodo, StreakInfo, CommunityPulse, Journey } from '../types/mypage';
 import {
@@ -838,6 +843,102 @@ class BFFClient {
     return response.data;
   }
 
+  // ==================== コーチ画面: コーチングスケジュール / AIノート ====================
+  // 上の「コーチング記録」は受講生側の画面が使う招待URL型のモックAPI。
+  // ここから下はコーチ画面（/coach/schedule/:studentId）が使う別系統で、
+  // 実BFF側は dev/kanegae で実装済み。呼び出し形は kanegae と同一に保つこと
+  // （デザイン統一だけを目的にこのブランチを切っているので、API層は写経のまま動かさない）。
+
+  /**
+   * コーチングスケジュール一覧取得
+   * GET /api/coaching/schedule/{userid}
+   */
+  async getCoachingSchedules(userId: number): Promise<CoachingSchedule[]> {
+    const response = await this.api.get(`/coaching/schedule/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール作成
+   * POST /api/coaching/schedule/{userid}
+   */
+  async createCoachingSchedule(
+    userId: number,
+    data: CreateCoachingScheduleRequest
+  ): Promise<CoachingSchedule> {
+    const response = await this.api.post(`/coaching/schedule/${userId}`, data);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール更新
+   * PUT /api/coaching/schedule/{userid}/{id}
+   */
+  async updateCoachingSchedule(
+    userId: number,
+    id: number,
+    data: UpdateCoachingScheduleRequest
+  ): Promise<CoachingSchedule> {
+    const response = await this.api.put(`/coaching/schedule/${userId}/${id}`, data);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール削除
+   * DELETE /api/coaching/schedule/{userid}/{id}
+   */
+  async deleteCoachingSchedule(userId: number, id: number): Promise<void> {
+    await this.api.delete(`/coaching/schedule/${userId}/${id}`);
+  }
+
+  /**
+   * AIコーチングノート取得
+   * GET /api/coaching/notes/{coaching_schedule_id}
+   */
+  async getCoachingNote(coachingScheduleId: number): Promise<CoachingNote> {
+    const response = await this.api.get(`/coaching/notes/${coachingScheduleId}`);
+    return response.data;
+  }
+
+  /**
+   * AIコーチングノート編集・確定・公開
+   * PUT /api/coaching/notes/{coaching_schedule_id}
+   */
+  async updateCoachingNote(
+    coachingScheduleId: number,
+    data: UpdateCoachingNoteRequest
+  ): Promise<CoachingNote> {
+    const response = await this.api.put(`/coaching/notes/${coachingScheduleId}`, data);
+    return response.data;
+  }
+
+  /**
+   * 自分（コーチ）のミーティング連携状態取得
+   * GET /api/integrations/status
+   */
+  async getMeetingIntegrationStatus(): Promise<{
+    coach_user_id: number;
+    integrations: Array<{
+      coach_user_id: number;
+      provider: string;
+      provider_account_email: string | null;
+      connected_at: string;
+      updated_at: string;
+    }>;
+  }> {
+    const response = await this.api.get('/integrations/status');
+    return response.data;
+  }
+
+  /**
+   * Zoom/Google Meet連携の認可URL取得
+   * GET /api/integrations/{provider}/authorize
+   */
+  async getMeetingIntegrationAuthorizeUrl(provider: 'zoom' | 'google'): Promise<{ authorizeUrl: string }> {
+    const response = await this.api.get(`/integrations/${provider}/authorize`);
+    return response.data;
+  }
+
   // ==================== Zoom / Meet 連携（自動取り込み） ====================
   // 録画・文字起こしの持ち主は会議の主催者（コーチ）なので、認可はコーチ側から取る。
   // ただしコーチにLMSアカウントは無い前提。運営が初回セットアップで接続リンクを発行し、
@@ -1391,7 +1492,7 @@ class BFFClient {
     return response.data;
   }
 
-  // --- フォルダ（デザイン『マイノート 改善案』の左列）。実BFFには無く、noteHandlers.ts が応答する ---
+  // --- フォルダ（マイノートの上部バー）。実BFFには無く、noteHandlers.ts が応答する ---
 
   /** GET /api/webcoach/note-folders — 作成順 */
   async listNoteFolders(): Promise<NoteFolder[]> {

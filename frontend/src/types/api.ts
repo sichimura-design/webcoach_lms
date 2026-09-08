@@ -226,3 +226,71 @@ export interface HealthResponse {
   service?: string;
   environment?: string;
 }
+
+// WebCoach CoachingSchedule
+export type CoachingScheduleStatus = 'completed' | 'interrupted' | 'rescheduled';
+
+export interface CoachingSchedule {
+  id: number;
+  mdl_user_id: number;
+  coach_user_id: number;
+  coaching_no: number;
+  coaching_date: string;
+  status: CoachingScheduleStatus | null;
+  meeting_url: string;
+  meeting_provider: 'google_meet' | null;
+  meet_space_name: string | null;
+  coaching_summary: string | null;
+  todo: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateCoachingScheduleRequest {
+  coach_user_id: number;
+  coaching_date: string;
+  meeting_url: string;
+  meeting_provider?: 'google_meet' | null;
+  coaching_summary?: string | null;
+  todo?: string | null;
+}
+
+export interface UpdateCoachingScheduleRequest {
+  coaching_date?: string;
+  status?: CoachingScheduleStatus;
+  meeting_url?: string;
+  coaching_summary?: string | null;
+  todo?: string | null;
+}
+
+// WebCoach AI Coaching Note
+export type CoachingNoteStatus = 'ai_suggested' | 'coach_confirmed' | 'published';
+
+export interface CoachingNote {
+  id: number;
+  coaching_schedule_id: number;
+  status: CoachingNoteStatus;
+  session_summary: string | null;
+  client_status_and_goal: string | null;
+  main_issues: string | null;
+  coach_feedback: string | null;
+  decisions: string | null;
+  client_next_actions: string | null;
+  coach_follow_up: string | null;
+  next_session_check: string | null;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface UpdateCoachingNoteRequest {
+  status?: CoachingNoteStatus;
+  session_summary?: string | null;
+  client_status_and_goal?: string | null;
+  main_issues?: string | null;
+  coach_feedback?: string | null;
+  decisions?: string | null;
+  client_next_actions?: string | null;
+  coach_follow_up?: string | null;
+  next_session_check?: string | null;
+}

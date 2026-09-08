@@ -25,6 +25,7 @@ import type {
 } from '../types/api';
 import type { FocusBoothMember } from '../types/focusBooth';
 import { coachingHandlers } from './coachingHandlers';
+import { coachScheduleHandlers } from './coachScheduleHandlers';
 import { buildCourseStructure, buildOutline, courseLessonCount, isLessonDone, lessonHandlers, setLessonDone } from './lessonHandlers';
 import { MIGRATED_COURSE_IDS, isMigratedCourse } from './migratedMaterials';
 import { noteHandlers } from './noteHandlers';
@@ -845,6 +846,11 @@ export const handlers = [
   // ==================== コーチング記録 ====================
   // 取り込み・非同期処理・要約・目標確定。量が多いので coachingHandlers.ts に分離している。
   ...coachingHandlers,
+
+  // ==================== コーチ画面: スケジュール / AIノート / Zoom連携 ====================
+  // 上の coachingHandlers は受講生側の /coaching が使う系統。こちらはコーチ画面
+  // （/coach/schedule/:studentId、/coach/settings）専用で、coachScheduleHandlers.ts に分離している。
+  ...coachScheduleHandlers,
 
   // ==================== 教材学習ワークスペース ====================
   // 教材目次・構造化教材・教材準拠のAI回答・メモ/クリップ/保存回答。
