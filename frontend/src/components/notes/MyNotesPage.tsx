@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowUpDown, ChevronDown, Home, Plus, Search } from 'lucide-react';
-import { AppFooter, AppHeader, LearningBreadcrumb } from '../shared';
+import { ArrowUpDown, ChevronDown, Plus, Search } from 'lucide-react';
+import { AppFooter, AppHeader } from '../shared';
 import { MOCKS_ENABLED } from '../../mocks/config';
 import { useAuth } from '../../contexts/AuthContext';
 import { useToast } from '../../contexts/ToastContext';
@@ -30,13 +30,13 @@ import NoteEditorBar from './NoteEditorBar';
 import NoteFolderBar from './NoteFolderBar';
 import NoteGrid from './NoteGrid';
 import NotesPagination from './NotesPagination';
-import { countByFolder, filterLabel, folderNameOf } from './folderRows';
+import { countByFolder, folderNameOf } from './folderRows';
 
 /**
  * マイノート（/notes）。デザイン『マイノート 改善案』を実装したもの。
  *
  * 【構成】
- *   一覧 … 見出し＋パンくず ／ フォルダのバー（NoteFolderBar）／ 検索・種類チップ ／
+ *   一覧 … 見出し・検索 ／ フォルダのバー（NoteFolderBar）／ 種類チップ・並び替え ／
  *          カードグリッド
  *   ノート面 … 上部バー＋紙（?note=<id> のとき。フォルダのバーは出さない）
  * 以前は左に 248px のフォルダ列（NoteFolderColumn）を立てていたが、フォルダを
@@ -302,7 +302,6 @@ export function MyNotesPage() {
   };
 
   const hasOtherFilters = origin !== 'all' || list.query.trim() !== '';
-  const currentFolderLabel = filterLabel(filter, folders);
 
   const backToSource = backTo
     ? { label: backTo.label, onClick: () => navigate(backTo.to) }
@@ -457,12 +456,12 @@ export function MyNotesPage() {
             </div>
           ) : (
             <>
-              {/* ── 見出し＋パンくず、検索、新規作成 ── */}
+              {/* ── 見出し、検索、新規作成 ── */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: '1 1 200px', minWidth: 0 }}>
-                  {/* 🔴 以前は見出しそのものを現在地（フォルダ名）にしてパンくずを置かなかった。
-                         現在地はフォルダのバーが持つようになったので、見出しは画面名に戻し、
-                         いまどのフォルダを見ているかはパンくずで言う。 */}
+                <div style={{ flex: '1 1 200px', minWidth: 0 }}>
+                  {/* 🔴 パンくずは置かない。階層が「すべて／フォルダ」の一段しか無く、
+                         いまどこを見ているかはフォルダのバー（選択中のボタン）が言っている。
+                         見出しは画面名に固定する（以前は見出し自体をフォルダ名にしていた）。 */}
                   <h1
                     style={{
                       margin: 0,
@@ -474,36 +473,6 @@ export function MyNotesPage() {
                   >
                     マイノート
                   </h1>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0 }}>
-                    <button
-                      type="button"
-                      title="マイページ"
-                      aria-label="マイページ"
-                      onClick={() => navigate('/mypage')}
-                      className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                      style={{
-                        display: 'inline-flex',
-                        padding: 2,
-                        border: 0,
-                        borderRadius: 6,
-                        background: 'none',
-                        color: 'var(--dc-text-subtle)',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      <Home size={14} />
-                    </button>
-                    <span aria-hidden style={{ color: 'var(--dc-border-strong)' }}>
-                      │
-                    </span>
-                    <LearningBreadcrumb
-                      items={[
-                        { label: 'マイノート', onClick: () => setFolder({ kind: 'all' }) },
-                        { label: currentFolderLabel ?? 'すべて' },
-                      ]}
-                      style={{ fontSize: 12.5 }}
-                    />
-                  </div>
                 </div>
 
                 {/* 🔴 検索欄は幅いっぱいにしない。左端の入力から右端のボタンまで
