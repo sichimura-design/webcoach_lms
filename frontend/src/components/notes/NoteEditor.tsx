@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Check } from 'lucide-react';
 import { Note, NoteBlockInput, NoteBlockInsert, NoteBlockPatch, NoteSourceRef } from '../../types/notes';
-import { NOTE_IMAGE_ACCEPT, NOTE_IMAGE_MAX_BYTES, putNoteImage } from '../../utils/noteImageStore';
 import NoteBlockView from './NoteBlockView';
 import { DropPosition, NoteBlockRow } from './NoteBlockRow';
 import { InsertKind, NoteEditorToolbar, TEXT_PREFIX } from './NoteEditorToolbar';
@@ -11,7 +10,7 @@ import { InsertKind, NoteEditorToolbar, TEXT_PREFIX } from './NoteEditorToolbar'
  *
  * 上から「タイトル欄 → 常設ツールバー → 本文のブロック → 続きを書く欄」。
  * 🔴 何を足せるのかが最初から見えている状態にする。以前は本文の下端に
- *    「＋ 画像・見出し・箇条書きを追加」が1つあるだけで、ノートを作る中身の操作が
+ *    「＋ 見出し・箇条書きを追加」が1つあるだけで、ノートを作る中身の操作が
  *    画面から読み取れなかった（レビュー指摘）。ツールバーは本文より上に置くが、
  *    ボタンは「足す」だけに絞り、タイトルと本文の間で完結させる。
  * 🔴「クリップを追加」「AI回答を追加」のボタンは置かない。この画面には素材が無く、
@@ -29,8 +28,6 @@ interface NoteEditorProps {
   onMoveBlock: (blockId: string, toIndex: number) => void;
   onRemoveBlock: (blockId: string) => void;
   onOpenSource: (source: NoteSourceRef, blockId: string | null) => void;
-  /** 画像の取り込みに失敗したときの通知 */
-  onError: (message: string) => void;
 }
 
 export function NoteEditor({
@@ -41,7 +38,6 @@ export function NoteEditor({
   onMoveBlock,
   onRemoveBlock,
   onOpenSource,
-  onError,
 }: NoteEditorProps) {
   const [titleDraft, setTitleDraft] = useState(note.title);
 
@@ -57,10 +53,6 @@ export function NoteEditor({
 
   /** ＋／ツールバーから作った直後のブロック。開いた瞬間に書き始められるよう編集状態で出す */
   const [autoEditId, setAutoEditId] = useState<string | null>(null);
-
-  /** 画像の input は1つだけ持ち、どの位置に差し込むかは ref で覚える */
-  const fileRef = useRef<HTMLInputElement>(null);
-  const insertAtRef = useRef<number | undefined>(undefined);
 
   /** ⠿ のドラッグ。掴んでいる行と、線を出す行 */
   const [dragIndex, setDragIndex] = useState<number | null>(null);
@@ -104,36 +96,13 @@ export function NoteEditor({
     setTail(value);
   };
 
-  const insertText = async (kind: Exclude<InsertKind, 'image'>, index?: number) => {
+  const insertText = async (kind: InsertKind, index?: number) => {
     const block = await onAddBlock({ kind: 'text', text: TEXT_PREFIX[kind], index });
     if (block) setAutoEditId(block.id);
   };
 
   /** ＋（行の前に差し込む）とツールバー（末尾に足す）の共通入口。index 省略で末尾 */
-  const pickInsert = (kind: InsertKind, index?: number) => {
-    if (kind === 'image') {
-      insertAtRef.current = index;
-      fileRef.current?.click();
-      return;
-    }
-    void insertText(kind, index);
-  };
-
-  const handleFile = async (file: File | undefined) => {
-    const index = insertAtRef.current;
-    insertAtRef.current = undefined;
-    if (!file) return;
-    if (file.size > NOTE_IMAGE_MAX_BYTES) {
-      onError('画像が大きすぎます（12MBまで）');
-      return;
-    }
-    try {
-      const imageId = await putNoteImage(file);
-      await onAddBlock({ kind: 'image', imageId, alt: file.name, index });
-    } catch {
-      onError('画像を取り込めませんでした');
-    }
-  };
+  const pickInsert = (kind: InsertKind, index?: number) => void insertText(kind, index);
 
   /** ドロップ先（行 index の前／後）を、配列上の移動先に直す */
   const handleDrop = (index: number, position: DropPosition) => {
@@ -164,18 +133,6 @@ export function NoteEditor({
         flexDirection: 'column',
       }}
     >
-      <input
-        ref={fileRef}
-        type="file"
-        accept={NOTE_IMAGE_ACCEPT}
-        hidden
-        onChange={(e) => {
-          void handleFile(e.target.files?.[0]);
-          // 同じファイルを続けて選べるように値を空にする
-          e.target.value = '';
-        }}
-      />
-
       {/* ⑤ タイトルは入力欄として枠を持たせ、本文と境目を作る */}
       <div style={{ padding: '22px 28px 18px', borderBottom: '1px solid var(--dc-border)' }}>
         <label

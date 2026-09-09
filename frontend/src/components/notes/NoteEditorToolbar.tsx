@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react';
-import { BookOpen, ExternalLink, Heading, Image as ImageIcon, List, ListChecks } from 'lucide-react';
+import { BookOpen, ExternalLink, Heading, List, ListChecks } from 'lucide-react';
 import { useDismissable } from '../../hooks/useDismissable';
 
 /** ツールバーとブロックの ＋ が足せるもの。本文系は記法（noteText.tsx）の接頭辞で始める */
-export type InsertKind = 'heading' | 'list' | 'task' | 'image' | 'text';
+export type InsertKind = 'heading' | 'list' | 'task' | 'text';
 
-export const TEXT_PREFIX: Record<Exclude<InsertKind, 'image'>, string> = {
+export const TEXT_PREFIX: Record<InsertKind, string> = {
   heading: '## ',
   list: '- ',
   task: '- [ ] ',
@@ -16,13 +16,12 @@ export const INSERT_LABEL: Record<InsertKind, string> = {
   heading: '見出し',
   list: '箇条書き',
   task: 'チェックリスト',
-  image: '画像',
   text: '文章',
 };
 
 /**
  * ノート面の常設ツールバー（デザイン『マイノート 改善案』⑥）。
- * 何を足せるのかが最初から見えている。現行は本文の下端に「＋ 画像・見出し・箇条書きを追加」
+ * 何を足せるのかが最初から見えている。現行は本文の下端に「＋ 見出し・箇条書きを追加」
  * が1つあるだけで、開くまで何ができるか分からなかった。
  *
  * 🔴「教材から引用」は押しても画面を移動しない。この画面には素材が無いので、
@@ -68,7 +67,6 @@ export function NoteEditorToolbar({ onInsert, sourceLesson }: NoteEditorToolbarP
     >
       {tool('heading', <Heading size={14} />)}
       {tool('list', <List size={14} />)}
-      {tool('image', <ImageIcon size={14} />)}
 
       <div ref={quoteRef} style={{ position: 'relative' }}>
         <button

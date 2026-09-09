@@ -18,13 +18,12 @@
  * clip   … 教材本文を選択して取り込んだもの。元の位置へ戻れる
  * answer … AIコーチの回答。質問とセットで持つ
  */
-export type NoteBlockKind = 'text' | 'clip' | 'answer' | 'image';
+export type NoteBlockKind = 'text' | 'clip' | 'answer';
 
 export const NOTE_BLOCK_LABEL: Record<NoteBlockKind, string> = {
   text: '本文',
   clip: 'クリップ',
   answer: 'AI回答',
-  image: '画像',
 };
 
 /**
@@ -103,24 +102,7 @@ export interface NoteAnswerBlock extends NoteBlockBase {
   source: NoteSourceRef | null;
 }
 
-/**
- * 自分で貼った画像。
- * 🔴 画像の中身はここに持たない。`imageId` は IndexedDB
- *    （utils/noteImageStore.ts）の参照キーで、ノート本体は localStorage に
- *    入るため、dataURL を持たせると数枚で容量上限を超える
- *    （store/aiCoachStore.ts:27 で同じ失敗をしている）。
- *    実APIになったら imageId をサーバのURLに置き換える。
- */
-export interface NoteImageBlock extends NoteBlockBase {
-  kind: 'image';
-  imageId: string;
-  /** 読み上げ用。ファイル名を既定にする */
-  alt: string;
-  /** 画像の下に出す説明。未入力は null */
-  caption: string | null;
-}
-
-export type NoteBlock = NoteTextBlock | NoteClipBlock | NoteAnswerBlock | NoteImageBlock;
+export type NoteBlock = NoteTextBlock | NoteClipBlock | NoteAnswerBlock;
 
 export interface Note {
   id: string;
@@ -268,8 +250,7 @@ export type NoteBlockInput =
       selectedText?: string | null;
       image?: string | null;
       source?: NoteSourceRef | null;
-    }
-  | { kind: 'image'; imageId: string; alt?: string; caption?: string | null };
+    };
 
 /**
  * 挿入位置。省略すると末尾。
@@ -283,8 +264,6 @@ export interface NoteBlockInsert {
 export interface NoteBlockPatch {
   text?: string;
   answer?: string;
-  /** 画像ブロックの説明文 */
-  caption?: string | null;
   /** 並べ替え。この位置へ動かす（ノート面の ⠿）。範囲外は端に寄せる */
   index?: number;
 }

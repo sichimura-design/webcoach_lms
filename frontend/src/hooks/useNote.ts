@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import bffClient from '../services/bffClient';
 import { Note, NoteBlockInput, NoteBlockInsert, NoteBlockPatch } from '../types/notes';
-import { deleteNoteImage } from '../utils/noteImageStore';
 
 /**
  * ノート面の上部バーに出す保存状態（デザイン『マイノート 改善案』③）。
@@ -155,9 +154,6 @@ export function useNote(noteId: string | null) {
               blocks: prev.blocks.map((b) => {
                 if (b.id !== blockId) return b;
                 if (b.kind === 'answer') return { ...b, answer: patch.answer ?? b.answer };
-                if (b.kind === 'image') {
-                  return { ...b, caption: patch.caption !== undefined ? patch.caption : b.caption };
-                }
                 return { ...b, text: patch.text ?? b.text };
               }),
             }
@@ -196,17 +192,14 @@ export function useNote(noteId: string | null) {
   const removeBlock = useCallback(
     async (blockId: string) => {
       if (!noteId) return;
-      // 画像ブロックなら IndexedDB の実体も落とす（消したのに容量が残るのを防ぐ）
-      const target = note?.blocks.find((b) => b.id === blockId);
       setNote((prev) => (prev ? { ...prev, blocks: prev.blocks.filter((b) => b.id !== blockId) } : prev));
       try {
         await track(() => bffClient.deleteNoteBlock(noteId, blockId));
-        if (target?.kind === 'image') void deleteNoteImage(target.imageId);
       } catch {
         void reload();
       }
     },
-    [noteId, note, reload, track]
+    [noteId, reload, track]
   );
 
   const saveState: NoteSaveState = { saving: savingCount > 0, lastSavedAt, error: saveError };

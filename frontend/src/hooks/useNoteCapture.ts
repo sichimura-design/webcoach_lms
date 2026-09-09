@@ -50,8 +50,6 @@ export interface BackTo {
 /** ピッカーに出す「何を保存しようとしているか」の1行 */
 export function previewOf(block: NoteBlockInput): string {
   if (block.kind === 'answer') return block.question || block.answer;
-  // 画像は取り込み経路（教材のクリップ／AI回答）から来ないが、型としては通る
-  if (block.kind === 'image') return block.caption ?? '画像';
   return block.text;
 }
 

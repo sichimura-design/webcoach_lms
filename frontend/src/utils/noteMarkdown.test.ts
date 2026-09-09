@@ -39,11 +39,10 @@ const blocks: NoteBlock[] = [
     image: null,
     source,
   },
-  { id: 'blk_3', createdAt: at, updatedAt: at, kind: 'image', imageId: 'img_x', alt: 'パレット', caption: '作った配色' },
 ];
 
 describe('noteMarkdown', () => {
-  it('4種類すべてが往復して一致する', () => {
+  it('3種類すべてが往復して一致する', () => {
     expect(parseNoteMarkdown(serializeNoteMarkdown(blocks), at)).toEqual(blocks);
   });
 
@@ -59,7 +58,6 @@ describe('noteMarkdown', () => {
     expect(md).toContain('## 今日わかったこと');
     expect(md).toContain('> 補色は色相環の反対側にある色');
     expect(md).toContain('**Q:** 補色を使うときの注意は?');
-    expect(md).toContain('![パレット](img_x)');
     expect(md).toContain('— [Webデザイン入門 / Lesson 4](/materials/12/lessons/34)');
   });
 
@@ -84,9 +82,10 @@ describe('noteMarkdown', () => {
     expect((parsed[0] as any).text).toContain('補色は色相環の反対側にある色');
   });
 
-  it('キャプション無しの画像を読める', () => {
-    const parsed = parseNoteMarkdown('![図](img_1)', at);
-    expect(parsed[0]).toMatchObject({ kind: 'image', imageId: 'img_1', alt: '図', caption: null });
+  it('画像記法はただの本文として読む（画像機能は廃止した）', () => {
+    const parsed = parseNoteMarkdown('![図](img_1)\n説明', at);
+    expect(parsed).toHaveLength(1);
+    expect(parsed[0]).toMatchObject({ kind: 'text', text: '![図](img_1)\n説明' });
   });
 
   it('空文字は空配列', () => {
@@ -99,6 +98,6 @@ describe('noteMarkdown', () => {
   });
 
   it('blockCount がブロック数と一致する', () => {
-    expect(blockCountOf(serializeNoteMarkdown(blocks))).toBe(4);
+    expect(blockCountOf(serializeNoteMarkdown(blocks))).toBe(3);
   });
 });

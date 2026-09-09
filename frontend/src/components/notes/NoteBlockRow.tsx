@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ArrowDown, ArrowUp, GripVertical, Heading, Image as ImageIcon, List, ListChecks, Plus, Trash2, Type } from 'lucide-react';
+import { ArrowDown, ArrowUp, GripVertical, Heading, List, ListChecks, Plus, Trash2, Type } from 'lucide-react';
 import { useDismissable } from '../../hooks/useDismissable';
 import { NOTE_BLOCK_DRAG_TYPE, hasBlockDrag } from './folderRows';
 import { INSERT_LABEL, InsertKind } from './NoteEditorToolbar';
@@ -10,7 +10,7 @@ import { INSERT_LABEL, InsertKind } from './NoteEditorToolbar';
  *
  *   ⠿ … ドラッグで並べ替え。クリックすると「上に移動／下に移動／削除」のメニュー
  *        （ドラッグが使えないキーボード・タッチ向け。削除もここに集めた）
- *   ＋ … この行の前に 画像／見出し／箇条書き／チェックリスト／文章 を差し込む
+ *   ＋ … この行の前に 見出し／箇条書き／チェックリスト／文章 を差し込む
  *
  * 末尾の「続きを書く…」の行（tail）は ＋ だけ。動かすものも消すものも無い。
  */
@@ -40,7 +40,6 @@ const INSERT_ITEMS: Array<{ kind: InsertKind; icon: React.ReactNode }> = [
   { kind: 'heading', icon: <Heading size={15} /> },
   { kind: 'list', icon: <List size={15} /> },
   { kind: 'task', icon: <ListChecks size={15} /> },
-  { kind: 'image', icon: <ImageIcon size={15} /> },
 ];
 
 export function NoteBlockRow({

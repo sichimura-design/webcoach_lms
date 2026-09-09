@@ -211,15 +211,6 @@ function buildBlockFromInput(input: NoteBlockInput, index: number): NoteBlock {
       source: input.source ?? null,
     };
   }
-  if (input.kind === 'image') {
-    return {
-      ...base,
-      kind: 'image',
-      imageId: input.imageId,
-      alt: input.alt ?? '',
-      caption: input.caption ?? null,
-    };
-  }
   return { ...base, kind: 'text', text: input.text ?? '' };
 }
 
@@ -229,7 +220,6 @@ function applyBlockPatch(block: NoteBlock, patch: NoteBlockPatch): NoteBlock {
   if (block.kind === 'text' && patch.text !== undefined) return { ...block, text: patch.text, updatedAt };
   if (block.kind === 'clip' && patch.text !== undefined) return { ...block, text: patch.text, updatedAt };
   if (block.kind === 'answer' && patch.answer !== undefined) return { ...block, answer: patch.answer, updatedAt };
-  if (block.kind === 'image' && patch.caption !== undefined) return { ...block, caption: patch.caption, updatedAt };
   return block;
 }
 

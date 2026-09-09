@@ -4,7 +4,7 @@
  * （webcoach_my_note.contents）の相互変換。
  *
  * 【なぜ要るか】
- * ノート面のUIはブロック単位（text / clip / answer / image）で編集する前提で作られているが、
+ * ノート面のUIはブロック単位（text / clip / answer）で編集する前提で作られているが、
  * 実APIはノート本文を Markdown の1列で持つ。UIを作り替えずに実APIへ載せるため、
  * 保存時に blocks → Markdown、読込時に Markdown → blocks を通す。
  *
@@ -19,8 +19,9 @@
  *   > — [コース名 / レッスン名](/materials/12/lessons/34)   → clip（引用＋出典行）
  *   **Q:** 質問
  *   **A:** 回答                                  → answer
- *   ![alt](imageId)
- *   キャプション                                  → image
+ *
+ *   上のどれにも当たらない段落は text になる（画像記法もただの本文として扱う。
+ *   画像を貼る機能は取りやめたが、過去に貼られた `![](…)` 行を捨てないため）。
  *
  * 【割り切っていること】
  * ・ブロックIDは読み込みのたびに振り直す（本文が正で、IDは描画のための一時的なもの）。
@@ -34,7 +35,6 @@ const ANSWER_PREFIX = '**A:**';
 
 /** 出典行。`— [コース名 / レッスン名](/materials/<courseId>/lessons/<lessonId>)` */
 const SOURCE_LINE = /^>?\s*—\s*\[(.*?)\]\(\/materials\/(\d+)\/lessons\/(\d+)\)\s*$/;
-const IMAGE_LINE = /^!\[(.*?)\]\((.*?)\)\s*$/;
 
 function sourceLine(source: NoteSourceRef): string {
   const label = [source.courseName, source.lessonTitle].filter(Boolean).join(' / ');
@@ -63,14 +63,9 @@ function serializeBlock(block: NoteBlock): string {
     return `${quote(block.text)}\n> ${sourceLine(block.source)}`;
   }
 
-  if (block.kind === 'answer') {
-    const lines = [`${QUESTION_PREFIX} ${block.question}`, '', `${ANSWER_PREFIX} ${block.answer}`];
-    if (block.source) lines.push('', `> ${sourceLine(block.source)}`);
-    return lines.join('\n');
-  }
-
-  const img = `![${block.alt}](${block.imageId})`;
-  return block.caption ? `${img}\n${block.caption}` : img;
+  const lines = [`${QUESTION_PREFIX} ${block.question}`, '', `${ANSWER_PREFIX} ${block.answer}`];
+  if (block.source) lines.push('', `> ${sourceLine(block.source)}`);
+  return lines.join('\n');
 }
 
 /** blocks → Markdown。ノートの本文としてサーバへ送る形 */
@@ -159,20 +154,6 @@ export function parseNoteMarkdown(markdown: string, at?: string): NoteBlock[] {
       }
     }
 
-    // --- image: 先頭行が画像記法。残りはキャプション ---
-    const img = lines[0].match(IMAGE_LINE);
-    if (img) {
-      const caption = lines.slice(1).join('\n').trim();
-      blocks.push({
-        ...base(),
-        kind: 'image',
-        imageId: img[2],
-        alt: img[1],
-        caption: caption || null,
-      });
-      continue;
-    }
-
     // --- それ以外は text ---
     blocks.push({ ...base(), kind: 'text', text: p.trim() });
   }
@@ -192,6 +173,7 @@ export function excerptFromMarkdown(markdown: string): string {
           .replace(/^\s*(#{1,6}\s+|-\s+)/, '')
           .replace(/^\*\*[QA]:\*\*\s*/, '')
           .replace(/==(.+?)==/g, '$1')
+          // 画像記法は機能としては廃止したが、過去のノートに残っているので書き出しからは落とす
           .replace(/!\[.*?\]\(.*?\)/g, '')
           .trim()
       )

@@ -322,7 +322,6 @@ export function MyNotesPage() {
                         onMoveBlock={detail.moveBlock}
                         onRemoveBlock={detail.removeBlock}
                         onOpenSource={openSource}
-                        onError={(message) => showToast(message, 'error')}
                       />
                     </div>
                   </>
