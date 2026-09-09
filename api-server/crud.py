@@ -2871,7 +2871,7 @@ def _segment_totals_cte(user_scoped: bool) -> str:
             SELECT
                 userid, courseid, timecreated AS started_at, next_timecreated AS ended_at,
                 next_id AS ended_log_id,
-                TIMESTAMPDIFF(SECOND, timecreated, next_timecreated) AS duration_seconds
+                (next_timecreated - timecreated) AS duration_seconds
             FROM ordered
             WHERE eventname = :started_event AND next_eventname = :ended_event
         ),
