@@ -1,9 +1,9 @@
 /**
- * タイムライン「次回まで」のアクションカード。
+ * タイムライン「次回まで」の目標カード。
  * デザイン『コーチング トップ 3案.dc.html』案1C。
  *
  * 2つのモードを持つ:
- *   表示 … 行クリックで完了/未完了を即トグル（1行1アクション）
+ *   表示 … 行クリックで完了/未完了を即トグル（1行1目標）
  *   編集 … 文言の書き換え・削除・追加を下書きに溜め、「変更を保存」で確定
  *
  * 🔴 表示モードのトグルを「即保存」にしたのは1Cの指定。チェックを付けるたびに
@@ -38,7 +38,7 @@ export interface GoalDraftRow extends CoachingGoalUpdateItem {
   isNew?: boolean;
 }
 
-interface NextActionsCardProps {
+interface NextGoalsCardProps {
   goals: CoachingGoalApi[];
   editing: boolean;
   draft: GoalDraftRow[];
@@ -79,7 +79,7 @@ function CheckCircle({ done }: { done: boolean }) {
   );
 }
 
-export function NextActionsCard({
+export function NextGoalsCard({
   goals,
   editing,
   draft,
@@ -92,7 +92,7 @@ export function NextActionsCard({
   onRemove,
   onRestore,
   onAdd,
-}: NextActionsCardProps) {
+}: NextGoalsCardProps) {
   const [expanded, setExpanded] = useState(false);
   const [newText, setNewText] = useState('');
   /** 出している確認ダイアログ。save = 削除を含む保存、discard = 編集の破棄 */
@@ -158,7 +158,7 @@ export function NextActionsCard({
     <section style={{ ...CARD, padding: '16px 24px 14px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingBottom: 8, flexWrap: 'wrap' }}>
         <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: C.ink, flex: 1, minWidth: 0 }}>
-          次回までのアクション
+          次回までの目標
         </h3>
         {goals.length > 0 && (
           <span style={{ fontSize: 12, color: C.muted, fontVariantNumeric: 'tabular-nums' }}>
@@ -256,7 +256,7 @@ export function NextActionsCard({
                   type="button"
                   className="cg-btn-ghost focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                   onClick={() => onRestore(i)}
-                  aria-label={`「${g.description.trim() || '未入力のアクション'}」の削除を取り消す`}
+                  aria-label={`「${g.description.trim() || '未入力の目標'}」の削除を取り消す`}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -295,7 +295,7 @@ export function NextActionsCard({
                   value={g.description}
                   onChange={(e) => onPatch(i, { description: e.target.value })}
                   placeholder="例）バナーを1つ完成させる"
-                  aria-label={`アクション ${i + 1}`}
+                  aria-label={`目標 ${i + 1}`}
                   style={{
                     ...INPUT,
                     flex: 1,
@@ -308,7 +308,7 @@ export function NextActionsCard({
                   className="cg-btn-ghost focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                   onClick={() => onRemove(i)}
                   title="削除予定にする（保存するまで戻せます）"
-                  aria-label={`「${g.description.trim() || `アクション ${i + 1}`}」を削除予定にする`}
+                  aria-label={`「${g.description.trim() || `目標 ${i + 1}`}」を削除予定にする`}
                   style={{
                     width: 28,
                     height: 28,
@@ -335,8 +335,8 @@ export function NextActionsCard({
               onKeyDown={(e) => {
                 if (e.key === 'Enter') submitNew();
               }}
-              placeholder="アクションを追加…"
-              aria-label="アクションを追加"
+              placeholder="目標を追加…"
+              aria-label="目標を追加"
               style={{ ...INPUT, flex: 1, height: 36, fontSize: 13 }}
             />
             <button
@@ -433,8 +433,8 @@ export function NextActionsCard({
 
           {confirming === 'save' && (
             <ConfirmDialog
-              title={`${pendingRemoval.length}件のアクションを削除して保存します`}
-              description="削除したアクションはあとから戻せません。残しておく場合は「やめる」を押し、行の「戻す」で削除を取り消してください。"
+              title={`${pendingRemoval.length}件の目標を削除して保存します`}
+              description="削除した目標はあとから戻せません。残しておく場合は「やめる」を押し、行の「戻す」で削除を取り消してください。"
               items={pendingRemoval.map((g) => g.description.trim() || '（未入力）')}
               confirmLabel="削除して保存"
               busy={saving}
@@ -463,7 +463,7 @@ export function NextActionsCard({
       ) : goals.length === 0 ? (
         /* ---- 空 ---- */
         <p style={{ margin: 0, padding: '10px 2px 4px', fontSize: 13, color: C.muted, lineHeight: 1.9, borderTop: `1px solid ${C.line}` }}>
-          まだアクションがありません。コーチングが終わると、AIが目標とタスクを整理します。
+          まだ目標がありません。コーチングが終わると、AIが目標を整理します。
           いま決めたいことがあれば「リストを編集」から自分でも書けます。
         </p>
       ) : (
@@ -632,7 +632,7 @@ export function NextActionsCard({
             }}
           >
             <Plus size={13} strokeWidth={2.5} />
-            アクションを追加・編集する
+            目標を追加・編集する
           </button>
         </>
       )}
@@ -640,4 +640,4 @@ export function NextActionsCard({
   );
 }
 
-export default NextActionsCard;
+export default NextGoalsCard;
