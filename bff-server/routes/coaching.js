@@ -357,18 +357,31 @@ router.delete('/schedule/:userid/:id', requireAuth, async (req, res) => {
 router.get('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
   try {
     const { coaching_schedule_id } = req.params;
+    const scheduleId = parseInt(coaching_schedule_id);
 
     const userGroups = req.user?.groups || [];
     const isAdmin = userGroups.includes('admin');
     const isCoach = userGroups.includes('coach');
+    const moodleUserId = req.user?.moodleUserId;
 
-    const note = await coachingService.getCoachingNote(parseInt(coaching_schedule_id));
+    const schedule = await coachingService.getCoachingScheduleById(scheduleId);
+    if (!schedule) {
+      return res.status(404).json({ error: 'Not Found', detail: 'Coaching schedule not found' });
+    }
 
-    if (!isAdmin && !isCoach && note.status !== 'published') {
-      console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to access unpublished coaching note ${coaching_schedule_id}`);
+    // Ownership check (not just role): a coach may only see their own
+    // students' notes, and a student only their own (and only once published).
+    const isOwningCoach = isCoach && moodleUserId == schedule.coach_user_id;
+    const isOwningStudent = moodleUserId == schedule.mdl_user_id;
+
+    const note = await coachingService.getCoachingNote(scheduleId);
+    const allowed = isAdmin || isOwningCoach || (isOwningStudent && note.status === 'published');
+
+    if (!allowed) {
+      console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to access coaching note ${coaching_schedule_id}`);
       return res.status(403).json({
         error: 'Forbidden',
-        message: '公開済みのノートのみ閲覧できます。'
+        message: '担当コーチ本人、受講生本人（公開済みのみ）、または管理者のみ閲覧できます。'
       });
     }
 
@@ -385,25 +398,34 @@ router.get('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
 
 /**
  * PUT /api/coaching/notes/:coaching_schedule_id
- * Edit/confirm/publish AI coaching note (Admin or Coach only)
+ * Edit/confirm/publish AI coaching note (Admin, or the schedule's own coach)
  */
 router.put('/notes/:coaching_schedule_id', requireAuth, async (req, res) => {
   try {
     const { coaching_schedule_id } = req.params;
+    const scheduleId = parseInt(coaching_schedule_id);
 
     const userGroups = req.user?.groups || [];
     const isAdmin = userGroups.includes('admin');
     const isCoach = userGroups.includes('coach');
+    const moodleUserId = req.user?.moodleUserId;
 
-    if (!isAdmin && !isCoach) {
+    const schedule = await coachingService.getCoachingScheduleById(scheduleId);
+    if (!schedule) {
+      return res.status(404).json({ error: 'Not Found', detail: 'Coaching schedule not found' });
+    }
+
+    const isOwningCoach = isCoach && moodleUserId == schedule.coach_user_id;
+
+    if (!isAdmin && !isOwningCoach) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to update coaching note ${coaching_schedule_id}`);
       return res.status(403).json({
         error: 'Forbidden',
-        message: '管理者またはコーチのみ更新できます。'
+        message: '担当コーチ本人または管理者のみ更新できます。'
       });
     }
 
-    const note = await coachingService.updateCoachingNote(parseInt(coaching_schedule_id), req.body);
+    const note = await coachingService.updateCoachingNote(scheduleId, req.body);
     res.json(note);
   } catch (error) {
     console.error('[Coaching] Update coaching note error:', error.message);

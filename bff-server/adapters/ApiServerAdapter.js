@@ -901,6 +901,26 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get a single coaching schedule by its own id (owner unknown to caller) —
+   * used to check coach_user_id/mdl_user_id ownership before returning an
+   * AI coaching note. Returns null if not found (404).
+   */
+  async getCoachingScheduleById(scheduleId) {
+    try {
+      const response = await axios.get(
+        `${this.apiServerUrl}/api/coaching/schedule-by-id/${scheduleId}`,
+        { timeout: 10000 }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response?.status === 404) {
+        return null;
+      }
+      throw error;
+    }
+  }
+
+  /**
    * Coaching schedules using Google Meet with no transcript recorded yet
    * (internal — used by TranscriptSyncService's periodic poll)
    */

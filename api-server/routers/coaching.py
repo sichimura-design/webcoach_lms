@@ -22,6 +22,7 @@ from crud import (
     update_coaching_schedule,
     delete_coaching_schedule,
     get_pending_google_meet_schedules,
+    get_coaching_schedule_by_id,
 )
 
 logger = logging.getLogger(__name__)
@@ -352,6 +353,30 @@ def get_coaching_schedule_list(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to get coaching schedules"
         )
+
+
+@router.get(
+    "/schedule-by-id/{schedule_id}",
+    response_model=CoachingScheduleResponse,
+    summary="予約IDから直接1件取得(所有者チェックはbff-server側で実施)"
+)
+def get_coaching_schedule_by_id_endpoint(
+    schedule_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    予約IDから直接1件取得します。所有者(coach_user_id/mdl_user_id)を
+    知らない状態で呼ぶ、AIノート等のアクセス制御チェック向けの内部
+    エンドポイントです。別のprefix(/schedule-by-id/)にしているのは
+    /schedule/{userid}とのFastAPIルーティング順序衝突を避けるため。
+
+    Returns:
+        コーチングスケジュール1件
+    """
+    schedule = get_coaching_schedule_by_id(db, schedule_id)
+    if not schedule:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Schedule not found")
+    return schedule
 
 
 @router.post(

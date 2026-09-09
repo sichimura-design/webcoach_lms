@@ -77,6 +77,13 @@ class CoachingService {
   }
 
   /**
+   * Get a single coaching schedule by its own id (for ownership checks)
+   */
+  async getCoachingScheduleById(scheduleId) {
+    return await apiServerAdapter.getCoachingScheduleById(scheduleId);
+  }
+
+  /**
    * Get AI coaching note for a coaching schedule
    */
   async getCoachingNote(coachingScheduleId) {

@@ -2008,6 +2008,27 @@ def get_pending_google_meet_schedules(
     ).order_by(WebCoachCoachingSchedule.coaching_date).all()
 
 
+def get_coaching_schedule_by_id(
+    db: Session,
+    schedule_id: int,
+) -> Optional[WebCoachCoachingSchedule]:
+    """
+    予約IDから直接1件取得します(所有者IDを未知の呼び出し元向け)。
+    bff-server側でAIノート等の所有者チェック(coach_user_id/mdl_user_id)を
+    行うために使う。それ自体には認可を含まない。
+
+    Args:
+        db: Database session
+        schedule_id: 対象のwebcoach_coaching_schedule.id
+
+    Returns:
+        WebCoachCoachingSchedule: 見つからない場合はNone
+    """
+    return db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.id == schedule_id
+    ).first()
+
+
 def get_coaching_schedules(
     db: Session,
     mdl_user_id: int,
