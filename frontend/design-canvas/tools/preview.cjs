@@ -37,6 +37,8 @@ const WIDTHS = {
   'Main.dc.html': 1440,
   'Courses.dc.html': 1512,
   'Coaching.dc.html': 1440,
+  // notes/ — 操作つき1枚（本命）
+  'NotesApp.dc.html': 1440,
   // notes/ — フル画面
   'NotesList.dc.html': 1440,
   'NoteEditor.dc.html': 1440,

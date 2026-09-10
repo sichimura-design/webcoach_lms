@@ -1,0 +1,1434 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       マイノート /notes ── 現行実装（操作つき・1枚）
+       実装: frontend/src/components/notes/ 一式
+             MyNotesPage / NoteFolderBar / NoteGrid / NoteCard / NotesPagination /
+             NoteEditorBar / NoteEditor / NoteEditorToolbar / NoteBlockRow /
+             NoteBlockView / QuoteFromLessonModal / AnchoredMenu
+       CSS : frontend/src/index.css L1505-2015（.notes-*）
+       出典: design-canvas/_capture/ の STU-06 系（1440幅の実測）
+             🔴 ここに _capture/STU-06 のワイルドカード表記を書かないこと。
+                アスタリスクとスラッシュが並ぶとCSSコメントがそこで閉じ、
+                以降のトークン定義が丸ごと無効になる（実際に踏んだ）。
+
+       ── 押して動く。ランタイムは使っていない ─────────────────────────
+       状態は隠した radio / checkbox と兄弟セレクタだけで作っている。
+       ラベルを押すと状態が変わる。JS も <sc-if> も使っていないので、
+       このファイル単体をブラウザで開いてもそのまま動く。
+
+       🔴 切り替える側の display は必ずクラスに置くこと。
+          インライン style の display はセレクタより強く、CSS からの
+          display:none が効かなくなる（過去に踏んでいる）。
+       🔴 メニュー・モーダルは .ni-main 直下に置いてある。実装でも
+          createPortal で body 直下に出しており、カードや紙の中に入れると
+          overflow:hidden で切られたり、hover の transform が作る
+          重なり文脈に沈んだりする。
+
+       ── 触れるところ ───────────────────────────────────────────────
+       一覧  : フォルダのバー4つ＋パネル（作成/改名/削除の欄）／種類チップ5つ／
+               並び替え／カードを押すとノート面へ／カード下のフォルダ名で移動先／
+               ★ の付け外し（ノート面）／絞り込んで0件になると空状態が出る
+       ノート面: 戻る／保存先／速記メモの小窓／重要／その他／ツールバー5つ／
+               行の ⠿ と ＋（ホバーで出る）／本文を押すと編集欄／末尾の書き足し欄／
+               「教材から引用」でモーダル
+       新規  : 「新しいノート」から。空のノートの姿
+
+       ── 実装と違うところ（意図的） ─────────────────────────────────
+       ・カードは12枚。実装は1ページ24枚（PAGE_SIZE=24）で、モックには100件ある。
+         キャンバス上で手で直せる分量に間引いてある。件数の数字も12枚に合わせた。
+       ・どのカードを押しても同じノート（バナー制作の学び）が開く。
+       ・検索欄は入力できない（CSS だけで状態を作っているため）。
+       ・空状態は「フォルダが空」と「絞り込んで0件」の2つに実際に到達できる。
+         残り3つ（総数0・未整理0・重要0）はデータを空にしないと出ないので、
+         この板からは到達できない。文言は下のコメントに残してある。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    /* 🔒 frontend/src/index.css L91-145 の .wc-warm と同値。
+          ここを書き換えても実装の色は変わらない。色を変えたいなら index.css を直す。 */
+    .ni {
+      --dc-primary: #D60934;
+      --dc-primary-hover: #B50829;
+      --dc-soft-100: #FDF2F2;
+      --dc-soft-200: #F5D8DB;
+      --dc-bg: #FBF8F4;
+      --dc-surface: #FFFFFF;
+      --dc-sunken: #F9F5F0;
+      --dc-text: #141414;
+      --dc-text-body: #3D3D3D;
+      --dc-text-muted: #6B6B6B;
+      --dc-text-subtle: #9E9E9E;
+      --dc-border: #EFE9E0;
+      --dc-border-strong: #E2DBD0;
+      --dc-shadow-card: 0 1px 2px rgba(60,48,32,.05), 0 12px 24px -16px rgba(60,48,32,.14);
+      --dc-radius-md: 12px;
+      --dc-radius-lg: 20px;
+      /* 🔒 本文ブロックだけ theme/webcoachTheme.ts L85-97 の別系統。混ぜない */
+      --wc-text: #1F1D1E;
+      --wc-text-strong: #2B2629;
+      --wc-text-body: #4A4245;
+      --wc-text-muted: #6B6467;
+      --wc-text-faint: #9A9295;
+      --wc-border-soft: #F1E4E4;
+      --wc-clip-bg: #FFF4F5;
+      --wc-clip-accent: #D60934;
+      --wc-answer-bg: #F3FAF6;
+      --wc-answer-accent: #3E9E70;
+      --wc-note-highlight: #FFD9E0;
+    }
+
+    /* 🔒 実装は選択中フォルダ・「重要」ON に var(--dc-primary-deep) を当てているが、
+          この変数はどこにも定義されていない（index.css:1541 / 1676 / 1900 で使用のみ）。
+          未定義の var() は無効値になるので color は継承し、実際は #141414 になる。
+          実測もそうなっている。ここを赤にしないこと。 */
+
+    /* 🔒 実装は Tailwind の preflight が入っているので、すべての要素が border-box で
+          line-height は 1.5。これが無いと枠線のぶんピルが2pxずつ膨らみ、
+          バーとチップの高さが 32/30 ではなく 34/32 になって以降が下にずれる。 */
+    .ni *, .ni *::before, .ni *::after { box-sizing: border-box; }
+    .ni { line-height: 1.5; }
+    .ni .num { font-family: 'Inter', 'Noto Sans JP', sans-serif; font-variant-numeric: tabular-nums; }
+    .ni button, .ni label { font-family: inherit; }
+
+    /* ───────── 状態を持つ隠し input ───────── */
+    .ni .st { position: absolute; width: 0; height: 0; opacity: 0; pointer-events: none; }
+
+    /* ───────── 画面の切り替え ───────── */
+    .ni .view { display: none; }
+    #v-list:checked ~ .ni-shell .view-list { display: flex; }
+    #v-note:checked ~ .ni-shell .view-note { display: flex; }
+    #v-new:checked  ~ .ni-shell .view-new  { display: flex; }
+
+    /* ───────── ポップオーバー（メニュー・パネル・モーダル）─────────
+       どれか1つだけ開く。p-none に戻すと閉じる。 */
+    .ni .pop { display: none; position: absolute; z-index: 50; }
+    #p-folder:checked ~ .ni-shell .pop-folder { display: block; }
+    #p-sort:checked   ~ .ni-shell .pop-sort   { display: block; }
+    #p-move:checked   ~ .ni-shell .pop-move   { display: block; }
+    #p-pill:checked   ~ .ni-shell .pop-pill   { display: block; }
+    #p-more:checked   ~ .ni-shell .pop-more   { display: block; }
+    #p-grip:checked   ~ .ni-shell .pop-grip   { display: block; }
+    #p-plus:checked   ~ .ni-shell .pop-plus   { display: block; }
+    #p-plus2:checked  ~ .ni-shell .pop-plus2  { display: block; }
+    #p-quote:checked  ~ .ni-shell .pop-quote  { display: block; }
+    /* 外側を押すと閉じるための透明な面 */
+    .ni .scrim { display: none; position: absolute; inset: 0; z-index: 40; }
+    #p-folder:checked ~ .ni-shell .scrim,
+    #p-sort:checked   ~ .ni-shell .scrim,
+    #p-move:checked   ~ .ni-shell .scrim,
+    #p-pill:checked   ~ .ni-shell .scrim,
+    #p-more:checked   ~ .ni-shell .scrim,
+    #p-grip:checked   ~ .ni-shell .scrim,
+    #p-plus:checked   ~ .ni-shell .scrim,
+    #p-plus2:checked  ~ .ni-shell .scrim { display: block; }
+    /* 🔴 引用モーダルの scrim は押しても閉じない。本文をドラッグ選択して
+          指をパネル外で離した瞬間に閉じてしまうため（実装のコメントどおり）。
+          閉じ方は ✕ と Esc だけ。だからここでは scrim を出さない。 */
+
+    /* パネルを開いている間、トリガーの地が沈む（.is-trigger.is-open） */
+    #p-folder:checked ~ .ni-shell .fbar-trigger { background: var(--dc-sunken); }
+
+    /* ───────── サイドバーのレール（shared/AppHeader.tsx）───────── */
+    .ni .rail-item {
+      width: 40px; height: 40px; border: 0; padding: 0; background: transparent;
+      display: grid; place-items: center; border-radius: 12px; cursor: pointer;
+    }
+    .ni .rail-item-active { background: #D60934; box-shadow: 0 4px 16px -8px rgba(214,9,52,.25); }
+
+    /* ───────── フォルダのバー（index.css:1637-1700）───────── */
+    .ni .fbar { display: flex; align-items: center; gap: 8px; padding: 8px 0 12px; }
+    .ni .fbar-item {
+      display: inline-flex; align-items: center; gap: 6px; flex: none; height: 32px; padding: 0 14px;
+      border: 1px solid var(--dc-border-strong); border-radius: 9999px;
+      background: var(--dc-surface); color: var(--dc-text-body);
+      font-size: 12.5px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    }
+    .ni .fbar-item:hover { background: var(--dc-soft-100); }
+    .ni .fbar-count { font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; font-size: 11.5px; color: var(--dc-text-subtle); }
+    .ni .fbar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 240px; }
+    /* 選択中。🔒 文字色は #141414（上の --dc-primary-deep の注記を読むこと） */
+    #d-all:checked   ~ .ni-shell label[for="d-all"],
+    #d-star:checked  ~ .ni-shell label[for="d-star"],
+    #d-inbox:checked ~ .ni-shell label[for="d-inbox"] {
+      background: var(--dc-soft-100); border-color: var(--dc-soft-200);
+      color: var(--dc-text); font-weight: 700;
+    }
+    /* フォルダを選んでいるときはトリガーが選択中になり、名前と件数が出る */
+    #d-design:checked ~ .ni-shell .fbar-trigger,
+    #d-work:checked   ~ .ni-shell .fbar-trigger,
+    #d-coach:checked  ~ .ni-shell .fbar-trigger,
+    #d-later:checked  ~ .ni-shell .fbar-trigger {
+      background: var(--dc-soft-100); border-color: var(--dc-soft-200);
+      color: var(--dc-text); font-weight: 700;
+    }
+    .ni .fbar-trigger .tl { display: none; }
+    .ni .fbar-trigger .tl-none { display: inline; }
+    #d-design:checked ~ .ni-shell .fbar-trigger .tl-none,
+    #d-work:checked   ~ .ni-shell .fbar-trigger .tl-none,
+    #d-coach:checked  ~ .ni-shell .fbar-trigger .tl-none,
+    #d-later:checked  ~ .ni-shell .fbar-trigger .tl-none { display: none; }
+    #d-design:checked ~ .ni-shell .fbar-trigger .tl-design,
+    #d-work:checked   ~ .ni-shell .fbar-trigger .tl-work,
+    #d-coach:checked  ~ .ni-shell .fbar-trigger .tl-coach,
+    #d-later:checked  ~ .ni-shell .fbar-trigger .tl-later { display: inline; }
+
+    /* ───────── 種類チップ（index.css:1692-1727）───────── */
+    .ni .chip {
+      display: inline-flex; align-items: center; height: 30px; padding: 0 12px;
+      border: 1px solid var(--dc-border-strong); border-radius: 9999px;
+      background: var(--dc-surface); color: var(--dc-text-body);
+      font-size: 12.5px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    }
+    .ni .chip:hover { background: var(--dc-soft-100); }
+    #t-all:checked      ~ .ni-shell label[for="t-all"],
+    #t-self:checked     ~ .ni-shell label[for="t-self"],
+    #t-material:checked ~ .ni-shell label[for="t-material"],
+    #t-ai:checked       ~ .ni-shell label[for="t-ai"],
+    #t-coach:checked    ~ .ni-shell label[for="t-coach"] {
+      background: var(--dc-primary); border-color: var(--dc-primary); color: #FFFFFF; font-weight: 700;
+    }
+
+    /* ───────── 並び替え ───────── */
+    .ni .sort-trigger {
+      display: inline-flex; align-items: center; gap: 6px; margin-left: auto;
+      height: 30px; padding: 0 8px; border: 0; border-radius: 9999px; background: transparent;
+      font-size: 12px; font-weight: 700; color: var(--dc-text-muted); cursor: pointer;
+    }
+    .ni .sort-trigger:hover { background: var(--dc-soft-100); }
+    .ni .sort-label .sl { display: none; }
+    #s-new:checked   ~ .ni-shell .sl-new   { display: inline; }
+    #s-old:checked   ~ .ni-shell .sl-old   { display: inline; }
+    #s-title:checked ~ .ni-shell .sl-title { display: inline; }
+    #s-new:checked   ~ .ni-shell label[for="s-new"],
+    #s-old:checked   ~ .ni-shell label[for="s-old"],
+    #s-title:checked ~ .ni-shell label[for="s-title"] { background: var(--dc-soft-100); color: var(--dc-primary); }
+
+    /* ───────── カードのグリッド（index.css:1739-1806）───────── */
+    .ni .grid { display: grid; grid-template-columns: repeat(3, 424px); gap: 20px; }
+    .ni .card {
+      position: relative; display: flex; flex-direction: column; gap: 10px;
+      padding: 18px; box-sizing: border-box; width: 424px; height: 190px;
+      background: var(--dc-surface); border: 1px solid var(--dc-border);
+      border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card);
+      transition: transform .2s cubic-bezier(.2,.8,.2,1), box-shadow .2s cubic-bezier(.2,.8,.2,1);
+    }
+    .ni .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(60,48,32,.06), 0 18px 30px -18px rgba(60,48,32,.2);
+    }
+    /* カード全体を押すとノートが開く（実装のカードは role="button"）。
+       🔴 当たり判定は中身より手前に置くこと。奥に置くとタイトルや抜粋が
+          クリックを受け取ってしまい、カードを押してもノートが開かない。
+       ★とフォルダ名だけ、さらに手前に出して個別に押せるようにする。
+       実装でも stopPropagation でカードへ伝えないようにしている。 */
+    .ni .card-open { position: absolute; inset: 0; z-index: 3; cursor: pointer; border-radius: var(--dc-radius-lg); }
+    .ni .card-star, .ni .card-folder { position: relative; z-index: 4; }
+    .ni .card-badge {
+      display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 9999px;
+      font-size: 11.5px; font-weight: 700;
+    }
+    /* 🔒 出どころごとの色（NoteCard.tsx:45-50 の ORIGIN_STYLE） */
+    .ni .b-material, .ni .b-coach { background: var(--dc-soft-100); color: #B80A29; }
+    .ni .b-ai   { background: #FDF2F4; color: #D14D6C; }
+    .ni .b-self { background: #F7F3ED; color: var(--dc-text-muted); }
+    .ni .card-title { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.5; color: var(--dc-text); }
+    .ni .card-excerpt {
+      margin: 0; font-size: 12.5px; line-height: 1.7; color: var(--dc-text-muted);
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .ni .card-foot {
+      display: flex; align-items: center; gap: 10px; margin-top: auto;
+      padding-top: 8px; border-top: 1px solid var(--dc-border);
+    }
+    .ni .card-folder {
+      display: inline-flex; align-items: center; gap: 5px; min-width: 0;
+      border: 0; padding: 0; background: transparent; cursor: pointer;
+      font-size: 11.5px; color: var(--dc-text-subtle);
+    }
+    /* 未整理はブランド色。「まだ置き場所を決めていない」が一覧で見えるように */
+    .ni .card-folder.is-inbox { color: var(--dc-primary); }
+    .ni .card-date { margin-left: auto; flex-shrink: 0; font-size: 11.5px; color: var(--dc-text-subtle); }
+    .ni .card-star {
+      width: 26px; height: 26px; margin-right: -4px; padding: 0; border: 0; border-radius: 9999px;
+      background: transparent; display: inline-grid; place-items: center; cursor: pointer;
+      color: var(--dc-text-subtle);
+    }
+    .ni .card-star:hover { background: var(--dc-soft-100); }
+    .ni .card.is-star .card-star { color: var(--dc-primary); }
+    .ni .card.is-star .card-star svg { fill: currentColor; }
+
+    /* ── 絞り込み。フォルダと種類は掛け合わさる ── */
+    #d-star:checked   ~ .ni-shell .card:not(.is-star)  { display: none; }
+    #d-inbox:checked  ~ .ni-shell .card:not(.d-inbox)  { display: none; }
+    #d-design:checked ~ .ni-shell .card:not(.d-design) { display: none; }
+    #d-work:checked   ~ .ni-shell .card:not(.d-work)   { display: none; }
+    #d-coach:checked  ~ .ni-shell .card:not(.d-coach)  { display: none; }
+    #d-later:checked  ~ .ni-shell .card                { display: none; }
+    #t-self:checked     ~ .ni-shell .card:not(.t-self)     { display: none; }
+    #t-material:checked ~ .ni-shell .card:not(.t-material) { display: none; }
+    #t-ai:checked       ~ .ni-shell .card:not(.t-ai)       { display: none; }
+    #t-coach:checked    ~ .ni-shell .card:not(.t-coach)    { display: none; }
+
+    /* ───────── 空状態（NoteGrid.tsx:87-157）─────────
+       器は5種とも共通。違うのはアイコン・見出し・本文・ボタンの有無だけ。 */
+    .ni .empty {
+      display: none; flex-direction: column; align-items: center; gap: 10px;
+      padding: 72px 32px; box-sizing: border-box;
+      background: var(--dc-surface); border: 1px solid var(--dc-border);
+      border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card); text-align: center;
+    }
+    .ni .empty-icon {
+      display: flex; align-items: center; justify-content: center;
+      width: 56px; height: 56px; border-radius: 9999px; background: var(--dc-soft-100);
+    }
+    .ni .empty h2 { margin: 0; font-size: 18px; font-weight: 700; color: var(--dc-text); }
+    .ni .empty p { margin: 0; font-size: 13.5px; line-height: 1.9; color: var(--dc-text-muted); }
+    .ni .empty-cta {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 8px;
+      padding: 13px 28px; border: 0; border-radius: 9999px;
+      background: var(--dc-primary); color: #FFFFFF; font-size: 15px; font-weight: 700; cursor: pointer;
+    }
+    .ni .empty-outline {
+      display: inline-flex; align-items: center; margin-top: 8px;
+      padding: 11px 22px; border: 1px solid var(--dc-border-strong); border-radius: 9999px;
+      background: var(--dc-surface); color: var(--dc-text-body);
+      font-size: 13.5px; font-weight: 700; cursor: pointer;
+    }
+    /* 空のフォルダを開いたとき */
+    #d-later:checked ~ .ni-shell .e-folder { display: flex; }
+    #d-later:checked ~ .ni-shell .grid,
+    #d-later:checked ~ .ni-shell .pager { display: none; }
+    /* 絞り込んで0件になる組み合わせ。カード12枚の内訳から出した10通り */
+    #d-star:checked   ~ #t-self:checked     ~ .ni-shell .e-filter,
+    #d-inbox:checked  ~ #t-material:checked ~ .ni-shell .e-filter,
+    #d-inbox:checked  ~ #t-coach:checked    ~ .ni-shell .e-filter,
+    #d-design:checked ~ #t-self:checked     ~ .ni-shell .e-filter,
+    #d-design:checked ~ #t-ai:checked       ~ .ni-shell .e-filter,
+    #d-design:checked ~ #t-coach:checked    ~ .ni-shell .e-filter,
+    #d-work:checked   ~ #t-coach:checked    ~ .ni-shell .e-filter,
+    #d-coach:checked  ~ #t-self:checked     ~ .ni-shell .e-filter,
+    #d-coach:checked  ~ #t-material:checked ~ .ni-shell .e-filter,
+    #d-coach:checked  ~ #t-ai:checked       ~ .ni-shell .e-filter { display: flex; }
+    #d-star:checked   ~ #t-self:checked     ~ .ni-shell .grid,
+    #d-inbox:checked  ~ #t-material:checked ~ .ni-shell .grid,
+    #d-inbox:checked  ~ #t-coach:checked    ~ .ni-shell .grid,
+    #d-design:checked ~ #t-self:checked     ~ .ni-shell .grid,
+    #d-design:checked ~ #t-ai:checked       ~ .ni-shell .grid,
+    #d-design:checked ~ #t-coach:checked    ~ .ni-shell .grid,
+    #d-work:checked   ~ #t-coach:checked    ~ .ni-shell .grid,
+    #d-coach:checked  ~ #t-self:checked     ~ .ni-shell .grid,
+    #d-coach:checked  ~ #t-material:checked ~ .ni-shell .grid,
+    #d-coach:checked  ~ #t-ai:checked       ~ .ni-shell .grid,
+    #d-star:checked   ~ #t-self:checked     ~ .ni-shell .pager,
+    #d-inbox:checked  ~ #t-material:checked ~ .ni-shell .pager,
+    #d-inbox:checked  ~ #t-coach:checked    ~ .ni-shell .pager,
+    #d-design:checked ~ #t-self:checked     ~ .ni-shell .pager,
+    #d-design:checked ~ #t-ai:checked       ~ .ni-shell .pager,
+    #d-design:checked ~ #t-coach:checked    ~ .ni-shell .pager,
+    #d-work:checked   ~ #t-coach:checked    ~ .ni-shell .pager,
+    #d-coach:checked  ~ #t-self:checked     ~ .ni-shell .pager,
+    #d-coach:checked  ~ #t-material:checked ~ .ni-shell .pager,
+    #d-coach:checked  ~ #t-ai:checked       ~ .ni-shell .pager { display: none; }
+    /* 到達できない残り3つの文言（データを空にしないと出ない）:
+       総数0     「最初のノートをつくりましょう」／「学んだことを自分の言葉で残せます。」＋新しいノート
+       未整理0   「未整理のノートはありません」／「教材のクリップやAIの回答を保存すると、まずここに入ります。」
+       重要0     「重要にしたノートはありません」／「一覧のカード右上の★を押すと、ここに集まります。」 */
+
+    /* ───────── ページ送り（NotesPagination.tsx）───────── */
+    .ni .pager { position: relative; display: flex; align-items: center; justify-content: center; gap: 6px; padding-top: 4px; }
+    .ni .pager-btn {
+      width: 36px; height: 36px; border-radius: 9999px; border: 1px solid var(--dc-border-strong);
+      background: var(--dc-surface); color: var(--dc-text-muted);
+      display: inline-grid; place-items: center; cursor: pointer;
+    }
+    .ni .pager-num {
+      width: 36px; height: 36px; border-radius: 9999px; border: 0; background: transparent;
+      color: var(--dc-text-body); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+      display: inline-grid; place-items: center; cursor: pointer;
+    }
+    .ni .pager-num.is-current { background: var(--dc-primary); color: #FFFFFF; }
+
+    /* ───────── メニューの器（index.css:1808-1849）───────── */
+    .ni .menu {
+      padding: 6px; background: var(--dc-surface); color: #333333;
+      border: 1px solid var(--dc-border); border-radius: var(--dc-radius-md);
+      box-shadow: 0 8px 24px -8px rgba(60,48,32,.14);
+    }
+    .ni .menu-item {
+      display: flex; align-items: center; gap: 9px; width: 100%; box-sizing: border-box;
+      height: 37px; padding: 9px 10px; border: 0; border-radius: 8px;
+      background: transparent; color: var(--dc-text-body);
+      font-size: 13px; font-weight: 700; cursor: pointer; text-align: left;
+    }
+    .ni .menu-item:hover { background: var(--dc-soft-100); }
+    .ni .menu-item.is-danger { color: var(--dc-primary); }
+    .ni .menu-item.is-disabled { opacity: .4; cursor: default; }
+    .ni .menu-head {
+      padding: 4px 10px 6px; font-size: 11px; font-weight: 700; line-height: 1.5;
+      letter-spacing: .04em; color: var(--dc-text-subtle);
+    }
+    .ni .menu-sep { height: 1px; margin: 8px 10px; background: var(--dc-border); }
+
+    /* ───────── フォルダパネルの行（index.css:1526-1615）───────── */
+    .ni .frow { position: relative; display: flex; align-items: center; height: 36px; border-radius: 8px; }
+    .ni .frow:hover { background: #F4EFE8; }
+    .ni .frow-main {
+      display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; height: 36px;
+      padding: 0 10px; border: 0; background: transparent; color: inherit; cursor: pointer; text-align: left;
+    }
+    .ni .frow-label { flex: 1; min-width: 0; font-size: 13px; font-weight: 500; color: var(--dc-text-body); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ni .frow-count { flex: none; font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; font-size: 11.5px; font-weight: 500; color: var(--dc-text-subtle); }
+    /* 選択中の行。🔒 色は器から継承した #333333（--dc-primary-deep が未定義のため） */
+    #d-all:checked    ~ .ni-shell .frow.r-all,
+    #d-star:checked   ~ .ni-shell .frow.r-star,
+    #d-inbox:checked  ~ .ni-shell .frow.r-inbox,
+    #d-design:checked ~ .ni-shell .frow.r-design,
+    #d-work:checked   ~ .ni-shell .frow.r-work,
+    #d-coach:checked  ~ .ni-shell .frow.r-coach,
+    #d-later:checked  ~ .ni-shell .frow.r-later { background: var(--dc-soft-100); }
+    #d-all:checked    ~ .ni-shell .frow.r-all    .frow-label,
+    #d-star:checked   ~ .ni-shell .frow.r-star   .frow-label,
+    #d-inbox:checked  ~ .ni-shell .frow.r-inbox  .frow-label,
+    #d-design:checked ~ .ni-shell .frow.r-design .frow-label,
+    #d-work:checked   ~ .ni-shell .frow.r-work   .frow-label,
+    #d-coach:checked  ~ .ni-shell .frow.r-coach  .frow-label,
+    #d-later:checked  ~ .ni-shell .frow.r-later  .frow-label { font-weight: 700; color: #333333; }
+    /* 右端の鉛筆・ゴミ箱。実装どおり、行にホバー／フォーカスしたときだけ出る */
+    .ni .frow-actions { display: flex; align-items: center; gap: 2px; padding-right: 10px; opacity: 0; transition: opacity .12s ease; }
+    .ni .frow:hover .frow-actions, .ni .frow:focus-within .frow-actions { opacity: 1; }
+    .ni .frow-more {
+      display: grid; place-items: center; width: 26px; height: 26px;
+      border: 0; border-radius: 8px; background: transparent; color: var(--dc-text-subtle); cursor: pointer;
+    }
+    .ni .frow-more.is-danger { color: var(--dc-primary); }
+    /* 名前の入力欄。Enter で確定・Esc で取消（実装では blur では確定しない） */
+    .ni .name-row { display: flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px; }
+    .ni .name-input {
+      flex: 1; min-width: 0; height: 30px; box-sizing: border-box; padding: 0 10px;
+      border: 1px solid var(--dc-border-strong); border-radius: 8px;
+      background: var(--dc-surface); font-size: 13px; color: var(--dc-text); outline: none;
+    }
+    .ni .name-ok {
+      width: 30px; height: 30px; flex: none; display: grid; place-items: center;
+      border: 0; border-radius: 8px; background: var(--dc-primary); color: #FFFFFF; cursor: pointer;
+    }
+    /* パネルの中の「名前を変更」「新しいフォルダを作成」の欄。押すと出る */
+    .ni .fname { display: none; }
+    #f-rename:checked ~ .ni-shell .fname-rename { display: flex; }
+    #f-rename:checked ~ .ni-shell .frow.r-design { display: none; }
+    #f-new:checked    ~ .ni-shell .fname-new { display: flex; }
+    #f-new:checked    ~ .ni-shell .f-new-btn { display: none; }
+
+    /* ───────── ノート面（NoteEditor.tsx / NoteEditorBar.tsx）───────── */
+    .ni .tool {
+      display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px;
+      border: 1px solid var(--dc-border-strong); border-radius: 8px;
+      background: var(--dc-surface); color: var(--dc-text-body);
+      font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;
+    }
+    .ni .tool:hover { background: var(--dc-soft-100); }
+    .ni .tool--light { font-weight: 500; }
+    /* 🔒 重要ON。文字色は #141414（--dc-primary-deep が未定義のため） */
+    #fav:checked ~ .ni-shell .fav-btn {
+      background: var(--dc-soft-100); border-color: var(--dc-soft-200); color: var(--dc-text);
+    }
+    #fav:checked ~ .ni-shell .fav-btn svg { fill: currentColor; }
+    .ni .fav-btn .fav-off { display: inline; }
+    .ni .fav-btn .fav-on { display: none; }
+    #fav:checked ~ .ni-shell .fav-btn .fav-off { display: none; }
+    #fav:checked ~ .ni-shell .fav-btn .fav-on { display: inline; }
+    .ni .back {
+      display: inline-flex; align-items: center; gap: 4px; height: 31px; padding: 6px 10px 6px 4px;
+      border: 0; border-radius: 8px; background: transparent;
+      font-size: 13px; font-weight: 700; color: var(--dc-primary); cursor: pointer;
+    }
+    .ni .back:hover { background: var(--dc-soft-100); }
+    .ni .save { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--dc-text-muted); }
+
+    .ni .paper {
+      width: 100%; max-width: 900px; flex: 1; display: flex; flex-direction: column;
+      background: var(--dc-surface); border: 1px solid var(--dc-border);
+      border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card);
+    }
+    /* 🔴 実装の紙は overflow:hidden。ここでは外していない代わりに、メニューは
+          紙の外（.ni-main 直下）に置いてある。実装も createPortal で外に出している。 */
+
+    /* 本文の行（.notes-block / index.css:1928-1958）。ホバーで左に ⠿ と ＋ が出る */
+    .ni .block { position: relative; padding: 4px 0 4px 34px; border-radius: 6px; }
+    .ni .block:hover { background: #FCF9F5; }
+    .ni .grip { position: absolute; left: 0; top: 4px; display: flex; align-items: center; gap: 2px; opacity: 0; transition: opacity .12s ease; }
+    .ni .block:hover .grip, .ni .block:focus-within .grip { opacity: 1; }
+    #p-grip:checked ~ .ni-shell .block.b1 .grip,
+    #p-plus2:checked ~ .ni-shell .block.b-tail .grip { opacity: 1; }
+    .ni .grip-btn {
+      display: grid; place-items: center; width: 15px; height: 24px; padding: 0;
+      border: 0; background: transparent; color: var(--dc-text-subtle); cursor: pointer;
+    }
+    .ni .grip-btn:hover { color: var(--dc-text-body); }
+
+    /* 本文の描画（noteText.tsx:123-145 の実値） */
+    .ni .h { margin: 18px 0 10px; font-size: 15.5px; font-weight: 900; line-height: 1.6; color: var(--wc-text); }
+    .ni .p { margin: 0 0 6px; font-size: 13.5px; line-height: 2; color: var(--wc-text-body); }
+    .ni .ul { margin: 6px 0 12px; padding-left: 20px; }
+    .ni .ul li { font-size: 13.5px; line-height: 2; color: var(--wc-text-body); }
+    /* 見出しのマーカーは下側だけの帯。本文中の ==…== は renderInline が
+       background:none で上書きするので帯が出ない（noteText.tsx:47）。 */
+    .ni .mark { background: linear-gradient(transparent 62%, var(--wc-note-highlight) 62%); padding-bottom: 1px; }
+    .ni .callout { display: flex; align-items: flex-start; gap: 8px; margin: 10px 0; padding: 13px 16px; border-radius: 0 12px 12px 0; }
+    .ni .callout-label { font-size: 11.5px; font-weight: 700; }
+    .ni .src { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 11.5px; font-weight: 500; color: var(--wc-text-muted); }
+    .ni .src .num { margin-left: auto; color: var(--wc-text-faint); }
+    .ni .src-open { cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+
+    /* 本文ブロックの編集（読み取り ⇄ textarea） */
+    .ni .b1-read { display: block; cursor: text; }
+    .ni .b1-edit { display: none; }
+    #edit1:checked ~ .ni-shell .b1-read { display: none; }
+    #edit1:checked ~ .ni-shell .b1-edit { display: block; }
+    .ni .ta {
+      width: 100%; box-sizing: border-box; min-height: 96px; padding: 10px 12px;
+      border: 1px solid var(--wc-border-soft); border-radius: 14px; background: var(--dc-surface);
+      font-family: inherit; font-size: 13.5px; line-height: 1.9; color: var(--wc-text-body);
+      resize: none; outline: none;
+    }
+    .ni .btn-save {
+      display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 16px;
+      border: 0; border-radius: 14px; background: var(--dc-primary); color: #FFFFFF;
+      font-size: 12px; font-weight: 700; cursor: pointer;
+    }
+    .ni .btn-cancel {
+      height: 34px; padding: 0 14px; border: 1px solid var(--wc-border-soft); border-radius: 14px;
+      background: var(--dc-surface); color: var(--wc-text-muted); font-size: 12px; font-weight: 700; cursor: pointer;
+    }
+
+    /* 末尾の書き足し欄。入力があるときだけ「保存する」が出る */
+    .ni .tail-box { min-height: 96px; padding: 4px 0; font-size: 13.5px; line-height: 1.9; cursor: text; }
+    .ni .tail-ph { color: var(--dc-text-subtle); }
+    .ni .tail-txt { display: none; color: var(--wc-text-body); }
+    .ni .tail-actions { display: none; align-items: center; gap: 12px; margin-top: 6px; padding-left: 34px; }
+    #tail:checked ~ .ni-shell .tail-ph { display: none; }
+    #tail:checked ~ .ni-shell .tail-txt { display: block; }
+    #tail:checked ~ .ni-shell .tail-actions { display: flex; }
+    .ni .tail-save {
+      display: inline-flex; align-items: center; gap: 7px; height: 38px; padding: 0 20px;
+      border: 0; border-radius: var(--dc-radius-md); background: var(--dc-primary); color: #fff;
+      font-size: 12.5px; font-weight: 700; cursor: pointer;
+    }
+
+    /* ───────── 速記メモの小窓（Document PiP）───────── */
+    .ni .memo { display: none; position: absolute; right: 28px; bottom: 92px; z-index: 60; }
+    #memo:checked ~ .ni-shell .memo { display: flex; }
+    .ni .memo-btn .m-open { display: inline; }
+    .ni .memo-btn .m-close { display: none; }
+    #memo:checked ~ .ni-shell .memo-btn .m-open { display: none; }
+    #memo:checked ~ .ni-shell .memo-btn .m-close { display: inline; }
+
+    /* ───────── 引用モーダル ───────── */
+    .ni .modal { display: none; position: absolute; inset: 0; z-index: 70; background: rgba(31,29,30,.42); }
+    #p-quote:checked ~ .ni-shell .modal { display: flex; }
+  </style>
+</helmet>
+
+<div class="ni"
+     data-dc-id="STU-06"
+     data-dc-remote="マイノート 現行実装（操作つき）.dc.html"
+     data-dc-route="/notes"
+     data-dc-src="frontend/src/components/notes/MyNotesPage.tsx"
+     style="position: relative; width: 1440px; min-height: 1240px; background: var(--dc-bg); color: var(--dc-text); font-size: 14px;">
+
+  <!-- ═════════ 状態。checked を移すと初期表示が変わる ═════════ -->
+  <input type="radio" name="v" id="v-list" class="st" checked>
+  <input type="radio" name="v" id="v-note" class="st">
+  <input type="radio" name="v" id="v-new"  class="st">
+
+  <input type="radio" name="dir" id="d-all"    class="st" checked>
+  <input type="radio" name="dir" id="d-star"   class="st">
+  <input type="radio" name="dir" id="d-inbox"  class="st">
+  <input type="radio" name="dir" id="d-design" class="st">
+  <input type="radio" name="dir" id="d-work"   class="st">
+  <input type="radio" name="dir" id="d-coach"  class="st">
+  <input type="radio" name="dir" id="d-later"  class="st">
+
+  <input type="radio" name="type" id="t-all"      class="st" checked>
+  <input type="radio" name="type" id="t-self"     class="st">
+  <input type="radio" name="type" id="t-material" class="st">
+  <input type="radio" name="type" id="t-ai"       class="st">
+  <input type="radio" name="type" id="t-coach"    class="st">
+
+  <input type="radio" name="sort" id="s-new"   class="st" checked>
+  <input type="radio" name="sort" id="s-old"   class="st">
+  <input type="radio" name="sort" id="s-title" class="st">
+
+  <input type="radio" name="pop" id="p-none"   class="st" checked>
+  <input type="radio" name="pop" id="p-folder" class="st">
+  <input type="radio" name="pop" id="p-sort"   class="st">
+  <input type="radio" name="pop" id="p-move"   class="st">
+  <input type="radio" name="pop" id="p-pill"   class="st">
+  <input type="radio" name="pop" id="p-more"   class="st">
+  <input type="radio" name="pop" id="p-grip"   class="st">
+  <input type="radio" name="pop" id="p-plus"   class="st">
+  <input type="radio" name="pop" id="p-plus2"  class="st">
+  <input type="radio" name="pop" id="p-quote"  class="st">
+
+  <input type="radio" name="fn" id="f-none"   class="st" checked>
+  <input type="radio" name="fn" id="f-rename" class="st">
+  <input type="radio" name="fn" id="f-new"    class="st">
+
+  <input type="checkbox" id="fav"   class="st">
+  <input type="checkbox" id="memo"  class="st">
+  <input type="checkbox" id="edit1" class="st">
+  <input type="checkbox" id="tail"  class="st">
+
+  <div class="ni-shell" style="display: flex; width: 100%; min-height: 1240px;">
+
+    <!-- ───────── サイドバー：閉じた72pxレール（shared/AppHeader.tsx）───────── -->
+    <div style="width: 72px; flex: none; background: #FDF7F3; border-right: 1px solid #E2DBD0; box-shadow: 3px 0 10px -4px rgba(60,48,32,.18); padding: 16px 0; display: flex; flex-direction: column; align-items: center; gap: 14px;">
+      <button type="button" class="rail-item" style="border-radius: 10px;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M15 3v18"></path><path d="m10 15-3-3 3-3"></path></svg>
+      </button>
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+        <div class="rail-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></div>
+        <div class="rail-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg></div>
+        <div class="rail-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg></div>
+        <div class="rail-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path></svg></div>
+        <div class="rail-item rail-item-active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDF7F3" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"></path><path d="M2 6h4"></path><path d="M2 10h4"></path><path d="M2 14h4"></path><path d="M2 18h4"></path><path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"></path></svg></div>
+        <div class="rail-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path></svg></div>
+        <div style="width: 32px; height: 1px; background: #EFE9E0; margin: 14px 0;"></div>
+        <div class="rail-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg></div>
+      </div>
+      <div style="flex: 1;"></div>
+      <button type="button" style="width: 36px; height: 36px; border: 0; border-radius: 9999px; background: #F2E8E1; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #9E9698; cursor: pointer;">モッ</button>
+    </div>
+
+    <!-- ───────── 本文（.notes-content）───────── -->
+    <div class="ni-main" style="position: relative; flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+      <!-- ══════════ ① 一覧（.notes-main / padding 24px 28px 28px, gap 20）══════════ -->
+      <div class="view view-list" style="flex: 1; flex-direction: column; gap: 20px; padding: 24px 28px 28px; box-sizing: border-box;">
+
+        <!-- 見出し・検索・新規作成（MyNotesPage.tsx:460-535） -->
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="flex: 1 1 200px; min-width: 0;">
+            <!-- 🔒 パンくずは置かない。見出しは画面名に固定（MyNotesPage.tsx:462-464） -->
+            <h1 style="margin: 0; font-size: 22px; line-height: 1.35; font-weight: 700; letter-spacing: -.01em;">マイノート</h1>
+          </div>
+          <!-- 🔒 検索欄は幅いっぱいにしない（flex: 0 1 300px）。左端の入力から
+                 右端のボタンまで視線が横断してしまうため。 -->
+          <div style="position: relative; flex: 0 1 300px; min-width: 160px;">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%);"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="text" placeholder="タイトルや内容で検索" aria-label="ノートを検索"
+                   style="width: 100%; box-sizing: border-box; height: 42px; padding: 0 14px 0 38px; border: 1px solid var(--dc-border-strong); border-radius: var(--dc-radius-md); background: var(--dc-surface); font-family: inherit; font-size: 13px; color: var(--dc-text); outline: none;">
+          </div>
+          <label for="v-new" style="display: inline-flex; align-items: center; gap: 8px; flex: none; height: 42px; padding: 0 20px; border-radius: var(--dc-radius-md); background: var(--dc-primary); color: #FFFFFF; font-size: 13.5px; font-weight: 700; cursor: pointer;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+            新しいノート
+          </label>
+        </div>
+
+        <!-- フォルダのバー（NoteFolderBar.tsx:246-275）。
+             2026-09-08 に左フォルダ列（248px）を廃止してこの形に一本化した。 -->
+        <div class="fbar">
+          <label class="fbar-item" for="d-all">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg>
+            すべてのノート <span class="fbar-count">12</span>
+          </label>
+          <label class="fbar-item" for="d-star">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="#D60934" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+            重要 <span class="fbar-count">5</span>
+          </label>
+          <label class="fbar-item" for="d-inbox">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+            未整理 <span class="fbar-count">2</span>
+          </label>
+          <!-- 押すとパネルが出る。ラベルはいま開いているフォルダ名に変わる -->
+          <label class="fbar-item fbar-trigger" for="p-folder">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span class="fbar-label">
+              <span class="tl tl-none">フォルダを開く</span>
+              <span class="tl tl-design">デザイン基礎</span>
+              <span class="tl tl-work">案件・ポートフォリオ</span>
+              <span class="tl tl-coach">コーチング記録</span>
+              <span class="tl tl-later">あとで読む</span>
+            </span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </label>
+        </div>
+
+        <!-- 種類チップ ＋ 並び替え（MyNotesPage.tsx:549-597）。
+             フォルダとは別の軸だと分かるよう小見出しを付けている。 -->
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 11.5px; font-weight: 700; color: var(--dc-text-subtle); margin-right: 2px;">種類</span>
+          <label class="chip" for="t-all">すべて</label>
+          <label class="chip" for="t-self">自分のノート</label>
+          <label class="chip" for="t-material">教材</label>
+          <label class="chip" for="t-ai">AIコーチ</label>
+          <label class="chip" for="t-coach">コーチング</label>
+          <label class="sort-trigger" for="p-sort">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path d="m3 8 4-4 4 4"></path><path d="M7 4v16"></path></svg>
+            <span class="sort-label"><span class="sl sl-new">更新が新しい順</span><span class="sl sl-old">更新が古い順</span><span class="sl sl-title">タイトル順</span></span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </label>
+        </div>
+
+        <!-- ── カード。🔒 424×190・gap 20・3列（1440幅の実測）──
+             実装は1ページ24枚。ここは手で直せる分量として12枚に間引いてある。 -->
+        <div class="grid">
+
+          <article class="card t-coach d-coach is-star">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-coach">コーチング</span>
+              <button type="button" class="card-star" title="重要を外す"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">8/19 コーチング記録</h3>
+                <p class="card-excerpt">ターゲットの課題に寄り添ったメッセージ設計が重要。特に「誰に」「どんな価値を」「どう届けるか」の3点を明確にする。</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span>コーチング記録</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/10</span>
+            </div>
+          </article>
+
+          <article class="card t-material d-design is-star">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-material">教材</span>
+              <button type="button" class="card-star" title="重要を外す"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">バナー制作の学び</h3>
+                <p class="card-excerpt">1. バナーデザインの目的を明確にする</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span>デザイン基礎</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/10</span>
+            </div>
+          </article>
+
+          <article class="card t-material d-design">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-material">教材</span>
+              <button type="button" class="card-star" title="重要にする"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">配色ルールまとめ</h3>
+                <p class="card-excerpt">配色は70:25:5。ベース70%・メイン25%・アクセント5%。迷ったらこの比率に戻す。</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span>デザイン基礎</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/09</span>
+            </div>
+          </article>
+
+          <article class="card t-material d-design is-star">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-material">教材</span>
+              <button type="button" class="card-star" title="重要を外す"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">バナー改善の3ポイント</h3>
+                <p class="card-excerpt">視線の流れ（Zの法則）を意識して、伝えたい情報を優先順位で整理する。余白の使い方とコントラストを意識。</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span>デザイン基礎</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/09</span>
+            </div>
+          </article>
+
+          <article class="card t-material d-work">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-material">教材</span>
+              <button type="button" class="card-star" title="重要にする"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">LPファーストビュー設計</h3>
+                <p class="card-excerpt">最初の3秒で「誰の」「どんな悩みを」「どう解決できるか」を伝える。視線を集めるキャッチコピーとビジュアルが鍵。</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span>案件・ポートフォリオ</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/08</span>
+            </div>
+          </article>
+
+          <article class="card t-ai d-work is-star">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-ai">AIコーチ</span>
+              <button type="button" class="card-star" title="重要を外す"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">AI回答：応募文の改善ポイント</h3>
+                <p class="card-excerpt">強みの根拠が具体的で良いです。成果を数字で示すと、説得力がさらに高まります。まずは「結論→根拠→再現性」の順で整理しまし</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span>案件・ポートフォリオ</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/08</span>
+            </div>
+          </article>
+
+          <article class="card t-self d-work">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-self">自分のノート</span>
+              <button type="button" class="card-star" title="重要にする"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">ポートフォリオ改善案</h3>
+                <p class="card-excerpt">次のコーチングまでに、作品の並び順を「見せたい順」に直す。制作意図を1作品につき2行だけ添える。</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span>案件・ポートフォリオ</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/07</span>
+            </div>
+          </article>
+
+          <article class="card t-coach d-coach">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-coach">コーチング</span>
+              <button type="button" class="card-star" title="重要にする"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">キャリアの方向性メモ</h3>
+                <p class="card-excerpt">やりたいこと×得意なこと×価値を届けたいことの重なる領域を軸に考える。小さく試して検証していくことが大切。</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span>コーチング記録</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/07</span>
+            </div>
+          </article>
+
+          <article class="card t-material d-design">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-material">教材</span>
+              <button type="button" class="card-star" title="重要にする"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">余白の使い方Tips</h3>
+                <p class="card-excerpt">要素間より外側の余白を広く。グループの関係は余白の差で伝わる。詰まって見えたらまず外側を広げる。</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span>デザイン基礎</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/07</span>
+            </div>
+          </article>
+
+          <article class="card t-ai d-inbox is-star">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-ai">AIコーチ</span>
+              <button type="button" class="card-star" title="重要を外す"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">AI回答：フォント選びの基準</h3>
+                <p class="card-excerpt">まず可読性、次に世界観。見出しと本文で役割を分け、使うフォントは2種類までに絞ると整います。</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <!-- 未整理はブランド色 -->
+              <label class="card-folder is-inbox" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+                <span>未整理</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/06</span>
+            </div>
+          </article>
+
+          <article class="card t-material d-design">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-material">教材</span>
+              <button type="button" class="card-star" title="重要にする"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">デザイン4大原則の要点</h3>
+                <p class="card-excerpt">近接・整列・反復・コントラスト。迷ったら整列から見直すと、崩れの原因が見つかりやすい。</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+                <span>デザイン基礎</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/06</span>
+            </div>
+          </article>
+
+          <article class="card t-self d-inbox">
+            <label class="card-open" for="v-note"></label>
+            <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+              <span class="card-badge b-self">自分のノート</span>
+              <button type="button" class="card-star" title="重要にする"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+            </div>
+            <div style="display: flex; gap: 12px; min-width: 0;">
+              <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+                <h3 class="card-title">参考バナーの共通点メモ</h3>
+                <p class="card-excerpt">目を引くバナーは色数が3色以内。メインコピーが全体の1/3以上の面積を占めている。</p>
+              </div>
+            </div>
+            <div class="card-foot">
+              <label class="card-folder is-inbox" for="p-move" title="フォルダを変える">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+                <span>未整理</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              </label>
+              <span class="card-date num">09/05</span>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- 空のフォルダを開いたとき（NoteGrid.tsx:98-106）。
+             🔴「カードから移せます」だけでは足りない。いま開いているのが空のフォルダで、
+                この画面には移動元のカードが1枚も無いので、戻る場所まで言う。 -->
+        <div class="empty e-folder">
+          <span class="empty-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2"></path></svg></span>
+          <h2>このフォルダにはまだノートがありません</h2>
+          <p>ここで作るか、「すべてのノート」に戻って、カード下のフォルダ名から移せます。</p>
+          <label class="empty-cta" for="v-new">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+            新しいノート
+          </label>
+        </div>
+
+        <!-- 絞り込んで0件（NoteGrid.tsx:130-157）。種類チップとフォルダの掛け合わせで到達する -->
+        <div class="empty e-filter">
+          <span class="empty-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--dc-text-subtle)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m13.5 8.5-5 5"></path><path d="m8.5 8.5 5 5"></path><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></span>
+          <h2>条件に一致するノートがありません</h2>
+          <p>キーワードを短くするか、絞り込みを外してみてください。</p>
+          <label class="empty-outline" for="t-all">条件をクリア</label>
+        </div>
+
+        <!-- ページ送り。1ページ24件（PAGE_SIZE = 24） -->
+        <div class="pager">
+          <button type="button" class="pager-btn" title="前のページ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg></button>
+          <button type="button" class="pager-num is-current">1</button>
+          <button type="button" class="pager-btn" title="次のページ"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg></button>
+          <span class="num" style="position: absolute; right: 0; font-size: 12px; color: var(--dc-text-muted);">1–12 / 12件</span>
+        </div>
+      </div>
+
+      <!-- ══════════ ② ノート面（?note=<id>）══════════ -->
+      <div class="view view-note" style="flex: 1; flex-direction: column; gap: 14px; padding: 24px 28px 28px; box-sizing: border-box;">
+
+        <!-- 上部バー（NoteEditorBar.tsx） -->
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <label class="back" for="v-list">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+            マイノートに戻る
+          </label>
+          <!-- 🔴 この画面から離れる唯一の導線。押すと /course/:id へ遷移する。
+               クリップの「出どころ」行は遷移せずモーダルで開く（別物）。 -->
+          <button type="button" class="tool">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+            <span>「ハンズオン①」に戻る</span>
+          </button>
+          <label class="tool" for="p-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>デザイン基礎</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </label>
+          <div style="flex: 1;"></div>
+          <label class="tool memo-btn" for="memo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"></path><rect width="10" height="7" x="12" y="3" rx="1"></rect></svg>
+            <span class="m-open">速記メモを小窓で開く</span><span class="m-close">速記メモを閉じる</span>
+          </label>
+          <span class="save">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2FA35C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            保存しました <span class="num" style="color: var(--dc-text-subtle);">14:22</span>
+          </span>
+          <label class="tool fav-btn" for="fav">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+            <span class="fav-off">重要にする</span><span class="fav-on">重要</span>
+          </label>
+          <label class="tool" for="p-more">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+            その他
+          </label>
+        </div>
+
+        <!-- 紙（NoteEditor.tsx:180-192）。🔒 maxWidth 900・flex:1（ページの高さいっぱいに伸ばす） -->
+        <div class="paper">
+          <!-- タイトル（padding 22px 28px 18px、下に1px罫） -->
+          <div style="padding: 22px 28px 18px; border-bottom: 1px solid var(--dc-border);">
+            <div style="font-size: 11px; font-weight: 700; color: var(--dc-text-subtle); margin-bottom: 6px;">タイトル</div>
+            <input type="text" value="バナー制作の学び" placeholder="無題のノート"
+                   style="display: block; width: 100%; box-sizing: border-box; padding: 0; border: 0; background: transparent; font-family: inherit; font-size: 22px; font-weight: 900; line-height: 1.4; color: var(--wc-text); outline: none;">
+            <div style="margin-top: 6px; font-size: 11.5px; color: var(--dc-text-muted);">バナー100本道場 / ハンズオン①</div>
+          </div>
+
+          <!-- 常設ツールバー（NoteEditorToolbar.tsx。地は #FFFDFA、下に1px罫）
+               🔒 並びは 見出し／箇条書き／画像／教材から引用／チェックリスト -->
+          <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 10px 28px; border-bottom: 1px solid var(--dc-border); background: #FFFDFA;">
+            <button type="button" class="tool tool--light"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12"></path><path d="M6 20V4"></path><path d="M18 20V4"></path></svg>見出し</button>
+            <button type="button" class="tool tool--light"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h.01"></path><path d="M3 12h.01"></path><path d="M3 19h.01"></path><path d="M8 5h13"></path><path d="M8 12h13"></path><path d="M8 19h13"></path></svg>箇条書き</button>
+            <button type="button" class="tool tool--light"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>画像</button>
+            <!-- 🔴 ここだけ画面遷移しない。モーダルで教材を読んでその場でクリップする -->
+            <label class="tool tool--light" for="p-quote"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>教材から引用</label>
+            <button type="button" class="tool tool--light"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>チェックリスト</button>
+            <span style="margin-left: auto; font-size: 11px; color: var(--dc-text-subtle); white-space: nowrap;">行にカーソルを置くと、左に ⠿ と ＋ が出ます</span>
+          </div>
+
+          <!-- 本文（padding 20px 28px 24px、行間 gap 2）。
+               🔒 ブロックは種別ごとにセクションを分けず、同じ流れに混在させる。 -->
+          <div style="flex: 1; padding: 20px 28px 24px; display: flex; flex-direction: column; gap: 2px;">
+
+            <!-- text ブロック。押すと編集欄になる -->
+            <div class="block b1">
+              <span class="grip">
+                <label class="grip-btn" for="p-grip" title="ドラッグで並べ替え。クリックでメニュー"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg></label>
+                <label class="grip-btn" for="p-plus" title="この上に追加"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></label>
+              </span>
+              <label class="b1-read" for="edit1" style="margin: 4px 0 10px;">
+                <h3 class="h"><span class="mark">1. バナーデザインの目的を明確にする</span></h3>
+                <p class="p">まず、誰に何を伝えたいのかをはっきりさせることが大事。目的がブレると、デザインの方向性もブレてしまう。</p>
+                <ul class="ul">
+                  <li>ターゲットは誰か？</li>
+                  <li>伝えたいメッセージは？</li>
+                  <li>行動してほしいことは？</li>
+                </ul>
+                <!-- 🔴 本文中の ==…== は帯が出ない。renderInline が background:none を
+                     インラインで上書きしているため（noteText.tsx:47）。見出しだけ帯が付く。 -->
+                <p class="p">この3つが明確になると、レイアウトや配色も自然と決まってくる</p>
+              </label>
+              <div class="b1-edit" style="margin: 4px 0 10px;">
+                <textarea class="ta" rows="4">## 1. バナーデザインの目的を明確にする
+まず、誰に何を伝えたいのかをはっきりさせることが大事。目的がブレると、デザインの方向性もブレてしまう。
+- ターゲットは誰か？
+- 伝えたいメッセージは？
+- 行動してほしいことは？
+この3つが明確になると、==レイアウトや配色も自然と決まってくる==</textarea>
+                <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 8px;">
+                  <label class="btn-save" for="edit1"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>保存する</label>
+                  <label class="btn-cancel" for="edit1">取り消す</label>
+                  <span style="font-size: 11.5px; font-weight: 500; color: var(--wc-text-faint);">## 見出し ／ - 箇条書き ／ - [ ] チェック ／ ==マーカー==</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- clip ブロック。地 #FFF4F5・左罫3px #D60934 -->
+            <div class="block">
+              <span class="grip">
+                <label class="grip-btn" for="p-grip" title="ドラッグで並べ替え。クリックでメニュー"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg></label>
+                <label class="grip-btn" for="p-plus" title="この上に追加"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></label>
+              </span>
+              <div class="callout" style="background: var(--wc-clip-bg); border-left: 3px solid var(--wc-clip-accent);">
+                <div style="flex: 1; min-width: 0;">
+                  <span class="callout-label" style="color: var(--wc-clip-accent);">クリップ</span>
+                  <p style="margin: 6px 0 0; font-size: 13.5px; line-height: 1.95; color: var(--wc-text-strong);">余白を意識することで、情報の優先順位が伝わりやすくなる</p>
+                  <!-- 出どころ行。押すと引用モーダルがその箇所で開く（遷移しない） -->
+                  <div class="src">
+                    <label class="src-open" for="p-quote">
+                      <span>バナー100本道場 &gt; ハンズオン① &gt; バナー制作の基礎</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+                    </label>
+                    <span class="num">13:27</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- answer ブロック。地 #F3FAF6・左罫3px #3E9E70
+                 🔒 /notes の中に AI を呼ぶ操作は無い。ここは読み取り専用の表示だけ。 -->
+            <div class="block">
+              <span class="grip">
+                <label class="grip-btn" for="p-grip" title="ドラッグで並べ替え。クリックでメニュー"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg></label>
+                <label class="grip-btn" for="p-plus" title="この上に追加"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></label>
+              </span>
+              <div class="callout" style="background: var(--wc-answer-bg); border-left: 3px solid var(--wc-answer-accent);">
+                <div style="flex: 1; min-width: 0;">
+                  <span class="callout-label" style="color: var(--wc-answer-accent);">AI回答</span>
+                  <p style="margin: 6px 0 0; font-size: 13.5px; font-weight: 700; line-height: 1.8; color: var(--wc-text);">バナーの文字量はどのくらいが最適ですか？</p>
+                  <p style="margin: 6px 0 0; font-size: 13px; line-height: 1.95; color: var(--wc-text-body);">バナーは視認時間が短いため、訴求ポイントを1つに絞り、10〜20文字程度にまとめるのが効果的です。<br>長い文章は避け、視線の流れを意識して簡潔に伝えましょう。</p>
+                  <div class="src">
+                    <label class="src-open" for="p-quote">
+                      <span>バナー100本道場 &gt; ハンズオン① &gt; バナー制作の基礎</span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+                    </label>
+                    <span class="num">14:22</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 末尾の書き足し欄。常にここが「次に書く場所」になる。
+                 🔴 紙の下端まで伸ばして、余白をクリックしても入力に入れる。 -->
+            <div class="block b-tail">
+              <span class="grip">
+                <label class="grip-btn" for="p-plus2" title="末尾に追加"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></label>
+              </span>
+              <label class="tail-box" for="tail">
+                <span class="tail-ph">続きを書く…</span>
+                <span class="tail-txt">書きかけの1行</span>
+              </label>
+            </div>
+            <!-- 🔴 未確定の入力があるときだけ出す。常設すると、空のノートの下端に
+                 押せないボタンと注記が居座って余白が締まらない。 -->
+            <div class="tail-actions">
+              <label class="tail-save" for="tail"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>保存する</label>
+              <span style="font-size: 11.5px; color: var(--dc-text-subtle);">Ctrl+Enter でも保存できます</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════ ③ 新規ノート（「新しいノート」の直後）══════════ -->
+      <div class="view view-new" style="flex: 1; flex-direction: column; gap: 14px; padding: 24px 28px 28px; box-sizing: border-box;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <label class="back" for="v-list">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+            マイノートに戻る
+          </label>
+          <!-- 🔴「「〜」に戻る」は出ない。教材から作られたノートだけに付く導線で、
+               新規作成のノートは source を持たないため。 -->
+          <!-- 🔒 未整理はブランド色 -->
+          <label class="tool" for="p-pill" style="color: var(--dc-primary);">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+            <span>未整理</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </label>
+          <div style="flex: 1;"></div>
+          <label class="tool memo-btn" for="memo">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"></path><rect width="10" height="7" x="12" y="3" rx="1"></rect></svg>
+            <span class="m-open">速記メモを小窓で開く</span><span class="m-close">速記メモを閉じる</span>
+          </label>
+          <span class="save">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2FA35C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            保存しました <span class="num" style="color: var(--dc-text-subtle);">14:57</span>
+          </span>
+          <label class="tool fav-btn" for="fav">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+            <span class="fav-off">重要にする</span><span class="fav-on">重要</span>
+          </label>
+          <label class="tool" for="p-more">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+            その他
+          </label>
+        </div>
+
+        <div class="paper">
+          <div style="padding: 22px 28px 18px; border-bottom: 1px solid var(--dc-border);">
+            <div style="font-size: 11px; font-weight: 700; color: var(--dc-text-subtle); margin-bottom: 6px;">タイトル</div>
+            <input type="text" placeholder="無題のノート"
+                   style="display: block; width: 100%; box-sizing: border-box; padding: 0; border: 0; background: transparent; font-family: inherit; font-size: 22px; font-weight: 900; line-height: 1.4; color: var(--wc-text); outline: none;">
+            <!-- 🔒 出どころ行（コース名 / レッスン名）は出ない。source を持たないため。 -->
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 10px 28px; border-bottom: 1px solid var(--dc-border); background: #FFFDFA;">
+            <button type="button" class="tool tool--light"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12"></path><path d="M6 20V4"></path><path d="M18 20V4"></path></svg>見出し</button>
+            <button type="button" class="tool tool--light"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h.01"></path><path d="M3 12h.01"></path><path d="M3 19h.01"></path><path d="M8 5h13"></path><path d="M8 12h13"></path><path d="M8 19h13"></path></svg>箇条書き</button>
+            <button type="button" class="tool tool--light"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>画像</button>
+            <label class="tool tool--light" for="p-quote"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>教材から引用</label>
+            <button type="button" class="tool tool--light"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>チェックリスト</button>
+            <span style="margin-left: auto; font-size: 11px; color: var(--dc-text-subtle); white-space: nowrap;">行にカーソルを置くと、左に ⠿ と ＋ が出ます</span>
+          </div>
+          <div style="flex: 1; padding: 20px 28px 24px; display: flex; flex-direction: column; gap: 2px;">
+            <div class="block">
+              <span class="grip">
+                <label class="grip-btn" for="p-plus2" title="末尾に追加"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg></label>
+              </span>
+              <!-- 🔒 空のノートだけ placeholder が変わる（isEmptyNote）。
+                   ブロックが1つでもあると「続きを書く…」になる。 -->
+              <div style="min-height: 96px; padding: 4px 0; font-size: 13.5px; line-height: 1.9; color: var(--dc-text-subtle);">ここに入力して、自由に書いていきましょう…</div>
+            </div>
+            <!-- 🔴「保存する」と注記はここには出ない。未確定の入力があるときだけ。 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ───────── フッター（shared/AppFooter.tsx）───────── -->
+      <div style="text-align: center; font-size: 12px; color: var(--dc-text-subtle); padding: 32px 0 24px;">2026 © WEBCOACH</div>
+
+      <!-- ═════════ メニュー・モーダル ═════════
+           🔴 実装は createPortal で body 直下に出している。ここでも .ni-main 直下に
+              置いてある。カードや紙の中に入れると overflow:hidden で切られたり、
+              hover の transform が作る重なり文脈に沈んだりする。 -->
+
+      <!-- 外側を押すと閉じる面 -->
+      <label class="scrim" for="p-none"></label>
+
+      <!-- フォルダパネル（NoteFolderBar.tsx:169-357 / role="dialog" aria-label="フォルダ"） -->
+      <div class="pop pop-folder menu" style="left: 398px; top: 132px; width: 332px; box-sizing: border-box;">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 4px 10px 6px; font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--dc-text-subtle);">
+          フォルダ
+          <label for="p-none" style="width: 26px; height: 26px; flex: none; margin-left: auto; border-radius: 8px; color: var(--dc-text-subtle); display: grid; place-items: center; cursor: pointer;" title="閉じる">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+          </label>
+        </div>
+        <div class="frow r-all"><label class="frow-main" for="d-all"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg><span class="frow-label">すべてのノート</span><span class="frow-count">12</span></label></div>
+        <div class="frow r-star"><label class="frow-main" for="d-star"><svg width="15" height="15" viewBox="0 0 24 24" fill="#D60934" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg><span class="frow-label">重要</span><span class="frow-count">5</span></label></div>
+        <div class="menu-sep"></div>
+        <!-- 行にホバーすると右端に鉛筆とゴミ箱が出る。鉛筆を押すと名前の入力欄になる -->
+        <div class="frow r-design">
+          <label class="frow-main" for="d-design"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg><span class="frow-label">デザイン基礎</span><span class="frow-count">5</span></label>
+          <span class="frow-actions">
+            <label class="frow-more" for="f-rename" title="名前を変更"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg></label>
+            <button type="button" class="frow-more is-danger" title="フォルダを削除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+          </span>
+        </div>
+        <!-- 名前を変更（placeholder「フォルダ名」・40字まで・Enter で確定、Esc で取消。
+             🔴 blur では確定しない） -->
+        <div class="fname fname-rename name-row">
+          <input class="name-input" type="text" value="デザイン基礎" placeholder="フォルダ名">
+          <label class="name-ok" for="f-none" title="決定"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></label>
+        </div>
+        <div class="frow r-work">
+          <label class="frow-main" for="d-work"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg><span class="frow-label">案件・ポートフォリオ</span><span class="frow-count">3</span></label>
+          <span class="frow-actions">
+            <label class="frow-more" for="f-rename" title="名前を変更"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg></label>
+            <button type="button" class="frow-more is-danger" title="フォルダを削除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+          </span>
+        </div>
+        <div class="frow r-coach">
+          <label class="frow-main" for="d-coach"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg><span class="frow-label">コーチング記録</span><span class="frow-count">2</span></label>
+          <span class="frow-actions">
+            <label class="frow-more" for="f-rename" title="名前を変更"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg></label>
+            <button type="button" class="frow-more is-danger" title="フォルダを削除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+          </span>
+        </div>
+        <!-- 中身が0件のフォルダ。選ぶと「このフォルダにはまだノートがありません」が出る -->
+        <div class="frow r-later">
+          <label class="frow-main" for="d-later"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg><span class="frow-label">あとで読む</span><span class="frow-count">0</span></label>
+          <span class="frow-actions">
+            <label class="frow-more" for="f-rename" title="名前を変更"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"></path></svg></label>
+            <button type="button" class="frow-more is-danger" title="フォルダを削除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+          </span>
+        </div>
+        <div class="menu-sep"></div>
+        <div class="frow r-inbox"><label class="frow-main" for="d-inbox"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg><span class="frow-label">未整理</span><span class="frow-count">2</span></label></div>
+        <div class="menu-sep"></div>
+        <label class="menu-item f-new-btn" for="f-new" style="color: var(--dc-primary);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10v6"></path><path d="M9 13h6"></path><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+          新しいフォルダを作成
+        </label>
+        <div class="fname fname-new name-row">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M12 10v6"></path><path d="M9 13h6"></path><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+          <input class="name-input" type="text" placeholder="新しいフォルダの名前">
+          <label class="name-ok" for="f-none" title="決定"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></label>
+        </div>
+      </div>
+
+      <!-- 並び替え（top: 36 / right: 0 で一覧の右上に付く） -->
+      <div class="pop pop-sort menu" style="right: 28px; top: 194px; width: 180px; box-sizing: border-box;">
+        <label class="menu-item" for="s-new">更新が新しい順</label>
+        <label class="menu-item" for="s-old">更新が古い順</label>
+        <label class="menu-item" for="s-title">タイトル順</label>
+      </div>
+
+      <!-- カードの移動先。
+           🔴 実装ではこのメニューは NoteGrid が1つだけ持つ。NoteCard の中に置くと、
+              createPortal のイベントが DOM ではなく React ツリーを伝播するので、
+              項目クリックでノートが開いてしまう。 -->
+      <div class="pop pop-move menu" style="left: 40px; top: 383px; width: 220px; box-sizing: border-box;">
+        <div class="menu-head">移動先</div>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>未整理</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>デザイン基礎</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>案件・ポートフォリオ</label>
+        <label class="menu-item" for="p-none" style="background: var(--dc-soft-100); color: var(--dc-primary);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>コーチング記録</label>
+      </div>
+
+      <!-- ノート面の保存先ピル -->
+      <div class="pop pop-pill menu" style="left: 346px; top: 62px; width: 220px; box-sizing: border-box;">
+        <div class="menu-head">移動先</div>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>未整理</label>
+        <label class="menu-item" for="p-none" style="background: var(--dc-soft-100); color: var(--dc-primary);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>デザイン基礎</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>案件・ポートフォリオ</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>コーチング記録</label>
+      </div>
+
+      <!-- その他。🔒 項目は1つだけ。ノートの削除はここにしか無い（カードの ⋮ は廃止済み）
+           押すと window.confirm が出る:
+           「バナー制作の学び」を削除しますか？／この操作は元に戻せません。 -->
+      <div class="pop pop-more menu" style="right: 28px; top: 62px; width: 180px; box-sizing: border-box;">
+        <label class="menu-item is-danger" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>このノートを削除</label>
+      </div>
+
+      <!-- ⠿。先頭の行なので「上に移動」は押せない -->
+      <div class="pop pop-grip menu" style="left: 57px; top: 296px; width: 170px; box-sizing: border-box;">
+        <span class="menu-item is-disabled"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>上に移動</span>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg>下に移動</label>
+        <label class="menu-item is-danger" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>削除</label>
+      </div>
+
+      <!-- ＋。🔒 並びは 文章／見出し／箇条書き／チェックリスト／画像（INSERT_ITEMS の順）。
+           ツールバー側の並びとは違う。アイコンだけ --dc-primary 色で、文字は本文色のまま。 -->
+      <div class="pop pop-plus menu" style="left: 57px; top: 296px; width: 190px; box-sizing: border-box;">
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"></path><path d="M9 20h6"></path><path d="M12 4v16"></path></svg>文章</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12"></path><path d="M6 20V4"></path><path d="M18 20V4"></path></svg>見出し</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h.01"></path><path d="M3 12h.01"></path><path d="M3 19h.01"></path><path d="M8 5h13"></path><path d="M8 12h13"></path><path d="M8 19h13"></path></svg>箇条書き</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>チェックリスト</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>画像</label>
+      </div>
+
+      <div class="pop pop-plus2 menu" style="left: 57px; top: 841px; width: 190px; box-sizing: border-box;">
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"></path><path d="M9 20h6"></path><path d="M12 4v16"></path></svg>文章</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12"></path><path d="M6 20V4"></path><path d="M18 20V4"></path></svg>見出し</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h.01"></path><path d="M3 12h.01"></path><path d="M3 19h.01"></path><path d="M8 5h13"></path><path d="M8 12h13"></path><path d="M8 19h13"></path></svg>箇条書き</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>チェックリスト</label>
+        <label class="menu-item" for="p-none"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>画像</label>
+      </div>
+
+      <!-- 速記メモの小窓（Document Picture-in-Picture）。
+           🔴 実装は別ウィンドウ。--dc-* も Tailwind も効かないので色は直書き。
+              窓の実寸はブラウザ任せで、312×380 は目安。 -->
+      <!-- 🔴 display はインライン style に書かないこと。インラインはセレクタより強く、
+           .memo { display: none } が効かなくなって閉じられなくなる（実際に踏んだ）。
+           出し入れする要素の display は必ずクラス側（上の .memo）に置く。 -->
+      <div class="memo" style="width: 312px; height: 380px; box-sizing: border-box; flex-direction: column; padding: 12px; gap: 8px; background: #FFFFFF; border: 1px solid #F3EDED; border-radius: 12px; box-shadow: 0 10px 24px -12px rgba(60,48,32,.25);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="flex: 1; min-width: 0; font-size: 12px; font-weight: 700; color: #6B6467; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">→ バナー制作の学び</span>
+          <span style="flex: none; display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #9A9295;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2FA35C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+            保存しました
+          </span>
+        </div>
+        <p style="display: flex; align-items: center; gap: 5px; margin: 0; font-size: 11px; font-weight: 500; color: #8B8386;">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+          前回の書きかけを復元しました
+        </p>
+        <textarea placeholder="話しながら思ったことを、そのまま。" style="flex: 1; min-height: 0; padding: 10px 12px; box-sizing: border-box; border: 1px solid #F3EDED; border-radius: 14px; background: #FFFFFF; font-family: inherit; font-size: 13.5px; line-height: 1.85; color: #1F1D1E; resize: none; outline: none;"></textarea>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="flex: 1; font-size: 10.5px; font-weight: 500; color: #9A9295;">Ctrl + Enter でも追加</span>
+          <button type="button" style="display: inline-flex; align-items: center; gap: 5px; padding: 8px 16px; border: 0; border-radius: 999px; background: #D60934; color: #FFFFFF; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+            ノートに追加
+          </button>
+        </div>
+      </div>
+
+      <!-- 教材から引用（QuoteFromLessonModal.tsx）。
+           🔴 オーバーレイを押しても閉じない。本文をドラッグ選択して指をパネル外で
+              離した瞬間に閉じてしまうため。閉じ方は ✕ と Esc だけ。 -->
+      <div class="modal" style="align-items: flex-start; justify-content: center; padding: 60px 0;">
+        <div style="width: 860px; background: #FFFFFF; border-radius: 18px; overflow: hidden; box-shadow: 0 24px 60px -20px rgba(31,29,30,.35);">
+          <div style="display: flex; align-items: flex-start; gap: 12px; padding: 18px 24px 14px; border-bottom: 1px solid var(--dc-border);">
+            <span style="width: 28px; height: 28px; flex: none; display: grid; place-items: center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+            </span>
+            <div style="flex: 1; min-width: 0;">
+              <h2 style="margin: 0; font-size: 16.5px; font-weight: 900; line-height: 1.5; color: var(--wc-text);">教材から引用</h2>
+              <p style="margin: 4px 0 0; font-size: 11.5px; font-weight: 500; color: var(--wc-text-muted);">選んだ文章は「バナー制作の学び」に入ります</p>
+            </div>
+            <label for="p-none" aria-label="閉じてノートに戻る" style="width: 30px; height: 30px; flex: none; border-radius: 9999px; background: #F7F3EE; color: var(--wc-text-muted); display: grid; place-items: center; cursor: pointer;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+            </label>
+          </div>
+          <!-- 教材の選択。コース名は文字だけ、レッスンは select（セクションごとに optgroup） -->
+          <div style="display: flex; align-items: center; gap: 12px; padding: 12px 24px; border-bottom: 1px solid var(--dc-border);">
+            <span style="flex: none; font-size: 12px; font-weight: 700; color: var(--wc-text-muted);">バナー100本道場</span>
+            <select aria-label="開く教材" style="flex: 1; min-width: 0; height: 32px; box-sizing: border-box; padding: 0 10px; border: 1px solid var(--dc-border); border-radius: 8px; background: #FFFFFF; font-family: inherit; font-size: 12.5px; color: var(--wc-text);">
+              <optgroup label="単元2 手を動かす"><option>ハンズオン①</option><option>ハンズオン②</option></optgroup>
+            </select>
+            <button type="button" style="display: inline-flex; align-items: center; gap: 6px; flex: none; height: 32px; padding: 0 12px; border: 1px solid var(--dc-border); border-radius: 8px; background: #FFFFFF; color: var(--wc-text-muted); font-size: 12px; font-weight: 700; cursor: pointer;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"></path><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"></path></svg>
+              別の教材
+            </button>
+          </div>
+          <div style="padding: 8px 20px; background: #FFF6F7; font-size: 11.5px; font-weight: 500; line-height: 1.5; color: var(--wc-text-muted);">読みたい文章をドラッグで選ぶと「クリップ」が出ます。押すとノートに入り、この画面は開いたままです。</div>
+          <!-- 本文（LessonQuoteReader）。すでにクリップ済みの箇所は <mark> で復元される -->
+          <div style="position: relative; padding: 4px 48px 28px; height: 520px; overflow: hidden;">
+            <div style="display: flex; align-items: center; gap: 12px; margin: 28px 0 18px;">
+              <span style="width: 26px; height: 26px; flex: none; border-radius: 9999px; background: var(--dc-primary); color: #FFFFFF; display: grid; place-items: center; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;">01</span>
+              <span style="font-size: 15.5px; font-weight: 700; color: var(--wc-text);">このパートの位置づけ</span>
+            </div>
+            <h3 style="margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--wc-text);">1. このパートで押さえること</h3>
+            <p style="margin: 0 0 16px; font-size: 13.5px; line-height: 2; color: var(--wc-text-body);">「ハンズオン①」では、バナー100本道場のなかでデザインの土台になる考え方を扱います。細かな手順を覚える前に、なぜその手順が必要なのかを理解しておくと、応用が効くようになります。</p>
+            <p style="margin: 0 0 16px; font-size: 13.5px; line-height: 2; color: var(--wc-text-body);">読み進めながら<mark style="background: linear-gradient(transparent 62%, var(--wc-note-highlight) 62%); color: inherit;">「自分の制作物ならどうなるか」を都度あてはめてみてください</mark>。手を動かす前に判断基準を持っておくことが、やり直しを減らす一番の近道です。</p>
+            <div style="padding: 16px 20px; border: 1px solid #F5D8DB; border-radius: 12px; background: #FFF8F9;">
+              <div style="font-size: 11.5px; font-weight: 700; color: var(--dc-primary);">💡 ポイント</div>
+              <div style="margin-top: 8px; font-size: 13.5px; font-weight: 700; color: var(--wc-text);">判断基準</div>
+              <p style="margin: 4px 0 0; font-size: 13.5px; line-height: 2; color: var(--wc-text-body);">迷ったときは「一番見てほしいものが最初に目に入るか」に立ち返ります。この基準に照らして説明できない選択は、いったん保留にして構いません。</p>
+            </div>
+            <!-- 文章を選ぶと出るツールバー（SelectionToolbar / z-index 102）。
+                 押すとノート末尾に clip ブロックが増え、右下に「ノートに追加しました」が
+                 2.2秒だけ出る（2件目以降は「（2件）」と数が付く）。モーダルは閉じない。 -->
+            <div style="position: absolute; left: 150px; top: 212px; display: inline-flex; align-items: center; gap: 6px; padding: 6px; background: #2B2629; border-radius: 10px; box-shadow: 0 8px 24px -8px rgba(0,0,0,.35);">
+              <span style="display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 7px; color: #FFFFFF; font-size: 12px; font-weight: 700;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+                クリップ
+              </span>
+            </div>
+            <div style="position: absolute; right: 20px; bottom: 16px; padding: 8px 14px; border-radius: 9999px; background: #2B2629; color: #FFFFFF; font-size: 12px; font-weight: 700;">ノートに追加しました</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
