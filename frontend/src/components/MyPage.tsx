@@ -79,7 +79,7 @@ function MyPage() {
 
   // 学習時間は集中ブースの実測を正にする（取れなければ進捗率からの推定に落ちる）。
   // useMypageData の Promise.all には足さない（ブートをブロックしないため）。
-  const { stats: studyStats, loading: studyStatsLoading } = useStudyStats(user?.userid);
+  const { stats: studyStats, loading: studyStatsLoading, unavailable: studyStatsUnavailable } = useStudyStats(user?.userid);
   const learningSummary = useLearningSummary(learningCourses, studyStats);
   const primaryCourse = learningCourses[0];
 
@@ -239,14 +239,35 @@ function MyPage() {
           <ChevronRight className="w-4 h-4" style={{ color: 'var(--dc-text-muted)', flexShrink: 0 }} />
         </button>
 
-        <StudyDashboardCard
-          stats={studyStats}
-          loading={studyStatsLoading}
-          completedLessons={learningSummary.completedLessons.total}
-          completedLessonsDelta={learningSummary.completedLessons.weekDelta}
-          goalMinutes={goalMinutes}
-          onEditGoal={() => setGoalOpen(true)}
-        />
+        {studyStatsUnavailable ? (
+          // 🔴 通信失敗時にstats=nullのままStudyDashboardCardへ渡すと、
+          //    streakDays = stats?.streak.currentDays ?? 0 で「0日連続」が
+          //    確定値として表示されてしまう(実績と無関係の誤表示)。
+          //    /study-log の unavailable 表示と同じ方針で縮退させる。
+          <div
+            style={{
+              background: 'var(--dc-surface)',
+              border: '1px solid var(--dc-border)',
+              borderRadius: 'var(--dc-radius-lg)',
+              boxShadow: 'var(--dc-shadow-card)',
+              padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
+              fontSize: 'var(--dc-fs-body)',
+              color: 'var(--dc-text-muted)',
+              lineHeight: 'var(--dc-lh-prose)',
+            }}
+          >
+            学習状況を表示できませんでした。しばらくしてからもう一度お試しください。
+          </div>
+        ) : (
+          <StudyDashboardCard
+            stats={studyStats}
+            loading={studyStatsLoading}
+            completedLessons={learningSummary.completedLessons.total}
+            completedLessonsDelta={learningSummary.completedLessons.weekDelta}
+            goalMinutes={goalMinutes}
+            onEditGoal={() => setGoalOpen(true)}
+          />
+        )}
 
         <WeeklyGoalModal
           open={goalOpen}

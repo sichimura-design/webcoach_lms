@@ -109,8 +109,9 @@ rds-migration/
 # SSL certificates
 ssl/
 
-# Test suites
-tests/
+# Test suites (リポジトリ直下のtests/のみ対象。api-server/tests/等のネストしたテストは
+# 先頭スラッシュ無しだと誤って巻き込まれるので明示的にルート限定にしてある)
+/tests/
 
 # Clipkit 教材エクスポート（LMS移行用の中間データ・認証状態）
 # storageState にはセッションCookieが入るので絶対に追跡しない。

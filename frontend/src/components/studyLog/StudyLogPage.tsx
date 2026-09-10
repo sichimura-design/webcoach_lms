@@ -338,7 +338,7 @@ function StudyLogPage() {
 
         {openSessionId ? null : unavailable ? (
           <div style={{ ...cardStyle, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)', lineHeight: 'var(--dc-lh-prose)' }}>
-            学習記録を表示できませんでした。この機能はモック環境でのみ利用できます。
+            学習記録を表示できませんでした。しばらくしてからもう一度お試しください。
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--dc-sp-gap)' }}>
