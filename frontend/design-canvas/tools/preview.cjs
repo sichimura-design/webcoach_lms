@@ -14,22 +14,48 @@
  *   node preview.cjs Main.dc.html --on sidebarOpen    # サイドバーを開いた状態
  *   node preview.cjs Main.dc.html --on aiOpen,accountOpen
  *   node preview.cjs                                  # screens/ の .dc.html を全部
+ *   node preview.cjs --dir notes                      # notes/ の .dc.html を全部
+ *   node preview.cjs --dir notes NotesList.dc.html
  */
 const fs = require('fs');
 const path = require('path');
 
 const { chromium } = require(path.resolve(__dirname, '../../../tools/clipkit-export/node_modules/playwright'));
 
-const SCREENS_DIR = path.resolve(__dirname, '../screens');
+/**
+ * アートボードの置き場。Claude Design のプロジェクト1つにつき1ディレクトリ。
+ *   screens/ … 「Webスクール LMS トップページ 3案」(49f4765f-…) 側のカタログ
+ *   notes/   … /notes の現行実装カタログ（別プロジェクト）
+ * 混ぜると往復のときに別プロジェクトのファイルを上げてしまうので分けてある。
+ */
+const DEFAULT_DIR = 'screens';
 const OUT_DIR = path.resolve(__dirname, '../_preview');
 
 /** アートボードごとの既定の描画幅。canvas.json の w に合わせる */
 const WIDTHS = {
+  // screens/
   'Main.dc.html': 1440,
   'Courses.dc.html': 1512,
-  'Notes.dc.html': 1440,
   'Coaching.dc.html': 1440,
-  'NotesImproved.dc.html': 1440,
+  // notes/ — フル画面
+  'NotesList.dc.html': 1440,
+  'NoteEditor.dc.html': 1440,
+  'NoteEditorEmpty.dc.html': 1440,
+  // notes/ — 部品（実寸の断片）
+  'NotesFolderBar.dc.html': 760,
+  'NotesFolderPanel.dc.html': 1480,
+  'NotesListMenus.dc.html': 520,
+  'NotesCard.dc.html': 960,
+  'NotesEmptyStates.dc.html': 1360,
+  'NotesListFoot.dc.html': 1360,
+  'NoteEditorBarStates.dc.html': 1330,
+  'NoteEditorMenus.dc.html': 940,
+  'NoteBlocks.dc.html': 960,
+  'NoteTail.dc.html': 960,
+  'QuoteModalReader.dc.html': 960,
+  'QuoteModalPicker.dc.html': 960,
+  'QuickMemoWindow.dc.html': 360,
+  'NotesNotices.dc.html': 960,
 };
 const FALLBACK_WIDTH = 1440;
 
@@ -78,8 +104,8 @@ ${inner}
   };
 }
 
-async function shootOne(browser, file, width, on, vals) {
-  const source = fs.readFileSync(path.join(SCREENS_DIR, file), 'utf8');
+async function shootOne(browser, dir, file, width, on, vals) {
+  const source = fs.readFileSync(path.join(dir, file), 'utf8');
   const { html, leftover, conditions } = toPlainHtml(source, on, vals);
 
   const page = await browser.newPage();
@@ -107,6 +133,8 @@ async function main() {
   const widthArg = args.indexOf('--width');
   const onArg = args.indexOf('--on');
   const valsArg = args.indexOf('--vals');
+  const dirArg = args.indexOf('--dir');
+  const dir = path.resolve(__dirname, '..', dirArg >= 0 ? String(args[dirArg + 1] || DEFAULT_DIR) : DEFAULT_DIR);
   const width = widthArg >= 0 ? Number(args[widthArg + 1]) : null;
   const on = onArg >= 0 ? String(args[onArg + 1] || '').split(',').filter(Boolean) : [];
   // --vals accountLeft=222px,other=12px の形で {{hole}} に流す値を渡す
@@ -123,13 +151,14 @@ async function main() {
   if (widthArg >= 0) skip.add(widthArg + 1);
   if (onArg >= 0) skip.add(onArg + 1);
   if (valsArg >= 0) skip.add(valsArg + 1);
+  if (dirArg >= 0) skip.add(dirArg + 1);
   const files = args.filter((a, i) => !a.startsWith('--') && !skip.has(i));
-  const targets = files.length ? files : fs.readdirSync(SCREENS_DIR).filter((f) => f.endsWith('.dc.html'));
+  const targets = files.length ? files : fs.readdirSync(dir).filter((f) => f.endsWith('.dc.html'));
 
   const browser = await chromium.launch();
   for (const file of targets) {
     try {
-      const r = await shootOne(browser, file, width || WIDTHS[file] || FALLBACK_WIDTH, on, vals);
+      const r = await shootOne(browser, dir, file, width || WIDTHS[file] || FALLBACK_WIDTH, on, vals);
       const states = r.conditions.length ? `  状態[${r.conditions.map((c) => (on.includes(c) ? c + '=ON' : c)).join(' ')}]` : '';
       const warn = r.leftover ? `  ⚠ 値の無い {{hole}}: ${r.leftover.join(', ')}（--vals で渡せる）` : '';
       console.log(`✓ ${r.file} @${r.width}  実サイズ ${r.size.w}x${r.size.h}${states}  → ${path.basename(r.out)}${warn}`);

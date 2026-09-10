@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06-P08 ノート面のメニュー 4種（部品）
+       実装: NoteEditorBar.tsx:114-135（保存先ピル）/ :251-273（その他）
+             NoteBlockRow.tsx:133-204（⠿ と ＋）
+             いずれも AnchoredMenu.tsx がポータルで body 直下に出す。
+       出典: _capture/STU-06-pill ・ -more ・ -grip ・ -plus（各 1440）
+       ⚠ 部品ボード。compare.cjs は 字・太さ・色 の3項目だけ見ること。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    /* 🔒 index.css L91-145 の .wc-warm と同値。ポータルのメニューは自分で wc-warm を
+          被って --dc-* を解決している。ここでもルートに .n6 が要る。 */
+    .n6 {
+      --dc-primary: #D60934;
+      --dc-soft-100: #FDF2F2;
+      --dc-bg: #FBF8F4;
+      --dc-surface: #FFFFFF;
+      --dc-text-body: #3D3D3D;
+      --dc-text-subtle: #9E9E9E;
+      --dc-border: #EFE9E0;
+      --dc-radius-md: 12px;
+    }
+
+    .n6 .menu {
+      padding: 6px; background: var(--dc-surface);
+      border: 1px solid var(--dc-border); border-radius: var(--dc-radius-md);
+      box-shadow: 0 8px 24px -8px rgba(60,48,32,.14);
+    }
+    .n6 .item {
+      display: flex; align-items: center; gap: 9px; width: 100%; box-sizing: border-box;
+      height: 37px; padding: 9px 10px; border: 0; border-radius: 8px;
+      background: transparent; color: var(--dc-text-body);
+      font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; text-align: left;
+    }
+    .n6 .item.is-selected { background: var(--dc-soft-100); color: var(--dc-primary); }
+    .n6 .item.is-danger { color: var(--dc-primary); }
+    /* 先頭／末尾のブロックでは「上に移動」「下に移動」が押せなくなる */
+    .n6 .item.is-disabled { opacity: .4; cursor: default; }
+    .n6 .menu-head {
+      padding: 4px 10px 6px; font-size: 11px; font-weight: 700; line-height: 1.5;
+      letter-spacing: .04em; color: var(--dc-text-subtle);
+    }
+    .n6 .cap { font-size: 11.5px; font-weight: 700; color: #8A8178; margin-bottom: 10px; }
+    .n6 .cap span { font-weight: 400; color: #A79E93; }
+  </style>
+</helmet>
+
+<div class="n6"
+     data-dc-id="STU-06-P08"
+     data-dc-remote="マイノート 部品 ノート面のメニュー.dc.html"
+     data-dc-route="/notes?note=<id>"
+     data-dc-src="frontend/src/components/notes/NoteBlockRow.tsx#L133-L204"
+     style="display: flex; align-items: flex-start; gap: 32px; width: 940px; min-height: 360px; padding: 24px; box-sizing: border-box; background: var(--dc-bg);">
+
+  <!-- ───────── ① 保存先ピル（上部バーのフォルダ名を押す）─────────
+       器は minWidth 220。フォルダが0件のときは項目の代わりに
+       「一覧に戻って「フォルダを開く」から作れます。」だけが入る。 -->
+  <div>
+    <div class="cap">保存先 <span>／ 上部バーのフォルダ名から</span></div>
+    <div class="menu" style="width: 220px;">
+      <div class="menu-head">移動先</div>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        未整理
+      </button>
+      <button type="button" class="item is-selected">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        デザイン基礎
+      </button>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        案件・ポートフォリオ
+      </button>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        コーチング記録
+      </button>
+    </div>
+  </div>
+
+  <!-- ───────── ② その他（上部バーの右端）─────────
+       🔒 項目は1つだけ。ノートの削除はここにしか無い（カードの ⋮ は廃止済み）。 -->
+  <div>
+    <div class="cap">その他 <span>／ 上部バーの右端から</span></div>
+    <div class="menu" style="width: 180px;">
+      <button type="button" class="item is-danger">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        このノートを削除
+      </button>
+    </div>
+  </div>
+
+  <!-- ───────── ③ ⠿（行の左。ドラッグで並べ替え、クリックでメニュー）───────── -->
+  <div>
+    <div class="cap">⠿ <span>／ 行にホバーすると左に出る</span></div>
+    <div class="menu" style="width: 170px;">
+      <!-- 先頭の行では「上に移動」が opacity .4 で押せない（末尾は「下に移動」） -->
+      <button type="button" class="item is-disabled">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"></path><path d="M12 19V5"></path></svg>
+        上に移動
+      </button>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></svg>
+        下に移動
+      </button>
+      <button type="button" class="item is-danger">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+        削除
+      </button>
+    </div>
+  </div>
+
+  <!-- ───────── ④ ＋（行の左。その行の「上」に挿入。末尾行だけ「末尾に追加」）─────────
+       🔒 並びは 文章／見出し／箇条書き／チェックリスト／画像（INSERT_ITEMS の順）。
+          ツールバー側の並び（見出し／箇条書き／画像／教材から引用／チェックリスト）とは違う。
+          アイコンだけ --dc-primary 色で、文字は本文色のまま。 -->
+  <div>
+    <div class="cap">＋ <span>／ 行にホバーすると左に出る</span></div>
+    <div class="menu" style="width: 190px;">
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"></path><path d="M9 20h6"></path><path d="M12 4v16"></path></svg>
+        文章
+      </button>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12"></path><path d="M6 20V4"></path><path d="M18 20V4"></path></svg>
+        見出し
+      </button>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h.01"></path><path d="M3 12h.01"></path><path d="M3 19h.01"></path><path d="M8 5h13"></path><path d="M8 12h13"></path><path d="M8 19h13"></path></svg>
+        箇条書き
+      </button>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>
+        チェックリスト
+      </button>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+        画像
+      </button>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

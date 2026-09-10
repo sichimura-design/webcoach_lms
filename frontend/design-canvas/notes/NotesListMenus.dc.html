@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06-P03 一覧のメニュー 2種（部品）
+       実装: MyNotesPage.tsx:577-595（並び替え）/ NoteGrid.tsx:175-204（移動先）
+             どちらも components/notes/AnchoredMenu.tsx がポータルで body 直下に出す。
+       出典: _capture/STU-06-sort/1440 ・ _capture/STU-06-move/1440
+       ⚠ これは部品ボード。原点がページと違うので compare.cjs の x/y/幅 は見ない。
+         字・太さ・色の3項目だけを見ること。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    /* 🔒 index.css L91-145 の .wc-warm と同値。
+       🔴 AnchoredMenu は body 直下のポータルなので、自分で className="wc-warm" を
+          被って --dc-* を解決している（AnchoredMenu.tsx:173-179）。部品ボードでも
+          ルートに .n6 を持たせないと、枠・影・地色が全部消える。 */
+    .n6 {
+      --dc-primary: #D60934;
+      --dc-soft-100: #FDF2F2;
+      --dc-bg: #FBF8F4;
+      --dc-surface: #FFFFFF;
+      --dc-text-body: #3D3D3D;
+      --dc-text-subtle: #9E9E9E;
+      --dc-border: #EFE9E0;
+      --dc-radius-md: 12px;
+    }
+
+    /* メニューの器（.notes-menu / index.css:1808-1817） */
+    .n6 .menu {
+      padding: 6px; background: var(--dc-surface);
+      border: 1px solid var(--dc-border); border-radius: var(--dc-radius-md);
+      box-shadow: 0 8px 24px -8px rgba(60,48,32,.14);
+    }
+    /* 1項目（.notes-menu-item / index.css:1819-1849） */
+    .n6 .item {
+      display: flex; align-items: center; gap: 9px; width: 100%; box-sizing: border-box;
+      height: 37px; padding: 9px 10px; border: 0; border-radius: 8px;
+      background: transparent; color: var(--dc-text-body);
+      font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; text-align: left;
+    }
+    .n6 .item.is-selected { background: var(--dc-soft-100); color: var(--dc-primary); }
+    .n6 .item.is-danger { color: var(--dc-primary); }
+    /* メニューの小見出し */
+    .n6 .menu-head {
+      padding: 4px 10px 6px; font-size: 11px; font-weight: 700; line-height: 1.5;
+      letter-spacing: .04em; color: var(--dc-text-subtle);
+    }
+    /* 部品ボードの説明ラベル。アートボードの注記であって実装には無い */
+    .n6 .cap { font-size: 11.5px; font-weight: 700; color: #8A8178; margin-bottom: 10px; }
+    .n6 .cap span { font-weight: 400; color: #A79E93; }
+  </style>
+</helmet>
+
+<div class="n6"
+     data-dc-id="STU-06-P03"
+     data-dc-remote="マイノート 部品 一覧のメニュー.dc.html"
+     data-dc-route="/notes"
+     data-dc-src="frontend/src/components/notes/AnchoredMenu.tsx"
+     style="display: flex; align-items: flex-start; gap: 40px; width: 520px; min-height: 270px; padding: 24px; box-sizing: border-box; background: var(--dc-bg);">
+
+  <!-- ───────── ① 並び替え（一覧の右上「更新が新しい順」を押すと出る）─────────
+       器は幅 180px、右上ぞろえ（top: 36 / right: 0）。項目は3つで、現在の並びに .is-selected。 -->
+  <div>
+    <div class="cap">並び替え <span>／ 一覧の「更新が新しい順」から</span></div>
+    <div class="menu" style="width: 180px;">
+      <button type="button" class="item is-selected">更新が新しい順</button>
+      <button type="button" class="item">更新が古い順</button>
+      <button type="button" class="item">タイトル順</button>
+    </div>
+  </div>
+
+  <!-- ───────── ② 移動先（カード下部のフォルダ名を押すと出る）─────────
+       🔴 このメニューは NoteGrid が1つだけ持つ。NoteCard の中に置くと、createPortal の
+          イベントが DOM ではなく React ツリーを伝播するので、項目クリックでノートが開く
+          （NoteGrid.tsx の doc に明記）。 -->
+  <div>
+    <div class="cap">移動先 <span>／ カード下部のフォルダ名から</span></div>
+    <div class="menu" style="width: 220px;">
+      <div class="menu-head">移動先</div>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        未整理
+      </button>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        デザイン基礎
+      </button>
+      <button type="button" class="item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        案件・ポートフォリオ
+      </button>
+      <!-- いま入っているフォルダに .is-selected（role="menuitemradio" の aria-checked） -->
+      <button type="button" class="item is-selected">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        コーチング記録
+      </button>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

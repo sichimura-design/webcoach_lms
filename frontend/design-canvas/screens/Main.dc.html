@@ -1,0 +1,734 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&family=Inter:wght@600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+    a { color: #D60934; }
+    a:hover { color: #B50829; }
+
+    /* frontend/src/index.css の .mypage-3d と同じ値。ここを変えるときは実装も合わせる */
+    .mp {
+      --dc-primary: #D60934;
+      --dc-primary-hover: #B50829;
+      --dc-soft-100: #FDF2F2;
+      --dc-soft-200: #F5D8DB;
+      --dc-bg: #FBF8F4;
+      --dc-surface: #FFFFFF;
+      --dc-sunken: #F9F5F0;
+      --dc-text: #141414;
+      --dc-text-body: #3D3D3D;
+      --dc-text-muted: #6B6B6B;
+      --dc-text-subtle: #9E9E9E;
+      --dc-border: #EFE9E0;
+      --dc-border-strong: #E2DBD0;
+      --dc-badge-pink: #FBE9EC;
+      --dc-idle-border: #E9E9EC;
+      --dc-idle-dash: #C9BFAF;
+      --dc-progress-track: #F3E3E0;
+      --dc-bar-past: #E97B90;
+      --dc-chevron: #C9BFB2;
+      --dc-shadow-card: 0 1px 2px rgba(60,48,32,.05), 0 12px 24px -16px rgba(60,48,32,.14);
+      --dc-radius-md: 12px;
+      --dc-radius-lg: 20px;
+
+      --dc-fs-caption: 12px;
+      --dc-fs-body: 14px;
+      --dc-fs-lead: 16px;
+      --dc-fs-title: 20px;
+      --dc-fs-display: clamp(28px, 1.68vw, 32px);
+      --dc-fs-hero-xs: clamp(28px, 2.21vw, 42px);
+
+      --dc-lh-hero: 1.2;
+      --dc-lh-heading: 1.4;
+      --dc-lh-ui: 1.6;
+      --dc-lh-prose: 1.7;
+
+      --dc-sp-page-x: clamp(20px, 2.53vw, 48px);
+      --dc-sp-page-y: clamp(28px, 2.53vw, 48px);
+      --dc-sp-gap: clamp(16px, 1.47vw, 28px);
+      --dc-sp-card-y: clamp(18px, 1.37vw, 26px);
+      --dc-sp-card-x: clamp(18px, 1.47vw, 28px);
+      --dc-sz-badge: clamp(26px, 1.58vw, 30px);
+    }
+    /* 数値は Inter + tabular-nums（実装の .dc-num） */
+    .num { font-family: 'Inter', system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+
+    /* 押せるものは見た目だけでなく手触りも合わせる。素の button を無地に戻す */
+    .mp button { font-family: inherit; border: 0; background: transparent; padding: 0; cursor: pointer; color: inherit; }
+
+    /* 閉じたレールの項目（AppHeader.tsx） */
+    .rail-item { width: 40px; height: 40px; border-radius: 9999px; display: grid; place-items: center; }
+    .rail-item-active { background: var(--dc-primary); box-shadow: 0 2px 10px -2px rgba(214, 9, 52, .4); }
+    .rail-item:hover { background: var(--dc-soft-100); }
+    .rail-item-active:hover { background: var(--dc-primary); }
+
+    /* 展開したサイドバー（224px・赤地）の項目 */
+    .nav-row {
+      width: 200px; height: 46px; border-radius: 9999px; padding: 0 16px; box-sizing: border-box;
+      display: flex; align-items: center; gap: 12px;
+      font-size: 13px; font-weight: 500; color: #FDF7F3;
+    }
+    .nav-row:hover { background: rgba(255, 255, 255, .12); }
+    .nav-row-active {
+      background: #FDF7F3; color: #B50829; font-weight: 700;
+      box-shadow: 0 2px 10px -2px rgba(90, 0, 14, .35);
+    }
+    .nav-row-active:hover { background: #FDF7F3; }
+
+    /* ダッシュボードの格子。index.css の .mypage-dash-* と同値 */
+    .dash-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr); gap: 14px; align-items: stretch; }
+    .dash-left { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+    .dash-kpi { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: stretch; flex: 1; }
+    .dash-right { border: 1px solid var(--dc-border); border-radius: 14px; padding: 18px 22px; display: flex; gap: 36px; align-items: stretch; min-width: 0; }
+    .streak-day { display: flex; flex-direction: column; align-items: center; gap: 5px; min-width: 0; }
+    .streak-dot { width: 100%; max-width: 34px; aspect-ratio: 1 / 1; margin: auto 0; border-radius: 9999px; display: grid; place-items: center; }
+    .streak-dot-idle { border: 2px dashed #E5DED3; box-sizing: border-box; }
+    .streak-cap { font-size: var(--dc-fs-caption); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .bar-day { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 5px; height: 100%; }
+  </style>
+</helmet>
+
+<div class="mp" style="position: relative; display: flex; min-height: 1180px; overflow: hidden; background: var(--dc-bg); color: var(--dc-text);">
+
+  <!-- ───────── サイドバー：閉じた72pxレール（shared/AppHeader.tsx） ───────── -->
+  <div style="width: 72px; flex: none; background: #FDF7F3; border-right: 1px solid #E2DBD0; box-shadow: 3px 0 10px -4px rgba(60,48,32,.18); padding: 16px 0; display: flex; flex-direction: column; align-items: center; gap: 14px;">
+    <!-- ロゴ位置のボタンがサイドバーを開く（aria-label は「サイドバーをひらく」） -->
+    <button type="button" class="rail-item" style="border-radius: 10px;" onClick="{{ openSidebar }}">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+        <path d="M15 3v18"></path>
+        <path d="m10 15-3-3 3-3"></path>
+      </svg>
+    </button>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+      <!-- トップ（この画面。アクティブは赤ベタ＋赤い落ち影・アイコンは #FDF7F3） -->
+      <div class="rail-item rail-item-active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDF7F3" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+          <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        </svg>
+      </div>
+      <!-- 学習する -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 7v14"></path>
+          <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path>
+        </svg>
+      </div>
+      <!-- AIコーチ -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path>
+        </svg>
+      </div>
+      <!-- コーチング -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path>
+          <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
+        </svg>
+      </div>
+      <!-- マイノート -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"></path>
+          <path d="M2 6h4"></path>
+          <path d="M2 10h4"></path>
+          <path d="M2 14h4"></path>
+          <path d="M2 18h4"></path>
+          <path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"></path>
+        </svg>
+      </div>
+
+      <div style="width: 32px; height: 1px; background: #EFE9E0; margin: 14px 0;"></div>
+
+      <!-- 管理（管理者のみ） -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>
+      </div>
+    </div>
+
+    <div style="flex: 1;"></div>
+
+    <!-- レール下端のアカウント。押すとアカウントメニューが出る -->
+    <button type="button" style="width: 36px; height: 36px; border-radius: 9999px; background: #F2E8E1; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #9E9698;" onClick="{{ toggleAccount }}">モッ</button>
+  </div>
+
+  <!-- ───────── 本文 ───────── -->
+  <div style="flex: 1; min-width: 0; position: relative;">
+    <div style="width: 100%; max-width: 1600px; margin: 0 auto; padding: var(--dc-sp-page-y) var(--dc-sp-page-x) calc(var(--dc-sp-page-y) * 0.8); display: flex; flex-direction: column; box-sizing: border-box;">
+
+      <!-- ① 挨拶（mypage/MypageGreeting.tsx）。
+           「モックさんさん」は実装がそのまま出している表示。氏名に「さん」が含まれる
+           モックデータに敬称を足しているため二重になる。ここは実装どおりに写している。 -->
+      <div style="margin-bottom: 30px;">
+        <div style="font-size: var(--dc-fs-caption); color: var(--dc-text-muted); margin-bottom: 6px;">2026年9月1日（火）</div>
+        <h1 style="margin: 0; font-size: var(--dc-fs-display); line-height: var(--dc-lh-heading); font-weight: 700; letter-spacing: -0.01em; color: var(--dc-text);">モックさんさん、こんにちは</h1>
+      </div>
+
+      <!-- ② 上段2カラム（.mypage-8a-grid は 1fr / 1.15fr） -->
+      <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: var(--dc-sp-gap); align-items: stretch; margin-bottom: var(--dc-sp-gap);">
+
+        <!-- 続きから学習（mypage/ResumeStudyCard.tsx） -->
+        <section style="background: var(--dc-surface); border: 1px solid var(--dc-border); border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card); padding: var(--dc-sp-card-y) var(--dc-sp-card-x); display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
+            <span style="width: var(--dc-sz-badge); height: var(--dc-sz-badge); flex: none; border-radius: 9999px; background: var(--dc-soft-100); color: var(--dc-primary); display: grid; place-items: center;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"></path></svg>
+            </span>
+            <h2 style="margin: 0; font-size: var(--dc-fs-lead); font-weight: 700; color: var(--dc-text);">続きから学習</h2>
+          </div>
+
+          <div style="display: flex; gap: 18px; align-items: center; margin-bottom: 18px;">
+            <!-- 教材サムネイル。実データは Moodle の courseimage。今は無地の枠が出る -->
+            <div style="width: 150px; height: 100px; flex: none; border-radius: var(--dc-radius-md); overflow: hidden; background: var(--dc-badge-pink);"></div>
+            <div style="min-width: 0;">
+              <div style="font-size: var(--dc-fs-body); color: var(--dc-text-subtle); margin-bottom: 6px;">デザイン基礎</div>
+              <div style="font-size: var(--dc-fs-title); font-weight: 700; color: var(--dc-text); line-height: var(--dc-lh-heading);">
+                <span class="num">Lesson 2</span><br>基本の考え方
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: var(--dc-fs-caption); margin-bottom: 8px;">
+            <span class="num" style="font-weight: 700; color: var(--dc-text);">1<span style="font-weight: 600; color: var(--dc-text-subtle);">/7 レッスン</span></span>
+            <span style="color: var(--dc-text-subtle);">残り 約1時間18分で完了できます</span>
+          </div>
+
+          <div style="height: 7px; border-radius: 9999px; background: var(--dc-progress-track); overflow: hidden; margin-bottom: 20px;">
+            <div style="width: 14%; height: 100%; border-radius: 9999px; background: var(--dc-primary);"></div>
+          </div>
+
+          <button type="button" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 52px; border-radius: 14px; background: var(--dc-primary); color: #fff; font-size: var(--dc-fs-lead); font-weight: 700; box-shadow: 0 10px 22px -10px rgba(160,8,36,.55); margin-bottom: 10px;">
+            続きから学習する
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </button>
+
+          <button type="button" style="display: inline-flex; align-items: center; justify-content: center; height: 46px; border-radius: 14px; background: var(--dc-surface); border: 1px solid var(--dc-border-strong); color: var(--dc-text-body); font-size: var(--dc-fs-body); font-weight: 600; margin-top: auto;">レッスンを選び直す</button>
+        </section>
+
+        <!-- 次回コーチングまでのタスク（mypage/CoachingTaskCard.tsx・上限3件） -->
+        <section style="background: var(--dc-surface); border: 1px solid var(--dc-border); border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card); padding: var(--dc-sp-card-y) var(--dc-sp-card-x); display: flex; flex-direction: column;">
+          <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+            <h2 style="margin: 0; flex: 1; font-size: var(--dc-fs-lead); font-weight: 700; color: var(--dc-text); line-height: var(--dc-lh-heading);">次回コーチングまでのタスク</h2>
+            <button type="button" style="font-size: var(--dc-fs-body); font-weight: 600; color: var(--dc-primary); white-space: nowrap;">編集する ›</button>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 10px; flex: 1;">
+            <!-- 未完了を先に詰める -->
+            <div style="display: flex; align-items: center; gap: 14px; border: 1px solid var(--dc-border); border-radius: 14px; padding: 15px 16px;">
+              <span style="width: 24px; height: 24px; flex: none; border-radius: 9999px; border: 2px solid var(--dc-idle-dash); box-sizing: border-box;"></span>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: var(--dc-fs-lead); font-weight: 600; color: var(--dc-text); line-height: var(--dc-lh-ui);">レイアウト実践に着手する</div>
+                <div style="font-size: var(--dc-fs-caption); color: var(--dc-text-subtle); margin-top: 3px;">目安 40分</div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 14px; border: 1px solid var(--dc-soft-200); background: var(--dc-soft-100); border-radius: 14px; padding: 15px 16px;">
+              <span style="width: 24px; height: 24px; flex: none; border-radius: 9999px; background: var(--dc-primary); display: grid; place-items: center;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              </span>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: var(--dc-fs-lead); font-weight: 500; color: #B08A8F; text-decoration: line-through; line-height: var(--dc-lh-ui);">配色の基礎を修了する</div>
+              </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 14px; border: 1px solid var(--dc-soft-200); background: var(--dc-soft-100); border-radius: 14px; padding: 15px 16px;">
+              <span style="width: 24px; height: 24px; flex: none; border-radius: 9999px; background: var(--dc-primary); display: grid; place-items: center;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              </span>
+              <div style="flex: 1; min-width: 0;">
+                <div style="font-size: var(--dc-fs-lead); font-weight: 500; color: #B08A8F; text-decoration: line-through; line-height: var(--dc-lh-ui);">バナーを1つ完成させる</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: var(--dc-fs-caption); color: var(--dc-text-subtle); margin-top: 14px; line-height: var(--dc-lh-ui);">コーチングノートのタスクを表示しています。編集はコーチングページから。</div>
+        </section>
+      </div>
+
+      <!-- ③ いまの目標宣言（mypage/GoalDeclarationCard.tsx）。
+           ②の2カラムと学習状況ダッシュボードの間に挟まる全幅カード。
+           Primary ボタンは置かず、右上のテキストリンクだけで編集に入る
+           （宣言が未記入のときだけ .dc-cta-outline の「宣言を書く ›」が出る）。 -->
+      <section style="background: var(--dc-surface); border: 1px solid var(--dc-border); border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card); padding: var(--dc-sp-card-y) var(--dc-sp-card-x); margin-bottom: var(--dc-sp-gap);">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+          <span style="width: var(--dc-sz-badge); height: var(--dc-sz-badge); flex: none; border-radius: 9999px; background: var(--dc-soft-100); color: var(--dc-primary); display: grid; place-items: center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"></path>
+            </svg>
+          </span>
+          <h2 style="margin: 0; flex: 1; font-size: var(--dc-fs-lead); font-weight: 700; color: var(--dc-text);">いまの目標宣言</h2>
+          <span style="font-size: var(--dc-fs-caption); color: var(--dc-text-muted);">9月6日まで（あと4日）</span>
+          <button type="button" style="flex: none; font-size: var(--dc-fs-body); font-weight: 700; color: var(--dc-primary);">編集する ›</button>
+        </div>
+        <p style="margin: 0; padding-left: 12px; border-left: 4px solid var(--dc-primary); font-size: var(--dc-fs-title); font-weight: 700; line-height: var(--dc-lh-heading); color: var(--dc-text); overflow-wrap: anywhere;">今月中にLPを1本、自分の手で完成させる</p>
+        <p style="margin: 12px 0 0; font-size: var(--dc-fs-caption); color: var(--dc-text-subtle);">目標宣言は学習記録ページで編集できます。</p>
+      </section>
+
+      <!-- ④ 学習状況ダッシュボード（mypage/StudyDashboardCard.tsx） -->
+      <section style="background: var(--dc-surface); border: 1px solid var(--dc-border); border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card); padding: var(--dc-sp-card-y) var(--dc-sp-card-x);">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
+          <span style="width: var(--dc-sz-badge); height: var(--dc-sz-badge); flex: none; border-radius: 9999px; background: var(--dc-soft-100); color: var(--dc-primary); display: grid; place-items: center;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
+            </svg>
+          </span>
+          <h2 style="margin: 0; font-size: var(--dc-fs-lead); font-weight: 700; color: var(--dc-text); line-height: var(--dc-lh-heading);">学習状況ダッシュボード</h2>
+        </div>
+
+        <div class="dash-grid">
+
+          <!-- 左カラム：連続学習日数が全幅、その下に KPI 2枚を横並び。
+               🔴 連続学習日数と KPI を横に割らない。7日ドットが 30px 台に潰れる。 -->
+          <div class="dash-left">
+            <div style="background: var(--dc-soft-100); border: 1px solid var(--dc-soft-200); border-radius: 14px; padding: 16px 18px; min-width: 0; display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: center; gap: 7px; font-size: var(--dc-fs-body); font-weight: 500; color: var(--dc-text-body); margin-bottom: 14px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#D60934"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg>
+                連続学習日数
+              </div>
+
+              <div style="display: flex; align-items: baseline; gap: 5px; margin-bottom: 14px;">
+                <span class="num" style="font-size: var(--dc-fs-hero-xs); font-weight: 700; color: var(--dc-primary); line-height: 1;">5</span>
+                <span style="font-size: var(--dc-fs-lead); font-weight: 700; color: var(--dc-text);">日連続で学習中</span>
+                <span style="flex: 1;"></span>
+                <span style="font-size: var(--dc-fs-caption); color: var(--dc-text-muted); white-space: nowrap;">🔥 自己ベスト：12日</span>
+              </div>
+
+              <!-- 7日ぶんのドット。曜日・記録の有無・その日の学習時間の3段 -->
+              <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; flex: 1; align-content: stretch;">
+                <div class="streak-day">
+                  <span class="streak-cap" style="color: var(--dc-text-muted);">月</span>
+                  <span class="streak-dot" style="background: #FDECEC;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#D60934"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg>
+                  </span>
+                  <span class="streak-cap num" style="color: var(--dc-text-body);">25分</span>
+                </div>
+                <div class="streak-day">
+                  <span class="streak-cap" style="font-weight: 700; color: var(--dc-primary);">今日</span>
+                  <span class="streak-dot" style="background: var(--dc-primary); box-shadow: 0 4px 10px -4px rgba(160,8,36,.5);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"></path></svg>
+                  </span>
+                  <span class="streak-cap num" style="font-weight: 700; color: var(--dc-text-body);">30分</span>
+                </div>
+                <div class="streak-day">
+                  <span class="streak-cap" style="color: var(--dc-text-subtle);">水</span>
+                  <span class="streak-dot streak-dot-idle"></span>
+                  <span class="streak-cap" style="color: var(--dc-text-subtle);">–</span>
+                </div>
+                <div class="streak-day">
+                  <span class="streak-cap" style="color: var(--dc-text-subtle);">木</span>
+                  <span class="streak-dot streak-dot-idle"></span>
+                  <span class="streak-cap" style="color: var(--dc-text-subtle);">–</span>
+                </div>
+                <div class="streak-day">
+                  <span class="streak-cap" style="color: var(--dc-text-subtle);">金</span>
+                  <span class="streak-dot streak-dot-idle"></span>
+                  <span class="streak-cap" style="color: var(--dc-text-subtle);">–</span>
+                </div>
+                <div class="streak-day">
+                  <span class="streak-cap" style="color: var(--dc-text-subtle);">土</span>
+                  <span class="streak-dot streak-dot-idle"></span>
+                  <span class="streak-cap" style="color: var(--dc-text-subtle);">–</span>
+                </div>
+                <div class="streak-day">
+                  <span class="streak-cap" style="color: var(--dc-text-subtle);">日</span>
+                  <span class="streak-dot streak-dot-idle"></span>
+                  <span class="streak-cap" style="color: var(--dc-text-subtle);">–</span>
+                </div>
+              </div>
+
+              <!-- 自己ベストまでの進捗 -->
+              <div style="margin-top: 16px;">
+                <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px;">
+                  <span style="font-size: var(--dc-fs-caption); font-weight: 700; color: var(--dc-text-body);">あと7日で自己ベスト</span>
+                  <span style="flex: 1;"></span>
+                  <span class="num" style="font-size: var(--dc-fs-caption); color: var(--dc-text-muted); white-space: nowrap;">5 / 12日</span>
+                </div>
+                <div style="height: 8px; border-radius: 9999px; background: var(--dc-sunken); overflow: hidden;">
+                  <div style="width: 42%; height: 100%; border-radius: 9999px; background: var(--dc-primary);"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-kpi">
+              <div style="background: var(--dc-bg); border: 1px solid var(--dc-border); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; min-width: 0;">
+                <div style="display: flex; align-items: center; gap: 7px; font-size: var(--dc-fs-body); font-weight: 500; color: var(--dc-text-body); margin-bottom: 14px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D60934" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 6v6l4 2"></path>
+                    <circle cx="12" cy="12" r="10"></circle>
+                  </svg>
+                  総学習時間
+                </div>
+                <div class="num" style="font-size: var(--dc-fs-lead); font-weight: 700; color: var(--dc-text); margin-bottom: 8px; line-height: var(--dc-lh-hero);">
+                  <span style="display: inline-block; white-space: nowrap;"><span style="font-size: var(--dc-fs-display);">25</span>時間</span><span style="display: inline-block; white-space: nowrap;"><span style="font-size: var(--dc-fs-display);">8</span>分</span>
+                </div>
+                <div style="font-size: var(--dc-fs-caption); color: var(--dc-text-subtle); margin-top: auto;">今月：30分</div>
+              </div>
+
+              <div style="background: var(--dc-bg); border: 1px solid var(--dc-border); border-radius: 14px; padding: 16px 18px; display: flex; flex-direction: column; min-width: 0;">
+                <div style="display: flex; align-items: center; gap: 7px; font-size: var(--dc-fs-body); font-weight: 500; color: var(--dc-text-body); margin-bottom: 14px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D60934" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                    <path d="M3 3v5h5"></path>
+                  </svg>
+                  修了レッスン数
+                </div>
+                <div class="num" style="font-size: var(--dc-fs-lead); font-weight: 700; color: var(--dc-text); margin-bottom: 8px; line-height: var(--dc-lh-hero);">
+                  <span style="display: inline-block; white-space: nowrap;"><span style="font-size: var(--dc-fs-display);">7</span>レッスン</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 右カラム：今週の学習時間ゲージ ＋ 今週の目標グラフ -->
+          <div class="dash-right">
+            <div style="flex: none; display: flex; flex-direction: column; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 7px; font-size: var(--dc-fs-body); font-weight: 500; color: var(--dc-text-body); margin-bottom: 12px; align-self: flex-start; min-height: 32px;">
+                <span style="width: 9px; height: 9px; border-radius: 9999px; background: #2BB49A;"></span>
+                今週の学習時間
+              </div>
+              <div style="position: relative; width: 128px; height: 128px; margin: auto 0;">
+                <svg width="128" height="128" viewBox="0 0 118 118" style="transform: rotate(-90deg);">
+                  <circle cx="59" cy="59" r="50" fill="none" stroke="#F8E3E6" stroke-width="9"></circle>
+                  <circle cx="59" cy="59" r="50" fill="none" stroke="#D60934" stroke-width="9" stroke-linecap="round" stroke-dasharray="28.8 285.4"></circle>
+                </svg>
+                <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;">
+                  <div style="font-size: var(--dc-fs-caption); color: var(--dc-text-subtle);">合計</div>
+                  <div class="num" style="font-size: var(--dc-fs-lead); font-weight: 700; color: var(--dc-primary); line-height: var(--dc-lh-hero);">55分</div>
+                  <div style="font-size: var(--dc-fs-caption); color: var(--dc-text-subtle);">目標 10時間</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+              <div style="display: flex; align-items: center; gap: 7px; font-size: var(--dc-fs-body); font-weight: 500; color: var(--dc-text-body); margin-bottom: 12px; min-height: 32px;">
+                <span style="width: 9px; height: 9px; border-radius: 9999px; background: #3B82F6;"></span>
+                今週の目標
+                <span style="flex: 1;"></span>
+                <button type="button" style="display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--dc-border-strong); background: var(--dc-surface); border-radius: 9999px; padding: 5px 11px; font-size: var(--dc-fs-body); font-weight: 600; color: var(--dc-text-body); white-space: nowrap;">目標を変更</button>
+              </div>
+
+              <div style="display: flex; align-items: baseline; gap: 6px; margin-bottom: 12px;">
+                <span style="font-size: var(--dc-fs-body); font-weight: 600; color: var(--dc-text);">目標</span>
+                <span class="num" style="font-size: var(--dc-fs-title); font-weight: 700; color: var(--dc-text); line-height: var(--dc-lh-hero);">10時間</span>
+                <span style="font-size: var(--dc-fs-body); font-weight: 500; color: var(--dc-text-muted);">/ 週</span>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; align-items: end; height: 130px; margin-bottom: 8px;">
+                <div class="bar-day">
+                  <span class="num" style="font-size: var(--dc-fs-caption); color: var(--dc-text-muted);">0.4h</span>
+                  <div style="width: 16px; height: 31px; border-radius: 8px; background: var(--dc-bar-past);"></div>
+                </div>
+                <div class="bar-day">
+                  <span class="num" style="font-size: var(--dc-fs-caption); font-weight: 700; color: var(--dc-primary);">0.5h</span>
+                  <div style="width: 16px; height: 37px; border-radius: 8px; background: var(--dc-primary);"></div>
+                </div>
+                <div class="bar-day">
+                  <span class="num" style="font-size: var(--dc-fs-caption); color: var(--dc-chevron);">0h</span>
+                  <div style="width: 16px; height: 5px; border-radius: 8px; background: var(--dc-border);"></div>
+                </div>
+                <div class="bar-day">
+                  <span class="num" style="font-size: var(--dc-fs-caption); color: var(--dc-chevron);">0h</span>
+                  <div style="width: 16px; height: 5px; border-radius: 8px; background: var(--dc-border);"></div>
+                </div>
+                <div class="bar-day">
+                  <span class="num" style="font-size: var(--dc-fs-caption); color: var(--dc-chevron);">0h</span>
+                  <div style="width: 16px; height: 5px; border-radius: 8px; background: var(--dc-border);"></div>
+                </div>
+                <div class="bar-day">
+                  <span class="num" style="font-size: var(--dc-fs-caption); color: var(--dc-chevron);">0h</span>
+                  <div style="width: 16px; height: 5px; border-radius: 8px; background: var(--dc-border);"></div>
+                </div>
+                <div class="bar-day">
+                  <span class="num" style="font-size: var(--dc-fs-caption); color: var(--dc-chevron);">0h</span>
+                  <div style="width: 16px; height: 5px; border-radius: 8px; background: var(--dc-border);"></div>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 12px;">
+                <span style="font-size: var(--dc-fs-caption); text-align: center; color: var(--dc-text-muted);">月</span>
+                <span style="display: flex; align-items: center; justify-content: center; font-size: var(--dc-fs-caption); font-weight: 700; color: #fff; background: var(--dc-primary); border-radius: 9999px; width: 24px; height: 24px; margin: 0 auto;">火</span>
+                <span style="font-size: var(--dc-fs-caption); text-align: center; color: var(--dc-text-subtle);">水</span>
+                <span style="font-size: var(--dc-fs-caption); text-align: center; color: var(--dc-text-subtle);">木</span>
+                <span style="font-size: var(--dc-fs-caption); text-align: center; color: var(--dc-text-subtle);">金</span>
+                <span style="font-size: var(--dc-fs-caption); text-align: center; color: var(--dc-text-subtle);">土</span>
+                <span style="font-size: var(--dc-fs-caption); text-align: center; color: var(--dc-text-subtle);">日</span>
+              </div>
+
+              <div style="font-size: var(--dc-fs-body); color: var(--dc-text-body); text-align: right;">
+                目標まであと <strong class="num" style="color: var(--dc-primary);">9時間5分</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ⑤ フッター（shared/AppFooter.tsx） -->
+      <div style="text-align: center; font-size: var(--dc-fs-caption); color: var(--dc-text-subtle); padding: 32px 0 0; margin-top: auto;">2026 © WEBCOACH</div>
+    </div>
+
+    <!-- 常駐AIコーチFAB（aicoach/GlobalAiCoachDrawer.tsx）。押すと右のドロワーが開く -->
+    <button type="button" style="position: absolute; right: 24px; bottom: 24px; display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 22px; border-radius: 9999px; background: var(--dc-primary); border: 1px solid var(--dc-primary); color: #fff; font-size: 14px; font-weight: 700; box-shadow: 0 8px 24px -8px rgba(160,8,36,.45);" onClick="{{ openAi }}">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path>
+        <path d="M20 2v4"></path>
+        <path d="M22 4h-4"></path>
+        <circle cx="4" cy="20" r="2"></circle>
+      </svg>
+      AIコーチに相談
+    </button>
+  </div>
+
+  <!-- ═════════ ここから下は「押した状態」。既定では出ていない ═════════ -->
+
+  <!-- サイドバー展開（224px・赤地）。本文を押しのけず上に重なる -->
+  <sc-if value="{{ sidebarOpen }}" hint-placeholder-val="{{ true }}">
+    <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 224px; box-sizing: border-box; background: var(--dc-primary); box-shadow: 3px 0 10px -4px rgba(90,0,14,.25); padding: 12px 12px 16px; display: flex; flex-direction: column; z-index: 20;">
+      <div style="display: flex; align-items: flex-start;">
+        <div style="flex: 1; padding: 8px;">
+          <div style="font-size: 18px; font-weight: 800; color: #FDF7F3; letter-spacing: .02em;">WEBCOACH</div>
+          <div style="font-size: 11px; font-weight: 500; color: rgba(253,247,243,.9); margin-top: 4px;">学習システム</div>
+        </div>
+        <button type="button" style="width: 28px; height: 28px; border-radius: 9999px; display: grid; place-items: center; color: rgba(253,247,243,.9); font-size: 15px;" onClick="{{ closeSidebar }}">«</button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 14px;">
+        <div class="nav-row nav-row-active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+            <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          </svg>
+          トップ
+        </div>
+        <div class="nav-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 7v14"></path>
+            <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path>
+          </svg>
+          学習する
+        </div>
+        <div class="nav-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path>
+          </svg>
+          AIコーチ
+        </div>
+        <div class="nav-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path>
+            <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
+          </svg>
+          コーチング
+        </div>
+        <div class="nav-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"></path>
+            <path d="M2 6h4"></path>
+            <path d="M2 10h4"></path>
+            <path d="M2 14h4"></path>
+            <path d="M2 18h4"></path>
+            <path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"></path>
+          </svg>
+          マイノート
+        </div>
+
+        <div style="height: 1px; background: rgba(255,255,255,.22); margin: 14px 12px;"></div>
+
+        <div class="nav-row">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+          管理
+        </div>
+      </div>
+
+      <div style="flex: 1;"></div>
+
+      <!-- 下部：ヘルプ2件とアカウント行 -->
+      <div style="display: flex; flex-direction: column; gap: 2px;">
+        <div style="width: 184px; height: 32px; border-radius: 13.6px; padding: 1px 6px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; margin: 0 8px; font-size: 12px; color: rgba(253,247,243,.95);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"></path>
+            <path d="M14 2v5h6"></path>
+          </svg>
+          利用マニュアル
+        </div>
+        <div style="width: 184px; height: 32px; border-radius: 13.6px; padding: 1px 6px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; margin: 0 8px; font-size: 12px; color: rgba(253,247,243,.95);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+          よくある質問
+        </div>
+
+        <div style="height: 1px; background: rgba(255,255,255,.22); margin: 10px 12px;"></div>
+
+        <button type="button" style="width: 200px; padding: 16px 8px 2px; display: flex; align-items: center; gap: 10px;" onClick="{{ toggleAccount }}">
+          <span style="width: 30px; height: 30px; flex: none; border-radius: 9999px; background: rgba(255,255,255,.25); display: grid; place-items: center; font-size: 10px; font-weight: 700; color: #FDF7F3;">モッ</span>
+          <span style="flex: 1; text-align: left; font-size: 13px; font-weight: 700; color: #FDF7F3;">モックさん</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(253,247,243,.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+        </button>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- アカウントメニュー。レール／展開のどちらから押しても同じものが出る -->
+  <sc-if value="{{ accountOpen }}" hint-placeholder-val="{{ true }}">
+    <!-- 出る位置はサイドバーの状態で変わる。レールなら 64px、展開中は panel の右隣 222px -->
+    <div style="position: absolute; left: {{ accountLeft }}; bottom: 78px; width: 232px; background: var(--dc-surface); border-radius: 14px; box-shadow: 0 16px 38px rgba(96,70,65,.16); padding: 0; overflow: hidden; z-index: 30;">
+      <div style="padding: 14px 14px 10px;">
+        <div style="font-size: 13px; font-weight: 700; color: #2B2426; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">mock@webcoach.dev</div>
+        <div style="font-size: 11px; color: #8B8386; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">mock@webcoach.dev</div>
+      </div>
+      <div style="height: 1px; background: var(--dc-border);"></div>
+      <div style="height: 39px; padding: 10px 14px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--dc-text-body);">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        アカウント設定
+      </div>
+      <div style="height: 39px; padding: 10px 14px; box-sizing: border-box; display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--dc-text-body);">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"></circle>
+          <path d="M20 21a8 8 0 0 0-16 0"></path>
+        </svg>
+        プロフィール
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- AIコーチのドロワー（aicoach/GlobalAiCoachDrawer.tsx）。右から420px -->
+  <sc-if value="{{ aiOpen }}" hint-placeholder-val="{{ true }}">
+    <div style="position: absolute; right: 0; top: 0; bottom: 0; width: 420px; box-sizing: border-box; background: var(--dc-surface); box-shadow: -8px 0 32px rgba(33,42,57,.16); display: flex; flex-direction: column; z-index: 40;">
+
+      <div style="flex: none; padding: 14px 14px 0; display: flex; align-items: flex-start; gap: 10px;">
+        <div style="flex: 1; font-size: 13px; font-weight: 800; color: #1F1D1E;">AIコーチに相談</div>
+        <button type="button" style="width: 24px; height: 24px; display: grid; place-items: center; color: #6B6467;" onClick="{{ closeAi }}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div style="flex: none; padding: 10px 14px; display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 12px; font-weight: 800; color: #1F1D1E;">AIコーチ</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--dc-border); background: var(--dc-surface); font-size: 10px; font-weight: 700; color: #6B6467;">
+          おまかせ
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+        </span>
+        <span style="flex: 1;"></span>
+        <span style="display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 10px; border-radius: 8px; border: 1px solid var(--dc-border); background: var(--dc-surface); font-size: 10px; font-weight: 700; color: #6B6467;">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h6v6"></path>
+            <path d="M9 21H3v-6"></path>
+            <path d="M21 3 14 10"></path>
+            <path d="M3 21l7-7"></path>
+          </svg>
+          広い画面で続ける
+        </span>
+      </div>
+
+      <!-- 会話ログ。初回は挨拶だけが1件ある -->
+      <div style="flex: 1; min-height: 0; background: #FDFCFC; padding: 14px; display: flex; flex-direction: column; gap: 12px;">
+        <div style="display: flex; gap: 12px; align-items: flex-start;">
+          <span style="width: 27px; height: 27px; flex: none; border-radius: 8px; background: var(--dc-primary); display: grid; place-items: center; font-size: 9px; font-weight: 900; color: #fff;">AI</span>
+          <div style="flex: 1; min-width: 0; background: var(--dc-surface); border-radius: 12px; padding: 11px 12px;">
+            <div style="font-size: 12px; font-weight: 800; color: #1F1D1E;">学習のことなら何でも相談できます</div>
+            <div style="font-size: 11.5px; color: #4A4245; margin-top: 6px; line-height: var(--dc-lh-ui);">困っていることをそのまま書いてください。内容に応じて、添削や文章改善などの専門モードを提案します。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 入力まわり -->
+      <div style="flex: none; padding: 9px 12px 11px; display: flex; flex-direction: column; gap: 8px;">
+        <div style="display: flex; gap: 6px; overflow: hidden;">
+          <span style="flex: none; height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--dc-border); background: var(--dc-surface); display: inline-flex; align-items: center; font-size: 10px; color: #6B6467;">簡単に説明して</span>
+          <span style="flex: none; height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--dc-border); background: var(--dc-surface); display: inline-flex; align-items: center; font-size: 10px; color: #6B6467;">具体例を出して</span>
+          <span style="flex: none; height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--dc-border); background: var(--dc-surface); display: inline-flex; align-items: center; font-size: 10px; color: #6B6467;">なぜそうするの？</span>
+          <span style="flex: none; height: 28px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--dc-border); background: var(--dc-surface); display: inline-flex; align-items: center; font-size: 10px; color: #6B6467;">制作物に当てはめると？</span>
+        </div>
+
+        <div style="border: 1px solid var(--dc-border); border-radius: 12px; background: var(--dc-surface); padding: 10px 12px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; color: var(--dc-text-subtle);">相談したいことを書いてください...</div>
+          <div style="height: 34px;"></div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9A9295" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+              <circle cx="9" cy="9" r="2"></circle>
+              <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+            </svg>
+            <span style="flex: 1; font-size: 9px; color: #9A9295;">画像貼り付けにも対応 / Ctrl+Enter で送信</span>
+            <span style="display: inline-flex; align-items: center; gap: 5px; height: 30px; padding: 0 12px; border-radius: 8px; background: var(--dc-primary); color: #fff; font-size: 11.5px; font-weight: 700;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m22 2-7 20-4-9-9-4Z"></path>
+                <path d="M22 2 11 13"></path>
+              </svg>
+              送信
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"sidebarOpen":{"editor":"boolean","default":false,"section":"状態"},"aiOpen":{"editor":"boolean","default":false,"section":"状態"},"accountOpen":{"editor":"boolean","default":false,"section":"状態"}}'>
+/**
+ * マイページの操作。実装（AppHeader.tsx / GlobalAiCoachDrawer.tsx）で
+ * 実際に開け閉めできるものだけを持たせている。
+ *
+ * 3つの状態はチップからも切り替えられるようにしてある（既定は全部閉じた状態）。
+ * state が未設定のあいだは props の既定値を使う。
+ */
+class Component extends DCLogic {
+  flag(key) {
+    const s = this.state || {};
+    if (typeof s[key] === 'boolean') return s[key];
+    return !!this.props[key];
+  }
+
+  renderVals() {
+    const sidebarOpen = this.flag('sidebarOpen');
+    const aiOpen = this.flag('aiOpen');
+    const accountOpen = this.flag('accountOpen');
+
+    return {
+      sidebarOpen: sidebarOpen,
+      aiOpen: aiOpen,
+      accountOpen: accountOpen,
+
+      // 位置は {{hole}} に入れる値として先に組み立てる（テンプレート側では式が書けない）
+      accountLeft: sidebarOpen ? '222px' : '64px',
+
+      // サイドバーを開くとアカウントメニューは畳む（実装と同じ）
+      openSidebar: () => this.setState({ sidebarOpen: true, accountOpen: false }),
+      closeSidebar: () => this.setState({ sidebarOpen: false, accountOpen: false }),
+      toggleAccount: () => this.setState({ accountOpen: !accountOpen }),
+      openAi: () => this.setState({ aiOpen: true }),
+      closeAi: () => this.setState({ aiOpen: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -7,16 +7,21 @@
  *
  * 使い方:
  *   node compare.cjs Courses.dc.html STU-03 1520 --offset 0
+ *   node compare.cjs NotesList.dc.html STU-06 1440 --dir notes
  *
  * 第3引数はキャプチャ側の幅。--offset はアートボードとキャプチャの x 原点の差
  * （キャプチャはビューポート全体、アートボードは画面ぴったりなので、ずれることがある）。
+ * --dir はアートボードの置き場（既定 screens）。preview.cjs と同じ。
+ *
+ * 🔴 部品アートボード（メニュー・モーダルなどの断片）は原点がページと違うので、
+ *    x/y/幅 の差には意味がない。字・太さ・色の3項目だけを見ること。
  */
 const fs = require('fs');
 const path = require('path');
 
 const { chromium } = require(path.resolve(__dirname, '../../../tools/clipkit-export/node_modules/playwright'));
 
-const SCREENS_DIR = path.resolve(__dirname, '../screens');
+const DEFAULT_DIR = 'screens';
 const CAPTURE_DIR = path.resolve(__dirname, '../_capture');
 
 /** capture.cjs と同じ採取をアートボード側にも適用する（同じものさしで測るため） */
@@ -55,11 +60,18 @@ function toPlainHtml(source) {
 }
 
 async function main() {
-  const [file, screenId, widthArg] = process.argv.slice(2);
+  const [file, screenId, widthArg] = process.argv.slice(2).filter((a, i, all) => {
+    // --offset / --dir とその値をファイル名たちと取り違えない
+    if (a.startsWith('--')) return false;
+    const prev = all[i - 1];
+    return !(prev === '--offset' || prev === '--dir');
+  });
   const offIdx = process.argv.indexOf('--offset');
   const offset = offIdx >= 0 ? Number(process.argv[offIdx + 1]) : 0;
+  const dirIdx = process.argv.indexOf('--dir');
+  const dir = path.resolve(__dirname, '..', dirIdx >= 0 ? String(process.argv[dirIdx + 1] || DEFAULT_DIR) : DEFAULT_DIR);
   if (!file || !screenId) {
-    console.error('使い方: node compare.cjs <Artboard.dc.html> <画面ID> [幅] [--offset n]');
+    console.error('使い方: node compare.cjs <Artboard.dc.html> <画面ID> [幅] [--offset n] [--dir notes]');
     process.exit(1);
   }
   const width = Number(widthArg) || 1440;
@@ -74,7 +86,7 @@ async function main() {
   const browser = await chromium.launch();
   const page = await browser.newPage();
   await page.setViewportSize({ width, height: 900 });
-  await page.setContent(toPlainHtml(fs.readFileSync(path.join(SCREENS_DIR, file), 'utf8')), { waitUntil: 'load' });
+  await page.setContent(toPlainHtml(fs.readFileSync(path.join(dir, file), 'utf8')), { waitUntil: 'load' });
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(500);
   const mine = await page.evaluate(collect);

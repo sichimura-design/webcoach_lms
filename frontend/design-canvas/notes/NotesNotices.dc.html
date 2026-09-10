@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06-P14 知らせ・確認・見つからない（部品）
+       実装: contexts/ToastContext.tsx:60-140（トースト）
+             MyNotesPage.tsx:184-194 / :236-258（window.confirm の文言）
+             MyNotesPage.tsx:434-453（ノートが見つからない・読み込み中）
+       ⚠ 部品ボード。トーストは画面右下に固定（bottom-8 right-8 / z-9999）。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    .n6 {
+      --dc-primary: #D60934;
+      --dc-bg: #FBF8F4;
+      --dc-surface: #FFFFFF;
+      --dc-text-muted: #6B6B6B;
+      --dc-text-subtle: #9E9E9E;
+      --dc-border: #EFE9E0;
+      --dc-radius-lg: 20px;
+      --dc-shadow-card: 0 1px 2px rgba(60,48,32,.05), 0 12px 24px -16px rgba(60,48,32,.14);
+    }
+
+    /* トースト（ToastContext.tsx:80-88）。px-5 py-3・rounded-2xl・shadow-lg・14px/500 */
+    .n6 .toast {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 12px 20px; border-radius: 16px; color: #FFFFFF;
+      font-size: 14px; font-weight: 500;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -4px rgba(0,0,0,.1);
+    }
+    /* 🔒 3色（ToastContext.tsx:60-64）。--dc-* ではなく、この3つの直値 */
+    .n6 .t-success { background: #6BBF8A; }
+    .n6 .t-error   { background: #E86D78; }
+    .n6 .t-info    { background: #4B3A33; }
+    .n6 .toast-action {
+      flex-shrink: 0; padding: 4px 12px; border: 0; border-radius: 999px;
+      background: rgba(255,255,255,.20); color: #FFFFFF;
+      font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap;
+    }
+    /* 🔴 ✕ は action の有無で出し分けない。案内文の長いトーストほど長く残るため */
+    .n6 .toast-close {
+      flex-shrink: 0; width: 22px; height: 22px; border: 0; border-radius: 999px;
+      background: transparent; color: #FFFFFF; display: grid; place-items: center;
+      font-family: inherit; font-size: 15px; line-height: 1; cursor: pointer;
+    }
+
+    /* window.confirm の文言だけを入れる枠。OS/ブラウザ標準のダイアログなので
+       見た目はデザインで変えられない。ここは文言の台帳として置いている。 */
+    .n6 .confirm {
+      width: 420px; box-sizing: border-box; padding: 14px 16px;
+      border: 1px dashed #C9BFAF; border-radius: 12px; background: #FFFDFA;
+      font-size: 12.5px; line-height: 1.9; color: #4A4245; white-space: pre-line;
+    }
+
+    .n6 .cap { font-size: 11.5px; font-weight: 700; color: #8A8178; margin-bottom: 10px; }
+    .n6 .cap span { font-weight: 400; color: #A79E93; }
+    .n6 .note { margin-top: 10px; font-size: 11px; line-height: 1.7; color: #A79E93; max-width: 460px; }
+  </style>
+</helmet>
+
+<div class="n6"
+     data-dc-id="STU-06-P14"
+     data-dc-remote="マイノート 部品 知らせと確認.dc.html"
+     data-dc-route="/notes"
+     data-dc-src="frontend/src/contexts/ToastContext.tsx#L60-L140"
+     style="display: flex; flex-direction: column; gap: 30px; width: 960px; min-height: 680px; padding: 24px; box-sizing: border-box; background: var(--dc-bg);">
+
+  <!-- ───────── ① トースト 3種 ───────── -->
+  <div>
+    <div class="cap">トースト <span>／ 画面右下に固定（bottom 32px・right 32px・z-index 9999）</span></div>
+    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 10px;">
+      <div class="toast t-success">
+        <span>「デザイン基礎」に移動しました</span>
+        <button type="button" class="toast-close" aria-label="閉じる">×</button>
+      </div>
+      <div class="toast t-error">
+        <span>削除できませんでした</span>
+        <button type="button" class="toast-close" aria-label="閉じる">×</button>
+      </div>
+      <!-- action 付き。速記メモから別のノートへ書き足したときに出る -->
+      <div class="toast t-info">
+        <span>「バナー制作の学び」に追加しました</span>
+        <button type="button" class="toast-action">このノートを開く</button>
+        <button type="button" class="toast-close" aria-label="閉じる">×</button>
+      </div>
+    </div>
+    <div class="note">
+      /notes で出るもの: 「〜」に移動しました／ノートを削除しました／削除できませんでした／
+      「〜」に追加しました（＋「このノートを開く」）／マイノートに残しました（学習記録から）。
+      引用モーダルの中だけは別で、右下に「ノートに追加しました」が 2.2 秒だけ出る（モーダルは閉じない）。
+    </div>
+  </div>
+
+  <!-- ───────── ② window.confirm の文言 2種 ─────────
+       🔴 ブラウザ標準のダイアログ。見た目は環境依存で、デザインでは変えられない。
+          変えられるのは文言だけなので、ここには文言だけを置いている。 -->
+  <div>
+    <div class="cap">削除の確認 <span>／ window.confirm。見た目は変えられない・文言だけ</span></div>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+      <div>
+        <div style="font-size: 11px; font-weight: 700; color: #A79E93; margin-bottom: 6px;">ノートを削除（ノート面の「その他」から）</div>
+        <div class="confirm">「バナー制作の学び」を削除しますか？
+この操作は元に戻せません。</div>
+      </div>
+      <div>
+        <div style="font-size: 11px; font-weight: 700; color: #A79E93; margin-bottom: 6px;">フォルダを削除（パネルのゴミ箱から）</div>
+        <div class="confirm">フォルダ「デザイン基礎」を削除しますか？
+中のノート 31件 は未整理に移ります。</div>
+      </div>
+    </div>
+    <div class="note">
+      絞り込み中で件数が数えられないときは「中のノートは未整理に移ります。」（件数なし）になる。
+      フォルダを消してもノートは消えない。消えるのは入れ物だけ。
+    </div>
+  </div>
+
+  <!-- ───────── ③ ノートが見つからない・読み込み中 ─────────
+       ?note=<id> のノートが取れないときの姿。一覧には戻れる。 -->
+  <div>
+    <div class="cap">ノートが開けない <span>／ /notes?note=&lt;消えたid&gt;</span></div>
+    <div style="display: flex; flex-direction: column; gap: 14px; width: 900px;">
+      <button type="button" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; height: 31px; padding: 6px 10px 6px 4px; border: 0; border-radius: 8px; background: transparent; font-family: inherit; font-size: 13px; font-weight: 700; color: var(--dc-primary); cursor: pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+        マイノートに戻る
+      </button>
+      <div style="padding: 24px; background: var(--dc-surface); border: 1px solid var(--dc-border); border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card); font-size: 13.5px; color: var(--dc-text-muted);">
+        このノートは見つかりませんでした。一覧から選び直してください。
+      </div>
+      <div style="padding: 24px; background: var(--dc-surface); border: 1px solid var(--dc-border); border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card); font-size: 13.5px; color: var(--dc-text-subtle);">
+        読み込んでいます…
+      </div>
+    </div>
+    <div class="note">
+      一覧側の取得に失敗したときは、グリッドの位置に「マイノートを読み込めませんでした」の
+      1枚だけが出る（useNoteList.ts:43）。
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06-P01 フォルダのバー 3態（部品）
+       実装: components/notes/NoteFolderBar.tsx:246-275 / index.css:1637-1700
+       出典: _capture/STU-06/1440（すべて選択）・_capture/STU-06-folder/1440（フォルダ選択）
+       ⚠ 部品ボード。実画面では一覧の見出しのすぐ下に1本だけ出る。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    /* 🔒 index.css L91-145 の .wc-warm と同値 */
+    .n6 {
+      --dc-primary: #D60934;
+      --dc-soft-100: #FDF2F2;
+      --dc-soft-200: #F5D8DB;
+      --dc-bg: #FBF8F4;
+      --dc-surface: #FFFFFF;
+      --dc-sunken: #F9F5F0;
+      --dc-text: #141414;
+      --dc-text-body: #3D3D3D;
+      --dc-text-subtle: #9E9E9E;
+      --dc-border-strong: #E2DBD0;
+    }
+
+    .n6 .fbar {
+      display: flex; align-items: center; gap: 8px; padding: 8px 0 12px; background: var(--dc-bg);
+    }
+    .n6 .fbar-item {
+      display: inline-flex; align-items: center; gap: 6px; flex: none; height: 32px; padding: 0 14px;
+      border: 1px solid var(--dc-border-strong); border-radius: 9999px;
+      background: var(--dc-surface); color: var(--dc-text-body);
+      font-family: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    }
+    /* 🔒 選択中。文字色は #141414。実装は var(--dc-primary-deep) を当てているが
+          その変数はどこにも定義されていない（index.css:1676）ので継承色になる。赤にしないこと。 */
+    .n6 .fbar-item.is-active {
+      background: var(--dc-soft-100); border-color: var(--dc-soft-200);
+      color: var(--dc-text); font-weight: 700;
+    }
+    /* パネルを開いている間、トリガーだけ地が沈む（.is-trigger.is-open） */
+    .n6 .fbar-item.is-open { background: var(--dc-sunken); }
+    .n6 .fbar-count {
+      font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;
+      font-size: 11.5px; color: var(--dc-text-subtle);
+    }
+    /* フォルダ名は最大40字。トリガーが伸びきらないよう切る（.notes-folder-bar__label） */
+    .n6 .fbar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 240px; }
+
+    .n6 .cap { font-size: 11.5px; font-weight: 700; color: #8A8178; margin-bottom: 8px; }
+    .n6 .cap span { font-weight: 400; color: #A79E93; }
+    .n6 .note { margin-top: 4px; font-size: 11px; line-height: 1.7; color: #A79E93; }
+  </style>
+</helmet>
+
+<div class="n6"
+     data-dc-id="STU-06-P01"
+     data-dc-remote="マイノート 部品 フォルダのバー.dc.html"
+     data-dc-route="/notes"
+     data-dc-src="frontend/src/components/notes/NoteFolderBar.tsx#L246-L275"
+     style="display: flex; flex-direction: column; gap: 18px; width: 760px; min-height: 260px; padding: 24px; box-sizing: border-box; background: var(--dc-bg);">
+
+  <!-- ───────── ① すべてのノートを選択（既定）───────── -->
+  <div>
+    <div class="cap">すべてのノート <span>／ /notes（?folder 無し）</span></div>
+    <div class="fbar">
+      <button type="button" class="fbar-item is-active">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg>
+        すべてのノート <span class="fbar-count">100</span>
+      </button>
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#D60934" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        重要 <span class="fbar-count">18</span>
+      </button>
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        未整理 <span class="fbar-count">40</span>
+      </button>
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        <span class="fbar-label">フォルダを開く</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ───────── ② 重要を選択 ───────── -->
+  <div>
+    <div class="cap">重要 <span>／ /notes?folder=star</span></div>
+    <div class="fbar">
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg>
+        すべてのノート <span class="fbar-count">100</span>
+      </button>
+      <button type="button" class="fbar-item is-active">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#D60934" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        重要 <span class="fbar-count">18</span>
+      </button>
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        未整理 <span class="fbar-count">40</span>
+      </button>
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        <span class="fbar-label">フォルダを開く</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ───────── ③ フォルダを開いている ─────────
+       トリガーのラベルがフォルダ名に変わり、件数が付いて is-active になる。 -->
+  <div>
+    <div class="cap">フォルダを選択 <span>／ /notes?folder=folder-seed-work</span></div>
+    <div class="fbar">
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg>
+        すべてのノート <span class="fbar-count">100</span>
+      </button>
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#D60934" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        重要 <span class="fbar-count">18</span>
+      </button>
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        未整理 <span class="fbar-count">40</span>
+      </button>
+      <button type="button" class="fbar-item is-active">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        <span class="fbar-label">案件・ポートフォリオ</span> <span class="fbar-count">13</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </div>
+    <div class="note">
+      トリガーの文字は状態で変わる: 未選択「フォルダを開く」／読み込み中「フォルダ」／
+      消えたフォルダを指している「（削除されたフォルダ）」。
+      パネルを開いている間は地が --dc-sunken に沈む。
+    </div>
+  </div>
+
+  <div class="note">
+    🔴 バーは position: sticky（top: 0・z-index 20）。下からカードが上がってくると画面の上端に張り付く。
+    幅が足りないときは折り返さず横スクロールする（overflow-x: auto）。静止画では表せないので文章で残す。
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
