@@ -70,6 +70,13 @@ class StudySessionService {
   }
 
   /**
+   * Get the study-stats-dashboard summary (マイページ/学習記録ページ向けの集約API)
+   */
+  async getStatsSummary(userid, days) {
+    return await apiServerAdapter.getStudyStatsSummary(userid, days);
+  }
+
+  /**
    * Get the study calendar for a given year/month
    */
   async getCalendar(userid, year, month) {

@@ -985,12 +985,13 @@ class BFFClient {
   }
 
   /**
-   * 今日/今週/今月・ストリーク・日別・教材別・最近の履歴をまとめて取得する
-   * GET /api/webcoach/study-stats/{userId}?days=35
+   * 今日/今週/先週/今月/累計・ストリーク・日別/月別・コース別内訳をまとめて取得する
+   * GET /api/study/stats-summary/{userId}?days=35
    * 画面はこれ1本で描けるようにしてある（リクエストを増やさない）。
+   * byCategory/recentは実データの取得元が無いため常に空配列（project_dev-miyabe-ai-app-gap.md参照）。
    */
   async getStudyStatsSummary(userId: number, days: number | 'all' = 35): Promise<StudyStatsSummary> {
-    const response = await this.api.get(`/webcoach/study-stats/${userId}`, { params: { days } });
+    const response = await this.api.get(`/study/stats-summary/${userId}`, { params: { days } });
     return response.data;
   }
 

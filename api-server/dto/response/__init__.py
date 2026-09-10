@@ -37,6 +37,7 @@ from .study import (
     CourseAccessResponse,
     CourseMaterialAccessSummaryResponse,
     CourseMaterialAccessResponse,
+    StudyStatsSummaryResponse,
 )
 from .common import (
     HealthResponse,
@@ -118,4 +119,5 @@ __all__ = [
     "CourseAccessResponse",
     "CourseMaterialAccessSummaryResponse",
     "CourseMaterialAccessResponse",
+    "StudyStatsSummaryResponse",
 ]

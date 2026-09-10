@@ -20,6 +20,7 @@ from dto.response import (
     StudyRankingResponse,
     CourseAccessResponse,
     CourseMaterialAccessResponse,
+    StudyStatsSummaryResponse,
 )
 from crud import (
     get_active_study_session,
@@ -30,6 +31,7 @@ from crud import (
     get_study_ranking,
     get_course_access_summary,
     get_course_material_access,
+    get_study_stats_summary,
 )
 
 logger = logging.getLogger(__name__)
@@ -87,6 +89,33 @@ def get_streak(userid: int, db: Session = Depends(get_db)):
     ログインストリーク(/webcoach/users/{userid}/login-streak)とは独立した別指標です。
     """
     return get_study_streak(db, userid)
+
+
+@router.get(
+    "/stats-summary/{userid}",
+    response_model=StudyStatsSummaryResponse,
+    summary="学習状況ダッシュボード向けの集計まとめ取得"
+)
+def get_stats_summary(userid: int, days: str = "35", db: Session = Depends(get_db)):
+    """
+    今日/今週/先週/今月/累計の学習時間・ストリーク・日別/月別/コース別内訳をまとめて返します。
+    マイページの学習状況ダッシュボードと/study-logページが1回の呼び出しで描画できるようにするための
+    集約エンドポイントです。
+
+    Args:
+        days: dailyTotalsを直近何日ぶん返すか。'all'を渡すと最初の記録の日から今日まで全期間。
+    """
+    if days == "all":
+        days_value = None
+    else:
+        try:
+            days_value = int(days)
+        except ValueError:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="days must be an integer or 'all'")
+        if days_value <= 0:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="days must be positive")
+
+    return get_study_stats_summary(db, userid, days=days_value)
 
 
 @router.get(

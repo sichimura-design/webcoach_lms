@@ -203,6 +203,31 @@ router.get('/streak/:userid', requireAuth, async (req, res) => {
 });
 
 /**
+ * GET /api/study/stats-summary/:userid?days=35|all
+ * Get the study-stats-dashboard summary (マイページ/学習記録ページ向け)
+ */
+router.get('/stats-summary/:userid', requireAuth, async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const { days } = req.query;
+
+    if (!isSelfOrAdminOrCoach(req, userid)) {
+      return forbid(res, req.user?.email, `access study stats summary for user ${userid}`);
+    }
+
+    const summary = await studySessionService.getStatsSummary(parseInt(userid, 10), days);
+    res.json(summary);
+  } catch (error) {
+    console.error('[StudySession] Get stats summary error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
  * GET /api/study/calendar/:userid?year=&month=
  * Get the study calendar for a given year/month
  */

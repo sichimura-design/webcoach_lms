@@ -280,10 +280,13 @@ export interface StudyFinishDraft {
   };
 }
 
-// ---- 集計値の型（dev/miyabe・モック） ---------------------------------------
+// ---- 集計値の型（dev/miyabe・元モック） -------------------------------------
 // APIのレスポンス形。実BFFにロールアップテーブルを置いてもフロントが変わらないよう、
 // 「集計済みを受け取る」契約にしてある（実装は都度導出）。
-// TODO(backend未実装): このセクションは mocks/studyActivityHandlers.ts のみが応答する。
+// StudyStatsSummary(GET /api/study/stats-summary/{userId})のみ実バックエンドに配線済み
+// (api-server crud.get_study_stats_summary)。byCategory/recentは実データの取得元が無く
+// 常に空配列を返す。それ以外(このファイル上半分のStudyActivity CRUD系)は引き続き
+// mocks/studyActivityHandlers.ts のみが応答する。
 
 export interface StudyDayTotal {
   /** YYYY-MM-DD */
@@ -337,7 +340,7 @@ export interface StudyMonthTotal {
   studyDays: number;
 }
 
-/** GET /webcoach/study-stats/{userId}（モック） */
+/** GET /api/study/stats-summary/{userId} */
 export interface StudyStatsSummary {
   today: StudyPeriodTotal;
   /** 月曜始まり */

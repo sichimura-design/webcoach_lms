@@ -194,6 +194,22 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get the study-stats-dashboard summary (today/week/lastWeek/month/allTime,
+   * streak, daily/monthly breakdown, per-course breakdown) in one call
+   */
+  async getStudyStatsSummary(userid, days = 35) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/stats-summary/${userid}`,
+      {
+        params: { days },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Get the study time ranking for a given period ('week' | 'month' | 'all')
    */
   async getStudyRanking(period = 'week', limit = 20) {

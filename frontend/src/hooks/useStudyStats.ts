@@ -113,14 +113,14 @@ export function useStudyStatsBundle(userId: number | undefined): StudyStatsBundl
  * react-query / SWR がこのリポジトリに無いため、useLearningPlan.ts と同じ
  * 手書きの useState + useEffect 形に揃える。
  *
- * TODO(backend未実装): このモック集計API(GET /webcoach/study-stats/{userId})は
- *   実BFFに存在しない。unavailable フラグで縮退させる設計はそのまま活かす。
+ * 実BFF(GET /api/study/stats-summary/{userId})に接続済み。byCategory/recentは
+ * 実データの取得元がまだ無いため常に空配列で返る(project_dev-miyabe-ai-app-gap.md参照)。
  */
 export interface UseStudyStatsResult {
   stats: StudyStatsSummary | null;
   loading: boolean;
   /**
-   * 取得できなかった = モックOFF（本番）で実BFFにこのAPIが無い、または通信失敗。
+   * 取得できなかった = 通信失敗（ネットワークエラー・認証切れ等）。
    * 🔴 エラー文言ではなくこのフラグを返すのは、本番で赤いエラーが出続けるのを避けるため。
    *    呼び出し側は「統計セクションを出さない」に縮退させる（タイマー自体は動く）。
    */

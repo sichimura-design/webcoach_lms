@@ -1,10 +1,12 @@
 /**
  * MSW: 学習アクティビティ（集中ブースのタイマー記録・統計・ストリーク）
  * ============================================================
- * 対応エンドポイント（すべて実BFFには存在しない。バックエンド変更禁止のためモックで提供）
+ * 対応エンドポイント（study-stats-summaryを除き実BFFには存在しない。バックエンド変更禁止のためモックで提供）
  *   POST   /api/webcoach/study-activities/:userid            記録する（id で冪等・手動追加も同じ口）
  *   GET    /api/webcoach/study-activities/:userid            履歴（新しい順・ページング）
- *   GET    /api/webcoach/study-stats/:userid?days=35|all     今日/今週/今月・ストリーク・日別・月別・教材別
+ *   GET    /api/study/stats-summary/:userid?days=35|all      今日/今週/今月・ストリーク・日別/月別・コース別
+ *          ★実バックエンドに配線済み(api-server crud.get_study_stats_summary)。ここは
+ *           モックモードON時の代替実装。byCategory/recentのみ実データの取得元が無く常に空配列。
  *   PATCH  /api/webcoach/study-activities/:userid/:activityId 1件編集（時間・教材・メモ・日付）
  *   DELETE /api/webcoach/study-activities/:userid/:activityId 1件削除
  *   POST   /api/webcoach/study-activities/:userid/reset       🔴モック確認用（シード再生成）
@@ -270,7 +272,9 @@ export const studyActivityHandlers = [
   // 🔴 days=all は「最初の記録の日から今日まで」。/study-log がこれで呼び、
   //    カレンダーの月送りも期間タブも全部この1回の応答から切り出す。
   //    日数で切ると「タブを切り替えるたびに読み込み中へ戻る」が復活する。
-  http.get('*/api/webcoach/study-stats/:userid', async ({ params, request }) => {
+  // 🔴 実体は /api/study/stats-summary/{userId} に配線済み(api-server: crud.get_study_stats_summary)。
+  //    ここはモックモードOFF時にも同じURLを叩けるよう、パスだけ実装に合わせてある。
+  http.get('*/api/study/stats-summary/:userid', async ({ params, request }) => {
     await delay();
     const userId = userIdOf(params);
     const raw = new URL(request.url).searchParams.get('days');

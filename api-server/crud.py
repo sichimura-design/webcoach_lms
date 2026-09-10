@@ -5,7 +5,7 @@ import time
 from datetime import datetime, timedelta, timezone, date
 from typing import Optional, List, Dict, Any
 from sqlalchemy.orm import Session
-from sqlalchemy import desc, text, func
+from sqlalchemy import desc, text, func, bindparam
 from entities import (
     UserLastCourseAccess,
     UserProfileSettings,
@@ -3129,4 +3129,179 @@ def get_course_material_access(db: Session, mdl_user_id: int, courseid: int) -> 
         }
         for row in result.fetchall()
     ]
+
+
+_STUDY_STREAK_THRESHOLD_MINUTES = 10
+
+
+def get_study_stats_summary(db: Session, mdl_user_id: int, days: Optional[int] = 35) -> Dict[str, Any]:
+    """
+    マイページ「学習状況ダッシュボード」/ /study-log 向けの集計まとめ。
+    today/week/lastWeek/month/allTime・ストリーク・日別/月別・コース別内訳を1回で返す。
+
+    自前テーブルは持たないため、_segment_totals_cte(study_session_started/ended)の
+    全区間を一度に取得し、以降はPython側で集計する
+    (frontend/src/utils/studyStats.ts の純関数と同じ方針・同じストリーク定義に揃えてある)。
+
+    🔴 get_study_streak/get_study_stats(FocusBoothPage向け)とはストリークの閾値定義が異なる。
+       あちらは「1分でも学習していれば成立」、こちらは STUDY_DAY_MIN_MINUTES(10分)以上を
+       「学習した日」とみなす。frontendのマイページ/学習記録ページの表示文言
+       （「あと○分で今日を達成」等）がこの閾値を前提にしているため、独自に定義し直している。
+       両者の統一は project_dev-miyabe-ai-app-gap.md に記載の未決着事項。
+
+    Args:
+        days: dailyTotals を直近何日ぶん返すか。Noneなら最初の記録の日から今日まで全期間。
+    """
+    query = text(f"""
+        SELECT courseid, started_at, duration_minutes
+        FROM ({_segment_totals_cte(user_scoped=True)}) segment_totals
+        ORDER BY started_at
+    """)
+    rows = db.execute(query, _segment_params(mdl_user_id)).fetchall()
+
+    day_minutes: Dict[date, int] = {}
+    day_session_count: Dict[date, int] = {}
+    day_longest: Dict[date, int] = {}
+    course_minutes: Dict[Optional[int], int] = {}
+    course_session_count: Dict[Optional[int], int] = {}
+    course_last_ts: Dict[Optional[int], int] = {}
+
+    for row in rows:
+        minutes = int(row.duration_minutes or 0)
+        ts = int(row.started_at)
+        d = datetime.fromtimestamp(ts, tz=JST).date()
+
+        day_minutes[d] = day_minutes.get(d, 0) + minutes
+        day_session_count[d] = day_session_count.get(d, 0) + 1
+        day_longest[d] = max(day_longest.get(d, 0), minutes)
+
+        courseid = row.courseid
+        course_minutes[courseid] = course_minutes.get(courseid, 0) + minutes
+        course_session_count[courseid] = course_session_count.get(courseid, 0) + 1
+        course_last_ts[courseid] = max(course_last_ts.get(courseid, 0), ts)
+
+    today_jst = datetime.now(JST).date()
+    week_start = today_jst - timedelta(days=today_jst.weekday())
+    last_week_start = week_start - timedelta(days=7)
+    last_week_end = week_start - timedelta(days=1)
+    month_start = today_jst.replace(day=1)
+    first_study_date = min(day_minutes) if day_minutes else None
+
+    def period_total(from_d: Optional[date], to_d: date) -> Dict[str, int]:
+        minutes = 0
+        session_count = 0
+        longest = 0
+        for d, m in day_minutes.items():
+            if d > to_d or (from_d is not None and d < from_d):
+                continue
+            minutes += m
+            session_count += day_session_count[d]
+            longest = max(longest, day_longest[d])
+        return {"minutes": minutes, "session_count": session_count, "longest_minutes": longest}
+
+    # ストリーク: 「今日」が未成立でも「昨日」が成立していれば連続は継続中とみなす
+    # (0時をまたいだ瞬間に連続が切れて見えるのを避ける。frontendのcomputeStreakと同一の定義)
+    study_days = sorted(d for d, m in day_minutes.items() if m >= _STUDY_STREAK_THRESHOLD_MINUTES)
+    study_day_set = set(study_days)
+    yesterday_jst = today_jst - timedelta(days=1)
+
+    cursor = today_jst if today_jst in study_day_set else (yesterday_jst if yesterday_jst in study_day_set else None)
+    current_streak = 0
+    while cursor is not None and cursor in study_day_set:
+        current_streak += 1
+        cursor -= timedelta(days=1)
+
+    best_streak = 0
+    run = 0
+    prev_day: Optional[date] = None
+    for d in study_days:
+        run = run + 1 if prev_day is not None and (d - prev_day) == timedelta(days=1) else 1
+        best_streak = max(best_streak, run)
+        prev_day = d
+    best_streak = max(best_streak, current_streak)
+
+    # 日別内訳: 欠損日も0で埋めて連続させる(グラフ・カレンダーが共用するため)
+    daily_from = (first_study_date or today_jst) if days is None else today_jst - timedelta(days=max(0, days - 1))
+    daily_totals = []
+    d = daily_from
+    while d <= today_jst:
+        minutes = day_minutes.get(d, 0)
+        daily_totals.append({
+            "date": d,
+            "minutes": minutes,
+            "session_count": day_session_count.get(d, 0),
+            "longest_minutes": day_longest.get(d, 0),
+            "is_study_day": minutes >= _STUDY_STREAK_THRESHOLD_MINUTES,
+        })
+        d += timedelta(days=1)
+
+    # 月別内訳: 受講開始月〜今月を欠損なく並べる
+    monthly_minutes: Dict[str, int] = {}
+    monthly_session_count: Dict[str, int] = {}
+    monthly_study_days: Dict[str, int] = {}
+    for d, m in day_minutes.items():
+        key = d.strftime("%Y-%m")
+        monthly_minutes[key] = monthly_minutes.get(key, 0) + m
+        monthly_session_count[key] = monthly_session_count.get(key, 0) + day_session_count[d]
+        if m >= _STUDY_STREAK_THRESHOLD_MINUTES:
+            monthly_study_days[key] = monthly_study_days.get(key, 0) + 1
+
+    monthly_totals = []
+    if first_study_date:
+        cursor_month = date(first_study_date.year, first_study_date.month, 1)
+        end_month = date(today_jst.year, today_jst.month, 1)
+        while cursor_month <= end_month:
+            key = cursor_month.strftime("%Y-%m")
+            monthly_totals.append({
+                "month": key,
+                "minutes": monthly_minutes.get(key, 0),
+                "session_count": monthly_session_count.get(key, 0),
+                "study_days": monthly_study_days.get(key, 0),
+            })
+            cursor_month = date(cursor_month.year + 1, 1, 1) if cursor_month.month == 12 \
+                else date(cursor_month.year, cursor_month.month + 1, 1)
+
+    # コース別内訳: タイトルはmdl_courseから解決(courseid=NULLは「教材を指定しない」扱い)
+    course_ids = [cid for cid in course_minutes.keys() if cid is not None]
+    course_titles: Dict[int, str] = {}
+    if course_ids:
+        title_query = text("SELECT id, fullname FROM mdl_course WHERE id IN :ids").bindparams(
+            bindparam("ids", expanding=True)
+        )
+        course_titles = {row.id: row.fullname for row in db.execute(title_query, {"ids": course_ids}).fetchall()}
+
+    by_course = [
+        {
+            "course_id": cid,
+            "course_title": course_titles.get(cid, "教材を指定しない") if cid is not None else "教材を指定しない",
+            "minutes": minutes,
+            "session_count": course_session_count[cid],
+            "last_studied_at": datetime.fromtimestamp(course_last_ts[cid], tz=JST).replace(tzinfo=None),
+        }
+        for cid, minutes in course_minutes.items()
+    ]
+    by_course.sort(key=lambda c: c["minutes"], reverse=True)
+
+    return {
+        "today": period_total(today_jst, today_jst),
+        "week": period_total(week_start, today_jst),
+        "last_week": period_total(last_week_start, last_week_end),
+        "month": period_total(month_start, today_jst),
+        "all_time": period_total(None, today_jst),
+        "streak": {
+            "current_days": current_streak,
+            "best_days": best_streak,
+            "month_study_days": monthly_study_days.get(today_jst.strftime("%Y-%m"), 0),
+            "today_achieved": today_jst in study_day_set,
+            "today_minutes": day_minutes.get(today_jst, 0),
+            "threshold_minutes": _STUDY_STREAK_THRESHOLD_MINUTES,
+        },
+        "daily_totals": daily_totals,
+        "by_course": by_course,
+        "by_category": [],
+        "recent": [],
+        "first_study_date": first_study_date,
+        "monthly_totals": monthly_totals,
+        "generated_at": datetime.now(JST).replace(tzinfo=None),
+    }
 
