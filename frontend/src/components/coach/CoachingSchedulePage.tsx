@@ -48,7 +48,11 @@ interface ScheduleFormState {
 const emptyForm: ScheduleFormState = {
   coaching_date: new Date().toISOString().slice(0, 10),
   status: '',
-  meeting_provider: '',
+  // 新規作成時は常にGoogle Meetを自動発行する前提(コーチが手動でURLを貼る経路は
+  // 廃止した)。文字起こし自動取り込み(TranscriptSyncService)がGoogle Meet
+  // Organizer発行のスケジュールしか対象にできないため、これを徹底しないと
+  // AIコーチングノートが一部の回だけ生成されない不整合が生じる。
+  meeting_provider: 'google_meet',
   meeting_url: '',
   coaching_summary: '',
   todo: '',
@@ -291,7 +295,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
 
         {showAddForm && (
           <div style={{ ...t.card, padding: 20 }}>
-            <ScheduleForm form={addForm} onChange={setAddForm} allowProviderChange />
+            <ScheduleForm form={addForm} onChange={setAddForm} forceGoogleMeet />
             <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
               <button type="button" style={smallPrimaryButton} onClick={handleCreate} disabled={saving}>
                 {saving ? '保存中...' : '記録する'}
@@ -459,13 +463,16 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
 function ScheduleForm({
   form,
   onChange,
-  allowProviderChange = false,
+  forceGoogleMeet = false,
 }: {
   form: ScheduleFormState;
   onChange: (form: ScheduleFormState) => void;
-  allowProviderChange?: boolean;
+  // 新規作成では常にtrue: Google Meet自動発行が前提で、手動URL入力の経路は無い。
+  // 編集(false)では、過去に手動URLで作られた回の値をそのまま編集できるよう
+  // 既存の分岐を維持する(provider切り替えのUIは出さない)。
+  forceGoogleMeet?: boolean;
 }) {
-  const isGoogleMeet = form.meeting_provider === 'google_meet';
+  const isGoogleMeet = forceGoogleMeet || form.meeting_provider === 'google_meet';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
@@ -480,16 +487,6 @@ function ScheduleForm({
         </div>
         <div style={{ flex: 2, minWidth: 220 }}>
           <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>ミーティングURL</label>
-          {allowProviderChange && (
-            <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6, fontSize: 12, color: color.textSubtle }}>
-              <input
-                type="checkbox"
-                checked={isGoogleMeet}
-                onChange={e => onChange({ ...form, meeting_provider: e.target.checked ? 'google_meet' : '', meeting_url: '' })}
-              />
-              Google Meetを自動発行する
-            </label>
-          )}
           {isGoogleMeet ? (
             <div style={{ ...inputStyle, color: color.textSubtle, display: 'flex', alignItems: 'center' }}>
               作成時に自動的にGoogle MeetのURLを発行します
