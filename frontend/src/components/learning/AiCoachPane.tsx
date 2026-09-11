@@ -6,6 +6,7 @@ import { LessonAiResponse } from '../../types/lesson';
 import { AiSkillId, AI_SKILL_META, isSpecialistSkill } from '../../types/aiSkill';
 import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
 import MarkdownRenderer from '../MarkdownRenderer';
+import { parseDifyMessage } from '../../utils/difyButtons';
 import SkillPlusMenu from './SkillPlusMenu';
 import SkillProposalCard from './SkillProposalCard';
 import SkillResultView from './SkillResultView';
@@ -438,9 +439,41 @@ export function AiCoachPane({
                           </p>
                         </>
                       ) : (
-                        <div style={{ fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
-                          <MarkdownRenderer content={message.answer.conclusion} compact />
-                        </div>
+                        (() => {
+                          const { text, buttons } = parseDifyMessage(message.answer.conclusion);
+                          return (
+                            <div style={{ fontSize: 11.5, lineHeight: 1.75, color: color.textBody }}>
+                              <MarkdownRenderer content={text} compact />
+                              {buttons.length > 0 && (
+                                <div className="flex flex-wrap" style={{ gap: 6, marginTop: 6 }}>
+                                  {buttons.map((btn, i) => (
+                                    <button
+                                      key={`${btn.value}-${i}`}
+                                      type="button"
+                                      disabled={ai.loading}
+                                      onClick={() => void ai.send(btn.value)}
+                                      className="wc-ai-chip focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                                      style={{
+                                        border: `1px solid ${color.primaryBorder}`,
+                                        borderRadius: 8,
+                                        background: color.hoverBgTint,
+                                        color: color.primary,
+                                        padding: '8px 12px',
+                                        fontFamily: 'inherit',
+                                        fontSize: 11.5,
+                                        fontWeight: 700,
+                                        cursor: ai.loading ? 'default' : 'pointer',
+                                        opacity: ai.loading ? 0.6 : 1,
+                                      }}
+                                    >
+                                      {btn.label}
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })()
                       )}
 
                       <AnswerSection label="教材の根拠" body={message.answer.basis} />

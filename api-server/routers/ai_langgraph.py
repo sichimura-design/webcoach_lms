@@ -188,7 +188,7 @@ def ai_chat_langgraph(
 
         # DBに登録済みのAIアプリケーション（secret_key設定済み）を動的ツールとして構築
         from agents.tools_langchain import create_ai_application_tools
-        dynamic_tools = create_ai_application_tools(db)
+        dynamic_tools = create_ai_application_tools(db, request.message)
 
         # 初期ステートを構築
         initial_state: LearningCoachState = {
@@ -200,6 +200,7 @@ def ai_chat_langgraph(
             "rag_context": "",
             "tool_results": [],
             "final_response": None,
+            "dify_bypass_response": None,
             "iteration_count": 0,
             "max_iterations": calculated_max_iterations
         }
