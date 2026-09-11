@@ -35,10 +35,13 @@ import { AdminImageUploadPage } from '../components/admin/AdminImageUploadPage';
 import { AdminVectorPage } from '../components/admin/AdminVectorPage';
 import { AdminStudentsPage } from '../components/admin/AdminStudentsPage';
 import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage';
-import { AdminCoachIntegrationsPage } from '../components/admin/AdminCoachIntegrationsPage';
+// AdminCoachIntegrationsPage(コーチの録画連携管理)は、依存する
+// /webcoach/meeting-connections* がBFFに未実装(モックのみ)でいったん没。
+// TODO(バックエンド未実装): 実装され次第 /admin/coach-integrations ルートへ再接続する。
 import { AdminSettingsPage } from '../components/admin/AdminSettingsPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
-import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
+// CoachSettingsPage(コーチ向けZoom連携設定)も同様に依存するmeeting-connections系が
+// BFF未実装のためいったん没。TODO: 上と合わせて実装され次第 /coach/settings へ再接続する。
 import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
 import { MyCoachingPage } from '../components/MyCoachingPage';
 import FocusBoothPage from '../components/FocusBoothPage';
@@ -526,7 +529,6 @@ function AppRoutes() {
         <Route path="avatars" element={<AdminCsvPage key="avatars" dataType="avatars" />} />
         <Route path="vector-data" element={<AdminVectorPage />} />
         <Route path="coach-mapping" element={<AdminCoachMappingPage />} />
-        <Route path="coach-integrations" element={<AdminCoachIntegrationsPage />} />
         <Route path="settings" element={<AdminSettingsPage />} />
       </Route>
 
@@ -544,15 +546,6 @@ function AppRoutes() {
         element={
           <CoachRoute>
             <CoachingScheduleWrapper />
-          </CoachRoute>
-        }
-      />
-
-      <Route
-        path="/coach/settings"
-        element={
-          <CoachRoute>
-            <CoachSettingsPage />
           </CoachRoute>
         }
       />

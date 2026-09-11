@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Video, Send, X, User, Paperclip, ImageOff } from 'lucide-react';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, X, User, Paperclip, ImageOff } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -27,7 +27,6 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const location = useLocation();
   const { user, avatarUrl: ctxAvatarUrl, nickName: ctxNickName, contentToken } = useAuth();
   const isStudentsPage = location.pathname.startsWith('/coach/students');
-  const isCoachSettingsPage = location.pathname.startsWith('/coach/settings');
 
   const resolvedUserName = userName ?? ctxNickName ?? user?.username ?? 'User';
   // avatarUrl は呼び出し元が既にcf_token付与済みの前提。ctxAvatarUrlはcontextの生URLなのでここで付与する
@@ -206,16 +205,13 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   ];
   const learnItems = navItems;
   // 🔴 dev/kanegae統合: 管理者/コーチは複数ロールを併せ持ちうるため、旧ternary
-  //    (どちらか一方しか出ない)から配列連結に変更。「連携設定」(Zoom/Google Meet
-  //    連携, CoachSettingsPage.tsx)はdev/kanegaeの実装のみに存在しmiyabe側に
-  //    対応ナビが無かったため追加。
+  //    (どちらか一方しか出ない)から配列連結に変更。
+  // 「連携設定」(Zoom/Google Meet連携, CoachSettingsPage.tsx)は依存するBFF側
+  // meeting-connections系が未実装のためいったん没(routes/index.tsx参照)。
   const manageItems = [
     ...(user?.isAdmin ? [{ label: '管理', icon: ShieldCheck, path: '/admin', active: isAdmin }] : []),
     ...(!user?.isAdmin && user?.isCoach
       ? [{ label: '受講生一覧', icon: BookOpen, path: '/coach/students', active: isStudentsPage }]
-      : []),
-    ...(user?.isCoach || user?.isAdmin
-      ? [{ label: '連携設定', icon: Video, path: '/coach/settings', active: isCoachSettingsPage }]
       : []),
   ];
 
