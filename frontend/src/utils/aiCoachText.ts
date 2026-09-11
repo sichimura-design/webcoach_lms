@@ -56,7 +56,11 @@ export function messageSummary(message: AiCoachMessage): string {
  */
 export function toHistory(
   messages: AiCoachMessage[],
-  limit = 6
+  // バックエンド(ai_langgraph.pyのConversationHistory max_length=10)に合わせる。
+  // 6件(3往復)だと、DBに登録したAIアプリ(Dify)との複数ターンのやり取りで
+  // 「どのアプリと話しているか」を示す最初の発言が古いターンで押し出されてしまい、
+  // LLMが文脈を見失って無関係なツールを呼んでしまうことがあった。
+  limit = 10
 ): { role: 'user' | 'assistant'; content: string }[] {
   return messages
     .filter((m) => m.role === 'user' || m.role === 'assistant')
