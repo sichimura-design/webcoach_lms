@@ -253,7 +253,11 @@ def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
                 "conversation_id": conversation_id,
                 "user": f"webcoach-user-{userid}",
             },
-            timeout=30,
+            # CloudFront(dev-preview)のオリジンレスポンスタイムアウト(既定30秒)より
+            # 手前で必ず何か返せるよう、LLM推論+FAISS検索の分(数秒)を差し引いた
+            # 余裕を持たせる。ここが30秒ギリギリだと、Dify応答が間に合っていても
+            # CloudFrontが先に504で切ってしまい、フロントには何も届かない。
+            timeout=20,
         )
         response.raise_for_status()
         data = response.json()
