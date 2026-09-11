@@ -23,6 +23,7 @@ import {
 import Encoding from 'encoding-japanese';
 import MarkdownRenderer from './MarkdownRenderer';
 import { AppHeader } from './shared';
+import { parseDifyMessage } from '../utils/difyButtons';
 
 interface CourseContentPageProps {
   courseId: number;
@@ -529,7 +530,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     } catch { /* cross-origin の場合は何もしない */ }
   };
 
-  const handleAiQuestion = () => sendAiMessage();
+  const handleAiQuestion = (overrideMessage?: string) => sendAiMessage(overrideMessage);
 
   // ─── コンテンツ描画 ───────────────────────
   const renderContent = () => {
@@ -1033,7 +1034,7 @@ interface AiCoachPanelProps {
   aiQuestion: string;
   setAiQuestion: (v: string) => void;
   handleAiKeyPress: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-  onSend: () => void;
+  onSend: (overrideMessage?: string) => void;
   chatEndRef: React.RefObject<HTMLDivElement>;
   pendingImage: PendingImage | null;
   imageError: string | null;
@@ -1074,7 +1075,29 @@ function AiCoachPanel({
                 <img src={msg.imageDataUrl} alt="添付画像" className="max-w-full max-h-40 rounded-lg mb-2 object-contain" />
               )}
               {msg.role === 'assistant' ? (
-                <MarkdownRenderer content={msg.content} compact />
+                (() => {
+                  const { text, buttons } = parseDifyMessage(msg.content);
+                  return (
+                    <>
+                      <MarkdownRenderer content={text} compact />
+                      {buttons.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-1">
+                          {buttons.map((btn, i) => (
+                            <button
+                              key={`${btn.value}-${i}`}
+                              type="button"
+                              disabled={aiLoading}
+                              onClick={() => onSend(btn.value)}
+                              className="text-xs font-bold rounded-lg px-3 py-2 border border-brand-border bg-brand-bg text-brand hover:bg-brand-bg/80 disabled:opacity-50"
+                            >
+                              {btn.label}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  );
+                })()
               ) : (
                 <span className="whitespace-pre-wrap">{msg.content}</span>
               )}
@@ -1153,7 +1176,7 @@ function AiCoachPanel({
             style={{ maxHeight: '120px', overflowY: 'auto' }}
           />
           <button
-            onClick={onSend}
+            onClick={() => onSend()}
             disabled={(!aiQuestion.trim() && !pendingImage) || aiLoading}
             className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mb-0.5 transition-colors ${(aiQuestion.trim() || pendingImage) && !aiLoading ? 'bg-brand' : 'bg-[#d0cac6]'}`}
           >
