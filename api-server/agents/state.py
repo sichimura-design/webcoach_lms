@@ -31,6 +31,12 @@ class LearningCoachState(TypedDict):
     # 最終回答
     final_response: Optional[str]
 
+    # AIアプリケーション（Dify）ツールの応答をそのまま最終回答として使う場合の内容。
+    # 設定されている場合、agentノードによる言い換えをスキップしてそのまま返す
+    # （Difyアプリ側がボタンのdata-message値など厳密な文字列一致を前提にした
+    # フローを持つことがあり、LLMによる要約・言い換えで壊れてしまうため）。
+    dify_bypass_response: Optional[str]
+
     # メタデータ
     iteration_count: int
     max_iterations: int

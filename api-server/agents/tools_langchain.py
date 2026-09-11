@@ -100,6 +100,8 @@ class GetUserBadgesInput(BaseModel):
 
 class AskAiApplicationInput(BaseModel):
     """AIアプリケーション連携ツールの入力"""
+    # 実際にDifyへ送る内容には使わない（ユーザーの発言をそのまま送るため）。
+    # ツール呼び出しのスキーマ上必要なため残しているが、値は無視される。
     query: str = Field(..., description="AIアプリに問い合わせる質問内容")
     userid: int = Field(..., description="ユーザーID")
 
@@ -267,12 +269,17 @@ def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
         return f"Difyへの問い合わせに失敗しました: {str(e)}"
 
 
-def create_ai_application_tools(db) -> List[BaseTool]:
+def create_ai_application_tools(db, raw_user_message: str) -> List[BaseTool]:
     """
     DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
     LangChain Toolとして動的に生成する。
 
     secret_keyに対応するAPIキーがSecrets Manager等の認証情報から見つからない場合はスキップする。
+
+    Difyへ送る問い合わせ内容は、LLMが生成する`query`引数ではなく、常に
+    ユーザーの発言(raw_user_message)をそのまま使う。Dify側アプリがボタンの
+    data-message値等、厳密な文字列一致を前提にしたステップ形式のフローを
+    持つことがあり、LLMによる言い換えを挟むとフローが先に進まなくなるため。
     """
     from entities.webcoach import WebCoachAIApplication
 
@@ -287,9 +294,9 @@ def create_ai_application_tools(db) -> List[BaseTool]:
             logger.warning(f"No credential found for AI application '{app.name}' (secret_key={app.secret_key})")
             continue
 
-        def make_func(api_key: str = api_key, app_id: int = app.id):
+        def make_func(api_key: str = api_key, app_id: int = app.id, message: str = raw_user_message):
             def _call(query: str, userid: int) -> str:
-                return _call_dify_chat(query, userid, api_key, app_id)
+                return _call_dify_chat(message, userid, api_key, app_id)
             return _call
 
         tools.append(

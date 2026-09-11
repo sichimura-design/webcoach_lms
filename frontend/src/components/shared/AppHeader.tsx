@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Video, Send, X, User, Paperclip, ImageOff } from 'lucide-react';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, X, User, Paperclip, ImageOff } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -13,6 +13,7 @@ import GlobalAiCoachDrawer from '../aicoach/GlobalAiCoachDrawer';
 import SidebarStudyTimer from './SidebarStudyTimer';
 import { withCfToken } from '../profile/AvatarPicker';
 import { color } from '../../theme/webcoachTheme';
+import { parseDifyMessage } from '../../utils/difyButtons';
 
 interface AppHeaderProps {
   userName?: string;
@@ -27,7 +28,6 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const location = useLocation();
   const { user, avatarUrl: ctxAvatarUrl, nickName: ctxNickName, contentToken } = useAuth();
   const isStudentsPage = location.pathname.startsWith('/coach/students');
-  const isCoachSettingsPage = location.pathname.startsWith('/coach/settings');
 
   const resolvedUserName = userName ?? ctxNickName ?? user?.username ?? 'User';
   // avatarUrl は呼び出し元が既にcf_token付与済みの前提。ctxAvatarUrlはcontextの生URLなのでここで付与する
@@ -206,16 +206,13 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   ];
   const learnItems = navItems;
   // 🔴 dev/kanegae統合: 管理者/コーチは複数ロールを併せ持ちうるため、旧ternary
-  //    (どちらか一方しか出ない)から配列連結に変更。「連携設定」(Zoom/Google Meet
-  //    連携, CoachSettingsPage.tsx)はdev/kanegaeの実装のみに存在しmiyabe側に
-  //    対応ナビが無かったため追加。
+  //    (どちらか一方しか出ない)から配列連結に変更。
+  // 「連携設定」(Zoom/Google Meet連携, CoachSettingsPage.tsx)は依存するBFF側
+  // meeting-connections系が未実装のためいったん没(routes/index.tsx参照)。
   const manageItems = [
     ...(user?.isAdmin ? [{ label: '管理', icon: ShieldCheck, path: '/admin', active: isAdmin }] : []),
     ...(!user?.isAdmin && user?.isCoach
       ? [{ label: '受講生一覧', icon: BookOpen, path: '/coach/students', active: isStudentsPage }]
-      : []),
-    ...(user?.isCoach || user?.isAdmin
-      ? [{ label: '連携設定', icon: Video, path: '/coach/settings', active: isCoachSettingsPage }]
       : []),
   ];
 
@@ -1011,27 +1008,56 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                       />
                     )}
                     {message.role === 'assistant' ? (
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        children={message.content.replace(/^(✅[^\n-]*?) - (.+)$/gm, '$1\n$2')}
-                        components={{
-                          h1: ({ children }) => <p className="text-base font-bold text-brand-text mt-3 mb-2">{children}</p>,
-                          h2: ({ children }) => <p className="text-sm font-bold text-brand-text mt-3 mb-2">{children}</p>,
-                          h3: ({ children }) => <p className="text-sm font-semibold text-brand-text mt-2 mb-1">{children}</p>,
-                          p: ({ children }) => <p className="text-sm leading-relaxed mb-2 last:mb-0" style={{ whiteSpace: 'pre-line' }}>{children}</p>,
-                          strong: ({ children }) => <strong className="font-bold text-brand-text">{children}</strong>,
-                          em: ({ children }) => <em className="italic">{children}</em>,
-                          ul: ({ children }) => <ul style={{ listStyleType: 'disc', paddingLeft: '1.25rem', margin: '0.25rem 0' }} className="text-sm">{children}</ul>,
-                          ol: ({ children }) => <ol style={{ listStyleType: 'decimal', paddingLeft: '1.25rem', margin: '0.25rem 0' }} className="text-sm">{children}</ol>,
-                          li: ({ children }) => <li style={{ listStyleType: 'inherit' }} className="text-sm leading-relaxed mb-0.5">{children}</li>,
-                          code: ({ children, className }) => className ? (
-                            <code className="block bg-gray-100 rounded p-2 text-xs font-mono my-1 overflow-x-auto">{children}</code>
-                          ) : (
-                            <code className="bg-gray-100 rounded px-1 text-xs font-mono">{children}</code>
-                          ),
-                          hr: () => <hr className="my-2 border-gray-200" />,
-                        }}
-                      />
+                      (() => {
+                        const { text, buttons } = parseDifyMessage(message.content);
+                        return (
+                          <>
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              children={text.replace(/^(✅[^\n-]*?) - (.+)$/gm, '$1\n$2')}
+                              components={{
+                                h1: ({ children }) => <p className="text-base font-bold text-brand-text mt-3 mb-2">{children}</p>,
+                                h2: ({ children }) => <p className="text-sm font-bold text-brand-text mt-3 mb-2">{children}</p>,
+                                h3: ({ children }) => <p className="text-sm font-semibold text-brand-text mt-2 mb-1">{children}</p>,
+                                p: ({ children }) => <p className="text-sm leading-relaxed mb-2 last:mb-0" style={{ whiteSpace: 'pre-line' }}>{children}</p>,
+                                strong: ({ children }) => <strong className="font-bold text-brand-text">{children}</strong>,
+                                em: ({ children }) => <em className="italic">{children}</em>,
+                                ul: ({ children }) => <ul style={{ listStyleType: 'disc', paddingLeft: '1.25rem', margin: '0.25rem 0' }} className="text-sm">{children}</ul>,
+                                ol: ({ children }) => <ol style={{ listStyleType: 'decimal', paddingLeft: '1.25rem', margin: '0.25rem 0' }} className="text-sm">{children}</ol>,
+                                li: ({ children }) => <li style={{ listStyleType: 'inherit' }} className="text-sm leading-relaxed mb-0.5">{children}</li>,
+                                code: ({ children, className }) => className ? (
+                                  <code className="block bg-gray-100 rounded p-2 text-xs font-mono my-1 overflow-x-auto">{children}</code>
+                                ) : (
+                                  <code className="bg-gray-100 rounded px-1 text-xs font-mono">{children}</code>
+                                ),
+                                hr: () => <hr className="my-2 border-gray-200" />,
+                              }}
+                            />
+                            {buttons.length > 0 && (
+                              <div className="flex flex-wrap gap-1.5 mt-1">
+                                {buttons.map((btn, i) => (
+                                  <button
+                                    key={`${btn.value}-${i}`}
+                                    type="button"
+                                    disabled={loading}
+                                    onClick={() => void sendMessage(btn.value)}
+                                    className="text-xs font-bold rounded-lg px-3 py-2"
+                                    style={{
+                                      border: `1px solid ${color.primaryBorder}`,
+                                      background: color.hoverBgTint,
+                                      color: color.primary,
+                                      cursor: loading ? 'default' : 'pointer',
+                                      opacity: loading ? 0.6 : 1,
+                                    }}
+                                  >
+                                    {btn.label}
+                                  </button>
+                                ))}
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()
                     ) : (
                       <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                     )}
@@ -1131,7 +1157,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent disabled:bg-gray-100"
               />
               <button
-                onClick={sendMessage}
+                onClick={() => void sendMessage()}
                 disabled={(!input.trim() && !pendingImage) || loading}
                 className="p-2 bg-brand text-white rounded-lg hover:bg-brand/90 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               >

@@ -275,19 +275,26 @@ def tools_node(state: LearningCoachState) -> LearningCoachState:
 
         # tool_resultsに記録
         new_tool_results = []
+        dify_bypass_response = None
         for msg in new_messages:
             if isinstance(msg, ToolMessage):
                 new_tool_results.append({
                     "tool_name": msg.name,
                     "content": msg.content
                 })
+                # AIアプリケーション（Dify）ツールの応答は、後段のagentノードで
+                # LLMに言い換えさせず、そのまま最終回答として使う（respond_nodeへ直行）。
+                # Difyアプリ側の会話文脈・ボタン選択肢を壊さないため。
+                if msg.name and msg.name.startswith("ask_ai_application_"):
+                    dify_bypass_response = msg.content
 
         logger.info(f"tools_node - Output: {len(new_messages)} new messages")
         # 新しいメッセージのみを返す（operator.addで既存のmessagesに追加される）
         return {
             **state,
             "messages": new_messages,  # 新しいToolMessageのみ
-            "tool_results": state["tool_results"] + new_tool_results
+            "tool_results": state["tool_results"] + new_tool_results,
+            "dify_bypass_response": dify_bypass_response
         }
 
     # ツールが実行されなかった場合
@@ -296,6 +303,20 @@ def tools_node(state: LearningCoachState) -> LearningCoachState:
         **state,
         "messages": []
     }
+
+
+def after_tools(state: LearningCoachState) -> Literal["agent", "respond"]:
+    """
+    条件付きエッジ: ツール実行後、エージェントに戻って推論を続けるか、
+    そのまま最終回答とするかを判定。
+
+    AIアプリケーション（Dify）ツールが呼ばれた場合はdify_bypass_responseが
+    設定されており、その内容をLLMに言い換えさせずそのまま最終回答にする。
+    """
+    if state.get("dify_bypass_response"):
+        logger.info("Dify tool response detected - bypassing agent rewrite, going straight to respond")
+        return "respond"
+    return "agent"
 
 
 def should_continue(state: LearningCoachState) -> Literal["tools", "respond"]:
@@ -321,15 +342,20 @@ def respond_node(state: LearningCoachState) -> LearningCoachState:
     """
     logger.info("Running respond_node")
 
-    # 最後のAIメッセージを取得
-    final_response = None
-    for msg in reversed(state["messages"]):
-        if isinstance(msg, AIMessage):
-            final_response = _extract_text(msg.content)
-            break
+    # AIアプリケーション（Dify）ツールの応答をそのまま使う場合は、
+    # LLMによる言い換えを挟まずそのまま最終回答にする。
+    if state.get("dify_bypass_response"):
+        final_response = state["dify_bypass_response"]
+    else:
+        # 最後のAIメッセージを取得
+        final_response = None
+        for msg in reversed(state["messages"]):
+            if isinstance(msg, AIMessage):
+                final_response = _extract_text(msg.content)
+                break
 
-    if not final_response:
-        final_response = "申し訳ございません。回答を生成できませんでした。"
+        if not final_response:
+            final_response = "申し訳ございません。回答を生成できませんでした。"
 
     # messagesは変更しないので空リストを返す
     return {
@@ -374,8 +400,17 @@ def create_learning_coach_graph() -> StateGraph:
         }
     )
 
-    # ツール実行後はエージェントに戻る（ループ）
-    workflow.add_edge("tools", "agent")
+    # ツール実行後: 通常はエージェントに戻る（ループ）。
+    # AIアプリケーション（Dify）ツールの応答はそのまま最終回答にするため、
+    # respondへ直行する場合がある（after_tools参照）。
+    workflow.add_conditional_edges(
+        "tools",
+        after_tools,
+        {
+            "agent": "agent",
+            "respond": "respond"
+        }
+    )
 
     # 最終回答後は終了
     workflow.add_edge("respond", END)

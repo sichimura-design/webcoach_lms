@@ -67,10 +67,10 @@ export function useAiChat() {
     setImageError(null);
   };
 
-  const sendMessage = async () => {
-    if ((!input.trim() && !pendingImage) || loading) return;
+  const sendMessage = async (overrideMessage?: string) => {
+    if ((!overrideMessage && !input.trim() && !pendingImage) || loading) return;
 
-    const messageText = input.trim() || 'この画像について教えてください。';
+    const messageText = overrideMessage ?? (input.trim() || 'この画像について教えてください。');
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
