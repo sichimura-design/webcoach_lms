@@ -65,5 +65,6 @@ class WebCoachUserProfileResponse(BaseModel):
     goal: Optional[str] = None
     badge_count: Optional[int] = 0
     avatar_id: Optional[int] = None
+    weekly_target_minutes: Optional[int] = None
 
     model_config = ConfigDict(from_attributes=True)

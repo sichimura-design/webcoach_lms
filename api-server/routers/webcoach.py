@@ -151,7 +151,8 @@ def get_webcoach_profile_endpoint(
                 today_small_step=None,
                 goal=None,
                 badge_count=0,
-                avatar_id=None
+                avatar_id=None,
+                weekly_target_minutes=None
             )
 
         # Convert profile to dict
@@ -164,7 +165,8 @@ def get_webcoach_profile_endpoint(
             "today_small_step": profile.today_small_step,
             "goal": profile.goal,
             "badge_count": profile.badge_count,
-            "avatar_id": profile.avatar_id
+            "avatar_id": profile.avatar_id,
+            "weekly_target_minutes": profile.weekly_target_minutes
         }
         return WebCoachUserProfileResponse(**profile_dict)
 
@@ -244,7 +246,8 @@ def get_profile_alias(userid: int, db: Session = Depends(get_db)):
             today_small_step=None,
             goal=None,
             badge_count=0,
-            avatar_id=None
+            avatar_id=None,
+            weekly_target_minutes=None
         )
 
     # Convert profile to dict
@@ -257,7 +260,8 @@ def get_profile_alias(userid: int, db: Session = Depends(get_db)):
         "today_small_step": profile.today_small_step,
         "goal": profile.goal,
         "badge_count": profile.badge_count,
-        "avatar_id": profile.avatar_id
+        "avatar_id": profile.avatar_id,
+        "weekly_target_minutes": profile.weekly_target_minutes
     }
     return WebCoachUserProfileResponse(**profile_dict)
 

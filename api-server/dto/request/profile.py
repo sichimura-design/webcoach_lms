@@ -42,3 +42,4 @@ class WebCoachUserProfileUpdate(BaseModel):
     goal: Optional[str] = Field(default=None, description="目標")
     badge_count: Optional[int] = Field(default=None, ge=0, description="獲得バッジ数")
     avatar_id: Optional[int] = Field(default=None, description="アバターID")
+    weekly_target_minutes: Optional[int] = Field(default=None, ge=0, description="週間の学習時間目標（分）")

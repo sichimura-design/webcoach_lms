@@ -38,6 +38,7 @@ class WebCoachUserProfile(Base):
     goal = Column(Text, nullable=True)
     badge_count = Column(SmallInteger, nullable=True, default=0)
     avatar_id = Column(BigInteger, nullable=True, index=True)
+    weekly_target_minutes = Column(SmallInteger, nullable=True)
 
 
 class WebCoachLearningRoadmap(Base):

@@ -713,6 +713,7 @@ def upsert_webcoach_user_profile(
     goal = record.get('goal')
     badge_count = record.get('badge_count', 0)
     avatar_id = record.get('avatar_id')
+    weekly_target_minutes = record.get('weekly_target_minutes')
 
     # Check if record exists
     existing = db.query(WebCoachUserProfile).filter(
@@ -737,6 +738,8 @@ def upsert_webcoach_user_profile(
             existing.badge_count = badge_count
         if avatar_id is not None:
             existing.avatar_id = avatar_id
+        if weekly_target_minutes is not None:
+            existing.weekly_target_minutes = weekly_target_minutes
     else:
         # Create new record
         existing = WebCoachUserProfile(
@@ -748,7 +751,8 @@ def upsert_webcoach_user_profile(
             today_small_step=today_small_step,
             goal=goal,
             badge_count=badge_count,
-            avatar_id=avatar_id
+            avatar_id=avatar_id,
+            weekly_target_minutes=weekly_target_minutes
         )
         db.add(existing)
 
