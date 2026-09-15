@@ -22,7 +22,7 @@ import type { LessonAiHistoryItem, LessonAiSource } from './lesson';
  * 実行API（POST /webcoach/ai-skill）には渡らない。
  *
  * 旧「AIアプリ」（専門用語AIアシスタント／キャッチコピーアイデアメーカー／
- * AI面接シミュレーター／案件抽出メーカー）はここへ畳み込んでいる。
+ * AI面接シミュレーター）はここへ畳み込んでいる。
  * 別タブで開くアプリではなく、AIコーチのモードとして扱うため。
  */
 export type AiSkillId =
@@ -35,7 +35,6 @@ export type AiSkillId =
   | 'copy'
   | 'application'
   | 'interview'
-  | 'job-search'
   | 'idea'
   | 'tooling';
 
@@ -69,7 +68,6 @@ export type AiSkillIconKey =
   | 'lightbulb'
   | 'document'
   | 'mic'
-  | 'briefcase'
   | 'sparkles'
   | 'wrench';
 
@@ -259,23 +257,6 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     preferWide: true,
   },
 
-  'job-search': {
-    label: '自分に合う案件を探す',
-    modeLabel: '案件さがしモード',
-    shortLabel: '案件さがし',
-    cta: '条件に合う案件を探す',
-    category: 'career',
-    icon: 'briefcase',
-    description: 'できることと使える時間を整理して、無理なく受けられる案件の条件まで絞ります。',
-    inputHint: '得意な作業・週に使える時間・希望単価',
-    useCase: '副業を始めたいが、どこから受けるか迷うとき',
-    modeLead: '受けられる条件を整理して、案件の探し方まで決めます。',
-    quickActions: ['条件を整理して', 'はじめやすい案件は？', '単価の目安を知りたい'],
-    placeholder: '得意な作業と、週に使える時間を書いてください…',
-    needsImage: false,
-    preferWide: false,
-  },
-
   idea: {
     label: 'アイデアを整理する',
     modeLabel: 'アイデア整理モード',
@@ -331,7 +312,6 @@ export const FEATURED_AI_SKILLS: ConcreteAiSkillId[] = [
   'copy',
   'learning',
   'interview',
-  'job-search',
 ];
 
 /** AI_SKILL_META から1項目だけ抜き出した対応表を作る（表示名などの後方互換マップ用） */

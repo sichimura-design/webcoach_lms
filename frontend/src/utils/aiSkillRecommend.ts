@@ -48,7 +48,6 @@ const CATEGORY_SKILL: Array<{ match: RegExp; skillId: ConcreteAiSkillId }> = [
   { match: /Web制作|コーディング|コード|プログラ/, skillId: 'tooling' },
   { match: /マーケ|ライティング|セールス/, skillId: 'copy' },
   { match: /SNS/, skillId: 'copy' },
-  { match: /キャリア|副業|案件|ソフトスキル/, skillId: 'job-search' },
 ];
 
 /** 教材名から拾う、より具体的な手がかり。カテゴリより優先する */
@@ -67,7 +66,6 @@ const FALLBACK_ORDER: ConcreteAiSkillId[] = [
   'learning',
   'copy',
   'quiz',
-  'job-search',
 ];
 
 /** 機能ごとの既定の見出し・理由。学習状況が取れないときはこの文言で出す */
@@ -103,10 +101,6 @@ const GENERIC: Record<ConcreteAiSkillId, { title: string; reason: string }> = {
   interview: {
     title: 'AIと面接の練習をする',
     reason: '声に出して答える練習を、相手を待たずにできます。',
-  },
-  'job-search': {
-    title: '受けられる案件の条件を絞る',
-    reason: 'できることと使える時間を整理すると、探す範囲が決まります。',
   },
   idea: {
     title: '何から始めるかを整理する',
