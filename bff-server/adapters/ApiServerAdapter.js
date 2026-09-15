@@ -281,7 +281,7 @@ class ApiServerAdapter {
       {
         headers: { 'Content-Type': 'application/json' },
         // api-server内部でLLM推論+FAISS検索(数秒)に加えてDify呼び出し自体が
-        // 最大30秒(tools_langchain.pyのtimeout=30)かかりうるため、
+        // 最大45秒(tools_langchain.pyのtimeout=45)かかりうるため、
         // BFF側のタイムアウトはそれより十分長く取る必要がある。
         // 以前は30000(Dify側と同値)だったため、Dify応答がわずかに遅いだけで
         // BFFが先にタイムアウトし「一時的なエラー」を返していた。

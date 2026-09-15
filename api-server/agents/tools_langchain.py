@@ -253,13 +253,14 @@ def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
                 "conversation_id": conversation_id,
                 "user": f"webcoach-user-{userid}",
             },
-            # CloudFront(dev-preview)のオリジンレスポンスタイムアウト(既定30秒)より
-            # 手前で必ず何か返せるよう、LLM推論+FAISS検索の分を差し引いた余裕を持たせる。
-            # 実測: Dify側は会話が進み複雑な提案をするほど遅くなり、後半のターンで
-            # 21.8秒かかった例がある。20秒では不足だったため25秒に緩和。
-            # それでも30秒ぎりぎりの余地は少ないので、これ以上遅いDifyアプリが
-            # 出てきた場合はCloudFront側のオリジンタイムアウト自体を見直す必要がある。
-            timeout=25,
+            # dev-previewのCloudFrontオリジンタイムアウトを60秒、BFF→api-server間の
+            # タイムアウトを50秒に緩和済み(2026-09-15)なので、それより手前で必ず
+            # 何か返せる範囲でDify呼び出し自体にも余裕を持たせる。
+            # 実測: 25秒では「案件検索」のような重いステップ形式フローの後半ターンで
+            # 依然としてread timeoutになるケースがあったため45秒に緩和。
+            # FAISS検索+ツール選択のLLM呼び出し分(数秒)を差し引いてもBFFの50秒に
+            # 収まるよう、45秒より上げる場合はBFF側のタイムアウトも合わせて見直すこと。
+            timeout=45,
         )
         response.raise_for_status()
         data = response.json()
@@ -270,9 +271,13 @@ def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
 
         return data.get("answer", "")
 
+    except requests.exceptions.Timeout as e:
+        logger.error(f"Dify API call timed out: {e}")
+        return "案件検索に時間がかかっており、時間内に確認できませんでした。もう一度試すか、少し時間をおいてから聞いてみてください。"
+
     except requests.exceptions.RequestException as e:
         logger.error(f"Dify API call failed: {e}")
-        return f"Difyへの問い合わせに失敗しました: {str(e)}"
+        return "外部サービスへの問い合わせでエラーが発生しました。もう一度試してみてください。"
 
 
 def create_ai_application_tools(db, raw_user_message: str) -> List[BaseTool]:
