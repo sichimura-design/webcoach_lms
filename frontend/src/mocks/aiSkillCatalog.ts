@@ -340,35 +340,6 @@ export const AI_SKILL_MOCK: Record<ConcreteAiSkillId, AiSkillMockConfig> = {
     latencyMs: 850,
   },
 
-  // 旧「案件抽出メーカー」。UIでは「自分に合う案件を探す」。
-  'job-search': {
-    internalApp: 'webcoach-job-search',
-    summaryTemplate: () =>
-      'いま受けられる条件から整理しました。案件を広く見るより、受けられる形を決める方が先に進みます。',
-    aspects: [
-      {
-        label: 'できること',
-        terms: ['得意', 'できる', 'スキル'],
-        fallbackVerdict: 'improve',
-        comment: '完成まで一人で運べる作業だけを挙げます。学習中のものは分けて考えます。',
-      },
-      {
-        label: '使える時間',
-        terms: ['時間', '週', '納期'],
-        fallbackVerdict: 'improve',
-        comment: '週に確実に取れる時間で考えます。ここを多めに見積もると納期で苦しくなります。',
-      },
-      {
-        label: '単価の目安',
-        terms: ['単価', '報酬', '価格'],
-        fallbackVerdict: 'good',
-        comment: '最初の数件は実績づくりを優先しても構いませんが、下限は決めておきます。',
-      },
-    ],
-    producesRevision: false,
-    latencyMs: 800,
-  },
-
   tooling: {
     internalApp: 'webcoach-tooling',
     summaryTemplate: () =>

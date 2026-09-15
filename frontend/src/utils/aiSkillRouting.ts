@@ -115,19 +115,6 @@ const INTERVIEW_WORDS = ['面接', '面談', '商談', '顧客との打ち合わ
 /** 応募・提案の文書を作りたいことを示す語 */
 const APPLICATION_WORDS = ['応募', '提案文', '営業文', 'エントリー', '職務経歴', '履歴書'];
 
-/** 案件そのものを探していることを示す語 */
-const JOB_WORDS = [
-  '案件',
-  '仕事を探',
-  '受注',
-  'クラウドソーシング',
-  'ランサーズ',
-  'クラウドワークス',
-  'ココナラ',
-  '副業',
-  '単価',
-];
-
 /** 言葉の意味が分からないことを示す語 */
 const GLOSSARY_WORDS = [
   '用語',
@@ -305,7 +292,7 @@ function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
       references: buildReferences('writing', input),
     };
   }
-  // ── キャリア（面接練習・応募文・案件さがし）──
+  // ── キャリア（面接練習・応募文）──
   // 「長い文章の貼り付け」だけで文章改善に流すより先に見る。募集要項を貼っただけの
   // 相談を「文章を整えますか」と返してしまうと、聞かれていないことに答えることになる。
   const interviewWord = hit(text, INTERVIEW_WORDS);
@@ -326,16 +313,6 @@ function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
       strength: pasted ? 'explicit' : 'suggest',
       reason: pasted ? `募集内容の貼り付け ＋「${applicationWord}」` : `「${applicationWord}」`,
       references: buildReferences('application', input),
-    };
-  }
-
-  const jobWord = hit(text, JOB_WORDS);
-  if (jobWord) {
-    return {
-      skillId: 'job-search',
-      strength: 'suggest',
-      reason: `「${jobWord}」`,
-      references: buildReferences('job-search', input),
     };
   }
 
