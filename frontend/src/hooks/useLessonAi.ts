@@ -250,6 +250,10 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         try {
           const res = await bffClient.sendAIMessage({
             message: question,
+            // 会話履歴を渡さないと、DBに登録したAIアプリ(Dify)へ問い合わせ中の
+            // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
+            // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
+            conversation_history: toHistory(messages),
             ...(img
               ? {
                   image: {

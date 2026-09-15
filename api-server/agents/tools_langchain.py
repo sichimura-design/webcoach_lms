@@ -253,7 +253,13 @@ def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
                 "conversation_id": conversation_id,
                 "user": f"webcoach-user-{userid}",
             },
-            timeout=30,
+            # CloudFront(dev-preview)のオリジンレスポンスタイムアウト(既定30秒)より
+            # 手前で必ず何か返せるよう、LLM推論+FAISS検索の分を差し引いた余裕を持たせる。
+            # 実測: Dify側は会話が進み複雑な提案をするほど遅くなり、後半のターンで
+            # 21.8秒かかった例がある。20秒では不足だったため25秒に緩和。
+            # それでも30秒ぎりぎりの余地は少ないので、これ以上遅いDifyアプリが
+            # 出てきた場合はCloudFront側のオリジンタイムアウト自体を見直す必要がある。
+            timeout=25,
         )
         response.raise_for_status()
         data = response.json()
