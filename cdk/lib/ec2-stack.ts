@@ -87,6 +87,17 @@ export class Ec2Stack extends cdk.Stack {
       }));
     }
 
+    // Grant SES send permission for bff-server's coaching schedule reminder
+    // emails (ReminderService). No specific verified identity ARN exists yet
+    // in this account (dev/UAT is still SES sandbox — see
+    // memory/ses-sandbox-release.md), so this is scoped to the account/region
+    // rather than a single identity; narrow it once a webcoach.jp identity is
+    // verified here.
+    role.addToPolicy(new iam.PolicyStatement({
+      actions: ['ses:SendEmail', 'ses:SendRawEmail'],
+      resources: ['*'],
+    }));
+
     // User Data script for Moodle installation
     const userData = ec2.UserData.forLinux();
     userData.addCommands(

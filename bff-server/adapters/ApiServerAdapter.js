@@ -956,6 +956,31 @@ class ApiServerAdapter {
   }
 
   /**
+   * Coaching schedules taking place tomorrow (JST) with no reminder email
+   * sent yet (internal — used by ReminderService's periodic poll)
+   */
+  async getPendingCoachingReminders() {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/coaching/schedule/pending-reminders`,
+      { timeout: 10000 }
+    );
+    return response.data;
+  }
+
+  /**
+   * Mark a coaching schedule's reminder email as sent (internal — used by
+   * ReminderService right after a successful send, to avoid double-sending).
+   */
+  async markCoachingReminderSent(scheduleId) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/coaching/schedule-by-id/${scheduleId}/reminder-sent`,
+      {},
+      { timeout: 10000 }
+    );
+    return response.data;
+  }
+
+  /**
    * Save (upsert) recording/transcript metadata for a coaching schedule.
    * The actual file must already be uploaded to S3 before calling this.
    */

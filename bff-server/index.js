@@ -19,6 +19,7 @@ const logger = require('./utils/logger');
 // Services
 const authService = require('./services/AuthService');
 const transcriptSyncService = require('./services/TranscriptSyncService');
+const reminderService = require('./services/ReminderService');
 
 // Middleware
 const { cookieLogging, auditLogging, rawBodyLogging } = require('./middleware/logging');
@@ -241,6 +242,17 @@ if (require.main === module) {
           });
         }, intervalMs);
         logger.log(`Transcript sync: enabled (every ${config.transcriptSyncIntervalMinutes} min)`);
+      }
+
+      // Start periodic coaching schedule reminder emails (see ReminderService)
+      if (config.reminderEnabled) {
+        const intervalMs = config.reminderIntervalMinutes * 60 * 1000;
+        setInterval(() => {
+          reminderService.sendPendingReminders().catch(err => {
+            logger.error('[Reminder] Periodic send failed:', err.message);
+          });
+        }, intervalMs);
+        logger.log(`Coaching reminders: enabled (every ${config.reminderIntervalMinutes} min)`);
       }
 
       // Start HTTP server

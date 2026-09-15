@@ -2012,6 +2012,47 @@ def get_pending_google_meet_schedules(
     ).order_by(WebCoachCoachingSchedule.coaching_date).all()
 
 
+def get_pending_coaching_reminders(db: Session) -> List[WebCoachCoachingSchedule]:
+    """
+    翌日(JST)に実施予定で、まだリマインドメールを送っていない予約を全ユーザー
+    横断で取得します(定期リマインド送信処理向け)。
+
+    coaching_scheduleには時刻列が無いため、「実施日の前日に1回だけ送る」日次
+    バッチ方式を前提にしている(厳密な「開始N時間前」ではない)。
+
+    Returns:
+        List[WebCoachCoachingSchedule]
+    """
+    tomorrow_jst = datetime.now(JST).date() + timedelta(days=1)
+
+    return db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.coaching_date == tomorrow_jst,
+        WebCoachCoachingSchedule.reminder_sent_at.is_(None),
+    ).order_by(WebCoachCoachingSchedule.coaching_date).all()
+
+
+def mark_coaching_reminder_sent(
+    db: Session,
+    schedule_id: int,
+) -> Optional[WebCoachCoachingSchedule]:
+    """
+    リマインドメールを送信済みとしてマークします(内部処理向け、二重送信防止)。
+
+    Returns:
+        WebCoachCoachingSchedule: 更新後のレコード。見つからない場合はNone
+    """
+    schedule = db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.id == schedule_id
+    ).first()
+
+    if not schedule:
+        return None
+
+    schedule.reminder_sent_at = datetime.now(JST).replace(tzinfo=None)
+    db.flush()
+    return schedule
+
+
 def get_coaching_schedule_by_id(
     db: Session,
     schedule_id: int,

@@ -83,6 +83,7 @@ class CoachingScheduleResponse(BaseModel):
     meet_space_name: Optional[str] = None
     coaching_summary: Optional[str] = None
     todo: Optional[str] = None
+    reminder_sent_at: Optional[datetime] = None
     created_at: datetime
     updated_at: datetime
 

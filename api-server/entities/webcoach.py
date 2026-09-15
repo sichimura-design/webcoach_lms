@@ -249,6 +249,7 @@ class WebCoachCoachingSchedule(Base):
     meet_space_name = Column(String(255), nullable=True, comment='Google Meet APIのSpaceリソース名 (例: spaces/aBcD1234)。議事録取得時にConference Recordを検索するための内部ID')
     coaching_summary = Column(Text, nullable=True, comment='コーチング内容の要約')
     todo = Column(Text, nullable=True, comment='次回までのTODO')
+    reminder_sent_at = Column(TIMESTAMP, nullable=True, comment='リマインドメール送信日時(前日通知、二重送信防止用)')
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
 

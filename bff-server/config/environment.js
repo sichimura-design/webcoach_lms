@@ -40,6 +40,14 @@ const config = {
   transcriptSyncEnabled: process.env.TRANSCRIPT_SYNC_ENABLED === 'true',
   transcriptSyncIntervalMinutes: parseInt(process.env.TRANSCRIPT_SYNC_INTERVAL_MINUTES || '15', 10),
 
+  // Periodic coaching schedule reminder emails (see ReminderService). Disabled
+  // by default — dev/UAT's SES account is still in sandbox mode (can only send
+  // to verified addresses; see memory/ses-sandbox-release.md), so this should
+  // stay off there until that's resolved.
+  reminderEnabled: process.env.REMINDER_ENABLED === 'true',
+  reminderIntervalMinutes: parseInt(process.env.REMINDER_INTERVAL_MINUTES || '60', 10),
+  reminderSenderEmail: process.env.REMINDER_SENDER_EMAIL || 'noreply@webcoach.jp',
+
   // Content Token
   contentTokenSecret: process.env.CONTENT_TOKEN_SECRET,
 

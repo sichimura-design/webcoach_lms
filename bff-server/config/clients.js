@@ -7,12 +7,14 @@ const { CognitoJwtVerifier } = require('aws-jwt-verify');
 const { CognitoIdentityProviderClient } = require('@aws-sdk/client-cognito-identity-provider');
 const { S3Client } = require('@aws-sdk/client-s3');
 const { SecretsManagerClient } = require('@aws-sdk/client-secrets-manager');
+const { SESClient } = require('@aws-sdk/client-ses');
 const { config } = require('./environment');
 
 let jwtVerifierInstance = null;
 let cognitoClientInstance = null;
 let s3ClientInstance = null;
 let secretsManagerClientInstance = null;
+let sesClientInstance = null;
 
 /**
  * Get or create Cognito JWT Verifier instance (singleton)
@@ -64,9 +66,22 @@ function getSecretsManagerClient() {
   return secretsManagerClientInstance;
 }
 
+/**
+ * Get or create SES Client instance (singleton)
+ */
+function getSesClient() {
+  if (!sesClientInstance) {
+    sesClientInstance = new SESClient({
+      region: config.cognitoRegion
+    });
+  }
+  return sesClientInstance;
+}
+
 module.exports = {
   getCognitoJwtVerifier,
   getCognitoClient,
   getS3Client,
-  getSecretsManagerClient
+  getSecretsManagerClient,
+  getSesClient
 };

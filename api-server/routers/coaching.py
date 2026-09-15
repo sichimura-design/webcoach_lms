@@ -23,6 +23,8 @@ from crud import (
     delete_coaching_schedule,
     get_pending_google_meet_schedules,
     get_coaching_schedule_by_id,
+    get_pending_coaching_reminders,
+    mark_coaching_reminder_sent,
 )
 
 logger = logging.getLogger(__name__)
@@ -328,6 +330,35 @@ def get_pending_google_meet_sync_endpoint(
 
 
 @router.get(
+    "/schedule/pending-reminders",
+    response_model=List[CoachingScheduleResponse],
+    summary="翌日実施予定でリマインド未送信の予約一覧を取得(全ユーザー横断、定期リマインド処理向け)"
+)
+def get_pending_reminders_endpoint(
+    db: Session = Depends(get_db)
+):
+    """
+    翌日(JST)に実施予定で、まだreminder_sent_atが立っていない予約を取得します。
+    bff-server側の定期リマインド送信処理(ReminderService)専用の内部エンドポイント
+    です。
+
+    NOTE: この定義は /schedule/{userid} より前に置くこと(理由は
+    pending-google-meet-sync と同じ)。
+
+    Returns:
+        リマインド未送信のコーチングスケジュール一覧
+    """
+    try:
+        return get_pending_coaching_reminders(db)
+    except Exception as e:
+        logger.error(f"Failed to get pending coaching reminders: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to get pending coaching reminders"
+        )
+
+
+@router.get(
     "/schedule/{userid}",
     response_model=List[CoachingScheduleResponse],
     summary="コーチングスケジュール一覧取得"
@@ -377,6 +408,37 @@ def get_coaching_schedule_by_id_endpoint(
     if not schedule:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Schedule not found")
     return schedule
+
+
+@router.put(
+    "/schedule-by-id/{schedule_id}/reminder-sent",
+    response_model=CoachingScheduleResponse,
+    summary="リマインドメール送信済みとしてマークする(bff-server定期処理向け内部エンドポイント)"
+)
+def mark_reminder_sent_endpoint(
+    schedule_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    reminder_sent_atに現在時刻(JST)をセットします。bff-server側の定期リマインド
+    送信処理(ReminderService)が、送信直後に二重送信防止のため呼び出します。
+    """
+    try:
+        schedule = mark_coaching_reminder_sent(db, schedule_id)
+        if not schedule:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Schedule not found")
+        db.commit()
+        db.refresh(schedule)
+        return schedule
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Failed to mark coaching reminder as sent: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to mark coaching reminder as sent"
+        )
 
 
 @router.post(
