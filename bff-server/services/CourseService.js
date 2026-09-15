@@ -114,6 +114,20 @@ class CourseService {
       return true;
     });
 
+    // Resolve category names. core_course_get_courses only returns categoryid (numeric),
+    // never categoryname, so frontend code that groups courses by category.name
+    // (materials/catalogCourse.ts) always saw an empty categoryName without this.
+    try {
+      const categoriesRaw = await moodleAdapter.getCategories();
+      const categoriesArray = Array.isArray(categoriesRaw) ? categoriesRaw : categoriesRaw.categories || [];
+      const categoryNameById = new Map(categoriesArray.map((c) => [c.id, c.name]));
+      filteredCourses.forEach((course) => {
+        course.categoryname = categoryNameById.get(course.categoryid) || '';
+      });
+    } catch (error) {
+      console.warn('[Get All Courses] Failed to fetch categories:', error.message);
+    }
+
     // Enrich with custom image URLs from WebCoach database
     const enrichedCourses = await this.enrichCoursesWithImageUrls(filteredCourses, 1);
 
