@@ -221,7 +221,20 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
     messages = [SystemMessage(content=system_content)] + state["messages"]
 
     # LLMを呼び出し（ツール付き）
-    llm_with_tools = llm.bind_tools(combined_tools)
+    # 前ターンで使っていたDifyアプリがある場合は、そのツールに固定して呼び出す。
+    # 会話履歴には生テキストしか残らずツール名の情報が失われるため、似た説明を
+    # 持つ複数の案件抽出アプリ間でLLMが毎ターン選び直し、Dify側の会話が
+    # 意図せずリセットされてしまう問題を防ぐ（sticky_dify_tool_nameの算出元は
+    # tools_langchain.create_ai_application_tools参照）。
+    sticky_tool_name = state.get("sticky_dify_tool_name")
+    if sticky_tool_name and any(t.name == sticky_tool_name for t in combined_tools):
+        logger.info(f"Forcing continuation of sticky Dify tool: {sticky_tool_name}")
+        llm_with_tools = llm.bind_tools(
+            combined_tools,
+            tool_choice={"type": "tool", "name": sticky_tool_name}
+        )
+    else:
+        llm_with_tools = llm.bind_tools(combined_tools)
 
     # デバッグ: メッセージ構造をログ出力
     logger.info(f"Sending {len(messages)} messages to LLM:")
@@ -348,6 +361,12 @@ def respond_node(state: LearningCoachState) -> LearningCoachState:
     if state.get("dify_bypass_response"):
         final_response = state["dify_bypass_response"]
     else:
+        # Difyツールを使わずにターンが完了した場合は、話題が変わった/
+        # 案件検索等のフローが終わったとみなし、次ターンでのツール固定を解除する。
+        if state.get("user_id") is not None:
+            from agents.tools_langchain import clear_sticky_dify_app
+            clear_sticky_dify_app(state["user_id"])
+
         # 最後のAIメッセージを取得
         final_response = None
         for msg in reversed(state["messages"]):

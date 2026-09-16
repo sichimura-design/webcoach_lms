@@ -235,10 +235,29 @@ def get_user_badges(userid: int) -> str:
 # プロセス内メモリのみ。複数コンテナ構成やコンテナ再起動をまたぐ継続には対応しない。
 _dify_conversation_cache: Dict[tuple, str] = {}
 
+# 直前のターンでユーザーが実際に呼び出したDifyアプリ（userid -> app_id）。
+# 会話履歴(conversation_history)はロールとテキストのみをやり取り相手に送っており
+# どのask_ai_application_*ツールを使ったかの情報が失われるため、似た説明を持つ
+# 複数の案件抽出アプリ（Crowdworks/Lancers/ココナラ等）の間でLLMが毎ターン
+# 選び直してしまい、Dify側の会話が意図せずリセットされる問題への対策。
+# プロセス内メモリのみ。
+_dify_sticky_app_cache: Dict[int, int] = {}
+
+
+def get_sticky_dify_app_id(userid: int) -> Optional[int]:
+    """このユーザーが直前に使っていたDifyアプリのapp_idを取得（無ければNone）"""
+    return _dify_sticky_app_cache.get(userid)
+
+
+def clear_sticky_dify_app(userid: int) -> None:
+    """Difyツールを使わずにターンが完了した場合、次ターンでのツール固定を解除する"""
+    _dify_sticky_app_cache.pop(userid, None)
+
 
 def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
     """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリの会話はプロセス内で継続する）"""
     conversation_id = _dify_conversation_cache.get((userid, app_id), "")
+    _dify_sticky_app_cache[userid] = app_id
     try:
         response = requests.post(
             f"{DIFY_API_BASE_URL}/chat-messages",
@@ -280,7 +299,7 @@ def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
         return "外部サービスへの問い合わせでエラーが発生しました。もう一度試してみてください。"
 
 
-def create_ai_application_tools(db, raw_user_message: str) -> List[BaseTool]:
+def create_ai_application_tools(db, raw_user_message: str, userid: int = None) -> "tuple[List[BaseTool], Optional[str]]":
     """
     DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
     LangChain Toolとして動的に生成する。
@@ -291,6 +310,10 @@ def create_ai_application_tools(db, raw_user_message: str) -> List[BaseTool]:
     ユーザーの発言(raw_user_message)をそのまま使う。Dify側アプリがボタンの
     data-message値等、厳密な文字列一致を前提にしたステップ形式のフローを
     持つことがあり、LLMによる言い換えを挟むとフローが先に進まなくなるため。
+
+    戻り値の2つ目は、このターンで会話継続のために固定すべきツール名
+    （前ターンで使っていたDifyアプリと同一のもの）。ユーザーの発言に他アプリ
+    固有のタグキーワードが含まれる場合は明示的な切り替え意図とみなし、Noneを返す。
     """
     from entities.webcoach import WebCoachAIApplication
 
@@ -319,7 +342,24 @@ def create_ai_application_tools(db, raw_user_message: str) -> List[BaseTool]:
             )
         )
 
-    return tools
+    sticky_tool_name = None
+    sticky_app_id = get_sticky_dify_app_id(userid) if userid is not None else None
+    if sticky_app_id is not None:
+        sticky_app = next((a for a in apps if a.id == sticky_app_id), None)
+        if sticky_app:
+            sticky_tags = {t.strip() for t in (sticky_app.tags or "").split(",")}
+            other_tags = set()
+            for other in apps:
+                if other.id == sticky_app_id:
+                    continue
+                other_tags |= {t.strip() for t in (other.tags or "").split(",")}
+            # 汎用タグ（AI/案件など複数アプリで共通のもの）は切り替え判定から除外する
+            distinctive_other_tags = {t for t in (other_tags - sticky_tags) if t}
+            switched = any(tag in raw_user_message for tag in distinctive_other_tags)
+            if not switched:
+                sticky_tool_name = f"ask_ai_application_{sticky_app_id}"
+
+    return tools, sticky_tool_name
 
 
 # LangChain Tools定義
