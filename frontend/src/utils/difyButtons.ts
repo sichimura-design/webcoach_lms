@@ -23,9 +23,6 @@ export interface ParsedDifyMessage {
 }
 
 const BUTTON_RE = /<button\b[^>]*\bdata-message="([^"]*)"[^>]*>([\s\S]*?)<\/button>/gi;
-// ボタンはDifyアプリ側が1つのラッパーdivにまとめて出力する想定。
-// 最初の<div>から最後の</div>までをまとめて取り除く。
-const DIV_BLOCK_RE = /<div[\s\S]*<\/div>/i;
 const ANY_TAG_RE = /<[^>]+>/g;
 
 export function parseDifyMessage(content: string): ParsedDifyMessage {
@@ -34,6 +31,51 @@ export function parseDifyMessage(content: string): ParsedDifyMessage {
   if (!content || !content.includes('data-message=')) {
     return { text: content, buttons };
   }
+
+  if (typeof DOMParser === 'undefined') {
+    return parseDifyMessageWithoutDom(content);
+  }
+
+  const doc = new DOMParser().parseFromString(content, 'text/html');
+  const buttonEls = Array.from(doc.body.querySelectorAll('button[data-message]'));
+
+  if (buttonEls.length === 0) {
+    return { text: content, buttons };
+  }
+
+  // ボタンを含む「本文直下(body直下)の要素」を特定し、それをまるごと除去する。
+  // Difyアプリはボタンを1つのカードdivにまとめて出力するが、応答に案件条件の
+  // 整理内容など「ボタンとは無関係な別のdivブロック」が同時に含まれることがある。
+  // 従来は正規表現で最初の<div>〜最後の</div>を一括除去しており、この場合
+  // 無関係な整理内容までまとめて消えてしまっていた（body直下の要素単位で
+  // 判定すれば、ボタンを含む要素だけをピンポイントで除去できる）。
+  const topLevelNodesToRemove = new Set<Element>();
+  for (const btn of buttonEls) {
+    const value = (btn.getAttribute('data-message') || '').trim();
+    const label = (btn.textContent || '').replace(/\s+/g, ' ').trim();
+    if (value) {
+      buttons.push({ label: label || value, value });
+    }
+
+    let node: Element = btn;
+    while (node.parentElement && node.parentElement !== doc.body) {
+      node = node.parentElement;
+    }
+    topLevelNodesToRemove.add(node);
+  }
+
+  topLevelNodesToRemove.forEach((node) => node.remove());
+
+  const text = (doc.body.textContent || '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+
+  return { text, buttons };
+}
+
+/** DOMParserが利用できない環境向けの簡易フォールバック（ボタンの抽出のみ行い、本文はタグを外すだけ） */
+function parseDifyMessageWithoutDom(content: string): ParsedDifyMessage {
+  const buttons: DifyMessageButton[] = [];
 
   const re = new RegExp(BUTTON_RE);
   let match: RegExpExecArray | null;
@@ -50,7 +92,7 @@ export function parseDifyMessage(content: string): ParsedDifyMessage {
   }
 
   const text = content
-    .replace(DIV_BLOCK_RE, '')
+    .replace(BUTTON_RE, '')
     .replace(ANY_TAG_RE, '')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
