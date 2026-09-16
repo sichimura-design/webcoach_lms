@@ -901,6 +901,12 @@ body.learning-immersive {
   to   { transform: translateY(0); opacity: 1; }
 }
 
+/* レッスン完了時の紙吹雪。画面上端から落ちながら回転してフェードアウトする */
+@keyframes wcConfettiFall {
+  0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
 .wc-drawer-scrim {
   animation: wcFadeIn 160ms ease-out;
 }
