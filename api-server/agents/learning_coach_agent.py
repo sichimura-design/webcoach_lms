@@ -190,6 +190,7 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
 - 学習者が理解しやすいよう丁寧で親しみやすい言葉遣いを心がける
 - 具体例を挙げて分かりやすく説明する
 - **重要: 会話履歴の直前のAIの発言が、上記の「AIアプリケーション」ツール(ask_ai_application_*)による回答（案件検索の条件を尋ねる、面接の練習を進める、キャッチコピー案を出す等の途中経過）である場合、ユーザーの新しい発言はそのやり取りへの返答である可能性が高いです。話題が明確に変わったのでない限り、直前と同じask_ai_application_*ツールを再度呼び出して続きを進めてください。ユーザーの発言が短い単語(例:「WEBデザイン」「Photoshopが使える」)であっても、コース確認等の別のツールに切り替えず、そのまま同じツールへの回答として渡してください**
+- **重要: ユーザーの要望が上記の「AIアプリケーション」ツールのいずれかの説明と合致する場合(例:「案件を探したい」「面接の練習をしたい」)、あなた自身が案件の職種・予算・納期といった条件を聞き出そうとしないでください。それらはツール(Difyアプリ)側が対話形式で確認するため、あなたが先回りして質問すると、ツールが同じ内容を改めて尋ねてきて会話が噛み合わなくなります。同じ用途のツールが複数ある場合(例:「案件抽出メーカー」がCrowdworks/Lancers/ココナラ向けに別々にある)、それらを区別するために必要な情報(どのプラットフォームを使うか)だけをユーザーに確認し、それ以外の条件は尋ねずに直ちにそのツールを呼び出してください**
 - **ユーザーのコースや学習状況について質問された場合は、必ず対応するツールを使って最新情報を取得してください**
 - ユーザーが「何ができますか？」「どんな支援ができますか？」と聞いた場合は、あなたができることを具体的に説明してください（例：受講中のコースの確認、学習進捗の把握、次のステップの提案など）
 - 情報が不足している場合は、適切なツールを使って情報を取得してから回答してください
@@ -221,7 +222,20 @@ def agent_node(state: LearningCoachState) -> LearningCoachState:
     messages = [SystemMessage(content=system_content)] + state["messages"]
 
     # LLMを呼び出し（ツール付き）
-    llm_with_tools = llm.bind_tools(combined_tools)
+    # 前ターンで使っていたDifyアプリがある場合は、そのツールに固定して呼び出す。
+    # 会話履歴には生テキストしか残らずツール名の情報が失われるため、似た説明を
+    # 持つ複数の案件抽出アプリ間でLLMが毎ターン選び直し、Dify側の会話が
+    # 意図せずリセットされてしまう問題を防ぐ（sticky_dify_tool_nameの算出元は
+    # tools_langchain.create_ai_application_tools参照）。
+    sticky_tool_name = state.get("sticky_dify_tool_name")
+    if sticky_tool_name and any(t.name == sticky_tool_name for t in combined_tools):
+        logger.info(f"Forcing continuation of sticky Dify tool: {sticky_tool_name}")
+        llm_with_tools = llm.bind_tools(
+            combined_tools,
+            tool_choice={"type": "tool", "name": sticky_tool_name}
+        )
+    else:
+        llm_with_tools = llm.bind_tools(combined_tools)
 
     # デバッグ: メッセージ構造をログ出力
     logger.info(f"Sending {len(messages)} messages to LLM:")
@@ -348,6 +362,12 @@ def respond_node(state: LearningCoachState) -> LearningCoachState:
     if state.get("dify_bypass_response"):
         final_response = state["dify_bypass_response"]
     else:
+        # Difyツールを使わずにターンが完了した場合は、話題が変わった/
+        # 案件検索等のフローが終わったとみなし、次ターンでのツール固定を解除する。
+        if state.get("user_id") is not None:
+            from agents.tools_langchain import clear_sticky_dify_app
+            clear_sticky_dify_app(state["user_id"])
+
         # 最後のAIメッセージを取得
         final_response = None
         for msg in reversed(state["messages"]):

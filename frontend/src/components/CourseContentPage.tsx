@@ -1,9 +1,11 @@
-import { useState, useEffect, useRef, useReducer } from 'react';
+import { useState, useEffect, useRef, useReducer, useMemo, MouseEvent as ReactMouseEvent } from 'react';
+import { createPortal } from 'react-dom';
 import DOMPurify from 'dompurify';
 import { bffClient } from '../services/bffClient';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { useAiChat, ChatMessage, PendingImage } from '../hooks/useAiChat';
+import { useNoteCapture } from '../hooks/useNoteCapture';
 import {
   FileText,
   Send,
@@ -19,11 +21,16 @@ import {
   Paperclip,
   ImageOff,
   StickyNote,
+  NotebookPen,
 } from 'lucide-react';
 import Encoding from 'encoding-japanese';
 import MarkdownRenderer from './MarkdownRenderer';
 import { AppHeader } from './shared';
 import { parseDifyMessage } from '../utils/difyButtons';
+import { color as themeColor } from '../theme/webcoachTheme';
+import LessonFloatingActions from './learning/LessonFloatingActions';
+import NoteTargetPicker from './notes/NoteTargetPicker';
+import type { NoteSourceRef } from '../types/notes';
 
 interface CourseContentPageProps {
   courseId: number;
@@ -283,6 +290,19 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
 
   // page iframe
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  // label/resource-other 等、メインDOMへ直接描画するコンテンツのコンテナ
+  // （画像拡大クリック検知・テキスト選択検知のスコープに使う）
+  const contentAreaRef = useRef<HTMLDivElement>(null);
+
+  // 画像タップ拡大
+  const [zoomTarget, setZoomTarget] = useState<{ src: string; alt: string } | null>(null);
+
+  // 選択テキストのマイノート引用
+  const [quoteSelection, setQuoteSelection] = useState<{ text: string; rect: DOMRect } | null>(null);
+  const noteCapture = useNoteCapture();
+
+  // レッスン完了コンフェッティ
+  const [showConfetti, setShowConfetti] = useState(false);
 
   // AI コーチ
   const {
@@ -371,6 +391,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         newCompletedIds.delete(selectedModule.id);
       }
       setCompletedIds(newCompletedIds);
+      if (markAsComplete) setShowConfetti(true);
 
       // resumeCourse を更新
       if (user?.userid) {
@@ -417,6 +438,8 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
 
   useEffect(() => {
     setIframeError(false);
+    setZoomTarget(null);
+    setQuoteSelection(null);
   }, [selectedModule?.id]);
 
   // ─── データ読み込み ───────────────────────
@@ -467,6 +490,33 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       .then(res => { if (!res.ok) setIframeError(true); })
       .catch(() => setIframeError(true));
   }, [processedHtml, contentToken]);
+
+  // ─── メインDOM直描画コンテンツ（label等）の選択テキスト検知 ──
+  useEffect(() => {
+    const type = selectedModule ? getContentType(selectedModule) : null;
+    if (type !== 'label' && type !== 'resource-other' && type !== 'unknown') return;
+
+    const onMouseUp = () => {
+      window.setTimeout(() => {
+        const sel = window.getSelection();
+        const text = sel?.toString().trim() ?? '';
+        const container = contentAreaRef.current;
+        if (!sel || sel.rangeCount === 0 || !container || text.length < 2 || text.length > 400) {
+          setQuoteSelection(null);
+          return;
+        }
+        const range = sel.getRangeAt(0);
+        if (!container.contains(range.commonAncestorContainer)) {
+          setQuoteSelection(null);
+          return;
+        }
+        setQuoteSelection({ text, rect: range.getBoundingClientRect() });
+      }, 0);
+    };
+
+    document.addEventListener('mouseup', onMouseUp);
+    return () => document.removeEventListener('mouseup', onMouseUp);
+  }, [selectedModule]);
 
   // ─── モジュール選択時の処理 ──────────────
   useEffect(() => {
@@ -527,10 +577,86 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         })
         .filter(item => item.text.length > 0);
       if (toc.length > 0) dispatch({ type: 'SET_TOC', toc });
+
+      // ─ 画像タップ拡大／選択テキストのマイノート引用 ─
+      // srcdoc（allow-same-origin）は親と同一オリジン扱いになるため、
+      // TOC抽出と同様に contentDocument へ直接リスナーを張れる。
+      // cross-origin（実URLをそのまま src にする分岐）はこの try 自体が例外で止まるため、
+      // 自動的に対象外になる（Moodleフォールバックと同じ制約）。
+      doc.addEventListener('click', (e: MouseEvent) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        const node = e.target as HTMLElement | null;
+        if (!node) return;
+        const anchor = node.closest('a');
+        if (anchor && !anchor.classList.contains('lightbox')) return;
+        const img = node.closest('img');
+        if (!img || img.hasAttribute('data-no-zoom')) return;
+        if (anchor) e.preventDefault();
+        const src = img.currentSrc || img.getAttribute('src') || '';
+        if (!src) return;
+        setZoomTarget({ src, alt: img.getAttribute('alt') || '' });
+      });
+
+      doc.addEventListener('mouseup', () => {
+        window.setTimeout(() => {
+          const sel = iframe.contentWindow?.getSelection();
+          const text = sel?.toString().trim() ?? '';
+          if (!sel || sel.rangeCount === 0 || text.length < 2 || text.length > 400) {
+            setQuoteSelection(null);
+            return;
+          }
+          const localRect = sel.getRangeAt(0).getBoundingClientRect();
+          const frameRect = iframe.getBoundingClientRect();
+          setQuoteSelection({
+            text,
+            rect: new DOMRect(
+              localRect.left + frameRect.left,
+              localRect.top + frameRect.top,
+              localRect.width,
+              localRect.height,
+            ),
+          });
+        }, 0);
+      });
     } catch { /* cross-origin の場合は何もしない */ }
   };
 
   const handleAiQuestion = (overrideMessage?: string) => sendAiMessage(overrideMessage);
+
+  /** label / resource-other 等、メインDOMに直接描画されるコンテンツ内の画像クリックを拾う */
+  const handleContentClickCapture = (e: ReactMouseEvent<HTMLDivElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+    const node = e.target as HTMLElement | null;
+    if (!node) return;
+    const anchor = node.closest('a');
+    if (anchor && !anchor.classList.contains('lightbox')) return;
+    const img = node.closest('img');
+    if (!img || img.hasAttribute('data-no-zoom')) return;
+    if (anchor) e.preventDefault();
+    const src = img.currentSrc || img.getAttribute('src') || '';
+    if (!src) return;
+    setZoomTarget({ src, alt: img.getAttribute('alt') || '' });
+  };
+
+  const handleQuoteToNote = (text: string) => {
+    if (!selectedModule) return;
+    const source: NoteSourceRef = {
+      courseId,
+      courseName,
+      lessonId: selectedModule.id,
+      lessonTitle: selectedModule.name,
+      heading: null,
+      blockId: null,
+      offset: null,
+    };
+    noteCapture.capture({
+      block: { kind: 'clip', text, source },
+      suggestedTitle: selectedModule.name,
+      source,
+      lessonId: selectedModule.id,
+    });
+    setQuoteSelection(null);
+  };
 
   // ─── コンテンツ描画 ───────────────────────
   const renderContent = () => {
@@ -594,7 +720,9 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       case 'label':
         return (
           <div
+            ref={contentAreaRef}
             className="moodle-content"
+            onClickCapture={handleContentClickCapture}
             dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedModule.description || '') }}
           />
         );
@@ -677,7 +805,9 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         if (selectedModule.description) {
           return (
             <div
+              ref={contentAreaRef}
               className="moodle-content"
+              onClickCapture={handleContentClickCapture}
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(selectedModule.description) }}
             />
           );
@@ -964,6 +1094,40 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
           </div>
         </div>
       )}
+
+      {/* モバイル用フローティングボタン（デスクトップは右サイドバーが常時表示のため不要） */}
+      <div className="lg:hidden">
+        <LessonFloatingActions
+          hidden={!!quoteSelection}
+          onOpenAi={() => { setSidebarTab('ai'); setSidebarOpen(true); }}
+          onOpenMemo={() => { setSidebarTab('memo'); setSidebarOpen(true); }}
+        />
+      </div>
+
+      {/* 画像タップ拡大 */}
+      <ImageZoomOverlay target={zoomTarget} onClose={() => setZoomTarget(null)} />
+
+      {/* 選択テキストのマイノート引用ツールバー */}
+      {quoteSelection && (
+        <QuoteToNoteToolbar
+          selection={quoteSelection}
+          onQuote={() => handleQuoteToNote(quoteSelection.text)}
+        />
+      )}
+
+      {/* マイノート引用先ピッカー */}
+      {noteCapture.pending && (
+        <NoteTargetPicker
+          pending={noteCapture.pending}
+          busy={noteCapture.saving}
+          onPickNote={(noteId) => { void noteCapture.resolvePendingWithNote(noteId); }}
+          onCreateNew={() => { void noteCapture.resolvePendingWithNewNote(); }}
+          onCancel={noteCapture.cancelPending}
+        />
+      )}
+
+      {/* レッスン完了コンフェッティ */}
+      {showConfetti && <LessonCompletionConfetti onDone={() => setShowConfetti(false)} />}
     </div>
   );
 }
@@ -1222,6 +1386,224 @@ function MemoPanel({ content, status, onChange, lessonTitle, mobile = false }: M
         )}
       </div>
     </div>
+  );
+}
+
+// ─────────────────────────────────────────
+// 画像タップ拡大（iframe内 / メインDOM直描画コンテンツの両方から呼ばれる）
+// ─────────────────────────────────────────
+
+interface ImageZoomOverlayProps {
+  target: { src: string; alt: string } | null;
+  onClose: () => void;
+}
+
+function ImageZoomOverlay({ target, onClose }: ImageZoomOverlayProps) {
+  useEffect(() => {
+    if (!target) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      onClose();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [target, onClose]);
+
+  if (!target) return null;
+
+  return createPortal(
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={target.alt || '画像の拡大表示'}
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 120,
+        background: 'rgba(20,10,10,.88)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 14,
+        padding: 24,
+        cursor: 'zoom-out',
+        animation: 'wcFadeIn .16s ease-out',
+      }}
+    >
+      <button
+        type="button"
+        aria-label="閉じる"
+        onClick={onClose}
+        className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        style={{
+          position: 'absolute',
+          top: 16,
+          right: 16,
+          width: 44,
+          height: 44,
+          borderRadius: 9999,
+          border: 'none',
+          background: 'rgba(255,255,255,.14)',
+          color: '#FFFFFF',
+          cursor: 'pointer',
+          display: 'grid',
+          placeItems: 'center',
+        }}
+      >
+        <X size={22} />
+      </button>
+
+      <img
+        src={target.src}
+        alt={target.alt}
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          maxWidth: 'min(96vw, 1400px)',
+          maxHeight: '92vh',
+          width: 'auto',
+          height: 'auto',
+          objectFit: 'contain',
+          borderRadius: 8,
+          cursor: 'default',
+        }}
+      />
+
+      {target.alt && (
+        <p style={{ margin: 0, maxWidth: 'min(96vw, 1400px)', textAlign: 'center', fontSize: 13, color: 'rgba(255,255,255,.82)' }}>
+          {target.alt}
+        </p>
+      )}
+    </div>,
+    document.body,
+  );
+}
+
+// ─────────────────────────────────────────
+// 選択テキストのマイノート引用ツールバー
+// ─────────────────────────────────────────
+
+interface QuoteToNoteToolbarProps {
+  selection: { text: string; rect: DOMRect };
+  onQuote: () => void;
+}
+
+const QUOTE_TOOLBAR_WIDTH = 150;
+const QUOTE_TOOLBAR_HEIGHT = 40;
+
+function QuoteToNoteToolbar({ selection, onQuote }: QuoteToNoteToolbarProps) {
+  const { rect } = selection;
+  const left = Math.max(
+    10,
+    Math.min(window.innerWidth - QUOTE_TOOLBAR_WIDTH - 10, rect.left + rect.width / 2 - QUOTE_TOOLBAR_WIDTH / 2),
+  );
+  // ヘッダーが画面上部に固定されているため、選択位置が上端に近ければ下へ回り込ませる
+  const above = rect.top - QUOTE_TOOLBAR_HEIGHT - 8;
+  const top = above > 90 ? above : rect.bottom + 8;
+
+  return (
+    <div
+      data-selection-ui
+      role="toolbar"
+      aria-label="選択した文章への操作"
+      onMouseDown={(e) => e.preventDefault()}
+      style={{
+        position: 'fixed',
+        left,
+        top,
+        zIndex: 80,
+        borderRadius: 10,
+        background: '#222A37',
+        boxShadow: '0 16px 48px rgba(33,42,57,.24)',
+      }}
+    >
+      <button
+        type="button"
+        onClick={onQuote}
+        style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 6,
+          height: QUOTE_TOOLBAR_HEIGHT,
+          padding: '0 14px',
+          border: 0,
+          borderRadius: 10,
+          background: 'transparent',
+          color: '#FFFFFF',
+          fontSize: 12,
+          fontWeight: 700,
+          cursor: 'pointer',
+          whiteSpace: 'nowrap',
+        }}
+      >
+        <NotebookPen size={14} style={{ color: themeColor.primarySoft }} />
+        メモに引用
+      </button>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────
+// レッスン完了コンフェッティ
+// ─────────────────────────────────────────
+
+const CONFETTI_COLORS = [
+  themeColor.primary,
+  themeColor.primarySoft,
+  themeColor.goalBorder,
+  themeColor.goalBg,
+  '#FFFFFF',
+];
+
+interface LessonCompletionConfettiProps {
+  onDone: () => void;
+}
+
+function LessonCompletionConfetti({ onDone }: LessonCompletionConfettiProps) {
+  const pieces = useMemo(
+    () =>
+      Array.from({ length: 28 }, (_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        delay: Math.random() * 0.25,
+        duration: 1.1 + Math.random() * 0.6,
+        width: 6 + Math.random() * 5,
+        height: 8 + Math.random() * 6,
+        color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
+      })),
+    [],
+  );
+
+  useEffect(() => {
+    const timer = setTimeout(onDone, 1800);
+    return () => clearTimeout(timer);
+  }, [onDone]);
+
+  return createPortal(
+    <div aria-hidden className="fixed inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 130 }}>
+      {pieces.map((p) => (
+        <span
+          key={p.id}
+          style={{
+            position: 'absolute',
+            top: -20,
+            left: `${p.left}%`,
+            width: p.width,
+            height: p.height,
+            background: p.color,
+            borderRadius: 2,
+            animation: `wcConfettiFall ${p.duration}s ease-in ${p.delay}s forwards`,
+          }}
+        />
+      ))}
+    </div>,
+    document.body,
   );
 }
 

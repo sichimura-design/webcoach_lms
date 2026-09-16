@@ -37,6 +37,10 @@ class LearningCoachState(TypedDict):
     # フローを持つことがあり、LLMによる要約・言い換えで壊れてしまうため）。
     dify_bypass_response: Optional[str]
 
+    # 前ターンで使用していたDifyアプリのツール名（会話継続のためこのターンで
+    # 固定すべきツール。Noneの場合は通常通りLLMに選ばせる）
+    sticky_dify_tool_name: Optional[str]
+
     # メタデータ
     iteration_count: int
     max_iterations: int
