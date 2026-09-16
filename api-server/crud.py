@@ -2926,9 +2926,14 @@ def _segment_totals_cte(user_scoped: bool) -> str:
                 c.timecreated,
                 CAST(JSON_UNQUOTE(JSON_EXTRACT(c.other, '$.deltaminutes')) AS SIGNED) AS delta_minutes,
                 (
-                    SELECT MAX(e.id) FROM mdl_logstore_standard_log e
-                    WHERE e.userid = c.userid AND e.eventname = :ended_event
-                      AND e.timecreated <= c.timecreated
+                    -- 🔴 raw な mdl_logstore_standard_log ではなく segments (started/endedの
+                    --    ペアリングが成立した行) から選ぶ。複数タブでの操作が重なると、
+                    --    ペアにならなかった孤立したendedイベントが紛れ込むことがある。
+                    --    rawテーブルから最新のendedを拾うと、その孤立endedを補正対象に
+                    --    誤って選んでしまい、本来のセグメントのended_log_idと一致せず
+                    --    補正がどこにもJOINされず消える(discard等が効かなくなる)。
+                    SELECT MAX(seg.ended_log_id) FROM segments seg
+                    WHERE seg.userid = c.userid AND seg.ended_at <= c.timecreated
                 ) AS target_ended_log_id
             FROM mdl_logstore_standard_log c
             WHERE c.eventname = :corrected_event
