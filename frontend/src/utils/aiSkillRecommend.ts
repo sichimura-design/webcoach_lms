@@ -43,31 +43,31 @@ export interface RecommendInput {
 const CATEGORY_SKILL: Array<{ match: RegExp; skillId: ConcreteAiSkillId }> = [
   // 「Web×AI」「生成AI基礎」を先に見る（「Web×AI」は下のデザイン/制作にも当たるため）
   { match: /AI/, skillId: 'learning' },
+  { match: /動画/, skillId: 'video-review' },
   { match: /デザイン/, skillId: 'design-review' },
-  { match: /動画/, skillId: 'design-review' },
-  { match: /Web制作|コーディング|コード|プログラ/, skillId: 'tooling' },
+  { match: /Web制作|コーディング|コード|プログラ/, skillId: 'learning' },
   { match: /マーケ|ライティング|セールス/, skillId: 'copy' },
   { match: /SNS/, skillId: 'copy' },
-  { match: /キャリア|副業|案件|ソフトスキル/, skillId: 'job-search' },
+  { match: /キャリア|副業|案件|学習ガイド/, skillId: 'job-search-crowdworks' },
 ];
 
 /** 教材名から拾う、より具体的な手がかり。カテゴリより優先する */
 const TITLE_SKILL: Array<{ match: RegExp; skillId: ConcreteAiSkillId }> = [
+  { match: /動画|ムービー|ショート/, skillId: 'video-review' },
   { match: /バナー|サムネ|LP|ロゴ|チラシ|ポートフォリオサイト/, skillId: 'design-review' },
   { match: /キャッチ|コピー|見出し/, skillId: 'copy' },
   { match: /面接|面談|商談/, skillId: 'interview' },
   { match: /応募|提案|営業/, skillId: 'application' },
-  { match: /エラー|環境構築|セットアップ/, skillId: 'tooling' },
 ];
 
 /** 学習状況に依存しない、迷ったときの並び。ここから穴埋めする */
 const FALLBACK_ORDER: ConcreteAiSkillId[] = [
   'design-review',
-  'writing',
+  'daily-design-sprint',
   'learning',
   'copy',
-  'quiz',
-  'job-search',
+  'glossary',
+  'job-search-crowdworks',
 ];
 
 /** 機能ごとの既定の見出し・理由。学習状況が取れないときはこの文言で出す */
@@ -80,17 +80,17 @@ const GENERIC: Record<ConcreteAiSkillId, { title: string; reason: string }> = {
     title: '知らない用語をやさしく言い換える',
     reason: '専門用語をそのまま覚えるより、言い換えた方が先に進めます。',
   },
-  quiz: {
-    title: '学んだ範囲の理解度を確認する',
-    reason: '説明できるかどうかを確かめると、抜けが分かります。',
+  'daily-design-sprint': {
+    title: '今日のデザイン課題に取り組む',
+    reason: '使える時間から課題を出すので、何を作るか決める前に手が動きます。',
   },
   'design-review': {
     title: '制作物を提出前にチェックする',
     reason: '画像を添付すると、教材の基準で改善点を確認できます。',
   },
-  writing: {
-    title: '書いた文章を読みやすく整える',
-    reason: '結論の位置と一文の長さを直すだけで伝わり方が変わります。',
+  'video-review': {
+    title: '編集した動画を見てもらう',
+    reason: 'テンポとテロップは、作った本人だと気づきにくいところです。',
   },
   copy: {
     title: 'キャッチコピーの案を並べて比べる',
@@ -104,17 +104,17 @@ const GENERIC: Record<ConcreteAiSkillId, { title: string; reason: string }> = {
     title: 'AIと面接の練習をする',
     reason: '声に出して答える練習を、相手を待たずにできます。',
   },
-  'job-search': {
-    title: '受けられる案件の条件を絞る',
+  'job-search-crowdworks': {
+    title: 'クラウドワークスで受けられる案件を絞る',
     reason: 'できることと使える時間を整理すると、探す範囲が決まります。',
   },
-  idea: {
-    title: '何から始めるかを整理する',
-    reason: '決めることを分けると、今日動ける大きさになります。',
+  'job-search-coconala': {
+    title: 'ココナラで受けられる案件を絞る',
+    reason: 'できることと使える時間を整理すると、探す範囲が決まります。',
   },
-  tooling: {
-    title: 'ツールのエラーを切り分ける',
-    reason: '再現条件から順に見ると、原因の見当がつきます。',
+  'job-search-lancers': {
+    title: 'ランサーズで受けられる案件を絞る',
+    reason: 'できることと使える時間を整理すると、探す範囲が決まります。',
   },
 };
 
@@ -161,14 +161,16 @@ export function buildRecommendations(input: RecommendInput): AiSkillRecommendati
     });
   }
 
-  // ② 進捗から。終盤なら定着の確認、序盤なら教材の理解を優先する
+  // ② 進捗から。終盤なら手を動かす練習、序盤なら教材の理解を優先する
+  // 🔴 終盤に勧めていた「理解度チェック」はアプリが無くなったので、
+  //    同じ「仕上げに効くもの」としてデイリーデザインスプリントに置き換えた。
   if (typeof progress === 'number' && lessonName) {
     if (progress >= 70) {
       add({
-        skillId: 'quiz',
-        title: `${lessonName}の理解度を確認する`,
-        reason: `このコースを${Math.round(progress)}%まで進めているため、説明できるかを確かめておくと定着します。`,
-        seedInput: `「${lessonName}」の範囲から確認の問題を出してください`,
+        skillId: 'daily-design-sprint',
+        title: `${lessonName}で学んだことを課題で試す`,
+        reason: `このコースを${Math.round(progress)}%まで進めているため、学んだ範囲を手を動かして確かめると定着します。`,
+        seedInput: `「${lessonName}」で学んだことを試せる課題を出してください`,
       });
     } else if (progress <= 30) {
       add({

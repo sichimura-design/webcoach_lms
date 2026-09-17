@@ -3,9 +3,12 @@
  * AIコーチの「専門モード」のドメイン型。
  *
  * 設計の中心:
- *   AIコーチは相談相手。従来「AIアプリ」として一覧に並べて別タブで開いていたものは、
- *   AIコーチが必要に応じて使う専門スキルとして裏に隠す。
- *   よってユーザー向けの語彙は「モード」で統一し、UIには "Dify" も "アプリ" も出さない。
+ *   AIコーチは相談相手。従来「AIアプリ」として別タブで開いていたものは、
+ *   AIコーチの中のモードとして扱う（別タブへ飛ばさない・資格情報もフロントは持たない）。
+ *   🔴 ただし**名前は実在のアプリ名をそのまま出す**。動詞へ言い換えていた時期があるが、
+ *      コーチや教材が「デザインフィードバックメンタープロを使って」と案内したときに
+ *      画面のどれのことか通じなくなるため戻した。
+ *      UIに出さないのは "Dify" と、裏のアプリ識別子（internalApp）。
  *
  * これらのAPIは実BFF（FastAPI）に存在しない。バックエンドは変更禁止のため、
  * すべて MSW（frontend/src/mocks/aiSkillHandlers.ts）で提供する。
@@ -21,23 +24,23 @@ import type { LessonAiHistoryItem, LessonAiSource } from './lesson';
  * 'auto' は「まだ判定していない／おまかせ」を表す擬似スキルで、
  * 実行API（POST /webcoach/ai-skill）には渡らない。
  *
- * 旧「AIアプリ」（専門用語AIアシスタント／キャッチコピーアイデアメーカー／
- * AI面接シミュレーター／案件抽出メーカー）はここへ畳み込んでいる。
- * 別タブで開くアプリではなく、AIコーチのモードとして扱うため。
+ * 🔴 顔ぶれは実在のAIアプリ（Dify側）と1対1で揃えている。
+ *    ここにあってあちらに無いものを勝手に足さないこと。
+ *    案件抽出メーカーは媒体ごとに別アプリなので、IDも媒体ごとに分けてある。
  */
 export type AiSkillId =
   | 'auto'
   | 'learning'
   | 'glossary'
-  | 'quiz'
+  | 'daily-design-sprint'
   | 'design-review'
-  | 'writing'
+  | 'video-review'
   | 'copy'
   | 'application'
   | 'interview'
-  | 'job-search'
-  | 'idea'
-  | 'tooling';
+  | 'job-search-crowdworks'
+  | 'job-search-coconala'
+  | 'job-search-lancers';
 
 /** 実行APIに渡せる実スキル（'auto' を除いたもの） */
 export type ConcreteAiSkillId = Exclude<AiSkillId, 'auto'>;
@@ -51,8 +54,9 @@ export const isConcreteSkill = (id: AiSkillId): id is ConcreteAiSkillId => id !=
 export type AiSkillCategory = 'learn' | 'create' | 'career' | 'other';
 
 export const AI_SKILL_CATEGORY_LABEL: Record<AiSkillCategory, string> = {
-  learn: '学習',
-  create: '制作',
+  learn: '学習サポート',
+  create: '制作サポート',
+  // 🔴 キャリアは「キャリアサポート」にしない。指示どおりの据え置き。
   career: 'キャリア',
   other: 'そのほか',
 };
@@ -63,22 +67,22 @@ export const AI_SKILL_CATEGORY_ORDER: AiSkillCategory[] = ['learn', 'create', 'c
 export type AiSkillIconKey =
   | 'book'
   | 'glossary'
-  | 'quiz'
   | 'image'
-  | 'pen'
+  | 'video'
   | 'lightbulb'
   | 'document'
   | 'mic'
   | 'briefcase'
-  | 'sparkles'
-  | 'wrench';
+  | 'sparkles';
 
 /**
  * スキル1件のユーザー向け情報。**ここに書いたことしかUIに出さない**。
- * 裏で呼ばれるDifyアプリ名は mocks/aiSkillCatalog.ts 側にあり、UIへは渡らない。
  *
- * 名前は「AIアプリ」「メーカー」ではなく動詞で書く。
- * 受講生が判断できるのは「何ができるか」であって、アプリの商品名ではないため。
+ * 🔴 名前は実在のAIアプリ名をそのまま使う（表記もアプリ側と1文字ずらさない。
+ *    「AI面接シュミレーター」もこの綴りのまま）。
+ *    かつてここは「用語・文章をわかりやすくする」のように動詞へ言い換えていたが、
+ *    コーチや教材が案内するときの呼び名（＝アプリ名）と画面の表示が食い違い、
+ *    どれの話なのか通じなくなるため戻した。何ができるかは description が受け持つ。
  */
 export interface AiSkillMeta {
   /** 一覧・セレクタに出す表示名（動詞） */
@@ -116,6 +120,13 @@ export interface AiSkillMeta {
   /** 画像が無いと成立しないか（未添付なら実行ボタンではなく添付を促す） */
   needsImage: boolean;
   /**
+   * 一覧（/ai-coach の「AIコーチでできること」・教材ページの ＋ メニュー）に出すか。
+   * 既定は true で、false は 'learning' だけ。あれはカードから始めるアプリではなく、
+   * 教材ページ右パネルのAIコーチが既定で入っているモードそのものなので、
+   * 一覧に並べると「アプリが1つ多い」ことになる（消すと教材ページのAIが動かない）。
+   */
+  listed?: boolean;
+  /**
    * 右パネルでは手狭になりやすく、AI専用ページへの拡大を勧めたいか（仕様§6）。
    * 「修正して再添削を繰り返す」「長い文章を作る」類の作業がこれに当たる。
    */
@@ -137,13 +148,15 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     quickActions: ['簡単に説明して', '具体例を出して', 'なぜそうするの？', '制作物に当てはめると？'],
     placeholder: '教材について質問する…',
     needsImage: false,
+    // 一覧に出さない唯一のモード。理由は listed の注記
+    listed: false,
     preferWide: false,
   },
 
   glossary: {
-    label: '用語・文章をわかりやすくする',
-    modeLabel: '用語解説モード',
-    shortLabel: '用語解説',
+    label: '専門用語AIアシスタント',
+    modeLabel: '専門用語AIアシスタント',
+    shortLabel: '専門用語',
     cta: 'やさしい言葉に置き換える',
     category: 'learn',
     icon: 'glossary',
@@ -157,27 +170,32 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     preferWide: false,
   },
 
-  quiz: {
-    label: '理解度を確認する',
-    modeLabel: '理解度チェックモード',
-    shortLabel: '理解度チェック',
-    cta: '確認の問題を出す',
+  /*
+   * 🔴 カテゴリは「学習サポート」。デザインの課題を出すアプリだが、
+   *    やっていることは毎日の練習なので、制作サポート（＝作ったものを見てもらう）
+   *    ではなくこちらに置く。
+   */
+  'daily-design-sprint': {
+    label: 'デイリーデザインスプリントチャレンジャー',
+    modeLabel: 'デイリーデザインスプリントチャレンジャー',
+    shortLabel: 'デイリースプリント',
+    cta: '今日の課題を出す',
     category: 'learn',
-    icon: 'quiz',
-    description: '学んだ範囲から質問を出して、自分の言葉で説明できるかを確かめます。',
-    inputHint: '確認したい教材・単元の名前',
-    useCase: 'レッスンを終えて、身についたか不安なとき',
-    modeLead: '教材の範囲から出題し、答えを一緒に確かめます。',
-    quickActions: ['3問出して', 'いまの範囲を確認したい', '間違えた理由を教えて'],
-    placeholder: '確認したい単元や、答えを書いてください…',
+    icon: 'sparkles',
+    description: '使える時間と分野を答えると、その日のデザイン課題を出します。仕上げて出すとフィードバックが返ります。',
+    inputHint: '今日使える時間・挑戦したい分野',
+    useCase: '何を作るか決まらない日に、とにかく手を動かし始めたいとき',
+    modeLead: '今日のデザイン課題を、使える時間と分野から決めます。',
+    quickActions: ['今日の課題を出して', '3時間で終わる課題がいい', 'バナーの課題にして'],
+    placeholder: '使える時間と、挑戦したい分野を書いてください…',
     needsImage: false,
-    preferWide: false,
+    preferWide: true,
   },
 
   'design-review': {
-    label: '制作物を添削する',
-    modeLabel: '制作物添削モード',
-    shortLabel: '制作物添削',
+    label: 'デザインフィードバックメンタープロ',
+    modeLabel: 'デザインフィードバックメンタープロ',
+    shortLabel: 'デザインフィードバック',
     cta: '項目別に添削する',
     category: 'create',
     icon: 'image',
@@ -191,27 +209,28 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     preferWide: true,
   },
 
-  writing: {
-    label: '文章を改善する',
-    modeLabel: '文章改善モード',
-    shortLabel: '文章改善',
-    cta: '文章を書き直す',
+  'video-review': {
+    label: '動画編集フィードバックPro',
+    modeLabel: '動画編集フィードバックPro',
+    shortLabel: '動画フィードバック',
+    cta: '編集を見てもらう',
     category: 'create',
-    icon: 'pen',
-    description: '書いた文章を、読み手が判断しやすい順序と長さに整えて、修正案まで出します。',
-    inputHint: '直したい文章',
-    useCase: 'プロフィールや提案文が読みにくいと感じたとき',
-    modeLead: '文章を教材の考え方に沿って整え、修正案を作ります。',
-    quickActions: ['読みやすく整えて', '短くして', '結論を先に出して'],
-    placeholder: '直したい文章を貼り付けてください…',
+    icon: 'video',
+    description: '編集した動画のテンポ・テロップ・音まわりを、見る人の目線で確認します。',
+    inputHint: '動画のURL、または書き出した画面の画像',
+    useCase: '動画を提出する前に、冒頭やテロップを見てほしいとき',
+    modeLead: '動画編集を、見る人の目線で確認します。',
+    // 🔴 needsImage は false。動画そのものはURLで渡すので、画像が無くても成立する
+    quickActions: ['全体を見てほしい', 'テロップを確認して', '冒頭3秒を見て'],
+    placeholder: '見てほしい点と、動画のURLを書いてください…',
     needsImage: false,
     preferWide: true,
   },
 
   copy: {
-    label: 'キャッチコピーを考える',
-    modeLabel: 'コピー作成モード',
-    shortLabel: 'コピー作成',
+    label: 'キャッチコピーアイデアメーカー',
+    modeLabel: 'キャッチコピーアイデアメーカー',
+    shortLabel: 'キャッチコピー',
     cta: 'コピー案を出す',
     category: 'create',
     icon: 'lightbulb',
@@ -226,9 +245,9 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
   },
 
   application: {
-    label: '応募文をつくる',
-    modeLabel: '応募文作成モード',
-    shortLabel: '応募文作成',
+    label: '案件応募文 生成・添削メーカー',
+    modeLabel: '案件応募文 生成・添削メーカー',
+    shortLabel: '応募文',
     cta: '応募文を組み立てる',
     category: 'career',
     icon: 'document',
@@ -242,9 +261,10 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     preferWide: true,
   },
 
+  /* 🔴 「シュミレーター」はアプリ側の綴りに合わせている。直さないこと */
   interview: {
-    label: 'AIと面接練習をする',
-    modeLabel: '面接練習モード',
+    label: 'AI面接シュミレーター',
+    modeLabel: 'AI面接シュミレーター',
     shortLabel: '面接練習',
     cta: '面接の練習を始める',
     category: 'career',
@@ -259,53 +279,59 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
     preferWide: true,
   },
 
-  'job-search': {
-    label: '自分に合う案件を探す',
-    modeLabel: '案件さがしモード',
-    shortLabel: '案件さがし',
-    cta: '条件に合う案件を探す',
+  /*
+   * 案件抽出メーカー。
+   * 🔴 媒体ごとに別のアプリ（別のDifyアプリ）なので、1つにまとめて中で媒体を
+   *    選ばせる形にはしない。探し方も単価の相場も媒体ごとに違う。
+   *    3件の違いは媒体名だけなので、文言は揃えて媒体名だけ差し替える。
+   */
+  'job-search-crowdworks': {
+    label: '案件抽出メーカー（クラウドワークス）',
+    modeLabel: '案件抽出メーカー（クラウドワークス）',
+    shortLabel: '案件抽出（CW）',
+    cta: 'クラウドワークスで探す',
     category: 'career',
     icon: 'briefcase',
-    description: 'できることと使える時間を整理して、無理なく受けられる案件の条件まで絞ります。',
+    description: 'できることと使える時間を整理して、クラウドワークスで受けられる案件の条件まで絞ります。',
     inputHint: '得意な作業・週に使える時間・希望単価',
-    useCase: '副業を始めたいが、どこから受けるか迷うとき',
-    modeLead: '受けられる条件を整理して、案件の探し方まで決めます。',
+    useCase: 'クラウドワークスで受けられる案件を探したいとき',
+    modeLead: 'クラウドワークスで受けられる条件を整理して、探し方まで決めます。',
     quickActions: ['条件を整理して', 'はじめやすい案件は？', '単価の目安を知りたい'],
     placeholder: '得意な作業と、週に使える時間を書いてください…',
     needsImage: false,
     preferWide: false,
   },
 
-  idea: {
-    label: 'アイデアを整理する',
-    modeLabel: 'アイデア整理モード',
-    shortLabel: 'アイデア整理',
-    cta: '考えを整理する',
-    category: 'other',
-    icon: 'sparkles',
-    description: 'いま決めることと後回しにできることを分けて、次の一歩まで落とします。',
-    inputHint: '迷っていること・やりたいこと',
-    useCase: '手が止まって、何から始めるか決まらないとき',
-    modeLead: '決めることを分けて、今日動ける大きさにします。',
-    quickActions: ['何から始める？', '優先順位をつけて', '15分でできることは？'],
-    placeholder: '迷っていることをそのまま書いてください…',
+  'job-search-coconala': {
+    label: '案件抽出メーカー（ココナラ）',
+    modeLabel: '案件抽出メーカー（ココナラ）',
+    shortLabel: '案件抽出（ココナラ）',
+    cta: 'ココナラで探す',
+    category: 'career',
+    icon: 'briefcase',
+    description: 'できることと使える時間を整理して、ココナラで受けられる案件の条件まで絞ります。',
+    inputHint: '得意な作業・週に使える時間・希望単価',
+    useCase: 'ココナラで受けられる案件を探したいとき',
+    modeLead: 'ココナラで受けられる条件を整理して、探し方まで決めます。',
+    quickActions: ['条件を整理して', 'はじめやすい案件は？', '単価の目安を知りたい'],
+    placeholder: '得意な作業と、週に使える時間を書いてください…',
     needsImage: false,
     preferWide: false,
   },
 
-  tooling: {
-    label: 'ツール・エラーを相談する',
-    modeLabel: 'トラブル相談モード',
-    shortLabel: 'トラブル相談',
-    cta: '原因を順に切り分ける',
-    category: 'other',
-    icon: 'wrench',
-    description: 'エラーや動かない症状を、再現条件から順に切り分けて原因を絞ります。',
-    inputHint: '出ているメッセージ・直前にした操作',
-    useCase: 'ツールが動かず、先に進めないとき',
-    modeLead: '再現条件から順に、原因を切り分けます。',
-    quickActions: ['エラーの原因を知りたい', '直前の操作を伝える', '設定を確認したい'],
-    placeholder: '出ているメッセージをそのまま貼り付けてください…',
+  'job-search-lancers': {
+    label: '案件抽出メーカー（ランサーズ）',
+    modeLabel: '案件抽出メーカー（ランサーズ）',
+    shortLabel: '案件抽出（ランサーズ）',
+    cta: 'ランサーズで探す',
+    category: 'career',
+    icon: 'briefcase',
+    description: 'できることと使える時間を整理して、ランサーズで受けられる案件の条件まで絞ります。',
+    inputHint: '得意な作業・週に使える時間・希望単価',
+    useCase: 'ランサーズで受けられる案件を探したいとき',
+    modeLead: 'ランサーズで受けられる条件を整理して、探し方まで決めます。',
+    quickActions: ['条件を整理して', 'はじめやすい案件は？', '単価の目安を知りたい'],
+    placeholder: '得意な作業と、週に使える時間を書いてください…',
     needsImage: false,
     preferWide: false,
   },
@@ -314,12 +340,19 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
 /** 実スキルの一覧（AI_SKILL_META の宣言順） */
 export const CONCRETE_AI_SKILLS = Object.keys(AI_SKILL_META) as ConcreteAiSkillId[];
 
+/** 一覧に出すスキル（listed が false でないもの） */
+export const LISTED_AI_SKILLS: ConcreteAiSkillId[] = CONCRETE_AI_SKILLS.filter(
+  (id) => AI_SKILL_META[id].listed !== false
+);
+
 /**
- * カテゴリ別のスキル一覧（「すべてのAI機能」の並び）。
+ * カテゴリ別のスキル一覧（「AIコーチでできること」の並び）。
  * 宣言順をそのまま使うので、並べ替えは AI_SKILL_META の順序を変えるだけで済む。
+ * 🔴 listed が false のものは含めない。カテゴリが空になることがあるので、
+ *    呼び出し側は「0件なら見出しごと出さない」こと。
  */
 export const skillsInCategory = (category: AiSkillCategory): ConcreteAiSkillId[] =>
-  CONCRETE_AI_SKILLS.filter((id) => AI_SKILL_META[id].category === category);
+  LISTED_AI_SKILLS.filter((id) => AI_SKILL_META[id].category === category);
 
 /**
  * 「よく使うAI」に出すスキル。
@@ -327,11 +360,11 @@ export const skillsInCategory = (category: AiSkillCategory): ConcreteAiSkillId[]
  */
 export const FEATURED_AI_SKILLS: ConcreteAiSkillId[] = [
   'design-review',
-  'writing',
+  'daily-design-sprint',
   'copy',
-  'learning',
+  'glossary',
   'interview',
-  'job-search',
+  'job-search-crowdworks',
 ];
 
 /** AI_SKILL_META から1項目だけ抜き出した対応表を作る（表示名などの後方互換マップ用） */

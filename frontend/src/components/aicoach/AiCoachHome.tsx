@@ -316,29 +316,38 @@ export function AiCoachHome({
                どちらも下のカード一覧が実物で示しているので、
                ゼロ状態の文字量を増やすだけになっていた。 */}
 
-        {/* ── AIアプリでできること ──
+        {/* ── AIコーチでできること ──
             機能を見て選びたい人の入口。並びは AI_SKILL_META の宣言順（固定）で、
-            「最近使った順」に並べ替えない。毎回場所が変わると覚えられないため。 */}
+            「最近使った順」に並べ替えない。毎回場所が変わると覚えられないため。
+            🔴 見出しは「AIコーチ」。カードの1枚1枚はアプリ名で呼ぶが、
+               この一覧が何なのかは「AIコーチでできること」と言い切る。 */}
         <h3 style={{ margin: '36px 0 4px', fontSize: 18, fontWeight: 700, color: 'var(--dc-text)' }}>
-          AIアプリでできること
+          AIコーチでできること
         </h3>
 
-        {AI_SKILL_CATEGORY_ORDER.map((category) => (
-          <section key={category} style={{ marginTop: 24 }}>
-            <h4
-              style={{
-                margin: '0 0 12px',
-                fontSize: 12.5,
-                fontWeight: 700,
-                letterSpacing: '0.04em',
-                color: 'var(--dc-text-muted)',
-              }}
-            >
-              {AI_SKILL_CATEGORY_LABEL[category]}
-            </h4>
-            <div className="ai-home-apps">{skillsInCategory(category).map(renderCard)}</div>
-          </section>
-        ))}
+        {/* 🔴 0件のカテゴリは見出しごと出さない。アプリの顔ぶれは実在のアプリに
+               合わせてあるので、カテゴリが空になることがある（いまは「そのほか」）。
+               見出しだけが並ぶと、読み込みに失敗したように見える。 */}
+        {AI_SKILL_CATEGORY_ORDER.map((category) => {
+          const skills = skillsInCategory(category);
+          if (skills.length === 0) return null;
+          return (
+            <section key={category} style={{ marginTop: 24 }}>
+              <h4
+                style={{
+                  margin: '0 0 12px',
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  letterSpacing: '0.04em',
+                  color: 'var(--dc-text-muted)',
+                }}
+              >
+                {AI_SKILL_CATEGORY_LABEL[category]}
+              </h4>
+              <div className="ai-home-apps">{skills.map(renderCard)}</div>
+            </section>
+          );
+        })}
       </div>
     </div>
   );
