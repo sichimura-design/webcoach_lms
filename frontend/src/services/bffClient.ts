@@ -1401,12 +1401,50 @@ class BFFClient {
   }
 
   /**
+   * AI非同期チャットジョブの状態取得（ポーリング用）
+   * GET /api/webcoach/ai/status/:jobId
+   */
+  async getAIChatStatus(jobId: string): Promise<AIResponse> {
+    const response = await this.api.get(`/webcoach/ai/status/${jobId}`);
+    return response.data;
+  }
+
+  /**
    * AIチャット
    * POST /api/webcoach/ai
+   *
+   * 「案件抽出メーカー」等のDify連携ツールが実際に検索を行うステップは70〜90秒
+   * かかることがある。api-server側は短い猶予時間(8秒)を超えると
+   * status: "processing" + job_id を返すので、その場合はここで透過的に
+   * ポーリングし、呼び出し側(useLessonAi.ts等)は今まで通りawaitするだけでよい。
+   *
+   * @param onWaiting ポーリングに切り替わった瞬間に1回だけ呼ばれる
+   *   （「検索に時間がかかっています」等の一時表示に使う）
    */
-  async sendAIMessage(request: AIRequest): Promise<AIResponse> {
+  async sendAIMessage(request: AIRequest, onWaiting?: () => void): Promise<AIResponse> {
     const response = await this.api.post('/webcoach/ai', request);
-    return response.data;
+    const data: AIResponse = response.data;
+
+    if (data.status !== 'processing' || !data.job_id) {
+      return data;
+    }
+
+    onWaiting?.();
+
+    const jobId = data.job_id;
+    const pollIntervalMs = 3000;
+    const maxWaitMs = 3 * 60 * 1000;
+    const startedAt = Date.now();
+
+    while (Date.now() - startedAt < maxWaitMs) {
+      await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+      const statusResponse = await this.getAIChatStatus(jobId);
+      if (statusResponse.status !== 'processing') {
+        return statusResponse;
+      }
+    }
+
+    throw new Error('AIチャットの応答がタイムアウトしました');
   }
 
   /**

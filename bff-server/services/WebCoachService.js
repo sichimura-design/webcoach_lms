@@ -78,6 +78,13 @@ class WebCoachService {
   }
 
   /**
+   * Get async AI chat job status
+   */
+  async getAIChatStatus(jobId) {
+    return await apiServerAdapter.getAIChatStatus(jobId);
+  }
+
+  /**
    * Update database (bulk operation)
    */
   async updateDatabase(dataType, records) {

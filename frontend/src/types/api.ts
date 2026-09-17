@@ -426,6 +426,9 @@ export interface AIResponse {
   context?: Record<string, any>;
   timestamp?: string;
   suggestions?: string[];
+  /** "processing"の場合、Dify連携ツールの実検索等で時間がかかっており、job_idでポーリング中であることを示す */
+  status?: 'done' | 'processing';
+  job_id?: string;
 }
 
 // WebCoach Database

@@ -280,14 +280,26 @@ class ApiServerAdapter {
       chatRequest,
       {
         headers: { 'Content-Type': 'application/json' },
-        // api-server内部でLLM推論+FAISS検索(数秒)に加えてDify呼び出し自体が
-        // 最大45秒(tools_langchain.pyのtimeout=45)かかりうるため、
-        // BFF側のタイムアウトはそれより十分長く取る必要がある。
-        // 以前は30000(Dify側と同値)だったため、Dify応答がわずかに遅いだけで
-        // BFFが先にタイムアウトし「一時的なエラー」を返していた。
-        // frontend側(bffClient.ts)のタイムアウトが60000なので、それより
-        // 短く保つ(BFFが先に諦めて意味のあるエラーメッセージを返せるように)。
+        // 2026-09-17: api-server側がバックグラウンドスレッド+ポーリング方式になり、
+        // SYNC_WAIT_SECONDS(8秒)以内に完了しなければ即座にstatus="processing"を
+        // 返すようになった(routers/ai_langgraph.py参照)。Dify連携ツールの実検索が
+        // 70〜90秒かかる場合でも、この呼び出し自体は8秒程度で返るため、
+        // 50000msは実質使い切らない安全マージンとして残している。
         timeout: 50000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get async AI chat job status (LangGraph version)
+   */
+  async getAIChatStatus(jobId) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/ai/chat/status/${jobId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
       }
     );
     return response.data;

@@ -189,6 +189,26 @@ router.post('/ai', requireAuth, async (req, res) => {
   }
 });
 
+// Get async AI chat job status (polling)
+router.get('/ai/status/:jobId', requireAuth, async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const result = await webCoachService.getAIChatStatus(jobId);
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach AI Status] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to get AI chat job status',
+      detail: error.message
+    });
+  }
+});
+
 // Update database (bulk operation)
 router.post('/updatedb', requireAuth, async (req, res) => {
   try {

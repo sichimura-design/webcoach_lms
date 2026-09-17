@@ -272,14 +272,13 @@ def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
                 "conversation_id": conversation_id,
                 "user": f"webcoach-user-{userid}",
             },
-            # dev-previewのCloudFrontオリジンタイムアウトを60秒、BFF→api-server間の
-            # タイムアウトを50秒に緩和済み(2026-09-15)なので、それより手前で必ず
-            # 何か返せる範囲でDify呼び出し自体にも余裕を持たせる。
-            # 実測: 25秒では「案件検索」のような重いステップ形式フローの後半ターンで
-            # 依然としてread timeoutになるケースがあったため45秒に緩和。
-            # FAISS検索+ツール選択のLLM呼び出し分(数秒)を差し引いてもBFFの50秒に
-            # 収まるよう、45秒より上げる場合はBFF側のタイムアウトも合わせて見直すこと。
-            timeout=45,
+            # 2026-09-17: routers/ai_langgraph.pyがバックグラウンドスレッド+ポーリング
+            # 方式(SYNC_WAIT_SECONDS超過時はjob_id化)に変更されたため、この呼び出しは
+            # もはやCloudFront/BFFの同期タイムアウトに縛られない。
+            # 実測: 「案件抽出メーカー」の実検索ステップはDify側で72秒かかった例がある
+            # (Dify `GET /v1/messages`のprovider_response_latencyで確認)。それでも
+            # 無制限にはせず、異常に長時間化した場合の安全弁として120秒を上限とする。
+            timeout=120,
         )
         response.raise_for_status()
         data = response.json()

@@ -92,6 +92,19 @@ const errorAnswer = (): LessonAiResponse => ({
   generalNote: null,
 });
 
+/** 「案件抽出メーカー」等のDify連携ツールが実際に検索を行うステップは70〜90秒かかることがあり、
+ *  その間ユーザーに待機中であることを伝えるための一時メッセージ（bffClient.sendAIMessageの
+ *  onWaitingコールバックから使う。完了時は別の通常メッセージがこの下に追加される）。 */
+const waitingAnswer = (): LessonAiResponse => ({
+  conclusion: '検索に時間がかかっています。1分ほどお待ちください…',
+  basis: '',
+  apply: '',
+  next: '',
+  sources: [],
+  groundedInMaterial: false,
+  generalNote: null,
+});
+
 /**
  * @param doc 教材本文。null なら教材の文脈を持たない単独の会話
  * @param sessionIdOverride AI専用ページのように、外からセッションを指定する場合
@@ -248,21 +261,35 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       // （UI側も教材の文脈が無いときは「教材だけでは判断できません」を出さない）。
       if (!request) {
         try {
-          const res = await bffClient.sendAIMessage({
-            message: question,
-            // 会話履歴を渡さないと、DBに登録したAIアプリ(Dify)へ問い合わせ中の
-            // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
-            // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
-            conversation_history: toHistory(messages),
-            ...(img
-              ? {
-                  image: {
-                    media_type: img.slice(5, img.indexOf(';')) || 'image/png',
-                    data: img.split(',')[1] || '',
-                  },
-                }
-              : {}),
-          });
+          const res = await bffClient.sendAIMessage(
+            {
+              message: question,
+              // 会話履歴を渡さないと、DBに登録したAIアプリ(Dify)へ問い合わせ中の
+              // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
+              // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
+              conversation_history: toHistory(messages),
+              ...(img
+                ? {
+                    image: {
+                      media_type: img.slice(5, img.indexOf(';')) || 'image/png',
+                      data: img.split(',')[1] || '',
+                    },
+                  }
+                : {}),
+            },
+            // Dify連携ツールの実検索など時間がかかる場合、bffClient側が裏でポーリングに
+            // 切り替えた瞬間に1回だけ呼ばれる。待機中であることが分かるよう一時メッセージを積む。
+            () => {
+              appendMessage(sessionId, {
+                id: nextId('a'),
+                role: 'assistant',
+                content: '',
+                answer: waitingAnswer(),
+                references,
+                createdAt: new Date().toISOString(),
+              });
+            }
+          );
           appendMessage(sessionId, {
             id: nextId('a'),
             role: 'assistant',
