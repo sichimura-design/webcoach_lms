@@ -316,47 +316,9 @@ h1, h2, h3 {
   scrollbar-width: thin;
 }
 
-/* 並べ替えの ↑↓。行に触れるまで出さない（3件のときは並べ替える必要がない）。
-   opacity で出し入れするのは、display だとキーボードで届かないため */
-.mypage-task-move {
-  opacity: 0;
-  transition: opacity .12s ease;
-}
-
-.mypage-task-row:hover .mypage-task-move,
-.mypage-task-row:focus-within .mypage-task-move {
-  opacity: 1;
-}
-
-/* hover が無い端末（タッチ）では出しっぱなし。触れる手段がなくなるため */
-@media (hover: none) {
-  .mypage-task-move {
-    opacity: 1;
-  }
-}
-
-.mypage-task-move-btn {
-  display: grid;
-  place-items: center;
-  width: 22px;
-  height: 20px;
-  padding: 0;
-  border: 0;
-  border-radius: 5px;
-  background: transparent;
-  color: #C9BFB2;
-  cursor: pointer;
-}
-
-.mypage-task-move-btn:hover:not(:disabled) {
-  background: #F1EBE3;
-  color: var(--dc-text-muted);
-}
-
-.mypage-task-move-btn:disabled {
-  opacity: .3;
-  cursor: default;
-}
+/* 🔴 並べ替えの ↑↓（.mypage-task-move / .mypage-task-move-btn）は撤去した。
+   トップページの一覧は表示専用で、並べ替えはコーチングの編集モードが持つ
+   （components/coaching/NextGoalsCard.tsx）。 */
 
 /* 1カラムに落ちたら中スクロールをやめて全件そのまま並べる。丈を合わせる相手が
    隣にいないので縮める理由が無く、狭い画面で入れ子のスクロールを作ると

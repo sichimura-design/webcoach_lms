@@ -207,6 +207,21 @@ export default function CoachingPage() {
   const patchGoal = (index: number, next: Partial<CoachingGoalUpdateItem>) =>
     setGoalDraft((prev) => prev.map((g, i) => (i === index ? { ...g, ...next } : g)));
 
+  /*
+   * 並べ替え。下書きの配列を入れ替えるだけで、保存処理には手を入れない。
+   * 🔴 commitGoals が確定時に no を i+1 で振り直すので、配列の順序が並び順になる。
+   * 🔴 削除予定（removed）の行も配列に残っているので、そのまま隣と入れ替える。
+   *    保存時に落ちるため、見えている順序と保存される順序はズレない。
+   */
+  const moveGoal = (index: number, to: number) =>
+    setGoalDraft((prev) => {
+      if (to < 0 || to >= prev.length || to === index) return prev;
+      const next = [...prev];
+      const [moved] = next.splice(index, 1);
+      next.splice(to, 0, moved);
+      return next;
+    });
+
   /** 削除予定にする。実際に消えるのは保存したとき */
   const removeGoal = (index: number) =>
     setGoalDraft((prev) => prev.map((g, i) => (i === index ? { ...g, removed: true } : g)));
@@ -500,6 +515,7 @@ export default function CoachingPage() {
                 onCommit={() => void commitGoals()}
                 onCancel={cancelGoalEdit}
                 onPatch={patchGoal}
+                onMove={moveGoal}
                 onRemove={removeGoal}
                 onRestore={restoreGoal}
                 onAdd={addGoal}
