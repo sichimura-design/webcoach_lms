@@ -277,11 +277,6 @@ def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int, reset: b
     （ユーザーが前回までの条件を引き継がず新しく検索し直したい場合の入口）。
     """
     conversation_id = "" if reset else _dify_conversation_cache.get((userid, app_id), "")
-    logger.info(
-        f"[dify-debug] userid={userid} app_id={app_id} reset={reset} "
-        f"cached_conversation_id={_dify_conversation_cache.get((userid, app_id), '')!r} "
-        f"sent_conversation_id={conversation_id!r} query={query!r}"
-    )
     _dify_sticky_app_cache[userid] = app_id
     try:
         response = requests.post(
@@ -380,10 +375,6 @@ def create_ai_application_tools(db, raw_user_message: str, userid: int = None) -
             # 汎用タグ（AI/案件など複数アプリで共通のもの）は切り替え判定から除外する
             distinctive_other_tags = {t for t in (other_tags - sticky_tags) if t}
             switched = any(tag in raw_user_message for tag in distinctive_other_tags)
-            logger.info(
-                f"[dify-debug] sticky_app_id={sticky_app_id} distinctive_other_tags={distinctive_other_tags} "
-                f"switched={switched} raw_user_message={raw_user_message!r}"
-            )
             if not switched:
                 sticky_tool_name = f"ask_ai_application_{sticky_app_id}"
 
