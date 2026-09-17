@@ -26,10 +26,13 @@ h1, h2, h3 {
   letter-spacing: 0.01em;
 }
 
-/* SP版ボトムナビゲーション（h-16 = 64px）がコンテンツを隠さないよう余白を確保 */
+/* SP版ボトムナビゲーションがコンテンツを隠さないよう余白を確保。
+   🔴 --wc-bottomnav-total はバーの実測高（AppHeader.tsx が ResizeObserver で書く）。
+      学習タイマーが記録中はナビの上に帯が積まれて 64px → 約100px に増えるので、
+      固定値だと記録中だけページ最下部が帯に隠れる。 */
 @media (max-width: 639px) {
   body {
-    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: var(--wc-bottomnav-total);
   }
 }
 
@@ -43,6 +46,15 @@ h1, h2, h3 {
 :root {
   --wc-sidebar-w: 72px;
   --wc-sidebar-w-expanded: 224px;
+  /* SP下部ナビの高さ。AppHeader.tsx の <nav> と常駐AIコーチFABもこれを読む。
+     🔴 以前は 64px が CSS と TSX（h-16）に分かれて書かれていて、片方だけ動かすと
+        本文の下余白とバーの高さがずれた。ここが唯一の定義。
+     🔴 教材画面の .wc-lesson-main の grid-template-rows: 64px は
+        LessonTopBar の高さで、この変数とは無関係。まとめて置換しないこと。 */
+  --wc-bottomnav-h: 64px;
+  /* バーが実際に占有する高さ。AppHeader.tsx が実測値で上書きする（記録中は帯ぶん増える）。
+     ここの値は JS が走る前／AppHeader を描かないページ用の既定。 */
+  --wc-bottomnav-total: calc(var(--wc-bottomnav-h) + env(safe-area-inset-bottom, 0px));
 }
 
 /* 左サイドバーぶんコンテンツを右へオフセット。AppHeader を描画するページのみ。
@@ -61,6 +73,38 @@ h1, h2, h3 {
 @media (prefers-reduced-motion: reduce) {
   body.with-sidebar {
     transition: none;
+  }
+}
+
+/* SP「その他」シートのせり上がり。AppHeader.tsx の .wc-more-sheet が使う。
+   閉じるときのアニメは付けていない（条件レンダリングなので即座に消える）。 */
+@keyframes wc-sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.wc-more-sheet {
+  animation: wc-sheet-up 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 常駐AIコーチFABの下端。
+   🔴 SPは下部ナビの実測高（セーフエリア込み）を避ける。Tailwind の bottom-20
+      （固定80px）だったころは、ノッチ機のセーフエリア34pxも、記録中に積まれる
+      学習タイマーの帯も勘定しておらず、FAB がバーにめり込んでいた。
+   🔴 インラインstyleではなくクラスで書く。style だと sm 以上の指定まで潰れる。 */
+.wc-fab-bottom {
+  bottom: calc(var(--wc-bottomnav-total) + 16px);
+}
+
+@media (min-width: 640px) {
+  .wc-fab-bottom {
+    bottom: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-more-sheet {
+    animation: none;
   }
 }
 
@@ -837,10 +881,10 @@ body.learning-workspace {
   grid-template-rows: 64px minmax(0, 1fr);
 }
 
-/* SPは下部ナビ（h-16 = 64px）ぶんを差し引く */
+/* SPは下部ナビぶんを差し引く */
 @media (max-width: 639px) {
   .wc-learning-shell {
-    height: calc(100dvh - 64px);
+    height: calc(100dvh - var(--wc-bottomnav-h));
   }
 }
 

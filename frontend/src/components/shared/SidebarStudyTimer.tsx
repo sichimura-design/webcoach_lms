@@ -225,8 +225,14 @@ export function SidebarStudyTimer({ variant, tabIndex }: SidebarStudyTimerProps)
           minHeight: 36,
           padding: '0 16px',
           border: 0,
-          borderTop: `1px solid ${color.border}`,
-          background: running ? color.primaryTint : color.surface,
+          /* 🔴 borderTop は引かない。この帯は下部ナビ <nav> の最初の子で、
+                nav 自身の borderTop（#E2DBD0）と隣り合って二重線に見える。
+                区切りは下側（ナビ本体との間）に引く。 */
+          borderBottom: `1px solid ${color.border}`,
+          /* 🔴 mobile は下部ナビ（地色 #FDF7F3）の上に乗る帯。非記録時に白を敷くと
+                帯だけ浮いて、ナビとの間に段差が見える。透過して親の地を透かす。
+                記録中だけは primaryTint で塗り、止め忘れに気づけるようにする。 */
+          background: running ? color.primaryTint : 'transparent',
           fontFamily: font.family,
           fontSize: 12.5,
           fontWeight: 700,
