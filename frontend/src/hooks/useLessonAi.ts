@@ -96,7 +96,7 @@ const errorAnswer = (): LessonAiResponse => ({
  *  その間ユーザーに待機中であることを伝えるための一時メッセージ（bffClient.sendAIMessageの
  *  onWaitingコールバックから使う。完了時は別の通常メッセージがこの下に追加される）。 */
 const waitingAnswer = (): LessonAiResponse => ({
-  conclusion: '検索に時間がかかっています。1分ほどお待ちください…',
+  conclusion: '検索に時間がかかっています。もうしばらくお待ちください…',
   basis: '',
   apply: '',
   next: '',
