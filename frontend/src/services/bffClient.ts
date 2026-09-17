@@ -391,25 +391,13 @@ class BFFClient {
     return response.data;
   }
 
-  /**
-   * プロフィールアイコンの画像アップロード
-   * POST /api/webcoach/profile/{userid}/avatar  （multipart/form-data, field名: file）
-   *
-   * 🔴 実BFFには未実装のモック専用API。実装は frontend/src/mocks/handlers.ts。
-   *    受講生が自分のアイコンに任意の画像を上げる経路は本番に無い（/api/admin/s3-upload は
-   *    管理者用で、任意のS3キーを受け取る作りなので受講生には開けられない）。
-   *    本番で必要になったら、S3キーをサーバ側で決める専用エンドポイントを
-   *    BFFに立ててからここを実URLに向ける。
-   * @returns アップロード後の画像URL
+  /*
+   * 🔴 uploadProfileAvatar（POST /webcoach/profile/{userid}/avatar）は削除した。
+   *    受講生が任意の画像を上げる口を持たない方針になったため。
+   *    アイコンはプリセット（/admin/avatars が登録したもの）から選ぶだけ。
+   *    足し直すなら、S3キーをサーバ側で決める専用エンドポイントが先に要る
+   *    （/api/admin/s3-upload は管理者用・任意キー受け取りなので流用できない）。
    */
-  async uploadProfileAvatar(userId: number, file: File): Promise<{ avatar_url: string }> {
-    const formData = new FormData();
-    formData.append('file', file);
-    const response = await this.api.post(`/webcoach/profile/${userId}/avatar`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-    return response.data;
-  }
 
   /**
    * 再開コース取得

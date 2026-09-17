@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { ProfileFormData } from '../types/profile';
@@ -33,13 +33,12 @@ import {
  *
  * 【構成】アイコン / ニックネーム の2行だけ。
  *
- * 🔴 アイコンは「画像をアップロード」（任意画像）を主導線に、プリセットの
- *    AvatarPicker をその横のテキストリンクに置いている。
- *    ⚠️ アップロードはモック専用（bffClient.uploadProfileAvatar / mocks/handlers.ts）。
- *       実BFFに受講生向けの画像アップロードAPIが無いため、本番(master)ではこのボタンは
- *       失敗する。プリセット選択を残しているのは、本番で唯一動く経路がそれだから。
- *       本番でも使うなら、S3キーをサーバ側で決める専用エンドポイントをBFFに立てる必要がある
- *       （/api/admin/s3-upload は管理者用・任意キー受け取りなので流用できない）。
+ * 🔴 アイコンはプリセット（AvatarPicker → /admin/avatars が登録したもの）から選ぶ
+ *    1経路だけ。任意画像のアップロードは**置かないこと**。
+ *    ・受講生が任意の画像を置ける口を持たない方針
+ *    ・実装面でも、実BFFに受講生向けのアップロードAPIは無く、以前あったボタンは
+ *      モック専用で本番(master)では必ず失敗していた
+ *      （/api/admin/s3-upload は管理者用・任意キー受け取りなので流用できない）
  * 🔴 メールアドレスはこの画面に置かない。表示だけの行を置いていた時期があるが、
  *    編集できない値を編集画面に並べても意味が無く、変更（Cognito の確認コード往復）は
  *    アカウント設定の「ログイン情報」が1箇所で持っている。
@@ -54,8 +53,6 @@ function ProfilePage() {
   const { user, contentToken, refreshProfile } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -137,53 +134,15 @@ function ProfilePage() {
     }
   };
 
-  /**
-   * アイコン画像のアップロード。
-   * 🔴 アップロードは「保存する」を待たずにその場で確定させる。ファイルを選んだのに
-   *    見た目が変わらないと成功したのか分からず、逆に画像だけ先に反映して保存前に
-   *    離脱されると、次に来たとき元に戻っていて混乱する。サーバ側（モック）が
-   *    URLを確定した時点で formData も更新し、保存ボタンはニックネームだけの
-   *    責務にしている。
-   * 🔴 検証はクライアントとモックの両方でやる。ここで弾くのは即座に理由を返すため、
-   *    モック側（handlers.ts）で弾くのは本番APIに置き換えたときの契約を残すため。
+  /*
+   * 🔴 アイコン画像のアップロード（handlePickFile / bffClient.uploadProfileAvatar）は
+   *    撤去した。任意の画像を受け取る口を持たないため。
+   *    アイコンはプリセット（AvatarPicker）から選ぶ1経路だけ。
    */
-  const handlePickFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    // 同じファイルを選び直したときも onChange が来るように毎回クリアする
-    e.target.value = '';
-    if (!file) return;
 
-    if (!['image/png', 'image/jpeg'].includes(file.type)) {
-      setError('PNG または JPG の画像を選んでください');
-      return;
-    }
-    if (file.size > 5 * 1024 * 1024) {
-      setError('画像は5MBまでです');
-      return;
-    }
-    if (!user?.userid) {
-      setError('ユーザーIDが取得できていません');
-      return;
-    }
-
-    try {
-      setUploading(true);
-      setError(null);
-      const { avatar_url } = await bffClient.uploadProfileAvatar(user.userid, file);
-      // アップロードした画像を使うので、プリセットの選択（avatar_id）は外す
-      setFormData(prev => ({ ...prev, avatar_url, avatar_id: '' }));
-      setToastMessage('アイコンを変更しました！');
-      await refreshProfile();
-    } catch (err: any) {
-      console.error('Failed to upload avatar:', err);
-      setError(err?.response?.data?.message || err.message || 'アイコンのアップロードに失敗しました');
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  // avatar_url が実URL（またはアップロードした data URL）なら直接使用、
-  // なければ avatar_id / avatar_url から解決
+  // avatar_url が実URLならそのまま、なければ avatar_id / avatar_url から解決。
+  // 🔴 data: の分岐はアップロード時代の名残なので残してある。古いプロフィールに
+  //    data URL が入ったままのユーザーがいても、画像が消えないようにするため。
   const avatarIdentifier = formData.avatar_url?.startsWith('http') || formData.avatar_url?.startsWith('data:')
     ? formData.avatar_url
     : formData.avatar_id || formData.avatar_url;
@@ -281,45 +240,20 @@ function ProfilePage() {
                 size={96}
               />
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-start' }}>
-                {/* 主導線は任意画像のアップロード（デザイン 2b の「画像をアップロード」） */}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/png,image/jpeg"
-                  onChange={handlePickFile}
-                  style={{ display: 'none' }}
+                {/* 🔴 唯一の導線。任意画像のアップロード（デザイン 2b の
+                       「画像をアップロード」）は撤去したので、テキストリンクではなく
+                       ボタンで出す。 */}
+                <AvatarPicker
+                  selectedAvatarId={selectedAvatarId}
+                  onSelect={(avatarId, url) =>
+                    setFormData(prev => ({ ...prev, avatar_id: String(avatarId), avatar_url: url }))
+                  }
+                  triggerLabel="アイコンを選ぶ"
+                  triggerClassName={`dc-cta-outline ${focusRing}`}
+                  triggerStyle={{ ...dcOutlineButton, fontSize: 13.5, padding: '9px 22px' }}
                 />
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={uploading}
-                    className={`dc-cta-outline ${focusRing}`}
-                    style={{ ...dcOutlineButton, fontSize: 13.5, padding: '9px 22px' }}
-                  >
-                    {uploading ? 'アップロード中...' : '画像をアップロード'}
-                  </button>
-                  {/*
-                    プリセットのアイコンも残す。管理画面（/admin/avatars）が登録した
-                    アイコンは本番で唯一動く選択肢なので、任意画像を足したからといって
-                    到達できなくすると、本番では何も選べない画面になる。
-                  */}
-                  <AvatarPicker
-                    selectedAvatarId={selectedAvatarId}
-                    onSelect={(avatarId, url) =>
-                      setFormData(prev => ({ ...prev, avatar_id: String(avatarId), avatar_url: url }))
-                    }
-                    triggerLabel="用意されたアイコンから選ぶ"
-                    triggerClassName={focusRing}
-                    triggerStyle={{
-                      background: 'none', border: 'none', padding: 0,
-                      fontFamily: 'inherit', fontSize: 12.5, fontWeight: 700,
-                      color: 'var(--dc-primary)', cursor: 'pointer', textDecoration: 'underline',
-                    }}
-                  />
-                </div>
                 <span style={{ ...dcHint, marginTop: 0 }}>
-                  PNG / JPG、5MBまで。正方形の画像がきれいに表示されます
+                  用意されたアイコンから選べます
                 </span>
               </div>
             </div>
