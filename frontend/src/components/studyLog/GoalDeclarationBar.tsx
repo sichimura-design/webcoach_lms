@@ -1,32 +1,39 @@
-import { Flag, Pencil, Plus } from 'lucide-react';
+import { ChevronDown, Flag } from 'lucide-react';
 import { GoalDeclaration } from '../../types/goalDeclaration';
 import { daysLeft } from '../../utils/goalDeclaration';
 import { toLocalDateKey } from '../../utils/studyStats';
+import { GoalJump } from './GoalDeclarationCard';
 
 /**
- * いま進行中の目標宣言を、カレンダーの上に横1本で出すバー（/study-log）。
+ * いまの目標を、カレンダーの上に横1本で出すバー（/study-log の ①）。
  * ============================================================
  * 「今この期間に何をやると決めたか」がこの画面で一番読ませたいものなので、
  * カレンダーと日別記録より上に、独立した1枚として置く。
  *
- * 🔴 進行中の1件だけを持つ。振り返り待ち・過去の宣言は GoalDeclarationCard
- *    （ページ下部の履歴）が持つ。編集の入口をこの2つに散らさないため、
- *    進行中の編集はここ、振り返りと過去分の閲覧はあちら、と分けている。
+ * 🔴 ここでは編集しない。ボタンはすべて下向きアイコン付きで、押すとページ下部の
+ *    「あなたの目標」カード（GoalDeclarationCard）へスクロールして着地するだけ。
+ *    書く・直すの入口をあちらの1枚に集約するため、ここからモーダルを開かない。
  *
  * 🔴 期間の経過バーを付けない。GoalDeclarationCard と同じ理由で、
  *    経過バーは達成度%に読まれてしまい「学習効果を数値化した指標を出さない」規約に触れる。
  *
  * 🔴 この期間の学習時間・学習日数をここに出さない。
- *    バーは宣言文を読ませるためのもので、数字を足すと本文が主役でなくなる。
- *    事実としての集計は履歴カード側に残してある。
+ *    バーは目標の文を読ませるためのもので、数字を足すと本文が主役でなくなる。
+ *    事実としての集計は下部のカードに残してある。
+ *
+ * 🔴 ラベルは常に「あなたの目標」。かつては期間が月を丸ごと覆うときだけ
+ *    「今月の目標」と出し分けていたが、マイページ・下部カード・ここで呼び名が
+ *    ばらけて「同じ目標の話か」が読み手に分からなくなっていた。
  * ============================================================
  */
 interface GoalDeclarationBarProps {
-  /** いま有効な宣言。utils/goalDeclaration.ts の activeDeclaration() が決めた1件 */
+  /** いま有効な目標。utils/goalDeclaration.ts の activeDeclaration() が決めた1件 */
   active: GoalDeclaration | null;
+  /** 期間が終わったのに振り返りがまだのもの（新しい順） */
+  pending: GoalDeclaration[];
   loading: boolean;
-  onCreate: () => void;
-  onEdit: (declaration: GoalDeclaration) => void;
+  /** 下部の「あなたの目標」カードへ送る。編集はあちらで行う */
+  onJump: (target: Exclude<GoalJump, null>) => void;
 }
 
 const BAR: React.CSSProperties = {
@@ -34,7 +41,7 @@ const BAR: React.CSSProperties = {
   alignItems: 'center',
   gap: 14,
   flexWrap: 'wrap',
-  // 薄い赤地。白いカードが並ぶ中で「ここだけ宣言」と分かる程度に留める
+  // 薄い赤地。白いカードが並ぶ中で「ここだけ目標」と分かる程度に留める
   background: 'var(--dc-soft-100)',
   border: '1px solid var(--dc-soft-200)',
   borderRadius: 'var(--dc-radius-lg)',
@@ -44,29 +51,6 @@ const BAR: React.CSSProperties = {
 /** 'YYYY-MM-DD' → 'M/D' */
 function md(key: string): string {
   return `${Number(key.slice(5, 7))}/${Number(key.slice(8, 10))}`;
-}
-
-/** その月の日数 */
-function daysInMonth(year: number, month1to12: number): number {
-  return new Date(year, month1to12, 0).getDate();
-}
-
-/**
- * バーのラベル。
- * 🔴 「今月の目標」で固定しない。GoalDeclaration の期間は本人が決めるもので、
- *    2週間の宣言もある（types/goalDeclaration.ts は「数週間〜1ヶ月」と書いている）。
- *    9/6〜9/12 の宣言に「今月の目標」と付けると、期間の表示と食い違う。
- *    ひと月ぶんを丸ごと覆っているときだけ「今月の目標」と言う。
- */
-function barLabel(periodFrom: string, periodTo: string): string {
-  const year = Number(periodFrom.slice(0, 4));
-  const month = Number(periodFrom.slice(5, 7));
-  const sameMonth = periodFrom.slice(0, 7) === periodTo.slice(0, 7);
-  const coversMonth =
-    sameMonth &&
-    Number(periodFrom.slice(8, 10)) === 1 &&
-    Number(periodTo.slice(8, 10)) === daysInMonth(year, month);
-  return coversMonth ? '今月の目標' : 'いまの目標';
 }
 
 function badge() {
@@ -97,119 +81,148 @@ const LABEL: React.CSSProperties = {
   whiteSpace: 'nowrap',
 };
 
-export function GoalDeclarationBar({ active, loading, onCreate, onEdit }: GoalDeclarationBarProps) {
-  if (loading) {
-    return (
-      <section style={BAR} aria-label="いまの目標">
-        {badge()}
-        <span style={LABEL}>いまの目標</span>
-        <span style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)' }}>読み込み中…</span>
-      </section>
-    );
-  }
+const NOTE: React.CSSProperties = {
+  flex: 1,
+  minWidth: 200,
+  fontSize: 'var(--dc-fs-body)',
+  color: 'var(--dc-text-muted)',
+  lineHeight: 'var(--dc-lh-ui)',
+};
 
-  if (!active) {
-    return (
-      <section style={BAR} aria-label="いまの目標">
-        {badge()}
-        <span style={LABEL}>いまの目標</span>
-        <span
-          style={{
-            flex: 1,
-            minWidth: 200,
-            fontSize: 'var(--dc-fs-body)',
-            color: 'var(--dc-text-muted)',
-            lineHeight: 'var(--dc-lh-ui)',
-          }}
-        >
-          まだ宣言がありません。「この期間で何をやり切るか」を1文で書いておくと、期間が終わったときに振り返りとして残ります。
-        </span>
-        <button
-          type="button"
-          onClick={onCreate}
-          className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 5,
-            flex: 'none',
-            minHeight: 34,
-            padding: '0 14px',
-            borderRadius: 9999,
-            border: '1px solid var(--dc-border-strong)',
-            background: 'var(--dc-surface)',
-            fontFamily: 'inherit',
-            fontSize: 'var(--dc-fs-body)',
-            fontWeight: 700,
-            color: 'var(--dc-text-body)',
-            cursor: 'pointer',
-          }}
-        >
-          <Plus size={14} strokeWidth={2} aria-hidden="true" />
-          宣言を書く
-        </button>
-      </section>
-    );
-  }
+/**
+ * 期間とボタンの並び。
+ * 🔴 flex:'none' にしない。375px でボタンが2つ並ぶ状態（期間終了）だと、
+ *    縮まないぶんバーの外へはみ出して横スクロールが出る。
+ */
+const ACTIONS: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  gap: 12,
+  flex: '1 1 auto',
+  minWidth: 0,
+  flexWrap: 'wrap',
+};
 
-  const left = daysLeft(active, toLocalDateKey(new Date()));
-  const label = barLabel(active.periodFrom, active.periodTo);
+const META: React.CSSProperties = {
+  fontSize: 'var(--dc-fs-caption)',
+  color: 'var(--dc-text-muted)',
+  whiteSpace: 'nowrap',
+};
 
+/** 目標文。バーの中で一番大きく、一番濃い */
+function goalText(text: string) {
   return (
-    <section style={BAR} aria-label={label}>
+    <p
+      style={{
+        margin: 0,
+        flex: 1,
+        minWidth: 240,
+        fontSize: 'var(--dc-fs-title)',
+        fontWeight: 700,
+        lineHeight: 'var(--dc-lh-heading)',
+        color: 'var(--dc-text)',
+        overflowWrap: 'anywhere',
+      }}
+    >
+      {text}
+    </p>
+  );
+}
+
+/**
+ * 下部カードへ送るボタン。
+ * 🔴 下向きアイコンを必ず付ける。「押すとその場で編集できる」と読ませないため。
+ */
+function jumpButton(label: string, onClick: () => void) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 5,
+        flex: 'none',
+        minHeight: 34,
+        padding: '0 14px',
+        borderRadius: 9999,
+        border: '1px solid var(--dc-border-strong)',
+        background: 'var(--dc-surface)',
+        fontFamily: 'inherit',
+        fontSize: 'var(--dc-fs-body)',
+        fontWeight: 700,
+        color: 'var(--dc-text-body)',
+        whiteSpace: 'nowrap',
+        cursor: 'pointer',
+      }}
+    >
+      {label}
+      <ChevronDown size={14} strokeWidth={2} aria-hidden="true" />
+    </button>
+  );
+}
+
+export function GoalDeclarationBar({ active, pending, loading, onJump }: GoalDeclarationBarProps) {
+  /* 🔴 aria-label は下部カードの h2「あなたの目標」と同じにしない。
+        同じページに同名の領域が2つあると、読み上げでどちらに来たか分からない。 */
+  const frame = (children: React.ReactNode) => (
+    <section style={BAR} aria-label="あなたの目標（概要）">
       {badge()}
-      <span style={LABEL}>{label}</span>
-
-      {/* 宣言文が主役。バーの中で一番大きく、一番濃い */}
-      <p
-        style={{
-          margin: 0,
-          flex: 1,
-          minWidth: 240,
-          fontSize: 'var(--dc-fs-title)',
-          fontWeight: 700,
-          lineHeight: 'var(--dc-lh-heading)',
-          color: 'var(--dc-text)',
-          overflowWrap: 'anywhere',
-        }}
-      >
-        {active.text}
-      </p>
-
-      <span style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 'none' }}>
-        <span
-          className="dc-num"
-          style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}
-        >
-          {md(active.periodFrom)}〜{md(active.periodTo)}
-          {left > 0 ? `（あと${left}日）` : ''}
-        </span>
-        <button
-          type="button"
-          onClick={() => onEdit(active)}
-          className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 5,
-            minHeight: 34,
-            padding: '0 14px',
-            borderRadius: 9999,
-            border: '1px solid var(--dc-border-strong)',
-            background: 'var(--dc-surface)',
-            fontFamily: 'inherit',
-            fontSize: 'var(--dc-fs-body)',
-            fontWeight: 700,
-            color: 'var(--dc-text-body)',
-            whiteSpace: 'nowrap',
-            cursor: 'pointer',
-          }}
-        >
-          <Pencil size={13} strokeWidth={2} aria-hidden="true" />
-          編集
-        </button>
-      </span>
+      <span style={LABEL}>あなたの目標</span>
+      {children}
     </section>
+  );
+
+  if (loading) {
+    return frame(
+      <span style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)' }}>読み込み中…</span>
+    );
+  }
+
+  // 進行中がある。振り返り待ちが残っていれば件数だけ添える
+  if (active) {
+    const left = daysLeft(active, toLocalDateKey(new Date()));
+    return frame(
+      <>
+        {goalText(active.text)}
+        <span style={ACTIONS}>
+          <span className="dc-num" style={META}>
+            {md(active.periodFrom)}〜{md(active.periodTo)}
+            {left > 0 ? `（あと${left}日）` : ''}
+          </span>
+          {/* 🔴 件数を言うだけ。どれを振り返るかの選択は下部カードが持つ */}
+          {pending.length > 0 && jumpButton(`振り返り待ち ${pending.length}件`, () => onJump('pending'))}
+          {jumpButton('編集', () => onJump('current'))}
+        </span>
+      </>
+    );
+  }
+
+  // 進行中は無いが、振り返っていない目標が残っている
+  if (pending.length > 0) {
+    const d = pending[0];
+    return frame(
+      <>
+        {goalText(d.text)}
+        <span style={ACTIONS}>
+          <span className="dc-num" style={META}>
+            {md(d.periodFrom)}〜{md(d.periodTo)}（期間終了）
+          </span>
+          {jumpButton('振り返りを書く', () => onJump('pending'))}
+          {jumpButton('新しい目標を設定する', () => onJump('new'))}
+        </span>
+      </>
+    );
+  }
+
+  return frame(
+    <>
+      <span style={NOTE}>
+        まだ目標がありません。「この期間で何をやり切るか」を1文で書いておくと、期間が終わったときに振り返りとして残ります。
+      </span>
+      {jumpButton('目標を設定する', () => onJump('new'))}
+    </>
   );
 }
 

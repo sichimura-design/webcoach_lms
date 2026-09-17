@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { differenceInCalendarDays } from 'date-fns';
 import { GraduationCap, Plus } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
@@ -20,6 +20,7 @@ import { GoalDeclarationInput, GoalDeclarationPatch } from '../../types/goalDecl
 import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
 import { createNoteFromStudyRecord } from '../../utils/studyRecordNote';
 import bffClient from '../../services/bffClient';
+import { pageTitleStyle } from '../../theme/pageTitle';
 import SessionReview from '../coaching/SessionReview';
 import type { CoachingSessionDetail, CoachingSessionSummary } from '../../types/coaching';
 import { formatDayLabel, formatTime } from '../focus/focusFormat';
@@ -29,7 +30,7 @@ import StudyCalendarCard from './StudyCalendarCard';
 import DayDetailPanel from './DayDetailPanel';
 import StudyRecordEditModal from './StudyRecordEditModal';
 import GoalDeclarationBar from './GoalDeclarationBar';
-import GoalDeclarationCard from './GoalDeclarationCard';
+import GoalDeclarationCard, { GoalJump } from './GoalDeclarationCard';
 import GoalDeclarationModal from './GoalDeclarationModal';
 import GraduationNudge from './GraduationNudge';
 import CoachingRecordsCard from './CoachingRecordsCard';
@@ -54,11 +55,11 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  *
  * 【構成】
  *   ヘッダー（見出し ＋ 卒業予定 ＋ 記録を追加）
- *   ① 今月の目標（横長バー1本）
+ *   ① あなたの目標（横長バー1本・表示専用）
  *   ② 学習カレンダー ｜ その日の記録
  *   ③ 学習時間の推移（期間タブ／棒グラフ）
  *   ④ 累計の KPI 4枚
- *   ⑤ 目標宣言の振り返り（終わった期間と過去分）
+ *   ⑤ あなたの目標（いま／期間が終わった／これまで。編集はここだけ）
  *   ⑥ コーチング記録（過去のコーチングはここにためる）
  *
  * 🔴 この並び順に意味がある。「いつ・何を学習したか」に一番早く答えるのが
@@ -91,8 +92,20 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  *    （マイノートの ?note= と同じ作法）。
  *
  * 【クエリの優先順位】
- * 🔴 session > goal > date。3つ同時に付いていても、この順で1つだけが効く。
+ * 🔴 session > date。?session= が付いているときは日別パネルを出さない。
  *    ここが唯一の判断場所で、各カードは自分のクエリだけを見ない。
+ *
+ * 🔴 ?goal= は「⑤ の編集モーダルを開く」だけの意味で、背後のレイアウトを変えない。
+ *    （かつては goal でも selectedDate を落としていたが、モーダルの開閉のたびに
+ *      日別パネルの高さと表示月が変わり、背後の⑤がガタついていた）
+ *    語彙は new / edit / review-<id> / <id> の4つ。
+ *    🔴 振り返りは review 単体にしない。⑤ は振り返り待ちを全件並べるので、
+ *       「先頭の1件」に決め打ちすると2件目を押しても1件目が開く。どれを開くかは
+ *       押した側が id で名指しする。
+ *
+ * 🔴 ハッシュ #goal / #goal-reflect / #goal-new は直交した別の仕組みで、
+ *    「⑤ のどこへスクロールして着地するか」だけを指す。/mypage と ① のバーが使う。
+ *    モーダルは開かない。消費したら必ず消す（同じハッシュへの再遷移は発火しないため）。
  */
 
 /**
@@ -113,6 +126,17 @@ type EditTarget =
   | { mode: 'edit'; activity: StudyActivity }
   | { mode: 'create'; date: string }
   | null;
+
+/**
+ * ⑤「あなたの目標」のどのブロックへ着地するか。
+ * 🔴 アンカー（id="goal"）にはしない。id を付けるとブラウザ標準の fragment スクロールが
+ *    データ読み込み前の位置へ飛び、こちらの scrollIntoView と二重に走る。
+ */
+const HASH_TO_JUMP: Record<string, Exclude<GoalJump, null>> = {
+  '#goal': 'current',
+  '#goal-reflect': 'pending',
+  '#goal-new': 'new',
+};
 
 function StudyLogPage() {
   const { user } = useAuth();
@@ -146,8 +170,9 @@ function StudyLogPage() {
    */
   const [deselected, setDeselected] = useState(false);
   const dateParam = searchParams.get('date');
-  const selectedDate =
-    openSessionId || goalParam ? null : (dateParam ?? (deselected ? null : todayKey));
+  // 🔴 goalParam を混ぜない。目標モーダルは重なるだけで、背後の日別パネルと
+  //    表示月を変える理由がない（開閉のたびに下部カードの位置がガタついていた）
+  const selectedDate = openSessionId ? null : (dateParam ?? (deselected ? null : todayKey));
   // 日を選んでいればその月。選んでいなければ月送りの状態、既定は今月
   const monthKey = selectedDate ? selectedDate.slice(0, 7) : (monthOverride ?? todayKey.slice(0, 7));
 
@@ -316,15 +341,67 @@ function StudyLogPage() {
     if (goalParam === 'edit') {
       return goals.active ? { mode: 'edit' as const, declaration: goals.active } : null;
     }
-    if (goalParam === 'review') {
-      const d = goals.pendingReflection[0];
+    if (goalParam.startsWith('review-')) {
+      const d = goals.items.find((x) => x.id === goalParam.slice('review-'.length));
       return d ? { mode: 'review' as const, declaration: d } : null;
     }
     const found = goals.items.find((d) => d.id === goalParam);
     return found ? { mode: 'view' as const, declaration: found } : null;
-  }, [goalParam, goals.active, goals.pendingReflection, goals.items]);
+  }, [goalParam, goals.active, goals.items]);
 
   const closeGoal = () => patchParams({ goal: null }, true);
+
+  /**
+   * 迷子の ?goal= を掃除する。
+   * 🔴 該当なし（古いブックマークの ?goal=review だが振り返り待ちが無い等）のとき、
+   *    モーダルも開かずクエリだけ残ると、次に ?goal= を付けても同じ URL で発火しない。
+   */
+  useEffect(() => {
+    if (!goals.loading && goalParam && !goalTarget) patchParams({ goal: null }, true);
+  }, [goals.loading, goalParam, goalTarget, patchParams]);
+
+  // --- ⑤ へのスクロール着地 --------------------------------------------------
+
+  /**
+   * ① のバーと /mypage からの「編集する」は、ここでモーダルを開かず ⑤ へ送る。
+   * 🔴 編集の入口は ⑤ の1枚だけ。どこから来ても同じ場所に着地させる。
+   *    ページをまたぐ（/mypage → /study-log）ぶんはハッシュで運ぶ。
+   */
+  const [goalJump, setGoalJump] = useState<GoalJump>(null);
+  const hash = useLocation().hash;
+
+  useEffect(() => {
+    const target = HASH_TO_JUMP[hash];
+    if (!target) return;
+
+    // 🔴 ハッシュは必ず消す。同じハッシュへもう一度遷移しても location が変わらず
+    //    発火しないため、飛べなかったときも消す。
+    //    🔴 navigate({hash:''}) は partial path なので ?date= や ?session= まで
+    //       巻き添えで消える。クエリを保つ patchParams({}, true) で消すこと。
+    const clear = () => patchParams({}, true);
+
+    if (openSessionId || unavailable) {
+      clear();
+      return;
+    }
+    // 🔴 goals.loading だけを待たない。⑤ より上のカレンダー・推移グラフが
+    //    後から伸びて着地点が上へズレる。
+    if (goals.loading || statsLoading || month.loading) return;
+
+    const timer = window.setTimeout(() => {
+      setGoalJump(target);
+      clear();
+    }, 250);
+    return () => window.clearTimeout(timer);
+  }, [
+    hash,
+    openSessionId,
+    unavailable,
+    goals.loading,
+    statsLoading,
+    month.loading,
+    patchParams,
+  ]);
 
   const saveGoal = async (value: Omit<GoalDeclarationInput, 'id'> | GoalDeclarationPatch) => {
     if (!goalTarget) return;
@@ -392,18 +469,7 @@ function StudyLogPage() {
             }}
           >
             <div style={{ flex: 1, minWidth: 240 }}>
-              <h1
-                style={{
-                  margin: 0,
-                  fontSize: 'var(--dc-fs-display)',
-                  lineHeight: 'var(--dc-lh-heading)',
-                  fontWeight: 700,
-                  letterSpacing: '-0.01em',
-                  color: 'var(--dc-text)',
-                }}
-              >
-                学習の記録
-              </h1>
+              <h1 style={{ ...pageTitleStyle, color: 'var(--dc-text)' }}>学習の記録</h1>
               <p
                 style={{
                   margin: '4px 0 0',
@@ -494,12 +560,12 @@ function StudyLogPage() {
               <GraduationNudge daysLeft={daysToGraduation} />
             )}
 
-            {/* ① 今月の目標（横長バー1本） */}
+            {/* ① あなたの目標（横長バー1本・表示専用。押すと ⑤ へ送る） */}
             <GoalDeclarationBar
               active={goals.active}
+              pending={goals.pendingReflection}
               loading={goals.loading}
-              onCreate={() => patchParams({ goal: 'new' })}
-              onEdit={() => patchParams({ goal: 'edit' })}
+              onJump={setGoalJump}
             />
 
             {/* ② カレンダー ｜ その日の記録（1023px以下で1カラムに落ちる） */}
@@ -564,15 +630,18 @@ function StudyLogPage() {
             {/* ④ 累計の KPI */}
             <StudySummaryStrip stats={stats} loading={statsLoading} />
 
-            {/* ⑤ 目標宣言の振り返り（進行中は ① のバーが持つ） */}
+            {/* ⑤ あなたの目標（編集の入口はここだけ。① のバーは表示専用） */}
             <GoalDeclarationCard
               items={goals.items}
               active={goals.active}
               pendingReflection={goals.pendingReflection}
               daily={stats?.dailyTotals ?? []}
               loading={goals.loading}
+              jump={goalJump}
+              onJumpDone={() => setGoalJump(null)}
               onCreate={() => patchParams({ goal: 'new' })}
-              onReview={() => patchParams({ goal: 'review' })}
+              onEditActive={() => patchParams({ goal: 'edit' })}
+              onReview={(d) => patchParams({ goal: `review-${d.id}` })}
               onView={(d) => patchParams({ goal: d.id })}
             />
 
@@ -614,7 +683,10 @@ function StudyLogPage() {
         )}
 
         {goalTarget && (
+          /* 🔴 key。GoalDeclarationModal は props から useState を初期化するので、
+                 同じ位置で別の目標に差し替えると前の内容が残る */
           <GoalDeclarationModal
+            key={goalTarget.declaration?.id ?? goalTarget.mode}
             mode={goalTarget.mode}
             declaration={goalTarget.declaration}
             saving={goals.saving}

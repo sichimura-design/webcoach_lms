@@ -6,7 +6,7 @@ import { daysLeft } from '../../utils/goalDeclaration';
 import { toLocalDateKey } from '../../utils/studyStats';
 
 /**
- * トップページの目標宣言カード（表示専用）。
+ * トップページの「あなたの目標」カード（表示専用）。
  * ============================================================
  * 置き場所は上段グリッド（.mypage-8a-grid）の右上＝挨拶の右。
  * 挨拶の行の右が空いていたのでそこを埋めている。下の
@@ -20,18 +20,21 @@ import { toLocalDateKey } from '../../utils/studyStats';
  *
  * 🔴 Primary CTA を増やさない（DESIGN §15-5）。マイページで塗りボタンなのは
  *    ResumeStudyCard の「続きから学習する」だけ。ここはテキストリンクにする。
- *    未設定のときだけアウトラインの「宣言を書く ›」を出す（空カードを行き止まりに
+ *    未設定のときだけアウトラインの「目標を設定する ›」を出す（空カードを行き止まりに
  *    しないため。アウトラインなら唯一の Primary と競合しない）。
  *
  * 🔴 編集はここでしない。同じデータの編集入口を2箇所に置かない規約に従い、
- *    書くのも直すのも /study-log 側。ここは押すとそちらへ送るだけ。
+ *    書くのも直すのも /study-log 下部の「あなたの目標」カード。ここは押すと
+ *    そちらへ送るだけ。
+ *    🔴 送り先はハッシュ（#goal / #goal-reflect / #goal-new）。?goal= だと
+ *       あちらでモーダルが直接開いてしまい、「編集の入口は下部カード1つ」が崩れる。
  *
  * 🔴 期間の経過をバーで出さない。「あと12日」のテキストのみ。
  *    バーにすると達成度%に読める（学習効果の数値化はしない規約）。
  *
  * CoachingTaskCard（次回コーチングまでの目標）との見分け:
  *   位置が別段／中身が1文の引用体（左4pxの縦罫＋20px）vs チェック付き複数行。
- *   かつては「目標宣言は学習記録ページで編集できます。」の脚注でも見分けさせて
+ *   かつては「目標は学習記録ページで編集できます。」の脚注でも見分けさせて
  *   いたが、見出し右の「編集する ›」が同じ場所へ送るので二重だった。
  * ============================================================
  */
@@ -88,7 +91,8 @@ export function MypageGoalDeclarationCard({
     );
   }
 
-  // 振り返り待ちがあるときは、進行中よりそちらを促す（放置されやすいので）
+  // 進行中があればそれを出す。無いときだけ、振り返り待ちを出して促す
+  // （/study-log の上部バーと同じ優先順位にする）
   const target = declaration ?? pendingReflection;
 
   const header = (
@@ -123,7 +127,7 @@ export function MypageGoalDeclarationCard({
           <button
             type="button"
             className="dc-link-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-            onClick={() => navigate(declaration ? '/study-log?goal=edit' : '/study-log?goal=review')}
+            onClick={() => navigate(declaration ? '/study-log#goal' : '/study-log#goal-reflect')}
             style={linkStyle}
           >
             {declaration ? '編集する ›' : '振り返りを書く ›'}
@@ -150,7 +154,7 @@ export function MypageGoalDeclarationCard({
         </p>
         <button
           type="button"
-          onClick={() => navigate('/study-log?goal=new')}
+          onClick={() => navigate('/study-log#goal-new')}
           className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
           style={{
             display: 'inline-flex', alignItems: 'center', minHeight: 'var(--dc-sz-btn)',
@@ -160,7 +164,7 @@ export function MypageGoalDeclarationCard({
             color: 'var(--dc-text-body)', cursor: 'pointer',
           }}
         >
-          宣言を書く ›
+          目標を設定する ›
         </button>
       </section>
     );
