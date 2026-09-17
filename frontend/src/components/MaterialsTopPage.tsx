@@ -11,6 +11,7 @@ import { useMypageData } from '../hooks/useMypageData';
 import { useLearningSummary } from '../hooks/useLearningSummary';
 import { bffClient } from '../services/bffClient';
 import { t } from '../theme/tokens';
+import { pageTitleStyle } from '../theme/pageTitle';
 import { LEARNING_HIERARCHY } from '../constants/learningTaxonomy';
 import {
   AREAS,
@@ -357,7 +358,7 @@ function MaterialsTopPage() {
             スコープを必ず書く: すぐ下のヒーローにも「このコース 3 / 9」が出るので、
             スコープ無しの分数が2つ並ぶと、分母が違う理由が読めない（レビュー指摘）。 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 22 }}>
-          <h1 style={{ margin: 0, fontSize: 'var(--dc-fs-display)', fontWeight: t.font.weight.bold, letterSpacing: '-.01em', lineHeight: 'var(--dc-lh-heading)', flex: 1 }}>学習する</h1>
+          <h1 style={{ ...pageTitleStyle, flex: 1 }}>学習する</h1>
 
           {/* 🔴 かつてラベルの左に赤い丸チェックのバッジを置いていたが撤去した。意味を持たない
                  装飾で、押せない丸がこの行の主役になってしまっていた。

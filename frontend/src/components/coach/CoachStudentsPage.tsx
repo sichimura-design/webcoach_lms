@@ -15,6 +15,7 @@ import { AppHeader } from '../shared/AppHeader';
 import { AppFooter } from '../shared/AppFooter';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
+import { pageTitleStyle } from '../../theme/pageTitle';
 
 interface Student {
   id: number;
@@ -113,16 +114,7 @@ export function CoachStudentsPage() {
         className="wc-page flex-1"
         style={{ '--wc-page-max': '1080px' } as React.CSSProperties}
       >
-        <h1
-          style={{
-            margin: '0 0 20px',
-            fontSize: 'var(--dc-fs-display)',
-            fontWeight: 700,
-            letterSpacing: '-.01em',
-            lineHeight: 'var(--dc-lh-heading)',
-            color: 'var(--dc-text)',
-          }}
-        >
+        <h1 style={{ ...pageTitleStyle, margin: '0 0 20px', color: 'var(--dc-text)' }}>
           受講生一覧
         </h1>
 

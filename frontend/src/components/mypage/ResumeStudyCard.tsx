@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, BookOpen } from 'lucide-react';
 import { Course } from '../../types/mypage';
 import { lessonProgressFromPercent } from '../../utils/lessonProgress';
 import { formatMinutesHM } from '../../utils/studyStats';
@@ -74,7 +74,10 @@ export function ResumeStudyCard({ course, known, onOpenLesson, onOpenCurriculum 
             placeItems: 'center',
           }}
         >
-          <Play size={15} fill="currentColor" strokeWidth={0} />
+          {/* 🔴 ▶（塗りの三角）にしない。丸バッジ＋赤い塗り三角は再生ボタンそのものの
+                 見た目で、ただの見出し飾りなのに押せると誤解される。他カードの見出し
+                 （Clock / Activity / Trophy）と同じ「細線の輪郭アイコン」で揃える。 */}
+          <BookOpen size={16} strokeWidth={1.75} />
         </span>
         <h2 style={{ margin: 0, fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)' }}>
           続きから学習

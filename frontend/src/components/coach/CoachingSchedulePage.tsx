@@ -16,6 +16,7 @@ import { Calendar, Plus, ExternalLink, Trash2, Sparkles, ChevronDown, ChevronUp 
 import { AppHeader, AppFooter } from '../shared';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
+import { pageTitleStyle } from '../../theme/pageTitle';
 import { CoachingSchedule, CoachingScheduleStatus, CoachingNote, CoachingNoteStatus, UpdateCoachingNoteRequest } from '../../types/api';
 
 const NOTE_FIELD_LABELS: { key: keyof UpdateCoachingNoteRequest; label: string }[] = [
@@ -320,16 +321,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
         </Link>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-          <h1
-            style={{
-              margin: 0,
-              fontSize: 'var(--dc-fs-display)',
-              fontWeight: 700,
-              letterSpacing: '-.01em',
-              lineHeight: 'var(--dc-lh-heading)',
-              color: 'var(--dc-text)',
-            }}
-          >
+          <h1 style={{ ...pageTitleStyle, color: 'var(--dc-text)' }}>
             コーチング記録{studentName ? `：${studentName}` : ''}
           </h1>
           <button

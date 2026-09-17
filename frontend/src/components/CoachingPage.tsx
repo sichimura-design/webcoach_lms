@@ -15,6 +15,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import bffClient from '../services/bffClient';
 import { color, font } from '../theme/webcoachTheme';
+import { pageTitleStyle } from '../theme/pageTitle';
 import CoachingHeroCard from './coaching/CoachingHeroCard';
 import ConsentModal from './coaching/ConsentModal';
 import ImportRecordCard from './coaching/ImportRecordCard';
@@ -453,7 +454,10 @@ export default function CoachingPage() {
         } as React.CSSProperties}
       >
         <div>
-          <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.3, color: C.ink }}>
+          {/* 🔴 色だけ自前で持つ。このページは .wc-page しか持たず .wc-warm の
+                 外にいるので、pageTitleStyle に color を入れて var(--dc-text) に
+                 頼ると未定義に落ちる（theme/pageTitle.ts 参照）。 */}
+          <h1 style={{ ...pageTitleStyle, color: C.ink }}>
             コーチング
           </h1>
         </div>
