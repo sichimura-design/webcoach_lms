@@ -87,12 +87,15 @@ export const MAX_MANUAL_MINUTES = 600;
 export const TEXT_MAX_LENGTH = 500;
 
 /**
- * カレンダーの濃淡の閾値（分）。L1 / L2 / L3 / L4 の下限。
- * 🔴 L1 の下限を STUDY_DAY_MIN_MINUTES にしてあるのが要。こうしておくと
- *    「段階ドットが1つでも付いている = 学習した日」が構造的に真になり、
- *    凡例の文言（「10分以上で学習した日」）と実装がずれない。
+ * カレンダーの濃淡の閾値（分）。L1 / L2 / L3 の下限。
+ * 🔴 STUDY_DAY_MIN_MINUTES とは独立させてある。以前は L1 の下限を 10 に揃えて
+ *    「段階ドットが1つでも付いている = 学習した日」を構造的に真にしていたが、
+ *    段が4つあると隣り合う濃淡の差が読み取れなかったので 30/60/120 の3段に絞った。
+ *    1〜29分は level 0 に落ちるので、呼び出し側は minutes > 0 で
+ *    「記録あり（30分未満）」を見分けること。
+ *    「学習した日」かどうかは引き続き STUDY_DAY_MIN_MINUTES で判定する（濃淡とは別軸）。
  */
-export const STUDY_HEAT_THRESHOLDS = [STUDY_DAY_MIN_MINUTES, 30, 60, 120] as const;
+export const STUDY_HEAT_THRESHOLDS = [30, 60, 120] as const;
 
 const WEEKDAY_LABELS = ['月', '火', '水', '木', '金', '土', '日'];
 
@@ -327,15 +330,14 @@ export function dailyTotals(activities: StudyActivity[], from: Date, to: Date): 
 }
 
 /**
- * カレンダーの濃淡の段階。0 = 記録なし、1..4 = STUDY_HEAT_THRESHOLDS の各段。
- * 1〜9分（閾値未満）は 0 と区別したいので、呼び出し側が minutes > 0 で見分ける。
+ * カレンダーの濃淡の段階。0 = 記録なし、1..3 = STUDY_HEAT_THRESHOLDS の各段。
+ * 1〜29分（最初の段に満たない）は 0 と区別したいので、呼び出し側が minutes > 0 で見分ける。
  */
-export function heatLevelOf(minutes: number): 0 | 1 | 2 | 3 | 4 {
+export function heatLevelOf(minutes: number): 0 | 1 | 2 | 3 {
   if (minutes < STUDY_HEAT_THRESHOLDS[0]) return 0;
   if (minutes < STUDY_HEAT_THRESHOLDS[1]) return 1;
   if (minutes < STUDY_HEAT_THRESHOLDS[2]) return 2;
-  if (minutes < STUDY_HEAT_THRESHOLDS[3]) return 3;
-  return 4;
+  return 3;
 }
 
 /** 最古の記録の localDate。1件も無ければ null。カレンダーの遡り下限になる */
