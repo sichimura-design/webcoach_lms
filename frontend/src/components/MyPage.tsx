@@ -192,9 +192,10 @@ function MyPage() {
           <MypageGreeting name={avatarName} />
 
           <div className="mypage-8a-goal">
+            {/* 🔴 pendingReflection（振り返り待ち）は渡さない。振り返りの導線は
+                   /study-log の「あなたの目標」カードが1箇所で持つ。 */}
             <MypageGoalDeclarationCard
               declaration={declarations.active}
-              pendingReflection={declarations.pendingReflection[0] ?? null}
               loading={declarations.loading}
               unavailable={declarations.unavailable}
             />

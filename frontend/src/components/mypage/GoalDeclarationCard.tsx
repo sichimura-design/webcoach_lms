@@ -26,8 +26,13 @@ import { toLocalDateKey } from '../../utils/studyStats';
  * 🔴 編集はここでしない。同じデータの編集入口を2箇所に置かない規約に従い、
  *    書くのも直すのも /study-log 下部の「あなたの目標」カード。ここは押すと
  *    そちらへ送るだけ。
- *    🔴 送り先はハッシュ（#goal / #goal-reflect / #goal-new）。?goal= だと
+ *    🔴 送り先はハッシュ（#goal / #goal-new）。?goal= だと
  *       あちらでモーダルが直接開いてしまい、「編集の入口は下部カード1つ」が崩れる。
+ *
+ * 🔴 振り返り（#goal-reflect）はここから促さない。「期間終了・振り返り待ち」
+ *    「振り返りを書く ›」を出していたが、この画面だけを見ている人には
+ *    何を書くものなのか分からない。振り返りの導線は /study-log 側だけが持つ。
+ *    そのため pendingReflection は props に持たない（MyPage.tsx でも渡さない）。
  *
  * 🔴 期間の経過をバーで出さない。「あと12日」のテキストのみ。
  *    バーにすると達成度%に読める（学習効果の数値化はしない規約）。
@@ -40,8 +45,6 @@ import { toLocalDateKey } from '../../utils/studyStats';
  */
 interface MypageGoalDeclarationCardProps {
   declaration: GoalDeclaration | null;
-  /** 期間が終わったのに振り返りがまだのもの（先頭1件だけ促す） */
-  pendingReflection: GoalDeclaration | null;
   loading: boolean;
   /** モックOFF。カードごと出さない */
   unavailable: boolean;
@@ -72,7 +75,6 @@ const linkStyle: CSSProperties = {
 
 export function MypageGoalDeclarationCard({
   declaration,
-  pendingReflection,
   loading,
   unavailable,
 }: MypageGoalDeclarationCardProps) {
@@ -91,9 +93,10 @@ export function MypageGoalDeclarationCard({
     );
   }
 
-  // 進行中があればそれを出す。無いときだけ、振り返り待ちを出して促す
-  // （/study-log の上部バーと同じ優先順位にする）
-  const target = declaration ?? pendingReflection;
+  // 🔴 出すのは進行中の目標だけ。「期間終了・振り返り待ち」と「振り返りを書く ›」を
+  //    ここに出していたが、この画面だけを見ている人には何のことか分からないので外した。
+  //    振り返りの導線は /study-log の「あなたの目標」カードが1箇所で持つ。
+  const target = declaration;
 
   const header = (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
@@ -118,19 +121,17 @@ export function MypageGoalDeclarationCard({
       </h2>
       {target && (
         <>
-          {/* 状態と残りは色ではなく語と数で伝える */}
+          {/* 残りは色ではなく語と数で伝える */}
           <span className="dc-num" style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)' }}>
-            {declaration
-              ? `${Number(declaration.periodTo.slice(5, 7))}月${Number(declaration.periodTo.slice(8, 10))}日まで（あと${daysLeft(declaration, toLocalDateKey(new Date()))}日）`
-              : '期間終了・振り返り待ち'}
+            {`${Number(target.periodTo.slice(5, 7))}月${Number(target.periodTo.slice(8, 10))}日まで（あと${daysLeft(target, toLocalDateKey(new Date()))}日）`}
           </span>
           <button
             type="button"
             className="dc-link-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-            onClick={() => navigate(declaration ? '/study-log#goal' : '/study-log#goal-reflect')}
+            onClick={() => navigate('/study-log#goal')}
             style={linkStyle}
           >
-            {declaration ? '編集する ›' : '振り返りを書く ›'}
+            編集する ›
           </button>
         </>
       )}

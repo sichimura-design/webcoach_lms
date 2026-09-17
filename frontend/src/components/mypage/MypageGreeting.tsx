@@ -1,5 +1,6 @@
 /**
- * マイページ上段グリッド（.mypage-8a-grid）の左上。日付と挨拶だけを置く。
+ * マイページ上段グリッド（.mypage-8a-grid）の左上。日付・挨拶と、
+ * 「学習時間を記録する」（mypage/StartRecordingButton.tsx）を置く。
  * 右隣は「あなたの目標」カード（mypage/GoalDeclarationCard.tsx）。
  *
  * claude.ai/design『トップページ 3案』5a 準拠。
@@ -24,6 +25,7 @@
  *    数字の置き場を2箇所にしないこと。同じ値をここに戻さない。
  */
 import { pageTitleStyle } from '../../theme/pageTitle';
+import StartRecordingButton from './StartRecordingButton';
 
 interface MypageGreetingProps {
   /** 表示名（プロフィールのニックネーム） */
@@ -49,6 +51,11 @@ function MypageGreeting({ name }: MypageGreetingProps) {
       <h1 style={{ ...pageTitleStyle, color: 'var(--dc-text)' }}>
         {name || 'ゲスト'}さん、こんにちは
       </h1>
+      {/* 🔴 挨拶の下の空きはこれで埋める。右の目標カードのほうが背が高く、
+             align-items:stretch のぶんここに40〜50pxの白が残っていた。
+             縦中央寄せで散らすより、自分から記録を始める入口を置くほうが
+             その面積の使い道として良い（StartRecordingButton の🔴）。 */}
+      <StartRecordingButton />
     </div>
   );
 }

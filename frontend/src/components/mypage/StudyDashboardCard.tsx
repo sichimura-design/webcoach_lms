@@ -536,59 +536,90 @@ export function StudyDashboardCard({
               <span style={{ fontSize: 'var(--dc-fs-body)', fontWeight: 500, color: 'var(--dc-text-muted)' }}>/ 週</span>
             </div>
 
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(7, 1fr)',
-                gap: 6,
-                alignItems: 'end',
-                height: BAR_MAX_H + 20,
-                marginBottom: 8,
-              }}
-            >
-              {days.map((d) => {
-                const h = d.isFuture
-                  ? BAR_EMPTY_H
-                  : Math.max(BAR_EMPTY_H, Math.round((d.minutes / scaleMax) * BAR_MAX_H));
-                const background = d.isFuture || d.minutes === 0
-                  ? 'var(--dc-border)'
-                  : d.isToday
-                    ? 'var(--dc-primary)'
-                    : 'var(--dc-bar-past)';
-                return (
-                  <div
-                    key={d.key}
-                    // mypage-dash-col: 値ラベルが列幅を超えたら ellipsis で切る。
-                    // 隣の曜日と重なるのを幅のしきい値ではなく構造で防ぐ（index.css）
-                    className="mypage-dash-col"
-                    title={`${d.label}曜日 ${formatMinutesHM(d.minutes)}`}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'flex-end',
-                      gap: 5,
-                      height: '100%',
-                    }}
-                  >
-                    <span
-                      className="dc-num"
+            {/* 棒の高さが何に対して足りているのかを読めるようにするため、
+                1日あたりの目標ペース（perDayTarget）を点線で1本引く。
+                scaleMax はこの目標と実績の大きいほうで決まるので、
+                線は必ず枠の中（0〜BAR_MAX_H）に収まる。 */}
+            <div style={{ position: 'relative', marginBottom: 8 }}>
+              {perDayTarget > 0 && (
+                <div
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    right: 0,
+                    bottom: Math.round((perDayTarget / scaleMax) * BAR_MAX_H),
+                    borderTop: '1px dashed var(--dc-border-strong)',
+                    pointerEvents: 'none',
+                  }}
+                />
+              )}
+
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(7, 1fr)',
+                  gap: 6,
+                  alignItems: 'end',
+                  height: BAR_MAX_H + 20,
+                }}
+              >
+                {days.map((d) => {
+                  const h = d.isFuture
+                    ? BAR_EMPTY_H
+                    : Math.max(BAR_EMPTY_H, Math.round((d.minutes / scaleMax) * BAR_MAX_H));
+                  // 🔴 まだ来ていない日は、実績0の日より更に薄くする。同じ灰色にすると
+                  //    「今週はここまで0分だった」に読める（このファイル冒頭の方針）。
+                  const background = d.isFuture
+                    ? 'var(--dc-sunken)'
+                    : d.minutes === 0
+                      ? 'var(--dc-border)'
+                      : d.isToday
+                        ? 'var(--dc-primary)'
+                        : 'var(--dc-bar-past)';
+                  return (
+                    <div
+                      key={d.key}
+                      // mypage-dash-col: 値ラベルが列幅を超えたら ellipsis で切る。
+                      // 隣の曜日と重なるのを幅のしきい値ではなく構造で防ぐ（index.css）
+                      className="mypage-dash-col"
+                      title={
+                        d.isFuture
+                          ? `${d.label}曜日 まだ来ていません`
+                          : `${d.label}曜日 ${formatMinutesHM(d.minutes)}`
+                      }
                       style={{
-                        fontSize: 'var(--dc-fs-caption)',
-                        fontWeight: d.isToday ? 700 : 400,
-                        color: d.isToday
-                          ? 'var(--dc-primary)'
-                          : d.isFuture
-                            ? 'var(--dc-chevron)'
-                            : 'var(--dc-text-muted)',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
+                        gap: 5,
+                        height: '100%',
                       }}
                     >
-                      {formatHoursShort(d.minutes)}
-                    </span>
-                    <div style={{ width: 16, height: h, borderRadius: 8, background }} />
-                  </div>
-                );
-              })}
+                      <span
+                        className="dc-num"
+                        style={{
+                          fontSize: 'var(--dc-fs-caption)',
+                          fontWeight: d.isToday ? 700 : 400,
+                          color: d.isToday
+                            ? 'var(--dc-primary)'
+                            : d.isFuture
+                              ? 'var(--dc-chevron)'
+                              : 'var(--dc-text-muted)',
+                        }}
+                      >
+                        {/* 🔴 まだ来ていない日に「0h」を出さない。左の7日ドット（:369）と
+                               同じ「–」に揃える。起きていない不足を先に見せないため。
+                            🔴 表記は formatDayShort（45分 / 1.3h）。ここだけ小数時間の
+                               「0.4h」にすると、カードの他の数字と読み方が変わる。 */}
+                        {d.isFuture ? '–' : formatDayShort(d.minutes)}
+                      </span>
+                      <div style={{ width: 16, height: h, borderRadius: 8, background }} />
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 6, marginBottom: 12 }}>
@@ -628,18 +659,37 @@ export function StudyDashboardCard({
               )}
             </div>
 
-            {/* 「目標まであと○分」は次の行動に直結するので caption には落とさない */}
-            <div style={{ fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-body)', textAlign: 'right' }}>
-              {remain > 0 ? (
-                <>
-                  目標まであと{' '}
-                  <strong className="dc-num" style={{ color: 'var(--dc-primary)' }}>
-                    {formatMinutesHM(remain)}
-                  </strong>
-                </>
-              ) : (
-                <strong style={{ color: 'var(--dc-primary)' }}>今週の目標を達成しました！</strong>
+            {/* 点線の意味はグラフのすぐ下で言い切る。凡例を別の場所に置くと、
+                線だけ見えて何の線か分からない状態が残る */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                gap: 10,
+                flexWrap: 'wrap',
+                fontSize: 'var(--dc-fs-body)',
+                color: 'var(--dc-text-body)',
+              }}
+            >
+              {perDayTarget > 0 && (
+                <span style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-subtle)' }}>
+                  点線は1日あたりの目標 <span className="dc-num">{formatMinutesHM(perDayTarget)}</span>
+                </span>
               )}
+              <span style={{ flex: 1 }} />
+              {/* 「目標まであと○分」は次の行動に直結するので caption には落とさない */}
+              <span>
+                {remain > 0 ? (
+                  <>
+                    目標まであと{' '}
+                    <strong className="dc-num" style={{ color: 'var(--dc-primary)' }}>
+                      {formatMinutesHM(remain)}
+                    </strong>
+                  </>
+                ) : (
+                  <strong style={{ color: 'var(--dc-primary)' }}>今週の目標を達成しました！</strong>
+                )}
+              </span>
             </div>
           </div>
         </div>
