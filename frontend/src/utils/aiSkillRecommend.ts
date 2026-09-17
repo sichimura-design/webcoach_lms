@@ -36,9 +36,9 @@ export interface RecommendInput {
 
 /**
  * 学習領域から、その領域で最初に効く機能を1つ選ぶ。
- * 現行の10領域（constants/courseTaxonomy.ts の AREAS）すべてを網羅する。
- * 領域名を変えたらここも直すこと。網羅していない領域は FALLBACK_ORDER に落ちて、
- * 学習領域を見ていないのと同じ結果になる。
+ * 現行の領域（constants/courseTaxonomy.ts の AREAS）すべてを網羅する。
+ * 🔴 領域名を変えたらここも直すこと。網羅していない領域は FALLBACK_ORDER に落ちて、
+ *    学習領域を見ていないのと同じ結果になる（型では検出できない）。
  */
 const CATEGORY_SKILL: Array<{ match: RegExp; skillId: ConcreteAiSkillId }> = [
   // 「Web×AI」「生成AI基礎」を先に見る（「Web×AI」は下のデザイン/制作にも当たるため）

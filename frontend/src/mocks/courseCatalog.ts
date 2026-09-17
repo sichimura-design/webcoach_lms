@@ -33,9 +33,11 @@ export const COURSE_ID = COURSE_ID_BY_SLUG;
 
 /** モック固有の肉付け。キーは courseTaxonomy の slug */
 const DETAILS: Record<string, { summary: string; duration: string; purposes: string[] }> = {
-  // ソフトスキル
+  // 学習ガイド
+  tutorial: { summary: 'このサービスの使い方を一通り。学習の進め方とコーチングの受け方まで', duration: '20分', purposes: ['未経験向け', '最初におすすめ'] },
   mindset: { summary: '何をどの順で学ぶか、続けるために何を決めておくかを整理します', duration: '40分', purposes: ['未経験向け', '最初におすすめ'] },
-  // キャリア
+  // 案件獲得・キャリア
+  'client-work-program': { summary: '営業・提案・見積もり・納品までを通しで攻略する', duration: '240分', purposes: ['副業準備', '案件獲得'] },
   'job-change': { summary: '求人リサーチ・自己分析から書類・面接対策までのテキスト教材', duration: '90分', purposes: ['キャリアを変える', '副業準備'] },
 
   // Webデザイン
@@ -92,9 +94,6 @@ const DETAILS: Record<string, { summary: string; duration: string; purposes: str
   'maria-short-video': { summary: 'インフルエンサーMariaさんと作った、人を惹きつける企画術', duration: '120分', purposes: ['発信を伸ばす', 'デザイン力UP'] },
   'sns-buzz': { summary: 'ターゲット設定と試行錯誤の回し方。バズの前提を整える', duration: '180分', purposes: ['発信を伸ばす', '基礎から'] },
   camera: { summary: 'スマホを超える画作りのための、実機カメラの基本', duration: '90分', purposes: ['ツールを覚える'] },
-
-  // 案件獲得攻略プログラム
-  'client-work-program': { summary: '営業・提案・見積もり・納品までを通しで攻略する', duration: '240分', purposes: ['副業準備', '案件獲得'] },
 
   // 生成AI基礎
   'genai-basics': { summary: 'AIの著作権や市場感など、使う前に押さえたい前提', duration: '70分', purposes: ['未経験向け', '最初におすすめ'] },

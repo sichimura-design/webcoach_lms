@@ -240,15 +240,16 @@ function MaterialsTopPage() {
   }, [catalog]);
 
   /**
-   * 表示順＝コース数の降順。
-   * 🔴 「学べることが多い領域から見せる」がこの画面の並びの根拠。
-   *    family（キャリア/制作/…）のグループ見出しは廃止した。
-   * Array.prototype.sort は安定なので、同数の領域は courseTaxonomy の宣言順のまま残る。
+   * 表示順＝courseTaxonomy の宣言順（AREA_COURSES の並びそのまま）。
+   * 🔴 かつては「コース数の降順」だった（学べることが多い領域から見せる）。やめた理由:
+   *    ・入口として最初に読んでほしい「学習ガイド」が、コースが少ないので最後に落ちる
+   *    ・「生成AI基礎（2件）」が「Web×AI（5件）」の下に来て、前提より応用が先に出る
+   *    件数はその領域に何本あるかでしかなく、読む順番の根拠にならなかった。
+   *    並べ替えたくなったら courseTaxonomy.ts の AREA_COURSES の順を入れ替えること。
+   *    ここで sort を復活させない。
+   *    family（キャリア/制作/…）のグループ見出しは廃止したまま。
    */
-  const sortedAreas = useMemo(
-    () => [...areaCards].sort((a, b) => b.count - a.count),
-    [areaCards],
-  );
+  const sortedAreas = areaCards;
 
   /** 絞り込みが1つでも効いているか。畳みの解除と「リセット」の出し分けに使う */
   const filtering = areaFilter !== ALL || statusFilter !== ALL || hideCompleted;
@@ -776,8 +777,8 @@ function MaterialsTopPage() {
                枠と色と文字で画面がうるさく、領域ごとに変わる帯の色は
                「なぜこの色なのか」が読めない色分けになっていた。
                いまはまとまりを 見出し＋その下の罫線＋ブロック間の余白(48px) で示す。
-            🔴 並びはコース数の降順。同数のときは courseTaxonomy の宣言順を保つ
-               （sort は安定なので、areaCards の順序がそのまま効く）。
+            🔴 並びは courseTaxonomy の宣言順（sortedAreas の🔴を参照）。
+               コース数の降順には戻さない。
             🔴 コースが多い領域は AREA_PREVIEW_LIMIT 件で畳む。畳まないと
                Webデザイン（13コース）だけで画面が埋まり、下の領域に到達しない。
             🔴 コースが1本しかない領域は、領域ページを飛ばして直接コーストップへ。
