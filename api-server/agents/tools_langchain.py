@@ -104,6 +104,17 @@ class AskAiApplicationInput(BaseModel):
     # ツール呼び出しのスキーマ上必要なため残しているが、値は無視される。
     query: str = Field(..., description="AIアプリに問い合わせる質問内容")
     userid: int = Field(..., description="ユーザーID")
+    start_new_conversation: bool = Field(
+        False,
+        description=(
+            "trueにすると、このアプリとの会話を最初からやり直します（これまで選択済みの"
+            "職種・予算・納期・プラットフォームなどの条件を引き継ぎません）。"
+            "ユーザーが「新しく案件を探したい」「別の条件でもう一度探して」「前回とは違う条件で」"
+            "のように、前回までの条件を使わず新規に検索し直したい意図を示している場合はtrueにして"
+            "ください。前回の続きとして条件を絞り込んだり質問に答えているだけの場合はfalseのままに"
+            "してください。"
+        ),
+    )
 
 
 # ツール実行関数
@@ -254,9 +265,13 @@ def clear_sticky_dify_app(userid: int) -> None:
     _dify_sticky_app_cache.pop(userid, None)
 
 
-def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int) -> str:
-    """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリの会話はプロセス内で継続する）"""
-    conversation_id = _dify_conversation_cache.get((userid, app_id), "")
+def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int, reset: bool = False) -> str:
+    """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリの会話はプロセス内で継続する）
+
+    reset=Trueの場合、キャッシュ済みのconversation_idを使わず新規の会話として送信する
+    （ユーザーが前回までの条件を引き継がず新しく検索し直したい場合の入口）。
+    """
+    conversation_id = "" if reset else _dify_conversation_cache.get((userid, app_id), "")
     _dify_sticky_app_cache[userid] = app_id
     try:
         response = requests.post(
@@ -328,8 +343,8 @@ def create_ai_application_tools(db, raw_user_message: str, userid: int = None) -
             continue
 
         def make_func(api_key: str = api_key, app_id: int = app.id, message: str = raw_user_message):
-            def _call(query: str, userid: int) -> str:
-                return _call_dify_chat(message, userid, api_key, app_id)
+            def _call(query: str, userid: int, start_new_conversation: bool = False) -> str:
+                return _call_dify_chat(message, userid, api_key, app_id, reset=start_new_conversation)
             return _call
 
         tools.append(
