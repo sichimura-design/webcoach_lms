@@ -105,8 +105,8 @@ export function NextCoachingCard({
           {until && <span style={{ display: 'block', fontSize: 11, color: 'var(--dc-text-muted)' }}>{until}</span>}
         </span>
       </div>
-      <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--dc-text)', marginBottom: 2 }}>{next.date}</div>
-      <div style={{ fontSize: 13, color: 'var(--dc-text-muted)', marginBottom: 14 }}>担当：{next.coach}</div>
+      {/* 🔴 コーチ名（「担当：〇〇コーチ」）は出さない。CoachingHeroCard と揃える。 */}
+      <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--dc-text)', marginBottom: 14 }}>{next.date}</div>
     </>
   );
 

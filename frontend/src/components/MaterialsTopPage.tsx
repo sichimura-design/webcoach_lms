@@ -366,14 +366,16 @@ function MaterialsTopPage() {
           {enrolledLessons > 0 && (
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
               <span style={{ fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.medium, color: t.color.text.primary }}>
-                受講中コース全体の修了レッスン
+                受講中コース全体
               </span>
               <span
                 style={{ fontSize: 'var(--dc-fs-display)', fontWeight: t.font.weight.bold, color: t.color.primary, lineHeight: 1 }}
                 aria-label={`受講中コース全体で ${enrolledLessons}${LEARNING_HIERARCHY.lesson}中 ${completedLessons}${LEARNING_HIERARCHY.lesson}修了`}
               >
                 {completedLessons}
-                <span style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.semibold, color: t.color.text.subtle, marginLeft: 3 }}>/ {enrolledLessons}</span>
+                <span style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: t.font.weight.semibold, color: t.color.text.subtle, marginLeft: 3 }}>
+                  / {enrolledLessons} {LEARNING_HIERARCHY.lesson}
+                </span>
               </span>
             </div>
           )}
@@ -607,7 +609,7 @@ function MaterialsTopPage() {
                         color: t.color.primary, fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)', fontWeight: t.font.weight.semibold, cursor: 'pointer',
                       }}
                     >
-                      {showAllActive ? '畳む' : `ほか ${otherActive.length - OTHER_ACTIVE_VISIBLE} コースを表示`}
+                      {showAllActive ? '閉じる' : `ほか ${otherActive.length - OTHER_ACTIVE_VISIBLE} コースを表示`}
                     </button>
                   )}
                 </div>

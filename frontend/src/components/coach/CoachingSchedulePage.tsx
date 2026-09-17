@@ -32,7 +32,7 @@ const NOTE_FIELD_LABELS: { key: keyof UpdateCoachingNoteRequest; label: string }
 
 const NOTE_STATUS_LABEL: Record<CoachingNoteStatus, string> = {
   ai_suggested: 'AI下書き',
-  coach_confirmed: '確認済み（未公開）',
+  coach_confirmed: '確認済み',
   published: '公開済み',
 };
 
@@ -531,17 +531,12 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                             <button type="button" style={ghostSmallButton} className={`dc-cta-outline ${focusRing}`} onClick={() => handleSaveNote(schedule.id, 'coach_confirmed')} disabled={noteSaving}>
                               内容を確定
                             </button>
-                            {/* この画面で唯一の塗りボタン。受講生に見えるようになる操作なので、
-                                他の操作より一段強くしてある（docs/typography.md §9） */}
-                            <button
-                              type="button"
-                              style={smallPrimaryButton}
-                              className={`dc-cta-primary ${focusRing}`}
-                              onClick={() => handleSaveNote(schedule.id, 'published')}
-                              disabled={noteSaving}
-                            >
-                              受講生に公開
-                            </button>
+                            {/* 🔴 「受講生に公開」の塗りボタンは撤去した。公開するかどうかを
+                                   コーチが決める仕様ではないので、この画面から published を
+                                   送る経路を持たない。status に published が入ったものは
+                                   API 側から返ってくるので、チップの表示だけは残してある。
+                                   記録の操作が「下書き保存」「内容を確定」の2つだけなのは
+                                   そのため（塗りボタンを足し直さないこと）。 */}
                           </div>
                         </div>
                       )}

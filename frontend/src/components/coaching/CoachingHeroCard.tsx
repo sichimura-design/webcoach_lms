@@ -336,9 +336,10 @@ export function CoachingHeroCard({
             <CalendarDays size={24} color={C.brand} strokeWidth={1.75} />
           </span>
           <div style={{ minWidth: 0 }}>
+            {/* 🔴 コーチ名は出さない。公開/非公開と同じで、受講生が選べるものではなく、
+                   「次にいつあるか」だけがこのカードの用件だから（担当は固定されている）。 */}
             <div style={{ fontSize: 13, fontWeight: 700, color: C.ink }}>
               次回コーチング
-              <span style={{ fontWeight: 400, color: C.muted, marginLeft: 8 }}>{next.coach}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 4, flexWrap: 'wrap' }}>
               <span style={{ fontSize: 20, fontWeight: 700, color: C.ink }}>{next.date}</span>
