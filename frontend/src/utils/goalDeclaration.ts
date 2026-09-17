@@ -1,6 +1,9 @@
 /**
- * 目標宣言の純関数。副作用なし。
+ * 「あなたの目標」の純関数。副作用なし。
  * ============================================================
+ * 🔴 画面表記は「あなたの目標」。goalDeclaration は型・API・ファイル名だけの
+ *    呼称で、UI に「宣言」の語を出さない（ここが返す文言も画面にそのまま出る）。
+ *
  * utils/studyStats.ts と同じ理由でここに集約する:
  *   MSWモックハンドラと画面の両方が同じ関数を呼ぶため
  *   （「モックでは通るのに画面では弾かれる」を構造的に防ぐ）。
@@ -87,7 +90,7 @@ function textError(text: string): string | null {
 }
 
 export function validateDeclarationInput(v: GoalDeclarationInput): string | null {
-  if (!v.id) return '宣言IDがありません';
+  if (!v.id) return '目標IDがありません';
   return textError(v.text) ?? periodError(v.periodFrom, v.periodTo);
 }
 

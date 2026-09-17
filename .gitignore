@@ -114,5 +114,10 @@ web-production*/
 harness-starter/
 poc/
 
-# Claude Design のキャンバス下書き
+# Claude Design のキャンバス下書き。
+# ただし screens/ と notes/ の一式だけは追跡する。Claude Design 側で直された版を
+# get_file で落として git diff --no-index に掛けるのが往復の要なので、原本が要る。
+# 否定行は必ず *.dc.html の後に置くこと（先に書いても効かない）。
 *.dc.html
+!frontend/design-canvas/screens/*.dc.html
+!frontend/design-canvas/notes/*.dc.html

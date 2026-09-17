@@ -22,16 +22,23 @@ import {
  * を足している。
  *
  * 🔴 濃淡の閾値は utils/studyStats.ts の STUDY_HEAT_THRESHOLDS が唯一の実装。
- *    ここで再定義しないこと。L1 の下限が STUDY_DAY_MIN_MINUTES と同じなので、
- *    「段階ドットが1つでも付いている = 学習した日」が構造的に真になる。
+ *    ここで再定義しないこと。段は 30/60/120 分の3つで、これはストリークの
+ *    「学習した日」（STUDY_DAY_MIN_MINUTES = 10分）とは別の軸。
+ *    10〜29分の日は段に入らないが学習した日ではあるので、濃淡ではなく
+ *    aria-label の文言のほうでストリークと同じ判定を持つ（minutes >= 10）。
+ *    塗りの上では 1〜29分をまとめて「記録あり」（淡い地＋中空の丸）として出す。
  *
  * 🔴 色だけで情報を伝えない（design-token-spec.md）。
- *    濃淡に加えて、段階ドット（1〜4個）・日付の数字・aria-label の文言・
+ *    濃淡に加えて、段階ドット（1〜3個）・日付の数字・aria-label の文言・
  *    凡例の分数表記の4つで同じことを伝えている。どれか1つでも読めれば分かる。
  *
- * 🔴 「選択中」と「今日」を同じ記号で表さない。
- *    選択中は赤い枠（＋内側の細い白枠）、今日はセル下端の点にしている。
- *    どちらも枠にすると、今日を選んだときに2つが重なって区別が付かなくなる。
+ * 🔴 赤は「学習時間の多寡」専用にする。状態（今日・選択中）は赤の外へ出す。
+ *    選択中を赤枠にしていた頃は、濃淡の赤と同系色で「濃い日」なのか
+ *    「選んだ日」なのか読み分けられなかった。今は
+ *      選択中 = 濃いニュートラルの枠（＋内側の細い白枠）
+ *      今日   = セル下端の短い横バー（ニュートラル）
+ *    で、色と形の両方を変えてある。どちらも枠にすると今日を選んだときに
+ *    2つが重なって区別が付かなくなるので、片方は枠、片方はバーで通すこと。
  *    形のほかに aria-pressed / aria-current="date" / label の文言でも伝える。
  *    セルに「45分」と文字で入れないのは、--dc-sz-cell の下限が 38px で
  *    12px×4文字が溢れるため（12px未満は作らない規約がある）。
@@ -69,13 +76,16 @@ const WEEKDAYS = [
   { short: '日', full: '日曜日' },
 ];
 
-/** 濃淡の見た目。段階は heatLevelOf が決める（ここでは閾値を判定しない） */
+/**
+ * 濃淡の見た目。段階は heatLevelOf が決める（ここでは閾値を判定しない）。
+ * 🔴 --dc-soft-100（#FDF2F2）は段に使わない。白いカードの上で記録なしのセルと
+ *    ほとんど差が出ず、4段あった頃に「濃淡が読めない」原因になっていた。
+ */
 const HEAT_STYLE: { background: string; color: string; border: string }[] = [
-  // 0: 記録なし（未達 1〜9分もここを使い、記号だけ変える）
+  // 0: 記録なし（30分未満 1〜29分もここを使い、地と記号だけ変える）
   { background: 'var(--dc-surface)', color: 'var(--dc-text-muted)', border: 'var(--dc-border)' },
-  { background: 'var(--dc-soft-100)', color: 'var(--dc-text)', border: 'var(--dc-soft-200)' },
   { background: 'var(--dc-soft-200)', color: 'var(--dc-text)', border: 'var(--dc-soft-200)' },
-  // L3/L4 は地が濃いので、文字色のコントラストが変わる
+  // L2/L3 は地が濃いので、文字色のコントラストが変わる
   { background: 'var(--dc-bar-past)', color: 'var(--dc-text)', border: 'var(--dc-bar-past)' },
   { background: 'var(--dc-primary)', color: '#fff', border: 'var(--dc-primary)' },
 ];
@@ -99,9 +109,9 @@ interface Cell {
   blank: boolean;
   day: number;
   minutes: number;
-  level: 0 | 1 | 2 | 3 | 4;
-  /** 1〜9分。学習日には満たないが記録はある */
-  under: boolean;
+  level: 0 | 1 | 2 | 3;
+  /** 1〜29分。最初の段（30分）には満たないが記録はある */
+  recorded: boolean;
   coaching: boolean;
   isToday: boolean;
   isFuture: boolean;
@@ -133,7 +143,7 @@ export function StudyCalendarCard({
       if (day < 1 || day > daysInMonth) {
         return {
           key: `blank-${i}`, blank: true, day: 0, minutes: 0, level: 0 as const,
-          under: false, coaching: false, isToday: false, isFuture: false, label: '',
+          recorded: false, coaching: false, isToday: false, isFuture: false, label: '',
         };
       }
       const d = new Date(year, month, day);
@@ -151,14 +161,17 @@ export function StudyCalendarCard({
       else if (minutes === 0) parts.push('記録なし');
       else {
         parts.push(formatMinutesHM(minutes));
-        parts.push(level > 0 ? '学習した日' : `${STUDY_DAY_MIN_MINUTES}分未満`);
+        // 🔴 濃淡の段（level）ではなくストリークと同じ閾値で判定する。
+        //    level は 30分からしか立たないので、level > 0 で見ると
+        //    15分の日が「10分未満」と読み上げられてストリークと食い違う。
+        parts.push(minutes >= STUDY_DAY_MIN_MINUTES ? '学習した日' : `${STUDY_DAY_MIN_MINUTES}分未満`);
         if ((total?.sessionCount ?? 0) > 0) parts.push(`記録${total?.sessionCount}件`);
       }
       if (coaching) parts.push('コーチングあり');
 
       return {
         key, blank: false, day, minutes, level,
-        under: minutes > 0 && level === 0,
+        recorded: minutes > 0 && level === 0,
         coaching, isToday: key === todayKey, isFuture,
         label: parts.join(' '),
       };
@@ -272,7 +285,7 @@ export function StudyCalendarCard({
   );
 
   /** 段階を示すドット。色が読めなくても数で多寡が分かる */
-  const dots = (level: 0 | 1 | 2 | 3 | 4, onDark: boolean) => (
+  const dots = (level: 0 | 1 | 2 | 3, onDark: boolean) => (
     <span style={{ display: 'flex', gap: 2, height: 6, alignItems: 'center' }} aria-hidden="true">
       {Array.from({ length: level }, (_, i) => (
         <span
@@ -366,7 +379,7 @@ export function StudyCalendarCard({
 
             const selected = c.key === selectedDate;
             const heat = HEAT_STYLE[c.level];
-            const onDark = c.level === 4;
+            const onDark = c.level === 3;
 
             return (
               <span key={c.key} role="gridcell" style={{ display: 'block', minWidth: 0 }}>
@@ -399,13 +412,14 @@ export function StudyCalendarCard({
                     position: 'relative',
                     fontFamily: 'inherit',
                     cursor: c.isFuture ? 'default' : 'pointer',
-                    background: c.isFuture ? 'transparent' : c.under ? 'var(--dc-sunken)' : heat.background,
+                    background: c.isFuture ? 'transparent' : c.recorded ? 'var(--dc-sunken)' : heat.background,
+                    // 🔴 選択中は赤にしない。濃淡の赤と同系色だと「濃い日」と読み分けられない
                     border: selected
-                      ? '2px solid var(--dc-primary)'
+                      ? '2px solid var(--dc-text)'
                       : c.isFuture
                         ? '1px dashed var(--dc-idle-dash)'
-                        : `1px solid ${c.under ? 'var(--dc-border)' : heat.border}`,
-                    // 内側に地の色の細い枠を挟んで、濃い段（L3/L4）でも赤枠が沈まないようにする
+                        : `1px solid ${c.recorded ? 'var(--dc-border)' : heat.border}`,
+                    // 内側に地の色の細い枠を挟んで、濃い段（L2/L3）でも枠が沈まないようにする
                     boxShadow: selected ? 'inset 0 0 0 2px var(--dc-surface)' : undefined,
                   }}
                 >
@@ -413,8 +427,14 @@ export function StudyCalendarCard({
                     className="dc-num"
                     style={{
                       fontSize: 'var(--dc-fs-caption)',
-                      fontWeight: c.level > 0 || c.isToday ? 700 : 400,
-                      color: c.isFuture ? 'var(--dc-text-subtle)' : heat.color,
+                      fontWeight: c.level > 0 || c.recorded || c.isToday ? 700 : 400,
+                      // 記録ありは段0と同じ HEAT_STYLE を使うが、文字は記録なし（muted）より
+                      // 一段濃くする。地の差（--dc-sunken）だけだと白セルとの違いが弱い
+                      color: c.isFuture
+                        ? 'var(--dc-text-subtle)'
+                        : c.recorded
+                          ? 'var(--dc-text-body)'
+                          : heat.color,
                       lineHeight: 1,
                     }}
                   >
@@ -424,8 +444,8 @@ export function StudyCalendarCard({
                   {/* 高さは常に確保して升目を揃える（記号の有無で行がずれない） */}
                   {c.level > 0 ? (
                     dots(c.level, onDark)
-                  ) : c.under ? (
-                    // 1〜9分。記録はあるが学習日には満たない。塗りではなく中空の丸で区別する
+                  ) : c.recorded ? (
+                    // 1〜29分。記録はあるが最初の段には満たない。塗りではなく中空の丸で区別する
                     <span
                       aria-hidden="true"
                       style={{ width: 5, height: 5, borderRadius: 9999, border: '1px solid var(--dc-text-subtle)' }}
@@ -449,14 +469,18 @@ export function StudyCalendarCard({
                     </span>
                   )}
 
-                  {/* 今日。選択中の赤枠と competing しないよう、枠ではなく下端の点で示す */}
+                  {/*
+                    * 今日。選択中の枠と competing しないよう、枠ではなく下端のバーで示す。
+                    * 🔴 丸ではなく横バー、赤ではなくニュートラル。丸だと段階ドットの一部に、
+                    *    赤だと濃淡の一段に読まれる。形も色も両方ずらしておくこと。
+                    */}
                   {c.isToday && (
                     <span
                       aria-hidden="true"
                       style={{
                         position: 'absolute', bottom: 3, left: '50%', transform: 'translateX(-50%)',
-                        width: 4, height: 4, borderRadius: 9999,
-                        background: onDark ? '#fff' : 'var(--dc-primary)',
+                        width: 12, height: 2, borderRadius: 1,
+                        background: onDark ? '#fff' : 'var(--dc-text-body)',
                       }}
                     />
                   )}
@@ -476,7 +500,12 @@ export function StudyCalendarCard({
       >
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <span>学習時間</span>
-          {([1, 2, 3, 4] as const).map((lv) => (
+          {/* 段には入らないが記録はある日（1〜29分）。少ない順に並べたいので scale の先頭に置く */}
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+            <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: 9999, border: '1px solid var(--dc-text-subtle)' }} />
+            <span>記録あり</span>
+          </span>
+          {([1, 2, 3] as const).map((lv) => (
             <span key={lv} style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
               <span
                 aria-hidden="true"
@@ -487,25 +516,22 @@ export function StudyCalendarCard({
                 }}
               />
               <span className="dc-num">
-                {lv === 4 ? `${STUDY_HEAT_THRESHOLDS[3]}分〜` : `${STUDY_HEAT_THRESHOLDS[lv - 1]}〜`}
+                {lv === 3 ? `${STUDY_HEAT_THRESHOLDS[2]}分〜` : `${STUDY_HEAT_THRESHOLDS[lv - 1]}〜`}
               </span>
             </span>
           ))}
         </span>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-          <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: 9999, border: '1px solid var(--dc-text-subtle)' }} />
-          <span>{STUDY_DAY_MIN_MINUTES}分未満</span>
-        </span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
           <Headphones size={12} strokeWidth={2.5} color="var(--dc-gold)" aria-hidden="true" />
           <span>コーチングあり</span>
         </span>
+        {/* 見本はセルの中の記号と同じ形・同じ色で出す（バー = 今日、枠 = 選択中） */}
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-          <span aria-hidden="true" style={{ width: 4, height: 4, borderRadius: 9999, background: 'var(--dc-primary)' }} />
+          <span aria-hidden="true" style={{ width: 12, height: 2, borderRadius: 1, background: 'var(--dc-text-body)' }} />
           <span>今日</span>
         </span>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-          <span aria-hidden="true" style={{ width: 14, height: 14, borderRadius: 5, border: '2px solid var(--dc-primary)' }} />
+          <span aria-hidden="true" style={{ width: 14, height: 14, borderRadius: 5, border: '2px solid var(--dc-text)' }} />
           <span>選択中</span>
         </span>
       </div>

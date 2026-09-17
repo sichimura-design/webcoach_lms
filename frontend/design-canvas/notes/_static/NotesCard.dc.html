@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06-P04 ノートカード 4態（部品）
+       実装: components/notes/NoteCard.tsx / index.css:1758-1806
+       出典: _capture/STU-06/1440（既定）・_capture/STU-06-card-hover/1440（ホバー）
+       ⚠ 部品ボード。🔒 424×190 は 1440幅での実測。1700px以上では4列、767px以下では1列。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    /* 🔒 index.css L91-145 の .wc-warm と同値 */
+    .n6 {
+      --dc-primary: #D60934;
+      --dc-soft-100: #FDF2F2;
+      --dc-bg: #FBF8F4;
+      --dc-surface: #FFFFFF;
+      --dc-text: #141414;
+      --dc-text-muted: #6B6B6B;
+      --dc-text-subtle: #9E9E9E;
+      --dc-border: #EFE9E0;
+      --dc-shadow-card: 0 1px 2px rgba(60,48,32,.05), 0 12px 24px -16px rgba(60,48,32,.14);
+      --dc-radius-lg: 20px;
+    }
+    .n6 .num { font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; }
+
+    .n6 .card {
+      display: flex; flex-direction: column; gap: 10px; padding: 18px; box-sizing: border-box;
+      width: 424px; height: 190px;
+      background: var(--dc-surface); border: 1px solid var(--dc-border);
+      border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card); cursor: pointer;
+    }
+    /* ホバー: 2px 持ち上げて影を強くする（transition .2s var(--dc-ease)） */
+    .n6 .card.is-hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(60,48,32,.06), 0 18px 30px -18px rgba(60,48,32,.2);
+    }
+    .n6 .card-badge {
+      display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 9999px;
+      font-size: 11.5px; font-weight: 700;
+    }
+    /* 🔒 出どころごとの色（NoteCard.tsx:45-50 ORIGIN_STYLE）。
+          教材・コーチングはブランド赤系、AIコーチはAIのピンク、自分のノートは無彩色。 */
+    .n6 .b-material, .n6 .b-coaching { background: var(--dc-soft-100); color: #B80A29; }
+    .n6 .b-ai   { background: #FDF2F4; color: #D14D6C; }
+    .n6 .b-self { background: #F7F3ED; color: var(--dc-text-muted); }
+    .n6 .card-title { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.5; color: var(--dc-text); }
+    .n6 .card-excerpt {
+      margin: 0; font-size: 12.5px; line-height: 1.7; color: var(--dc-text-muted);
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    /* サムネがあるときだけ抜粋は2行（横幅が狭くなるため） */
+    .n6 .card-excerpt.is-2 { -webkit-line-clamp: 2; }
+    .n6 .card-foot {
+      display: flex; align-items: center; gap: 10px; margin-top: auto;
+      padding-top: 8px; border-top: 1px solid var(--dc-border);
+    }
+    .n6 .card-folder {
+      display: inline-flex; align-items: center; gap: 5px; min-width: 0;
+      border: 0; padding: 0; background: transparent; cursor: pointer;
+      font-family: inherit; font-size: 11.5px; color: var(--dc-text-subtle);
+    }
+    .n6 .card-folder.is-inbox { color: var(--dc-primary); }
+    .n6 .card-date { margin-left: auto; flex-shrink: 0; font-size: 11.5px; color: var(--dc-text-subtle); }
+    .n6 .card-star {
+      width: 26px; height: 26px; margin-right: -4px; padding: 0; border: 0; border-radius: 9999px;
+      background: transparent; display: inline-grid; place-items: center; cursor: pointer;
+      color: var(--dc-text-subtle);
+    }
+    .n6 .card-star.is-on { color: var(--dc-primary); }
+    /* ★ 自体にホバーすると地が --dc-soft-100 になる */
+    .n6 .card-star.is-hover { background: var(--dc-soft-100); }
+    /* サムネイル（.notes-card__thumb / index.css:1785-1806）。正方形。
+       読み込み中・見つからないときも枠は出したまま（出し入れするとグリッドが揺れる）。 */
+    .n6 .card-thumb {
+      width: 72px; height: 72px; flex: none; display: grid; place-items: center;
+      border: 1px solid var(--dc-border); border-radius: 12px; background: var(--dc-bg); overflow: hidden;
+    }
+
+    .n6 .cap { font-size: 11.5px; font-weight: 700; color: #8A8178; margin-bottom: 10px; }
+    .n6 .cap span { font-weight: 400; color: #A79E93; }
+    .n6 .note { margin-top: 12px; font-size: 11px; line-height: 1.7; color: #A79E93; width: 424px; }
+  </style>
+</helmet>
+
+<div class="n6"
+     data-dc-id="STU-06-P04"
+     data-dc-remote="マイノート 部品 ノートカード.dc.html"
+     data-dc-route="/notes"
+     data-dc-src="frontend/src/components/notes/NoteCard.tsx"
+     style="display: grid; grid-template-columns: repeat(2, 424px); gap: 32px 40px; width: 960px; min-height: 560px; padding: 24px; box-sizing: border-box; background: var(--dc-bg);">
+
+  <!-- ───────── ① 既定（★OFF・未整理）───────── -->
+  <div>
+    <div class="cap">既定 <span>／ ★OFF・未整理・抜粋3行</span></div>
+    <article class="card">
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+        <span class="card-badge b-self">自分のノート</span>
+        <button type="button" class="card-star" title="重要にする">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        </button>
+      </div>
+      <div style="display: flex; gap: 12px; min-width: 0;">
+        <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+          <h3 class="card-title">参考バナーの共通点メモ</h3>
+          <p class="card-excerpt">目を引くバナーは色数が3色以内。メインコピーが全体の1/3以上の面積を占めている。</p>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button type="button" class="card-folder is-inbox" title="フォルダを変える">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+          <span>未整理</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <span class="card-date num">09/05</span>
+      </div>
+    </article>
+    <div class="note">🔒 未整理だけフォルダ名がブランド色。「まだ置き場所を決めていない」が一覧で見えるようにするため。</div>
+  </div>
+
+  <!-- ───────── ② ホバー ───────── -->
+  <div>
+    <div class="cap">ホバー <span>／ 2px 持ち上げて影が濃くなる</span></div>
+    <article class="card is-hover">
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+        <span class="card-badge b-material">教材</span>
+        <!-- ★ にもホバーすると地が --dc-soft-100 になる -->
+        <button type="button" class="card-star is-hover" title="重要にする">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        </button>
+      </div>
+      <div style="display: flex; gap: 12px; min-width: 0;">
+        <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+          <h3 class="card-title">余白の使い方Tips</h3>
+          <p class="card-excerpt">要素間より外側の余白を広く。グループの関係は余白の差で伝わる。詰まって見えたらまず外側を広げる。</p>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button type="button" class="card-folder" title="フォルダを変える">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+          <span>デザイン基礎</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <span class="card-date num">09/07</span>
+      </div>
+    </article>
+    <div class="note">🔴 ⋮ メニューは無い。「開く」はカード自体、「削除」はノート面の「その他」だけ。★ だけ右上に常時出す。</div>
+  </div>
+
+  <!-- ───────── ③ ★ON ＋ AIコーチ ───────── -->
+  <div>
+    <div class="cap">★ON <span>／ 出どころが AIコーチ（別の色）</span></div>
+    <article class="card">
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+        <span class="card-badge b-ai">AIコーチ</span>
+        <button type="button" class="card-star is-on" title="重要を外す">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        </button>
+      </div>
+      <div style="display: flex; gap: 12px; min-width: 0;">
+        <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+          <h3 class="card-title">AI回答：応募文の改善ポイント</h3>
+          <p class="card-excerpt">強みの根拠が具体的で良いです。成果を数字で示すと、説得力がさらに高まります。まずは「結論→根拠→再現性」の順で整理しまし</p>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button type="button" class="card-folder" title="フォルダを変える">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+          <span>案件・ポートフォリオ</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <span class="card-date num">09/08</span>
+      </div>
+    </article>
+    <div class="note">出どころは4種: 自分のノート／教材／AIコーチ／コーチング（NOTE_ORIGIN_LABEL, types/notes.ts:42-47）。</div>
+  </div>
+
+  <!-- ───────── ④ サムネイル付き ─────────
+       中に画像ブロックがあるノートだけ、タイトルの左に正方形のサムネが付く。
+       自分の制作物（バナー・LP など）を一覧で絵として見分けるため。 -->
+  <div>
+    <div class="cap">サムネイル付き <span>／ 画像ブロックを持つノート。抜粋は2行</span></div>
+    <article class="card">
+      <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+        <span class="card-badge b-material">教材</span>
+        <button type="button" class="card-star" title="重要にする">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        </button>
+      </div>
+      <div style="display: flex; gap: 12px; min-width: 0;">
+        <!-- 画像はキャンバスに外部参照を持ち込めないので枠だけのプレースホルダ。
+             実装でも読み込み中・見つからないときはこの見た目になる。 -->
+        <div class="card-thumb">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--dc-text-subtle)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="opacity: .7;"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+          <h3 class="card-title">バナー1案目のラフ</h3>
+          <p class="card-excerpt is-2">Zの法則で組んでみた。キャッチの位置は良いが、写真とのコントラストが弱い。</p>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button type="button" class="card-folder" title="フォルダを変える">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+          <span>案件・ポートフォリオ</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+        </button>
+        <span class="card-date num">09/04</span>
+      </div>
+    </article>
+    <div class="note">🔴 読み込み中・見つからないときも枠は出したまま。出し入れするとカードの高さが動いてグリッド全体が揺れる。</div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06-P11 引用モーダル・教材ペイン（部品）
+       実装: components/notes/QuoteFromLessonModal.tsx:118-224, 416-596
+             components/notes/LessonQuoteReader.tsx（読み取り専用の本文）
+             components/learning/SelectionToolbar.tsx（選択したときに出る）
+       出典: _capture/STU-06-quote/1440
+       ⚠ 部品ボード。オーバーレイは rgba(31,29,30,.42)。パネルは 860×約790。
+          🔴 オーバーレイに onClick={onClose} は付けない。本文をドラッグ選択して
+             指をパネル外で離した瞬間に閉じてしまうため。閉じ方は ✕ と Esc だけ。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    .n6 {
+      --dc-primary: #D60934;
+      --dc-surface: #FFFFFF;
+      --dc-border: #EFE9E0;
+      --wc-text: #1F1D1E;
+      --wc-text-strong: #2B2629;
+      --wc-text-body: #4A4245;
+      --wc-text-muted: #6B6467;
+      --wc-text-faint: #9A9295;
+      --wc-note-highlight: #FFD9E0;
+    }
+
+    .n6 .panel {
+      width: 860px; box-sizing: border-box;
+      background: var(--dc-surface); border-radius: 18px; overflow: hidden;
+      box-shadow: 0 24px 60px -20px rgba(31,29,30,.35);
+    }
+    .n6 .panel-head { display: flex; align-items: flex-start; gap: 12px; padding: 18px 24px 14px; border-bottom: 1px solid var(--dc-border); }
+    .n6 .panel-close {
+      width: 30px; height: 30px; flex: none; margin-left: auto; border: 0; border-radius: 9999px;
+      background: #F7F3EE; color: var(--wc-text-muted); display: grid; place-items: center; cursor: pointer;
+    }
+    .n6 .picker-row { display: flex; align-items: center; gap: 12px; padding: 12px 24px; border-bottom: 1px solid var(--dc-border); }
+    .n6 .select {
+      flex: 1; min-width: 0; height: 32px; box-sizing: border-box; padding: 0 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      border: 1px solid var(--dc-border); border-radius: 8px; background: var(--dc-surface);
+      font-size: 12.5px; color: var(--wc-text);
+    }
+    .n6 .relesson {
+      display: inline-flex; align-items: center; gap: 6px; flex: none; height: 32px; padding: 0 12px;
+      border: 1px solid var(--dc-border); border-radius: 8px; background: var(--dc-surface);
+      color: var(--wc-text-muted); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+    }
+    /* 使い方バー。地は淡いピンク */
+    .n6 .howto { padding: 8px 20px; background: #FFF6F7; font-size: 11.5px; font-weight: 500; line-height: 1.5; color: var(--wc-text-muted); }
+
+    /* 本文（LessonQuoteReader）。章番号の丸 ＋ 見出し ＋ 段落 */
+    .n6 .chap { display: flex; align-items: center; gap: 12px; margin: 28px 0 18px; }
+    .n6 .chap-no {
+      width: 26px; height: 26px; flex: none; border-radius: 9999px; background: var(--dc-primary);
+      color: #FFFFFF; display: grid; place-items: center;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    }
+    .n6 .chap-title { font-size: 15.5px; font-weight: 700; color: var(--wc-text); }
+    .n6 .doc-h { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--wc-text); }
+    .n6 .doc-p { margin: 0 0 16px; font-size: 13.5px; line-height: 2; color: var(--wc-text-body); }
+    /* 教材本文の「ポイント」囲み（doc.css / wc-lesson-scope 由来） */
+    .n6 .doc-point { padding: 16px 20px; border: 1px solid #F5D8DB; border-radius: 12px; background: #FFF8F9; }
+    /* すでにクリップ済みの箇所は <mark> で復元される */
+    .n6 mark { background: linear-gradient(transparent 62%, var(--wc-note-highlight) 62%); color: inherit; }
+
+    /* 選択したときに出るツールバー（SelectionToolbar / z-index 102） */
+    .n6 .sel-bar {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px;
+      background: #2B2629; border-radius: 10px; box-shadow: 0 8px 24px -8px rgba(0,0,0,.35);
+    }
+    .n6 .sel-btn {
+      display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px;
+      border: 0; border-radius: 7px; background: transparent; color: #FFFFFF;
+      font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+    }
+    /* 追加の知らせ。🔴 アンカーになる本文スクロール枠に position: relative が要る
+       （無いとビューポート基準になって画面の隅に出る） */
+    .n6 .added {
+      position: absolute; right: 20px; bottom: 16px;
+      padding: 8px 14px; border-radius: 9999px; background: #2B2629; color: #FFFFFF;
+      font-size: 12px; font-weight: 700;
+    }
+
+    .n6 .cap { font-size: 11.5px; font-weight: 700; color: #8A8178; margin-bottom: 10px; }
+    .n6 .cap span { font-weight: 400; color: #A79E93; }
+    .n6 .note { margin-top: 14px; font-size: 11px; line-height: 1.8; color: #EDE6DF; width: 860px; }
+  </style>
+</helmet>
+
+<div class="n6"
+     data-dc-id="STU-06-P11"
+     data-dc-remote="マイノート 部品 引用モーダル 教材ペイン.dc.html"
+     data-dc-route="/notes?note=<id>"
+     data-dc-src="frontend/src/components/notes/QuoteFromLessonModal.tsx#L416-L596"
+     style="width: 960px; min-height: 1000px; padding: 24px; box-sizing: border-box; background: rgba(31,29,30,.42);">
+
+  <div class="cap" style="color: #EDE6DF;">教材ペイン <span style="color: #C9BFB6;">／ 教材から作られたノートで「教材から引用」を押したとき</span></div>
+
+  <div class="panel">
+    <!-- ───────── ① 見出し ───────── -->
+    <div class="panel-head">
+      <span style="width: 28px; height: 28px; flex: none; display: grid; place-items: center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+      </span>
+      <div style="flex: 1; min-width: 0;">
+        <h2 style="margin: 0; font-size: 16.5px; font-weight: 900; line-height: 1.5; color: var(--wc-text);">教材から引用</h2>
+        <p style="margin: 4px 0 0; font-size: 11.5px; font-weight: 500; color: var(--wc-text-muted);">選んだ文章は「バナー制作の学び」に入ります</p>
+      </div>
+      <button type="button" class="panel-close" aria-label="閉じてノートに戻る">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </div>
+
+    <!-- ───────── ② 教材の選択 ─────────
+         コース名は文字だけ。レッスンは select（セクションごとに optgroup）。 -->
+    <div class="picker-row">
+      <span style="flex: none; font-size: 12px; font-weight: 700; color: var(--wc-text-muted);">バナー100本道場</span>
+      <div class="select" aria-label="開く教材">
+        <span>ハンズオン①</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--wc-text-faint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </div>
+      <button type="button" class="relesson">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"></path><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11"></path></svg>
+        別の教材
+      </button>
+    </div>
+
+    <!-- ───────── ③ 使い方バー ───────── -->
+    <div class="howto">読みたい文章をドラッグで選ぶと「クリップ」が出ます。押すとノートに入り、この画面は開いたままです。</div>
+
+    <!-- ───────── ④ 本文（読み取り専用）─────────
+         🔴 position: relative が要る。下の「ノートに追加しました」がこの枠を基準に出る。 -->
+    <div style="position: relative; padding: 4px 48px 28px; max-height: 620px; overflow: hidden;">
+      <div class="chap">
+        <span class="chap-no">01</span>
+        <span class="chap-title">このパートの位置づけ</span>
+      </div>
+      <h3 class="doc-h">1. このパートで押さえること</h3>
+      <p class="doc-p">「ハンズオン①」では、バナー100本道場のなかでデザインの土台になる考え方を扱います。細かな手順を覚える前に、なぜその手順が必要なのかを理解しておくと、応用が効くようになります。</p>
+      <!-- すでにクリップ済みの箇所はマーカーで復元される -->
+      <p class="doc-p">読み進めながら<mark>「自分の制作物ならどうなるか」を都度あてはめてみてください</mark>。手を動かす前に判断基準を持っておくことが、やり直しを減らす一番の近道です。</p>
+
+      <div class="doc-point">
+        <div style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; color: var(--dc-primary);">💡 ポイント</div>
+        <div style="margin-top: 8px; font-size: 13.5px; font-weight: 700; color: var(--wc-text);">判断基準</div>
+        <p style="margin: 4px 0 0; font-size: 13.5px; line-height: 2; color: var(--wc-text-body);">迷ったときは「一番見てほしいものが最初に目に入るか」に立ち返ります。この基準に照らして説明できない選択は、いったん保留にして構いません。</p>
+      </div>
+
+      <div class="chap">
+        <span class="chap-no">02</span>
+        <span class="chap-title">基本の考え方</span>
+      </div>
+      <h3 class="doc-h">2. 基本の考え方</h3>
+      <p class="doc-p">デザインでは、要素を足していくほど良くなるわけではありません。まず目的を1つに絞り、それを支えない要素を削ります。</p>
+
+      <!-- 文章を選ぶと出るツールバー。押すとノート末尾に clip ブロックが増える -->
+      <div style="position: absolute; left: 150px; top: 212px;">
+        <div class="sel-bar">
+          <button type="button" class="sel-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+            クリップ
+          </button>
+        </div>
+      </div>
+
+      <!-- 追加できたときの知らせ。モーダルは閉じない。2.2秒で消える -->
+      <div class="added">ノートに追加しました</div>
+    </div>
+  </div>
+
+  <div class="note">
+    2件目以降は「ノートに追加しました（2件）」と数が付く。<br>
+    🔴 オーバーレイを押しても閉じない。閉じるのは ✕ と Esc だけ（ドラッグ選択で指をパネル外に出す操作と衝突するため）。<br>
+    🔴 移行教材の &lt;a class="lightbox"&gt; は押すと同じタブで外部へ飛ぶ。モーダルでは
+    /notes ごと離脱してしまうので、LessonQuoteReader が onClickCapture で遷移を止めている。<br>
+    出どころ行から開いたときは、その箇所までスクロールして 1.2 秒フラッシュする。
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

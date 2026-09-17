@@ -11,6 +11,7 @@ import { AppHeader } from '../shared/AppHeader';
 import { AppFooter } from '../shared/AppFooter';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
+import { pageTitleStyle } from '../../theme/pageTitle';
 
 // Google Meetはコーチ個別OAuthではなく、会社共有のOrganizerアカウントを管理者が
 // 一度だけ接続するOrganizer中心モデルに移行したため、コーチ向け連携先ではない。
@@ -121,16 +122,7 @@ export function CoachSettingsPage() {
         className="wc-page flex-1"
         style={{ '--wc-page-max': '860px' } as React.CSSProperties}
       >
-        <h1
-          style={{
-            margin: '0 0 20px',
-            fontSize: 'var(--dc-fs-display)',
-            fontWeight: 700,
-            letterSpacing: '-.01em',
-            lineHeight: 'var(--dc-lh-heading)',
-            color: 'var(--dc-text)',
-          }}
-        >
+        <h1 style={{ ...pageTitleStyle, margin: '0 0 20px', color: 'var(--dc-text)' }}>
           連携設定
         </h1>
 

@@ -1,0 +1,187 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06-P07 ノート面の上部バー 4態（部品）
+       実装: components/notes/NoteEditorBar.tsx（SaveStatus は :141-175）
+             速記メモのボタンは components/quickMemo/QuickMemoLauncher.tsx:154-160
+       出典: _capture/STU-06-note-rich/1440（保存しました・重要ON・教材から来た版）
+             _capture/STU-06-new/1440（未整理・重要OFF）
+       ⚠ 部品ボード。保存中／保存できませんでした は一瞬なのでキャプチャに残らず、
+         NoteEditorBar.tsx:141-175 から写経している。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    /* 🔒 index.css L91-145 の .wc-warm と同値 */
+    .n6 {
+      --dc-primary: #D60934;
+      --dc-soft-100: #FDF2F2;
+      --dc-soft-200: #F5D8DB;
+      --dc-bg: #FBF8F4;
+      --dc-surface: #FFFFFF;
+      --dc-text: #141414;
+      --dc-text-body: #3D3D3D;
+      --dc-text-muted: #6B6B6B;
+      --dc-text-subtle: #9E9E9E;
+      --dc-border-strong: #E2DBD0;
+    }
+    .n6 .num { font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; }
+
+    .n6 .tool {
+      display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px;
+      border: 1px solid var(--dc-border-strong); border-radius: 8px;
+      background: var(--dc-surface); color: var(--dc-text-body);
+      font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;
+    }
+    /* 🔒 重要ON の文字色は #141414。実装は var(--dc-primary-deep)（index.css:1900）を
+          当てているが、その変数はどこにも定義されていないので継承色になる。赤にしないこと。 */
+    .n6 .tool.is-on { background: var(--dc-soft-100); border-color: var(--dc-soft-200); color: var(--dc-text); }
+    .n6 .back {
+      display: inline-flex; align-items: center; gap: 4px; height: 31px; padding: 6px 10px 6px 4px;
+      border: 0; border-radius: 8px; background: transparent;
+      font-family: inherit; font-size: 13px; font-weight: 700; color: var(--dc-primary); cursor: pointer;
+    }
+    .n6 .save { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--dc-text-muted); }
+    .n6 .bar { display: flex; align-items: center; gap: 12px; width: 1282px; }
+
+    .n6 .cap { font-size: 11.5px; font-weight: 700; color: #8A8178; margin-bottom: 10px; }
+    .n6 .cap span { font-weight: 400; color: #A79E93; }
+  </style>
+</helmet>
+
+<div class="n6"
+     data-dc-id="STU-06-P07"
+     data-dc-remote="マイノート 部品 上部バー.dc.html"
+     data-dc-route="/notes?note=<id>"
+     data-dc-src="frontend/src/components/notes/NoteEditorBar.tsx"
+     style="display: flex; flex-direction: column; gap: 26px; width: 1330px; min-height: 300px; padding: 24px; box-sizing: border-box; background: var(--dc-bg);">
+
+  <!-- ───────── ① 既定（保存済み）─────────
+       教材から作られていないノート。保存先は未整理、重要はOFF。 -->
+  <div>
+    <div class="cap">既定 <span>／ 保存済み・未整理・重要OFF</span></div>
+    <div class="bar">
+      <button type="button" class="back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+        マイノートに戻る
+      </button>
+      <button type="button" class="tool" style="color: var(--dc-primary);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span>未整理</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+      <div style="flex: 1;"></div>
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"></path><rect width="10" height="7" x="12" y="3" rx="1"></rect></svg>
+        速記メモを小窓で開く
+      </button>
+      <span class="save">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2FA35C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+        保存しました <span class="num" style="color: var(--dc-text-subtle);">14:57</span>
+      </span>
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        重要にする
+      </button>
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+        その他
+      </button>
+    </div>
+  </div>
+
+  <!-- ───────── ② 保存中 ───────── -->
+  <div>
+    <div class="cap">保存中 <span>／ Loader2 が回る。時刻は出ない</span></div>
+    <div class="bar" style="justify-content: flex-end;">
+      <span class="save">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+        保存中…
+      </span>
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        重要にする
+      </button>
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+        その他
+      </button>
+    </div>
+  </div>
+
+  <!-- ───────── ③ 保存できませんでした ───────── -->
+  <div>
+    <div class="cap">保存できませんでした <span>／ AlertCircle ＋ ブランド色</span></div>
+    <div class="bar" style="justify-content: flex-end;">
+      <span class="save" style="color: var(--dc-primary);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+        保存できませんでした
+      </span>
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        重要にする
+      </button>
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+        その他
+      </button>
+    </div>
+  </div>
+
+  <!-- ───────── ④ 教材から来たノート ─────────
+       「〜」に戻る が増え、保存先はフォルダ名、重要はON。速記メモは書きかけ表示。 -->
+  <div>
+    <div class="cap">教材から来たノート <span>／「〜」に戻る が増える・重要ON・速記メモ書きかけ</span></div>
+    <div class="bar">
+      <button type="button" class="back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+        マイノートに戻る
+      </button>
+      <!-- 🔴 この画面から離れる唯一の導線。押すと /course/:id?module=&block= へ遷移する。
+           クリップの「出どころ」行は遷移せず、モーダルで開く（別物）。 -->
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+        <span>「ハンズオン①」に戻る</span>
+      </button>
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        <span>デザイン基礎</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+      <div style="flex: 1;"></div>
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"></path><rect width="10" height="7" x="12" y="3" rx="1"></rect></svg>
+        速記メモ（書きかけ）
+      </button>
+      <span class="save">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2FA35C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+        保存しました <span class="num" style="color: var(--dc-text-subtle);">14:22</span>
+      </span>
+      <button type="button" class="tool is-on">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        重要
+      </button>
+      <button type="button" class="tool">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+        その他
+      </button>
+    </div>
+    <div style="margin-top: 12px; font-size: 11px; line-height: 1.7; color: #A79E93;">
+      速記メモのボタンは3態:「速記メモを小窓で開く」／「速記メモ（書きかけ）」／「速記メモを閉じる」。
+      Document Picture-in-Picture に対応していない環境ではボタンごと出ない。小窓の中身は QuickMemoWindow.dc.html。
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

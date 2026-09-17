@@ -11,6 +11,7 @@ import { useNoteFolders } from '../../hooks/useNoteFolders';
 import { useNoteList } from '../../hooks/useNoteList';
 import { BackTo } from '../../hooks/useNoteCapture';
 import { bffClient } from '../../services/bffClient';
+import { pageTitleStyle } from '../../theme/pageTitle';
 import { noteDraftKey } from '../../utils/quickMemoDraft';
 import { QuickMemoButton, QuickMemoError, useQuickMemoWindow } from '../quickMemo/QuickMemoLauncher';
 import {
@@ -462,17 +463,7 @@ export function MyNotesPage() {
                   {/* 🔴 パンくずは置かない。階層が「すべて／フォルダ」の一段しか無く、
                          いまどこを見ているかはフォルダのバー（選択中のボタン）が言っている。
                          見出しは画面名に固定する（以前は見出し自体をフォルダ名にしていた）。 */}
-                  <h1
-                    style={{
-                      margin: 0,
-                      fontSize: 22,
-                      lineHeight: 1.35,
-                      fontWeight: 700,
-                      letterSpacing: '-.01em',
-                    }}
-                  >
-                    マイノート
-                  </h1>
+                  <h1 style={pageTitleStyle}>マイノート</h1>
                 </div>
 
                 {/* 🔴 検索欄は幅いっぱいにしない。左端の入力から右端のボタンまで

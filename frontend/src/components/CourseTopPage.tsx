@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAsyncData } from '../hooks/useAsyncData';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Check, Clock, Play, Search } from 'lucide-react';
+import { BookOpen, Check, Clock, Play, Search } from 'lucide-react';
 import { bffClient } from '../services/bffClient';
 import { AppFooter, AppHeader, LearningBreadcrumb } from './shared';
 import LessonProgressBar from './shared/LessonProgressBar';
@@ -382,7 +382,11 @@ export default function CourseTopPage() {
                   boxShadow: 'var(--dc-shadow-primary-soft)',
                 }}
               >
-                {allDone ? <Check size={22} strokeWidth={2.5} /> : <Play size={19} strokeWidth={2} fill="currentColor" />}
+                {/* 🔴 ▶（塗りの三角）にしない。丸 + 赤い塗り三角は再生ボタンそのものの
+                       見た目で、この丸は飾りなのに押せると誤解される。押すものは右の
+                       ct-btn-primary だけ。完了時の ✓ と同じ細線の輪郭アイコンで揃える
+                       （マイページ「続きから学習」の見出しバッジと同じ判断）。 */}
+                {allDone ? <Check size={22} strokeWidth={2.5} /> : <BookOpen size={21} strokeWidth={2} />}
               </span>
 
               <div style={{ flex: '1 1 240px', minWidth: 0 }}>

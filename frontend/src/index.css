@@ -1389,8 +1389,10 @@ body.learning-immersive {
   transition: box-shadow 120ms var(--dc-ease);
 }
 
+/* 🔴 --dc-soft-200 を使わない。3段に絞ったあとはこれが L1（30〜59分）の地そのもので、
+      L1 のセルにホバーしてもリングが見えない。ニュートラル側で通す。 */
 .studylog-cal-cell:hover:not(:disabled) {
-  box-shadow: inset 0 0 0 2px var(--dc-soft-200);
+  box-shadow: inset 0 0 0 2px var(--dc-border-strong);
 }
 
 /* コーチングを受けた日のマーク（升目の右上）。

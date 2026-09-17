@@ -260,10 +260,23 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     rowPadX: 16,
     /** ナビ行どうしの隙間 */
     rowSpacing: 4,
-    /** レールの丸アイコン */
-    railBtn: 40,
-    railIcon: 18,
-    railGap: 6,
+    /*
+     * レールの丸アイコン。
+     * 🔴 レールはアイコンの下にラベルを出す（72px幅・10px）ので、1項目が
+     *    「丸36 + 2px + 文字12px」= 50px になる。丸を 40→36・隙間を 6→4 に
+     *    詰めたのはラベルぶんの高さを吸収するため。実測（1440x768）で
+     *    ナビ帯の下端は 6項目 386px・管理ロールの9項目 565px。アカウント行は
+     *    下端に寄るので、必要な高さは 565+14+36+16 ≒ 631px。640px くらいの
+     *    ビューポートまでは重ならない（700・768 で実測ずみ）。
+     *    ここを大きく戻すと下端のアカウント行が短いノートPCで画面外に出る
+     *    （レールに overflow は付けられない ＝ ツールチップが切れる、の制約）。
+     */
+    railBtn: 36,
+    railIcon: 17,
+    railGap: 4,
+    /** レールのラベル（アイコン下） */
+    railLabelFont: 10,
+    railLabelGap: 2,
     /** パネル下部の補助リンク */
     subH: 32,
     subFont: 12,
@@ -287,30 +300,51 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     'pointer-events-none absolute left-full top-1/2 z-50 ml-2.5 -translate-y-1/2 whitespace-nowrap rounded-[7px] px-2.5 py-[5px] text-[12px] font-medium opacity-0 transition-opacity duration-[120ms] group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none';
   const tooltipStyle = { background: SB.tipBg, color: SB.panelInk };
 
-  /** 常時見えている72pxレールの丸アイコン1つ */
+  /*
+   * 常時見えている72pxレールの1項目（丸アイコン＋その下のラベル）。
+   * 🔴 ラベルを出しているので、ここにツールチップは付けない。同じ語が
+   *    ホバーで二重に出て読みにくくなる（ツールチップは開くボタンと
+   *    タイマーだけに残っている）。
+   * 🔴 ラベルは展開パネルと同じ語をそのまま使う。レールだけ「学習」
+   *    「ノート」と短くすると、開閉で呼び名が変わって別物に見える。
+   *    72px幅・10pxなら全角5文字（コーチング／マイノート／受講生一覧）
+   *    まで折り返さずに収まる。
+   */
   const renderRailItem = (item: { label: string; icon: any; path: string; active: boolean }) => {
     const Icon = item.icon;
     return (
       <button
         key={item.path}
         onClick={() => navigate(item.path)}
-        aria-label={item.label}
         aria-current={item.active ? 'page' : undefined}
         tabIndex={expanded ? -1 : undefined}
-        className={`group relative grid place-items-center rounded-full appearance-none border-0 cursor-pointer transition-colors duration-200 motion-reduce:transition-none ${focusRing} ${
-          item.active ? '' : 'hover:bg-[#FDF2F2]'
-        }`}
-        style={{
-          width: SZ.railBtn,
-          height: SZ.railBtn,
-          flex: 'none',
-          background: item.active ? SB.brand : 'transparent',
-          boxShadow: item.active ? '0 2px 10px -2px rgba(214,9,52,.4)' : undefined,
-        }}
+        className={`flex flex-col items-center appearance-none border-0 bg-transparent cursor-pointer ${focusRing}`}
+        style={{ width: 68, padding: 0, gap: SZ.railLabelGap, flex: 'none' }}
       >
-        <Icon size={SZ.railIcon} strokeWidth={1.75} color={item.active ? SB.panelInk : SB.iconIdle} />
-        {/* レールはアイコンのみなので、ホバー/フォーカスでラベルを添える（title属性はキーボードで読めない） */}
-        <span role="tooltip" aria-hidden="true" className={tooltipClass} style={tooltipStyle}>
+        <span
+          className={`grid place-items-center rounded-full transition-colors duration-200 motion-reduce:transition-none ${
+            item.active ? '' : 'hover:bg-[#FDF2F2]'
+          }`}
+          style={{
+            width: SZ.railBtn,
+            height: SZ.railBtn,
+            flex: 'none',
+            background: item.active ? SB.brand : 'transparent',
+            boxShadow: item.active ? '0 2px 10px -2px rgba(214,9,52,.4)' : undefined,
+          }}
+        >
+          <Icon size={SZ.railIcon} strokeWidth={1.75} color={item.active ? SB.panelInk : SB.iconIdle} />
+        </span>
+        <span
+          className="whitespace-nowrap"
+          style={{
+            fontSize: SZ.railLabelFont,
+            lineHeight: '12px',
+            fontWeight: item.active ? 700 : 500,
+            color: item.active ? SB.panelActiveInk : SB.iconIdle,
+            letterSpacing: '-0.02em',
+          }}
+        >
           {item.label}
         </span>
       </button>
@@ -424,7 +458,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
       {/* ──────────────────────────────────────────────────────────
           PC版 左ナビ（sm以上）。claude.ai/design『マイページ 3d.dc.html』準拠。
           2層構造（どちらも left:0 に常時マウントし、クロスフェードで入れ替わる）:
-            ① レール（72px・既定）… アイコンのみ
+            ① レール（72px・既定）… アイコン＋下にラベル（10px）
             ② パネル（224px・赤） … 展開時
 
           🔴 push 型。展開すると body の padding-left が 72px → 224px に伸び、
@@ -466,7 +500,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           🔴 ここに overflow を付けてはいけない。付けるとホバー時のツールチップが
              レールの内側（72px幅）で切られて読めなくなる。overflow:hidden/auto は
              どちらもクリップ領域を作るので、x だけ hidden にしても同じこと。
-             レールの中身は合計 約470px で、実用的な画面高には収まる。
+             レールの中身は合計 約630px（管理ロール・ラベル付き）で、
+             実用的な画面高には収まる。内訳は上の SZ のコメント参照。
         */}
         <div className="flex flex-col items-center" style={{ flex: 1, minHeight: 0, width: '100%' }}>
           <nav aria-label="メインナビゲーション" className="flex flex-col items-center" style={{ gap: SZ.railGap }}>

@@ -1,0 +1,593 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@600;700;800&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06 マイノート 一覧 /notes
+       実装: frontend/src/components/notes/MyNotesPage.tsx:457-641
+             NoteFolderBar.tsx / NoteGrid.tsx / NoteCard.tsx / NotesPagination.tsx
+       CSS : frontend/src/index.css L1505-2015（.notes-* の節）
+       出典: design-canvas/_capture/STU-06/1440.{png,styles.json}（1440幅）
+       ══════════════════════════════════════════════════════════════════════ */
+
+    /* 🔒 frontend/src/index.css L91-145 の .wc-warm と同値。
+          ここを書き換えても実装の色は変わらない。色を変えたいなら index.css を直す。
+          差分レビューでこのブロックが変わっていたら、意図を確認すること。 */
+    .n6 {
+      --dc-primary: #D60934;
+      --dc-primary-hover: #B50829;
+      --dc-tint-50: #FDF7F7;
+      --dc-soft-100: #FDF2F2;
+      --dc-soft-200: #F5D8DB;
+      --dc-bg: #FBF8F4;
+      --dc-surface: #FFFFFF;
+      --dc-sunken: #F9F5F0;
+      --dc-text: #141414;
+      --dc-text-body: #3D3D3D;
+      --dc-text-muted: #6B6B6B;
+      --dc-text-subtle: #9E9E9E;
+      --dc-border: #EFE9E0;
+      --dc-border-strong: #E2DBD0;
+      --dc-shadow-card: 0 1px 2px rgba(60,48,32,.05), 0 12px 24px -16px rgba(60,48,32,.14);
+      --dc-radius-md: 12px;
+      --dc-radius-lg: 20px;
+    }
+
+    /* 🔒 実装は選択中フォルダ・重要ON に var(--dc-primary-deep) を当てているが、
+          この変数はどこにも定義されていない（index.css:1541 / 1676 / 1900 で使用のみ）。
+          未定義の var() は無効値になるので color は継承し、実際の文字色は #141414 になる。
+          _capture の実測もそうなっている。ここを赤にしないこと。赤にしたいなら
+          index.css L91-145 に --dc-primary-deep を足す実装変更が要る。 */
+
+    /* 数値は Inter + tabular-nums（実装の .dc-num） */
+    .n6 .num { font-family: 'Inter', 'Noto Sans JP', sans-serif; font-variant-numeric: tabular-nums; }
+
+    /* レールの項目（shared/AppHeader.tsx。Main.dc.html と同じもの） */
+    .n6 .rail-item {
+      width: 40px; height: 40px; border: 0; padding: 0; background: transparent;
+      display: grid; place-items: center; border-radius: 12px; cursor: pointer;
+    }
+    .n6 .rail-item-active { background: #D60934; box-shadow: 0 4px 16px -8px rgba(214,9,52,.25); }
+
+    /* フォルダのバー（index.css:1637-1700）。実装は sticky ＋ 横スクロール */
+    .n6 .fbar-item {
+      display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 14px;
+      border: 1px solid var(--dc-border-strong); border-radius: 9999px;
+      background: var(--dc-surface); color: var(--dc-text-body);
+      font-family: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    }
+    .n6 .fbar-item.is-active {
+      background: var(--dc-soft-100); border-color: var(--dc-soft-200);
+      color: var(--dc-text); font-weight: 700;   /* 🔒 #141414。上の注記を読むこと */
+    }
+    /* 件数（.notes-folder-row__count.dc-num）。選択中でも色は変えない */
+    .n6 .fbar-count {
+      font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums;
+      font-size: 11.5px; color: var(--dc-text-subtle);
+    }
+
+    /* 種類チップ（index.css:1692-1727） */
+    .n6 .chip {
+      display: inline-flex; align-items: center; height: 30px; padding: 0 12px;
+      border: 1px solid var(--dc-border-strong); border-radius: 9999px;
+      background: var(--dc-surface); color: var(--dc-text-body);
+      font-family: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    }
+    .n6 .chip.is-active { background: var(--dc-primary); border-color: var(--dc-primary); color: #FFFFFF; font-weight: 700; }
+
+    /* カード（index.css:1758-1806） */
+    .n6 .card {
+      display: flex; flex-direction: column; gap: 10px; padding: 18px; box-sizing: border-box;
+      width: 424px; height: 190px;
+      background: var(--dc-surface); border: 1px solid var(--dc-border);
+      border-radius: var(--dc-radius-lg); box-shadow: var(--dc-shadow-card); cursor: pointer;
+    }
+    .n6 .card-badge {
+      display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 9999px;
+      font-size: 11.5px; font-weight: 700;
+    }
+    /* 出どころごとの色（NoteCard.tsx:45-50 の ORIGIN_STYLE） */
+    .n6 .b-material, .n6 .b-coaching { background: var(--dc-soft-100); color: #B80A29; }
+    .n6 .b-ai   { background: #FDF2F4; color: #D14D6C; }
+    .n6 .b-self { background: #F7F3ED; color: var(--dc-text-muted); }
+    .n6 .card-title { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.5; color: var(--dc-text); }
+    .n6 .card-excerpt {
+      margin: 0; font-size: 12.5px; line-height: 1.7; color: var(--dc-text-muted);
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .n6 .card-foot {
+      display: flex; align-items: center; gap: 10px; margin-top: auto;
+      padding-top: 8px; border-top: 1px solid var(--dc-border);
+    }
+    /* 入っているフォルダ。押すと移動先メニュー（→ NotesListMenus.dc.html） */
+    .n6 .card-folder {
+      display: inline-flex; align-items: center; gap: 5px; min-width: 0;
+      border: 0; padding: 0; background: transparent; cursor: pointer;
+      font-family: inherit; font-size: 11.5px; color: var(--dc-text-subtle);
+    }
+    /* 未整理はブランド色（「置き場所を決めていない」が一覧で見えるように） */
+    .n6 .card-folder.is-inbox { color: var(--dc-primary); }
+    .n6 .card-date { margin-left: auto; flex-shrink: 0; font-size: 11.5px; color: var(--dc-text-subtle); }
+    /* ★。favorite のときだけ塗る */
+    .n6 .card-star {
+      width: 26px; height: 26px; margin-right: -4px; padding: 0; border: 0; border-radius: 9999px;
+      background: transparent; display: inline-grid; place-items: center; cursor: pointer;
+      color: var(--dc-text-subtle);
+    }
+    .n6 .card-star.is-on { color: var(--dc-primary); }
+
+    /* ページ送り（NotesPagination.tsx） */
+    .n6 .pager-btn {
+      width: 36px; height: 36px; border-radius: 9999px; border: 1px solid var(--dc-border-strong);
+      background: var(--dc-surface); color: var(--dc-text-muted);
+      display: inline-grid; place-items: center; cursor: pointer;
+    }
+    .n6 .pager-num {
+      width: 36px; height: 36px; border-radius: 9999px; border: 0; background: transparent;
+      color: var(--dc-text-body); font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+      display: inline-grid; place-items: center; cursor: pointer;
+    }
+    .n6 .pager-num.is-current { background: var(--dc-primary); color: #FFFFFF; }
+  </style>
+</helmet>
+
+<div class="n6"
+     data-dc-id="STU-06"
+     data-dc-remote="マイノート 一覧 現行実装.dc.html"
+     data-dc-route="/notes"
+     data-dc-src="frontend/src/components/notes/MyNotesPage.tsx#L457-L641"
+     style="position: relative; display: flex; width: 1440px; min-height: 1240px; background: var(--dc-bg); color: var(--dc-text); font-size: 14px;">
+
+  <!-- ───────── サイドバー：閉じた72pxレール（shared/AppHeader.tsx）─────────
+       Main.dc.html と同じもの。この画面では「マイノート」がアクティブ。 -->
+  <div style="width: 72px; flex: none; background: #FDF7F3; border-right: 1px solid #E2DBD0; box-shadow: 3px 0 10px -4px rgba(60,48,32,.18); padding: 16px 0; display: flex; flex-direction: column; align-items: center; gap: 14px;">
+    <button type="button" class="rail-item" style="border-radius: 10px;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M15 3v18"></path><path d="m10 15-3-3 3-3"></path>
+      </svg>
+    </button>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+      <!-- トップ -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+          <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        </svg>
+      </div>
+      <!-- 学習する -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 7v14"></path>
+          <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path>
+        </svg>
+      </div>
+      <!-- AIコーチ -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path>
+        </svg>
+      </div>
+      <!-- コーチング -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path>
+          <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
+        </svg>
+      </div>
+      <!-- マイノート（この画面。アクティブは赤ベタ・アイコンは #FDF7F3） -->
+      <div class="rail-item rail-item-active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDF7F3" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"></path>
+          <path d="M2 6h4"></path><path d="M2 10h4"></path><path d="M2 14h4"></path><path d="M2 18h4"></path>
+          <path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"></path>
+        </svg>
+      </div>
+      <!-- 記録 -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 2v4"></path><path d="M16 2v4"></path>
+          <rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M3 10h18"></path>
+        </svg>
+      </div>
+
+      <div style="width: 32px; height: 1px; background: #EFE9E0; margin: 14px 0;"></div>
+
+      <!-- 管理（管理者のみ） -->
+      <div class="rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>
+      </div>
+    </div>
+
+    <div style="flex: 1;"></div>
+
+    <button type="button" style="width: 36px; height: 36px; border: 0; border-radius: 9999px; background: #F2E8E1; display: grid; place-items: center; font-family: inherit; font-size: 11px; font-weight: 700; color: #9E9698; cursor: pointer;">モッ</button>
+  </div>
+
+  <!-- ───────── 本文（.notes-content）─────────
+       フッターは main の外にある（MyNotesPage.tsx:644）。中に入れると main の
+       左右 28px パディングのぶん、中央寄せの位置が右にずれる。 -->
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+  <!-- ───────── 本文の中身（.notes-main / padding: 24px 28px 28px, gap: 20）─────────
+       🔒 gap: 20 は main の inline style（MyNotesPage.tsx:375）。CSS 側ではなく
+          こちらが節どうしの間隔を決めているので、CSS を読んでも見つからない。 -->
+  <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; padding: 24px 28px 28px; box-sizing: border-box;">
+
+    <!-- ───────── ① 見出し・検索・新規作成（MyNotesPage.tsx:460-535）─────────
+         🔒 検索欄は幅いっぱいにしない（flex: 0 1 300px）。実装のコメントどおり、
+            左端の入力から右端のボタンまで視線が横断してしまうため。 -->
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="flex: 1 1 200px; min-width: 0;">
+        <!-- 🔒 パンくずは置かない。見出しは画面名に固定（MyNotesPage.tsx:462-464）。 -->
+        <h1 style="margin: 0; font-size: 22px; line-height: 1.35; font-weight: 700; letter-spacing: -.01em; color: var(--dc-text);">マイノート</h1>
+      </div>
+
+      <div style="position: relative; flex: 0 1 300px; min-width: 160px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 13px; top: 50%; transform: translateY(-50%);">
+          <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path>
+        </svg>
+        <div style="width: 100%; height: 42px; box-sizing: border-box; padding: 0 14px 0 38px; display: flex; align-items: center; border: 1px solid var(--dc-border-strong); border-radius: var(--dc-radius-md); background: var(--dc-surface); font-size: 13px; color: var(--dc-text-subtle);">タイトルや内容で検索</div>
+      </div>
+
+      <button type="button" style="display: inline-flex; align-items: center; gap: 8px; flex: none; height: 42px; padding: 0 20px; border: 0; border-radius: var(--dc-radius-md); background: var(--dc-primary); color: #FFFFFF; font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+        新しいノート
+      </button>
+    </div>
+
+    <!-- ───────── ② フォルダのバー（NoteFolderBar.tsx:246-275）─────────
+         以前の左フォルダ列（248px）の置き換え。2026-09-08 に列を廃止してここに一本化した。
+         「フォルダを開く」を押すと body 直下にパネルが出る → NotesFolderPanel.dc.html -->
+    <div style="display: flex; align-items: center; gap: 8px; padding: 8px 0 12px;">
+      <button type="button" class="fbar-item is-active">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3a2 2 0 0 1-2-2V2"></path><path d="M9 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h7l4 4v10a2 2 0 0 1-2 2Z"></path><path d="M3 7.6v12.8A1.6 1.6 0 0 0 4.6 22h9.8"></path></svg>
+        すべてのノート <span class="fbar-count">100</span>
+      </button>
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#D60934" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>
+        重要 <span class="fbar-count">18</span>
+      </button>
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        未整理 <span class="fbar-count">40</span>
+      </button>
+      <button type="button" class="fbar-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+        <!-- フォルダ名は最大40字。トリガーが伸びきらないよう切る（.notes-folder-bar__label） -->
+        <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 240px;">フォルダを開く</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </div>
+
+    <!-- ───────── ③ 種類チップ ＋ 並び替え（MyNotesPage.tsx:549-597）─────────
+         フォルダ（自分で決める入れ物）とは別の軸。だから小見出し「種類」を付けている。
+         並び替えを押すと下にメニューが出る → NotesListMenus.dc.html -->
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="font-size: 11.5px; font-weight: 700; color: var(--dc-text-subtle); margin-right: 2px;">種類</span>
+      <button type="button" class="chip is-active">すべて</button>
+      <button type="button" class="chip">自分のノート</button>
+      <button type="button" class="chip">教材</button>
+      <button type="button" class="chip">AIコーチ</button>
+      <button type="button" class="chip">コーチング</button>
+
+      <button type="button" style="display: inline-flex; align-items: center; gap: 6px; margin-left: auto; height: 30px; padding: 0 8px; border: 0; border-radius: 9999px; background: transparent; font-family: inherit; font-size: 12px; font-weight: 700; color: var(--dc-text-muted); cursor: pointer;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path d="m3 8 4-4 4 4"></path><path d="M7 4v16"></path></svg>
+        更新が新しい順
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </div>
+
+    <!-- ───────── ④ カードのグリッド（NoteGrid.tsx / .notes-grid）─────────
+         🔒 424×190・gap 20・3列。1440幅での実測値（_capture/STU-06/1440.styles.json）。
+         実装は1ページ 24枚（3列×8行、PAGE_SIZE=24）。ここは canvas 上で手で直せる分量に
+         間引いて先頭 12枚だけ写している。カードの状態違い（hover・★ON・サムネ付き）は
+         NotesCard.dc.html にまとめてある。 -->
+    <div style="display: grid; grid-template-columns: repeat(3, 424px); gap: 20px;">
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-coaching">コーチング</span>
+          <button type="button" class="card-star is-on"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">8/19 コーチング記録</h3>
+            <p class="card-excerpt">ターゲットの課題に寄り添ったメッセージ設計が重要。特に「誰に」「どんな価値を」「どう届けるか」の3点を明確にする。</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>コーチング記録</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/10</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-material">教材</span>
+          <button type="button" class="card-star is-on"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">バナー制作の学び</h3>
+            <p class="card-excerpt">1. バナーデザインの目的を明確にする</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>デザイン基礎</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/10</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-material">教材</span>
+          <button type="button" class="card-star"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">配色ルールまとめ</h3>
+            <p class="card-excerpt">配色は70:25:5</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>デザイン基礎</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/09</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-material">教材</span>
+          <button type="button" class="card-star is-on"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">バナー改善の3ポイント</h3>
+            <p class="card-excerpt">視線の流れ（Zの法則）を意識して、伝えたい情報を優先順位で整理する。余白の使い方とコントラストを意識。</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>デザイン基礎</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/09</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-material">教材</span>
+          <button type="button" class="card-star"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">LPファーストビュー設計</h3>
+            <p class="card-excerpt">最初の3秒で「誰の」「どんな悩みを」「どう解決できるか」を伝える。視線を集めるキャッチコピーとビジュアルが鍵。</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>案件・ポートフォリオ</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/08</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-ai">AIコーチ</span>
+          <button type="button" class="card-star is-on"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">AI回答：応募文の改善ポイント</h3>
+            <p class="card-excerpt">強みの根拠が具体的で良いです。成果を数字で示すと、説得力がさらに高まります。まずは「結論→根拠→再現性」の順で整理しまし</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>案件・ポートフォリオ</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/08</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-self">自分のノート</span>
+          <button type="button" class="card-star"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">ポートフォリオ改善案</h3>
+            <p class="card-excerpt">次のコーチングまでに、作品の並び順を「見せたい順」に直す。制作意図を1作品につき2行だけ添える。</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>案件・ポートフォリオ</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/07</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-coaching">コーチング</span>
+          <button type="button" class="card-star"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">キャリアの方向性メモ</h3>
+            <p class="card-excerpt">やりたいこと×得意なこと×価値を届けたいことの重なる領域を軸に考える。小さく試して検証していくことが大切。</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>コーチング記録</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/07</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-material">教材</span>
+          <button type="button" class="card-star"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">余白の使い方Tips</h3>
+            <p class="card-excerpt">要素間より外側の余白を広く。グループの関係は余白の差で伝わる。詰まって見えたらまず外側を広げる。</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>デザイン基礎</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/07</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-ai">AIコーチ</span>
+          <button type="button" class="card-star is-on"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">AI回答：フォント選びの基準</h3>
+            <p class="card-excerpt">まず可読性、次に世界観。見出しと本文で役割を分け、使うフォントは2種類までに絞ると整います。</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <!-- 未整理はブランド色。まだ置き場所を決めていないことが一覧で見える -->
+          <button type="button" class="card-folder is-inbox">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+            <span>未整理</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/06</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-material">教材</span>
+          <button type="button" class="card-star"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">デザイン4大原則の要点</h3>
+            <p class="card-excerpt">近接・整列・反復・コントラスト。迷ったら整列から見直すと、崩れの原因が見つかりやすい。</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"></path></svg>
+            <span>デザイン基礎</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/06</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div style="display: flex; align-items: center; justify-content: space-between; min-height: 22px;">
+          <span class="card-badge b-self">自分のノート</span>
+          <button type="button" class="card-star"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg></button>
+        </div>
+        <div style="display: flex; gap: 12px; min-width: 0;">
+          <div style="display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1;">
+            <h3 class="card-title">参考バナーの共通点メモ</h3>
+            <p class="card-excerpt">目を引くバナーは色数が3色以内。メインコピーが全体の1/3以上の面積を占めている。</p>
+          </div>
+        </div>
+        <div class="card-foot">
+          <button type="button" class="card-folder is-inbox">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"></path><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+            <span>未整理</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+          </button>
+          <span class="card-date num">09/05</span>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- ───────── ⑤ ページ送り（NotesPagination.tsx）─────────
+         中央に前後の丸と番号、右端に件数。1ページ 24件（PAGE_SIZE = 24）。
+         件数は絶対配置で右端に置く（.notes-pager-count）。 -->
+    <div style="position: relative; display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 28px;">
+      <button type="button" class="pager-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+      </button>
+      <button type="button" class="pager-num is-current">1</button>
+      <button type="button" class="pager-num">2</button>
+      <button type="button" class="pager-num">3</button>
+      <button type="button" class="pager-num">4</button>
+      <button type="button" class="pager-num">5</button>
+      <button type="button" class="pager-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+      </button>
+      <span class="num" style="position: absolute; right: 0; font-size: 12px; color: var(--dc-text-muted);">1–24 / 100件</span>
+    </div>
+
+  </div>
+
+    <!-- ───────── ⑥ フッター（shared/AppFooter.tsx。padding: 32px 0 24px）───────── -->
+    <div style="text-align: center; font-size: 12px; color: var(--dc-text-subtle); padding: 32px 0 24px;">2026 © WEBCOACH</div>
+  </div>
+
+  <!-- 右下の「AIコーチに相談」（全画面共通のFAB）。
+       🔒 実装は position: fixed なので、実際の上下位置は「ページのどこ」ではなく
+          「ビューポートの下から96px」で決まる。ここでは最終行のカードの高さに
+          合わせて置いてあるだけで、この y に意味は無い。
+       実装ではこの隣に「DEV ノート 100件」パネルも出るが、あれは MOCKS_ENABLED
+       のときだけの開発用（components/dev/NotesDevPanel.tsx）なので写していない。 -->
+  <div style="position: absolute; right: 28px; bottom: 212px; display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 22px; border-radius: 9999px; background: var(--dc-primary); color: #FFFFFF; font-size: 13.5px; font-weight: 700; box-shadow: 0 8px 24px -8px rgba(60,48,32,.14);">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path></svg>
+    AIコーチに相談
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

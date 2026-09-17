@@ -69,6 +69,72 @@ const SCREENS = [
       'button:has-text("新しいノート")',
     ],
   },
+
+  /* ───────── /notes の状態違い（design-canvas/notes/ のアートボード用） ─────────
+   * 「バナー制作の学び」は text(##/-/==) + clip + answer を1件に持つ唯一のシード
+   * （mocks/noteMigration.ts:421-467）。ブロック4種の実測はここからしか取れない。
+   * 「ポートフォリオ改善案」は source が null（同 500-518）なので、引用モーダルが
+   * 教材ペインではなく「最近の教材ピッカー」で開く。
+   *
+   * 🔴 空状態は「検索して0件」だけを撮る。他の4種（総数0・フォルダ空・未整理空・重要空）は
+   *    データを壊さないと作れないが、器は NoteGrid.tsx:87-157 の共通シェルで、
+   *    違うのはアイコンと文言だけ。実測した器に、ソースの文言を載せて起こす。
+   *    localStorage['webcoach-lesson-notes'] は永続なので、DEV パネルで空にすると
+   *    以後のキャプチャが全部空になる。踏まないこと。
+   */
+  { id: 'STU-06-note-rich', route: '/notes', settle: 2500,
+    clicks: ['article[aria-label="バナー制作の学びを開く"]'] },
+
+  // 一覧：フォルダのパネル（AnchoredMenu role="dialog"）
+  { id: 'STU-06-folderpanel', route: '/notes', settle: 2500,
+    clicks: ['button[aria-haspopup="dialog"]'] },
+  // 同：行にホバーして鉛筆・ゴミ箱を出した状態（.notes-folder-row__more は opacity:0）
+  { id: 'STU-06-folder-hover', route: '/notes', settle: 2500,
+    clicks: ['button[aria-haspopup="dialog"]', { hover: 'button[aria-label="デザイン基礎の名前を変更"]' }] },
+  // 同：新しいフォルダの名前を打つ欄
+  { id: 'STU-06-folder-new', route: '/notes', settle: 2500,
+    clicks: ['button[aria-haspopup="dialog"]', 'button:has-text("新しいフォルダを作成")'] },
+  // 同：名前を変更する欄
+  { id: 'STU-06-folder-rename', route: '/notes', settle: 2500,
+    clicks: ['button[aria-haspopup="dialog"]', 'button[aria-label="デザイン基礎の名前を変更"]'] },
+  // フォルダを開いた一覧（バーの is-active とトリガーのラベル・件数）
+  { id: 'STU-06-folder', route: '/notes?folder=folder-seed-work', settle: 2500 },
+
+  // 一覧：並び替えと、カードの「移動先」
+  { id: 'STU-06-sort', route: '/notes', settle: 2500, clicks: ['button.notes-sort-trigger'] },
+  { id: 'STU-06-move', route: '/notes', settle: 2500, clicks: ['button[title="フォルダを変える"]'] },
+  // 一覧：カードにホバーした状態（translateY(-2px) と濃い影）
+  { id: 'STU-06-card-hover', route: '/notes', settle: 2500,
+    clicks: [{ hover: 'article[aria-label="バナー制作の学びを開く"]' }] },
+  // 一覧：検索して0件（空状態のうち、データを壊さずに撮れる唯一のもの）
+  { id: 'STU-06-empty-search', route: '/notes', settle: 2500,
+    clicks: [{ fill: 'input[aria-label="ノートを検索"]', value: 'zzzzz該当なし' }] },
+
+  // ノート面：各メニュー（先にノートを開く）
+  { id: 'STU-06-pill', route: '/notes', settle: 2500,
+    clicks: ['article[aria-label="バナー制作の学びを開く"]', 'button[aria-label="保存先のフォルダを変える"]'] },
+  { id: 'STU-06-more', route: '/notes', settle: 2500,
+    clicks: ['article[aria-label="バナー制作の学びを開く"]', 'button:has-text("その他")'] },
+  { id: 'STU-06-grip', route: '/notes', settle: 2500,
+    clicks: ['article[aria-label="バナー制作の学びを開く"]', 'button[aria-label="このブロックを動かす"]'] },
+  { id: 'STU-06-plus', route: '/notes', settle: 2500,
+    clicks: ['article[aria-label="バナー制作の学びを開く"]', 'button[aria-label="末尾に追加"]'] },
+  // ノート面：本文ブロックの編集中（textarea＋保存する／取り消す＋記法ヒント）
+  { id: 'STU-06-blockedit', route: '/notes', settle: 2500,
+    clicks: ['article[aria-label="バナー制作の学びを開く"]', '.notes-block [role="button"]'] },
+  // ノート面：末尾の書き足し欄に入力あり（「保存する」と Ctrl+Enter の注記が出る）
+  { id: 'STU-06-tail', route: '/notes', settle: 2500,
+    clicks: [
+      'article[aria-label="バナー制作の学びを開く"]',
+      { fill: 'textarea[placeholder="続きを書く…"]', value: '書きかけの1行' },
+    ] },
+
+  // 引用モーダル：教材ペイン（source を持つノートから開く）
+  { id: 'STU-06-quote', route: '/notes', settle: 4000,
+    clicks: ['article[aria-label="バナー制作の学びを開く"]', 'button:has-text("教材から引用")'] },
+  // 引用モーダル：最近の教材ピッカー（source が null のノートから開く）
+  { id: 'STU-06-quote-pick', route: '/notes', settle: 4000,
+    clicks: ['article[aria-label="ポートフォリオ改善案を開く"]', 'button:has-text("教材から引用")'] },
   { id: 'STU-07', route: '/coaching', widths: [1440, 375], settle: 2000 },
   // コーチング記録（公開済みセッションを開いた状態）。
   // 1002 は mocks/coachingHandlers.ts の seedAll で「第3回コーチング・published・反映済み」。
@@ -115,10 +181,18 @@ const STYLE_PROPS = [
  * ページ内で走らせる採取スクリプト。
  * 「文字を直接持つ要素」と「箱として見えている要素」だけに絞る。
  * それ以外（レイアウト用の透明な div）はアートボードを写すときに要らない。
+ *
+ * 🔴 起点は #root ではなく body。
+ *    メニューとモーダル（components/notes/AnchoredMenu.tsx:166、NoteTargetPicker、
+ *    引用モーダル）は createPortal で body 直下に出るので、#root から辿ると
+ *    1件も採れない。実際、フォルダパネルを開いて撮ったキャプチャが
+ *    「開く前と同じ294要素」になり、パネルの寸法が丸ごと欠けていた。
+ *    スクリーンショットには写るので、絵だけ見ていると気づけない。
  */
 function collectStyles({ props, limit }) {
   const root = document.getElementById('root');
   if (!root) return { error: '#root not found' };
+  const scanRoot = document.body;
 
   const out = [];
   const transparent = new Set(['rgba(0, 0, 0, 0)', 'transparent']);
@@ -136,7 +210,7 @@ function collectStyles({ props, limit }) {
   function pathOf(el) {
     const parts = [];
     let cur = el;
-    while (cur && cur !== root && parts.length < 12) {
+    while (cur && cur !== scanRoot && parts.length < 12) {
       const parent = cur.parentElement;
       if (!parent) break;
       const same = Array.from(parent.children).filter((c) => c.tagName === cur.tagName);
@@ -147,8 +221,8 @@ function collectStyles({ props, limit }) {
     return parts.join(' > ');
   }
 
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
-  let node = root;
+  const walker = document.createTreeWalker(scanRoot, NodeFilter.SHOW_ELEMENT);
+  let node = scanRoot;
   while (node && out.length < limit) {
     const cs = getComputedStyle(node);
     if (cs.display !== 'none' && cs.visibility !== 'hidden') {
@@ -318,10 +392,43 @@ async function loadScreen(page, screen) {
 
   await page.waitForTimeout(screen.settle || 1200);
 
-  // 状態違い（サイドバー展開・ドロワーが開いた状態など）を撮るためのクリック。
-  // 押せなかったら黙って通り過ぎず、その場で落とす（撮れたことにするのがいちばん困る）。
-  // 出たり出なかったりするもの（学習セッションの記録ダイアログなど）は optional にする。
+  /*
+   * 状態違い（サイドバー展開・ドロワーが開いた状態など）を撮るための操作列。
+   * 押せなかったら黙って通り過ぎず、その場で落とす（撮れたことにするのがいちばん困る）。
+   * 出たり出なかったりするもの（学習セッションの記録ダイアログなど）は optional にする。
+   *
+   * 3 通りの書き方がある:
+   *   'セレクタ'                        … クリック（必須）
+   *   { selector, optional, force }     … クリック（条件つき）
+   *   { hover: 'セレクタ' }             … ホバーだけ。opacity:0 で隠れている操作
+   *                                       （ノートの ⠿ / フォルダ行の鉛筆）を出すため
+   *   { fill: 'セレクタ', value: '…' }  … 入力。検索で0件・末尾欄に入力あり、を作るため
+   */
   for (const step of screen.clicks || []) {
+    if (typeof step === 'object' && step.hover) {
+      const target = page.locator(step.hover).first();
+      try {
+        await target.waitFor({ state: 'visible', timeout: 5000 });
+      } catch {
+        throw new Error(`ホバー対象が出てこない: ${step.hover}`);
+      }
+      await target.hover();
+      await page.waitForTimeout(400);
+      continue;
+    }
+    if (typeof step === 'object' && step.fill !== undefined) {
+      const target = page.locator(step.fill).first();
+      try {
+        await target.waitFor({ state: 'visible', timeout: 5000 });
+      } catch {
+        throw new Error(`入力対象が出てこない: ${step.fill}`);
+      }
+      await target.fill(String(step.value ?? ''));
+      // 検索は 500ms のデバウンス（hooks/useNoteList.ts）。それを越えて待つ
+      await page.waitForTimeout(1200);
+      continue;
+    }
+
     const selector = typeof step === 'string' ? step : step.selector;
     const optional = typeof step === 'object' && step.optional;
     const target = page.locator(selector).first();
@@ -414,9 +521,16 @@ async function captureOne(context, screen, width) {
    * （実際、マイページの本文が x=72 ではなく x=66 で記録され、アートボードのほうが
    *   正しいのに 8px ズレていると誤検知した）。
    */
+  // #root に加えて、body 直下のポータル（メニュー・モーダル）も残す。
+  // styles.json と同じ理由で、これが無いと開いた状態の構造を後から追えない。
   const html = await page.evaluate(() => {
     const r = document.getElementById('root');
-    return r ? r.outerHTML : '<!-- #root not found -->';
+    const parts = [r ? r.outerHTML : '<!-- #root not found -->'];
+    for (const el of Array.from(document.body.children)) {
+      if (el === r || el.tagName === 'SCRIPT' || el.tagName === 'STYLE') continue;
+      parts.push(`<!-- portal: body > ${el.tagName.toLowerCase()} -->\n${el.outerHTML}`);
+    }
+    return parts.join('\n\n');
   });
   fs.writeFileSync(`${stem}.html`, html, 'utf8');
 
