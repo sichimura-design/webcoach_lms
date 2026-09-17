@@ -55,6 +55,38 @@ def _get_dify_api_key(secret_key: str) -> Optional[str]:
     return _load_dify_credentials().get(secret_key)
 
 
+@lru_cache(maxsize=64)
+def _get_dify_parameters(api_key: str) -> Dict[str, Any]:
+    """DifyアプリのGET /parameters（suggested_questions・必須入力フォーム定義等）を取得
+
+    アプリ側の設定を変えても反映にはプロセス再起動が必要（_load_dify_credentialsと同様の
+    プロセス内キャッシュ）。
+    """
+    try:
+        response = requests.get(
+            f"{DIFY_API_BASE_URL}/parameters",
+            headers={"Authorization": f"Bearer {api_key}"},
+            params={"user": "webcoach-system"},
+            timeout=10,
+        )
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        logger.warning(f"Failed to fetch Dify /parameters: {e}")
+        return {}
+
+
+def _render_suggested_questions_html(questions: List[str]) -> str:
+    """suggested_questionsを、フロントエンドが解釈できる<button data-message>形式で描画する"""
+    buttons = "\n".join(
+        f'  <button data-message="{q}">{q}</button>' for q in questions
+    )
+    return (
+        "下記から選んでください👇\n\n"
+        f"<div>\n{buttons}\n</div>"
+    )
+
+
 # ツール入力スキーマ定義
 class GetUserCoursesInput(BaseModel):
     """ユーザーコース取得ツールの入力"""
@@ -118,6 +150,17 @@ class AskAiApplicationInput(BaseModel):
             "**trueにすべき場合**: ユーザーが「新しく」「最初から」「別の条件で」「今の検索とは"
             "別に」のように、進行中のやり取り（すでに答えた条件）を明示的に破棄して一から"
             "やり直したいと述べた場合のみ。"
+        ),
+    )
+    extra_inputs: Optional[Dict[str, str]] = Field(
+        None,
+        description=(
+            "このツールの説明文で追加の入力が必要と指示されている場合にのみ使う任意項目。"
+            "指示された変数名をキーにして、ユーザーから聞き取った値を設定すること。"
+            "まだユーザーから聞き取れていない場合は、このツールを呼ばずに先にユーザーへ質問する"
+            "こと。値が分かった一度きりではなく、それ以降の同じ会話の全ターンで毎回同じ値を"
+            "設定し続けること（省略すると再びエラーになる）。追加入力が不要なツールでは常に"
+            "省略してよい。"
         ),
     )
 
@@ -270,7 +313,14 @@ def clear_sticky_dify_app(userid: int) -> None:
     _dify_sticky_app_cache.pop(userid, None)
 
 
-def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int, reset: bool = False) -> str:
+def _call_dify_chat(
+    query: str,
+    userid: int,
+    api_key: str,
+    app_id: int,
+    reset: bool = False,
+    inputs: Optional[Dict[str, str]] = None,
+) -> str:
     """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリの会話はプロセス内で継続する）
 
     reset=Trueの場合、キャッシュ済みのconversation_idを使わず新規の会話として送信する
@@ -286,7 +336,7 @@ def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int, reset: b
                 "Content-Type": "application/json",
             },
             json={
-                "inputs": {},
+                "inputs": inputs or {},
                 "query": query,
                 "response_mode": "blocking",
                 "conversation_id": conversation_id,
@@ -307,7 +357,19 @@ def _call_dify_chat(query: str, userid: int, api_key: str, app_id: int, reset: b
         if new_conversation_id:
             _dify_conversation_cache[(userid, app_id)] = new_conversation_id
 
-        return data.get("answer", "")
+        answer = data.get("answer", "")
+        if not answer.strip():
+            # Difyアプリによっては、会話の冒頭で用意された選択肢(suggested_questions)と
+            # 厳密に一致する文言でないと、ワークフロー内の分岐が空の結果に落ちて何も
+            # 返さないことがある（例: 「応募文を作ってほしい」という自然文では反応しないが
+            # 「応募文作成」という完全一致の文言なら正しく応答する）。空応答をそのまま
+            # ユーザーに見せず、選べる選択肢がある場合はボタンとして提示する。
+            suggested_questions = _get_dify_parameters(api_key).get("suggested_questions") or []
+            if suggested_questions:
+                return _render_suggested_questions_html(suggested_questions)
+            return "回答を生成できませんでした。別の言い方で試すか、少し時間をおいてから聞いてみてください。"
+
+        return answer
 
     except requests.exceptions.Timeout as e:
         logger.error(f"Dify API call timed out: {e}")
@@ -348,14 +410,44 @@ def create_ai_application_tools(db, raw_user_message: str, userid: int = None) -
             continue
 
         def make_func(api_key: str = api_key, app_id: int = app.id, message: str = raw_user_message):
-            def _call(query: str, userid: int, start_new_conversation: bool = False) -> str:
-                return _call_dify_chat(message, userid, api_key, app_id, reset=start_new_conversation)
+            def _call(
+                query: str,
+                userid: int,
+                start_new_conversation: bool = False,
+                extra_inputs: Optional[Dict[str, str]] = None,
+            ) -> str:
+                return _call_dify_chat(
+                    message, userid, api_key, app_id, reset=start_new_conversation, inputs=extra_inputs
+                )
             return _call
+
+        # このアプリがDify側で必須入力変数（例: 求人情報のURL）を定義している場合、
+        # ツールの説明文にその旨を明記し、LLMがextra_inputsへ設定すべき値を
+        # ユーザーから聞き取ってから呼び出すよう促す。
+        required_vars = [
+            field["variable"]
+            for form_item in (_get_dify_parameters(api_key).get("user_input_form") or [])
+            for field_type, field in form_item.items()
+            if field.get("required")
+        ]
+        required_inputs_text = ""
+        if required_vars:
+            var_list = "、".join(required_vars)
+            required_inputs_text = (
+                f" **重要: このアプリを呼び出す前に、次の情報をユーザーから聞き取り、"
+                f"extra_inputs引数にキー名をそのまま使って設定してください: {var_list}**"
+                f"（まだ聞き取れていない場合はツールを呼ばずに先にユーザーへ質問すること。"
+                f"一度聞き取った後は、同じ会話の以降の全呼び出しでも毎回extra_inputsに"
+                f"設定し続けること）"
+            )
 
         tools.append(
             StructuredTool.from_function(
                 name=f"ask_ai_application_{app.id}",
-                description=f"「{app.name}」（{app.category}）に問い合わせます。{app.description}",
+                description=(
+                    f"「{app.name}」（{app.category}）に問い合わせます。{app.description}"
+                    f"{required_inputs_text}"
+                ),
                 func=make_func(),
                 args_schema=AskAiApplicationInput
             )
