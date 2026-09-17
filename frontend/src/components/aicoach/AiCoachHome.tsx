@@ -412,11 +412,23 @@ export function AiCoachHome({
           </span>
 
           <span style={{ display: 'block', padding: '12px 16px 14px' }}>
+            {/* 🔴 カードにはアプリ名（label）をそのまま出す。shortLabel（「専門用語」など）は
+                   提案チップやモードヘッダーのような幅の無い場所だけのもので、
+                   一覧でそれを出すと実際のアプリ名と違う名前で覚えることになる。
+                   長い名前は truncate で切らず2行まで許す。 */}
             <span
-              className="truncate"
-              style={{ display: 'block', fontSize: 14.5, fontWeight: 700, color: 'var(--dc-text)' }}
+              style={{
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+                overflow: 'hidden',
+                fontSize: 14.5,
+                fontWeight: 700,
+                lineHeight: 1.35,
+                color: 'var(--dc-text)',
+              }}
             >
-              {meta.shortLabel}
+              {meta.label}
             </span>
             <span
               style={{

@@ -147,17 +147,31 @@ export function NextGoalsCard({
   ).length;
   /** 文言が空のまま残っている行。保存すると黙って消えるので先に止める */
   const hasEmpty = draft.some((g) => !g.removed && g.description.trim() === '');
+  /*
+   * 並べ替えたか。
+   * 🔴 件数（削除・追加・修正）には現れない変更なので、別に見る。これが無いと
+   *    ↑↓ で動かしただけのときに「変更を保存」が押せず、並べ替えを保存できない。
+   * 保存済みの行（isNew でないもの）の no の並びを、保存されている順と比べる。
+   * 削除予定の行も位置を保ったまま draft に残っているので、そのまま突き合わせられる。
+   */
+  const reordered = useMemo(() => {
+    const saved = goals.map((g) => g.no);
+    const now = draft.filter((g) => !g.isNew).map((g) => g.no);
+    return now.length === saved.length && now.some((no, i) => no !== saved[i]);
+  }, [goals, draft]);
   const changeCount = pendingRemoval.length + addedCount + editedCount;
 
   const changeSummary = [
     pendingRemoval.length > 0 && `削除${pendingRemoval.length}件`,
     addedCount > 0 && `追加${addedCount}件`,
     editedCount > 0 && `修正${editedCount}件`,
+    reordered && '並べ替え',
   ]
     .filter(Boolean)
     .join('・');
 
-  const canSave = changeCount > 0 && !hasEmpty && !saving;
+  const hasChange = changeCount > 0 || reordered;
+  const canSave = hasChange && !hasEmpty && !saving;
 
   /** 削除を含むときだけ確認を挟む。文言の直しだけなら押した通りに保存する */
   const requestCommit = () => {
@@ -170,7 +184,7 @@ export function NextGoalsCard({
   };
 
   const requestCancel = () => {
-    if (changeCount > 0) {
+    if (hasChange) {
       setConfirming('discard');
       return;
     }
@@ -425,8 +439,8 @@ export function NextGoalsCard({
             >
               {hasEmpty
                 ? '未入力の行があります。文言を入れるか、× で削除予定にしてください。'
-                : changeCount === 0
-                  ? 'まだ変更はありません。書き換え・追加・削除は保存するまで反映されません。'
+                : !hasChange
+                  ? 'まだ変更はありません。書き換え・追加・削除・並べ替えは保存するまで反映されません。'
                   : `${changeSummary}。「変更を保存」を押すまで反映されません。`}
             </p>
             <button
