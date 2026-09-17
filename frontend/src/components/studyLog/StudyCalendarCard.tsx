@@ -16,7 +16,7 @@ import {
  * 旧 StreakCalendarCard の置き換え。あちらは「学習した日かどうか」の二値を炎マークで
  * 出すだけで、3か月前までしか遡れなかった。ここでは
  *   ・学習時間の多寡を濃淡で出す（どれだけやったか）
- *   ・コーチングを受けた日に別のマークを重ねる（何をやったか）
+ *   ・コーチングを受けた日は金のリングで囲い、ヘッドホンを重ねる（何をやったか）
  *   ・日をクリックすると右（狭い画面では下）にその日の詳細が開く
  *   ・受講開始月まで遡れる
  * を足している。
@@ -26,11 +26,13 @@ import {
  *    「学習した日」（STUDY_DAY_MIN_MINUTES = 10分）とは別の軸。
  *    10〜29分の日は段に入らないが学習した日ではあるので、濃淡ではなく
  *    aria-label の文言のほうでストリークと同じ判定を持つ（minutes >= 10）。
- *    塗りの上では 1〜29分をまとめて「記録あり」（淡い地＋中空の丸）として出す。
+ *    塗りの上では 1〜29分をまとめて「記録あり」（淡い地）として出す。
  *
  * 🔴 色だけで情報を伝えない（design-token-spec.md）。
- *    濃淡に加えて、段階ドット（1〜3個）・日付の数字・aria-label の文言・
- *    凡例の分数表記の4つで同じことを伝えている。どれか1つでも読めれば分かる。
+ *    濃淡に加えて、凡例の分数表記と aria-label の文言が同じことを伝えている。
+ *    かつては升目の中にも段階ドット（赤い四角1〜3個）を重ねていたが、
+ *    凡例に説明が無く「この点は何か」が読めないという指摘で撤去した。
+ *    升目の中に増やすのではなく、凡例と読み上げのほうを正確に保つこと。
  *
  * 🔴 赤は「学習時間の多寡」専用にする。状態（今日・選択中）は赤の外へ出す。
  *    選択中を赤枠にしていた頃は、濃淡の赤と同系色で「濃い日」なのか
@@ -284,20 +286,12 @@ export function StudyCalendarCard({
     </button>
   );
 
-  /** 段階を示すドット。色が読めなくても数で多寡が分かる */
-  const dots = (level: 0 | 1 | 2 | 3, onDark: boolean) => (
-    <span style={{ display: 'flex', gap: 2, height: 6, alignItems: 'center' }} aria-hidden="true">
-      {Array.from({ length: level }, (_, i) => (
-        <span
-          key={i}
-          style={{
-            width: 4, height: 4, borderRadius: 1,
-            background: onDark ? '#fff' : 'var(--dc-primary)',
-          }}
-        />
-      ))}
-    </span>
-  );
+  /*
+   * 🔴 段階を示す赤いドット（1〜3個）と、1〜29分の日の中空の丸は撤去した。
+   *    濃淡と同じことを升目の中でもう一度言っていただけで、凡例に説明も無く、
+   *    「この点は何か」が読めなかった（実際にそう指摘された）。
+   *    段の情報は 濃淡・凡例の分数表記・aria-label の3つが持つ。戻さないこと。
+   */
 
   return (
     <section
@@ -419,8 +413,19 @@ export function StudyCalendarCard({
                       : c.isFuture
                         ? '1px dashed var(--dc-idle-dash)'
                         : `1px solid ${c.recorded ? 'var(--dc-border)' : heat.border}`,
-                    // 内側に地の色の細い枠を挟んで、濃い段（L2/L3）でも枠が沈まないようにする
-                    boxShadow: selected ? 'inset 0 0 0 2px var(--dc-surface)' : undefined,
+                    /*
+                     * 内側に地の色の細い枠を挟んで、濃い段（L2/L3）でも枠が沈まないようにする。
+                     * 🔴 コーチングを受けた日は外側に金のリングを重ねる。border では出さないこと。
+                     *    border は「選択中」が 2px の黒で使っていて、コーチングの日を選んだ
+                     *    瞬間に金が消える（＝選ぶと手がかりが1つ減る）。外側のリングなら
+                     *    選択中の黒枠と同時に出せる。
+                     */
+                    boxShadow: [
+                      selected ? 'inset 0 0 0 2px var(--dc-surface)' : null,
+                      c.coaching ? '0 0 0 2px var(--dc-gold)' : null,
+                    ]
+                      .filter(Boolean)
+                      .join(', ') || undefined,
                   }}
                 >
                   <span
@@ -440,19 +445,6 @@ export function StudyCalendarCard({
                   >
                     {c.day}
                   </span>
-
-                  {/* 高さは常に確保して升目を揃える（記号の有無で行がずれない） */}
-                  {c.level > 0 ? (
-                    dots(c.level, onDark)
-                  ) : c.recorded ? (
-                    // 1〜29分。記録はあるが最初の段には満たない。塗りではなく中空の丸で区別する
-                    <span
-                      aria-hidden="true"
-                      style={{ width: 5, height: 5, borderRadius: 9999, border: '1px solid var(--dc-text-subtle)' }}
-                    />
-                  ) : (
-                    <span style={{ height: 6 }} />
-                  )}
 
                   {c.coaching && (
                     /*
@@ -500,9 +492,13 @@ export function StudyCalendarCard({
       >
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <span>学習時間</span>
-          {/* 段には入らないが記録はある日（1〜29分）。少ない順に並べたいので scale の先頭に置く */}
+          {/* 段には入らないが記録はある日（1〜29分）。少ない順に並べたいので scale の先頭に置く。
+              見本は升目と同じ地の色で出す（中空の丸は升目から外したので凡例でも使わない） */}
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
-            <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: 9999, border: '1px solid var(--dc-text-subtle)' }} />
+            <span
+              aria-hidden="true"
+              style={{ width: 16, height: 16, borderRadius: 4, background: 'var(--dc-sunken)', border: '1px solid var(--dc-border)' }}
+            />
             <span>記録あり</span>
           </span>
           {([1, 2, 3] as const).map((lv) => (
@@ -521,8 +517,17 @@ export function StudyCalendarCard({
             </span>
           ))}
         </span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-          <Headphones size={12} strokeWidth={2.5} color="var(--dc-gold)" aria-hidden="true" />
+        {/* 見本は升目と同じ形（金のリング＋ヘッドホン）で出す */}
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+          <span
+            aria-hidden="true"
+            style={{
+              width: 14, height: 14, borderRadius: 5, boxShadow: '0 0 0 2px var(--dc-gold)',
+              display: 'grid', placeItems: 'center',
+            }}
+          >
+            <Headphones size={9} strokeWidth={2.75} color="var(--dc-gold)" />
+          </span>
           <span>コーチングあり</span>
         </span>
         {/* 見本はセルの中の記号と同じ形・同じ色で出す（バー = 今日、枠 = 選択中） */}

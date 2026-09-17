@@ -163,7 +163,7 @@ export function buildRecommendations(input: RecommendInput): AiSkillRecommendati
 
   // ② 進捗から。終盤なら手を動かす練習、序盤なら教材の理解を優先する
   // 🔴 終盤に勧めていた「理解度チェック」はアプリが無くなったので、
-  //    同じ「仕上げに効くもの」としてデイリーデザインスプリントに置き換えた。
+  //    同じ「仕上げに効くもの」としてデザインスプリントチャレンジャーに置き換えた。
   if (typeof progress === 'number' && lessonName) {
     if (progress >= 70) {
       add({

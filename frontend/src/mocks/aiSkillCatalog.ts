@@ -161,7 +161,7 @@ export const AI_SKILL_MOCK: Record<ConcreteAiSkillId, AiSkillMockConfig> = {
     latencyMs: 950,
   },
 
-  /** デイリーデザインスプリントチャレンジャー。出すのは講評ではなく「今日の課題」 */
+  /** デザインスプリントチャレンジャー。出すのは講評ではなく「今日の課題」 */
   'daily-design-sprint': {
     internalApp: 'webcoach-daily-design-sprint',
     summaryTemplate: () =>

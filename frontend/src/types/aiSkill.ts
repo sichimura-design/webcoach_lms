@@ -56,8 +56,9 @@ export type AiSkillCategory = 'learn' | 'create' | 'career' | 'other';
 export const AI_SKILL_CATEGORY_LABEL: Record<AiSkillCategory, string> = {
   learn: '学習サポート',
   create: '制作サポート',
-  // 🔴 キャリアは「キャリアサポート」にしない。指示どおりの据え置き。
-  career: 'キャリア',
+  // 🔴 「キャリア」ではなく「案件獲得」。ここに並ぶのが案件を取るための道具
+  //    （案件抽出・応募文・面接練習）で、キャリアだと範囲が広すぎるため。
+  career: '案件獲得',
   other: 'そのほか',
 };
 
@@ -175,10 +176,12 @@ export const AI_SKILL_META: Record<ConcreteAiSkillId, AiSkillMeta> = {
    *    やっていることは毎日の練習なので、制作サポート（＝作ったものを見てもらう）
    *    ではなくこちらに置く。
    */
+  /* 🔴 ID の 'daily-' は残してある（public/content/ai-apps/daily-design-sprint.md と
+        揃える必要があるため）。画面に出るのは label のほうで、こちらに「デイリー」は付けない。 */
   'daily-design-sprint': {
-    label: 'デイリーデザインスプリントチャレンジャー',
-    modeLabel: 'デイリーデザインスプリントチャレンジャー',
-    shortLabel: 'デイリースプリント',
+    label: 'デザインスプリントチャレンジャー',
+    modeLabel: 'デザインスプリントチャレンジャー',
+    shortLabel: 'デザインスプリント',
     cta: '今日の課題を出す',
     category: 'learn',
     icon: 'sparkles',
