@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { AlertCircle, Check, Loader2, Plus, RotateCcw } from 'lucide-react';
+import { AlertCircle, Check, Loader2 } from 'lucide-react';
 import { color, font, radius } from '../../theme/webcoachTheme';
 
 /**
- * PiP小窓の中身。速記のテキストエリア1枚。
+ * PiP小窓の中身。ノートの本文そのものを編集する textarea 1枚。
  * ============================================================
  * 🔴 このファイルは自己完結していること。
  *    描画先は親と別のドキュメントなので、以下は一切効かない。
@@ -14,9 +14,13 @@ import { color, font, radius } from '../../theme/webcoachTheme';
  *    使ってよいのは インラインstyle と、下の SELF_CONTAINED_CSS だけ。
  *    theme/webcoachTheme.ts は ただのJSオブジェクトなので、そのまま使える。
  *
- * 🔴 ブロックの粒度は「1コミット＝1ブロック」。
- *    打つたびに追記するとノートにブロックが数十個できる。書き切ってから
- *    「ノートに追加」を押した分だけが text ブロックになる。
+ * 🔴 ここは「ノートを小窓で開いたもの」であって、別のメモ帳ではない。
+ *    かつては専用の localStorage（webcoach-quick-memo）に下書きを溜めて、
+ *    「ノートに追加」を押した分だけが text ブロックとして転記される
+ *    片道の投入口だった。小窓にノートの中身が出ないので「速記メモ」という
+ *    名前が何を指すのか分からない、という指摘で作りごと変えている。
+ *    いまは本文（Note.body）を親と同じ state で編集していて、
+ *    打った文字はそのまま親の紙にも出る。「追加」ボタンは無い（自動保存）。
  * ============================================================
  */
 
@@ -29,25 +33,18 @@ const SELF_CONTAINED_CSS = [
   '.qm-input::-webkit-scrollbar{width:10px}',
   `.qm-input::-webkit-scrollbar-thumb{background:${color.borderNeutral};border-radius:999px;`,
   'border:3px solid transparent;background-clip:content-box}',
-  `.qm-commit:hover:not(:disabled){background:${color.primaryHover}}`,
-  '.qm-commit:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}',
 ].join('');
 
-/** ⌘ か Ctrl か。小窓のヒント1行のためだけの判定なので UA で十分 */
-const isMac = typeof navigator !== 'undefined' && /Mac|iP(hone|ad|od)/.test(navigator.userAgent);
-const COMMIT_HINT = `${isMac ? '⌘' : 'Ctrl'} + Enter`;
-
 export interface QuickMemoPaneProps {
-  /** 「→ 9/4 コーチング記録」の右側。開いた時点の転記先を固定して見せる */
+  /** 「→ 9/4 コーチング記録」の右側。いま開いているノートの名前 */
   targetLabel: string;
   text: string;
   onChangeText: (text: string) => void;
+  /** 小窓から手が離れたら待たずに保存する */
+  onFlush: () => void;
   status: 'idle' | 'saving' | 'saved';
-  restored: boolean;
-  committing: boolean;
-  /** 追加に失敗したときの文言。出ている間も下書きは消さない */
+  /** 保存に失敗したときの文言。出ている間も打った文字は消さない */
   error: string | null;
-  onCommit: () => void;
 }
 
 function StatusLine({ status }: { status: QuickMemoPaneProps['status'] }) {
@@ -83,11 +80,9 @@ export function QuickMemoPane({
   targetLabel,
   text,
   onChangeText,
+  onFlush,
   status,
-  restored,
-  committing,
   error,
-  onCommit,
 }: QuickMemoPaneProps) {
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -95,21 +90,15 @@ export function QuickMemoPane({
   // ポータルが commit された次のフレームで自分から取りに行く
   // （autoFocus 属性は別ドキュメントだと順序が不安定なので使わない）。
   useEffect(() => {
-    const id = requestAnimationFrame(() => inputRef.current?.focus());
+    const id = requestAnimationFrame(() => {
+      const el = inputRef.current;
+      if (!el) return;
+      el.focus();
+      // 続きから書けるよう末尾へ。先頭に飛ぶと長いノートで書き出しが見えない
+      el.setSelectionRange(el.value.length, el.value.length);
+    });
     return () => cancelAnimationFrame(id);
   }, []);
-
-  const canCommit = text.trim() !== '' && !committing;
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // 🔴 変換確定の Enter を送信に取られないようにする。
-    //    前例: learning/CourseSearchPanel.tsx:155, LearningWorkspacePage.tsx:266
-    if (e.nativeEvent.isComposing || e.keyCode === 229) return;
-    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
-      e.preventDefault();
-      if (canCommit) onCommit();
-    }
-  };
 
   return (
     <div
@@ -135,34 +124,18 @@ export function QuickMemoPane({
           }}
           title={targetLabel}
         >
-          → {targetLabel}
+          {targetLabel}
         </span>
         <StatusLine status={status} />
       </div>
 
-      {restored && (
-        <p
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 5,
-            margin: 0,
-            fontSize: 11,
-            fontWeight: 500,
-            color: color.textSubtle,
-          }}
-        >
-          <RotateCcw size={12} />
-          前回の書きかけを復元しました
-        </p>
-      )}
-
       <textarea
         ref={inputRef}
         className="qm-input"
+        aria-label="本文"
         value={text}
         onChange={(e) => onChangeText(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onBlur={onFlush}
         placeholder="話しながら思ったことを、そのまま。"
         spellCheck={false}
         style={{
@@ -200,36 +173,6 @@ export function QuickMemoPane({
           {error}
         </p>
       )}
-
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <span style={{ fontSize: 10.5, fontWeight: 500, color: color.textFaint, flex: 1 }}>
-          {COMMIT_HINT} でも追加
-        </span>
-        <button
-          type="button"
-          className="qm-commit"
-          onClick={onCommit}
-          disabled={!canCommit}
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: 5,
-            background: color.primary,
-            color: color.textOnPrimary,
-            border: 'none',
-            borderRadius: radius.pill,
-            padding: '8px 16px',
-            fontFamily: 'inherit',
-            fontSize: 12.5,
-            fontWeight: 700,
-            cursor: 'pointer',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {committing ? <Loader2 size={13} className="qm-spin" /> : <Plus size={13} />}
-          ノートに追加
-        </button>
-      </div>
 
       <style>{SELF_CONTAINED_CSS}</style>
     </div>

@@ -1,71 +1,93 @@
 import { useEffect, useRef, useState } from 'react';
-import { Check } from 'lucide-react';
-import { Note, NoteBlockInput, NoteBlockInsert, NoteBlockPatch, NoteSourceRef } from '../../types/notes';
-import { NOTE_IMAGE_ACCEPT, NOTE_IMAGE_MAX_BYTES, putNoteImage } from '../../utils/noteImageStore';
+import { Note, NoteBlockInput, NoteBlockPatch, NoteSourceRef } from '../../types/notes';
 import NoteBlockView from './NoteBlockView';
-import { DropPosition, NoteBlockRow } from './NoteBlockRow';
 import { InsertKind, NoteEditorToolbar, TEXT_PREFIX } from './NoteEditorToolbar';
 import QuoteFromLessonModal, { QuoteTarget } from './QuoteFromLessonModal';
 
 /**
- * ノート面（デザイン『マイノート 改善案』⑤⑥⑦）。
+ * ノート面。上から「タイトル → ツールバー → 本文 → 素材」。
  *
- * 上から「タイトル欄 → 常設ツールバー → 本文のブロック → 続きを書く欄」。
- * 🔴 何を足せるのかが最初から見えている状態にする。以前は本文の下端に
- *    「＋ 画像・見出し・箇条書きを追加」が1つあるだけで、ノートを作る中身の操作が
- *    画面から読み取れなかった（レビュー指摘）。ツールバーは本文より上に置くが、
- *    ボタンは「足す」だけに絞り、タイトルと本文の間で完結させる。
+ * 🔴 本文は1枚の textarea。ブロックに割らない。
+ *    v5 まではここが「1段落＝1ブロック」で、書くたびに blur か Ctrl+Enter か
+ *    「保存する」ボタンでブロックを確定させ、次の段落はまた新しいブロックだった。
+ *    段落を跨いだカーソル移動も Backspace での結合もできず、
+ *    「一行書くのにこんな謎の保存方法が要るのか」という指摘で1本にした。
+ *    ⠿ ハンドル・行の ＋ メニュー・ドラッグ並べ替え（NoteBlockRow）は一緒に消している。
+ *    **戻さないこと。**
+ *
+ * 🔴 保存ボタンは置かない。打つのを止めれば useNote が自動で送る（デバウンス800ms）。
+ *    保存されたかどうかは上部バー（NoteEditorBar）の「保存しました HH:MM」が出す。
+ *
+ * 🔴 素材（教材からの引用クリップ・AI回答）は本文の下にまとめる。
+ *    本文の途中には差し込めない。本文が1本になって「段落と段落の間」という
+ *    座標が無くなったため。並べ替えも無い（追加順）。
+ *
+ * 🔴 紙に maxWidth を掛けない。以前 900px で左寄せに固定していて、広い画面では
+ *    右側に大きな空白が残っていた。幅は親（.notes-main の padding）に任せる。
+ *
  * 🔴「クリップを追加」「AI回答を追加」のボタンは置かない。素材はこの画面には無い。
  *    ツールバーの「教材から引用」は、教材を **モーダル** で開いてその場で引く
  *    （QuoteFromLessonModal）。押しても画面は /notes のまま動かない。
- *    以前はトーストを出して教材ページへ飛ばしていて、飛んだ先から書きかけのノートへ
- *    どう戻るのかが分からなかった。
  *
  * 重要・削除・保存先・保存状態は上部バー（NoteEditorBar）にある。紙の中は書く場所だけ。
  */
 interface NoteEditorProps {
   note: Note;
   onRename: (title: string) => void;
-  /** ブロックを追加する。index を渡すとその位置に差し込む */
-  onAddBlock: (input: NoteBlockInput & NoteBlockInsert) => Promise<{ id: string } | null>;
+  /** 本文が変わった。保存は useNote がデバウンスして送る */
+  onBodyChange: (body: string) => void;
+  /** 本文から離れた。待たずに送る */
+  onBodyFlush: () => void;
+  /** 素材（クリップ / AI回答）を末尾に足す */
+  onAddBlock: (input: NoteBlockInput) => Promise<{ id: string } | null>;
   onPatchBlock: (blockId: string, patch: NoteBlockPatch) => void;
-  onMoveBlock: (blockId: string, toIndex: number) => void;
   onRemoveBlock: (blockId: string) => void;
-  /** 画像の取り込みに失敗したときの通知 */
-  onError: (message: string) => void;
+}
+
+/** 行頭の記法（## / - / - [ ]）。差し替えるときに一度落とすために使う */
+const LINE_PREFIX_RE = /^(##\s+|-\s+\[[ xX]\]\s+|-\s+)/;
+
+/** ツールバーの記法を本文へ差し込んだ結果。選択範囲も返す（そこへカーソルを戻す） */
+function applyInsert(
+  kind: InsertKind,
+  text: string,
+  start: number,
+  end: number
+): { text: string; selStart: number; selEnd: number } {
+  if (kind === 'marker') {
+    // 選択があれば囲む。無ければ ==== を置いて真ん中にカーソルを入れる
+    const selected = text.slice(start, end);
+    const next = `${text.slice(0, start)}==${selected}==${text.slice(end)}`;
+    return selected
+      ? { text: next, selStart: start + 2, selEnd: start + 2 + selected.length }
+      : { text: next, selStart: start + 2, selEnd: start + 2 };
+  }
+
+  // 行頭の記法。カーソルのある行の頭に付ける（別の記法が付いていたら差し替える）
+  const lineStart = text.lastIndexOf('\n', Math.max(0, start - 1)) + 1;
+  const lineEnd = text.indexOf('\n', lineStart);
+  const line = text.slice(lineStart, lineEnd === -1 ? text.length : lineEnd);
+  const bare = line.replace(LINE_PREFIX_RE, '');
+  const prefix = TEXT_PREFIX[kind];
+  const nextLine = `${prefix}${bare}`;
+  const next =
+    text.slice(0, lineStart) + nextLine + text.slice(lineEnd === -1 ? text.length : lineEnd);
+  // カーソルは行末へ。付けた直後に続きを打てる
+  const caret = lineStart + nextLine.length;
+  return { text: next, selStart: caret, selEnd: caret };
 }
 
 export function NoteEditor({
   note,
   onRename,
+  onBodyChange,
+  onBodyFlush,
   onAddBlock,
   onPatchBlock,
-  onMoveBlock,
   onRemoveBlock,
-  onError,
 }: NoteEditorProps) {
   const [titleDraft, setTitleDraft] = useState(note.title);
-
-  const [tail, setTail] = useState('');
-  const tailRef = useRef<HTMLTextAreaElement>(null);
-  /**
-   * 未保存の下書きを ref にも持つ。
-   * 「保存する」を押すと textarea の blur と click が続けて走るので、
-   * state だけで判定すると同じ文章を2回足してしまう。
-   * ref を保存時に空にしておけば、2回目の呼び出しは何もしない。
-   */
-  const pendingRef = useRef('');
-
-  /** ＋／ツールバーから作った直後のブロック。開いた瞬間に書き始められるよう編集状態で出す */
-  const [autoEditId, setAutoEditId] = useState<string | null>(null);
-
-  /** 画像の input は1つだけ持ち、どの位置に差し込むかは ref で覚える */
-  const fileRef = useRef<HTMLInputElement>(null);
-  const insertAtRef = useRef<number | undefined>(undefined);
-
-  /** ⠿ のドラッグ。掴んでいる行と、線を出す行 */
-  const [dragIndex, setDragIndex] = useState<number | null>(null);
-  const [dropAt, setDropAt] = useState<{ index: number; position: DropPosition } | null>(null);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
 
   /**
    * 教材の引用モーダル。ツールバーの「教材から引用」と、クリップ／AI回答の
@@ -75,23 +97,18 @@ export function NoteEditor({
     null
   );
 
-  const isEmptyNote = note.blocks.length === 0;
-
   useEffect(() => {
     setTitleDraft(note.title);
-    setTail('');
-    pendingRef.current = '';
-    setAutoEditId(null);
-    setDragIndex(null);
-    setDropAt(null);
     // 別のノートに切り替わったら、前のノート向けに開いていた引用モーダルは閉じる
     setQuote(null);
   }, [note.id, note.title]);
 
-  // 新規ノートは開いた瞬間から書ける（＝まっさらに書き始められる）
+  // まっさらなノートは開いた瞬間から書ける
+  const isEmptyNote = !note.body && note.blocks.length === 0;
   useEffect(() => {
-    if (isEmptyNote) tailRef.current?.focus();
-  }, [note.id, isEmptyNote]);
+    if (isEmptyNote) bodyRef.current?.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [note.id]);
 
   const commitTitle = () => {
     const next = titleDraft.trim();
@@ -102,60 +119,22 @@ export function NoteEditor({
     if (next !== note.title) onRename(next);
   };
 
-  const commitTail = () => {
-    const text = pendingRef.current.trim();
-    if (!text) return;
-    pendingRef.current = '';
-    setTail('');
-    void onAddBlock({ kind: 'text', text });
-  };
-
-  const changeTail = (value: string) => {
-    pendingRef.current = value;
-    setTail(value);
-  };
-
-  const insertText = async (kind: Exclude<InsertKind, 'image'>, index?: number) => {
-    const block = await onAddBlock({ kind: 'text', text: TEXT_PREFIX[kind], index });
-    if (block) setAutoEditId(block.id);
-  };
-
-  /** ＋（行の前に差し込む）とツールバー（末尾に足す）の共通入口。index 省略で末尾 */
-  const pickInsert = (kind: InsertKind, index?: number) => {
-    if (kind === 'image') {
-      insertAtRef.current = index;
-      fileRef.current?.click();
-      return;
-    }
-    void insertText(kind, index);
-  };
-
-  const handleFile = async (file: File | undefined) => {
-    const index = insertAtRef.current;
-    insertAtRef.current = undefined;
-    if (!file) return;
-    if (file.size > NOTE_IMAGE_MAX_BYTES) {
-      onError('画像が大きすぎます（12MBまで）');
-      return;
-    }
-    try {
-      const imageId = await putNoteImage(file);
-      await onAddBlock({ kind: 'image', imageId, alt: file.name, index });
-    } catch {
-      onError('画像を取り込めませんでした');
-    }
-  };
-
-  /** ドロップ先（行 index の前／後）を、配列上の移動先に直す */
-  const handleDrop = (index: number, position: DropPosition) => {
-    const from = dragIndex;
-    setDragIndex(null);
-    setDropAt(null);
-    if (from === null) return;
-    let to = position === 'before' ? index : index + 1;
-    if (from < to) to -= 1; // 自分を抜いたぶん、下へ動かすときは1つ手前になる
-    if (to === from) return;
-    onMoveBlock(note.blocks[from].id, to);
+  /** ツールバー。本文のカーソル位置に記法を入れて、そこへ戻す */
+  const handleInsert = (kind: InsertKind) => {
+    const el = bodyRef.current;
+    if (!el) return;
+    const { text, selStart, selEnd } = applyInsert(
+      kind,
+      note.body,
+      el.selectionStart ?? note.body.length,
+      el.selectionEnd ?? note.body.length
+    );
+    onBodyChange(text);
+    // state が本文に反映されたあとでカーソルを置く
+    requestAnimationFrame(() => {
+      el.focus();
+      el.setSelectionRange(selStart, selEnd);
+    });
   };
 
   /**
@@ -170,7 +149,7 @@ export function NoteEditor({
     });
   };
 
-  /** モーダルからのクリップ。ノートの末尾に足す */
+  /** モーダルからのクリップ。素材の末尾に足す */
   const handleQuoteClip = async ({ text, source }: { text: string; source: NoteSourceRef }) =>
     !!(await onAddBlock({ kind: 'clip', text, source }));
 
@@ -179,7 +158,6 @@ export function NoteEditor({
       aria-label="ノート"
       style={{
         width: '100%',
-        maxWidth: 900,
         background: 'var(--dc-surface)',
         border: '1px solid var(--dc-border)',
         borderRadius: 'var(--dc-radius-lg)',
@@ -191,19 +169,7 @@ export function NoteEditor({
         flexDirection: 'column',
       }}
     >
-      <input
-        ref={fileRef}
-        type="file"
-        accept={NOTE_IMAGE_ACCEPT}
-        hidden
-        onChange={(e) => {
-          void handleFile(e.target.files?.[0]);
-          // 同じファイルを続けて選べるように値を空にする
-          e.target.value = '';
-        }}
-      />
-
-      {/* ⑤ タイトルは入力欄として枠を持たせ、本文と境目を作る */}
+      {/* タイトルは入力欄として枠を持たせ、本文と境目を作る */}
       <div style={{ padding: '22px 28px 18px', borderBottom: '1px solid var(--dc-border)' }}>
         <label
           htmlFor={`note-title-${note.id}`}
@@ -246,9 +212,8 @@ export function NoteEditor({
         )}
       </div>
 
-      {/* ⑥ 常設のツールバー */}
       <NoteEditorToolbar
-        onInsert={(kind) => pickInsert(kind)}
+        onInsert={handleInsert}
         onQuote={() =>
           setQuote({
             // 教材から作られたノートは元レッスンを開く。そうでなければモーダル側で選ばせる
@@ -260,119 +225,68 @@ export function NoteEditor({
         }
       />
 
-      {/* ⑦ 本文はブロックの集まり。行にホバーすると左に ⠿ と ＋ が出る */}
-      <div
-        style={{ flex: 1, padding: '20px 28px 24px', display: 'flex', flexDirection: 'column', gap: 2 }}
-        onDragLeave={(e) => {
-          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDropAt(null);
-        }}
-      >
-        {note.blocks.map((block, i) => (
-          <NoteBlockRow
-            key={block.id}
-            index={i}
-            total={note.blocks.length}
-            onInsert={pickInsert}
-            onMove={(from, to) => onMoveBlock(note.blocks[from].id, to)}
-            onRemove={() => onRemoveBlock(block.id)}
-            dragging={dragIndex === i}
-            dropIndicator={dropAt?.index === i && dragIndex !== i ? dropAt.position : null}
-            onDragStartRow={setDragIndex}
-            onDragOverRow={(index, position) => {
-              if (dropAt?.index !== index || dropAt.position !== position) setDropAt({ index, position });
-            }}
-            onDropRow={handleDrop}
-            onDragEndRow={() => {
-              setDragIndex(null);
-              setDropAt(null);
-            }}
-          >
-            <NoteBlockView
-              block={block}
-              autoEdit={block.id === autoEditId}
-              onPatch={onPatchBlock}
-              onOpenSource={handleOpenSource}
-            />
-          </NoteBlockRow>
-        ))}
-
-        {/*
-          ── 末尾の書き足し欄。常にここが「次に書く場所」になる ──
-          🔴 紙の下端まで伸ばして、余白をクリックしても入力に入れる。
-             以前は2行分の textarea だけで、下に広い空白が残って
-             「ここから下は何なのか」が分からなかった。
-        */}
-        <NoteBlockRow tail index={note.blocks.length} total={note.blocks.length} onInsert={pickInsert}>
-          <div
-            onClick={() => tailRef.current?.focus()}
-            style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 96, cursor: 'text' }}
-          >
-            <textarea
-              ref={tailRef}
-              value={tail}
-              onChange={(e) => changeTail(e.target.value)}
-              onBlur={commitTail}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-                  e.preventDefault();
-                  commitTail();
-                }
-              }}
-              placeholder={isEmptyNote ? 'ここに入力して、自由に書いていきましょう…' : '続きを書く…'}
-              rows={Math.max(2, tail.split('\n').length)}
-              style={{
-                width: '100%',
-                boxSizing: 'border-box',
-                flex: 1,
-                border: 0,
-                padding: '4px 0',
-                background: 'transparent',
-                fontFamily: 'inherit',
-                fontSize: 13.5,
-                lineHeight: 1.9,
-                color: '#4A4245',
-                resize: 'none',
-                outline: 'none',
-              }}
-            />
-          </div>
-        </NoteBlockRow>
-
-        {/*
-          書いたものが確定したかどうかは、押せるボタンで示す。
-          🔴 未確定の入力があるときだけ出す。常設すると、空のノートの下端に
-             押せないボタンと注記が居座って余白が締まらない。
-        */}
-        {tail.trim() && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 6, paddingLeft: 34 }}>
-            <button
-              type="button"
-              // クリックで textarea が blur するので、フォーカスは移さないでおく
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={commitTail}
-              className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 7,
-                height: 38,
-                padding: '0 20px',
-                border: 0,
-                borderRadius: 'var(--dc-radius-md)',
-                background: 'var(--dc-primary)',
-                color: '#fff',
-                fontFamily: 'inherit',
-                fontSize: 12.5,
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
-            >
-              <Check size={15} /> 保存する
-            </button>
-            <span style={{ fontSize: 11.5, color: 'var(--dc-text-subtle)' }}>Ctrl+Enter でも保存できます</span>
-          </div>
-        )}
+      {/*
+        本文。1枚の textarea を紙の底まで伸ばす。
+        🔴 余白をクリックしても書き始められるよう、包む div ではなく textarea 自身を
+           flex:1 で伸ばす。以前は下に 96px の空白ゾーンがあって、
+           そこが何なのか画面から読めなかった。
+      */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '20px 28px 8px' }}>
+        <textarea
+          ref={bodyRef}
+          aria-label="本文"
+          value={note.body}
+          onChange={(e) => onBodyChange(e.target.value)}
+          onBlur={onBodyFlush}
+          placeholder="ここに入力して、自由に書いていきましょう…"
+          style={{
+            width: '100%',
+            boxSizing: 'border-box',
+            flex: 1,
+            minHeight: 220,
+            border: 0,
+            padding: 0,
+            background: 'transparent',
+            fontFamily: 'inherit',
+            fontSize: 13.5,
+            lineHeight: 1.9,
+            color: '#4A4245',
+            resize: 'none',
+            outline: 'none',
+          }}
+        />
       </div>
+
+      {/* 素材。無ければ見出しごと出さない（空の器を見せない） */}
+      {note.blocks.length > 0 && (
+        <div style={{ padding: '4px 28px 24px' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 10,
+              marginBottom: 10,
+              fontSize: 11,
+              fontWeight: 700,
+              color: 'var(--dc-text-subtle)',
+            }}
+          >
+            <span style={{ whiteSpace: 'nowrap' }}>教材の引用・AIの回答</span>
+            <span aria-hidden="true" style={{ flex: 1, height: 1, background: 'var(--dc-border)' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {note.blocks.map((block) => (
+              <NoteBlockView
+                key={block.id}
+                block={block}
+                onPatch={onPatchBlock}
+                onRemove={() => onRemoveBlock(block.id)}
+                onOpenSource={handleOpenSource}
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* 教材から引用。追加先はこのノートで確定しているので、保存先の選び直しは出さない */}
       {quote && (

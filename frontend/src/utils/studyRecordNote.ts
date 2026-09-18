@@ -116,10 +116,8 @@ export async function createNoteFromStudyRecord(input: StudyRecordNoteInput): Pr
     origin: source ? 'material' : 'self',
   });
 
-  await bffClient.appendNoteBlock(note.id, {
-    kind: 'text',
-    text: buildStudyRecordNoteText(input),
-  });
+  // 本文はノートの body 1本。作った直後なので追記ではなく丸ごと入れてよい
+  await bffClient.updateNote(note.id, { body: buildStudyRecordNoteText(input) });
 
   return note.id;
 }

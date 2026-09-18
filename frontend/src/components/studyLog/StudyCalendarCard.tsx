@@ -38,12 +38,17 @@ import {
  *    選択中を赤枠にしていた頃は、濃淡の赤と同系色で「濃い日」なのか
  *    「選んだ日」なのか読み分けられなかった。今は
  *      選択中 = 濃いニュートラルの枠（＋内側の細い白枠）
- *      今日   = セル下端の短い横バー（ニュートラル）
- *    で、色と形の両方を変えてある。どちらも枠にすると今日を選んだときに
- *    2つが重なって区別が付かなくなるので、片方は枠、片方はバーで通すこと。
+ *      今日   = 日付の数字の代わりに「今日」と書く
+ *    で、伝える手段（枠と文字）そのものを分けてある。
+ *    かつては今日をセル下端の 12×2px の横バーで示していたが、
+ *    小さすぎて気づかれず、凡例の「— 今日」も何の記号か読めなかった。
+ *    文字で書けば凡例が要らない。トップの7日ストリップ（StudyDashboardCard）が
+ *    既に同じ手（isToday なら「今日」と出す）を使っていて、表現も揃う。
+ *    🔴 今日の表現を色に戻さないこと。上の原則どおり赤は多寡専用で、
+ *       濃い段（L3）の日が今日になっても文字だけで読み分けられる必要がある。
  *    形のほかに aria-pressed / aria-current="date" / label の文言でも伝える。
  *    セルに「45分」と文字で入れないのは、--dc-sz-cell の下限が 38px で
- *    12px×4文字が溢れるため（12px未満は作らない規約がある）。
+ *    12px×4文字が溢れるため（12px未満は作らない規約がある）。「今日」は2文字なので入る。
  *
  * 🔴 42個のセルを全部タブ順に入れない（roving tabindex）。
  *    タブキーで1つの月に42回止まると、その下のカードへ辿り着けない。
@@ -373,7 +378,6 @@ export function StudyCalendarCard({
 
             const selected = c.key === selectedDate;
             const heat = HEAT_STYLE[c.level];
-            const onDark = c.level === 3;
 
             return (
               <span key={c.key} role="gridcell" style={{ display: 'block', minWidth: 0 }}>
@@ -443,7 +447,7 @@ export function StudyCalendarCard({
                       lineHeight: 1,
                     }}
                   >
-                    {c.day}
+                    {c.isToday ? '今日' : c.day}
                   </span>
 
                   {c.coaching && (
@@ -461,21 +465,8 @@ export function StudyCalendarCard({
                     </span>
                   )}
 
-                  {/*
-                    * 今日。選択中の枠と competing しないよう、枠ではなく下端のバーで示す。
-                    * 🔴 丸ではなく横バー、赤ではなくニュートラル。丸だと段階ドットの一部に、
-                    *    赤だと濃淡の一段に読まれる。形も色も両方ずらしておくこと。
-                    */}
-                  {c.isToday && (
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        position: 'absolute', bottom: 3, left: '50%', transform: 'translateX(-50%)',
-                        width: 12, height: 2, borderRadius: 1,
-                        background: onDark ? '#fff' : 'var(--dc-text-body)',
-                      }}
-                    />
-                  )}
+                  {/* 今日はセルの中の文字そのものが「今日」になっている（上の🔴参照）。
+                      記号は足さない。足すと段階ドットやコーチングのマークと競合する */}
                 </button>
               </span>
             );
@@ -530,11 +521,8 @@ export function StudyCalendarCard({
           </span>
           <span>コーチングあり</span>
         </span>
-        {/* 見本はセルの中の記号と同じ形・同じ色で出す（バー = 今日、枠 = 選択中） */}
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-          <span aria-hidden="true" style={{ width: 12, height: 2, borderRadius: 1, background: 'var(--dc-text-body)' }} />
-          <span>今日</span>
-        </span>
+        {/* 🔴 「今日」の凡例は置かない。今日のセルにはそのまま「今日」と書いてあるので、
+               記号の説明が要らない。見本はセルの中の記号と同じ形・同じ色で出す（枠 = 選択中） */}
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
           <span aria-hidden="true" style={{ width: 14, height: 14, borderRadius: 5, border: '2px solid var(--dc-text)' }} />
           <span>選択中</span>

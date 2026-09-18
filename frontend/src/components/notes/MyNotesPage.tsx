@@ -10,10 +10,8 @@ import { useNote } from '../../hooks/useNote';
 import { useNoteFolders } from '../../hooks/useNoteFolders';
 import { useNoteList } from '../../hooks/useNoteList';
 import { BackTo } from '../../hooks/useNoteCapture';
-import { bffClient } from '../../services/bffClient';
 import { pageTitleStyle } from '../../theme/pageTitle';
-import { noteDraftKey } from '../../utils/quickMemoDraft';
-import { QuickMemoButton, QuickMemoError, useQuickMemoWindow } from '../quickMemo/QuickMemoLauncher';
+import { QuickMemoButton, useQuickMemoWindow } from '../quickMemo/QuickMemoLauncher';
 import {
   NOTE_ORIGIN_LABEL,
   NOTE_SORT_LABEL,
@@ -314,59 +312,32 @@ export function MyNotesPage() {
     : null;
 
   /*
-   * ── 速記メモの小窓（Document Picture-in-Picture）──
-   * 教材の動画や会議を見ながら、このノートに書き足すための常時最前面の小窓。
+   * ── ノートを小窓で開く（Document Picture-in-Picture）──
+   * 教材の動画や会議を見ながら、このノートの本文を書き足すための常時最前面の小窓。
    *
    * 🔴 小窓を持つのはこのページで、ボタンだけを上部バーに置く。
    *    バーは detail.note が消えると一緒に消えるので、そこに小窓を持たせると
-   *    一覧へ戻っただけで小窓が落ちる。
-   * 🔴 転記先は開いた時点のノートに固定する。開いたまま一覧へ戻ったり別のノートを
-   *    開いたりしても、書いていた分は書き始めたノートへ入るようにするため。
-   * 🔴 追加は detail.addBlock ではなく bffClient を直に呼ぶ。addBlock は noteId が
-   *    外れると if (!noteId) return null で例外も出さずに捨てる（useNote.ts:127）。
+   *    再描画のたびに小窓が落ちる。
+   * 🔴 本文の state は detail（useNote）と**共有する**。小窓に別のテキスト状態を
+   *    持たせない。持たせると紙と小窓で別々の本文ができて、あとから保存した方が
+   *    相手を潰す。同じ state なので、小窓で打った文字はそのまま紙にも出る。
+   * 🔴 ノートを閉じたら小窓も閉じる。開いているノートの本文を出す窓なので、
+   *    一覧に戻ったあとも残っていると、どこに書いているのか分からなくなる。
    */
-  const [pinnedNote, setPinnedNote] = useState<{ id: string; title: string } | null>(null);
-  const memoTarget =
-    pinnedNote ?? (detail.note ? { id: detail.note.id, title: detail.note.title } : null);
-
-  const commitQuickMemo = async (text: string) => {
-    if (!memoTarget) throw new QuickMemoError('追加先のノートが分かりません。');
-    await bffClient.appendNoteBlock(memoTarget.id, { kind: 'text', text });
-    if (selectedId === memoTarget.id) {
-      await detail.reload();
-    } else {
-      // 一覧に戻っていた／別のノートを開いていた。どこに入ったのかを言って出口を作る
-      void list.reload();
-      showToast(`「${memoTarget.title}」に追加しました`, 'success', {
-        action: { label: 'このノートを開く', onClick: () => select(memoTarget.id) },
-      });
-    }
-  };
-
   const memoWindow = useQuickMemoWindow({
-    draftKey: memoTarget ? noteDraftKey(memoTarget.id) : '',
-    targetLabel: memoTarget?.title || '無題のノート',
-    windowTitle: '速記メモ — WEBCOACH',
-    onCommit: commitQuickMemo,
+    targetLabel: detail.note ? `→ ${detail.note.title || '無題のノート'}` : '',
+    windowTitle: 'ノート — WEBCOACH',
+    text: detail.note?.body ?? '',
+    onChangeText: detail.setBody,
+    onFlush: detail.flushBody,
+    status: detail.saveState.saving ? 'saving' : detail.saveState.lastSavedAt ? 'saved' : 'idle',
+    error: detail.saveState.error,
   });
 
-  // 閉じたら固定を解く。次に開くときの宛先は、そのとき開いているノート。
-  // 「開いた直後の再描画」で解いてしまわないよう、開いていた事実を覚えてから判定する
-  const memoWasOpen = useRef(false);
+  const { isOpen: memoIsOpen, close: closeMemo } = memoWindow;
   useEffect(() => {
-    if (memoWindow.isOpen) memoWasOpen.current = true;
-    else if (memoWasOpen.current) {
-      memoWasOpen.current = false;
-      setPinnedNote(null);
-    }
-  }, [memoWindow.isOpen]);
-
-  const handleQuickMemo = () => {
-    if (!memoWindow.isOpen && detail.note) {
-      setPinnedNote({ id: detail.note.id, title: detail.note.title });
-    }
-    void memoWindow.toggle();
-  };
+    if (memoIsOpen && !detail.note) closeMemo();
+  }, [memoIsOpen, detail.note, closeMemo]);
 
   return (
     <div className="wc-warm min-h-screen flex flex-col" style={{ background: 'var(--dc-bg)' }}>
@@ -394,8 +365,7 @@ export function MyNotesPage() {
                       memoWindow.supported ? (
                         <QuickMemoButton
                           isOpen={memoWindow.isOpen}
-                          hasDraft={memoWindow.hasDraft}
-                          onClick={handleQuickMemo}
+                          onClick={() => void memoWindow.toggle()}
                           className="notes-tool focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
                         />
                       ) : null
@@ -405,11 +375,11 @@ export function MyNotesPage() {
                     <NoteEditor
                       note={detail.note}
                       onRename={renameInEditor}
+                      onBodyChange={detail.setBody}
+                      onBodyFlush={detail.flushBody}
                       onAddBlock={detail.addBlock}
                       onPatchBlock={detail.patchBlock}
-                      onMoveBlock={detail.moveBlock}
                       onRemoveBlock={detail.removeBlock}
-                      onError={(message) => showToast(message, 'error')}
                     />
                   </div>
                 </>
@@ -632,7 +602,9 @@ export function MyNotesPage() {
           )}
         </main>
 
-        <AppFooter style={{ padding: '32px 0 24px' }} />
+        {/* 🔴 ノート面ではフッターを出さない。紙を画面の底まで伸ばしているので、
+               その下にさらに 56px のフッターが付くと「まだ下がある」空白になる。 */}
+        {!selectedId && <AppFooter style={{ padding: '32px 0 24px' }} />}
       </div>
 
       {MOCKS_ENABLED && (
@@ -649,7 +621,7 @@ export function MyNotesPage() {
         </React.Suspense>
       )}
 
-      {/* 小窓の中身。ノート面を閉じても残るよう、バーではなくページの直下で描く */}
+      {/* 小窓の中身。バーの再描画で落ちないよう、ページの直下で描く */}
       {memoWindow.portal}
     </div>
   );

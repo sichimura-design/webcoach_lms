@@ -75,7 +75,6 @@ import {
   Note,
   NoteBlock,
   NoteBlockInput,
-  NoteBlockInsert,
   NoteBlockPatch,
   NoteClipRef,
   NoteCreateInput,
@@ -1448,7 +1447,7 @@ class BFFClient {
     return response.data;
   }
 
-  /** PATCH /api/webcoach/notes/{id} — タイトル・お気に入り・フォルダ移動 */
+  /** PATCH /api/webcoach/notes/{id} — タイトル・本文・お気に入り・フォルダ移動 */
   async updateNote(id: string, body: NoteUpdateInput): Promise<Note> {
     const response = await this.api.patch(`/webcoach/notes/${id}`, body);
     return response.data;
@@ -1460,18 +1459,15 @@ class BFFClient {
   }
 
   /**
-   * POST /api/webcoach/notes/{id}/blocks — 本文・クリップ・AI回答・画像の追加
-   * index を渡すとその位置に差し込む（省略時は末尾）。
+   * POST /api/webcoach/notes/{id}/blocks — 素材（クリップ / AI回答）の追加。常に末尾。
+   * 🔴 本文はここを通らない。本文は Note.body の1本で、updateNote({ body }) で送る。
    */
-  async appendNoteBlock(
-    noteId: string,
-    input: NoteBlockInput & NoteBlockInsert
-  ): Promise<NoteBlock> {
+  async appendNoteBlock(noteId: string, input: NoteBlockInput): Promise<NoteBlock> {
     const response = await this.api.post(`/webcoach/notes/${noteId}/blocks`, input);
     return response.data;
   }
 
-  /** PATCH /api/webcoach/notes/{id}/blocks/{blockId} — 本文の書き換え、または index で並べ替え */
+  /** PATCH /api/webcoach/notes/{id}/blocks/{blockId} — クリップ本文・AI回答・画像キャプションの書き換え */
   async updateNoteBlock(noteId: string, blockId: string, patch: NoteBlockPatch): Promise<NoteBlock> {
     const response = await this.api.patch(`/webcoach/notes/${noteId}/blocks/${blockId}`, patch);
     return response.data;

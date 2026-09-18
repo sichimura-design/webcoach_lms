@@ -80,6 +80,10 @@ interface NoteBlockBase {
   updatedAt: string;
 }
 
+/**
+ * 🔴 v5 以前の本文ブロック。**もう作られない**（本文は Note.body）。
+ *    移行（mocks/noteMigration.ts の foldToV6）が読むためだけに型を残す。
+ */
 export interface NoteTextBlock extends NoteBlockBase {
   kind: 'text';
   text: string;
@@ -97,13 +101,20 @@ export interface NoteAnswerBlock extends NoteBlockBase {
   answer: string;
   /** 質問したときに引用していた教材文 */
   selectedText: string | null;
-  /** 添付していた画像（dataURL） */
+  /**
+   * 添付していた画像（dataURL）。
+   * 🔴 新しく入ることはない（NoteBlockInput から落とした）。禁止より前に
+   *    保存された回答のために、表示できる形だけ残してある。
+   */
   image: string | null;
   source: NoteSourceRef | null;
 }
 
 /**
  * 自分で貼った画像。
+ * 🔴 **新しく作られることはない。** ノートに画像を貼る入口は撤去した
+ *    （セキュリティ方針。utils/noteImageStore.ts の冒頭に理由がある）。
+ *    禁止より前に貼られた画像を表示し続けるために型だけ残してある。
  * 🔴 画像の中身はここに持たない。`imageId` は IndexedDB
  *    （utils/noteImageStore.ts）の参照キーで、ノート本体は localStorage に
  *    入るため、dataURL を持たせると数枚で容量上限を超える
@@ -119,11 +130,28 @@ export interface NoteImageBlock extends NoteBlockBase {
   caption: string | null;
 }
 
-export type NoteBlock = NoteTextBlock | NoteClipBlock | NoteAnswerBlock | NoteImageBlock;
+/**
+ * 🔴 NoteBlock に text は**入らない**（v6）。本文は Note.body の1本。
+ *    NoteTextBlock 型は v5 以前のデータを読むための移行用として
+ *    mocks/noteMigration.ts が持っている（LegacyTextBlock）。
+ */
+export type NoteBlock = NoteClipBlock | NoteAnswerBlock | NoteImageBlock;
 
 export interface Note {
   id: string;
   title: string;
+  /**
+   * 本文。1枚の紙に書いた1本の長いテキスト（記法は utils の noteText.tsx が解釈する）。
+   * 🔴 ここを段落ごとのブロックに割り戻さないこと。v5 までは本文も
+   *    1段落＝1ブロックで、書くたびに「保存する」を押して次のブロックが生える作りだった。
+   *    段落を跨いだカーソル移動も Backspace での結合もできず、
+   *    「一行書くのにこんな保存方法が要るのか」という指摘で1本化した。
+   */
+  body: string;
+  /**
+   * 素材。教材からの引用クリップと AI回答（と、禁止前に貼られた画像）。
+   * 本文の下にまとめて並ぶ。本文の途中に差し込む座標は持たない。
+   */
   blocks: NoteBlock[];
   /**
    * 一覧のラベル「重要」。手で付けるラベルはこれ1種だけ。
@@ -214,6 +242,11 @@ export interface NoteCreateInput {
 export interface NoteUpdateInput {
   title?: string;
   favorite?: boolean;
+  /**
+   * 本文の全文。ノート面の textarea が自動保存で丸ごと送る。
+   * 🔴 差分ではなく全文。本文は1本のテキストで、部分更新の単位が無い。
+   */
+  body?: string;
   /** フォルダの移動。null で未整理へ。移動だけなら updatedAt は上がらない */
   folderId?: string | null;
 }
@@ -264,36 +297,46 @@ export function matchesFolderFilter(
   return note.folderId === filter.id;
 }
 
-/** POST /webcoach/notes/:id/blocks — kind ごとに必要なものだけ渡す */
+/**
+ * POST /webcoach/notes/:id/blocks — kind ごとに必要なものだけ渡す。
+ * 🔴 `{ kind: 'text' }` は削除した。本文は Note.body の1本で、
+ *    PATCH /webcoach/notes/:id（NoteUpdateInput.body）が受け持つ。
+ * 🔴 `{ kind: 'image' }` と、answer の `image`（添付画像の dataURL）は削除した。
+ *    受講生が任意の画像をノートに持ち込める口を持たない、というセキュリティ方針。
+ *    AIコーチに画像を添えて質問すること自体は従来どおりできる（送るだけで残さない）。
+ *    **足し直さないこと。** 詳しい理由は utils/noteImageStore.ts の冒頭。
+ *    既存データの表示のために NoteImageBlock / NoteAnswerBlock.image は残してある。
+ */
 export type NoteBlockInput =
-  | { kind: 'text'; text: string }
   | { kind: 'clip'; text: string; source: NoteSourceRef }
   | {
       kind: 'answer';
       question: string;
       answer: string;
       selectedText?: string | null;
-      image?: string | null;
       source?: NoteSourceRef | null;
-    }
-  | { kind: 'image'; imageId: string; alt?: string; caption?: string | null };
+    };
 
 /**
- * 挿入位置。省略すると末尾。
- * ブロックの間の ＋ から差し込むために要る（`order` 列は持たず、配列の順序が正）。
+ * 教材・AIコーチからノートへ取り込むもの（hooks/useNoteCapture.ts）。
+ * 素材として足すか、本文の末尾に書き足すかの2通り。
+ * 🔴 `{ kind:'text' }` はブロックではなく **Note.body への追記**。
+ *    v5 までは text ブロックとして足していたが、本文が1本になったので
+ *    ノートを取り直して body を組み直す（useNoteCapture の append を見ること）。
  */
-export interface NoteBlockInsert {
-  index?: number;
-}
+export type NoteCaptureInput = NoteBlockInput | { kind: 'text'; text: string };
 
-/** PATCH /webcoach/notes/:id/blocks/:blockId */
+/**
+ * PATCH /webcoach/notes/:id/blocks/:blockId
+ * 🔴 並べ替えの `index` は無い。素材は追加順に並ぶだけで、動かせない
+ *    （本文が1本になり、素材を本文のどこに挟むかという座標が無くなったため）。
+ */
 export interface NoteBlockPatch {
+  /** クリップの本文 */
   text?: string;
   answer?: string;
   /** 画像ブロックの説明文 */
   caption?: string | null;
-  /** 並べ替え。この位置へ動かす（ノート面の ⠿）。範囲外は端に寄せる */
-  index?: number;
 }
 
 /**

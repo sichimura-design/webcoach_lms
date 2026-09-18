@@ -1,27 +1,27 @@
-import { useEffect, useRef, useState } from 'react';
-import { BookOpen, Check } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { BookOpen, X } from 'lucide-react';
 import { color, font, radius } from '../../theme/webcoachTheme';
 import { NoteBlock, NoteBlockPatch, NoteSourceRef } from '../../types/notes';
 import { useNoteImageUrl } from '../../hooks/useNoteImageUrl';
-import { renderNoteText, toggleTaskLine, NOTE_SYNTAX_HINT } from './noteText';
 
 /**
- * ノート内の1ブロック。
+ * ノートの素材1つ（教材からの引用クリップ / AIの回答 / 禁止前に貼られた画像）。
  *
- * 3種（本文・クリップ・AI回答）が同じ流れの中に混ざって並ぶのが、この画面の要点。
- * 「メモ・クリップ・AI回答は別々の履歴として管理するのではなく、1つのノートの中に
- * 混在して配置できる」という要件そのものなので、種別ごとにセクションを分けない。
+ * 🔴 本文（kind:'text'）はここでは描かない。本文は Note.body の1本で、
+ *    NoteEditor の textarea が丸ごと受け持つ。v5 までは本文もここで
+ *    「クリックで textarea → 保存する」を1段落ずつやっていたが撤去した。
  *
  * 出どころの違いは左罫の色だけで示す（教材＝ブランド色 / AI＝緑）。
- * バッジや枠を増やすと、自分で書いた文章より引用のほうが目立ってしまう。
+ * バッジや枠を増やすと、自分で書いた本文より引用のほうが目立ってしまう。
  *
- * 削除・並べ替えはここには無い。行の左に出る ⠿（NoteBlockRow）に集めてある。
+ * 🔴 並べ替えは無い（素材は追加順）。削除はこの中の × 1つだけ。
+ *    行の左に ⠿ と ＋ を出す NoteBlockRow は本文の1本化と一緒に消している。
  */
 interface NoteBlockViewProps {
   block: NoteBlock;
-  /** ＋ から作った直後の本文ブロック。開いた瞬間に書けるよう編集状態で出す */
-  autoEdit?: boolean;
   onPatch: (blockId: string, patch: NoteBlockPatch) => void;
+  /** この素材を外す */
+  onRemove: () => void;
   /** クリップ・AI回答から元のレッスンへ戻る */
   onOpenSource: (source: NoteSourceRef, blockId: string | null) => void;
 }
@@ -190,156 +190,35 @@ function NoteImageCaption({
   );
 }
 
-export function NoteBlockView({ block, autoEdit, onPatch, onOpenSource }: NoteBlockViewProps) {
-  // ---- 本文：クリックで編集、blur で確定 ----
-  const isText = block.kind === 'text';
-  const [editing, setEditing] = useState(Boolean(autoEdit) && block.kind === 'text');
-  const [draft, setDraft] = useState(isText ? block.text : '');
-  const areaRef = useRef<HTMLTextAreaElement>(null);
-  /** 保存・取り消しの判定は ref を見る。blur と click の二重発火で戻り値がぶれないように */
-  const draftRef = useRef(isText ? block.text : '');
-
-  useEffect(() => {
-    if (isText) {
-      setDraft(block.text);
-      draftRef.current = block.text;
-    }
-  }, [isText, block]);
-
-  useEffect(() => {
-    if (!editing) return;
-    const el = areaRef.current;
-    if (!el) return;
-    el.focus();
-    el.setSelectionRange(el.value.length, el.value.length);
-  }, [editing]);
-
-  if (block.kind === 'text') {
-    const save = () => {
-      setEditing(false);
-      if (draftRef.current !== block.text) onPatch(block.id, { text: draftRef.current });
-    };
-
-    const cancel = () => {
-      draftRef.current = block.text;
-      setDraft(block.text);
-      setEditing(false);
-    };
-
-    if (editing) {
-      return (
-        <div style={{ margin: '4px 0 12px' }}>
-          <textarea
-            ref={areaRef}
-            value={draft}
-            onChange={(e) => {
-              draftRef.current = e.target.value;
-              setDraft(e.target.value);
-            }}
-            onBlur={save}
-            onKeyDown={(e) => {
-              if (e.key === 'Escape') cancel();
-              if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                save();
-              }
-            }}
-            rows={Math.max(3, draft.split('\n').length + 1)}
-            style={{
-              width: '100%',
-              boxSizing: 'border-box',
-              border: `1px solid ${color.primaryBorderSoft}`,
-              borderRadius: radius.md,
-              padding: '12px 14px',
-              fontFamily: 'inherit',
-              fontSize: 13.5,
-              lineHeight: 2,
-              color: color.textStrong,
-              background: color.surface,
-              resize: 'vertical',
-              outline: 'none',
-            }}
-          />
-          <div className="flex items-center flex-wrap" style={{ gap: 10, marginTop: 8 }}>
-            <button
-              type="button"
-              // クリックで textarea が blur し、この click が届く前に消える。
-              // フォーカスを移さないでおけば、押した意図どおりに処理できる。
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={save}
-              className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                height: 34,
-                padding: '0 16px',
-                border: 0,
-                borderRadius: radius.md,
-                background: color.primary,
-                color: color.textOnPrimary,
-                fontFamily: 'inherit',
-                fontSize: 12,
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
-            >
-              <Check size={14} /> 保存する
-            </button>
-            <button
-              type="button"
-              onMouseDown={(e) => e.preventDefault()}
-              onClick={cancel}
-              className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-              style={{
-                height: 34,
-                padding: '0 14px',
-                border: `1px solid ${color.borderSoft}`,
-                borderRadius: radius.md,
-                background: color.surface,
-                color: color.textMuted,
-                fontFamily: 'inherit',
-                fontSize: 12,
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
-            >
-              取り消す
-            </button>
-            <span style={{ ...font.caption, color: color.textFaint }}>{NOTE_SYNTAX_HINT}</span>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="flex items-start" style={{ gap: 8, margin: '4px 0 10px' }}>
-        <div
-          role="button"
-          tabIndex={0}
-          onClick={() => setEditing(true)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              setEditing(true);
-            }
-          }}
-          className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-          style={{ flex: 1, minWidth: 0, cursor: 'text', borderRadius: radius.sm, outline: 'none' }}
-        >
-          {block.text.trim() ? (
-            renderNoteText(block.text, {
-              // チェックリストの □ は、編集モードに入らずその行だけ書き換える
-              onToggleTask: (lineIndex, checked) =>
-                onPatch(block.id, { text: toggleTaskLine(block.text, lineIndex, checked) }),
-            })
-          ) : (
-            <p style={{ margin: 0, ...font.meta, color: color.textFaint }}>（空の段落。クリックで書く）</p>
-          )}
-        </div>
-      </div>
-    );
-  }
+export function NoteBlockView({ block, onPatch, onRemove, onOpenSource }: NoteBlockViewProps) {
+  /**
+   * 素材を外す。
+   * 🔴 確認は挟まない。素材は教材やAIから取り込んだもので、同じ操作で入れ直せる
+   *    （自分で書いた本文とは違い、消しても書いたものは失われない）。
+   */
+  const removeButton = (label: string) => (
+    <button
+      type="button"
+      onClick={onRemove}
+      aria-label={label}
+      title={label}
+      className="focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+      style={{
+        flexShrink: 0,
+        display: 'grid',
+        placeItems: 'center',
+        width: 26,
+        height: 26,
+        border: 0,
+        borderRadius: 7,
+        background: 'transparent',
+        color: color.textFaint,
+        cursor: 'pointer',
+      }}
+    >
+      <X size={14} />
+    </button>
+  );
 
   if (block.kind === 'image') {
     return (
@@ -351,6 +230,7 @@ export function NoteBlockView({ block, autoEdit, onPatch, onOpenSource }: NoteBl
             onSave={(caption) => onPatch(block.id, { caption: caption || null })}
           />
         </figure>
+        {removeButton('この画像を外す')}
       </div>
     );
   }
@@ -382,6 +262,7 @@ export function NoteBlockView({ block, autoEdit, onPatch, onOpenSource }: NoteBl
             onOpenSource={onOpenSource}
           />
         </div>
+        {removeButton('この引用を外す')}
       </div>
     );
   }
@@ -447,6 +328,7 @@ export function NoteBlockView({ block, autoEdit, onPatch, onOpenSource }: NoteBl
           </div>
         )}
       </div>
+      {removeButton('このAI回答を外す')}
     </div>
   );
 }

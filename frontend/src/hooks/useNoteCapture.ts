@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useToast } from '../contexts/ToastContext';
 import bffClient from '../services/bffClient';
 import { useNoteTargetStore } from '../store/noteTargetStore';
-import { NoteBlockInput, NoteSourceRef } from '../types/notes';
+import { NoteCaptureInput, NoteSourceRef } from '../types/notes';
 
 /**
  * 教材・AIコーチからノートへ取り込む共通の入口。
@@ -21,7 +21,8 @@ import { NoteBlockInput, NoteSourceRef } from '../types/notes';
  *   onSaved              … 成功したときだけ呼ばれる（下書きのクリアなど）
  */
 export interface PendingCapture {
-  block: NoteBlockInput;
+  /** 素材（クリップ / AI回答）か、本文への追記（kind:'text'） */
+  block: NoteCaptureInput;
   /** ピッカーの「〜のノートを作る」に出す既定タイトル */
   suggestedTitle: string;
   /** 新規作成するときにノートへ持たせる出どころ */
@@ -48,10 +49,8 @@ export interface BackTo {
 }
 
 /** ピッカーに出す「何を保存しようとしているか」の1行 */
-export function previewOf(block: NoteBlockInput): string {
+export function previewOf(block: NoteCaptureInput): string {
   if (block.kind === 'answer') return block.question || block.answer;
-  // 画像は取り込み経路（教材のクリップ／AI回答）から来ないが、型としては通る
-  if (block.kind === 'image') return block.caption ?? '画像';
   return block.text;
 }
 
@@ -96,7 +95,20 @@ export function useNoteCapture() {
   const append = useCallback(
     async (noteId: string, input: PendingCapture): Promise<string | null> => {
       try {
-        await bffClient.appendNoteBlock(noteId, input.block);
+        if (input.block.kind === 'text') {
+          /*
+           * 本文への追記。ノートを取り直してから末尾に足す。
+           * 🔴 PATCH は本文の全文で上書きするので、取り直さずに送ると
+           *    このタブが知らない編集（別タブ・小窓で書いたぶん）を消してしまう。
+           */
+          const current = await bffClient.getNote(noteId);
+          const merged = [current.body.trim(), input.block.text.trim()]
+            .filter(Boolean)
+            .join('\n\n');
+          await bffClient.updateNote(noteId, { body: merged });
+        } else {
+          await bffClient.appendNoteBlock(noteId, input.block);
+        }
         const note = await bffClient.getNote(noteId);
         remember(input.lessonId, { noteId, title: note.title });
         const backTo = input.backTo ?? backToOf(input.source);

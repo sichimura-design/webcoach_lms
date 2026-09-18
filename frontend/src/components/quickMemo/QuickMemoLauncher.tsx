@@ -1,24 +1,28 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { PictureInPicture2 } from 'lucide-react';
 import { useDocumentPiP } from '../../hooks/useDocumentPiP';
-import { useQuickMemo } from '../../hooks/useQuickMemo';
 import { QuickMemoPane } from './QuickMemoPane';
 
 /**
- * 「速記メモ」の小窓（Document Picture-in-Picture）。
+ * ノートを小窓で開く（Document Picture-in-Picture）。
  * ============================================================
  * コーチングは会議ツールを別タブで開いて行う（CoachingPage.tsx の window.open）。
  * Meet は iframe に入れられないので、LMS側でメモを取ろうとするとタブの往復になる。
  * Document PiP なら会議の上に小窓を浮かべたまま書ける。
  *
- * 転記先は「開く側」が決める。ここは下書きと小窓の面倒だけを見て、
- * どのノートへ入れるかは onCommit に委ねる。
+ * 🔴 小窓に出るのは**そのノートの本文そのもの**。
+ *    かつては「速記メモ」という名前で、専用の localStorage に下書きを溜め、
+ *    「ノートに追加」を押したぶんだけがブロックとして転記される片道の投入口だった。
+ *    小窓を開いてもノートの中身が出ないので、名前から何をする所か読めなかった。
+ *    いまは本文（Note.body）を呼び出し側と同じ state で編集する。
+ *    **ここに独自のテキスト状態を持たせないこと。** 持たせると
+ *    親の紙と小窓で別々の本文ができて、あとから書いた方が相手を潰す。
  *
  * 【ボタンと小窓を分けられるようにしてある理由】
  *   マイノートではボタンをノート面の上部バーに置くが、あのバーは
  *   ノートを閉じると一緒に消える。小窓の寿命をバーに預けると、一覧へ戻った
- *   だけで小窓が落ちる。そこで useQuickMemoWindow（小窓と下書きを持つ）と
+ *   だけで小窓が落ちる。そこで useQuickMemoWindow（小窓を持つ）と
  *   QuickMemoButton（押すだけ）に分け、ページ側が小窓を持てるようにした。
  *   コーチングの記録中画面のように寿命が一致する場所では、両方をまとめた
  *   QuickMemoLauncher をそのまま使えばよい。
@@ -29,133 +33,93 @@ import { QuickMemoPane } from './QuickMemoPane';
  * ============================================================
  */
 
-const FALLBACK_ERROR = 'ノートに追加できませんでした。もう一度お試しください。';
-
-/**
- * onCommit がこれを投げたときだけ、その文言をそのまま小窓に出す。
- * ふつうの Error（axios の "Request failed with status code 404" など）は
- * 読み手に意味が無いので FALLBACK_ERROR に置き換える。
- */
-export class QuickMemoError extends Error {}
-
 export interface UseQuickMemoWindowOptions {
-  /** 下書きの宛先。utils/quickMemoDraft.ts の coachingDraftKey / noteDraftKey で作る */
-  draftKey: string;
-  /** 小窓の中に出す転記先の名前 */
+  /** 小窓の中に出す、いま開いているノートの名前 */
   targetLabel: string;
   /** 小窓そのものの名前（タスクバー・支援技術向け） */
   windowTitle: string;
-  /** 追加を実行する。失敗は throw で伝える（下書きを残すため） */
-  onCommit: (text: string) => Promise<void>;
+  /** 本文。呼び出し側の useNote が持っているものをそのまま渡す */
+  text: string;
+  onChangeText: (text: string) => void;
+  /** 小窓から手が離れたときに、待たずに保存させる */
+  onFlush: () => void;
+  status: 'idle' | 'saving' | 'saved';
+  /** 保存に失敗したときの文言 */
+  error: string | null;
+  /** 小窓を開く前にやること（コーチングでは記録ノートを作る）。失敗したら開かない */
+  onBeforeOpen?: () => Promise<boolean>;
 }
 
 export interface QuickMemoWindow {
   supported: boolean;
   isOpen: boolean;
-  /** 書きかけがあるか。ボタンの文言に使う */
-  hasDraft: boolean;
   /** クリックハンドラから直接呼ぶ。開いていれば閉じる */
   toggle: () => Promise<void>;
+  /** 明示的に閉じる（ノートが閉じられたときなど） */
+  close: () => void;
   /** ページのどこかで描く。閉じていれば null */
   portal: React.ReactNode;
 }
 
 export function useQuickMemoWindow({
-  draftKey,
   targetLabel,
   windowTitle,
-  onCommit,
+  text,
+  onChangeText,
+  onFlush,
+  status,
+  error,
+  onBeforeOpen,
 }: UseQuickMemoWindowOptions): QuickMemoWindow {
   const { supported, pipWindow, open, close } = useDocumentPiP();
-  const memo = useQuickMemo(draftKey);
-  const [committing, setCommitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  /*
-   * 「前回の書きかけを復元しました」を出すか。
-   * 🔴 判定は下書きを読んだ時点ではなく "小窓を開いた時点"。フックはページと同じだけ
-   *    生きているので、読み込み時に空でも、書いて閉じて開き直せば復元は起きる。
-   */
-  const [restored, setRestored] = useState(false);
-
-  const { flush, clear, setText, text, status } = memo;
-
-  // 小窓が消えたら（× でも、他所に奪われても）状態を持ち越さない
-  useEffect(() => {
-    if (!pipWindow) {
-      setError(null);
-      setRestored(false);
-    }
-  }, [pipWindow]);
 
   const toggle = useCallback(async () => {
     if (pipWindow) {
-      flush();
+      onFlush();
       close();
       return;
     }
-    setError(null);
-    setRestored(text.trim() !== '');
-    // 🔴 requestWindow() より前に await を挟まないこと（user activation を消費する）
+    /*
+     * 🔴 onBeforeOpen（ノートの作成）を await してから requestWindow() を呼ぶと、
+     *    user activation が切れて小窓が開けない。先に窓を出して、
+     *    中身は開いたあとに揃える。
+     */
     await open({ title: windowTitle });
-  }, [pipWindow, flush, close, open, windowTitle, text]);
-
-  // 一文字でも打てば「復元しました」は役目を終える
-  const handleChangeText = useCallback(
-    (next: string) => {
-      setRestored(false);
-      setText(next);
-    },
-    [setText]
-  );
-
-  const handleCommit = useCallback(async () => {
-    const body = text.trim();
-    if (!body || committing) return;
-    setCommitting(true);
-    setError(null);
-    try {
-      await onCommit(body);
-      clear();
-    } catch (e) {
-      // 🔴 失敗したら下書きは消さない。useNoteCapture.ts:37-41 と同じ規約
-      setError(e instanceof QuickMemoError && e.message ? e.message : FALLBACK_ERROR);
-    } finally {
-      setCommitting(false);
+    if (onBeforeOpen) {
+      const ok = await onBeforeOpen();
+      if (!ok) close();
     }
-  }, [text, committing, onCommit, clear]);
+  }, [pipWindow, onFlush, close, open, windowTitle, onBeforeOpen]);
 
   const portal = pipWindow
     ? createPortal(
         <QuickMemoPane
           targetLabel={targetLabel}
           text={text}
-          onChangeText={handleChangeText}
+          onChangeText={onChangeText}
+          onFlush={onFlush}
           status={status}
-          restored={restored}
-          committing={committing}
           error={error}
-          onCommit={handleCommit}
         />,
         pipWindow.document.body
       )
     : null;
 
-  return { supported, isOpen: pipWindow !== null, hasDraft: text.trim() !== '', toggle, portal };
+  return { supported, isOpen: pipWindow !== null, toggle, close, portal };
 }
 
 export interface QuickMemoButtonProps {
   isOpen: boolean;
-  hasDraft: boolean;
   onClick: () => void;
   style?: React.CSSProperties;
   className?: string;
 }
 
-export function QuickMemoButton({ isOpen, hasDraft, onClick, style, className }: QuickMemoButtonProps) {
+export function QuickMemoButton({ isOpen, onClick, style, className }: QuickMemoButtonProps) {
   return (
     <button type="button" onClick={onClick} aria-pressed={isOpen} className={className} style={style}>
       <PictureInPicture2 size={14} style={{ flexShrink: 0 }} />
-      {isOpen ? '速記メモを閉じる' : hasDraft ? '速記メモ（書きかけ）' : '速記メモを小窓で開く'}
+      {isOpen ? '小窓を閉じる' : 'ノートを小窓で開く'}
     </button>
   );
 }
@@ -175,7 +139,6 @@ export function QuickMemoLauncher({ buttonStyle, buttonClassName, ...options }: 
     <>
       <QuickMemoButton
         isOpen={memoWindow.isOpen}
-        hasDraft={memoWindow.hasDraft}
         onClick={() => void memoWindow.toggle()}
         style={buttonStyle}
         className={buttonClassName}

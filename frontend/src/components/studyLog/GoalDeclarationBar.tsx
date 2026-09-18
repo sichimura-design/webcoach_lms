@@ -93,12 +93,17 @@ const NOTE: React.CSSProperties = {
  * 期間とボタンの並び。
  * 🔴 flex:'none' にしない。375px でボタンが2つ並ぶ状態（期間終了）だと、
  *    縮まないぶんバーの外へはみ出して横スクロールが出る。
+ * 🔴 バーの右端に寄せる（marginLeft:'auto'）。かつて flex:'1 1 auto' で
+ *    目標文と余白を山分けしていたころは、左端にも右端にも付かない
+ *    中途半端な位置で止まっていた。伸びる役は目標文（flex:1）に任せる。
  */
 const ACTIONS: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'flex-end',
   gap: 12,
-  flex: '1 1 auto',
+  flex: '0 1 auto',
+  marginLeft: 'auto',
   minWidth: 0,
   flexWrap: 'wrap',
 };
@@ -180,7 +185,14 @@ export function GoalDeclarationBar({ active, pending, loading, onJump }: GoalDec
     );
   }
 
-  // 進行中がある。振り返り待ちが残っていれば件数だけ添える
+  /*
+   * 進行中がある。
+   * 🔴 ここに「振り返り待ち N件」を並べない。進行中の目標を読む場所に
+   *    別の目標の未処理件数を混ぜると、ボタンが2つ並んでどちらが本筋か
+   *    読めなくなる（「編集」だけを残す、という指摘への対応）。
+   *    振り返り待ちには下部の GoalDeclarationCard に節があり、
+   *    ?goal=review の着地（StudyLogPage）も生きているので到達手段は消えていない。
+   */
   if (active) {
     const left = daysLeft(active, toLocalDateKey(new Date()));
     return frame(
@@ -191,9 +203,7 @@ export function GoalDeclarationBar({ active, pending, loading, onJump }: GoalDec
             {md(active.periodFrom)}〜{md(active.periodTo)}
             {left > 0 ? `（あと${left}日）` : ''}
           </span>
-          {/* 🔴 件数を言うだけ。どれを振り返るかの選択は下部カードが持つ */}
-          {pending.length > 0 && jumpButton(`振り返り待ち ${pending.length}件`, () => onJump('pending'))}
-          {jumpButton('編集', () => onJump('current'))}
+          {jumpButton('目標を編集', () => onJump('current'))}
         </span>
       </>
     );

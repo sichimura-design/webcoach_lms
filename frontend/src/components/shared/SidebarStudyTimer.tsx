@@ -122,7 +122,14 @@ export function SidebarStudyTimer({ variant, tabIndex }: SidebarStudyTimerProps)
 
   if (variant === 'rail') {
     return (
-      <div ref={wrapRef} className="relative" style={{ flex: 'none' }}>
+      /*
+       * 🔴 丸の下に10pxのラベルを出す。レールの他の項目は renderNavPillFace が
+       *    「丸ピル＋10pxラベル」で描いていて（AppHeader.tsx の SZ.railLabelFont/railLabelGap）、
+       *    ここだけラベルが無いせいで「● 12」としか読めず、記録を止めたい人が
+       *    これを押せば止まると気づけなかった。形を揃えて押せるナビ要素に見せる。
+       *    語は展開パネル側の見出しと同じ「学習記録」にして、レールとパネルで呼称を揃える。
+       */
+      <div ref={wrapRef} className="relative flex flex-col items-center" style={{ flex: 'none', gap: 2 }}>
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -162,6 +169,20 @@ export function SidebarStudyTimer({ variant, tabIndex }: SidebarStudyTimerProps)
             {stateLabel} {elapsedLabel}
           </span>
         </button>
+        {/* レールのナビ項目と同じ 10px ラベル。色は AppHeader の SB.iconIdle (#6B6B6B) に合わせる */}
+        <span
+          aria-hidden="true"
+          className="whitespace-nowrap"
+          style={{
+            fontSize: 10,
+            lineHeight: '12px',
+            fontWeight: 500,
+            color: '#6B6B6B',
+            letterSpacing: '-0.02em',
+          }}
+        >
+          学習記録
+        </span>
         {popover}
       </div>
     );

@@ -1,12 +1,16 @@
 /**
  * frontend/src/mocks/noteMigration.ts
- * ノートの保存形式 v1 → v2 → v3 → v4 → v5 移行と、空のときのデモシード。
+ * ノートの保存形式 v1 → … → v6 移行と、空のときのデモシード。
  *
  * v1: { notes: NoteItem[]; memos } … メモ/クリップ/AI回答が時系列に並ぶ平坦な履歴
  * v2: { schemaVersion: 2; notes: Note[]; memos } … 器（Note）＋中身（NoteBlock）
  * v3: v2 ＋ Note.origin（出どころ）… 一覧の出どころバッジと絞り込みチップの根拠
  * v4: v3 ＋ Note.coachingSessionId … コーチング記録の「マイノート」欄がどの回のノートかを引く
  * v5: v4 ＋ folders / Note.folderId … マイノートのフォルダ
+ * v6: 本文を Note.body の1本にまとめる。blocks に残るのは素材
+ *     （クリップ / AI回答 / 禁止前に貼られた画像）だけ。
+ *     🔴 v6 で kind:'text' のブロックは作られない。本文をブロックに割るのをやめた
+ *        （1段落ごとに「保存する」を押す作りが煩わしい、という指摘）。
  *
  * 🔴 memos（レッスン別の下書き）は触らない。下書きはノートではないし、
  *    MemoPane の自動保存がそこを読み書きしている。
@@ -40,8 +44,51 @@ interface LegacyNoteItem {
   createdAt: string;
 }
 
-export interface NoteStoreV5 {
-  schemaVersion: 5;
+/**
+ * v5 までのノートの形。本文が `kind:'text'` のブロックとして blocks に並んでいた。
+ * 移行元としてだけ使う内部型で、外には出さない（外は必ず v6 = Note）。
+ */
+type LegacyTextBlock = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  kind: 'text';
+  text: string;
+};
+export type NoteV5 = Omit<Note, 'body' | 'blocks'> & {
+  body?: string;
+  blocks: (NoteBlock | LegacyTextBlock)[];
+};
+
+/**
+ * v5 → v6。本文の text ブロックを1本の `body` にまとめ、
+ * クリップ・AI回答・（既存の）画像は素材として blocks に残す。
+ *
+ * 🔴 text と素材が交互に並んでいたノートは「本文が先、素材が後」に潰れる。
+ *    v6 では本文の途中に素材を差し込む座標（NoteBlockInsert.index）が無いので、
+ *    順序を保てない。捨てるよりは潰して全部残すほうを採る。
+ * 🔴 何度通しても同じ結果になること（冪等）。v6 のストアを読み直したときも
+ *    この関数を通るので、text ブロックが無ければ body をそのまま返す。
+ */
+function foldToV6(note: NoteV5): Note {
+  const texts: string[] = [];
+  const blocks: NoteBlock[] = [];
+  for (const block of note.blocks) {
+    if (block.kind === 'text') {
+      if (block.text.trim()) texts.push(block.text.trim());
+    } else {
+      blocks.push(block);
+    }
+  }
+  // 既に body を持っているノート（v6）は、その本文を先頭に置いて取りこぼさない
+  const head = (note.body ?? '').trim();
+  const body = [head, ...texts].filter(Boolean).join('\n\n');
+  const { body: _ignored, ...rest } = note;
+  return { ...rest, body, blocks };
+}
+
+export interface NoteStoreV6 {
+  schemaVersion: 6;
   notes: Note[];
   /** ユーザーが作ったフォルダ。ノート側は folderId で参照する（未整理は null） */
   folders: NoteFolder[];
@@ -66,7 +113,7 @@ export function nextId(prefix: string): string {
  * 作成時の文脈は残っていないので、中身の証拠から推定する。
  * 'coaching' は判定材料が無い（コーチング→ノートの導線が未実装）ので出てこない。
  */
-export function inferOrigin(note: Note): NoteOrigin {
+export function inferOrigin(note: Pick<NoteV5, 'source' | 'blocks'>): NoteOrigin {
   if (note.source) return 'material';
   if (note.blocks.some((b) => b.kind === 'clip')) return 'material';
   if (note.blocks.some((b) => b.kind === 'answer')) return 'ai';
@@ -75,9 +122,9 @@ export function inferOrigin(note: Note): NoteOrigin {
 
 /** origin を持たないノートに推定値を入れ、フォルダ未指定は未整理（null）にして返す */
 function withOrigin(
-  note: Omit<Note, 'origin' | 'folderId'> & { origin?: NoteOrigin; folderId?: string | null }
-): Note {
-  const filled = note as Note;
+  note: Omit<NoteV5, 'origin' | 'folderId'> & { origin?: NoteOrigin; folderId?: string | null }
+): NoteV5 {
+  const filled = note as NoteV5;
   return { ...filled, origin: note.origin ?? inferOrigin(filled), folderId: note.folderId ?? null };
 }
 
@@ -133,7 +180,7 @@ function sourceOf(item: LegacyNoteItem): NoteSourceRef {
   };
 }
 
-function blockOf(item: LegacyNoteItem): NoteBlock {
+function blockOf(item: LegacyNoteItem): NoteBlock | LegacyTextBlock {
   const base = { id: nextId(item.kind), createdAt: item.createdAt, updatedAt: item.createdAt };
   if (item.kind === 'clip') {
     return { ...base, kind: 'clip', text: item.text, source: sourceOf(item) };
@@ -162,7 +209,7 @@ function blockOf(item: LegacyNoteItem): NoteBlock {
  *    旧レコードは courseName / lessonTitle を持っているのでデータを捏造しない。
  * 🔴 捨てない。ユーザー自身が書いたもの。
  */
-export function migrateLegacyNotes(legacy: LegacyNoteItem[]): Note[] {
+export function migrateLegacyNotes(legacy: LegacyNoteItem[]): NoteV5[] {
   const byLesson = new Map<string, LegacyNoteItem[]>();
   const orphans: LegacyNoteItem[] = [];
 
@@ -178,7 +225,7 @@ export function migrateLegacyNotes(legacy: LegacyNoteItem[]): Note[] {
   }
 
   const asc = (a: LegacyNoteItem, b: LegacyNoteItem) => a.createdAt.localeCompare(b.createdAt);
-  const notes: Note[] = [];
+  const notes: NoteV5[] = [];
 
   byLesson.forEach((items) => {
     const sorted = [...items].sort(asc);
@@ -340,8 +387,8 @@ function folderIdOf(key: SeedFolderKey | null | undefined): string | null {
   return key ? SEED_FOLDER_ID[key] : null;
 }
 
-export function buildDummyNotes(count: number, now: Date, startDay = 0): Note[] {
-  const notes: Note[] = [];
+export function buildDummyNotes(count: number, now: Date, startDay = 0): NoteV5[] {
+  const notes: NoteV5[] = [];
   for (let i = 0; i < count; i += 1) {
     const { topic, text } = DUMMY_TOPICS[i % DUMMY_TOPICS.length];
     const lensIndex = Math.floor(i / DUMMY_TOPICS.length) % DUMMY_LENSES.length;
@@ -392,9 +439,10 @@ export const DEFAULT_SEED_COUNT = 100;
  */
 export function buildSeedNotes(now: Date, count: number = DEFAULT_SEED_COUNT): Note[] {
   const curated = buildCuratedNotes(now);
-  if (count <= curated.length) return curated.slice(0, count);
+  // シードの本文は読みやすさのために text ブロックで書いてある。外へ出すときに v6 へ畳む
+  if (count <= curated.length) return curated.slice(0, count).map(foldToV6);
   // 手書き分の一番古いカード（35日前）より後ろに続ける
-  return [...curated, ...buildDummyNotes(count - curated.length, now, 36)];
+  return [...curated, ...buildDummyNotes(count - curated.length, now, 36)].map(foldToV6);
 }
 
 /**
@@ -405,7 +453,7 @@ export function buildSeedNotes(now: Date, count: number = DEFAULT_SEED_COUNT): N
 const bannerCourse = courseBySlug('banner-dojo');
 const designBasicsCourse = courseBySlug('design-basics');
 
-function buildCuratedNotes(now: Date): Note[] {
+function buildCuratedNotes(now: Date): NoteV5[] {
   const iso = (minutesAgo: number) => new Date(now.getTime() - minutesAgo * 60_000).toISOString();
   const source: NoteSourceRef = {
     courseId: bannerCourse?.id ?? 0,
@@ -547,14 +595,14 @@ function buildCuratedNotes(now: Date): Note[] {
  * 🔴 保存できなかったときに黙って諦めると、書いたノートが次のリクエストで
  *    消えて「読み込めない」ように見える。保存だけ諦めて、その場では動かす。
  */
-let fallbackStore: NoteStoreV5 | null = null;
+let fallbackStore: NoteStoreV6 | null = null;
 
 /**
  * v3 までのノートに coachingSessionId を後付けする。
  * 作成時の文脈は残っていないので、シードのタイトルと突き合わせて埋める
  * （デモノート以外は紐づけようがないので null のまま）。
  */
-function backfillCoachingSessionIds(notes: Note[]): Note[] {
+function backfillCoachingSessionIds(notes: NoteV5[]): NoteV5[] {
   const byTitle = new Map(
     SEED_CARDS.filter((c) => c.coachingSessionId).map((c) => [c.title, c.coachingSessionId!]),
   );
@@ -572,7 +620,7 @@ function backfillCoachingSessionIds(notes: Note[]): Note[] {
  * デモフォルダ3つを置く。それ以外＝ユーザーが自分で書いたノートは未整理（null）に
  * 置くだけで、フォルダは捏造しない。デモが1枚も無いストアにはフォルダも置かない。
  */
-function backfillFolders(notes: Note[], now: Date): { notes: Note[]; folders: NoteFolder[] } {
+function backfillFolders(notes: NoteV5[], now: Date): { notes: NoteV5[]; folders: NoteFolder[] } {
   const byTitle = new Map<string, string | null>();
   for (const seed of buildSeedNotes(now, DEFAULT_SEED_COUNT)) byTitle.set(seed.title, seed.folderId);
 
@@ -586,11 +634,24 @@ function backfillFolders(notes: Note[], now: Date): { notes: Note[]; folders: No
   return { notes: filled, folders: matched ? buildSeedFolders(now) : [] };
 }
 
-/** localStorage から読む。v1〜v4 なら移行し、空ならシードを置く */
-export function readNoteStore(): NoteStoreV5 {
-  if (fallbackStore) return fallbackStore;
+/** 移行の途中経過。本文がまだ text ブロックのままの状態で返す */
+interface RawNoteStore {
+  notes: NoteV5[];
+  folders: NoteFolder[];
+  memos: Record<string, { text: string; updatedAt: string }>;
+  seeded?: boolean;
+  /** 何版から上げたか。null なら読んだだけで書き戻しは要らない */
+  upgradedFrom: number | null;
+}
 
-  const empty: NoteStoreV5 = { schemaVersion: 5, notes: [], folders: [], memos: {} };
+/**
+ * localStorage から読む。v1〜v5 なら移行し、空ならシードを置く。
+ *
+ * 🔴 ここでは書き戻さない。本文を1本化する v6 への畳み込み（foldToV6）は
+ *    readNoteStore 側が最後に1回だけ通すので、途中で保存すると v5 の形が
+ *    一瞬だけ書かれて二度手間になる。
+ */
+function readRawNoteStore(): RawNoteStore {
   let parsed: any = null;
   try {
     const raw = localStorage.getItem(NOTES_KEY);
@@ -602,7 +663,9 @@ export function readNoteStore(): NoteStoreV5 {
   const memos = parsed?.memos && typeof parsed.memos === 'object' ? parsed.memos : {};
   const now = new Date();
 
-  if (parsed?.schemaVersion === 5 && Array.isArray(parsed.notes)) {
+  // v5 / v6。どちらも器は同じで、違うのは本文が text ブロックか body かだけ。
+  // 畳み込み（foldToV6）は冪等なので、まとめて同じ枝で扱う
+  if ((parsed?.schemaVersion === 5 || parsed?.schemaVersion === 6) && Array.isArray(parsed.notes)) {
     const folders: NoteFolder[] = Array.isArray(parsed.folders) ? parsed.folders : [];
     // 🔴 「置かれないままの0件」はここで直す。デモを一度も置いていないのに
     //    0件で保存されているブラウザは、以後いくら開き直しても真っ白のまま
@@ -611,52 +674,45 @@ export function readNoteStore(): NoteStoreV5 {
     if (parsed.notes.length > 0 || parsed.seeded === true) {
       // 1枚でもあるストアは「出来上がっている」ので印を立てておく。
       // こうしておくと、このあと全部消しても勝手にデモが戻ってこない。
-      return { schemaVersion: 5, notes: parsed.notes, folders, memos, seeded: true };
+      return {
+        notes: parsed.notes,
+        folders,
+        memos,
+        seeded: true,
+        upgradedFrom: parsed.schemaVersion === 6 ? null : 5,
+      };
     }
-    const reseeded: NoteStoreV5 = {
-      schemaVersion: 5,
+    return {
       notes: buildSeedNotes(now),
       folders: buildSeedFolders(now),
       memos,
       seeded: true,
+      upgradedFrom: 5,
     };
-    writeNoteStore(reseeded);
-    // eslint-disable-next-line no-console
-    console.info(`[MSW] ノートが0件だったのでデモを置き直しました: ${reseeded.notes.length}件`);
-    return reseeded;
   }
 
-  // v4 → v5。フォルダを足す（デモノートはシードと同じフォルダへ、それ以外は未整理）
+  // v4 → v6。フォルダを足す（デモノートはシードと同じフォルダへ、それ以外は未整理）
   if (parsed?.schemaVersion === 4 && Array.isArray(parsed.notes)) {
-    const { notes, folders } = backfillFolders(parsed.notes as Note[], now);
-    const upgraded: NoteStoreV5 = { schemaVersion: 5, notes, folders, memos, seeded: true };
-    writeNoteStore(upgraded);
-    // eslint-disable-next-line no-console
-    console.info(`[MSW] ノートにフォルダを付けました（v4 → v5）: ${notes.length}ノート / ${folders.length}フォルダ`);
-    return upgraded;
+    const { notes, folders } = backfillFolders(parsed.notes as NoteV5[], now);
+    return { notes, folders, memos, seeded: true, upgradedFrom: 4 };
   }
 
-  // v3 → v5。コーチング回への紐づけをシードのタイトルから後付けし、フォルダも足す
+  // v3 → v6。コーチング回への紐づけをシードのタイトルから後付けし、フォルダも足す
   if (parsed?.schemaVersion === 3 && Array.isArray(parsed.notes)) {
-    const { notes, folders } = backfillFolders(backfillCoachingSessionIds(parsed.notes as Note[]), now);
-    const upgraded: NoteStoreV5 = { schemaVersion: 5, notes, folders, memos, seeded: true };
-    writeNoteStore(upgraded);
-    // eslint-disable-next-line no-console
-    console.info(`[MSW] ノートにコーチング回の紐づけとフォルダを付けました（v3 → v5）: ${notes.length}ノート`);
-    return upgraded;
-  }
-
-  // v2 → v5。器はそのまま、出どころを中身から推定して足す
-  if (parsed?.schemaVersion === 2 && Array.isArray(parsed.notes)) {
     const { notes, folders } = backfillFolders(
-      backfillCoachingSessionIds((parsed.notes as Note[]).map((note) => withOrigin(note))),
+      backfillCoachingSessionIds(parsed.notes as NoteV5[]),
       now
     );
-    const upgraded: NoteStoreV5 = { schemaVersion: 5, notes, folders, memos, seeded: true };
-    writeNoteStore(upgraded);
-    // eslint-disable-next-line no-console
-    console.info(`[MSW] ノートに出どころを付けました（v2 → v5）: ${notes.length}ノート`);
-    return upgraded;
+    return { notes, folders, memos, seeded: true, upgradedFrom: 3 };
+  }
+
+  // v2 → v6。器はそのまま、出どころを中身から推定して足す
+  if (parsed?.schemaVersion === 2 && Array.isArray(parsed.notes)) {
+    const { notes, folders } = backfillFolders(
+      backfillCoachingSessionIds((parsed.notes as NoteV5[]).map((note) => withOrigin(note))),
+      now
+    );
+    return { notes, folders, memos, seeded: true, upgradedFrom: 2 };
   }
 
   // v1（schemaVersion 無し）か、まったくの空
@@ -664,16 +720,35 @@ export function readNoteStore(): NoteStoreV5 {
   const notes = legacy.length > 0 ? migrateLegacyNotes(legacy) : buildSeedNotes(now);
   // v1 の移行分はユーザーの記録なのでフォルダを捏造しない。デモを置く場合だけデモフォルダも置く
   const folders = legacy.length > 0 ? [] : buildSeedFolders(now);
-  const migrated: NoteStoreV5 = { schemaVersion: 5, notes, folders, memos, seeded: true };
-  writeNoteStore(migrated);
-  if (legacy.length > 0) {
-    // eslint-disable-next-line no-console
-    console.info(`[MSW] ノートを v5 へ移行しました: ${legacy.length}件 → ${notes.length}ノート`);
-  }
-  return { ...empty, ...migrated };
+  return { notes, folders, memos, seeded: true, upgradedFrom: 1 };
 }
 
-export function writeNoteStore(store: NoteStoreV5): void {
+/**
+ * localStorage から読んで、必ず v6（本文は Note.body の1本）で返す。
+ * 上がった版があれば、その場で書き戻して次回から移行を走らせない。
+ */
+export function readNoteStore(): NoteStoreV6 {
+  if (fallbackStore) return fallbackStore;
+
+  const raw = readRawNoteStore();
+  const store: NoteStoreV6 = {
+    schemaVersion: 6,
+    notes: raw.notes.map(foldToV6),
+    folders: raw.folders,
+    memos: raw.memos,
+    seeded: raw.seeded,
+  };
+  if (raw.upgradedFrom !== null) {
+    writeNoteStore(store);
+    // eslint-disable-next-line no-console
+    console.info(
+      `[MSW] ノートを v6 へ移行しました（v${raw.upgradedFrom} → v6・本文を1本にまとめました）: ${store.notes.length}ノート`
+    );
+  }
+  return store;
+}
+
+export function writeNoteStore(store: NoteStoreV6): void {
   try {
     localStorage.setItem(NOTES_KEY, JSON.stringify(store));
     fallbackStore = null; // 保存できたので退避先は要らない

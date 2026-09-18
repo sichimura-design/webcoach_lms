@@ -411,7 +411,9 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
   const handleSaveAnswer = useCallback(
     async (message: LessonAiMessage) => {
       if (!doc || (!message.answer && !message.skillResult)) return;
-      const { question, quote, image } = questionFor(message);
+      // 🔴 添付画像は持ってこない。ノートに任意の画像を残さない方針
+      //    （utils/noteImageStore.ts の冒頭）。質問に画像を使うのは従来どおり。
+      const { question, quote } = questionFor(message);
       const sources = message.answer?.sources ?? message.skillResult?.sources ?? [];
       const source = sourceOf({
         blockId: sources[0]?.blockId ?? null,
@@ -423,7 +425,6 @@ export function LearningWorkspacePage({ courseId, initialModuleId, onBack }: Lea
           question,
           answer: answerToText(message),
           selectedText: quote,
-          image,
           source,
         },
         suggestedTitle: doc.title,

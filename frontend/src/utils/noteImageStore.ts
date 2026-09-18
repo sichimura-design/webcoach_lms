@@ -1,7 +1,20 @@
 /**
- * ノートに貼った画像の置き場所（IndexedDB）。
+ * ノートに貼った画像の置き場所（IndexedDB）。**読み出しと削除だけ**。
  * ============================================================
- * 🔴 なぜ localStorage でも dataURL でもないのか。
+ * 🔴 putNoteImage（ファイルを受け取って保存する関数）と、それが使っていた
+ *    縮小処理・NOTE_IMAGE_MAX_BYTES・NOTE_IMAGE_ACCEPT は削除した。
+ *    受講生が任意の画像をアプリに持ち込める口を持たない、というセキュリティ方針。
+ *    実BFFに画像アップロードAPIは無く、選んだファイルは検証されないまま
+ *    ブラウザ内（IndexedDB）に溜まるだけだった。
+ *    **足し直さないこと。** 必要になったら、サーバ側で種別・サイズ・保存先を
+ *    決める専用エンドポイントを先に用意する（profile のアイコンで同じ判断をしている。
+ *    services/bffClient.ts の uploadProfileAvatar の抜け殻コメント参照）。
+ *
+ * 🔴 読み出し（getNoteImageUrl）と削除（deleteNoteImage）は残す。
+ *    禁止より前に貼られた画像が既存ノートに入っているので、
+ *    表示できなくなると過去のノートが壊れる。消す手段も要る。
+ *
+ * 🔴 なぜ localStorage でも dataURL でもないのか（既存データの形の理由）。
  *    ノート本体（mocks/noteMigration.ts の webcoach-lesson-notes）は
  *    localStorage に入る。dataURL を本文に埋めると1枚で数MBになり、
  *    localStorage の 5MB 上限を数枚で超えてノートごと保存できなくなる。
@@ -19,14 +32,6 @@
 const DB_NAME = 'webcoach-note-images';
 const DB_VERSION = 1;
 const STORE = 'images';
-
-/** 長辺の上限。これを超える写真は縮めて入れる（表示はノート幅700px程度） */
-const MAX_EDGE = 1600;
-/** 縮小せずそのまま入れる上限。これ以下なら元のフォーマットを保つ */
-const KEEP_AS_IS_BYTES = 400 * 1024;
-
-export const NOTE_IMAGE_MAX_BYTES = 12 * 1024 * 1024;
-export const NOTE_IMAGE_ACCEPT = 'image/png,image/jpeg,image/gif,image/webp';
 
 let dbPromise: Promise<IDBDatabase> | null = null;
 
@@ -58,59 +63,6 @@ function tx<T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => IDBRequ
         req.onerror = () => reject(req.error);
       })
   );
-}
-
-function newId(): string {
-  return `img_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-}
-
-/**
- * 大きすぎる画像を縮める。canvas を通すので、透過PNGは白背景ではなく
- * PNG のまま出す（JPEGにすると透過が黒く潰れる）。
- * 失敗したら元のファイルをそのまま返す（縮小は最適化であって必須ではない）。
- */
-async function shrink(file: File): Promise<Blob> {
-  if (file.size <= KEEP_AS_IS_BYTES) return file;
-
-  const url = URL.createObjectURL(file);
-  try {
-    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
-      const el = new Image();
-      el.onload = () => resolve(el);
-      el.onerror = () => reject(new Error('decode failed'));
-      el.src = url;
-    });
-
-    const longEdge = Math.max(img.naturalWidth, img.naturalHeight);
-    if (longEdge <= MAX_EDGE && file.size <= 2 * 1024 * 1024) return file;
-
-    const scale = Math.min(1, MAX_EDGE / longEdge);
-    const canvas = document.createElement('canvas');
-    canvas.width = Math.round(img.naturalWidth * scale);
-    canvas.height = Math.round(img.naturalHeight * scale);
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return file;
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-    const type = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
-    const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, type, type === 'image/jpeg' ? 0.85 : undefined)
-    );
-    // 縮めたのに大きくなることがある（小さなPNGなど）。その場合は元を採る
-    return blob && blob.size < file.size ? blob : file;
-  } catch {
-    return file;
-  } finally {
-    URL.revokeObjectURL(url);
-  }
-}
-
-/** 画像を保存して参照キーを返す。ブロックにはこのキーだけを載せる */
-export async function putNoteImage(file: File): Promise<string> {
-  const blob = await shrink(file);
-  const id = newId();
-  await tx('readwrite', (store) => store.put(blob, id));
-  return id;
 }
 
 /**

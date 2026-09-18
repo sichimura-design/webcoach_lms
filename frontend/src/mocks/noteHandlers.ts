@@ -3,12 +3,12 @@
  * ============================================================
  *   GET    /api/webcoach/notes                      一覧（NoteSummary[]）
  *   POST   /api/webcoach/notes                      ノート作成
- *   GET    /api/webcoach/notes/:id                  1件（ブロック込み）
- *   PATCH  /api/webcoach/notes/:id                  タイトル・お気に入り・フォルダ移動
+ *   GET    /api/webcoach/notes/:id                  1件（本文＋素材）
+ *   PATCH  /api/webcoach/notes/:id                  タイトル・本文・お気に入り・フォルダ移動
  *   DELETE /api/webcoach/notes/:id                  削除
- *   POST   /api/webcoach/notes/:id/blocks           ブロック追加
- *   PATCH  /api/webcoach/notes/:id/blocks/:blockId  ブロック編集（index で並べ替え）
- *   DELETE /api/webcoach/notes/:id/blocks/:blockId  ブロック削除
+ *   POST   /api/webcoach/notes/:id/blocks           素材の追加（クリップ / AI回答。常に末尾）
+ *   PATCH  /api/webcoach/notes/:id/blocks/:blockId  素材の編集
+ *   DELETE /api/webcoach/notes/:id/blocks/:blockId  素材の削除
  *   GET    /api/webcoach/note-clips?lessonId=       教材ハイライト用の軽量一覧
  *   GET    /api/webcoach/note-folders               フォルダ一覧（作成順）
  *   POST   /api/webcoach/note-folders               フォルダ作成
@@ -34,7 +34,6 @@ import {
   Note,
   NoteBlock,
   NoteBlockInput,
-  NoteBlockInsert,
   NoteBlockPatch,
   NoteClipRef,
   NoteCreateInput,
@@ -57,19 +56,17 @@ import {
 
 const delay = (ms = 200) => new Promise((resolve) => setTimeout(resolve, ms));
 
-/** 検索・書き出しに使う、そのブロックの文字列。画像は文字を持たない */
+/** 検索・書き出しに使う、その素材の文字列。画像は文字を持たない */
 function textOf(block: NoteBlock): string {
   if (block.kind === 'answer') return `${block.question} ${block.answer}`;
   if (block.kind === 'image') return block.caption ?? '';
   return block.text;
 }
 
-/** 一覧カードの書き出し。記法（## / - / - [ ] / ==）は落として素の文にする */
-function excerptOf(note: Note): string {
-  for (const block of note.blocks) {
-    const raw =
-      block.kind === 'answer' ? block.question || block.answer : textOf(block);
-    const plain = raw
+/** 記法（## / - / - [ ] / ==）を落として、最初の意味のある1行を返す */
+function firstPlainLine(raw: string): string {
+  return (
+    raw
       .split('\n')
       .map((line) =>
         line
@@ -77,7 +74,20 @@ function excerptOf(note: Note): string {
           .replace(/==(.+?)==/g, '$1')
           .trim()
       )
-      .filter(Boolean)[0];
+      .filter(Boolean)[0] ?? ''
+  );
+}
+
+/**
+ * 一覧カードの書き出し。本文の先頭から取る。
+ * 本文が空のノート（引用だけ・AI回答だけ）は素材から拾う。
+ */
+function excerptOf(note: Note): string {
+  const fromBody = firstPlainLine(note.body ?? '');
+  if (fromBody) return fromBody.slice(0, 60);
+  for (const block of note.blocks) {
+    const raw = block.kind === 'answer' ? block.question || block.answer : textOf(block);
+    const plain = firstPlainLine(raw);
     if (plain) return plain.slice(0, 60);
   }
   return '';
@@ -99,6 +109,7 @@ function toSummary(note: Note): NoteSummary {
     favorite: note.favorite,
     origin: note.origin,
     folderId: note.folderId ?? null,
+    // 🔴 「素材（クリップ・AI回答）の件数」。本文は数に入らない（v6 で本文は1本になった）
     blockCount: note.blocks.length,
     excerpt: excerptOf(note),
     thumbnailImageId: thumbnailOf(note),
@@ -114,6 +125,7 @@ function matchesQuery(note: Note, q: string): boolean {
   if (!q) return true;
   const haystack = [
     note.title,
+    note.body ?? '',
     note.source?.courseName ?? '',
     note.source?.lessonTitle ?? '',
     ...note.blocks.map(textOf),
@@ -138,11 +150,13 @@ function sortNotes(notes: Note[], sort: NoteSort): Note[] {
   return copy.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 }
 
+/**
+ * 素材（クリップ / AI回答）を作る。
+ * 🔴 kind:'text' は作らない。本文は Note.body の1本で、PATCH /notes/:id が受け持つ。
+ *    ここに text を戻すと、また段落ごとにブロックが生える作りに逆戻りする。
+ */
 function buildBlock(input: NoteBlockInput, nowIso: string): NoteBlock | null {
   const base = { id: nextId(input.kind), createdAt: nowIso, updatedAt: nowIso };
-  if (input.kind === 'text') {
-    return { ...base, kind: 'text', text: input.text ?? '' };
-  }
   if (input.kind === 'clip') {
     if (!input.source) return null;
     return { ...base, kind: 'clip', text: input.text ?? '', source: input.source };
@@ -154,21 +168,21 @@ function buildBlock(input: NoteBlockInput, nowIso: string): NoteBlock | null {
       question: input.question ?? '',
       answer: input.answer ?? '',
       selectedText: input.selectedText ?? null,
-      image: input.image ?? null,
+      /*
+       * 🔴 添付画像（dataURL）は保存しない。ノートに任意の画像を残さない方針
+       *    （utils/noteImageStore.ts の冒頭）。AIコーチに画像を添えて質問することは
+       *    従来どおりできるが、回答をノートに残すときに画像は落とす。
+       *    ここを input.image に戻さないこと。
+       */
+      image: null,
       source: input.source ?? null,
     };
   }
-  if (input.kind === 'image') {
-    // 画像の中身は IndexedDB（utils/noteImageStore.ts）にあり、ここは参照キーだけ持つ
-    if (!input.imageId) return null;
-    return {
-      ...base,
-      kind: 'image',
-      imageId: input.imageId,
-      alt: input.alt ?? '',
-      caption: input.caption ?? null,
-    };
-  }
+  /*
+   * 🔴 kind:'image' の分岐は削除した。ノートに画像を貼る入口そのものを撤去している。
+   *    足し直さないこと（理由は utils/noteImageStore.ts の冒頭）。
+   *    既存の image ブロックは store にそのまま残り、読み出し・削除はできる。
+   */
   return null;
 }
 
@@ -351,6 +365,7 @@ export const noteHandlers = [
     const note: Note = {
       id: nextId('note'),
       title: (body.title ?? '').trim() || '無題のノート',
+      body: '',
       blocks: [],
       favorite: false,
       // 出どころは「どこで作ったか」で一度決まる。指定が無ければ
@@ -390,11 +405,14 @@ export const noteHandlers = [
     }
     // 中身を変えないもの（置き場所・重要）では updatedAt を進めない（一覧の並びを崩さない）。
     // 一覧のカードから★を押せるようにしたので、押した端からカードが先頭へ飛ぶのを避ける
-    const editsContent = typeof body.title === 'string';
+    const editsContent = typeof body.title === 'string' || typeof body.body === 'string';
     const note = updateNote(
       String(params.id),
       (n) => {
         if (typeof body.title === 'string') n.title = body.title.trim() || '無題のノート';
+        // 🔴 本文は全文で来る。trim しない（書きかけの末尾の改行まで消すと、
+        //    自動保存のたびにカーソルの下の空行が消えて書き心地が壊れる）
+        if (typeof body.body === 'string') n.body = body.body;
         if (typeof body.favorite === 'boolean') n.favorite = body.favorite;
         if (movesFolder) n.folderId = body.folderId ?? null;
       },
@@ -414,13 +432,13 @@ export const noteHandlers = [
     return new HttpResponse(null, { status: 204 });
   }),
 
-  // --- ブロック追加 ---
-  // index を渡すとその位置に差し込む（ブロック間の ＋ から挿入するため）。
-  // 省略・範囲外は末尾。order 列は持たず、配列の順序が正。
+  // --- 素材の追加（クリップ / AI回答）---
+  // 🔴 常に末尾。挿入位置（index）は受け取らない。本文が1本になったので
+  //    「本文のこの段落とこの段落の間」という座標がそもそも無い。
   http.post('*/api/webcoach/notes/:id/blocks', async ({ params, request }) => {
-    let input: (NoteBlockInput & NoteBlockInsert) | null = null;
+    let input: NoteBlockInput | null = null;
     try {
-      input = (await request.json()) as NoteBlockInput & NoteBlockInsert;
+      input = (await request.json()) as NoteBlockInput;
     } catch {
       return HttpResponse.json({ error: 'invalid body' }, { status: 400 });
     }
@@ -428,10 +446,8 @@ export const noteHandlers = [
     const block = input ? buildBlock(input, nowIso) : null;
     if (!block) return HttpResponse.json({ error: 'invalid block' }, { status: 400 });
 
-    const at = input?.index;
     const note = updateNote(String(params.id), (n) => {
-      if (typeof at === 'number' && at >= 0 && at < n.blocks.length) n.blocks.splice(at, 0, block);
-      else n.blocks.push(block);
+      n.blocks.push(block);
     });
     if (!note) return new HttpResponse(null, { status: 404 });
     return HttpResponse.json(block, { status: 201 });
@@ -448,29 +464,18 @@ export const noteHandlers = [
 
     const editsContent =
       typeof patch.text === 'string' || typeof patch.answer === 'string' || patch.caption !== undefined;
-    const moves = typeof patch.index === 'number';
 
     let updated: NoteBlock | null = null;
     const note = updateNote(
       String(params.id),
       (n) => {
-        const from = n.blocks.findIndex((b) => b.id === String(params.blockId));
-        if (from < 0) return;
-        const block = n.blocks[from];
-        if (typeof patch.text === 'string' && (block.kind === 'text' || block.kind === 'clip')) {
-          block.text = patch.text;
-        }
+        const block = n.blocks.find((b) => b.id === String(params.blockId));
+        if (!block) return;
+        if (typeof patch.text === 'string' && block.kind === 'clip') block.text = patch.text;
         if (typeof patch.answer === 'string' && block.kind === 'answer') block.answer = patch.answer;
         if (patch.caption !== undefined && block.kind === 'image') block.caption = patch.caption;
         if (editsContent) block.updatedAt = new Date().toISOString();
-        // 並べ替え（ノート面の ⠿）。範囲外は端に寄せる。配列の順序が正で order 列は持たない
-        if (moves) {
-          const to = Math.max(0, Math.min(n.blocks.length - 1, Math.trunc(patch.index!)));
-          if (to !== from) {
-            n.blocks.splice(from, 1);
-            n.blocks.splice(to, 0, block);
-          }
-        }
+        // 🔴 並べ替え（index）は受け取らない。素材は追加順に並ぶだけ
         updated = block;
       },
       { touch: editsContent }

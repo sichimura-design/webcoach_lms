@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import bffClient from '../services/bffClient';
-import { Note, NoteBlockInput, NoteBlockInsert, NoteBlockPatch } from '../types/notes';
+import { Note, NoteBlockInput, NoteBlockPatch } from '../types/notes';
 import { deleteNoteImage } from '../utils/noteImageStore';
 
 /**
@@ -82,6 +82,67 @@ export function useNote(noteId: string | null) {
     setSaveError(null);
   }, [noteId]);
 
+  /*
+   * ────────── 本文の自動保存 ──────────
+   * 🔴 「保存する」ボタンは無い。打った手が止まったら勝手に送る。
+   *    v5 までは1段落ごとに「保存する」を押してブロックを確定させる作りで、
+   *    「一行書くのにこんな保存方法が要るのか」という指摘で撤去した。
+   * 🔴 本文は全文で送る。部分更新の単位が無いので差分は作れない。
+   */
+  const bodyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** まだ送っていない本文。null なら送るものが無い */
+  const pendingBodyRef = useRef<string | null>(null);
+
+  const sendBody = useCallback(async () => {
+    const text = pendingBodyRef.current;
+    if (!noteId || text === null) return;
+    pendingBodyRef.current = null;
+    try {
+      const saved = await track(() => bffClient.updateNote(noteId, { body: text }));
+      /*
+       * 🔴 返ってきたノートで setNote しない。保存中も打ち続けているので、
+       *    往復の間に打った文字がレスポンスで巻き戻る。更新日だけ取り込む。
+       */
+      setNote((prev) => (prev ? { ...prev, updatedAt: saved.updatedAt } : prev));
+    } catch {
+      /*
+       * 🔴 ここで reload() しない。他の操作と違い、巻き戻すと「いま打った本文」が
+       *    そのまま消える。画面の文字は残したまま保存状態だけエラーにして、
+       *    次の入力でもう一度送る（保存状態は上部バーが出す）。
+       */
+      pendingBodyRef.current = text;
+    }
+  }, [noteId, track]);
+
+  /** 本文を打った。画面は即時、保存は 800ms 後 */
+  const setBody = useCallback(
+    (next: string) => {
+      setNote((prev) => (prev ? { ...prev, body: next } : prev));
+      pendingBodyRef.current = next;
+      if (bodyTimer.current) clearTimeout(bodyTimer.current);
+      bodyTimer.current = setTimeout(() => void sendBody(), 800);
+    },
+    [sendBody]
+  );
+
+  /** 待たずに送る（textarea から抜けたとき） */
+  const flushBody = useCallback(() => {
+    if (bodyTimer.current) {
+      clearTimeout(bodyTimer.current);
+      bodyTimer.current = null;
+    }
+    void sendBody();
+  }, [sendBody]);
+
+  // ノートを切り替える・画面を離れるときは、待ち時間を待たずに送る
+  useEffect(
+    () => () => {
+      if (bodyTimer.current) clearTimeout(bodyTimer.current);
+      void sendBody();
+    },
+    [sendBody]
+  );
+
   /** タイトルは打つたびに保存せず、確定（blur / Enter）で送る */
   const renameNote = useCallback(
     async (title: string) => {
@@ -121,20 +182,13 @@ export function useNote(noteId: string | null) {
     [noteId, note, reload, track]
   );
 
-  /** index を渡すとその位置に差し込む（ブロック間の ＋ から挿入するため） */
+  /** 素材（クリップ / AI回答）を末尾に足す。本文は saveBody が受け持つ */
   const addBlock = useCallback(
-    async (input: NoteBlockInput & NoteBlockInsert) => {
+    async (input: NoteBlockInput) => {
       if (!noteId) return null;
       try {
         const block = await track(() => bffClient.appendNoteBlock(noteId, input));
-        setNote((prev) => {
-          if (!prev) return prev;
-          const blocks = [...prev.blocks];
-          const at = input.index;
-          if (typeof at === 'number' && at >= 0 && at < blocks.length) blocks.splice(at, 0, block);
-          else blocks.push(block);
-          return { ...prev, blocks };
-        });
+        setNote((prev) => (prev ? { ...prev, blocks: [...prev.blocks, block] } : prev));
         return block;
       } catch {
         void reload();
@@ -172,27 +226,6 @@ export function useNote(noteId: string | null) {
     [noteId, reload, track]
   );
 
-  /** 並べ替え（ノート面の ⠿）。楽観的に入れ替えてから送る。範囲外は端に寄せる */
-  const moveBlock = useCallback(
-    async (blockId: string, toIndex: number) => {
-      if (!noteId || !note) return;
-      const from = note.blocks.findIndex((b) => b.id === blockId);
-      if (from < 0) return;
-      const to = Math.max(0, Math.min(note.blocks.length - 1, toIndex));
-      if (to === from) return;
-      const blocks = [...note.blocks];
-      const [moved] = blocks.splice(from, 1);
-      blocks.splice(to, 0, moved);
-      setNote({ ...note, blocks });
-      try {
-        await track(() => bffClient.updateNoteBlock(noteId, blockId, { index: to }));
-      } catch {
-        void reload();
-      }
-    },
-    [noteId, note, reload, track]
-  );
-
   const removeBlock = useCallback(
     async (blockId: string) => {
       if (!noteId) return;
@@ -218,11 +251,12 @@ export function useNote(noteId: string | null) {
     saveState,
     reload,
     renameNote,
+    setBody,
+    flushBody,
     toggleFavorite,
     moveToFolder,
     addBlock,
     patchBlock,
-    moveBlock,
     removeBlock,
   };
 }

@@ -83,7 +83,7 @@ export function GlobalAiCoachDrawer() {
       if (!answer) return;
 
       capture.capture({
-        block: { kind: 'answer', question, answer, selectedText: null, image: null, source: null },
+        block: { kind: 'answer', question, answer, selectedText: null, source: null },
         suggestedTitle: 'AIコーチとの相談',
         source: null,
         lessonId: null,
