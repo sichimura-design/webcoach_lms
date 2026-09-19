@@ -35,7 +35,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
               予期しないエラーが発生しました
             </p>
             <p className="text-sm mb-4 text-brand-muted">
-              {this.state.error?.message}
+              しばらくしてから再度お試しください。改善しない場合は管理者にお問い合わせください。
             </p>
             <Button
               onClick={() => window.location.reload()}

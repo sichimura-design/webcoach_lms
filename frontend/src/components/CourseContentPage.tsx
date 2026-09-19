@@ -27,6 +27,7 @@ import Encoding from 'encoding-japanese';
 import MarkdownRenderer from './MarkdownRenderer';
 import { AppHeader } from './shared';
 import { parseDifyMessage } from '../utils/difyButtons';
+import { getUserMessage } from '../utils/errorMessage';
 import { color as themeColor } from '../theme/webcoachTheme';
 import LessonFloatingActions from './learning/LessonFloatingActions';
 import NoteTargetPicker from './notes/NoteTargetPicker';
@@ -456,7 +457,8 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         dispatch({ type: 'FETCH_SUCCESS', sections, courseName: course?.fullname ?? '', initialModule });
       })
       .catch((err: any) => {
-        dispatch({ type: 'FETCH_ERROR', error: err.message || 'コースコンテンツの読み込みに失敗しました。' });
+        console.error('Failed to load course content:', err);
+        dispatch({ type: 'FETCH_ERROR', error: getUserMessage(err, 'コースコンテンツの読み込みに失敗しました。') });
       });
   }, [courseId]);
 

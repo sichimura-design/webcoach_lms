@@ -5,6 +5,7 @@ import { UploadResult } from './UploadResult';
 import { UploadHistory } from './UploadHistory';
 import { bffClient } from '../../services/bffClient';
 import { Button } from '../ui/button';
+import { getUserMessage } from '../../utils/errorMessage';
 
 // ─── CSV テンプレート定義 ────────────────────────────────────────────────────
 
@@ -410,11 +411,12 @@ export const AdminCsvPage: React.FC<AdminCsvPageProps> = ({ dataType }) => {
         errorMessage: newResult.success ? undefined : newResult.message,
       }, ...prev]);
     } catch (error) {
+      console.error('CSV upload failed:', error);
       setUploadResult({
         success: false,
         recordsProcessed: 0,
         recordsFailed: 0,
-        message: error instanceof Error ? error.message : 'アップロード中にエラーが発生しました',
+        message: getUserMessage(error, 'アップロード中にエラーが発生しました'),
       });
     } finally {
       setIsUploading(false);

@@ -33,6 +33,7 @@ import AIContentChat from './AIContentChat';
 import { LoadingState, ErrorState, CourseCard, PageHeader } from './shared';
 import { COLORS } from '../theme';
 import { getModuleIcon, getModuleTypeName } from '../utils';
+import { getUserMessage } from '../utils/errorMessage';
 
 interface ContentListPageProps {
   onBack: () => void;
@@ -270,19 +271,7 @@ function ContentListPage({ onBack }: ContentListPageProps) {
 
     } catch (err: any) {
       console.error('Content creation error:', err);
-      console.error('Error response:', err.response);
-      console.error('Error data:', err.response?.data);
-
-      let errorMessage = 'Failed to create content';
-      if (err.response?.data?.message) {
-        errorMessage = err.response.data.message;
-      } else if (err.response?.data?.error) {
-        errorMessage = err.response.data.error;
-      } else if (err.message) {
-        errorMessage = err.message;
-      }
-
-      setError(`Error: ${errorMessage}`);
+      setError(getUserMessage(err, 'コンテンツの作成に失敗しました'));
     } finally {
       setLoading(false);
     }

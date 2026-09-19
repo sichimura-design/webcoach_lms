@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { bffClient } from '../../services/bffClient';
+import { getUserMessage } from '../../utils/errorMessage';
 
 type ApiStatus = 'idle' | 'loading' | 'success' | 'error';
 
@@ -75,13 +76,9 @@ const IngestSection: React.FC<{
       if (data?.errors) lines.push(`エラー: ${JSON.stringify(data.errors)}`);
       setMessage(lines.join('\n') || '完了しました');
     } catch (err: any) {
+      console.error('Vector data registration failed:', err);
       setStatus('error');
-      const data = err?.response?.data;
-      setMessage(
-        typeof data === 'object' && data !== null
-          ? (data.message ?? data.error ?? JSON.stringify(data, null, 2))
-          : (err instanceof Error ? err.message : '通信エラーが発生しました')
-      );
+      setMessage(getUserMessage(err, 'ベクトルデータの登録に失敗しました'));
     }
   };
 

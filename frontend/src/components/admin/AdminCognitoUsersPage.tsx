@@ -3,6 +3,7 @@ import { UploadResult as UploadResultType } from '../../types/admin';
 import { UploadResult } from './UploadResult';
 import { bffClient } from '../../services/bffClient';
 import { Button } from '../../components/ui/button';
+import { getUserMessage } from '../../utils/errorMessage';
 
 function escapeCsvValue(val: unknown): string {
   if (val === null || val === undefined) return '';
@@ -86,11 +87,12 @@ export const AdminCognitoUsersPage: React.FC = () => {
         errors: result.errors,
       });
     } catch (error) {
+      console.error('Cognito user upload failed:', error);
       setUploadResult({
         success: false,
         recordsProcessed: 0,
         recordsFailed: 0,
-        message: error instanceof Error ? error.message : 'エラーが発生しました',
+        message: getUserMessage(error, 'エラーが発生しました'),
       });
     } finally {
       setIsUploading(false);

@@ -6,6 +6,7 @@ import { UploadHistory as UploadHistoryType, UploadResult as UploadResultType } 
 import { CsvUploader } from './CsvUploader';
 import { UploadResult } from './UploadResult';
 import { UploadHistory } from './UploadHistory';
+import { getUserMessage } from '../../utils/errorMessage';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -302,8 +303,8 @@ export const AdminCoachMappingPage: React.FC = () => {
       setSelectedCoach(null);
       setSelectedStudent(null);
     } catch (err: any) {
-      const msg = err?.response?.data?.message ?? err?.message ?? '登録に失敗しました';
-      setToast({ type: 'error', message: msg });
+      console.error('Failed to create coaching mapping:', err);
+      setToast({ type: 'error', message: getUserMessage(err, '登録に失敗しました') });
     } finally {
       setRegistering(false);
     }
@@ -410,7 +411,8 @@ export const AdminCoachMappingPage: React.FC = () => {
             await bffClient.createCoachingMapping(coach_user_id, student_user_id, updateFlag, deleteFlag);
             successCount++;
           } catch (err: any) {
-            errors.push({ row, message: err?.response?.data?.message ?? err?.message ?? '登録に失敗しました' });
+            console.error(`Failed to create coaching mapping (row ${row}):`, err);
+            errors.push({ row, message: getUserMessage(err, '登録に失敗しました') });
           }
         })
       );
@@ -434,11 +436,12 @@ export const AdminCoachMappingPage: React.FC = () => {
         errorMessage: result.success ? undefined : result.message,
       }, ...prev]);
     } catch (error) {
+      console.error('CSV upload failed:', error);
       setUploadResult({
         success: false,
         recordsProcessed: 0,
         recordsFailed: 0,
-        message: error instanceof Error ? error.message : 'アップロード中にエラーが発生しました',
+        message: getUserMessage(error, 'アップロード中にエラーが発生しました'),
       });
     } finally {
       setIsUploading(false);
