@@ -299,6 +299,30 @@ class WebCoachService {
   }
 
   /**
+   * Get the day's study reflection
+   */
+  async getStudyReflection(userid, date) {
+    console.log(`[WebCoach StudyReflection] Getting reflection for user ${userid}, date ${date}`);
+    return await apiServerAdapter.getStudyReflection(userid, date);
+  }
+
+  /**
+   * Update the day's study reflection
+   */
+  async updateStudyReflection(userid, date, { achievement, memo }) {
+    console.log(`[WebCoach StudyReflection] Updating reflection for user ${userid}, date ${date}`);
+    return await apiServerAdapter.updateStudyReflection(userid, date, { achievement, memo });
+  }
+
+  /**
+   * Delete the day's study reflection
+   */
+  async deleteStudyReflection(userid, date) {
+    console.log(`[WebCoach StudyReflection] Deleting reflection for user ${userid}, date ${date}`);
+    return await apiServerAdapter.deleteStudyReflection(userid, date);
+  }
+
+  /**
    * Create next coaching goal
    */
   async createNextCoachingGoal(mdlUserId, no, description, isCompleted = 0) {

@@ -70,6 +70,17 @@ class StudyNoteResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class StudyReflectionResponse(BaseModel):
+    """学習の日別振り返りレスポンス"""
+    mdl_user_id: int
+    local_date: date
+    achievement: Optional[str] = None
+    memo: Optional[str] = None
+    updated_at: Optional[datetime] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class CoachingScheduleResponse(BaseModel):
     """コーチングスケジュールレスポンス"""
     id: int

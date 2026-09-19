@@ -520,3 +520,24 @@ export interface CourseMaterialAccess {
   courseid: number;
   materials: CourseMaterialAccessSummary[];
 }
+
+/**
+ * 学習の日別振り返り（1ユーザー1日につき1件）。
+ * 学習時間・教材・区間はMoodleログ由来（StudySession）を正とし、ここには持たない。
+ * ここが持つのは本人にしか分からない自己申告（達成度・メモ）だけ。
+ * GET/PUT/DELETE /api/webcoach/study-reflection/{userid}/{date}
+ */
+export interface StudyReflection {
+  mdl_user_id: number;
+  /** YYYY-MM-DD */
+  local_date: string;
+  achievement: Achievement | null;
+  memo: string | null;
+  updated_at: string | null;
+}
+
+/** PUT /api/webcoach/study-reflection/{userid}/{date} のbody */
+export interface StudyReflectionPatch {
+  achievement: Achievement | null;
+  memo: string | null;
+}

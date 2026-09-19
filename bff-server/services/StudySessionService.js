@@ -56,6 +56,13 @@ class StudySessionService {
   }
 
   /**
+   * Get completed study sessions for one specific local date (学習記録の日別詳細用)
+   */
+  async getSessionsByDate(userid, date) {
+    return await apiServerAdapter.getStudySessionsByDate(userid, date);
+  }
+
+  /**
    * Get today / this week / total study minutes
    */
   async getStats(userid) {

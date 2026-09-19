@@ -2,15 +2,15 @@
 WebCoach specific endpoints (Resume courses, profiles, etc.)
 """
 from typing import List
-from datetime import datetime
+from datetime import datetime, date
 import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import text, func
 
 from database import get_db
-from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate
-from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse, StudyNoteResponse, LoginStreakResponse
+from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate, StudyReflectionUpdate
+from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse, StudyNoteResponse, StudyReflectionResponse, LoginStreakResponse
 import crud
 from crud import (
     get_webcoach_user_profile,
@@ -19,6 +19,9 @@ from crud import (
     upsert_webcoach_user_course_lastaccess,
     get_study_note,
     upsert_study_note,
+    get_study_reflection,
+    upsert_study_reflection,
+    delete_study_reflection,
     get_moodle_user_info,
     get_image_url,
     upsert_image_url,
@@ -490,6 +493,106 @@ def update_study_note_endpoint(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to update study note: {str(e)}"
+        )
+
+
+# ==========================================
+# Study Reflection Endpoints (日別振り返り)
+# ==========================================
+
+@router.get(
+    "/study-reflection/{userid}/{local_date}",
+    response_model=StudyReflectionResponse,
+    summary="学習の日別振り返り取得"
+)
+def get_study_reflection_endpoint(
+    userid: int,
+    local_date: date,
+    db: Session = Depends(get_db)
+):
+    """
+    その日の学習の振り返り(達成度・メモ)を取得します。
+
+    レコードが存在しない場合も404にせず、未入力として返します
+    （フロント側は常に編集可能な空の状態から始められる）。
+    """
+    try:
+        reflection = get_study_reflection(db, userid, local_date)
+
+        if not reflection:
+            return StudyReflectionResponse(
+                mdl_user_id=userid,
+                local_date=local_date,
+                achievement=None,
+                memo=None,
+                updated_at=None
+            )
+
+        return StudyReflectionResponse(
+            mdl_user_id=reflection.mdl_user_id,
+            local_date=reflection.local_date,
+            achievement=reflection.achievement,
+            memo=reflection.memo,
+            updated_at=reflection.updated_at
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get study reflection: {str(e)}"
+        )
+
+
+@router.put(
+    "/study-reflection/{userid}/{local_date}",
+    response_model=StudyReflectionResponse,
+    summary="学習の日別振り返り更新"
+)
+def update_study_reflection_endpoint(
+    userid: int,
+    local_date: date,
+    data: StudyReflectionUpdate,
+    db: Session = Depends(get_db)
+):
+    """その日の学習の振り返り(達成度・メモ)を更新(無ければ作成)します。"""
+    try:
+        reflection = upsert_study_reflection(db, userid, local_date, data.achievement, data.memo)
+        db.commit()
+        db.refresh(reflection)
+
+        return StudyReflectionResponse(
+            mdl_user_id=reflection.mdl_user_id,
+            local_date=reflection.local_date,
+            achievement=reflection.achievement,
+            memo=reflection.memo,
+            updated_at=reflection.updated_at
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update study reflection: {str(e)}"
+        )
+
+
+@router.delete(
+    "/study-reflection/{userid}/{local_date}",
+    summary="学習の日別振り返り削除"
+)
+def delete_study_reflection_endpoint(
+    userid: int,
+    local_date: date,
+    db: Session = Depends(get_db)
+):
+    """その日の学習の振り返り(達成度・メモ)を削除します。"""
+    try:
+        delete_study_reflection(db, userid, local_date)
+        db.commit()
+        return {"success": True}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete study reflection: {str(e)}"
         )
 
 

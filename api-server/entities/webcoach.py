@@ -210,6 +210,24 @@ class WebCoachStudyNote(Base):
     )
 
 
+class WebCoachStudyReflection(Base):
+    """
+    WebCoach: 学習の日別振り返り（1ユーザー1日につき1件）
+
+    学習時間・教材・区間はMoodleログ(mdl_logstore_standard_log)から都度算出する
+    ものを正とし、ここには持たない。ここが持つのは本人にしか分からない
+    自己申告（達成度・メモ）だけ。
+    """
+    __tablename__ = "webcoach_study_reflection"
+
+    mdl_user_id = Column(BigInteger, primary_key=True, nullable=False, comment='MoodleユーザーID')
+    local_date = Column(Date, primary_key=True, nullable=False, comment='振り返り対象の日(JSTローカル日付)')
+    achievement = Column(String(8), nullable=True, comment='自己申告の達成度 (low, mid, high)')
+    memo = Column(Text, nullable=True, comment='その日の振り返りメモ')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+
 class WebCoachCoachingRecording(Base):
     """
     WebCoach: コーチング録画ファイルのメタデータ管理（実データはS3）

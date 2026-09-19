@@ -54,6 +54,8 @@ import {
   StudyActivityPatch,
   StudyActivityQuery,
   StudyStatsSummary,
+  StudyReflection,
+  StudyReflectionPatch,
 } from '../types/studyActivity';
 import {
   GoalDeclaration,
@@ -580,6 +582,32 @@ class BFFClient {
   }
 
   /**
+   * その日の学習の振り返り(達成度・メモ)取得
+   * GET /api/webcoach/study-reflection/{userid}/{date}
+   */
+  async getStudyReflection(userId: number, date: string): Promise<StudyReflection> {
+    const response = await this.api.get(`/webcoach/study-reflection/${userId}/${date}`);
+    return response.data;
+  }
+
+  /**
+   * その日の学習の振り返り(達成度・メモ)更新
+   * PUT /api/webcoach/study-reflection/{userid}/{date}
+   */
+  async updateStudyReflection(userId: number, date: string, data: StudyReflectionPatch): Promise<StudyReflection> {
+    const response = await this.api.put(`/webcoach/study-reflection/${userId}/${date}`, data);
+    return response.data;
+  }
+
+  /**
+   * その日の学習の振り返り(達成度・メモ)削除
+   * DELETE /api/webcoach/study-reflection/{userid}/{date}
+   */
+  async deleteStudyReflection(userId: number, date: string): Promise<void> {
+    await this.api.delete(`/webcoach/study-reflection/${userId}/${date}`);
+  }
+
+  /**
    * マイノートフォルダ一覧取得（フラット。ツリー化はフロント側でparent_folder_idから行う）
    * GET /api/my-note/folders/{userid}
    */
@@ -793,6 +821,15 @@ class BFFClient {
    */
   async getRecentStudySessions(userId: number, limit = 10): Promise<StudySession[]> {
     const response = await this.api.get(`/study/sessions/${userId}/recent`, { params: { limit } });
+    return response.data;
+  }
+
+  /**
+   * 指定日に完了した学習セッション一覧取得（学習記録の日別詳細用）
+   * GET /api/study/sessions/{userid}/by-date?date=YYYY-MM-DD
+   */
+  async getStudySessionsByDate(userId: number, date: string): Promise<StudySession[]> {
+    const response = await this.api.get(`/study/sessions/${userId}/by-date`, { params: { date } });
     return response.data;
   }
 

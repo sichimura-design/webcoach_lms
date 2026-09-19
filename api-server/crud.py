@@ -18,6 +18,7 @@ from entities import (
     WebCoachStudentCoachMapping,
     WebCoachCoachMeetingIntegration,
     WebCoachStudyNote,
+    WebCoachStudyReflection,
     WebCoachCoachingSchedule,
     WebCoachCoachingRecording,
     WebCoachCoachingNote,
@@ -386,6 +387,81 @@ def upsert_study_note(
 
     db.flush()
     return existing
+
+
+def get_study_reflection(
+    db: Session,
+    mdl_user_id: int,
+    local_date: date
+) -> Optional[WebCoachStudyReflection]:
+    """
+    WebCoach: 学習の日別振り返りを取得
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        local_date: 振り返り対象の日(JSTローカル日付)
+
+    Returns:
+        WebCoachStudyReflection: レコードが無い場合はNone
+    """
+    return db.query(WebCoachStudyReflection).filter(
+        WebCoachStudyReflection.mdl_user_id == mdl_user_id,
+        WebCoachStudyReflection.local_date == local_date,
+    ).first()
+
+
+def upsert_study_reflection(
+    db: Session,
+    mdl_user_id: int,
+    local_date: date,
+    achievement: Optional[str],
+    memo: Optional[str],
+) -> WebCoachStudyReflection:
+    """
+    WebCoach: 学習の日別振り返りを登録/更新
+
+    Args:
+        db: Database session
+        mdl_user_id: MoodleユーザーID
+        local_date: 振り返り対象の日(JSTローカル日付)
+        achievement: 自己申告の達成度 (low, mid, high) または None
+        memo: その日の振り返りメモ または None
+
+    Returns:
+        WebCoachStudyReflection: Created or updated record
+    """
+    existing = get_study_reflection(db, mdl_user_id, local_date)
+
+    if existing:
+        existing.achievement = achievement
+        existing.memo = memo
+    else:
+        existing = WebCoachStudyReflection(
+            mdl_user_id=mdl_user_id,
+            local_date=local_date,
+            achievement=achievement,
+            memo=memo,
+        )
+        db.add(existing)
+
+    db.flush()
+    return existing
+
+
+def delete_study_reflection(db: Session, mdl_user_id: int, local_date: date) -> bool:
+    """
+    WebCoach: 学習の日別振り返りを削除
+
+    Returns:
+        bool: 削除した場合True。レコードが無かった場合False
+    """
+    existing = get_study_reflection(db, mdl_user_id, local_date)
+    if not existing:
+        return False
+    db.delete(existing)
+    db.flush()
+    return True
 
 
 def create_my_note_folder(
@@ -2995,6 +3071,29 @@ def get_recent_study_sessions(db: Session, mdl_user_id: int, limit: int = 10) ->
     query = text(_segment_totals_cte(user_scoped=True) + " ORDER BY started_at DESC LIMIT :limit")
     params = _segment_params(mdl_user_id)
     params["limit"] = limit
+    result = db.execute(query, params)
+    return [
+        {
+            "courseid": row.courseid,
+            "started_at": datetime.fromtimestamp(row.started_at, tz=JST).replace(tzinfo=None),
+            "ended_at": datetime.fromtimestamp(row.ended_at, tz=JST).replace(tzinfo=None),
+            "duration_minutes": int(row.duration_minutes),
+        }
+        for row in result.fetchall()
+    ]
+
+
+def get_study_sessions_by_date(db: Session, mdl_user_id: int, local_date: date) -> List[Dict[str, Any]]:
+    """指定日(JSTローカル日付)に完了した学習セッション(区間)を新しい順に取得する(学習記録の日別詳細用)。"""
+    query = text(
+        f"""
+        SELECT * FROM ({_segment_totals_cte(user_scoped=True)}) segment_totals
+        WHERE DATE(FROM_UNIXTIME(started_at + 9 * 3600)) = :local_date
+        ORDER BY started_at DESC
+        """
+    )
+    params = _segment_params(mdl_user_id)
+    params["local_date"] = local_date
     result = db.execute(query, params)
     return [
         {

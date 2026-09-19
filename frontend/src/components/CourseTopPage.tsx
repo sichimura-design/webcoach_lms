@@ -221,10 +221,13 @@ export default function CourseTopPage() {
   const sections: Section[] = data?.sections ?? [];
   const course: Course | null = data?.course ?? null;
   const modules: Module[] = sections.flatMap(s => s.modules);
+  // 完了トラッキング対象（Moodleでcompletion有効）のモジュールだけが completedIds に入る。
+  // 進捗の分数・次レッスン・全完了判定は、この母集団に対して計算しないと
+  // 「トラッキング対象外のページが1つでもあると分母だけ膨らんで完了扱いにならない」バグになる。
+  const trackableModules = modules.filter(m => (m.completion ?? 0) >= 1);
 
   useEffect(() => {
     if (sections.length === 0) return;
-    const trackableModules = sections.flatMap(s => s.modules).filter(m => (m.completion ?? 0) >= 1);
     Promise.all(
       trackableModules.map(m =>
         bffClient.getActivityCompletion(m.id, courseIdNum)
@@ -258,15 +261,17 @@ export default function CourseTopPage() {
     );
   }
 
-  const progressPercent = modules.length > 0 ? Math.round((completedIds.size / modules.length) * 100) : 0;
+  const progressPercent = trackableModules.length > 0 ? Math.round((completedIds.size / trackableModules.length) * 100) : 0;
   // 表示は分数。この画面は完了レッスンの実数を持っているので率から復元せず直接組む
-  const lessons = lessonProgressOf(completedIds.size, modules.length);
+  const lessons = lessonProgressOf(completedIds.size, trackableModules.length);
   // 次にやるレッスン。ロックはかけず、どのレッスンからでも開ける
-  const nextModule = modules.find(m => !completedIds.has(m.id));
+  // トラッキング対象外のモジュール（completionが無いページ等）は completedIds に一切入らないため、
+  // 全体の modules から探すと「常に未完了」なそのモジュールで止まり続ける（allDoneも永久にfalseになる）。
+  const nextModule = trackableModules.find(m => !completedIds.has(m.id));
   const currentSectionIndex = sections.findIndex(s => s.modules.some(m => m.id === nextModule?.id));
   const currentSection = currentSectionIndex >= 0 ? sections[currentSectionIndex] : null;
   const courseMinutes = totalMinutes(modules);
-  const allDone = modules.length > 0 && !nextModule;
+  const allDone = trackableModules.length > 0 && !nextModule;
   const started = completedIds.size > 0;
 
   const openLesson = (moduleId?: number) => {
@@ -431,8 +436,10 @@ export default function CourseTopPage() {
             </p>
           ) : (
             sections.map((section, sectionIndex) => {
+              // 分母もトラッキング対象のモジュールだけに絞る（上のトップレベル進捗と同じ理由）。
+              const sectionTrackableCount = section.modules.filter(m => (m.completion ?? 0) >= 1).length;
               const doneCount = section.modules.filter(m => completedIds.has(m.id)).length;
-              const chapterDone = doneCount === section.modules.length;
+              const chapterDone = sectionTrackableCount > 0 && doneCount === sectionTrackableCount;
               const isCurrent = section.id === currentSection?.id;
 
               return (
@@ -505,15 +512,15 @@ export default function CourseTopPage() {
                     {chapterDone ? (
                       <span style={{ ...PILL, color: 'var(--dc-success)', background: 'var(--dc-success-surface)', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
                         <Check size={12} strokeWidth={3} />
-                        {doneCount}/{section.modules.length} 完了
+                        {doneCount}/{sectionTrackableCount} 完了
                       </span>
                     ) : isCurrent ? (
                       <span style={{ flex: 'none', fontSize: 12, fontWeight: 700, color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}>
-                        {doneCount}/{section.modules.length} 完了
+                        {doneCount}/{sectionTrackableCount} 完了
                       </span>
                     ) : doneCount > 0 ? (
                       <span style={{ ...PILL, color: 'var(--dc-text-muted)', background: 'var(--dc-neutral-surface)' }}>
-                        {doneCount}/{section.modules.length} 完了
+                        {doneCount}/{sectionTrackableCount} 完了
                       </span>
                     ) : (
                       <span style={{ ...PILL, color: 'var(--dc-text-subtle)', background: 'var(--dc-neutral-surface)' }}>

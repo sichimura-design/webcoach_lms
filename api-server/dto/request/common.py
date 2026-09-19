@@ -66,6 +66,12 @@ class StudyNoteUpdate(BaseModel):
     content: str = Field(..., description="メモの内容")
 
 
+class StudyReflectionUpdate(BaseModel):
+    """学習の日別振り返り更新リクエスト"""
+    achievement: Optional[str] = Field(None, pattern="^(low|mid|high)$", description="自己申告の達成度")
+    memo: Optional[str] = Field(None, max_length=2000, description="その日の振り返りメモ")
+
+
 class CoachingScheduleCreate(BaseModel):
     """コーチングスケジュール作成リクエスト"""
     coach_user_id: int = Field(..., description="コーチのMoodleユーザーID")

@@ -7,6 +7,7 @@ mdl_logstore_standard_log(Moodleログ)から算出する。自前テーブル�
 ここには書き込み系エンドポイントは無い(読み取り専用)。
 """
 import logging
+from datetime import date
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -25,6 +26,7 @@ from dto.response import (
 from crud import (
     get_active_study_session,
     get_recent_study_sessions,
+    get_study_sessions_by_date,
     get_study_stats,
     get_study_streak,
     get_study_calendar,
@@ -66,6 +68,16 @@ def get_active_session(userid: int, db: Session = Depends(get_db)):
 def get_recent_sessions(userid: int, limit: int = 10, db: Session = Depends(get_db)):
     """直近に完了した学習セッション(区間)を新しい順に取得します。"""
     return get_recent_study_sessions(db, userid, limit=limit)
+
+
+@router.get(
+    "/sessions/{userid}/by-date",
+    response_model=list[StudySessionResponse],
+    summary="指定日に完了した学習セッション一覧取得"
+)
+def get_sessions_by_date(userid: int, date: date, db: Session = Depends(get_db)):
+    """指定日(JSTローカル日付)に完了した学習セッション(区間)を新しい順に取得します(学習記録の日別詳細用)。"""
+    return get_study_sessions_by_date(db, userid, local_date=date)
 
 
 @router.get(

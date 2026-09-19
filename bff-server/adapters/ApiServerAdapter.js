@@ -151,6 +151,21 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get completed study sessions for one specific local date (学習記録の日別詳細用)
+   */
+  async getStudySessionsByDate(userid, date) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study/sessions/${userid}/by-date`,
+      {
+        params: { date },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Get today / this week / total study minutes
    */
   async getStudyStats(userid) {
@@ -584,6 +599,49 @@ class ApiServerAdapter {
     const response = await axios.put(
       `${this.apiServerUrl}/api/study-note/${userid}/${courseid}/${cmid}`,
       { content },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get the day's study reflection (achievement/memo)
+   */
+  async getStudyReflection(userid, date) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study-reflection/${userid}/${date}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update (or create) the day's study reflection
+   */
+  async updateStudyReflection(userid, date, { achievement, memo }) {
+    const response = await axios.put(
+      `${this.apiServerUrl}/api/study-reflection/${userid}/${date}`,
+      { achievement, memo },
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Delete the day's study reflection
+   */
+  async deleteStudyReflection(userid, date) {
+    const response = await axios.delete(
+      `${this.apiServerUrl}/api/study-reflection/${userid}/${date}`,
       {
         headers: { 'Content-Type': 'application/json' },
         timeout: 10000

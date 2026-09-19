@@ -47,6 +47,7 @@ from .common import (
     AvatarResponse,
     NextCoachingGoalResponse,
     StudyNoteResponse,
+    StudyReflectionResponse,
     CoachingScheduleResponse,
     CoachStudentMappingResponse,
     StudentListResponse,
@@ -94,6 +95,7 @@ __all__ = [
     "AvatarResponse",
     "NextCoachingGoalResponse",
     "StudyNoteResponse",
+    "StudyReflectionResponse",
     "CoachingScheduleResponse",
     # Coaching
     "CoachStudentMappingResponse",

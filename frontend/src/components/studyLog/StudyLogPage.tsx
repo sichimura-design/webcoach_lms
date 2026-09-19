@@ -2,31 +2,23 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Clock, Flame } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { AppFooter, AppHeader, ConfirmDialog } from '../shared';
+import { AppFooter, AppHeader } from '../shared';
 import { useStudyStats } from '../../hooks/useStudyStats';
-import { useStudyActivityEditor } from '../../hooks/useStudyActivityEditor';
-import { useMonthActivities } from '../../hooks/useMonthActivities';
+import { useDayDetail } from '../../hooks/useDayDetail';
 import { useGoalDeclaration } from '../../hooks/useGoalDeclaration';
 import { useStreakRanking, useStudyRanking } from '../../hooks/useRankings';
 import { StreakRankingPeriod, StudyRankingPeriod } from '../../types/focusBooth';
-import {
-  ManualStudyEntryInput,
-  StudyActivity,
-  StudyActivityPatch,
-  StudyDayTotal,
-} from '../../types/studyActivity';
+import { StudyDayTotal } from '../../types/studyActivity';
 import { GoalDeclarationInput, GoalDeclarationPatch } from '../../types/goalDeclaration';
 import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
 import { RankingRowItem } from '../shared/RankingRow';
 import bffClient from '../../services/bffClient';
 import SessionReview from '../coaching/SessionReview';
 import type { CoachingSessionDetail, CoachingSessionSummary } from '../../types/coaching';
-import { formatDayLabel, formatTime } from '../focus/focusFormat';
 import StudyRecordPanel from './StudyRecordPanel';
 import StudySummaryStrip from './StudySummaryStrip';
 import StudyCalendarCard from './StudyCalendarCard';
 import DayDetailPanel from './DayDetailPanel';
-import StudyRecordEditModal from './StudyRecordEditModal';
 import GoalDeclarationCard from './GoalDeclarationCard';
 import GoalDeclarationModal from './GoalDeclarationModal';
 import RankingListCard from './RankingListCard';
@@ -47,8 +39,9 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  * 🔴 学習記録は useStudyStats(userId, 'all') の1本だけ。期間タブ（1週間〜月別）も
  *    カレンダーの月送りも、この受講開始日〜今日ぶんの dailyTotals から切り出す。
  *    タブごとに days を変えて叩くと、切り替えのたびに画面が読み込み中へ戻る。
- *    日別パネルだけは記録の実体（教材名・メモ）が要るので、見ている月のぶんを
- *    useMonthActivities が別に取る（月内の日送りでは再取得しない）。
+ *    日別パネルは、選んだ日に完了した実セッション（Moodleログ由来、
+ *    useDayDetail経由でGET /api/study/sessions/:userid/by-date）と、その日の
+ *    振り返り（達成度・メモ、同じくuseDayDetail経由）を選択のたびに取る。
  *
  * 【構成】
  *   ① 総まとめ（KPI×4 ＋ 教材別の累計）
@@ -60,7 +53,8 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  *
  * 🔴 全期間の記録を縦に並べる「学習履歴」セクションは廃止した。同じ記録を
  *    ② のカレンダー＋日別パネルが日単位で見せており、下に同じ行を全期間ぶん
- *    並べ直しているだけだった。記録の編集・削除・手動追加はすべて日別パネルが持つ。
+ *    並べ直しているだけだった。セッション自体は自動記録の読み取り専用データなので
+ *    日別パネルに編集・削除・手動追加は無く、書けるのはその日の振り返りだけ。
  *
  * 🔴 ランキング（他人との比較）を最下段に置いている。カレンダーを主役にした結果、
  *    上から「自分の記録」を掘っていく並びになったので、その途中を他人の話で
@@ -76,17 +70,6 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  *    ここが唯一の判断場所で、各カードは自分のクエリだけを見ない。
  */
 
-/** 学習アクティビティ1件を、削除確認の一覧に出す1行にする */
-function describeActivity(a: StudyActivity): string {
-  const where = a.course?.courseTitle ?? '教材を指定しない';
-  return `${formatDayLabel(`${a.localDate}T00:00:00`)} ${formatTime(a.startedAt)} ${where} ${formatMinutesHM(a.session.durationMinutes)}`;
-}
-
-type EditTarget =
-  | { mode: 'edit'; activity: StudyActivity }
-  | { mode: 'create'; date: string }
-  | null;
-
 function StudyLogPage() {
   const { user } = useAuth();
   const userId = user?.userid;
@@ -98,8 +81,6 @@ function StudyLogPage() {
   const [streakPeriod, setStreakPeriod] = useState<StreakRankingPeriod>('month');
   const time = useStudyRanking(userId, timePeriod);
   const streak = useStreakRanking(userId, streakPeriod);
-
-  const editor = useStudyActivityEditor(userId);
   const goals = useGoalDeclaration(userId);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -112,10 +93,7 @@ function StudyLogPage() {
   // 日を選んでいればその月。選んでいなければ月送りの状態、既定は今月
   const monthKey = selectedDate ? selectedDate.slice(0, 7) : (monthOverride ?? todayKey.slice(0, 7));
 
-  const month = useMonthActivities(userId, monthKey);
-
-  const [editTarget, setEditTarget] = useState<EditTarget>(null);
-  const [deleteTarget, setDeleteTarget] = useState<StudyActivity | null>(null);
+  const dayDetail = useDayDetail(userId, selectedDate);
 
   // --- コーチング記録 -------------------------------------------------------
 
@@ -181,10 +159,6 @@ function StudyLogPage() {
     [pastSessions]
   );
 
-  const dayActivities = useMemo(
-    () => (selectedDate ? month.activities.filter((a) => a.localDate === selectedDate) : []),
-    [month.activities, selectedDate]
-  );
   const daySessions = useMemo(
     () => (selectedDate ? pastSessions.filter((s) => s.date === selectedDate) : []),
     [pastSessions, selectedDate]
@@ -199,31 +173,11 @@ function StudyLogPage() {
     [stats]
   );
 
-  // --- 記録の編集 -----------------------------------------------------------
-
-  const saveRecord = async (value: StudyActivityPatch | Omit<ManualStudyEntryInput, 'id'>) => {
-    if (!editTarget) return;
-    try {
-      if (editTarget.mode === 'edit') {
-        await editor.update(editTarget.activity, value as StudyActivityPatch);
-      } else {
-        await editor.addManual(value as Omit<ManualStudyEntryInput, 'id'>);
-      }
-      setEditTarget(null);
-    } catch {
-      // 文言は editor.error に入っている。モーダルは開いたままにして直させる
-    }
-  };
-
-  const confirmDelete = async () => {
-    if (!deleteTarget) return;
-    try {
-      await editor.remove(deleteTarget);
-      setDeleteTarget(null);
-    } catch {
-      setDeleteTarget(null);
-    }
-  };
+  /** courseid → 教材名。日別詳細パネルのセッション行が使う */
+  const courseTitleOf = useCallback(
+    (courseid: number | null) => courseOptions.find((c) => c.id === courseid)?.title ?? null,
+    [courseOptions]
+  );
 
   // --- 目標宣言 -------------------------------------------------------------
 
@@ -364,15 +318,15 @@ function StudyLogPage() {
               />
               <DayDetailPanel
                 date={selectedDate}
-                todayKey={todayKey}
-                activities={dayActivities}
+                sessions={dayDetail.sessions}
+                courseTitleOf={courseTitleOf}
+                reflection={dayDetail.reflection}
                 coachingSessions={daySessions}
-                loading={month.loading}
-                busy={editor.saving}
+                loading={dayDetail.loading}
+                saving={dayDetail.saving}
+                saveError={dayDetail.error}
                 onOpenSession={showSession}
-                onEdit={(activity) => setEditTarget({ mode: 'edit', activity })}
-                onDelete={setDeleteTarget}
-                onAdd={(date) => setEditTarget({ mode: 'create', date })}
+                onSaveReflection={dayDetail.saveReflection}
                 onClose={() => patchParams({ date: null }, true)}
               />
             </div>
@@ -447,33 +401,6 @@ function StudyLogPage() {
           </div>
         )}
 
-        {editTarget && (
-          <StudyRecordEditModal
-            mode={editTarget.mode}
-            activity={editTarget.mode === 'edit' ? editTarget.activity : undefined}
-            defaultDate={editTarget.mode === 'create' ? editTarget.date : undefined}
-            courses={courseOptions}
-            saving={editor.saving}
-            error={editor.error}
-            onSave={saveRecord}
-            onClose={() => {
-              editor.clearError();
-              setEditTarget(null);
-            }}
-          />
-        )}
-
-        {deleteTarget && (
-          <ConfirmDialog
-            title="この学習記録を削除しますか？"
-            description="削除すると、学習時間の合計・ストリーク・カレンダーからも取り除かれます。元に戻せません。"
-            items={[describeActivity(deleteTarget)]}
-            confirmLabel="削除する"
-            busy={editor.saving}
-            onConfirm={confirmDelete}
-            onCancel={() => setDeleteTarget(null)}
-          />
-        )}
 
         {goalTarget && (
           <GoalDeclarationModal

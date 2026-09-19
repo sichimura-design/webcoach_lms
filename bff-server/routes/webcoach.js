@@ -648,6 +648,68 @@ router.put('/study-note/:userid/:courseid/:cmid', requireAuth, requireOwnership,
   }
 });
 
+// Get the day's study reflection
+router.get('/study-reflection/:userid/:date', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid, date } = req.params;
+    const result = await webCoachService.getStudyReflection(userid, date);
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Get StudyReflection] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to get study reflection',
+      detail: error.message
+    });
+  }
+});
+
+// Update the day's study reflection
+router.put('/study-reflection/:userid/:date', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid, date } = req.params;
+    const { achievement, memo } = req.body;
+
+    const result = await webCoachService.updateStudyReflection(userid, date, { achievement, memo });
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Update StudyReflection] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to update study reflection',
+      detail: error.message
+    });
+  }
+});
+
+// Delete the day's study reflection
+router.delete('/study-reflection/:userid/:date', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid, date } = req.params;
+    const result = await webCoachService.deleteStudyReflection(userid, date);
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Delete StudyReflection] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to delete study reflection',
+      detail: error.message
+    });
+  }
+});
+
 router.get('/next-coaching-goal/:userid/:no', requireAuth, requireOwnership, async (req, res) => {
   try {
     const { userid, no } = req.params;

@@ -155,6 +155,34 @@ router.get('/sessions/:userid/recent', requireAuth, async (req, res) => {
 });
 
 /**
+ * GET /api/study/sessions/:userid/by-date?date=YYYY-MM-DD
+ * Get completed study sessions for one specific local date (学習記録の日別詳細用)
+ */
+router.get('/sessions/:userid/by-date', requireAuth, async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const { date } = req.query;
+
+    if (!isSelfOrAdminOrCoach(req, userid)) {
+      return forbid(res, req.user?.email, `access study sessions for user ${userid}`);
+    }
+    if (!date) {
+      return res.status(400).json({ error: 'date is required' });
+    }
+
+    const sessions = await studySessionService.getSessionsByDate(parseInt(userid, 10), date);
+    res.json(sessions);
+  } catch (error) {
+    console.error('[StudySession] Get sessions by date error:', error.message);
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+    const errorResponse = createErrorResponse(error, 'general', 500);
+    res.status(500).json(errorResponse);
+  }
+});
+
+/**
  * GET /api/study/stats/:userid
  * Get today / this week / total study minutes
  */
