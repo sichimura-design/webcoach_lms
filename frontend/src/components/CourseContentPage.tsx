@@ -660,6 +660,38 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     setQuoteSelection(null);
   };
 
+  // AIコーチの回答をマイノートへ保存する。直前のユーザー発言を質問として添える。
+  const handleSaveAiAnswerToNote = (index: number) => {
+    const message = aiMessages[index];
+    if (!message || message.role !== 'assistant') return;
+    const question = [...aiMessages.slice(0, index)].reverse().find((m) => m.role === 'user')?.content ?? '';
+    const source: NoteSourceRef | null = selectedModule
+      ? {
+          courseId,
+          courseName,
+          lessonId: selectedModule.id,
+          lessonTitle: selectedModule.name,
+          heading: null,
+          blockId: null,
+          offset: null,
+        }
+      : null;
+
+    noteCapture.capture({
+      block: {
+        kind: 'answer',
+        question,
+        answer: message.content,
+        selectedText: null,
+        image: message.imageDataUrl ?? null,
+        source,
+      },
+      suggestedTitle: selectedModule?.name || 'AIコーチとの相談',
+      source,
+      lessonId: selectedModule?.id ?? null,
+    });
+  };
+
   // ─── コンテンツ描画 ───────────────────────
   const renderContent = () => {
     if (!selectedModule) return <EmptyPlaceholder />;
@@ -854,6 +886,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
           imageError={aiImageError}
           onImageSelect={handleAiImageSelect}
           onClearImage={clearAiPendingImage}
+          onSaveAnswer={handleSaveAiAnswerToNote}
           mobile={mobile}
         />
       ) : (
@@ -1206,12 +1239,13 @@ interface AiCoachPanelProps {
   imageError: string | null;
   onImageSelect: (file: File) => void;
   onClearImage: () => void;
+  onSaveAnswer: (index: number) => void;
   mobile?: boolean;
 }
 
 function AiCoachPanel({
   aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, chatEndRef,
-  pendingImage, imageError, onImageSelect, onClearImage, mobile = false,
+  pendingImage, imageError, onImageSelect, onClearImage, onSaveAnswer, mobile = false,
 }: AiCoachPanelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -1231,41 +1265,53 @@ function AiCoachPanel({
         </div>
       </div>
       <div className="px-6 py-5 space-y-3 overflow-y-auto" style={{ background: '#fafafa', maxHeight: '280px' }}>
-        {aiMessages.map((msg) => (
+        {aiMessages.map((msg, index) => (
           <div key={msg.id} className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
             <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white ${msg.role === 'user' ? 'bg-[#1976d2]' : 'bg-brand'}`}>
               {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
             </div>
-            <div className={`rounded-2xl px-4 py-3 shadow-sm max-w-xs text-sm ${msg.role === 'user' ? 'bg-brand text-white' : 'bg-white text-brand-muted'}`}>
-              {msg.imageDataUrl && (
-                <img src={msg.imageDataUrl} alt="添付画像" className="max-w-full max-h-40 rounded-lg mb-2 object-contain" />
-              )}
-              {msg.role === 'assistant' ? (
-                (() => {
-                  const { text, buttons } = parseDifyMessage(msg.content);
-                  return (
-                    <>
-                      <MarkdownRenderer content={text} compact />
-                      {buttons.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 mt-1">
-                          {buttons.map((btn, i) => (
-                            <button
-                              key={`${btn.value}-${i}`}
-                              type="button"
-                              disabled={aiLoading}
-                              onClick={() => onSend(btn.value)}
-                              className="text-xs font-bold rounded-lg px-3 py-2 border border-brand-border bg-brand-bg text-brand hover:bg-brand-bg/80 disabled:opacity-50"
-                            >
-                              {btn.label}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </>
-                  );
-                })()
-              ) : (
-                <span className="whitespace-pre-wrap">{msg.content}</span>
+            <div className={msg.role === 'assistant' ? 'max-w-xs' : ''}>
+              <div className={`rounded-2xl px-4 py-3 shadow-sm max-w-xs text-sm ${msg.role === 'user' ? 'bg-brand text-white' : 'bg-white text-brand-muted'}`}>
+                {msg.imageDataUrl && (
+                  <img src={msg.imageDataUrl} alt="添付画像" className="max-w-full max-h-40 rounded-lg mb-2 object-contain" />
+                )}
+                {msg.role === 'assistant' ? (
+                  (() => {
+                    const { text, buttons } = parseDifyMessage(msg.content);
+                    return (
+                      <>
+                        <MarkdownRenderer content={text} compact />
+                        {buttons.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5 mt-1">
+                            {buttons.map((btn, i) => (
+                              <button
+                                key={`${btn.value}-${i}`}
+                                type="button"
+                                disabled={aiLoading}
+                                onClick={() => onSend(btn.value)}
+                                className="text-xs font-bold rounded-lg px-3 py-2 border border-brand-border bg-brand-bg text-brand hover:bg-brand-bg/80 disabled:opacity-50"
+                              >
+                                {btn.label}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    );
+                  })()
+                ) : (
+                  <span className="whitespace-pre-wrap">{msg.content}</span>
+                )}
+              </div>
+              {msg.role === 'assistant' && (
+                <button
+                  type="button"
+                  onClick={() => onSaveAnswer(index)}
+                  className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-brand-muted hover:text-brand"
+                >
+                  <NotebookPen size={12} />
+                  ノートに保存
+                </button>
               )}
             </div>
           </div>
