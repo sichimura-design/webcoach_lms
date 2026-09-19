@@ -710,6 +710,48 @@ router.delete('/study-reflection/:userid/:date', requireAuth, requireOwnership, 
   }
 });
 
+// Get the study-time peer ranking (self + other real users, pseudonymized)
+router.get('/study-ranking/:userid', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const { period } = req.query;
+    const result = await webCoachService.getPeerStudyRanking(userid, period || 'week');
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Get PeerStudyRanking] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to get study ranking',
+      detail: error.message
+    });
+  }
+});
+
+// Get the study-days peer ranking (self + other real users, pseudonymized)
+router.get('/study-ranking-streak/:userid', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const { period } = req.query;
+    const result = await webCoachService.getPeerStudyStreakRanking(userid, period || 'month');
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Get PeerStudyStreakRanking] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to get study streak ranking',
+      detail: error.message
+    });
+  }
+});
+
 router.get('/next-coaching-goal/:userid/:no', requireAuth, requireOwnership, async (req, res) => {
   try {
     const { userid, no } = req.params;

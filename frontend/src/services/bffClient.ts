@@ -68,8 +68,8 @@ import {
   FocusBoothPulse,
   StreakRanking,
   StreakRankingPeriod,
-  // dev/kanegae統合: 実装(types/studyActivity.ts)と同名・別形のモック専用ランキング型なので別名で入れる
-  StudyRanking as MockStudyRanking,
+  // dev/kanegae統合: 実装(types/studyActivity.ts)と同名・別形の仲間ランキング型なので別名で入れる
+  StudyRanking as PeerStudyRanking,
   StudyRankingPeriod,
 } from '../types/focusBooth';
 import {
@@ -1034,21 +1034,19 @@ class BFFClient {
   }
 
   /**
-   * 学習時間ランキング（今週／今月）
+   * 学習時間の仲間ランキング（今週／今月）。自分+他の実受講者(仮名＋絵文字)
    * GET /api/webcoach/study-ranking/{userId}?period=week|month
-   * 🔴 実BFFには無い。他ユーザー横断の集計はサーバの仕事なので、モックで提供している。
    */
-  async getStudyRankingMock(userId: number, period: StudyRankingPeriod): Promise<MockStudyRanking> {
+  async getPeerStudyRanking(userId: number, period: StudyRankingPeriod): Promise<PeerStudyRanking> {
     const response = await this.api.get(`/webcoach/study-ranking/${userId}`, { params: { period } });
     return response.data;
   }
 
   /**
-   * ストリークランキング（今月／累計の学習日数）
+   * 学習日数の仲間ランキング（今月／累計）。自分+他の実受講者(仮名＋絵文字)
    * GET /api/webcoach/study-ranking-streak/{userId}?period=month|total
-   * 🔴 実BFFには無い。学習時間ランキングと同じくモックで提供している。
    */
-  async getStreakRanking(userId: number, period: StreakRankingPeriod): Promise<StreakRanking> {
+  async getPeerStudyStreakRanking(userId: number, period: StreakRankingPeriod): Promise<StreakRanking> {
     const response = await this.api.get(`/webcoach/study-ranking-streak/${userId}`, {
       params: { period },
     });

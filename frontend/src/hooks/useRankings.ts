@@ -18,12 +18,12 @@ import { useStudyTimerStore } from '../store/studyTimerStore';
  *
  * 🔴 activityRevision を依存に入れる。学習セッションが保存されたら
  *    自分の行が動かないと「記録が反映されている」体験が確認できない。
- * 🔴 並べ替えはしない。順位はサーバ役（MSW）が確定させたものをそのまま描く。
+ * 🔴 並べ替えはしない。順位はサーバ側(api-server)が確定させたものをそのまま描く。
  */
 interface RankingResult<T> {
   ranking: T | null;
   loading: boolean;
-  /** 取得できなかった = 本番で実BFFにこのAPIが無い、または通信失敗 */
+  /** 取得できなかった = 通信失敗 */
   failed: boolean;
 }
 
@@ -73,12 +73,12 @@ export function useStudyRanking(
   userId: number | undefined,
   period: StudyRankingPeriod
 ): RankingResult<StudyRanking> {
-  return useRanking(userId, `time:${period}`, () => bffClient.getStudyRankingMock(userId!, period));
+  return useRanking(userId, `time:${period}`, () => bffClient.getPeerStudyRanking(userId!, period));
 }
 
 export function useStreakRanking(
   userId: number | undefined,
   period: StreakRankingPeriod
 ): RankingResult<StreakRanking> {
-  return useRanking(userId, `streak:${period}`, () => bffClient.getStreakRanking(userId!, period));
+  return useRanking(userId, `streak:${period}`, () => bffClient.getPeerStudyStreakRanking(userId!, period));
 }

@@ -323,6 +323,22 @@ class WebCoachService {
   }
 
   /**
+   * Get the study-time peer ranking
+   */
+  async getPeerStudyRanking(userid, period) {
+    console.log(`[WebCoach PeerRanking] Getting study ranking for user ${userid}, period ${period}`);
+    return await apiServerAdapter.getPeerStudyRanking(userid, period);
+  }
+
+  /**
+   * Get the study-days peer ranking
+   */
+  async getPeerStudyStreakRanking(userid, period) {
+    console.log(`[WebCoach PeerRanking] Getting streak ranking for user ${userid}, period ${period}`);
+    return await apiServerAdapter.getPeerStudyStreakRanking(userid, period);
+  }
+
+  /**
    * Create next coaching goal
    */
   async createNextCoachingGoal(mdlUserId, no, description, isCompleted = 0) {

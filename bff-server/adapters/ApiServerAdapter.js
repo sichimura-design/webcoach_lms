@@ -651,6 +651,36 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get the study-time peer ranking (self + other real users, pseudonymized)
+   */
+  async getPeerStudyRanking(userid, period) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study-ranking/${userid}`,
+      {
+        params: { period },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Get the study-days peer ranking (self + other real users, pseudonymized)
+   */
+  async getPeerStudyStreakRanking(userid, period) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/study-ranking-streak/${userid}`,
+      {
+        params: { period },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Get roadmap skill master list
    */
   async getRoadmapSkills() {

@@ -10,7 +10,7 @@ from sqlalchemy import text, func
 
 from database import get_db
 from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate, StudyReflectionUpdate
-from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse, StudyNoteResponse, StudyReflectionResponse, LoginStreakResponse
+from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse, StudyNoteResponse, StudyReflectionResponse, LoginStreakResponse, PeerStudyRankingResponse, PeerStudyStreakRankingResponse
 import crud
 from crud import (
     get_webcoach_user_profile,
@@ -41,6 +41,8 @@ from crud import (
     reorder_next_coaching_goals,
     bulk_upsert_next_coaching_goals,
     get_user_login_streak,
+    get_peer_study_time_ranking,
+    get_peer_study_streak_ranking,
 )
 from entities.webcoach import WebCoachAIApplication
 
@@ -594,6 +596,48 @@ def delete_study_reflection_endpoint(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to delete study reflection: {str(e)}"
         )
+
+
+# ==========================================
+# Peer Ranking Endpoints (マイページ・学習記録ページの仲間ランキング)
+# ==========================================
+
+@router.get(
+    "/study-ranking/{userid}",
+    response_model=PeerStudyRankingResponse,
+    summary="学習時間の仲間ランキング取得"
+)
+def get_peer_study_ranking_endpoint(
+    userid: int,
+    period: str = "week",
+    db: Session = Depends(get_db)
+):
+    """
+    学習時間ランキング(自分+他の受講者)を取得します。period: 'week' | 'month'。
+
+    他の受講者は仮名＋絵文字で返します(design-token-spec.mdの規約により実名は返しません)。
+    """
+    if period not in ("week", "month"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="period must be one of: week, month")
+    return get_peer_study_time_ranking(db, userid, period)
+
+
+@router.get(
+    "/study-ranking-streak/{userid}",
+    response_model=PeerStudyStreakRankingResponse,
+    summary="学習日数の仲間ランキング取得"
+)
+def get_peer_study_streak_ranking_endpoint(
+    userid: int,
+    period: str = "month",
+    db: Session = Depends(get_db)
+):
+    """
+    学習した日数(連続日数ではない)ランキング(自分+他の受講者)を取得します。period: 'month' | 'total'。
+    """
+    if period not in ("month", "total"):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="period must be one of: month, total")
+    return get_peer_study_streak_ranking(db, userid, period)
 
 
 # ==========================================

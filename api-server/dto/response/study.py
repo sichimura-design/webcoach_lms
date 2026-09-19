@@ -66,6 +66,47 @@ class StudyRankingResponse(BaseModel):
     entries: List[StudyRankingEntryResponse]
 
 
+# ------------------------------------------------------------------
+# GET /api/study-ranking/{userid}, /api/study-ranking-streak/{userid}
+#
+# マイページ・学習記録ページ向け。自分の順位を必ず含み、他の受講者は
+# frontend/docs/design-token-spec.md の規約により仮名＋絵文字で返す(実名は返さない)。
+# ------------------------------------------------------------------
+
+class PeerRankingEntryBase(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+    rank: int
+    nickname: str
+    avatar_emoji: str = Field(alias="avatarEmoji")
+    is_me: bool = Field(alias="isMe")
+
+
+class PeerStudyRankingEntryResponse(PeerRankingEntryBase):
+    minutes: int
+
+
+class PeerStudyRankingResponse(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+    period: str
+    period_label: str = Field(alias="periodLabel")
+    entries: List[PeerStudyRankingEntryResponse]
+    me: PeerStudyRankingEntryResponse
+    participant_count: int = Field(alias="participantCount")
+
+
+class PeerStudyStreakEntryResponse(PeerRankingEntryBase):
+    days: int
+
+
+class PeerStudyStreakRankingResponse(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+    period: str
+    period_label: str = Field(alias="periodLabel")
+    entries: List[PeerStudyStreakEntryResponse]
+    me: PeerStudyStreakEntryResponse
+    participant_count: int = Field(alias="participantCount")
+
+
 class CourseAccessSummaryResponse(BaseModel):
     """コース単位のアクセス集計1件(course_module_viewed系イベントの集計)"""
     courseid: int

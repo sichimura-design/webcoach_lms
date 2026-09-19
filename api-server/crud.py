@@ -1,6 +1,7 @@
 """
 CRUD operations for user course access and profile settings
 """
+import hashlib
 import time
 from datetime import datetime, timedelta, timezone, date
 from typing import Optional, List, Dict, Any
@@ -3226,6 +3227,141 @@ def get_study_ranking(db: Session, period: str = "week", limit: int = 20) -> Lis
         {"rank": i + 1, "userid": row.userid, "total_minutes": int(row.total_minutes or 0)}
         for i, row in enumerate(result.fetchall())
     ]
+
+
+# ------------------------------------------------------------------
+# マイページ・学習記録ページ向けの「仲間ランキング」
+#
+# 上のget_study_rankingとは呼び出し元が違う: あちらは集中ブースページ専用で
+# 上位N件のuseridを返すだけでよいが、こちらは「自分が何位か」を常に見せる必要があり、
+# かつ frontend/docs/design-token-spec.md の規約(他の受講者は仮名＋絵文字。実名は不可)
+# により実名の代わりに仮名を割り当てて返す。仮名はDBに保存せずuseridから毎回決定的に
+# 算出する(新規カラム不要)。
+# ------------------------------------------------------------------
+
+_PEER_ANIMALS = [
+    ("うさぎ", "🐰"), ("こあら", "🐨"), ("ぱんだ", "🐼"), ("ひつじ", "🐑"),
+    ("きつね", "🦊"), ("ねこ", "🐱"), ("りす", "🐿️"), ("ぺんぎん", "🐧"),
+    ("とら", "🐯"), ("ぞう", "🐘"), ("かば", "🦛"), ("さる", "🐵"),
+    ("ひよこ", "🐤"), ("くま", "🐻"), ("いぬ", "🐶"), ("かえる", "🐸"),
+]
+
+
+def _peer_pseudonym(mdl_user_id: int) -> Dict[str, str]:
+    """useridから仮名(動物名+番号)とアバター絵文字を決定的に算出する。
+    単純なuserid%Nだと第三者がuseridを逆算できてしまうため、ハッシュを経由する。"""
+    digest = hashlib.sha256(f"webcoach-peer-ranking-{mdl_user_id}".encode()).hexdigest()
+    name, emoji = _PEER_ANIMALS[int(digest[:8], 16) % len(_PEER_ANIMALS)]
+    number = int(digest[8:12], 16) % 100
+    return {"nickname": f"{name}{number}", "avatarEmoji": emoji}
+
+
+def _to_peer_entry(row: Dict[str, Any], mdl_user_id: int, value_key: str) -> Dict[str, Any]:
+    is_me = row["userid"] == mdl_user_id
+    pseudo = _peer_pseudonym(row["userid"])
+    return {
+        "rank": row["rank"],
+        "nickname": "あなた" if is_me else pseudo["nickname"],
+        "avatarEmoji": pseudo["avatarEmoji"],
+        "isMe": is_me,
+        value_key: row[value_key],
+    }
+
+
+def get_peer_study_time_ranking(db: Session, mdl_user_id: int, period: str, limit: int = 20) -> Dict[str, Any]:
+    """
+    学習時間の仲間ランキング(period: 'week' | 'month')。自分の順位は圏外でも必ず含める。
+    """
+    today_jst = datetime.now(JST).date()
+    if period == "week":
+        since = today_jst - timedelta(days=today_jst.weekday())
+        label = f"今週（{since.month}/{since.day}〜）"
+    elif period == "month":
+        since = today_jst.replace(day=1)
+        label = f"{since.month}月"
+    else:
+        raise ValueError(f"Invalid period: {period}")
+
+    query = text(f"""
+        SELECT userid, SUM(duration_minutes) AS total_minutes
+        FROM ({_segment_totals_cte(user_scoped=False)}) segment_totals
+        WHERE DATE(FROM_UNIXTIME(started_at + 9 * 3600)) >= :since
+        GROUP BY userid
+        ORDER BY total_minutes DESC
+    """)
+    params = _segment_params()
+    params["since"] = since
+    rows = db.execute(query, params).fetchall()
+
+    ranked = [
+        {"rank": i + 1, "userid": row.userid, "minutes": int(row.total_minutes or 0)}
+        for i, row in enumerate(rows)
+    ]
+    participant_count = len(ranked)
+    me = next((r for r in ranked if r["userid"] == mdl_user_id), None)
+    if me is None:
+        me = {"rank": participant_count + 1, "userid": mdl_user_id, "minutes": 0}
+
+    entries = ranked[:limit]
+    if not any(e["userid"] == mdl_user_id for e in entries):
+        entries = entries + [me]
+
+    return {
+        "period": period,
+        "periodLabel": label,
+        "entries": [_to_peer_entry(r, mdl_user_id, "minutes") for r in entries],
+        "me": _to_peer_entry(me, mdl_user_id, "minutes"),
+        "participantCount": participant_count,
+    }
+
+
+def get_peer_study_streak_ranking(db: Session, mdl_user_id: int, period: str, limit: int = 20) -> Dict[str, Any]:
+    """
+    学習した日数(連続日数ではない)の仲間ランキング(period: 'month' | 'total')。
+    """
+    if period not in ("month", "total"):
+        raise ValueError(f"Invalid period: {period}")
+
+    params = _segment_params()
+    since_filter = ""
+    if period == "month":
+        today_jst = datetime.now(JST).date()
+        since = today_jst.replace(day=1)
+        since_filter = "WHERE DATE(FROM_UNIXTIME(started_at + 9 * 3600)) >= :since"
+        params["since"] = since
+        label = f"{since.month}月"
+    else:
+        label = "累計"
+
+    query = text(f"""
+        SELECT userid, COUNT(DISTINCT DATE(FROM_UNIXTIME(started_at + 9 * 3600))) AS study_days
+        FROM ({_segment_totals_cte(user_scoped=False)}) segment_totals
+        {since_filter}
+        GROUP BY userid
+        ORDER BY study_days DESC
+    """)
+    rows = db.execute(query, params).fetchall()
+
+    ranked = [
+        {"rank": i + 1, "userid": row.userid, "days": int(row.study_days or 0)}
+        for i, row in enumerate(rows)
+    ]
+    participant_count = len(ranked)
+    me = next((r for r in ranked if r["userid"] == mdl_user_id), None)
+    if me is None:
+        me = {"rank": participant_count + 1, "userid": mdl_user_id, "days": 0}
+
+    entries = ranked[:limit]
+    if not any(e["userid"] == mdl_user_id for e in entries):
+        entries = entries + [me]
+
+    return {
+        "period": period,
+        "periodLabel": label,
+        "entries": [_to_peer_entry(r, mdl_user_id, "days") for r in entries],
+        "me": _to_peer_entry(me, mdl_user_id, "days"),
+        "participantCount": participant_count,
+    }
 
 
 def get_course_access_summary(db: Session, mdl_user_id: int) -> List[Dict[str, Any]]:
