@@ -122,7 +122,14 @@ export function SidebarStudyTimer({ variant, tabIndex }: SidebarStudyTimerProps)
 
   if (variant === 'rail') {
     return (
-      <div ref={wrapRef} className="relative" style={{ flex: 'none' }}>
+      /*
+       * 🔴 丸の下に10pxのラベルを出す。レールの他の項目は renderNavPillFace が
+       *    「丸ピル＋10pxラベル」で描いていて（AppHeader.tsx の SZ.railLabelFont/railLabelGap）、
+       *    ここだけラベルが無いせいで「● 12」としか読めず、記録を止めたい人が
+       *    これを押せば止まると気づけなかった。形を揃えて押せるナビ要素に見せる。
+       *    語は展開パネル側の見出しと同じ「学習記録」にして、レールとパネルで呼称を揃える。
+       */
+      <div ref={wrapRef} className="relative flex flex-col items-center" style={{ flex: 'none', gap: 2 }}>
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -162,6 +169,20 @@ export function SidebarStudyTimer({ variant, tabIndex }: SidebarStudyTimerProps)
             {stateLabel} {elapsedLabel}
           </span>
         </button>
+        {/* レールのナビ項目と同じ 10px ラベル。色は AppHeader の SB.iconIdle (#6B6B6B) に合わせる */}
+        <span
+          aria-hidden="true"
+          className="whitespace-nowrap"
+          style={{
+            fontSize: 10,
+            lineHeight: '12px',
+            fontWeight: 500,
+            color: '#6B6B6B',
+            letterSpacing: '-0.02em',
+          }}
+        >
+          学習記録
+        </span>
         {popover}
       </div>
     );
@@ -225,8 +246,14 @@ export function SidebarStudyTimer({ variant, tabIndex }: SidebarStudyTimerProps)
           minHeight: 36,
           padding: '0 16px',
           border: 0,
-          borderTop: `1px solid ${color.border}`,
-          background: running ? color.primaryTint : color.surface,
+          /* 🔴 borderTop は引かない。この帯は下部ナビ <nav> の最初の子で、
+                nav 自身の borderTop（#E2DBD0）と隣り合って二重線に見える。
+                区切りは下側（ナビ本体との間）に引く。 */
+          borderBottom: `1px solid ${color.border}`,
+          /* 🔴 mobile は下部ナビ（地色 #FDF7F3）の上に乗る帯。非記録時に白を敷くと
+                帯だけ浮いて、ナビとの間に段差が見える。透過して親の地を透かす。
+                記録中だけは primaryTint で塗り、止め忘れに気づけるようにする。 */
+          background: running ? color.primaryTint : 'transparent',
           fontFamily: font.family,
           fontSize: 12.5,
           fontWeight: 700,

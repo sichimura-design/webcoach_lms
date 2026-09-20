@@ -63,6 +63,7 @@ import {
   GoalDeclarationPatch,
   GoalDeclarationQuery,
 } from '../types/goalDeclaration';
+import { Enrollment } from '../types/enrollment';
 import {
   FocusBoothMember,
   FocusBoothPulse,
@@ -94,6 +95,7 @@ import {
   LessonDoc,
   LessonOutline,
 } from '../types/lesson';
+import type { LessonSearchResponse } from '../types/lessonSearch';
 import { AiSkillRequest, AiSkillResponse } from '../types/aiSkill';
 import { MaterialSearchResult } from '../types/courses';
 import {
@@ -507,6 +509,15 @@ class BFFClient {
     return response.data;
   }
 
+  /*
+   * 🔴 uploadProfileAvatar（POST /webcoach/profile/{userid}/avatar）は削除した。
+   *    受講生が任意の画像を上げる口を持たない方針になったため。
+   *    アイコンはプリセット（/admin/avatars が登録したもの）から選ぶだけ。
+   *    足し直すなら、S3キーをサーバ側で決める専用エンドポイントが先に要る
+   *    （/api/admin/s3-upload は管理者用・任意キー受け取りなので流用できない）。
+   */
+
+
   /**
    * 再開コース取得
    * GET /api/webcoach/resumecourse/{userid}
@@ -685,68 +696,6 @@ class BFFClient {
     await this.api.delete(`/my-note/notes/${userId}/${noteId}`);
   }
 
-  /**
-   * コーチングスケジュール一覧取得
-   * GET /api/coaching/schedule/{userid}
-   */
-  async getCoachingSchedules(userId: number): Promise<CoachingSchedule[]> {
-    const response = await this.api.get(`/coaching/schedule/${userId}`);
-    return response.data;
-  }
-
-  /**
-   * コーチングスケジュール作成
-   * POST /api/coaching/schedule/{userid}
-   */
-  async createCoachingSchedule(
-    userId: number,
-    data: CreateCoachingScheduleRequest
-  ): Promise<CoachingSchedule> {
-    const response = await this.api.post(`/coaching/schedule/${userId}`, data);
-    return response.data;
-  }
-
-  /**
-   * コーチングスケジュール更新
-   * PUT /api/coaching/schedule/{userid}/{id}
-   */
-  async updateCoachingSchedule(
-    userId: number,
-    id: number,
-    data: UpdateCoachingScheduleRequest
-  ): Promise<CoachingSchedule> {
-    const response = await this.api.put(`/coaching/schedule/${userId}/${id}`, data);
-    return response.data;
-  }
-
-  /**
-   * コーチングスケジュール削除
-   * DELETE /api/coaching/schedule/{userid}/{id}
-   */
-  async deleteCoachingSchedule(userId: number, id: number): Promise<void> {
-    await this.api.delete(`/coaching/schedule/${userId}/${id}`);
-  }
-
-  /**
-   * AIコーチングノート取得
-   * GET /api/coaching/notes/{coaching_schedule_id}
-   */
-  async getCoachingNote(coachingScheduleId: number): Promise<CoachingNote> {
-    const response = await this.api.get(`/coaching/notes/${coachingScheduleId}`);
-    return response.data;
-  }
-
-  /**
-   * AIコーチングノート編集・確定・公開
-   * PUT /api/coaching/notes/{coaching_schedule_id}
-   */
-  async updateCoachingNote(
-    coachingScheduleId: number,
-    data: UpdateCoachingNoteRequest
-  ): Promise<CoachingNote> {
-    const response = await this.api.put(`/coaching/notes/${coachingScheduleId}`, data);
-    return response.data;
-  }
 
   /**
    * おすすめバッジ取得
@@ -1128,6 +1077,17 @@ class BFFClient {
     return response.data;
   }
 
+  // ==================== 受講の期間（受講開始日・卒業予定日） ====================
+  // 🔴 実BFFには存在しない。mocks/handlers.ts の MSW モックだけが応答する。
+  //    モックOFF（本番）では取得に失敗するので、呼び出し側は
+  //    「取れない = 卒業予定を出さない」に縮退させる（hooks/useEnrollment.ts）。
+
+  /** GET /api/webcoach/enrollment/{userId} */
+  async getEnrollment(userId: number): Promise<Enrollment> {
+    const response = await this.api.get(`/webcoach/enrollment/${userId}`);
+    return response.data;
+  }
+
   /**
    * 学習ジャーニー（ロードマップ＋今日のクエスト＋ストリーク）
    */
@@ -1136,7 +1096,7 @@ class BFFClient {
     return response.data;
   }
 
-  // ==================== AIコーチングノート ====================
+  // ==================== コーチング記録 ====================
   // 実BFFには存在しない新機能。すべて MSW モックで応答する。
 
   /**
@@ -1173,7 +1133,7 @@ class BFFClient {
   }
 
   /**
-   * AIノートを開始してコーチングに参加する
+   * 記録を開始してコーチングに参加する
    * POST /api/webcoach/coaching-sessions/{userid}/start
    *
    * 受講生の端末で録音を始めるものではない。コーチの認証済み権限を使って
@@ -1275,6 +1235,75 @@ class BFFClient {
    */
   async updateNextCoaching(userId: number, next: Partial<NextCoaching>): Promise<NextCoaching> {
     const response = await this.api.put(`/webcoach/coaching-sessions/${userId}/next`, next);
+    return response.data;
+  }
+
+  // ==================== コーチ画面: コーチングスケジュール / AIノート ====================
+  // 上の「コーチング記録」は受講生側の画面が使う招待URL型のモックAPI。
+  // ここから下はコーチ画面（/coach/schedule/:studentId）が使う別系統で、
+  // 実BFF側は dev/kanegae で実装済み。呼び出し形は kanegae と同一に保つこと
+  // （デザイン統一だけを目的にこのブランチを切っているので、API層は写経のまま動かさない）。
+
+  /**
+   * コーチングスケジュール一覧取得
+   * GET /api/coaching/schedule/{userid}
+   */
+  async getCoachingSchedules(userId: number): Promise<CoachingSchedule[]> {
+    const response = await this.api.get(`/coaching/schedule/${userId}`);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール作成
+   * POST /api/coaching/schedule/{userid}
+   */
+  async createCoachingSchedule(
+    userId: number,
+    data: CreateCoachingScheduleRequest
+  ): Promise<CoachingSchedule> {
+    const response = await this.api.post(`/coaching/schedule/${userId}`, data);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール更新
+   * PUT /api/coaching/schedule/{userid}/{id}
+   */
+  async updateCoachingSchedule(
+    userId: number,
+    id: number,
+    data: UpdateCoachingScheduleRequest
+  ): Promise<CoachingSchedule> {
+    const response = await this.api.put(`/coaching/schedule/${userId}/${id}`, data);
+    return response.data;
+  }
+
+  /**
+   * コーチングスケジュール削除
+   * DELETE /api/coaching/schedule/{userid}/{id}
+   */
+  async deleteCoachingSchedule(userId: number, id: number): Promise<void> {
+    await this.api.delete(`/coaching/schedule/${userId}/${id}`);
+  }
+
+  /**
+   * AIコーチングノート取得
+   * GET /api/coaching/notes/{coaching_schedule_id}
+   */
+  async getCoachingNote(coachingScheduleId: number): Promise<CoachingNote> {
+    const response = await this.api.get(`/coaching/notes/${coachingScheduleId}`);
+    return response.data;
+  }
+
+  /**
+   * AIコーチングノート編集・確定・公開
+   * PUT /api/coaching/notes/{coaching_schedule_id}
+   */
+  async updateCoachingNote(
+    coachingScheduleId: number,
+    data: UpdateCoachingNoteRequest
+  ): Promise<CoachingNote> {
+    const response = await this.api.put(`/coaching/notes/${coachingScheduleId}`, data);
     return response.data;
   }
 
@@ -1858,6 +1887,20 @@ class BFFClient {
    */
   async getLessonDoc(courseId: number, lessonId: number): Promise<LessonDoc> {
     const response = await this.api.get(`/webcoach/courses/${courseId}/lessons/${lessonId}`);
+    return response.data;
+  }
+
+  /**
+   * コース内の教材本文を単語検索する（モック専用API）。
+   * GET /api/webcoach/courses/{courseId}/search?q=...
+   *
+   * 実BFFには未実装なので、モックOFF（本番）では失敗する。
+   * 呼び出し側で catch して、この機能だけを畳むこと。
+   */
+  async searchInCourse(courseId: number, query: string): Promise<LessonSearchResponse> {
+    const response = await this.api.get(`/webcoach/courses/${courseId}/search`, {
+      params: { q: query },
+    });
     return response.data;
   }
 

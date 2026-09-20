@@ -50,10 +50,19 @@ export function courseStatusOf(course: StatusSource): CourseStatus {
   return COURSE_STATUS.notStarted;
 }
 
-/** 素の select。角丸は control(9px) で「その場で絞る」側の形 */
+/**
+ * 素の select。角丸は control(9px) で「その場で絞る」側の形。
+ *
+ * 🔴 maxWidth を外さないこと。select の幅は「いちばん長い option」で決まるので、
+ *    「並び替え：レッスンが少ない順」を持つものは実測 256px になる。SP 幅では
+ *    これが親からはみ出してページごと横スクロールしていた（領域ページで実測
+ *    375px に対して 444px）。上限を親の幅に切って、あとはブラウザの省略に任せる。
+ */
 export const selectStyle: CSSProperties = {
   appearance: 'none',
   WebkitAppearance: 'none',
+  maxWidth: '100%',
+  minWidth: 0,
   background: `${t.color.bg.card} no-repeat right 12px center`,
   backgroundImage:
     'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%238A8082\' stroke-width=\'2.2\' stroke-linecap=\'round\'><path d=\'m6 9 6 6 6-6\'/></svg>")',

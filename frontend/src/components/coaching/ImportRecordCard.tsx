@@ -1,7 +1,7 @@
 /**
  * 【フォールバック】記録の手動取り込み。
  *
- * 通常は「AIノートを開始して参加」→ 終了後に自動で届く、で完結する。
+ * 通常は「コーチングに参加する」→ 終了後に自動で届く、で完結する。
  * この画面が出るのは、コーチが未連携・プラン非対応・自動取得に失敗したときだけ。
  * 自動取得の対象外になるコーチが構造的に必ず残るため、この経路は撤去できない。
  *
@@ -35,8 +35,8 @@ const METHODS: Method[] = [
   },
   {
     source: 'pasted_text',
-    label: 'コーチングメモから作る',
-    hint: '録音がなくても記録できます。話した内容のメモからでも目標とタスクを作れます。',
+    label: '話した内容を書いて作る',
+    hint: '録音がなくても記録できます。話した内容を書き起こすだけでも目標を作れます。',
   },
 ];
 
@@ -204,7 +204,7 @@ export function ImportRecordCard({ onSubmit, onCancel, submitting, reason }: Imp
     <section style={{ ...t.card, padding: 24 }}>
       <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 4px' }}>コーチング記録を取り込む</h2>
       <p style={{ ...font.meta, color: color.textMuted, margin: '0 0 18px', lineHeight: 1.7 }}>
-        取り込んだ内容をAIが整理し、次回までの目標とタスクを作ります。内容は必ずご自身で確認してから確定できます。
+        取り込んだ内容をAIが整理し、次回までの目標を作ります。内容は必ずご自身で確認してから確定できます。
       </p>
 
       {reason && (

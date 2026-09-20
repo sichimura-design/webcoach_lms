@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { color } from '../../theme/webcoachTheme';
 import { AiSkillId, AI_SKILL_META, isSpecialistSkill } from '../../types/aiSkill';
+import AiCoachFace from '../shared/AiCoachFace';
 
 /**
  * AIが考えているあいだの表示。
@@ -52,23 +53,8 @@ export function AiThinkingBubble({ skillId }: AiThinkingBubbleProps) {
 
   return (
     <div className="flex" style={{ gap: 8 }}>
-      <div
-        aria-hidden
-        style={{
-          width: 27,
-          height: 27,
-          display: 'grid',
-          placeItems: 'center',
-          borderRadius: 8,
-          background: color.primary,
-          color: '#fff',
-          fontSize: 9,
-          fontWeight: 900,
-          flexShrink: 0,
-        }}
-      >
-        AI
-      </div>
+      {/* 考えている最中の顔。回答（AiCoachPane の AiAvatar）と同じ狐で、表情だけ違う */}
+      <AiCoachFace size={27} mood="think" />
 
       <div
         style={{

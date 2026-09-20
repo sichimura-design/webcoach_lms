@@ -3362,8 +3362,9 @@ def get_study_ranking(db: Session, period: str = "week", limit: int = 20) -> Lis
 # 上のget_study_rankingとは呼び出し元が違う: あちらは集中ブースページ専用で
 # 上位N件のuseridを返すだけでよいが、こちらは「自分が何位か」を常に見せる必要があり、
 # かつ frontend/docs/design-token-spec.md の規約(他の受講者は仮名＋絵文字。実名は不可)
-# により実名の代わりに仮名を割り当てて返す。仮名はDBに保存せずuseridから毎回決定的に
-# 算出する(新規カラム不要)。
+# により実名の代わりに仮名を割り当てて返す。仮名は webcoach_user_profile.nick_name
+# (ユーザー自身がプロフィール画面で設定した値)をそのまま使う。未設定のユーザーだけ、
+# useridから決定的に算出したフォールバック仮名(動物名+番号)で補う。
 # ------------------------------------------------------------------
 
 _PEER_ANIMALS = [
@@ -3375,7 +3376,7 @@ _PEER_ANIMALS = [
 
 
 def _peer_pseudonym(mdl_user_id: int) -> Dict[str, str]:
-    """useridから仮名(動物名+番号)とアバター絵文字を決定的に算出する。
+    """nick_name未設定ユーザー向けのフォールバック仮名+絵文字をuseridから決定的に算出する。
     単純なuserid%Nだと第三者がuseridを逆算できてしまうため、ハッシュを経由する。"""
     digest = hashlib.sha256(f"webcoach-peer-ranking-{mdl_user_id}".encode()).hexdigest()
     name, emoji = _PEER_ANIMALS[int(digest[:8], 16) % len(_PEER_ANIMALS)]
@@ -3383,12 +3384,26 @@ def _peer_pseudonym(mdl_user_id: int) -> Dict[str, str]:
     return {"nickname": f"{name}{number}", "avatarEmoji": emoji}
 
 
-def _to_peer_entry(row: Dict[str, Any], mdl_user_id: int, value_key: str) -> Dict[str, Any]:
+def _get_peer_nick_names(db: Session, mdl_user_ids: List[int]) -> Dict[int, str]:
+    """webcoach_user_profile.nick_nameをuseridごとに一括取得する(空文字/NULLは除く)。"""
+    if not mdl_user_ids:
+        return {}
+    rows = db.execute(
+        text("SELECT mdl_user_id, nick_name FROM webcoach_user_profile WHERE mdl_user_id IN :ids").bindparams(
+            bindparam("ids", expanding=True)
+        ),
+        {"ids": mdl_user_ids},
+    ).fetchall()
+    return {row.mdl_user_id: row.nick_name for row in rows if row.nick_name}
+
+
+def _to_peer_entry(row: Dict[str, Any], mdl_user_id: int, value_key: str, nick_names: Dict[int, str]) -> Dict[str, Any]:
     is_me = row["userid"] == mdl_user_id
     pseudo = _peer_pseudonym(row["userid"])
+    nickname = nick_names.get(row["userid"]) or pseudo["nickname"]
     return {
         "rank": row["rank"],
-        "nickname": "あなた" if is_me else pseudo["nickname"],
+        "nickname": "あなた" if is_me else nickname,
         "avatarEmoji": pseudo["avatarEmoji"],
         "isMe": is_me,
         value_key: row[value_key],
@@ -3433,11 +3448,13 @@ def get_peer_study_time_ranking(db: Session, mdl_user_id: int, period: str, limi
     if not any(e["userid"] == mdl_user_id for e in entries):
         entries = entries + [me]
 
+    nick_names = _get_peer_nick_names(db, [e["userid"] for e in entries] + [me["userid"]])
+
     return {
         "period": period,
         "periodLabel": label,
-        "entries": [_to_peer_entry(r, mdl_user_id, "minutes") for r in entries],
-        "me": _to_peer_entry(me, mdl_user_id, "minutes"),
+        "entries": [_to_peer_entry(r, mdl_user_id, "minutes", nick_names) for r in entries],
+        "me": _to_peer_entry(me, mdl_user_id, "minutes", nick_names),
         "participantCount": participant_count,
     }
 
@@ -3482,11 +3499,13 @@ def get_peer_study_streak_ranking(db: Session, mdl_user_id: int, period: str, li
     if not any(e["userid"] == mdl_user_id for e in entries):
         entries = entries + [me]
 
+    nick_names = _get_peer_nick_names(db, [e["userid"] for e in entries] + [me["userid"]])
+
     return {
         "period": period,
         "periodLabel": label,
-        "entries": [_to_peer_entry(r, mdl_user_id, "days") for r in entries],
-        "me": _to_peer_entry(me, mdl_user_id, "days"),
+        "entries": [_to_peer_entry(r, mdl_user_id, "days", nick_names) for r in entries],
+        "me": _to_peer_entry(me, mdl_user_id, "days", nick_names),
         "participantCount": participant_count,
     }
 

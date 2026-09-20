@@ -1,0 +1,449 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+    a { color: #D60934; }
+    a:hover { color: #B50829; }
+
+    /* /courses（MaterialsTopPage.tsx）は frontend/src/theme/tokens.ts 系。
+       マイページの --dc-* とは別系統なので混ぜないこと。値は tokens.ts の実値。 */
+    .cs {
+      --cs-primary: #D60934;
+      --cs-primary-soft: #FDEEEF;
+      --cs-primary-border: #F3C7CB;
+      --cs-text: #1F1A1B;
+      --cs-text-body: #4A4244;
+      --cs-text-muted: #8A8082;
+      --cs-text-subtle: #A29A9C;
+      --cs-bg-page: #FDFBFB;
+      --cs-bg-card: #FFFFFF;
+      --cs-border-card: #F2EDED;
+      --cs-progress-track: #F5E9EA;
+      --cs-shadow-card: 0 2px 10px rgba(120, 90, 95, .04);
+    }
+    /* 学習領域カードの3列グリッド（index.css の .wc-area-cards と同値） */
+    .cs-area-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    /* 領域カード。実装は <button> だが、静的モックなので div で写す */
+    .cs-area-card {
+      display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+      background: var(--cs-bg-card); border: 1px solid var(--cs-border-card);
+      border-radius: 20px; color: var(--cs-text); text-align: left;
+    }
+    .cs-area-name { display: flex; align-items: baseline; gap: 8px; font-size: 13.5px; font-weight: 900; }
+    .cs-area-count { font-size: 11.5px; font-weight: 400; color: var(--cs-text-subtle); }
+    .cs-area-desc { display: block; margin-top: 3px; font-size: 11.5px; color: var(--cs-text-muted); line-height: 1.6; }
+    .cs-sec-head { display: flex; align-items: center; gap: 10px; }
+    .cs-sec-bar { width: 3px; height: 15px; border-radius: 2px; flex: none; }
+    .cs-sec-title { margin: 0; font-size: 13.5px; font-weight: 900; }
+    .cs-sec-sub { font-size: 11.5px; color: var(--cs-text-subtle); }
+    /* サイドバーの閉じたレール（AppHeader.tsx）。全画面共通 */
+    .cs-rail-item { width: 40px; height: 40px; border-radius: 9999px; display: grid; place-items: center; }
+    .cs-rail-item-active { background: var(--cs-primary); box-shadow: 0 2px 10px -2px rgba(214, 9, 52, .4); }
+  </style>
+</helmet>
+
+<div class="cs" style="display: flex; min-height: 1250px; background: var(--cs-bg-page); color: var(--cs-text);">
+
+  <!-- ───────── サイドバー：閉じた72pxレール（shared/AppHeader.tsx） ───────── -->
+  <div style="width: 72px; flex: none; background: #FDF7F3; border-right: 1px solid #E2DBD0; box-shadow: 3px 0 10px -4px rgba(60, 48, 32, .18); padding: 16px 0; display: flex; flex-direction: column; align-items: center; gap: 14px;">
+    <div style="width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+        <path d="M15 3v18"></path>
+        <path d="m10 15-3-3 3-3"></path>
+      </svg>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+      <!-- トップ -->
+      <div class="cs-rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+          <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        </svg>
+      </div>
+      <!-- 学習する（この画面。アクティブは赤ベタ＋赤い落ち影） -->
+      <div class="cs-rail-item cs-rail-item-active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDF7F3" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 7v14"></path>
+          <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path>
+        </svg>
+      </div>
+      <!-- AIコーチ -->
+      <div class="cs-rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path>
+        </svg>
+      </div>
+      <!-- コーチング -->
+      <div class="cs-rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path>
+          <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
+        </svg>
+      </div>
+      <!-- マイノート -->
+      <div class="cs-rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"></path>
+          <path d="M2 6h4"></path>
+          <path d="M2 10h4"></path>
+          <path d="M2 14h4"></path>
+          <path d="M2 18h4"></path>
+          <path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"></path>
+        </svg>
+      </div>
+
+      <div style="width: 32px; height: 1px; background: #EFE9E0; margin: 14px 0;"></div>
+
+      <!-- 管理（管理者のみ） -->
+      <div class="cs-rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>
+      </div>
+    </div>
+
+    <div style="flex: 1;"></div>
+
+    <div style="width: 36px; height: 36px; border-radius: 9999px; background: #F2E8E1; display: grid; place-items: center; font-size: 12px; font-weight: 700; color: #CDC6C6;">MO</div>
+  </div>
+
+  <!-- ───────── 本文：1440px の固定キャンバス ─────────
+       実装は useScaleToFit(1440) で、使える幅に収まるよう transform:scale で縮める
+       （MaterialsTopPage.tsx:25,57）。ここでは縮尺 1 の設計値そのままを描く。
+       main の padding は 54px 42px 56px（実装のインライン値）。 -->
+  <div style="width: 1440px; flex: none; padding: 54px 42px 56px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px; position: relative;">
+
+    <!-- ① ページ見出し -->
+    <div style="display: flex; align-items: center; gap: 22px;">
+      <h1 style="margin: 0; font-size: 30px; font-weight: 900; letter-spacing: -0.01em; flex: 1;">学習する</h1>
+      <div style="display: inline-flex; align-items: center; gap: 10px;">
+        <span style="font-size: 13px; font-weight: 700;">受講中コース全体の修了レッスン</span>
+        <span style="font-size: 24px; font-weight: 900; color: var(--cs-primary); line-height: 1;">7<span style="font-size: 12px; font-weight: 700; color: var(--cs-text-subtle); margin-left: 3px;">/ 21</span></span>
+      </div>
+    </div>
+
+    <!-- ② 続きから学ぶ（左） ＋ ほかに学習中（右 340px 固定） -->
+    <div style="display: flex; gap: 20px; align-items: flex-start;">
+
+      <div style="flex: 1; min-width: 0; background: var(--cs-bg-card); border: 1px solid var(--cs-border-card); border-radius: 20px; box-shadow: var(--cs-shadow-card); padding: 18px 20px; display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; gap: 18px; align-items: center;">
+          <!-- 実装の /images/materials/hero-art.png を 368x224 に縮めて埋め込んだもの（表示は 184x112） -->
+          <img src="data:image/webp;base64,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" alt="" style="width: 184px; height: 112px; flex: none; object-fit: cover; border-radius: 14px; display: block;">
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-size: 12px; font-weight: 900; color: var(--cs-primary); margin-bottom: 4px; letter-spacing: 0.08em;">続きから学ぶ</div>
+            <div style="font-size: 20px; font-weight: 900; letter-spacing: -0.01em;">デザイン基礎</div>
+            <div style="font-size: 13px; color: var(--cs-text-muted); margin-top: 3px;">基礎を理解する</div>
+            <div style="display: flex; align-items: center; gap: 12px; margin-top: 10px;">
+              <div style="flex: 1; height: 7px; border-radius: 999px; background: var(--cs-progress-track); overflow: hidden;">
+                <div style="width: 14%; height: 100%; border-radius: 999px; background: var(--cs-primary);"></div>
+              </div>
+              <span style="font-size: 12.5px; color: var(--cs-text-muted); flex: none;">このコース <span style="font-weight: 700; color: var(--cs-text);">1 / 7</span> レッスン</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="flex: 1; min-width: 240px; background: var(--cs-primary-soft); border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; gap: 10px;">
+            <span style="width: 30px; height: 30px; flex: none; border-radius: 50%; background: #FFFFFF; display: grid; place-items: center;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="#D60934"><path d="M9 6.5v11l9-5.5z"></path></svg>
+            </span>
+            <div style="min-width: 0;">
+              <div style="font-size: 11.5px; color: var(--cs-text-muted);">次に学ぶ</div>
+              <div style="font-size: 13.5px; font-weight: 900;">基本の考え方<span style="font-size: 11.5px; font-weight: 700; color: var(--cs-text-muted); margin-left: 8px;">Lesson 2・12分</span></div>
+            </div>
+          </div>
+          <div style="flex: none; background: var(--cs-primary); color: #FFFFFF; border-radius: 12px; padding: 11px 24px; font-size: 14px; font-weight: 900;">続きから学ぶ</div>
+          <div style="flex: none; background: #FFFFFF; color: var(--cs-primary); border: 1px solid var(--cs-primary-border); border-radius: 12px; padding: 10px 20px; font-size: 13px; font-weight: 900;">コース目次を見る</div>
+        </div>
+      </div>
+
+      <div style="width: 340px; flex: none; display: flex; flex-direction: column; gap: 12px;">
+        <div style="font-size: 14.5px; font-weight: 900;">ほかに学習中</div>
+        <div style="background: var(--cs-bg-card); border: 1px solid var(--cs-border-card); border-radius: 16px; box-shadow: var(--cs-shadow-card); padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; box-sizing: border-box;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <!-- CourseThumb の build（タグ記号）。courseVisuals.tsx の実パス -->
+            <span style="width: 56px; height: 56px; flex: none; border-radius: 14px; background: #FBF1DC; display: grid; place-items: center;">
+              <svg width="31.36" height="31.36" viewBox="0 0 36 36">
+                <g fill="none" stroke="#D9930D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M13 12 L7 18 L13 24"></path>
+                  <path d="M23 12 L29 18 L23 24"></path>
+                  <path d="M20 9 L16 27"></path>
+                </g>
+              </svg>
+            </span>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-size: 11px; font-weight: 700; color: var(--cs-text-subtle); margin-bottom: 2px;">Web制作</div>
+              <div style="font-size: 15px; font-weight: 900;">HTML/CSS</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="flex: 1; height: 6px; border-radius: 999px; background: var(--cs-progress-track); overflow: hidden;">
+              <div style="width: 10%; height: 100%; border-radius: 999px; background: var(--cs-primary);"></div>
+            </div>
+            <span style="font-size: 12px; font-weight: 700; color: var(--cs-text-muted); flex: none;">1 / 9</span>
+            <span style="font-size: 12.5px; font-weight: 900; color: var(--cs-primary); flex: none;">続きから →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ ぴったりの教材をさがす（AI検索バー） -->
+    <div style="background: var(--cs-primary-soft); border-radius: 16px; padding: 18px 24px; display: flex; align-items: center; gap: 18px;">
+      <div style="flex: none; width: 200px;">
+        <div style="font-size: 14.5px; font-weight: 900;">ぴったりの教材をさがす</div>
+        <div style="font-size: 12px; color: var(--cs-text-muted); margin-top: 2px; line-height: 1.6;">学びたいこと・つまずいていることから、AIが教材をおすすめ</div>
+      </div>
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px;">
+        <div style="position: relative; width: 100%; max-width: 620px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A8082" stroke-width="1.75" stroke-linecap="round" style="position: absolute; left: 16px; top: 14px;">
+            <path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zm10 17-5-5"></path>
+          </svg>
+          <div style="height: 44px; box-sizing: border-box; border-radius: 999px; border: 1px solid var(--cs-primary-border); background: #FFFFFF; padding: 0 118px 0 42px; font-size: 13px; color: var(--cs-text-subtle); display: flex; align-items: center;">学びたいこと・つまずいていることを入力（例：配色が苦手）</div>
+          <!-- 未入力なので送信ボタンは無効色（#A29A9C） -->
+          <div style="position: absolute; right: 5px; top: 5px; height: 34px; border-radius: 999px; background: #A29A9C; padding: 0 16px; color: #FFFFFF; font-size: 12.5px; font-weight: 900; display: flex; align-items: center;">教材をさがす</div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px; max-width: 620px;">
+          <span style="font-size: 11px; color: var(--cs-text-subtle); flex: none;">例：</span>
+          <div style="background: #FFFFFF; border: 1px solid var(--cs-primary-border); border-radius: 999px; padding: 5px 13px; font-size: 12px; color: var(--cs-text-body);">配色が苦手</div>
+          <div style="background: #FFFFFF; border: 1px solid var(--cs-primary-border); border-radius: 999px; padding: 5px 13px; font-size: 12px; color: var(--cs-text-body);">バナーを作りたい</div>
+          <div style="background: #FFFFFF; border: 1px solid var(--cs-primary-border); border-radius: 999px; padding: 5px 13px; font-size: 12px; color: var(--cs-text-body);">次に学ぶべき教材は？</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ 学習領域から探す。領域は10個あるが色は family の5色だけ（tokens.ts の category） -->
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; align-items: baseline; gap: 10px;">
+        <div style="font-size: 14.5px; font-weight: 900;">学習領域から探す</div>
+        <span style="font-size: 12px; color: var(--cs-text-subtle);">全 55 コース ・ 目標以外のコースも自由に受講できます</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 20px;">
+
+        <!-- 仕事の土台 / family=career（緑 #2FA35C・地 #EAF6ED）。図形は「書類」 -->
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="cs-sec-head">
+            <span class="cs-sec-bar" style="background: #2FA35C;"></span>
+            <h3 class="cs-sec-title">仕事の土台</h3>
+            <span class="cs-sec-sub">3 学習領域</span>
+          </div>
+          <div class="cs-area-cards">
+            <div class="cs-area-card">
+              <span style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: #EAF6ED; display: grid; place-items: center;">
+                <svg width="24.64" height="24.64" viewBox="0 0 36 36">
+                  <rect x="8" y="12" width="20" height="15" rx="2.5" fill="#2FA35C" opacity=".85"></rect>
+                  <path d="M14 12 V10 a2 2 0 0 1 2-2 h4 a2 2 0 0 1 2 2 v2" fill="none" stroke="#2FA35C" stroke-width="2.4"></path>
+                  <rect x="8" y="17" width="20" height="2.4" fill="#fff" opacity=".85"></rect>
+                </svg>
+              </span>
+              <span style="min-width: 0; flex: 1;">
+                <span class="cs-area-name">ソフトスキル<span class="cs-area-count">1 コース</span></span>
+                <span class="cs-area-desc">学ぶ前に知っておきたい心得とマインドセット</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A29A9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+            <div class="cs-area-card">
+              <span style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: #EAF6ED; display: grid; place-items: center;">
+                <svg width="24.64" height="24.64" viewBox="0 0 36 36">
+                  <rect x="8" y="12" width="20" height="15" rx="2.5" fill="#2FA35C" opacity=".85"></rect>
+                  <path d="M14 12 V10 a2 2 0 0 1 2-2 h4 a2 2 0 0 1 2 2 v2" fill="none" stroke="#2FA35C" stroke-width="2.4"></path>
+                  <rect x="8" y="17" width="20" height="2.4" fill="#fff" opacity=".85"></rect>
+                </svg>
+              </span>
+              <span style="min-width: 0; flex: 1;">
+                <span class="cs-area-name">キャリア<span class="cs-area-count">1 コース</span></span>
+                <span class="cs-area-desc">リサーチ・自己分析から選考対策まで</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A29A9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+            <div class="cs-area-card">
+              <span style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: #EAF6ED; display: grid; place-items: center;">
+                <svg width="24.64" height="24.64" viewBox="0 0 36 36">
+                  <rect x="8" y="12" width="20" height="15" rx="2.5" fill="#2FA35C" opacity=".85"></rect>
+                  <path d="M14 12 V10 a2 2 0 0 1 2-2 h4 a2 2 0 0 1 2 2 v2" fill="none" stroke="#2FA35C" stroke-width="2.4"></path>
+                  <rect x="8" y="17" width="20" height="2.4" fill="#fff" opacity=".85"></rect>
+                </svg>
+              </span>
+              <span style="min-width: 0; flex: 1;">
+                <span class="cs-area-name">案件獲得攻略プログラム<span class="cs-area-count">1 コース</span></span>
+                <span class="cs-area-desc">最初の1件から継続案件までの進め方</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A29A9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- つくる / family=create（赤 #D60934・地 #FDEEEF）。図形は「四角＋丸＋三角」 -->
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="cs-sec-head">
+            <span class="cs-sec-bar" style="background: #D60934;"></span>
+            <h3 class="cs-sec-title">つくる</h3>
+            <span class="cs-sec-sub">2 学習領域</span>
+          </div>
+          <div class="cs-area-cards">
+            <div class="cs-area-card">
+              <span style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: #FDEEEF; display: grid; place-items: center;">
+                <svg width="24.64" height="24.64" viewBox="0 0 36 36">
+                  <rect x="8" y="9" width="12" height="12" rx="2.5" fill="#D60934" opacity=".85"></rect>
+                  <circle cx="25" cy="14" r="5.5" fill="#D60934" opacity=".45"></circle>
+                  <path d="M13 29 L19 20 L25 29 Z" fill="#D60934" opacity=".65"></path>
+                </svg>
+              </span>
+              <span style="min-width: 0; flex: 1;">
+                <span class="cs-area-name">Webデザイン<span class="cs-area-count">13 コース</span></span>
+                <span class="cs-area-desc">デザインの基礎概念からツール、実践課題まで</span>
+                <!-- 「学習中 n」バッジ。radius 5 は tokens.radius.badge（押せないラベルは pill にしない） -->
+                <span style="display: inline-block; margin-top: 4px; background: #FDEEEF; color: #D60934; border-radius: 5px; padding: 2px 8px; font-size: 11px; font-weight: 900;">学習中 1</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A29A9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+            <div class="cs-area-card">
+              <span style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: #FDEEEF; display: grid; place-items: center;">
+                <svg width="24.64" height="24.64" viewBox="0 0 36 36">
+                  <rect x="8" y="9" width="12" height="12" rx="2.5" fill="#D60934" opacity=".85"></rect>
+                  <circle cx="25" cy="14" r="5.5" fill="#D60934" opacity=".45"></circle>
+                  <path d="M13 29 L19 20 L25 29 Z" fill="#D60934" opacity=".65"></path>
+                </svg>
+              </span>
+              <span style="min-width: 0; flex: 1;">
+                <span class="cs-area-name">動画編集<span class="cs-area-count">7 コース</span></span>
+                <span class="cs-area-desc">編集ツールの操作と、納品できる動画の作り方</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A29A9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Webをつくる / family=build（琥珀 #D9930D・地 #FBF1DC）。図形は「タグ記号」 -->
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="cs-sec-head">
+            <span class="cs-sec-bar" style="background: #D9930D;"></span>
+            <h3 class="cs-sec-title">Webをつくる</h3>
+            <span class="cs-sec-sub">1 学習領域</span>
+          </div>
+          <div class="cs-area-cards">
+            <div class="cs-area-card">
+              <span style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: #FBF1DC; display: grid; place-items: center;">
+                <svg width="24.64" height="24.64" viewBox="0 0 36 36">
+                  <g fill="none" stroke="#D9930D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M13 12 L7 18 L13 24"></path>
+                    <path d="M23 12 L29 18 L23 24"></path>
+                    <path d="M20 9 L16 27"></path>
+                  </g>
+                </svg>
+              </span>
+              <span style="min-width: 0; flex: 1;">
+                <span class="cs-area-name">Web制作<span class="cs-area-count">8 コース</span></span>
+                <span class="cs-area-desc">ノーコードからコーディングまで、作って公開する</span>
+                <span style="display: inline-block; margin-top: 4px; background: #FDEEEF; color: #D60934; border-radius: 5px; padding: 2px 8px; font-size: 11px; font-weight: 900;">学習中 1</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A29A9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- 集める・伸ばす / family=grow（紫 #8B5CD6・地 #F2ECFC）。図形は「拡声器」 -->
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="cs-sec-head">
+            <span class="cs-sec-bar" style="background: #8B5CD6;"></span>
+            <h3 class="cs-sec-title">集める・伸ばす</h3>
+            <span class="cs-sec-sub">2 学習領域</span>
+          </div>
+          <div class="cs-area-cards">
+            <div class="cs-area-card">
+              <span style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: #F2ECFC; display: grid; place-items: center;">
+                <svg width="24.64" height="24.64" viewBox="0 0 36 36">
+                  <path d="M9 22 L9 14 L16 14 L26 8 L26 28 L16 22 Z" fill="#8B5CD6" opacity=".85"></path>
+                  <path d="M12 22 L12 28 L16 28 L15 22 Z" fill="#8B5CD6" opacity=".55"></path>
+                </svg>
+              </span>
+              <span style="min-width: 0; flex: 1;">
+                <span class="cs-area-name">Webマーケティング<span class="cs-area-count">11 コース</span></span>
+                <span class="cs-area-desc">解析・SEO・広告運用で数字を動かす</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A29A9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+            <div class="cs-area-card">
+              <span style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: #F2ECFC; display: grid; place-items: center;">
+                <svg width="24.64" height="24.64" viewBox="0 0 36 36">
+                  <path d="M9 22 L9 14 L16 14 L26 8 L26 28 L16 22 Z" fill="#8B5CD6" opacity=".85"></path>
+                  <path d="M12 22 L12 28 L16 28 L15 22 Z" fill="#8B5CD6" opacity=".55"></path>
+                </svg>
+              </span>
+              <span style="min-width: 0; flex: 1;">
+                <span class="cs-area-name">SNS運用<span class="cs-area-count">6 コース</span></span>
+                <span class="cs-area-desc">各SNSの運用と、伸びる企画の作り方</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A29A9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- AIを使う / family=ai（青緑 #1E88A8・地 #E7F2F6）。図形は「きらめき」 -->
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="cs-sec-head">
+            <span class="cs-sec-bar" style="background: #1E88A8;"></span>
+            <h3 class="cs-sec-title">AIを使う</h3>
+            <span class="cs-sec-sub">2 学習領域</span>
+          </div>
+          <div class="cs-area-cards">
+            <div class="cs-area-card">
+              <span style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: #E7F2F6; display: grid; place-items: center;">
+                <svg width="24.64" height="24.64" viewBox="0 0 36 36">
+                  <path d="M18 7 L20.4 15.6 L29 18 L20.4 20.4 L18 29 L15.6 20.4 L7 18 L15.6 15.6 Z" fill="#1E88A8" opacity=".85"></path>
+                  <circle cx="27" cy="9" r="2.4" fill="#1E88A8" opacity=".45"></circle>
+                </svg>
+              </span>
+              <span style="min-width: 0; flex: 1;">
+                <span class="cs-area-name">生成AI基礎<span class="cs-area-count">2 コース</span></span>
+                <span class="cs-area-desc">AIの市場感・著作権など前提の理解</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A29A9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+            <div class="cs-area-card">
+              <span style="width: 44px; height: 44px; flex: none; border-radius: 12px; background: #E7F2F6; display: grid; place-items: center;">
+                <svg width="24.64" height="24.64" viewBox="0 0 36 36">
+                  <path d="M18 7 L20.4 15.6 L29 18 L20.4 20.4 L18 29 L15.6 20.4 L7 18 L15.6 15.6 Z" fill="#1E88A8" opacity=".85"></path>
+                  <circle cx="27" cy="9" r="2.4" fill="#1E88A8" opacity=".45"></circle>
+                </svg>
+              </span>
+              <span style="min-width: 0; flex: 1;">
+                <span class="cs-area-name">Web×AI<span class="cs-area-count">5 コース</span></span>
+                <span class="cs-area-desc">実務のそれぞれの工程にAIを組み込む</span>
+              </span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A29A9C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="m9 18 6-6-6-6"></path></svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ⑤ 右下に常駐する「AIコーチに相談」（GlobalAiCoachDrawer の起動ボタン）。
+         実装は position: fixed。ここでは本文の右下に絶対配置で置く -->
+    <div style="position: absolute; right: 24px; bottom: 24px; height: 52px; display: inline-flex; align-items: center; gap: 8px; padding: 0 22px; border-radius: 9999px; background: #D60934; border: 1px solid #D60934; box-sizing: border-box; font-size: 14px; font-weight: 700; color: #FFFFFF; box-shadow: 0 8px 24px -8px rgba(160, 8, 36, .45);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path>
+        <path d="M20 2v4"></path>
+        <path d="M22 4h-4"></path>
+        <circle cx="4" cy="20" r="2"></circle>
+      </svg>
+      AIコーチに相談
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

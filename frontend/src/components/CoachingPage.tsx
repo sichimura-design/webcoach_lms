@@ -1,8 +1,8 @@
 /**
- * コーチングページ（受講生側）。
+ * コーチング画面（受講生側）。
  *
  * 目指す体験:
- *   コーチから届いたリンクを貼る → LMSからコーチングに参加する → 終了後にノートとタスクが完成している
+ *   コーチから届いたリンクを貼る → LMSからコーチングに参加する → 終了後にコーチング記録と目標が揃っている
  *
  * 受講生は Google / Zoom のアカウント連携をしない。録画・文字起こしは
  * コーチの認証済み権限で行われるので、受講生の操作は
@@ -15,6 +15,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import bffClient from '../services/bffClient';
 import { color, font } from '../theme/webcoachTheme';
+import { pageTitleStyle } from '../theme/pageTitle';
 import CoachingHeroCard from './coaching/CoachingHeroCard';
 import ConsentModal from './coaching/ConsentModal';
 import ImportRecordCard from './coaching/ImportRecordCard';
@@ -74,7 +75,7 @@ function TimelineNode({ label, accent, last }: { label: string; accent?: boolean
   );
 }
 
-export default function CoachingNotesPage() {
+export default function CoachingPage() {
   const { user } = useAuth();
   const { showToast } = useToast();
   const userId = user?.userid;
@@ -171,7 +172,7 @@ export default function CoachingNotesPage() {
   // 🔴 この編集UIはもともとマイページの「次回コーチングまでの目標」カードにあった。
   //    マイページ側に「編集」「続ける」「コーチング記録を取り込む」と入口が散らばっていて
   //    どれが何をするのか分からない、というレビュー指摘を受け、
-  //    目標に対する操作はこのコーチングページに集約した。
+  //    目標に対する操作はこのコーチング画面に集約した。
   //    マイページのカードは表示専用で、「編集」「詳しく」ともにここへ飛ばす。
   //
   // 編集は「編集モードに入って、まとめて保存」。1文字ごとに保存すると
@@ -205,6 +206,21 @@ export default function CoachingNotesPage() {
 
   const patchGoal = (index: number, next: Partial<CoachingGoalUpdateItem>) =>
     setGoalDraft((prev) => prev.map((g, i) => (i === index ? { ...g, ...next } : g)));
+
+  /*
+   * 並べ替え。下書きの配列を入れ替えるだけで、保存処理には手を入れない。
+   * 🔴 commitGoals が確定時に no を i+1 で振り直すので、配列の順序が並び順になる。
+   * 🔴 削除予定（removed）の行も配列に残っているので、そのまま隣と入れ替える。
+   *    保存時に落ちるため、見えている順序と保存される順序はズレない。
+   */
+  const moveGoal = (index: number, to: number) =>
+    setGoalDraft((prev) => {
+      if (to < 0 || to >= prev.length || to === index) return prev;
+      const next = [...prev];
+      const [moved] = next.splice(index, 1);
+      next.splice(to, 0, moved);
+      return next;
+    });
 
   /** 削除予定にする。実際に消えるのは保存したとき */
   const removeGoal = (index: number) =>
@@ -432,7 +448,7 @@ export default function CoachingNotesPage() {
         alignSelf: 'flex-start',
       }}
     >
-      ← コーチング一覧に戻る
+      ← 戻る
     </button>
   );
 
@@ -453,8 +469,11 @@ export default function CoachingNotesPage() {
         } as React.CSSProperties}
       >
         <div>
-          <h1 style={{ margin: 0, fontSize: 28, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.3, color: C.ink }}>
-            コーチング記録
+          {/* 🔴 色だけ自前で持つ。このページは .wc-page しか持たず .wc-warm の
+                 外にいるので、pageTitleStyle に color を入れて var(--dc-text) に
+                 頼ると未定義に落ちる（theme/pageTitle.ts 参照）。 */}
+          <h1 style={{ ...pageTitleStyle, color: C.ink }}>
+            コーチング
           </h1>
         </div>
 
@@ -497,6 +516,7 @@ export default function CoachingNotesPage() {
                 onCommit={() => void commitGoals()}
                 onCancel={cancelGoalEdit}
                 onPatch={patchGoal}
+                onMove={moveGoal}
                 onRemove={removeGoal}
                 onRestore={restoreGoal}
                 onAdd={addGoal}

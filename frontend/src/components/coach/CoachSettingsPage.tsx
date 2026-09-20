@@ -1,10 +1,17 @@
+/**
+ * コーチ向け 連携設定（/coach/settings）。
+ *
+ * 色・角丸・影・文字は index.css の --dc-*（.wc-warm スコープ）。
+ * 🔴 ルート要素の className に wc-warm が必要（CoachStudentsPage と同じ理由）。
+ */
 import React, { useEffect, useState, useCallback } from 'react';
 import { Video, CheckCircle2 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { AppHeader } from '../shared/AppHeader';
-import { Button } from '../ui/button';
+import { AppFooter } from '../shared/AppFooter';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
+import { pageTitleStyle } from '../../theme/pageTitle';
 
 // Google Meetはコーチ個別OAuthではなく、会社共有のOrganizerアカウントを管理者が
 // 一度だけ接続するOrganizer中心モデルに移行したため、コーチ向け連携先ではない。
@@ -23,6 +30,34 @@ const PROVIDER_META: Record<Provider, { label: string; description: string }> = 
     description: 'Zoomと連携すると、コーチングで利用したミーティングの情報を取得できるようになります。',
   },
 };
+
+const cardStyle: React.CSSProperties = {
+  background: 'var(--dc-surface)',
+  border: '1px solid var(--dc-border)',
+  borderRadius: 'var(--dc-radius-lg)',
+  boxShadow: 'var(--dc-shadow-card)',
+};
+
+/** 完了・失敗のバナー。連携直後のリダイレクトで1回だけ出る */
+function Banner({ tone, children }: { tone: 'success' | 'error'; children: React.ReactNode }) {
+  return (
+    <div
+      role="status"
+      style={{
+        padding: '12px 16px',
+        marginBottom: 14,
+        borderRadius: 'var(--dc-radius-md)',
+        background: tone === 'success' ? 'var(--dc-success-surface)' : 'var(--dc-soft-100)',
+        color: tone === 'success' ? 'var(--dc-success)' : 'var(--dc-primary)',
+        fontSize: 'var(--dc-fs-body)',
+        fontWeight: 500,
+        lineHeight: 'var(--dc-lh-ui)',
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 export function CoachSettingsPage() {
   const { user } = useAuth();
@@ -44,18 +79,23 @@ export function CoachSettingsPage() {
     loadStatus();
   }, [loadStatus]);
 
-  // OAuthコールバック後のリダイレクト（?connected=zoom&status=success|error）を処理
-  const connectedResult = searchParams.get('connected');
-  const connectedStatus = searchParams.get('status');
+  /*
+   * OAuthコールバック後のリダイレクト（?connected=zoom&status=success|error）を処理。
+   * 🔴 バナーの内容は state に写してから、クエリを消す。
+   *    searchParams を直接読んで描いていると、同じ useEffect が消したクエリで
+   *    即座に再描画されて、バナーが1フレームも出ないまま消える。
+   */
+  const [banner, setBanner] = useState<{ provider: string; ok: boolean } | null>(null);
   useEffect(() => {
-    if (connectedResult) {
-      loadStatus();
-      searchParams.delete('connected');
-      searchParams.delete('status');
-      setSearchParams(searchParams, { replace: true });
-    }
+    const connected = searchParams.get('connected');
+    if (!connected) return;
+    setBanner({ provider: connected, ok: searchParams.get('status') === 'success' });
+    loadStatus();
+    searchParams.delete('connected');
+    searchParams.delete('status');
+    setSearchParams(searchParams, { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [connectedResult]);
+  }, []);
 
   const handleConnect = async (provider: Provider) => {
     setConnectingProvider(provider);
@@ -75,91 +115,145 @@ export function CoachSettingsPage() {
     integrations.find(i => i.provider === provider);
 
   return (
-    <div className="min-h-screen bg-brand-bg flex flex-col">
+    <div className="wc-warm min-h-screen flex flex-col" style={{ background: 'var(--dc-bg)' }}>
       <AppHeader userName={user?.username} />
 
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-20" style={{ zIndex: 0 }}>
-        <div className="absolute w-[900px] h-[900px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(225,112,121,0.3) 0%, transparent 70%)', top: '-200px', left: '-300px', filter: 'blur(40px)' }} />
-        <div className="absolute w-[900px] h-[900px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(253,234,226,0.5) 0%, transparent 70%)', top: '-100px', right: '-400px', filter: 'blur(40px)' }} />
-        <div className="absolute w-[900px] h-[900px] rounded-full" style={{ background: 'radial-gradient(circle, rgba(242,147,103,0.3) 0%, transparent 70%)', bottom: '-300px', left: '30%', filter: 'blur(40px)' }} />
-      </div>
+      <div
+        className="wc-page flex-1"
+        style={{ '--wc-page-max': '860px' } as React.CSSProperties}
+      >
+        <h1 style={{ ...pageTitleStyle, margin: '0 0 20px', color: 'var(--dc-text)' }}>
+          連携設定
+        </h1>
 
-      <div className="relative flex-1 max-w-[860px] w-full mx-auto px-4 sm:px-6 py-8 pb-24 sm:pb-8" style={{ zIndex: 1 }}>
-        <h1 className="text-xl sm:text-2xl font-bold mb-6" style={{ color: '#4B3A33' }}>連携設定</h1>
-
-        {connectedResult && connectedStatus === 'success' && (
-          <div className="rounded-xl px-4 py-3 mb-4 text-sm" style={{ background: '#E9F7EF', color: '#2E7D46' }}>
-            {PROVIDER_META[connectedResult as Provider]?.label ?? connectedResult}との連携が完了しました。
-          </div>
-        )}
-        {connectedResult && connectedStatus === 'error' && (
-          <div className="rounded-xl px-4 py-3 mb-4 text-sm" style={{ background: '#FDEEEE', color: '#E86D78' }}>
-            {PROVIDER_META[connectedResult as Provider]?.label ?? connectedResult}との連携に失敗しました。もう一度お試しください。
-          </div>
+        {banner && (
+          <Banner tone={banner.ok ? 'success' : 'error'}>
+            {PROVIDER_META[banner.provider as Provider]?.label ?? banner.provider}
+            {banner.ok ? 'との連携が完了しました。' : 'との連携に失敗しました。もう一度お試しください。'}
+          </Banner>
         )}
 
-        <div className="bg-white rounded-2xl overflow-hidden" style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-          <div className="px-5 py-4" style={{ background: 'linear-gradient(135deg, #E86D78, #FA9262)' }}>
-            <span className="text-sm font-bold text-white">ミーティング連携</span>
+        <div style={{ ...cardStyle, overflow: 'hidden' }}>
+          <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--dc-border)' }}>
+            <span style={{ fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)' }}>
+              ミーティング連携
+            </span>
           </div>
 
-          <div className="divide-y" style={{ borderColor: '#F5F0ED' }}>
-            {loading ? (
-              <div className="py-12 text-center text-sm" style={{ color: '#7E6E68' }}>読み込み中...</div>
-            ) : error ? (
-              <div className="py-12 text-center text-sm" style={{ color: '#E86D78' }}>{error}</div>
-            ) : (
-              (Object.keys(PROVIDER_META) as Provider[]).map(provider => {
-                const meta = PROVIDER_META[provider];
-                const connected = isConnected(provider);
-                const integration = getIntegration(provider);
+          {loading ? (
+            <p
+              style={{
+                margin: 0, padding: '56px 24px', textAlign: 'center',
+                fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-body)',
+              }}
+            >
+              読み込み中…
+            </p>
+          ) : error ? (
+            <p
+              style={{
+                margin: 0, padding: '56px 24px', textAlign: 'center',
+                fontSize: 'var(--dc-fs-body)', color: 'var(--dc-primary)',
+              }}
+            >
+              {error}
+            </p>
+          ) : (
+            (Object.keys(PROVIDER_META) as Provider[]).map((provider, i) => {
+              const meta = PROVIDER_META[provider];
+              const connected = isConnected(provider);
+              const integration = getIntegration(provider);
 
-                return (
-                  <div key={provider} className="flex items-center gap-4 px-5 py-5">
-                    <div
-                      className="w-11 h-11 rounded-full flex items-center justify-center flex-shrink-0"
-                      style={{ background: '#EDE8E3' }}
+              return (
+                <div
+                  key={provider}
+                  className="coach-setting-row"
+                  style={{
+                    padding: '20px',
+                    borderTop: i === 0 ? 'none' : '1px solid var(--dc-rule)',
+                  }}
+                >
+                  <span
+                    style={{
+                      width: 44, height: 44, flex: 'none',
+                      borderRadius: '50%',
+                      background: 'var(--dc-badge-pink)',
+                      color: 'var(--dc-primary)',
+                      display: 'grid', placeItems: 'center',
+                    }}
+                  >
+                    <Video size={20} strokeWidth={2} />
+                  </span>
+
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p
+                      style={{
+                        margin: 0,
+                        fontSize: 'var(--dc-fs-lead)', fontWeight: 600,
+                        color: 'var(--dc-text)', lineHeight: 'var(--dc-lh-heading)',
+                      }}
                     >
-                      <Video className="w-5 h-5" style={{ color: '#7E6E68' }} />
-                    </div>
-
-                    <div className="flex-1 min-w-0">
-                      <p className="font-bold text-sm" style={{ color: '#4B3A33' }}>{meta.label}</p>
-                      <p className="text-xs mt-0.5" style={{ color: '#7E6E68' }}>
-                        {connected
-                          ? `連携済み${integration?.provider_account_email ? `（${integration.provider_account_email}）` : ''}`
-                          : meta.description}
-                      </p>
-                    </div>
-
-                    {connected ? (
-                      <span
-                        className="flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold flex-shrink-0"
-                        style={{ background: '#E9F7EF', color: '#2E7D46' }}
-                      >
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        連携済み
-                      </span>
-                    ) : (
-                      <Button
-                        variant="brand-gradient"
-                        size="pill-sm"
-                        disabled={connectingProvider === provider}
-                        onClick={() => handleConnect(provider)}
-                        className="flex-shrink-0"
-                      >
-                        {connectingProvider === provider ? '接続中...' : `${meta.label}と連携する`}
-                      </Button>
-                    )}
+                      {meta.label}
+                    </p>
+                    <p
+                      style={{
+                        margin: '2px 0 0',
+                        fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)',
+                        lineHeight: 'var(--dc-lh-prose)',
+                      }}
+                    >
+                      {connected
+                        ? `連携済み${integration?.provider_account_email ? `（${integration.provider_account_email}）` : ''}`
+                        : meta.description}
+                    </p>
                   </div>
-                );
-              })
-            )}
-          </div>
-        </div>
 
-        <p className="text-center text-xs mt-8" style={{ color: '#C3BAB4' }}>2026 © WEBCOACH</p>
+                  <span className="coach-setting-action">
+                  {connected ? (
+                    <span
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 6,
+                        padding: '7px 14px',
+                        borderRadius: 999,
+                        background: 'var(--dc-success-surface)',
+                        color: 'var(--dc-success)',
+                        fontSize: 'var(--dc-fs-caption)', fontWeight: 600,
+                      }}
+                    >
+                      <CheckCircle2 size={14} strokeWidth={2.25} />
+                      連携済み
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={connectingProvider === provider}
+                      onClick={() => handleConnect(provider)}
+                      className="dc-cta-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                      style={{
+                        display: 'inline-flex', alignItems: 'center',
+                        padding: '11px 20px',
+                        border: 0,
+                        borderRadius: 'var(--dc-radius-md)',
+                        background: 'var(--dc-primary)',
+                        color: '#fff',
+                        fontFamily: 'inherit',
+                        fontSize: 'var(--dc-fs-body)', fontWeight: 600,
+                        cursor: connectingProvider === provider ? 'default' : 'pointer',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {connectingProvider === provider ? '接続中…' : `${meta.label}と連携する`}
+                    </button>
+                  )}
+                  </span>
+                </div>
+              );
+            })
+          )}
+        </div>
       </div>
+
+      <AppFooter />
     </div>
   );
 }

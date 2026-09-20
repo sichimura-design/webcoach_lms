@@ -4,14 +4,14 @@
  * カード構成:
  *   見出し「コーチング記録（M/D）」
  *   → ①今回のまとめ（会話の要点まで含む）
- *   → ②次回までにやること（チェックリスト）
- *   → ③自分のメモ（マイノート）
+ *   → ②次回までの目標（チェックリスト）
+ *   → ③マイノート
  *   → ④文字起こし・記録の管理（折りたたみ）
  *
  * 🔴 この画面は「読む場所」であって「直す場所」ではない。
  *    以前はここに 期限・完了条件の入力、項目の追加/削除、「この内容で確定」まで
  *    載っていて、1回分の記録を読み返すだけなのに操作の選択肢が多すぎた。
- *    学習目標への反映と編集は /coaching の NextActionsCard が持っているので、
+ *    学習目標への反映と編集は /coaching の NextGoalsCard が持っているので、
  *    ここには持ち込まないこと。
  *
  * 🔴 ①の小見出し（「前回からの進捗」など）は固定文言にしない。
@@ -68,7 +68,7 @@ export function SessionReview({ session, onDeleted }: SessionReviewProps) {
     setTasks(session.summary?.tasks ?? []);
   }, [session]);
 
-  /** この回に取ったノート。「自分のメモ」はマイノート側を正典にする */
+  /** この回に取ったノート。書いたものはマイノート側を正典にする */
   useEffect(() => {
     let alive = true;
     setNotes(null);
@@ -82,8 +82,8 @@ export function SessionReview({ session, onDeleted }: SessionReviewProps) {
   const summary = detail.summary;
 
   /*
-   * 表示上は目標とタスクを1リストにする（読む側にとって「次回までにやること」は1つの束で、
-   * どちらに分類されたかは関心が無い）。state を goals / tasks に分けたままなのは、
+   * 表示上は goals / tasks を1リストにする（UIの呼称はどちらも「次回までの目標」で、
+   * 読む側はどちらに分類されたかに関心が無い）。state を goals / tasks に分けたままなのは、
    * persist がその形で送るのと、チェックを戻すときに元の配列へ書き戻すため。
    */
   const actionItems = useMemo(
@@ -201,7 +201,7 @@ export function SessionReview({ session, onDeleted }: SessionReviewProps) {
   if (!summary) {
     return (
       <section style={{ ...t.card, padding: 24 }}>
-        <h1 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 10px', fontSize: 22 }}>{recordTitle}</h1>
+        <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 10px', fontSize: 22 }}>{recordTitle}</h2>
         <p style={{ ...font.meta, color: color.textMuted, margin: 0 }}>
           この記録にはまだAIの整理結果がありません。
         </p>
@@ -243,9 +243,9 @@ export function SessionReview({ session, onDeleted }: SessionReviewProps) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
       {/* ---- 見出し ---- */}
       <div>
-        <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.3, color: color.text }}>
+        <h2 style={{ margin: 0, fontSize: 24, fontWeight: 700, letterSpacing: '-0.01em', lineHeight: 1.3, color: color.text }}>
           {recordTitle}
-        </h1>
+        </h2>
         <p style={{ ...font.caption, color: color.textSubtle, margin: '6px 0 0' }}>
           {detail.coach}
           {detail.importedFrom === 'auto'
@@ -257,7 +257,7 @@ export function SessionReview({ session, onDeleted }: SessionReviewProps) {
 
       {/* ---- ① 今回のまとめ（会話の要点まで1枚に） ---- */}
       <section style={sectionCard}>
-        <h2 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>今回のまとめ</h2>
+        <h3 style={{ ...font.sectionTitle, color: color.text, margin: 0 }}>今回のまとめ</h3>
         <p style={{ ...font.listItem, color: color.textBody, lineHeight: 1.9, margin: '14px 0 0' }}>
           {summary.sessionSummary}
         </p>
@@ -271,21 +271,21 @@ export function SessionReview({ session, onDeleted }: SessionReviewProps) {
               borderTop: `1px solid ${color.border}`,
             }}
           >
-            <h3 style={{ ...font.rowTitle, color: color.textStrong, margin: '0 0 10px' }}>{block.heading}</h3>
+            <h4 style={{ ...font.rowTitle, color: color.textStrong, margin: '0 0 10px' }}>{block.heading}</h4>
             {renderEvidenced(block.items)}
           </div>
         ))}
       </section>
 
-      {/* ---- ② 次回までにやること ---- */}
+      {/* ---- ② 次回までの目標 ---- */}
       <section style={sectionCard}>
-        <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 14px' }}>
-          次回までにやること{actionItems.length > 0 && `（${actionItems.length}件）`}
-        </h2>
+        <h3 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 14px' }}>
+          次回までの目標{actionItems.length > 0 && `（${actionItems.length}件）`}
+        </h3>
 
         {actionItems.length === 0 ? (
           <p style={{ ...font.meta, color: color.textMuted, margin: 0 }}>
-            この会話からは、次回までの目標・タスクが見つかりませんでした。
+            この会話からは、次回までの目標が見つかりませんでした。
           </p>
         ) : (
           <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -317,7 +317,7 @@ export function SessionReview({ session, onDeleted }: SessionReviewProps) {
           </ul>
         )}
 
-        {/* 中身を直したり学習目標に反映したりするのはコーチングページ側の役目 */}
+        {/* 中身を直したり学習目標に反映したりするのはコーチング画面側の役目 */}
         <p style={{ ...font.caption, color: color.textMuted, margin: '14px 0 0', lineHeight: 1.9 }}>
           内容の修正や学習目標への反映は{' '}
           <button
@@ -325,15 +325,15 @@ export function SessionReview({ session, onDeleted }: SessionReviewProps) {
             onClick={() => navigate('/coaching')}
             style={{ ...font.link, color: color.primary, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
           >
-            コーチングページ
+            コーチング
           </button>
           {' '}から行えます。
         </p>
       </section>
 
-      {/* ---- ③ 自分のメモ（マイノート） ---- */}
+      {/* ---- ③ マイノート ---- */}
       <section style={sectionCard}>
-        <h2 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 10px' }}>自分のメモ</h2>
+        <h3 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 10px' }}>マイノート</h3>
 
         {notes === null ? (
           <p style={{ ...font.meta, color: color.textMuted, margin: 0 }}>読み込み中…</p>

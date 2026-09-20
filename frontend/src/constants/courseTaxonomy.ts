@@ -14,9 +14,11 @@
  * 人が値を振らないので、増えたコースが未分類のまま取り残されることが無い。
  *
  * コースIDは `領域code * 100 + 領域内の順番`（1始まり）。
- *   - 先頭桁が family（1=仕事の土台 / 2=作る / 3=集める / 4=案件 / 5=AI）なので
+ *   - 先頭桁がだいたいの区分（1=仕事の土台 / 2=作る / 3=集める / 5=AI）なので
  *     URLやCSVでIDを見ただけでどの辺の教材か分かる
+ *     （4 は旧「案件獲得攻略プログラム」で、12 に統合したので今は空き番）
  *   - 領域code は手書きなので、領域を足しても既存コースのIDが動かない
+ *   - 逆に、領域を統合するとその領域のコースIDは変わる。参照は slug 経由なので追随する
  * IDをリテラルで書かないこと。フィクスチャからは COURSE_ID_BY_SLUG / courseIdOf を通す。
  */
 
@@ -43,22 +45,23 @@ export interface CourseDef {
 
 /** 領域とコース。この配列の順序がそのまま表示順・カリキュラム順になる */
 export const AREA_COURSES: ReadonlyArray<AreaDef & { courses: readonly CourseDef[] }> = [
+  /*
+   * 🔴 この配列の順序がそのまま学習トップ（⑤ 領域から探す）の表示順になる。
+   *    以前あった「コース数の降順」は廃止した（MaterialsTopPage の sortedAreas の🔴）。
+   *    並べ替えたいときはここを入れ替えること。
+   *    ・「学習ガイド」は入口なので必ず先頭
+   *    ・「生成AI基礎」は「Web×AI」の直前（前提 → 応用の順）
+   *    ・「案件獲得・キャリア」は学び終えた先の話なので最後
+   */
   {
-    name: 'ソフトスキル',
+    // 旧「ソフトスキル」。何の領域か伝わらないので改名した
+    name: '学習ガイド',
     code: 11,
     family: 'career',
-    description: '学ぶ前に知っておきたい心得とマインドセット',
+    description: 'はじめの使い方と、学ぶ前に知っておきたい心得',
     courses: [
+      { name: 'チュートリアル', slug: 'tutorial' },
       { name: '学習に必要な心得集', slug: 'mindset' },
-    ],
-  },
-  {
-    name: 'キャリア',
-    code: 12,
-    family: 'career',
-    description: 'リサーチ・自己分析から選考対策まで',
-    courses: [
-      { name: '転職', slug: 'job-change' },
     ],
   },
   {
@@ -147,15 +150,6 @@ export const AREA_COURSES: ReadonlyArray<AreaDef & { courses: readonly CourseDef
     ],
   },
   {
-    name: '案件獲得攻略プログラム',
-    code: 41,
-    family: 'career',
-    description: '最初の1件から継続案件までの進め方',
-    courses: [
-      { name: '案件獲得攻略プログラム', slug: 'client-work-program' },
-    ],
-  },
-  {
     name: '生成AI基礎',
     code: 51,
     family: 'ai',
@@ -178,6 +172,26 @@ export const AREA_COURSES: ReadonlyArray<AreaDef & { courses: readonly CourseDef
       { name: 'AI×SNS', slug: 'ai-sns' },
     ],
   },
+  /*
+   * 🔴 旧「キャリア」＋旧「案件獲得攻略プログラム（code 41）」の統合。
+   *    41 は領域にコースが1本だけで、しかも領域名とコース名が同じだった
+   *    （＝領域の名前として意味を持っていなかった）。転職と地続きの話なので
+   *    1つの領域にまとめ、code は 12 を引き継ぐ。
+   *    そのぶんコースIDは client-work-program が 4101 → 1201、
+   *    job-change が 1201 → 1202 に変わるが、参照はすべて slug 経由
+   *    （COURSE_ID_BY_SLUG / courseIdOf）なので追随する。
+   *    localStorage に残る古いID（進捗・最近見たコース）は孤児になるだけ。
+   */
+  {
+    name: '案件獲得・キャリア',
+    code: 12,
+    family: 'career',
+    description: '最初の1件から継続案件まで。リサーチ・自己分析から選考対策も',
+    courses: [
+      { name: '案件獲得攻略プログラム', slug: 'client-work-program' },
+      { name: '転職', slug: 'job-change' },
+    ],
+  },
 ] as const;
 
 /**
@@ -193,7 +207,7 @@ export const AREA_FAMILY_LABEL: Record<AreaFamily, string> = {
   ai: 'AIを使う',
 };
 
-/** family の並び。AREA_COURSES に最初に出てくる順と同じ */
+/** family の並び。AREA_COURSES に最初に出てくる順と同じ（領域の表示順とは別物） */
 export const AREA_FAMILY_ORDER: readonly AreaFamily[] = ['career', 'create', 'build', 'grow', 'ai'];
 
 /** 領域だけの一覧（表示順）。コースを持たない用途はこちらを使う */
@@ -214,7 +228,7 @@ export interface TaxonomyCourse extends CourseDef {
   indexInArea: number;
 }
 
-/** 全コース（領域の表示順 × 領域内のカリキュラム順）。55件 */
+/** 全コース（領域の表示順 × 領域内のカリキュラム順） */
 export const COURSES: readonly TaxonomyCourse[] = AREA_COURSES.flatMap((area) =>
   area.courses.map((course, i) => ({
     ...course,

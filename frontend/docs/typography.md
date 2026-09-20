@@ -40,6 +40,28 @@ WEBCOACH では
 **21〜27px は意図的に空けている。** 見出しとコンテンツ名が 2px 差で並ぶと、
 どちらも太字のときに階層が読めなくなる。
 
+### ページ見出し（h1）は定数を spread する
+
+🔴 **h1 の style を手写ししない。`frontend/src/theme/pageTitle.ts` の
+`pageTitleStyle` を spread する。**
+
+```tsx
+import { pageTitleStyle } from '../theme/pageTitle';
+
+<h1 style={pageTitleStyle}>マイノート</h1>
+<h1 style={{ ...pageTitleStyle, color: 'var(--dc-text)' }}>学習の記録</h1>
+```
+
+かつてこの値はどこにも定義されておらず、各ページが h1 のインライン style に
+写していた。結果 20px（マイページ）/ 22px（マイノート）/ 28px 生px（コーチング）/
+28〜32px（学習する・学習の記録）と4通りに散り、画面を移ると見出しの大きさが
+変わっていた。マイノートの 22px は上の「空けている帯」にそのまま落ちていた。
+
+`pageTitleStyle` は **color を持たない**。`--dc-fs-*` は `:root` にあるが、
+`--dc-text` などの色トークンは `.mypage-3d` / `.wc-warm` の opt-in スコープにあり、
+コーチング（`CoachingPage` は `.wc-page` しか持たない）からは見えないため。
+色は各ページが自分のスコープに合わせて足す。
+
 ### なぜ 20px 以下は固定 px なのか
 
 `index.css` の `--dc-sp-*`（余白）は幅に連動する可変スケール（`clamp` + `vw`）で、
@@ -224,18 +246,26 @@ grep -n "fontWeight: [89]00\|font\.weight\.black" $FILES
 grep -n "lineHeight: 1\.[89]" $FILES
 # 生px直書きが増えていないか
 grep -n "fontSize: [0-9]" $FILES
+
+# h1 が pageTitleStyle を経由せず自前でサイズを持っていないか（下が0件で、
+# 上が全ページぶんヒットするのが正）
+grep -rn "<h1" --include=*.tsx . -A6 | grep -n "fontSize"
+grep -rn "pageTitleStyle" --include=*.tsx .
 ```
 
 すべて0件が正。
 
-## 12. 適用範囲（2026-09-01 時点）
+## 12. 適用範囲（2026-09-17 時点）
 
 | 状態 | 対象 |
 |---|---|
 | ✅ 適用済み | 上の grep の `$FILES` 19ファイル（マイページ・学習記録・**学習する導線**・`shared/RankingRow.tsx`）と `index.css` の `:root` |
+| ✅ h1 を `pageTitleStyle` に統一 | マイページ（`MypageGreeting`）・学習する（`MaterialsTopPage`）・領域一覧（`AreaCoursesPage`）・コーチング（`CoachingPage`）・マイノート（`MyNotesPage`）・学習の記録（`StudyLogPage`）・コーチ3画面（`coach/CoachStudentsPage` `CoachSettingsPage` `CoachingSchedulePage`）の9ファイル |
 | ❌ 未適用 | `components/mypage/` に残る 5a 時代の未使用カード 8ファイル（`StatsStrip` `LearningStreakCard` `RoadmapStrip` `RoadmapRail` `ContinueLearningHero` `GuildLobby` `GuildLobbyCard` `PeopleActivityCard` `NextCoachingPlan`）。どれも現在の 8a マイページでは描画されておらず、5a に戻すとき用に残してあるだけ。**戻すなら先にここを移行すること**（`fontWeight: 900` や 10px が残っている） |
 | ❌ 未適用 | `theme/webcoachTheme.ts` の `font.*` を参照する約60ファイル（教材・コーストップ・レッスン・AIコーチ・コーチング・管理・設定）。`font.caption` = 11.5px が112箇所、`font.meta` = 12.5px が52箇所など、**12px 未満が多数残っている** |
 | ❌ 未適用 | `fontSize` の生px直書き約600箇所 |
+| ❌ 未適用（h1 が別系統） | ページ見出しの統一は上の9ファイルで止めてある。残っているのは次の5系統で、**サイズだけでなく weight もバラバラ**なので、手を付けるときは系統ごとにまとめてやる:<br>・`webcoachTheme.ts` の `font.pageTitle`（28px / **900**）= ヘルプ・学習ロードマップ・未使用の `shared/PageTitleBar.tsx`。900 は `public/index.html` でロードしていない（400/500/700/800 のみ）ので合成太字になっている<br>・`profile/settingsStyles.ts` の `dcPageTitle`（27px / 800）= アカウント設定・プロフィール。27px は「空けている帯」の中<br>・生px = AIコーチ 32px・コーストップ 32px・AIアプリ詳細 24px<br>・Tailwind = バッジ（`text-2xl` の **h2** が見出しで、`h1` はロゴ「WEBCOACH」になっており階層が壊れている）・管理画面 `text-2xl`<br>・MUI = `shared/PageHeader.tsx`（`variant="h6"` = 16px）とその唯一の利用者 `ContentListPage` |
+| ❌ 未適用 | `ConnectCoachPage.tsx` は `h1` に `font.sectionTitle`（17.5px）を当てていて、ページ見出しが本文より一段小さい |
 | 🗑 撤去済み | `theme/tokens.ts` の `font.size` と `font.weight.black`(900)。参照は `pageTitle` の1箇所だけで、残りは生px直書きに散っており、**この系統の画面（学習する・領域一覧）だけが一段小さいまま取り残される原因**になっていたので型から消した |
 
 ### ⚠️ 「学習する」だけに残っている構造的な差

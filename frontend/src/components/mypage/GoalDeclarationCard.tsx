@@ -6,32 +6,45 @@ import { daysLeft } from '../../utils/goalDeclaration';
 import { toLocalDateKey } from '../../utils/studyStats';
 
 /**
- * トップページの目標宣言カード（表示専用）。
+ * トップページの「あなたの目標」カード（表示専用）。
  * ============================================================
- * 「今やること（続きから学習）→ 何のために（この宣言）→ 積み上がり（ダッシュボード）」
- * の順で読めるよう、8a グリッドと学習状況ダッシュボードの間に全幅で置く。
+ * 置き場所は上段グリッド（.mypage-8a-grid）の右上＝挨拶の右。
+ * 挨拶の行の右が空いていたのでそこを埋めている。下の
+ * 「次回コーチングまでの目標」と列を共有するので左右の端が揃う。
+ * 🔴 全幅の帯（旧レイアウト）に戻さないこと。理由は MyPage.tsx の 🔴 に書いた。
+ *
+ * 🔴 目標文は lead(16px)。title(20px) に戻さないこと。左隣の
+ *    ResumeStudyCard がレッスン名を title で出しているので、横並びで
+ *    20px が2つになると上段の主役が分からなくなる（index.css の
+ *    --dc-fs-title の注記）。
  *
  * 🔴 Primary CTA を増やさない（DESIGN §15-5）。マイページで塗りボタンなのは
  *    ResumeStudyCard の「続きから学習する」だけ。ここはテキストリンクにする。
- *    未設定のときだけアウトラインの「宣言を書く ›」を出す（空カードを行き止まりに
+ *    未設定のときだけアウトラインの「目標を設定する ›」を出す（空カードを行き止まりに
  *    しないため。アウトラインなら唯一の Primary と競合しない）。
  *
  * 🔴 編集はここでしない。同じデータの編集入口を2箇所に置かない規約に従い、
- *    書くのも直すのも /study-log 側。ここは押すとそちらへ送るだけ。
+ *    書くのも直すのも /study-log 下部の「あなたの目標」カード。ここは押すと
+ *    そちらへ送るだけ。
+ *    🔴 送り先はハッシュ（#goal / #goal-new）。?goal= だと
+ *       あちらでモーダルが直接開いてしまい、「編集の入口は下部カード1つ」が崩れる。
+ *
+ * 🔴 振り返り（#goal-reflect）はここから促さない。「期間終了・振り返り待ち」
+ *    「振り返りを書く ›」を出していたが、この画面だけを見ている人には
+ *    何を書くものなのか分からない。振り返りの導線は /study-log 側だけが持つ。
+ *    そのため pendingReflection は props に持たない（MyPage.tsx でも渡さない）。
  *
  * 🔴 期間の経過をバーで出さない。「あと12日」のテキストのみ。
  *    バーにすると達成度%に読める（学習効果の数値化はしない規約）。
  *
- * CoachingTaskCard（次回コーチングまでのタスク）との見分け:
+ * CoachingTaskCard（次回コーチングまでの目標）との見分け:
  *   位置が別段／中身が1文の引用体（左4pxの縦罫＋20px）vs チェック付き複数行。
- *   かつては「目標宣言は学習記録ページで編集できます。」の脚注でも見分けさせて
+ *   かつては「目標は学習記録ページで編集できます。」の脚注でも見分けさせて
  *   いたが、見出し右の「編集する ›」が同じ場所へ送るので二重だった。
  * ============================================================
  */
 interface MypageGoalDeclarationCardProps {
   declaration: GoalDeclaration | null;
-  /** 期間が終わったのに振り返りがまだのもの（先頭1件だけ促す） */
-  pendingReflection: GoalDeclaration | null;
   loading: boolean;
   /** モックOFF。カードごと出さない */
   unavailable: boolean;
@@ -43,7 +56,7 @@ const CARD_STYLE: CSSProperties = {
   borderRadius: 'var(--dc-radius-lg)',
   boxShadow: 'var(--dc-shadow-card)',
   padding: 'var(--dc-sp-card-y) var(--dc-sp-card-x)',
-  marginBottom: 'var(--dc-sp-gap)',
+  /* 🔴 下余白を持たない。間隔は .mypage-8a-grid の gap が持つ */
 };
 
 const linkStyle: CSSProperties = {
@@ -51,6 +64,8 @@ const linkStyle: CSSProperties = {
   border: 'none',
   padding: 0,
   flex: 'none',
+  /* 狭い幅で見出し行から折り返したとき、左端に取り残されず右に寄る */
+  marginLeft: 'auto',
   fontFamily: 'inherit',
   fontSize: 'var(--dc-fs-body)',
   fontWeight: 700,
@@ -60,7 +75,6 @@ const linkStyle: CSSProperties = {
 
 export function MypageGoalDeclarationCard({
   declaration,
-  pendingReflection,
   loading,
   unavailable,
 }: MypageGoalDeclarationCardProps) {
@@ -79,8 +93,10 @@ export function MypageGoalDeclarationCard({
     );
   }
 
-  // 振り返り待ちがあるときは、進行中よりそちらを促す（放置されやすいので）
-  const target = declaration ?? pendingReflection;
+  // 🔴 出すのは進行中の目標だけ。「期間終了・振り返り待ち」と「振り返りを書く ›」を
+  //    ここに出していたが、この画面だけを見ている人には何のことか分からないので外した。
+  //    振り返りの導線は /study-log の「あなたの目標」カードが1箇所で持つ。
+  const target = declaration;
 
   const header = (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
@@ -93,24 +109,29 @@ export function MypageGoalDeclarationCard({
       >
         <Flag size={16} strokeWidth={1.75} />
       </span>
-      <h2 style={{ margin: 0, flex: 1, fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)' }}>
+      {/* 🔴 whiteSpace:nowrap。見出しが「あなた／の目標」と2行に割れるより、
+             flexWrap で右の「〇月〇日まで」「編集する ›」が次の行に落ちるほうがよい */}
+      <h2
+        style={{
+          margin: 0, flex: 1, whiteSpace: 'nowrap',
+          fontSize: 'var(--dc-fs-lead)', fontWeight: 700, color: 'var(--dc-text)',
+        }}
+      >
         あなたの目標
       </h2>
       {target && (
         <>
-          {/* 状態と残りは色ではなく語と数で伝える */}
+          {/* 残りは色ではなく語と数で伝える */}
           <span className="dc-num" style={{ fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)' }}>
-            {declaration
-              ? `${Number(declaration.periodTo.slice(5, 7))}月${Number(declaration.periodTo.slice(8, 10))}日まで（あと${daysLeft(declaration, toLocalDateKey(new Date()))}日）`
-              : '期間終了・振り返り待ち'}
+            {`${Number(target.periodTo.slice(5, 7))}月${Number(target.periodTo.slice(8, 10))}日まで（あと${daysLeft(target, toLocalDateKey(new Date()))}日）`}
           </span>
           <button
             type="button"
             className="dc-link-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-            onClick={() => navigate(declaration ? '/study-log?goal=edit' : '/study-log?goal=review')}
+            onClick={() => navigate('/study-log#goal')}
             style={linkStyle}
           >
-            {declaration ? '編集する ›' : '振り返りを書く ›'}
+            編集する ›
           </button>
         </>
       )}
@@ -134,7 +155,7 @@ export function MypageGoalDeclarationCard({
         </p>
         <button
           type="button"
-          onClick={() => navigate('/study-log?goal=new')}
+          onClick={() => navigate('/study-log#goal-new')}
           className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
           style={{
             display: 'inline-flex', alignItems: 'center', minHeight: 'var(--dc-sz-btn)',
@@ -144,7 +165,7 @@ export function MypageGoalDeclarationCard({
             color: 'var(--dc-text-body)', cursor: 'pointer',
           }}
         >
-          宣言を書く ›
+          目標を設定する ›
         </button>
       </section>
     );
@@ -158,7 +179,7 @@ export function MypageGoalDeclarationCard({
           margin: 0,
           paddingLeft: 12,
           borderLeft: '4px solid var(--dc-primary)',
-          fontSize: 'var(--dc-fs-title)',
+          fontSize: 'var(--dc-fs-lead)',
           fontWeight: 700,
           lineHeight: 'var(--dc-lh-heading)',
           color: 'var(--dc-text)',

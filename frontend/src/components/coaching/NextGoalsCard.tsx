@@ -19,13 +19,28 @@
  *      3. 保存前の確認ダイアログ … 何が消えるかを一覧で見せる（最後の関門）
  */
 import React, { useMemo, useState } from 'react';
-import { Check, Pencil, Plus, RotateCcw } from 'lucide-react';
+import { ArrowDown, ArrowUp, Check, Pencil, Plus, RotateCcw } from 'lucide-react';
 import { C, CARD, INPUT } from './design1c';
 import ConfirmDialog from './ConfirmDialog';
 import type { CoachingGoalApi, CoachingGoalUpdateItem } from '../../types/mypage';
 
 /** 表示モードで最初に見せる件数。これを超えたぶんは折りたたむ */
 const VISIBLE_LIMIT = 5;
+
+/** 並べ替えの ↑↓。2つ重ねて行の高さ（46px）に収める */
+const MOVE_BTN: React.CSSProperties = {
+  width: 22,
+  height: 18,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: 0,
+  border: 0,
+  background: 'transparent',
+  color: C.ink,
+  cursor: 'pointer',
+  lineHeight: 1,
+};
 
 /**
  * 編集モードの下書き1行。
@@ -50,6 +65,13 @@ interface NextGoalsCardProps {
   /** 編集を破棄して表示モードへ戻す */
   onCancel: () => void;
   onPatch: (index: number, next: Partial<CoachingGoalUpdateItem>) => void;
+  /**
+   * 行を1つ上／下へ動かす（下書きの配列を入れ替えるだけ）。
+   * 🔴 並べ替えの入口はここだけ。マイページの一覧は表示専用にした。
+   *    保存時に no を振り直す（CoachingPage の commitGoals）ので、
+   *    配列の順序がそのまま並び順として保存される。
+   */
+  onMove: (index: number, to: number) => void;
   /** 削除予定にする（この時点ではまだ消えない） */
   onRemove: (index: number) => void;
   /** 削除予定を取り消す */
@@ -89,6 +111,7 @@ export function NextGoalsCard({
   onCommit,
   onCancel,
   onPatch,
+  onMove,
   onRemove,
   onRestore,
   onAdd,
@@ -124,17 +147,31 @@ export function NextGoalsCard({
   ).length;
   /** 文言が空のまま残っている行。保存すると黙って消えるので先に止める */
   const hasEmpty = draft.some((g) => !g.removed && g.description.trim() === '');
+  /*
+   * 並べ替えたか。
+   * 🔴 件数（削除・追加・修正）には現れない変更なので、別に見る。これが無いと
+   *    ↑↓ で動かしただけのときに「変更を保存」が押せず、並べ替えを保存できない。
+   * 保存済みの行（isNew でないもの）の no の並びを、保存されている順と比べる。
+   * 削除予定の行も位置を保ったまま draft に残っているので、そのまま突き合わせられる。
+   */
+  const reordered = useMemo(() => {
+    const saved = goals.map((g) => g.no);
+    const now = draft.filter((g) => !g.isNew).map((g) => g.no);
+    return now.length === saved.length && now.some((no, i) => no !== saved[i]);
+  }, [goals, draft]);
   const changeCount = pendingRemoval.length + addedCount + editedCount;
 
   const changeSummary = [
     pendingRemoval.length > 0 && `削除${pendingRemoval.length}件`,
     addedCount > 0 && `追加${addedCount}件`,
     editedCount > 0 && `修正${editedCount}件`,
+    reordered && '並べ替え',
   ]
     .filter(Boolean)
     .join('・');
 
-  const canSave = changeCount > 0 && !hasEmpty && !saving;
+  const hasChange = changeCount > 0 || reordered;
+  const canSave = hasChange && !hasEmpty && !saving;
 
   /** 削除を含むときだけ確認を挟む。文言の直しだけなら押した通りに保存する */
   const requestCommit = () => {
@@ -147,7 +184,7 @@ export function NextGoalsCard({
   };
 
   const requestCancel = () => {
-    if (changeCount > 0) {
+    if (hasChange) {
       setConfirming('discard');
       return;
     }
@@ -303,6 +340,30 @@ export function NextGoalsCard({
                     borderColor: g.description.trim() === '' ? C.brand : C.borderInput,
                   }}
                 />
+                {/* 並べ替え。🔴 ドラッグにしない（掴んだまま端まで送れない／
+                    タッチとキーボードで同じ操作にならない）。上下の端では disabled */}
+                <span style={{ display: 'flex', flexDirection: 'column', flex: 'none' }}>
+                  <button
+                    type="button"
+                    className="cg-btn-ghost focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                    onClick={() => onMove(i, i - 1)}
+                    disabled={i === 0}
+                    aria-label={`「${g.description.trim() || `目標 ${i + 1}`}」を1つ上へ`}
+                    style={{ ...MOVE_BTN, opacity: i === 0 ? 0.3 : 1 }}
+                  >
+                    <ArrowUp size={12} strokeWidth={2.25} />
+                  </button>
+                  <button
+                    type="button"
+                    className="cg-btn-ghost focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+                    onClick={() => onMove(i, i + 1)}
+                    disabled={i >= draft.length - 1}
+                    aria-label={`「${g.description.trim() || `目標 ${i + 1}`}」を1つ下へ`}
+                    style={{ ...MOVE_BTN, opacity: i >= draft.length - 1 ? 0.3 : 1 }}
+                  >
+                    <ArrowDown size={12} strokeWidth={2.25} />
+                  </button>
+                </span>
                 <button
                   type="button"
                   className="cg-btn-ghost focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
@@ -378,8 +439,8 @@ export function NextGoalsCard({
             >
               {hasEmpty
                 ? '未入力の行があります。文言を入れるか、× で削除予定にしてください。'
-                : changeCount === 0
-                  ? 'まだ変更はありません。書き換え・追加・削除は保存するまで反映されません。'
+                : !hasChange
+                  ? 'まだ変更はありません。書き換え・追加・削除・並べ替えは保存するまで反映されません。'
                   : `${changeSummary}。「変更を保存」を押すまで反映されません。`}
             </p>
             <button

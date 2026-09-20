@@ -188,7 +188,9 @@ export function AiCoachSessionView({
    */
   const handleSaveAnswer = useCallback(
     async (message: LessonAiMessage) => {
-      const { question, quote, image } = questionFor(message);
+      // 🔴 添付画像は持ってこない。ノートに任意の画像を残さない方針
+      //    （utils/noteImageStore.ts の冒頭）。質問に画像を使うのは従来どおり。
+      const { question, quote } = questionFor(message);
       const sources = message.answer?.sources ?? message.skillResult?.sources ?? [];
       const source: NoteSourceRef | null =
         courseId && lessonId
@@ -209,7 +211,6 @@ export function AiCoachSessionView({
           question,
           answer: answerToText(message),
           selectedText: quote,
-          image,
           source,
         },
         suggestedTitle: ai.context.lessonTitle || 'AIコーチとの相談',
@@ -223,12 +224,12 @@ export function AiCoachSessionView({
   const handleAppendToMemo = useCallback(
     (message: LessonAiMessage) => {
       if (!lessonId) {
-        showToast('教材に紐づく相談だけメモへ追加できます', 'error');
+        showToast('教材に紐づく相談だけ下書きに追加できます', 'error');
         return;
       }
       const { question } = questionFor(message);
       notes.appendToMemo(question, answerToText(message));
-      showToast('AI回答をメモへ追加しました', 'success');
+      showToast('AI回答を下書きに追加しました', 'success');
     },
     [answerToText, lessonId, notes, questionFor, showToast]
   );

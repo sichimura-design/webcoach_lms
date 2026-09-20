@@ -315,6 +315,10 @@ function StudyLogPage() {
                   if (selectedDate) patchParams({ date: null }, true);
                 }}
                 onSelectDate={(date) => patchParams({ date }, !date)}
+                onSelectToday={() => {
+                  setMonthOverride(null);
+                  patchParams({ date: todayKey }, false);
+                }}
               />
               <DayDetailPanel
                 date={selectedDate}

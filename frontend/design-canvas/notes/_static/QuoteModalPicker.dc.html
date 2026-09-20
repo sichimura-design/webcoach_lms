@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06-P12 引用モーダル 3態（部品）
+       実装: components/notes/QuoteFromLessonModal.tsx:230-319（RecentLessonPicker）
+             :519-557（引用できない教材・読み込み中）
+       出典: _capture/STU-06-quote-pick/1440
+             （source を持たないシード「ポートフォリオ改善案」から開いた状態）
+       ⚠ 部品ボード。器（見出し・✕・オーバーレイ）は QuoteModalReader.dc.html と同じ。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    .n6 {
+      --dc-primary: #D60934;
+      --dc-surface: #FFFFFF;
+      --dc-border: #EFE9E0;
+      --wc-text: #1F1D1E;
+      --wc-text-body: #4A4245;
+      --wc-text-muted: #6B6467;
+      --wc-text-faint: #9A9295;
+    }
+
+    .n6 .panel {
+      width: 860px; box-sizing: border-box;
+      background: var(--dc-surface); border-radius: 18px; overflow: hidden;
+      box-shadow: 0 24px 60px -20px rgba(31,29,30,.35);
+    }
+    .n6 .panel-head { display: flex; align-items: flex-start; gap: 12px; padding: 18px 24px 14px; border-bottom: 1px solid var(--dc-border); }
+    .n6 .panel-close {
+      width: 30px; height: 30px; flex: none; margin-left: auto; border: 0; border-radius: 9999px;
+      background: #F7F3EE; color: var(--wc-text-muted); display: grid; place-items: center; cursor: pointer;
+    }
+    .n6 .body { padding: 22px 24px 26px; }
+    .n6 .lead { margin: 0 0 16px; font-size: 12.5px; line-height: 1.9; color: var(--wc-text-muted); }
+    /* 最近開いた教材の1枚 */
+    .n6 .lesson-card {
+      display: flex; align-items: center; gap: 12px; width: 100%; box-sizing: border-box;
+      padding: 14px 16px; border: 1px solid var(--dc-border); border-radius: 12px;
+      background: var(--dc-surface); cursor: pointer; text-align: left; font-family: inherit;
+    }
+    .n6 .lesson-card:hover { background: #FFFBF7; }
+    .n6 .lesson-course { font-size: 11px; font-weight: 700; color: var(--wc-text-faint); }
+    .n6 .lesson-title { margin-top: 2px; font-size: 13.5px; font-weight: 700; color: var(--wc-text); }
+    .n6 .cta {
+      display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px;
+      border: 0; border-radius: 9999px; background: var(--dc-primary); color: #FFFFFF;
+      font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer;
+    }
+    .n6 .empty { padding: 40px 24px; text-align: center; }
+    .n6 .empty p { margin: 0 0 16px; font-size: 13px; line-height: 1.9; color: var(--wc-text-muted); }
+
+    .n6 .cap { font-size: 11.5px; font-weight: 700; color: #EDE6DF; margin-bottom: 10px; }
+    .n6 .cap span { font-weight: 400; color: #C9BFB6; }
+  </style>
+</helmet>
+
+<div class="n6"
+     data-dc-id="STU-06-P12"
+     data-dc-remote="マイノート 部品 引用モーダル 3態.dc.html"
+     data-dc-route="/notes?note=<id>"
+     data-dc-src="frontend/src/components/notes/QuoteFromLessonModal.tsx#L230-L319"
+     style="display: flex; flex-direction: column; gap: 30px; width: 960px; min-height: 1080px; padding: 24px; box-sizing: border-box; background: rgba(31,29,30,.42);">
+
+  <!-- ───────── ① 最近の教材ピッカー ─────────
+       教材から作られていないノートで「教材から引用」を押したとき。
+       候補は recentCourseStore の履歴から。 -->
+  <div>
+    <div class="cap">最近の教材ピッカー <span>／ 教材から作られていないノートで開いたとき</span></div>
+    <div class="panel">
+      <div class="panel-head">
+        <span style="width: 28px; height: 28px; flex: none; display: grid; place-items: center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+        </span>
+        <div style="flex: 1; min-width: 0;">
+          <h2 style="margin: 0; font-size: 16.5px; font-weight: 900; line-height: 1.5; color: var(--wc-text);">教材から引用</h2>
+          <p style="margin: 4px 0 0; font-size: 11.5px; font-weight: 500; color: var(--wc-text-muted);">選んだ文章は「ポートフォリオ改善案」に入ります</p>
+        </div>
+        <button type="button" class="panel-close" aria-label="閉じてノートに戻る">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div class="body">
+        <p class="lead">このノートは教材から作られていないので、どの教材から引くかを選んでください。</p>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <button type="button" class="lesson-card">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+            <span style="flex: 1; min-width: 0;">
+              <span class="lesson-course" style="display: block;">バナー100本道場</span>
+              <span class="lesson-title" style="display: block;">ハンズオン①</span>
+            </span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9BFB2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          </button>
+          <button type="button" class="lesson-card">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="flex: none;"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+            <span style="flex: 1; min-width: 0;">
+              <span class="lesson-course" style="display: block;">デザイン基礎</span>
+              <span class="lesson-title" style="display: block;">基本の考え方</span>
+            </span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9BFB2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── ② 履歴が空 ───────── -->
+  <div>
+    <div class="cap">履歴が空 <span>／ 一度も教材を開いていない</span></div>
+    <div class="panel">
+      <div class="panel-head">
+        <span style="width: 28px; height: 28px; flex: none; display: grid; place-items: center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+        </span>
+        <div style="flex: 1; min-width: 0;">
+          <h2 style="margin: 0; font-size: 16.5px; font-weight: 900; line-height: 1.5; color: var(--wc-text);">教材から引用</h2>
+          <p style="margin: 4px 0 0; font-size: 11.5px; font-weight: 500; color: var(--wc-text-muted);">選んだ文章は「ポートフォリオ改善案」に入ります</p>
+        </div>
+        <button type="button" class="panel-close" aria-label="閉じてノートに戻る">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div class="empty">
+        <p>最近開いた教材がありません。一度教材を開くと、ここから引けるようになります。</p>
+        <button type="button" class="cta">教材一覧を開く</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── ③ 引用できない教材 ＋ 読み込み中 ─────────
+       移行教材など、本文のブロック位置を特定できない形式のもの。 -->
+  <div>
+    <div class="cap">引用できない教材 <span>／ 本文の位置を特定できない形式</span></div>
+    <div class="panel">
+      <div class="panel-head">
+        <span style="width: 28px; height: 28px; flex: none; display: grid; place-items: center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--dc-primary)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+        </span>
+        <div style="flex: 1; min-width: 0;">
+          <h2 style="margin: 0; font-size: 16.5px; font-weight: 900; line-height: 1.5; color: var(--wc-text);">教材から引用</h2>
+          <p style="margin: 4px 0 0; font-size: 11.5px; font-weight: 500; color: var(--wc-text-muted);">選んだ文章は「バナー制作の学び」に入ります</p>
+        </div>
+        <button type="button" class="panel-close" aria-label="閉じてノートに戻る">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div class="empty">
+        <p>この教材はここから引用できません（本文の位置を特定できない形式のため）。<br>教材ページで開いてクリップしてください。</p>
+        <button type="button" class="cta">教材ページを開く</button>
+      </div>
+      <!-- 読み込み中はこの1行だけ -->
+      <div style="padding: 20px 24px 26px; border-top: 1px dashed var(--dc-border); font-size: 12.5px; color: var(--wc-text-faint); text-align: center;">
+        （読み込み中はここが「教材を読み込んでいます…」の1行になる）
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

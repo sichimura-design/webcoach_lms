@@ -13,11 +13,14 @@ import {
 import { toLocalDateKey } from '../../utils/studyStats';
 
 /**
- * 目標宣言の作成・編集・振り返り。
+ * 「あなたの目標」の作成・編集・振り返り。
  * ============================================================
- * 入力は「宣言文 / 対象期間 / 振り返り」の3ブロックだけなので、
+ * 🔴 画面表記は「あなたの目標」。GoalDeclaration / goal-declarations は
+ *    型・API・ファイル名だけの呼称で、UI に「宣言」の語を出さない。
+ *
+ * 入力は「目標文 / 対象期間 / 振り返り」の3ブロックだけなので、
  * SessionReview のようにページ全面を差し替えず、モーダルで開く
- * （全面にするとカレンダーごと消えて、何のための宣言だったかの文脈が飛ぶ）。
+ * （全面にするとカレンダーごと消えて、何のための目標だったかの文脈が飛ぶ）。
  *
  * 🔴 達成率・進捗%の入力を置かない。達成したかどうかは status の語彙、
  *    手応えは既存の Achievement（もう少し／できた／バッチリ）の3語で表す。
@@ -120,7 +123,13 @@ export function GoalDeclarationModal({
 
   const readOnly = mode === 'view';
   const title =
-    mode === 'create' ? '目標を宣言する' : mode === 'review' ? '振り返りを書く' : mode === 'view' ? '目標宣言' : '目標宣言を編集する';
+    mode === 'create'
+      ? '新しい目標を設定する'
+      : mode === 'review'
+        ? '振り返りを書く'
+        : mode === 'view'
+          ? 'あなたの目標'
+          : '目標を編集する';
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -326,7 +335,7 @@ export function GoalDeclarationModal({
                 color: 'var(--dc-text-muted)', cursor: saving ? 'default' : 'pointer',
               }}
             >
-              この宣言を削除
+              この目標を削除
             </button>
           )}
 
@@ -357,7 +366,7 @@ export function GoalDeclarationModal({
                 color: '#fff', cursor: saving ? 'default' : 'pointer', opacity: saving ? 0.6 : 1,
               }}
             >
-              {saving ? '保存中…' : mode === 'create' ? '宣言する' : '保存する'}
+              {saving ? '保存中…' : mode === 'create' ? '設定する' : '保存する'}
             </button>
           )}
         </div>

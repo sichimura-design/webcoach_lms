@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06-P13 速記メモの小窓（Document Picture-in-Picture）
+       実装: components/quickMemo/QuickMemoPane.tsx
+             開くのはノート面の上部バー（QuickMemoLauncher.tsx:154-160）。
+             小窓の寿命は MyNotesPage が持つので、一覧に戻っても落ちない。
+       出典: 実測不能。Playwright では別ドキュメントの小窓を撮れないので
+             QuickMemoPane.tsx から写経している。
+       🔴 別ウィンドウなので index.css も --dc-* も Tailwind も効かない。
+          色は theme/webcoachTheme.ts の実値を直書きしている（変数にしない）。
+       🔴 窓の実寸はブラウザ任せ。360×470 は目安で、この数字に意味は無い。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    /* 🔒 webcoachTheme.ts の実値。ここだけ --dc-* 系ではない */
+    .qm {
+      --primary: #D60934;
+      --surface: #FFFFFF;
+      --border: #F3EDED;
+      --text: #1F1D1E;
+      --text-muted: #6B6467;
+      --text-subtle: #8B8386;
+      --text-faint: #9A9295;
+    }
+    .qm .cap { font-size: 11.5px; font-weight: 700; color: #8A8178; margin-bottom: 10px; }
+    .qm .cap span { font-weight: 400; color: #A79E93; }
+    .qm .note { margin-top: 12px; font-size: 11px; line-height: 1.7; color: #A79E93; width: 312px; }
+  </style>
+</helmet>
+
+<div class="qm"
+     data-dc-id="STU-06-P13"
+     data-dc-remote="マイノート 部品 速記メモの小窓.dc.html"
+     data-dc-route="/notes?note=<id>"
+     data-dc-src="frontend/src/components/quickMemo/QuickMemoPane.tsx"
+     style="width: 360px; min-height: 540px; padding: 24px; box-sizing: border-box; background: #FBF8F4;">
+
+  <div class="cap">速記メモ <span>／ 別ウィンドウ</span></div>
+
+  <!-- 小窓の中身。padding 12・gap 8 の縦積み -->
+  <div style="width: 312px; height: 380px; box-sizing: border-box; display: flex; flex-direction: column; padding: 12px; gap: 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 10px 24px -12px rgba(60,48,32,.25);">
+
+    <!-- 行き先のノート ＋ 保存状態 -->
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="flex: 1; min-width: 0; font-size: 12px; font-weight: 700; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">→ バナー制作の学び</span>
+      <span style="flex: none; display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text-faint);">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#2FA35C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+        保存しました
+      </span>
+    </div>
+
+    <!-- 前回の書きかけがあったときだけ出る1行 -->
+    <p style="display: flex; align-items: center; gap: 5px; margin: 0; font-size: 11px; font-weight: 500; color: var(--text-subtle);">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+      前回の書きかけを復元しました
+    </p>
+
+    <!-- 本文。placeholder は textFaint -->
+    <div style="flex: 1; min-height: 0; padding: 10px 12px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); font-size: 13.5px; line-height: 1.85; color: var(--text-faint);">話しながら思ったことを、そのまま。</div>
+
+    <!-- 追加のヒント ＋ ボタン -->
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="flex: 1; font-size: 10.5px; font-weight: 500; color: var(--text-faint);">Ctrl + Enter でも追加</span>
+      <button type="button" style="display: inline-flex; align-items: center; gap: 5px; padding: 8px 16px; border: 0; border-radius: 999px; background: var(--primary); color: #FFFFFF; font-family: inherit; font-size: 12.5px; font-weight: 700; cursor: pointer; white-space: nowrap;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+        ノートに追加
+      </button>
+    </div>
+  </div>
+
+  <div class="note">
+    「ノートに追加」を押した分だけが text ブロックになる。書いている途中の文字はノートに入らない。<br>
+    保存状態は「保存中」「保存しました」の2つ。<br>
+    いま開いているノートと行き先が違うときは、追加後に本体側へトースト
+    「「〜」に追加しました」＋「このノートを開く」が出る。<br>
+    Document Picture-in-Picture に対応していない環境では、上部バーのボタンごと出ない。
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

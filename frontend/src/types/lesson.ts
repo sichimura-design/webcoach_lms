@@ -85,6 +85,12 @@ export interface LessonDoc {
   learningType?: LearningType;
   /** 主となる教材形式。レッスン内の教材が複数形式なら代表的なものを入れる。 */
   materialFormat?: MaterialFormat;
+  /**
+   * ヘッダーに出すカバー画像。**親コースの画像（Moodle の courseimage）**で、
+   * レッスン固有の画像ではない。レッスンごとの絵は持っていないため。
+   * 無ければ画面側がフォールバックの絵柄を描く（CourseImage）。
+   */
+  coverImageUrl?: string;
   blocks: LessonBlock[];
   summary: string;           // このレッスンのまとめ
   nextAction: string;        // 次にやること

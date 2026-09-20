@@ -4,7 +4,11 @@ import { NoteSummary } from '../../types/notes';
 import { UseNotes } from '../../hooks/useNotes';
 
 /**
- * 教材ページのメモ欄。
+ * 教材ページのマイノート欄。
+ *
+ * 🔴 呼称は「マイノート」で統一する（サイドバー・/notes と同じ名前）。
+ *    ここで「メモ」と呼ぶと、行き先が別物だと思われる。
+ *    ただし下書きの textarea だけは「下書き」。まだノートに入っていない。
  *
  * 【何を外したか】
  * 以前はここに 種別タブ（すべて/メモ/クリップ/AI回答）＋検索＋平坦なカード一覧が
@@ -43,7 +47,7 @@ export function MemoPane({
         className="flex items-center"
         style={{ gap: 8, minHeight: 45, padding: '0 14px', borderBottom: `1px solid ${color.border}`, flexShrink: 0 }}
       >
-        <strong style={{ ...font.label, fontWeight: 800, color: color.text }}>メモ</strong>
+        <strong style={{ ...font.label, fontWeight: 800, color: color.text }}>マイノート</strong>
         <div style={{ flex: 1 }} />
         <span style={{ fontSize: 9.5, color: color.textFaint }}>{statusLabel}</span>
       </div>
@@ -103,12 +107,12 @@ export function MemoPane({
                   fontFamily: 'inherit',
                 }}
               >
-                ノートに残す
+                マイノートに残す
               </button>
             </div>
           </div>
           <p style={{ margin: '8px 2px 0', fontSize: 9.5, color: color.textFaint, lineHeight: 1.8 }}>
-            下書きは自動保存されます。「ノートに残す」を押すと、追加先のノートを選ぶ画面が出ます。
+            下書きは自動保存されます。「マイノートに残す」を押すと、追加先のノートを選ぶ画面が出ます。
           </p>
         </div>
 

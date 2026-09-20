@@ -83,7 +83,7 @@ export function GlobalAiCoachDrawer() {
       if (!answer) return;
 
       capture.capture({
-        block: { kind: 'answer', question, answer, selectedText: null, image: null, source: null },
+        block: { kind: 'answer', question, answer, selectedText: null, source: null },
         suggestedTitle: 'AIコーチとの相談',
         source: null,
         lessonId: null,
@@ -106,13 +106,16 @@ export function GlobalAiCoachDrawer() {
        *    ※ かつてこの位置に「赤ベタにしない（DESIGN.md §2-6 / §15-8）」という
        *      コメントがあったが、参照先の DESIGN.md はリポジトリに存在しない。
        *      判断の根拠が辿れない指示なので、実物の見え方を優先して赤にした。
-       * 🔴 SPはボトムナビ（h-16）を避けて bottom を上げる。
+       * 🔴 SPはボトムナビを避けて bottom を上げる。位置は index.css の
+       *    .wc-fab-bottom（--wc-bottomnav-h ＋ セーフエリア ＋ 16px）が持つ。
+       *    Tailwind の bottom-20（固定80px）だったころは、ノッチ機のセーフエリア
+       *    34px を勘定しておらず、FAB がナビにめり込んでいた。
        */
       <button
         type="button"
         onClick={() => setDrawerOpen(true)}
         aria-label="AIコーチに相談"
-        className="group fixed z-40 right-6 bottom-20 sm:bottom-6 inline-flex items-center rounded-full transition-all duration-200 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+        className="group wc-fab-bottom fixed z-40 right-6 inline-flex items-center rounded-full transition-all duration-200 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
         style={{
           height: 52,
           gap: 8,

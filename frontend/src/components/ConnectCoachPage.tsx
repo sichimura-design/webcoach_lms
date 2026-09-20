@@ -1,5 +1,5 @@
 /**
- * コーチ向け AIコーチングノートの利用設定ページ（`/connect/:token`）。
+ * コーチ向けの「コーチング記録の連携設定」ページ（`/connect/:token`）。
  *
  * コーチ用のLMSは作らない。コーチがLMSで目にする画面はここ1枚だけで、
  * しかも初回セットアップの1回きり。そのため**未ログインで到達できる必要がある**
@@ -20,7 +20,7 @@ import type { ConnectionInvite, MeetingConnection, MeetingProviderId } from '../
 type Phase = 'loading' | 'ready' | 'connecting' | 'done' | 'expired' | 'notfound' | 'failed';
 
 const SCOPE_NOTES = [
-  'WEBCOACHに登録された、担当受講生とのコーチング面談の録画・文字起こしのみを取得します。',
+  'WEBCOACHに登録された、担当受講生とのコーチングの録画・文字起こしのみを取得します。',
   'それ以外の会議（他のお客様との打ち合わせなど）は取得しません。会議IDが一致しないものは受信しても破棄します。',
   '取得した音声は最大90日で自動削除されます。文字起こしと確定した目標は受講生の学習記録として保持されます。',
   'この連携はいつでも解除できます。解除後は自動取得が停止します。',
@@ -159,7 +159,7 @@ export default function ConnectCoachPage() {
             <p style={{ ...font.meta, color: color.textBody, margin: 0, lineHeight: 1.9 }}>
               {unsupported
                 ? connection.reason
-                : '今後、あなたが主催するコーチングでは、AIコーチングノートを利用できます。この画面は閉じて問題ありません。'}
+                : '今後、あなたが主催するコーチングから、内容を自動で記録できます。この画面は閉じて問題ありません。'}
             </p>
           </div>
         </div>
@@ -192,7 +192,7 @@ export default function ConnectCoachPage() {
 
         {unsupported && (
           <p style={{ ...font.caption, color: color.textMuted, margin: '16px 0 0', lineHeight: 1.9 }}>
-            受講生は面談後にご自身で記録を取り込む形になります。コーチ側で追加の操作は不要です。
+            受講生はコーチング後にご自身で記録を取り込む形になります。コーチ側で追加の操作は不要です。
           </p>
         )}
 
@@ -225,14 +225,14 @@ export default function ConnectCoachPage() {
     <>
       <div style={{ ...t.card, padding: 28, marginBottom: 16 }}>
         <h1 style={{ ...font.sectionTitle, color: color.text, margin: '0 0 8px' }}>
-          AIコーチングノートの利用設定
+          コーチング記録の連携設定
         </h1>
         <p style={{ ...font.meta, color: color.textBody, margin: 0, lineHeight: 1.9 }}>
           {invite?.coachName} 様
           <br />
           {isReauth
             ? 'アクセス許可の有効期限が切れました。お手数ですが、もう一度連携をお願いします。'
-            : '普段コーチングで使用するサービスを連携してください。連携すると、面談後の録画・文字起こしからAIが要約と次回までのタスクを作成し、受講生の振り返りに使われます。'}
+            : '普段コーチングで使用するサービスを連携してください。連携すると、コーチング後の録画・文字起こしからAIが要約と次回までの目標を作成し、受講生の振り返りに使われます。'}
         </p>
         <p style={{ ...font.caption, color: color.textMuted, margin: '14px 0 0', lineHeight: 1.9 }}>
           設定は今回1回のみです。WEBCOACHへのログインやアカウント作成は必要ありません。

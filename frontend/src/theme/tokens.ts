@@ -87,7 +87,7 @@ export const t = {
      *   create … Webデザイン / 動画編集
      *   build  … Web制作
      *   grow   … Webマーケティング / SNS運用
-     *   career … ソフトスキル / キャリア / 案件獲得攻略プログラム
+     *   career … 学習ガイド / 案件獲得・キャリア
      *   ai     … 生成AI基礎 / Web×AI
      *
      * create/build/grow/career の4色は旧カテゴリ色（design_handoff_materials の
