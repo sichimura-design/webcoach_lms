@@ -66,6 +66,14 @@ class ChatRequest(BaseModel):
         description="会話履歴（オプション）",
         max_length=10
     )
+    session_id: Optional[str] = Field(
+        None,
+        description=(
+            "フロント側のチャットセッションID（例: lesson:123、常設ドロワーのID）。"
+            "Dify連携ツールの会話継続キャッシュ(userid+app_id+session_id)をこの単位で"
+            "区切るために使う。省略時はuser_id+app_id単位で共有される（従来動作）。"
+        )
+    )
     max_iterations: Optional[int] = Field(None, description="最大推論回数（Noneの場合は文字数で自動調整）", ge=1, le=5)
     image: Optional[ImageAttachment] = Field(None, description="添付画像（Base64、任意）")
 
@@ -231,13 +239,14 @@ def _execute_chat(request: ChatRequest, db: Session) -> ChatResponse:
     # DBに登録済みのAIアプリケーション（secret_key設定済み）を動的ツールとして構築
     from agents.tools_langchain import create_ai_application_tools
     dynamic_tools, sticky_dify_tool_name = create_ai_application_tools(
-        db, request.message, request.user_id
+        db, request.message, request.user_id, session_id=request.session_id
     )
 
     # 初期ステートを構築
     initial_state: LearningCoachState = {
         "messages": [HumanMessage(content=user_content)],
         "user_id": request.user_id,
+        "session_id": request.session_id,
         "course_id": request.course_id,
         "dynamic_tools": dynamic_tools,
         "rag_sources": [],

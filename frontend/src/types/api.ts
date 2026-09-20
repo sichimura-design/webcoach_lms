@@ -401,6 +401,13 @@ export interface AIRequest {
   use_tools?: boolean;
   image?: AIImageAttachment;
   conversation_history?: AIConversationMessage[];
+  /**
+   * フロント側のチャットセッションID（例: "lesson:123" や常設ドロワーのDRAWER_SESSION_ID）。
+   * Dify連携ツールの会話継続キャッシュをこの単位で区切るために使う。
+   * 「新しい相談を始める」等で別セッションになった場合、以前の検索条件を
+   * 引き継がないようにする（省略時は従来通りuser_id単位で共有される）。
+   */
+  session_id?: string;
 }
 
 export interface AISource {

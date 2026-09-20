@@ -268,6 +268,9 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
               // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
               // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
               conversation_history: toHistory(messages),
+              // 「新しい相談を始める」等で別のsessionIdになった場合、Dify連携ツール側の
+              // 会話継続キャッシュも区切って、前回の検索条件を引き継がないようにする。
+              session_id: sessionId,
               ...(img
                 ? {
                     image: {
