@@ -710,6 +710,87 @@ router.delete('/study-reflection/:userid/:date', requireAuth, requireOwnership, 
   }
 });
 
+// List a user's study goal declarations
+router.get('/goal-declarations/:userid', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const { status, limit } = req.query;
+    const result = await webCoachService.getStudyGoals(userid, { status, limit });
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Get StudyGoals] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to get study goals',
+      detail: error.message
+    });
+  }
+});
+
+// Create a study goal declaration
+router.post('/goal-declarations/:userid', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid } = req.params;
+    const result = await webCoachService.createStudyGoal(userid, req.body);
+    res.status(201).json(result);
+  } catch (error) {
+    console.error('[WebCoach Create StudyGoal] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to create study goal',
+      detail: error.message
+    });
+  }
+});
+
+// Update a study goal declaration (edit / save reflection)
+router.patch('/goal-declarations/:userid/:goalid', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid, goalid } = req.params;
+    const result = await webCoachService.updateStudyGoal(userid, goalid, req.body);
+    res.json(result);
+  } catch (error) {
+    console.error('[WebCoach Update StudyGoal] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to update study goal',
+      detail: error.message
+    });
+  }
+});
+
+// Delete a study goal declaration
+router.delete('/goal-declarations/:userid/:goalid', requireAuth, requireOwnership, async (req, res) => {
+  try {
+    const { userid, goalid } = req.params;
+    await webCoachService.deleteStudyGoal(userid, goalid);
+    res.status(204).end();
+  } catch (error) {
+    console.error('[WebCoach Delete StudyGoal] Error:', error.message);
+
+    if (error.response) {
+      return res.status(error.response.status).json(error.response.data);
+    }
+
+    res.status(500).json({
+      error: 'Failed to delete study goal',
+      detail: error.message
+    });
+  }
+});
+
 // Get the study-time peer ranking (self + other real users, pseudonymized)
 router.get('/study-ranking/:userid', requireAuth, requireOwnership, async (req, res) => {
   try {

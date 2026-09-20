@@ -651,6 +651,64 @@ class ApiServerAdapter {
   }
 
   /**
+   * List a user's study goal declarations
+   */
+  async getStudyGoals(userid, { status, limit } = {}) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/goal-declarations/${userid}`,
+      {
+        params: { status, limit },
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Create a study goal declaration (id is client-generated = idempotent)
+   */
+  async createStudyGoal(userid, input) {
+    const response = await axios.post(
+      `${this.apiServerUrl}/api/goal-declarations/${userid}`,
+      input,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Update a study goal declaration (edit / save reflection)
+   */
+  async updateStudyGoal(userid, goalId, patch) {
+    const response = await axios.patch(
+      `${this.apiServerUrl}/api/goal-declarations/${userid}/${goalId}`,
+      patch,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
+   * Delete a study goal declaration
+   */
+  async deleteStudyGoal(userid, goalId) {
+    await axios.delete(
+      `${this.apiServerUrl}/api/goal-declarations/${userid}/${goalId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+  }
+
+  /**
    * Get the study-time peer ranking (self + other real users, pseudonymized)
    */
   async getPeerStudyRanking(userid, period) {

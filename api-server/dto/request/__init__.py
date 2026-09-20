@@ -3,7 +3,7 @@ Request DTOs for API endpoints
 """
 from .profile import ProfileSettingsCreate, ProfileSettingsUpdate, WebCoachUserProfileUpdate
 from .course import CourseAccessCreate, ResumeCourseUpdate
-from .common import BulkUploadRequest, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalItem, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate, StudyReflectionUpdate, CoachingScheduleCreate, CoachingScheduleUpdate, CoachStudentMappingCreate, CoachMeetingIntegrationUpsert, CoachingRecordingUpsert, CoachingNoteUpsert, CoachingNoteUpdate, TranscriptEntryItem, CoachingNoteGenerateRequest, MyNoteFolderCreate, MyNoteFolderUpdate, MyNoteCreate, MyNoteUpdate
+from .common import BulkUploadRequest, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalItem, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate, StudyReflectionUpdate, CoachingScheduleCreate, CoachingScheduleUpdate, CoachStudentMappingCreate, CoachMeetingIntegrationUpsert, CoachingRecordingUpsert, CoachingNoteUpsert, CoachingNoteUpdate, TranscriptEntryItem, CoachingNoteGenerateRequest, MyNoteFolderCreate, MyNoteFolderUpdate, MyNoteCreate, MyNoteUpdate, StudyGoalCreate, StudyGoalPatch
 from .roadmap import UserRoadmapCreate, RoadmapProgressUpdate, RoadmapAnswerItem, RoadmapAnswerSubmit
 
 __all__ = [
@@ -36,6 +36,8 @@ __all__ = [
     "MyNoteFolderUpdate",
     "MyNoteCreate",
     "MyNoteUpdate",
+    "StudyGoalCreate",
+    "StudyGoalPatch",
     "UserRoadmapCreate",
     "RoadmapProgressUpdate",
     "RoadmapAnswerItem",
