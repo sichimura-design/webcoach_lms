@@ -9,8 +9,6 @@
  * （本番の見え方を変えないため）。
  */
 
-import Encoding from 'encoding-japanese';
-
 export interface MoodleModuleContent {
   type: string;
   filename: string;
@@ -127,32 +125,6 @@ ${head}
 ${IFRAME_FIXUP_CSS}
 </head>
 <body>${body}${EXPLAIN_INJECT}</body></html>`;
-}
-
-function buildSrcdocShiftJis(html: string): string {
-  const { head, body } = splitStyles(html);
-  return `<!DOCTYPE html>
-<html lang="ja"><head><meta charset="shift-jis">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-${head}
-${IFRAME_FIXUP_CSS}
-</head>
-<body>${body}${EXPLAIN_INJECT}</body></html>`;
-}
-
-/**
- * Moodle コンテンツを Shift-JIS の Blob として新しいタブで開く。
- * 教材HTMLが Shift-JIS 前提で書かれているものがあるため、変換して渡す。
- */
-export function openMoodleContentInNewTab(html: string): void {
-  if (!html) return;
-  const fullHtml = buildSrcdocShiftJis(html);
-  const unicodeArray = Encoding.stringToCode(fullHtml);
-  const sjisArray = Encoding.convert(unicodeArray, { to: 'SJIS', from: 'UNICODE' });
-  const blob = new Blob([new Uint8Array(sjisArray)], { type: 'text/html; charset=shift-jis' });
-  const url = URL.createObjectURL(blob);
-  const win = window.open(url, '_blank');
-  if (win) win.addEventListener('load', () => URL.revokeObjectURL(url), { once: true });
 }
 
 /** content / description が「URLだけ」のとき、そのURLを取り出す */

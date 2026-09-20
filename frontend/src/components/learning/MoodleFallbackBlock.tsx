@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import DOMPurify from 'dompurify';
-import { ExternalLink, FileText } from 'lucide-react';
+import { FileText } from 'lucide-react';
 import { color, font, radius } from '../../theme/webcoachTheme';
 import { useAuth } from '../../contexts/AuthContext';
 import {
   MoodleContentType,
   buildSrcdoc,
   extractSoleUrl,
-  openMoodleContentInNewTab,
 } from './moodleContent';
 
 /**
@@ -144,31 +143,14 @@ export function MoodleFallbackBlock({
 
   // ── mod/page：srcdoc の iframe（Moodle側CSSを本体へ漏らさないため）
   return (
-    <>
-      <div className="flex justify-end" style={{ marginBottom: 12 }}>
-        <button
-          type="button"
-          onClick={() => openMoodleContentInNewTab(html)}
-          className="flex items-center focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-          style={{
-            gap: 6, padding: '6px 12px', borderRadius: 999,
-            border: `1px solid ${color.borderStrong}`, background: color.surface,
-            color: color.textMuted, ...font.caption, cursor: 'pointer',
-          }}
-        >
-          <ExternalLink size={13} />
-          新しいタブで開く
-        </button>
-      </div>
-      <iframe
-        ref={iframeRef}
-        srcDoc={buildSrcdoc(html)}
-        sandbox="allow-scripts allow-same-origin"
-        onLoad={handleIframeLoad}
-        title={title}
-        style={{ width: '100%', border: 'none', minHeight: 200 }}
-      />
-    </>
+    <iframe
+      ref={iframeRef}
+      srcDoc={buildSrcdoc(html)}
+      sandbox="allow-scripts allow-same-origin"
+      onLoad={handleIframeLoad}
+      title={title}
+      style={{ width: '100%', border: 'none', minHeight: 200 }}
+    />
   );
 }
 

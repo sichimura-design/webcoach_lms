@@ -15,7 +15,6 @@ import {
   ChevronDown,
   X,
   Check,
-  ExternalLink,
   Bot,
   User,
   Paperclip,
@@ -34,7 +33,6 @@ import {
   getContentType as getModuleContentType,
   isVideoFile,
   buildSrcdoc,
-  openMoodleContentInNewTab,
   resolveExternalUrl,
 } from './learning/moodleContent';
 import NoteTargetPicker from './notes/NoteTargetPicker';
@@ -831,40 +829,23 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
                     {selectedModule ? selectedModule.name : courseName}
                   </h1>
 
-                  {/* ── 目次トグル／新しいタブで開く ── */}
-                  {(pageToc.length > 0 || (processedHtml && selectedModule && getModuleContentType(selectedModule) === 'page')) && (
+                  {/* ── 目次トグル ── */}
+                  {pageToc.length > 0 && (
                     <div className="flex items-center flex-wrap" style={{ gap: 8, marginBottom: 16 }}>
-                      {pageToc.length > 0 && (
-                        <button
-                          type="button"
-                          onClick={() => setTocOpen(v => !v)}
-                          className="inline-flex items-center"
-                          style={{
-                            gap: 6, padding: '6px 12px', borderRadius: 999,
-                            border: `1px solid ${color.borderStrong}`, background: tocOpen ? color.hoverBgTint : color.surface,
-                            color: color.textMuted, ...font.caption, cursor: 'pointer',
-                          }}
-                        >
-                          <AlignJustify size={13} />
-                          目次（{pageToc.length}）
-                          <ChevronDown size={13} style={{ transform: tocOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s ease' }} />
-                        </button>
-                      )}
-                      {processedHtml && selectedModule && getModuleContentType(selectedModule) === 'page' && (
-                        <button
-                          type="button"
-                          onClick={() => openMoodleContentInNewTab(processedHtml)}
-                          className="inline-flex items-center"
-                          style={{
-                            gap: 6, padding: '6px 12px', borderRadius: 999,
-                            border: `1px solid ${color.borderStrong}`, background: color.surface,
-                            color: color.textMuted, ...font.caption, cursor: 'pointer',
-                          }}
-                        >
-                          <ExternalLink size={13} />
-                          新しいタブで開く
-                        </button>
-                      )}
+                      <button
+                        type="button"
+                        onClick={() => setTocOpen(v => !v)}
+                        className="inline-flex items-center"
+                        style={{
+                          gap: 6, padding: '6px 12px', borderRadius: 999,
+                          border: `1px solid ${color.borderStrong}`, background: tocOpen ? color.hoverBgTint : color.surface,
+                          color: color.textMuted, ...font.caption, cursor: 'pointer',
+                        }}
+                      >
+                        <AlignJustify size={13} />
+                        目次（{pageToc.length}）
+                        <ChevronDown size={13} style={{ transform: tocOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s ease' }} />
+                      </button>
                     </div>
                   )}
 
