@@ -24,7 +24,10 @@ export interface StudyRankingEntry {
   rank: number;
   /** 仮名。自分の行だけ「あなた」になる */
   nickname: string;
+  /** nick_name/avatar未設定ユーザー向けのフォールバック絵文字 */
   avatarEmoji: string;
+  /** プロフィールでプリセットアバターを選択済みならそのURL(未設定ならavatarEmojiを使う) */
+  avatarUrl?: string;
   minutes: number;
   /** 自分の行はハイライトする */
   isMe: boolean;
@@ -56,7 +59,10 @@ export interface StreakRankingEntry {
   rank: number;
   /** 仮名。自分の行だけ「あなた」になる */
   nickname: string;
+  /** nick_name/avatar未設定ユーザー向けのフォールバック絵文字 */
   avatarEmoji: string;
+  /** プロフィールでプリセットアバターを選択済みならそのURL(未設定ならavatarEmojiを使う) */
+  avatarUrl?: string;
   /** 学習した日数 */
   days: number;
   isMe: boolean;

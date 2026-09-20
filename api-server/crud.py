@@ -3257,27 +3257,41 @@ def _peer_pseudonym(mdl_user_id: int) -> Dict[str, str]:
     return {"nickname": f"{name}{number}", "avatarEmoji": emoji}
 
 
-def _get_peer_nick_names(db: Session, mdl_user_ids: List[int]) -> Dict[int, str]:
-    """webcoach_user_profile.nick_nameをuseridごとに一括取得する(空文字/NULLは除く)。"""
+def _get_peer_profiles(db: Session, mdl_user_ids: List[int]) -> Dict[int, Dict[str, Optional[str]]]:
+    """
+    webcoach_user_profile.nick_name / avatar_id(→webcoach_avatar.url)をuseridごとに
+    一括取得する。プロフィール画面(/admin/avatarsのプリセットから選ぶ方式)で設定した
+    値をそのまま仲間ランキングに使う。nick_name/avatar未設定の項目はNoneのまま返す。
+    """
     if not mdl_user_ids:
         return {}
     rows = db.execute(
-        text("SELECT mdl_user_id, nick_name FROM webcoach_user_profile WHERE mdl_user_id IN :ids").bindparams(
-            bindparam("ids", expanding=True)
-        ),
+        text("""
+            SELECT p.mdl_user_id, p.nick_name, a.url AS avatar_url
+            FROM webcoach_user_profile p
+            LEFT JOIN webcoach_avatar a ON a.avatar_id = p.avatar_id
+            WHERE p.mdl_user_id IN :ids
+        """).bindparams(bindparam("ids", expanding=True)),
         {"ids": mdl_user_ids},
     ).fetchall()
-    return {row.mdl_user_id: row.nick_name for row in rows if row.nick_name}
+    return {
+        row.mdl_user_id: {"nickname": row.nick_name or None, "avatarUrl": row.avatar_url or None}
+        for row in rows
+    }
 
 
-def _to_peer_entry(row: Dict[str, Any], mdl_user_id: int, value_key: str, nick_names: Dict[int, str]) -> Dict[str, Any]:
+def _to_peer_entry(
+    row: Dict[str, Any], mdl_user_id: int, value_key: str, profiles: Dict[int, Dict[str, Optional[str]]]
+) -> Dict[str, Any]:
     is_me = row["userid"] == mdl_user_id
     pseudo = _peer_pseudonym(row["userid"])
-    nickname = nick_names.get(row["userid"]) or pseudo["nickname"]
+    profile = profiles.get(row["userid"], {})
+    nickname = profile.get("nickname") or pseudo["nickname"]
     return {
         "rank": row["rank"],
         "nickname": "あなた" if is_me else nickname,
         "avatarEmoji": pseudo["avatarEmoji"],
+        "avatarUrl": profile.get("avatarUrl"),
         "isMe": is_me,
         value_key: row[value_key],
     }
@@ -3321,13 +3335,13 @@ def get_peer_study_time_ranking(db: Session, mdl_user_id: int, period: str, limi
     if not any(e["userid"] == mdl_user_id for e in entries):
         entries = entries + [me]
 
-    nick_names = _get_peer_nick_names(db, [e["userid"] for e in entries] + [me["userid"]])
+    profiles = _get_peer_profiles(db, [e["userid"] for e in entries] + [me["userid"]])
 
     return {
         "period": period,
         "periodLabel": label,
-        "entries": [_to_peer_entry(r, mdl_user_id, "minutes", nick_names) for r in entries],
-        "me": _to_peer_entry(me, mdl_user_id, "minutes", nick_names),
+        "entries": [_to_peer_entry(r, mdl_user_id, "minutes", profiles) for r in entries],
+        "me": _to_peer_entry(me, mdl_user_id, "minutes", profiles),
         "participantCount": participant_count,
     }
 
@@ -3372,13 +3386,13 @@ def get_peer_study_streak_ranking(db: Session, mdl_user_id: int, period: str, li
     if not any(e["userid"] == mdl_user_id for e in entries):
         entries = entries + [me]
 
-    nick_names = _get_peer_nick_names(db, [e["userid"] for e in entries] + [me["userid"]])
+    profiles = _get_peer_profiles(db, [e["userid"] for e in entries] + [me["userid"]])
 
     return {
         "period": period,
         "periodLabel": label,
-        "entries": [_to_peer_entry(r, mdl_user_id, "days", nick_names) for r in entries],
-        "me": _to_peer_entry(me, mdl_user_id, "days", nick_names),
+        "entries": [_to_peer_entry(r, mdl_user_id, "days", profiles) for r in entries],
+        "me": _to_peer_entry(me, mdl_user_id, "days", profiles),
         "participantCount": participant_count,
     }
 

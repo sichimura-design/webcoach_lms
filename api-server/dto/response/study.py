@@ -78,6 +78,7 @@ class PeerRankingEntryBase(BaseModel):
     rank: int
     nickname: str
     avatar_emoji: str = Field(alias="avatarEmoji")
+    avatar_url: Optional[str] = Field(default=None, alias="avatarUrl")
     is_me: bool = Field(alias="isMe")
 
 

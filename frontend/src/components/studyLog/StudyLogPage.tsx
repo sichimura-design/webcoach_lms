@@ -12,6 +12,7 @@ import { StudyDayTotal } from '../../types/studyActivity';
 import { GoalDeclarationInput, GoalDeclarationPatch } from '../../types/goalDeclaration';
 import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
 import { RankingRowItem } from '../shared/RankingRow';
+import { withCfToken } from '../profile/AvatarPicker';
 import bffClient from '../../services/bffClient';
 import SessionReview from '../coaching/SessionReview';
 import type { CoachingSessionDetail, CoachingSessionSummary } from '../../types/coaching';
@@ -71,7 +72,7 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  */
 
 function StudyLogPage() {
-  const { user } = useAuth();
+  const { user, contentToken } = useAuth();
   const userId = user?.userid;
 
   // 受講開始日〜今日。カレンダーの月送りと期間タブが同じ配列を使う
@@ -217,6 +218,7 @@ function StudyLogPage() {
     rank: e.rank,
     nickname: e.isMe ? 'あなた' : e.nickname,
     avatarEmoji: e.avatarEmoji,
+    avatarUrl: e.avatarUrl ? withCfToken(e.avatarUrl, contentToken) : undefined,
     value: formatMinutesHM(e.minutes),
     isMe: e.isMe,
   }));
@@ -225,6 +227,7 @@ function StudyLogPage() {
     rank: e.rank,
     nickname: e.isMe ? 'あなた' : e.nickname,
     avatarEmoji: e.avatarEmoji,
+    avatarUrl: e.avatarUrl ? withCfToken(e.avatarUrl, contentToken) : undefined,
     value: `${e.days}日`,
     isMe: e.isMe,
   }));
