@@ -368,7 +368,7 @@ def respond_node(state: LearningCoachState) -> LearningCoachState:
         # 案件検索等のフローが終わったとみなし、次ターンでのツール固定を解除する。
         if state.get("user_id") is not None:
             from agents.tools_langchain import clear_sticky_dify_app
-            clear_sticky_dify_app(state["user_id"])
+            clear_sticky_dify_app(state["user_id"], state.get("session_id"))
 
         # 最後のAIメッセージを取得
         final_response = None

@@ -18,6 +18,10 @@ class LearningCoachState(TypedDict):
     user_id: int
     course_id: Optional[int]
 
+    # フロント側のチャットセッションID（Dify連携ツールの会話継続キャッシュを
+    # このセッション単位で区切るために使う。tools_langchain.create_ai_application_tools参照）
+    session_id: Optional[str]
+
     # DBの webcoach_ai_application から動的に生成されたツール（リクエストごとに構築）
     dynamic_tools: List[BaseTool]
 
