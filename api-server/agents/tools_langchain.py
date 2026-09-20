@@ -290,27 +290,38 @@ def get_user_badges(userid: int) -> str:
     return str(result)
 
 
-# Dify会話の継続用キャッシュ（(userid, app_id) -> conversation_id）。
+# Dify会話の継続用キャッシュ（(userid, app_id, session_id) -> conversation_id）。
+# session_idはフロント側のチャット単位（例: レッスンごと、常設ドロワー）で、
+# 「新しい相談を始める」等で別セッションになった場合はキーごと別物になるため、
+# 以前の検索条件を引き継がない。session_idを渡さない呼び出し元は従来通り
+# userid+app_id単位で共有される（Noneも通常の辞書キーとして機能する）。
 # プロセス内メモリのみ。複数コンテナ構成やコンテナ再起動をまたぐ継続には対応しない。
 _dify_conversation_cache: Dict[tuple, str] = {}
 
-# 直前のターンでユーザーが実際に呼び出したDifyアプリ（userid -> app_id）。
+# 直前のターンでユーザーが実際に呼び出したDifyアプリ（(userid, session_id) -> app_id）。
 # 会話履歴(conversation_history)はロールとテキストのみをやり取り相手に送っており
 # どのask_ai_application_*ツールを使ったかの情報が失われるため、似た説明を持つ
 # 複数の案件抽出アプリ（Crowdworks/Lancers/ココナラ等）の間でLLMが毎ターン
 # 選び直してしまい、Dify側の会話が意図せずリセットされる問題への対策。
 # プロセス内メモリのみ。
-_dify_sticky_app_cache: Dict[int, int] = {}
+_dify_sticky_app_cache: Dict[tuple, int] = {}
+
+# 必須入力変数(extra_inputs)のセッション内キャッシュ（(userid, app_id, session_id) -> inputs辞書）。
+# LLMには「一度聞き取ったら以降の全ターンでextra_inputsに設定し続けること」と指示しているが、
+# 実際には省略してしまうことがあり(非決定的)、その場合Difyがrequired変数不足で
+# 400 invalid_paramを返し「一時的なエラー」としてユーザーに見えていた。LLMの記憶に頼らず、
+# 一度渡された値をサーバー側で覚えておき、以降の呼び出しで自動的に補完する。
+_dify_extra_inputs_cache: Dict[tuple, Dict[str, str]] = {}
 
 
-def get_sticky_dify_app_id(userid: int) -> Optional[int]:
-    """このユーザーが直前に使っていたDifyアプリのapp_idを取得（無ければNone）"""
-    return _dify_sticky_app_cache.get(userid)
+def get_sticky_dify_app_id(userid: int, session_id: Optional[str] = None) -> Optional[int]:
+    """このユーザー・このセッションが直前に使っていたDifyアプリのapp_idを取得（無ければNone）"""
+    return _dify_sticky_app_cache.get((userid, session_id))
 
 
-def clear_sticky_dify_app(userid: int) -> None:
+def clear_sticky_dify_app(userid: int, session_id: Optional[str] = None) -> None:
     """Difyツールを使わずにターンが完了した場合、次ターンでのツール固定を解除する"""
-    _dify_sticky_app_cache.pop(userid, None)
+    _dify_sticky_app_cache.pop((userid, session_id), None)
 
 
 def _call_dify_chat(
@@ -320,14 +331,27 @@ def _call_dify_chat(
     app_id: int,
     reset: bool = False,
     inputs: Optional[Dict[str, str]] = None,
+    session_id: Optional[str] = None,
 ) -> str:
-    """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリの会話はプロセス内で継続する）
+    """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリ・同一セッションの
+    会話はプロセス内で継続する）
 
     reset=Trueの場合、キャッシュ済みのconversation_idを使わず新規の会話として送信する
     （ユーザーが前回までの条件を引き継がず新しく検索し直したい場合の入口）。
     """
-    conversation_id = "" if reset else _dify_conversation_cache.get((userid, app_id), "")
-    _dify_sticky_app_cache[userid] = app_id
+    cache_key = (userid, app_id, session_id)
+    conversation_id = "" if reset else _dify_conversation_cache.get(cache_key, "")
+    _dify_sticky_app_cache[(userid, session_id)] = app_id
+
+    # extra_inputsはLLMが送り忘れることがあるため、一度渡された値をセッション単位で
+    # 覚えておき、今回省略されていてもマージして補う（新しい値が来れば上書きする）。
+    if reset:
+        _dify_extra_inputs_cache.pop(cache_key, None)
+    stored_inputs = {} if reset else _dify_extra_inputs_cache.get(cache_key, {})
+    merged_inputs = {**stored_inputs, **(inputs or {})}
+    if merged_inputs:
+        _dify_extra_inputs_cache[cache_key] = merged_inputs
+
     try:
         response = requests.post(
             f"{DIFY_API_BASE_URL}/chat-messages",
@@ -336,7 +360,7 @@ def _call_dify_chat(
                 "Content-Type": "application/json",
             },
             json={
-                "inputs": inputs or {},
+                "inputs": merged_inputs,
                 "query": query,
                 "response_mode": "blocking",
                 "conversation_id": conversation_id,
@@ -355,7 +379,7 @@ def _call_dify_chat(
 
         new_conversation_id = data.get("conversation_id")
         if new_conversation_id:
-            _dify_conversation_cache[(userid, app_id)] = new_conversation_id
+            _dify_conversation_cache[cache_key] = new_conversation_id
 
         answer = data.get("answer", "")
         if not answer.strip():
@@ -380,7 +404,9 @@ def _call_dify_chat(
         return "外部サービスへの問い合わせでエラーが発生しました。もう一度試してみてください。"
 
 
-def create_ai_application_tools(db, raw_user_message: str, userid: int = None) -> "tuple[List[BaseTool], Optional[str]]":
+def create_ai_application_tools(
+    db, raw_user_message: str, userid: int = None, session_id: Optional[str] = None
+) -> "tuple[List[BaseTool], Optional[str]]":
     """
     DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
     LangChain Toolとして動的に生成する。
@@ -409,7 +435,12 @@ def create_ai_application_tools(db, raw_user_message: str, userid: int = None) -
             logger.warning(f"No credential found for AI application '{app.name}' (secret_key={app.secret_key})")
             continue
 
-        def make_func(api_key: str = api_key, app_id: int = app.id, message: str = raw_user_message):
+        def make_func(
+            api_key: str = api_key,
+            app_id: int = app.id,
+            message: str = raw_user_message,
+            session_id: Optional[str] = session_id,
+        ):
             def _call(
                 query: str,
                 userid: int,
@@ -417,7 +448,13 @@ def create_ai_application_tools(db, raw_user_message: str, userid: int = None) -
                 extra_inputs: Optional[Dict[str, str]] = None,
             ) -> str:
                 return _call_dify_chat(
-                    message, userid, api_key, app_id, reset=start_new_conversation, inputs=extra_inputs
+                    message,
+                    userid,
+                    api_key,
+                    app_id,
+                    reset=start_new_conversation,
+                    inputs=extra_inputs,
+                    session_id=session_id,
                 )
             return _call
 
@@ -454,7 +491,7 @@ def create_ai_application_tools(db, raw_user_message: str, userid: int = None) -
         )
 
     sticky_tool_name = None
-    sticky_app_id = get_sticky_dify_app_id(userid) if userid is not None else None
+    sticky_app_id = get_sticky_dify_app_id(userid, session_id) if userid is not None else None
     if sticky_app_id is not None:
         sticky_app = next((a for a in apps if a.id == sticky_app_id), None)
         if sticky_app:
