@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Plus, ExternalLink, Trash2, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import { Calendar, Plus, ExternalLink, Trash2, Pencil, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { AppHeader } from '../shared';
 import { useAuth } from '../../contexts/AuthContext';
 import bffClient from '../../services/bffClient';
@@ -295,7 +295,7 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
 
         {showAddForm && (
           <div style={{ ...t.card, padding: 20 }}>
-            <ScheduleForm form={addForm} onChange={setAddForm} forceGoogleMeet />
+            <ScheduleForm form={addForm} onChange={setAddForm} mode="create" />
             <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
               <button type="button" style={smallPrimaryButton} onClick={handleCreate} disabled={saving}>
                 {saving ? '保存中...' : '記録する'}
@@ -343,50 +343,60 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                     </div>
                   </>
                 ) : (
-                  <button
-                    type="button"
-                    onClick={() => startEdit(schedule)}
-                    style={{ textAlign: 'left', width: '100%', background: 'none', border: 'none', padding: 0, cursor: 'pointer', fontFamily: 'inherit', display: 'block' }}
-                  >
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 6 }}>
-                      <span style={{ ...font.rowTitle, color: color.text }}>第{schedule.coaching_no}回</span>
-                      <span style={{ ...font.caption, color: color.textSubtle, display: 'flex', alignItems: 'center', gap: 4 }}>
-                        <Calendar className="w-3.5 h-3.5" />
-                        {schedule.coaching_date}
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 6 }}>
+                        <span style={{ ...font.rowTitle, color: color.text }}>第{schedule.coaching_no}回</span>
+                        <span style={{ ...font.caption, color: color.textSubtle, display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <Calendar className="w-3.5 h-3.5" />
+                          {schedule.coaching_date}
+                        </span>
+                        {schedule.status && (
+                          <span style={{ ...t.chip, background: '#F1EFEA', color: color.textMuted }}>
+                            {SCHEDULE_STATUS_LABEL[schedule.status]}
+                          </span>
+                        )}
+                        {schedule.todo && (
+                          <span style={{ ...t.chip, background: '#FFF6E5', color: '#B26A00' }}>TODOあり</span>
+                        )}
                       </span>
-                      {schedule.status && (
-                        <span style={{ ...t.chip, background: '#F1EFEA', color: color.textMuted }}>
-                          {SCHEDULE_STATUS_LABEL[schedule.status]}
+                      {schedule.meeting_url && (
+                        <a
+                          href={schedule.meeting_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ ...font.link, color: '#3A5C8F', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6, textDecoration: 'none' }}
+                        >
+                          <ExternalLink className="w-3 h-3" />
+                          {schedule.meeting_url}
+                        </a>
+                      )}
+                      {schedule.coaching_summary && (
+                        <span
+                          style={{
+                            ...font.meta, color: color.textMuted,
+                            display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden', lineHeight: 1.8,
+                          }}
+                        >
+                          {schedule.coaching_summary}
                         </span>
                       )}
-                      {schedule.todo && (
-                        <span style={{ ...t.chip, background: '#FFF6E5', color: '#B26A00' }}>TODOあり</span>
-                      )}
-                    </span>
-                    {schedule.meeting_url && (
-                      <a
-                        href={schedule.meeting_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={e => e.stopPropagation()}
-                        style={{ ...font.link, color: '#3A5C8F', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6, textDecoration: 'none' }}
-                      >
-                        <ExternalLink className="w-3 h-3" />
-                        {schedule.meeting_url}
-                      </a>
-                    )}
-                    {schedule.coaching_summary && (
-                      <span
-                        style={{
-                          ...font.meta, color: color.textMuted,
-                          display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden', lineHeight: 1.8,
-                        }}
-                      >
-                        {schedule.coaching_summary}
-                      </span>
-                    )}
-                  </button>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => startEdit(schedule)}
+                      style={{
+                        display: 'flex', alignItems: 'center', gap: 6, flexShrink: 0,
+                        ...font.buttonSm, color: color.textStrong, background: color.surface,
+                        border: `1px solid ${color.borderSoft}`, borderRadius: t.chip.borderRadius,
+                        padding: '8px 14px', cursor: 'pointer', fontFamily: 'inherit',
+                      }}
+                    >
+                      <Pencil className="w-3.5 h-3.5" />
+                      編集
+                    </button>
+                  </div>
                 )}
 
                 <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${color.borderSoft}` }}>
@@ -463,16 +473,16 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
 function ScheduleForm({
   form,
   onChange,
-  forceGoogleMeet = false,
+  mode = 'edit',
 }: {
   form: ScheduleFormState;
   onChange: (form: ScheduleFormState) => void;
-  // 新規作成では常にtrue: Google Meet自動発行が前提で、手動URL入力の経路は無い。
-  // 編集(false)では、過去に手動URLで作られた回の値をそのまま編集できるよう
-  // 既存の分岐を維持する(provider切り替えのUIは出さない)。
-  forceGoogleMeet?: boolean;
+  // 'create': 新規作成用。Google Meet自動発行が前提(手動URL入力の経路は無い)なので
+  // URL欄は案内文のみ表示し、実施結果・要約・TODOは実施後に編集で入力する運用にする。
+  // 'edit'(デフォルト): 既存回の編集。過去に手動URLで作られた回の値もそのまま編集できる。
+  mode?: 'create' | 'edit';
 }) {
-  const isGoogleMeet = forceGoogleMeet || form.meeting_provider === 'google_meet';
+  const isGoogleMeet = mode === 'create' || form.meeting_provider === 'google_meet';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
@@ -501,38 +511,44 @@ function ScheduleForm({
             />
           )}
         </div>
-        <div style={{ flex: 1, minWidth: 140 }}>
-          <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>実施結果</label>
-          <select
-            value={form.status}
-            onChange={e => onChange({ ...form, status: e.target.value as ScheduleFormState['status'] })}
-            style={inputStyle}
-          >
-            <option value="">未設定</option>
-            <option value="completed">終了</option>
-            <option value="interrupted">中断</option>
-            <option value="rescheduled">リスケ</option>
-          </select>
-        </div>
+        {mode === 'edit' && (
+          <div style={{ flex: 1, minWidth: 140 }}>
+            <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>実施結果</label>
+            <select
+              value={form.status}
+              onChange={e => onChange({ ...form, status: e.target.value as ScheduleFormState['status'] })}
+              style={inputStyle}
+            >
+              <option value="">未設定</option>
+              <option value="completed">終了</option>
+              <option value="interrupted">中断</option>
+              <option value="rescheduled">リスケ</option>
+            </select>
+          </div>
+        )}
       </div>
-      <div>
-        <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>コーチング内容の要約</label>
-        <textarea
-          value={form.coaching_summary}
-          onChange={e => onChange({ ...form, coaching_summary: e.target.value })}
-          rows={3}
-          style={{ ...inputStyle, resize: 'none' }}
-        />
-      </div>
-      <div>
-        <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>次回までのTODO</label>
-        <textarea
-          value={form.todo}
-          onChange={e => onChange({ ...form, todo: e.target.value })}
-          rows={2}
-          style={{ ...inputStyle, resize: 'none' }}
-        />
-      </div>
+      {mode === 'edit' && (
+        <>
+          <div>
+            <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>コーチング内容の要約</label>
+            <textarea
+              value={form.coaching_summary}
+              onChange={e => onChange({ ...form, coaching_summary: e.target.value })}
+              rows={3}
+              style={{ ...inputStyle, resize: 'none' }}
+            />
+          </div>
+          <div>
+            <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>次回までのTODO</label>
+            <textarea
+              value={form.todo}
+              onChange={e => onChange({ ...form, todo: e.target.value })}
+              rows={2}
+              style={{ ...inputStyle, resize: 'none' }}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }
