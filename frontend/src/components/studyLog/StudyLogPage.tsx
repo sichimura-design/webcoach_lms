@@ -80,8 +80,8 @@ function StudyLogPage() {
 
   const [timePeriod, setTimePeriod] = useState<StudyRankingPeriod>('week');
   const [streakPeriod, setStreakPeriod] = useState<StreakRankingPeriod>('month');
-  const time = useStudyRanking(userId, timePeriod);
-  const streak = useStreakRanking(userId, streakPeriod);
+  const time = useStudyRanking(user?.isAdmin ? userId : undefined, timePeriod);
+  const streak = useStreakRanking(user?.isAdmin ? userId : undefined, streakPeriod);
   const goals = useGoalDeclaration(userId);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -361,7 +361,8 @@ function StudyLogPage() {
               onOpen={showSession}
             />
 
-            {/* ⑥ ランキング */}
+            {/* ⑥ ランキング（管理者のみ表示） */}
+            {user?.isAdmin && (
             <div className="studylog-rank-grid">
               <RankingListCard
                 title="学習時間ランキング"
@@ -405,6 +406,7 @@ function StudyLogPage() {
                 failed={streak.failed}
               />
             </div>
+            )}
           </div>
         )}
 
