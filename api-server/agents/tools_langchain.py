@@ -352,6 +352,21 @@ def _call_dify_chat(
     if merged_inputs:
         _dify_extra_inputs_cache[cache_key] = merged_inputs
 
+    # Dify側でrequired: trueな入力変数は、キー自体が送信データに存在しないと
+    # （値が空文字であっても）400 invalid_paramで弾かれる。LLMがまだ聞き取れて
+    # いない状態でもツールをためらわず呼び出せるよう（Dify自身のopening_statementに
+    # 聞いてもらう設計にするため）、未取得の必須変数は空文字で埋めて送信する。
+    # ここではキャッシュ(_dify_extra_inputs_cache)には反映せず、実送信データのみ補う。
+    required_vars = [
+        field["variable"]
+        for form_item in (_get_dify_parameters(api_key).get("user_input_form") or [])
+        for _, field in form_item.items()
+        if field.get("required")
+    ]
+    request_inputs = dict(merged_inputs)
+    for var in required_vars:
+        request_inputs.setdefault(var, "")
+
     try:
         response = requests.post(
             f"{DIFY_API_BASE_URL}/chat-messages",
@@ -360,7 +375,7 @@ def _call_dify_chat(
                 "Content-Type": "application/json",
             },
             json={
-                "inputs": merged_inputs,
+                "inputs": request_inputs,
                 "query": query,
                 "response_mode": "blocking",
                 "conversation_id": conversation_id,
@@ -459,8 +474,12 @@ def create_ai_application_tools(
             return _call
 
         # このアプリがDify側で必須入力変数（例: 求人情報のURL）を定義している場合、
-        # ツールの説明文にその旨を明記し、LLMがextra_inputsへ設定すべき値を
-        # ユーザーから聞き取ってから呼び出すよう促す。
+        # ツールの説明文にその旨を明記する。未取得でもツール呼び出し自体は
+        # _call_dify_chat側で空文字を補って安全に送信できるため、LLMには
+        # 「聞き取れたら渡す」ことだけを促し、聞き取るまで呼び出しを保留させる
+        # 指示は入れない（保留させると、ユーザーが情報を持たない/答えたくない場合に
+        # 同じ質問を繰り返すだけでツールに一度も到達しない不具合になっていたため。
+        # Dify側にopening_statement等の聞き取りフローがあるアプリはそちらに委ねる）。
         required_vars = [
             field["variable"]
             for form_item in (_get_dify_parameters(api_key).get("user_input_form") or [])
@@ -471,16 +490,13 @@ def create_ai_application_tools(
         if required_vars:
             var_list = "、".join(required_vars)
             required_inputs_text = (
-                f" **重要: このアプリを呼び出す前に、次の情報をユーザーから聞き取り、"
-                f"extra_inputs引数にキー名をそのまま使って設定してください: {var_list}**"
-                f"（まだ聞き取れていない場合はツールを呼ばずに先にユーザーへ質問すること。"
-                f"一度聞き取った後は、同じ会話の以降の全呼び出しでも毎回extra_inputsに"
+                f" このアプリはDify側で次の入力項目を持っています: {var_list}。"
+                f"ユーザーの発言や会話の流れから読み取れる場合は、キー名をそのまま使って"
+                f"extra_inputsに設定してください。まだ読み取れていない場合でも、"
+                f"ユーザーがこのアプリの利用を求めているならためらわずすぐに呼び出して"
+                f"ください（アプリ側が必要な情報を自分から尋ねてくれます）。"
+                f"一度聞き取った値は、同じ会話の以降の全呼び出しでも毎回extra_inputsに"
                 f"設定し続けること。"
-                f"ただし、ユーザーが「持っていない」「特にない」等、情報提供を明確に断った"
-                f"場合や、同じ内容を2回聞いても得られない場合は、それ以上同じ質問を繰り返さず、"
-                f"聞き取れた範囲の情報（無ければ「情報なし」等の分かる値）をそのまま"
-                f"extra_inputsに設定してツールを呼び出すこと。ユーザーへの確認を理由に"
-                f"ツール呼び出しを保留し続けてはならない）"
             )
 
         tools.append(
