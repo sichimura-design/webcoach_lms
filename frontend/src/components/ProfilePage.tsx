@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft } from 'lucide-react';
 import { ProfileFormData } from '../types/profile';
@@ -133,8 +133,15 @@ function ProfilePage() {
     }
   };
 
-  // avatar_url が実URL（またはアップロードした data URL）なら直接使用、
-  // なければ avatar_id / avatar_url から解決
+  /*
+   * 🔴 アイコン画像のアップロード（handlePickFile / bffClient.uploadProfileAvatar）は
+   *    撤去した。任意の画像を受け取る口を持たないため。
+   *    アイコンはプリセット（AvatarPicker）から選ぶ1経路だけ。
+   */
+
+  // avatar_url が実URLならそのまま、なければ avatar_id / avatar_url から解決。
+  // 🔴 data: の分岐はアップロード時代の名残なので残してある。古いプロフィールに
+  //    data URL が入ったままのユーザーがいても、画像が消えないようにするため。
   const avatarIdentifier = formData.avatar_url?.startsWith('http') || formData.avatar_url?.startsWith('data:')
     ? formData.avatar_url
     : formData.avatar_id || formData.avatar_url;
@@ -232,12 +239,15 @@ function ProfilePage() {
                 size={96}
               />
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-start' }}>
+                {/* 🔴 唯一の導線。任意画像のアップロード（デザイン 2b の
+                       「画像をアップロード」）は撤去したので、テキストリンクではなく
+                       ボタンで出す。 */}
                 <AvatarPicker
                   selectedAvatarId={selectedAvatarId}
                   onSelect={(avatarId, url) =>
                     setFormData(prev => ({ ...prev, avatar_id: String(avatarId), avatar_url: url }))
                   }
-                  triggerLabel="用意されたアイコンから選ぶ"
+                  triggerLabel="アイコンを選ぶ"
                   triggerClassName={`dc-cta-outline ${focusRing}`}
                   triggerStyle={{ ...dcOutlineButton, fontSize: 13.5, padding: '9px 22px' }}
                 />

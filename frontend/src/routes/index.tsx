@@ -4,7 +4,7 @@ import LoginPage from '../components/LoginPage';
 import PasswordResetPage from '../components/PasswordResetPage';
 import MyPage from '../components/MyPage';
 import StudyLogPage from '../components/studyLog/StudyLogPage';
-// CoachingNotesPage(dev/miyabeの招待URL型コーチング連携、モック)はどのルートにも接続していない。
+// CoachingPage(dev/miyabeの招待URL型コーチング連携、モック)はどのルートにも接続していない。
 // TODO(backend未実装/方針転換で陳腐化): 下の /coaching ルートのコメント参照。
 import LearningPlanPage from '../components/learningPlan/LearningPlanPage';
 import LearningPlanSetupPage from '../components/learningPlan/LearningPlanSetupPage';
@@ -40,9 +40,8 @@ import { AdminCoachMappingPage } from '../components/admin/AdminCoachMappingPage
 // TODO(バックエンド未実装): 実装され次第 /admin/coach-integrations ルートへ再接続する。
 import { AdminSettingsPage } from '../components/admin/AdminSettingsPage';
 import { CoachStudentsPage } from '../components/coach/CoachStudentsPage';
-// CoachSettingsPage(コーチ向けZoom連携設定)も同様に依存するmeeting-connections系が
-// BFF未実装のためいったん没。TODO: 上と合わせて実装され次第 /coach/settings へ再接続する。
 import { CoachingSchedulePage } from '../components/coach/CoachingSchedulePage';
+import { CoachSettingsPage } from '../components/coach/CoachSettingsPage';
 import { MyCoachingPage } from '../components/MyCoachingPage';
 import FocusBoothPage from '../components/FocusBoothPage';
 import { useAuth } from '../contexts/AuthContext';
@@ -63,15 +62,29 @@ interface ProtectedRouteProps {
   children: React.ReactNode;
 }
 
+/**
+ * ルートガードが認証待ちのあいだ出すスピナー。
+ * 🔴 3つのガードに同じものがコピペされていて、色がサーモン #E86D78（旧コーチ画面と
+ *    同じ、どのトークンにも属さない値）だった。ログイン直後に必ず一瞬見える面なので
+ *    ブランド赤（--dc-primary）に寄せ、1箇所に括った。
+ *    地色は .wc-warm を付けて --dc-bg（暖色クリーム）に合わせる。
+ */
+function RouteLoading() {
+  return (
+    <div className="wc-warm min-h-screen flex items-center justify-center" style={{ background: 'var(--dc-bg)' }}>
+      <span
+        className="w-8 h-8 rounded-full animate-spin"
+        style={{ border: '3px solid var(--dc-primary)', borderTopColor: 'transparent' }}
+      />
+    </div>
+  );
+}
+
 function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
-        <span className="w-8 h-8 border-3 border-[#E86D78] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <RouteLoading />;
   }
 
   if (!user) {
@@ -85,11 +98,7 @@ function AdminRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
-        <span className="w-8 h-8 border-3 border-[#E86D78] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <RouteLoading />;
   }
 
   if (!user) {
@@ -107,11 +116,7 @@ function CoachRoute({ children }: ProtectedRouteProps) {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-brand-bg flex items-center justify-center">
-        <span className="w-8 h-8 border-3 border-[#E86D78] border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
+    return <RouteLoading />;
   }
 
   if (!user) {
@@ -296,7 +301,7 @@ function AppRoutes() {
       {/*
         dev/kanegae統合: /coaching は下の方で dev/kanegae の実装(MyCoachingPage、
         実装済みのOAuth型連携・録画・スケジュール・AIコーチングノートに接続)へルーティングする。
-        dev/miyabeのCoachingNotesPage（招待URL型連携の想定）は、その前提(Google Meet
+        dev/miyabeのCoachingPage（招待URL型連携の想定）は、その前提(Google Meet
         Organizer中心モデルへの方針転換)が既に陳腐化しているためルートに接続しない
         （ファイルはTODOとして残置。実装しないと決めたわけではない）。
       */}
@@ -549,6 +554,16 @@ function AppRoutes() {
           </CoachRoute>
         }
       />
+
+      <Route
+        path="/coach/settings"
+        element={
+          <CoachRoute>
+            <CoachSettingsPage />
+          </CoachRoute>
+        }
+      />
+
 
       {MOCKS_ENABLED && (
         <Route

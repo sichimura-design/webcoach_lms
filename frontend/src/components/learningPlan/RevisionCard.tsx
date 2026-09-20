@@ -124,7 +124,7 @@ function RevisionCard({ revision, pendingCount, busy, onResolve, onOpenEditor }:
             }}
           >
             {showAllDiffs
-              ? '変更内容を畳む'
+              ? '変更内容を閉じる'
               : `以降のフェーズへの影響 ${revision.diffs.length - VISIBLE_DIFFS}件をみる`}
           </button>
         )}

@@ -14,6 +14,8 @@
 import type { Category } from '../types/api';
 import { AREA_COURSES, COURSES, COURSE_ID_BY_SLUG, COURSE_KIND, courseKindOf } from '../constants/courseTaxonomy';
 import { courseLessonCount } from './lessonHandlers';
+// サムネイルの登録表。教材API（lessonHandlers.ts）とも共有するので葉モジュールに置いてある
+import { courseThumbnailUrl } from './courseThumbnails';
 
 export type MockCourse = {
   id: number; fullname: string; shortname: string;
@@ -31,9 +33,11 @@ export const COURSE_ID = COURSE_ID_BY_SLUG;
 
 /** モック固有の肉付け。キーは courseTaxonomy の slug */
 const DETAILS: Record<string, { summary: string; duration: string; purposes: string[] }> = {
-  // ソフトスキル
+  // 学習ガイド
+  tutorial: { summary: 'このサービスの使い方を一通り。学習の進め方とコーチングの受け方まで', duration: '20分', purposes: ['未経験向け', '最初におすすめ'] },
   mindset: { summary: '何をどの順で学ぶか、続けるために何を決めておくかを整理します', duration: '40分', purposes: ['未経験向け', '最初におすすめ'] },
-  // キャリア
+  // 案件獲得・キャリア
+  'client-work-program': { summary: '営業・提案・見積もり・納品までを通しで攻略する', duration: '240分', purposes: ['副業準備', '案件獲得'] },
   'job-change': { summary: '求人リサーチ・自己分析から書類・面接対策までのテキスト教材', duration: '90分', purposes: ['キャリアを変える', '副業準備'] },
 
   // Webデザイン
@@ -91,9 +95,6 @@ const DETAILS: Record<string, { summary: string; duration: string; purposes: str
   'sns-buzz': { summary: 'ターゲット設定と試行錯誤の回し方。バズの前提を整える', duration: '180分', purposes: ['発信を伸ばす', '基礎から'] },
   camera: { summary: 'スマホを超える画作りのための、実機カメラの基本', duration: '90分', purposes: ['ツールを覚える'] },
 
-  // 案件獲得攻略プログラム
-  'client-work-program': { summary: '営業・提案・見積もり・納品までを通しで攻略する', duration: '240分', purposes: ['副業準備', '案件獲得'] },
-
   // 生成AI基礎
   'genai-basics': { summary: 'AIの著作権や市場感など、使う前に押さえたい前提', duration: '70分', purposes: ['未経験向け', '最初におすすめ'] },
   'genai-passport': { summary: '生成AIパスポートの試験範囲に沿った対策講座', duration: '180分', purposes: ['基礎から', 'キャリアを変える'] },
@@ -107,28 +108,13 @@ const DETAILS: Record<string, { summary: string; duration: string; purposes: str
 };
 
 /**
- * コースのサムネイル画像。キーは courseTaxonomy の slug、値は
- * frontend/public/images/courses/ 配下のファイル名。
- *
- * 実BFF（Moodle）は courseimage に保護URLを返すが、モックには画像が無いので
- * ここで public の静的ファイルに差し替える。**未登録のコースは文字組みサムネ**
- * （CourseTile / CourseArt のフォールバック）になるので、1枚ずつ足していける。
- *
- * 🔴 リテラルのコースIDをキーにしないこと。ID は領域code*100+連番で採番されるので、
- *    領域内の並びを1つ変えると全部ずれる。slug は動かない。
- */
-const COURSE_THUMBNAILS: Record<string, string> = {
-  // 画像が届いたらここに追記する（例: 'design-basics': 'design-basics.png'）
-};
-
-/**
  * カタログ本体。tags（＝種類）は courseKindOf から機械的に決める。
  * 手で「基礎知識」「実践課題」を振らないので、コースを足しても未分類が出ない。
  */
 export const catalog: MockCourse[] = COURSES.map((course) => {
   const detail = DETAILS[course.slug];
   const kind = courseKindOf({ fullname: course.name });
-  const thumbnail = COURSE_THUMBNAILS[course.slug];
+  const thumbnail = courseThumbnailUrl(course.slug);
   return {
     id: course.id,
     fullname: course.name,
@@ -136,8 +122,7 @@ export const catalog: MockCourse[] = COURSES.map((course) => {
     categoryid: Math.floor(course.id / 100),
     categoryname: course.areaName,
     summary: detail?.summary ?? '',
-    // サブパス配信（dev プレビューの /branches/<slug>/）でも壊れないよう PUBLIC_URL 起点にする
-    ...(thumbnail ? { courseimage: `${process.env.PUBLIC_URL}/images/courses/${thumbnail}` } : {}),
+    ...(thumbnail ? { courseimage: thumbnail } : {}),
     tags: [{ rawname: kind === COURSE_KIND.practice ? COURSE_KIND.practice : '基礎知識' }],
     duration: detail?.duration ?? '60分',
     lessoncount: courseLessonCount(course.id),

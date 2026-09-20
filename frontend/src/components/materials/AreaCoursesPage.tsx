@@ -9,6 +9,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { useMypageData } from '../../hooks/useMypageData';
 import { bffClient } from '../../services/bffClient';
 import { t } from '../../theme/tokens';
+import { pageTitleStyle } from '../../theme/pageTitle';
 import { LEARNING_HIERARCHY } from '../../constants/learningTaxonomy';
 import {
   COURSE_KIND,
@@ -164,7 +165,7 @@ function AreaCoursesPage() {
               <CourseThumb categoryName={area.name} size={52} radius={14} />
               <div style={{ minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, flexWrap: 'wrap' }}>
-                  <h1 style={{ margin: 0, fontSize: 'var(--dc-fs-display)', fontWeight: t.font.weight.bold, lineHeight: 'var(--dc-lh-heading)' }}>{area.name}</h1>
+                  <h1 style={pageTitleStyle}>{area.name}</h1>
                   <span style={{ fontSize: 'var(--dc-fs-caption)', color: t.color.text.subtle }}>
                     {areaCourses.length} {LEARNING_HIERARCHY.course}
                   </span>
@@ -195,7 +196,10 @@ function AreaCoursesPage() {
                   </span>
                 )}
               </div>
-              <div style={{ display: 'flex', gap: 10 }}>
+              {/* 🔴 折り返せるようにしておく。2つ並ぶと実測 424px あり、375px では
+                     入らない（外側の行だけ wrap でも、この内側が縮まないので
+                     ページごと横スクロールしていた）。 */}
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', minWidth: 0, maxWidth: '100%' }}>
                 {hasPractice && (
                   <select aria-label="種類" value={kind} onChange={(e) => setKind(e.target.value)} style={selectStyle}>
                     <option value={ALL}>種類：すべて</option>

@@ -150,7 +150,7 @@ export function MeetingLinkModal({
                 <p style={{ ...font.meta, color: color.textBody, margin: 0, lineHeight: 1.9 }}>
                   {coachIssue
                     ? '会議リンクは登録できました。ただし、下記の理由で録音・文字起こしが利用できない可能性があります。'
-                    : '次回のコーチングでは、AIコーチングノートを利用できます。'}
+                    : '次回のコーチングから、内容を自動で記録できます。'}
                 </p>
               </div>
               {coachIssue && (
@@ -397,7 +397,7 @@ export function MeetingLinkModal({
                       >
                         {coachIssue
                           ? '担当コーチの設定が未完了のため、録音・文字起こしが利用できない可能性があります'
-                          : 'AIコーチングノートを利用できます'}
+                          : 'コーチングの内容を自動で記録できます'}
                       </span>
                     </li>
                   </ul>

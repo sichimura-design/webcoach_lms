@@ -173,7 +173,7 @@ export function AdminCoachIntegrationsPage() {
       </div>
       <p className="text-sm mb-6" style={{ color: '#6B6467', lineHeight: 1.8 }}>
         コーチの初回セットアップで接続リンクを発行し、Zoom / Google Meet の録画・文字起こしを
-        面談後に自動で取り込めるようにします。<strong>コーチのLMSログインは不要</strong>で、リンクを1回開くだけです。
+        コーチング後に自動で取り込めるようにします。<strong>コーチのLMSログインは不要</strong>で、リンクを1回開くだけです。
         取得するのはLMSに登録された会議のみで、それ以外の録画には触れません。
       </p>
 
@@ -186,7 +186,7 @@ export function AdminCoachIntegrationsPage() {
           <p className="text-xs" style={{ color: '#4A4245', lineHeight: 1.8 }}>
             {unsupportedCount}名のコーチは、アカウントのプラン上そもそも自動取得ができません
             （Zoom無料プランにはクラウド録画が無く、個人GoogleアカウントではMeetの文字起こしが使えません）。
-            この方々の面談は<strong>受講生による手動取り込み</strong>のままになります。
+            この方々のコーチングは<strong>受講生による手動取り込み</strong>のままになります。
           </p>
         </div>
       )}
@@ -339,7 +339,7 @@ export function AdminCoachIntegrationsPage() {
                   {c.status === 'plan_unsupported' && c.reason && (
                     <div className="px-4 pb-3.5 pl-[52px]">
                       <p className="text-xs" style={{ color: '#B50829', lineHeight: 1.8 }}>
-                        {c.reason} このコーチの面談は手動取り込みのみになります。
+                        {c.reason} このコーチのコーチングは手動取り込みのみになります。
                       </p>
                     </div>
                   )}

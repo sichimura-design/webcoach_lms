@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { CalendarDays, MessageSquare } from 'lucide-react';
+import { CalendarDays, Headphones } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { StudyDayTotal } from '../../types/studyActivity';
 import {
@@ -16,20 +16,39 @@ import {
  * 旧 StreakCalendarCard の置き換え。あちらは「学習した日かどうか」の二値を炎マークで
  * 出すだけで、3か月前までしか遡れなかった。ここでは
  *   ・学習時間の多寡を濃淡で出す（どれだけやったか）
- *   ・コーチングを受けた日に別のマークを重ねる（何をやったか）
+ *   ・コーチングを受けた日は金のリングで囲い、ヘッドホンを重ねる（何をやったか）
  *   ・日をクリックすると右（狭い画面では下）にその日の詳細が開く
  *   ・受講開始月まで遡れる
  * を足している。
  *
  * 🔴 濃淡の閾値は utils/studyStats.ts の STUDY_HEAT_THRESHOLDS が唯一の実装。
- *    ここで再定義しないこと。L1 の下限が STUDY_DAY_MIN_MINUTES と同じなので、
- *    「段階ドットが1つでも付いている = 学習した日」が構造的に真になる。
+ *    ここで再定義しないこと。段は 30/60/120 分の3つで、これはストリークの
+ *    「学習した日」（STUDY_DAY_MIN_MINUTES = 10分）とは別の軸。
+ *    10〜29分の日は段に入らないが学習した日ではあるので、濃淡ではなく
+ *    aria-label の文言のほうでストリークと同じ判定を持つ（minutes >= 10）。
+ *    塗りの上では 1〜29分をまとめて「記録あり」（淡い地）として出す。
  *
  * 🔴 色だけで情報を伝えない（design-token-spec.md）。
- *    濃淡に加えて、段階ドット（1〜4個）・日付の数字・aria-label の文言・
- *    凡例の分数表記の4つで同じことを伝えている。どれか1つでも読めれば分かる。
+ *    濃淡に加えて、凡例の分数表記と aria-label の文言が同じことを伝えている。
+ *    かつては升目の中にも段階ドット（赤い四角1〜3個）を重ねていたが、
+ *    凡例に説明が無く「この点は何か」が読めないという指摘で撤去した。
+ *    升目の中に増やすのではなく、凡例と読み上げのほうを正確に保つこと。
+ *
+ * 🔴 赤は「学習時間の多寡」専用にする。状態（今日・選択中）は赤の外へ出す。
+ *    選択中を赤枠にしていた頃は、濃淡の赤と同系色で「濃い日」なのか
+ *    「選んだ日」なのか読み分けられなかった。今は
+ *      選択中 = 濃いニュートラルの枠（＋内側の細い白枠）
+ *      今日   = 日付の数字の代わりに「今日」と書く
+ *    で、伝える手段（枠と文字）そのものを分けてある。
+ *    かつては今日をセル下端の 12×2px の横バーで示していたが、
+ *    小さすぎて気づかれず、凡例の「— 今日」も何の記号か読めなかった。
+ *    文字で書けば凡例が要らない。トップの7日ストリップ（StudyDashboardCard）が
+ *    既に同じ手（isToday なら「今日」と出す）を使っていて、表現も揃う。
+ *    🔴 今日の表現を色に戻さないこと。上の原則どおり赤は多寡専用で、
+ *       濃い段（L3）の日が今日になっても文字だけで読み分けられる必要がある。
+ *    形のほかに aria-pressed / aria-current="date" / label の文言でも伝える。
  *    セルに「45分」と文字で入れないのは、--dc-sz-cell の下限が 38px で
- *    12px×4文字が溢れるため（12px未満は作らない規約がある）。
+ *    12px×4文字が溢れるため（12px未満は作らない規約がある）。「今日」は2文字なので入る。
  *
  * 🔴 42個のセルを全部タブ順に入れない（roving tabindex）。
  *    タブキーで1つの月に42回止まると、その下のカードへ辿り着けない。
@@ -50,6 +69,8 @@ interface StudyCalendarCardProps {
   loading: boolean;
   onMonthChange: (monthKey: string) => void;
   onSelectDate: (date: string | null) => void;
+  /** 「今日」ボタン。表示月を今月に戻して今日を選ぶ（呼び出し側で両方やる） */
+  onSelectToday: () => void;
 }
 
 const WEEKDAYS = [
@@ -62,13 +83,16 @@ const WEEKDAYS = [
   { short: '日', full: '日曜日' },
 ];
 
-/** 濃淡の見た目。段階は heatLevelOf が決める（ここでは閾値を判定しない） */
+/**
+ * 濃淡の見た目。段階は heatLevelOf が決める（ここでは閾値を判定しない）。
+ * 🔴 --dc-soft-100（#FDF2F2）は段に使わない。白いカードの上で記録なしのセルと
+ *    ほとんど差が出ず、4段あった頃に「濃淡が読めない」原因になっていた。
+ */
 const HEAT_STYLE: { background: string; color: string; border: string }[] = [
-  // 0: 記録なし（未達 1〜9分もここを使い、記号だけ変える）
+  // 0: 記録なし（30分未満 1〜29分もここを使い、地と記号だけ変える）
   { background: 'var(--dc-surface)', color: 'var(--dc-text-muted)', border: 'var(--dc-border)' },
-  { background: 'var(--dc-soft-100)', color: 'var(--dc-text)', border: 'var(--dc-soft-200)' },
   { background: 'var(--dc-soft-200)', color: 'var(--dc-text)', border: 'var(--dc-soft-200)' },
-  // L3/L4 は地が濃いので、文字色のコントラストが変わる
+  // L2/L3 は地が濃いので、文字色のコントラストが変わる
   { background: 'var(--dc-bar-past)', color: 'var(--dc-text)', border: 'var(--dc-bar-past)' },
   { background: 'var(--dc-primary)', color: '#fff', border: 'var(--dc-primary)' },
 ];
@@ -92,9 +116,9 @@ interface Cell {
   blank: boolean;
   day: number;
   minutes: number;
-  level: 0 | 1 | 2 | 3 | 4;
-  /** 1〜9分。学習日には満たないが記録はある */
-  under: boolean;
+  level: 0 | 1 | 2 | 3;
+  /** 1〜29分。最初の段（30分）には満たないが記録はある */
+  recorded: boolean;
   coaching: boolean;
   isToday: boolean;
   isFuture: boolean;
@@ -110,6 +134,7 @@ export function StudyCalendarCard({
   loading,
   onMonthChange,
   onSelectDate,
+  onSelectToday,
 }: StudyCalendarCardProps) {
   const todayKey = toLocalDateKey(new Date());
 
@@ -125,7 +150,7 @@ export function StudyCalendarCard({
       if (day < 1 || day > daysInMonth) {
         return {
           key: `blank-${i}`, blank: true, day: 0, minutes: 0, level: 0 as const,
-          under: false, coaching: false, isToday: false, isFuture: false, label: '',
+          recorded: false, coaching: false, isToday: false, isFuture: false, label: '',
         };
       }
       const d = new Date(year, month, day);
@@ -143,14 +168,17 @@ export function StudyCalendarCard({
       else if (minutes === 0) parts.push('記録なし');
       else {
         parts.push(formatMinutesHM(minutes));
-        parts.push(level > 0 ? '学習した日' : `${STUDY_DAY_MIN_MINUTES}分未満`);
+        // 🔴 濃淡の段（level）ではなくストリークと同じ閾値で判定する。
+        //    level は 30分からしか立たないので、level > 0 で見ると
+        //    15分の日が「10分未満」と読み上げられてストリークと食い違う。
+        parts.push(minutes >= STUDY_DAY_MIN_MINUTES ? '学習した日' : `${STUDY_DAY_MIN_MINUTES}分未満`);
         if ((total?.sessionCount ?? 0) > 0) parts.push(`記録${total?.sessionCount}件`);
       }
       if (coaching) parts.push('コーチングあり');
 
       return {
         key, blank: false, day, minutes, level,
-        under: minutes > 0 && level === 0,
+        recorded: minutes > 0 && level === 0,
         coaching, isToday: key === todayKey, isFuture,
         label: parts.join(' '),
       };
@@ -263,20 +291,12 @@ export function StudyCalendarCard({
     </button>
   );
 
-  /** 段階を示すドット。色が読めなくても数で多寡が分かる */
-  const dots = (level: 0 | 1 | 2 | 3 | 4, onDark: boolean) => (
-    <span style={{ display: 'flex', gap: 2, height: 6, alignItems: 'center' }} aria-hidden="true">
-      {Array.from({ length: level }, (_, i) => (
-        <span
-          key={i}
-          style={{
-            width: 4, height: 4, borderRadius: 1,
-            background: onDark ? '#fff' : 'var(--dc-primary)',
-          }}
-        />
-      ))}
-    </span>
-  );
+  /*
+   * 🔴 段階を示す赤いドット（1〜3個）と、1〜29分の日の中空の丸は撤去した。
+   *    濃淡と同じことを升目の中でもう一度言っていただけで、凡例に説明も無く、
+   *    「この点は何か」が読めなかった（実際にそう指摘された）。
+   *    段の情報は 濃淡・凡例の分数表記・aria-label の3つが持つ。戻さないこと。
+   */
 
   return (
     <section
@@ -307,6 +327,27 @@ export function StudyCalendarCard({
             {title}
           </span>
           {navButton('次の月へ', '›', canGoForward, () => onMonthChange(shiftMonth(monthKey, 1)))}
+          {/* 遡ったあとに戻る手段。月を今月へ戻して今日を選ぶところまでやる */}
+          <button
+            type="button"
+            onClick={onSelectToday}
+            className="dc-cta-outline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
+            style={{
+              minHeight: 24,
+              padding: '0 10px',
+              borderRadius: 9999,
+              border: '1px solid var(--dc-border-strong)',
+              background: '#fff',
+              fontFamily: 'inherit',
+              fontSize: 'var(--dc-fs-caption)',
+              fontWeight: 700,
+              color: 'var(--dc-text-body)',
+              whiteSpace: 'nowrap',
+              cursor: 'pointer',
+            }}
+          >
+            今日
+          </button>
         </div>
       </div>
 
@@ -337,7 +378,6 @@ export function StudyCalendarCard({
 
             const selected = c.key === selectedDate;
             const heat = HEAT_STYLE[c.level];
-            const onDark = c.level === 4;
 
             return (
               <span key={c.key} role="gridcell" style={{ display: 'block', minWidth: 0 }}>
@@ -370,59 +410,63 @@ export function StudyCalendarCard({
                     position: 'relative',
                     fontFamily: 'inherit',
                     cursor: c.isFuture ? 'default' : 'pointer',
-                    background: c.isFuture ? 'transparent' : c.under ? 'var(--dc-sunken)' : heat.background,
+                    background: c.isFuture ? 'transparent' : c.recorded ? 'var(--dc-sunken)' : heat.background,
+                    // 🔴 選択中は赤にしない。濃淡の赤と同系色だと「濃い日」と読み分けられない
                     border: selected
                       ? '2px solid var(--dc-text)'
-                      : c.isToday
-                        ? '2px solid var(--dc-primary)'
-                        : c.isFuture
-                          ? '1px dashed var(--dc-idle-dash)'
-                          : `1px solid ${c.under ? 'var(--dc-border)' : heat.border}`,
+                      : c.isFuture
+                        ? '1px dashed var(--dc-idle-dash)'
+                        : `1px solid ${c.recorded ? 'var(--dc-border)' : heat.border}`,
+                    /*
+                     * 内側に地の色の細い枠を挟んで、濃い段（L2/L3）でも枠が沈まないようにする。
+                     * 🔴 コーチングを受けた日は外側に金のリングを重ねる。border では出さないこと。
+                     *    border は「選択中」が 2px の黒で使っていて、コーチングの日を選んだ
+                     *    瞬間に金が消える（＝選ぶと手がかりが1つ減る）。外側のリングなら
+                     *    選択中の黒枠と同時に出せる。
+                     */
+                    boxShadow: [
+                      selected ? 'inset 0 0 0 2px var(--dc-surface)' : null,
+                      c.coaching ? '0 0 0 2px var(--dc-gold)' : null,
+                    ]
+                      .filter(Boolean)
+                      .join(', ') || undefined,
                   }}
                 >
                   <span
                     className="dc-num"
                     style={{
                       fontSize: 'var(--dc-fs-caption)',
-                      fontWeight: c.level > 0 || c.isToday ? 700 : 400,
-                      color: c.isFuture ? 'var(--dc-text-subtle)' : heat.color,
+                      fontWeight: c.level > 0 || c.recorded || c.isToday ? 700 : 400,
+                      // 記録ありは段0と同じ HEAT_STYLE を使うが、文字は記録なし（muted）より
+                      // 一段濃くする。地の差（--dc-sunken）だけだと白セルとの違いが弱い
+                      color: c.isFuture
+                        ? 'var(--dc-text-subtle)'
+                        : c.recorded
+                          ? 'var(--dc-text-body)'
+                          : heat.color,
                       lineHeight: 1,
                     }}
                   >
-                    {c.day}
+                    {c.isToday ? '今日' : c.day}
                   </span>
-
-                  {/* 高さは常に確保して升目を揃える（記号の有無で行がずれない） */}
-                  {c.level > 0 ? (
-                    dots(c.level, onDark)
-                  ) : c.under ? (
-                    // 1〜9分。記録はあるが学習日には満たない。塗りではなく中空の丸で区別する
-                    <span
-                      aria-hidden="true"
-                      style={{ width: 5, height: 5, borderRadius: 9999, border: '1px solid var(--dc-text-subtle)' }}
-                    />
-                  ) : (
-                    <span style={{ height: 6 }} />
-                  )}
 
                   {c.coaching && (
                     /*
                      * 段階ドット（四角）と形を変える。濃淡の一部に読まれないように。
-                     * 🔴 11px より大きくしない。狭い画面では升目が 37px しかなく、
-                     *    中央の日付（2桁で約13px）にマークが重なって数字が読めなくなる。
+                     * 🔴 大きさは index.css の .studylog-cal-coaching が持つ（インラインで書かない）。
+                     *    狭い画面では升目が 38px しかなく、中央の日付（2桁で約13px）に
+                     *    マークが重なって数字が読めなくなる。広い画面（升目 50px）でだけ
+                     *    大きくしたいので、メディアクエリのあるクラス側で持つ
+                     *    （インライン style にメディアクエリは書けない）。
+                     *    size は指定しない。svg の寸法もクラスが決める。
                      */
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        position: 'absolute', top: 1, right: 1,
-                        width: 11, height: 11, borderRadius: 9999,
-                        background: 'var(--dc-gold-surface)', color: 'var(--dc-gold)',
-                        display: 'grid', placeItems: 'center',
-                      }}
-                    >
-                      <MessageSquare size={8} strokeWidth={2.75} />
+                    <span aria-hidden="true" className="studylog-cal-coaching">
+                      <Headphones strokeWidth={2.75} />
                     </span>
                   )}
+
+                  {/* 今日はセルの中の文字そのものが「今日」になっている（上の🔴参照）。
+                      記号は足さない。足すと段階ドットやコーチングのマークと競合する */}
                 </button>
               </span>
             );
@@ -439,7 +483,16 @@ export function StudyCalendarCard({
       >
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <span>学習時間</span>
-          {([1, 2, 3, 4] as const).map((lv) => (
+          {/* 段には入らないが記録はある日（1〜29分）。少ない順に並べたいので scale の先頭に置く。
+              見本は升目と同じ地の色で出す（中空の丸は升目から外したので凡例でも使わない） */}
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
+            <span
+              aria-hidden="true"
+              style={{ width: 16, height: 16, borderRadius: 4, background: 'var(--dc-sunken)', border: '1px solid var(--dc-border)' }}
+            />
+            <span>記録あり</span>
+          </span>
+          {([1, 2, 3] as const).map((lv) => (
             <span key={lv} style={{ display: 'inline-flex', alignItems: 'center', gap: 3 }}>
               <span
                 aria-hidden="true"
@@ -450,22 +503,29 @@ export function StudyCalendarCard({
                 }}
               />
               <span className="dc-num">
-                {lv === 4 ? `${STUDY_HEAT_THRESHOLDS[3]}分〜` : `${STUDY_HEAT_THRESHOLDS[lv - 1]}〜`}
+                {lv === 3 ? `${STUDY_HEAT_THRESHOLDS[2]}分〜` : `${STUDY_HEAT_THRESHOLDS[lv - 1]}〜`}
               </span>
             </span>
           ))}
         </span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-          <span aria-hidden="true" style={{ width: 5, height: 5, borderRadius: 9999, border: '1px solid var(--dc-text-subtle)' }} />
-          <span>{STUDY_DAY_MIN_MINUTES}分未満</span>
+        {/* 見本は升目と同じ形（金のリング＋ヘッドホン）で出す */}
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+          <span
+            aria-hidden="true"
+            style={{
+              width: 14, height: 14, borderRadius: 5, boxShadow: '0 0 0 2px var(--dc-gold)',
+              display: 'grid', placeItems: 'center',
+            }}
+          >
+            <Headphones size={9} strokeWidth={2.75} color="var(--dc-gold)" />
+          </span>
+          <span>コーチングあり</span>
         </span>
+        {/* 🔴 「今日」の凡例は置かない。今日のセルにはそのまま「今日」と書いてあるので、
+               記号の説明が要らない。見本はセルの中の記号と同じ形・同じ色で出す（枠 = 選択中） */}
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-          <MessageSquare size={12} strokeWidth={2.5} color="var(--dc-gold)" aria-hidden="true" />
-          <span>コーチング</span>
-        </span>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-          <span aria-hidden="true" style={{ width: 14, height: 14, borderRadius: 5, border: '2px solid var(--dc-primary)' }} />
-          <span>今日</span>
+          <span aria-hidden="true" style={{ width: 14, height: 14, borderRadius: 5, border: '2px solid var(--dc-text)' }} />
+          <span>選択中</span>
         </span>
       </div>
     </section>

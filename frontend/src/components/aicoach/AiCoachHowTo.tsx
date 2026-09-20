@@ -35,7 +35,7 @@ const STEPS = [
   {
     n: '2',
     title: '機能を選んで始める',
-    body: '下の「AIアプリでできること」に全てのAIアプリが学習・制作・キャリア・そのほかに分けて並んでいます。押すと、その機能のモードでそのまま始まります。',
+    body: '下の「AIコーチでできること」に全てのAIが学習サポート・制作サポート・案件獲得に分けて並んでいます。押すと、そのAIのモードでそのまま始まります。',
   },
   {
     n: '3',
@@ -117,7 +117,7 @@ export function AiCoachHowTo({ onClose }: AiCoachHowToProps) {
               color: 'var(--dc-text-body)',
             }}
           >
-            AIコーチは、学習・制作・キャリアの相談にのる窓口です。入り方は3通りあります。
+            AIコーチは、学習・制作・案件獲得の相談にのる窓口です。入り方は3通りあります。
           </p>
 
           <ol style={{ margin: '18px 0 0', padding: 0, listStyle: 'none' }}>

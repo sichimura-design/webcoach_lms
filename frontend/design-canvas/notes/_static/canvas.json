@@ -1,0 +1,55 @@
+{
+  "artboards": [
+    { "file": "NotesList.dc.html",          "x": 0,    "y": 0,    "w": 1440, "h": 1240, "title": "STU-06 マイノート 一覧 /notes" },
+    { "file": "NotesFolderBar.dc.html",     "x": 1640, "y": 0,    "w": 760,  "h": 260,  "title": "STU-06-P01 フォルダのバー 3態" },
+    { "file": "NotesFolderPanel.dc.html",   "x": 1640, "y": 380,  "w": 1480, "h": 520,  "title": "STU-06-P02 フォルダパネル 4態" },
+    { "file": "NotesListMenus.dc.html",     "x": 1640, "y": 1020, "w": 520,  "h": 270,  "title": "STU-06-P03 一覧のメニュー 2種" },
+    { "file": "NotesCard.dc.html",          "x": 2280, "y": 1020, "w": 960,  "h": 560,  "title": "STU-06-P04 ノートカード 4態" },
+    { "file": "NotesListFoot.dc.html",      "x": 1640, "y": 1700, "w": 1360, "h": 320,  "title": "STU-06-P06 スケルトン＋ページ送り" },
+    { "file": "NotesEmptyStates.dc.html",   "x": 3320, "y": 0,    "w": 1360, "h": 1900, "title": "STU-06-P05 空状態 5種" },
+
+    { "file": "NoteEditor.dc.html",         "x": 4880, "y": 0,    "w": 1440, "h": 1045, "title": "STU-06-note ノート面 /notes?note=" },
+    { "file": "NoteEditorEmpty.dc.html",    "x": 4880, "y": 1245, "w": 1440, "h": 900,  "title": "STU-06-new 新規ノート（空）" },
+    { "file": "NoteEditorBarStates.dc.html","x": 6520, "y": 0,    "w": 1330, "h": 300,  "title": "STU-06-P07 上部バー 4態" },
+    { "file": "NoteEditorMenus.dc.html",    "x": 6520, "y": 420,  "w": 940,  "h": 360,  "title": "STU-06-P08 ノート面のメニュー 4種" },
+    { "file": "NoteBlocks.dc.html",         "x": 6520, "y": 900,  "w": 960,  "h": 2054, "title": "STU-06-P09 本文ブロック 7態" },
+    { "file": "NoteTail.dc.html",           "x": 7680, "y": 900,  "w": 960,  "h": 420,  "title": "STU-06-P10 末尾の書き足し欄 2態" },
+
+    { "file": "QuoteModalReader.dc.html",   "x": 8840, "y": 0,    "w": 960,  "h": 1000, "title": "STU-06-P11 引用モーダル 教材ペイン" },
+    { "file": "QuoteModalPicker.dc.html",   "x": 8840, "y": 1120, "w": 960,  "h": 1080, "title": "STU-06-P12 引用モーダル 3態" },
+    { "file": "QuickMemoWindow.dc.html",    "x": 10000,"y": 0,    "w": 360,  "h": 540,  "title": "STU-06-P13 速記メモの小窓" },
+    { "file": "NotesNotices.dc.html",       "x": 10000,"y": 660,  "w": 960,  "h": 680,  "title": "STU-06-P14 知らせ・確認・見つからない" }
+  ],
+
+  "annotations": [
+    {
+      "id": "about",
+      "x": 0,
+      "y": -540,
+      "w": 900,
+      "text": "／notes（マイノート）の現行実装を写したカタログ。dev/coach-ui、2026-09-10 時点。\n実装を見ながら手で起こしたもので、自動変換ではない。寸法・色は frontend/design-canvas/_capture/ に撮った実画面の computed style から取っている。\n\n■ 2種類のアートボードがある\n  フル画面（1440px）… ページ全体。NotesList / NoteEditor / NoteEditorEmpty の3枚。\n  部品（実寸の断片）… メニュー・モーダル・空状態など。親のフル画面の右の列に並べてある。\n  キャンバスに矢印は引けないので、「どの操作で出るものか」は各アートボードの注記に文章で書いてある。\n\n■ 🔒 と ✅\n  🔒 = 実装と同値であるべき値。トークン・実測した寸法・ラベル文字列。ここを直すと「デザインが変えた」のか「写し間違い」なのか区別がつかなくなる。変えたいときは意図をコメントで残してほしい。\n  ✅ = 自由に動かしてよい。余白・並び順・文言そのもの・どのトークンを当てるか。\n\n■ 直したものを実装に戻す手順\n  frontend/design-canvas/notes/README.md にある。DesignSync get_file → ローカル原本と git diff --no-index → 差分を「設計変更／整形ノイズ／🔒の書き換え」に仕分ける、の順。\n  ローカル原本は git 追跡にしてあるので、戻ってきた版との差分がそのまま読める。\n\n■ 入っていないもの\n  1700px以上の4列グリッド／767px以下のSP分岐／タッチ端末で ⠿ と鉛筆が出っぱなしになる挙動／フォルダバーの sticky と横スクロール／window.confirm の見た目（ブラウザ標準なので変えられない。文言だけ P14 にある）。"
+    },
+    {
+      "id": "known-issues",
+      "x": 960,
+      "y": -540,
+      "w": 620,
+      "text": "■ 写経中に見つかった実装の気になる点（直していない）\n\n1) --dc-primary-deep がどこにも定義されていない\n   使用は index.css:1541 / 1676 / 1900 の3か所。選択中フォルダ・フォルダパネルの選択行・「重要」ON の文字色に当てているが、変数が無いので無効値になり、実際は継承色（#141414 / #333333）で出ている。\n   アートボードは実測どおりの色で描いてある。赤にしたいなら index.css の .wc-warm に変数を足す実装変更が要る。\n\n2) 検索して0件のとき、空状態の文言が違う\n   「条件に一致するノートがありません」ではなく「最初のノートをつくりましょう」が出る。NoteGrid の totalCount に、絞り込み後の list.items.length を渡しているため（MyNotesPage.tsx:617 ＋ useNoteList.ts:38 が q を API に投げる）。\n   P05 の5枚目はこの文言が本来出るべき姿として描いてある。"
+    },
+
+    { "id": "stu-06",     "x": 0,    "y": -180, "w": 620, "text": "STU-06 /notes 一覧 — MyNotesPage.tsx:457-641 / NoteFolderBar / NoteGrid / NoteCard / NotesPagination\nCSS: index.css:1505-2015（.notes-*）  トークン: index.css:91-145（.wc-warm の --dc-*）\n🔒 カード 424×190・gap 20・3列・角丸20。1ページ24件（PAGE_SIZE=24）。\n※ 実装は24枚。ここは手で直せる分量として先頭12枚に間引いてある。" },
+    { "id": "p01",        "x": 1640, "y": -180, "w": 620, "text": "一覧の見出しのすぐ下に出るフォルダのバー。「フォルダを開く」を押すと右のパネルが body 直下に出る。\n2026-09-08 に左フォルダ列（248px）を廃止してこの形に一本化した。" },
+    { "id": "p02",        "x": 1640, "y": 300,  "w": 620, "text": "フォルダパネル。実画面では同時に1態だけ出る。行の鉛筆・ゴミ箱は実装では opacity:0 で、ホバー時だけ出る。ここでは見えるように描いてある。" },
+    { "id": "p03-p04",    "x": 1640, "y": 940,  "w": 620, "text": "左＝並び替え（一覧右上のトリガーから）／中＝カードの移動先（カード下部のフォルダ名から）。右はカード単体の4態。\n🔴 移動先メニューは NoteGrid が1つだけ持つ。NoteCard の中に置くとポータルのイベントが React ツリーを伝播して、項目クリックでノートが開いてしまう。" },
+    { "id": "p06",        "x": 1640, "y": 1620, "w": 620, "text": "グリッドの読み込み中（176pxの箱×3）と、一覧下部のページ送り。" },
+    { "id": "p05",        "x": 3320, "y": -180, "w": 620, "text": "空状態は5種。器は共通で、違うのはアイコン・見出し・本文・ボタンの有無だけ。\n5枚目「条件に一致するノートがありません」は、いまの実装では検索欄からは出ない（左の known-issues 参照）。" },
+
+    { "id": "stu-06-note","x": 4880, "y": -180, "w": 620, "text": "STU-06-note /notes?note=<id> ノート面 — NoteEditor.tsx / NoteEditorBar / NoteEditorToolbar / NoteBlockRow / NoteBlockView\n🔒 紙は maxWidth 900・flex:1（ページの高さいっぱいに伸ばす）。\n🔒 本文ブロックの色だけ theme/webcoachTheme.ts L85-97 の別系統。--dc-* と混ぜない。\n出典は シード「バナー制作の学び」。text + clip + answer を1件に持つ唯一のノート。" },
+    { "id": "stu-06-new", "x": 4880, "y": 1065,"w": 620, "text": "STU-06-new 「新しいノート」を押した直後。タイトルは placeholder、ブロック0件、書き足し欄だけ。\n「〜に戻る」も出どころ行も出ない（source を持たないため）。「保存する」も出ない（未確定の入力があるときだけ）。" },
+    { "id": "p07-p10",    "x": 6520, "y": -180, "w": 620, "text": "ノート面の部品。上から 上部バー4態／メニュー4種／本文ブロック7態／末尾の書き足し欄2態。\n⠿ と ＋ は実装では opacity:0 で、行にホバー／フォーカスしたときだけ出る。部品側では見えるように描いてある。" },
+    { "id": "p11-p12",    "x": 8840, "y": -180, "w": 620, "text": "「教材から引用」モーダル。ツールバーのボタン、または clip / answer の出どころ行から開く。どちらも画面遷移はしない。\n🔴 オーバーレイを押しても閉じない。閉じ方は ✕ と Esc だけ（本文をドラッグ選択して指をパネル外で離す操作と衝突するため）。" },
+    { "id": "p13-p14",    "x": 10000,"y": -180, "w": 620, "text": "左上＝速記メモの小窓（Document Picture-in-Picture の別ウィンドウ。--dc-* も Tailwind も効かないので色は直書き。寸法はブラウザ任せ）。\n下＝トースト3種、window.confirm の文言、ノートが開けないとき。" }
+  ],
+
+  "launch": { "view": "canvas" }
+}

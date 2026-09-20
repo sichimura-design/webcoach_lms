@@ -199,6 +199,15 @@ export function MyCoachingPage() {
   const addGoal = (description: string) =>
     setGoalDraft(prev => [...prev, { no: 0, description, is_completed: 0, progress: 0, removed: false, isNew: true }]);
 
+  const moveGoal = (index: number, to: number) =>
+    setGoalDraft(prev => {
+      if (to < 0 || to >= prev.length) return prev;
+      const next = [...prev];
+      const [moved] = next.splice(index, 1);
+      next.splice(to, 0, moved);
+      return next;
+    });
+
   const toggleGoalDone = async (no: number) => {
     if (!userId || editingGoals) return;
     const before = goals;
@@ -308,6 +317,7 @@ export function MyCoachingPage() {
                   onRemove={removeGoal}
                   onRestore={restoreGoal}
                   onAdd={addGoal}
+                  onMove={moveGoal}
                 />
               </div>
             )}

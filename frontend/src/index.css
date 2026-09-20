@@ -26,10 +26,13 @@ h1, h2, h3 {
   letter-spacing: 0.01em;
 }
 
-/* SP版ボトムナビゲーション（h-16 = 64px）がコンテンツを隠さないよう余白を確保 */
+/* SP版ボトムナビゲーションがコンテンツを隠さないよう余白を確保。
+   🔴 --wc-bottomnav-total はバーの実測高（AppHeader.tsx が ResizeObserver で書く）。
+      学習タイマーが記録中はナビの上に帯が積まれて 64px → 約100px に増えるので、
+      固定値だと記録中だけページ最下部が帯に隠れる。 */
 @media (max-width: 639px) {
   body {
-    padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: var(--wc-bottomnav-total);
   }
 }
 
@@ -43,6 +46,15 @@ h1, h2, h3 {
 :root {
   --wc-sidebar-w: 72px;
   --wc-sidebar-w-expanded: 224px;
+  /* SP下部ナビの高さ。AppHeader.tsx の <nav> と常駐AIコーチFABもこれを読む。
+     🔴 以前は 64px が CSS と TSX（h-16）に分かれて書かれていて、片方だけ動かすと
+        本文の下余白とバーの高さがずれた。ここが唯一の定義。
+     🔴 教材画面の .wc-lesson-main の grid-template-rows: 64px は
+        LessonTopBar の高さで、この変数とは無関係。まとめて置換しないこと。 */
+  --wc-bottomnav-h: 64px;
+  /* バーが実際に占有する高さ。AppHeader.tsx が実測値で上書きする（記録中は帯ぶん増える）。
+     ここの値は JS が走る前／AppHeader を描かないページ用の既定。 */
+  --wc-bottomnav-total: calc(var(--wc-bottomnav-h) + env(safe-area-inset-bottom, 0px));
 }
 
 /* 左サイドバーぶんコンテンツを右へオフセット。AppHeader を描画するページのみ。
@@ -61,6 +73,38 @@ h1, h2, h3 {
 @media (prefers-reduced-motion: reduce) {
   body.with-sidebar {
     transition: none;
+  }
+}
+
+/* SP「その他」シートのせり上がり。AppHeader.tsx の .wc-more-sheet が使う。
+   閉じるときのアニメは付けていない（条件レンダリングなので即座に消える）。 */
+@keyframes wc-sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.wc-more-sheet {
+  animation: wc-sheet-up 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* 常駐AIコーチFABの下端。
+   🔴 SPは下部ナビの実測高（セーフエリア込み）を避ける。Tailwind の bottom-20
+      （固定80px）だったころは、ノッチ機のセーフエリア34pxも、記録中に積まれる
+      学習タイマーの帯も勘定しておらず、FAB がバーにめり込んでいた。
+   🔴 インラインstyleではなくクラスで書く。style だと sm 以上の指定まで潰れる。 */
+.wc-fab-bottom {
+  bottom: calc(var(--wc-bottomnav-total) + 16px);
+}
+
+@media (min-width: 640px) {
+  .wc-fab-bottom {
+    bottom: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-more-sheet {
+    animation: none;
   }
 }
 
@@ -251,23 +295,86 @@ h1, h2, h3 {
   }
 }
 
-/* ─── トップページ 8a ───────────────────────
-   上段は「続きから学習」と「次回コーチングまでのタスク」の2枚。
-   デザインは 1fr / 1.15fr。タスク側のほうが行数で伸びるので余りを右に渡す。
+/* ─── トップページ 8a 上段（4枠・2行）───────────────
+   1行目: 挨拶（地色に直置き）｜あなたの目標
+   2行目: 続きから学習          ｜次回コーチングまでの目標
+   DOM 順（MyPage.tsx）に自動配置させているだけで、行の指定は持たない。
+
+   🔴 1.15fr / 1fr。元は逆（左が狭い）だったが、主 CTA「続きから学習する」と
+      レッスン名を載せている左を広く取る。右のタスクは1行が短く、
+      3件（MAX_ROWS）しか出さないので狭くても折り返さない。
+   🔴 目標カードを1行目の右に入れているのは、挨拶の右が丸ごと空いていたから。
+      2列を共有するので目標カードの端が下のタスクカードと揃う。
+      全幅の帯（旧レイアウト）に戻さないこと。1段ぶん縦が伸びる。
    align-items:stretch で2枚の丈を揃える（カード側が height:100% を持つ）。 */
 .mypage-8a-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: var(--dc-sp-gap);
   align-items: stretch;
   margin-bottom: var(--dc-sp-gap);
 }
 
+/* 目標カードの入れ物。1カラムに落ちたときの並べ替えのためだけにある */
+.mypage-8a-goal {
+  min-width: 0;
+}
+
 /* 🔴 しきい値は .mypage-3d-grid（1023px）と揃える。同じ画面の上下で
-   折り返す幅が違うと、中間の幅で片方だけ1カラムになって崩れて見える。 */
+   折り返す幅が違うと、中間の幅で片方だけ1カラムになって崩れて見える。
+   🔴 1カラムでは目標カードだけ order で最後へ送る（挨拶→続きから→タスク→目標）。
+      文章のカードを主 CTA より先に置くと、「続きから学習する」が
+      折り返しで画面外に落ちるため。order を外さないこと。 */
 @media (max-width: 1023px) {
   .mypage-8a-grid {
     grid-template-columns: 1fr;
+  }
+
+  .mypage-8a-goal {
+    order: 1;
+  }
+}
+
+/* ─── 「次回コーチングまでの目標」の一覧（CoachingTaskCard）─────────
+   🔴 件数でカードの丈を変えない。中身を position:absolute で浮かせて
+      高さに効かないようにし、溢れたぶんはこの中でスクロールさせる。
+      外枠の min-height（LIST_MIN_H）が最低の丈で、左の「続きから学習」が
+      それより高いときは stretch のぶんだけ伸びて、そのぶん多く見える。 */
+.mypage-task-listbox {
+  position: relative;
+  flex: 1;
+  /* 中身は浮いていて高さを持たないので、これがカードの最低の丈になる。
+     3行ぶん＝これまで出していた件数の丈で、隣が高いときは stretch でもっと見える */
+  min-height: 210px;
+}
+
+.mypage-task-list {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* 右はスクロールバーの逃げ。上下はフォーカスリングが切れないための余白 */
+  padding: 3px 8px 3px 0;
+  scrollbar-width: thin;
+}
+
+/* 🔴 並べ替えの ↑↓（.mypage-task-move / .mypage-task-move-btn）は撤去した。
+   トップページの一覧は表示専用で、並べ替えはコーチングの編集モードが持つ
+   （components/coaching/NextGoalsCard.tsx）。 */
+
+/* 1カラムに落ちたら中スクロールをやめて全件そのまま並べる。丈を合わせる相手が
+   隣にいないので縮める理由が無く、狭い画面で入れ子のスクロールを作ると
+   ページのスクロールと取り合いになる。しきい値は .mypage-8a-grid と揃える */
+@media (max-width: 1023px) {
+  .mypage-task-listbox {
+    min-height: 0;
+  }
+
+  .mypage-task-list {
+    position: static;
+    overflow: visible;
   }
 }
 
@@ -413,6 +520,12 @@ h1, h2, h3 {
   body.sidebar-expanded .mypage-8a-grid {
     grid-template-columns: 1fr;
   }
+
+  /* 1カラム版と同じ並べ替え（目標を最後に）。上の 1023px ブロックでは
+     まだ2列なので、こちらにも書かないと目標が挨拶の右に残ってしまう */
+  body.sidebar-expanded .mypage-8a-goal {
+    order: 1;
+  }
 }
 
 /* 学習記録カードのKPI（今週 / 累計 / 修了レッスン数）。
@@ -494,6 +607,108 @@ h1, h2, h3 {
   border-color: var(--dc-primary);
 }
 
+/* ─── コーチ画面（受講生一覧・連携設定）─────────────────
+   擬似テーブルの行と設定行。ホバーは .ct-row と同じ理由でここに出している
+   （インライン style は :hover を持てない）。
+   🔴 狭い幅で必ず縦積みに落とす。列幅を固定した1行のままだと 375px で
+      氏名が1文字ずつ折り返し、3列目のボタンが画面外に出る。 */
+.coach-row {
+  display: flex;
+  align-items: center;
+  transition: background-color 120ms var(--dc-ease);
+}
+
+.coach-row:hover {
+  background: var(--dc-soft-100);
+}
+
+/* 列見出しの行。display をここに持つのは、狭い幅で display:none に
+   落とすため（インライン style だとメディアクエリで戻せない）。 */
+.coach-table-head {
+  display: flex;
+  align-items: center;
+}
+
+/* 左（アバター＋受講ID・氏名）と右（最終ログイン＋操作）の2グループ */
+.coach-row-main {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.coach-row-meta {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.coach-col-access {
+  width: 132px;
+  flex: none;
+}
+
+.coach-col-action {
+  width: 152px;
+  flex: none;
+  text-align: right;
+}
+
+/* 連携設定の1行（アイコン＋説明＋ボタン） */
+.coach-setting-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.coach-setting-row > .coach-setting-action {
+  flex: none;
+}
+
+@media (max-width: 640px) {
+  /* 縦積みにすると列の対応が消えるので、見出し行そのものを畳む */
+  .coach-table-head {
+    display: none;
+  }
+
+  .coach-row {
+    flex-wrap: wrap;
+    row-gap: 12px;
+  }
+
+  .coach-row-main,
+  .coach-row-meta {
+    flex: 1 1 100%;
+  }
+
+  /* アバター（40px）＋ gap（14px）のぶん字下げして、氏名の下に揃える */
+  .coach-row-meta {
+    justify-content: space-between;
+    padding-left: 54px;
+  }
+
+  .coach-col-access,
+  .coach-col-action {
+    width: auto;
+    text-align: left;
+  }
+
+  .coach-setting-row {
+    flex-wrap: wrap;
+  }
+
+  .coach-setting-row > .coach-setting-action {
+    flex: 1 1 100%;
+  }
+
+  /* ボタンは幅いっぱいに伸ばす。半端な幅で残ると押しにくい */
+  .coach-setting-row > .coach-setting-action > * {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* .dc-cta-* はコーストップ以外（マイページ 5a・学習記録 4a）も使う共通名。
    中身は同じなのでセレクタだけ足している。 */
 .ct-btn-primary:hover,
@@ -517,9 +732,11 @@ h1, h2, h3 {
 
 @media (prefers-reduced-motion: reduce) {
   .ct-row,
+  .coach-row,
   .studylog-cal-cell,
   .studylog-row,
-  .studylog-row-actions {
+  .studylog-row-actions,
+  .studylog-coaching-row {
     transition: none;
   }
 }
@@ -664,10 +881,10 @@ body.learning-workspace {
   grid-template-rows: 64px minmax(0, 1fr);
 }
 
-/* SPは下部ナビ（h-16 = 64px）ぶんを差し引く */
+/* SPは下部ナビぶんを差し引く */
 @media (max-width: 639px) {
   .wc-learning-shell {
-    height: calc(100dvh - 64px);
+    height: calc(100dvh - var(--wc-bottomnav-h));
   }
 }
 
@@ -684,13 +901,13 @@ body.learning-immersive {
   }
 }
 
-/* 右下の常設ピル（AIに聞く／メモする） */
+/* 右下の常設ピル（AIに聞く／マイノートに残す） */
 .wc-lesson-fab {
   right: 24px;
   bottom: 24px;
 }
 
-/* AI／メモのパネル。狭い画面は右からのドロワー、SPはボトムシート。
+/* AI／マイノートのパネル。狭い画面は右からのドロワー、SPはボトムシート。
    JSの幅判定をやめてここで分けている（1024pxちょうどで跳ねる問題も消える）。 */
 .wc-lesson-support {
   position: fixed;
@@ -779,7 +996,9 @@ body.learning-immersive {
 
 @media (max-width: 900px) {
   .wc-lesson-wordmark { display: none; }
-  .wc-lesson-progress-bar { display: none; }
+  /* !important は必須。中身は shared/LessonProgressBar で、ステップ型のときに
+     display:flex をインラインで持つ（インラインの方が強いので !important 無しでは消えない）。 */
+  .wc-lesson-progress-bar { display: none !important; }
   .wc-lesson-progress-strip { display: block; }
   /* パンくずはレッスン名だけ残す。狭い画面で残すべきは「いま読んでいるもの」 */
   .wc-lesson-crumb-course { display: none; }
@@ -788,6 +1007,22 @@ body.learning-immersive {
 @media (max-width: 600px) {
   .wc-lesson-backlabel { display: none; }
   .wc-lesson-progress-label { display: none; }
+}
+
+/* 教材ヘッダー（LessonArticle）。既定は左にカバー画像・右にテキストの2カラム。
+   狭い画面ではカバーを上に積んで全幅にする。横に並べたままだと画像もテキストも
+   痩せて、375px では文字が2〜3語で折り返してしまう。 */
+@media (max-width: 640px) {
+  .wc-lesson-hero {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  /* !important は必須。幅は LessonArticle 側がインラインで持っており
+     （min(288px, 38%)）、インラインの方が強いので !important 無しでは効かない。
+     .wc-lesson-progress-bar と同じ事情。 */
+  .wc-lesson-hero-cover {
+    width: 100% !important;
+  }
 }
 
 /* 教材本文のタイポグラフィ。既存の .moodle-content とは別系統にして衝突を避ける。
@@ -895,7 +1130,7 @@ body.learning-immersive {
   to   { transform: translateX(0); opacity: 1; }
 }
 
-/* 下から出るシート（SPのAI/メモパネル）。右からのスライドと使い分ける */
+/* 下から出るシート（SPのAI/マイノートパネル）。右からのスライドと使い分ける */
 @keyframes wcSlideInUp {
   from { transform: translateY(14px); opacity: 0; }
   to   { transform: translateY(0); opacity: 1; }
@@ -918,6 +1153,61 @@ body.learning-immersive {
 @media (prefers-reduced-motion: reduce) {
   .wc-drawer-scrim,
   .wc-drawer-right {
+    animation: none;
+  }
+}
+
+/* ─── レッスン完了の祝い（LessonArticle の達成カード）─────────
+   完了ボタンを押した瞬間の「やり切った」を出すためのひと組。
+   達成カードが跳ねて出る → その中で紙吹雪が弾ける → コーチの顔が遅れて跳ねる。
+
+   🔴 紙吹雪の粒は prefers-reduced-motion のとき animation: none で止めてはいけない。
+      止めると散る前の粒が中央に固まったまま残る。JS側（LessonCompleteConfetti）が
+      そもそも描かないので、ここには粒の打ち消しを書かない。 */
+@keyframes wcPopIn {
+  0%   { opacity: 0; transform: scale(.94) translateY(6px); }
+  60%  { opacity: 1; transform: scale(1.012) translateY(0); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* 中央から上へ弾けて落ちる紙吹雪の粒。
+   飛ぶ先・回転・速さは1粒ずつ違うので、JS がインラインの CSS 変数で渡す。
+   🔴 45% の山（--wc-cf-up）を必ず経由させる。始点から終点へ直線で動かすと
+      「弾けた」ではなく「流れ落ちた」に見える。 */
+@keyframes wcConfettiBurst {
+  0%   { opacity: 0; transform: translate(0, 0) scale(.4) rotate(0deg); }
+  12%  { opacity: 1; }
+  45%  {
+    transform: translate(var(--wc-cf-mx), var(--wc-cf-up)) scale(1)
+      rotate(calc(var(--wc-cf-rot) * 0.45));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--wc-cf-x), var(--wc-cf-y)) scale(1) rotate(var(--wc-cf-rot));
+  }
+}
+
+/* 🔴 イージングは var(--dc-ease) で書かない。あの変数は :root ではなく .wc-warm に
+      置かれていて、教材ページはそのスコープの外にある。未定義の var が混ざると
+      animation ショートハンド全体が無効になり、アニメーションが丸ごと消える
+      （.wc-drawer-right など既存の指定もリテラルで書いてある）。 */
+.wc-lesson-done-pop {
+  animation: wcPopIn 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.wc-ai-face-pop {
+  animation: wcPopIn 380ms cubic-bezier(0.2, 0.8, 0.2, 1) 120ms both;
+}
+
+.wc-confetti-piece {
+  animation-name: wcConfettiBurst;
+  animation-timing-function: cubic-bezier(0.15, 0.6, 0.35, 1);
+  animation-fill-mode: both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wc-lesson-done-pop,
+  .wc-ai-face-pop {
     animation: none;
   }
 }
@@ -1065,7 +1355,7 @@ body.learning-immersive {
   flex-wrap: nowrap;
 }
 
-/* ─── 学習記録・ランキング(/study-log) ─────────────
+/* ─── 学習記録(/study-log) ─────────────────────
    デザイン『トップページ 3案』4a。マイページと同じ fr ベースの流動レイアウトへ移行した。
 
    🔴 かつてここにあった .studylog-main / .studylog-summary-row（1440px 固定キャンバスを
@@ -1083,21 +1373,17 @@ body.learning-immersive {
   gap: calc(var(--dc-sp-gap) * 0.55);
 }
 
-/* 学習時間ランキングとストリークランキングの2枚並び */
-.studylog-rank-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--dc-sp-gap);
-  align-items: start;
-}
-
-/* 学習カレンダー ｜ 選んだ日の詳細。
-   詳細側は 320〜380px の固定寄り（中は1行1記録なので、広げても情報は増えない）。
-   🔴 折り返すしきい値は .studylog-rank-grid と揃える。同じ画面の上下で
+/* 学習カレンダー ｜ 選んだ日の記録。
+   広い画面ではほぼ 1:1。
+   🔴 かつて詳細側を 320〜380px の固定寄りにしていた（中は1行1記録なので広げても
+      情報が増えない、という理由）。日別パネルが「合計の学習時間」「学んだ教材」
+      「コーチング」の3節を持つようになり、380px では合計の大きな数字と
+      編集ボタンが同じ行に収まらなくなったので 1fr に開いた。
+   🔴 折り返すしきい値は .studylog-kpi-grid と揃える。同じ画面の上下で
       折り返す幅が違うと、中間の幅で片方だけ1カラムになって崩れて見える。 */
 .studylog-calendar-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 380px);
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
   gap: var(--dc-sp-gap);
   align-items: start;
 }
@@ -1115,8 +1401,46 @@ body.learning-immersive {
   transition: box-shadow 120ms var(--dc-ease);
 }
 
+/* 🔴 --dc-soft-200 を使わない。3段に絞ったあとはこれが L1（30〜59分）の地そのもので、
+      L1 のセルにホバーしてもリングが見えない。ニュートラル側で通す。 */
 .studylog-cal-cell:hover:not(:disabled) {
-  box-shadow: inset 0 0 0 2px var(--dc-soft-200);
+  box-shadow: inset 0 0 0 2px var(--dc-border-strong);
+}
+
+/* コーチングを受けた日のマーク（升目の右上）。
+   🔴 狭い画面で大きくしない。--dc-sz-cell の下限は 38px で、中央の日付（2桁で約13px）に
+      重なって数字が読めなくなる。升目が広がる 1024px 以上でだけ一段大きくする。
+   🔴 学習時間の赤い濃淡と混ざらないよう、オレンジ側（--dc-gold）で通す。 */
+.studylog-cal-coaching {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: var(--dc-gold-surface);
+  color: var(--dc-gold);
+  display: grid;
+  place-items: center;
+}
+
+.studylog-cal-coaching > svg {
+  width: 9px;
+  height: 9px;
+}
+
+@media (min-width: 1024px) {
+  .studylog-cal-coaching {
+    top: 3px;
+    right: 3px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .studylog-cal-coaching > svg {
+    width: 11px;
+    height: 11px;
+  }
 }
 
 /* 学習記録の1行。操作はホバー／フォーカスで出す（並んだ行にボタンが増えると
@@ -1151,12 +1475,23 @@ body.learning-immersive {
   background: var(--dc-soft-100);
 }
 
+/* 日別詳細のコーチング1件。押すと ?session= でその記録が開く */
+.studylog-coaching-row {
+  transition: border-color 120ms var(--dc-ease), background-color 120ms var(--dc-ease);
+}
+
+.studylog-coaching-row:hover {
+  /* 🔴 赤系（--dc-soft-100）にしない。コーチングはオレンジ側の系統で、
+        学習時間の赤い濃淡と混ぜないのがこの画面の約束。 */
+  border-color: var(--dc-gold-border);
+  background: var(--dc-gold-surface);
+}
+
 @media (max-width: 1023px) {
   .studylog-kpi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .studylog-rank-grid,
   .studylog-calendar-grid {
     grid-template-columns: 1fr;
   }
@@ -1175,7 +1510,6 @@ body.learning-immersive {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  body.sidebar-expanded .studylog-rank-grid,
   body.sidebar-expanded .studylog-calendar-grid,
   body.sidebar-expanded .mypage-3d-grid {
     grid-template-columns: 1fr;
@@ -1183,36 +1517,13 @@ body.learning-immersive {
 }
 
 /* ─── マイノート(/notes) ───────────────────────
-   デザイン『マイノート 改善案』。左にフォルダ列（248px）、右に一覧／ノート面。
-   値はアートボード（design-canvas/screens/NotesImproved.dc.html）と同値。
+   一覧の上にフォルダのバー（NoteFolderBar）、その下に検索・種類チップ・カードグリッド。
+   もとは左に 248px のフォルダ列（NoteFolderColumn）を立てていた。アートボード
+   （design-canvas/screens/NotesImproved.dc.html）はまだその形なので、
+   カード・チップ・メニューの値は同値、レイアウトだけが別物になっている。
 
    🔴 切り替わる・hover する見た目はここ（クラス）に置く。インライン style は
       :hover を持てず、インラインの display は CSS から上書きできない。 */
-.notes-shell {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  align-items: stretch;
-}
-
-/* フォルダ列。本文がスクロールしても列は画面に留まる */
-.notes-folder-col {
-  width: 248px;
-  flex: none;
-  box-sizing: border-box;
-  position: sticky;
-  top: 0;
-  align-self: flex-start;
-  height: 100vh;
-  overflow-y: auto;
-  background: #FFFDFA;
-  border-right: 1px solid var(--dc-border);
-  padding: 24px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
 .notes-content {
   flex: 1;
   min-width: 0;
@@ -1224,8 +1535,8 @@ body.learning-immersive {
   padding: 24px 28px 28px;
 }
 
-/* フォルダ列の1行。行全体（__main）と右端の ⋮（__more）が別のボタンなので、
-   行は div にして hover の地色だけをここで持つ */
+/* フォルダのパネルの1行。行全体（__main）と右端の鉛筆・ゴミ箱（__more）が
+   別のボタンなので、行は div にして hover の地色だけをここで持つ */
 .notes-folder-row {
   position: relative;
   display: flex;
@@ -1246,13 +1557,6 @@ body.learning-immersive {
 
 .notes-folder-row.is-active .notes-folder-row__main {
   font-weight: 700;
-}
-
-/* ドラッグ中のカードが上に乗っている行 */
-.notes-folder-row.is-drop-target {
-  outline: 2px solid var(--dc-primary);
-  outline-offset: -2px;
-  background: var(--dc-soft-100);
 }
 
 .notes-folder-row__main {
@@ -1288,10 +1592,12 @@ body.learning-immersive {
   font-variant-numeric: tabular-nums;
 }
 
-/* ⋮ は hover / フォーカス中だけ出す。常時出すと列が操作パネルに見える */
+/* 鉛筆・ゴミ箱は hover / フォーカス中だけ出す。常時出すとパネルが操作盤に見える。
+   .is-shown は行の外で使うもの（パネルの ✕、名前入力の ✓） */
 .notes-folder-row__more {
   display: grid;
   place-items: center;
+  flex: none;
   width: 26px;
   height: 26px;
   margin-right: 6px;
@@ -1306,6 +1612,7 @@ body.learning-immersive {
 
 .notes-folder-row:hover .notes-folder-row__more,
 .notes-folder-row:focus-within .notes-folder-row__more,
+.notes-folder-row__more.is-shown,
 .notes-folder-row__more[aria-expanded="true"] {
   opacity: 1;
 }
@@ -1315,22 +1622,53 @@ body.learning-immersive {
   color: var(--dc-text-body);
 }
 
-/* 狭い画面（1023px 以下）ではフォルダ列の代わりに横並びのピル */
-.notes-folder-strip {
+.notes-folder-row__more.is-danger:hover {
+  color: var(--dc-primary);
+}
+
+/* 🔴 hover を持たない端末では常に出す。ここがフォルダの名前変更・削除の唯一の入口で、
+      出さないとタッチでは永久に押せない（旧フォルダ列は 1024px 以上専用だった）。 */
+@media (hover: none) {
+  .notes-folder-row__more {
+    opacity: 1;
+  }
+}
+
+/* 狭い画面では行と的を大きくする（26px の的が2つ隣り合うと押し間違える） */
+@media (max-width: 767px) {
+  .notes-folder-row {
+    height: 44px;
+  }
+
+  .notes-folder-row__more {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* 一覧の上に立つフォルダのバー。折り返さずに横へスクロールさせる
+   （wrap を入れると overflow-x が死んで、フォルダ名の長いトリガーが行を占領する） */
+.notes-folder-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  /* 上下の余白は「スクロールで画面の上端に張り付いたとき」の見え方で決めている。
+     4px しか無いと、下から上がってきたカードの文字がボタンにくっついて見える。 */
+  padding: 8px 0 12px;
+  background: var(--dc-bg);
   scrollbar-width: thin;
 }
 
-.notes-folder-pill {
+.notes-folder-bar__item {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   flex: none;
-  height: 30px;
-  padding: 0 12px;
+  height: 32px;
+  padding: 0 14px;
   border: 1px solid var(--dc-border-strong);
   border-radius: 9999px;
   background: var(--dc-surface);
@@ -1342,15 +1680,35 @@ body.learning-immersive {
   white-space: nowrap;
 }
 
-.notes-folder-pill.is-active {
+.notes-folder-bar__item:hover {
+  background: var(--dc-soft-100);
+}
+
+.notes-folder-bar__item.is-active {
   background: var(--dc-soft-100);
   border-color: var(--dc-soft-200);
   color: var(--dc-primary-deep);
   font-weight: 700;
 }
 
-/* 種類チップ（自分のメモ／教材／AIコーチ／コーチング） */
-.notes-chip {
+.notes-folder-bar__item.is-trigger.is-open {
+  background: var(--dc-sunken);
+}
+
+/* フォルダ名は最大40字。トリガーが伸びきらないよう切る */
+.notes-folder-bar__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 240px;
+}
+
+/* 種類チップ（自分のノート／教材／AIコーチ／コーチング）
+   .coach-chip はコーチ画面（受講生一覧の絞り込み）が使う同じピル。
+   中身は同じなのでセレクタだけ足している（.dc-cta-* と同じやり方）。
+   別に定義すると、片方だけ手が入って2種類のピルに分かれるため。 */
+.notes-chip,
+.coach-chip {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1367,11 +1725,13 @@ body.learning-immersive {
   white-space: nowrap;
 }
 
-.notes-chip:hover {
+.notes-chip:hover,
+.coach-chip:hover {
   background: var(--dc-soft-100);
 }
 
-.notes-chip.is-active {
+.notes-chip.is-active,
+.coach-chip.is-active {
   background: var(--dc-primary);
   border-color: var(--dc-primary);
   color: #fff;
@@ -1392,7 +1752,8 @@ body.learning-immersive {
 
 /* ノート一覧のカードグリッド。列数は画面幅で落とす（.mypage-3d-grid と同じ方針）。
    以前の .notes-2col（左＝一覧／右＝ノート面）は、一覧がグリッドになり
-   ノート面が /notes?note= の全幅表示に移ったので削除した。 */
+   ノート面が /notes?note= の全幅表示に移ったので削除した。
+   フォルダ列（248px）が無くなって本文が広がったので、閾値は下記のとおり下げてある。 */
 .notes-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1400,15 +1761,61 @@ body.learning-immersive {
   align-items: stretch;
 }
 
-/* カードはフォルダへドラッグできる。掴めることはポインタで示す（タッチには出ない） */
-@media (pointer: fine) {
-  .notes-card {
-    cursor: grab;
+/* 広い画面では4列。3列のままだと1枚が 560px を超えて、抜粋3行に対して横長すぎる */
+@media (min-width: 1700px) {
+  .notes-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
-.notes-card.is-dragging {
-  opacity: .5;
+/* カード全体が「開く」ボタン。以前は掴んでフォルダ列へ運べたので cursor: grab だった */
+.notes-card {
+  cursor: pointer;
+}
+
+/* カード下部の「入っているフォルダ」。押すと移動先が開く。
+   枠は持たせず、hover と開いている間だけ地色を出す（一覧を騒がしくしないため） */
+.notes-card__folder {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  height: 24px;
+  margin-left: -6px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11.5px;
+  cursor: pointer;
+}
+
+.notes-card__folder:hover,
+.notes-card__folder.is-open {
+  background: var(--dc-sunken);
+}
+
+/* カード左のサムネイル（中に画像ブロックがあるノートだけ付く）。
+   正方形を保つのが要点。高さを内容に任せると、抜粋の行数でカードごとに
+   絵の大きさが変わって一覧が騒がしくなる。 */
+.notes-card__thumb {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--dc-radius-md);
+}
+
+/* 1列表示ではカードの幅いっぱいに文字を使いたいので、絵を一段小さくする */
+@media (max-width: 767px) {
+  .notes-card__thumb {
+    width: 56px;
+    height: 56px;
+  }
 }
 
 /* ドロップダウン／ポップオーバー共通 */
@@ -1454,6 +1861,30 @@ body.learning-immersive {
   color: var(--dc-primary);
 }
 
+/* 並べ替えの切り替え。枠を持たせず、文字だけで押せることを伝える */
+.notes-sort-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--dc-text-muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notes-sort-trigger:hover,
+.notes-sort-trigger.is-open {
+  background: var(--dc-sunken);
+  color: var(--dc-text-body);
+}
+
 /* ノート面の上部バー・ツールバーの角丸ボタン */
 .notes-tool {
   display: inline-flex;
@@ -1485,6 +1916,26 @@ body.learning-immersive {
 
 .notes-tool--light {
   font-weight: 500;
+}
+
+/* 教材から引用するモーダル（QuoteFromLessonModal）。
+   狭い画面では中央の箱ではなく全画面にする。教材の本文を読む面なので、
+   周りに余白を残すと1画面に入る行数が足りない。
+
+   🔴 !important は必須。padding / maxWidth / height / borderRadius は
+      QuoteFromLessonModal 側がインラインで持っており、インラインの方が強い。
+      （!important 無しの同じブロックを二重に書いていて、後ろのぶんは
+        丸ごと効いていなかった） */
+@media (max-width: 767px) {
+  .notes-quote-overlay {
+    padding: 0 !important;
+  }
+
+  .notes-quote-panel {
+    height: 100% !important;
+    max-width: none !important;
+    border-radius: 0 !important;
+  }
 }
 
 /* 本文のブロック行。hover で左に ⠿ と ＋ が出る */
@@ -1580,9 +2031,13 @@ body.learning-immersive {
 
 /* コースタイルのグリッド。学習トップの領域ブロックと領域ページ
    （/courses/category/:code）が共有する。
-   🔴 3列まで。4列だと1枚が約330pxまで縮み、8枚並ぶと絵柄も文字も細切れの
-      パッチワークに見えていた。3列なら1枚約440pxで、タイル内の文字を削った
-      ぶんが絵柄として効く。 */
+   🔴 揃えているのは列数ではなく「1枚の実寸（約330px）」。本文の最大幅が
+      2画面で違う（学習トップ 1440px / 領域ページは --wc-page-max 1140px ＝
+      中身 1012px）ので、同じ大きさのタイルを並べると列数は自然と変わる。
+      領域ページはここの3列で1枚 328px。学習トップだけ 1280px 以上で
+      .wc-area-grid--wide が4列に上書きして 313〜330px にする。
+   🔴 領域ページを4列にはしない。中身 1012px を4つに割ると1枚 242px で、
+      絵柄が帯になり文字組みサムネのコース名も入らない。 */
 .wc-area-grid {
   grid-template-columns: repeat(3, 1fr);
 }
@@ -1599,6 +2054,17 @@ body.learning-immersive {
   }
 }
 
+/* 「ほかに学習中」の行に出る領域名。狭い幅では畳む。
+   🔴 この span は flexShrink:0 なので、残す限り縮まず、削れるのはコース名側だけ。
+      1行の中身は サムネ40 + コース名 + 領域名 + 進捗バー96 + 「1/7」+ ›。
+      375px だと名前と領域名に残るのが約70pxで、コース名がほぼ読めなくなる。
+      領域の手がかりは左のサムネの色と図形が持つので、文字の方を落とす。 */
+@media (max-width: 767px) {
+  .wc-active-row-area {
+    display: none;
+  }
+}
+
 /* 学習トップの「領域から探す」は、領域カードの地図をやめて
    「領域ブロック＋その領域のコース一覧」になった（MaterialsTopPage ⑤）。
    コースのグリッドは領域ページと同じ .wc-area-grid を使い回すので、
@@ -1606,22 +2072,62 @@ body.learning-immersive {
 
    サイドバー展開中は本文が 152px（= 224 − 72）細くなるので、その分を足した
    幅で先に1段落とす（.mypage-rank-split などと同じ理由・同じ足し方）。
-   900 + 152 = 1052px。 */
-@media (max-width: 1052px) {
+   900 + 152 = 1052px。
+
+   🔴 min-width: 640px を外さないこと。body.sidebar-expanded .wc-area-grid（0,2,1）は
+      .wc-area-grid（0,1,0）より強いので、ガードが無いと 560px 以下の1列指定まで
+      これが上書きし、375px でサイドバーを開いていた人だけ2列（1枚161px）になる
+      ＝コース名も切れる。サイドバーのオフセット自体が @media (min-width: 640px) の
+      中でしか効かない（＝それ未満では本文が細くならない）ので、640px が正しい値。 */
+@media (min-width: 640px) and (max-width: 1052px) {
   body.sidebar-expanded .wc-area-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* サイドバー展開中は本文が 152px 細くなる。フォルダ列 248px も引かれるので、
-   1279 + 152 = 1431px 以下で先に2列へ落とす（.wc-area-cards と同じ足し方） */
-@media (max-width: 1431px) {
+/* 学習トップ（MaterialsTopPage）の領域ブロックだけ4列にする修飾クラス。
+   ============================================================
+   🔴 min-width で足す。上の .wc-area-grid の段組み（3 → 2 → 1）は max-width の
+      連鎖で、そこに max-width を1本割り込ませると順序依存が増えるうえ、
+      body.sidebar-expanded .wc-area-grid（0,2,1）が 560px 以下の1列指定を
+      上書きしている既存の穴まで広がる。1280px 以上でしか発火しない形にすれば、
+      狭い側の段組みには1行も届かない。
+   🔴 4列にできるのは学習トップだけ。共有クラス側に4列を持たせると本文 1012px の
+      領域ページが1枚 242px になる（上のコメント参照）。
+   🔴 4→3 の境目は「1枚 273px」が下限。学習トップは maxWidth 1440・左右
+      clamp(20px,2.53vw,42px)・gap 14 なので、1280px で 275px、1920px で 328px。
+      かつて 1100px まで4列で粘っていた版（98f5202 以前）は1枚 232px まで縮み、
+      絵柄も文字も細切れに見えていた。ここを下げ直さないこと。
+   🔴 サイドバー展開中は本文が 152px 細くなるので 1280 + 152 = 1432px 未満で3列に
+      戻す（1431px 以下。.notes-grid と同じ足し方）。展開時の4列の最小は 273px。
+   ============================================================ */
+@media (min-width: 1280px) {
+  .wc-area-grid--wide {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1431px) {
+  body.sidebar-expanded .wc-area-grid--wide {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* サイドバー展開中は本文が 152px 細くなるので、素の 2列落ち（1023px 以下）より
+   152px 手前で落とす（1023 + 152 = 1175px 以下。.wc-area-cards と同じ足し方）。
+
+   🔴 min-width: 768px を外さないこと。この指定（0,2,1）は .notes-grid（0,1,0）より
+      強いので、ガードが無いと 767px 以下の1列指定まで上書きし、375px でサイドバーを
+      開いていた人だけ2列になる。下限は「素のグリッドが複数列である幅」＝768px。 */
+@media (min-width: 768px) and (max-width: 1175px) {
   body.sidebar-expanded .notes-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 1279px) {
+/* フォルダ列（248px）が消えて本文がその分広がったので、2列に落とす境目も
+   248px ぶん下げた（1279 → 1023）。1024px で1枚 320px 前後。 */
+@media (max-width: 1023px) {
   .notes-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1730,7 +2236,7 @@ body.learning-immersive {
    「押せば戻せる」ことが伝わっていなかった。行にホバー／フォーカスしたときだけ
    「未完了に戻す」に入れ替えて、未完了側の「完了にする」ピルと対にする。
 
-   ピルの中は2つの文言を同じグリッドセルに重ねてあるので（NextActionsCard.tsx）、
+   ピルの中は2つの文言を同じグリッドセルに重ねてあるので（NextGoalsCard.tsx）、
    入れ替えても幅は広い方のまま変わらない。ホバーの起点はピルではなく行:
    行のどこにマウスが乗ってもクリックでトグルされるため、ピルの上だけ反応させると
    「ピルを狙って押すもの」と誤解させる。 */
@@ -1775,7 +2281,7 @@ body.learning-immersive {
 }
 
 /* ─── AIコーチ(/ai-coach) ─────────────────── */
-/* ホームの「AIアプリでできること」グリッド。
+/* ホームの「AIコーチでできること」グリッド。
    カードがサムネイル付きの縦組みになったので、1行に置ける枚数を1つ増やして
    4列を基準にする（16:9のサムネは3列だと1枚が大きすぎて、1カテゴリで
    ファーストビューを使い切ってしまう）。狭い画面では3→2→1列に落とす。
@@ -1981,7 +2487,7 @@ body.learning-immersive {
   animation: fadeInUp 180ms var(--dc-ease);
 }
 
-/* 回答下のアクション（コピー／保存／メモに追加）。
+/* 回答下のアクション（コピー／マイノートに残す／下書きに追加）。
    毎回3つ並ぶと本文が読みにくいので、ホバーとフォーカスのときだけ出す。
    🔴 display / visibility ではなく opacity で消すこと。ボタンをフォーカス可能なまま
       残さないと、キーボードだけの人が保存に辿り着けなくなる。

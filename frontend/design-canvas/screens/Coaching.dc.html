@@ -1,0 +1,303 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', system-ui, sans-serif; }
+    a { color: #D60934; }
+    a:hover { color: #B50829; }
+
+    /* /coaching?session=<id>（CoachingNotesPage.tsx → coaching/SessionReview.tsx）。
+       この画面の色はマイページの --dc-* とは別系統なので、実測値をここに置いている。 */
+    .cw {
+      --cw-primary: #D60934;
+      --cw-text: #1F1D1E;          /* 見出し */
+      --cw-text-body: #4A4245;     /* 本文・チェック項目 */
+      --cw-text-sub: #6B6467;      /* 補助テキスト・戻るリンク */
+      --cw-text-muted: #8B8386;    /* コーチ名・話者ラベル */
+      --cw-text-faint: #9A9295;    /* 文字起こしの時刻 */
+      --cw-surface: #FFFFFF;
+      --cw-border: #F3EDED;
+      --cw-shadow: 0 8px 26px rgba(190, 60, 70, .06);
+    }
+
+    .cw-card {
+      background: var(--cw-surface); border: 1px solid var(--cw-border);
+      border-radius: 20px; box-shadow: var(--cw-shadow); padding: 24px;
+    }
+    .cw-h2 { font-size: 17.5px; font-weight: 900; color: var(--cw-text); margin: 0; }
+    .cw-h3 { font-size: 13.5px; font-weight: 700; color: #2B2629; margin: 0 0 10px; }
+    /* 会話への導線。この画面のリンクはすべてこの見た目 */
+    .cw-link {
+      font-size: 12.5px; font-weight: 700; color: var(--cw-primary);
+      background: none; border: 0; padding: 0; cursor: pointer; white-space: nowrap;
+    }
+    .cw-link:hover { color: #B50829; text-decoration: underline; }
+
+    /* まとめカードの中の小見出しブロック。見出しは回ごとにAIが付ける可変のもの
+       （summary.highlights）で、旧実装のような固定4項目ではない。 */
+    .cw-block { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--cw-border); }
+    .cw-bullets { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .cw-bullets li { display: flex; align-items: flex-start; gap: 10px; }
+    .cw-dot { color: var(--cw-primary); line-height: 1.8; flex: none; }
+    .cw-bullet-text { font-size: 14.5px; font-weight: 500; color: var(--cw-text-body); line-height: 1.8; }
+
+    /* 次回までにやること。見出しとチェックだけまで削ぎ落とされている
+       （種別チップ・期限/完了条件・確定ボタンは /coaching 側へ移った） */
+    .cw-todo { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+    .cw-todo label { display: flex; align-items: flex-start; gap: 12px; padding: 8px 0; cursor: pointer; }
+    .cw-todo label:hover { background: #FDFCFC; border-radius: 8px; }
+    .cw-todo span { font-size: 14.5px; font-weight: 500; color: var(--cw-text-body); line-height: 1.8; }
+
+    /* 自分のメモ。textarea をやめ、その回に紐づくノートの一覧になった */
+    .cw-note {
+      display: block; width: 100%; text-align: left; box-sizing: border-box;
+      border: 1px solid var(--cw-border); border-radius: 14px; background: var(--cw-surface);
+      padding: 12px 14px; font-family: inherit; cursor: pointer;
+    }
+    .cw-note:hover { background: #FDFCFC; }
+    .cw-note-title { font-size: 13.5px; font-weight: 700; color: #2B2629; display: block; }
+    .cw-note-body {
+      font-size: 11.5px; font-weight: 500; color: var(--cw-text-sub); display: block; margin-top: 4px;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    /* 折りたたみ。<details> はそのままクリックで開閉する */
+    .cw-details > summary {
+      font-size: 13.5px; font-weight: 700; color: #2B2629; cursor: pointer;
+      padding: 14px 0; display: flex; align-items: center; gap: 8px; list-style: none;
+    }
+    .cw-details > summary::-webkit-details-marker { display: none; }
+    .cw-details > summary svg { transition: transform .2s; }
+    .cw-details[open] > summary svg { transform: rotate(180deg); }
+
+    .cw-utt { display: flex; gap: 12px; padding: 10px 12px; border-radius: 12px; border: 1px solid transparent; }
+    .cw-utt:hover { background: #FDFCFC; border-color: var(--cw-border); }
+    .cw-utt-time { font-size: 11.5px; font-weight: 500; color: var(--cw-text-faint); flex: 0 0 44px; padding-top: 2px; }
+    .cw-utt-who { font-size: 11.5px; font-weight: 700; color: #5C5559; display: block; margin-bottom: 2px; }
+    .cw-utt-text { font-size: 12.5px; font-weight: 500; color: var(--cw-text-body); line-height: 1.8; }
+
+    /* サイドバーの閉じたレール（AppHeader.tsx）。全画面共通 */
+    .cw-rail-item { width: 40px; height: 40px; border-radius: 9999px; display: grid; place-items: center; }
+    .cw-rail-item-active { background: var(--cw-primary); box-shadow: 0 2px 10px -2px rgba(214, 9, 52, .4); }
+  </style>
+</helmet>
+
+<div class="cw" style="position: relative; display: flex; min-height: 1900px; background: #FBF8F4; color: #141414;">
+
+  <!-- ───────── サイドバー：閉じた72pxレール ───────── -->
+  <div style="width: 72px; flex: none; background: #FDF7F3; border-right: 1px solid #E2DBD0; box-shadow: 3px 0 10px -4px rgba(60,48,32,.18); padding: 16px 0; display: flex; flex-direction: column; align-items: center; gap: 14px;">
+    <div class="cw-rail-item" style="border-radius: 10px;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#D60934" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M15 3v18"></path><path d="m10 15-3-3 3-3"></path>
+      </svg>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+      <div class="cw-rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path>
+          <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        </svg>
+      </div>
+      <div class="cw-rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 7v14"></path>
+          <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path>
+        </svg>
+      </div>
+      <div class="cw-rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path>
+        </svg>
+      </div>
+      <!-- コーチング（この画面） -->
+      <div class="cw-rail-item cw-rail-item-active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FDF7F3" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"></path>
+          <path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"></path>
+        </svg>
+      </div>
+      <div class="cw-rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"></path>
+          <path d="M2 6h4"></path><path d="M2 10h4"></path><path d="M2 14h4"></path><path d="M2 18h4"></path>
+          <path d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"></path>
+        </svg>
+      </div>
+      <div style="width: 32px; height: 1px; background: #EFE9E0; margin: 14px 0;"></div>
+      <div class="cw-rail-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>
+      </div>
+    </div>
+    <div style="flex: 1;"></div>
+    <div style="width: 36px; height: 36px; border-radius: 9999px; background: #F2E8E1; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #9E9698;">モッ</div>
+  </div>
+
+  <!-- ───────── 本文 ─────────
+       .wc-page は max-width 860px（ガター込み）を中央寄せ、padding 32px / clamp(20px,5vw,64px) / 80px。
+       1440 では左右 64px なので本文の実幅は 732px。 -->
+  <div style="flex: 1; min-width: 0; position: relative; display: flex; justify-content: center;">
+    <div style="width: 100%; max-width: 860px; box-sizing: border-box; padding: 32px 64px 80px; display: flex; flex-direction: column; gap: 20px;">
+
+      <div>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3;">コーチング記録</h1>
+      </div>
+
+      <button type="button" class="cw-link" style="color: var(--cw-text-sub); align-self: flex-start;">← コーチング一覧に戻る</button>
+
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+
+        <!-- どの回の記録かを見出しで名乗る。
+             🔴 日付はモックが「今日-14日」で作るので（mocks/coachingHandlers.ts の seedAll）、
+                実画面の値は日が経つと動く。ここは 2026-09-02 に撮った時点の値。 -->
+        <div>
+          <h2 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; color: var(--cw-text);">コーチング記録（8/19）</h2>
+          <p style="font-size: 11.5px; font-weight: 500; color: var(--cw-text-muted); margin: 6px 0 0;">山田コーチ ・ 自動取得 ・ AIが整理</p>
+        </div>
+
+        <!-- ① 今回のまとめ。会話からの抜き出しも同じカードに入る -->
+        <section class="cw-card">
+          <h2 class="cw-h2">今回のまとめ</h2>
+          <p style="font-size: 14.5px; font-weight: 500; color: var(--cw-text-body); line-height: 1.9; margin: 14px 0 0;">バナー制作が「完成度を気にして手が止まる」状態で停滞していることを確認し、1案目は粗くても最後まで通す方針で合意しました。学習時間は土日まとめ型から平日30分の毎日型へ切り替えます。ポートフォリオは制作サービスを決める前に構成案から着手し、次回コーチングでレビューします。</p>
+
+          <div class="cw-block">
+            <h3 class="cw-h3">手が止まっていた原因</h3>
+            <ul class="cw-bullets">
+              <li><span class="cw-dot">・</span><span style="min-width: 0;"><span class="cw-bullet-text">配色の基礎の教材を最後まで完了（確認テストも通過）</span><button type="button" class="cw-link" style="padding-left: 8px;">この会話を見る</button></span></li>
+              <li><span class="cw-dot">・</span><span style="min-width: 0;"><span class="cw-bullet-text">前回設定した3つの目標のうち2つが完了</span><button type="button" class="cw-link" style="padding-left: 8px;">この会話を見る</button></span></li>
+              <li><span class="cw-dot">・</span><span style="min-width: 0;"><span class="cw-bullet-text">バナー制作はラフまで着手（完成には至らず）</span><button type="button" class="cw-link" style="padding-left: 8px;">この会話を見る</button></span></li>
+            </ul>
+          </div>
+
+          <div class="cw-block">
+            <h3 class="cw-h3">腑に落ちたアドバイス</h3>
+            <ul class="cw-bullets">
+              <li><span class="cw-dot">・</span><span style="min-width: 0;"><span class="cw-bullet-text">最初から完成度を上げすぎず、まず1案を最後まで通す</span><button type="button" class="cw-link" style="padding-left: 8px;">この会話を見る</button></span></li>
+              <li><span class="cw-dot">・</span><span style="min-width: 0;"><span class="cw-bullet-text">直すのは2案目以降にする</span><button type="button" class="cw-link" style="padding-left: 8px;">この会話を見る</button></span></li>
+              <li><span class="cw-dot">・</span><span style="min-width: 0;"><span class="cw-bullet-text">平日は30分単位に区切って毎日触る。まとめてやると間が空いて忘れる</span><button type="button" class="cw-link" style="padding-left: 8px;">この会話を見る</button></span></li>
+              <li><span class="cw-dot">・</span><span style="min-width: 0;"><span class="cw-bullet-text">ポートフォリオはサービス選定より先に構成から考える</span><button type="button" class="cw-link" style="padding-left: 8px;">この会話を見る</button></span></li>
+            </ul>
+          </div>
+
+          <div class="cw-block">
+            <h3 class="cw-h3">案件について決めたこと</h3>
+            <ul class="cw-bullets">
+              <li><span class="cw-dot">・</span><span style="min-width: 0;"><span class="cw-bullet-text">狙う案件は、まずは小さめのバナー案件から入る</span><button type="button" class="cw-link" style="padding-left: 8px;">この会話を見る</button></span></li>
+            </ul>
+          </div>
+
+          <!-- ここだけ「この会話を見る」が付かない（まだ会話に紐づかない持ち越しのため） -->
+          <div class="cw-block">
+            <h3 class="cw-h3">次回に持ち越したこと</h3>
+            <ul class="cw-bullets">
+              <li><span class="cw-dot">・</span><span style="min-width: 0;"><span class="cw-bullet-text">ポートフォリオを作るサービスの決定</span></span></li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- ② 次回までにやること。ここは見出しとチェックだけ -->
+        <section class="cw-card">
+          <h2 class="cw-h2" style="margin-bottom: 14px;">次回までにやること（5件）</h2>
+          <ul class="cw-todo">
+            <li><label><input type="checkbox" style="margin-top: 4px; accent-color: #D60934; flex: none;"><span>「まず1案を最後まで通す」進め方に切り替える</span></label></li>
+            <li><label><input type="checkbox" style="margin-top: 4px; accent-color: #D60934; flex: none;"><span>平日に毎日30分の学習時間を確保する</span></label></li>
+            <li><label><input type="checkbox" style="margin-top: 4px; accent-color: #D60934; flex: none;"><span>バナーを1案、完成の形まで作る</span></label></li>
+            <li><label><input type="checkbox" style="margin-top: 4px; accent-color: #D60934; flex: none;"><span>ポートフォリオの構成案を作る</span></label></li>
+            <li><label><input type="checkbox" style="margin-top: 4px; accent-color: #D60934; flex: none;"><span>案件サイトのプロフィールを作成する</span></label></li>
+          </ul>
+          <p style="font-size: 11.5px; font-weight: 500; color: var(--cw-text-sub); margin: 14px 0 0; line-height: 1.9;">内容の修正や学習目標への反映は <button type="button" class="cw-link">コーチングページ</button> から行えます。</p>
+        </section>
+
+        <!-- ③ 自分のメモ。その回に紐づくノートを並べ、続きはマイノートで書く -->
+        <section class="cw-card">
+          <h2 class="cw-h2" style="margin-bottom: 10px;">自分のメモ</h2>
+          <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px;">
+            <li>
+              <button type="button" class="cw-note">
+                <span class="cw-note-title">8/19 コーチングまとめ</span>
+                <span class="cw-note-body">ターゲットの課題に寄り添ったメッセージ設計が重要。特に「誰に」「どんな価値を」「どう届けるか」の3点を明確にする。</span>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="cw-note">
+                <span class="cw-note-title">キャリアの方向性メモ</span>
+                <span class="cw-note-body">やりたいこと×得意なこと×価値を届けたいことの重なる領域を軸に考える。小さく試して検証していくことが大切。</span>
+              </button>
+            </li>
+          </ul>
+          <button type="button" class="cw-link" style="margin-top: 14px;">マイノートで書く・編集する →</button>
+        </section>
+
+        <!-- ④ 折りたたみ2つ -->
+        <section class="cw-card" style="padding: 4px 24px 10px;">
+
+          <details class="cw-details">
+            <summary>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              文字起こしを見る（31件の発言）
+            </summary>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; padding-bottom: 14px;">
+              <label style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 11.5px; font-weight: 500; color: var(--cw-text-muted);">話者1</span>
+                <select style="border: 1px solid var(--cw-border); border-radius: 12px; padding: 4px 8px; font-family: inherit; font-size: 12.5px; color: var(--cw-text); background: var(--cw-surface);">
+                  <option>未設定</option><option>コーチ</option><option>自分</option>
+                </select>
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px;">
+                <span style="font-size: 11.5px; font-weight: 500; color: var(--cw-text-muted);">話者2</span>
+                <select style="border: 1px solid var(--cw-border); border-radius: 12px; padding: 4px 8px; font-family: inherit; font-size: 12.5px; color: var(--cw-text); background: var(--cw-surface);">
+                  <option>未設定</option><option>コーチ</option><option>自分</option>
+                </select>
+              </label>
+            </div>
+            <!-- 実装は31件。ここは手で直せる分量として先頭8件だけ写している -->
+            <ul style="list-style: none; margin: 0; padding: 0 0 18px; display: flex; flex-direction: column; gap: 10px;">
+              <li class="cw-utt"><span class="cw-utt-time">00:12</span><span style="min-width: 0;"><span class="cw-utt-who">話者1</span><span class="cw-utt-text">今日はお時間ありがとうございます。前回から2週間ですが、進み具合はいかがですか。</span></span></li>
+              <li class="cw-utt"><span class="cw-utt-time">00:20</span><span style="min-width: 0;"><span class="cw-utt-who">話者2</span><span class="cw-utt-text">はい、配色の基礎の教材は最後まで終わりました。確認テストも通っています。</span></span></li>
+              <li class="cw-utt"><span class="cw-utt-time">00:27</span><span style="min-width: 0;"><span class="cw-utt-who">話者1</span><span class="cw-utt-text">教材を終えられたのは大きいですね。前回決めた3つのうち2つは進んだ形になります。</span></span></li>
+              <li class="cw-utt"><span class="cw-utt-time">00:35</span><span style="min-width: 0;"><span class="cw-utt-who">話者2</span><span class="cw-utt-text">ただ、バナーの制作が思ったより進んでいなくて。</span></span></li>
+              <li class="cw-utt"><span class="cw-utt-time">00:40</span><span style="min-width: 0;"><span class="cw-utt-who">話者1</span><span class="cw-utt-text">どのあたりで止まっていますか。</span></span></li>
+              <li class="cw-utt"><span class="cw-utt-time">00:44</span><span style="min-width: 0;"><span class="cw-utt-who">話者2</span><span class="cw-utt-text">最初のラフを作るところまではいったんですが、そこから手が止まってしまって。完成度が気になってしまうというか。</span></span></li>
+              <li class="cw-utt"><span class="cw-utt-time">00:54</span><span style="min-width: 0;"><span class="cw-utt-who">話者1</span><span class="cw-utt-text">なるほど。よくあるつまずき方です。最初から完成度を上げようとすると、だいたい手が止まります。</span></span></li>
+              <li class="cw-utt"><span class="cw-utt-time">01:03</span><span style="min-width: 0;"><span class="cw-utt-who">話者2</span><span class="cw-utt-text">たしかに、1案目から作り込もうとしていました。</span></span></li>
+            </ul>
+          </details>
+
+          <details class="cw-details" style="border-top: 1px solid var(--cw-border);">
+            <summary>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+              記録の管理
+            </summary>
+            <div style="padding-bottom: 18px;">
+              <p style="font-size: 12.5px; font-weight: 500; color: var(--cw-text-sub); margin: 0;">この記録には音声データがありません。文字起こしのみ保存されています。</p>
+              <button type="button" style="font-size: 12.5px; font-weight: 700; color: var(--cw-text-muted); background: none; border: 0; padding: 0; margin-top: 18px; cursor: pointer; text-decoration: underline;">この記録を削除する</button>
+            </div>
+          </details>
+        </section>
+      </div>
+
+      <p style="text-align: center; font-size: 12px; color: #9E9E9E; margin-top: 4px;">© 2026 WEBCOACH</p>
+    </div>
+
+    <!-- 常駐AIコーチFAB -->
+    <div style="position: absolute; right: 24px; top: 616px; display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 22px; border-radius: 9999px; background: var(--cw-primary); border: 1px solid var(--cw-primary); box-sizing: border-box; color: #fff; font-size: 14px; font-weight: 700; box-shadow: 0 8px 24px -8px rgba(160,8,36,.45);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path>
+        <path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle>
+      </svg>
+      AIコーチに相談
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

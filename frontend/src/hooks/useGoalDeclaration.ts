@@ -1,6 +1,9 @@
 /**
- * 目標宣言の取得と書き換え。/study-log（編集の主戦場）と /mypage（表示のみ）が使う。
+ * 「あなたの目標」の取得と書き換え。/study-log（編集の主戦場）と /mypage（表示のみ）が使う。
  * ============================================================
+ * 🔴 画面表記は「あなたの目標」。GoalDeclaration / goal-declarations は
+ *    型・API・ファイル名だけの呼称で、UI に「宣言」の語を出さない。
+ *
  * 作法は useNoteList / useNoteFolders に揃える:
  *   ・reqRef のシーケンス番号で、応答が前後しても最後のリクエストの結果だけを採る
  *   ・エラーは日本語の固定文言（例外の中身は画面に出さない）
@@ -32,7 +35,7 @@ import { toLocalDateKey } from '../utils/studyStats';
 export interface UseGoalDeclarationResult {
   /** 新しい順 */
   items: GoalDeclaration[];
-  /** いま有効な宣言（activeDeclaration の結果）。無ければ null */
+  /** いま有効な目標（activeDeclaration の結果）。無ければ null */
   active: GoalDeclaration | null;
   /** 期間が終わったのに振り返りがまだのもの（新しい順） */
   pendingReflection: GoalDeclaration[];
@@ -109,7 +112,7 @@ export function useGoalDeclaration(userId: number | undefined): UseGoalDeclarati
         await reload();
         return created;
       } catch (e) {
-        setError(messageOf(e, '目標宣言を保存できませんでした'));
+        setError(messageOf(e, '目標を保存できませんでした'));
         throw e;
       } finally {
         setSaving(false);
@@ -138,7 +141,7 @@ export function useGoalDeclaration(userId: number | undefined): UseGoalDeclarati
         const saved = await bffClient.updateGoalDeclaration(userId, id, patch);
         setItems((prev) => sortDeclarations(prev.map((d) => (d.id === id ? saved : d))));
       } catch (e) {
-        setError(messageOf(e, '目標宣言を保存できませんでした'));
+        setError(messageOf(e, '目標を保存できませんでした'));
         void reload();  // 巻き戻す
         throw e;
       } finally {
@@ -157,7 +160,7 @@ export function useGoalDeclaration(userId: number | undefined): UseGoalDeclarati
         await bffClient.deleteGoalDeclaration(userId, id);
         await reload();
       } catch (e) {
-        setError(messageOf(e, '目標宣言を削除できませんでした'));
+        setError(messageOf(e, '目標を削除できませんでした'));
         throw e;
       } finally {
         setSaving(false);

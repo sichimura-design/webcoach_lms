@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@600;700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Noto Sans JP', sans-serif; }
+
+    /* ══════════════════════════════════════════════════════════════════════
+       STU-06-P09 本文ブロック 7態（部品）
+       実装: components/notes/NoteBlockView.tsx（4種の中身）
+             components/notes/NoteBlockRow.tsx / index.css:1928-2010（行・⠿・＋・ドロップ線）
+             components/notes/noteText.tsx（ミニ記法の描画）
+       出典: _capture/STU-06-note-rich（text/clip/answer）・-blockedit（編集中）・
+             -grip / -plus（行の操作）。image ブロックはどのシードにも無いので
+             NoteBlockView.tsx:344-356 と webcoachTheme.ts:90-96 から写経（実測不能）。
+       ⚠ 部品ボード。幅 844px は紙の内側（900 − 左右28）。
+          🔒 ブロックは種別ごとにセクションを分けず、同じ流れに混在させる設計。
+       ══════════════════════════════════════════════════════════════════════ */
+
+    .n6 {
+      --dc-primary: #D60934;
+      --dc-bg: #FBF8F4;
+      --dc-surface: #FFFFFF;
+      --dc-text-subtle: #9E9E9E;
+      --dc-border: #EFE9E0;
+      /* 🔒 ブロックの色は theme/webcoachTheme.ts L85-97。--dc-* とは別系統 */
+      --wc-text: #1F1D1E;
+      --wc-text-strong: #2B2629;
+      --wc-text-body: #4A4245;
+      --wc-text-muted: #6B6467;
+      --wc-text-faint: #9A9295;
+      --wc-border-soft: #F1E4E4;
+      --wc-clip-bg: #FFF4F5;
+      --wc-clip-accent: #D60934;
+      --wc-answer-bg: #F3FAF6;
+      --wc-answer-accent: #3E9E70;
+      --wc-note-highlight: #FFD9E0;
+    }
+    .n6 .num { font-family: 'Inter', sans-serif; font-variant-numeric: tabular-nums; }
+
+    .n6 .paper { width: 900px; box-sizing: border-box; padding: 16px 28px; background: var(--dc-surface); border: 1px solid var(--dc-border); border-radius: 16px; }
+    /* 行（.notes-block）。左 34px は ⠿ と ＋ の席 */
+    .n6 .block { position: relative; padding: 4px 0 4px 34px; border-radius: 6px; }
+    .n6 .block.is-hover { background: #FCF9F5; }
+    .n6 .block.is-dragging { opacity: .45; }
+    /* ドロップ線（.is-drop-before::before / .is-drop-after::after） */
+    .n6 .block.is-drop-before::before,
+    .n6 .block.is-drop-after::after {
+      content: ''; position: absolute; left: 34px; right: 0; height: 2px; background: var(--dc-primary);
+    }
+    .n6 .block.is-drop-before::before { top: -1px; }
+    .n6 .block.is-drop-after::after { bottom: -1px; }
+    /* ⠿ と ＋。実装は opacity:0 で、ホバー／フォーカス時だけ出る。
+       ここは見えるように出した状態で描いている。 */
+    .n6 .grip { position: absolute; left: 0; top: 4px; display: flex; align-items: center; gap: 2px; }
+    .n6 .grip-btn {
+      display: grid; place-items: center; width: 15px; height: 24px; padding: 0;
+      border: 0; background: transparent; color: var(--dc-text-subtle); cursor: pointer;
+    }
+
+    .n6 .mark { background: linear-gradient(transparent 62%, var(--wc-note-highlight) 62%); padding-bottom: 1px; }
+    .n6 .p { margin: 0 0 6px; font-size: 13.5px; line-height: 2; color: var(--wc-text-body); }
+    .n6 .h { margin: 18px 0 10px; font-size: 15.5px; font-weight: 900; line-height: 1.6; color: var(--wc-text); }
+    .n6 .ul { margin: 6px 0 12px; padding-left: 20px; }
+    .n6 .ul li { font-size: 13.5px; line-height: 2; color: var(--wc-text-body); }
+    .n6 .callout {
+      display: flex; align-items: flex-start; gap: 8px;
+      margin: 10px 0; padding: 13px 16px; border-radius: 0 12px 12px 0;
+    }
+    .n6 .callout-label { font-size: 11.5px; font-weight: 700; }
+    .n6 .src { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 11.5px; font-weight: 500; color: var(--wc-text-muted); }
+    .n6 .src .num { margin-left: auto; color: var(--wc-text-faint); }
+    /* チェックリスト（.notes-checklist / index.css:2003-2015） */
+    .n6 .checklist { margin: 6px 0 12px; padding: 0; list-style: none; }
+    .n6 .checklist li { display: flex; align-items: flex-start; gap: 9px; font-size: 13.5px; line-height: 2; color: var(--wc-text-body); }
+
+    .n6 .cap { font-size: 11.5px; font-weight: 700; color: #8A8178; margin-bottom: 10px; }
+    .n6 .cap span { font-weight: 400; color: #A79E93; }
+    .n6 .note { margin-top: 10px; font-size: 11px; line-height: 1.7; color: #A79E93; width: 900px; }
+  </style>
+</helmet>
+
+<div class="n6"
+     data-dc-id="STU-06-P09"
+     data-dc-remote="マイノート 部品 本文ブロック.dc.html"
+     data-dc-route="/notes?note=<id>"
+     data-dc-src="frontend/src/components/notes/NoteBlockView.tsx"
+     style="display: flex; flex-direction: column; gap: 26px; width: 960px; min-height: 1500px; padding: 24px; box-sizing: border-box; background: var(--dc-bg);">
+
+  <!-- ───────── ① text（ミニ記法の描画）───────── -->
+  <div>
+    <div class="cap">text <span>／ ## 見出し・- 箇条書き・- [ ] チェック・==マーカー==</span></div>
+    <div class="paper">
+      <div class="block">
+        <div style="margin: 4px 0 10px;">
+          <h3 class="h"><span class="mark">1. バナーデザインの目的を明確にする</span></h3>
+          <p class="p">まず、誰に何を伝えたいのかをはっきりさせることが大事。</p>
+          <ul class="ul">
+            <li>ターゲットは誰か？</li>
+            <li>伝えたいメッセージは？</li>
+          </ul>
+          <ul class="checklist">
+            <li><input type="checkbox" checked style="margin-top: 7px;"><span style="text-decoration: line-through; color: var(--wc-text-faint);">ラフを30分で固める</span></li>
+            <li><input type="checkbox" style="margin-top: 7px;"><span>配色を3色に絞る</span></li>
+          </ul>
+          <p class="p">この3つが明確になると、<span>レイアウトや配色も自然と決まってくる</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="note">
+      🔴 マーカーの見え方は2通り。<b>見出しの ==…== は下側だけの帯が出る</b>が、
+      <b>本文中の ==…== は帯が出ない</b>。renderInline が background:none をインラインで
+      上書きしているため（noteText.tsx:47）。上の「レイアウトや配色も…」が本文中の例。<br>
+      チェックの □ は編集モードに入らず、その行だけをその場で切り替える。
+    </div>
+  </div>
+
+  <!-- ───────── ② 空の段落 ───────── -->
+  <div>
+    <div class="cap">空の段落 <span>／ 中身が消えたブロック。押すと編集に入る</span></div>
+    <div class="paper">
+      <div class="block">
+        <div style="margin: 4px 0 10px; font-size: 13.5px; line-height: 2; color: var(--wc-text-faint);">（空の段落。クリックで書く）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── ③ text 編集中 ─────────
+       クリックか Enter で textarea になる。Esc で取消、Ctrl/⌘+Enter で保存、
+       欄から外れても保存される。 -->
+  <div>
+    <div class="cap">text 編集中 <span>／ textarea ＋ 保存する／取り消す ＋ 記法ヒント</span></div>
+    <div class="paper">
+      <div class="block">
+        <div style="margin: 4px 0 10px;">
+          <div style="width: 100%; box-sizing: border-box; min-height: 96px; padding: 10px 12px; border: 1px solid var(--wc-border-soft); border-radius: 14px; background: var(--dc-surface); font-size: 13.5px; line-height: 1.9; color: var(--wc-text-body);">## 1. バナーデザインの目的を明確にする
+まず、誰に何を伝えたいのかをはっきりさせることが大事。</div>
+          <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 8px;">
+            <button type="button" style="display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 16px; border: 0; border-radius: 14px; background: var(--dc-primary); color: #FFFFFF; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              保存する
+            </button>
+            <button type="button" style="height: 34px; padding: 0 14px; border: 1px solid var(--wc-border-soft); border-radius: 14px; background: var(--dc-surface); color: var(--wc-text-muted); font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;">取り消す</button>
+            <span style="font-size: 11.5px; font-weight: 500; color: var(--wc-text-faint);">## 見出し ／ - 箇条書き ／ - [ ] チェック ／ ==マーカー==</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────── ④ clip（教材から引いた文章）───────── -->
+  <div>
+    <div class="cap">clip <span>／ 地 #FFF4F5・左罫3px #D60934</span></div>
+    <div class="paper">
+      <div class="block">
+        <div class="callout" style="background: var(--wc-clip-bg); border-left: 3px solid var(--wc-clip-accent);">
+          <div style="flex: 1; min-width: 0;">
+            <span class="callout-label" style="color: var(--wc-clip-accent);">クリップ</span>
+            <p style="margin: 6px 0 0; font-size: 13.5px; line-height: 1.95; color: var(--wc-text-strong);">余白を意識することで、情報の優先順位が伝わりやすくなる</p>
+            <div class="src">
+              <span>バナー100本道場 &gt; ハンズオン① &gt; バナー制作の基礎</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+              <span class="num">13:27</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note">出どころ行（コース &gt; レッスン &gt; 見出し）を押すと、引用モーダルがその箇所で開く。画面は遷移しない。</div>
+  </div>
+
+  <!-- ───────── ⑤ answer（AIコーチ／教材から保存された回答）───────── -->
+  <div>
+    <div class="cap">answer <span>／ 地 #F3FAF6・左罫3px #3E9E70</span></div>
+    <div class="paper">
+      <div class="block">
+        <div class="callout" style="background: var(--wc-answer-bg); border-left: 3px solid var(--wc-answer-accent);">
+          <div style="flex: 1; min-width: 0;">
+            <span class="callout-label" style="color: var(--wc-answer-accent);">AI回答</span>
+            <p style="margin: 6px 0 0; font-size: 13.5px; font-weight: 700; line-height: 1.8; color: var(--wc-text);">バナーの文字量はどのくらいが最適ですか？</p>
+            <p style="margin: 6px 0 0; font-size: 13px; line-height: 1.95; color: var(--wc-text-body);">バナーは視認時間が短いため、訴求ポイントを1つに絞り、10〜20文字程度にまとめるのが効果的です。</p>
+            <div class="src">
+              <span>バナー100本道場 &gt; ハンズオン① &gt; バナー制作の基礎</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg>
+              <span class="num">14:22</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note">
+      🔴 /notes の中に AI を呼ぶ操作は無い。answer は AIコーチ画面・教材画面から入ってくる読み取り専用の表示だけ
+      （NoteEditor.tsx:18「「クリップを追加」「AI回答を追加」のボタンは置かない」）。
+      質問に画像が付いていれば、質問文の下に最大260pxで出る（alt「質問に添付した画像」）。
+      出どころが無いときは時刻だけが右寄せで出る。
+    </div>
+  </div>
+
+  <!-- ───────── ⑥ image ───────── -->
+  <div>
+    <div class="cap">image <span>／ 実測不能（シードに無い）。ソースから写経</span></div>
+    <div class="paper">
+      <div class="block">
+        <figure style="margin: 12px 0;">
+          <!-- キャンバスに外部参照を持ち込めないのでプレースホルダ -->
+          <div style="width: 100%; height: 200px; display: grid; place-items: center; border: 1px solid var(--dc-border); border-radius: 12px; background: var(--dc-bg);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--dc-text-subtle)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: .7;"><rect width="18" height="18" x="3" y="3" rx="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>
+          </div>
+          <figcaption style="margin-top: 6px; font-size: 12px; color: var(--wc-text-faint); cursor: text;">説明を書く（任意）</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="note">
+      画像の実体は IndexedDB（utils/noteImageStore.ts）にあり、ブロックは imageId だけを持つ。
+      別の端末で貼った画像は取れないので「画像を読み込めませんでした（この端末に保存されていません）」になる。
+      取り込みの上限は 12MB（超えると「画像が大きすぎます（12MBまで）」）。
+      キャプションは未入力なら「説明を書く（任意）」、押すと入力欄（placeholder「画像の説明（任意）」）。
+    </div>
+  </div>
+
+  <!-- ───────── ⑦ 行の操作（ホバー・ドラッグ中・ドロップ線）───────── -->
+  <div>
+    <div class="cap">行の操作 <span>／ ホバーで ⠿ と ＋ が出る・掴むと薄くなる・落とし先に線</span></div>
+    <div class="paper">
+      <!-- ホバー中の行 -->
+      <div class="block is-hover">
+        <span class="grip">
+          <button type="button" class="grip-btn" title="ドラッグで並べ替え。クリックでメニュー">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"></circle><circle cx="9" cy="5" r="1"></circle><circle cx="9" cy="19" r="1"></circle><circle cx="15" cy="12" r="1"></circle><circle cx="15" cy="5" r="1"></circle><circle cx="15" cy="19" r="1"></circle></svg>
+          </button>
+          <button type="button" class="grip-btn" title="この上に追加">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+          </button>
+        </span>
+        <p class="p" style="margin: 4px 0 4px;">ホバー中の行。地が #FCF9F5 になり、左に ⠿ と ＋ が出る。</p>
+      </div>
+      <!-- 掴んでいる行 -->
+      <div class="block is-dragging">
+        <p class="p" style="margin: 4px 0 4px;">掴んでいる行。opacity .45 まで薄くなる。</p>
+      </div>
+      <!-- 落とし先の行（下側に線） -->
+      <div class="block is-drop-after">
+        <p class="p" style="margin: 4px 0 4px;">落とし先の行。行の上半分／下半分のどちらに来たかで、線が上か下に出る。</p>
+      </div>
+    </div>
+    <div class="note">
+      ⠿ は「ドラッグで並べ替え」と「クリックでメニュー（上に移動／下に移動／削除）」の両方。
+      ＋ はその行の<b>上</b>に挿入（末尾行だけ「末尾に追加」）。メニューの中身は NoteEditorMenus.dc.html。<br>
+      🔴 タッチ端末（@media (hover:none)）では ⠿ と ＋ が出っぱなしになる。この板は 1440 の姿だけ。
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

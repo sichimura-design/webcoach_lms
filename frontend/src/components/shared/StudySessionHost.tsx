@@ -200,8 +200,10 @@ function StudySessionHost() {
    * 🔴 ここに「⏱ 学習時間を記録する」の常設ピルもあったが撤去済み。
    *    打診を断った日はその日ずっと画面に残るので邪魔だったのと、
    *    そもそも開始の入口を2つにしていた（LessonMiniTimer.tsx のコメント参照）。
-   *    断ったあとの復帰は、ピルではなく打診そのものが受け持つ
-   *    （PROMPT_DECLINE_LIMIT: 1回目の「あとで」なら別の学習ページでまた聞く）。
+   *    浮かぶピルを戻さないこと。
+   *    断り切ったあと（PROMPT_DECLINE_LIMIT に達してその日もう打診されない状態）の
+   *    復帰は、マイページの挨拶の下に置いた定位置のボタンが受け持つ
+   *    （mypage/StartRecordingButton.tsx）。
    */
   return (
     <>

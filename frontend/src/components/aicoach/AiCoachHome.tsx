@@ -33,10 +33,10 @@ import { useAutoGrowTextarea } from '../../hooks/useAutoGrowTextarea';
  *   ・ショートカット行   … カードグリッドが役割を引き取った
  *
  * 1a から変えたもの:
- *   ・6枚＋「全てのAIアプリを見る」→ **全11件をここに出す**。
- *     アプリは11個しかないので、一覧を別ページに分けると7個目以降が
+ *   ・6枚＋「全てのAIアプリを見る」→ **全件をここに出す**。
+ *     数が多くないので、一覧を別ページに分けると7個目以降が
  *     存在に気づかれず、使うのに1ステップ余計にかかるだけだった。
- *     11枚を素で並べると壁になるのでカテゴリ（学習／制作／キャリア／そのほか）で束ね、
+ *     素で並べると壁になるのでカテゴリ（学習サポート／制作サポート／案件獲得）で束ね、
  *     「こんなときに」を各カードに添えて、名前だけで選ばせないようにしている。
  *
  * 色は index.css の --dc-* （.wc-warm）を使う。webcoachTheme の pageBg は
@@ -147,7 +147,7 @@ export function AiCoachHome({
             今日は何をお手伝いしましょうか？
           </h1>
           <p style={{ margin: '10px 0 0', fontSize: 15, color: 'var(--dc-text-muted)' }}>
-            AIコーチが、学習・制作・キャリアに関するお悩みをサポートします。
+            AIコーチが、学習・制作・案件獲得に関するお悩みをサポートします。
           </p>
         </div>
 
@@ -316,29 +316,38 @@ export function AiCoachHome({
                どちらも下のカード一覧が実物で示しているので、
                ゼロ状態の文字量を増やすだけになっていた。 */}
 
-        {/* ── AIアプリでできること ──
+        {/* ── AIコーチでできること ──
             機能を見て選びたい人の入口。並びは AI_SKILL_META の宣言順（固定）で、
-            「最近使った順」に並べ替えない。毎回場所が変わると覚えられないため。 */}
+            「最近使った順」に並べ替えない。毎回場所が変わると覚えられないため。
+            🔴 見出しは「AIコーチ」。カードの1枚1枚はアプリ名で呼ぶが、
+               この一覧が何なのかは「AIコーチでできること」と言い切る。 */}
         <h3 style={{ margin: '36px 0 4px', fontSize: 18, fontWeight: 700, color: 'var(--dc-text)' }}>
-          AIアプリでできること
+          AIコーチでできること
         </h3>
 
-        {AI_SKILL_CATEGORY_ORDER.map((category) => (
-          <section key={category} style={{ marginTop: 24 }}>
-            <h4
-              style={{
-                margin: '0 0 12px',
-                fontSize: 12.5,
-                fontWeight: 700,
-                letterSpacing: '0.04em',
-                color: 'var(--dc-text-muted)',
-              }}
-            >
-              {AI_SKILL_CATEGORY_LABEL[category]}
-            </h4>
-            <div className="ai-home-apps">{skillsInCategory(category).map(renderCard)}</div>
-          </section>
-        ))}
+        {/* 🔴 0件のカテゴリは見出しごと出さない。アプリの顔ぶれは実在のアプリに
+               合わせてあるので、カテゴリが空になることがある（いまは「そのほか」）。
+               見出しだけが並ぶと、読み込みに失敗したように見える。 */}
+        {AI_SKILL_CATEGORY_ORDER.map((category) => {
+          const skills = skillsInCategory(category);
+          if (skills.length === 0) return null;
+          return (
+            <section key={category} style={{ marginTop: 24 }}>
+              <h4
+                style={{
+                  margin: '0 0 12px',
+                  fontSize: 12.5,
+                  fontWeight: 700,
+                  letterSpacing: '0.04em',
+                  color: 'var(--dc-text-muted)',
+                }}
+              >
+                {AI_SKILL_CATEGORY_LABEL[category]}
+              </h4>
+              <div className="ai-home-apps">{skills.map(renderCard)}</div>
+            </section>
+          );
+        })}
       </div>
     </div>
   );
@@ -403,11 +412,23 @@ export function AiCoachHome({
           </span>
 
           <span style={{ display: 'block', padding: '12px 16px 14px' }}>
+            {/* 🔴 カードにはアプリ名（label）をそのまま出す。shortLabel（「専門用語」など）は
+                   提案チップやモードヘッダーのような幅の無い場所だけのもので、
+                   一覧でそれを出すと実際のアプリ名と違う名前で覚えることになる。
+                   長い名前は truncate で切らず2行まで許す。 */}
             <span
-              className="truncate"
-              style={{ display: 'block', fontSize: 14.5, fontWeight: 700, color: 'var(--dc-text)' }}
+              style={{
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+                overflow: 'hidden',
+                fontSize: 14.5,
+                fontWeight: 700,
+                lineHeight: 1.35,
+                color: 'var(--dc-text)',
+              }}
             >
-              {meta.shortLabel}
+              {meta.label}
             </span>
             <span
               style={{

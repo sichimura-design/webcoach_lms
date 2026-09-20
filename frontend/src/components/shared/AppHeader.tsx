@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, X, User, Paperclip, ImageOff } from 'lucide-react';
+import { Bell, Home, BookOpen, Sparkles, Settings, ShieldCheck, BookMarked, HelpCircle, FileText, Mail, CalendarDays, ChevronDown, ChevronRight, ChevronsLeft, PanelLeftOpen, MessagesSquare, NotebookPen, UserRound, Send, X, User, Paperclip, ImageOff, MoreHorizontal } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useAuth } from '../../contexts/AuthContext';
@@ -12,7 +12,7 @@ import { AccountSettingsDropdown } from './AccountSettingsDropdown';
 import GlobalAiCoachDrawer from '../aicoach/GlobalAiCoachDrawer';
 import SidebarStudyTimer from './SidebarStudyTimer';
 import { withCfToken } from '../profile/AvatarPicker';
-import { color } from '../../theme/webcoachTheme';
+import { color, radius } from '../../theme/webcoachTheme';
 import { parseDifyMessage } from '../../utils/difyButtons';
 
 interface AppHeaderProps {
@@ -27,7 +27,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, avatarUrl: ctxAvatarUrl, nickName: ctxNickName, contentToken } = useAuth();
-  const isStudentsPage = location.pathname.startsWith('/coach/students');
+  const isStudentsPage = location.pathname.startsWith('/coach/students') || location.pathname.startsWith('/coach/schedule');
+  const isCoachSettings = location.pathname.startsWith('/coach/settings');
 
   const resolvedUserName = userName ?? ctxNickName ?? user?.username ?? 'User';
   // avatarUrl は呼び出し元が既にcf_token付与済みの前提。ctxAvatarUrlはcontextの生URLなのでここで付与する
@@ -69,6 +70,15 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
   // アカウント行だけ消えるのを避けるため）なので、外側クリック判定は両方見る。
   const accountRailRef = useRef<HTMLDivElement>(null);
   const accountPanelRef = useRef<HTMLDivElement>(null);
+
+  /*
+   * SP下部バーの「その他」シート。
+   * 🔴 PCには存在しない面。sm未満でしか出さない（描画側が sm:hidden）。
+   */
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreBtnRef = useRef<HTMLButtonElement>(null);
+  const morePanelRef = useRef<HTMLDivElement>(null);
+  const bottomNavRef = useRef<HTMLElement>(null);
 
   // ドロップダウン外クリックで閉じる
   useEffect(() => {
@@ -178,6 +188,112 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     return () => document.removeEventListener('keydown', onKey);
   }, [expanded]);
 
+  /*
+   * SP下部ナビの「実際に占有している高さ」を --wc-bottomnav-total に書き出す。
+   * ============================================================
+   * 🔴 バーの高さは固定ではない。学習タイマーが記録中のときは、ナビ本体（64px）の
+   *    上に帯（36px）が積まれて実効 101px になる。固定値 64px を前提にしていると、
+   *    記録中はページ最下部の内容が帯に隠れ、常駐AIコーチのFABも帯に重なる。
+   * 🔴 セーフエリアぶん（nav の padding-bottom）も込みで測れるので、
+   *    読む側は env() を足さなくてよい。
+   * 🔴 sm以上では nav が display:none になり高さ0。そのときは変数を外して
+   *    index.css の既定値（--wc-bottomnav-h ＋ セーフエリア）に戻す。
+   * ============================================================
+   */
+  useLayoutEffect(() => {
+    const el = bottomNavRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    const root = document.documentElement;
+    const apply = () => {
+      const h = el.getBoundingClientRect().height;
+      if (h > 0) root.style.setProperty('--wc-bottomnav-total', `${Math.round(h)}px`);
+      else root.style.removeProperty('--wc-bottomnav-total');
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      root.style.removeProperty('--wc-bottomnav-total');
+    };
+  }, []);
+
+  /*
+   * 「その他」シートを開いている間は背面を動かさない。
+   * 🔴 body のクラスではなく style を退避して戻す（QuoteFromLessonModal と同じ作法）。
+   *    クラスだと、誰が外すのかが曖昧になる。
+   */
+  useEffect(() => {
+    if (!moreOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = previous; };
+  }, [moreOpen]);
+
+  /*
+   * Esc で閉じる／Tab をシートの中に閉じ込める。
+   * 🔴 シートはコンテンツ全面を覆うので、フォーカスが背面のリンクへ抜けると
+   *    見えない要素を操作できてしまう。
+   */
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        setMoreOpen(false);
+        return;
+      }
+      if (e.key !== 'Tab' || !morePanelRef.current) return;
+      const focusables = morePanelRef.current.querySelectorAll<HTMLElement>(
+        'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+      );
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      } else if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey, true);
+    return () => document.removeEventListener('keydown', onKey, true);
+  }, [moreOpen]);
+
+  /*
+   * sm以上になったらシートを閉じる。
+   * 🔴 表示は sm:hidden で消えるが、それだけでは body のスクロールロックが
+   *    掛かったまま残る（＝PC幅に広げたのに本文が動かない）。端末を横向きに
+   *    しただけで 640px を跨ぐことがあるので、幅の監視は必須。
+   */
+  useEffect(() => {
+    if (!moreOpen) return;
+    const mq = window.matchMedia('(min-width: 640px)');
+    if (mq.matches) { setMoreOpen(false); return; }
+    const onChange = (e: MediaQueryListEvent) => { if (e.matches) setMoreOpen(false); };
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [moreOpen]);
+
+  /*
+   * 開いたらシート本体に、閉じたら「その他」ボタンにフォーカスを戻す。
+   * 🔴 hasOpenedMore で「一度でも開いたか」を見る。これが無いと初回マウント時の
+   *    false でも else 側が走り、ページを開いただけでフォーカスが下部バーに飛ぶ。
+   * 🔴 開いたとき先頭の行にいきなり当てない。押し間違いを誘発するので、
+   *    パネル自身（tabIndex=-1）に当てて Tab で降りてもらう。
+   */
+  const hasOpenedMore = useRef(false);
+  useEffect(() => {
+    if (moreOpen) {
+      hasOpenedMore.current = true;
+      morePanelRef.current?.focus();
+    } else if (hasOpenedMore.current) {
+      moreBtnRef.current?.focus();
+    }
+  }, [moreOpen]);
+
   // 【一旦停止】全画面共通の「なぞって解説」（テキスト選択で「AIに解説」ボタンを出す機能）は撤去した。
   // AppHeader は全ページに出るため、文章をなぞる・コピーするなどの通常操作のたびに
   // ポップアップが割り込んでしまうのが理由。
@@ -205,15 +321,63 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     { label: '記録', icon: CalendarDays, path: '/study-log', active: isStudyLog },
   ];
   const learnItems = navItems;
-  // 🔴 dev/kanegae統合: 管理者/コーチは複数ロールを併せ持ちうるため、旧ternary
-  //    (どちらか一方しか出ない)から配列連結に変更。
-  // 「連携設定」(Zoom/Google Meet連携, CoachSettingsPage.tsx)は依存するBFF側
-  // meeting-connections系が未実装のためいったん没(routes/index.tsx参照)。
+  /*
+   * 管理・コーチ項目。
+   * 🔴 admin と coach を排他にしない。以前は isAdmin を先に見て早期に返していたため、
+   *    admin かつ coach の人（運営がコーチも持つ運用、モックの擬似ユーザーもこれ）には
+   *    コーチ画面への導線が1本も出なかった。両方持っているなら両方出す。
+   * 🔴 dev/kanegae統合: 「連携設定」(Zoom連携, CoachSettingsPage.tsx)はbffClient側の
+   *    getMeetingIntegrationStatus/getMeetingIntegrationAuthorizeUrlが実装済み
+   *    (api-server/routers/integrations.py)のため、ナビへ復元してある。
+   */
   const manageItems = [
     ...(user?.isAdmin ? [{ label: '管理', icon: ShieldCheck, path: '/admin', active: isAdmin }] : []),
-    ...(!user?.isAdmin && user?.isCoach
-      ? [{ label: '受講生一覧', icon: BookOpen, path: '/coach/students', active: isStudentsPage }]
+    ...(user?.isCoach
+      ? [
+          { label: '受講生一覧', icon: UserRound, path: '/coach/students', active: isStudentsPage },
+          { label: '連携設定', icon: Settings, path: '/coach/settings', active: isCoachSettings },
+        ]
       : []),
+  ];
+
+  /*
+   * SP下部バーの枠割り。
+   * ============================================================
+   * 🔴 navItems / manageItems 自体には触らない。PC（レール・パネル）は今までどおり
+   *    全項目を出す。ここは「SPのバーに何を常設するか」だけを決める派生。
+   * 🔴 バーは常に 5項目＋「その他」の6枠。ロールで枠数が変わらないのが要点で、
+   *    以前は管理ロールだと最大9枠＝375pxで1枠41pxまで潰れていた（CL-A12）。
+   * 🔴 find ではなく filter で引く。navItems 側の path を変えたとき、find だと
+   *    undefined が混ざって落ちるが、filter なら「バーから消えてシートに出る」
+   *    だけで済む（安全側に倒れる）。
+   * 🔴 バーから外した項目は必ず sheetNavItems に落ちる。どちらにも出ない項目が
+   *    できると、SPからその画面へ到達できなくなる。
+   * ============================================================
+   */
+  const BOTTOM_BAR_PATHS = ['/mypage', '/courses', '/ai-coach', '/coaching', '/study-log'];
+  const bottomBarItems = navItems.filter((i) => BOTTOM_BAR_PATHS.includes(i.path));
+  const sheetNavItems = [...navItems.filter((i) => !BOTTOM_BAR_PATHS.includes(i.path)), ...manageItems];
+  /*
+   * 「その他」の点灯。
+   * 🔴 バーに枠が無いページ（マイノート・管理・設定・ヘルプ）でも、必ずどれか1枠が
+   *    点灯している状態を保つ。「ナビに無いページも必ずどれか1本の配下として
+   *    点灯させる」（アクティブ判定のコメント）を SP でも破らないため。
+   */
+  const isOtherActive =
+    moreOpen ||
+    sheetNavItems.some((i) => i.active) ||
+    isSettingsPage ||
+    location.pathname.startsWith('/help');
+
+  /*
+   * パネル下部の補助リンク。
+   * 🔴 配列にしてあるのは、PCパネルとSPの「その他」シートが同じものを map するため。
+   *    2箇所に手で書くと、かつての「PC6項目 vs SP3項目」（下部ナビのコメント参照）を
+   *    別の場所で再演することになる。増やすときはここに1行足すだけ。
+   */
+  const subLinks = [
+    { label: '利用マニュアル', icon: FileText, path: '/help/manual' },
+    { label: 'よくある質問', icon: HelpCircle, path: '/help/faq' },
   ];
 
   // キーボードフォーカス時の共通フィードバック（色だけに依存しないよう ring + 背景色の両方を使う）
@@ -239,6 +403,14 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     panelActiveInk: color.primaryHover,
     /** ツールチップのダークピル（デザインの .rail-tip） */
     tipBg: '#3A3532',
+    /*
+     * アクティブな丸ピルの影。
+     * 🔴 レール（PC）と下部バー（SP）が同じ値を読む。以前は下部バーだけ別に
+     *    書かれていて、旧パレット（#FF5A7A の文字色だけ）のまま取り残されていた。
+     */
+    activePillShadow: '0 2px 10px -2px rgba(214,9,52,.4)',
+    /** 下部バーの上向きの影。レールの右向き影 '3px 0 10px -4px …' の向きだけ変えたもの */
+    barShadowUp: '0 -3px 10px -4px rgba(60,48,32,.18)',
   };
 
   /*
@@ -270,10 +442,33 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     rowPadX: 16,
     /** ナビ行どうしの隙間 */
     rowSpacing: 4,
-    /** レールの丸アイコン */
-    railBtn: 40,
-    railIcon: 18,
-    railGap: 6,
+    /*
+     * レールの丸アイコン。
+     * 🔴 レールはアイコンの下にラベルを出す（72px幅・10px）ので、1項目が
+     *    「丸36 + 2px + 文字12px」= 50px になる。丸を 40→36・隙間を 6→4 に
+     *    詰めたのはラベルぶんの高さを吸収するため。実測（1440x768）で
+     *    ナビ帯の下端は 6項目 386px・管理ロールの9項目 565px。アカウント行は
+     *    下端に寄るので、必要な高さは 565+14+36+16 ≒ 631px。640px くらいの
+     *    ビューポートまでは重ならない（700・768 で実測ずみ）。
+     *    ここを大きく戻すと下端のアカウント行が短いノートPCで画面外に出る
+     *    （レールに overflow は付けられない ＝ ツールチップが切れる、の制約）。
+     */
+    railBtn: 36,
+    railIcon: 17,
+    railGap: 4,
+    /** レールのラベル（アイコン下） */
+    railLabelFont: 10,
+    railLabelGap: 2,
+    /*
+     * SP下部バーのラベル。丸ピル本体はレールと同寸（railBtn/railIcon）を使い回す。
+     * 🔴 レールの10pxより1px大きい。レールは幅72pxの中に全角5文字を収める都合で
+     *    10pxだが、下部バーは1枠62.5px（375px÷6枠）あるので11pxが収まる。
+     *    ui-review CL-A12 が「ラベル11px・枠を固定」を指しているのに合わせた値で、
+     *    typography.md の「12px未満を作らない」に対するこの枠限定の例外。
+     *    36 + 2 + 13 = 51px なので、バーの高さ64pxには収まる。
+     */
+    bottomLabelFont: 11,
+    bottomLabelGap: 2,
     /** パネル下部の補助リンク */
     subH: 32,
     subFont: 12,
@@ -297,35 +492,69 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     'pointer-events-none absolute left-full top-1/2 z-50 ml-2.5 -translate-y-1/2 whitespace-nowrap rounded-[7px] px-2.5 py-[5px] text-[12px] font-medium opacity-0 transition-opacity duration-[120ms] group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none';
   const tooltipStyle = { background: SB.tipBg, color: SB.panelInk };
 
-  /** 常時見えている72pxレールの丸アイコン1つ */
-  const renderRailItem = (item: { label: string; icon: any; path: string; active: boolean }) => {
-    const Icon = item.icon;
-    return (
-      <button
-        key={item.path}
-        onClick={() => navigate(item.path)}
-        aria-label={item.label}
-        aria-current={item.active ? 'page' : undefined}
-        tabIndex={expanded ? -1 : undefined}
-        className={`group relative grid place-items-center rounded-full appearance-none border-0 cursor-pointer transition-colors duration-200 motion-reduce:transition-none ${focusRing} ${
-          item.active ? '' : 'hover:bg-[#FDF2F2]'
+  /*
+   * 常時見えている72pxレールの1項目（丸アイコン＋その下のラベル）。
+   * 🔴 ラベルを出しているので、ここにツールチップは付けない。同じ語が
+   *    ホバーで二重に出て読みにくくなる（ツールチップは開くボタンと
+   *    タイマーだけに残っている）。
+   * 🔴 ラベルは展開パネルと同じ語をそのまま使う。レールだけ「学習」
+   *    「ノート」と短くすると、開閉で呼び名が変わって別物に見える。
+   *    72px幅・10pxなら全角5文字（コーチング／マイノート／受講生一覧）
+   *    まで折り返さずに収まる。
+   */
+  /*
+   * 丸ピル＋その下のラベル、という「見た目」だけを組む。
+   * ============================================================
+   * 🔴 ここがナビの見た目の唯一の基準。PCレール・SP下部バー・SPの「その他」の
+   *    3箇所がこれを読む。以前は SP 下部バーだけ別に書かれていて、アクティブが
+   *    旧パレット（#FF5A7A の文字色だけ）のまま取り残され、PCと別物に見えていた。
+   *    片方だけ直さないこと。
+   * 🔴 変わってよいのは labelFont だけ。色・影・丸の寸法・strokeWidth は共通。
+   * ============================================================
+   */
+  const renderNavPillFace = (Icon: any, label: string, active: boolean, labelFont: number) => (
+    <>
+      <span
+        className={`grid place-items-center rounded-full transition-colors duration-200 motion-reduce:transition-none ${
+          active ? '' : 'hover:bg-[#FDF2F2]'
         }`}
         style={{
           width: SZ.railBtn,
           height: SZ.railBtn,
           flex: 'none',
-          background: item.active ? SB.brand : 'transparent',
-          boxShadow: item.active ? '0 2px 10px -2px rgba(214,9,52,.4)' : undefined,
+          background: active ? SB.brand : 'transparent',
+          boxShadow: active ? SB.activePillShadow : undefined,
         }}
       >
-        <Icon size={SZ.railIcon} strokeWidth={1.75} color={item.active ? SB.panelInk : SB.iconIdle} />
-        {/* レールはアイコンのみなので、ホバー/フォーカスでラベルを添える（title属性はキーボードで読めない） */}
-        <span role="tooltip" aria-hidden="true" className={tooltipClass} style={tooltipStyle}>
-          {item.label}
-        </span>
-      </button>
-    );
-  };
+        <Icon size={SZ.railIcon} strokeWidth={1.75} color={active ? SB.panelInk : SB.iconIdle} />
+      </span>
+      <span
+        className="whitespace-nowrap"
+        style={{
+          fontSize: labelFont,
+          lineHeight: `${labelFont + 2}px`,
+          fontWeight: active ? 700 : 500,
+          color: active ? SB.panelActiveInk : SB.iconIdle,
+          letterSpacing: '-0.02em',
+        }}
+      >
+        {label}
+      </span>
+    </>
+  );
+
+  const renderRailItem = (item: { label: string; icon: any; path: string; active: boolean }) => (
+    <button
+      key={item.path}
+      onClick={() => navigate(item.path)}
+      aria-current={item.active ? 'page' : undefined}
+      tabIndex={expanded ? -1 : undefined}
+      className={`flex flex-col items-center appearance-none border-0 bg-transparent cursor-pointer ${focusRing}`}
+      style={{ width: 68, padding: 0, gap: SZ.railLabelGap, flex: 'none' }}
+    >
+      {renderNavPillFace(item.icon, item.label, item.active, SZ.railLabelFont)}
+    </button>
+  );
 
   /*
    * 展開パネル（224px・赤）の行1つ。
@@ -414,6 +643,53 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
     </div>
   );
 
+  /*
+   * 「その他」シートの1行。
+   * 🔴 遷移したら必ず閉じる。PCの展開パネルは「遷移しても畳まない」（push 型で
+   *    開いたまま本文を操作できるのが要件）だが、シートは本文を覆うオーバーレイなので
+   *    逆。ここをパネルに揃えて閉じないようにすると、行き先に着いても幕が残る。
+   * 🔴 ラベルは14px。バーのラベル（11px）と違い、こちらは一覧行なので
+   *    typography.md の「UIの下限は14px」をそのまま守れる。
+   */
+  const renderSheetRow = (label: string, Icon: any, path: string, active: boolean) => (
+    <button
+      key={path}
+      onClick={() => { setMoreOpen(false); navigate(path); }}
+      aria-current={active ? 'page' : undefined}
+      className={`flex items-center w-full appearance-none border-0 cursor-pointer text-left transition-colors hover:bg-[#FAF7F7] motion-reduce:transition-none ${focusRing}`}
+      style={{
+        height: 52,
+        gap: 12,
+        padding: '0 20px',
+        fontFamily: 'inherit',
+        fontSize: 14,
+        fontWeight: active ? 700 : 500,
+        background: active ? color.primaryTint : 'transparent',
+        color: active ? SB.panelActiveInk : color.textBody,
+      }}
+    >
+      <Icon size={18} strokeWidth={1.75} color={active ? SB.brand : SB.iconIdle} style={{ flex: 'none' }} />
+      <span className="truncate">{label}</span>
+    </button>
+  );
+
+  /** シート内のセクション見出し。行の由来（管理 / アカウント / ヘルプ）を分ける */
+  const renderSheetHeading = (text: string) => (
+    <div
+      style={{
+        padding: '12px 20px 4px',
+        borderTop: `1px solid ${color.border}`,
+        marginTop: 4,
+        fontSize: 12,
+        fontWeight: 700,
+        letterSpacing: '.04em',
+        color: color.textSubtle,
+      }}
+    >
+      {text}
+    </div>
+  );
+
   /** パネル下部の補助リンク（利用マニュアル・よくある質問） */
   const renderPanelSubLink = (label: string, Icon: any, onClick: () => void) => (
     <button
@@ -434,7 +710,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
       {/* ──────────────────────────────────────────────────────────
           PC版 左ナビ（sm以上）。claude.ai/design『マイページ 3d.dc.html』準拠。
           2層構造（どちらも left:0 に常時マウントし、クロスフェードで入れ替わる）:
-            ① レール（72px・既定）… アイコンのみ
+            ① レール（72px・既定）… アイコン＋下にラベル（10px）
             ② パネル（224px・赤） … 展開時
 
           🔴 push 型。展開すると body の padding-left が 72px → 224px に伸び、
@@ -476,7 +752,8 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           🔴 ここに overflow を付けてはいけない。付けるとホバー時のツールチップが
              レールの内側（72px幅）で切られて読めなくなる。overflow:hidden/auto は
              どちらもクリップ領域を作るので、x だけ hidden にしても同じこと。
-             レールの中身は合計 約470px で、実用的な画面高には収まる。
+             レールの中身は合計 約630px（管理ロール・ラベル付き）で、
+             実用的な画面高には収まる。内訳は上の SZ のコメント参照。
         */}
         <div className="flex flex-col items-center" style={{ flex: 1, minHeight: 0, width: '100%' }}>
           <nav aria-label="メインナビゲーション" className="flex flex-col items-center" style={{ gap: SZ.railGap }}>
@@ -611,8 +888,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
         </div>
 
         <div style={{ padding: '12px 8px', display: 'flex', flexDirection: 'column', gap: 2, flex: 'none' }}>
-          {renderPanelSubLink('利用マニュアル', FileText, () => navigate('/help/manual'))}
-          {renderPanelSubLink('よくある質問', HelpCircle, () => navigate('/help/faq'))}
+          {subLinks.map(({ label, icon, path }) => renderPanelSubLink(label, icon, () => navigate(path)))}
         </div>
 
         {/*
@@ -927,30 +1203,50 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           🔴 項目は navItems / manageItems を共有する。以前はここに同じ内容を
              手で並べていて、PC6項目に対しSP3項目という食い違いが起きていた
              （コーチング・マイノートへSPから到達できなかった）。定義を1本にする。
-          🔴 管理・受講生一覧はロール保持者だけに出る7枚目。375pxで1枚53pxと
-             詰まるが、管理者がSPから到達できなくなる回帰よりはましと判断した。
+          🔴 見た目はPCレールと同じ言語（暖色の地＋アクティブは赤い丸ピル）。
+             renderNavPillFace が唯一の基準で、色も影も丸の寸法もレールと共有する。
+             ここだけ別に書くと、かつてのように旧パレット（#FF5A7A）のまま
+             取り残されてPCと別物に見える。
+          🔴 枠はロールに関係なく常に6つ（5項目＋その他）。以前は管理ロールだと
+             最大9枠＝375pxで1枚41pxまで潰れていた（CL-A12）。あふれた項目は
+             「その他」シートに落ちるので、到達できなくなる項目は無い。
          ────────────────────────────────────────────────────────── */}
       <nav
+        ref={bottomNavRef}
         aria-label="メインナビゲーション"
-        className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#F0EAE6]"
-        style={{ boxShadow: '0 -2px 10px rgba(0,0,0,0.06)', paddingBottom: 'env(safe-area-inset-bottom)' }}
+        className="sm:hidden fixed bottom-0 left-0 right-0 z-40"
+        style={{
+          background: SB.railBg,
+          borderTop: `1px solid ${SB.railBorder}`,
+          boxShadow: SB.barShadowUp,
+          paddingBottom: 'env(safe-area-inset-bottom)',
+        }}
       >
         {/* 学習タイマー。SPはサイドバーが無いので、ナビの上に細い帯として出す */}
         <SidebarStudyTimer variant="mobile" />
-        <div className="flex items-stretch h-16">
-          {[...navItems, ...manageItems].map(({ label, icon: Icon, path, active }) => (
+        <div className="flex items-stretch" style={{ height: 'var(--wc-bottomnav-h)' }}>
+          {bottomBarItems.map((item) => (
             <button
-              key={path}
-              onClick={() => navigate(path)}
-              aria-current={active ? 'page' : undefined}
-              className={`flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 px-0.5 transition-colors ${focusRing} ${
-                active ? 'text-brand' : 'text-brand-muted'
-              }`}
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              aria-current={item.active ? 'page' : undefined}
+              className={`flex-1 min-w-0 flex flex-col items-center justify-center appearance-none border-0 bg-transparent cursor-pointer ${focusRing}`}
+              style={{ padding: 0, gap: SZ.bottomLabelGap }}
             >
-              <Icon className="w-5 h-5 flex-none" />
-              <span className="text-[10px] font-bold whitespace-nowrap truncate max-w-full">{label}</span>
+              {renderNavPillFace(item.icon, item.label, item.active, SZ.bottomLabelFont)}
             </button>
           ))}
+          {/* 6枠目。ページではないので aria-current は付けない（点灯はするが「現在地」ではない） */}
+          <button
+            ref={moreBtnRef}
+            onClick={() => setMoreOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={moreOpen}
+            className={`flex-1 min-w-0 flex flex-col items-center justify-center appearance-none border-0 bg-transparent cursor-pointer ${focusRing}`}
+            style={{ padding: 0, gap: SZ.bottomLabelGap }}
+          >
+            {renderNavPillFace(MoreHorizontal, 'その他', isOtherActive, SZ.bottomLabelFont)}
+          </button>
         </div>
       </nav>
 
@@ -1167,6 +1463,102 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
           </div>
         </div>
       )}
+      {/* ──────────────────────────────────────────────────────────
+          SP版「その他」シート（sm未満）。
+          🔴 下部バーの <nav> の外に置く。nav は z-40 の positioned 要素なので
+             独自の重なり文脈を作り、中に入れると常駐AIコーチのFAB（同じ z-40 で
+             DOM上あと）が幕の上に浮いてしまう。
+          🔴 ポータルは使わず sm:hidden の素の div で包む。display:none なら
+             中の position:fixed ごと消えるので、PC幅に漏れない。
+          🔴 ここは SP から唯一到達できる「設定・ヘルプ」の入口でもある。
+             PC版 <header> は className="hidden" で死んでいて、レール／パネルは
+             sm以上にしか出ない。ここを消すと SP からアカウント設定・プロフィール・
+             利用マニュアル・よくある質問へ行く手段が1本も無くなる（CL-A11）。
+          🔴 ログアウトは置かない。アカウント設定画面が持っている（SCREEN-013）。
+         ────────────────────────────────────────────────────────── */}
+      <div className="sm:hidden">
+        {moreOpen && (
+          <div
+            role="presentation"
+            onClick={(e) => { if (e.target === e.currentTarget) setMoreOpen(false); }}
+            style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(20,14,8,.42)' }}
+          >
+            <div
+              ref={morePanelRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="wc-more-sheet-title"
+              tabIndex={-1}
+              className="wc-more-sheet focus:outline-none"
+              style={{
+                position: 'fixed',
+                left: 0,
+                right: 0,
+                bottom: 0,
+                maxWidth: 520,
+                margin: '0 auto',
+                maxHeight: 'min(78dvh, 620px)',
+                overflowY: 'auto',
+                overscrollBehavior: 'contain',
+                background: color.surface,
+                borderTopLeftRadius: radius.card,
+                borderTopRightRadius: radius.card,
+                paddingBottom: 'max(8px, env(safe-area-inset-bottom))',
+              }}
+            >
+              {/* 掴んで下ろせそうに見えるが実際のドラッグは持たせていないので、細い線1本に留める */}
+              <div aria-hidden="true" style={{ width: 36, height: 4, borderRadius: 999, background: color.borderNeutral, margin: '8px auto 2px' }} />
+              <h2 id="wc-more-sheet-title" style={{ margin: 0, padding: '6px 20px 8px', fontSize: 16, fontWeight: 700, color: color.textStrong }}>
+                その他
+              </h2>
+
+              {/* アカウント行。パネルのアカウント行と同じくタップでアカウント設定へ直行する */}
+              <button
+                onClick={() => { setMoreOpen(false); navigate('/account-settings'); }}
+                aria-label={`アカウント設定: ${resolvedUserName}`}
+                className={`flex items-center w-full appearance-none border-0 bg-transparent cursor-pointer text-left transition-colors hover:bg-[#FAF7F7] motion-reduce:transition-none ${focusRing}`}
+                style={{ gap: 12, padding: '10px 20px 14px' }}
+              >
+                <span className="grid place-items-center rounded-full overflow-hidden" style={{ width: 40, height: 40, flex: 'none', background: SB.softPink }}>
+                  <img src={avatarSrc} alt="" className="w-full h-full object-cover" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate" style={{ fontSize: 14, fontWeight: 700, color: color.textStrong }}>{resolvedUserName}</span>
+                  {user?.username && (
+                    <span className="block truncate" style={{ fontSize: 12, color: color.textSubtle, marginTop: 1 }}>{user.username}</span>
+                  )}
+                </span>
+                <ChevronRight size={18} strokeWidth={2} color={SB.iconIdle} style={{ flex: 'none' }} />
+              </button>
+
+              {/* バーの6枠に入らなかったナビ項目（マイノート）と、ロール項目 */}
+              {sheetNavItems.map((i) => renderSheetRow(i.label, i.icon, i.path, i.active))}
+
+              {renderSheetHeading('アカウント')}
+              {accountItems.map(({ label, icon, path }) => renderSheetRow(label, icon, path, location.pathname === path))}
+
+              {renderSheetHeading('ヘルプ')}
+              {subLinks.map(({ label, icon, path }) => renderSheetRow(label, icon, path, location.pathname === path))}
+
+              <button
+                onClick={() => setMoreOpen(false)}
+                className={`w-full appearance-none border-0 bg-transparent cursor-pointer transition-colors hover:bg-[#FAF7F7] motion-reduce:transition-none ${focusRing}`}
+                style={{
+                  height: 52,
+                  marginTop: 4,
+                  borderTop: `1px solid ${color.border}`,
+                  fontFamily: 'inherit',
+                  fontSize: 14,
+                  fontWeight: 700,
+                  color: color.textSecondary,
+                }}
+              >
+                閉じる
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 }

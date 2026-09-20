@@ -143,22 +143,27 @@ export function SkillPlusMenu({
           {/* 'auto' を先頭に固定し、実スキルは目的（学習／制作／キャリア）で束ねる。
               機能が増えたのでフラットに並べると探せなくなる。 */}
           {renderOption('auto')}
-          {AI_SKILL_CATEGORY_ORDER.map((category) => (
-            <div key={category}>
-              <p
-                style={{
-                  margin: '5px 8px 2px',
-                  fontSize: 9,
-                  fontWeight: 800,
-                  letterSpacing: '.06em',
-                  color: color.textFaint,
-                }}
-              >
-                {AI_SKILL_CATEGORY_LABEL[category]}
-              </p>
-              {skillsInCategory(category).map(renderOption)}
-            </div>
-          ))}
+          {/* 🔴 0件のカテゴリは見出しごと出さない（AiCoachHome と同じ理由） */}
+          {AI_SKILL_CATEGORY_ORDER.map((category) => {
+            const skills = skillsInCategory(category);
+            if (skills.length === 0) return null;
+            return (
+              <div key={category}>
+                <p
+                  style={{
+                    margin: '5px 8px 2px',
+                    fontSize: 9,
+                    fontWeight: 800,
+                    letterSpacing: '.06em',
+                    color: color.textFaint,
+                  }}
+                >
+                  {AI_SKILL_CATEGORY_LABEL[category]}
+                </p>
+                {skills.map(renderOption)}
+              </div>
+            );
+          })}
           <p
             style={{
               margin: '4px 8px 3px',
