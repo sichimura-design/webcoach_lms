@@ -109,9 +109,6 @@ const COPY_WORDS = ['キャッチコピー', 'キャッチ', 'コピー', '見�
 /** コピーを「作ってほしい」という動作の語 */
 const COPY_ACTION_WORDS = ['考えて', '作って', 'つくって', '案を', 'アイデア', '出して', '提案して'];
 
-/** 面接・面談の練習を示す語 */
-const INTERVIEW_WORDS = ['面接', '面談', '商談', '顧客との打ち合わせ', '自己紹介の練習'];
-
 /** 応募・提案の文書を作りたいことを示す語 */
 const APPLICATION_WORDS = ['応募', '提案文', '営業文', 'エントリー', '職務経歴', '履歴書'];
 
@@ -292,19 +289,12 @@ function detectRaw(input: DetectSkillInput, text: string): SkillSuggestion {
       references: buildReferences('writing', input),
     };
   }
-  // ── キャリア（面接練習・応募文）──
-  // 「長い文章の貼り付け」だけで文章改善に流すより先に見る。募集要項を貼っただけの
-  // 相談を「文章を整えますか」と返してしまうと、聞かれていないことに答えることになる。
-  const interviewWord = hit(text, INTERVIEW_WORDS);
-  if (interviewWord) {
-    const practice = hit(text, ['練習', 'シミュレーション', '模擬', '想定質問']);
-    return {
-      skillId: 'interview',
-      strength: practice ? 'explicit' : 'suggest',
-      reason: practice ? `「${interviewWord}」＋「${practice}」` : `「${interviewWord}」`,
-      references: buildReferences('interview', input),
-    };
-  }
+  // ── キャリア（面接練習）──
+  // 'interview' は専門モード実行API（POST /webcoach/ai-skill、未実装）に回さない
+  // （types/aiSkill.ts の SPECIALIST_SKILLS 参照）。AI面接シミュレーターは既存の
+  // Dify動的ツール（通常のAIコーチ会話）としてすでに動いているため、ここで確認カードや
+  // 提案バッジを出すとかえって（未実装の）専門モード実行に迷い込む導線を作ってしまう。
+  // よって検知そのものを行わず、通常のAIコーチ会話にそのまま流す。
 
   const applicationWord = hit(text, APPLICATION_WORDS);
   if (applicationWord) {
