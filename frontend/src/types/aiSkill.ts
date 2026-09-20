@@ -359,9 +359,15 @@ export const AI_SKILL_PREFER_WIDE: Record<AiSkillId, boolean> = {
  * 'learning' を含めないのは意図的。「教材について質問」は右パネルのAIコーチが
  * 従来から POST /webcoach/lesson-ai でやっていることそのもので、
  * 別のエンドポイントに回すと同じ処理が二重になる。
+ *
+ * 'interview' も含めない。POST /webcoach/ai-skill は実BFFに未実装（MSWモックのみ）
+ * だが、AI面接シミュレーターは webcoach_ai_application 経由のDify動的ツールとして
+ * 実際に稼働済み（POST /webcoach/ai 経由）。ここに残すと確認カード→未実装API呼び出しで
+ * 必ずエラーになるだけで、実際のDify連携には到達できない。除外すると通常のAIコーチ会話
+ * （既存のDify動的ツール）にそのまま流れ、Dify側が自分で必要な情報を聞いてくれる。
  */
 export const SPECIALIST_SKILLS: ConcreteAiSkillId[] = CONCRETE_AI_SKILLS.filter(
-  (id) => id !== 'learning'
+  (id) => id !== 'learning' && id !== 'interview'
 );
 
 export const isSpecialistSkill = (id: AiSkillId): id is ConcreteAiSkillId =>
