@@ -207,6 +207,28 @@ class MyNoteResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class StudyGoalResponse(BaseModel):
+    """
+    学習目標宣言レスポンス。
+    frontend/src/types/goalDeclaration.ts の GoalDeclaration(camelCase契約)をそのまま満たす。
+    reflectedAt は自前カラムを持たず、常にnullを返す(フロント側でも未使用)。
+    """
+    model_config = ConfigDict(populate_by_name=True)
+
+    id: str
+    user_id: int = Field(alias="userId")
+    text: str
+    period_from: date = Field(alias="periodFrom")
+    period_to: date = Field(alias="periodTo")
+    status: str
+    reflection: Optional[str] = None
+    reflection_achievement: Optional[str] = Field(None, alias="reflectionAchievement")
+    reflected_at: Optional[datetime] = Field(None, alias="reflectedAt")
+    created_at: datetime = Field(alias="createdAt")
+    updated_at: datetime = Field(alias="updatedAt")
+    schema_version: int = Field(1, alias="schemaVersion")
+
+
 class LoginStreakResponse(BaseModel):
     """継続ログイン日数レスポンス"""
     userid: int

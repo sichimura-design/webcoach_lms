@@ -462,3 +462,25 @@ class WebCoachMyNote(Base):
         Index('idx_my_note_course', 'courseid'),
         Index('idx_my_note_cmid', 'cmid'),
     )
+
+
+class WebCoachStudyGoal(Base):
+    """
+    WebCoach: 学習目標宣言（受講生が自分の言葉で書く、期間つきの意思表明と振り返り）
+    """
+    __tablename__ = "webcoach_study_goal"
+
+    goal_id = Column(String(64), primary_key=True, nullable=False, comment='クライアント生成の宣言ID（POSTの冪等キー）')
+    mdl_user_id = Column(BigInteger, nullable=False, comment='MoodleユーザーID')
+    text = Column(String(120), nullable=False, comment='宣言文')
+    period_from = Column(Date, nullable=False, comment='対象期間の開始日')
+    period_to = Column(Date, nullable=False, comment='対象期間の終了日')
+    status = Column(String(16), nullable=False, default='active', comment='本人の意思 (active, achieved, missed, abandoned)')
+    reflection = Column(Text, nullable=True, comment='期間終了後の振り返り')
+    reflection_achievement = Column(String(8), nullable=True, comment='振り返りの手応え (low, mid, high)')
+    created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
+    updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())
+
+    __table_args__ = (
+        Index('idx_study_goal_user', 'mdl_user_id'),
+    )

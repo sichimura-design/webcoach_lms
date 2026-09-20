@@ -3,7 +3,7 @@ Common request DTOs
 """
 from typing import List, Dict, Any, Optional
 from datetime import datetime, date
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class BulkUploadRequest(BaseModel):
@@ -188,3 +188,32 @@ class MyNoteUpdate(BaseModel):
     favorite: Optional[int] = Field(None, ge=0, le=1, description="重要ラベル（0/1）")
     from_ai: Optional[int] = Field(None, ge=0, le=1, description="AIコーチの回答から作られたか（0/1）")
     from_coaching: Optional[int] = Field(None, ge=0, le=1, description="コーチングから作られたか（0/1）")
+
+
+# ------------------------------------------------------------------
+# 学習目標宣言（frontend/src/types/goalDeclaration.ts のcamelCase契約をそのまま満たす。
+# populate_by_name=Trueでcamelcase/snake_caseどちらでも受け付ける）
+# ------------------------------------------------------------------
+
+class StudyGoalCreate(BaseModel):
+    """学習目標宣言 作成リクエスト"""
+    model_config = ConfigDict(populate_by_name=True)
+
+    id: str = Field(..., max_length=64, description="クライアント生成の宣言ID（POSTの冪等キー）")
+    text: str = Field(..., max_length=120, description="宣言文")
+    period_from: date = Field(..., alias="periodFrom", description="対象期間の開始日")
+    period_to: date = Field(..., alias="periodTo", description="対象期間の終了日")
+
+
+class StudyGoalPatch(BaseModel):
+    """学習目標宣言 編集・振り返り保存リクエスト（未指定の項目は変更なし）"""
+    model_config = ConfigDict(populate_by_name=True)
+
+    text: Optional[str] = Field(None, max_length=120, description="宣言文")
+    period_from: Optional[date] = Field(None, alias="periodFrom", description="対象期間の開始日")
+    period_to: Optional[date] = Field(None, alias="periodTo", description="対象期間の終了日")
+    status: Optional[str] = Field(None, pattern="^(active|achieved|missed|abandoned)$", description="本人の意思")
+    reflection: Optional[str] = Field(None, max_length=500, description="振り返り")
+    reflection_achievement: Optional[str] = Field(
+        None, alias="reflectionAchievement", pattern="^(low|mid|high)$", description="振り返りの手応え"
+    )

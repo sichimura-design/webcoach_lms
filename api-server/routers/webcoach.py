@@ -1,16 +1,16 @@
 """
 WebCoach specific endpoints (Resume courses, profiles, etc.)
 """
-from typing import List
+from typing import List, Optional
 from datetime import datetime, date
 import logging
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 from sqlalchemy import text, func
 
 from database import get_db
-from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate, StudyReflectionUpdate
-from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse, StudyNoteResponse, StudyReflectionResponse, LoginStreakResponse, PeerStudyRankingResponse, PeerStudyStreakRankingResponse
+from dto.request import WebCoachUserProfileUpdate, ResumeCourseUpdate, UpdateDBRequest, AvatarCreate, AvatarUpdate, NextCoachingGoalCreate, NextCoachingGoalUpdate, NextCoachingGoalReorderRequest, NextCoachingGoalsBulkUpsertRequest, StudyNoteUpdate, StudyReflectionUpdate, StudyGoalCreate, StudyGoalPatch
+from dto.response import WebCoachUserProfileResponse, AvatarResponse, NextCoachingGoalResponse, StudyNoteResponse, StudyReflectionResponse, LoginStreakResponse, PeerStudyRankingResponse, PeerStudyStreakRankingResponse, StudyGoalResponse
 import crud
 from crud import (
     get_webcoach_user_profile,
@@ -43,6 +43,11 @@ from crud import (
     get_user_login_streak,
     get_peer_study_time_ranking,
     get_peer_study_streak_ranking,
+    create_study_goal,
+    get_study_goal,
+    list_study_goals,
+    update_study_goal,
+    delete_study_goal,
 )
 from entities.webcoach import WebCoachAIApplication
 
@@ -595,6 +600,154 @@ def delete_study_reflection_endpoint(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to delete study reflection: {str(e)}"
+        )
+
+
+# ==========================================
+# Study Goal Endpoints (学習目標宣言。/study-log の目標宣言カードが使う)
+# ==========================================
+
+def _study_goal_to_response(goal) -> StudyGoalResponse:
+    return StudyGoalResponse(
+        id=goal.goal_id,
+        user_id=goal.mdl_user_id,
+        text=goal.text,
+        period_from=goal.period_from,
+        period_to=goal.period_to,
+        status=goal.status,
+        reflection=goal.reflection,
+        reflection_achievement=goal.reflection_achievement,
+        reflected_at=None,
+        created_at=goal.created_at,
+        updated_at=goal.updated_at,
+        schema_version=1,
+    )
+
+
+@router.get(
+    "/goal-declarations/{userid}",
+    response_model=List[StudyGoalResponse],
+    summary="学習目標宣言 一覧取得"
+)
+def list_study_goals_endpoint(
+    userid: int,
+    status_filter: Optional[str] = Query(None, alias="status"),
+    limit: Optional[int] = None,
+    db: Session = Depends(get_db)
+):
+    """学習目標宣言の一覧を、開始日の新しい順で返します。"""
+    goals = list_study_goals(db, userid, status=status_filter, limit=limit)
+    return [_study_goal_to_response(g) for g in goals]
+
+
+@router.post(
+    "/goal-declarations/{userid}",
+    response_model=StudyGoalResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="学習目標宣言 作成"
+)
+def create_study_goal_endpoint(
+    userid: int,
+    data: StudyGoalCreate,
+    db: Session = Depends(get_db)
+):
+    """
+    学習目標宣言を作成します。idはクライアント生成の冪等キーで、
+    同じidが再送された場合は新規作成せず既存のものを返します。
+    """
+    if data.period_from > data.period_to:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="終わりの日は始まりの日より後にしてください")
+
+    try:
+        goal = create_study_goal(
+            db,
+            mdl_user_id=userid,
+            goal_id=data.id,
+            text=data.text,
+            period_from=data.period_from,
+            period_to=data.period_to,
+        )
+        db.commit()
+        db.refresh(goal)
+        return _study_goal_to_response(goal)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create study goal: {str(e)}"
+        )
+
+
+@router.patch(
+    "/goal-declarations/{userid}/{goal_id}",
+    response_model=StudyGoalResponse,
+    summary="学習目標宣言 編集・振り返りの保存"
+)
+def update_study_goal_endpoint(
+    userid: int,
+    goal_id: str,
+    data: StudyGoalPatch,
+    db: Session = Depends(get_db)
+):
+    """学習目標宣言を編集、または振り返り(手応え含む)を保存します。"""
+    existing = get_study_goal(db, userid, goal_id)
+    if not existing:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Study goal not found")
+
+    fields = data.model_fields_set
+    next_period_from = data.period_from if "period_from" in fields else existing.period_from
+    next_period_to = data.period_to if "period_to" in fields else existing.period_to
+    if next_period_from > next_period_to:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="終わりの日は始まりの日より後にしてください")
+
+    try:
+        goal = update_study_goal(
+            db,
+            mdl_user_id=userid,
+            goal_id=goal_id,
+            text=data.text,
+            period_from=data.period_from,
+            period_to=data.period_to,
+            status=data.status,
+            reflection=data.reflection,
+            reflection_provided="reflection" in fields,
+            reflection_achievement=data.reflection_achievement,
+            reflection_achievement_provided="reflection_achievement" in fields,
+        )
+        db.commit()
+        db.refresh(goal)
+        return _study_goal_to_response(goal)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to update study goal: {str(e)}"
+        )
+
+
+@router.delete(
+    "/goal-declarations/{userid}/{goal_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="学習目標宣言 削除"
+)
+def delete_study_goal_endpoint(
+    userid: int,
+    goal_id: str,
+    db: Session = Depends(get_db)
+):
+    """学習目標宣言を削除します。"""
+    try:
+        deleted = delete_study_goal(db, userid, goal_id)
+        if not deleted:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Study goal not found")
+        db.commit()
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete study goal: {str(e)}"
         )
 
 

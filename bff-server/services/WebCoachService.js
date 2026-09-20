@@ -323,6 +323,38 @@ class WebCoachService {
   }
 
   /**
+   * List a user's study goal declarations
+   */
+  async getStudyGoals(userid, query) {
+    console.log(`[WebCoach StudyGoal] Listing goals for user ${userid}`);
+    return await apiServerAdapter.getStudyGoals(userid, query);
+  }
+
+  /**
+   * Create a study goal declaration
+   */
+  async createStudyGoal(userid, input) {
+    console.log(`[WebCoach StudyGoal] Creating goal for user ${userid}`);
+    return await apiServerAdapter.createStudyGoal(userid, input);
+  }
+
+  /**
+   * Update a study goal declaration
+   */
+  async updateStudyGoal(userid, goalId, patch) {
+    console.log(`[WebCoach StudyGoal] Updating goal ${goalId} for user ${userid}`);
+    return await apiServerAdapter.updateStudyGoal(userid, goalId, patch);
+  }
+
+  /**
+   * Delete a study goal declaration
+   */
+  async deleteStudyGoal(userid, goalId) {
+    console.log(`[WebCoach StudyGoal] Deleting goal ${goalId} for user ${userid}`);
+    return await apiServerAdapter.deleteStudyGoal(userid, goalId);
+  }
+
+  /**
    * Get the study-time peer ranking
    */
   async getPeerStudyRanking(userid, period) {

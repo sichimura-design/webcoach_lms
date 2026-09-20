@@ -32,6 +32,7 @@ from entities import (
     WebCoachRoadmapAnswer,
     WebCoachMyNoteFolder,
     WebCoachMyNote,
+    WebCoachStudyGoal,
 )
 from dto.request import (
     CourseAccessCreate,
@@ -744,6 +745,132 @@ def delete_my_note(
         return False
 
     db.delete(note)
+    db.flush()
+    return True
+
+
+def create_study_goal(
+    db: Session,
+    mdl_user_id: int,
+    goal_id: str,
+    text: str,
+    period_from: date,
+    period_to: date,
+) -> WebCoachStudyGoal:
+    """
+    WebCoach: 学習目標宣言を作成
+
+    goal_idはクライアント生成の冪等キー。同じgoal_idで再送された場合は
+    新規作成せず既存のレコードをそのまま返す(二重タブ・ダブルクリック・リトライ対策)。
+    """
+    existing = get_study_goal(db, mdl_user_id, goal_id)
+    if existing:
+        return existing
+
+    goal = WebCoachStudyGoal(
+        goal_id=goal_id,
+        mdl_user_id=mdl_user_id,
+        text=text,
+        period_from=period_from,
+        period_to=period_to,
+        status='active',
+    )
+    db.add(goal)
+    db.flush()
+    return goal
+
+
+def get_study_goal(
+    db: Session,
+    mdl_user_id: int,
+    goal_id: str
+) -> Optional[WebCoachStudyGoal]:
+    """
+    WebCoach: 学習目標宣言を取得（本人所有のもののみ）
+    """
+    return db.query(WebCoachStudyGoal).filter(
+        WebCoachStudyGoal.goal_id == goal_id,
+        WebCoachStudyGoal.mdl_user_id == mdl_user_id,
+    ).first()
+
+
+def list_study_goals(
+    db: Session,
+    mdl_user_id: int,
+    status: Optional[str] = None,
+    limit: Optional[int] = None,
+) -> List[WebCoachStudyGoal]:
+    """
+    WebCoach: 学習目標宣言の一覧を取得（開始日の新しい順、同日なら作成の新しい順）
+    """
+    query = db.query(WebCoachStudyGoal).filter(WebCoachStudyGoal.mdl_user_id == mdl_user_id)
+
+    if status:
+        query = query.filter(WebCoachStudyGoal.status == status)
+
+    query = query.order_by(desc(WebCoachStudyGoal.period_from), desc(WebCoachStudyGoal.created_at))
+
+    if limit:
+        query = query.limit(limit)
+
+    return query.all()
+
+
+def update_study_goal(
+    db: Session,
+    mdl_user_id: int,
+    goal_id: str,
+    text: Optional[str] = None,
+    period_from: Optional[date] = None,
+    period_to: Optional[date] = None,
+    status: Optional[str] = None,
+    reflection: Optional[str] = None,
+    reflection_provided: bool = False,
+    reflection_achievement: Optional[str] = None,
+    reflection_achievement_provided: bool = False,
+) -> Optional[WebCoachStudyGoal]:
+    """
+    WebCoach: 学習目標宣言を更新（編集・振り返りの保存）
+    """
+    goal = get_study_goal(db, mdl_user_id, goal_id)
+    if not goal:
+        return None
+
+    if text is not None:
+        goal.text = text
+
+    if period_from is not None:
+        goal.period_from = period_from
+
+    if period_to is not None:
+        goal.period_to = period_to
+
+    if status is not None:
+        goal.status = status
+
+    if reflection_provided:
+        goal.reflection = reflection
+
+    if reflection_achievement_provided:
+        goal.reflection_achievement = reflection_achievement
+
+    db.flush()
+    return goal
+
+
+def delete_study_goal(
+    db: Session,
+    mdl_user_id: int,
+    goal_id: str
+) -> bool:
+    """
+    WebCoach: 学習目標宣言を削除
+    """
+    goal = get_study_goal(db, mdl_user_id, goal_id)
+    if not goal:
+        return False
+
+    db.delete(goal)
     db.flush()
     return True
 
