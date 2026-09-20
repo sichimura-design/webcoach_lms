@@ -10,26 +10,33 @@ import {
   FileText,
   Send,
   ArrowLeft,
+  ArrowRight,
   AlignJustify,
+  ChevronDown,
   X,
-  CheckCircle,
-  RotateCcw,
+  Check,
   ExternalLink,
-  Menu,
   Bot,
   User,
   Paperclip,
   ImageOff,
-  StickyNote,
   NotebookPen,
+  Sparkles,
 } from 'lucide-react';
-import Encoding from 'encoding-japanese';
 import MarkdownRenderer from './MarkdownRenderer';
-import { AppHeader } from './shared';
 import { parseDifyMessage } from '../utils/difyButtons';
 import { getUserMessage } from '../utils/errorMessage';
-import { color as themeColor } from '../theme/webcoachTheme';
+import { color, font, radius, shadow } from '../theme/webcoachTheme';
+import LessonTopBar from './learning/LessonTopBar';
 import LessonFloatingActions from './learning/LessonFloatingActions';
+import SupportPanel, { SupportTab } from './learning/SupportPanel';
+import {
+  getContentType as getModuleContentType,
+  isVideoFile,
+  buildSrcdoc,
+  openMoodleContentInNewTab,
+  resolveExternalUrl,
+} from './learning/moodleContent';
 import NoteTargetPicker from './notes/NoteTargetPicker';
 import type { NoteSourceRef } from '../types/notes';
 
@@ -73,107 +80,9 @@ interface TocItem {
   level: number; // 1〜4
 }
 
-// モジュールのコンテンツ種別（modname + ファイル種別）
-type ContentType =
-  | 'page'              // mod/page → description にHTML
-  | 'label'             // mod/label → description にHTML（インライン表示）
-  | 'url'               // mod/url → 外部リンク
-  | 'resource-video'    // mod/resource（動画ファイル）
-  | 'resource-markdown' // mod/resource（.md ファイル）
-  | 'resource-html'     // mod/resource（.html ファイル）
-  | 'resource-other'    // mod/resource（その他）
-  | 'unknown';
-
 // ─────────────────────────────────────────
 // ヘルパー関数
 // ─────────────────────────────────────────
-
-const isMarkdownFile = (filename: string) => /\.(md|markdown)$/i.test(filename);
-const isVideoFile    = (filename: string) => /\.(mp4|webm|ogg|mov|avi|mkv|flv|wmv)$/i.test(filename);
-const isHtmlFile     = (filename: string) => /\.(html|htm|xhtml)$/i.test(filename);
-
-/** modname とファイル拡張子からコンテンツ種別を決定 */
-function getContentType(module: Module): ContentType {
-  switch (module.modname) {
-    case 'page':  return 'page';
-    case 'label': return 'label';
-    case 'url':   return 'url';
-    case 'resource': {
-      const contents = module.contents ?? [];
-      if (contents.some(c => isVideoFile(c.filename)))    return 'resource-video';
-      if (contents.some(c => isMarkdownFile(c.filename))) return 'resource-markdown';
-      if (contents.some(c => isHtmlFile(c.filename)))     return 'resource-html';
-      return 'resource-other';
-    }
-    default: return 'unknown';
-  }
-}
-
-/**
- * Moodle コンテンツ HTML から srcdoc 用の完全な HTML を生成する。
- * CSS の正規化は BFF の normalizeMoodleContent で実施済みのため、
- * ここでは <style> を <head> に移動し iframe 表示用の補正 CSS を注入するのみ。
- */
-function buildSrcdoc(html: string): string {
-  const headStyles: string[] = [];
-
-  // <style> を抽出して <head> 用に収集し、<body> からは除去
-  const bodyHtml = html.replace(
-    /(<style[^>]*>)([\s\S]*?)(<\/style>)/gi,
-    (_, open, css, close) => {
-      headStyles.push(`${open}${css}${close}`);
-      return '';
-    }
-  );
-
-  const cleanedBody = bodyHtml;
-
-  return `<!DOCTYPE html>
-<html lang="ja"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-${headStyles.join('\n')}
-<style>
-  /* Moodleエディタがブロック要素間の改行を <br> に変換した余分な空白を除去 */
-  div > br, nav > br, ul > br, ol > br, li > br { display: none !important; }
-  /* コンテンツ内蔵のサイドバー・プログレスバーはiframe内では不要 */
-  .toc-sidebar { display: none !important; }
-  #progressBar { display: none !important; }
-  /*
-   * .quiz-options は display:flex。
-   * Moodleが &nbsp; テキストノードをブロック要素間に挿入するため、
-   * それらが flex アイテムとして扱われレイアウトが崩れる。
-   * font-size:0 でテキストノードのサイズを潰し、子要素で元に戻す。
-   */
-  .quiz-options { font-size: 0 !important; }
-  .quiz-options > * { font-size: revert !important; }
-</style>
-</head>
-<body>${cleanedBody}</body></html>`;
-}
-
-function buildSrcdocShiftJis(html: string): string {
-  const headStyles: string[] = [];
-  const bodyHtml = html.replace(
-    /(<style[^>]*>)([\s\S]*?)(<\/style>)/gi,
-    (_, open, css, close) => {
-      headStyles.push(`${open}${css}${close}`);
-      return '';
-    }
-  );
-  return `<!DOCTYPE html>
-<html lang="ja"><head><meta charset="shift-jis">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-${headStyles.join('\n')}
-<style>
-  div > br, nav > br, ul > br, ol > br, li > br { display: none !important; }
-  .toc-sidebar { display: none !important; }
-  #progressBar { display: none !important; }
-  .quiz-options { font-size: 0 !important; }
-  .quiz-options > * { font-size: revert !important; }
-</style>
-</head>
-<body>${bodyHtml}</body></html>`;
-}
 
 /** HTML文字列のh1〜h4に id を付与して返す */
 function addHeadingIds(html: string): string {
@@ -331,11 +240,22 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     });
   }, [user?.userid, courseId, selectedModule?.id, selectedModule?.modname]);
 
-  // モバイルサイドバー
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  // 教材画面はLMSのシェル（サイドバー・SP下部ナビ）を描かない没入モード。
+  // dev/miyabe の LearningWorkspacePage と同じ body クラスで、その余白の
+  // 打ち消しとページスクロールの停止を index.css 側に任せる。
+  useEffect(() => {
+    document.body.classList.add('learning-workspace', 'learning-immersive');
+    return () => document.body.classList.remove('learning-workspace', 'learning-immersive');
+  }, []);
 
-  // 右サイドバー タブ（AIコーチ／メモ）
-  const [sidebarTab, setSidebarTab] = useState<'ai' | 'memo'>('ai');
+  // AI／メモのサポートパネル（右ドッキング／ドロワー／ボトムシート）
+  const [supportOpen, setSupportOpen] = useState(false);
+  const [supportTab, setSupportTab] = useState<SupportTab>('ai');
+  const [supportWidth, setSupportWidth] = useState(400);
+  const openSupport = (tab: SupportTab) => { setSupportTab(tab); setSupportOpen(true); };
+
+  // 教材内目次（この教材の見出し一覧）の開閉
+  const [tocOpen, setTocOpen] = useState(false);
 
   // 学習メモ
   const [memoContent, setMemoContent] = useState('');
@@ -421,19 +341,6 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     }
   };
 
-  const openInNewTab = () => {
-    if (!selectedModule) return;
-    const html = processedHtml;
-    if (!html) return;
-    const fullHtml = buildSrcdocShiftJis(html);
-    const unicodeArray = Encoding.stringToCode(fullHtml);
-    const sjisArray = Encoding.convert(unicodeArray, { to: 'SJIS', from: 'UNICODE' });
-    const blob = new Blob([new Uint8Array(sjisArray)], { type: 'text/html; charset=shift-jis' });
-    const url = URL.createObjectURL(blob);
-    const win = window.open(url, '_blank');
-    if (win) win.addEventListener('load', () => URL.revokeObjectURL(url), { once: true });
-  };
-
   // ─── URL コンテンツの事前チェック ─────────
   const [iframeError, setIframeError] = useState(false);
 
@@ -441,6 +348,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     setIframeError(false);
     setZoomTarget(null);
     setQuoteSelection(null);
+    setTocOpen(false);
   }, [selectedModule?.id]);
 
   // ─── データ読み込み ───────────────────────
@@ -478,7 +386,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   // processedHtml と contentToken が揃ったら URL の存在確認
   useEffect(() => {
     if (!processedHtml || contentToken === null || !selectedModule) return;
-    if (getContentType(selectedModule) !== 'page') return;
+    if (getModuleContentType(selectedModule) !== 'page') return;
 
     const urlMatch = processedHtml.trim().match(/^(?:<[^>]+>\s*)*?(https?:\/\/[^\s<"']+?)(?:\s*<\/[^>]+>)*\s*$/i);
     const extractedUrl = urlMatch?.[1];
@@ -495,7 +403,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
 
   // ─── メインDOM直描画コンテンツ（label等）の選択テキスト検知 ──
   useEffect(() => {
-    const type = selectedModule ? getContentType(selectedModule) : null;
+    const type = selectedModule ? getModuleContentType(selectedModule) : null;
     if (type !== 'label' && type !== 'resource-other' && type !== 'unknown') return;
 
     const onMouseUp = () => {
@@ -527,7 +435,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       return;
     }
 
-    const contentType = getContentType(selectedModule);
+    const contentType = getModuleContentType(selectedModule);
 
     if (contentType === 'page') {
       const rawHtml = selectedModule.content ?? selectedModule.description ?? '';
@@ -547,7 +455,6 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   // ─── ハンドラ ─────────────────────────────
   const handleModuleSelect = (module: Module) => {
     dispatch({ type: 'SELECT_MODULE', module });
-    setSidebarOpen(false);
   };
 
   const handleTocItemClick = (id: string) => {
@@ -696,7 +603,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   const renderContent = () => {
     if (!selectedModule) return <EmptyPlaceholder />;
 
-    const contentType = getContentType(selectedModule);
+    const contentType = getModuleContentType(selectedModule);
 
     switch (contentType) {
       // ── mod/page ────────────────────────────
@@ -704,21 +611,25 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         const rawFallback = selectedModule.content ?? selectedModule.description ?? '';
         const html = processedHtml || rawFallback;
         if (!html) {
-          return <p className="text-brand-muted">コンテンツがありません。</p>;
+          return <p style={{ color: color.textSubtle }}>コンテンツがありません。</p>;
         }
         // content が生URL、または <p>URL</p> などURLのみのHTML の場合は src で読み込む
         const urlMatch = html.trim().match(/^(?:<[^>]+>\s*)*?(https?:\/\/[^\s<"']+?)(?:\s*<\/[^>]+>)*\s*$/i);
         const extractedUrl = urlMatch?.[1];
         if (extractedUrl) {
           if (contentToken === null) {
-            return <div className="flex justify-center p-8"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand" /></div>;
+            return (
+              <div className="flex justify-center" style={{ padding: 32 }}>
+                <span className="animate-spin rounded-full" style={{ width: 32, height: 32, borderBottom: `2px solid ${color.primary}` }} />
+              </div>
+            );
           }
           if (iframeError) {
             return (
-              <div className="flex flex-col items-center justify-center py-16 gap-3 text-brand-muted">
-                <FileText className="w-12 h-12 opacity-25" />
-                <p className="text-sm font-medium">コンテンツが見つかりませんでした</p>
-                <p className="text-xs opacity-50">このコンテンツは現在利用できないか、移動された可能性があります。</p>
+              <div className="flex flex-col items-center justify-center" style={{ padding: '64px 0', gap: 10, color: color.textSubtle }}>
+                <FileText size={44} style={{ opacity: 0.25 }} />
+                <p style={{ ...font.label, margin: 0 }}>コンテンツが見つかりませんでした</p>
+                <p style={{ ...font.caption, margin: 0, opacity: 0.6 }}>このコンテンツは現在利用できないか、移動された可能性があります。</p>
               </div>
             );
           }
@@ -731,8 +642,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
               src={srcUrl}
               onLoad={handleIframeLoad}
               title={selectedModule.name}
-              className="w-full border-none"
-              style={{ minHeight: '200px', height: '85vh' }}
+              style={{ width: '100%', border: 'none', minHeight: '200px', height: '85vh' }}
             />
           );
         }
@@ -744,8 +654,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
             sandbox="allow-scripts allow-same-origin"
             onLoad={handleIframeLoad}
             title={selectedModule.name}
-            className="w-full border-none"
-            style={{ minHeight: '200px' }}
+            style={{ width: '100%', border: 'none', minHeight: '200px' }}
           />
         );
       }
@@ -763,24 +672,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
 
       // ── mod/url ─────────────────────────────
       case 'url': {
-        const externalUrl = (() => {
-          if (selectedModule.externalurl) return selectedModule.externalurl;
-          const fromContents =
-            selectedModule.contents?.find(c => c.type === 'url')?.fileurl ||
-            selectedModule.contents?.[0]?.fileurl;
-          if (fromContents) return fromContents;
-          // content / description が生URL（https://...）の場合はそのまま使用
-          for (const raw of [selectedModule.content, selectedModule.description]) {
-            const text = raw?.trim();
-            if (!text) continue;
-            if (/^https?:\/\//i.test(text)) return text;
-            // HTML の <a href> からURLを抽出
-            const doc = new DOMParser().parseFromString(text, 'text/html');
-            const href = doc.querySelector('a[href]')?.getAttribute('href');
-            if (href) return href;
-          }
-          return undefined;
-        })();
+        const externalUrl = resolveExternalUrl(selectedModule);
         if (!externalUrl) {
           return <EmptyPlaceholder />;
         }
@@ -789,8 +681,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
             src={externalUrl}
             sandbox="allow-scripts allow-same-origin allow-forms"
             title={selectedModule.name}
-            className="w-full border-none rounded-xl"
-            style={{ height: '85vh', minHeight: '400px' }}
+            style={{ width: '100%', border: 'none', borderRadius: radius.md, height: '85vh', minHeight: '400px' }}
           />
         );
       }
@@ -800,7 +691,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         const videoFile = selectedModule.contents?.find(c => isVideoFile(c.filename));
         if (!videoFile) return <EmptyPlaceholder />;
         return (
-          <video controls className="w-full rounded-2xl">
+          <video controls style={{ width: '100%', borderRadius: radius.md }}>
             <source src={videoFile.fileurl} type="video/mp4" />
             <source src={videoFile.fileurl} type="video/webm" />
             お使いのブラウザは動画タグをサポートしていません。
@@ -812,23 +703,21 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       case 'resource-markdown':
         if (loadingMarkdown) {
           return (
-            <div className="flex justify-center p-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand" />
+            <div className="flex justify-center" style={{ padding: 32 }}>
+              <span className="animate-spin rounded-full" style={{ width: 32, height: 32, borderBottom: `2px solid ${color.primary}` }} />
             </div>
           );
         }
         return markdownContent
           ? <div className="prose max-w-none"><MarkdownRenderer content={markdownContent} /></div>
-          : <p className="text-brand-muted">Markdownファイルの読み込みに失敗しました。</p>;
+          : <p style={{ color: color.textSubtle }}>Markdownファイルの読み込みに失敗しました。</p>;
 
       // ── mod/resource（HTML）─────────────────
       case 'resource-html':
         return (
-          <div className="flex flex-col items-center gap-4 py-10">
-            <FileText className="w-12 h-12 text-brand opacity-60" />
-            <p className="text-sm text-brand-muted">
-              HTMLファイルのリソースです。（取得機能は準備中）
-            </p>
+          <div className="flex flex-col items-center" style={{ gap: 16, padding: '40px 0' }}>
+            <FileText size={48} style={{ color: color.primary, opacity: 0.6 }} />
+            <p style={{ ...font.label, color: color.textSubtle }}>HTMLファイルのリソースです。（取得機能は準備中）</p>
           </div>
         );
 
@@ -850,294 +739,299 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     }
   };
 
-  // ─── 右サイドバー（AIコーチ／メモ タブ） ─────
-  const renderSupportPanel = (mobile: boolean) => (
-    <div className={mobile ? 'bg-white rounded-2xl shadow-sm overflow-hidden' : ''}>
-      <div className="flex items-center gap-1.5 px-4 pt-3 pb-2 bg-brand-bg">
-        <button
-          onClick={() => setSidebarTab('ai')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
-            sidebarTab === 'ai' ? 'bg-brand-gradient text-white' : 'text-brand-muted hover:bg-white'
-          }`}
-        >
-          <Bot className="w-3.5 h-3.5" />
-          AIコーチ
-        </button>
-        <button
-          onClick={() => setSidebarTab('memo')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-colors ${
-            sidebarTab === 'memo' ? 'bg-brand-gradient text-white' : 'text-brand-muted hover:bg-white'
-          }`}
-        >
-          <StickyNote className="w-3.5 h-3.5" />
-          メモ
-        </button>
-      </div>
-      {sidebarTab === 'ai' ? (
-        <AiCoachPanel
-          aiMessages={aiMessages}
-          aiLoading={aiLoading}
-          aiQuestion={aiQuestion}
-          setAiQuestion={setAiQuestion}
-          handleAiKeyPress={handleAiKeyPress}
-          onSend={handleAiQuestion}
-          chatEndRef={chatEndRef}
-          pendingImage={aiPendingImage}
-          imageError={aiImageError}
-          onImageSelect={handleAiImageSelect}
-          onClearImage={clearAiPendingImage}
-          onSaveAnswer={handleSaveAiAnswerToNote}
-          mobile={mobile}
-        />
-      ) : (
-        <MemoPanel
-          content={memoContent}
-          status={memoStatus}
-          onChange={handleMemoChange}
-          lessonTitle={selectedModule?.name}
-          mobile={mobile}
-        />
-      )}
-    </div>
-  );
-
-  // ─── ローディング / エラー ────────────────
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-brand-bg">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mx-auto" />
-          <p className="mt-4 text-brand-muted">読み込み中...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-brand-bg">
-        <div className="text-center">
-          <p className="text-brand">{error}</p>
-          <button
-            onClick={onBack}
-            className="mt-4 px-6 py-2 rounded-full text-white font-medium bg-brand"
-          >
-            戻る
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-
-  
   // ─── Chapter ナビゲーション用 ───────────────
   const allModules = sections.flatMap(s => s.modules);
   const currentIdx = allModules.findIndex(m => m.id === selectedModule?.id);
-  const chapterLabel = currentIdx >= 0 ? `Chapter ${currentIdx + 1}` : '';
   const prevModule  = currentIdx > 0                    ? allModules[currentIdx - 1] : null;
   const nextModule  = currentIdx < allModules.length - 1 ? allModules[currentIdx + 1] : null;
+  const isCompleted = !!selectedModule && completedIds.has(selectedModule.id);
+
+  // 選択テキストのマイノート引用が使える種別（iframe内は同一オリジンのsrcdocのみ）
+  const selectionCapableType = selectedModule
+    ? ['page', 'label', 'resource-other', 'unknown'].includes(getModuleContentType(selectedModule))
+    : false;
+
+  const aiPane = (
+    <AiCoachPanel
+      aiMessages={aiMessages}
+      aiLoading={aiLoading}
+      aiQuestion={aiQuestion}
+      setAiQuestion={setAiQuestion}
+      handleAiKeyPress={handleAiKeyPress}
+      onSend={handleAiQuestion}
+      chatEndRef={chatEndRef}
+      pendingImage={aiPendingImage}
+      imageError={aiImageError}
+      onImageSelect={handleAiImageSelect}
+      onClearImage={clearAiPendingImage}
+      onSaveAnswer={handleSaveAiAnswerToNote}
+    />
+  );
+
+  const memoPane = (
+    <MemoPanel
+      content={memoContent}
+      status={memoStatus}
+      onChange={handleMemoChange}
+      lessonTitle={selectedModule?.name}
+    />
+  );
 
   // ─── メインレンダリング ───────────────────
   return (
-    <div className="relative min-h-screen bg-brand-bg">
-
-      {/* ─── 背景装飾（グラデーション円） ──── */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-        <div className="absolute rounded-full opacity-10" style={{ width: 900, height: 900, background: 'radial-gradient(circle, #e17079 0%, transparent 70%)', top: -300, left: -350, filter: 'blur(40px)' }} />
-        <div className="absolute rounded-full opacity-10" style={{ width: 900, height: 900, background: 'radial-gradient(circle, #fdeae2 0%, transparent 70%)', top: -200, right: -400, filter: 'blur(40px)' }} />
-        <div className="absolute rounded-full opacity-10" style={{ width: 900, height: 900, background: 'radial-gradient(circle, #f29367 0%, transparent 70%)', bottom: -200, left: '35%', filter: 'blur(40px)' }} />
-      </div>
-
-      {/* ─── WebCoach グローバルヘッダー ──── */}
-      <AppHeader userName={user?.username || 'User'} />
-
-      {/* ─── ヘッダー ─────────────────────── */}
-      <header
-        className="sticky top-[60px] sm:top-[80px] z-30 h-20 bg-white border-b border-brand-border"
-        style={{ boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
-      >
-        <div className="max-w-[1400px] mx-auto h-full flex items-center justify-between px-4 sm:px-6">
-          {/* 左: 戻るボタン + 赤区切り + チャプター情報 */}
-          <div className="flex items-center gap-3 min-w-0">
-            <button
-              onClick={onBack}
-              className="w-10 h-10 rounded-full border flex items-center justify-center flex-shrink-0 hover:bg-gray-50 transition-colors"
-              style={{ borderColor: '#e0d8d4' }}
-            >
-              <ArrowLeft className="w-5 h-5 text-brand-text" />
-            </button>
-            <div className="w-0.5 h-10 rounded-full flex-shrink-0 bg-brand" />
-            <div className="min-w-0">
-              <p className="text-xs font-medium truncate text-brand">
-                {chapterLabel || courseName}
-              </p>
-              <p className="text-base font-bold truncate text-brand-text">
-                {selectedModule ? selectedModule.name : courseName}
-              </p>
-            </div>
-          </div>
-
-          {/* 右: モバイルメニュー + 完了ボタン */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="lg:hidden w-10 h-10 rounded-full border flex items-center justify-center hover:bg-gray-50 transition-colors"
-              style={{ borderColor: '#e0d8d4' }}
-            >
-              <Menu className="w-5 h-5 text-brand-text" />
-            </button>
-            {selectedModule && completedIds.has(selectedModule.id) ? (
-              <button
-                onClick={() => handleToggleComplete(false)}
-                disabled={completing}
-                className="flex items-center gap-2 px-5 py-2 rounded-full font-bold text-sm transition-opacity hover:opacity-80 disabled:opacity-60 disabled:cursor-default"
-                style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
-              >
-                <RotateCcw className="w-4 h-4" />
-                <span className="hidden sm:inline">
-                  {completing ? '処理中...' : '完了を取り消す'}
-                </span>
-              </button>
-            ) : (
-              <button
-                onClick={() => handleToggleComplete(true)}
-                disabled={completing}
-                className="flex items-center gap-2 px-5 py-2 rounded-full text-white font-bold text-sm transition-opacity hover:opacity-90 bg-brand-gradient disabled:opacity-60 disabled:cursor-default"
-              >
-                <CheckCircle className="w-4 h-4" />
-                <span className="hidden sm:inline">
-                  {completing ? '送信中...' : '完了にする'}
-                </span>
-              </button>
-            )}
-          </div>
-        </div>
-      </header>
-
-      {/* ─── ボディ ───────────────────────── */}
-      <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 py-8 flex gap-6 items-start">
-
-        {/* メインコンテンツ */}
-        <div className="flex-1 min-w-0">
-          <div
-            className="bg-white rounded-3xl flex flex-col overflow-hidden"
-            style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6' }}
-          >
-            {/* ─ コンテンツエリア ─ */}
-            <div className="p-4 sm:p-6">
-              {processedHtml && selectedModule && getContentType(selectedModule) === 'page' && (
-                <div className="flex justify-end mb-2">
-                  <button
-                    onClick={openInNewTab}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-opacity hover:opacity-80"
-                    style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
-                  >
-                    <ExternalLink className="w-3.5 h-3.5" />
-                    新しいタブで開く
-                  </button>
-                </div>
-              )}
-              <div
-                className="rounded-2xl p-4 sm:p-6"
-                style={{ background: '#fafafa', minHeight: '360px' }}
-              >
-                {renderContent()}
-              </div>
-            </div>
-
-            {/* ─ 完了ボタン ─ */}
-            <div className="flex justify-center pb-6 px-8">
-              {selectedModule && completedIds.has(selectedModule.id) ? (
-                <button
-                  onClick={() => handleToggleComplete(false)}
-                  disabled={completing}
-                  className="flex items-center gap-2 px-12 py-3 rounded-full font-bold text-base transition-opacity hover:opacity-80 disabled:opacity-60 disabled:cursor-default"
-                  style={{ background: '#F0EAE6', color: '#7E6E68', border: '1px solid #D8CEC8' }}
-                >
-                  <RotateCcw className="w-5 h-5" />
-                  {completing ? '処理中...' : '完了を取り消す'}
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleToggleComplete(true)}
-                  disabled={completing}
-                  className="flex items-center gap-2 px-12 py-3 rounded-full text-white font-bold text-base transition-opacity hover:opacity-90 bg-brand-gradient disabled:opacity-60 disabled:cursor-default"
-                >
-                  <CheckCircle className="w-5 h-5" />
-                  {completing ? '送信中...' : '学習を完了する'}
-                </button>
-              )}
-            </div>
-
-            {/* ─ 前後チャプター ナビゲーション ─ */}
-            <div className="flex items-center justify-between border-t border-brand-border px-8 py-5">
-              {prevModule ? (
-                <span
-                  onClick={() => handleModuleSelect(prevModule)}
-                  className="text-sm text-brand-muted hover:text-brand-text cursor-pointer transition-colors"
-                >
-                  ← 前のチャプターに戻る
-                </span>
-              ) : (
-                <span />
-              )}
-              {nextModule ? (
-                <span
-                  onClick={() => handleModuleSelect(nextModule)}
-                  className="text-sm text-brand-muted hover:text-brand-text cursor-pointer transition-colors"
-                >
-                  次のチャプターに進む →
-                </span>
-              ) : (
-                <span />
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* 右サイドバー（デスクトップ） */}
-        <div className="hidden lg:flex flex-col gap-0 w-80 flex-shrink-0 sticky top-[160px] rounded-3xl overflow-y-auto" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)', border: '1px solid #F0EAE6', maxHeight: 'calc(100vh - 170px)' }}>
-          <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} />
-          <div className="border-t border-brand-border">
-            {renderSupportPanel(false)}
-          </div>
-        </div>
-      </div>
-
-      {/* モバイルサイドバー */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
-          <div
-            className="absolute inset-0 bg-black bg-opacity-40"
-            onClick={() => setSidebarOpen(false)}
+    <div style={{ background: color.pageBg }}>
+      <div className="wc-learning-shell" data-support-open={supportOpen ? 'true' : 'false'}>
+        <div className="wc-lesson-main">
+          <LessonTopBar
+            courseName={courseName}
+            lessonTitle={selectedModule?.name}
+            lessonIndex={currentIdx >= 0 ? currentIdx + 1 : null}
+            lessonTotal={allModules.length}
+            courseId={courseId}
+            lessonId={selectedModule?.id ?? null}
+            onBackToCourse={onBack}
           />
-          <div
-            className="absolute right-0 top-0 h-full w-80 overflow-y-auto p-4 flex flex-col gap-4 bg-brand-bg"
-          >
-            <div className="flex items-center justify-between py-2">
-              <span className="font-bold text-brand-text">メニュー</span>
-              <button
-                onClick={() => setSidebarOpen(false)}
-                className="w-9 h-9 rounded-full border border-[#e0d8d4] flex items-center justify-center"
-              >
-                <X className="w-4 h-4 text-brand-text" />
-              </button>
-            </div>
-            <TocPanel pageToc={pageToc} onTocItemClick={handleTocItemClick} mobile />
-            {renderSupportPanel(true)}
-          </div>
-        </div>
-      )}
 
-      {/* モバイル用フローティングボタン（デスクトップは右サイドバーが常時表示のため不要） */}
-      <div className="lg:hidden">
+          <main style={{ flex: 1, overflowY: 'auto', minWidth: 0, padding: '0 clamp(16px, 3vw, 32px)', scrollBehavior: 'smooth' }}>
+            {loading && (
+              <div className="flex items-center justify-center" style={{ height: '100%' }}>
+                <span className="animate-spin rounded-full" style={{ width: 34, height: 34, borderBottom: `2px solid ${color.primary}` }} />
+              </div>
+            )}
+
+            {!loading && error && (
+              <div className="flex flex-col items-center justify-center" style={{ height: '100%', gap: 14 }}>
+                <p style={{ ...font.label, color: color.primary, margin: 0 }}>{error}</p>
+                <button
+                  type="button"
+                  onClick={onBack}
+                  style={{
+                    padding: '10px 22px', borderRadius: 999, border: 'none',
+                    background: color.primary, color: '#fff', ...font.buttonSm, cursor: 'pointer',
+                  }}
+                >
+                  コースに戻る
+                </button>
+              </div>
+            )}
+
+            {!loading && !error && (
+              <article style={{ width: 'min(100%, var(--wc-reading-max, 900px))', margin: '32px auto 100px' }}>
+                <div
+                  style={{
+                    background: color.surface,
+                    border: `1px solid ${color.border}`,
+                    borderRadius: radius.card,
+                    boxShadow: shadow.card,
+                    padding: 'clamp(20px, 4vw, 40px)',
+                  }}
+                >
+                  {/* ── タイトル ── */}
+                  <h1 style={{ margin: '0 0 18px', fontSize: 'clamp(20px, 2.4vw, 26px)', fontWeight: 900, lineHeight: 1.4, letterSpacing: '-.01em', color: color.text }}>
+                    {selectedModule ? selectedModule.name : courseName}
+                  </h1>
+
+                  {/* ── 目次トグル／新しいタブで開く ── */}
+                  {(pageToc.length > 0 || (processedHtml && selectedModule && getModuleContentType(selectedModule) === 'page')) && (
+                    <div className="flex items-center flex-wrap" style={{ gap: 8, marginBottom: 16 }}>
+                      {pageToc.length > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setTocOpen(v => !v)}
+                          className="inline-flex items-center"
+                          style={{
+                            gap: 6, padding: '6px 12px', borderRadius: 999,
+                            border: `1px solid ${color.borderStrong}`, background: tocOpen ? color.hoverBgTint : color.surface,
+                            color: color.textMuted, ...font.caption, cursor: 'pointer',
+                          }}
+                        >
+                          <AlignJustify size={13} />
+                          目次（{pageToc.length}）
+                          <ChevronDown size={13} style={{ transform: tocOpen ? 'rotate(180deg)' : 'none', transition: 'transform .15s ease' }} />
+                        </button>
+                      )}
+                      {processedHtml && selectedModule && getModuleContentType(selectedModule) === 'page' && (
+                        <button
+                          type="button"
+                          onClick={() => openMoodleContentInNewTab(processedHtml)}
+                          className="inline-flex items-center"
+                          style={{
+                            gap: 6, padding: '6px 12px', borderRadius: 999,
+                            border: `1px solid ${color.borderStrong}`, background: color.surface,
+                            color: color.textMuted, ...font.caption, cursor: 'pointer',
+                          }}
+                        >
+                          <ExternalLink size={13} />
+                          新しいタブで開く
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  {tocOpen && pageToc.length > 0 && (
+                    <div style={{ border: `1px solid ${color.border}`, borderRadius: radius.md, background: color.hoverBgTint, padding: '8px 6px', marginBottom: 20 }}>
+                      <TocList pageToc={pageToc} onItemClick={handleTocItemClick} />
+                    </div>
+                  )}
+
+                  {/* ── 選択のヒント（文章選択→マイノート引用に対応する種別のみ）── */}
+                  {selectionCapableType && (
+                    <div
+                      className="flex items-center"
+                      style={{
+                        gap: 8, marginBottom: 20, padding: '9px 14px', borderRadius: radius.nav,
+                        background: color.hoverBgTint, border: `1px solid ${color.primaryBorderSoft}`,
+                        ...font.caption, color: color.textMuted,
+                      }}
+                    >
+                      <Sparkles size={13} style={{ color: color.primary, flexShrink: 0 }} />
+                      文章を選択すると、マイノートに引用できます。右下からAIコーチ・マイノートも開けます
+                    </div>
+                  )}
+
+                  {/* ── コンテンツ本体 ── */}
+                  <div>{renderContent()}</div>
+
+                  {/* ── レッスンの終点 ── */}
+                  <footer style={{ marginTop: 40 }}>
+                    {!isCompleted ? (
+                      <div
+                        style={{
+                          background: color.goalBg, border: `1px solid ${color.goalBorder}`, borderRadius: radius.lg,
+                          padding: 'clamp(22px, 3vw, 30px)', textAlign: 'center', marginBottom: 20,
+                        }}
+                      >
+                        <h3 style={{ margin: '0 0 10px', fontSize: 18, fontWeight: 900, lineHeight: 1.5, color: color.text }}>
+                          ここまでで「{selectedModule?.name ?? courseName}」は終了です
+                        </h3>
+                        <p style={{ margin: '0 0 18px', ...font.label, lineHeight: 1.9, color: color.textMuted }}>
+                          内容を確認できたら、このモジュールを完了しましょう。
+                          <br />
+                          完了すると学習進捗に反映されます。
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => handleToggleComplete(true)}
+                          disabled={completing}
+                          className="inline-flex items-center disabled:opacity-60"
+                          style={{
+                            gap: 8, minHeight: 44, padding: '0 26px', border: 'none', borderRadius: radius.nav,
+                            background: color.primary, color: color.textOnPrimary, fontFamily: 'inherit',
+                            ...font.bodyLarge, boxShadow: shadow.primaryButton, cursor: completing ? 'default' : 'pointer',
+                          }}
+                        >
+                          <Check size={16} strokeWidth={2.5} />
+                          {completing ? '送信中…' : 'このモジュールを完了する'}
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <div
+                          style={{
+                            background: color.successSurface, border: `1px solid ${color.success}`, borderRadius: radius.lg,
+                            padding: 'clamp(22px, 3vw, 30px)', textAlign: 'center', marginBottom: 10,
+                          }}
+                        >
+                          <div className="inline-flex items-center" style={{ gap: 10, marginBottom: 4 }}>
+                            <span className="grid place-items-center" style={{ width: 28, height: 28, borderRadius: '50%', background: color.success, flexShrink: 0 }}>
+                              <Check size={16} strokeWidth={2.5} color={color.textOnPrimary} />
+                            </span>
+                            <h3 style={{ margin: 0, fontSize: 18, fontWeight: 900, lineHeight: 1.4, color: color.text }}>
+                              「{selectedModule?.name ?? courseName}」を完了しました
+                            </h3>
+                          </div>
+                        </div>
+                        <div className="flex justify-center" style={{ marginBottom: 20 }}>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleComplete(false)}
+                            disabled={completing}
+                            style={{
+                              background: 'none', border: 'none', padding: '4px 8px', ...font.caption,
+                              color: color.textSubtle, textDecoration: 'underline', cursor: 'pointer',
+                            }}
+                          >
+                            完了を取り消す
+                          </button>
+                        </div>
+                      </>
+                    )}
+
+                    {/* ── 前後モジュール ナビゲーション ── */}
+                    <div className="flex items-center flex-wrap justify-between" style={{ gap: 12, paddingTop: 20, borderTop: `1px solid ${color.border}` }}>
+                      {prevModule ? (
+                        <button
+                          type="button"
+                          onClick={() => handleModuleSelect(prevModule)}
+                          className="inline-flex items-center"
+                          style={{
+                            gap: 8, minHeight: 40, padding: '0 16px', border: `1px solid ${color.borderNeutral}`,
+                            borderRadius: radius.nav, background: color.surface, color: color.textStrong,
+                            fontFamily: 'inherit', ...font.buttonSm, cursor: 'pointer',
+                          }}
+                        >
+                          <ArrowLeft size={14} />
+                          前のモジュールへ
+                        </button>
+                      ) : <span />}
+                      {nextModule ? (
+                        <button
+                          type="button"
+                          onClick={() => handleModuleSelect(nextModule)}
+                          className="inline-flex items-center"
+                          style={{
+                            gap: 8, minHeight: 40, padding: '0 20px', border: 'none',
+                            borderRadius: radius.nav, background: color.primary, color: color.textOnPrimary,
+                            fontFamily: 'inherit', ...font.buttonSm, cursor: 'pointer',
+                          }}
+                        >
+                          次のモジュールへ
+                          <ArrowRight size={14} />
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={onBack}
+                          className="inline-flex items-center"
+                          style={{
+                            gap: 8, minHeight: 40, padding: '0 20px', border: 'none',
+                            borderRadius: radius.nav, background: color.primary, color: color.textOnPrimary,
+                            fontFamily: 'inherit', ...font.buttonSm, cursor: 'pointer',
+                          }}
+                        >
+                          コースの目次へ
+                          <ArrowRight size={14} />
+                        </button>
+                      )}
+                    </div>
+                  </footer>
+                </div>
+              </article>
+            )}
+          </main>
+        </div>
+
+        {supportOpen && (
+          <SupportPanel
+            tab={supportTab}
+            onTabChange={setSupportTab}
+            onClose={() => setSupportOpen(false)}
+            width={supportWidth}
+            onWidthChange={setSupportWidth}
+            aiPane={aiPane}
+            memoPane={memoPane}
+          />
+        )}
+      </div>
+
+      {/* 常設アクション（右下）。教材を読みながらAI・メモへ入る唯一の入口 */}
+      {!loading && !error && (
         <LessonFloatingActions
           hidden={!!quoteSelection}
-          onOpenAi={() => { setSidebarTab('ai'); setSidebarOpen(true); }}
-          onOpenMemo={() => { setSidebarTab('memo'); setSidebarOpen(true); }}
+          onOpenAi={() => openSupport('ai')}
+          onOpenMemo={() => openSupport('notes')}
         />
-      </div>
+      )}
 
       {/* 画像タップ拡大 */}
       <ImageZoomOverlay target={zoomTarget} onClose={() => setZoomTarget(null)} />
@@ -1171,58 +1065,44 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
 
 function EmptyPlaceholder() {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center py-16 text-brand-muted">
-      <FileText className="w-14 h-14 mb-4 opacity-20" />
-      <p className="text-sm">コンテンツがありません</p>
+    <div className="flex flex-col items-center justify-center text-center" style={{ padding: '64px 0', color: color.textSubtle }}>
+      <FileText size={56} style={{ marginBottom: 16, opacity: 0.2 }} />
+      <p style={{ ...font.label, margin: 0 }}>コンテンツがありません</p>
     </div>
   );
 }
 
-interface TocPanelProps {
+interface TocListProps {
   pageToc: TocItem[];
-  onTocItemClick: (id: string) => void;
-  mobile?: boolean;
+  onItemClick: (id: string) => void;
 }
 
-function TocPanel({ pageToc, onTocItemClick, mobile = false }: TocPanelProps) {
+function TocList({ pageToc, onItemClick }: TocListProps) {
   return (
-    <div className={`bg-white ${mobile ? 'rounded-2xl shadow-sm' : ''} overflow-hidden`}>
-      <div className="flex items-center gap-2 px-6 py-4 bg-brand-bg border-b border-brand-border">
-        <AlignJustify className="w-4 h-4 text-brand" />
-        <span className="font-bold text-brand-muted" style={{ fontSize: '15px' }}>目次</span>
-      </div>
-      <div className="overflow-y-auto p-3" style={{ maxHeight: '320px' }}>
-        {pageToc.length > 0 ? (
-          <div className="space-y-0.5">
-            {pageToc.map(item => (
-              <div
-                key={item.id}
-                onClick={() => onTocItemClick(item.id)}
-                className="w-full flex items-center gap-2 px-3 py-1.5 rounded-xl text-left hover:bg-orange-50 transition-colors cursor-pointer select-none"
-                style={{ paddingLeft: `${(item.level - 1) * 14 + 12}px` }}
-              >
-                <span
-                  className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                  style={{ background: item.level === 1 ? '#e86d78' : item.level === 2 ? '#fa9262' : '#d0cac6' }}
-                />
-                <span
-                  className="text-xs truncate text-brand-text"
-                  style={{ fontWeight: item.level <= 2 ? 600 : 400 }}
-                >
-                  {item.text}
-                </span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-8 gap-2">
-            <AlignJustify className="w-8 h-8 opacity-20 text-brand-muted" />
-            <p className="text-xs text-center text-brand-subtle">
-              このコンテンツに<br />目次はありません
-            </p>
-          </div>
-        )}
-      </div>
+    <div>
+      {pageToc.map(item => (
+        <div
+          key={item.id}
+          onClick={() => onItemClick(item.id)}
+          className="flex items-center cursor-pointer select-none"
+          style={{
+            gap: 8,
+            padding: '7px 10px',
+            paddingLeft: (item.level - 1) * 14 + 10,
+            borderRadius: radius.nav,
+          }}
+        >
+          <span
+            style={{
+              width: 6, height: 6, borderRadius: 999, flexShrink: 0,
+              background: item.level === 1 ? color.primary : item.level === 2 ? color.primaryBorder : color.borderNeutral,
+            }}
+          />
+          <span style={{ fontSize: item.level <= 2 ? 13 : 12.5, fontWeight: item.level <= 2 ? 700 : 500, color: color.textBody }}>
+            {item.text}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -1240,12 +1120,11 @@ interface AiCoachPanelProps {
   onImageSelect: (file: File) => void;
   onClearImage: () => void;
   onSaveAnswer: (index: number) => void;
-  mobile?: boolean;
 }
 
 function AiCoachPanel({
   aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, chatEndRef,
-  pendingImage, imageError, onImageSelect, onClearImage, onSaveAnswer, mobile = false,
+  pendingImage, imageError, onImageSelect, onClearImage, onSaveAnswer,
 }: AiCoachPanelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -1257,89 +1136,112 @@ function AiCoachPanel({
   }, [aiQuestion]);
 
   return (
-    <div className={`bg-white ${mobile ? 'rounded-2xl shadow-sm' : ''} overflow-hidden`}>
-      <div className="flex items-center justify-between px-6 py-4 bg-brand-bg border-b border-brand-border">
-        <div className="flex items-center gap-2">
-          <Bot className="w-5 h-5 text-brand" />
-          <span className="font-bold text-brand-muted" style={{ fontSize: '15px' }}>AIコーチ</span>
+    <section className="flex flex-col" style={{ minHeight: 0, height: '100%', overflow: 'hidden' }}>
+      <div className="flex-1" style={{ minHeight: 0, overflowY: 'auto', padding: 14, background: color.pageBg }}>
+        {aiMessages.length === 0 && !aiLoading && (
+          <p style={{ ...font.label, color: color.textSubtle, textAlign: 'center', marginTop: 24 }}>
+            教材について気になることを聞いてみましょう
+          </p>
+        )}
+        <div className="space-y-3">
+          {aiMessages.map((msg, index) => (
+            <div key={msg.id} className={`flex ${msg.role === 'user' ? 'flex-row-reverse' : ''}`} style={{ gap: 8 }}>
+              <div
+                className="flex items-center justify-center flex-shrink-0"
+                style={{ width: 28, height: 28, borderRadius: '50%', color: '#fff', background: msg.role === 'user' ? '#1976d2' : color.primary }}
+              >
+                {msg.role === 'user' ? <User size={14} /> : <Bot size={14} />}
+              </div>
+              <div style={{ maxWidth: '82%' }}>
+                <div
+                  style={{
+                    borderRadius: radius.md,
+                    borderTopLeftRadius: msg.role === 'assistant' ? 4 : radius.md,
+                    borderTopRightRadius: msg.role === 'user' ? 4 : radius.md,
+                    padding: '10px 12px',
+                    fontSize: 12.5,
+                    background: msg.role === 'user' ? color.primary : color.surface,
+                    color: msg.role === 'user' ? '#fff' : color.textBody,
+                    border: msg.role === 'assistant' ? `1px solid ${color.border}` : 'none',
+                  }}
+                >
+                  {msg.imageDataUrl && (
+                    <img src={msg.imageDataUrl} alt="添付画像" style={{ maxWidth: '100%', maxHeight: 160, borderRadius: 8, marginBottom: 8, objectFit: 'contain' }} />
+                  )}
+                  {msg.role === 'assistant' ? (
+                    (() => {
+                      const { text, buttons } = parseDifyMessage(msg.content);
+                      return (
+                        <>
+                          <MarkdownRenderer content={text} compact />
+                          {buttons.length > 0 && (
+                            <div className="flex flex-wrap" style={{ gap: 6, marginTop: 4 }}>
+                              {buttons.map((btn, i) => (
+                                <button
+                                  key={`${btn.value}-${i}`}
+                                  type="button"
+                                  disabled={aiLoading}
+                                  onClick={() => onSend(btn.value)}
+                                  style={{
+                                    fontSize: 11.5, fontWeight: 700, borderRadius: radius.md,
+                                    padding: '7px 11px', border: `1px solid ${color.border}`,
+                                    background: color.pageBg, color: color.primary,
+                                    cursor: 'pointer', opacity: aiLoading ? 0.5 : 1,
+                                  }}
+                                >
+                                  {btn.label}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </>
+                      );
+                    })()
+                  ) : (
+                    <span style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</span>
+                  )}
+                </div>
+                {msg.role === 'assistant' && (
+                  <button
+                    type="button"
+                    onClick={() => onSaveAnswer(index)}
+                    className="inline-flex items-center"
+                    style={{ gap: 4, marginTop: 4, fontSize: 10.5, fontWeight: 700, color: color.textMuted, background: 'none', border: 0, cursor: 'pointer' }}
+                  >
+                    <NotebookPen size={11} />
+                    ノートに保存
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+          {aiLoading && (
+            <div className="flex" style={{ gap: 8 }}>
+              <div className="flex items-center justify-center flex-shrink-0" style={{ width: 28, height: 28, borderRadius: '50%', color: '#fff', background: color.primary }}>
+                <Bot size={14} />
+              </div>
+              <div style={{ borderRadius: radius.md, border: `1px solid ${color.border}`, background: color.surface, padding: '10px 12px' }}>
+                <div className="flex items-center" style={{ gap: 8 }}>
+                  <span className="animate-spin rounded-full" style={{ width: 12, height: 12, border: `2px solid ${color.primary}`, borderTopColor: 'transparent' }} />
+                  <span style={{ fontSize: 11.5, color: color.textMuted }}>考え中...</span>
+                </div>
+              </div>
+            </div>
+          )}
+          <div ref={chatEndRef} />
         </div>
       </div>
-      <div className="px-6 py-5 space-y-3 overflow-y-auto" style={{ background: '#fafafa', maxHeight: '280px' }}>
-        {aiMessages.map((msg, index) => (
-          <div key={msg.id} className={`flex gap-2 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white ${msg.role === 'user' ? 'bg-[#1976d2]' : 'bg-brand'}`}>
-              {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
-            </div>
-            <div className={msg.role === 'assistant' ? 'max-w-xs' : ''}>
-              <div className={`rounded-2xl px-4 py-3 shadow-sm max-w-xs text-sm ${msg.role === 'user' ? 'bg-brand text-white' : 'bg-white text-brand-muted'}`}>
-                {msg.imageDataUrl && (
-                  <img src={msg.imageDataUrl} alt="添付画像" className="max-w-full max-h-40 rounded-lg mb-2 object-contain" />
-                )}
-                {msg.role === 'assistant' ? (
-                  (() => {
-                    const { text, buttons } = parseDifyMessage(msg.content);
-                    return (
-                      <>
-                        <MarkdownRenderer content={text} compact />
-                        {buttons.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 mt-1">
-                            {buttons.map((btn, i) => (
-                              <button
-                                key={`${btn.value}-${i}`}
-                                type="button"
-                                disabled={aiLoading}
-                                onClick={() => onSend(btn.value)}
-                                className="text-xs font-bold rounded-lg px-3 py-2 border border-brand-border bg-brand-bg text-brand hover:bg-brand-bg/80 disabled:opacity-50"
-                              >
-                                {btn.label}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </>
-                    );
-                  })()
-                ) : (
-                  <span className="whitespace-pre-wrap">{msg.content}</span>
-                )}
-              </div>
-              {msg.role === 'assistant' && (
-                <button
-                  type="button"
-                  onClick={() => onSaveAnswer(index)}
-                  className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-brand-muted hover:text-brand"
-                >
-                  <NotebookPen size={12} />
-                  ノートに保存
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-        {aiLoading && (
-          <div className="flex gap-2">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-white bg-brand"><Bot className="w-4 h-4" /></div>
-            <div className="rounded-2xl px-4 py-3 shadow-sm bg-white">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 border-2 border-brand border-t-transparent rounded-full animate-spin" />
-                <span className="text-xs text-brand-muted">考え中...</span>
-              </div>
-            </div>
-          </div>
-        )}
-        <div ref={chatEndRef} />
-      </div>
-      <div className="px-6 py-4 bg-white border-t border-brand-border">
+      <div style={{ padding: 12, background: color.surface, borderTop: `1px solid ${color.border}` }}>
         {pendingImage && (
-          <div className="mb-2 flex items-center gap-2">
-            <img src={pendingImage.dataUrl} alt="添付予定の画像" className="w-12 h-12 rounded-lg object-cover border border-brand-border" />
-            <button onClick={onClearImage} className="p-1 text-brand-muted hover:text-brand-text" title="画像を取り消す">
-              <ImageOff className="w-4 h-4" />
+          <div className="flex items-center" style={{ gap: 8, marginBottom: 8 }}>
+            <img src={pendingImage.dataUrl} alt="添付予定の画像" style={{ width: 40, height: 40, borderRadius: 8, objectFit: 'cover', border: `1px solid ${color.border}` }} />
+            <button onClick={onClearImage} style={{ padding: 4, background: 'none', border: 0, color: color.textMuted, cursor: 'pointer' }} title="画像を取り消す">
+              <ImageOff size={14} />
             </button>
           </div>
         )}
-        {imageError && <p className="text-xs text-red-500 mb-2">{imageError}</p>}
-        <div className="flex items-end gap-2 px-4 py-2 rounded-2xl bg-brand-bg">
+        {imageError && <p style={{ fontSize: 11, color: '#DC2626', marginBottom: 8 }}>{imageError}</p>}
+        <div className="flex items-end" style={{ gap: 8, padding: '8px 10px', borderRadius: radius.md, background: color.pageBg }}>
           <input
             ref={imageInputRef}
             type="file"
@@ -1354,10 +1256,10 @@ function AiCoachPanel({
           <button
             onClick={() => imageInputRef.current?.click()}
             disabled={aiLoading}
-            className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-brand-muted hover:text-brand disabled:opacity-50 transition-colors"
+            style={{ width: 26, height: 26, borderRadius: '50%', border: 0, background: 'none', color: color.textMuted, cursor: 'pointer', flexShrink: 0, opacity: aiLoading ? 0.5 : 1 }}
             title="画像を添付"
           >
-            <Paperclip className="w-4 h-4" />
+            <Paperclip size={15} />
           </button>
           <textarea
             ref={textareaRef}
@@ -1384,19 +1286,27 @@ function AiCoachPanel({
                 }
               }
             }}
-            className="flex-1 bg-transparent outline-none text-sm text-brand-text resize-none overflow-hidden leading-5 py-1"
-            style={{ maxHeight: '120px', overflowY: 'auto' }}
+            style={{
+              flex: 1, background: 'transparent', outline: 'none', border: 0, resize: 'none', overflow: 'hidden',
+              fontSize: 12.5, color: color.text, lineHeight: 1.5, padding: '4px 0', maxHeight: 120, overflowY: 'auto',
+              fontFamily: 'inherit',
+            }}
           />
           <button
             onClick={() => onSend()}
             disabled={(!aiQuestion.trim() && !pendingImage) || aiLoading}
-            className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mb-0.5 transition-colors ${(aiQuestion.trim() || pendingImage) && !aiLoading ? 'bg-brand' : 'bg-[#d0cac6]'}`}
+            style={{
+              width: 26, height: 26, borderRadius: '50%', border: 0, flexShrink: 0,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: (aiQuestion.trim() || pendingImage) && !aiLoading ? color.primary : color.borderNeutral,
+              cursor: 'pointer',
+            }}
           >
-            <Send className="w-3 h-3 text-white" />
+            <Send size={12} color="#fff" />
           </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -1405,35 +1315,35 @@ interface MemoPanelProps {
   status: 'idle' | 'loading' | 'saving' | 'saved';
   onChange: (value: string) => void;
   lessonTitle?: string;
-  mobile?: boolean;
 }
 
-function MemoPanel({ content, status, onChange, lessonTitle, mobile = false }: MemoPanelProps) {
+function MemoPanel({ content, status, onChange, lessonTitle }: MemoPanelProps) {
   const statusLabel =
     status === 'saving' ? '保存中…' : status === 'saved' ? '自動保存済み' : '自動保存';
 
   return (
-    <div className={`bg-white ${mobile ? 'rounded-2xl shadow-sm' : ''} overflow-hidden`}>
-      <div className="flex items-center justify-between px-6 py-4 bg-brand-bg border-b border-brand-border">
-        <div className="flex items-center gap-2">
-          <StickyNote className="w-5 h-5 text-brand" />
-          <span className="font-bold text-brand-muted" style={{ fontSize: '15px' }}>メモ</span>
-        </div>
-        <span className="text-xs text-brand-subtle">{statusLabel}</span>
+    <section className="flex flex-col" style={{ minHeight: 0, height: '100%', overflow: 'hidden' }}>
+      <div className="flex items-center" style={{ gap: 8, minHeight: 45, padding: '0 14px', borderBottom: `1px solid ${color.border}`, flexShrink: 0 }}>
+        <strong style={{ ...font.label, fontWeight: 800, color: color.text }}>メモ</strong>
+        <div style={{ flex: 1 }} />
+        <span style={{ fontSize: 10.5, color: color.textFaint }}>{statusLabel}</span>
       </div>
-      <div className="px-6 py-5" style={{ background: '#fafafa' }}>
+      <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', padding: 14, background: color.pageBg }}>
         <textarea
           value={content}
           onChange={e => onChange(e.target.value)}
           placeholder="教材を見ながら、気づいたこと・試したいことを書く…"
-          className="w-full bg-white rounded-2xl px-4 py-3 text-sm text-brand-text outline-none border border-brand-border resize-none"
-          style={{ minHeight: '220px' }}
+          style={{
+            width: '100%', minHeight: 220, background: color.surface, borderRadius: radius.md,
+            padding: '12px 14px', fontSize: 12.5, color: color.text, outline: 'none',
+            border: `1px solid ${color.border}`, resize: 'none', fontFamily: 'inherit', lineHeight: 1.7,
+          }}
         />
         {lessonTitle && (
-          <p className="mt-2 text-xs text-brand-subtle">「{lessonTitle}」に保存</p>
+          <p style={{ marginTop: 8, fontSize: 10.5, color: color.textFaint }}>「{lessonTitle}」に保存</p>
         )}
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -1590,7 +1500,7 @@ function QuoteToNoteToolbar({ selection, onQuote }: QuoteToNoteToolbarProps) {
           whiteSpace: 'nowrap',
         }}
       >
-        <NotebookPen size={14} style={{ color: themeColor.primarySoft }} />
+        <NotebookPen size={14} style={{ color: color.primarySoft }} />
         メモに引用
       </button>
     </div>
@@ -1602,10 +1512,10 @@ function QuoteToNoteToolbar({ selection, onQuote }: QuoteToNoteToolbarProps) {
 // ─────────────────────────────────────────
 
 const CONFETTI_COLORS = [
-  themeColor.primary,
-  themeColor.primarySoft,
-  themeColor.goalBorder,
-  themeColor.goalBg,
+  color.primary,
+  color.primarySoft,
+  color.goalBorder,
+  color.goalBg,
   '#FFFFFF',
 ];
 
