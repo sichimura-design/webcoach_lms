@@ -50,14 +50,23 @@ export class ProdAlbStack extends cdk.Stack {
 
     // ECS サービス作成前のため、ターゲット未登録のターゲットグループを先に作る。
     // HOST ネットワークモードの EC2 起動タイプなので targetType は INSTANCE。
+    //
+    // port/protocol は 443/HTTPS(コンテナ内nginxの自己署名証明書向け)。
+    // nginx.conf の実際のプロキシ処理・API連携ロジックは443側のserverブロックにのみ
+    // 実装されており、80側は「OPTIONS応答+HTTPSへのリダイレクト」しか持たない。
+    // ここを80/HTTPにするとALB(TLS終端済み)からの全リクエストが80側のリダイレクトに
+    // 突き刺さり、常にHTTPSへ302/301で送り返される無限リダイレクトになる
+    // (api.webcoach.jp等、CloudFrontを介さずALBに直接到達する経路で顕在化した実際の障害、
+    // 2026-09-21判明)。ALBはターゲットのTLS証明書を検証しないため自己署名でも問題ない。
     this.targetGroup = new elbv2.ApplicationTargetGroup(this, 'TargetGroup', {
       vpc,
-      port: 80,
-      protocol: elbv2.ApplicationProtocol.HTTP,
+      port: 443,
+      protocol: elbv2.ApplicationProtocol.HTTPS,
       targetType: elbv2.TargetType.INSTANCE,
       targetGroupName: `${envName}-lms-tg`,
       healthCheck: {
         path: '/health',
+        protocol: elbv2.Protocol.HTTPS,
         interval: cdk.Duration.seconds(30),
         timeout: cdk.Duration.seconds(10),
         healthyThresholdCount: 2,

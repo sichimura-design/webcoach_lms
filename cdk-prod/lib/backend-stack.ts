@@ -80,6 +80,8 @@ export class ProdBackendStack extends cdk.Stack {
       allowAllOutbound: true,
     });
     ec2Sg.addIngressRule(albSecurityGroup, ec2.Port.tcp(80), 'HTTP from ALB');
+    // ALBターゲットグループはnginxの443(TLS終端+実プロキシ処理)を向いているため必須
+    ec2Sg.addIngressRule(albSecurityGroup, ec2.Port.tcp(443), 'HTTPS from ALB (nginx TLS termination)');
     this.ec2SecurityGroup = ec2Sg;
 
     const efsSg = new ec2.SecurityGroup(this, 'EfsSg', {
