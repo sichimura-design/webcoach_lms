@@ -1,6 +1,6 @@
 -- webcoach_my_note_folder / webcoach_my_note の新規作成
 -- 教材に紐づかない自由記述のマイノート機能（フォルダは入れ子対応、本文はMarkdown）
--- 適用済み環境: なし（draft、UAT/本番適用は別途承認後）
+-- 適用済み環境: UAT, prod (2026-09-21)
 
 CREATE TABLE `webcoach_my_note_folder` (
   `folder_id` bigint NOT NULL AUTO_INCREMENT,

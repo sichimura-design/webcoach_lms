@@ -1,7 +1,7 @@
 -- webcoach_coach_meeting_integration の新規作成
 -- コーチのZoom/Google Meet連携情報（OAuthトークン）を管理する
 -- トークンはbff-server側でAES-256-GCM暗号化された文字列として保存される（api-serverは暗号文をそのまま保存・返却するのみ）
--- 適用済み環境: uat (2026-08-10)
+-- 適用済み環境: uat (2026-08-10), prod (2026-09-21)
 
 CREATE TABLE `webcoach_coach_meeting_integration` (
   `coach_user_id` bigint NOT NULL COMMENT 'コーチのMoodleユーザーID',

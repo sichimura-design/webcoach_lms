@@ -1,5 +1,5 @@
 -- webcoach_coaching_schedule に Google Meet連携(Organizer中心モデル)用カラムを追加
--- 未適用 (draft) — UAT/本番への適用はユーザー承認後に別途実施
+-- 適用済み環境: UAT, prod (2026-09-21)
 --
 -- 予約(coaching_schedule)ごとにMeeting Spaceを1つ発行する方式(1予約=1 Space)にすることで、
 -- 開催記録(Conference Record)と予約の紐づけを作成時点で確定させる。時間窓や参加者メールでの

@@ -1,6 +1,6 @@
 -- webcoach_coaching_schedule に status カラムを追加
 -- webcoach_coaching_note を新規作成
--- 未適用 (draft) — UAT/本番への適用はユーザー承認後に別途実施
+-- 適用済み環境: UAT, prod (2026-09-21)
 
 ALTER TABLE `webcoach_coaching_schedule`
   ADD COLUMN `status` enum('completed','interrupted','rescheduled') DEFAULT NULL COMMENT 'コーチング実施結果 (completed=終了, interrupted=中断, rescheduled=リスケ)' AFTER `coaching_date`;
