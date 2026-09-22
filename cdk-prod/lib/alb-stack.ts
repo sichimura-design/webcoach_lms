@@ -63,7 +63,11 @@ export class ProdAlbStack extends cdk.Stack {
       port: 443,
       protocol: elbv2.ApplicationProtocol.HTTPS,
       targetType: elbv2.TargetType.INSTANCE,
-      targetGroupName: `${envName}-lms-tg`,
+      // port/protocolの変更はCloudFormation上replacement必須だが、targetGroupNameを
+      // 固定文字列のままにすると新旧が同名衝突してcreateに失敗する
+      // (実際に2026-09-22 "target group prod-lms-tg already exists" で検証済み)。
+      // 名前をv2にリネームして回避する。
+      targetGroupName: `${envName}-lms-tg-v2`,
       healthCheck: {
         path: '/health',
         protocol: elbv2.Protocol.HTTPS,
