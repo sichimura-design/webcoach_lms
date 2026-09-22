@@ -34,6 +34,8 @@ export interface ProdEcsStackProps extends cdk.StackProps {
   readonly cognitoSecret: secretsmanager.ISecret;
   readonly anthropicSecret: secretsmanager.ISecret;
   readonly appSecrets: secretsmanager.ISecret;
+  /** Dify APIキー(webcoach_ai_application.secret_key -> APIキー のJSONマップ)。api-serverがboto3で実行時に直接読む(task roleにgrantRead)。 */
+  readonly difySecret: secretsmanager.ISecret;
   readonly cognitoUserPoolId?: string;
   readonly cognitoClientId?: string;
   /** Moodle の wwwroot URL。ALB DNS 名または独自ドメイン。*/
@@ -88,7 +90,7 @@ export class ProdEcsStack extends cdk.Stack {
       ec2SecurityGroup,
       databaseEndpointAddress, databaseEndpointPort, dbSecretArn,
       fileSystem, moodledataAccessPoint, moodleAppAccessPoint,
-      cognitoSecret, anthropicSecret, appSecrets,
+      cognitoSecret, anthropicSecret, appSecrets, difySecret,
       cognitoUserPoolId, cognitoClientId,
       moodleSiteUrl,
       desiredCount = 2,
@@ -213,6 +215,11 @@ export class ProdEcsStack extends cdk.Stack {
       ],
     }));
 
+    // Dify APIキーはコンテナ起動時のsecrets注入ではなく、api-serverがリクエストごとに
+    // boto3で直接GetSecretValueする(DB側のsecret_key列でどのキーを読むか動的に決まるため)。
+    // よってexecution roleではなくtask roleにgrantReadする(dev/uatのcdk/lib/ecs-stack.tsと同じ設計)。
+    difySecret.grantRead(taskDef.taskRole);
+
     // ----------------------------------------
     // 各コンテナイメージ: webcoach-lms リポジトリのタグで区別
     // ----------------------------------------
@@ -224,9 +231,15 @@ export class ProdEcsStack extends cdk.Stack {
       portMappings: [{ containerPort: 80, protocol: ecs.Protocol.TCP }],
       essential: true,
       environment: {
-        BFF_HOST: 'localhost:3001',
-        API_HOST: 'localhost:8001',
-        MOODLE_HOST: 'localhost:8080',
+        // IPリテラルで指定すること。nginx.conf側はDNS再解決を強制するため$変数経由で
+        // proxy_passしており、"localhost"のようなホスト名だと(/etc/hostsを見ず)必ず
+        // resolverへ問い合わせに行ってしまう。ECS host networkモードには
+        // resolverに指定できるDNSサーバーが存在しないため、"could not be resolved"で
+        // 502になる(2026-09-22判明、api.webcoach.jpの無限リダイレクト修正後に発覚)。
+        // IPリテラルならnginxはresolverを経由せず直接接続するため問題ない。
+        BFF_HOST: '127.0.0.1:3001',
+        API_HOST: '127.0.0.1:8001',
+        MOODLE_HOST: '127.0.0.1:8080',
       },
     });
 
@@ -274,6 +287,8 @@ export class ProdEcsStack extends cdk.Stack {
         ALLOWED_ORIGINS: allowedOrigins ?? '',
         VECTOR_DB_ENV: vectorDbEnv ?? 'faiss',
         COGNITO_REGION: this.region,
+        DIFY_API_BASE_URL: 'https://api.dify.ai/v1',
+        DIFY_CREDENTIALS_SECRET_ID: difySecret.secretName,
         ...(cognitoUserPoolId ? { COGNITO_USER_POOL_ID: cognitoUserPoolId } : {}),
         ...(cognitoClientId ? { COGNITO_CLIENT_ID: cognitoClientId } : {}),
         ...(s3BucketName ? { S3_BUCKET_NAME: s3BucketName } : {}),
