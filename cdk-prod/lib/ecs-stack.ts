@@ -221,12 +221,7 @@ export class ProdEcsStack extends cdk.Stack {
       memoryLimitMiB: 256,
       cpu: 256,
       logging: ecs.LogDrivers.awsLogs({ streamPrefix: 'nginx', logGroup }),
-      // 443はALBターゲットグループが向く実プロキシ処理用(nginx.confの自己署名TLS)。
-      // 80は/healthのみ(実処理はリダイレクトのみ)だが直接デバッグ用に残す。
-      portMappings: [
-        { containerPort: 80, protocol: ecs.Protocol.TCP },
-        { containerPort: 443, protocol: ecs.Protocol.TCP },
-      ],
+      portMappings: [{ containerPort: 80, protocol: ecs.Protocol.TCP }],
       essential: true,
       environment: {
         BFF_HOST: 'localhost:3001',
@@ -456,12 +451,7 @@ export class ProdEcsStack extends cdk.Stack {
     const targetGroup = elbv2.ApplicationTargetGroup.fromTargetGroupAttributes(this, 'TargetGroup', {
       targetGroupArn,
     });
-    // ターゲットグループはnginxの443(実プロキシ処理)を向いている。containerName/containerPortを
-    // 明示しないとdefaultContainerの解決順に依存してしまうため明示指定する。
-    targetGroup.addTarget(service.loadBalancerTarget({
-      containerName: 'nginx',
-      containerPort: 443,
-    }));
+    targetGroup.addTarget(service);
 
     // ========================================
     // Outputs
