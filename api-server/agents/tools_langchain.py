@@ -4,6 +4,7 @@ BFF APIツールをLangChain Tool形式で定義
 """
 import os
 import json
+import base64
 import logging
 from functools import lru_cache
 from typing import Dict, Any, List, Optional
@@ -314,6 +315,45 @@ _dify_sticky_app_cache: Dict[tuple, int] = {}
 _dify_extra_inputs_cache: Dict[tuple, Dict[str, str]] = {}
 
 
+# Difyへアップロード済みの画像ID（(userid, app_id, session_id) -> upload_file_id）。
+# 「デザインフィードバックメンターPro」等の添削アプリは、画像を受け取っても最初に
+# プロジェクトの概要を聞き返してから添削に進む。ユーザーがその質問に答えるターンには
+# 画像が添付されていないため、同じ会話のあいだは最後に受け取った画像を送り続ける。
+# プロセス内メモリのみ（_dify_conversation_cache と同じ思想）。
+_dify_image_cache: Dict[tuple, str] = {}
+
+# api-server のフロントからの添付画像と拡張子の対応（Difyのアップロードはファイル名の拡張子で種別を判定する）
+_IMAGE_EXTENSIONS = {"image/png": "png", "image/jpeg": "jpg", "image/webp": "webp", "image/gif": "gif"}
+
+
+def _dify_accepts_images(api_key: str) -> bool:
+    """Dify側アプリで画像のファイルアップロードが有効か（GET /parameters の file_upload）"""
+    file_upload = _get_dify_parameters(api_key).get("file_upload") or {}
+    if file_upload.get("enabled"):
+        return "image" in (file_upload.get("allowed_file_types") or [])
+    # 旧形式の設定（file_upload.image.enabled）
+    return bool((file_upload.get("image") or {}).get("enabled"))
+
+
+def _upload_image_to_dify(api_key: str, userid: int, image: Dict[str, str]) -> Optional[str]:
+    """添付画像（{"media_type", "data"(base64)}）をDifyへアップロードし、upload_file_idを返す。失敗時はNone"""
+    media_type = image.get("media_type", "image/png")
+    try:
+        content = base64.b64decode(image.get("data", ""))
+        response = requests.post(
+            f"{DIFY_API_BASE_URL}/files/upload",
+            headers={"Authorization": f"Bearer {api_key}"},
+            files={"file": (f"upload.{_IMAGE_EXTENSIONS.get(media_type, 'png')}", content, media_type)},
+            data={"user": f"webcoach-user-{userid}"},
+            timeout=30,
+        )
+        response.raise_for_status()
+        return response.json().get("id")
+    except (requests.exceptions.RequestException, ValueError) as e:
+        logger.error(f"Dify file upload failed: {e}")
+        return None
+
+
 def get_sticky_dify_app_id(userid: int, session_id: Optional[str] = None) -> Optional[int]:
     """このユーザー・このセッションが直前に使っていたDifyアプリのapp_idを取得（無ければNone）"""
     return _dify_sticky_app_cache.get((userid, session_id))
@@ -332,12 +372,17 @@ def _call_dify_chat(
     reset: bool = False,
     inputs: Optional[Dict[str, str]] = None,
     session_id: Optional[str] = None,
+    image: Optional[Dict[str, str]] = None,
 ) -> str:
     """Dify上に構築されたAIアプリに問い合わせる（同一ユーザー・同一アプリ・同一セッションの
     会話はプロセス内で継続する）
 
     reset=Trueの場合、キャッシュ済みのconversation_idを使わず新規の会話として送信する
     （ユーザーが前回までの条件を引き継がず新しく検索し直したい場合の入口）。
+
+    image（{"media_type", "data"(base64)}）が渡され、Dify側アプリで画像アップロードが
+    有効な場合は、Difyへアップロードしてfilesとして添付する。以降のターンで画像が
+    無くても、同じ会話のあいだは最後の画像を添付し続ける（_dify_image_cache参照）。
     """
     cache_key = (userid, app_id, session_id)
     conversation_id = "" if reset else _dify_conversation_cache.get(cache_key, "")
@@ -367,6 +412,19 @@ def _call_dify_chat(
     for var in required_vars:
         request_inputs.setdefault(var, "")
 
+    if reset:
+        _dify_image_cache.pop(cache_key, None)
+    if image and _dify_accepts_images(api_key):
+        upload_file_id = _upload_image_to_dify(api_key, userid, image)
+        if upload_file_id:
+            _dify_image_cache[cache_key] = upload_file_id
+    upload_file_id = _dify_image_cache.get(cache_key)
+    files = (
+        [{"type": "image", "transfer_method": "local_file", "upload_file_id": upload_file_id}]
+        if upload_file_id
+        else []
+    )
+
     try:
         response = requests.post(
             f"{DIFY_API_BASE_URL}/chat-messages",
@@ -380,6 +438,7 @@ def _call_dify_chat(
                 "response_mode": "blocking",
                 "conversation_id": conversation_id,
                 "user": f"webcoach-user-{userid}",
+                **({"files": files} if files else {}),
             },
             # 2026-09-17: routers/ai_langgraph.pyがバックグラウンドスレッド+ポーリング
             # 方式(SYNC_WAIT_SECONDS超過時はjob_id化)に変更されたため、この呼び出しは
@@ -420,7 +479,11 @@ def _call_dify_chat(
 
 
 def create_ai_application_tools(
-    db, raw_user_message: str, userid: int = None, session_id: Optional[str] = None
+    db,
+    raw_user_message: str,
+    userid: int = None,
+    session_id: Optional[str] = None,
+    image: Optional[Dict[str, str]] = None,
 ) -> "tuple[List[BaseTool], Optional[str]]":
     """
     DBに登録済みのAIアプリケーション（webcoach_ai_application.secret_keyが設定されているもの）を
@@ -432,6 +495,7 @@ def create_ai_application_tools(
     ユーザーの発言(raw_user_message)をそのまま使う。Dify側アプリがボタンの
     data-message値等、厳密な文字列一致を前提にしたステップ形式のフローを
     持つことがあり、LLMによる言い換えを挟むとフローが先に進まなくなるため。
+    同じ理由で、ユーザーの添付画像(image)もLLMを介さずそのままDifyへ渡す。
 
     戻り値の2つ目は、このターンで会話継続のために固定すべきツール名
     （前ターンで使っていたDifyアプリと同一のもの）。ユーザーの発言に他アプリ
@@ -455,6 +519,7 @@ def create_ai_application_tools(
             app_id: int = app.id,
             message: str = raw_user_message,
             session_id: Optional[str] = session_id,
+            image: Optional[Dict[str, str]] = image,
         ):
             def _call(
                 query: str,
@@ -470,6 +535,7 @@ def create_ai_application_tools(
                     reset=start_new_conversation,
                     inputs=extra_inputs,
                     session_id=session_id,
+                    image=image,
                 )
             return _call
 

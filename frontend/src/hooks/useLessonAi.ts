@@ -11,8 +11,9 @@ import {
 } from '../types/aiCoach';
 import {
   AiSkillId,
-  AiSkillRequest,
+  AI_SKILL_META,
   AI_SKILL_SHORT_LABEL,
+  ConcreteAiSkillId,
   isSpecialistSkill,
   SkillSuggestion,
 } from '../types/aiSkill';
@@ -82,6 +83,21 @@ const nextId = (prefix: string) => `${prefix}-${Date.now()}-${(seq += 1)}`;
 /** セッションが未作成のあいだの既定値。毎レンダーで新しい参照を作らないよう定数にする */
 const EMPTY_MESSAGES: AiCoachMessage[] = [];
 
+/** api-server の ChatRequest.message の上限（ai_langgraph.py の max_length） */
+const AI_MESSAGE_MAX_LENGTH = 1000;
+
+/**
+ * 専門モードの依頼文。実BFFに POST /webcoach/ai-skill は無いので、専門モードも
+ * 通常のAIチャット（POST /webcoach/ai）で実行し、モードの意図をこの前置きで伝える。
+ * 画像はそのままLLM（マルチモーダル）へ渡るので、制作物添削も成り立つ。
+ */
+const skillRequestMessage = (skillId: ConcreteAiSkillId, question: string): string => {
+  const meta = AI_SKILL_META[skillId];
+  const framed = `【${meta.modeLabel}】${meta.modeLead}観点ごとに整理して答え、最後に次にやることを示してください。\n\n${question}`;
+  // 上限を超えるとAPIが400を返すので、そのときは前置きを諦めて質問だけ送る
+  return framed.length <= AI_MESSAGE_MAX_LENGTH ? framed : question;
+};
+
 const errorAnswer = (): LessonAiResponse => ({
   conclusion: '一時的なエラーで回答を取得できませんでした。',
   basis: '',
@@ -92,11 +108,12 @@ const errorAnswer = (): LessonAiResponse => ({
   generalNote: null,
 });
 
-/** 「案件抽出メーカー」等のDify連携ツールが実際に検索を行うステップは70〜90秒かかることがあり、
- *  その間ユーザーに待機中であることを伝えるための一時メッセージ（bffClient.sendAIMessageの
- *  onWaitingコールバックから使う。完了時は別の通常メッセージがこの下に追加される）。 */
+/** 回答に時間がかかっているあいだ、待機中であることを伝える一時メッセージ（bffClient.sendAIMessageの
+ *  onWaitingコールバックから使う。完了時は別の通常メッセージがこの下に追加される）。
+ *  api-serverは8秒を超えると一律ポーリングに切り替えるため、Dify連携ツールの実検索に限らず
+ *  画像添削のような普通の回答でも出る。「検索」と書くと質問と噛み合わないので中立な文言にする。 */
 const waitingAnswer = (): LessonAiResponse => ({
-  conclusion: '検索に時間がかかっています。もうしばらくお待ちください…',
+  conclusion: '回答を作成しています。もうしばらくお待ちください…',
   basis: '',
   apply: '',
   next: '',
@@ -238,6 +255,83 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
   );
 
   /**
+   * 汎用AIエンドポイント（POST /webcoach/ai）で応答する。
+   *
+   * @param requestMessage APIへ送る文面。専門モードの前置きを付けるときだけ指定し、
+   *   省略時は question をそのまま送る（画面に出るユーザー発言は常に question のまま）。
+   */
+  const runGeneralAi = useCallback(
+    async (
+      question: string,
+      img: string | null,
+      localSuggestion?: SkillSuggestion | null,
+      requestMessage?: string
+    ) => {
+      try {
+        const res = await bffClient.sendAIMessage(
+          {
+            message: requestMessage ?? question,
+            // 会話履歴を渡さないと、DBに登録したAIアプリ(Dify)へ問い合わせ中の
+            // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
+            // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
+            conversation_history: toHistory(messages),
+            // 「新しい相談を始める」等で別のsessionIdになった場合、Dify連携ツール側の
+            // 会話継続キャッシュも区切って、前回の検索条件を引き継がないようにする。
+            session_id: sessionId,
+            ...(img
+              ? {
+                  image: {
+                    media_type: img.slice(5, img.indexOf(';')) || 'image/png',
+                    data: img.split(',')[1] || '',
+                  },
+                }
+              : {}),
+          },
+          // Dify連携ツールの実検索など時間がかかる場合、bffClient側が裏でポーリングに
+          // 切り替えた瞬間に1回だけ呼ばれる。待機中であることが分かるよう一時メッセージを積む。
+          () => {
+            appendMessage(sessionId, {
+              id: nextId('a'),
+              role: 'assistant',
+              content: '',
+              answer: waitingAnswer(),
+              references,
+              createdAt: new Date().toISOString(),
+            });
+          }
+        );
+        appendMessage(sessionId, {
+          id: nextId('a'),
+          role: 'assistant',
+          content: '',
+          answer: {
+            conclusion: res.message || '回答を取得できませんでした。',
+            basis: '',
+            apply: '',
+            next: '',
+            sources: [],
+            groundedInMaterial: false,
+            generalNote: null,
+          },
+          suggestion:
+            localSuggestion && localSuggestion.strength !== 'none' ? localSuggestion : null,
+          references,
+          createdAt: new Date().toISOString(),
+        });
+      } catch {
+        appendMessage(sessionId, {
+          id: nextId('a'),
+          role: 'assistant',
+          content: '',
+          answer: errorAnswer(),
+          createdAt: new Date().toISOString(),
+        });
+      }
+    },
+    [appendMessage, messages, references, sessionId]
+  );
+
+  /**
    * 通常のAIコーチとして回答する（教材準拠の構造化回答）。
    *
    * @param localSuggestion 教材の文脈が無い会話で、回答の下に出す提案。
@@ -260,66 +354,7 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
       // 教材の根拠が無いのは当然なので、ここでは警告扱いにしない
       // （UI側も教材の文脈が無いときは「教材だけでは判断できません」を出さない）。
       if (!request) {
-        try {
-          const res = await bffClient.sendAIMessage(
-            {
-              message: question,
-              // 会話履歴を渡さないと、DBに登録したAIアプリ(Dify)へ問い合わせ中の
-              // 2ターン目以降でLLMが文脈を見失い、別のツールを呼んでしまう
-              // (例: ボタン選択の「WEBデザイン」だけ送ると学習相談ツールに逸れる)。
-              conversation_history: toHistory(messages),
-              // 「新しい相談を始める」等で別のsessionIdになった場合、Dify連携ツール側の
-              // 会話継続キャッシュも区切って、前回の検索条件を引き継がないようにする。
-              session_id: sessionId,
-              ...(img
-                ? {
-                    image: {
-                      media_type: img.slice(5, img.indexOf(';')) || 'image/png',
-                      data: img.split(',')[1] || '',
-                    },
-                  }
-                : {}),
-            },
-            // Dify連携ツールの実検索など時間がかかる場合、bffClient側が裏でポーリングに
-            // 切り替えた瞬間に1回だけ呼ばれる。待機中であることが分かるよう一時メッセージを積む。
-            () => {
-              appendMessage(sessionId, {
-                id: nextId('a'),
-                role: 'assistant',
-                content: '',
-                answer: waitingAnswer(),
-                references,
-                createdAt: new Date().toISOString(),
-              });
-            }
-          );
-          appendMessage(sessionId, {
-            id: nextId('a'),
-            role: 'assistant',
-            content: '',
-            answer: {
-              conclusion: res.message || '回答を取得できませんでした。',
-              basis: '',
-              apply: '',
-              next: '',
-              sources: [],
-              groundedInMaterial: false,
-              generalNote: null,
-            },
-            suggestion:
-              localSuggestion && localSuggestion.strength !== 'none' ? localSuggestion : null,
-            references,
-            createdAt: new Date().toISOString(),
-          });
-        } catch {
-          appendMessage(sessionId, {
-            id: nextId('a'),
-            role: 'assistant',
-            content: '',
-            answer: errorAnswer(),
-            createdAt: new Date().toISOString(),
-          });
-        }
+        await runGeneralAi(question, img, localSuggestion);
         return;
       }
 
@@ -346,47 +381,28 @@ export function useLessonAi(doc: LessonDoc | null, sessionIdOverride?: string): 
         });
       }
     },
-    [appendMessage, buildRequest, references, sessionId]
+    [appendMessage, buildRequest, references, runGeneralAi, sessionId]
   );
 
-  /** 専門モードを実行する（裏でDifyアプリが呼ばれる箇所） */
+  /**
+   * 専門モードを実行する。
+   *
+   * 本来は POST /webcoach/ai-skill（項目別の構造化添削）を呼ぶ設計だが、実BFFには
+   * 未実装で、呼ぶと必ず「一時的なエラー」になっていた。実装されるまでは、実在する
+   * 汎用AIエンドポイントへモードの意図を前置きして送る。回答は項目別カードではなく
+   * 通常の回答として表示される。
+   */
   const runSkill = useCallback(
     async (targetSkill: AiSkillId, question: string, q: AiCoachQuote | null, img: string | null) => {
       if (!isSpecialistSkill(targetSkill)) {
         await runLessonAi(question, q, img);
         return;
       }
-      const request: AiSkillRequest = {
-        skillId: targetSkill,
-        question,
-        image: img ?? undefined,
-        quote: q?.text ?? null,
-        courseId: context.courseId,
-        lessonId: context.lessonId,
-        blockIds: q?.blockId ? [q.blockId] : [],
-        history: toHistory(messages),
-      };
-      try {
-        const skillResult = await bffClient.runAiSkill(request);
-        appendMessage(sessionId, {
-          id: nextId('a'),
-          role: 'assistant',
-          content: '',
-          skillResult,
-          references,
-          createdAt: new Date().toISOString(),
-        });
-      } catch {
-        appendMessage(sessionId, {
-          id: nextId('a'),
-          role: 'assistant',
-          content: '',
-          answer: errorAnswer(),
-          createdAt: new Date().toISOString(),
-        });
-      }
+      // 引用していた教材本文は汎用AIに渡す欄が無いので、依頼文に含める
+      const body = q?.text ? `${question}\n\n引用:「${q.text}」` : question;
+      await runGeneralAi(question, img, null, skillRequestMessage(targetSkill, body));
     },
-    [appendMessage, context, messages, references, runLessonAi, sessionId]
+    [runGeneralAi, runLessonAi]
   );
 
   /** 未回答の確認カードを探す。最後の1件だけを見る */

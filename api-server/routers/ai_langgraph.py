@@ -239,7 +239,12 @@ def _execute_chat(request: ChatRequest, db: Session) -> ChatResponse:
     # DBに登録済みのAIアプリケーション（secret_key設定済み）を動的ツールとして構築
     from agents.tools_langchain import create_ai_application_tools
     dynamic_tools, sticky_dify_tool_name = create_ai_application_tools(
-        db, request.message, request.user_id, session_id=request.session_id
+        db,
+        request.message,
+        request.user_id,
+        session_id=request.session_id,
+        # 添付画像はDify側アプリにも渡す（制作物添削アプリ等が画像を見て答えられるように）
+        image=request.image.model_dump() if request.image else None,
     )
 
     # 初期ステートを構築

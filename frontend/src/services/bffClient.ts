@@ -1931,6 +1931,8 @@ class BFFClient {
    * POST /api/webcoach/ai-skill
    *
    * 実BFFには未実装。すべて mocks/aiSkillHandlers.ts のMSWモックが応答する。
+   * ⚠ 実BFFで呼ぶと必ず失敗するため、useLessonAi は現在これを呼ばず、専門モードも
+   *   sendAIMessage（POST /webcoach/ai）で実行している。BFFに実装したら戻すこと。
    * 本番ではこのエンドポイントが Dify 呼び出しの唯一の境界になり、
    * BFF が skillId を Difyアプリの資格情報へ解決して代理呼び出しする。
    * フロントはアプリIDやURLを一切持たない（ユーザーにも見せない）。
