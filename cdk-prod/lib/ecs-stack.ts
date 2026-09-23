@@ -369,7 +369,19 @@ export class ProdEcsStack extends cdk.Stack {
         MOODLE_DATABASE_TYPE: 'mysqli',
         // Bitnami イメージが実際に読むのは MOODLE_DATA_DIR (MOODLE_DATAROOT ではない)。
         MOODLE_DATA_DIR: '/moodledata',
-        MOODLE_SITE_URL: moodleSiteUrl ?? 'REPLACE_ME',
+        // 2026-09-23: 'REPLACE_ME'のまま未設定だった。api.webcoach.jp(ALB直下、nginxの
+        // location / がmoodle-appへプロキシする経路)を正式なwwwrootとして使う。
+        MOODLE_SITE_URL: moodleSiteUrl ?? 'https://api.webcoach.jp',
+        // ALB(TLS終端済み)配下で動いていることをMoodleに伝える。未設定だと
+        // $CFG->sslproxyがfalseのままとなり、Moodleがhttp://始まりのURL(favicon等)を
+        // 生成してブラウザのCSP(img-src ... https:)にブロックされる
+        // (2026-09-23発見)。Bitnamiイメージのバージョンによって変数名が
+        // MOODLE_REVERSEPROXY/MOODLE_SSLPROXY と MOODLE_REVERSE_PROXY/MOODLE_SSL_PROXY の
+        // 2系統あるため両方セットする(未使用の変数名は単に無視される)。
+        MOODLE_REVERSEPROXY: 'yes',
+        MOODLE_SSLPROXY: 'yes',
+        MOODLE_REVERSE_PROXY: 'yes',
+        MOODLE_SSL_PROXY: 'yes',
         MOODLE_SESSION_HANDLER: 'database',
         MOODLE_LANG: moodleLang ?? 'ja',
         // 2026-07-24: 「既存498テーブル」は実際には admin/user/context 等の
