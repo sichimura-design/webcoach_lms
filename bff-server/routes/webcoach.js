@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const requireAuth = require('../middleware/auth');
 const requireOwnership = require('../middleware/ownership');
+const requireAdmin = require('../middleware/admin');
 const webCoachService = require('../services/WebCoachService');
 
 // Get profile
@@ -168,9 +169,13 @@ router.post('/ai', requireAuth, async (req, res) => {
   try {
     const chatRequest = req.body;
 
-    // Automatically set user_id from authenticated user
-    if (!chatRequest.user_id && req.user && req.user.moodleUserId) {
+    // user_id is always taken from the authenticated session, never from the
+    // client-supplied body — otherwise any logged-in user could impersonate
+    // another user by setting user_id themselves.
+    if (req.user && req.user.moodleUserId) {
       chatRequest.user_id = req.user.moodleUserId;
+    } else {
+      delete chatRequest.user_id;
     }
 
     const result = await webCoachService.sendAIChat(chatRequest);
@@ -534,7 +539,7 @@ router.get('/avatar/:avatar_id', requireAuth, async (req, res) => {
 });
 
 // Create next coaching goal
-router.post('/next-coaching-goal', requireAuth, async (req, res) => {
+router.post('/next-coaching-goal', requireAuth, requireAdmin, async (req, res) => {
   try {
     const { mdl_user_id, no, description, is_completed } = req.body;
 
@@ -567,7 +572,7 @@ router.post('/next-coaching-goal', requireAuth, async (req, res) => {
 });
 
 // Get all next coaching goals (all users)
-router.get('/next-coaching-goals', requireAuth, async (req, res) => {
+router.get('/next-coaching-goals', requireAuth, requireAdmin, async (req, res) => {
   try {
     const result = await webCoachService.getAllNextCoachingGoals();
     res.json(result);

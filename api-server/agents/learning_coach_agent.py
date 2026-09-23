@@ -274,6 +274,24 @@ def tools_node(state: LearningCoachState) -> LearningCoachState:
         logger.warning("No tool calls found in last message")
         return state
 
+    # 本人確認済みのuseridに強制上書きする対象ツール。これらは`userid`を
+    # LLMが自由に選べる引数として公開しているため、上書きしないと
+    # プロンプトインジェクション等で他人のuseridを指定され、なりすましに
+    # つながる（tools_listはプロセス共有のシングルトンなので、ツール関数側に
+    # クロージャでuseridを固定することができず、ここで上書きする必要がある）。
+    _IDENTITY_BOUND_TOOLS = {
+        "get_user_courses",
+        "get_user_profile",
+        "get_resume_courses",
+        "get_recommended_badges",
+        "get_user_badges",
+    }
+    authenticated_user_id = state.get("user_id")
+    if authenticated_user_id is not None:
+        for tool_call in last_message.tool_calls:
+            if tool_call.get("name") in _IDENTITY_BOUND_TOOLS:
+                tool_call["args"]["userid"] = authenticated_user_id
+
     # ToolNodeを使ってツールを実行（静的ツール + 動的ツール）
     tool_node = ToolNode(tools_list + (state.get("dynamic_tools") or []))
 

@@ -8,16 +8,7 @@ const router = express.Router();
 const requireAuth = require('../middleware/auth');
 const roadmapService = require('../services/RoadmapService');
 const { createErrorResponse } = require('../utils/errorHandler');
-
-function isAdminOrCoach(req) {
-  const userGroups = req.user?.groups || [];
-  return userGroups.includes('admin') || userGroups.includes('coach');
-}
-
-function isSelfOrAdminOrCoach(req, userid) {
-  const moodleUserId = req.user?.moodleUserId;
-  return isAdminOrCoach(req) || moodleUserId == userid;
-}
+const { isSelfOrAdminOrAssignedCoach, isAdminOrAssignedCoach } = require('../middleware/coachAccess');
 
 // ==================== SKILL / PHASE TEMPLATES ====================
 
@@ -74,7 +65,7 @@ router.post('/users/:userid', requireAuth, async (req, res) => {
     const { userid } = req.params;
     const { skill_id } = req.body;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to start roadmap for user ${userid}`);
       return res.status(403).json({
         error: 'Forbidden',
@@ -117,7 +108,7 @@ router.get('/users/:userid', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to access roadmap for user ${userid}`);
       return res.status(403).json({
         error: 'Forbidden',
@@ -153,11 +144,24 @@ router.put('/progress/:id', requireAuth, async (req, res) => {
   try {
     const { id } = req.params;
 
-    if (!isAdminOrCoach(req)) {
+    let owner;
+    try {
+      owner = await roadmapService.getProgressOwner(parseInt(id));
+    } catch (lookupError) {
+      if (lookupError.response && lookupError.response.status === 404) {
+        return res.status(404).json({
+          error: 'Not Found',
+          detail: lookupError.response.data?.detail || 'Roadmap progress not found'
+        });
+      }
+      throw lookupError;
+    }
+
+    if (!(await isAdminOrAssignedCoach(req, owner.mdl_user_id))) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to update roadmap progress ${id}`);
       return res.status(403).json({
         error: 'Forbidden',
-        message: '管理者またはコーチのみ更新できます。'
+        message: '管理者または担当コーチのみ更新できます。'
       });
     }
 
@@ -212,7 +216,7 @@ router.post('/users/:userid/answers', requireAuth, async (req, res) => {
     const { userid } = req.params;
     const { review_no, answers } = req.body;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to submit answers for user ${userid}`);
       return res.status(403).json({
         error: 'Forbidden',

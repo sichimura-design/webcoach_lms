@@ -9,6 +9,7 @@ const requireAuth = require('../middleware/auth');
 const requireAdmin = require('../middleware/admin');
 const coachingService = require('../services/CoachingService');
 const { createErrorResponse } = require('../utils/errorHandler');
+const { isSelfOrAdminOrAssignedCoach, isAdminOrAssignedCoach } = require('../middleware/coachAccess');
 
 // ==================== COACH-STUDENT MAPPING ====================
 
@@ -233,16 +234,11 @@ router.get('/schedule/:userid', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
 
-    const userGroups = req.user?.groups || [];
-    const isAdmin = userGroups.includes('admin');
-    const isCoach = userGroups.includes('coach');
-    const moodleUserId = req.user?.moodleUserId;
-
-    if (!isAdmin && !isCoach && moodleUserId != userid) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to access coaching schedule for user ${userid}`);
       return res.status(403).json({
         error: 'Forbidden',
-        message: '管理者、コーチ、または本人のみアクセス可能です。'
+        message: '管理者、担当コーチ、または本人のみアクセス可能です。'
       });
     }
 
@@ -263,15 +259,11 @@ router.post('/schedule/:userid', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
 
-    const userGroups = req.user?.groups || [];
-    const isAdmin = userGroups.includes('admin');
-    const isCoach = userGroups.includes('coach');
-
-    if (!isAdmin && !isCoach) {
+    if (!(await isAdminOrAssignedCoach(req, userid))) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to create coaching schedule for user ${userid}`);
       return res.status(403).json({
         error: 'Forbidden',
-        message: '管理者またはコーチのみ作成できます。'
+        message: '管理者または担当コーチのみ作成できます。'
       });
     }
 
@@ -292,15 +284,11 @@ router.put('/schedule/:userid/:id', requireAuth, async (req, res) => {
   try {
     const { userid, id } = req.params;
 
-    const userGroups = req.user?.groups || [];
-    const isAdmin = userGroups.includes('admin');
-    const isCoach = userGroups.includes('coach');
-
-    if (!isAdmin && !isCoach) {
+    if (!(await isAdminOrAssignedCoach(req, userid))) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to update coaching schedule ${id} for user ${userid}`);
       return res.status(403).json({
         error: 'Forbidden',
-        message: '管理者またはコーチのみ更新できます。'
+        message: '管理者または担当コーチのみ更新できます。'
       });
     }
 
@@ -324,15 +312,11 @@ router.delete('/schedule/:userid/:id', requireAuth, async (req, res) => {
   try {
     const { userid, id } = req.params;
 
-    const userGroups = req.user?.groups || [];
-    const isAdmin = userGroups.includes('admin');
-    const isCoach = userGroups.includes('coach');
-
-    if (!isAdmin && !isCoach) {
+    if (!(await isAdminOrAssignedCoach(req, userid))) {
       console.warn(`[SECURITY ALERT] Unauthorized user ${req.user?.email} attempted to delete coaching schedule ${id} for user ${userid}`);
       return res.status(403).json({
         error: 'Forbidden',
-        message: '管理者またはコーチのみ削除できます。'
+        message: '管理者または担当コーチのみ削除できます。'
       });
     }
 

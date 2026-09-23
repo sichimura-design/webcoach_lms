@@ -2592,6 +2592,21 @@ def _advance_to_next_phase(db: Session, completed_progress: WebCoachRoadmapProgr
             next_progress.end = today + timedelta(days=next_phase.duration_days)
 
 
+def get_roadmap_progress_owner(db: Session, progress_id: int) -> Optional[int]:
+    """
+    WebCoach: フェーズ進捗レコードの持ち主(mdl_user_id)を取得する。
+    BFF側で「このコーチが担当している生徒の進捗か」を判定するための、
+    書き込み前の所有者確認専用。見つからない場合はNone。
+    """
+    row = (
+        db.query(WebCoachUserRoadmap.mdl_user_id)
+        .join(WebCoachRoadmapProgress, WebCoachRoadmapProgress.user_roadmap_id == WebCoachUserRoadmap.id)
+        .filter(WebCoachRoadmapProgress.id == progress_id)
+        .first()
+    )
+    return row[0] if row else None
+
+
 def update_roadmap_progress(
     db: Session,
     progress_id: int,
