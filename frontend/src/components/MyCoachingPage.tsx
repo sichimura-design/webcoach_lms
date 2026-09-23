@@ -13,6 +13,7 @@
  */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Calendar, ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { AppHeader } from './shared';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
@@ -24,7 +25,7 @@ import LastSessionCard from './coaching/LastSessionCard';
 import NextGoalsCard, { type GoalDraftRow } from './coaching/NextGoalsCard';
 import { C } from './coaching/design1c';
 import type { CoachingGoalUpdateItem } from '../types/mypage';
-import type { CoachingSessionDetail, CoachingSessionSummary } from '../types/coaching';
+import { toSessionDetail, toSessionSummary } from '../utils/coachingScheduleAdapter';
 
 const NOTE_FIELD_LABELS: { key: keyof CoachingNote; label: string }[] = [
   { key: 'session_summary', label: 'セッション概要' },
@@ -68,56 +69,6 @@ function TimelineNode({ label, accent, last }: { label: string; accent?: boolean
   );
 }
 
-/** LastSessionCardが期待する形へschedule+noteを詰め替える（型は変えず、値だけ合わせる） */
-function toSessionSummary(schedule: CoachingSchedule): CoachingSessionSummary {
-  return {
-    id: schedule.id,
-    date: schedule.coaching_date,
-    title: `第${schedule.coaching_no}回`,
-    coach: '',
-    summary: schedule.coaching_summary || '',
-    status: 'published',
-    source: null,
-    importedFrom: null,
-    tasksCreated: false,
-  };
-}
-
-function toSessionDetail(schedule: CoachingSchedule, note: CoachingNote | null): CoachingSessionDetail | null {
-  if (!note) return null;
-  return {
-    id: schedule.id,
-    date: schedule.coaching_date,
-    title: `第${schedule.coaching_no}回`,
-    coach: '',
-    coachId: schedule.coach_user_id,
-    meetingLink: null,
-    source: null,
-    importedFrom: null,
-    status: 'published',
-    step: '',
-    progress: 100,
-    error: null,
-    audioRetention: 'delete_after_summary',
-    visibility: 'shared_with_coach',
-    hasAudio: false,
-    segments: [],
-    summary: {
-      sessionSummary: note.session_summary || '',
-      progressSinceLast: [],
-      coachFeedback: note.coach_feedback ? [{ title: note.coach_feedback, sourceSegmentIds: [] }] : [],
-      decisions: note.decisions ? [{ title: note.decisions, sourceSegmentIds: [] }] : [],
-      goals: [],
-      tasks: [],
-      nextSessionAgenda: note.next_session_check ? [note.next_session_check] : [],
-      referencedContext: [],
-    },
-    studentMemo: '',
-    reflectedGoalIds: [],
-    reflectedAt: null,
-  };
-}
-
 export function MyCoachingPage() {
   const { user } = useAuth();
   const { showToast } = useToast();
@@ -128,6 +79,9 @@ export function MyCoachingPage() {
   const [error, setError] = useState<string | null>(null);
   const [openId, setOpenId] = useState<number | null>(null);
   const [notes, setNotes] = useState<Record<number, CoachingNote | null>>({});
+  // /study-log のコーチング記録から ?schedule=<id> 付きで飛んでくる。その回を開いた状態で見せる
+  const [searchParams] = useSearchParams();
+  const linkedScheduleId = Number(searchParams.get('schedule')) || null;
 
   const reload = useCallback(() => {
     if (!userId) return;
@@ -164,6 +118,15 @@ export function MyCoachingPage() {
   useEffect(() => {
     if (lastSchedule) loadNote(lastSchedule.id);
   }, [lastSchedule, loadNote]);
+
+  useEffect(() => {
+    if (!linkedScheduleId || !schedules.some(s => s.id === linkedScheduleId)) return;
+    setOpenId(linkedScheduleId);
+    loadNote(linkedScheduleId);
+    document.getElementById(`coaching-schedule-${linkedScheduleId}`)?.scrollIntoView({ block: 'start' });
+    // loadNote は notes が変わるたびに作り直されるので deps に入れると開き直しが繰り返される
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [linkedScheduleId, schedules]);
 
   // --- 次回コーチングまでの目標 ---------------------------------------------
 
@@ -335,7 +298,7 @@ export function MyCoachingPage() {
               const isOpen = openId === schedule.id;
               const note = notes[schedule.id];
               return (
-                <div key={schedule.id} style={{ ...t.card, padding: '16px 18px' }}>
+                <div key={schedule.id} id={`coaching-schedule-${schedule.id}`} style={{ ...t.card, padding: '16px 18px', scrollMarginTop: 80 }}>
                   <button
                     type="button"
                     onClick={() => {

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Clock, Flame } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { AppFooter, AppHeader } from '../shared';
@@ -14,8 +14,8 @@ import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
 import { RankingRowItem } from '../shared/RankingRow';
 import { withCfToken } from '../profile/AvatarPicker';
 import bffClient from '../../services/bffClient';
-import SessionReview from '../coaching/SessionReview';
-import type { CoachingSessionDetail, CoachingSessionSummary } from '../../types/coaching';
+import type { CoachingSessionSummary } from '../../types/coaching';
+import { toSessionSummary } from '../../utils/coachingScheduleAdapter';
 import StudyRecordPanel from './StudyRecordPanel';
 import StudySummaryStrip from './StudySummaryStrip';
 import StudyCalendarCard from './StudyCalendarCard';
@@ -62,12 +62,13 @@ import CoachingRecordsCard from './CoachingRecordsCard';
  *    割らないようにするため。
  *
  * 【コーチング記録】
- * 🔴 /coaching は「次の1回」の画面で、残すのは前回分だけ。過去の積み上がりはここが持つ。
- *    1件開くときはルートを増やさず /study-log?session=<id> にする
- *    （マイノートの ?note= と同じ作法）。
+ * 🔴 実データはコーチが登録するコーチング予約（/api/coaching/schedule）。実施日が今日以前の回を
+ *    カレンダーと一覧に出す。以前は実BFFに存在しないモック専用API（/webcoach/coaching-sessions）を
+ *    呼んでいて、実環境では常に0件＝コーチングの日付がどこにも出ていなかった。
+ *    1件開くと /coaching?schedule=<id> へ移り、AIノートはそちら（MyCoachingPage）で読む。
  *
  * 【クエリの優先順位】
- * 🔴 session > goal > date。3つ同時に付いていても、この順で1つだけが効く。
+ * 🔴 goal > date。2つ同時に付いていても、この順で1つだけが効く。
  *    ここが唯一の判断場所で、各カードは自分のクエリだけを見ない。
  */
 
@@ -85,9 +86,9 @@ function StudyLogPage() {
   const goals = useGoalDeclaration(userId);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const openSessionId = searchParams.get('session');
-  const goalParam = openSessionId ? null : searchParams.get('goal');
-  const selectedDate = openSessionId || goalParam ? null : searchParams.get('date');
+  const navigate = useNavigate();
+  const goalParam = searchParams.get('goal');
+  const selectedDate = goalParam ? null : searchParams.get('date');
 
   const todayKey = toLocalDateKey(new Date());
   const [monthOverride, setMonthOverride] = useState<string | null>(null);
@@ -100,37 +101,26 @@ function StudyLogPage() {
 
   const [pastSessions, setPastSessions] = useState<CoachingSessionSummary[]>([]);
   const [coachingLoading, setCoachingLoading] = useState(true);
-  const [openSession, setOpenSession] = useState<CoachingSessionDetail | null>(null);
 
   useEffect(() => {
     if (!userId) return;
     let alive = true;
     setCoachingLoading(true);
     bffClient
-      .getCoachingSessions(userId)
-      .then((res) => { if (alive) setPastSessions(res.past ?? []); })
-      // コーチングを使っていない受講生・実BFF未対応でも学習記録側は出す
+      .getCoachingSchedules(userId)
+      .then((schedules) => {
+        if (!alive) return;
+        // 実施済みの回だけ。未来の予約とリスケで流れた回は「記録」ではないので出さない
+        const done = schedules.filter((s) => s.coaching_date <= todayKey && s.status !== 'rescheduled');
+        setPastSessions(done.map(toSessionSummary));
+      })
+      // コーチングを使っていない受講生でも学習記録側は出す
       .catch(() => { if (alive) setPastSessions([]); })
       .finally(() => { if (alive) setCoachingLoading(false); });
     return () => { alive = false; };
-  }, [userId]);
+  }, [userId, todayKey]);
 
-  // ?session= の中身が唯一の入口。ブラウザバックと直リンクもここが受ける
-  useEffect(() => {
-    if (!openSessionId) {
-      setOpenSession(null);
-      return;
-    }
-    let alive = true;
-    setOpenSession(null);
-    bffClient
-      .getCoachingSession(Number(openSessionId))
-      .then((d) => { if (alive) setOpenSession(d); })
-      .catch(() => { if (alive) setOpenSession(null); });
-    return () => { alive = false; };
-  }, [openSessionId]);
-
-  /** クエリを1つ足す／消す。?date= を残したまま ?session= を足せるようにする */
+  /** クエリを1つ足す／消す。?date= を残したまま ?goal= を足せるようにする */
   const patchParams = useCallback(
     (changes: Record<string, string | null>, replace = false) => {
       const params = new URLSearchParams(searchParams);
@@ -143,8 +133,7 @@ function StudyLogPage() {
     [searchParams, setSearchParams]
   );
 
-  const showSession = (sessionId: number) => patchParams({ session: String(sessionId) });
-  const backToList = () => patchParams({ session: null }, true);
+  const showSession = (scheduleId: number) => navigate(`/coaching?schedule=${scheduleId}`);
 
   // --- カレンダー -----------------------------------------------------------
 
@@ -250,52 +239,25 @@ function StudyLogPage() {
         className="dc-page-main flex flex-col"
         style={{ flex: 1, padding: 'var(--dc-sp-page-y) var(--dc-sp-page-x) calc(var(--dc-sp-page-y) * 0.8)', color: 'var(--dc-text)' }}
       >
-        {/* 記録を1件開いているときは、その記録が見出しを持つのでページの見出しは出さない */}
-        {openSessionId ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 18, marginBottom: 22 }}>
-            <button
-              type="button"
-              onClick={backToList}
-              style={{
-                alignSelf: 'flex-start',
-                background: 'none',
-                border: 'none',
-                padding: 0,
-                fontFamily: 'inherit',
-                fontSize: 'var(--dc-fs-body)',
-                color: 'var(--dc-text-muted)',
-                cursor: 'pointer',
-              }}
-            >
-              ← 学習記録に戻る
-            </button>
-            {openSession ? (
-              <SessionReview session={openSession} onDeleted={backToList} />
-            ) : (
-              <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)' }}>読み込み中…</p>
-            )}
-          </div>
-        ) : (
-          <div style={{ marginBottom: 22 }}>
-            <h1
-              style={{
-                margin: '0 0 8px',
-                fontSize: 'var(--dc-fs-display)',
-                lineHeight: 'var(--dc-lh-heading)',
-                fontWeight: 700,
-                letterSpacing: '-0.01em',
-                color: 'var(--dc-text)',
-              }}
-            >
-              学習記録・ランキング
-            </h1>
-            <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-body)' }}>
-              いつ何をどれだけ学習したかと、これまでの積み上がりを確認できます。
-            </p>
-          </div>
-        )}
+        <div style={{ marginBottom: 22 }}>
+          <h1
+            style={{
+              margin: '0 0 8px',
+              fontSize: 'var(--dc-fs-display)',
+              lineHeight: 'var(--dc-lh-heading)',
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              color: 'var(--dc-text)',
+            }}
+          >
+            学習記録・ランキング
+          </h1>
+          <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-body)' }}>
+            いつ何をどれだけ学習したかと、これまでの積み上がりを確認できます。
+          </p>
+        </div>
 
-        {openSessionId ? null : unavailable ? (
+        {unavailable ? (
           <div style={{ ...cardStyle, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)', lineHeight: 'var(--dc-lh-prose)' }}>
             学習記録を表示できませんでした。しばらくしてからもう一度お試しください。
           </div>
