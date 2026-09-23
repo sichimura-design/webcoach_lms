@@ -8,6 +8,7 @@ import { StudySessionMode } from '../types/studyRoom';
 import { StudyFinishDraft } from '../types/studyActivity';
 import { color, font, space } from '../theme/webcoachTheme';
 import FocusTimerCard from './focus/FocusTimerCard';
+import { StudyCourseChoice } from './shared/StudyCourseSelect';
 import StudyStatsCard from './focus/StudyStatsCard';
 import StreakCalendarCard from './focus/StreakCalendarCard';
 import RecentSessionsCard from './focus/RecentSessionsCard';
@@ -54,12 +55,13 @@ function FocusBoothPage() {
   // 開始前の設定。開始したらsession側が正になる
   const [mode, setMode] = useState<StudySessionMode>('freeform');
   const [targetMinutes, setTargetMinutes] = useState(25);
+  const [course, setCourse] = useState<StudyCourseChoice | null>(null);
 
   const handleStart = () => {
     // dev/kanegae統合: 実API呼び出しは useStudySession 内で非同期(fire-and-forget)に
     // 送信されるようになり、開始操作そのものは同期で完了する（starting状態は不要）。
     // category はページ専用のカテゴリが無いため、集中ブースは一律 'other' 扱いにする。
-    start({ mode, targetMinutes, category: 'other' });
+    start({ mode, targetMinutes, category: 'other', courseId: course?.id, courseTitle: course?.title });
   };
 
   const handleCommit = async (patch: Partial<StudyFinishDraft>) => {
@@ -118,6 +120,9 @@ function FocusBoothPage() {
                   targetMinutes={targetMinutes}
                   onModeChange={setMode}
                   onTargetChange={setTargetMinutes}
+                  userId={user?.userid}
+                  course={course}
+                  onCourseChange={setCourse}
                   onStart={handleStart}
                   onPause={pause}
                   onResume={resume}

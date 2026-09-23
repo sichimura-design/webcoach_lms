@@ -5,6 +5,7 @@ import { StudySessionMode } from '../../types/studyRoom';
 import TimerDial, { DialState } from './TimerDial';
 import TimerModeToggle from './TimerModeToggle';
 import DurationPresets from './DurationPresets';
+import StudyCourseSelect, { StudyCourseChoice } from '../shared/StudyCourseSelect';
 
 /**
  * 集中ブースの左カラム。タイマーと、開始前の設定をまとめて持つ。
@@ -25,6 +26,10 @@ interface FocusTimerCardProps {
   targetMinutes: number;
   onModeChange: (mode: StudySessionMode) => void;
   onTargetChange: (minutes: number) => void;
+  /** 開始前に選ぶ教材（任意）。開始後は session.courseTitle を表示する */
+  userId: number | undefined;
+  course: StudyCourseChoice | null;
+  onCourseChange: (course: StudyCourseChoice | null) => void;
   onStart: () => void;
   onPause: () => void;
   onResume: () => void;
@@ -43,6 +48,9 @@ export function FocusTimerCard({
   targetMinutes,
   onModeChange,
   onTargetChange,
+  userId,
+  course,
+  onCourseChange,
   onStart,
   onPause,
   onResume,
@@ -132,6 +140,14 @@ export function FocusTimerCard({
 
       {activeMode === 'pomodoro' && (
         <DurationPresets value={activeTarget ?? 25} onChange={onTargetChange} disabled={controlsDisabled} />
+      )}
+
+      {!session ? (
+        <StudyCourseSelect userId={userId} value={course} onChange={onCourseChange} />
+      ) : (
+        <div style={{ ...font.meta, color: color.textMuted, textAlign: 'center' }}>
+          {session.courseTitle ? `教材: ${session.courseTitle}` : '教材を指定しない'}
+        </div>
       )}
 
       {/* 操作は開始・一時停止・終了の3つだけ */}
