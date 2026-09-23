@@ -19,11 +19,6 @@ export interface PlanItem {
   estimatedMinutes: number | null;
 }
 
-interface NextSession {
-  date: string;
-  coach: string;
-}
-
 function fromApi(raw: CoachingGoalApi): PlanItem {
   const progress = raw.progress ?? (raw.is_completed === 1 ? 100 : 0);
   return {
@@ -48,7 +43,6 @@ function toApi(item: PlanItem, index: number) {
 
 export interface UseNextCoachingPlan {
   items: PlanItem[];
-  nextSession: NextSession | null;
   loading: boolean;
   /** 保存中（ボタンを二度押しさせないため） */
   saving: boolean;
@@ -70,7 +64,6 @@ export interface UseNextCoachingPlan {
  */
 export function useNextCoachingPlan(userId: number | undefined): UseNextCoachingPlan {
   const [items, setItems] = useState<PlanItem[]>([]);
-  const [nextSession, setNextSession] = useState<NextSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -87,16 +80,11 @@ export function useNextCoachingPlan(userId: number | undefined): UseNextCoaching
     setLoading(true);
     setError(null);
 
-    Promise.all([
-      bffClient.getNextCoachingGoals(userId),
-      // 実BFFに存在しない(モック専用)。目標一覧の取得自体を巻き込んで失敗させないよう、
-      // 次回セッション情報だけ個別にcatchして「無し」に縮退させる。
-      bffClient.getCoachingSessions(userId).catch(() => null),
-    ])
-      .then(([goals, sessions]) => {
+    bffClient
+      .getNextCoachingGoals(userId)
+      .then((goals) => {
         if (cancelled) return;
         setItems(goals.map(fromApi));
-        setNextSession(sessions?.next ?? null);
         setLoading(false);
       })
       .catch(() => {
@@ -130,5 +118,5 @@ export function useNextCoachingPlan(userId: number | undefined): UseNextCoaching
     [userId]
   );
 
-  return { items, nextSession, loading, saving, error, reload, save };
+  return { items, loading, saving, error, reload, save };
 }

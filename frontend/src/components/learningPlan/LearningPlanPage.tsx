@@ -71,7 +71,10 @@ export default function LearningPlanPage() {
   const [mode, setMode] = useState<Mode>({ kind: 'view' });
   const [draft, setDraft] = useState<LearningPlan | null>(null);
   const [busy, setBusy] = useState(false);
-  const [coachName, setCoachName] = useState<string | null>(null);
+  // 「コーチと確認しました」に添える既定のコーチ名。以前は実BFFに存在しないモック専用API
+  // (/webcoach/coaching-sessions)の次回予定から取っていたが、実環境では常に失敗していた。
+  // 実APIの担当コーチ取得はIDしか返さないので、名前が取れるまでは既定値なし(受講生が入力)とする。
+  const coachName: string | null = null;
 
   /**
    * 見直し案内のモーダル。見直し時期になったら1度だけ出す。
@@ -88,22 +91,6 @@ export default function LearningPlanPage() {
       setReviewModalShown(true);
     }
   }, [checkinDue, checkin, reviewModalShown]);
-
-  // 「コーチと確認しました」に添える既定のコーチ名を次回コーチング予定から取る。
-  // 読み取りのみ。コーチング機能側のデータには書き込まない。
-  useEffect(() => {
-    if (!userId) return;
-    let cancelled = false;
-    bffClient
-      .getCoachingSessions(userId)
-      .then((s) => {
-        if (!cancelled) setCoachName(s.next?.coach ?? null);
-      })
-      .catch(() => undefined);
-    return () => {
-      cancelled = true;
-    };
-  }, [userId]);
 
   const draftStatuses = useMemo(() => (draft ? derivePhaseStatus(draft, TODAY) : []), [draft]);
 
