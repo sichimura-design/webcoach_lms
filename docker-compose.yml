@@ -186,8 +186,15 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      # nginx.conf(.template)がBFF_HOST/MOODLE_HOSTをenvsubstで実値に置換して使う。
+      # ECS(host networkモード、Docker DNS無し)ではlocalhost:<port>が必要だが、
+      # docker-composeのbridgeネットワークではDocker DNS経由でサービス名がそのまま解決できる。
+      BFF_HOST: moodle-bff:3001
+      MOODLE_HOST: moodle-app:8080
     volumes:
-      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf.template:ro
+      - ./nginx/docker-entrypoint-envsubst.sh:/docker-entrypoint.d/00-envsubst-nginx-conf.sh:ro
       - ./nginx/ssl:/etc/nginx/ssl:ro
     depends_on:
       - moodle

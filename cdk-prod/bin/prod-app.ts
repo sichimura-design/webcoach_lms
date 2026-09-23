@@ -226,6 +226,7 @@ const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
   moodleAppAccessPoint: backendStack.moodleAppAccessPoint,
   cognitoSecret: backendStack.cognitoSecret,
   anthropicSecret: backendStack.anthropicSecret,
+  difySecret: backendStack.difySecret,
   appSecrets: backendStack.appSecrets,
   cognitoUserPoolId: app.node.tryGetContext('cognitoUserPoolId') ?? 'ap-northeast-1_aAPBRNL7D',
   cognitoClientId: app.node.tryGetContext('cognitoClientId') ?? '23jacbr6nk4baiftjueddmr4kb',
@@ -236,7 +237,7 @@ const ecsStack = new ProdEcsStack(app, `${envName}-EcsStack`, {
   // ※ 元の値は UAT (uat.webcoach.jp) のものだったため、config 値のみ流用し、
   //   S3/CloudFront/DBホストなど cdk-prod 自身が新規作成するリソースの識別子は流用していない。
   allowedOrigins: app.node.tryGetContext('allowedOrigins')
-    ?? 'https://52.194.117.196,https://15.152.220.38,http://localhost:3000,https://localhost:3000,https://d3ljs7ii9tnofg.cloudfront.net,https://d1zs9qsimyg41i.cloudfront.net,https://uat.webcoach.jp',
+    ?? 'https://52.194.117.196,https://15.152.220.38,http://localhost:3000,https://localhost:3000,https://d3ljs7ii9tnofg.cloudfront.net,https://d1zs9qsimyg41i.cloudfront.net,https://uat.webcoach.jp,https://study.webcoach.jp,https://api.webcoach.jp',
   moodleServiceName: app.node.tryGetContext('moodleServiceName') ?? 'moodle-api-service',
   moodleServiceUsername: app.node.tryGetContext('moodleServiceUsername') ?? 'admin',
   moodleLang: app.node.tryGetContext('moodleLang') ?? 'ja',

@@ -54,6 +54,7 @@ export class ProdBackendStack extends cdk.Stack {
   public readonly cognitoSecret: secretsmanager.ISecret;
   public readonly anthropicSecret: secretsmanager.ISecret;
   public readonly appSecrets: secretsmanager.ISecret;
+  public readonly difySecret: secretsmanager.ISecret;
 
   constructor(scope: Construct, id: string, props: ProdBackendStackProps) {
     super(scope, id, props);
@@ -110,6 +111,19 @@ export class ProdBackendStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
     this.anthropicSecret = anthropicSecret;
+
+    // Dify APIキー(webcoach_ai_application.secret_key -> APIキー のJSONマップ)。
+    // 外部発行のため値はデプロイ後に手動でSecrets Manager側を更新し、AIアプリ追加のたびに
+    // JSONへキーを追加する運用(CDK再デプロイ不要)。dev/uat(cdk/lib/ecs-stack.ts)と同じ設計。
+    const difySecret = new secretsmanager.Secret(this, 'DifySecret', {
+      secretName: `${envName}/moodle/dify-credentials`,
+      description: 'Dify API keys used by the WEBCOACH AI chat, keyed by webcoach_ai_application.secret_key',
+      secretObjectValue: {
+        CHANGE_ME_SECRET_KEY: cdk.SecretValue.unsafePlainText('CHANGE_ME_API_KEY'),
+      },
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    });
+    this.difySecret = difySecret;
 
     // アプリ側シークレット (content-token / internal-api-key / session / moodle-service-password)
     // すべて未指定時は 'REPLACE_ME' で作成し、デプロイ後に手動で put-secret-value する。
