@@ -192,8 +192,10 @@ function StudyLogPage() {
       const d = goals.pendingReflection[0];
       return d ? { mode: 'review' as const, declaration: d } : null;
     }
+    // 「これまでの宣言」の行からも状態・振り返り・手応えを直せるよう編集で開く
+    // （以前は閲覧専用で、状態や手応えのピルが押しても何も起きなかった）
     const found = goals.items.find((d) => d.id === goalParam);
-    return found ? { mode: 'view' as const, declaration: found } : null;
+    return found ? { mode: 'edit' as const, declaration: found } : null;
   }, [goalParam, goals.active, goals.pendingReflection, goals.items]);
 
   const closeGoal = () => patchParams({ goal: null }, true);
@@ -351,7 +353,7 @@ function StudyLogPage() {
               onCreate={() => patchParams({ goal: 'new' })}
               onEdit={(d) => patchParams({ goal: d.id === goals.active?.id ? 'edit' : d.id })}
               onReview={() => patchParams({ goal: 'review' })}
-              onView={(d) => patchParams({ goal: d.id })}
+              onOpen={(d) => patchParams({ goal: d.id })}
             />
 
             {/* ⑤ コーチング記録 */}

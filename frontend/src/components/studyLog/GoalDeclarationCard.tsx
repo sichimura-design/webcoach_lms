@@ -37,7 +37,8 @@ interface GoalDeclarationCardProps {
   onCreate: () => void;
   onEdit: (declaration: GoalDeclaration) => void;
   onReview: (declaration: GoalDeclaration) => void;
-  onView: (declaration: GoalDeclaration) => void;
+  /** 「これまでの宣言」の行を開く（編集モーダル） */
+  onOpen: (declaration: GoalDeclaration) => void;
 }
 
 const CARD: React.CSSProperties = {
@@ -85,7 +86,7 @@ export function GoalDeclarationCard({
   onCreate,
   onEdit,
   onReview,
-  onView,
+  onOpen,
 }: GoalDeclarationCardProps) {
   const todayKey = toLocalDateKey(new Date());
   // 「いま出しているもの」以外を過去分として並べる
@@ -210,7 +211,7 @@ export function GoalDeclarationCard({
                     key={d.id}
                     type="button"
                     className="studylog-goal-row focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-                    onClick={() => onView(d)}
+                    onClick={() => onOpen(d)}
                     style={{
                       display: 'flex', alignItems: 'center', gap: 12,
                       width: '100%', minHeight: 44, padding: '10px 8px',
