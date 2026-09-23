@@ -128,7 +128,10 @@ materials/lessons/
 # 一括ignoreすると git 管理から丸ごと外れてしまう。
 
 # Claude のローカル設定・worktree（各自の環境依存なので共有しない）
-.claude/
+# ただしチーム共通の hooks 設定(settings.json と hooks/)だけは共有する
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
 
 # デザイン受領物・配布物の展開先（リポジトリの成果物ではなく作業用の置き場）
 __MACOSX/
