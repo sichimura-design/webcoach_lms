@@ -7,16 +7,7 @@ const router = express.Router();
 const requireAuth = require('../middleware/auth');
 const studySessionService = require('../services/StudySessionService');
 const { createErrorResponse } = require('../utils/errorHandler');
-
-function isAdminOrCoach(req) {
-  const userGroups = req.user?.groups || [];
-  return userGroups.includes('admin') || userGroups.includes('coach');
-}
-
-function isSelfOrAdminOrCoach(req, userid) {
-  const moodleUserId = req.user?.moodleUserId;
-  return isAdminOrCoach(req) || moodleUserId == userid;
-}
+const { isSelfOrAdminOrAssignedCoach } = require('../middleware/coachAccess');
 
 function forbid(res, userEmail, action) {
   console.warn(`[SECURITY ALERT] Unauthorized user ${userEmail} attempted to ${action}`);
@@ -34,7 +25,7 @@ router.post('/sessions/:userid/start', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `start a study session for user ${userid}`);
     }
 
@@ -58,7 +49,7 @@ router.post('/sessions/:userid/end', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `end a study session for user ${userid}`);
     }
 
@@ -83,7 +74,7 @@ router.post('/sessions/:userid/correct', requireAuth, async (req, res) => {
     const { userid } = req.params;
     const { deltaMinutes, courseid } = req.body || {};
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `correct a study session for user ${userid}`);
     }
     if (typeof deltaMinutes !== 'number' || !Number.isFinite(deltaMinutes)) {
@@ -110,7 +101,7 @@ router.get('/sessions/:userid/active', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `access active study session for user ${userid}`);
     }
 
@@ -138,7 +129,7 @@ router.get('/sessions/:userid/recent', requireAuth, async (req, res) => {
     const { userid } = req.params;
     const { limit } = req.query;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `access study sessions for user ${userid}`);
     }
 
@@ -163,7 +154,7 @@ router.get('/sessions/:userid/by-date', requireAuth, async (req, res) => {
     const { userid } = req.params;
     const { date } = req.query;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `access study sessions for user ${userid}`);
     }
     if (!date) {
@@ -190,7 +181,7 @@ router.get('/stats/:userid', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `access study stats for user ${userid}`);
     }
 
@@ -214,7 +205,7 @@ router.get('/streak/:userid', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `access study streak for user ${userid}`);
     }
 
@@ -239,7 +230,7 @@ router.get('/stats-summary/:userid', requireAuth, async (req, res) => {
     const { userid } = req.params;
     const { days } = req.query;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `access study stats summary for user ${userid}`);
     }
 
@@ -264,7 +255,7 @@ router.get('/calendar/:userid', requireAuth, async (req, res) => {
     const { userid } = req.params;
     const { year, month } = req.query;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `access study calendar for user ${userid}`);
     }
 
@@ -311,7 +302,7 @@ router.get('/course-access/:userid', requireAuth, async (req, res) => {
   try {
     const { userid } = req.params;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `access course access stats for user ${userid}`);
     }
 
@@ -335,7 +326,7 @@ router.get('/course-access/:userid/:courseid/materials', requireAuth, async (req
   try {
     const { userid, courseid } = req.params;
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `access material access stats for user ${userid}`);
     }
 
@@ -361,7 +352,7 @@ router.post('/modules/:userid/viewed', requireAuth, async (req, res) => {
     const { userid } = req.params;
     const { courseid, cmid } = req.body || {};
 
-    if (!isSelfOrAdminOrCoach(req, userid)) {
+    if (!(await isSelfOrAdminOrAssignedCoach(req, userid))) {
       return forbid(res, req.user?.email, `log module view for user ${userid}`);
     }
     if (!courseid) {

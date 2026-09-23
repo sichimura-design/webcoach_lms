@@ -797,6 +797,21 @@ class ApiServerAdapter {
   }
 
   /**
+   * Get the mdl_user_id that owns a phase progress entry (for BFF-side
+   * assigned-coach authorization checks before writing).
+   */
+  async getRoadmapProgressOwner(progressId) {
+    const response = await axios.get(
+      `${this.apiServerUrl}/api/roadmap/progress/${progressId}/owner`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 10000
+      }
+    );
+    return response.data;
+  }
+
+  /**
    * Update a phase progress entry (status / dates)
    */
   async updateRoadmapProgress(progressId, data) {

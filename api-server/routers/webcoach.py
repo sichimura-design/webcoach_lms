@@ -453,9 +453,10 @@ def get_study_note_endpoint(
             updated_at=note.updated_at
         )
     except Exception as e:
+        logger.error(f"Failed to get study note: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get study note: {str(e)}"
+            detail="学習メモの取得に失敗しました。しばらくしてから再度お試しください。"
         )
 
 
@@ -497,9 +498,10 @@ def update_study_note_endpoint(
         )
     except Exception as e:
         db.rollback()
+        logger.error(f"Failed to update study note: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update study note: {str(e)}"
+            detail="学習メモの更新に失敗しました。しばらくしてから再度お試しください。"
         )
 
 
@@ -543,9 +545,10 @@ def get_study_reflection_endpoint(
             updated_at=reflection.updated_at
         )
     except Exception as e:
+        logger.error(f"Failed to get study reflection: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get study reflection: {str(e)}"
+            detail="学習の振り返りの取得に失敗しました。しばらくしてから再度お試しください。"
         )
 
 
@@ -575,9 +578,10 @@ def update_study_reflection_endpoint(
         )
     except Exception as e:
         db.rollback()
+        logger.error(f"Failed to update study reflection: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update study reflection: {str(e)}"
+            detail="学習の振り返りの更新に失敗しました。しばらくしてから再度お試しください。"
         )
 
 
@@ -597,9 +601,10 @@ def delete_study_reflection_endpoint(
         return {"success": True}
     except Exception as e:
         db.rollback()
+        logger.error(f"Failed to delete study reflection: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to delete study reflection: {str(e)}"
+            detail="学習の振り返りの削除に失敗しました。しばらくしてから再度お試しください。"
         )
 
 
@@ -672,9 +677,10 @@ def create_study_goal_endpoint(
         return _study_goal_to_response(goal)
     except Exception as e:
         db.rollback()
+        logger.error(f"Failed to create study goal: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to create study goal: {str(e)}"
+            detail="目標の作成に失敗しました。しばらくしてから再度お試しください。"
         )
 
 
@@ -719,9 +725,10 @@ def update_study_goal_endpoint(
         return _study_goal_to_response(goal)
     except Exception as e:
         db.rollback()
+        logger.error(f"Failed to update study goal: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to update study goal: {str(e)}"
+            detail="目標の更新に失敗しました。しばらくしてから再度お試しください。"
         )
 
 
@@ -745,9 +752,10 @@ def delete_study_goal_endpoint(
         raise
     except Exception as e:
         db.rollback()
+        logger.error(f"Failed to delete study goal: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to delete study goal: {str(e)}"
+            detail="目標の削除に失敗しました。しばらくしてから再度お試しください。"
         )
 
 
@@ -1724,7 +1732,8 @@ def get_login_streak(
         streak = get_user_login_streak(db, userid)
         return LoginStreakResponse(**streak)
     except Exception as e:
+        logger.error(f"Failed to get login streak: {e}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to get login streak: {str(e)}"
+            detail="連続ログイン日数の取得に失敗しました。しばらくしてから再度お試しください。"
         )

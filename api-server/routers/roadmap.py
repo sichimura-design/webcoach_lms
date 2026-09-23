@@ -25,6 +25,7 @@ from crud import (
     get_roadmap_phase_todos,
     create_user_roadmap,
     get_user_roadmap_detail,
+    get_roadmap_progress_owner,
     update_roadmap_progress,
     get_roadmap_questions,
     submit_roadmap_answers,
@@ -127,6 +128,24 @@ def get_user_roadmap(userid: int, db: Session = Depends(get_db)):
             detail=f"Active roadmap not found for user {userid}"
         )
     return detail
+
+
+@router.get(
+    "/progress/{progress_id}/owner",
+    summary="フェーズ進捗レコードの持ち主取得（BFFの担当コーチ確認専用）"
+)
+def get_progress_owner(progress_id: int, db: Session = Depends(get_db)):
+    """
+    フェーズ進捗レコードの持ち主(mdl_user_id)を返す。
+    BFFが書き込み前に「担当コーチかどうか」を判定するためだけに使う内部向けエンドポイント。
+    """
+    owner = get_roadmap_progress_owner(db, progress_id)
+    if owner is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Roadmap progress not found: id={progress_id}"
+        )
+    return {"mdl_user_id": owner}
 
 
 @router.put(

@@ -39,6 +39,14 @@ class RoadmapService {
   }
 
   /**
+   * Get the mdl_user_id that owns a phase progress entry
+   */
+  async getProgressOwner(progressId) {
+    console.log(`[Roadmap] Getting owner of progress ${progressId}`);
+    return await apiServerAdapter.getRoadmapProgressOwner(progressId);
+  }
+
+  /**
    * Update a phase progress entry (status / dates)
    */
   async updateProgress(progressId, data) {
