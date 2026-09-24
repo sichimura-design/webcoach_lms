@@ -72,13 +72,36 @@ function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
-/** 一時ファイル → rename の原子的書き込み。Windows でも既存ファイルを置換できる。 */
+/** 同期の待ち。rename の再試行にだけ使う。 */
+function sleepSync(ms) {
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+}
+
+/** 置換先を誰かが掴んでいるときの Windows のエラー。少し待てば通る。 */
+const LOCKED = new Set(['EPERM', 'EBUSY', 'EACCES']);
+
+/**
+ * 一時ファイル → rename の原子的書き込み。Windows でも既存ファイルを置換できる。
+ *
+ * Windows では、書いた直後のファイルをウイルス対策や検索インデックスが掴んでいると
+ * rename が EPERM で落ちる。実際に長時間の実行がこれで中断したので、数回だけ待って再試行する。
+ */
 function writeFileAtomic(filePath, data, options = {}) {
   ensureDir(path.dirname(filePath));
-  const tmp = `${filePath}.tmp-${process.pid}-${Date.now()}`;
+  const tmp = `${filePath}.tmp-${process.pid}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   try {
     fs.writeFileSync(tmp, data, options);
-    fs.renameSync(tmp, filePath);
+
+    const delays = [0, 50, 150, 400, 1000];
+    for (let attempt = 0; attempt < delays.length; attempt += 1) {
+      try {
+        if (delays[attempt] > 0) sleepSync(delays[attempt]);
+        fs.renameSync(tmp, filePath);
+        return;
+      } catch (error) {
+        if (!LOCKED.has(error.code) || attempt === delays.length - 1) throw error;
+      }
+    }
   } catch (error) {
     try {
       if (fs.existsSync(tmp)) fs.unlinkSync(tmp);

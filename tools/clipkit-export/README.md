@@ -170,7 +170,67 @@ HTML は `<body>` だけ切り出して再利用できる最小のラッパー�
 
 `internalLinks` は同一ホストへのリンク。次段（LMS 内リンクの付け替え）で使う。
 
-## 5. ZIP だけ作り直す
+## 5. 元ページのフルHTMLとして書き出す（snapshot）
+
+`export` は本文だけを抜き出して再構成する。エンジニアに渡すなど**元ページそのもの**が要るときは
+`snapshot` を使う。`<head>` もテーマCSSも込みで、ローカルで開けば見た目が再現される形にする。
+
+```bash
+node src/cli.js snapshot --config ./clipkit.config.json --course knowledge --limit 3 --screenshot
+node src/cli.js snapshot --config ./clipkit.config.json                      # 全件
+node src/cli.js check    --out ../../materials/handoff                       # ローカルで開いて点検
+node src/cli.js handoff  --out ../../materials/handoff --no-media --prune    # README・一覧・ZIP
+```
+
+### 出力
+
+```
+materials/handoff/
+  index.html                 全ページの一覧
+  README.md                  受け取る人向けの説明（自動生成）
+  assets.json                元URL → _assets/ のファイル名
+  _assets/<hash>.<ext>       CSS・画像・フォント（全コース共通・内容ハッシュ名）
+  <course>/
+    html/<slug>.html         表示された最終形のHTML（資産はローカル相対パス）
+    raw/<slug>.html          サーバーが返した生HTML（JS実行前）
+    media/<file>             動画・音声（materials/source からの複製）
+    manifest.json            元URL・タイトル・未解決の参照
+```
+
+### 速い理由
+
+**画像を取り直さない。** `materials/source` の各コースの `images/` にある 700MB 超を
+資産ストアの種にする（Pass 1）。取りに行くのは HTML と CSS だけになる。
+画像はこの取り込みのときに横幅1600px・WebP へ変換して**最終ファイル名まで確定させる**ので、
+後から一括変換して HTML と CSS を置換し直す工程が要らない。
+
+### 忘れると壊れる勘所
+
+- **レスポンス本体は page を閉じる前に待ち切る。** `page.on('response')` の中で始めた
+  `response.body()` を待たずに閉じると `Target closed` で握りつぶされ、資産が黙って欠ける。
+- **リダイレクトの body は取れない。** `redirectedFrom()` の鎖を全部たどって、
+  鎖の全URLを最終URLへ結びつけないと、HTML が指す元URLで引けなくなる。
+- **`<base>` と `integrity` は必ず落とす。** base が残ると相対パスが元サイトへ解決され、
+  SRI が残ると差し替えた CSS が検証に落ちてページが真っ白になる。
+- **`srcset` は残さない。** ブラウザは現在の DPR の1候補しか取っていないので、他候補は 404 になる。
+  `img.currentSrc` を `src` に固定し、`<picture>` の `<source>` は消す。
+- **`url(#gradient)` を書き換えない。** SVG の filter/mask 参照。触ると SVG が崩壊する。
+- **スクロール後のDOM状態に頼らない。** `autoScrollInPage` は最後に先頭へ戻るので、
+  出現アニメーションを class で出し入れする実装だと上部が隠れたまま保存される。
+  `content.forceVisibleSelectors` に該当セレクタを足して、スタイルで強制的に見せる。
+- **`--prune` は全コースを取り切ってから。** 部分実行のあとに掛けると、
+  まだ作っていないページの資産まで消える。
+
+### check が効く
+
+`check` は出力した HTML を `file://` で開き、**ローカル参照の 404** と、
+残っていると事故る属性（`base` / `integrity` / `srcset` / `blob` / `script`）を数える。
+相対パスの取り違えも資産の取りこぼしも、ここに全部出る。ZIP を展開した先に対しても掛けられる。
+
+`--screenshot` を付けて取得すると `screenshots/<slug>.live.png`（元ページ）が残り、
+`check` が同じ条件で `<slug>.local.png` を撮る。高さが一致していれば、まず再現できている。
+
+## 6. ZIP だけ作り直す
 
 ```bash
 node src/cli.js zip --config ./clipkit.config.json --course web-marketing-basic

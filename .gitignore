@@ -103,6 +103,10 @@ tools/clipkit-export/clipkit.config.json
 # 変換後の教材データ（materials/source から再生成できる中間データ・約55MB）
 materials/lessons/
 
+# エンジニアへの受け渡し用に組み直した教材HTML一式（snapshot コマンドの出力）
+materials/handoff/
+materials/handoff*.zip
+
 # Claude のローカル設定・worktree（各自の環境依存なので共有しない）
 .claude/
 

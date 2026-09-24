@@ -15,38 +15,10 @@
 const fs = require('fs');
 const path = require('path');
 
+// 横幅を抑えて WebP にする処理は clipkit-export（エンジニアへの受け渡し）と共通。
+const { optimizeImageFile } = require('../../shared/optimize-image');
+
 const ASSET_TOKEN = '__ASSET__';
-
-/** 変換の必要が無い形式。SVG はベクタなので触らない。 */
-const PASSTHROUGH = new Set(['.svg', '.gif']);
-
-async function optimizeImage(sharp, srcFile, destDir, { maxWidth, quality }) {
-  const ext = path.extname(srcFile).toLowerCase();
-  const base = path.basename(srcFile, ext);
-  const srcBytes = fs.statSync(srcFile).size;
-
-  if (PASSTHROUGH.has(ext)) {
-    const dest = path.join(destDir, path.basename(srcFile));
-    fs.copyFileSync(srcFile, dest);
-    return { name: path.basename(srcFile), srcBytes, outBytes: srcBytes, converted: false };
-  }
-
-  const dest = path.join(destDir, `${base}.webp`);
-  const buffer = await sharp(srcFile)
-    .resize({ width: maxWidth, withoutEnlargement: true })
-    .webp({ quality })
-    .toBuffer();
-
-  // まれに WebP のほうが大きくなる。その場合は元をそのまま置く。
-  if (buffer.length >= srcBytes) {
-    const keep = path.join(destDir, path.basename(srcFile));
-    fs.copyFileSync(srcFile, keep);
-    return { name: path.basename(srcFile), srcBytes, outBytes: srcBytes, converted: false };
-  }
-
-  fs.writeFileSync(dest, buffer);
-  return { name: `${base}.webp`, srcBytes, outBytes: buffer.length, converted: true };
-}
 
 /** ブロックHTML内の ../images/x.png を __ASSET__/images/x.webp に置き換える。 */
 function rewriteAssets(html, imageMap, mediaNames) {
@@ -60,8 +32,6 @@ function rewriteAssets(html, imageMap, mediaNames) {
 }
 
 async function publishCourse({ course, lessonsDir, sourceDir, frontendDir, options, log }) {
-  const sharp = require('sharp');
-
   const courseLessons = path.join(lessonsDir, course);
   const files = fs.readdirSync(courseLessons).filter((f) => f.endsWith('.json') && f !== 'index.json');
   const docs = files.map((f) => JSON.parse(fs.readFileSync(path.join(courseLessons, f), 'utf8')));
@@ -95,7 +65,7 @@ async function publishCourse({ course, lessonsDir, sourceDir, frontendDir, optio
     const srcFile = path.join(sourceDir, course, 'images', name);
     if (!fs.existsSync(srcFile)) { log(`  [warn] 画像が見つかりません: ${name}`); continue; }
     /* eslint-disable no-await-in-loop -- 直列で十分。メモリを使いすぎない */
-    const r = await optimizeImage(sharp, srcFile, imagesOut, options);
+    const r = await optimizeImageFile(srcFile, imagesOut, options);
     /* eslint-enable no-await-in-loop */
     imageMap.set(name, r.name);
     srcTotal += r.srcBytes;

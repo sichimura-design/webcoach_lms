@@ -10,12 +10,15 @@
   "scripts": {
     "login": "node src/cli.js login",
     "export": "node src/cli.js export",
+    "snapshot": "node src/cli.js snapshot",
+    "check": "node src/cli.js check",
     "zip": "node src/cli.js zip",
     "postinstall-hint": "echo \"次に: npx playwright install chromium\""
   },
   "dependencies": {
     "archiver": "^7.0.1",
-    "playwright": "^1.49.0"
+    "playwright": "^1.49.0",
+    "sharp": "^0.35.3"
   },
   "engines": {
     "node": ">=18"
