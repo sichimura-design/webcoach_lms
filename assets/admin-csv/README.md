@@ -20,7 +20,7 @@
 - アップロード画面のパーサは単純な `split(',')` なので、値にカンマ・改行を入れない。BOM無しで保存する
   （Excelで保存し直すとBOMが付き、先頭列名が壊れる）。
 - `area` 列は `fill_categoryid.py` 用。アップロード時は無視される。
-- 教材本文（`../materials/`）を登録するCSVは管理画面に無い。下の「教材HTMLの登録」の手順でMoodleに直接登録する。
+- 教材本文を登録するCSVは管理画面に無い。下の「教材HTMLの登録」の手順でMoodleに直接登録する。
 
 ## 教材HTMLの登録（A-8. コースに教材・アクティビティを追加する）
 
@@ -28,16 +28,16 @@
 
 | 列 | 内容 |
 |---|---|
-| bucket | 教材の書き出し単位（`../materials/<bucket>/`）。学習領域の大きさでコースslugではない |
+| bucket | 教材の書き出し単位（`frontend/public/materials/<bucket>/`）。学習領域の大きさでコースslugではない |
 | order | バケツ内の並び順 |
 | section | 元サイト（learn.webcoach.jp）のURLパスの章・フォルダ名。登録先コースを決める手がかり |
 | title | ページタイトル。Moodleページの「名前」に使う |
 | htmlFile | リポジトリ内のHTMLファイル |
-| htmlUrl | dev プレビュー（CloudFront `/branches/dev-kanegae/lesson-html/`）で開けるURL |
+| htmlUrl | dev プレビュー（CloudFront `/branches/dev-kanegae/materials/<bucket>/html/`）で開けるURL |
 | sourceUrl | 元サイトのURL |
 
-`htmlUrl` は dev/kanegae のプレビューをデプロイするときに `assets/materials/*/html/` を
-コピーして配信している（`.github/workflows/dev-preview.yml` の「Copy lesson HTML」）。
+教材HTMLは `frontend/public/materials/<bucket>/html/` に置いてあり、dev/kanegae へ push すると
+dev プレビューのデプロイで `htmlUrl` に配信される。
 
 ### 想定ユースケース
 

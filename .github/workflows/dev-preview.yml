@@ -6,7 +6,6 @@ on:
       - 'dev/**'
     paths:
       - 'frontend/**'
-      - 'assets/materials/**'
       - '.github/workflows/dev-preview.yml'
   delete:
 
@@ -50,17 +49,6 @@ jobs:
       - name: Install dependencies
         working-directory: frontend
         run: npm ci
-
-      # 教材HTML（assets/materials/<バケツ>/html/*.html）を <PUBLIC_URL>/lesson-html/<バケツ>/ で配信する。
-      # Moodleのページへ貼り付ける際の参照用（一覧は assets/admin-csv/lesson_html_urls.csv）。
-      # リポジトリ内で二重管理しないよう、ビルド時だけ public/ へコピーする。
-      - name: Copy lesson HTML
-        run: |
-          for d in assets/materials/*/html; do
-            b=$(basename "$(dirname "$d")")
-            mkdir -p "frontend/public/lesson-html/$b"
-            cp "$d"/*.html "frontend/public/lesson-html/$b/"
-          done
 
       - name: Build
         working-directory: frontend
