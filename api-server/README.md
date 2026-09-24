@@ -1,214 +1,85 @@
-# Moodle User Tracking API
+# api-server
 
-FastAPIベースのユーザー追跡・プロフィール管理APIサーバー
+WebCoach LMS のバックエンド API。FastAPI (Python 3.11) で実装し、Moodle の DB に直接接続して WebCoach 独自テーブル（`webcoach_*`）の読み書きと AI チャットを担当します。フロントエンドからは直接呼ばず、必ず BFF 経由でアクセスします。
 
-## 機能
+## 構成
 
-### 1. コースアクセス追跡
-- ユーザーごとの最終アクセスコースを記録
-- アクセス回数のカウント
-- 最新アクセス順・アクセス頻度順での取得
+```
+api-server/
+├── main.py              # FastAPI アプリ本体・ルーター登録
+├── config.py            # 設定読み込み（環境変数 / SSM Parameter Store）
+├── database.py          # SQLAlchemy 接続（Moodle DB）
+├── crud.py              # DB 操作
+├── entities/            # SQLAlchemy エンティティ
+├── dto/  mappers/       # レスポンス DTO と変換
+├── routers/             # エンドポイント（下表）
+├── agents/              # AI エージェント関連
+├── tools.py             # LangGraph 用ツール（Dify 動的ツール等）
+├── vector_db.py  moodle_to_chromadb.py   # 教材ベクトル検索
+├── tests/               # pytest
+└── swagger.yaml
+```
 
-### 2. プロフィール設定管理
-- テーマ設定（ライト/ダーク）
-- 言語設定
-- 通知設定
-- タイムゾーン設定
-- カスタム設定（JSON形式）
+## 主なルーター（`routers/`）
+
+| ファイル | 内容 |
+|---|---|
+| `health.py` | ヘルスチェック |
+| `courses.py` / `profiles.py` | コースアクセス履歴・プロフィール設定 |
+| `webcoach.py` | WebCoach 共通（学習状況・目標など） |
+| `ai.py` / `ai_langgraph.py` | AI チャット（LangGraph 版、Dify アプリ連携を含む） |
+| `faiss_ingest.py` | 教材の FAISS 取り込み |
+| `coaching.py` / `notes.py` / `recordings.py` | コーチング管理・AI コーチングノート・録画メタデータ |
+| `integrations.py` | Zoom / Google Meet 連携 |
+| `study.py` | 集中ブースの学習セッション記録 |
+| `roadmap.py` / `roadmaps.py` | キャリアロードマップ |
+| `my_note.py` | マイノート |
+| `badges.py` / `tags.py` / `admin.py` | バッジ・タグ・管理機能 |
 
 ## セットアップ
 
-### 1. 環境変数の設定
-
 ```bash
-cp .env.example .env
-```
-
-`.env`ファイルを編集してMoodleデータベースの接続情報を設定:
-
-```env
-MOODLE_DB_HOST=localhost
-MOODLE_DB_PORT=3306
-MOODLE_DB_USER=moodleuser
-MOODLE_DB_PASSWORD=your_password
-MOODLE_DB_NAME=moodle
-```
-
-### 2. データベーステーブルの作成
-
-Moodleデータベースに接続して、以下のSQLを実行:
-
-```bash
-mysql -h localhost -u moodleuser -p moodle < sql/create_tables.sql
-```
-
-または、FastAPIの起動時に自動的にテーブルが作成されます。
-
-### 3. 依存パッケージのインストール
-
-```bash
+cd api-server
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. サーバー起動
+### 環境変数
 
-#### 開発モード（ホットリロード有効）
+| 変数 | 既定値 | 説明 |
+|---|---|---|
+| `MOODLE_DB_HOST` / `MOODLE_DB_PORT` | `localhost` / `3306` | Moodle DB |
+| `MOODLE_DB_USER` / `MOODLE_DB_PASSWORD` / `MOODLE_DB_NAME` | `moodleuser` / なし / `moodle` | 同上 |
+| `API_SERVER_HOST` / `API_SERVER_PORT` | `0.0.0.0` / `8001` | 待ち受け |
+| `ENV` | `production` | `development` でホットリロード |
+| `USE_PARAMETER_STORE` | `false` | `true` で SSM Parameter Store から設定を読む |
+| `PARAMETER_STORE_PREFIX` | `/moodle/prod` | 読み込むパラメータのパス |
+| `AWS_REGION` | `ap-northeast-1` | |
+
+Dify アプリの API キーは DB（`webcoach_ai_application.secret_key` にキー名）と Secrets Manager（実キー）に分けて管理しています。
+
+## 起動
+
 ```bash
-python main.py
+ENV=development python main.py          # http://localhost:8001 （ホットリロード）
 ```
 
-#### 本番モード
+Docker では `start-with-parameter-store.sh` 経由で起動します（ポート 8001）。
+
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8001
+docker build -t api-server .
+docker run -p 8001:8001 --env-file .env api-server
 ```
 
-#### Docker
+API ドキュメントは起動後 `http://localhost:8001/docs` で確認できます。
+
+## テスト
+
 ```bash
-docker build -t moodle-api-server .
-docker run -p 8001:8001 --env-file .env moodle-api-server
+pytest
 ```
 
-## API エンドポイント
+## 注意
 
-### ヘルスチェック
-```
-GET /health
-```
-
-### コースアクセス
-
-#### コースアクセスを記録
-```
-POST /api/course-access
-Content-Type: application/json
-
-{
-  "userid": 123,
-  "courseid": 456
-}
-```
-
-#### 最終アクセスコース一覧を取得
-```
-GET /api/users/{userid}/last-courses?limit=10
-```
-
-レスポンス例:
-```json
-[
-  {
-    "id": 1,
-    "userid": 123,
-    "courseid": 456,
-    "lastaccess": 1701234567,
-    "accesscount": 15,
-    "course_fullname": "Introduction to Python",
-    "course_shortname": "PY101",
-    "course_summary": "Learn Python basics"
-  }
-]
-```
-
-#### 最もアクセスの多いコース一覧を取得
-```
-GET /api/users/{userid}/most-accessed-courses?limit=5
-```
-
-### プロフィール設定
-
-#### プロフィール設定を作成
-```
-POST /api/profile-settings
-Content-Type: application/json
-
-{
-  "userid": 123,
-  "theme": "dark",
-  "language": "ja",
-  "notifications_enabled": true,
-  "email_notifications": true,
-  "timezone": "Asia/Tokyo",
-  "items_per_page": 20,
-  "bio": "Hello, I'm a student!",
-  "preferences": {
-    "custom_setting": "value"
-  }
-}
-```
-
-#### プロフィール設定を取得
-```
-GET /api/users/{userid}/profile-settings?auto_create=true
-```
-
-`auto_create=true` を指定すると、設定が存在しない場合にデフォルト値で自動作成されます。
-
-#### プロフィール設定を更新（部分更新）
-```
-PUT /api/users/{userid}/profile-settings
-Content-Type: application/json
-
-{
-  "theme": "dark",
-  "items_per_page": 50
-}
-```
-
-## API ドキュメント
-
-サーバー起動後、以下のURLでインタラクティブなAPIドキュメントを確認できます:
-
-- **Swagger UI**: http://localhost:8001/docs
-- **ReDoc**: http://localhost:8001/redoc
-
-## データベーステーブル
-
-### mdl_user_last_course_access
-ユーザーの最終アクセスコース履歴を保存
-
-| カラム | 説明 |
-|--------|------|
-| userid | Moodleユーザー ID |
-| courseid | MoodleコースID |
-| lastaccess | 最終アクセス時刻（UNIX timestamp） |
-| accesscount | アクセス回数 |
-
-### mdl_user_profile_settings
-ユーザーのプロフィール設定を保存
-
-| カラム | 説明 |
-|--------|------|
-| userid | Moodleユーザー ID（ユニーク） |
-| theme | テーマ（light/dark） |
-| language | 言語（ja/en） |
-| notifications_enabled | 通知有効化 |
-| email_notifications | メール通知 |
-| timezone | タイムゾーン |
-| items_per_page | 表示件数 |
-| bio | 自己紹介 |
-| preferences | カスタム設定（JSON） |
-
-## トラブルシューティング
-
-### データベース接続エラー
-1. `.env`ファイルの接続情報を確認
-2. Moodleデータベースへの接続権限を確認
-3. ファイアウォール設定を確認
-
-### テーブルが作成されない
-SQLファイルを手動で実行:
-```bash
-mysql -h localhost -u moodleuser -p moodle < sql/create_tables.sql
-```
-
-## 本番環境デプロイ
-
-### 推奨設定
-- `ENABLE_DOCS=false` でAPIドキュメントを無効化
-- HTTPSを使用
-- 環境変数をセキュアに管理
-- データベース接続プールの設定を調整
-
-## ライセンス
-
-MIT
+- 新しいテーブル・カラムを追加する場合は、実装前にチームへ相談してください（dev/uat は RDS を共用しています）。
+- Dify 会話キャッシュと非同期ジョブストアはプロセス内の辞書です。ワーカー数を増やす・複数台構成にする場合は Redis などへの移行が必要です。
