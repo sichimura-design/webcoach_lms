@@ -26,6 +26,7 @@ import NextGoalsCard, { type GoalDraftRow } from './coaching/NextGoalsCard';
 import { C } from './coaching/design1c';
 import type { CoachingGoalUpdateItem } from '../types/mypage';
 import { toSessionDetail, toSessionSummary } from '../utils/coachingScheduleAdapter';
+import { toLocalDateKey } from '../utils/studyStats';
 
 const NOTE_FIELD_LABELS: { key: keyof CoachingNote; label: string }[] = [
   { key: 'session_summary', label: 'セッション概要' },
@@ -102,31 +103,42 @@ export function MyCoachingPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
 
-  /** 今日以降の日付を持つ最も近い予約。無ければヒーローカードは出さない */
+  /**
+   * 実施済みの回（「これまでのコーチング」「前回」に出すもの）。
+   * 未来の予約と、当日でまだ実施記録（status）が付いていない回は未実施なので除く。
+   * リスケで流れた回も実施していないので出さない（/study-log と同じ扱い）。
+   * 並びはAPIの coaching_date 降順のまま。
+   */
+  const pastSchedules = useMemo(() => {
+    const today = toLocalDateKey(new Date());
+    return schedules.filter(s =>
+      s.status !== 'rescheduled'
+      && (s.coaching_date < today || (s.coaching_date === today && s.status !== null))
+    );
+  }, [schedules]);
+
+  /** 未実施の予約のうち最も近いもの。無ければヒーローカードは出さない */
   const nextSchedule = useMemo(() => {
-    const today = new Date().toISOString().slice(0, 10);
-    const upcoming = schedules.filter(s => s.coaching_date >= today);
+    const today = toLocalDateKey(new Date());
+    const upcoming = schedules.filter(s => s.coaching_date >= today && s.status === null);
     return upcoming.length > 0 ? upcoming[upcoming.length - 1] : null;
   }, [schedules]);
 
-  /** 直近の過去セッション（「前回の振り返り」用）。次回として出す回は除く */
-  const lastSchedule = useMemo(
-    () => schedules.find(s => s.id !== nextSchedule?.id) ?? null,
-    [schedules, nextSchedule]
-  );
+  /** 直近の実施済みセッション（「前回の振り返り」用） */
+  const lastSchedule = pastSchedules[0] ?? null;
 
   useEffect(() => {
     if (lastSchedule) loadNote(lastSchedule.id);
   }, [lastSchedule, loadNote]);
 
   useEffect(() => {
-    if (!linkedScheduleId || !schedules.some(s => s.id === linkedScheduleId)) return;
+    if (!linkedScheduleId || !pastSchedules.some(s => s.id === linkedScheduleId)) return;
     setOpenId(linkedScheduleId);
     loadNote(linkedScheduleId);
     document.getElementById(`coaching-schedule-${linkedScheduleId}`)?.scrollIntoView({ block: 'start' });
     // loadNote は notes が変わるたびに作り直されるので deps に入れると開き直しが繰り返される
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [linkedScheduleId, schedules]);
+  }, [linkedScheduleId, pastSchedules]);
 
   // --- 次回コーチングまでの目標 ---------------------------------------------
 
@@ -289,12 +301,12 @@ export function MyCoachingPage() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <h2 style={{ ...font.sectionTitle, color: color.text, margin: '8px 0 0' }}>これまでのコーチング</h2>
-          {!loading && schedules.length === 0 ? (
+          {!loading && pastSchedules.length === 0 ? (
             <p style={{ ...font.meta, color: color.textSubtle, textAlign: 'center', padding: '48px 0' }}>
               まだ記録がありません。
             </p>
           ) : (
-            schedules.map(schedule => {
+            pastSchedules.map(schedule => {
               const isOpen = openId === schedule.id;
               const note = notes[schedule.id];
               return (
