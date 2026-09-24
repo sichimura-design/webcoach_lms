@@ -55,6 +55,25 @@ class ImageAttachment(BaseModel):
         return v
 
 
+class LessonContext(BaseModel):
+    """教材ページから送られる「いま学習者が見ている箇所」の文脈。
+
+    教材ページ(CourseContentPage)のAIコーチからのみ送られる。これがある場合、
+    エージェントは教材を最優先の根拠にし、教材外の一般知識と区別して回答する
+    (learning_coach_agent.build_lesson_context_prompt参照)。
+    文字数上限はフロント側で切り詰めた長さ+余裕。超えた場合は422になる。
+    """
+    course_name: Optional[str] = Field(None, max_length=300, description="コース名")
+    section_name: Optional[str] = Field(None, max_length=300, description="セクション名")
+    lesson_id: Optional[int] = Field(None, ge=1, description="レッスン(モジュール)ID=cmid")
+    lesson_name: Optional[str] = Field(None, max_length=300, description="レッスン名")
+    heading: Optional[str] = Field(None, max_length=300, description="選択箇所の直近の見出し")
+    selected_text: Optional[str] = Field(None, max_length=1000, description="学習者が選択した文章")
+    context_before: Optional[str] = Field(None, max_length=1000, description="選択箇所の直前の文章")
+    context_after: Optional[str] = Field(None, max_length=1000, description="選択箇所の直後の文章")
+    lesson_text: Optional[str] = Field(None, max_length=6000, description="レッスン本文の抜粋")
+
+
 # リクエスト/レスポンス定義
 class ChatRequest(BaseModel):
     """AIチャットリクエスト（LangGraph版）"""
@@ -76,6 +95,9 @@ class ChatRequest(BaseModel):
     )
     max_iterations: Optional[int] = Field(None, description="最大推論回数（Noneの場合は文字数で自動調整）", ge=1, le=5)
     image: Optional[ImageAttachment] = Field(None, description="添付画像（Base64、任意）")
+    lesson_context: Optional[LessonContext] = Field(
+        None, description="教材ページで開いているレッスン・見出し・選択文章等（教材ページからのみ）"
+    )
 
 
 class ChatResponse(BaseModel):
@@ -91,6 +113,10 @@ class ChatResponse(BaseModel):
     # 通常(数秒で完了)は status="done" のままで、呼び出し側の扱いは今までと変わらない。
     status: str = Field("done", description="done | processing")
     job_id: Optional[str] = Field(None, description="非同期実行中のジョブID（statusがprocessingの場合のみ）")
+    # 教材ページ(lesson_contextあり)での回答の根拠区分。
+    # material=教材のみ / mixed=教材+教材外の一般知識 / general=教材に該当なし(一般知識のみ)。
+    # lesson_contextが無い、Difyツールの応答、LLMが区分を出さなかった場合はNone。
+    grounding: Optional[str] = Field(None, description="material | mixed | general")
 
 
 def estimate_token_count(text: str) -> int:
@@ -253,6 +279,8 @@ def _execute_chat(request: ChatRequest, db: Session) -> ChatResponse:
         "user_id": request.user_id,
         "session_id": request.session_id,
         "course_id": request.course_id,
+        "lesson_context": request.lesson_context.model_dump() if request.lesson_context else None,
+        "grounding": None,
         "dynamic_tools": dynamic_tools,
         "rag_sources": [],
         "rag_context": "",
@@ -296,7 +324,8 @@ def _execute_chat(request: ChatRequest, db: Session) -> ChatResponse:
         message=response_message,
         sources=None,  # 参照元は常にNoneを返す
         tool_calls=tool_calls,
-        iteration_count=final_state["iteration_count"]
+        iteration_count=final_state["iteration_count"],
+        grounding=final_state.get("grounding"),
     )
 
 

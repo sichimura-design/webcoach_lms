@@ -386,6 +386,25 @@ export interface AIConversationMessage {
   content: string;
 }
 
+/**
+ * 教材ページ(CourseContentPage)のAIコーチが送る「いま見ている箇所」の文脈。
+ * これがあるとapi-serverは教材を最優先の根拠にし、教材外の一般知識と区別して答える。
+ */
+export interface AILessonContext {
+  course_name?: string;
+  section_name?: string;
+  lesson_id?: number;
+  lesson_name?: string;
+  heading?: string;
+  selected_text?: string;
+  context_before?: string;
+  context_after?: string;
+  lesson_text?: string;
+}
+
+/** 教材ページでの回答の根拠区分（material=教材のみ / mixed=教材+一般知識 / general=一般知識のみ） */
+export type AIGrounding = 'material' | 'mixed' | 'general';
+
 export interface AIRequest {
   message: string;
   user_id?: number;
@@ -402,6 +421,7 @@ export interface AIRequest {
    * 引き継がないようにする（省略時は従来通りuser_id単位で共有される）。
    */
   session_id?: string;
+  lesson_context?: AILessonContext;
 }
 
 export interface AISource {
@@ -430,6 +450,8 @@ export interface AIResponse {
   /** "processing"の場合、Dify連携ツールの実検索等で時間がかかっており、job_idでポーリング中であることを示す */
   status?: 'done' | 'processing';
   job_id?: string;
+  /** 教材ページ(lesson_contextあり)での回答の根拠区分。それ以外はnull/未定義 */
+  grounding?: AIGrounding | null;
 }
 
 // WebCoach Database

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { bffClient } from '../services/bffClient';
 import { useChatStore } from '../store/chatStore';
 import { toConversationHistory } from '../utils/aiChatHistory';
+import type { AIGrounding, AILessonContext } from '../types/api';
 
 export interface ChatMessage {
   id: string;
@@ -11,6 +12,10 @@ export interface ChatMessage {
   // 添付画像の表示用データURI。このブラウザセッション内のstateにのみ保持し、
   // サーバー側には保存しない（リロード/別セッションでは消える想定）。
   imageDataUrl?: string;
+  /** 教材ページで選択した文章について質問した場合の、その選択文章（ユーザー発言にのみ付く） */
+  quote?: string;
+  /** 教材ページでの回答の根拠区分（アシスタント発言にのみ付く） */
+  grounding?: AIGrounding;
   sources?: Array<{
     chunk_index: number;
     module_name: string;
@@ -26,6 +31,12 @@ const MAX_IMAGE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 export interface PendingImage {
   dataUrl: string;
   mediaType: string;
+}
+
+/** 教材ページから送る文脈。教材ページ以外（ヘッダーのチャット）では渡さない */
+export interface AiChatPageContext {
+  courseId?: number;
+  lessonContext?: AILessonContext;
 }
 
 export function useAiChat() {
@@ -67,7 +78,7 @@ export function useAiChat() {
     setImageError(null);
   };
 
-  const sendMessage = async (overrideMessage?: string) => {
+  const sendMessage = async (overrideMessage?: string, pageContext?: AiChatPageContext) => {
     if ((!overrideMessage && !input.trim() && !pendingImage) || loading) return;
 
     const messageText = overrideMessage ?? (input.trim() || 'この画像について教えてください。');
@@ -78,6 +89,7 @@ export function useAiChat() {
       content: messageText,
       timestamp: new Date(),
       imageDataUrl: pendingImage?.dataUrl,
+      quote: pageContext?.lessonContext?.selected_text,
     };
 
     addMessage(userMessage);
@@ -91,6 +103,8 @@ export function useAiChat() {
       const result = await bffClient.sendAIMessage({
         message: messageText,
         conversation_history: toConversationHistory(messages),
+        ...(pageContext?.courseId ? { course_id: pageContext.courseId } : {}),
+        ...(pageContext?.lessonContext ? { lesson_context: pageContext.lessonContext } : {}),
         ...(currentImage
           ? {
               image: {
@@ -106,6 +120,7 @@ export function useAiChat() {
         role: 'assistant',
         content: result.message || '回答を取得できませんでした',
         timestamp: new Date(),
+        grounding: result.grounding ?? undefined,
         sources: (result.sources || []).map((s: any) => ({
           chunk_index: s.chunk_index || 0,
           module_name: s.module_name || '',

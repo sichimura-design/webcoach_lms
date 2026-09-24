@@ -5,6 +5,13 @@ import { bffClient } from '../services/bffClient';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { useAiChat, ChatMessage, PendingImage } from '../hooks/useAiChat';
+import type { AIGrounding, AILessonContext } from '../types/api';
+import {
+  captureSelectionContext,
+  extractLessonText,
+  extractLessonTextFromHtml,
+  SelectionContext,
+} from '../utils/lessonSelectionContext';
 import { useNoteCapture } from '../hooks/useNoteCapture';
 import {
   FileText,
@@ -206,8 +213,10 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   // 画像タップ拡大
   const [zoomTarget, setZoomTarget] = useState<{ src: string; alt: string } | null>(null);
 
-  // 選択テキストのマイノート引用
-  const [quoteSelection, setQuoteSelection] = useState<{ text: string; rect: DOMRect } | null>(null);
+  // 選択テキストのマイノート引用／AIへの質問
+  const [quoteSelection, setQuoteSelection] = useState<(SelectionContext & { rect: DOMRect }) | null>(null);
+  // 「AIに聞く」で質問対象として固定した選択箇所。次の1回の質問に添えて送り、送ったら外す
+  const [aiSelection, setAiSelection] = useState<SelectionContext | null>(null);
   const noteCapture = useNoteCapture();
 
   // レッスン完了コンフェッティ
@@ -216,7 +225,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   // AI コーチ
   const {
     messages: aiMessages, input: aiQuestion, setInput: setAiQuestion, loading: aiLoading,
-    messagesEndRef: chatEndRef, sendMessage: sendAiMessage, handleKeyPress: handleAiKeyPress,
+    messagesEndRef: chatEndRef, sendMessage: sendAiMessage,
     pendingImage: aiPendingImage, imageError: aiImageError, handleImageSelect: handleAiImageSelect,
     clearPendingImage: clearAiPendingImage,
   } = useAiChat();
@@ -378,6 +387,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     setIframeError(false);
     setZoomTarget(null);
     setQuoteSelection(null);
+    setAiSelection(null);
     setTocOpen(false);
   }, [selectedModule?.id]);
 
@@ -450,7 +460,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
           setQuoteSelection(null);
           return;
         }
-        setQuoteSelection({ text, rect: range.getBoundingClientRect() });
+        setQuoteSelection({ ...captureSelectionContext(range, container), rect: range.getBoundingClientRect() });
       }, 0);
     };
 
@@ -544,10 +554,11 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
             setQuoteSelection(null);
             return;
           }
-          const localRect = sel.getRangeAt(0).getBoundingClientRect();
+          const range = sel.getRangeAt(0);
+          const localRect = range.getBoundingClientRect();
           const frameRect = iframe.getBoundingClientRect();
           setQuoteSelection({
-            text,
+            ...captureSelectionContext(range, doc.body),
             rect: new DOMRect(
               localRect.left + frameRect.left,
               localRect.top + frameRect.top,
@@ -560,7 +571,65 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     } catch { /* cross-origin の場合は何もしない */ }
   };
 
-  const handleAiQuestion = (overrideMessage?: string) => sendAiMessage(overrideMessage);
+  /** いま開いているレッスンの本文テキスト（AIが教材を根拠に答えるために送る） */
+  const getLessonText = (): string => {
+    if (!selectedModule) return '';
+    const type = getModuleContentType(selectedModule);
+    if (type === 'page') {
+      // srcdoc iframe は同一オリジンなので実際に描画された本文を読める。
+      // 外部URLを src にした iframe（cross-origin）は読めないので送らない
+      try {
+        const body = iframeRef.current?.contentDocument?.body;
+        if (body) return extractLessonText(body);
+      } catch { /* cross-origin */ }
+      return iframeRef.current?.getAttribute('src') ? '' : extractLessonTextFromHtml(processedHtml);
+    }
+    if (type === 'label' || type === 'resource-other' || type === 'unknown') {
+      return extractLessonText(contentAreaRef.current);
+    }
+    return '';
+  };
+
+  /** 教材ページのAIコーチへ送る文脈（コース・セクション・レッスン・見出し・選択文章・前後文章・本文） */
+  const buildLessonContext = (): AILessonContext | undefined => {
+    if (!selectedModule) return undefined;
+    const sectionName = sections.find(sec => sec.modules.some(m => m.id === selectedModule.id))?.name;
+    const lessonText = getLessonText();
+    return {
+      course_name: courseName || undefined,
+      section_name: sectionName || undefined,
+      lesson_id: selectedModule.id,
+      lesson_name: selectedModule.name,
+      heading: aiSelection?.heading ?? undefined,
+      selected_text: aiSelection?.text || undefined,
+      context_before: aiSelection?.before || undefined,
+      context_after: aiSelection?.after || undefined,
+      lesson_text: lessonText || undefined,
+    };
+  };
+
+  const handleAiQuestion = (overrideMessage?: string) => {
+    // 選択箇所だけ添えて質問文が空なら、その箇所の解説を頼む
+    const message = overrideMessage
+      ?? (aiSelection && !aiQuestion.trim() && !aiPendingImage ? 'この箇所を分かりやすく説明してください。' : undefined);
+    void sendAiMessage(message, { courseId, lessonContext: buildLessonContext() });
+    setAiSelection(null);
+  };
+
+  // Enterでの送信も文脈を添えるため、useAiChat の handleKeyPress ではなくこちらを使う
+  const handleAiKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      if (aiLoading || (!aiQuestion.trim() && !aiPendingImage && !aiSelection)) return;
+      handleAiQuestion();
+    }
+  };
+
+  const handleAskAiAboutSelection = (selection: SelectionContext) => {
+    setAiSelection({ text: selection.text, heading: selection.heading, before: selection.before, after: selection.after });
+    setQuoteSelection(null);
+    openSupport('ai');
+  };
 
   /** label / resource-other 等、メインDOMに直接描画されるコンテンツ内の画像クリックを拾う */
   const handleContentClickCapture = (e: ReactMouseEvent<HTMLDivElement>) => {
@@ -601,7 +670,8 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
   const handleSaveAiAnswerToNote = (index: number) => {
     const message = aiMessages[index];
     if (!message || message.role !== 'assistant') return;
-    const question = [...aiMessages.slice(0, index)].reverse().find((m) => m.role === 'user')?.content ?? '';
+    const questionMessage = [...aiMessages.slice(0, index)].reverse().find((m) => m.role === 'user');
+    const question = questionMessage?.content ?? '';
     const source: NoteSourceRef | null = selectedModule
       ? {
           courseId,
@@ -619,7 +689,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         kind: 'answer',
         question,
         answer: message.content,
-        selectedText: null,
+        selectedText: questionMessage?.quote ?? null,
         image: message.imageDataUrl ?? null,
         source,
       },
@@ -787,8 +857,10 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       aiLoading={aiLoading}
       aiQuestion={aiQuestion}
       setAiQuestion={setAiQuestion}
-      handleAiKeyPress={handleAiKeyPress}
+      handleAiKeyPress={handleAiKeyDown}
       onSend={handleAiQuestion}
+      selection={aiSelection}
+      onClearSelection={() => setAiSelection(null)}
       chatEndRef={chatEndRef}
       pendingImage={aiPendingImage}
       imageError={aiImageError}
@@ -1054,6 +1126,7 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
         <QuoteToNoteToolbar
           selection={quoteSelection}
           onQuote={() => handleQuoteToNote(quoteSelection.text)}
+          onAskAi={() => handleAskAiAboutSelection(quoteSelection)}
         />
       )}
 
@@ -1133,11 +1206,21 @@ interface AiCoachPanelProps {
   onImageSelect: (file: File) => void;
   onClearImage: () => void;
   onSaveAnswer: (index: number) => void;
+  /** 「AIに聞く」で質問対象にした教材の選択箇所 */
+  selection: SelectionContext | null;
+  onClearSelection: () => void;
 }
+
+/** 教材ページでの回答の根拠区分の表示 */
+const GROUNDING_LABEL: Record<AIGrounding, { label: string; fg: string; bg: string }> = {
+  material: { label: '教材にもとづく回答', fg: '#1F7A4D', bg: '#E8F5EE' },
+  mixed: { label: '教材＋教材外の補足', fg: '#8A5A00', bg: '#FEF6E7' },
+  general: { label: '教材に記載なし（一般知識）', fg: '#6B6467', bg: '#F1EFEF' },
+};
 
 function AiCoachPanel({
   aiMessages, aiLoading, aiQuestion, setAiQuestion, handleAiKeyPress, onSend, chatEndRef,
-  pendingImage, imageError, onImageSelect, onClearImage, onSaveAnswer,
+  pendingImage, imageError, onImageSelect, onClearImage, onSaveAnswer, selection, onClearSelection,
 }: AiCoachPanelProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
@@ -1147,6 +1230,13 @@ function AiCoachPanel({
       textareaRef.current.style.height = 'auto';
     }
   }, [aiQuestion]);
+
+  // 「AIに聞く」で開いたら、すぐ質問を打てるようにする
+  useEffect(() => {
+    if (selection) textareaRef.current?.focus();
+  }, [selection]);
+
+  const canSend = (!!aiQuestion.trim() || !!pendingImage || !!selection) && !aiLoading;
 
   return (
     <section className="flex flex-col" style={{ minHeight: 0, height: '100%', overflow: 'hidden' }}>
@@ -1178,6 +1268,17 @@ function AiCoachPanel({
                     border: msg.role === 'assistant' ? `1px solid ${color.border}` : 'none',
                   }}
                 >
+                  {msg.quote && (
+                    <div
+                      style={{
+                        marginBottom: 6, padding: '4px 8px', borderLeft: '3px solid rgba(255,255,255,.7)',
+                        background: 'rgba(255,255,255,.14)', borderRadius: 4, fontSize: 11.5,
+                        display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+                      }}
+                    >
+                      {msg.quote}
+                    </div>
+                  )}
                   {msg.imageDataUrl && (
                     <img src={msg.imageDataUrl} alt="添付画像" style={{ maxWidth: '100%', maxHeight: 160, borderRadius: 8, marginBottom: 8, objectFit: 'contain' }} />
                   )}
@@ -1214,6 +1315,18 @@ function AiCoachPanel({
                     <span style={{ whiteSpace: 'pre-wrap' }}>{msg.content}</span>
                   )}
                 </div>
+                {msg.role === 'assistant' && msg.grounding && (
+                  <span
+                    title="この回答が教材の内容にもとづくか、教材外の一般知識を含むか"
+                    style={{
+                      display: 'inline-block', marginTop: 4, marginRight: 8, padding: '1px 7px', borderRadius: 999,
+                      fontSize: 10, fontWeight: 700,
+                      color: GROUNDING_LABEL[msg.grounding].fg, background: GROUNDING_LABEL[msg.grounding].bg,
+                    }}
+                  >
+                    {GROUNDING_LABEL[msg.grounding].label}
+                  </span>
+                )}
                 {msg.role === 'assistant' && (
                   <button
                     type="button"
@@ -1254,6 +1367,35 @@ function AiCoachPanel({
           </div>
         )}
         {imageError && <p style={{ fontSize: 11, color: '#DC2626', marginBottom: 8 }}>{imageError}</p>}
+        {selection && (
+          <div
+            className="flex items-start"
+            style={{ gap: 8, marginBottom: 8, padding: '8px 10px', borderRadius: radius.md, background: color.primarySoft, border: `1px solid ${color.primaryBorder}` }}
+          >
+            <Sparkles size={13} style={{ color: color.primary, flexShrink: 0, marginTop: 2 }} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ margin: 0, fontSize: 10.5, fontWeight: 700, color: color.primary }}>
+                選択した箇所について質問{selection.heading ? `（${selection.heading}）` : ''}
+              </p>
+              <p
+                style={{
+                  margin: '2px 0 0', fontSize: 11.5, color: color.textBody,
+                  display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+                }}
+              >
+                {selection.text}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={onClearSelection}
+              title="選択箇所を外す"
+              style={{ padding: 2, background: 'none', border: 0, color: color.textMuted, cursor: 'pointer', flexShrink: 0 }}
+            >
+              <X size={13} />
+            </button>
+          </div>
+        )}
         <div className="flex items-end" style={{ gap: 8, padding: '8px 10px', borderRadius: radius.md, background: color.pageBg }}>
           <input
             ref={imageInputRef}
@@ -1276,7 +1418,7 @@ function AiCoachPanel({
           </button>
           <textarea
             ref={textareaRef}
-            placeholder="質問を入力..."
+            placeholder={selection ? 'この箇所について質問（空のまま送ると解説します）' : '質問を入力...'}
             value={aiQuestion}
             rows={1}
             onChange={e => {
@@ -1307,11 +1449,11 @@ function AiCoachPanel({
           />
           <button
             onClick={() => onSend()}
-            disabled={(!aiQuestion.trim() && !pendingImage) || aiLoading}
+            disabled={!canSend}
             style={{
               width: 26, height: 26, borderRadius: '50%', border: 0, flexShrink: 0,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: (aiQuestion.trim() || pendingImage) && !aiLoading ? color.primary : color.borderNeutral,
+              background: canSend ? color.primary : color.borderNeutral,
               cursor: 'pointer',
             }}
           >
@@ -1463,12 +1605,28 @@ function ImageZoomOverlay({ target, onClose }: ImageZoomOverlayProps) {
 interface QuoteToNoteToolbarProps {
   selection: { text: string; rect: DOMRect };
   onQuote: () => void;
+  onAskAi: () => void;
 }
 
-const QUOTE_TOOLBAR_WIDTH = 150;
+const QUOTE_TOOLBAR_WIDTH = 240;
 const QUOTE_TOOLBAR_HEIGHT = 40;
+const QUOTE_TOOLBAR_BUTTON_STYLE: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: 6,
+  height: QUOTE_TOOLBAR_HEIGHT,
+  padding: '0 14px',
+  border: 0,
+  borderRadius: 10,
+  background: 'transparent',
+  color: '#FFFFFF',
+  fontSize: 12,
+  fontWeight: 700,
+  cursor: 'pointer',
+  whiteSpace: 'nowrap',
+};
 
-function QuoteToNoteToolbar({ selection, onQuote }: QuoteToNoteToolbarProps) {
+function QuoteToNoteToolbar({ selection, onQuote, onAskAi }: QuoteToNoteToolbarProps) {
   const { rect } = selection;
   const left = Math.max(
     10,
@@ -1492,27 +1650,15 @@ function QuoteToNoteToolbar({ selection, onQuote }: QuoteToNoteToolbarProps) {
         borderRadius: 10,
         background: '#222A37',
         boxShadow: '0 16px 48px rgba(33,42,57,.24)',
+        display: 'flex',
       }}
     >
-      <button
-        type="button"
-        onClick={onQuote}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 6,
-          height: QUOTE_TOOLBAR_HEIGHT,
-          padding: '0 14px',
-          border: 0,
-          borderRadius: 10,
-          background: 'transparent',
-          color: '#FFFFFF',
-          fontSize: 12,
-          fontWeight: 700,
-          cursor: 'pointer',
-          whiteSpace: 'nowrap',
-        }}
-      >
+      <button type="button" onClick={onAskAi} style={QUOTE_TOOLBAR_BUTTON_STYLE}>
+        <Sparkles size={14} style={{ color: color.primarySoft }} />
+        AIに聞く
+      </button>
+      <span aria-hidden style={{ width: 1, margin: '10px 0', background: 'rgba(255,255,255,.2)' }} />
+      <button type="button" onClick={onQuote} style={QUOTE_TOOLBAR_BUTTON_STYLE}>
         <NotebookPen size={14} style={{ color: color.primarySoft }} />
         メモに引用
       </button>

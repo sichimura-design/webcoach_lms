@@ -18,6 +18,13 @@ class LearningCoachState(TypedDict):
     user_id: int
     course_id: Optional[int]
 
+    # 教材ページで学習者が開いているレッスン・見出し・選択文章等（routers/ai_langgraph.LessonContext）。
+    # 教材ページ以外からのチャットではNone
+    lesson_context: Optional[Dict[str, Any]]
+
+    # 教材ページでの回答の根拠区分（material / mixed / general）。respond_nodeで確定する
+    grounding: Optional[str]
+
     # フロント側のチャットセッションID（Dify連携ツールの会話継続キャッシュを
     # このセッション単位で区切るために使う。tools_langchain.create_ai_application_tools参照）
     session_id: Optional[str]
