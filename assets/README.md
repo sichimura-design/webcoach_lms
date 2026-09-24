@@ -20,4 +20,4 @@ assets/
   バケツ名（web-design・coding・sns 等）はコースslugではなく**学習領域サイズ**なので、
   アプリへ載せるときはコース単位に割り直す（`frontend/src/mocks/migratedMaterials.ts` の注意参照）。
   `html/` が参照する `../../_assets/` は未取得。
-- `thumbnails/<コースslug>.png` … 54枚。`instagram-ads.png` だけはカタログに対応コースが無いため未登録。
+- `thumbnails/<コースslug>.png` … 54枚。`instagram.png` は原本名「Instagram広告運用」だが、対応する広告コースが無いため「インスタグラム運用」(instagram)に割り当てた。

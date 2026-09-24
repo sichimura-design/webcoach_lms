@@ -16,7 +16,7 @@
 - カテゴリ名は学習領域名と完全一致させること（フロントは `categoryname` で領域を判定する）。
   コースの `shortname` はコースslug。
 - `imageUrl` は dev プレビュー（CloudFront `/branches/dev-kanegae/images/courses/`）の WebP。
-  サムネが無い tutorial・google-analytics・instagram は空欄。
+  サムネ素材が無い tutorial・google-analytics は空欄。
 - アップロード画面のパーサは単純な `split(',')` なので、値にカンマ・改行を入れない。BOM無しで保存する
   （Excelで保存し直すとBOMが付き、先頭列名が壊れる）。
 - `area` 列は `fill_categoryid.py` 用。アップロード時は無視される。
