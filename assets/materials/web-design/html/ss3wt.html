@@ -1,0 +1,2425 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/Illustrator/SS3wt -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3章：画像とテキストの操作 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/Illustrator/SS3wt">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="3章：画像とテキストの操作 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/782/medium/11b2175b-160b-461b-9e6d-d5f47952d247.png?1752129926">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="3章：画像とテキストの操作">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/Illustrator/SS3wt">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/782/large/11b2175b-160b-461b-9e6d-d5f47952d247.png?1752129926">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="n3zPimGYP3KiseszNBNQoGg6EBprynyQwcuD_38gv8A6SW0jnvVDQD-fcSIxu64B0qNmylCZzPX7aNKiB6Xpkw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>Illustrator</div>
+
+          <div class="fw-bold h2">3章：画像とテキストの操作</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章：画像とテキストの操作</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:6時間</a></li></ul></li><li><a href="#heading2" class="tocLink">【3-1】画像の配置と管理</a><ul><li><a href="#heading3" class="tocLink">リンク画像の配置</a><ul><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink">作業動画</a></li></ul></li><li><a href="#heading8" class="tocLink">埋め込み画像との違い</a><ul><li><a href="#heading9" class="tocLink">作業手順</a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">作業動画</a></li><li><a href="#heading13" class="tocLink">リンク画像と埋め込み画像の違い</a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li><li><a href="#heading16" class="tocLink">リンクパネルの活用</a><ul><li><a href="#heading17" class="tocLink">リンクパネルの表示方法</a></li><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink">リンクパネルでできること</a></li><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink">作業動画</a></li><li><a href="#heading24" class="tocLink">リンクの再設定</a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink">リンク画像の置き換え（別の写真へ変更したい場合）</a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink">作業動画</a></li><li><a href="#heading31" class="tocLink">リンクパネルの設定項目一覧</a></li><li><a href="#heading32" class="tocLink"></a></li></ul></li><li><a href="#heading33" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading34" class="tocLink">【3-2】画像のトレース</a><ul><li><a href="#heading35" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading36" class="tocLink">イメージトレースの基本設定</a><ul><li><a href="#heading37" class="tocLink">使用素材</a></li><li><a href="#heading38" class="tocLink">イメージトレースの基本手順</a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink"></a></li><li><a href="#heading42" class="tocLink"></a></li><li><a href="#heading43" class="tocLink">作業動画</a></li><li><a href="#heading44" class="tocLink">主なプリセット</a></li><li><a href="#heading45" class="tocLink"></a></li><li><a href="#heading46" class="tocLink"></a></li><li><a href="#heading47" class="tocLink"></a></li><li><a href="#heading48" class="tocLink"></a></li><li><a href="#heading49" class="tocLink"></a></li><li><a href="#heading50" class="tocLink"></a></li><li><a href="#heading51" class="tocLink"></a></li><li><a href="#heading52" class="tocLink"></a></li></ul></li><li><a href="#heading53" class="tocLink">トレース結果の調整</a><ul><li><a href="#heading54" class="tocLink">イメージトレースパネルの表示方法</a></li><li><a href="#heading55" class="tocLink"></a></li><li><a href="#heading56" class="tocLink"></a></li><li><a href="#heading57" class="tocLink">主な調整項目</a></li><li><a href="#heading58" class="tocLink"></a></li><li><a href="#heading59" class="tocLink"></a></li><li><a href="#heading60" class="tocLink"></a></li><li><a href="#heading61" class="tocLink"></a></li><li><a href="#heading62" class="tocLink"></a></li><li><a href="#heading63" class="tocLink"></a></li><li><a href="#heading64" class="tocLink"></a></li><li><a href="#heading65" class="tocLink"></a></li><li><a href="#heading66" class="tocLink"></a></li><li><a href="#heading67" class="tocLink"></a></li><li><a href="#heading68" class="tocLink">イメージトレースパネルの詳細設定と調整による変化</a></li><li><a href="#heading69" class="tocLink"></a></li></ul></li><li><a href="#heading70" class="tocLink">トレースデータの編集</a><ul><li><a href="#heading71" class="tocLink">拡張の手順</a></li><li><a href="#heading72" class="tocLink">拡張後のデータ編集</a></li><li><a href="#heading73" class="tocLink">トレースデータの拡張と編集例</a></li><li><a href="#heading74" class="tocLink"></a></li></ul></li><li><a href="#heading75" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading76" class="tocLink">【3-3】テキスト操作</a><ul><li><a href="#heading77" class="tocLink">文字ツールの基本</a><ul><li><a href="#heading78" class="tocLink">文字ツールの種類</a></li><li><a href="#heading79" class="tocLink"></a></li><li><a href="#heading80" class="tocLink">テキストの種類</a></li></ul></li><li><a href="#heading81" class="tocLink">文字パネルと段落パネル</a><ul><li><a href="#heading82" class="tocLink">文字パネルの表示方法</a></li><li><a href="#heading83" class="tocLink">文字パネルの主な機能</a></li><li><a href="#heading84" class="tocLink">段落パネルの表示方法</a></li><li><a href="#heading85" class="tocLink">段落パネルの主な機能</a></li><li><a href="#heading86" class="tocLink"></a></li><li><a href="#heading87" class="tocLink"></a></li><li><a href="#heading88" class="tocLink">文字パネルとパラグラフパネルの主な機能</a></li><li><a href="#heading89" class="tocLink"></a></li><li><a href="#heading90" class="tocLink"></a></li></ul></li><li><a href="#heading91" class="tocLink">文字のアウトライン化</a><ul><li><a href="#heading92" class="tocLink">文字のアウトライン化の方法</a></li><li><a href="#heading93" class="tocLink">アウトライン化後の編集テクニック</a></li><li><a href="#heading94" class="tocLink">文字のアウトライン化前後の比較と編集例</a></li><li><a href="#heading95" class="tocLink"></a></li></ul></li><li><a href="#heading96" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading97" class="tocLink">【3-4】3章-演習課題-</a><ul><li><a href="#heading98" class="tocLink">使用素材</a></li></ul><ul><li><a href="#heading99" class="tocLink">画像を含むチラシデザイン</a><ul><li><a href="#heading100" class="tocLink">ステップ1: 新規ドキュメントの作成</a></li><li><a href="#heading101" class="tocLink"></a></li><li><a href="#heading102" class="tocLink"></a></li><li><a href="#heading103" class="tocLink"></a></li><li><a href="#heading104" class="tocLink">ステップ2: 画像の配置</a></li><li><a href="#heading105" class="tocLink">ステップ3: 背景の作成</a></li><li><a href="#heading106" class="tocLink">ステップ4: リンク管理の確認</a></li><li><a href="#heading107" class="tocLink">チラシの基本レイアウト</a></li><li><a href="#heading108" class="tocLink"></a></li></ul></li><li><a href="#heading109" class="tocLink">ロゴと組み合わせたレイアウト</a><ul><li><a href="#heading110" class="tocLink">ステップ1: ロゴの作成</a></li><li><a href="#heading111" class="tocLink"></a></li><li><a href="#heading112" class="tocLink">ステップ2: 装飾の追加</a></li><li><a href="#heading113" class="tocLink">ステップ3: サブタイトルの追加</a></li><li><a href="#heading114" class="tocLink">ステップ4: レイアウトの調整</a></li><li><a href="#heading115" class="tocLink">ロゴとテキストを追加したレイアウト</a></li></ul></li><li><a href="#heading116" class="tocLink">テキストスタイルの活用</a><ul><li><a href="#heading117" class="tocLink">ステップ1: キャッチコピーの作成</a></li><li><a href="#heading118" class="tocLink"></a></li><li><a href="#heading119" class="tocLink">ステップ2: メニュー情報の作成</a></li><li><a href="#heading120" class="tocLink"></a></li><li><a href="#heading121" class="tocLink">ステップ3: 詳細情報の追加</a></li><li><a href="#heading122" class="tocLink"></a></li><li><a href="#heading123" class="tocLink">ステップ4: テキストの微調整</a></li><li><a href="#heading124" class="tocLink">完成したチラシデザイン</a></li><li><a href="#heading125" class="tocLink"></a></li><li><a href="#heading126" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item33416" data-item-id="33416" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/bfXTO" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/Wcbk3" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30772" data-item-id="30772" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">3章：画像とテキストの操作</h2></div>
+        
+        <div class="article-item item_markdown " id="item39532" data-item-id="39532" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:6時間</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30773" data-item-id="30773" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、デザイン制作において欠かせない「<span class="decoration-02">画像の配置・管理</span>」と「<span class="decoration-02">テキストの操作</span>」について学び、<span class="decoration-02">チラシやポスターなど、画像とテキストを組み合わせた実践的なデザイン制作ができるようになる</span>ことを目標とします。</div></div>
+        
+        <div class="article-item item_heading " id="item30774" data-item-id="30774" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【3-1】画像の配置と管理</h2></div>
+        
+        <div class="article-item item_text " id="item51347" data-item-id="51347" data-item-type="ItemText"><div class="item-body-hbr">3-1の解説動画です。<br>以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51348" data-item-id="51348" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-747c8eea22.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30776" data-item-id="30776" data-item-type="ItemHeading"><h3 class="item-body" id="heading3">リンク画像の配置</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30777" data-item-id="30777" data-item-type="ItemRichText"><div class="item-body-hbr">Illustratorでは外部の画像ファイル（写真やイラストなど）を配置して使用することができます。<br>
+画像を配置する方法は主に以下の2つです。</div></div>
+        
+        <div class="article-item item_rich_text " id="item30778" data-item-id="30778" data-item-type="ItemRichText"><div class="item-body-hbr">1.メニューから配置する方法</div></div>
+        
+        <div class="article-item item_html " id="item30779" data-item-id="30779" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>「ファイル」メニュー＞「配置」を選択</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30782" data-item-id="30782" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/782/medium/11b2175b-160b-461b-9e6d-d5f47952d247.png?1752129926" title=""><img class="img-responsive item-image" alt=" (30782)" data-reference="" src="../../_assets/52332e259b.webp" width="567" height="403"></a><h4 id="heading4"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30785" data-item-id="30785" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30780" data-item-id="30780" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>配置したい画像ファイルを選択し「配置」ボタンをクリック（リンクにチェックが入っているか確認）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30783" data-item-id="30783" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/783/medium/32182da0-b99f-4af3-92d8-fd1e0fd70467.jpg?1752129945" title=""><img class="img-responsive item-image" alt=" (30783)" data-reference="" src="../../_assets/bec4b43320.webp" width="640" height="344"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30786" data-item-id="30786" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30781" data-item-id="30781" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>カーソルが読み込みカーソルになるので、アートボード上でクリックすると画像が配置されます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30784" data-item-id="30784" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/784/medium/e869275a-c127-442d-8604-c1c2023ea705.png?1752129969" title=""><img class="img-responsive item-image" alt=" (30784)" data-reference="" src="../../_assets/28292e492b.webp" width="640" height="360"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30787" data-item-id="30787" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item30788" data-item-id="30788" data-item-type="ItemMarkdown"><h4 id="heading7">作業動画</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30790" data-item-id="30790" data-item-type="ItemRichText"><div class="item-body-hbr">2.ドラッグ&amp;ドロップで配置する方法</div></div>
+        
+        <div class="article-item item_html " id="item30791" data-item-id="30791" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>Finderやエクスプローラーから直接画像ファイルをIllustratorのアートボード上にドラッグ＆ドロップする</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30792" data-item-id="30792" data-item-type="ItemRichText"><div class="item-body-hbr">Illustratorに画像を配置すると、デフォルトでは<span class="decoration-02">「リンク画像」</span>として扱われます。<br>
+リンク画像とは、Illustratorファイル内に画像データそのものではなく、元の画像ファイルへの「参照情報」が保存される仕組みです。</div></div>
+        
+        <div class="article-item item_html " id="item30793" data-item-id="30793" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">リンク画像のメリット</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>ファイルのサイズが小さくなる</li>
+          	<li>元の画像を編集すれば、Illustrator上の画像も自動的に更新される</li>
+            <li>作業効率が向上する</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item30794" data-item-id="30794" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">リンク画像の保存場所に注意<br></span>
+	  <ul>
+        <li>画像ファイルを移動したり名前を変えるとリンクが切れてしまいます。</li>
+        <li>リンク配置した画像と制作を行っているaiデータは同じフォルダで管理しましょう。</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30796" data-item-id="30796" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">埋め込み画像との違い</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30797" data-item-id="30797" data-item-type="ItemRichText"><div class="item-body-hbr">リンク画像に対して<span class="decoration-02">「埋め込み画像」</span>という選択肢もあります。<br>
+埋め込み画像とは、画像データそのものをIllustratorファイル内に取り込む方法です。</div></div>
+        
+        <div class="article-item item_markdown " id="item30798" data-item-id="30798" data-item-type="ItemMarkdown"><h4 id="heading9">作業手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30799" data-item-id="30799" data-item-type="ItemRichText"><div class="item-body-hbr">1.リンクパネルで画像を選択</div></div>
+        
+        <div class="article-item item_html " id="item30800" data-item-id="30800" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>リンクパネルが表示されていない場合は「ウィンドウ」メニュー＞「リンク」で表示する</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30801" data-item-id="30801" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/801/medium/66b66756-a214-486c-8cc1-61ad92b9f3cf.jpg?1752190262" title=""><img class="img-responsive item-image" alt=" (30801)" data-reference="" src="../../_assets/f6ecfd8e06.webp" width="640" height="454"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30810" data-item-id="30810" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30802" data-item-id="30802" data-item-type="ItemRichText"><div class="item-body-hbr">2.リンクパネル右上のメニューから「画像を埋め込む」を選択</div></div>
+        
+        <div class="article-item item_image " id="item30803" data-item-id="30803" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/803/medium/15ff6fe7-c57b-4fbc-baff-64faeb590ac0.jpg?1752190292" title=""><img class="img-responsive item-image" alt=" (30803)" data-reference="" src="../../_assets/68a39c49c3.webp" width="597" height="616"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30804" data-item-id="30804" data-item-type="ItemMarkdown"><h4 id="heading12">作業動画</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item30806" data-item-id="30806" data-item-type="ItemMarkdown"><h4 id="heading13">リンク画像と埋め込み画像の違い</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30807" data-item-id="30807" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <thead>
+        <tr>
+            <th scope="col">
+                <div>
+                    <div>特徴</div>
+                </div>
+            </th>
+            <th scope="col">
+                <div>
+                    <div>リンク画像</div>
+                </div>
+            </th>
+            <th scope="col">
+                <div>
+                    <div>埋め込み画像</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>ファイルサイズ</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>小さい（aiデータの容量に含まれない）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>大きい（aiデータの容量に含まれる）</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>元画像との関係</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>参照（独立）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>内包（一体化）</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>更新方法</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>元画像を更新すると反映</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>埋め込んだ後は元画像と無関係</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>データ管理</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>別途画像ファイルの管理が必要</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>Illustratorファイルのみで完結</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>向いている用途</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>大きなファイルサイズの画像、複数人での制作</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>小さな画像、完全に独立したファイルが必要な場合</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_html " id="item30808" data-item-id="30808" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">リンク画像の使い所<br></span>
+	  <ul>
+      <li>リンク配置を行うと、作業するIllustratorファイル（.ai）が軽量になり、ソフトの動作が軽快になります。</li>
+      <li>Photoshopで画像加工した画像をリンク画像として配置した場合は、リンク画像に操作を加えた場合、更新内容がaiデータでも反映され効率的にIllustratorとPhotoshopの連携が取れる（Illustratorで写真を扱う場合は非常に便利です）</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item30809" data-item-id="30809" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>リンク配置
+    <ul>
+      <li>ファイル容量が小さい（3.2MB）</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30811" data-item-id="30811" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/811/medium/29249f3d-cba8-4303-9336-c62c2aadb3e9.jpg?1752190792" title=""><img class="img-responsive item-image" alt=" (30811)" data-reference="" src="../../_assets/289c8b9ef1.webp" width="640" height="306"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30812" data-item-id="30812" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30813" data-item-id="30813" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>埋め込み
+    <ul>
+      <li>ファイル容量が比較的大きい（5.7MB）</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30814" data-item-id="30814" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/814/medium/63c1798f-afa4-4987-abb3-51a8f1f77c99.jpg?1752190856" title=""><img class="img-responsive item-image" alt=" (30814)" data-reference="" src="../../_assets/30bcfec6ae.webp" width="640" height="317"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30815" data-item-id="30815" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30816" data-item-id="30816" data-item-type="ItemRichText"><div class="item-body-hbr">実務では基本的にリンク画像として扱うこともありますが、印刷物の入稿データの納品時や画像サイズが小さい場合には埋め込みを選択することを推奨します。</div></div>
+        
+        <div class="article-item item_heading " id="item30817" data-item-id="30817" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">リンクパネルの活用</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30818" data-item-id="30818" data-item-type="ItemRichText"><div class="item-body-hbr">リンク画像を効率的に管理するために欠かせないのが<span class="decoration-02">リンクパネル</span>です。<br>
+リンクパネルでは、配置したすべての画像の状態を一覧で確認できます。</div></div>
+        
+        <div class="article-item item_markdown " id="item30819" data-item-id="30819" data-item-type="ItemMarkdown"><h4 id="heading17">リンクパネルの表示方法</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30820" data-item-id="30820" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>「ウィンドウ」メニュー＞「リンク」を選択する</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30821" data-item-id="30821" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/821/medium/53f2e49f-cb4f-4e58-acc3-56a0d64d5a38.jpg?1752191004" title=""><img class="img-responsive item-image" alt=" (30821)" data-reference="" src="../../_assets/f6ecfd8e06.webp" width="640" height="454"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30822" data-item-id="30822" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item30823" data-item-id="30823" data-item-type="ItemMarkdown"><h4 id="heading19">リンクパネルでできること</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30824" data-item-id="30824" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>リンク情報の確認
+    <ul>
+      <li>名前：画像のファイル名</li>
+      <li>ファイル形式：拡張子と「リンクファイル」か「埋め込みファイル」が記載</li>
+      <li>カラースペース：カラーモード（RGB、CMYK）が記載</li>
+      <li>ファイルの位置：配置元の画像の格納先が記載（クリックするとファインダー or エクスプローラーが開く）</li>
+      <li>PPI：解像度が記載（Web用は72、印刷用は300）</li>
+      <li>寸法：画像の「横幅 × 縦幅」が記載</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30825" data-item-id="30825" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/825/medium/6caa4de3-fe43-4e0b-a34d-6c90e0956f44.png?1752191152" title=""><img class="img-responsive item-image" alt=" (30825)" data-reference="" src="../../_assets/cc1215ee35.webp" width="291" height="361"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30826" data-item-id="30826" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30827" data-item-id="30827" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>リンクの更新
+    <ul>
+      <li>元画像が更新された場合、リンクパネル上に警告アイコンが表示される</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30828" data-item-id="30828" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/828/medium/cd89c1ee-53dd-400e-a60d-ed02b1c2715d.jpg?1752191204" title=""><img class="img-responsive item-image" alt=" (30828)" data-reference="" src="../../_assets/2dfab2b2cb.webp" width="640" height="391"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30829" data-item-id="30829" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30830" data-item-id="30830" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>更新ボタンをクリックすると最新の画像に更新される（自動的に検知される場合もあります）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30831" data-item-id="30831" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/831/medium/0f3a7e5c-28d3-4f8c-ad49-b4e08484d211.png?1752191255" title=""><img class="img-responsive item-image" alt=" (30831)" data-reference="" src="../../_assets/6c4af52d93.webp" width="640" height="375"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30832" data-item-id="30832" data-item-type="ItemMarkdown"><h4 id="heading23">作業動画</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30833" data-item-id="30833" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>動画では、dog.psdというPhotoshopのファイルをIllustratorへリンク配置しています。
+    <ol>
+      <li>Illustratorへdog.psdをリンク配置する</li>
+      <li>Photoshopでdog.psdに編集を加える（動画では切り抜きを実施）</li>
+      <li>Illustratorで更新のポップアップが表示され、更新（Photoshopで編集した内容が反映される）</li>
+    </ol>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item30835" data-item-id="30835" data-item-type="ItemMarkdown"><h4 id="heading24">リンクの再設定</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30836" data-item-id="30836" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>リンクが切れている場合（元ファイルが移動・削除された場合）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30837" data-item-id="30837" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/837/medium/1433526f-4e46-42aa-bd2f-e112ab6aab95.jpg?1752191473" title=""><img class="img-responsive item-image" alt=" (30837)" data-reference="" src="../../_assets/d397e61ab6.webp" width="640" height="390"></a><h4 id="heading25"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30838" data-item-id="30838" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30839" data-item-id="30839" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>リンクパネルのメニューから「リンクを再設定」を選択し、新しい場所を指定する</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30840" data-item-id="30840" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/840/medium/18665f93-53f3-4cb8-b0b4-b94e1a8a828a.jpg?1752191529" title=""><img class="img-responsive item-image" alt=" (30840)" data-reference="" src="../../_assets/2120b888f5.webp" width="640" height="373"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30841" data-item-id="30841" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30842" data-item-id="30842" data-item-type="ItemRichText"><div class="item-body-hbr">下の動画では、dog.psdをリンク配置した時に格納されていたフォルダから新しく作成したフォルダへ移動させています。</div></div>
+        
+        <div class="article-item item_html " id="item30843" data-item-id="30843" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+  <span class="bold">作業手順<br></span>
+  <ol>
+    <li>dog.psdがリンクパネルでリンク配置されているか確認</li>
+    <li>Finder（エクスプローラ）を開き、新しいフォルダを作成しその中へdog.psdを移動</li>
+    <li>リンクパネルで確認すると赤色のアイコンが表示され、カーソルを近づけると見つからないリンクと表示。<br><span class="decoration-02">※重要※ この状態になると、画面上には「プレビュー用の低解像度画像」で表示されます。</span></li>
+    <li>リンクパネルから「リンクを再設定」をクリックしリンク配置した画像のリンク先を指定する。<br><span class="decoration-02">※リンク配置を行いながら制作する時には、配置する画像と、編集する Illustratorのファイル（.aiのファイル）は同じフォルダで管理することが望ましいです。</span></li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item30844" data-item-id="30844" data-item-type="ItemMarkdown"><h4 id="heading27">リンク画像の置き換え（別の写真へ変更したい場合）</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30845" data-item-id="30845" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>リンクパネルのメニューから「リンク再配置」を選択する</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30846" data-item-id="30846" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/846/medium/6aff07e6-a41e-4d93-b8b4-46f6eba268f6.jpg?1752191824" title=""><img class="img-responsive item-image" alt=" (30846)" data-reference="" src="../../_assets/2120b888f5.webp" width="640" height="373"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30847" data-item-id="30847" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30848" data-item-id="30848" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>新しい画像を選択すると、同じ位置・サイズで置き換わる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30849" data-item-id="30849" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/849/medium/93fb4e50-5e27-4321-adaa-14195ca7b198.png?1752191880" title=""><img class="img-responsive item-image" alt=" (30849)" data-reference="" src="../../_assets/f54cf362a7.webp" width="640" height="407"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30850" data-item-id="30850" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item30851" data-item-id="30851" data-item-type="ItemMarkdown"><h4 id="heading30">作業動画</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30854" data-item-id="30854" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">プロのデザイナーは常にリンクパネルをチェックし、リンク切れがないかを確認しています。</span><br>
+特に入稿前には必ず確認しましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item30855" data-item-id="30855" data-item-type="ItemMarkdown"><h4 id="heading31">リンクパネルの設定項目一覧</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30856" data-item-id="30856" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <div><div>01 埋め込み画像</div></div>
+      </th>
+      <td>
+        <div><div>右端に何も表示されていない場合は、埋め込まれた画像</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>02 リンク配置</div></div>
+      </th>
+      <td>
+        <div><div>鎖のアイコンが表示されている場合はリンク配置画像</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>03 リンク切れ</div></div>
+      </th>
+      <td>
+        <div><div>赤色のアイコンが表示されている場合はリンク配置されている画像の読み込み元が不明な状態になっている</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>04 CCライブラリから再リンク</div></div>
+      </th>
+      <td>
+        <div><div>CCライブラリを使って配置した画像がリンク切れになった場合の再リンク設定</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>05 リンクを再配置</div></div>
+      </th>
+      <td>
+        <div><div>リンク切れが起こっている時に読み込み元の再設定や、別の画像に置き換え</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>06 リンクへ移動</div></div>
+      </th>
+      <td>
+        <div><div>アートボード上で配置されている場所へ移動する</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>07 リンクを更新</div></div>
+      </th>
+      <td>
+        <div><div>リンク配置している画像がPhotoshopなどで編集された場合に編集内容を反映するために使用する</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>08 Photoshopで編集</div></div>
+      </th>
+      <td>
+        <div><div>Photoshopが立ち上がり編集作業可能</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>09 削除</div></div>
+      </th>
+      <td>
+        <div><div>配置した画像を削除する</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>10 画像を埋め込み</div></div>
+      </th>
+      <td>
+        <div><div>リンク配置した画像を埋め込み画像へ</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>11 情報</div></div>
+      </th>
+      <td>
+        <div><div>配置されている画像の詳しい情報</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>12 Finderで表示</div></div>
+      </th>
+      <td>
+        <div><div>選択している画像が格納されているフォルダを表示</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>13 リストの表示設定</div></div>
+      </th>
+      <td>
+        <div><div>チェックを切り替えると、それぞれの項目の内容で表示ソートされる</div></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_image " id="item30857" data-item-id="30857" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/857/medium/7da7c313-b550-48cd-93d4-9670944a19a5.jpg?1752192713" title=""><img class="img-responsive item-image" alt=" (30857)" data-reference="" src="../../_assets/ca243218f1.webp" width="640" height="577"></a><h4 id="heading32"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item30858" data-item-id="30858" data-item-type="ItemRichText"><div class="item-body-hbr">※赤枠で囲っている4〜8はアイコン表示とオプション表示でも設定できる。</div></div>
+        
+        <div class="article-item item_heading " id="item30859" data-item-id="30859" data-item-type="ItemHeading"><h3 class="item-body" id="heading33">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item30860" data-item-id="30860" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">確認問題<br></span>
+    <ol>
+      <li>Illustratorに画像を配置するとき、デフォルトではどのような扱いになりますか？</li>
+      <li>リンク画像の主なメリットを2つ挙げてください。</li>
+      <li>リンクが切れている画像を修復するためにどのような操作を行いますか？</li>
+    </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item30861" data-item-id="30861" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">解答<br></span>
+  <ol>
+    <li>リンク画像として取り込まれる</li>
+    <li>「ファイルサイズが小さくなる」「元の画像を編集すれば自動的に更新される」</li>
+    <li>リンクパネルの「リンクを再設定」機能を使用</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item30862" data-item-id="30862" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+  <ul>
+    <li>このセクションではIllustratorでの画像配置の基本を学びました。</li>
+    <li>次のセクションでは、画像のトレース機能について学んでいきます。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30863" data-item-id="30863" data-item-type="ItemHeading"><h2 class="item-body" id="heading34">【3-2】画像のトレース</h2></div>
+        
+        <div class="article-item item_markdown " id="item30864" data-item-id="30864" data-item-type="ItemMarkdown"><h4 id="heading35">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item51349" data-item-id="51349" data-item-type="ItemText"><div class="item-body-hbr">3-2の解説動画です。<br>以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51350" data-item-id="51350" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-066a54b07b.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30865" data-item-id="30865" data-item-type="ItemHeading"><h3 class="item-body" id="heading36">イメージトレースの基本設定</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30866" data-item-id="30866" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">イメージトレース</span>とは、ラスター画像（写真やスキャンした手書きイラストなど）をベクター形式に変換する機能です。<br>
+これにより、<span class="decoration-02">拡大しても品質が劣化しない形式に変換できます。</span></div></div>
+        
+        <div class="article-item item_markdown " id="item30867" data-item-id="30867" data-item-type="ItemMarkdown"><h4 id="heading37">使用素材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item30868" data-item-id="30868" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SS3wt&amp;item_id=30868" rel="nofollow noopener noreferrer" target="_blank">Illustrator 3-1 使用素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Illustrator 3-1 使用素材" data-reference="https://www.dropbox.com/scl/fi/tx56gn3itue7t7jpe4e5r/Illustrator_3.1_v1-0_published.png?rlkey=m0ag4jk4ku60w08a7rduqzx0x&amp;st=xckrj40g&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item30869" data-item-id="30869" data-item-type="ItemMarkdown"><h4 id="heading38">イメージトレースの基本手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30870" data-item-id="30870" data-item-type="ItemRichText"><div class="item-body-hbr">「画像トレース」を実行すると、Illustratorデータに変換した状態になります。<br>
+この状態のことを「<span class="decoration-02">トレースオブジェクト</span>」と呼びます。<br>
+<br>
+この「トレースオブジェクト」は、「拡張」を実行するまでは、まだIllustratorのパスデータにはなっていません。<br>
+そのため、「画像トレースパネル」で設定変更や「効果」で各種効果を適用や、「画像トレース」を実施する前の「ラスター画像」の状態へ戻すことができます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item30871" data-item-id="30871" data-item-type="ItemRichText"><div class="item-body-hbr">1.ラスター画像をIllustratorに配置</div></div>
+        
+        <div class="article-item item_image " id="item30872" data-item-id="30872" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/872/medium/48220d1c-2ca0-497e-95d3-5c7a95c7dbab.png?1752193146" title=""><img class="img-responsive item-image" alt=" (30872)" data-reference="" src="../../_assets/1456df78e2.webp" width="640" height="331"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30873" data-item-id="30873" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30874" data-item-id="30874" data-item-type="ItemRichText"><div class="item-body-hbr">2.画像を選択した状態で、下記のいずれかの操作。上部のコントロールパネルにある「イメージトレース」ボタンをクリック</div></div>
+        
+        <div class="article-item item_image " id="item30875" data-item-id="30875" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/875/medium/77140228-015f-4eb3-b1a7-0d88827503ba.png?1752193197" title=""><img class="img-responsive item-image" alt=" (30875)" data-reference="" src="../../_assets/8679dd0e61.webp" width="640" height="262"></a><h4 id="heading40"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30876" data-item-id="30876" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30877" data-item-id="30877" data-item-type="ItemRichText"><div class="item-body-hbr">3.または「オブジェクト」メニュー＞「イメージトレース」＞「作成」を選択</div></div>
+        
+        <div class="article-item item_image " id="item30878" data-item-id="30878" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/878/medium/69892928-55a8-481a-bdcf-2f515cc11b8e.png?1752193240" title=""><img class="img-responsive item-image" alt=" (30878)" data-reference="" src="../../_assets/6ce6c9536f.webp" width="640" height="640"></a><h4 id="heading41"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30879" data-item-id="30879" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30880" data-item-id="30880" data-item-type="ItemRichText"><div class="item-body-hbr">4.プリセットを選択して適用</div></div>
+        
+        <div class="article-item item_image " id="item30881" data-item-id="30881" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/881/medium/cfb1ed5d-3da7-4c2b-9733-895268c2da7b.png?1752193285" title=""><img class="img-responsive item-image" alt=" (30881)" data-reference="" src="../../_assets/e4a5cab6a9.webp" width="640" height="202"></a><h4 id="heading42"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30883" data-item-id="30883" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item30882" data-item-id="30882" data-item-type="ItemMarkdown"><h4 id="heading43">作業動画</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item30885" data-item-id="30885" data-item-type="ItemMarkdown"><h4 id="heading44">主なプリセット</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30886" data-item-id="30886" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">高精細写真</span>：写真の詳細を保持してトレース</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30887" data-item-id="30887" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/887/medium/6428af6d-d02d-4d45-bad8-c8bbe79262a9.png?1752193823" title=""><img class="img-responsive item-image" alt=" (30887)" data-reference="" src="../../_assets/9b1d9f3aa8.webp" width="640" height="360"></a><h4 id="heading45"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30888" data-item-id="30888" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30889" data-item-id="30889" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">低精細写真</span>：写真を簡略化してトレース</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30890" data-item-id="30890" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/890/medium/f81ef033-e860-479c-b9b6-ab75118fbeb8.png?1752193913" title=""><img class="img-responsive item-image" alt=" (30890)" data-reference="" src="../../_assets/dbe6598286.webp" width="640" height="360"></a><h4 id="heading46"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30891" data-item-id="30891" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30892" data-item-id="30892" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">6色</span>：色数を6色に制限してトレース</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30893" data-item-id="30893" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/893/medium/a02b021a-edab-4f78-8d1c-917ab29d1055.png?1752193950" title=""><img class="img-responsive item-image" alt=" (30893)" data-reference="" src="../../_assets/e54e999b95.webp" width="640" height="360"></a><h4 id="heading47"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30894" data-item-id="30894" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30895" data-item-id="30895" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">3色</span>：色数を3色に制限してトレース</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30896" data-item-id="30896" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/896/medium/eb119a9b-cd7d-4d3c-ab83-5f10027fa572.png?1752194056" title=""><img class="img-responsive item-image" alt=" (30896)" data-reference="" src="../../_assets/4324e5ee74.webp" width="640" height="360"></a><h4 id="heading48"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30897" data-item-id="30897" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30898" data-item-id="30898" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">グレーの色合い</span>：グレースケールでトレース</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30899" data-item-id="30899" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/899/medium/6828df7e-c160-4a7c-8bc7-96b8c7cc6ed8.png?1752194135" title=""><img class="img-responsive item-image" alt=" (30899)" data-reference="" src="../../_assets/1332438cd9.webp" width="640" height="360"></a><h4 id="heading49"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30900" data-item-id="30900" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30901" data-item-id="30901" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">白黒のロゴ</span>：モノクロでクリーンにトレース</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30902" data-item-id="30902" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/902/medium/93552595-5989-4284-b68a-d1c3b7e6d758.png?1752194209" title=""><img class="img-responsive item-image" alt=" (30902)" data-reference="" src="../../_assets/aad3adf611.webp" width="640" height="360"></a><h4 id="heading50"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30903" data-item-id="30903" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30904" data-item-id="30904" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">スケッチアート</span>：手描きイラストに最適</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30905" data-item-id="30905" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/905/medium/936703a2-bf03-4b5a-be49-e61af37efd7f.png?1757082139" title=""><img class="img-responsive item-image" alt=" (30905)" data-reference="" src="../../_assets/2d97924761.webp" width="640" height="482"></a><h4 id="heading51"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30906" data-item-id="30906" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30907" data-item-id="30907" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">シルエット</span>：外形のみをトレース<br>※外形を認識しない場合は全体が黒く塗りつぶされてしまう場合があります。その場合はトレース対象の画像をPhotoshopなどでコントラストの調整を行い実施しましょう</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30908" data-item-id="30908" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/908/medium/a76e0954-1eb8-4e53-9273-23b680fc0e16.jpg?1752194331" title=""><img class="img-responsive item-image" alt=" (30908)" data-reference="" src="../../_assets/4b659f9e14.webp" width="640" height="543"></a><h4 id="heading52"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30910" data-item-id="30910" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">用途に応じたプリセットの選び方<br></span>
+  <ul>
+    <li>ロゴや図形のトレース → 「白黒のロゴ」または「3色」「6色」</li>
+    <li>写真のイラスト化 → 「高精細写真」または「低精細写真」</li>
+    <li>手書きスケッチ → 「スケッチアート」</li>
+    <li>人物や物体の切り抜き → 「シルエット」</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30911" data-item-id="30911" data-item-type="ItemHeading"><h3 class="item-body" id="heading53">トレース結果の調整</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30912" data-item-id="30912" data-item-type="ItemRichText"><div class="item-body-hbr">プリセットを適用した後、詳細な設定を調整してトレース結果をより良くすることができます。<br>
+調整はイメージトレースパネルで行います。</div></div>
+        
+        <div class="article-item item_markdown " id="item30913" data-item-id="30913" data-item-type="ItemMarkdown"><h4 id="heading54">イメージトレースパネルの表示方法</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30914" data-item-id="30914" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>画像を選択した状態で「ウィンドウ」メニュー＞「画像トレース」を選択する</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30915" data-item-id="30915" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/915/medium/6ece5f1a-929d-4176-94b8-7dccb13211bd.png?1752194714" title=""><img class="img-responsive item-image" alt=" (30915)" data-reference="" src="../../_assets/d7dc818f9f.webp" width="457" height="640"></a><h4 id="heading55"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30916" data-item-id="30916" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30917" data-item-id="30917" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>または、画像をトレースした状態で上部のコントロールパネルにある「画像トレースパネル」ボタンをクリックする</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30918" data-item-id="30918" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/918/medium/47bb1a46-bbcd-4409-8772-0d5a02a18292.png?1752194776" title=""><img class="img-responsive item-image" alt=" (30918)" data-reference="" src="../../_assets/4b844c8fbb.webp" width="640" height="509"></a><h4 id="heading56"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30919" data-item-id="30919" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item30920" data-item-id="30920" data-item-type="ItemMarkdown"><h4 id="heading57">主な調整項目</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30921" data-item-id="30921" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>カラーモード
+    <ul>
+      <li>カラー：フルカラートレース</li>
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30922" data-item-id="30922" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/922/medium/001d13f9-e7ad-4d96-934e-0592743c11bc.png?1752194934" title=""><img class="img-responsive item-image" alt=" (30922)" data-reference="" src="../../_assets/987657356a.webp" width="640" height="258"></a><h4 id="heading58"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30923" data-item-id="30923" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30924" data-item-id="30924" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>グレースケール：グレーでトレース</li>
+    </ul>
+</ul>
+
+</div></div>
+        
+        <div class="article-item item_image " id="item30925" data-item-id="30925" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/925/medium/6a607e9f-bdc8-4ebb-9885-802c5ca71e26.png?1752194990" title=""><img class="img-responsive item-image" alt=" (30925)" data-reference="" src="../../_assets/e79a5ba0d8.webp" width="640" height="258"></a><h4 id="heading59"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30926" data-item-id="30926" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30927" data-item-id="30927" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>白黒：モノクロでトレース</li>
+    </ul>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30928" data-item-id="30928" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/928/medium/b5c04fac-9851-497e-b09e-2ca18402134e.png?1752195034" title=""><img class="img-responsive item-image" alt=" (30928)" data-reference="" src="../../_assets/3a88ed0ef1.webp" width="640" height="258"></a><h4 id="heading60"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30929" data-item-id="30929" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30930" data-item-id="30930" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>作業動画</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item30932" data-item-id="30932" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>パレット
+    <ul>
+      <li>自動：自動的に色を決定</li>
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30933" data-item-id="30933" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/933/medium/e24e3786-8613-4da5-bbbc-9382fca26b1f.png?1752195163" title=""><img class="img-responsive item-image" alt=" (30933)" data-reference="" src="../../_assets/2f5b953a1e.webp" width="640" height="258"></a><h4 id="heading61"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30934" data-item-id="30934" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30935" data-item-id="30935" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>制限：色数を制限（2〜256色）</li>
+    </ul>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30936" data-item-id="30936" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/936/medium/bc0d302c-5ce0-4128-9039-a9a4a7aa6d8c.png?1752195208" title=""><img class="img-responsive item-image" alt=" (30936)" data-reference="" src="../../_assets/4625cd019b.webp" width="640" height="258"></a><h4 id="heading62"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30937" data-item-id="30937" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30938" data-item-id="30938" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>文書のスウォッチ：ドキュメントのスウォッチを使用</li>
+    </ul>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30939" data-item-id="30939" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/939/medium/84624753-aff5-463d-ae3d-cc3467dd3db3.png?1752195256" title=""><img class="img-responsive item-image" alt=" (30939)" data-reference="" src="../../_assets/72c8bea857.webp" width="640" height="258"></a><h4 id="heading63"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30940" data-item-id="30940" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30941" data-item-id="30941" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>作業動画</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item30943" data-item-id="30943" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>色
+    <ul>
+      <li>色数：トレースに使用する色数（「限定」パレット選択時）</li>
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30944" data-item-id="30944" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/944/medium/688a39c0-2777-421c-b661-2709d5f8a6c0.png?1752195366" title=""><img class="img-responsive item-image" alt=" (30944)" data-reference="" src="../../_assets/45536b822e.webp" width="640" height="258"></a><h4 id="heading64"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30946" data-item-id="30946" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>詳細設定
+    <ul>
+      <li>パス：トレース結果の精度に影響</li>
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item30948" data-item-id="30948" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>角：角の鋭さを調整</li>
+    </ul>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item30951" data-item-id="30951" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>ノイズ：小さなノイズを除去する閾値</li>
+    </ul>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item30953" data-item-id="30953" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>表示
+    <ul>
+      <li>トレース結果：トレース結果を表示</li>
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30954" data-item-id="30954" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/954/medium/a2166dd1-f9f5-452e-8919-bae668ba9fdf.png?1752195652" title=""><img class="img-responsive item-image" alt=" (30954)" data-reference="" src="../../_assets/9fd72001e1.webp" width="640" height="358"></a><h4 id="heading65"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30955" data-item-id="30955" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30956" data-item-id="30956" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>アウトライン：生成されるパスを表示</li>
+    </ul>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30957" data-item-id="30957" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/957/medium/03048f71-c4c1-4f39-b5d8-5f0682519376.png?1752195776" title=""><img class="img-responsive item-image" alt=" (30957)" data-reference="" src="../../_assets/f686ca2d33.webp" width="640" height="358"></a><h4 id="heading66"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30958" data-item-id="30958" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30959" data-item-id="30959" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>アウトラインと元の画像：元画像と重ねて表示</li>
+    </ul>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30960" data-item-id="30960" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/960/medium/dbf1cd44-8de9-4387-b6de-58527fd37fc9.png?1752195857" title=""><img class="img-responsive item-image" alt=" (30960)" data-reference="" src="../../_assets/8d45aeacdb.webp" width="640" height="358"></a><h4 id="heading67"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30961" data-item-id="30961" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item30962" data-item-id="30962" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>作業動画</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item30964" data-item-id="30964" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+  <span class="bold">実践的な調整手順<br></span>
+  <ol>
+    <li>まずはプリセットで大まかな方向性を決める</li>
+    <li>モードと色数を調整して色の表現を決める</li>
+    <li>パスと角を調整して形の精度を決める</li>
+    <li>ノイズを調整して不要な細部を除去する</li>
+    <li>表示を切り替えながら元画像との比較を行う</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item30965" data-item-id="30965" data-item-type="ItemMarkdown"><h4 id="heading68">イメージトレースパネルの詳細設定と調整による変化</h4>
+</div>
+        
+        <div class="article-item item_image " id="item30966" data-item-id="30966" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/966/medium/26bbe47a-3ed5-460b-9173-ba76b71efcd6.png?1757082173" title=""><img class="img-responsive item-image" alt=" (30966)" data-reference="" src="../../_assets/d793d5de3d.webp" width="640" height="163"></a><h4 id="heading69"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30967" data-item-id="30967" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item30968" data-item-id="30968" data-item-type="ItemHeading"><h3 class="item-body" id="heading70">トレースデータの編集</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30969" data-item-id="30969" data-item-type="ItemRichText"><div class="item-body-hbr">トレース結果に満足したら、「拡張」を行ってパスとして編集可能な状態にします。<br>
+拡張する前は「トレースオブジェクト」という特殊な状態で、見た目はパスに見えても中身はまだ画像のままであるため、パスとしての直接編集はできません。</div></div>
+        
+        <div class="article-item item_html " id="item30970" data-item-id="30970" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">トレースデータ編集のコツ<br></span>
+  <ul>
+    <li>トレース直後は非常に多くのアンカーポイントが生成されるため、必要に応じて単純化する</li>
+    <li>拡張後は元の画像には戻せないため、必要であれば拡張前のデータを複製してバックアップしておく</li>
+    <li>複雑な画像のトレースは処理が重くなるため、PCのスペックに注意</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item30971" data-item-id="30971" data-item-type="ItemMarkdown"><h4 id="heading71">拡張の手順</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30972" data-item-id="30972" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>トレースオブジェクトを選択</li>
+  <li>「オブジェクト」メニュー＞「イメージトレース」＞「拡張」を選択</li>
+  <ul>
+    <li>または上部のコントロールパネルにある「拡張」ボタンをクリック</li>
+  </ul>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item30974" data-item-id="30974" data-item-type="ItemMarkdown"><h4 id="heading72">拡張後のデータ編集</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30975" data-item-id="30975" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>基本的な編集
+    <ul>
+      <li>直接選択ツールでアンカーポイントを調整</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30977" data-item-id="30977" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>不要なパスの削除
+    <ul>
+      <li>ダイレクト選択ツールで選択後、Deleteキーで削除</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30979" data-item-id="30979" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>色の変更
+    <ul>
+      <li>クリックしたオブジェクトの塗りや線の色変更が可能</li>
+      <li>選択を行ったオブジェクトと同じ色の別のオブジェクトを選択したい場合は、「選択 &gt; 共通 &gt; カラー（塗り）」を使用</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30981" data-item-id="30981" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>パスの整理
+    <ul>
+      <li>複雑なパスの単純化（「オブジェクト」メニュー＞「パス」＞「単純化」）</li>
+      <ul>
+        <li>パス上のアンカーポイントの数を減らす（単純化）ことができる</li>
+      </ul>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30983" data-item-id="30983" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>パスの切断と再連結
+    <ul>
+      <li>手と背景が同化してしまっているので切り離すために「ハサミツール」でパスをカットする</li>
+      <li>手と背景を切り離し、背景の部分のオブジェクトを削除</li>
+      <li>切り離した箇所のアンカーを連結（「オブジェクト」メニュー＞「パス」＞「連結」）</li>
+      <li>「ハサミツール」で追加されたパスをアンカーポイント削除で調整</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30985" data-item-id="30985" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>色の調整
+    <ul>
+      <li>似た色のグループ化
+        <ul>
+          <li>グループ化する色を選択「選択＞共通＞カラー（塗り）」</li>
+          <li>パスファインダーの合体を行い統合する</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30987" data-item-id="30987" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>不要な色の統合
+    <ul>
+      <li>不要な色を「選択＞共通＞カラー（塗り）」で選択</li>
+      <li>結合したい色へ変更（スポイトツールでコピー）</li>
+      <li>結合する色を「選択＞共通＞カラー（塗り）」で全て選択</li>
+      <li>パスファインダーの合体を行い統合する</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30989" data-item-id="30989" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>レイヤー整理
+    <ul>
+      <li>パスをレイヤーに分けて整理</li>
+      <li>重なり順の調整</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item30991" data-item-id="30991" data-item-type="ItemMarkdown"><h4 id="heading73">トレースデータの拡張と編集例</h4>
+</div>
+        
+        <div class="article-item item_image " id="item30992" data-item-id="30992" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/992/medium/8f925137-b17e-4d4d-9cb6-f3f144a5c40d.png?1757082193" title=""><img class="img-responsive item-image" alt=" (30992)" data-reference="" src="../../_assets/438bb14597.webp" width="640" height="163"></a><h4 id="heading74"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item30993" data-item-id="30993" data-item-type="ItemHeading"><h3 class="item-body" id="heading75">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item30994" data-item-id="30994" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">確認問題<br></span>
+  <ol>
+    <li>イメージトレースの主な機能は何ですか？</li>
+    <li>トレースしたオブジェクトを編集可能にするために必要な操作は何ですか？</li>
+    <li>手書きのスケッチをトレースする場合、最適なプリセットは何ですか？</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item30995" data-item-id="30995" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">解答<br></span>
+  <ol>
+    <li>ビットマップ画像をベクター形式に変換する機能</li>
+    <li>拡張操作</li>
+    <li>「スケッチアート」プリセット</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item30996" data-item-id="30996" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+  <ul>
+    <li>このセクションではイメージトレースの基本から応用まで学びました。</li>
+    <li>次のセクションではテキストの操作について学びます。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30997" data-item-id="30997" data-item-type="ItemHeading"><h2 class="item-body" id="heading76">【3-3】テキスト操作</h2></div>
+        
+        <div class="article-item item_text " id="item51351" data-item-id="51351" data-item-type="ItemText"><div class="item-body-hbr">3-3の解説動画です。<br>以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51352" data-item-id="51352" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-381a90b952.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30999" data-item-id="30999" data-item-type="ItemHeading"><h3 class="item-body" id="heading77">文字ツールの基本</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31000" data-item-id="31000" data-item-type="ItemRichText"><div class="item-body-hbr">Illustratorでは様々なテキスト表現が可能です。<br>
+まずは文字ツールの基本から学びましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item31001" data-item-id="31001" data-item-type="ItemMarkdown"><h4 id="heading78">文字ツールの種類</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31002" data-item-id="31002" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">横書き文字ツール(T)</span>：<br>標準的な横書きテキストを作成</li>
+  <li><span class="decoration-02">エリア内文字ツール</span>：<br>指定したエリア内にテキストを配置</li>
+  <li><span class="decoration-02">パス上文字ツール</span>：<br>線や図形に沿ってテキストを配置</li>
+  <li><span class="decoration-02">縦書き文字ツール</span>：<br>日本語などの縦書きテキストを作成</li>
+  <li><span class="decoration-02">タッチタイプツール</span>：<br>自由に「位置」「サイズ」「回転」などを配置・編集できる文字を作成</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item31003" data-item-id="31003" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/003/medium/f404480e-fd5c-4e9a-b840-bffecc4efb46.png?1752198053" title=""><img class="img-responsive item-image" alt=" (31003)" data-reference="" src="../../_assets/95e07857a2.webp" width="358" height="639"></a><h4 id="heading79"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item31004" data-item-id="31004" data-item-type="ItemMarkdown"><h4 id="heading80">テキストの種類</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31005" data-item-id="31005" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">ポイントテキスト</span>
+    <ul>
+      <li>特定の点からスタートする文字列</li>
+      <li>改行しない限り一行で表示される</li>
+      <li>作成方法：文字ツールでアートボード上をクリックし入力</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31007" data-item-id="31007" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">エリアテキスト</span>
+    <ul>
+      <li>指定した領域内にテキストを流し込む</li>
+      <li>自動的に折り返し表示される</li>
+      <li>作成方法：文字ツールでドラッグして領域を作成、またはオブジェクトをテキストエリアに変換</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31009" data-item-id="31009" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">パステキスト</span>
+    <ul>
+      <li>線や図形のパスに沿ってテキストを配置</li>
+      <li>作成方法：パス上文字ツールで既存のパスをクリック、またはパス上文字ツールでドラッグして新規作成</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31011" data-item-id="31011" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">テキスト入力と編集の基本操作</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li><span class="decoration-02">テキストの入力</span>：文字ツールでクリックまたはドラッグして入力</li>
+      <li><span class="decoration-02">テキストの選択</span>：文字ツールでテキストをドラッグして選択、またはクリックして全選択</li>
+      <li><span class="decoration-02">テキストの編集</span>：文字ツールでテキストをダブルクリックして編集モードに入る</li>
+      <li><span class="decoration-02">テキストの変形</span>：選択ツールでテキストオブジェクトを選択し、変形ツールで変形</li>
+      </ul>	
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item31012" data-item-id="31012" data-item-type="ItemHeading"><h3 class="item-body" id="heading81">文字パネルと段落パネル</h3></div>
+        
+        <div class="article-item item_rich_text " id="item51354" data-item-id="51354" data-item-type="ItemRichText"><div class="item-body-hbr">テキストのスタイル設定には「文字パネル」と「段落パネル」を使用します。</div></div>
+        
+        <div class="article-item item_markdown " id="item31014" data-item-id="31014" data-item-type="ItemMarkdown"><h4 id="heading82">文字パネルの表示方法</h4>
+</div>
+        
+        <div class="article-item item_html " id="item51355" data-item-id="51355" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>「ウィンドウ」メニュー＞「書式」＞「文字」を選択</li>
+  <li>ショートカットキー「<span class="decoration-02">Ctrl+T</span>」（Windows）/「<span class="decoration-02">Command+T</span>」（Mac）</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item31017" data-item-id="31017" data-item-type="ItemMarkdown"><h4 id="heading83">文字パネルの主な機能</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31018" data-item-id="31018" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>フォント関連
+    <ul>
+      <li>フォントファミリー：書体の選択</li>
+      <li>フォントスタイル：太さや斜体などのスタイル</li>
+      <li>サイズ：文字のサイズ設定</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31020" data-item-id="31020" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>文字間隔</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_code " id="item31021" data-item-id="31021" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>つれづれなるまゝに、日暮らし、硯にむかひて、心にうつりゆくよしなし事を、
+そこはかとなく書きつくれば、あやしうこそものぐるほしけれ。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">サンプルテキスト</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item31022" data-item-id="31022" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>カーニング：特定の文字の組み合わせの間隔</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31024" data-item-id="31024" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>トラッキング：選択範囲全体の文字間隔</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31026" data-item-id="31026" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>水平比率/垂直比率：文字の横幅/高さの比率
+    <ul>
+      <li>文字の幅（水平比率）や高さ（垂直比率）を、元の形状に対してパーセントで変形します。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_link " id="item31027" data-item-id="31027" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SS3wt&amp;item_id=31027" rel="nofollow noopener noreferrer" target="_blank">Illustrator 3-32</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Illustrator 3-32" data-reference="https://www.dropbox.com/scl/fi/2je2x2kwpg4yl9mjqomab/Illustrator_3.32.1.0_.mp4?rlkey=bkt2rldh0e5lvkfcwh9ki1ai6&amp;st=gnrd4ir7&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">※この動画はデモンストレーションです。音声はございません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item31028" data-item-id="31028" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>文字配置
+    <ul>
+      <li>ベースラインシフト：ベースラインからの上下シフト
+        <ul>
+          <li>テキストの「ベースライン（基準線）」から、文字を上下にずらすことができます</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31030" data-item-id="31030" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>言語：テキストのハイフネーション（単語の分割）や禁則処理に使用する言語辞書を設定します。
+    <ul>
+      <li>文字のスペルミスを発見できる</li>
+      <li>Illustratorでは、文字パネルで言語を選択すれば基本的なハイフネーションなどを適用できますが、InDesignはより多くの言語の詳細な組版ルールに対応しています。そのため、複数言語が混在するカタログや書籍のような専門的な組版作業では、InDesignが主に使われます。</li>
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item31032" data-item-id="31032" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>文字装飾
+    <ul>
+      <li>打ち消し線/下線：装飾線の設定</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31034" data-item-id="31034" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <ul>
+  <li>大文字/小文字：文字の大小切り替え</li>
+   <ul>
+</ul>
+</ul></ul></div></div>
+        
+        <div class="article-item item_markdown " id="item31036" data-item-id="31036" data-item-type="ItemMarkdown"><h4 id="heading84">段落パネルの表示方法</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31037" data-item-id="31037" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>「ウィンドウ」メニュー＞「書式」＞「段落」を選択</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31038" data-item-id="31038" data-item-type="ItemMarkdown"><h4 id="heading85">段落パネルの主な機能</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31039" data-item-id="31039" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>整列</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31040" data-item-id="31040" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>左揃え/中央揃え/右揃え
+    <ul>
+      <li>文字揃えは、<span class="decoration-02">テキストの種類によって動き方が変わります。</span></li>
+      <li>ポイントテキストは、「文字の開始位置」が基準</li>
+      <li>エリア内テキストは、「エリアの幅」が基準</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31043" data-item-id="31043" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>両端揃え（ジャスティファイ）
+    <ul>
+      <li>揃える範囲の基準が必要なので、エリア内テキストの場合のみ適用可能です（※ ポイントテキストは右端の丸い図形をダブルクリックするとエリア内テキストへ変更可能です）</li>
+      <li>最終行を含むすべての行が両端に合わせて均等に配置</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31045" data-item-id="31045" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>インデント<br>
+    インデントは基本的にはエリア内テキストで使用します。<br>
+    ポイントテキストでは限定的な使い方になるため使用は推奨しません。<br><br>
+    左インデント/右インデント
+    <ul>
+      <li>左端/右端に、指定値分の余白を挿入</li>
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item31047" data-item-id="31047" data-item-type="ItemRichText"><div class="item-body-hbr">インデントの数値は、フォントサイズと同じ数値を入れましょう。<br>
+動画では「フォントサイズを30pt」なので「インデントの数値も30pt」にすると1文字分のインデントを下げることができます。</div></div>
+        
+        <div class="article-item item_html " id="item31048" data-item-id="31048" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>正の数値を設定すると、段落の1行目の左端に余白を作ります。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31050" data-item-id="31050" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>負の数値を設定すると、段落の1行目が繰り上がり2行目以降は1行目の2文字目からの位置から開始になります。<br>このような状態をぶら下がりインデントといいます。（負の数値を入れるためエリアの幅からはみ出した位置に配置される）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31052" data-item-id="31052" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>間隔
+    <ul>
+      <li>段落前のアキ/段落後のアキ
+        <ul>
+          <li>テキストエリア内で改行で段落に分けた際の段落の前と後に余白を設定できます。（どちらを使用しても似たような結果となります）</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item31070" data-item-id="31070" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">段落前のアキ</span></div></div>
+        
+        <div class="article-item item_image " id="item31053" data-item-id="31053" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/053/medium/885939fd-be0c-4c3a-81aa-a69dccbad5b6.png?1757082213" title=""><img class="img-responsive item-image" alt=" (31053)" data-reference="" src="../../_assets/2c7af9c02b.webp" width="640" height="457"></a><h4 id="heading86"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item31071" data-item-id="31071" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">段落後のアキ</span></div></div>
+        
+        <div class="article-item item_image " id="item31054" data-item-id="31054" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/054/medium/32141605-d51b-445e-b384-3f48eeb35e86.png?1752200317" title=""><img class="img-responsive item-image" alt=" (31054)" data-reference="" src="../../_assets/2c1edf77bc.webp" width="546" height="520"></a><h4 id="heading87"></h4></div></div>
+        
+        <div class="article-item item_html " id="item31056" data-item-id="31056" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>行送り（行間）
+    <ul>
+      <li>複数行の行と行の間の間隔を設定できます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31058" data-item-id="31058" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>禁則処理
+    <ul>
+      <li>単語の分割禁止（改行する箇所で、「1つの単語」が複数行にまたがないようにする）
+        <ul>
+          <li>テキストが自動的に改行されるエリア内テキストで使用する機能です。</li>
+          <li>行をまたぎたくない単語を部分選択を行い分割禁止を適用</li>
+          <li>（※「テキストエリア全体を選択した状態」で分割禁止を適用すると文字が消える様な動きをするため注意）</li>
+        </ul>
+      </li>
+      <li>行送り（行間）の方法（禁則処理による見た目の変化の対処）</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31060" data-item-id="31060" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">テキスト編集のプロのテクニック<br></span>
+  <ul>
+    <li><span class="decoration-02">スタイルの一括適用</span>：複数テキストに同じスタイルを適用するには、テキストをすべて選択してから設定</li>
+    <li><span class="decoration-02">効率的な行間調整</span>：行送りは「自動」でなく具体的な数値で設定すると制御しやすい</li>
+    <li><span class="decoration-02">インデント活用</span>：箇条書きなどは1行目インデントとぶら下げインデントを組み合わせると効率的</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item31061" data-item-id="31061" data-item-type="ItemMarkdown"><h4 id="heading88">文字パネルとパラグラフパネルの主な機能</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31062" data-item-id="31062" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>文字パネル</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31063" data-item-id="31063" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <div><div>1</div></div>
+      </th>
+      <td>
+        <div><div>フォントファミリーを設定</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>2</div></div>
+      </th>
+      <td>
+        <div><div>フォントの太さ</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>3</div></div>
+      </th>
+      <td>
+        <div><div>フォントサイズ</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>4</div></div>
+      </th>
+      <td>
+        <div><div>行送り（行間）</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>5</div></div>
+      </th>
+      <td>
+        <div><div>垂直の比率</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>6</div></div>
+      </th>
+      <td>
+        <div><div>水平の比率</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>7</div></div>
+      </th>
+      <td>
+        <div><div>文字間のカーニング（一文字ずつ設定）</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>8</div></div>
+      </th>
+      <td>
+        <div><div>トラッキング（文字全体で設定）</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>9</div></div>
+      </th>
+      <td>
+        <div><div>オールキャップス</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>10</div></div>
+      </th>
+      <td>
+        <div><div>スモールキャップス</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>11</div></div>
+      </th>
+      <td>
+        <div><div>下線</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>12</div></div>
+      </th>
+      <td>
+        <div><div>打ち消し線</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>13</div></div>
+      </th>
+      <td>
+        <div><div>言語</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>14</div></div>
+      </th>
+      <td>
+        <div><div>文字揃え</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>15</div></div>
+      </th>
+      <td>
+        <div><div>分割禁止</div></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_image " id="item31064" data-item-id="31064" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/064/medium/db9cc099-2a62-412b-828e-94f578712f4b.png?1752202046" title=""><img class="img-responsive item-image" alt=" (31064)" data-reference="" src="../../_assets/20dea82217.webp" width="640" height="486"></a><h4 id="heading89"></h4></div></div>
+        
+        <div class="article-item item_html " id="item31065" data-item-id="31065" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>文字パネル</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item31066" data-item-id="31066" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <tbody>
+    <tr>
+      <th scope="row">
+        <div><div>1</div></div>
+      </th>
+      <td>
+        <div><div>左揃え</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>2</div></div>
+      </th>
+      <td>
+        <div><div>中央揃え</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>3</div></div>
+      </th>
+      <td>
+        <div><div>右揃え</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>4</div></div>
+      </th>
+      <td>
+        <div><div>両端揃え</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>5</div></div>
+      </th>
+      <td>
+        <div><div>左インデント</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>6</div></div>
+      </th>
+      <td>
+        <div><div>右インデント</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>7</div></div>
+      </th>
+      <td>
+        <div><div>1行め左インデント</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>8</div></div>
+      </th>
+      <td>
+        <div><div>段落前のアキ</div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div><div>9</div></div>
+      </th>
+      <td>
+        <div><div>段落後のアキ</div></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_image " id="item31067" data-item-id="31067" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/067/medium/caa5f8a0-6707-4c67-8b7f-01e97766d204.png?1752202139" title=""><img class="img-responsive item-image" alt=" (31067)" data-reference="" src="../../_assets/27f46d120a.webp" width="539" height="398"></a><h4 id="heading90"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item31068" data-item-id="31068" data-item-type="ItemHeading"><h3 class="item-body" id="heading91">文字のアウトライン化</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31069" data-item-id="31069" data-item-type="ItemRichText"><div class="item-body-hbr">テキストをパスに変換することを「アウトライン化」と言います。<br>
+アウトライン化することで、文字そのものをグラフィック要素として編集できるようになります。</div></div>
+        
+        <div class="article-item item_html " id="item31072" data-item-id="31072" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">アウトライン化のメリット<br></span>
+  <ul>
+    <li>フォントがインストールされていない環境でも表示が崩れない</li>
+    <li>文字の形状を自由に編集できる</li>
+    <li>特殊な効果や変形を適用できる</li>
+    <li>印刷時のトラブルが減少する</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31073" data-item-id="31073" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">アウトライン化のデメリット<br></span>
+  <ul>
+    <li>テキストとしての編集ができなくなる</li>
+    <li>ファイルサイズが大きくなる</li>
+    <li>小さい文字はアウトライン化すると視認性が落ちる場合がある</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item31074" data-item-id="31074" data-item-type="ItemRichText"><div class="item-body-hbr">印刷会社にデータを提出する際はアウトライン化した状態であることが条件であることがほとんどです。</div></div>
+        
+        <div class="article-item item_markdown " id="item31075" data-item-id="31075" data-item-type="ItemMarkdown"><h4 id="heading92">文字のアウトライン化の方法</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31076" data-item-id="31076" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>テキストを選択</li>
+  <li>「文字」メニュー＞「アウトラインを作成」を選択
+    <ul>
+      <li>またはショートカットキー「<span class="decoration-02">Ctrl+Shift+O</span>」（Windows）/「<span class="decoration-02">Command+Shift+O</span>」（Mac）</li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31078" data-item-id="31078" data-item-type="ItemMarkdown"><h4 id="heading93">アウトライン化後の編集テクニック</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31079" data-item-id="31079" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>文字のグループ解除
+    <ul>
+      <li>個々の文字に分解したい場合は「オブジェクト」メニュー＞「グループ解除」</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31081" data-item-id="31081" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>文字の一部だけを使用したい場合は不要な部分を削除</li>
+    </ul>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31083" data-item-id="31083" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>アンカーポイントの調整
+    <ul>
+      <li>直接選択ツールでアンカーポイントを選択し調整</li>
+      <li>特定の箇所だけ形を変えたい場合に有効</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31085" data-item-id="31085" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>パスファインダーの活用
+    <ul>
+      <li>文字の一部を切り抜く</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31087" data-item-id="31087" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>複数の文字を結合する</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31089" data-item-id="31089" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>文字と他のオブジェクトを組み合わせる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31091" data-item-id="31091" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>効果の適用
+    <ul>
+      <li>アピアランスパネル（次の章で学びます）で複数の効果を適用</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31093" data-item-id="31093" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <ul>
+      <li>3D効果でエンボス加工風に</li>
+    </ul>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item31095" data-item-id="31095" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>変形ツールでゆがみや曲線を適用</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31097" data-item-id="31097" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">アウトライン化のタイミング<br></span>
+  <ul>
+    <li>基本的にはデザインの最終段階で行う</li>
+    <li>特に印刷データの入稿前に行うことが多い</li>
+    <li>元のテキストデータも別レイヤーで保持しておくと安全</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item31098" data-item-id="31098" data-item-type="ItemMarkdown"><h4 id="heading94">文字のアウトライン化前後の比較と編集例</h4>
+</div>
+        
+        <div class="article-item item_image " id="item31099" data-item-id="31099" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/099/medium/5ca72c28-5f39-4aaa-9e62-e0641943b97f.png?1752203192" title=""><img class="img-responsive item-image" alt=" (31099)" data-reference="" src="../../_assets/0da0f27511.webp" width="640" height="506"></a><h4 id="heading95"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item31100" data-item-id="31100" data-item-type="ItemHeading"><h3 class="item-body" id="heading96">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item31101" data-item-id="31101" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">確認問題<br></span>
+  <ol>
+    <li>図形のパスに沿ってテキストを配置するために使用するツール名を答えてください。</li>
+    <li>文字間隔を全体的に調整する設定は何と呼ばれますか？</li>
+    <li>文字をアウトライン化する主な目的は何ですか？</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31102" data-item-id="31102" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">解答<br></span>
+  <ol>
+    <li>パス上文字ツール</li>
+    <li>トラッキング</li>
+    <li>文字の形状を自由に編集できるようにするため</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31103" data-item-id="31103" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+  <ul>
+    <li>このセクションでは、Illustratorのテキスト操作について学びました。</li>
+    <li>次のセクションでは、これまで学んだ画像とテキストの操作を組み合わせた実践的な演習を学びます。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item31104" data-item-id="31104" data-item-type="ItemHeading"><h2 class="item-body" id="heading97">【3-4】3章-演習課題-</h2></div>
+        
+        <div class="article-item item_rich_text " id="item31106" data-item-id="31106" data-item-type="ItemRichText"><div class="item-body-hbr">この演習課題では、これまで学んだ画像とテキストの操作を実践的に活用し、実際のデザイン制作を行います。<br>
+チラシデザインを題材に、画像の配置とリンク管理、テキストのレイアウトとスタイリングを実践していきましょう。</div></div>
+        
+        <div class="article-item item_text " id="item51357" data-item-id="51357" data-item-type="ItemText"><div class="item-body-hbr">3-4の解説動画です。<br>以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51358" data-item-id="51358" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-6961db5c8c.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item34980" data-item-id="34980" data-item-type="ItemMarkdown"><h4 id="heading98">使用素材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item34981" data-item-id="34981" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SS3wt&amp;item_id=34981" rel="nofollow noopener noreferrer" target="_blank">Illustrator 3章 使用素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Illustrator 3章 使用素材" data-reference="https://www.dropbox.com/scl/fi/y7qnc1zsint7x3ewh8gxx/3-_.zip?rlkey=neyc54sbm9mzwbhk8mikxwkr7&amp;st=fse0o2iy&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item31107" data-item-id="31107" data-item-type="ItemHeading"><h3 class="item-body" id="heading99">画像を含むチラシデザイン</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31108" data-item-id="31108" data-item-type="ItemRichText"><div class="item-body-hbr">今回は架空のカフェの新メニュー紹介チラシを制作します。<br>
+まずは基本的なレイアウトから始めましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item31109" data-item-id="31109" data-item-type="ItemMarkdown"><h4 id="heading100">ステップ1: 新規ドキュメントの作成</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31110" data-item-id="31110" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>ファイル＞新規を選択</li>
+  <li>用途：「印刷」</li>
+  <li>サイズ：A4（210mm×297mm）</li>
+  <li>「裁ち落とし（3mm）」の設定を追加する</li>
+  <li>カラーモード：CMYK</li>
+  <li>解像度：300ppi</li>
+  <li>「作成」をクリック</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item31111" data-item-id="31111" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/111/medium/e2622723-99c2-47ef-894b-b99114b5232a.jpg?1752203453" title=""><img class="img-responsive item-image" alt=" (31111)" data-reference="" src="../../_assets/a31141473a.webp" width="640" height="497"></a><h4 id="heading101"></h4></div></div>
+        
+        <div class="article-item item_html " id="item31112" data-item-id="31112" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item31113" data-item-id="31113" data-item-type="ItemHtml"><div class="item-body"><ol start="8">
+  <li>アートボードの外側に表示されている赤い枠が「裁ち落とし」です。
+    <ul>
+      <li>裁ち落としは、印刷サイズ（アートボード）より <span class="decoration-02">3mm大きめにデザインを広げる部分を表記したものです</span></li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item31114" data-item-id="31114" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/114/medium/6d189b3f-4d6b-4c26-8ba6-e7bb8bc5be28.jpg?1752203611" title=""><img class="img-responsive item-image" alt=" (31114)" data-reference="" src="../../_assets/d7f43e041a.webp" width="640" height="502"></a><h4 id="heading102"></h4></div></div>
+        
+        <div class="article-item item_html " id="item31115" data-item-id="31115" data-item-type="ItemHtml"><div class="item-body"><ol start="9">
+  <li>トンボの設定
+    <ul>
+      <li>トンボは、印刷後に <span class="decoration-02">紙をカットする位置を示すガイド線です。</span>
+        <ul>
+          <li>印刷物を仕上がりサイズに断裁する際、どこでカットするかを示す目印の線です。フチまで色や写真を入れるデザインでは、仕上がりサイズより <span class="decoration-02">上下左右に3mm程度塗り足し</span> をつけ、この裁ち落とし線を基準にカットすることで、断裁ズレによる白いフチが出来るのを防ぎます。</li>
+        </ul>
+      </li>
+      <li>アートボードと同じ大きさの図形を作成する（210mm×297mm）</li>
+      <li>整列パネルでアートボードとちょうど重なるように配置</li>
+      <li>図形の塗りと線の色を透明にする</li>
+      <li>透明にした図形を選択した状態で「メニューバー：効果 ＞ トリムマークを作成」を押すとトンボが作成される</li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item31116" data-item-id="31116" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/116/medium/4cf7083d-f8ce-4528-9a93-3e77563ccdfc.jpg?1752203704" title=""><img class="img-responsive item-image" alt=" (31116)" data-reference="" src="../../_assets/9cc37a2d8b.webp" width="640" height="339"></a><h4 id="heading103"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item31118" data-item-id="31118" data-item-type="ItemMarkdown"><h4 id="heading104">ステップ2: 画像の配置</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31119" data-item-id="31119" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>「ファイル」＞「配置」を選択</li>
+  <li>提供されたサンプル画像（cafe_menu.jpg）を選択</li>
+  <li>「配置」ボタンをクリック</li>
+  <li>アートボード中央に画像を配置</li>
+  <li>画像のサイズを調整：画像を選択し、<span class="decoration-02">Shift</span>キーを押しながら角をドラッグしてサイズ変更</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31121" data-item-id="31121" data-item-type="ItemMarkdown"><h4 id="heading105">ステップ3: 背景の作成</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31122" data-item-id="31122" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>長方形ツールを選択</li>
+  <li>アートボード全体をカバーする長方形を描く</li>
+  <li>塗りのカラーを薄いベージュ（C:5 M:10 Y:20 K:0）に設定</li>
+  <li>線は「なし」に設定</li>
+  <li>レイヤーパネルで背景を一番下に移動</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31124" data-item-id="31124" data-item-type="ItemMarkdown"><h4 id="heading106">ステップ4: リンク管理の確認</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31125" data-item-id="31125" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>「ウィンドウ」＞「リンク」を選択してリンクパネルを表示</li>
+  <li>配置した画像が正しくリンクされていることを確認</li>
+  <li>リンクパネルの右端にある鎖のアイコンをダブルクリックし、解像度や形式を確認</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31127" data-item-id="31127" data-item-type="ItemMarkdown"><h4 id="heading107">チラシの基本レイアウト</h4>
+</div>
+        
+        <div class="article-item item_image " id="item31128" data-item-id="31128" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/128/medium/f54e78ea-5bbc-4210-b146-fd9fb6f92cac.png?1752204037" title=""><img class="img-responsive item-image" alt=" (31128)" data-reference="" src="../../_assets/23abbb7b21.webp" width="479" height="640"></a><h4 id="heading108"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item31130" data-item-id="31130" data-item-type="ItemRichText"><div class="item-body-hbr">リンク画像を活用することで、後から画像を差し替えたり、元の写真を編集したりしても簡単に更新できます。<br>
+実務では複数の画像を使用することが多いので、リンクパネルで常に状態を確認する習慣をつけましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item31131" data-item-id="31131" data-item-type="ItemHeading"><h3 class="item-body" id="heading109">ロゴと組み合わせたレイアウト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31132" data-item-id="31132" data-item-type="ItemRichText"><div class="item-body-hbr">次に、ロゴとテキストを追加してレイアウトを完成させます。</div></div>
+        
+        <div class="article-item item_markdown " id="item31133" data-item-id="31133" data-item-type="ItemMarkdown"><h4 id="heading110">ステップ1: ロゴの作成</h4>
+</div>
+        
+        <div class="article-item item_image " id="item31134" data-item-id="31134" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/134/medium/e18f1472-0c14-400c-9342-427bbd904dd0.jpg?1752204148" title=""><img class="img-responsive item-image" alt=" (31134)" data-reference="" src="../../_assets/006ca35bb8.webp" width="467" height="617"></a><h4 id="heading111"></h4></div></div>
+        
+        <div class="article-item item_html " id="item31135" data-item-id="31135" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>横書き文字ツールを選択</li>
+  <li>アートボード上部中央をクリック</li>
+  <li>カフェ名「FRESH CAFE」を入力</li>
+  <li>フォントを選択（例：Arial Bold）</li>
+  <li>サイズを36ptに設定</li>
+  <li>文字間隔（トラッキング）を50に設定</li>
+  <li>色を濃い茶色（C:30 M:70 Y:100 K:30）に設定</li>
+  <li>整列パネルでアートボードの中央になるように配置</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31137" data-item-id="31137" data-item-type="ItemMarkdown"><h4 id="heading112">ステップ2: 装飾の追加</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31138" data-item-id="31138" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>任意のアイコンを準備し、タイトル右横に配置する(動画内ではコーヒーカップのアイコン)</li>
+  <li>「FRESH CAFE」とアイコンをグループ化し、整列パネルでアートボード中央に揃える</li>
+  <li>パスツールで「FRESH CAFE」の下に細長い横線を作成(長方形ツールなどでも可)</li>
+  <li>線の太さを2ptに設定</li>
+  <li>線の色をロゴと同じ色に設定したり、整列パネルで位置を整える</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31140" data-item-id="31140" data-item-type="ItemMarkdown"><h4 id="heading113">ステップ3: サブタイトルの追加</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31141" data-item-id="31141" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>横書き文字ツールで横線の下をクリック</li>
+  <li>「NEW SPRING MENU 2025」（年号は自由に変えて良いです）と入力</li>
+  <li>色をロゴより薄い茶色に設定</li>
+  <li>文字間隔を100に設定</li>
+  <li>フォントを選択（例：Arial）</li>
+  <li>サイズを18ptに設定</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31143" data-item-id="31143" data-item-type="ItemMarkdown"><h4 id="heading114">ステップ4: レイアウトの調整</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31144" data-item-id="31144" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>選択ツールでロゴ、線、サブタイトルをすべて選択</li>
+  <li>「オブジェクト」＞「グループ」を選択してグループ化</li>
+  <li>グループを適切な位置に配置</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31146" data-item-id="31146" data-item-type="ItemMarkdown"><h4 id="heading115">ロゴとテキストを追加したレイアウト</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item31147" data-item-id="31147" data-item-type="ItemRichText"><div class="item-body-hbr">テキストの位置や大きさ、文字間隔などを調整することで、情報の階層性が明確になります。<br>
+特にロゴはチラシの顔となる部分なので、目立つようデザインしましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item31148" data-item-id="31148" data-item-type="ItemHeading"><h3 class="item-body" id="heading116">テキストスタイルの活用</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31149" data-item-id="31149" data-item-type="ItemRichText"><div class="item-body-hbr">メニュー情報やキャッチコピーなど、残りのテキスト要素を追加します。</div></div>
+        
+        <div class="article-item item_markdown " id="item31150" data-item-id="31150" data-item-type="ItemMarkdown"><h4 id="heading117">ステップ1: キャッチコピーの作成</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31151" data-item-id="31151" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>図形ツールでキャッチコピーの帯を作成</li>
+  <li>色を薄いベージュ（C:5 M:10 Y:20 K:0）に設定</li>
+  <li>エリアテキストツールを選択</li>
+  <li>テキストエリアを作成</li>
+  <li>「春の新鮮素材を使った」と入力</li>
+  <li>サイズを24ptに設定</li>
+  <li>フォントを選択（例：游ゴシック）</li>
+  <li>行送りを32ptに設定</li>
+  <li>色を深緑色（C:80 M:10 Y:95 K:0）に設定</li>
+  <li>「春の新鮮素材を使った」の要素をコピー&amp;ペーストし、「特別メニューが登場！」に変更</li>
+  <li>細い位置の調整を行う</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item31152" data-item-id="31152" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/152/medium/db574ee7-7621-4761-b599-deb9d9a9798e.jpg?1752204582" title=""><img class="img-responsive item-image" alt=" (31152)" data-reference="" src="../../_assets/f22558dbb7.webp" width="450" height="620"></a><h4 id="heading118"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item31154" data-item-id="31154" data-item-type="ItemMarkdown"><h4 id="heading119">ステップ2: メニュー情報の作成</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31155" data-item-id="31155" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>塗りつぶしの色を薄いベージュ（C:4 M:6 Y:9 K:0）に設定</li>
+  <li>図形ツールを使用して幅60mm 高さ72mmの図形を作成</li>
+  <li>エリアテキストツールで画像の下側にテキストエリアを作成</li>
+  <li>以下のテキストを入力(動画では「春野菜のパスタ」を例として使用)</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_code " id="item31157" data-item-id="31157" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>■ 春野菜のパスタ
+新鮮アスパラガスとトマトのオイルソース
+1,280円
+
+■ いちごのパンケーキ
+季節の苺をたっぷり使ったスペシャルデザート
+980円
+
+■ 有機野菜のサラダボウル
+地元農家から直送の有機野菜を使用
+1,480円</pre></div>
+</div>
+<div class="cite"><cite class="item-source">入力テキスト</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item31158" data-item-id="31158" data-item-type="ItemHtml"><div class="item-body"><ol start="5">
+  <li>適切なフォントやサイズ、カラーの設定、整列を行う</li>
+    <ul>
+      <li>メニュー名を太字に設定</li>
+      <li>価格を強調するスタイルに設定</li>
+      <li>文字色をロゴに合わせる</li>
+      <li>など</li>
+    </ul>
+  <li>作成したメニュー情報を図形の上に重ねる</li>
+  <li>メニューの写真を配置する</li>
+  <li>他のメニューも同じように作業を行い、全部で3種類のメニューを作成する</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item31156" data-item-id="31156" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/156/medium/0839e59d-d63e-431e-9b84-a0936d946c96.jpg?1752204680" title=""><img class="img-responsive item-image" alt=" (31156)" data-reference="" src="../../_assets/a65538d748.webp" width="451" height="607"></a><h4 id="heading120"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item31160" data-item-id="31160" data-item-type="ItemMarkdown"><h4 id="heading121">ステップ3: 詳細情報の追加</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31161" data-item-id="31161" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>図形ツールで背景を設置（C:30 M:70 Y:100 K:30）</li>
+  <li>エリアテキストツールでアートボード下部にテキストエリアを作成</li>
+  <li>以下の店舗情報を入力</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_code " id="item31162" data-item-id="31162" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>FRESH CAFE
+住所：東京都〇〇区△△町1-2-3
+TEL：03-XXXX-XXXX
+営業時間：10:00-21:00（L.O. 20:30）
+定休日：水曜日</pre></div>
+</div>
+<div class="cite"><cite class="item-source">入力テキスト</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item31163" data-item-id="31163" data-item-type="ItemHtml"><div class="item-body"><ol start="4">
+  <li>店名のフォントサイズを26ptに設定</li>
+  <li>店舗情報は垂直比率と水平比率を50％に設定</li>
+  <li>その他、全体のバランスを見ながら文字の配置や間隔を調整</li>
+  <li>店舗写真を配置</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item31164" data-item-id="31164" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/164/medium/80e7c82b-60a9-46aa-96c0-897c6b9d489a.jpg?1752204887" title=""><img class="img-responsive item-image" alt=" (31164)" data-reference="" src="../../_assets/cce7881064.webp" width="448" height="610"></a><h4 id="heading122"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item31166" data-item-id="31166" data-item-type="ItemMarkdown"><h4 id="heading123">ステップ4: テキストの微調整</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31167" data-item-id="31167" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>各テキスト要素を選択し、位置や大きさを微調整</li>
+  <li>必要に応じて文字パネルやパラグラフパネルで細かい設定を調整</li>
+  <li>全体のバランスを確認</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31169" data-item-id="31169" data-item-type="ItemMarkdown"><h4 id="heading124">完成したチラシデザイン</h4>
+</div>
+        
+        <div class="article-item item_image " id="item31170" data-item-id="31170" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/170/medium/95f6d6d7-737d-4678-b994-236be5f31252.jpg?1752205028" title=""><img class="img-responsive item-image" alt=" (31170)" data-reference="" src="../../_assets/cce7881064.webp" width="448" height="610"></a><h4 id="heading125"></h4></div></div>
+        
+        <div class="article-item item_image " id="item31171" data-item-id="31171" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/171/medium/fc065e99-8010-4016-be86-006f402e6e6d.jpg?1752205057" title=""><img class="img-responsive item-image" alt=" (31171)" data-reference="" src="../../_assets/d6c73d36a5.webp" width="453" height="640"></a><h4 id="heading126"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item31172" data-item-id="31172" data-item-type="ItemRichText"><div class="item-body-hbr">実際のデザイン制作では、このようにテキストの階層を意識したスタイリングが重要です。<br>
+見出し、本文、注釈など、情報の重要度に応じてフォントの種類・サイズ・色・配置を変えることで、読みやすく魅力的なデザインになります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item31173" data-item-id="31173" data-item-type="ItemRichText"><div class="item-body-hbr">これで「3章：画像とテキストの操作」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item33417" data-item-id="33417" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/bfXTO" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/Wcbk3" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章：画像とテキストの操作</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:6時間</a></li></ul></li><li><a href="#heading2" class="tocLink">【3-1】画像の配置と管理</a><ul><li><a href="#heading3" class="tocLink">リンク画像の配置</a><ul><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink">作業動画</a></li></ul></li><li><a href="#heading8" class="tocLink">埋め込み画像との違い</a><ul><li><a href="#heading9" class="tocLink">作業手順</a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">作業動画</a></li><li><a href="#heading13" class="tocLink">リンク画像と埋め込み画像の違い</a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li><li><a href="#heading16" class="tocLink">リンクパネルの活用</a><ul><li><a href="#heading17" class="tocLink">リンクパネルの表示方法</a></li><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink">リンクパネルでできること</a></li><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink">作業動画</a></li><li><a href="#heading24" class="tocLink">リンクの再設定</a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink">リンク画像の置き換え（別の写真へ変更したい場合）</a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink">作業動画</a></li><li><a href="#heading31" class="tocLink">リンクパネルの設定項目一覧</a></li><li><a href="#heading32" class="tocLink"></a></li></ul></li><li><a href="#heading33" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading34" class="tocLink">【3-2】画像のトレース</a><ul><li><a href="#heading35" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading36" class="tocLink">イメージトレースの基本設定</a><ul><li><a href="#heading37" class="tocLink">使用素材</a></li><li><a href="#heading38" class="tocLink">イメージトレースの基本手順</a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink"></a></li><li><a href="#heading42" class="tocLink"></a></li><li><a href="#heading43" class="tocLink">作業動画</a></li><li><a href="#heading44" class="tocLink">主なプリセット</a></li><li><a href="#heading45" class="tocLink"></a></li><li><a href="#heading46" class="tocLink"></a></li><li><a href="#heading47" class="tocLink"></a></li><li><a href="#heading48" class="tocLink"></a></li><li><a href="#heading49" class="tocLink"></a></li><li><a href="#heading50" class="tocLink"></a></li><li><a href="#heading51" class="tocLink"></a></li><li><a href="#heading52" class="tocLink"></a></li></ul></li><li><a href="#heading53" class="tocLink">トレース結果の調整</a><ul><li><a href="#heading54" class="tocLink">イメージトレースパネルの表示方法</a></li><li><a href="#heading55" class="tocLink"></a></li><li><a href="#heading56" class="tocLink"></a></li><li><a href="#heading57" class="tocLink">主な調整項目</a></li><li><a href="#heading58" class="tocLink"></a></li><li><a href="#heading59" class="tocLink"></a></li><li><a href="#heading60" class="tocLink"></a></li><li><a href="#heading61" class="tocLink"></a></li><li><a href="#heading62" class="tocLink"></a></li><li><a href="#heading63" class="tocLink"></a></li><li><a href="#heading64" class="tocLink"></a></li><li><a href="#heading65" class="tocLink"></a></li><li><a href="#heading66" class="tocLink"></a></li><li><a href="#heading67" class="tocLink"></a></li><li><a href="#heading68" class="tocLink">イメージトレースパネルの詳細設定と調整による変化</a></li><li><a href="#heading69" class="tocLink"></a></li></ul></li><li><a href="#heading70" class="tocLink">トレースデータの編集</a><ul><li><a href="#heading71" class="tocLink">拡張の手順</a></li><li><a href="#heading72" class="tocLink">拡張後のデータ編集</a></li><li><a href="#heading73" class="tocLink">トレースデータの拡張と編集例</a></li><li><a href="#heading74" class="tocLink"></a></li></ul></li><li><a href="#heading75" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading76" class="tocLink">【3-3】テキスト操作</a><ul><li><a href="#heading77" class="tocLink">文字ツールの基本</a><ul><li><a href="#heading78" class="tocLink">文字ツールの種類</a></li><li><a href="#heading79" class="tocLink"></a></li><li><a href="#heading80" class="tocLink">テキストの種類</a></li></ul></li><li><a href="#heading81" class="tocLink">文字パネルと段落パネル</a><ul><li><a href="#heading82" class="tocLink">文字パネルの表示方法</a></li><li><a href="#heading83" class="tocLink">文字パネルの主な機能</a></li><li><a href="#heading84" class="tocLink">段落パネルの表示方法</a></li><li><a href="#heading85" class="tocLink">段落パネルの主な機能</a></li><li><a href="#heading86" class="tocLink"></a></li><li><a href="#heading87" class="tocLink"></a></li><li><a href="#heading88" class="tocLink">文字パネルとパラグラフパネルの主な機能</a></li><li><a href="#heading89" class="tocLink"></a></li><li><a href="#heading90" class="tocLink"></a></li></ul></li><li><a href="#heading91" class="tocLink">文字のアウトライン化</a><ul><li><a href="#heading92" class="tocLink">文字のアウトライン化の方法</a></li><li><a href="#heading93" class="tocLink">アウトライン化後の編集テクニック</a></li><li><a href="#heading94" class="tocLink">文字のアウトライン化前後の比較と編集例</a></li><li><a href="#heading95" class="tocLink"></a></li></ul></li><li><a href="#heading96" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading97" class="tocLink">【3-4】3章-演習課題-</a><ul><li><a href="#heading98" class="tocLink">使用素材</a></li></ul><ul><li><a href="#heading99" class="tocLink">画像を含むチラシデザイン</a><ul><li><a href="#heading100" class="tocLink">ステップ1: 新規ドキュメントの作成</a></li><li><a href="#heading101" class="tocLink"></a></li><li><a href="#heading102" class="tocLink"></a></li><li><a href="#heading103" class="tocLink"></a></li><li><a href="#heading104" class="tocLink">ステップ2: 画像の配置</a></li><li><a href="#heading105" class="tocLink">ステップ3: 背景の作成</a></li><li><a href="#heading106" class="tocLink">ステップ4: リンク管理の確認</a></li><li><a href="#heading107" class="tocLink">チラシの基本レイアウト</a></li><li><a href="#heading108" class="tocLink"></a></li></ul></li><li><a href="#heading109" class="tocLink">ロゴと組み合わせたレイアウト</a><ul><li><a href="#heading110" class="tocLink">ステップ1: ロゴの作成</a></li><li><a href="#heading111" class="tocLink"></a></li><li><a href="#heading112" class="tocLink">ステップ2: 装飾の追加</a></li><li><a href="#heading113" class="tocLink">ステップ3: サブタイトルの追加</a></li><li><a href="#heading114" class="tocLink">ステップ4: レイアウトの調整</a></li><li><a href="#heading115" class="tocLink">ロゴとテキストを追加したレイアウト</a></li></ul></li><li><a href="#heading116" class="tocLink">テキストスタイルの活用</a><ul><li><a href="#heading117" class="tocLink">ステップ1: キャッチコピーの作成</a></li><li><a href="#heading118" class="tocLink"></a></li><li><a href="#heading119" class="tocLink">ステップ2: メニュー情報の作成</a></li><li><a href="#heading120" class="tocLink"></a></li><li><a href="#heading121" class="tocLink">ステップ3: 詳細情報の追加</a></li><li><a href="#heading122" class="tocLink"></a></li><li><a href="#heading123" class="tocLink">ステップ4: テキストの微調整</a></li><li><a href="#heading124" class="tocLink">完成したチラシデザイン</a></li><li><a href="#heading125" class="tocLink"></a></li><li><a href="#heading126" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/bfXTO" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/Wcbk3" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

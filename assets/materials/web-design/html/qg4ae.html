@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/uiux/chap1/QG4Ae -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1-4 Webの基本構造 — デザイナーのための技術リテラシー - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/uiux/chap1/QG4Ae">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="1-4 Webの基本構造 — デザイナーのための技術リテラシー - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="1-4 Webの基本構造 — デザイナーのための技術リテラシー">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/uiux/chap1/QG4Ae">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="EbcImQyXW-f2meYHnAKBQgbH78PgUSfBJ5hq3aVcWW0uBA9-Cr5mjIUTVJ_bE51BqvSj7x5-KcaDq1iDNeZM6g"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item51073" data-item-id="51073" data-item-type="ItemHtml"><div class="item-body"><meta charset="UTF-8">
+<!--
+  AI×UX/UIデザイナー育成講座（Reスキル認定申請予定・レベル3）
+  UX/UIデザイン教材 第1章「UX/UIデザインの基礎」 lesson-04（1-4）※申請書類上は第Ⅲ部 Ⅲ-1
+  ID: 31-04 ／ タイトル: Webの基本構造 ／ 型: 知識型 ／ 所要時間: 約60分
+  DSS-P: Webアプリケーション基本技術（別表1の8＝情報処理要件の裏付け）
+  範囲（学習項目例を網羅）: リクエスト/レスポンス・HTML/CSS/JavaScript の役割・API/REST・SPA・CMS
+        ＋ デザイナーが押さえる技術的制約（表示速度・レスポンシブ・実装可能性）
+  方針: コードは書かせない。デザイナーが「なぜUIがこう作られるか・エンジニアと何を協業するか」を
+        理解するための技術リテラシーとして概念レベルで解説。
+  CSS・構成: chapter-05/lesson-01.html（F5テンプレ）準拠（ClipKit目次対策込み）
+  図版: 画像生成は後日タスクのため fig-ph プレースホルダーで配置（data-asset-id: ig-3104-NN）
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ClipKit対策: アンカージャンプ先が固定ヘッダーに隠れないようオフセット */
+section[id] { scroll-margin-top: 96px; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — ClipKit対策版（高詳細度＋!important） */
+.lesson-wrapper nav.toc { background: #fff !important; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.lesson-wrapper nav.toc .toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lesson-wrapper nav.toc .toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.lesson-wrapper nav.toc .toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.lesson-wrapper nav.toc ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 3px; }
+.lesson-wrapper nav.toc ul li { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.lesson-wrapper nav.toc ul li::before { content: none !important; }
+.lesson-wrapper nav.toc ul li::marker { content: '' !important; }
+.lesson-wrapper nav.toc ul li a { display: flex !important; align-items: center; gap: 12px; padding: 8px 14px !important; background: #FAF9F8; border-radius: 8px; text-decoration: none !important; border-bottom: none !important; box-shadow: none; color: #2D2D2D !important; transition: background 0.2s; }
+.lesson-wrapper nav.toc ul li a:hover { background: #F5EFEC; text-decoration: none !important; color: #2D2D2D !important; }
+.lesson-wrapper nav.toc ul li a:visited { color: #2D2D2D !important; }
+.lesson-wrapper nav.toc .toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.lesson-wrapper nav.toc .toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.lesson-wrapper nav.toc .toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* 理解度チェック */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== 図解キット（fig-*）v2 分かりやすさ最適化 ===== */
+.fig { margin: 28px 0; }
+.fig__frame { background:#FBFAF8; border:1px solid #E4E1DB; border-radius:14px; padding:22px 20px; }
+.fig__cap { font-size:13px; color:#6E6A66; text-align:center; margin-top:10px; line-height:1.7; }
+.fig__sample { color:#B8B0A8 !important; font-style:italic; }
+.fig-row { display:flex; gap:16px; flex-wrap:wrap; }
+.fig-row > * { flex:1 1 0; min-width:150px; }
+.fig-card { background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:18px; }
+.fig-card__n { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:#E85D4A; color:#fff; font-size:13px; font-weight:800; margin-bottom:10px; }
+.fig-card__t { font-size:15px; font-weight:700; color:#2D2D2D; margin-bottom:6px; line-height:1.5; }
+.fig-card__d { font-size:13px; color:#555; line-height:1.75; }
+.fig-card__note { margin-top:10px; padding-top:10px; border-top:1px dashed #E4E1DB; font-size:12.5px; color:#C2402F; font-weight:700; }
+.fig-card--accent { border-color:#E85D4A; background:#FDEEE9; }
+.fig-card--fill { background:#E85D4A; border-color:#E85D4A; }
+.fig-card--fill .fig-card__t, .fig-card--fill .fig-card__d { color:#fff; }
+.fig-card--fill .fig-card__n { background:#fff; color:#E85D4A; }
+.fig-card--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-card--mute .fig-card__n { background:#A8A29B; }
+.fig-card--mute .fig-card__t { color:#6E6A66; }
+.fig-flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; }
+.fig-node { flex:1 1 0; min-width:104px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:13px 11px; text-align:center; }
+.fig-node__n { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; margin-bottom:8px; }
+.fig-node__t { font-size:13px; font-weight:700; color:#2D2D2D; line-height:1.45; }
+.fig-node__d { font-size:11.5px; color:#6E6A66; line-height:1.6; margin-top:4px; }
+.fig-node--current { border-color:#E85D4A; background:#FDEEE9; }
+.fig-node--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-node--mute .fig-node__n { background:#A8A29B; }
+.fig-node--mute .fig-node__t { color:#6E6A66; }
+.fig-sep { display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:18px; font-weight:800; flex:0 0 auto; }
+.fig-loop { margin-top:12px; display:flex; align-items:center; gap:10px; color:#C2402F; font-size:12.5px; font-weight:700; }
+.fig-loop__line { flex:1; height:0; border-top:2px dashed #C9C4BD; }
+.fig-two { display:flex; align-items:stretch; gap:12px; flex-wrap:wrap; }
+.fig-two__col { flex:1 1 0; min-width:180px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:16px 18px; }
+.fig-two__h { font-size:14px; font-weight:800; color:#2D2D2D; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.fig-two__col ul { margin:0; padding-left:1.1em; }
+.fig-two__col li { font-size:13px; color:#555; line-height:1.8; }
+.fig-two__mid { flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:22px; font-weight:800; }
+.fig-two__col--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-two__col--mute .fig-two__h, .fig-two__col--mute li { color:#8A8279; }
+.fig-two__col--accent { background:#FDEEE9; border-color:#E85D4A; }
+.fig-mark { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; font-size:12px; font-weight:800; flex:0 0 auto; }
+.fig-mark--ok { background:#E85D4A; color:#fff; }
+.fig-mark--ng { background:#C9C4BD; color:#fff; }
+.fig-tag { display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.04em; padding:2px 8px; border-radius:6px; }
+.fig-tag--mute { background:#E4E1DB; color:#8A8279; }
+.fig-tag--accent { background:#E85D4A; color:#fff; }
+.fig-nest { display:flex; justify-content:center; }
+.fig-nest__outer { position:relative; background:#FDEEE9; border:2px solid #F0A891; border-radius:20px; padding:38px 28px 22px; min-width:280px; max-width:440px; text-align:center; }
+.fig-nest__label { position:absolute; top:12px; left:20px; font-size:12.5px; font-weight:800; color:#C2402F; }
+.fig-nest__inner { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:18px 20px; }
+.fig-nest__inner .t { font-size:14px; font-weight:800; color:#2D2D2D; }
+.fig-nest__inner .d { font-size:12px; color:#6E6A66; margin-top:4px; line-height:1.6; }
+.fig-nest__outerd { font-size:12px; color:#8A6A5A; margin-top:14px; line-height:1.6; }
+.fig-ladder { display:flex; flex-direction:column; gap:8px; }
+.fig-step { border:1px solid #E4E1DB; border-radius:12px; padding:12px 16px; display:flex; gap:12px; align-items:flex-start; }
+.fig-step__n { flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.fig-step__t { font-size:13px; color:#3D3D3D; line-height:1.6; }
+.fig-step.s1{background:#FCF1ED}.fig-step.s2{background:#FADED4}.fig-step.s3{background:#F7C9B8}.fig-step.s4{background:#F3B39B}.fig-step.s5{background:#EE9B7E}
+.fig-step.d2{margin-left:22px}.fig-step.d3{margin-left:44px}.fig-step.d4{margin-left:66px}.fig-step.d5{margin-left:88px}
+.fig-step--root { border-color:#E85D4A; border-width:2px; }
+.fig-why { text-align:center; color:#A8A29B; font-size:12px; font-weight:800; margin:2px 0; }
+.fig-band { display:flex; flex-direction:column; gap:8px; }
+.fig-band__row { display:flex; gap:10px; align-items:center; }
+.fig-band__k { flex:0 0 104px; font-size:12.5px; font-weight:800; color:#C2402F; text-align:right; line-height:1.4; }
+.fig-band__v { flex:1; background:#FDEEE9; border:1px solid #E4E1DB; border-radius:10px; padding:9px 12px; font-size:12.5px; color:#3D3D3D; line-height:1.6; }
+.fig-exchange { display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap; }
+.fig-exchange__end { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:16px 18px; font-size:13.5px; font-weight:800; color:#2D2D2D; text-align:center; min-width:110px; }
+.fig-exchange__mid { flex:1; min-width:150px; display:flex; flex-direction:column; gap:8px; }
+.fig-exchange__req, .fig-exchange__res { border-radius:8px; padding:7px 12px; font-size:12px; font-weight:700; text-align:center; }
+.fig-exchange__req { background:#FDEEE9; color:#C2402F; }
+.fig-exchange__res { background:#F4F2F0; color:#6E6A66; }
+@media (max-width:600px){
+  .fig-two__mid{transform:rotate(90deg)}
+  .fig-step.d2,.fig-step.d3,.fig-step.d4,.fig-step.d5{margin-left:0}
+}
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">第1章</span>
+  <div class="lesson-hero__title">Webの基本構造 — デザイナーのための技術リテラシー</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">レッスン 1-4</span>
+    <span class="lesson-hero__topic">UX/UIデザインの基礎</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約60分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+      <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap1/6DFNF" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap1/aqKkM" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+  
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">URL入力からページ表示までの、リクエストとレスポンスの往復を説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">HTML・CSS・JavaScript の役割分担と、API・REST・SPA・CMS の役割を説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">表示速度・レスポンシブ・実装可能性の制約をふまえてエンジニアと協業できる</div></li>
+  </ul>
+</div>
+
+<!-- 目次: ClipKit対策のためインラインstyleを併記（<style>剥がし対策） -->
+<nav class="toc" style="background:#fff; border-radius:14px; padding:22px 26px; box-shadow:0 2px 12px rgba(0,0,0,0.05); margin:0 0 48px;">
+  <div class="toc-head" style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <div class="toc-icon" style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#E85D4A,#F5A64A); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700;">≡</div>
+    <div class="toc-title" style="font-size:15px; font-weight:700; color:#2D2D2D;">目次</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;">
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s1" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">01</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">Webが動く基本の流れ</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s2" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">02</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">画面をつくる3つの言語（HTML・CSS・JavaScript）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s3" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">03</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">サーバとデータをやり取りする（API・REST）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s4" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">04</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">ページ遷移の2つの作り方（SPAと従来型）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s5" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">05</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">サイトを運用する仕組み（CMS）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s6" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">06</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">デザイナーが押さえる技術的制約</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+  </ul>
+</nav>
+
+<p>あなたが仕上げた画面デザインをエンジニアに渡したところ、この数字はシステムがデータとして持っていないので出せない、この動きはこの作りでは表示が重くなる、と指摘され、作り直しになりました。見た目が良くても、そのままでは実装できないデザインは珍しくありません。<strong>このレッスンでやるのは、Webサービスが動く仕組みを、コードは書かずに概念として押さえ、実装者と正確に話せるようになること</strong>です。ブラウザとサーバの往復、画面をつくるHTML・CSS・JavaScript、サーバとデータをやり取りするAPIとREST、ページの切り替え方まで、順に見ます。表示速度や実装のしやすさはUIの作り方でも変わるので、仕組みを知っているデザイナーほど、実現できるデザインを提案できます。</p>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>Webが動く基本の流れ</h2>
+
+<p>普段使うWebサービスの裏側では、手元の<strong>ブラウザ</strong>（クライアント）と、遠くにある<strong>サーバ</strong>が絶えずやり取りをしています。ブラウザが送る依頼を<strong>リクエスト</strong>、サーバが返す答えを<strong>レスポンス</strong>と呼び、この往復の共通ルールが<strong>HTTP</strong>です。</p>
+
+<figure class="fig" data-asset-id="ig-3104-01">
+  <div class="fig-exchange">
+    <div class="fig-exchange__end">ブラウザ<br>（クライアント）</div>
+    <div class="fig-exchange__mid">
+      <div class="fig-exchange__req">① URL入力 → ② リクエスト送信 →</div>
+      <div class="fig-exchange__res">← ④ レスポンス返却 → ⑤ ブラウザが描画</div>
+    </div>
+    <div class="fig-exchange__end">サーバ<br><span style="font-size:11px;font-weight:600;color:#6B6B6B;">③ 受け取って処理</span></div>
+  </div>
+  <figcaption class="fig__cap">リクエストとレスポンスの往復が1セット。この往復の共通ルールが HTTP。</figcaption>
+</figure>
+
+<p>この往復は、ページを開くたびに起きています。読み込みが遅い、表示されないといった不具合も、往復のどの段階でつまずいたのかという視点で捉えられるようになりましょう。不具合の報告を受けたときも、往復のどの段階の問題かを切り分けて、エンジニアに具体的に相談できます。</p>
+
+<p>なお、このHTTPに通信の暗号化を加えた安全版が<strong>HTTPS</strong>で、アドレス欄の鍵マークが目印です。入力フォームや会員機能を扱う画面では、情報を安全に送れることが前提になります。仕組みの名前として押さえておけば十分です。</p>
+
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>画面をつくる3つの言語（HTML・CSS・JavaScript）</h2>
+
+<p>サーバから届くのは、ページの中身を記した文字データです。ブラウザがそれを読み取って画面に組み立てる処理を<strong>レンダリング</strong>と呼び、その組み立ての材料になるのが次の3つの言語です。</p>
+
+<figure class="fig" data-asset-id="ig-3104-02">
+  <div class="fig-row">
+    <div class="fig-card"><div class="fig-card__t">HTML ＝ 構造</div><div class="fig-card__d"><strong>何があるか</strong>。見出し・文章・画像・ボタンといった要素と、その骨組み。</div></div>
+    <div class="fig-card"><div class="fig-card__t">CSS ＝ 見た目</div><div class="fig-card__d"><strong>どう見せるか</strong>。色・余白・文字サイズ・レイアウトの指定。</div></div>
+    <div class="fig-card"><div class="fig-card__t">JavaScript ＝ 動き</div><div class="fig-card__d"><strong>操作への反応</strong>。押したときの開閉や送信など、動きの制御。</div></div>
+  </div>
+  <figcaption class="fig__cap">Figmaで作るデザインは、最終的にこの3層になる（色・余白＝CSS、押したときの反応＝JavaScript）。</figcaption>
+</figure>
+
+<p>本講座でコードを書くことはありません。ただしFigmaで作るデザインは、最終的にこの3つで実装されます。色や余白の指定はCSSに、押したときの反応はJavaScriptに置き換わります。デザインレビューで実装者と話すときも、構造・見た目・動きのどの層を直したいのかを言い分けられると、修正指示が正確に伝わります。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">どの層の話かを聞き分ける</div>
+  </div>
+  <p>打ち合わせで実装の話が出たら、構造・見た目・動きの<strong>どの層</strong>を指しているかを聞き分けましょう。層が分かると、修正の依頼も正確に伝わります。</p>
+</div>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ 1</div>
+  </div>
+  <div class="quiz-q">デザインした画面で、文字の色と余白の見た目を細かく指定しました。この指定は、実装では主にどの言語に置き換わるでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">HTML（ページの構造を記述する言語）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">CSS（見た目を指定する言語）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">JavaScript（操作への反応を付ける言語）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">HTTP（ブラウザとサーバの通信ルール）</div></button>
+  </div>
+  <div class="quiz-feedback" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">色や余白などの見た目の指定は、CSSが担当します。HTMLは何があるかという構造、JavaScriptは操作への反応、HTTPは言語ではなく通信の約束事でした。役割で切り分けると迷いません。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">見た目（色・余白）はCSSの担当です。HTMLは構造、JavaScriptは操作への反応、HTTPは通信ルールで言語ではありません。まず役割を思い出して切り分けましょう。</div>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>サーバとデータをやり取りする（API・REST）</h2>
+
+<p>会員名や予約状況のように変わる情報を画面に出すには、その都度サーバへデータを取りに行きます。このとき、機能どうしがデータを決まった形式でやり取りする窓口を<strong>API</strong>と呼びます。</p>
+
+<figure class="fig" data-asset-id="ig-3104-03">
+  <div class="fig-flow">
+    <div class="fig-node"><div class="fig-node__n">1</div><div class="fig-node__t">画面が要求</div><div class="fig-node__d">APIへデータを取りにいく</div></div>
+    <div class="fig-sep">›</div>
+    <div class="fig-node"><div class="fig-node__n">2</div><div class="fig-node__t">サーバ／DBが応答</div><div class="fig-node__d">該当データを返す</div></div>
+    <div class="fig-sep">›</div>
+    <div class="fig-node"><div class="fig-node__n">3</div><div class="fig-node__t">画面に表示</div><div class="fig-node__d">受け取ったデータを描画</div></div>
+  </div>
+  <div class="fig-row" style="margin-top:12px;">
+    <div class="fig-card fig-card--mute"><div class="fig-card__t">… 読み込み中</div><div class="fig-card__d">応答が返るまでの待ち時間。その間に見せる表示も用意する。</div></div>
+    <div class="fig-card fig-card--mute"><div class="fig-card__t">該当なし（空）</div><div class="fig-card__d">データが0件のときの画面も設計しておく。</div></div>
+  </div>
+  <figcaption class="fig__cap">要求 → 応答 → 表示が基本。加えて「読み込み中」と「空（該当なし）」の状態表示まで設計が必要。</figcaption>
+</figure>
+
+<p>Webでよく使われるのが<strong>REST</strong>という設計の考え方で、欲しいデータをURLで指定し、統一された形式でやり取りします。データが返るまでに時間がかかったり、そもそも該当データが無いこともあります。だから読み込み中の表示や、データが空のときの画面まで用意しておく必要があります。予約状況や在庫のように刻々と変わる情報を扱う画面では、この用意まで済ませておくと、抜け漏れのない設計になります。</p>
+
+<p>このRESTでは、データへの操作を<strong>取得・作成・更新・削除</strong>の4種類に整理し、それぞれ決まった形式でやり取りします。共通ルールがあるおかげで、別々に作られた機能どうしでも噛み合います。予約サービスなら、予約一覧の取得、新規予約の作成、内容の更新、キャンセルによる削除が、この4操作に対応します。</p>
+
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>ページ遷移の2つの作り方（SPAと従来型）</h2>
+
+<p>リンクを押したときの画面の切り替え方には、大きく2つの作り方があります。どちらで作るかによって、体感の速さや操作の感触が変わります。</p>
+
+<figure class="fig" data-asset-id="ig-3104-04">
+  <div class="fig-two">
+    <div class="fig-two__col fig-two__col--mute"><div class="fig-two__h"><span class="fig-tag fig-tag--mute">従来型</span>ページごとに読み直す</div><ul><li>リンクを押すたびにサーバから全体を取得</li><li>作りはシンプルで、初回は軽い</li><li>遷移のたびに画面が一瞬白くなりやすい</li></ul></div>
+    <div class="fig-two__mid">→</div>
+    <div class="fig-two__col fig-two__col--accent"><div class="fig-two__h"><span class="fig-tag fig-tag--accent">SPA</span>必要な部分だけ差し替え</div><ul><li>最初に一式を読み込む</li><li>以降は変わる部分だけを差し替え</li><li>遷移はなめらか、初回は重くなりがち</li></ul></div>
+  </div>
+  <figcaption class="fig__cap">SPAは遷移がなめらかな反面、初回の読み込みが重くなりやすい（トレードオフ）。</figcaption>
+</figure>
+
+<p>従来型はページごとに全体を読み直し、<strong>SPA</strong>（シングルページアプリケーション）は最初に読み込んだあと必要な部分だけを差し替えます。SPAは画面遷移がなめらかな反面、初回の読み込みは重くなりがちです。予約フローのように画面を何度も行き来する体験では、この違いが操作感に直結します。設計するときは、SPAか従来型かをふまえて、遷移の見せ方や待ち時間の演出を選べます。</p>
+</section>
+
+<!-- ===== セクション5 ===== -->
+<section id="s5">
+<h2>サイトを運用する仕組み（CMS）</h2>
+
+<p>公開後もお知らせやメニューを更新し続けるには、専門知識がなくても中身を書き換えられる仕組みが要ります。それが<strong>CMS</strong>（コンテンツ管理システム）です。</p>
+
+<figure class="fig" data-asset-id="ig-3104-05">
+  <div class="fig-flow">
+    <div class="fig-node"><div class="fig-node__n">1</div><div class="fig-node__t">管理画面で編集</div><div class="fig-node__d">中身（文章・画像）を入力</div></div>
+    <div class="fig-sep">›</div>
+    <div class="fig-node"><div class="fig-node__n">2</div><div class="fig-node__t">テンプレートに流し込み</div><div class="fig-node__d">デザインの型に自動で当てはめ</div></div>
+    <div class="fig-sep">›</div>
+    <div class="fig-node"><div class="fig-node__n">3</div><div class="fig-node__t">公開ページに反映</div><div class="fig-node__d">組み上がったページを表示</div></div>
+  </div>
+  <figcaption class="fig__cap">デザインの型と中身が分離。中身の長さや画像の有無がばらつく前提でテンプレートを設計する。</figcaption>
+</figure>
+
+<p>CMSでは、デザインの型（テンプレート）と中身（文章や画像）が分かれています。運営者は管理画面から中身だけを差し替え、ページが自動で組み上がります。テンプレートを設計するときは、文章の長さや画像の有無が実際にはばらつく前提で、どんな中身が入っても崩れないレイアウトを意識しましょう。とくに更新頻度の高いお知らせやブログのページでは、運営者が管理画面から無理なく更新できるレイアウトを提案できます。</p>
+</section>
+
+<!-- ===== セクション6 ===== -->
+<section id="s6">
+<h2>デザイナーが押さえる技術的制約</h2>
+
+<p>デザインの一つひとつには、実装の手間と表示への影響がついてきます。デザイナーが先に押さえておきたい制約は、大きく3つです。</p>
+
+<figure class="fig" data-asset-id="ig-3104-06">
+  <div class="fig-row">
+    <div class="fig-card"><div class="fig-card__n">1</div><div class="fig-card__t">表示速度</div><div class="fig-card__d">大きな画像や過剰な動きで低下し、離脱につながる。<div class="fig-card__note">対策：画像の重さ・動きの量を見積もる</div></div></div>
+    <div class="fig-card"><div class="fig-card__n">2</div><div class="fig-card__t">レスポンシブ</div><div class="fig-card__d">同じHTMLをCSSが画面幅に合わせて組み替える。<div class="fig-card__note">対策：PCとスマホの両方を設計する</div></div></div>
+    <div class="fig-card"><div class="fig-card__n">3</div><div class="fig-card__t">実装可能性</div><div class="fig-card__d">存在しないデータは出せず、凝った表現はコストが大きい。<div class="fig-card__note">対策：早めにエンジニアへ確認する</div></div></div>
+  </div>
+  <figcaption class="fig__cap">制約を先回りで確認できるデザイナーは、実装後の大きな手戻りを防げる。</figcaption>
+</figure>
+
+<p>表示速度は大きな画像や凝った動きで落ち、離脱の原因になります。<strong>レスポンシブ</strong>は同じHTMLをCSSが画面幅に合わせて組み替える仕組みで、PCとスマホの両方の見え方を設計します。そして存在しないデータは画面に出せません。実現できるかを早めにエンジニアへ確認することが重要です。提案の段階で表示速度やレスポンシブを織り込めると、実装後の大きな作り直しを避けられ、エンジニアからの信頼につながります。</p>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ 2</div>
+  </div>
+  <div class="quiz-q">会員画面に、その人の累計予約回数を大きく見せるデザインを考えました。ただし、システムがその回数を記録しているかは分かりません。実装に渡す前に、デザイナーとして最初にすべきことはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">見た目を優先し、そのままデザインに入れて実装に渡す</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">その回数をシステムがデータとして持っているか、エンジニアに確認する</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">それらしい固定の数字を表示するよう依頼する</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">技術は分からないので、表示自体をあきらめる</div></button>
+  </div>
+  <div class="quiz-feedback" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">画面に出せるのは、システムが持っているデータだけです。確定前に有無を確認すれば手戻りを防げます。無いと分かった場合も、そのデータを新しく持てるかをエンジニアと相談できます。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">存在しないデータは画面に出せません。そのまま渡すと手戻りになり（A）、固定の数字は誤った情報の表示になります（C）。あきらめる前に、有無をエンジニアに確認する（B）のが適切です。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>リクエストとレスポンスの往復を、5つのステップで説明できる</summary>
+    <div class="check-box__detail">URL入力 → ブラウザがリクエストを送る → サーバが処理する → サーバがレスポンスを返す → ブラウザが描画する、の順です。この往復の共通ルールがHTTPで、暗号化した安全版がHTTPSだという点もあわせて押さえましょう。</div>
+  </details>
+  <details>
+    <summary>HTML・CSS・JavaScript の役割分担を、一言ずつで言える</summary>
+    <div class="check-box__detail">HTMLは構造（何があるか）、CSSは見た目（どう見せるか）、JavaScriptは動き（操作にどう反応するか）です。Figmaで作るデザインは、最終的にこの3つで実装されます。</div>
+  </details>
+  <details>
+    <summary>API・REST の役割と、読み込み中・空状態を設計する理由を説明できる</summary>
+    <div class="check-box__detail">APIは機能どうしがデータをやり取りする窓口で、Webではその設計にRESTが広く使われます。データが返るまでの待ち時間や、該当データが無い場合があるため、読み込み中と空状態の表示まで用意します。</div>
+  </details>
+  <details>
+    <summary>SPAと従来型の違い、CMSの仕組みを説明できる</summary>
+    <div class="check-box__detail">従来型はページごとに全体を読み直し、SPAは必要な部分だけを差し替えます（初回は重くなりがち）。CMSはデザインの型と中身を分け、管理画面から中身だけを更新できる仕組みです。</div>
+  </details>
+  <details>
+    <summary>表示速度・レスポンシブ・実装可能性の3つの制約を挙げられる</summary>
+    <div class="check-box__detail">表示速度は画像や動きの重さで変わる、レスポンシブは同じHTMLをCSSが画面幅で組み替えるためPCとスマホの両方を設計する、実装可能性は存在しないデータは出せず凝った表現はコストが大きい、の3つです。</div>
+  </details>
+</div>
+  
+        <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap1/6DFNF" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap1/aqKkM" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div><!-- /.lesson-wrapper -->
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

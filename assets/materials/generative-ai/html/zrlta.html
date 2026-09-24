@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-1/ZRltA -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48592" data-item-id="48592" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>クリエイターが成果を出すために必要な「視点の転換」</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .hero__meta span { display: flex; align-items: center; gap: 4px; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* 比較カード */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .compare-card {
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+  }
+  .compare-card--skill {
+    background: #F0F4FF;
+    border: 2px solid #A0B4E8;
+  }
+  .compare-card--mktg {
+    background: #FFF0ED;
+    border: 2px solid #E85D4A;
+  }
+  .compare-card__label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .compare-card--skill .compare-card__label { color: #5B7BE8; }
+  .compare-card--mktg .compare-card__label { color: #E85D4A; }
+  .compare-card__title { font-size: 16px; font-weight: 800; margin-bottom: 12px; }
+  .compare-card__list { list-style: none; }
+  .compare-card__list li { font-size: 13px; padding: 6px 0; border-bottom: 1px solid rgba(0,0,0,0.07); display: flex; align-items: flex-start; gap: 8px; }
+  .compare-card__list li:last-child { border-bottom: none; }
+  .compare-card__list li::before { content: '→'; font-size: 12px; margin-top: 2px; flex-shrink: 0; }
+  .compare-card--skill .compare-card__list li::before { color: #5B7BE8; }
+  .compare-card--mktg .compare-card__list li::before { color: #E85D4A; }
+
+  /* 事例カード */
+  .case-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .case-card {
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .case-card--ng { background: #FFF5F5; border: 1.5px solid #FFBDBD; }
+  .case-card--ok { background: #F0FBF4; border: 1.5px solid #6DCFA0; }
+  .case-card__badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .case-card--ng .case-card__badge { background: #FFBDBD; color: #C0392B; }
+  .case-card--ok .case-card__badge { background: #6DCFA0; color: white; }
+  .case-card__role { font-size: 13px; font-weight: 700; color: #666; margin-bottom: 6px; }
+  .case-card__thought { font-size: 14px; line-height: 1.65; color: #3D3D3D; }
+  .case-card__result { font-size: 12px; color: #888; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.08); }
+  .case-card--ng .case-card__result { color: #C0392B; }
+  .case-card--ok .case-card__result { color: #2E9B6E; }
+
+  /* 3つの問い */
+  .three-questions { display: flex; flex-direction: column; gap: 16px; margin: 20px 0; }
+  .question-item { display: flex; align-items: flex-start; gap: 16px; background: #F7F8FA; border-radius: 10px; padding: 18px; }
+  .question-num {
+    width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: white; flex-shrink: 0;
+  }
+  .question-num--1 { background: linear-gradient(135deg, #E85D4A, #F5A64A); }
+  .question-num--2 { background: linear-gradient(135deg, #F5A64A, #F9C84A); }
+  .question-num--3 { background: linear-gradient(135deg, #4CAF7C, #2E9B6E); }
+  .question-body__q { font-size: 15px; font-weight: 700; color: #3D3D3D; margin-bottom: 6px; }
+  .question-body__desc { font-size: 13px; color: #666; line-height: 1.65; }
+
+  /* 転換のイメージ図 */
+  .shift-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .shift-box {
+    border-radius: 10px;
+    padding: 18px 24px;
+    text-align: center;
+    min-width: 160px;
+  }
+  .shift-box--from {
+    background: #F0F4FF;
+    border: 2px solid #A0B4E8;
+  }
+  .shift-box--to {
+    background: #FFF0ED;
+    border: 2px solid #E85D4A;
+  }
+  .shift-box__label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .shift-box--from .shift-box__label { color: #5B7BE8; }
+  .shift-box--to .shift-box__label { color: #E85D4A; }
+  .shift-box__text { font-size: 17px; font-weight: 800; }
+  .shift-arrow {
+    font-size: 28px;
+    color: #E85D4A;
+    padding: 0 12px;
+    font-weight: 700;
+  }
+
+  /* ポイントボックス */
+  .point-box {
+    background: linear-gradient(135deg, #3D3D3D 0%, #555 100%);
+    border-radius: 10px;
+    padding: 22px 24px;
+    color: white;
+    margin: 20px 0;
+  }
+  .point-box__title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin-bottom: 10px; }
+  .point-box__text { font-size: 15px; line-height: 1.75; }
+  .point-box__text strong { color: #F5A64A; }
+
+  /* チェックリスト */
+  .check-list { list-style: none; margin: 16px 0; }
+  .check-list li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #F0F0F0; font-size: 14px; }
+  .check-list li:last-child { border-bottom: none; }
+  .check-list li::before { content: '✓'; color: #4CAF7C; font-weight: 700; margin-top: 1px; flex-shrink: 0; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; letter-spacing: 0.05em; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+  .text-emphasis { font-size: 15px; font-weight: 700; color: #E85D4A; }
+
+  /* Scroll reveal */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .compare-grid { grid-template-columns: 1fr; }
+    .case-pair { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+    .shift-diagram { flex-direction: column; }
+    .shift-arrow { transform: rotate(90deg); }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="7qCh9MoPl7PaUBQJ9_c7RGZDuK3Xt3gcKcRdBHWWGM_nnVPSNW8A2q8_9MVotDO4hWmNt4k4l5izjp5yMH0HAQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+
+<div class="hero">
+  <div class="hero__label">Course A — Chapter 1 / Lesson 1</div>
+  <div class="hero__title">クリエイターが成果を出すために必要な<br>「視点の転換」</div>
+  <div class="hero__meta">
+    <span>⏱ 25分</span>
+    <span>📖 概論</span>
+    <span>🎯 SNS運用者・Webデザイナー・動画編集者</span>
+  </div>
+</div>
+
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+  
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-1/ZLRRw" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>  
+
+  
+<div class="container">
+
+  <div class="intro-box reveal visible">
+    <div class="intro-box__text">
+      あなたは今、どんな理由でこの教材を読んでいますか？<br>
+      「もっと仕事を取りたい」「SNSを伸ばしたい」「クライアントに喜ばれたい」——きっとそういった<strong>「成果」</strong>への期待があるはずです。<br><br>
+      このレッスンでは、成果を出すクリエイターと出せないクリエイターの間にある<strong>「たった一つの違い」</strong>を明らかにします。
+    </div>
+  </div>
+
+  <!-- セクション1 -->
+  <div class="card reveal visible">
+    <div class="card__title">「技術力があるのに成果が出ない」は本当によくある</div>
+    <p>
+      デザインが上手い。編集スキルが高い。投稿頻度も守っている。でも、なかなか結果につながらない——。
+      これは、Webクリエイターが最も多く感じる悩みのひとつです。
+    </p>
+    <p>
+      実は、この悩みの原因は「技術の不足」ではありません。<strong class="text-emphasis">「視点」の問題</strong>です。
+    </p>
+
+    <div class="case-pair">
+      <div class="case-card case-card--ng">
+        <span class="case-card__badge">成果が出にくいパターン</span>
+        <div class="case-card__role">あるWebデザイナーの場合</div>
+        <div class="case-card__thought">
+          「このデザイン、自分ではすごくいいと思う。色もまとまってるし、レイアウトも綺麗にできた。」
+        </div>
+        <div class="case-card__result">→ クライアントから「なんか違う…」と言われ修正依頼が続く</div>
+      </div>
+      <div class="case-card case-card--ok">
+        <span class="case-card__badge">成果が出るパターン</span>
+        <div class="case-card__role">マーケ思考があるデザイナーの場合</div>
+        <div class="case-card__thought">
+          「このページを見る人は何に不安を持っているんだろう。まず安心感を伝えてから行動を促そう。」
+        </div>
+        <div class="case-card__result">→ ファーストビューだけでCV率が1.2%向上</div>
+      </div>
+    </div>
+
+    <div class="case-pair">
+      <div class="case-card case-card--ng">
+        <span class="case-card__badge">成果が出にくいパターン</span>
+        <div class="case-card__role">あるSNS運用者の場合</div>
+        <div class="case-card__thought">
+          「映えてるし、コンセプトも一貫してる。毎日投稿もしてるのに、なぜかフォロワーが増えない…」
+        </div>
+        <div class="case-card__result">→ 3ヶ月でフォロワー50人増</div>
+      </div>
+      <div class="case-card case-card--ok">
+        <span class="case-card__badge">成果が出るパターン</span>
+        <div class="case-card__role">マーケ思考があるSNS運用者の場合</div>
+        <div class="case-card__thought">
+          「このアカウントを見る人は何を解決したくてフォローするんだろう。保存されるコンテンツはなにか。」
+        </div>
+        <div class="case-card__result">→ 投稿頻度を3→週3回に下げても3ヶ月で+1,200フォロワー</div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <div class="point-box__title">Key Insight</div>
+      <div class="point-box__text">
+        成果が出るクリエイターは「<strong>自分が作りたいもの</strong>」ではなく、「<strong>見る人が求めているもの</strong>」を起点にしています。この視点の違いが、あらゆる成果の差を生みます。
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション2: 視点の転換 -->
+  <div class="card reveal visible">
+    <div class="card__title">「作る視点」から「届ける視点」へ</div>
+    <p>
+      クリエイターが自然に持っているのは<strong>「作る視点」</strong>——いかに高品質に制作するか、という内向きの目線です。これ自体は素晴らしい。でも成果を出すには、もう一つの視点が必要です。
+    </p>
+
+    <div class="shift-diagram">
+      <div class="shift-box shift-box--from">
+        <div class="shift-box__label">作る視点（内向き）</div>
+        <div class="shift-box__text">「いい制作物を作る」</div>
+      </div>
+      <div class="shift-arrow">→</div>
+      <div class="shift-box shift-box--to">
+        <div class="shift-box__label">届ける視点（外向き）</div>
+        <div class="shift-box__text">「成果につなげる」</div>
+      </div>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-card--skill">
+        <div class="compare-card__label">作る視点（技術軸）</div>
+        <div class="compare-card__title">「何を作るか」</div>
+        <ul class="compare-card__list">
+          <li>クオリティの高い制作物</li>
+          <li>トレンドのデザイン・編集スタイル</li>
+          <li>一貫したビジュアルコンセプト</li>
+          <li>技術的な完成度</li>
+        </ul>
+      </div>
+      <div class="compare-card compare-card--mktg">
+        <div class="compare-card__label">届ける視点（マーケ軸）</div>
+        <div class="compare-card__title">「誰に・何のために」</div>
+        <ul class="compare-card__list">
+          <li>誰の・どんな問題を解決するか</li>
+          <li>何を感じてもらうか</li>
+          <li>どんな行動を起こしてもらうか</li>
+          <li>どう成果を測るか</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="margin-top: 16px;">
+      「届ける視点」を持つということは、技術を捨てることではありません。技術力の土台の上に、<strong>「誰のため・何のため」という目的意識</strong>を加えることです。
+    </p>
+  </div>
+
+  <!-- セクション3: 3つの問い -->
+  <div class="card reveal visible">
+    <div class="card__title">成果を出すクリエイターが常に問い続けること</div>
+    <p>視点の転換を実践するために、あらゆる制作・運用の場面で問い続けたい3つの質問があります。</p>
+
+    <div class="three-questions">
+      <div class="question-item">
+        <div class="question-num question-num--1">1</div>
+        <div class="question-body">
+          <div class="question-body__q">「誰に届けるか？」</div>
+          <div class="question-body__desc">ターゲットは誰か。その人はどんな状況にいて、何に悩んでいるか。「全員に届けたい」は「誰にも届かない」のリスクがある。</div>
+        </div>
+      </div>
+      <div class="question-item">
+        <div class="question-num question-num--2">2</div>
+        <div class="question-body">
+          <div class="question-body__q">「何を伝えるか？」</div>
+          <div class="question-body__desc">この制作物で最も伝えたいことは何か。機能的なメリットか、感情的な価値か。メッセージは一つに絞れているか。</div>
+        </div>
+      </div>
+      <div class="question-item">
+        <div class="question-num question-num--3">3</div>
+        <div class="question-body">
+          <div class="question-body__q">「どう動いてもらうか？」</div>
+          <div class="question-body__desc">見た人にどんな行動を期待するか。フォロー・問い合わせ・購入・シェア——目標とする行動を明確にすることで、制作判断がすべて変わる。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <div class="point-box__title">実践のヒント</div>
+      <div class="point-box__text">
+        次に制作に入る前に、この3問を紙に書き出してみてください。「なんとなく作り始める」ではなく、「目的を持って作り始める」習慣が、成果を出すクリエイターへの第一歩です。
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション4: このコースで学ぶこと -->
+  <div class="card reveal visible">
+    <div class="card__title">このコース（Course A）で身につけること</div>
+    <p>「届ける視点」を体系的に習得するために、このコースでは以下の5テーマを学びます。</p>
+
+    <ul class="check-list">
+      <li><strong>Chapter 2: ターゲット・ペルソナ設計</strong>——「誰に」を科学的に設計する方法</li>
+      <li><strong>Chapter 3: メッセージ・ベネフィット設計</strong>——「何を伝えるか」を言語化する技術（USP作成含む）</li>
+      <li><strong>Chapter 4: ユーザー行動モデル</strong>——人がどう動くかのパターンを理解し、設計に活かす</li>
+      <li><strong>Chapter 5: マーケティングブリーフ</strong>——クライアントとのズレをなくす「制作の設計書」の作り方</li>
+      <li><strong>Course B: 職種別実践</strong>——SNS運用者・Webデザイナー・動画編集者それぞれの現場への適用</li>
+    </ul>
+
+    <p style="margin-top: 8px;">Course A全体を通じて、<strong>実際にすぐ使えるテンプレート・ワークシート</strong>が手元に揃います。ポートフォリオにも活用できます。</p>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">成果が出るかどうかは「技術力」より「視点」の問題。<br>「作る視点」に「届ける視点」を加えよう。</div>
+    <div class="summary-card__sub">
+      常に問い続ける3つの質問: ①誰に届けるか ②何を伝えるか ③どう動いてもらうか<br>
+      次のレッスンでは「マーケティングとは何か」をクリエイター向けに再定義します。
+    </div>
+  </div>
+
+</div>
+  
+  
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-1/ZLRRw" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+  
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+  
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

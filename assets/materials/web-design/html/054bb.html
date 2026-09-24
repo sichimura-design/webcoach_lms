@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/WordPress/054Bb -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>WordPress｜5章：メインナビゲーションの使い方 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/WordPress/054Bb">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="WordPress｜5章：メインナビゲーションの使い方 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/205/medium/ecf05259-72e2-4739-8d9a-be9d418ee238.png?1746845237">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="WordPress｜5章：メインナビゲーションの使い方">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/WordPress/054Bb">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/205/large/ecf05259-72e2-4739-8d9a-be9d418ee238.png?1746845237">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="IP-39oileyFliSoxzEsBUVrlLiQuwVnoEx0WBSLIifjxs-PeaQlC79bwtrmMoQCp9Fudf7GTRaWfFtOFBtF2AA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WordPress</div>
+
+          <div class="fw-bold h2">WordPress｜5章：メインナビゲーションの使い方</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">5章：メインナビゲーションの使い方</a><ul><li><a href="#heading1" class="tocLink">この章で到達できるゴール</a></li></ul><ul><li><a href="#heading2" class="tocLink">【5-1】固定ページと投稿ページ</a><ul><li><a href="#heading3" class="tocLink">投稿ページ</a></li><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink">固定ページ</a></li><li><a href="#heading6" class="tocLink"></a></li></ul></li><li><a href="#heading7" class="tocLink">【5-2】メディアライブラリ</a><ul><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink">メディアライブラリに画像をアップロード</a></li><li><a href="#heading10" class="tocLink">メディアの詳細設定</a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">メディアを削除する</a></li><li><a href="#heading13" class="tocLink">メディアを検索する</a></li><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">【5-3】コメントとは</a><ul><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink">削除・編集</a></li><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink">コメント設定をオフにする</a></li></ul></li><li><a href="#heading20" class="tocLink">【5-4】外観とは</a><ul><li><a href="#heading21" class="tocLink">テーマ</a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink">テーマの変更</a></li><li><a href="#heading25" class="tocLink">新しいテーマの追加</a></li><li><a href="#heading26" class="tocLink">テーマの削除</a></li><li><a href="#heading27" class="tocLink">テーマのカスタマイズ</a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li></ul></li><li><a href="#heading30" class="tocLink">【5-5】プラグインとは</a><ul><li><a href="#heading31" class="tocLink">プラグインの追加</a></li><li><a href="#heading32" class="tocLink">プラグインの削除</a></li><li><a href="#heading33" class="tocLink">おすすめプラグイン</a></li><li><a href="#heading34" class="tocLink"></a></li><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li></ul></li><li><a href="#heading37" class="tocLink">【5-6】第5章 章末問題</a><ul><li><a href="#heading38" class="tocLink">目安の学習時間：10分</a></li><li><a href="#heading39" class="tocLink">STEP1:テーマ「Cocoon」を導入する</a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink">STEP2:プラグインを3つ導入する</a></li><li><a href="#heading42" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25496" data-item-id="25496" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/U1359" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/WordPress/bUNul" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item14196" data-item-id="14196" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">5章：メインナビゲーションの使い方</h2></div>
+        
+        <div class="article-item item_markdown " id="item45174" data-item-id="45174" data-item-type="ItemMarkdown"><h4 id="heading1">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_text " id="item45175" data-item-id="45175" data-item-type="ItemText"><div class="item-body-hbr">本章は、いよいよWebサイトの中身を作るための主要な機能を一通り触り、WordPress操作の基礎体力をつけるパートです。<br>以下の状態になれば、この章はクリアとなります。</div></div>
+        
+        <div class="article-item item_markdown " id="item45176" data-item-id="45176" data-item-type="ItemMarkdown"><ul>
+  <li>「投稿（ブログ用）」と「固定ページ（Webサイト用）」という2つのページ作成機能の違いを理解し、用途に合わせて正しく使い分けることができる</li>
+  <li>画像のアップロード、デザイン（テーマ）の変更、機能（プラグイン）の追加といった、サイト制作に欠かせない基本操作を自力で行える</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item14200" data-item-id="14200" data-item-type="ItemHeading"><h3 class="item-body" id="heading2">【5-1】固定ページと投稿ページ</h3></div>
+        
+        <div class="article-item item_text " id="item14201" data-item-id="14201" data-item-type="ItemText"><div class="item-body-hbr">WordPressは「投稿」と「固定ページ」と言われる2種類のページの作成方法があります！<br>まずはこちらの違いについて説明していきます！<br><br>それぞれの詳しい説明は後ほど実践でおこなっていきます！</div></div>
+        
+        <div class="article-item item_markdown " id="item15543" data-item-id="15543" data-item-type="ItemMarkdown"><h4 id="heading3">投稿ページ</h4>
+</div>
+        
+        <div class="article-item item_image " id="item14205" data-item-id="14205" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/205/medium/ecf05259-72e2-4739-8d9a-be9d418ee238.png?1746845237" title=""><img class="img-responsive item-image" alt=" (14205)" data-reference="" src="../../_assets/fa51fd3f05.webp" width="187" height="40"></a><h4 id="heading4"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15544" data-item-id="15544" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><strong>特徴</strong>
+    <ul>
+      <li>ブログや記事、お知らせのようなコンテンツは投稿で作成。</li>
+    </ul>
+  </li>
+  <li><strong>できること</strong>
+    <ul>
+      <li>時系列で順序関係があり、「前へ」「次へ」で移動</li>
+      <li>投稿一覧、カテゴリー一覧、タグ一覧から各ページを一覧表示</li>
+      <li>カテゴリーやタグにより投稿記事のグループ化</li>
+    </ul>
+  </li>
+  <li><strong>できないこと</strong>
+    <ul>
+      <li>投稿同士で親子関係の作成</li>
+      <li>ページごとにデザインテンプレートを選択することはできない</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item15545" data-item-id="15545" data-item-type="ItemMarkdown"><h4 id="heading5">固定ページ</h4>
+</div>
+        
+        <div class="article-item item_image " id="item14208" data-item-id="14208" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/208/medium/cb5dfd73-5dab-46d9-a1e4-465479b48f83.png?1746845387" title=""><img class="img-responsive item-image" alt=" (14208)" data-reference="" src="../../_assets/a255f46b60.webp" width="190" height="41"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15546" data-item-id="15546" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><strong>特徴</strong>
+    <ul>
+      <li>トップページや採用情報、会社概要などページ単体で完結できるようなコンテンツは固定ページで作成。</li>
+    </ul>
+  </li>
+  <li><strong>できること</strong>
+    <ul>
+      <li>任意の固定ページをトップページのメニューへリンク</li>
+      <li>固定ページ同士で親子関係を作成</li>
+      <li>ページごとにデザインテンプレートを作成・選択</li>
+    </ul>
+  </li>
+  <li><strong>できないこと</strong>
+    <ul>
+      <li>カテゴリー・タグによる投稿の関連付け</li>
+      <li>固定ページ一覧、カテゴリー一覧、タグ一覧などで各ページを一覧表示</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item14211" data-item-id="14211" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+          <ul>
+            <li>まずはざっくり、「固定ページはホームページの各ページを作成するもの」「投稿ページはブログ記事を作成するもの」と覚えておきましょう！</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item14215" data-item-id="14215" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">【5-2】メディアライブラリ</h3></div>
+        
+        <div class="article-item item_text " id="item14220" data-item-id="14220" data-item-type="ItemText"><div class="item-body-hbr">WordPressでは、ホームページ内で使用している画像や動画を全て閲覧・編集できるメディアライブラリと呼ばれるメニューがあります。</div></div>
+        
+        <div class="article-item item_image " id="item14217" data-item-id="14217" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/217/medium/b4d8ca60-49d9-4df3-b6c3-4317fc04d0e2.png?1746845963" title=""><img class="img-responsive item-image" alt=" (14217)" data-reference="" src="../../_assets/0eb2786ffd.webp" width="640" height="319"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item14222" data-item-id="14222" data-item-type="ItemMarkdown"><h4 id="heading9">メディアライブラリに画像をアップロード</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14227" data-item-id="14227" data-item-type="ItemText"><div class="item-body-hbr">メディアライブラリに直接画像をアップロードする場合は【メディア】→【新しいメディアファイルを追加】→PC内に保存した画像をドラッグ＆ドロップでアップロードできます！<br><br>このあと説明していきますが、固定ページや投稿ページから追加した画像もここに自動的に保存されます！<br></div></div>
+        
+        <div class="article-item item_text " id="item34972" data-item-id="34972" data-item-type="ItemText"><div class="item-body-hbr">以下のデモ動画でも操作方法を確認しておきましょう！（デモ動画には音声はついておりません）</div></div>
+        
+        <div class="article-item item_link " id="item14234" data-item-id="14234" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=054Bb&amp;item_id=14234" rel="nofollow noopener noreferrer" target="_blank">WordPress 5-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 5-1" data-reference="https://www.dropbox.com/scl/fi/koj6ljh9vvr2w9ndqkvc2/wp_5.1.1.0_.mp4?rlkey=shdu9elb2rzmcvf19erhtltv7&amp;st=4eq0wysf&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item14245" data-item-id="14245" data-item-type="ItemMarkdown"><h4 id="heading10">メディアの詳細設定</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14246" data-item-id="14246" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">①代替テキスト</span><br>
+<span class="decoration-01">代替テキストはWebサイトに含まれる画像の代わりになるテキスト</span>のことで、画像が何らかの原因で表示されないときや音声読み上げ機能の際に使用するテキストのことです。<br>
+alt属性と呼ばれ検索エンジンに画像の詳細を伝える役割や画像検索に表示されるなどSEOに優位に働くテキストです。<br>
+<br>
+<span class="decoration-01">②タイトル</span><br>
+タイトルはテーマや設定により画像に表示される説明文です。<br>
+必要に応じて記載しましょう。<br>
+<br>
+<span class="decoration-01">③キャプション</span><br>
+キャプションは代替テキストとは違いテーマや設定により画像の下部に表示される説明文です。<br>
+必要に応じて記載しましょう。<br>
+<br>
+<span class="decoration-01">④説明</span><br>
+管理者が使用するメモです。<br>
+Webページに表示されることはないのですが、メディアライブラリ内の検索を行う時に便利な機能です。<br>
+<br>
+<span class="decoration-01">⑤ファイルのURL</span><br>
+画像に対するURLです。</div></div>
+        
+        <div class="article-item item_image " id="item14247" data-item-id="14247" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/247/medium/7eea9a55-894e-4f6d-a558-ecf641316940.png?1746846758" title=""><img class="img-responsive item-image" alt=" (14247)" data-reference="" src="../../_assets/58a47f1be0.webp" width="640" height="298"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item14248" data-item-id="14248" data-item-type="ItemMarkdown"><h4 id="heading12">メディアを削除する</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14249" data-item-id="14249" data-item-type="ItemText"><div class="item-body-hbr">メディアの削除方法は2パターンあります。<br><br>①1枚のみ削除　画像を選択→【完全に削除する】<br>②複数削除　【一括選択】→画像を選択→【完全に削除する】</div></div>
+        
+        <div class="article-item item_link " id="item14250" data-item-id="14250" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=054Bb&amp;item_id=14250" rel="nofollow noopener noreferrer" target="_blank">WordPress 5-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 5-2" data-reference="https://www.dropbox.com/scl/fi/c49r1rmcip774syayj59b/wp_5.2.1.0_.mp4?rlkey=q4kjruovmj1vaz69jtx51t6v7&amp;st=rioqkbes&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item14251" data-item-id="14251" data-item-type="ItemMarkdown"><h4 id="heading13">メディアを検索する</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14252" data-item-id="14252" data-item-type="ItemText"><div class="item-body-hbr">メディアライブラリにはアップロードを行ったファイルの検索を行える機能があります。<br><br>【すべてのメディア】データファイルの形式での絞り込み<br>【すべての日付】アップロードした日付での絞り込み<br>【メディアを検索】「メディアの詳細設定＞④説明」で入力したキーワードでの絞り込み</div></div>
+        
+        <div class="article-item item_image " id="item14254" data-item-id="14254" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/254/medium/f92d4a1b-663f-408a-81ce-66d372145c1b.png?1746847231" title=""><img class="img-responsive item-image" alt=" (14254)" data-reference="" src="../../_assets/263a04e6bb.webp" width="640" height="298"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item14255" data-item-id="14255" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">メディアライブラリの基本的な使い方について解説しました。<br>
+操作する機会が多いメニューなのでしっかり覚えてくださいね！</span></div></div>
+        
+        <div class="article-item item_heading " id="item14256" data-item-id="14256" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">【5-3】コメントとは</h3></div>
+        
+        <div class="article-item item_text " id="item14258" data-item-id="14258" data-item-type="ItemText"><div class="item-body-hbr">WordPressはもともとブログサイトとして作成されたため投稿ページにコメントが記載できる機能が備わっています。<br><br>Webサイトの種類によってはあまり使用されない機能であるため、簡単に説明していきます！</div></div>
+        
+        <div class="article-item item_image " id="item14259" data-item-id="14259" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/259/medium/41ae95db-7009-410d-8092-3c42ef6bf5c2.png?1746847353" title=""><img class="img-responsive item-image" alt=" (14259)" data-reference="" src="../../_assets/b5c241a196.webp" width="640" height="291"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item14260" data-item-id="14260" data-item-type="ItemMarkdown"><h4 id="heading17">削除・編集</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14261" data-item-id="14261" data-item-type="ItemText"><div class="item-body-hbr">コメントにカーソルを合わせると下の写真のメニューが出てきます。<br>こちらを選択することで削除や編集が可能です。</div></div>
+        
+        <div class="article-item item_image " id="item14262" data-item-id="14262" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/262/medium/5e823361-8151-4cf7-8972-eac193c272ca.png?1746847428" title=""><img class="img-responsive item-image" alt=" (14262)" data-reference="" src="../../_assets/ea0ec138d5.webp" width="640" height="151"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item14263" data-item-id="14263" data-item-type="ItemMarkdown"><h4 id="heading19">コメント設定をオフにする</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14264" data-item-id="14264" data-item-type="ItemRichText"><div class="item-body-hbr">サイトを作成する際コメント機能をオフにする設定です。<br>
+コーポレートサイトなどを作成する場合必ずこちらを設定していきましょう。<br>
+<br>
+【設定】→【ディスカッション】→<span class="decoration-01">新しい投稿へのコメントを許可のチェックを外してください。</span><br>
+<br>
+こちらを設定することでコメント機能が表示されなくなります。</div></div>
+        
+        <div class="article-item item_link " id="item14265" data-item-id="14265" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=054Bb&amp;item_id=14265" rel="nofollow noopener noreferrer" target="_blank">WordPress 5-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 5-3" data-reference="https://www.dropbox.com/scl/fi/eai6gsindppwzlbjcnlc1/wp_5.3.1.0_.mp4?rlkey=nzc10qp5qvyfttukqjw6vzlc3&amp;st=ot9mxrdz&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item14266" data-item-id="14266" data-item-type="ItemHeading"><h3 class="item-body" id="heading20">【5-4】外観とは</h3></div>
+        
+        <div class="article-item item_text " id="item14267" data-item-id="14267" data-item-type="ItemText"><div class="item-body-hbr">外観とはWordPress のデザイン・表示のされ方を設定する場所です。<br>テーマ（テンプレート）の設定や編集などを行う事が可能です。</div></div>
+        
+        <div class="article-item item_html " id="item14268" data-item-id="14268" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+          <ul>
+            <li>編集できるものはテーマによって異なります！</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item14269" data-item-id="14269" data-item-type="ItemMarkdown"><h4 id="heading21">テーマ</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14270" data-item-id="14270" data-item-type="ItemText"><div class="item-body-hbr">【外観】→【テーマ】を選択していただくとダウンロードしてあるテーマの一覧が表示されます。<br>【有効】となっているテーマが現在使われているテーマです。</div></div>
+        
+        <div class="article-item item_image " id="item14271" data-item-id="14271" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/271/medium/389348bf-0ecc-45e6-ab4b-078ccb338dec.png?1746847835" title=""><img class="img-responsive item-image" alt=" (14271)" data-reference="" src="../../_assets/f16e23d455.webp" width="640" height="298"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15537" data-item-id="15537" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14272" data-item-id="14272" data-item-type="ItemText"><div class="item-body-hbr">ダッシュボードのヘッダーにある家マークのボタン（画面左上）を押して現在使用しているテーマの見た目を確認してみましょう！</div></div>
+        
+        <div class="article-item item_image " id="item14273" data-item-id="14273" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/273/medium/a343d7d8-7b03-46de-b03f-750c6898d5ec.png?1746847887" title=""><img class="img-responsive item-image" alt=" (14273)" data-reference="" src="../../_assets/90ff24d01d.webp" width="640" height="298"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item14274" data-item-id="14274" data-item-type="ItemMarkdown"><h4 id="heading24">テーマの変更</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14275" data-item-id="14275" data-item-type="ItemText"><div class="item-body-hbr">ダウンロードしたテーマに変更する場合は変更したいテーマにカーソルを合わせ【有効化】ボタンを押すことで変更が可能です。</div></div>
+        
+        <div class="article-item item_link " id="item14354" data-item-id="14354" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=054Bb&amp;item_id=14354" rel="nofollow noopener noreferrer" target="_blank">WordPress 5-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 5-4" data-reference="https://www.dropbox.com/scl/fi/sdhg8fmofsigudlbff7nx/wp_5.4.1.0_.mp4?rlkey=seg26wepjotre1ymtat6tybku&amp;st=wx5ayqj5&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item14277" data-item-id="14277" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+            <li>ページ制作後にテーマを変更するとレイアウトの崩れやバグが発生することがあるため、必ず作成前にテーマを選定しましょう！</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item14355" data-item-id="14355" data-item-type="ItemMarkdown"><h4 id="heading25">新しいテーマの追加</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14356" data-item-id="14356" data-item-type="ItemText"><div class="item-body-hbr">【新しいテーマの追加】→テーマの検索＆選定→【インストール】を行うとテーマの追加が可能です。<br>追加されたテーマは先ほど紹介したテーマの変更の方法で設定ができます。</div></div>
+        
+        <div class="article-item item_link " id="item14278" data-item-id="14278" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=054Bb&amp;item_id=14278" rel="nofollow noopener noreferrer" target="_blank">WordPress 5-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 5-5" data-reference="https://www.dropbox.com/scl/fi/tkp2mskmx56pmmfpcd4sa/wp_5.5.1.0_.mp4?rlkey=tze9util957crhxd6tuhtnbiu&amp;st=pg6kcuy8&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item14353" data-item-id="14353" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+            <li>テーマは沢山ありますが、日本語対応のテーマを選ぶようにしましょう！</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item14279" data-item-id="14279" data-item-type="ItemMarkdown"><h4 id="heading26">テーマの削除</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14280" data-item-id="14280" data-item-type="ItemText"><div class="item-body-hbr">不要なテーマを削除する場合は、削除するテーマをクリック→【削除】を行う事で削除する事が可能です。</div></div>
+        
+        <div class="article-item item_link " id="item14282" data-item-id="14282" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=054Bb&amp;item_id=14282" rel="nofollow noopener noreferrer" target="_blank">WordPress 5-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 5-6" data-reference="https://www.dropbox.com/scl/fi/r3zp6hj916d1k0n12tdia/wp_5.6.1.0_.mp4?rlkey=cu884wflb9g4w1z6czp6bmowt&amp;st=zjlqy448&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item14283" data-item-id="14283" data-item-type="ItemMarkdown"><h4 id="heading27">テーマのカスタマイズ</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14286" data-item-id="14286" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">カスタマイズ画面</span></div></div>
+        
+        <div class="article-item item_text " id="item14287" data-item-id="14287" data-item-type="ItemText"><div class="item-body-hbr">カスタマイズはテーマの設定を行うメニューです。<br>まずはカスタマイズの画面について説明していきます。</div></div>
+        
+        <div class="article-item item_text " id="item14288" data-item-id="14288" data-item-type="ItemText"><div class="item-body-hbr">①テーマの修正箇所を確認する場所です。<br>②アイコンを変更することでレスポンシブデザインの確認ができます。<br>③編集を行う箇所のメニューです。<br>④現在有効になっているテーマ名が表示され、テーマ自体を変更できるメニューです。<br>⑤修正を反映させるボタンです。</div></div>
+        
+        <div class="article-item item_image " id="item14289" data-item-id="14289" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/289/medium/f73cef13-dc3d-47b8-96cd-1b78cf422315.png?1746848557" title=""><img class="img-responsive item-image" alt=" (14289)" data-reference="" src="../../_assets/165ceab361.webp" width="640" height="298"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15538" data-item-id="15538" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14290" data-item-id="14290" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">サイトの基本情報</span></div></div>
+        
+        <div class="article-item item_text " id="item14291" data-item-id="14291" data-item-type="ItemText"><div class="item-body-hbr">【4-3】で説明させていただいている内容が表示されています！<br>どちらからでも設定修正可能なので使用しやすい方を使用してください。</div></div>
+        
+        <div class="article-item item_image " id="item14292" data-item-id="14292" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/292/medium/d57e9fe0-1dda-4278-9cf8-caa79c6fe621.png?1746848626" title=""><img class="img-responsive item-image" alt=" (14292)" data-reference="" src="../../_assets/2830a338ab.webp" width="640" height="298"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_text " id="item14293" data-item-id="14293" data-item-type="ItemText"><div class="item-body-hbr">ではここからは実際に動画を見ながら手を動かしてサイトの情報を編集していきましょう！<br><br>【サイトの基本情報】を選択してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item14294" data-item-id="14294" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">【サイトのタイトル】：Wordpress練習用サイト＋お名前<br>
+【キャッチフレーズ】：Wordpress練習用のサイトです。<br>
+【サイトアイコン】：FigmaまたはCanvaを使用し512 x 512pxのロゴ画像を作成して設定してください</span></div></div>
+        
+        <div class="article-item item_link " id="item14295" data-item-id="14295" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=054Bb&amp;item_id=14295" rel="nofollow noopener noreferrer" target="_blank">WordPress 5-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 5-7" data-reference="https://www.dropbox.com/scl/fi/gzzpncyd8tl1w3izimq9s/wp_5.7.1.0_.mp4?rlkey=ymkqsgdyx85mrylvjnu3enklp&amp;st=nimijeu1&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item15539" data-item-id="15539" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14302" data-item-id="14302" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">サイトの背景を設定</span></div></div>
+        
+        <div class="article-item item_text " id="item14305" data-item-id="14305" data-item-type="ItemText"><div class="item-body-hbr">【背景画像】を選択してください。<br><br>【画像を選択】→メディアライブラリにある画像を選択orドラッグ＆ドロップで画像をアップロードしてください（素材サイトからダウンロードしたお好きな画像）→プリセットをデフォルトに設定</div></div>
+        
+        <div class="article-item item_html " id="item14308" data-item-id="14308" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+            <li>プリセットとは背景をどのように配置するかの設定なのでお好みの設定にしましょう！</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item14310" data-item-id="14310" data-item-type="ItemText"><div class="item-body-hbr">ここまで設定が完了したら、【公開】をクリックし、ページを閉じてください。<br><br>メニュー、ウィジェット、ホームページ設定、はこの後作成する固定ページや投稿ページが出来てから設定を行って行くので現段階では一旦飛ばしていきます！</div></div>
+        
+        <div class="article-item item_heading " id="item14311" data-item-id="14311" data-item-type="ItemHeading"><h3 class="item-body" id="heading30">【5-5】プラグインとは</h3></div>
+        
+        <div class="article-item item_markdown " id="item15536" data-item-id="15536" data-item-type="ItemMarkdown"><h4 id="heading31">プラグインの追加</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14312" data-item-id="14312" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">プラグインとは好きなプラグインを追加することで自分好みにWebサイトをカスタマイズできる機能です。<br>
+基本的には、WordPress本体やテーマに備わっていない機能を補うために使用していきます。</span><br>
+<br>
+プラグインは便利な機能ですが、セキュリティやテーマとの相性などもあるので、下の注意事項を必ず守って使用してください。</div></div>
+        
+        <div class="article-item item_html " id="item14317" data-item-id="14317" data-item-type="ItemHtml"><div class="item-body">
+<div class="card-with-icon point">
+  <span class="bold">プラグインを使用する際の注意<br></span>
+        <ul>
+            <li>不要なプラグインはインストールしない</li>
+          	<li>テーマやプラグイン同士の相性が悪い場合、使用できないことがある</li>
+          	<li>バージョンアップは必ず行い、最新の状態を保つ</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item14321" data-item-id="14321" data-item-type="ItemText"><div class="item-body-hbr">では早速ですがプラグインを追加していきましょう！<br><br>今回は後で使用していく【Contact Form 7】という問い合わせ機能を追加できるプラグインを入れていきます。<br>【プラグイン】→【新規プラグインを追加】→「Contact Form 7」と検索→【インストール】をクリックします。<br>インストールができたら、【有効化】を押してください！</div></div>
+        
+        <div class="article-item item_link " id="item14324" data-item-id="14324" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=054Bb&amp;item_id=14324" rel="nofollow noopener noreferrer" target="_blank">WordPress 5-8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 5-8" data-reference="https://www.dropbox.com/scl/fi/9lznmq4ye7q2ogab2o9de/wp_5.8.1.0_.mp4?rlkey=i90qjy7sd3tlin89whsj417m7&amp;st=nvq1omq5&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item14323" data-item-id="14323" data-item-type="ItemMarkdown"><h4 id="heading32">プラグインの削除</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14325" data-item-id="14325" data-item-type="ItemText"><div class="item-body-hbr">使用しないプラグインはプログラムエラーの原因となりますので削除を行いましょう！<br>削除方法は【プラグイン】→削除したいプラグインにカーソルを合わせる→【削除】で完全削除が可能です！</div></div>
+        
+        <div class="article-item item_html " id="item14329" data-item-id="14329" data-item-type="ItemHtml"><div class="item-body">
+<div class="card-with-icon point">
+  <span class="bold">削除と無効化の違い<br></span>
+        <ul>
+            <li>削除はWordPress内から完全削除を行うのに対して無効化は一時停止のような役割です。</li>
+            <li>不要なプラグインは必ず削除を行いましょう。</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item14331" data-item-id="14331" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=054Bb&amp;item_id=14331" rel="nofollow noopener noreferrer" target="_blank">WordPress 5-9</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 5-9" data-reference="https://www.dropbox.com/scl/fi/dko0r3q3onv6eouq90qjl/wp_5.9.1.0_.mp4?rlkey=x5i63fa4igi9ppiqld8k5wai1&amp;st=v371jc81&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item14332" data-item-id="14332" data-item-type="ItemMarkdown"><h4 id="heading33">おすすめプラグイン</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item45177" data-item-id="45177" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">こちらのプラグインは６章で使用します。<br>
+このあとの章末問題で皆様には実際にダウンロードしていただきます！</span></span></div></div>
+        
+        <div class="article-item item_rich_text " id="item14333" data-item-id="14333" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Enable Media Replace</span></div></div>
+        
+        <div class="article-item item_text " id="item14334" data-item-id="14334" data-item-type="ItemText"><div class="item-body-hbr">メディアライブラリ内の画像の上書き保存ができるようになるプラグイン。<br>ブログなどの画像を一括差し替えするときなどに便利なプラグインです！</div></div>
+        
+        <div class="article-item item_image " id="item14335" data-item-id="14335" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/335/medium/06b312fa-30ed-46b0-a21f-30277535496c.png?1746850226" title=""><img class="img-responsive item-image" alt=" (14335)" data-reference="" src="../../_assets/8b87140cdf.webp" width="640" height="298"></a><h4 id="heading34"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15540" data-item-id="15540" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14336" data-item-id="14336" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">VK Blocks</span></div></div>
+        
+        <div class="article-item item_text " id="item14337" data-item-id="14337" data-item-type="ItemText"><div class="item-body-hbr">ブロックエディタを拡張するプラグイン。<br>簡単に視覚的にWebページの作成ができるプラグインです。</div></div>
+        
+        <div class="article-item item_image " id="item14338" data-item-id="14338" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/338/medium/80c473ff-e0f6-4f64-b817-473eee51e9cd.png?1746850277" title=""><img class="img-responsive item-image" alt=" (14338)" data-reference="" src="../../_assets/1dacbb108c.webp" width="640" height="298"></a><h4 id="heading35"></h4></div></div>
+        
+        <div class="article-item item_html " id="item15541" data-item-id="15541" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14339" data-item-id="14339" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">All in One SEO</span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_text " id="item14340" data-item-id="14340" data-item-type="ItemText"><div class="item-body-hbr">SEO対策が簡単にできるプラグイン。</div></div>
+        
+        <div class="article-item item_image " id="item14341" data-item-id="14341" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/341/medium/49ce0b55-378a-4a0e-9a0c-b31f2f5258b8.png?1746850332" title=""><img class="img-responsive item-image" alt=" (14341)" data-reference="" src="../../_assets/318de9c905.webp" width="640" height="298"></a><h4 id="heading36"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item45178" data-item-id="45178" data-item-type="ItemHeading"><h3 class="item-body" id="heading37">【5-6】第5章 章末問題</h3></div>
+        
+        <div class="article-item item_markdown " id="item45179" data-item-id="45179" data-item-type="ItemMarkdown"><h4 id="heading38">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item45180" data-item-id="45180" data-item-type="ItemText"><div class="item-body-hbr">これまで学んだ操作を使って、第6章からの本格的なページ作成に必要な「テーマ」と「プラグイン」を導入しましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item45181" data-item-id="45181" data-item-type="ItemMarkdown"><h4 id="heading39">STEP1:テーマ「Cocoon」を導入する</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item45182" data-item-id="45182" data-item-type="ItemMarkdown"><ul>
+  <li>「Cocoon」をブラウザで検索し、ダウンロードする</li>
+  <li>「外観」⇒「新しいテーマを追加」でインストール・有効化してください。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_text " id="item45183" data-item-id="45183" data-item-type="ItemText"><div class="item-body-hbr">以下の画像の状態になっていたら完成です。</div></div>
+        
+        <div class="article-item item_image " id="item45184" data-item-id="45184" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/184/medium/e7b13ffb-2c41-4c26-8496-879fc9c81dbf.png?1765448575" title=""><img class="img-responsive item-image" alt=" (45184)" data-reference="" src="../../_assets/95ce3608d0.webp" width="640" height="322"></a><h4 id="heading40"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item45185" data-item-id="45185" data-item-type="ItemMarkdown"><h4 id="heading41">STEP2:プラグインを3つ導入する</h4>
+</div>
+        
+        <div class="article-item item_text " id="item45186" data-item-id="45186" data-item-type="ItemText"><div class="item-body-hbr">以下の3つのプラグインを「プラグイン」&gt;「新規追加」から検索し、インストール・有効化してください。<br>これらは今後の課題制作で必須となります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item45187" data-item-id="45187" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01"><span class="decoration-02">Enable Media Replace</span></span>（画像の差し替え用）<br>
+2. <span class="decoration-01"><span class="decoration-02">VK Blocks</span></span>（装飾ブロック拡張用）<br>
+3. <span class="decoration-01"><span class="decoration-02">All in One SEO</span></span>（SEO設定用）</div></div>
+        
+        <div class="article-item item_text " id="item45188" data-item-id="45188" data-item-type="ItemText"><div class="item-body-hbr">「プラグイン」を確認して以下の赤枠内のものがあれば完了です。</div></div>
+        
+        <div class="article-item item_image " id="item45189" data-item-id="45189" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/189/medium/950c1359-6499-416e-bdcc-ca7e0dc20ae3.png?1765448645" title=""><img class="img-responsive item-image" alt=" (45189)" data-reference="" src="../../_assets/84878dc932.webp" width="640" height="380"></a><h4 id="heading42"></h4></div></div>
+        
+        <div class="article-item item_text " id="item14342" data-item-id="14342" data-item-type="ItemText"><div class="item-body-hbr">これで【5章 メインナビゲーションの使い方】の解説を終わります。<br><br>次の章に進みましょう！</div></div>
+        
+        <div class="article-item item_html " id="item25497" data-item-id="25497" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/U1359" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/WordPress/bUNul" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">5章：メインナビゲーションの使い方</a><ul><li><a href="#heading1" class="tocLink">この章で到達できるゴール</a></li></ul><ul><li><a href="#heading2" class="tocLink">【5-1】固定ページと投稿ページ</a><ul><li><a href="#heading3" class="tocLink">投稿ページ</a></li><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink">固定ページ</a></li><li><a href="#heading6" class="tocLink"></a></li></ul></li><li><a href="#heading7" class="tocLink">【5-2】メディアライブラリ</a><ul><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink">メディアライブラリに画像をアップロード</a></li><li><a href="#heading10" class="tocLink">メディアの詳細設定</a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">メディアを削除する</a></li><li><a href="#heading13" class="tocLink">メディアを検索する</a></li><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">【5-3】コメントとは</a><ul><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink">削除・編集</a></li><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink">コメント設定をオフにする</a></li></ul></li><li><a href="#heading20" class="tocLink">【5-4】外観とは</a><ul><li><a href="#heading21" class="tocLink">テーマ</a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink">テーマの変更</a></li><li><a href="#heading25" class="tocLink">新しいテーマの追加</a></li><li><a href="#heading26" class="tocLink">テーマの削除</a></li><li><a href="#heading27" class="tocLink">テーマのカスタマイズ</a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li></ul></li><li><a href="#heading30" class="tocLink">【5-5】プラグインとは</a><ul><li><a href="#heading31" class="tocLink">プラグインの追加</a></li><li><a href="#heading32" class="tocLink">プラグインの削除</a></li><li><a href="#heading33" class="tocLink">おすすめプラグイン</a></li><li><a href="#heading34" class="tocLink"></a></li><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li></ul></li><li><a href="#heading37" class="tocLink">【5-6】第5章 章末問題</a><ul><li><a href="#heading38" class="tocLink">目安の学習時間：10分</a></li><li><a href="#heading39" class="tocLink">STEP1:テーマ「Cocoon」を導入する</a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink">STEP2:プラグインを3つ導入する</a></li><li><a href="#heading42" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/WordPress/U1359" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/WordPress/bUNul" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

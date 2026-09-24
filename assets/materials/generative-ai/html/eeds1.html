@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/passport/eeDS1 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>5章 実践！プロンプト制作と実例 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/passport/eeDS1">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="5章 実践！プロンプト制作と実例 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="5章 実践！プロンプト制作と実例">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/passport/eeDS1">
+<meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="IkaqCLmdASxv9bNNMeqGQ6bDnHa5SCgHZlBIl_4IHta27cDFqm2OBFG46Kmz6PKQaeMteNexbiKKzWfayLIILQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>生成AIパスポート試験対策講座</div>
+
+          <div class="fw-bold h2">5章 実践！プロンプト制作と実例</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">5章 実践！プロンプト制作と実例</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：120分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【5-1】プロンプトの基礎</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">LMとLLMの基礎</a></li><li><a href="#heading6" class="tocLink">プロンプトエンジニアリングの概念</a></li><li><a href="#heading7" class="tocLink">考えてみよう！：AIへの指示の出し方</a><ul><li><a href="#heading8" class="tocLink">解答</a></li></ul></li></ul></li><li><a href="#heading9" class="tocLink">【5-2】プロンプティングの技法</a><ul><li><a href="#heading10" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading11" class="tocLink">主要なプロンプト手法</a></li><li><a href="#heading12" class="tocLink">プロンプトの構造化と出力指示の最適化</a><ul><li><a href="#heading13" class="tocLink">具体例</a></li></ul></li></ul></li><li><a href="#heading14" class="tocLink">【5-3】LLMプロンプティングの実践と実務応用</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading16" class="tocLink">基本的なテキスト処理</a></li><li><a href="#heading17" class="tocLink">ビジネス実務への応用</a></li><li><a href="#heading18" class="tocLink">練習問題：メール作成プロンプトの構築</a><ul><li><a href="#heading19" class="tocLink">問題</a></li><li><a href="#heading20" class="tocLink">解答例</a></li></ul></li><li><a href="#heading21" class="tocLink">生成AIの不得意なこと（限界の理解）</a></li></ul></li><li><a href="#heading22" class="tocLink">【5-4】5章 -章末課題- [実務プロンプトの作成]</a><ul><li><a href="#heading23" class="tocLink">問題</a></li><li><a href="#heading24" class="tocLink">解答例</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item46491" data-item-id="46491" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/passport/05VUA" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/passport/9i81Z" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item46434" data-item-id="46434" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">5章 実践！プロンプト制作と実例</h2></div>
+        
+        <div class="article-item item_markdown " id="item46435" data-item-id="46435" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：120分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item46436" data-item-id="46436" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item46437" data-item-id="46437" data-item-type="ItemMarkdown"><ul>
+  <li>高精度な回答を得るためのプロンプト技術を習得する</li>
+  <li>ビジネスシーンでの具体的な応用方法を実践する</li>
+  <li>生成AIの特性を理解し、得意なことと不得意なことを判別できる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item46438" data-item-id="46438" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【5-1】プロンプトの基礎</h2></div>
+        
+        <div class="article-item item_markdown " id="item46439" data-item-id="46439" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item46440" data-item-id="46440" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">LMとLLMの基礎</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46441" data-item-id="46441" data-item-type="ItemRichText"><div class="item-body-hbr">生成AIの中核を成すのが「言語モデル」です。<br>
+プロンプトを使いこなすために、まずはその仕組みを理解する必要があります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46442" data-item-id="46442" data-item-type="ItemRichText"><div class="item-body-hbr">・<span class="decoration-01"><span class="decoration-02">LM（Language Model：言語モデル）</span></span><br>
+　 &nbsp; ・ある単語の次にどの単語が来る確率が高いかを計算する確率モデルです。<br>
+　 &nbsp; ・<span class="decoration-01"><span class="decoration-02">n-gramモデル</span></span>：直前のn-1個の単語だけを見て、次の単語を予測する単純なモデルです。計算負荷が低く高速ですが、長い文章の文脈を捉えるのは苦手です。<br>
+ &nbsp; ・<span class="decoration-01"><span class="decoration-02">ニューラル言語モデル</span></span>：人間の脳を模したニューラルネットワークを利用したモデルです。n-gramモデルよりも複雑な計算を行いますが、文脈の理解力が格段に向上しました。<br>
+<br>
+<span class="decoration-01"><span class="decoration-02"><span>・</span>LLM（Large Language Model：大規模言語モデル）</span></span><br>
+　 &nbsp; ・膨大なデータと数十億以上のパラメータ（情報のつながりの強さを示す数値）を持つ巨大な言語モデルです。<br>
+　 &nbsp; ・ <span class="decoration-01"><span class="decoration-02">プレトレーニング（事前学習）</span></span>：インターネット上の膨大なテキストデータをあらかじめ学習させる工程を指します。これにより、言語の基礎知識を身に付けます。</div></div>
+        
+        <div class="article-item item_html " id="item46443" data-item-id="46443" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>重要語句：言語モデルの本質</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">言語モデルは「文章の意味」を人間と同じように理解しているわけではありません。</span></li>
+            <li>統計的に「次に続く確率が最も高い言葉」を選び出している確率的な仕組みであることを意識することが、プロンプトの工夫に繋がります。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item46444" data-item-id="46444" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">プロンプトエンジニアリングの概念</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46445" data-item-id="46445" data-item-type="ItemRichText"><div class="item-body-hbr">AIに対する命令文を「<span class="decoration-01"><span class="decoration-02">プロンプト</span></span>」と呼び、その精度を高めるための設計・最適化技術を「<span class="decoration-01"><span class="decoration-02">プロンプトエンジニアリング</span></span>」と呼びます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46446" data-item-id="46446" data-item-type="ItemRichText"><div class="item-body-hbr">・<span class="decoration-01"><span class="decoration-02">ハイパーパラメータの調整</span></span><br>
+ &nbsp;AIの出力の「多様性」や「正確性」を制御する設定値です。<br>
+ &nbsp; &nbsp;・<span class="decoration-01"><span class="decoration-02">Temperature（温度）</span></span>：出力のランダム性を制御します。0に近づけるほど論理的で一貫した回答になり、1に近づけるほど独創的で多様な回答になります。<br>
+ &nbsp; &nbsp;・<span class="decoration-01"><span class="decoration-02">Top-p（核サンプリング）</span></span>：次に続く単語の候補を、累積確率が特定のしきい値（p）に達するまでの単語群から選ぶ手法です。<br>
+<br>
+・<span class="decoration-01"><span class="decoration-02">プロンプトの構成要素</span></span><br>
+ &nbsp;効果的なプロンプトは、以下の4つの要素を組み合わせて構成します。これらを明確に区別して伝えることで、AIの誤解を防ぎます。<br>
+ &nbsp; ・<span class="decoration-01"><span class="decoration-02">Instruction（指示）</span></span>：AIに実行させたい具体的なタスク。<br>
+ &nbsp; ・<span class="decoration-01"><span class="decoration-02">Context（背景）</span></span>：AIが参照すべき情報や、AI自身の役割（ロール）。<br>
+ &nbsp; ・<span class="decoration-01"><span class="decoration-02">Input Data（入力データ）</span></span>：処理の対象となる具体的なテキストやデータ。<br>
+ &nbsp; ・<span class="decoration-01"><span class="decoration-02">Output Indicator（出力形式）</span></span>：回答のフォーマット（表、箇条書き、JSONなど）の指定。</div></div>
+        
+        <div class="article-item item_html " id="item46447" data-item-id="46447" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        </tbody><thead>
+            <tr>
+                <th scope="col"><div><div>要素</div></div></th>
+                <th scope="col"><div><div>役割と具体例</div></div></th>
+            </tr>
+        </thead>
+        <tbody><tr>
+            <th scope="row"><div><div>指示（Instruction）</div></div></th>
+            <td><div><div>「300文字で要約してください」「キャッチコピーを5つ案出ししてください」など。</div></div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div><div>背景（Context）</div></div></th>
+            <td><div><div>「あなたはプロのWebライターです」「ターゲットは30代の会社員です」などの設定。</div></div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div><div>入力データ（Input Data）</div></div></th>
+            <td><div><div>要約の対象となる元の文章や、分析したい売上データなどの具体的な情報。</div></div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div><div>出力形式（Output Indicator）</div></div></th>
+            <td><div><div>「Markdownの表形式で出力してください」「箇条書きで記述してください」などの形式指定。</div></div></td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item46448" data-item-id="46448" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">考えてみよう！：AIへの指示の出し方</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46449" data-item-id="46449" data-item-type="ItemRichText"><div class="item-body-hbr">AIに対して「美味しいカレーの作り方を教えて」と聞く場合と、「5歳の子どもでも作れる、火を使わないカレーのレシピを教えて」と聞く場合、どちらが目的に合った回答が得られるか考えてみましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item46450" data-item-id="46450" data-item-type="ItemMarkdown"><h4 id="heading8">解答</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item46451" data-item-id="46451" data-item-type="ItemRichText"><div class="item-body-hbr">後者の方が「5歳の子ども」「火を使わない」という明確な「<span class="decoration-02"><span class="decoration-01">背景（Context）</span></span>」と「<span class="decoration-01"><span class="decoration-02">指示（Instruction）</span></span>」が含まれているため、状況に即した実用的な回答が得られます。</div></div>
+        
+        <div class="article-item item_heading " id="item46452" data-item-id="46452" data-item-type="ItemHeading"><h2 class="item-body" id="heading9">【5-2】プロンプティングの技法</h2></div>
+        
+        <div class="article-item item_markdown " id="item46453" data-item-id="46453" data-item-type="ItemMarkdown"><h4 id="heading10">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item46454" data-item-id="46454" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">主要なプロンプト手法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46455" data-item-id="46455" data-item-type="ItemRichText"><div class="item-body-hbr">回答の精度を劇的に変えるための代表的なテクニックを紹介します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46456" data-item-id="46456" data-item-type="ItemRichText"><div class="item-body-hbr">・<span class="decoration-01"><span class="decoration-02">Zero-Shot プロンプティング</span></span><br>
+ &nbsp; &nbsp;・AIに対して具体的な例（サンプル）を与えず、指示だけを伝えて回答させる手法です。<br>
+<br>
+・<span class="decoration-01"><span class="decoration-02">Few-Shot プロンプティング</span></span><br>
+ &nbsp; &nbsp;・いくつかの「入力と出力の例」をプロンプトに含める手法です。AIに出力パターンの傾向を学習させることができ、形式を整えたい場合に非常に有効です。</div></div>
+        
+        <div class="article-item item_html " id="item46457" data-item-id="46457" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>Zero-Shot vs Few-Shot</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">Zero-Shot：例を与えない。</span>「日本語を英語に訳して。入力：こんにちは」</li>
+            <li><span class="decoration-02">Few-Shot：例を与える。</span>「入力：おはよう 出力：Good morning / 入力：さようなら 出力：Goodbye / 入力：こんにちは」</li>
+            <li>複雑な形式で出力させたい場合は、<span class="decoration-02">Few-Shotを用いる方が圧倒的に精度が安定します。</span></li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item46458" data-item-id="46458" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">プロンプトの構造化と出力指示の最適化</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46459" data-item-id="46459" data-item-type="ItemRichText"><div class="item-body-hbr">情報を整理して伝えることで、AIは指示を正確に理解できるようになります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46460" data-item-id="46460" data-item-type="ItemRichText"><div class="item-body-hbr">・<span class="decoration-01"><span class="decoration-02">プロンプトの構造化</span></span>：情報を「### 指示」や「---」などの記号で区切り、視覚的に整理して伝える手法です。<br>
+・<span class="decoration-01"><span class="decoration-02">出力指示の最適化</span></span>：ただ「詳しく」と書くのではなく、「専門用語を使わずに」「3つのステップで」といった具体的な制約を追加し、出力を制御します。</div></div>
+        
+        <div class="article-item item_markdown " id="item46461" data-item-id="46461" data-item-type="ItemMarkdown"><h4 id="heading13">具体例</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item46462" data-item-id="46462" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・情報未整理の場合</span></div></div>
+        
+        <div class="article-item item_code " id="item46463" data-item-id="46463" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>新しく発売する「無添加のプロテインバー」のマーケティングプランを考えてください。
+ターゲットは20代から30代の働く女性。
+予算は100万円。
+期間は3ヶ月。
+SNS広告とインフルエンサー、あとは店頭での施策も入れたいです。
+売上目標は1万本。
+なるべく具体的なスケジュールも出してください。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプトA</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item46464" data-item-id="46464" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・情報構造化の場合</span></div></div>
+        
+        <div class="article-item item_code " id="item46465" data-item-id="46465" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>### 役割
+あなたは経験豊富なマーケティングコンサルタントです。
+
+### 依頼目的
+新商品「無添加プロテインバー」の認知拡大と売上達成のための、戦略的なプロモーション案を作成してください。
+
+### プロジェクト詳細
+- **ターゲット:** 20〜30代の働く女性（健康意識が高く、忙しい層）
+- **予算:** 100万円
+- **実施期間:** 3ヶ月間
+- **目標:** 累計販売数 10,000本
+
+### 提案に含める項目
+1. **コンセプト:** ターゲットに刺さる訴求キャッチコピー
+2. **チャネル別施策:** SNS広告（Instagram/TikTok）、インフルエンサー、店頭POPの使い分け
+3. **予算配分:** 100万円の最適配分案
+4. **実行スケジュール:** 1ヶ月ごとのガントチャート形式
+
+### 出力形式
+- セクションごとに見出しをつけてください。
+- スケジュールや予算配分は、見やすさを重視して「表形式」で出力してください。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプトB</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item46466" data-item-id="46466" data-item-type="ItemHeading"><h2 class="item-body" id="heading14">【5-3】LLMプロンプティングの実践と実務応用</h2></div>
+        
+        <div class="article-item item_markdown " id="item46467" data-item-id="46467" data-item-type="ItemMarkdown"><h4 id="heading15">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item46468" data-item-id="46468" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">基本的なテキスト処理</h3></div>
+        
+        <div class="article-item item_text " id="item46469" data-item-id="46469" data-item-type="ItemText"><div class="item-body-hbr">LLMは言葉の並び替えや変換が非常に得意です。<br>日常業務ですぐに使える活用例を確認しましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46470" data-item-id="46470" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">文章の校正・整理・要約・変換</span></span><br>
+　 &nbsp; ・誤字脱字の修正、長文の要点抽出、さらに「箇条書きを文章にする」「文章を箇条書きにする」といった形式変換が可能です。<br>
+<br>
+<span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">話者の設定変更・例え話の生成</span></span><br>
+　 &nbsp; ・「新入社員向けに説明して」「ベテラン技術者のトーンで書いて」といった話し方の変更や、難しい概念を身近なものに例えて解説させることができます。<br>
+<br>
+<span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">文章を会話のやり取りへ変換・数字の変換</span></span><br>
+ &nbsp;　 ・マニュアルを対話形式のFAQに書き換えたり、漢数字を算用数字に一括変換したりする作業も効率化できます。</div></div>
+        
+        <div class="article-item item_heading " id="item46471" data-item-id="46471" data-item-type="ItemHeading"><h3 class="item-body" id="heading17">ビジネス実務への応用</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46472" data-item-id="46472" data-item-type="ItemRichText"><div class="item-body-hbr">具体的なビジネスシーンでの活用方法を網羅します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46473" data-item-id="46473" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">メール作成（国内・海外企業宛）</span></span>：<br>
+状況を伝えるだけで、丁寧な敬語や正確な英語を用いたメール原稿を作成します。<br>
+<br>
+<span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">アンケート項目作成・分析</span></span>：<br>
+目的に沿った設問の設計から、自由記述の回答内容をポジティブ・ネガティブに分類する分析まで行えます。<br>
+<br>
+<span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">キャッチコピー・書類テンプレート・アジェンダ作成</span></span>：<br>
+企画の骨子や会議の議事録、会議の進行計画を素早く作成します。<br>
+<br>
+<span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">業務手順の分解・タスク抽出</span></span>：<br>
+漠然としたプロジェクトから、今日やるべき具体的なToDoリストを生成させます。<br>
+<br>
+<span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">実務特化（姓と名の分離・ふりがなの記載）</span></span>：<br>
+Excel等で混在している氏名を分離したり、フリガナを付与したりするデータ成形もプロンプトで完結します。<br>
+<br>
+<span class="decoration-01">・</span><span class="decoration-02"><span class="decoration-01">ブレインストーミング・ディベート</span></span>：<br>
+新しいアイデアの壁打ち相手や、あえて反対意見を出してもらう批判的思考のパートナーとして活用します。</div></div>
+        
+        <div class="article-item item_heading " id="item46474" data-item-id="46474" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">練習問題：メール作成プロンプトの構築</h3></div>
+        
+        <div class="article-item item_markdown " id="item46475" data-item-id="46475" data-item-type="ItemMarkdown"><h4 id="heading19">問題</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item46476" data-item-id="46476" data-item-type="ItemRichText"><div class="item-body-hbr">以下の条件を満たす、取引先への謝罪メールを作成するためのプロンプトを作成してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46477" data-item-id="46477" data-item-type="ItemRichText"><div class="item-body-hbr">・条件：商品の発送が2日遅れる。原因はシステム障害。お詫びとして次回10％割引を提示する。</div></div>
+        
+        <div class="article-item item_markdown " id="item46478" data-item-id="46478" data-item-type="ItemMarkdown"><h4 id="heading20">解答例</h4>
+</div>
+        
+        <div class="article-item item_code " id="item46479" data-item-id="46479" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>あなたは誠実な営業担当者です。以下の情報を元に、取引先への謝罪メールを作成してください。
+【背景】
+・商品名：A-100
+・遅延期間：2日間
+・原因：システム障害
+・対応：次回10％割引クーポンを付与
+【出力形式】
+・件名と本文を含めること</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト-解答例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item46480" data-item-id="46480" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">生成AIの不得意なこと（限界の理解）</h3></div>
+        
+        <div class="article-item item_rich_text " id="item46481" data-item-id="46481" data-item-type="ItemRichText"><div class="item-body-hbr">AIを過信せず、不得意な分野を理解しておくことが重要です。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46482" data-item-id="46482" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">正確な文字数指定の困難さ</span></span>：<br>
+AIは「トークン」という単位で文字を扱うため、「500文字ぴったり」といった厳密な指定は苦手です。<br>
+<br>
+<span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">計算の誤り</span></span>：<br>
+数学的な論理思考が必要な複雑な計算では、間違い（ハルシネーション）が発生することがあります。<br>
+<br>
+<span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">最新情報の不足</span></span>：<br>
+プレトレーニングが終了した時点以降の情報は持っていません（RAG等の外部連携がない場合）。<br>
+<br>
+<span class="decoration-01">・</span><span class="decoration-01"><span class="decoration-02">芸術の批評</span></span>：<br>
+客観的な評価基準がない「美しさ」や「感動」といった感性に基づく評価は、個人の好みを反映できません。</div></div>
+        
+        <div class="article-item item_rich_text " id="item46483" data-item-id="46483" data-item-type="ItemRichText"><div class="item-body-hbr">※生成AIは、もっともらしい「嘘」をつくことがあります。<br>
+特に最新のニュース、法律の条文、複雑な計算結果については、必ず一次情報でファクトチェックを行う必要があります。</div></div>
+        
+        <div class="article-item item_heading " id="item46484" data-item-id="46484" data-item-type="ItemHeading"><h2 class="item-body" id="heading22">【5-4】5章 -章末課題- [実務プロンプトの作成]</h2></div>
+        
+        <div class="article-item item_markdown " id="item46485" data-item-id="46485" data-item-type="ItemMarkdown"><h4 id="heading23">問題</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item46486" data-item-id="46486" data-item-type="ItemRichText"><div class="item-body-hbr">ある顧客名簿リスト（例：田中太郎、佐藤美咲、鈴木一郎...）があります。<br>
+このリストから「姓」と「名」を分離し、さらに「ふりがな（カタカナ）」を付与して、Markdownの表形式で出力させるためのプロンプトを作成してください。</div></div>
+        
+        <div class="article-item item_markdown " id="item46487" data-item-id="46487" data-item-type="ItemMarkdown"><h4 id="heading24">解答例</h4>
+</div>
+        
+        <div class="article-item item_code " id="item46488" data-item-id="46488" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>あなたはデータ整理のプロフェッショナルです。
+以下の顧客リストを【出力形式】に従って変換してください。
+
+【例】
+入力：田中太郎
+出力：| 田中 | 太郎 | タナカ タロウ |
+
+【入力データ】
+佐藤美咲
+鈴木一郎
+高橋優子
+
+【出力形式】
+Markdownの表形式
+列：姓 | 名 | ふりがな</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト-解答例2</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item46489" data-item-id="46489" data-item-type="ItemHtml"><div class="item-body">
+<div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>作成したプロンプトをチェックしよう</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">Few-Shotが含まれているか：</span>例示があることで、AIは「姓と名を分ける」という意図を正確に理解できます。</li>
+            <li><span class="decoration-02">出力形式が指定されているか：</span>表形式（Markdown）を指定することで、後の業務でそのままコピー＆ペーストして使えます。</li>
+            <li><span class="decoration-02">情報の欠落がないか：</span>元のリストにある名前が全て処理されているか確認しましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item46490" data-item-id="46490" data-item-type="ItemRichText"><div class="item-body-hbr">これで「実践！プロンプト制作と実例」の解説を終わります。 次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item46077" data-item-id="46077" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/passport/05VUA" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/passport/9i81Z" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">5章 実践！プロンプト制作と実例</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：120分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【5-1】プロンプトの基礎</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">LMとLLMの基礎</a></li><li><a href="#heading6" class="tocLink">プロンプトエンジニアリングの概念</a></li><li><a href="#heading7" class="tocLink">考えてみよう！：AIへの指示の出し方</a><ul><li><a href="#heading8" class="tocLink">解答</a></li></ul></li></ul></li><li><a href="#heading9" class="tocLink">【5-2】プロンプティングの技法</a><ul><li><a href="#heading10" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading11" class="tocLink">主要なプロンプト手法</a></li><li><a href="#heading12" class="tocLink">プロンプトの構造化と出力指示の最適化</a><ul><li><a href="#heading13" class="tocLink">具体例</a></li></ul></li></ul></li><li><a href="#heading14" class="tocLink">【5-3】LLMプロンプティングの実践と実務応用</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading16" class="tocLink">基本的なテキスト処理</a></li><li><a href="#heading17" class="tocLink">ビジネス実務への応用</a></li><li><a href="#heading18" class="tocLink">練習問題：メール作成プロンプトの構築</a><ul><li><a href="#heading19" class="tocLink">問題</a></li><li><a href="#heading20" class="tocLink">解答例</a></li></ul></li><li><a href="#heading21" class="tocLink">生成AIの不得意なこと（限界の理解）</a></li></ul></li><li><a href="#heading22" class="tocLink">【5-4】5章 -章末課題- [実務プロンプトの作成]</a><ul><li><a href="#heading23" class="tocLink">問題</a></li><li><a href="#heading24" class="tocLink">解答例</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/passport/05VUA" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/passport/9i81Z" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

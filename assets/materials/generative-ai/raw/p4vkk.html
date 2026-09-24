@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="I33mcUgv81ewBj9NsT0Qwg==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1686" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/P4VKk" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>4章：【動画編】VeoによるAI動画生成 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/P4VKk">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="4章：【動画編】VeoによるAI動画生成 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/112/medium/75ac8c79-7f2f-4099-97bf-1996ef9dbc60.png?1753145277">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="4章：【動画編】VeoによるAI動画生成">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/P4VKk">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/112/large/75ac8c79-7f2f-4099-97bf-1996ef9dbc60.png?1753145277">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/P4VKk"
+    },
+    "headline": "4章：【動画編】VeoによるAI動画生成",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/035/112/medium/75ac8c79-7f2f-4099-97bf-1996ef9dbc60.png?1753145277",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-22T10:02:47+09:00",
+    "dateModified": "2025-09-26T10:32:23+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="EddITpHs4Qyu13XPgaHdSzHgBCPl_p12jLWZUVYZKEFDNb-6M65Tk0sqkVqFjwhGPh7Wl8ev1WkNye6WaT7lKw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材3 生成AI素材の動画編集における活用術</div>
+
+          <div class="fw-bold h2">4章：【動画編】VeoによるAI動画生成</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item37136" data-item-id="37136" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="TMnIA" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="S3PpU" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35080" data-item-id="35080" data-item-type="ItemHeading"><h2 class="item-body">4章：【動画編】VeoによるAI動画生成</h2></div>
+        
+        <div class="article-item item_markdown " id="item35081" data-item-id="35081" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：1時間10分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item35082" data-item-id="35082" data-item-type="ItemMarkdown"><h4 id="section">この章の到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item35083" data-item-id="35083" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>Googleの動画生成AI「Veo」のモデルごとの違いと、その利用に必要な料金プランを理解できる。</li>
+  <li>Geminiを使い、テキストプロンプトから高品質な動画クリップを生成できるようになる。</li>
+  <li>現環境のVeoで縦動画を生成する方法について理解する。</li>
+</ul</div></div>
+        
+        <div class="article-item item_heading " id="item35084" data-item-id="35084" data-item-type="ItemHeading"><h2 class="item-body">【4-1】Google AI Proプランと次世代の動画生成</h2></div>
+        
+        <div class="article-item item_markdown " id="item35086" data-item-id="35086" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item35085" data-item-id="35085" data-item-type="ItemMarkdown"><p>このセクションでは、Googleの最先端AI動画生成モデル「Veo」の概要と、その利用に必要な準備、そして生成方法について学びます。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item35087" data-item-id="35087" data-item-type="ItemHeading"><h3 class="item-body">はじめに：Geminiで動画を創る</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35088" data-item-id="35088" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、Googleが開発した最先端のAIモデル「Veo」を、対話AIであるGeminiのインターフェースを通じて操作する方法を学びます。<br>
+普段使っているチャット画面に指示を出すだけで、高品質な動画が生成される。<br>
+そんな未来のクリエイティブ体験に触れていきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item35089" data-item-id="35089" data-item-type="ItemHeading"><h3 class="item-body">料金体系と登録方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35090" data-item-id="35090" data-item-type="ItemRichText"><div class="item-body-hbr">Veoを利用するには、Googleの有料AIプランへの登録が必要です。多くの場合、新規ユーザー向けに無料トライアル期間が提供されています。<br>
+今回はこちらに登録しVeoを体験してみましょう！</div></div>
+        
+        <div class="article-item item_html " id="item35091" data-item-id="35091" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col"><div>プラン名</div></th>
+                <th scope="col"><div>料金</div></th>
+                <th scope="col"><div>主なAI機能・特徴</div></th>
+                <th scope="col"><div>トライアル・特典</div></th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row"><div><strong>Free</strong></div></th>
+            <td><div>￥0</div></td>
+            <td>
+                <ul>
+                    <li>Gemini 2.5 Flash / Pro (一部制限)</li>
+                    <li>Imagen 4 による画像生成</li>
+                </ul>
+            </td>
+            <td><div>Googleアカウントに付帯</div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div><strong>Google AI Pro</strong></div></th>
+            <td><div>￥2,900 / 月</div></td>
+            <td>
+                <ul>
+                    <li>Gemini 2.5 Pro をフル活用</li>
+                    <li><span class="decoration-02"><strong>Veo 3 Fast</strong> による動画生成</span></li>
+                    <li>AI映像制作ツール「Flow」</li>
+                </ul>
+            </td>
+            <td><div><span class="decoration-02"><strong>1ヶ月間無料</strong></span></div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div><strong>Google AI Ultra</strong></div></th>
+            <td><div>￥36,400 / 月</div></td>
+            <td>
+                <div>Proの特典に加え、</div>
+                <ul>
+                    <li><span class="decoration-02">最先端モデル<strong>Veo 3</strong>を最大限利用</span></li>
+                    <li>Flowのプレミアム機能</li>
+                </ul>
+            </td>
+            <td><div>3ヶ月間 割引価格</div></td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item35092" data-item-id="35092" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>無料トライアルの登録手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>Geminiの公式サイトなどにアクセスし、プランのアップグレードページへ移動します。</li>
+            <li>「Google AI Pro」プランを選択し、「1か月間無料トライアル」などのボタンをクリックします。</li>
+            <li>画面の指示に従い、Googleアカウントでログインし、支払い情報（クレジットカード等）を登録します。（※トライアル期間内に解約すれば請求は発生しません）</li>
+            <li>登録が完了すると、GeminiでVeoが利用可能な状態になります。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item35093" data-item-id="35093" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>【Veoが利用できない方へ】代替ツールのご案内</strong></div>
+    </div>
+    <div class="content-area">
+        <p>Google AI Proの無料トライアルを既に利用済みなどの理由で、Veoの使用が難しい場合でもご安心ください。<strong>無理に有料プランに登録する必要はありません。</strong></p>
+        <p>その場合は、Veoの代わりに、無料で利用できる以下のAI動画生成ツールでこの章の学習を体験しましょう。</p>
+        <ul>
+            <li><strong>Runway:</strong> テキストや画像から動画を生成する、代表的なAIツールの一つ。無料クレジットの範囲内で利用できます。</li>
+            <li><strong>Pika:</strong> Runwayと並んで人気の動画生成AI。こちらも無料での利用が可能です。</li>
+        </ul>
+        <p>今後の章で登場する<span class="decoration-02">章末課題などでも、ここで紹介した代替ツールで生成した動画素材を使用していただいて、全く問題ありません。</span></p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35094" data-item-id="35094" data-item-type="ItemHeading"><h3 class="item-body">【重要】動画生成の利用制限と注意点</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35095" data-item-id="35095" data-item-type="ItemRichText"><div class="item-body-hbr">Veoの利用には、特に注意すべき重要な制限事項があります。</div></div>
+        
+        <div class="article-item item_html " id="item35096" data-item-id="35096" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>動画生成の回数制限について</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>公式サイトには明記されていませんが、有料プランであってもAIによる動画生成には回数制限があると言われています。</li>
+            <li>例えば「Google AI Pro」プランの場合、<span class="decoration-02">Veo 3 Fastによる動画生成は1日3回まで</span>、といった制限が課されます。</li>
+            <li>このため、<span class="decoration-02">プロンプトは慎重に作成し、「一回で」理想に近い結果を得る</span>ことを目指す必要があります。無駄打ちは注意しましょう。</li>
+            <li>トライアル期間が終了すると料金が発生する点と合わせて、計画的な利用を心がけてください。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35097" data-item-id="35097" data-item-type="ItemHeading"><h2 class="item-body">【4-2】Veoのモデルと性能を理解する</h2></div>
+        
+        <div class="article-item item_markdown " id="item35098" data-item-id="35098" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item35099" data-item-id="35099" data-item-type="ItemRichText"><div class="item-body-hbr">Veoには複数のモデルが存在し、それぞれに特徴があります。<br>
+効果的なプロンプトを作成するために、その性能を理解しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item35100" data-item-id="35100" data-item-type="ItemHeading"><h3 class="item-body">Veo3の主な特徴</h3></div>
+        
+        <div class="article-item item_html " id="item35101" data-item-id="35101" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><strong>高精細・最大8秒</strong>：<br>1080p以上の高解像度で、最大8秒の動画を生成できます。</li>
+  <li><strong>音声付き動画の生成</strong>：<br>映像だけでなく、プロンプトの内容に合った効果音や環境音を含んだ<span class="decoration-02">「音付き」</span>の動画を生成できる場合があります。</li>
+  <li><strong>映像言語の理解</strong>：<br><span class="decoration-02">「ドローンショット」「タイムラプス」</span>といった、専門的な映像表現の指示を理解し、反映させることができます。</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item35102" data-item-id="35102" data-item-type="ItemHeading"><h3 class="item-body">Veo 3 Fast と Veo 3 の違い</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35103" data-item-id="35103" data-item-type="ItemRichText"><div class="item-body-hbr">主に利用することになる2つのモデルには、以下のような違いがあります。</div></div>
+        
+        <div class="article-item item_html " id="item35104" data-item-id="35104" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>Veoモデルの違い</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><strong>Veo 3 Fast（Google AI Proで利用）</strong>
+                <ul class="nested-ul">
+                    <li>高品質を維持しつつ、<span class="decoration-02">生成速度を最適化したモデル</span>です。素早く結果を得たい場合に適しています。本教材では、主にこちらのモデルを使用します。</li>
+                </ul>
+            </li>
+            <li><strong>Veo 3（Google AI Ultraで利用）</strong>
+                <ul class="nested-ul">
+                    <li>Googleの<span class="decoration-02">最も性能の高い最先端モデル</span>です。より複雑で、より高品質な映像表現が可能ですが、生成に時間がかかる場合があります。</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35105" data-item-id="35105" data-item-type="ItemHeading"><h2 class="item-body">【4-3】実践！GeminiでVeo動画を生成する</h2></div>
+        
+        <div class="article-item item_markdown " id="item35106" data-item-id="35106" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item35107" data-item-id="35107" data-item-type="ItemRichText"><div class="item-body-hbr">それでは、実際にGeminiを操作して、Veoで動画クリップを生成する流れを体験しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item35108" data-item-id="35108" data-item-type="ItemHeading"><h3 class="item-body">Geminiでの動画生成プロンプト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35109" data-item-id="35109" data-item-type="ItemRichText"><div class="item-body-hbr">利用回数の制限があるため、一回のプロンプトでいかに具体的かつ詳細な指示を出せるかが、Veoを使いこなす上での最も重要なスキルです。<br>
+教材2で学んだプロンプトの4大要素（役割、指示、文脈、出力形式）を思い出し、可能な限りの情報を盛り込みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item35110" data-item-id="35110" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>Geminiでの動画生成手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>Gemini（gemini.google.com）にアクセスします。</li>
+            <li>プロンプト入力欄に、生成したい動画のイメージを、<span class="decoration-02">スタイル、雰囲気、カメラワーク、被写体の動き、色味など、具体的かつ詳細に</span>記述します。</li>
+            <li>プロンプトを送信し、動画が生成されるのを待ちます。</li>
+            <li>生成された動画を確認し、問題なければダウンロードします。回数制限があるため、ここから対話で修正するのは最後の手段と考えましょう。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_code " id="item35111" data-item-id="35111" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>森の中を流れる小さな川の、穏やかな動画、朝日が木々の間から差し込み、
+川面がキラキラと輝いている。
+ドローンがゆっくりと川の上を移動していくようなカメラワーク。
+4K、シネマティック、8秒間。」</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト</cite></div></div></div>
+        
+        <div class="article-item item_image " id="item35112" data-item-id="35112" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/112/medium/75ac8c79-7f2f-4099-97bf-1996ef9dbc60.png?1753145277" title=""><img class="img-responsive item-image" alt=" (35112)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/112/medium/75ac8c79-7f2f-4099-97bf-1996ef9dbc60.png?1753145277" width="640" height="316" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item35113" data-item-id="35113" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=P4VKk&amp;item_id=35113" rel="nofollow noopener noreferrer" target="_blank">教材3 生成AI素材の動画編集における活用術 4-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材3 生成AI素材の動画編集における活用術 4-1" data-reference="https://www.dropbox.com/scl/fi/uarbvmvtybjdq4vg9lkku/VideoEditor-AIpronpt_4.1.1.0_.mp4?rlkey=chlg64xz9zkqs1ildhn4qty9a&amp;st=womt7sxl&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/113/thumb/64d7e248-17ef-473c-9011-e760a12febd6.png?1754961700" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item35114" data-item-id="35114" data-item-type="ItemHeading"><h2 class="item-body">【4-4】AI Studioで縦長動画を生成する</h2></div>
+        
+        <div class="article-item item_markdown " id="item35115" data-item-id="35115" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item35116" data-item-id="35116" data-item-type="ItemRichText"><div class="item-body-hbr">Geminiで利用できるVeoは非常に高品質ですが、現在の仕様（2025年7月時点）では、<span class="decoration-02">8秒の横長（16:9）動画</span>の生成に限定されています。<br>
+では、Instagramリールのような「縦長動画」が必要な場合はどうすれば良いのでしょうか。<br>
+その答えが、プロ向けのツール「Google AI Studio(https://aistudio.google.com/prompts/new_chat)」です。</div></div>
+        
+        <div class="article-item item_heading " id="item35117" data-item-id="35117" data-item-type="ItemHeading"><h3 class="item-body">Gemini (Veo 3) と AI Studio (Veo 2) の違い</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35118" data-item-id="35118" data-item-type="ItemRichText"><div class="item-body-hbr">現在、同じVeoという名前でも、利用するインターフェースによって、使えるモデルのバージョンや機能が異なります。</div></div>
+        
+        <div class="article-item item_html " id="item35119" data-item-id="35119" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col"><div>ツール</div></th>
+                <th scope="col"><div>モデル</div></th>
+                <th scope="col"><div>主な利点</div></th>
+                <th scope="col"><div>主な制限 / 違い</div></th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row"><div><strong>Gemini</strong></div></th>
+            <td><div>Veo 3 Fast</div></td>
+            <td><div>・最新モデルで高品質<br>・音声付きで生成される場合がある</div></td>
+            <td><div><span class="decoration-02">横長（16:9）しか生成できない</span></div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div><strong>AI Studio</strong></div></th>
+            <td><div>Veo 2</div></td>
+            <td><div>・<span class="decoration-02">アスペクト比を指定可能（9:16など）</span><br>・動画の長さを秒単位で指定可能</div></td>
+            <td><div>・旧モデルである<br>・音声は生成されない</div></td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item35120" data-item-id="35120" data-item-type="ItemRichText"><div class="item-body-hbr">このように、縦長動画が必要な場合はAI Studioを使う、という使い分けを覚えておきましょう。<br>
+(今後のアップデート次第ではveo3でも縦型動画が生成できるようになる可能性があります)</div></div>
+        
+        <div class="article-item item_heading " id="item35121" data-item-id="35121" data-item-type="ItemHeading"><h3 class="item-body">AI Studioでのアスペクト比変更手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35122" data-item-id="35122" data-item-type="ItemRichText"><div class="item-body-hbr">AI Studioでの操作は非常にシンプルです。<br>
+「Run settings」パネルでアスペクト比を選択するだけで、縦長動画を生成できます。</div></div>
+        
+        <div class="article-item item_html " id="item35123" data-item-id="35123" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>AI Studioでの縦長動画生成手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>Google AI Studio(https://aistudio.google.com/prompts/new_chat)の「Generate Media」からVeoプロジェクトを開きます。</li>
+            <li>プロンプト入力欄に、生成したい動画のイメージを記述します。</li>
+            <li>画面右側の「Run settings」パネルにある「Aspect ratio」の項目で、<span class="decoration-02">「9:16」のアイコンをクリック</span>します。</li>
+            <li>必要に応じて「Video duration」などを設定し、「生成」ボタンをクリックします。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item35124" data-item-id="35124" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/124/medium/4aec5b05-65aa-4667-9ebd-599a6f1fe7f7.png?1753145591" title=""><img class="img-responsive item-image" alt=" (35124)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/124/medium/4aec5b05-65aa-4667-9ebd-599a6f1fe7f7.png?1753145591" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item35125" data-item-id="35125" data-item-type="ItemHeading"><h2 class="item-body">【4-5】4章 -章末課題- [心を落ち着かせるアクセント動画の生成]</h2></div>
+        
+        <div class="article-item item_markdown " id="item40148" data-item-id="40148" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item35126" data-item-id="35126" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35127" data-item-id="35127" data-item-type="ItemRichText"><div class="item-body-hbr">マインドフルネスアプリ「SereneMind」のプロモーション動画で、場面転換やイメージ映像として使用する、心を落ち着かせるような短い動画クリップをGemini（Veo）を使って1点生成してください。<br>
+（※利用回数制限を考慮し、課題は1点とします）<br>
+<br>
+<span class="decoration-01">クリップのイメージ</span>：中心から外側へ、柔らかな光のオーラがゆっくりと広がっていく、高品質で滑らかな映像<br>
+<span class="decoration-02">※ 生成した素材は５章で使用するため保存しておいてください。</span></div></div>
+        
+        <div class="article-item item_heading " id="item35128" data-item-id="35128" data-item-type="ItemHeading"><h3 class="item-body">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item35129" data-item-id="35129" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>Geminiを開きます。</li>
+            <li>限られた生成回数を無駄にしないよう、プロンプトを慎重に作成します。</li>
+            <li>プロンプト例：「<span class="decoration-02">中心からゆっくりと外側へ広がる、淡い青と紫のグラデーションの、柔らかな光のオーラ。ミニマルで、非常に滑らかな美しいアニメーション。背景は真っ白。4K、シネマティック、長さは8秒。</span>」</li>
+            <li>プロンプトを送信し、動画を生成します。</li>
+            <li>生成された動画が、アプリのコンセプトに合う、高品質で心を落ち着かせるような映像になっているか確認できれば完成です。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item35130" data-item-id="35130" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答例</span></div></div>
+        
+        <div class="article-item item_code " id="item35131" data-item-id="35131" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>中心からゆっくりと外側へ広がる、淡い青と紫のグラデーションの、柔らかな光のオーラ。
+ミニマルで、非常に滑らかな美しいアニメーション。背景は真っ白。
+4K、シネマティック、長さは8秒。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト</cite></div></div></div>
+        
+        <div class="article-item item_link " id="item35132" data-item-id="35132" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=P4VKk&amp;item_id=35132" rel="nofollow noopener noreferrer" target="_blank">教材3 生成AI素材の動画編集における活用術 4-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材3 生成AI素材の動画編集における活用術 4-2" data-reference="https://www.dropbox.com/scl/fi/4y5villpt3bvu2oxy8omf/VideoEditor-AIpronpt_4.2.1.0_.mp4?rlkey=z9be1jhgycjrondd6uxjf9thk&amp;st=ypcuwao0&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/132/thumb/21edd609-a2c5-4925-ac12-d0da59909126.png?1754961719" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item35133" data-item-id="35133" data-item-type="ItemRichText"><div class="item-body-hbr">これで「4章：【動画編】VeoによるAI動画生成」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37135" data-item-id="37135" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="TMnIA" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="S3PpU" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="I33mcUgv81ewBj9NsT0Qwg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

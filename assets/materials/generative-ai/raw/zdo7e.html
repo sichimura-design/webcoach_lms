@@ -1,0 +1,401 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48601" data-item-id="48601" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="ClMp/kky8acQqgsx+2d4zg==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2291" data-domain="learn.webcoach.jp" data-url="/generative-ai/ai_web_marketing/A-4/zDO7E" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>カスタマージャーニーマップの作り方と活用法</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* CJM構造説明 */
+  .cjm-structure { margin: 20px 0; }
+  .cjm-axes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .axis-card { border-radius: 10px; padding: 18px; }
+  .axis-card--h { background: #EBF0FF; border: 1.5px solid #A0B4E8; }
+  .axis-card--v { background: #FFE8E4; border: 1.5px solid #E85D4A; }
+  .axis-card__label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .axis-card--h .axis-card__label { color: #5B7BE8; }
+  .axis-card--v .axis-card__label { color: #E85D4A; }
+  .axis-card__title { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+  .axis-card__items { list-style: none; }
+  .axis-card__items li { font-size: 13px; padding: 4px 0; display: flex; align-items: center; gap: 6px; }
+  .axis-card__items li::before { content: '▪'; font-size: 8px; }
+  .axis-card--h .axis-card__items li::before { color: #5B7BE8; }
+  .axis-card--v .axis-card__items li::before { color: #E85D4A; }
+
+  /* CJMサンプル（テーブル形式） */
+  .cjm-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 12px; overflow-x: auto; display: block; }
+  .cjm-table th { padding: 10px 12px; font-size: 11px; font-weight: 700; border: 1px solid #EEE; white-space: nowrap; }
+  .cjm-table th:first-child { background: #F7F8FA; color: #888; width: 14%; }
+  .cjm-table th.phase-1 { background: #EBF0FF; color: #5B7BE8; }
+  .cjm-table th.phase-2 { background: #FFF3E6; color: #E0882A; }
+  .cjm-table th.phase-3 { background: #FFF0ED; color: #E85D4A; }
+  .cjm-table th.phase-4 { background: #F0FBF4; color: #2E9B6E; }
+  .cjm-table th.phase-5 { background: #F3E8FF; color: #7B4FCC; }
+  .cjm-table td { padding: 10px 12px; border: 1px solid #EEE; vertical-align: top; line-height: 1.6; }
+  .cjm-table td:first-child { background: #FAFAFA; font-weight: 700; font-size: 11px; color: #666; white-space: nowrap; }
+  .emotion-high { color: #E85D4A; font-weight: 700; }
+  .emotion-low { color: #888; }
+
+  /* 作成ステップ */
+  .steps { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+  .step { display: flex; gap: 16px; padding: 18px; background: #F7F8FA; border-radius: 0; border-bottom: 1px solid white; }
+  .step:first-child { border-radius: 10px 10px 0 0; }
+  .step:last-child { border-radius: 0 0 10px 10px; border-bottom: none; }
+  .step__num {
+    width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A);
+    color: white; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .step__title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .step__desc { font-size: 13px; color: #666; line-height: 1.65; }
+
+  /* ツール紹介 */
+  .tools-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  .tool-card { border-radius: 10px; padding: 16px; text-align: center; border: 1.5px solid #EEE; background: white; }
+  .tool-card__icon { font-size: 28px; margin-bottom: 8px; }
+  .tool-card__name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .tool-card__note { font-size: 12px; color: #888; line-height: 1.5; }
+
+  /* 活用Tips */
+  .tips-grid { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+  .tip-item { display: flex; gap: 12px; align-items: flex-start; padding: 14px; background: #F7F8FA; border-radius: 8px; }
+  .tip-icon { font-size: 20px; flex-shrink: 0; }
+  .tip-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .tip-desc { font-size: 13px; color: #666; line-height: 1.65; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .cjm-axes { grid-template-columns: 1fr; }
+    .tools-row { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="3ipw6zVwmv_Iy6nLyjLn9qqzPbsyERg-kE8UuuNNemhydayc6Mw_kQ2tGx0WOTVxiz4R1SodGXEniPMTHSGElw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+
+<div class="hero">
+  <div class="hero__label">Course A — Chapter 4 / Lesson 2</div>
+  <div class="hero__title">カスタマージャーニーマップの<br>作り方と活用法</div>
+  <div class="hero__meta">
+    <span>⏱ 40分</span>
+    <span>🛠 手順書</span>
+    <span>🎯 SNS・デザイン・動画</span>
+  </div>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="b7wzi" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+
+<div class="container">
+
+  <div class="intro-box reveal">
+    <div class="intro-box__text">
+      カスタマージャーニーマップとは、<strong>ペルソナが「認知→検討→購入→継続→推奨」に至るまでのプロセスを一枚の地図に可視化したもの</strong>です。<br>
+      これを作ると「どのタイミングで・どんなコンテンツが必要か」が一目でわかります。クライアントへの提案でも、自分のSNS運用でも使える強力なツールです。
+    </div>
+  </div>
+
+  <!-- セクション1: CJMの構造 -->
+  <div class="card reveal">
+    <div class="card__title">カスタマージャーニーマップの構造</div>
+    <p>縦軸（行に何を記録するか）と横軸（フェーズ）の組み合わせで構成されます。</p>
+
+    <div class="cjm-axes">
+      <div class="axis-card axis-card--h">
+        <div class="axis-card__label">横軸——フェーズ（認知から推奨まで）</div>
+        <div class="axis-card__title">旅の「段階」を表す</div>
+        <ul class="axis-card__items">
+          <li>認知（問題に気づく・知る）</li>
+          <li>検討（比較・調べる）</li>
+          <li>購入・行動（決める）</li>
+          <li>継続（使い続ける）</li>
+          <li>推奨（口コミ・シェア）</li>
+        </ul>
+      </div>
+      <div class="axis-card axis-card--v">
+        <div class="axis-card__label">縦軸——記録する要素</div>
+        <div class="axis-card__title">各フェーズの詳細情報</div>
+        <ul class="axis-card__items">
+          <li>行動（何をしているか）</li>
+          <li>思考・感情（何を考えているか）</li>
+          <li>タッチポイント（どこで接触するか）</li>
+          <li>課題・痛み（何に困っているか）</li>
+          <li>コンテンツ機会（何を提供すべきか）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション2: サンプルCJM -->
+  <div class="card reveal">
+    <div class="card__title">カスタマージャーニーマップのサンプル（ヨガスタジオ×さつきさん）</div>
+    <p style="font-size: 13px; color: #888; margin-bottom: 12px;">ペルソナ: 田中さつき（27歳・IT企業勤務・体を動かしたい・残業多め）</p>
+
+    <div style="overflow-x: auto;">
+      <table class="cjm-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="phase-1">① 認知</th>
+            <th class="phase-2">② 検討</th>
+            <th class="phase-3">③ 行動</th>
+            <th class="phase-4">④ 継続</th>
+            <th class="phase-5">⑤ 推奨</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>行動</td>
+            <td>インスタでヨガ動画が流れてくる</td>
+            <td>「渋谷 ヨガ 夜」で検索・口コミ確認</td>
+            <td>公式サイトで体験予約する</td>
+            <td>週1回通い続ける</td>
+            <td>Instagramのストーリーズでシェア</td>
+          </tr>
+          <tr>
+            <td>感情</td>
+            <td class="emotion-low">「最近体が疲れてるな…」</td>
+            <td>「ちゃんとしたスタジオがいい。近くにある？」</td>
+            <td class="emotion-high">「21時クラスがある！これなら続けられそう」</td>
+            <td class="emotion-high">「やっぱり来てよかった。自分の時間だ」</td>
+            <td>「友達にもすすめたい」</td>
+          </tr>
+          <tr>
+            <td>タッチポイント</td>
+            <td>Instagram（Reels・ハッシュタグ）</td>
+            <td>Google検索・Googleマップ・口コミ</td>
+            <td>公式LP・予約フォーム</td>
+            <td>LINE公式アカウント・メルマガ</td>
+            <td>Instagram・友人への口コミ</td>
+          </tr>
+          <tr>
+            <td>課題・痛み</td>
+            <td>「でも続けられるか不安」</td>
+            <td>「どのスタジオが自分に合うかわからない」</td>
+            <td>「体験レッスン後に無理な勧誘されそう」</td>
+            <td>「仕事が忙しい週は来られない罪悪感」</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td>コンテンツ機会</td>
+            <td>「残業後でもできる」系Reels投稿</td>
+            <td>SEO対応LP・Googleビジネスプロフィール更新</td>
+            <td>「勧誘なし」明記のLP・体験の流れ動画</td>
+            <td>「週1でいい」を肯定するLINE配信</td>
+            <td>シェアしたくなる体験・特典設計</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p style="font-size: 12px; color: #888; margin-top: 8px;">このマップ一枚で「どのフェーズに何のコンテンツが必要か」が明確になります。クライアント提案書の巻頭資料としても有効。</p>
+  </div>
+
+  <!-- セクション3: 作成ステップ -->
+  <div class="card reveal">
+    <div class="card__title">カスタマージャーニーマップを作る5ステップ</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step__num">1</div>
+        <div>
+          <div class="step__title">ペルソナを決める</div>
+          <div class="step__desc">Chapter 2で作ったペルソナを使う。ペルソナが複数ある場合は1人ずつマップを作る。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">2</div>
+        <div>
+          <div class="step__title">フェーズを設定する</div>
+          <div class="step__desc">「認知→検討→行動→継続→推奨」の5フェーズが基本。ビジネスによって調整する（例: ECなら「購入→再購入→ファン化」など）。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">3</div>
+        <div>
+          <div class="step__title">各フェーズの行動・感情・タッチポイントを埋める</div>
+          <div class="step__desc">「ペルソナがこのフェーズで何をしているか」を具体的に想像して記入。SNSのコメント・レビューを参考にするとリアルな情報が得られる。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">4</div>
+        <div>
+          <div class="step__title">課題・痛みを洗い出す</div>
+          <div class="step__desc">各フェーズで「何に困っているか・何が障壁になっているか」を探す。ここが改善ポイント＝コンテンツのチャンス。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">5</div>
+        <div>
+          <div class="step__title">コンテンツ機会を整理する</div>
+          <div class="step__desc">各フェーズで「どんなコンテンツが課題を解決するか」を記入。これがSNS投稿・LP・動画の制作優先度リストになる。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション4: デジタルツール -->
+  <div class="card reveal">
+    <div class="card__title">作成に使えるツール</div>
+
+    <div class="tools-row">
+      <div class="tool-card">
+        <div class="tool-card__icon">🟦</div>
+        <div class="tool-card__name">Miro</div>
+        <div class="tool-card__note">無料プランあり。付箋・テンプレート豊富。チームでのリアルタイム共同作業に最適</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card__icon">🖊️</div>
+        <div class="tool-card__name">FigJam (Figma)</div>
+        <div class="tool-card__note">デザイナーに馴染みやすい。Figmaと連携して制作フローに組み込める</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card__icon">📊</div>
+        <div class="tool-card__name">Googleスプレッドシート</div>
+        <div class="tool-card__note">最もシンプル。テンプレートをコピーしてすぐに使える。クライアントと共有しやすい</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション5: 活用Tips -->
+  <div class="card reveal">
+    <div class="card__title">クリエイターがCJMを使う3つのシーン</div>
+    <div class="tips-grid">
+      <div class="tip-item">
+        <div class="tip-icon">💼</div>
+        <div>
+          <div class="tip-title">クライアントへの提案時</div>
+          <div class="tip-desc">「現状どのフェーズのコンテンツが足りていないか」を可視化して提案する。「広告→LP改善→SNS強化」のどれを優先すべきかが一目でわかる。</div>
+        </div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon">📱</div>
+        <div>
+          <div class="tip-title">SNS運用計画時</div>
+          <div class="tip-desc">「認知フェーズのReel→検討フェーズのQ&A投稿→行動フェーズのCTAストーリーズ」のように、投稿の目的をフェーズで整理してコンテンツカレンダーを組める。</div>
+        </div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-icon">🎬</div>
+        <div>
+          <div class="tip-title">動画シリーズ設計時</div>
+          <div class="tip-desc">「認知向け：〇〇とは動画」「検討向け：比較動画」「購入向け：Before/After動画」と、フェーズごとの動画シリーズを設計できる。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">カスタマージャーニーマップで<br>「いつ・何のコンテンツが必要か」が一目瞭然に。</div>
+    <div class="summary-card__sub">
+      縦軸（行動・感情・タッチポイント・課題・コンテンツ機会）× 横軸（5フェーズ）で設計。<br>
+      MiroやFigJam、Googleスプレッドシートで制作できる。<br><br>
+      Chapter 4完了。次のChapter 5では学んだ全要素をまとめる「マーケティングブリーフ」の作り方を学びます。
+    </div>
+  </div>
+
+</div>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="b7wzi" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="ClMp/kky8acQqgsx+2d4zg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

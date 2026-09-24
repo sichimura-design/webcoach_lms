@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="g9mrDjeHnoHl5dsvGUonSA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1560" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_writing/%EF%BC%92%EF%BC%8E%E3%80%90%E5%85%B1%E9%80%9A%E3%82%B9%E3%82%AD%E3%83%AB%EF%BC%8F%E5%BF%85%E9%A0%88%E3%80%91AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%20%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%9F%BA%E7%A4%8E/ZZJ1Z" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章 AIによるペルソナ分析を身につけよう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_writing/%EF%BC%92%EF%BC%8E%E3%80%90%E5%85%B1%E9%80%9A%E3%82%B9%E3%82%AD%E3%83%AB%EF%BC%8F%E5%BF%85%E9%A0%88%E3%80%91AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%20%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%9F%BA%E7%A4%8E/ZZJ1Z">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章 AIによるペルソナ分析を身につけよう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/030/576/medium/b44cc398-eea9-4432-8136-b34cebccfa7f.png?1754959021">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章 AIによるペルソナ分析を身につけよう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_writing/%EF%BC%92%EF%BC%8E%E3%80%90%E5%85%B1%E9%80%9A%E3%82%B9%E3%82%AD%E3%83%AB%EF%BC%8F%E5%BF%85%E9%A0%88%E3%80%91AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%20%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%9F%BA%E7%A4%8E/ZZJ1Z">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/030/576/large/b44cc398-eea9-4432-8136-b34cebccfa7f.png?1754959021">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_writing/%EF%BC%92%EF%BC%8E%E3%80%90%E5%85%B1%E9%80%9A%E3%82%B9%E3%82%AD%E3%83%AB%EF%BC%8F%E5%BF%85%E9%A0%88%E3%80%91AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%20%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%9F%BA%E7%A4%8E/ZZJ1Z"
+    },
+    "headline": "2章 AIによるペルソナ分析を身につけよう",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_links/images/000/030/576/medium/b44cc398-eea9-4432-8136-b34cebccfa7f.png?1754959021",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-10T10:56:06+09:00",
+    "dateModified": "2025-09-26T09:40:00+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="Z1eGw6SJ714AeQHu_hnhFlO7ZZ0u392pxKW2_SdJEUygq0xhc-cMPxy4Avb7r04QHUxDT0uMPHOKSX-Sa6N2qg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>２．【共通スキル／必須】AIアシスト ライティング基礎</div>
+
+          <div class="fw-bold h2">2章 AIによるペルソナ分析を身につけよう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item30722" data-item-id="30722" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="3B4qM" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="0DtsD" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30555" data-item-id="30555" data-item-type="ItemHeading"><h2 class="item-body">2章 AIによるペルソナ分析を身につけよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item30556" data-item-id="30556" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：40分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item30557" data-item-id="30557" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30558" data-item-id="30558" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ライティングにおけるペルソナ分析の重要性を再確認できる</li>
+  <li>提供されるプロンプトテンプレートを使い、AIに高精度なペルソナ分析を実行させることができる</li>
+  <li>作成したペルソナの悩みやニーズを深く掘り下げ、言語化できる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item30559" data-item-id="30559" data-item-type="ItemHeading"><h2 class="item-body">【2-1】なぜペルソナがライティングの質を左右するのか？</h2></div>
+        
+        <div class="article-item item_markdown " id="item30560" data-item-id="30560" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item30561" data-item-id="30561" data-item-type="ItemHeading"><h3 class="item-body">「誰に」を決めないと、何も伝わらない</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30562" data-item-id="30562" data-item-type="ItemRichText"><div class="item-body-hbr">優れた文章を書くための第一歩は、<span class="decoration-02">「誰に届けたいのか」</span>を明確にすることです。<br>
+<br>
+例えば、「皆さんにおすすめのカメラです」と言われても、ほとんどの人の心には響きません。しかし、「カメラに詳しくないけど、子どもの運動会を綺麗に撮りたいパパへ」と呼びかけると、ターゲットは「これは自分のことだ」と感じ、話を聞く姿勢になります。<br>
+<br>
+このように、不特定多数の「みんな」ではなく、<span class="decoration-02">たった一人の「理想の読者」を具体的に設定すること。それがペルソナ分析</span>です。ペルソナを定めることで、文章のトーン、伝えるべき内容、響く言葉が全て明確になり、文章の質は劇的に向上します。</div></div>
+        
+        <div class="article-item item_html " id="item30563" data-item-id="30563" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>ペルソナ</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>商品やサービスの典型的なユーザー像を、具体的な人物として設定したもの。</li>
+            <li>年齢、職業、ライフスタイル、価値観、悩みなどを詳細に設定することで、ターゲットへの理解を深めることができます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30564" data-item-id="30564" data-item-type="ItemHeading"><h3 class="item-body">1章で学んだプロンプト技術の応用</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30565" data-item-id="30565" data-item-type="ItemRichText"><div class="item-body-hbr">このペルソナ分析は、AIが非常に得意とする分野の一つです。<br>
+<br>
+1章で学んだように、AIに「優秀なマーケティングリサーチャーです」といった<span class="decoration-02">役割</span>を与え、分析したいテーマや商品情報を伝えるだけで、AIは膨大なデータから想定されるターゲット像を驚くほど具体的に描き出してくれます。<br>
+<br>
+これまで数時間かかっていたリサーチと分析作業を、AIに<span class="decoration-02">丸投げ</span>することで、ライターはより本質的な作業に集中できるのです。</div></div>
+        
+        <div class="article-item item_heading " id="item30566" data-item-id="30566" data-item-type="ItemHeading"><h2 class="item-body">【2-2】テンプレート付！AIペルソナ分析の具体的なステップ</h2></div>
+        
+        <div class="article-item item_markdown " id="item30567" data-item-id="30567" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item30568" data-item-id="30568" data-item-type="ItemHeading"><h3 class="item-body">【配布】ペルソナ分析プロンプトテンプレート</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30569" data-item-id="30569" data-item-type="ItemRichText"><div class="item-body-hbr">ここでは、コピー＆ペーストしてすぐに使える、高品質な「ペルソナ分析プロンプトテンプレート」を提供します。<br>
+このテンプレートを使えば、誰でも簡単に詳細なペルソナを作成できます。</div></div>
+        
+        <div class="article-item item_html " id="item30570" data-item-id="30570" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>ペルソナ分析プロンプトテンプレート</strong></div>
+    </div>
+    <div class="content-area">
+        <p>あなたは優秀なマーケティングリサーチャーです。<br>
+        以下のテーマについて、最も典型的で具体的なユーザーペルソナを一人設定してください。<br><br>
+        # テーマ<br>
+        [ここに分析したいテーマや商品名を入力]<br><br>
+        # 出力項目<br>
+        - 基本情報（名前、年齢、性別、職業、年収、家族構成）<br>
+        - ライフスタイル・価値観<br>- 情報収集の方法（よく見るWebサイト、SNSなど）<br>
+        - 抱えている悩み（3つ以上）<br>
+        - 商品やサービスによって得られる理想の未来（3つ以上）<br><br>
+        # 注意事項<br>
+        - 架空の人物ですが、実在するかのようにリアルな言葉で記述してください。<br>
+        - 表形式で出力してください。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30571" data-item-id="30571" data-item-type="ItemRichText"><div class="item-body-hbr">このテンプレートのポイントは、単にペルソナを作るだけでなく、<span class="decoration-02">その人が抱える「悩み」と、それによって得られる「理想の未来（ベネフィット）」までを言語化させる点</span>にあります。<br>
+<br>
+これが、後のライティングで非常に重要な要素となります。</div></div>
+        
+        <div class="article-item item_heading " id="item30572" data-item-id="30572" data-item-type="ItemHeading"><h3 class="item-body"> テンプレートを使ったペルソナ作成フロー</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30573" data-item-id="30573" data-item-type="ItemRichText"><div class="item-body-hbr">先程のテンプレートを使用して、ターゲットペルソナを言語化してみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item30574" data-item-id="30574" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">作業手順</span></div></div>
+        
+        <div class="article-item item_html " id="item30575" data-item-id="30575" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>上記の「ペルソナ分析プロンプトテンプレート」をコピーする。</li>
+  <li>ChatGPTなどのAIツールの入力画面に貼り付ける。</li>
+  <li>テンプレート内の<span class="decoratino-02">[ここに分析したいテーマや商品名を入力]</span>の部分を、例として「地元で人気のパン屋さんの、Instagram投稿」と書き換える。</li>
+  <li>プロンプトを送信し、AIにペルソナシートを表形式で生成させる。</li>
+  <li>生成されたペルソナに対して、「この人の悩みを、もっと深掘りして教えて」といった追加の質問を投げかけ、対話を通じて情報を深化させる様子を示す。</li>
+</ol></div></div>
+        
+        <div class="article-item item_link " id="item30576" data-item-id="30576" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ZZJ1Z&amp;item_id=30576" rel="nofollow noopener noreferrer" target="_blank">AIアシスト ライティング基礎 2-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="AIアシスト ライティング基礎 2-1" data-reference="https://www.dropbox.com/scl/fi/y5poitsdadrxs3vpwy42g/AI-assist-writing_2.1.1.0_.mp4?rlkey=zs0bmue6iafkb7hdaqgfho4eb&amp;st=flnyoa4l&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/030/576/thumb/b44cc398-eea9-4432-8136-b34cebccfa7f.png?1754959021" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item30577" data-item-id="30577" data-item-type="ItemHeading"><h3 class="item-body">練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30578" data-item-id="30578" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span></div></div>
+        
+        <div class="article-item item_html " id="item30579" data-item-id="30579" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>配布した「ペルソナ分析プロンプトテンプレート」を使い、以下のテーマでペルソナを作成してみましょう。</li>
+  <li><span class="decoration-02">テーマ</span>: 「地元で人気のパン屋さんの、Instagram投稿」</li>
+  <li>AIが出力したペルソナの「名前」「年齢」「職業」を解答してください。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30580" data-item-id="30580" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答</span><br>
+上記のデモ動画で示した手順で、実際にAIにペルソナを作成させてみましょう。<br>
+AIによって毎回結果は多少異なりますが、以下のようなペルソナが出力されるはずです。</div></div>
+        
+        <div class="article-item item_code " id="item30581" data-item-id="30581" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>・ 名前：佐藤 ゆうか
+・ 年齢：32歳
+・ 職業：近所で働く会社員（事務職）</pre></div>
+</div>
+<div class="cite"><cite class="item-source">（AIの出力例）</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item30582" data-item-id="30582" data-item-type="ItemHeading"><h2 class="item-body">【2-3】2章 -章末課題- [架空サービスのペルソナを設計しよう]</h2></div>
+        
+        <div class="article-item item_markdown " id="item40122" data-item-id="40122" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item30583" data-item-id="30583" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30584" data-item-id="30584" data-item-type="ItemRichText"><div class="item-body-hbr">新サービス「月額1,500円で使える、AI搭載の献立自動提案アプリ」のライティング担当者になったと想定して、このサービスのペルソナを設計しましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item30585" data-item-id="30585" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">課題:</span><br>
+ AIを使って、このアプリの魅力を伝えるためのブログ記事を書くという想定でペルソナを一人作成してください。<br>
+<span class="decoration-01">提出物:</span><br>
+ 以下の項目を含む「ペルソナシート」として出力させ、提出してください。</div></div>
+        
+        <div class="article-item item_html " id="item30586" data-item-id="30586" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>基本情報（名前、年齢、性別、職業、家族構成）</li>
+  <li>ライフスタイル・価値観</li>
+  <li>抱えている悩み（3つ以上）</li>
+  <li>このアプリで解決できること（3つ以上）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item30587" data-item-id="30587" data-item-type="ItemHeading"><h3 class="item-body">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item30588" data-item-id="30588" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>配布した「ペルソナ分析プロンプトテンプレート」を開きます。</li>
+            <li>テンプレートの`[テーマ]`部分を「月額1,500円で使える、AI搭載の献立自動提案アプリ」に書き換えます。</li>
+            <li>AIにプロンプトを入力します。</li>
+            <li>出力された内容が「ペルソナシート」の項目をすべて満たしているか確認します。不足している場合は、「上記のペルソナについて、抱えている悩みを3つ教えてください」のように追加で質問します。</li>
+            <li>完成したペルソナシートを提出します。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_code " id="item30589" data-item-id="30589" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>あなたは、経験豊富なマーケティングリサーチャーです。
+以下に紹介する新サービスの魅力を伝えるブログ記事のターゲット読者として、最も典型的で具体的なユーザーペルソナを一人設定してください。
+
+■ サービス概要
+サービス名：月額1,500円で使える、AI搭載の献立自動提案アプリ
+主な機能：ユーザーの好みやアレルギー、冷蔵庫の中身、栄養バランスを考慮し、AIが1週間分の献立と買い物リストを自動で作成する。
+目的：このサービスの魅力を伝え、利用したいと思ってもらうためのブログ記事を作成する。
+
+■ 出力項目
+以下の項目を含む「ペルソナシート」を作成してください。
+
+1.基本情報
+・名前
+・年齢
+・性別
+・職業
+・家族構成
+
+2.ライフスタイル・価値観
+・平日・休日の過ごし方
+・趣味や関心興味
+・お金の使い方に対する考え方
+・食生活や健康に対する考え方
+
+3.抱えている悩み（3つ以上）
+食事の準備に関して、日常的に感じている具体的な悩みやストレスを記述してください。
+
+4.このアプリで解決できること（3つ以上）
+このアプリを利用することで、上記の悩みがどのように解決され、どのような理想の未来が手に入るかを具体的に記述してくだい。
+
+■ 注意事項
+・架空の人物ですが、実在するかのようなリアルな言葉と描写で記述してください。
+・各項目が明確に伝わるよう、人柄や日常がイメージできるように描写してください。
+・特に「抱えている悩み」は、共感を生むために具体的かつ切実に書いてください。
+・全体は表形式で出力してください。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト例</cite></div></div></div>
+        
+        <div class="article-item item_image " id="item30590" data-item-id="30590" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/590/medium/7fd46136-cf8f-4687-aadb-6eed18a34197.png?1752113187" title=""><img class="img-responsive item-image" alt=" (30590)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/590/medium/7fd46136-cf8f-4687-aadb-6eed18a34197.png?1752113187" width="632" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item30591" data-item-id="30591" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>自己添削しよう用！</strong></span>
+    <div class="content-area">
+    <ul><li>完成した課題は、以下のポイントを参照して自分で添削してみましょう。</li></ul>
+    <a><strong>【ポイント】</strong></a>
+        <ul>
+            <li>問題文に記載された４つの項目について、それぞれ出力されているか確認しましょう。</li>
+            <li>特にペルソナがこのアプリを使うことで、抱えている悩みを解決できるという結びつきが重要です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30592" data-item-id="30592" data-item-type="ItemRichText"><div class="item-body-hbr">これで「2章 AIによるペルソナ分析を身につけよう」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item30723" data-item-id="30723" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="3B4qM" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="0DtsD" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="g9mrDjeHnoHl5dsvGUonSA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

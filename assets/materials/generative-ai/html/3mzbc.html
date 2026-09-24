@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/3mzBc -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>１章 AIで勝利の方程式を描く：戦略立案・アカウント設計編 (Plan) - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/3mzBc">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="１章 AIで勝利の方程式を描く：戦略立案・アカウント設計編 (Plan) - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/029/023/medium/f204c3a5-adc7-4cf3-ac29-823e5011af17.png?1754883440">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="１章 AIで勝利の方程式を描く：戦略立案・アカウント設計編 (Plan)">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/3mzBc">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/029/023/large/f204c3a5-adc7-4cf3-ac29-823e5011af17.png?1754883440">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="W0rN3rkj_R19ugYKoa3VixXQsgKqSNqDaVvWKDwgBYhWsG7tNEoTY5LFsjoO5gfAWR8oFrCHkDoSwMl-vJhNdg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材３AIで加速するデータドリブンSNS運用</div>
+
+          <div class="fw-bold h2">１章 AIで勝利の方程式を描く：戦略立案・アカウント設計編 (Plan)</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">１章 AIで勝利の方程式を描く：戦略立案・アカウント設計編 (Plan)</a><ul><li><a href="#heading1" class="tocLink">この章の学習時間:135分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】【復習】データで舵を取るSNS運用とPDCAサイクル</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：15分</a></li></ul><ul><li><a href="#heading5" class="tocLink">SNS運用におけるPDCAの重要性</a></li><li><a href="#heading6" class="tocLink">AIが加速させるPDCAサイクル</a></li></ul></li><li><a href="#heading7" class="tocLink">【1-2】AIで顧客を解像度高く見る：ターゲットペルソナ分析</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading9" class="tocLink">「誰に」届けるかを明確にする</a></li><li><a href="#heading10" class="tocLink"> 実践：AIにペルソナを深掘りさせるプロンプト</a></li><li><a href="#heading11" class="tocLink">練習問題</a></li></ul></li><li><a href="#heading12" class="tocLink">【1-3】AIと市場を偵察する：競合アカウント分析</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading14" class="tocLink">ライバルを知り、自分の立ち位置を決める</a></li><li><a href="#heading15" class="tocLink">実践：競合の特徴をAIに整理・分析させるプロンプト</a></li></ul></li><li><a href="#heading16" class="tocLink">【1-4】AIとアイデアを無限に生む：コンテンツテーマ企画</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading18" class="tocLink">ネタ切れはAIで解決できる</a></li><li><a href="#heading19" class="tocLink">実践：コンテンツの切り口をAIと量産するプロンプト</a></li></ul></li><li><a href="#heading20" class="tocLink">【1-5】1章 -章末課題- [AI戦略プランニング演習]</a><ul><li><a href="#heading21" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading22" class="tocLink">問題</a></li><li><a href="#heading23" class="tocLink">解答手順</a><ul><li><a href="#heading24" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item29136" data-item-id="29136" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/nsaBk" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/Tjk3G" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item29001" data-item-id="29001" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">１章 AIで勝利の方程式を描く：戦略立案・アカウント設計編 (Plan)</h2></div>
+        
+        <div class="article-item item_markdown " id="item40096" data-item-id="40096" data-item-type="ItemMarkdown"><h4 id="heading1">この章の学習時間:135分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item29002" data-item-id="29002" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_html " id="item29003" data-item-id="29003" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>AIを活用して、ターゲットとなるペルソナの悩みやニーズを深く掘り下げられるようになる</li>
+  <li>AIの補助を受けながら競合アカウントの強みや特徴を分析し、差別化のヒントを得られるようになる</li>
+  <li>分析結果に基づいて、AIと協働しながらコンテンツのテーマや切り口を大量に創出できるようになる</li>
+  <li>AIを活用して、戦略に基づいたコンテンツカレンダーを効率的に作成できるようになる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item29004" data-item-id="29004" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【1-1】【復習】データで舵を取るSNS運用とPDCAサイクル</h2></div>
+        
+        <div class="article-item item_markdown " id="item29005" data-item-id="29005" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：15分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item29006" data-item-id="29006" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">SNS運用におけるPDCAの重要性</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29007" data-item-id="29007" data-item-type="ItemRichText"><div class="item-body-hbr">「AI時代のSNS運用戦略 - 効率化と成果最大化への道-2章」で、業務改善のフレームワークとして「PDCAサイクル」を学んできました。本教材では、このPDCAサイクルを<span class="decoration-02">デ</span><span class="decoration-02">ータドリブンなSNS運用</span>という文脈で捉え直し、その重要性を再確認します。<br>
+<br>
+勘や経験だけに頼る運用では、成功も失敗もその場限りになりがちです。なぜその結果になったのかを客観的に分析できなければ、次の打ち手を改善し、成果を安定させることは困難です。</div></div>
+        
+        <div class="article-item item_html " id="item29008" data-item-id="29008" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>データドリブン運用の本質</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>データドリブンなSNS運用とは、単に数値を眺めることではありません。</li>
+            <li><strong>Plan（計画）→ Do（実行）→ Check（測定）→ Action（改善）</strong>というサイクルの中で、一貫して<span class="decoration-02">データを意思決定の根拠</span>として活用し、論理的にアカウントを成長させていく思考法そのものを指します。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item29009" data-item-id="29009" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">AIが加速させるPDCAサイクル</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29010" data-item-id="29010" data-item-type="ItemRichText"><div class="item-body-hbr">本教材の核心は、このPDCAサイクル、特に多くの時間と専門知識を要する<span class="decoration-02">Plan・Check・Action</span>の3つのフェーズを、AIの力でいかに効率化・高度化するかにあります。<br>
+<br>
+AIは、各フェーズにおいて優秀なアシスタントとして機能します。</div></div>
+        
+        <div class="article-item item_html " id="item29011" data-item-id="29011" data-item-type="ItemHtml"><div class="item-body">
+<table class="simple">
+    <tbody>
+        </tbody><thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div>フェーズ</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>従来の課題</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div><strong>AIによる支援</strong></div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody><tr>
+            <th scope="row">
+                <div>
+                    <div><strong>Plan<br>（計画）</strong></div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>ターゲットや競合の調査に時間がかかる。アイデアがマンネリ化しがち。</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div><strong>膨大な情報からインサイトを抽出し、多角的なアイデア出しを補助する。</strong></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div><strong>Check<br>（測定）</strong></div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>データのどこを見れば良いか分からない。数値の羅列から傾向を読み解くのが難しい。</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div><strong>大量のパフォーマンスデータを要約・分析し、重要な傾向や課題点を提示する。</strong></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div><strong>Action<br>（改善）</strong></div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>分析結果をどう次のアクションに繋げるか、具体的な施策が思いつかない。</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div><strong>分析結果に基づき、具体的な改善施策の選択肢を複数提案する。</strong></div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item29012" data-item-id="29012" data-item-type="ItemRichText"><div class="item-body-hbr">このセクションでは、SNS運用におけるPDCAの重要性を再確認しました。<br>
+<br>
+次のセクションからは、このサイクルをAIと共にどのように回していくのか、具体的な手法を学んでいきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item29013" data-item-id="29013" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【1-2】AIで顧客を解像度高く見る：ターゲットペルソナ分析</h2></div>
+        
+        <div class="article-item item_markdown " id="item29014" data-item-id="29014" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item29015" data-item-id="29015" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">「誰に」届けるかを明確にする</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29016" data-item-id="29016" data-item-type="ItemRichText"><div class="item-body-hbr">SNS運用の戦略を立てる上での出発点は、「<span class="decoration-02">誰に情報を届けたいのか</span>」を明確にすることです。その「誰か」を具体的に言語化したものがペルソナです。</div></div>
+        
+        <div class="article-item item_html " id="item29017" data-item-id="29017" data-item-type="ItemHtml"><div class="item-body">
+<div class="card-with-icon note">
+    <span class="bold"><strong>重要語句：ペルソナ</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>サービスや商品の典型的なユーザー像を、具体的な人物像として詳細に設定したものです。</li>
+            <li>年齢や性別、職業といった表面的な属性だけでなく、ライフスタイル、価値観、悩み、SNSの利用動機といった内面（<span class="decoration-02">インサイト</span>）まで深く掘り下げて設定します。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item29018" data-item-id="29018" data-item-type="ItemRichText"><div class="item-body-hbr">ペルソナの解像度が高ければ高いほど、その人物の心に「刺さる」コンテンツのアイデアが生まれやすくなります。このペルソナ設定のプロセスで、AIは強力なパートナーとなります。</div></div>
+        
+        <div class="article-item item_heading " id="item29019" data-item-id="29019" data-item-type="ItemHeading"><h3 class="item-body" id="heading10"> 実践：AIにペルソナを深掘りさせるプロンプト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29020" data-item-id="29020" data-item-type="ItemRichText"><div class="item-body-hbr">それでは、実際にAIを使ってペルソナを深掘りしてみましょう。お手元のPCでChatGPTなどのテキスト生成AIを開いて、試してみてください。<br>
+基本的なペルソナ情報をAIに与え、より具体的な人物像やインサイトを推測させるのが基本のテクニックです。<br>
+<br>
+以下は、ペルソナを深掘りするためのプロンプトのテンプレートです。</div></div>
+        
+        <div class="article-item item_html " id="item29021" data-item-id="29021" data-item-type="ItemHtml"><div class="item-body"><pre><code class="hljs markdown">
+<span class="hljs-section"># 指示</span><br>
+あなたはプロのマーケティングリサーチャーです。<br>
+以下のペルソナ情報に基づき、この人物の具体的な人物像を深掘りしてください。<br>
+
+<span class="hljs-section"># 基本ペルソナ</span><br>
+<span class="hljs-bullet">- </span>{ここにターゲットの基本的な属性を記述。例：30代、女性、都内在住、健康志向}<br>
+
+<span class="hljs-section"># 深掘りしてほしい項目</span><br>
+<span class="hljs-bullet">- </span>具体的な1日のタイムスケジュール<br>
+<span class="hljs-bullet">- </span>SNSをどのような目的で、どの時間帯に利用するか<br>
+<span class="hljs-bullet">- </span>現在抱えている悩みや課題<br>
+<span class="hljs-bullet">- </span>将来達成したい目標や願望<br>
+<span class="hljs-bullet">- </span>このペルソナが情報収集する上で重視すること
+</code></pre></div></div>
+        
+        <div class="article-item item_rich_text " id="item29022" data-item-id="29022" data-item-type="ItemRichText"><div class="item-body-hbr">このプロンプトを実行すると、AIはまるでその人物が存在するかのように、詳細なライフスタイルや価値観を提案してくれます。さらに、「このペルソナが抱えるであろう悩みTOP5は？」のように、具体的な質問を投げかけることで、より深いインサイトを引き出すことができます。</div></div>
+        
+        <div class="article-item item_link " id="item29023" data-item-id="29023" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=3mzBc&amp;item_id=29023" rel="nofollow noopener noreferrer" target="_blank">AIで加速するデータドリブンSNS運用 1-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="AIで加速するデータドリブンSNS運用 1-1" data-reference="https://www.dropbox.com/scl/fi/dr5coxal31vq6crzjq4nr/ai-sns-data-driven_1.1.1.0_.mp4?rlkey=8uunraq07zssvjvhnwsbcefw9&amp;st=ojhavar4&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item29024" data-item-id="29024" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29025" data-item-id="29025" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+あなたは「都内で働く20代男性向けのお洒落なビジネスリュック」を売るためのSNS戦略を考えます。AIを使って、このターゲットの「ペルソナ」を深掘りし、「彼がリュックに求める機能やデザイン」について、具体的なアイデアを5つ以上生成させてください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item29026" data-item-id="29026" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答</span><br>
+<br>
+<span class="decoration-01">プロンプト例</span></div></div>
+        
+        <div class="article-item item_html " id="item29027" data-item-id="29027" data-item-type="ItemHtml"><div class="item-body"><pre><code class="hljs markdown">
+<span class="hljs-section"># あなたへのお願い</span><br>
+あなたはプロのマーケティングリサーチャーです。以下のペルソナについて、<br>
+その人物像をより具体的に深掘りし、彼が「ビジネスリュック」に求めるであろう機能や<br>
+デザインの具体的なアイデアを5つ以上提案してください。<br>
+
+<span class="hljs-section"># 基本ペルソナ</span><br>
+<span class="hljs-bullet">- </span>ターゲット：20代後半の男性<br>
+<span class="hljs-bullet">- </span>職業：都内のIT企業に勤める会社員<br>
+<span class="hljs-bullet">- </span>ライフスタイル：通勤は電車。仕事帰りにジムに寄ることもある。ミニマリスト志向。<br>
+
+<span class="hljs-section"># 提案の切り口</span><br>
+<span class="hljs-bullet">- </span>機能面でのニーズ<br>
+<span class="hljs-bullet">- </span>デザイン面での好み<br>
+<span class="hljs-bullet">- </span>彼が解決したい悩み<br>
+</code></pre></div></div>
+        
+        <div class="article-item item_rich_text " id="item29028" data-item-id="29028" data-item-type="ItemRichText"><div class="item-body-hbr">このプロンプトをAIに入力することで、例えば以下のようなアイデアを得ることができます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item29029" data-item-id="29029" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">AIによる生成アイデア例</span></div></div>
+        
+        <div class="article-item item_html " id="item29030" data-item-id="29030" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">機能面</span>
+    <ol>
+      <li>
+        <span class="decoration-02">PCと周辺機器のスマート収納：</span>
+        15インチのMacBookがぴったり収まる独立したコンパートメント。ケーブルやマウスを整理できるメッシュポケット付き。
+      </li>
+      <li>
+        <span class="decoration-02">ジム用品セパレート構造：</span>
+        仕事道具と汗をかいたウェアやシューズが混ざらないよう、底部に通気性の良い独立した収納スペース。
+      </li>
+      <li>
+        <span class="decoration-02">クイックアクセスポケット：</span>
+        スマホやICカードをスムーズに取り出せる、肩紐や背面の隠しポケット。
+      </li>
+    </ol>
+  </li>
+  <li>
+    <span class="decoration-01">デザイン面</span>
+    <ol start="4">
+      <li>
+        <span class="decoration-02">オンオフ兼用のミニマルデザイン：</span>
+        スーツにも私服にも合う、装飾を排したクリーンなデザイン。素材は撥水性の高いナイロンやコーデュラなど。
+      </li>
+      <li>
+        <span class="decoration-02">自立する設計：</span>
+        カフェやコワーキングスペースで床に置いた際に、倒れずに自立する構造。
+      </li>
+    </ol>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item29031" data-item-id="29031" data-item-type="ItemHeading"><h2 class="item-body" id="heading12">【1-3】AIと市場を偵察する：競合アカウント分析</h2></div>
+        
+        <div class="article-item item_markdown " id="item29032" data-item-id="29032" data-item-type="ItemMarkdown"><h4 id="heading13">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item29033" data-item-id="29033" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">ライバルを知り、自分の立ち位置を決める</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29034" data-item-id="29034" data-item-type="ItemRichText"><div class="item-body-hbr">ペルソナが明確になったら、次に市場、つまり競合アカウントを分析します。競合を分析することで、以下の点が見えてきます。</div></div>
+        
+        <div class="article-item item_html " id="item29035" data-item-id="29035" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">学ぶべき点：</span>競合のどのような投稿が人気を集めているのか。</li>
+  <li><span class="decoration-01">避けるべき点：</span>反応が悪い投稿や、失敗している施策は何か。</li>
+  <li><span class="decoration-01">差別化ポイント：</span>競合がまだ手をつけていない、自分たちが勝負できる領域はどこか。</li>
+</ul>
+<span>闇雲に見るのではなく、以下の観点で分析するのが効果的です。</span>
+<ul>
+  <li>ターゲット層</li>
+  <li>アカウントのコンセプト</li>
+  <li>人気投稿の傾向（内容、フォーマット）</li>
+  <li>強みと弱み</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item29036" data-item-id="29036" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>注意：AIは直接Webサイトを見に行けない</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>現時点での多くのテキスト生成AIは、特定のURLを指定してその内容をリアルタイムで分析することはできません。</li>
+            <li>そのため、<span class="decoration-02">競合アカウントの情報は、まず運用者自身が観察し、その情報をテキストとしてAIにインプットする</span>、という手順を踏む必要があります。</li>
+            <li>この「人間とAIの共同作業」が、競合分析の精度を高める鍵です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item29037" data-item-id="29037" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">実践：競合の特徴をAIに整理・分析させるプロンプト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29038" data-item-id="29038" data-item-type="ItemRichText"><div class="item-body-hbr">競合分析は以下のステップで進めます。</div></div>
+        
+        <div class="article-item item_html " id="item29039" data-item-id="29039" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>競合アカウントを3〜5つリストアップする</li>
+  <li>各アカウントについて、上記の分析観点で観察し、特徴をテキストでメモする</li>
+  <li>メモした情報をAIに渡し、分析や要約を依頼する</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item29040" data-item-id="29040" data-item-type="ItemRichText"><div class="item-body-hbr">以下は、観察した情報をAIに分析させるプロンプトの例です。</div></div>
+        
+        <div class="article-item item_html " id="item29041" data-item-id="29041" data-item-type="ItemHtml"><div class="item-body"><pre><code class="hljs markdown">
+<span class="hljs-section"># 指示</span><br>
+あなたはプロのSNSマーケティングアナリストです。<br>
+私が提供する競合アカウントの分析情報に基づき、以下のタスクを実行してください。<br>
+
+<span class="hljs-section"># 競合アカウント情報</span><br>
+<span class="hljs-section">## アカウントA (〇〇カフェ)</span><br>
+<span class="hljs-bullet">- </span>コンセプト：都心で働く女性向けの癒やし空間<br>
+<span class="hljs-bullet">- </span>人気投稿：季節のフルーツを使ったタルトの写真。ラテアートの動画。<br>
+<span class="hljs-bullet">- </span>強み：写真のクオリティが非常に高く、統一感がある。「#ご褒美カフェ」で人気。<br>
+<span class="hljs-bullet">- </span>弱み：メニューの価格帯が高め。男性客が少ない印象。<br>
+
+<span class="hljs-section">## アカウントB (△△珈琲店)</span><br>
+<span class="hljs-bullet">- </span>コンセプト：コーヒー豆にこだわる本格派カフェ<br>
+<span class="hljs-bullet">- </span>人気投稿：産地別のコーヒー豆の解説投稿。ハンドドリップの手順を紹介するリール動画。<br>
+<span class="hljs-bullet">- </span>強み：専門性が高く、コーヒー好きからの信頼が厚い。<br>
+<span class="hljs-bullet">- </span>弱み：フードメニューが少ない。投稿が専門的すぎて初心者には難しいかも。<br>
+
+<span class="hljs-section"># タスク</span><br>
+<span class="hljs-bullet">1. </span>上記の競合情報をまとめた比較表を作成してください。<br>
+<span class="hljs-bullet">2. </span>各アカウントの成功要因を推測してください。<br>
+<span class="hljs-bullet">3. </span>これら競合との差別化を図り、我々のアカウント（※）が狙うべきポジションについて、3つのアイデアを提案してください。<br>
+(※我々のアカウント：駅前の便利な立地で、手頃な価格帯のコーヒーと軽食を提供するカフェ)
+</code></pre></div></div>
+        
+        <div class="article-item item_link " id="item29042" data-item-id="29042" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=3mzBc&amp;item_id=29042" rel="nofollow noopener noreferrer" target="_blank">AIで加速するデータドリブンSNS運用 1-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="AIで加速するデータドリブンSNS運用 1-2" data-reference="https://www.dropbox.com/scl/fi/rw37q9kljupi0ynv3lrhi/ai-sns-data-driven_1.2.1.0_.mp4?rlkey=0929sbnzzgaugql00lp4f3hrx&amp;st=ztxqjncp&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item29056" data-item-id="29056" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">【1-4】AIとアイデアを無限に生む：コンテンツテーマ企画</h2></div>
+        
+        <div class="article-item item_markdown " id="item29057" data-item-id="29057" data-item-type="ItemMarkdown"><h4 id="heading17">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item29058" data-item-id="29058" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">ネタ切れはAIで解決できる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29059" data-item-id="29059" data-item-type="ItemRichText"><div class="item-body-hbr">「誰に（ペルソナ）」届け、「市場（競合）」がどうなっているかが分かりました。いよいよ、具体的なコンテンツ企画のフェーズです。「投稿のネタが思いつかない」という悩みはSNS運用でよくありますが、AIを使えばこの悩みは解決できます。<br>
+<br>
+アイデア創出の基本は、これまでの分析で得た<span class="decoration-02">「ペルソナの悩みや欲求」と「自社アカウントの強み」を掛け合わせる</span>ことです。この掛け合わせの作業を、AIは無限とも思えるパターンで手伝ってくれます。<br>
+<br>
+アイデア出しの段階では、質の高いものを一つ見つけようとするより、まずは<span class="decoration-02">質より量を意識して、AIとブレインストーミングを楽しむ</span>ことが重要です。</div></div>
+        
+        <div class="article-item item_heading " id="item29060" data-item-id="29060" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">実践：コンテンツの切り口をAIと量産するプロンプト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29061" data-item-id="29061" data-item-type="ItemRichText"><div class="item-body-hbr">ペルソナ情報と自社の強みをAIにインプットし、コンテンツアイデアを依頼してみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item29062" data-item-id="29062" data-item-type="ItemHtml"><div class="item-body"><pre><code class="hljs markdown">
+<span class="hljs-section"># 指示</span><br>
+あなたは人気Instagramアカウントの企画担当者です。<br>
+以下の情報を元に、ターゲットに響くコンテンツのアイデアを20個、ブレインストーミング形式で提案してください。<br>
+
+<span class="hljs-section"># ターゲットペルソナ</span><br>
+<span class="hljs-bullet">- </span>{ここに【2-1】で深掘りしたペルソナの詳細情報を貼り付ける}<br>
+
+<span class="hljs-section"># 自社アカウントの強み・特徴</span><br>
+<span class="hljs-bullet">- </span>{ここに自社の商品やサービス、アカウントのコンセプトを記述する}<br>
+
+<span class="hljs-section"># アイデアの切り口</span><br>
+<span class="hljs-bullet">- </span>専門家の視点<br>
+<span class="hljs-bullet">- </span>初心者の視点<br>
+<span class="hljs-bullet">- </span>意外な事実や豆知識<br>
+<span class="hljs-bullet">- </span>Before/After形式<br>
+<span class="hljs-bullet">- </span>ユーザーの悩みに共感するストーリー形式<br>
+</code></pre></div></div>
+        
+        <div class="article-item item_rich_text " id="item29063" data-item-id="29063" data-item-type="ItemRichText"><div class="item-body-hbr">生成されたアイデアが多すぎて整理できない場合は、「これらのアイデアを『お役立ち情報』『商品紹介』『ユーザーとの交流』の3つのカテゴリに分類してください」のように、AIに整理を依頼するのも有効なテクニックです。</div></div>
+        
+        <div class="article-item item_link " id="item29064" data-item-id="29064" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=3mzBc&amp;item_id=29064" rel="nofollow noopener noreferrer" target="_blank">AIで加速するデータドリブンSNS運用 1-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="AIで加速するデータドリブンSNS運用 1-3" data-reference="https://www.dropbox.com/scl/fi/jq40f1g6pqyi2y68jd4ej/ai-sns-data-driven_1.3.1.0_.mp4?rlkey=ln8g385p724m5vwkwn1yzefif&amp;st=zvl6s147&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item29065" data-item-id="29065" data-item-type="ItemHeading"><h2 class="item-body" id="heading20">【1-5】1章 -章末課題- [AI戦略プランニング演習]</h2></div>
+        
+        <div class="article-item item_markdown " id="item29066" data-item-id="29066" data-item-type="ItemMarkdown"><h4 id="heading21">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item29067" data-item-id="29067" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29068" data-item-id="29068" data-item-type="ItemRichText"><div class="item-body-hbr">あなたは、新しくオープンする「サステナブルな素材を使った商品を専門に扱うオンライン雑貨店」のSNS（Instagram）立ち上げを担当することになりました。<br>
+<br>
+この章で学んだことを活かし、AIを使って以下の戦略プランを作成してください。</div></div>
+        
+        <div class="article-item item_html " id="item29069" data-item-id="29069" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">ターゲットペルソナの深掘り：</span>
+    このお店のターゲットとなりそうな人物像をAIと協力して具体的に設定し、そのペルソナが抱えるニーズや価値観を記述してください。
+  </li>
+  <li>
+    <span class="decoration-01">コンテンツテーマの企画：</span>
+    作成したペルソナに向けて、どのようなコンテンツテーマ（投稿のカテゴリやシリーズ）を発信していくべきか、AIを使ってアイデアを10個以上出してください。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item29070" data-item-id="29070" data-item-type="ItemHeading"><h3 class="item-body" id="heading23">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item29071" data-item-id="29071" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    まずAIに対し、「あなたはサステナビリティに関心の高い層をターゲットとするマーケターです」と役割を設定します。
+  </li>
+  <li>
+    <span class="decoration-02">ペルソナ作成：</span>
+    <ul>
+      <li>AIに「サステナブルな雑貨に興味を持ちそうな人物像の候補を3パターン提案してください」と依頼し、その中から最も魅力的だと感じるものを1つ選びます。</li>
+      <li>選んだペルソナについて、【2-1】で学んだプロンプトを参考に「ライフスタイル」「価値観」「SNSで求める情報」などをさらに深掘りする質問をAIに投げかけ、具体的な人物像を完成させます。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">コンテンツ企画：</span>
+    <ul>
+      <li>完成したペルソナ情報をAIにインプットし、「このペルソナが興味を持つようなInstagramのコンテンツテーマのアイデアを、以下のカテゴリに分けて10個以上提案してください」と依頼します。</li>
+      <li>
+        カテゴリ例：商品紹介、作り手のストーリー、サステナブルな暮らしのヒント、イベント告知など
+      </li>
+    </ul>
+  </li>
+  <li>
+    生成されたペルソナ設定とコンテンツテーマのリストをまとめて、戦略プランとして完成させます。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item29072" data-item-id="29072" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/029/072/medium/617b4061-4d1b-46f4-8b41-ab6d7a95d8ba.jpg?1751515737" title=""><img class="img-responsive item-image" alt=" (29072)" data-reference="" src="../../_assets/85635440e4.webp" width="452" height="640"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item29073" data-item-id="29073" data-item-type="ItemRichText"><div class="item-body-hbr">これで「1章 AIで勝利の方程式を描く：戦略立案・アカウント設計編 (Plan)」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item29135" data-item-id="29135" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/nsaBk" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/Tjk3G" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">１章 AIで勝利の方程式を描く：戦略立案・アカウント設計編 (Plan)</a><ul><li><a href="#heading1" class="tocLink">この章の学習時間:135分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】【復習】データで舵を取るSNS運用とPDCAサイクル</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：15分</a></li></ul><ul><li><a href="#heading5" class="tocLink">SNS運用におけるPDCAの重要性</a></li><li><a href="#heading6" class="tocLink">AIが加速させるPDCAサイクル</a></li></ul></li><li><a href="#heading7" class="tocLink">【1-2】AIで顧客を解像度高く見る：ターゲットペルソナ分析</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading9" class="tocLink">「誰に」届けるかを明確にする</a></li><li><a href="#heading10" class="tocLink"> 実践：AIにペルソナを深掘りさせるプロンプト</a></li><li><a href="#heading11" class="tocLink">練習問題</a></li></ul></li><li><a href="#heading12" class="tocLink">【1-3】AIと市場を偵察する：競合アカウント分析</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading14" class="tocLink">ライバルを知り、自分の立ち位置を決める</a></li><li><a href="#heading15" class="tocLink">実践：競合の特徴をAIに整理・分析させるプロンプト</a></li></ul></li><li><a href="#heading16" class="tocLink">【1-4】AIとアイデアを無限に生む：コンテンツテーマ企画</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading18" class="tocLink">ネタ切れはAIで解決できる</a></li><li><a href="#heading19" class="tocLink">実践：コンテンツの切り口をAIと量産するプロンプト</a></li></ul></li><li><a href="#heading20" class="tocLink">【1-5】1章 -章末課題- [AI戦略プランニング演習]</a><ul><li><a href="#heading21" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading22" class="tocLink">問題</a></li><li><a href="#heading23" class="tocLink">解答手順</a><ul><li><a href="#heading24" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/nsaBk" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/Tjk3G" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

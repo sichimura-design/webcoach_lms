@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/movie-editing/Premiere_Pro/hRoTm -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>第3章：動画にテロップ・BGMを挿入しよう！ - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/hRoTm">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="第3章：動画にテロップ・BGMを挿入しよう！ - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/825/medium/38edc09f-8391-431e-80a3-d551e81051fe.png?1749184269">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="第3章：動画にテロップ・BGMを挿入しよう！">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/movie-editing/Premiere_Pro/hRoTm">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/825/large/38edc09f-8391-431e-80a3-d551e81051fe.png?1749184269">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="4OvBBrCMm70YCRhlO77icuKS3LjsxuZbLOOi-yjHFoQf3eblQ1DU8ayabuR8BdP9U8UYwnx2pH9FXUprALyXEQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>Premiere Pro</div>
+
+          <div class="fw-bold h2">第3章：動画にテロップ・BGMを挿入しよう！</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">第3章：動画にテロップ・BGMを挿入しよう！</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:70分</a></li></ul></li><li><a href="#heading2" class="tocLink">【3-1】フォントについて</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間：15分</a></li></ul><ul><li><a href="#heading4" class="tocLink">フォントをインストールする</a><ul><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading9" class="tocLink">【3-2】動画のタイトルを作成・配置する</a><ul><li><a href="#heading10" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading11" class="tocLink">作業手順</a><ul><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading19" class="tocLink">【3-3】テロップの大きさ・色を調整する</a><ul><li><a href="#heading20" class="tocLink">目安の学習時間：5分</a></li></ul><ul><li><a href="#heading21" class="tocLink">作業手順</a><ul><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading26" class="tocLink">【3-4】テロップを装飾する</a><ul><li><a href="#heading27" class="tocLink">&nbsp;目安の学習時間：10分</a></li></ul><ul><li><a href="#heading28" class="tocLink">作業手順</a><ul><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading34" class="tocLink">【3-5】テロップにフェードの効果をつける</a><ul><li><a href="#heading35" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading36" class="tocLink">作業手順</a><ul><li><a href="#heading37" class="tocLink"></a></li><li><a href="#heading38" class="tocLink"></a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink">完成動画</a></li></ul></li></ul></li><li><a href="#heading42" class="tocLink">【3-6】BGMを追加する</a><ul><li><a href="#heading43" class="tocLink">目安の学習時間：20分</a></li><li><a href="#heading44" class="tocLink">作業手順</a></li><li><a href="#heading45" class="tocLink"></a></li><li><a href="#heading46" class="tocLink"></a></li><li><a href="#heading47" class="tocLink"></a></li><li><a href="#heading48" class="tocLink"></a></li><li><a href="#heading49" class="tocLink"></a></li><li><a href="#heading50" class="tocLink"></a></li><li><a href="#heading51" class="tocLink"></a></li><li><a href="#heading52" class="tocLink"></a></li><li><a href="#heading53" class="tocLink"></a></li><li><a href="#heading54" class="tocLink"></a></li><li><a href="#heading55" class="tocLink"></a></li><li><a href="#heading56" class="tocLink"></a></li><li><a href="#heading57" class="tocLink">完成動画</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25922" data-item-id="25922" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/i2OYz" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/9eWfR" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item20817" data-item-id="20817" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">第3章：動画にテロップ・BGMを挿入しよう！</h2></div>
+        
+        <div class="article-item item_markdown " id="item39915" data-item-id="39915" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:70分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20818" data-item-id="20818" data-item-type="ItemRichText"><div class="item-body-hbr">この章では<span class="decoration-02">テロップの作り方や音声ファイルの使い方を学ぶ</span>ことで、<span class="decoration-02">書き出す前までの動画の完成をできるようにする</span>ことを目標とします。</div></div>
+        
+        <div class="article-item item_heading " id="item20819" data-item-id="20819" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【3-1】フォントについて</h2></div>
+        
+        <div class="article-item item_markdown " id="item20820" data-item-id="20820" data-item-type="ItemMarkdown"><h4 id="heading3">目安の学習時間：15分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20821" data-item-id="20821" data-item-type="ItemRichText"><div class="item-body-hbr">今回の作例に使用しているフォントは、<span class="decoration-02">「Adobe Fonts」</span>や<span class="decoration-02">フリーフォント</span>から利用できます。<br>
+<br>
+最初に、必要なフォントを「Adobe Fonts」にアクセスしてインストールします。</div></div>
+        
+        <div class="article-item item_rich_text " id="item20822" data-item-id="20822" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://fonts.adobe.com/?locale=ja-JP" class="default-link" rel="nofollow">https://fonts.adobe.com/?locale=ja-JP</a></div></div>
+        
+        <div class="article-item item_heading " id="item23280" data-item-id="23280" data-item-type="ItemHeading"><h3 class="item-body" id="heading4">フォントをインストールする</h3></div>
+        
+        <div class="article-item item_text " id="item20824" data-item-id="20824" data-item-type="ItemText"><div class="item-body-hbr">1.検索窓に「平成角ゴシック」と入力して、検索します。</div></div>
+        
+        <div class="article-item item_image " id="item20825" data-item-id="20825" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/825/medium/38edc09f-8391-431e-80a3-d551e81051fe.png?1749184269" title=""><img class="img-responsive item-image" alt=" (20825)" data-reference="" src="../../_assets/2c589a3d67.webp" width="640" height="254"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23302" data-item-id="23302" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20826" data-item-id="20826" data-item-type="ItemRichText"><div class="item-body-hbr">2. 検索結果に「平成角ゴシック Std」、「平成角ゴシック StdN」の2種類のフォントが表示されます。<br>
+今回は「平成角ゴシック Std」を選択します。</div></div>
+        
+        <div class="article-item item_image " id="item20827" data-item-id="20827" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/827/medium/4290095e-3932-4991-afd0-8a9bdde67498.png?1749184309" title=""><img class="img-responsive item-image" alt=" (20827)" data-reference="" src="../../_assets/cf1ae7c424.webp" width="448" height="493"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23303" data-item-id="23303" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20828" data-item-id="20828" data-item-type="ItemRichText"><div class="item-body-hbr">3. 「平成角ゴシック Std」のページに移動して、さまざまな太さのフォントが表示されます。<br>
+個別にインストールすることも可能ですが今回は<span class="decoration-02">【ファミリーを追加】</span>をクリックして、「平成角ゴシック Std」全ての種類を追加します。<br>
+4. フォントを追加すると緑の帯が表示されるので<span class="decoration-02">【アプリを開く】</span>をクリックします。</div></div>
+        
+        <div class="article-item item_image " id="item20829" data-item-id="20829" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/829/medium/09faf83f-3230-4a93-a38d-5f19f4a1fbe8.png?1749184352" title=""><img class="img-responsive item-image" alt=" (20829)" data-reference="" src="../../_assets/f6f79263e9.webp" width="640" height="331"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23304" data-item-id="23304" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20830" data-item-id="20830" data-item-type="ItemText"><div class="item-body-hbr">5. Creative Cloudのデスクトップアプリが起動します。<br>こちらで追加したフォントの管理ができます。</div></div>
+        
+        <div class="article-item item_image " id="item20831" data-item-id="20831" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/831/medium/a0fd93b1-c3b2-4900-8a62-fdc34f93d907.png?1749184390" title=""><img class="img-responsive item-image" alt=" (20831)" data-reference="" src="../../_assets/b0538628c2.webp" width="640" height="430"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23305" data-item-id="23305" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20832" data-item-id="20832" data-item-type="ItemText"><div class="item-body-hbr">これでフォントがインストールされてPremiere Proで使用できるようになります。<br><br>ここで説明した手順で、作例に使う以下のフォントをインストールしてアクティブな状態にしておいてください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item20833" data-item-id="20833" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://fonts.adobe.com/fonts/noto-sans" class="default-link" rel="nofollow">Noto Sans</a>→Adobe Fonts<br>
+<a href="https://www.kfstudio.net/font/kfhimajifude/#google_vignette" class="default-link" rel="nofollow">KFひま字ふで</a>→フリーフォント<br>
+<a href="https://font.spicy-sweet.com/" class="default-link" rel="nofollow">kawaii手書き文字</a>→フリーフォント<br>
+<a href="https://flopdesign.booth.pm/items/4571432" class="default-link" rel="nofollow">にくまるフォント→フリーフォント</a></div></div>
+        
+        <div class="article-item item_heading " id="item20834" data-item-id="20834" data-item-type="ItemHeading"><h2 class="item-body" id="heading9">【3-2】動画のタイトルを作成・配置する</h2></div>
+        
+        <div class="article-item item_markdown " id="item20835" data-item-id="20835" data-item-type="ItemMarkdown"><h4 id="heading10">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20836" data-item-id="20836" data-item-type="ItemRichText"><div class="item-body-hbr">映像に<span class="decoration-02">テロップを作成</span>し、<span class="decoration-02">フォント</span>や<span class="decoration-02">位置</span>を設定します。<br>
+<br>
+テロップには「タイトル」「ナレーション」などがあり、映像の内容を視覚的に理解しやすくさせる効果があります。</div></div>
+        
+        <div class="article-item item_heading " id="item23281" data-item-id="23281" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">作業手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item20838" data-item-id="20838" data-item-type="ItemRichText"><div class="item-body-hbr">1.時間インジケーターを0秒に合わせてから、ツールバーにある<span class="decoration-02">横書き文字ツール</span>を選択します。</div></div>
+        
+        <div class="article-item item_image " id="item23307" data-item-id="23307" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/023/307/medium/29a47080-f928-44e6-a89d-1ed3c7a411e5.png?1749546477" title=""><img class="img-responsive item-image" alt=" (23307)" data-reference="" src="../../_assets/ce4b4d765e.png" width="119" height="85"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23306" data-item-id="23306" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20840" data-item-id="20840" data-item-type="ItemText"><div class="item-body-hbr">2.プログラムパネルをクリックすると文字が入力できる状態になります。</div></div>
+        
+        <div class="article-item item_image " id="item20841" data-item-id="20841" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/841/medium/bc3801c0-e951-4bbf-9b97-fc71081419b6.png?1749184678" title=""><img class="img-responsive item-image" alt=" (20841)" data-reference="" src="../../_assets/a8958c711f.webp" width="640" height="355"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23308" data-item-id="23308" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20842" data-item-id="20842" data-item-type="ItemText"><div class="item-body-hbr">3.今回は「ねこの日常」と入力すると、テキストのクリップが動画クリップの上に配置されました。</div></div>
+        
+        <div class="article-item item_image " id="item20843" data-item-id="20843" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/843/medium/d24811ea-d279-476a-8fa3-c0b090550040.png?1749184712" title=""><img class="img-responsive item-image" alt=" (20843)" data-reference="" src="../../_assets/88c73da850.webp" width="640" height="356"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23309" data-item-id="23309" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20844" data-item-id="20844" data-item-type="ItemText"><div class="item-body-hbr">4.選択ツールに戻してからテキストのクリップを選択し、エフェクトコントロールパネルのタブをクリックします。</div></div>
+        
+        <div class="article-item item_image " id="item20845" data-item-id="20845" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/845/medium/3d927379-9aea-4e5d-aa90-278a9fcda54e.png?1749184742" title=""><img class="img-responsive item-image" alt=" (20845)" data-reference="" src="../../_assets/6b744a2bd6.webp" width="131" height="87"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23310" data-item-id="23310" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20846" data-item-id="20846" data-item-type="ItemRichText"><div class="item-body-hbr">5. <span class="decoration-02">【テキスト（ねこの日常）】</span>の項目を開いてフォントを選択します。<br>
+今回は<span class="decoration-02">「平成角ゴシック Std」</span>というフォントを選択しました。<br>
+フォントによってはフォントの太さを変更する「フォントスタイル」という設定項目があります。<br>
+今回は【W9】に設定します。</div></div>
+        
+        <div class="article-item item_image " id="item20847" data-item-id="20847" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/847/medium/3eda8559-1e96-49c8-be95-6552aeaab0c5.png?1749184802" title=""><img class="img-responsive item-image" alt=" (20847)" data-reference="" src="../../_assets/57b49e389b.webp" width="347" height="231"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23311" data-item-id="23311" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20848" data-item-id="20848" data-item-type="ItemRichText"><div class="item-body-hbr">6. 次にテキストの位置を調整します。<br>
+選択ツールでプログラムモニターパネルにあるテキストを選択すると、ドラッグ操作でテキストの位置を動かせる状態になります。</div></div>
+        
+        <div class="article-item item_image " id="item20849" data-item-id="20849" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/849/medium/3d395264-ca4d-46cb-bf73-a80646613875.png?1749184832" title=""><img class="img-responsive item-image" alt=" (20849)" data-reference="" src="../../_assets/e584fa5bab.webp" width="640" height="360"></a><h4 id="heading17"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23312" data-item-id="23312" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20850" data-item-id="20850" data-item-type="ItemText"><div class="item-body-hbr">7.画面左上にドラッグして移動させます。</div></div>
+        
+        <div class="article-item item_image " id="item20851" data-item-id="20851" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/851/medium/b84e940d-72b6-4e13-a74e-f965ea824e7c.png?1749184859" title=""><img class="img-responsive item-image" alt=" (20851)" data-reference="" src="../../_assets/526850e2cf.webp" width="640" height="361"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item20852" data-item-id="20852" data-item-type="ItemHeading"><h2 class="item-body" id="heading19">【3-3】テロップの大きさ・色を調整する</h2></div>
+        
+        <div class="article-item item_markdown " id="item20853" data-item-id="20853" data-item-type="ItemMarkdown"><h4 id="heading20">目安の学習時間：5分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item23282" data-item-id="23282" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">作業手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item20855" data-item-id="20855" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-02">【テキスト（ねこの日常）】</span>の項目を開いて<span class="decoration-02">【ソーステキスト】</span>の値を右にドラッグすると文字が大きくなります。<br>
+ここでは「120」に設定します。</div></div>
+        
+        <div class="article-item item_image " id="item20856" data-item-id="20856" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/856/medium/06d89454-ebfa-431c-9956-eff2bf2bc87b.png?1749184981" title=""><img class="img-responsive item-image" alt=" (20856)" data-reference="" src="../../_assets/c1cf98b126.webp" width="640" height="141"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_image " id="item20857" data-item-id="20857" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/857/medium/6ae15c83-0e0c-4d15-8c38-1ba2b8c80955.png?1749185016" title=""><img class="img-responsive item-image" alt=" (20857)" data-reference="" src="../../_assets/724cf7cfc3.webp" width="640" height="361"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23313" data-item-id="23313" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20858" data-item-id="20858" data-item-type="ItemRichText"><div class="item-body-hbr">2.<span class="decoration-02">【塗り】</span>の下にあるカラーパネルをクリックすると、カラーピッカー設定パネルが表示されるので、文字の塗り（内側）の色が変更できます。</div></div>
+        
+        <div class="article-item item_image " id="item20859" data-item-id="20859" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/859/medium/1302aec5-f43d-429c-8231-de63e66d554a.png?1749185043" title=""><img class="img-responsive item-image" alt=" (20859)" data-reference="" src="../../_assets/4a9c64274f.webp" width="640" height="468"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23314" data-item-id="23314" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20860" data-item-id="20860" data-item-type="ItemText"><div class="item-body-hbr">ここでは「青色(＃2285FB)」に設定します。</div></div>
+        
+        <div class="article-item item_image " id="item20861" data-item-id="20861" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/861/medium/a50b7727-a6f1-462e-b86f-a61763c2bcf4.png?1749185066" title=""><img class="img-responsive item-image" alt=" (20861)" data-reference="" src="../../_assets/66bf3d0458.webp" width="640" height="360"></a><h4 id="heading25"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item20862" data-item-id="20862" data-item-type="ItemHeading"><h2 class="item-body" id="heading26">【3-4】テロップを装飾する</h2></div>
+        
+        <div class="article-item item_markdown " id="item20863" data-item-id="20863" data-item-type="ItemMarkdown"><h4 id="heading27">&nbsp;目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20864" data-item-id="20864" data-item-type="ItemRichText"><div class="item-body-hbr">テロップにストロークと<span class="decoration-02">シャドウ</span>を装飾します。<br>
+<br>
+境界線を加えることでテキストに縁取りの効果をつけることができます。<br>
+<br>
+シャドウを適用することで、テキストが立体的になり背景と区別しやすくなります。</div></div>
+        
+        <div class="article-item item_heading " id="item23283" data-item-id="23283" data-item-type="ItemHeading"><h3 class="item-body" id="heading28">作業手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item20866" data-item-id="20866" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-02">【ストローク】</span>にチェックを入れてアクティブ状態にしてから、カラーパネルをクリックします。<br>
+<br>
+2. カラーピッカー設定パネルで文字のフチ（外側）の色を選択します。<br>
+ここでは白のままにしておきます。</div></div>
+        
+        <div class="article-item item_image " id="item50999" data-item-id="50999" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/050/999/medium/5d728e5f-8aa7-4a72-bd74-29c3ed927daa.png?1785068121" title=""><img class="img-responsive item-image" alt=" (50999)" data-reference="" src="../../_assets/fdcb0bf282.webp" width="166" height="58"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23315" data-item-id="23315" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20868" data-item-id="20868" data-item-type="ItemRichText"><div class="item-body-hbr">3.<span class="decoration-02">【ストローク】</span>の右側にある数値を入力すると、文字のフチの太さを変更することができます。</div></div>
+        
+        <div class="article-item item_image " id="item51000" data-item-id="51000" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/051/000/medium/b36baf65-ecd0-4853-a0fa-5223954e8df7.png?1785068193" title=""><img class="img-responsive item-image" alt=" (51000)" data-reference="" src="../../_assets/afa1b034d0.webp" width="163" height="67"></a><h4 id="heading30"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23316" data-item-id="23316" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20870" data-item-id="20870" data-item-type="ItemRichText"><div class="item-body-hbr">ここでは「8.0」に設定しました。</div></div>
+        
+        <div class="article-item item_image " id="item23317" data-item-id="23317" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/023/317/medium/445f7bfb-e94a-482d-834e-a824b58e66aa.png?1749546646" title=""><img class="img-responsive item-image" alt=" (23317)" data-reference="" src="../../_assets/382c432cab.webp" width="640" height="361"></a><h4 id="heading31"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23318" data-item-id="23318" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20872" data-item-id="20872" data-item-type="ItemRichText"><div class="item-body-hbr">4.次に<span class="decoration-02">【シャドウ】</span>にチェックを入れてアクティブ状態にすると、文字に<span class="decoration-02">ドロップシャドウ</span>の効果をつけることができます。<br>
+今回は【シャドウ】を「白色」、【不透明度】を「30％」、【角度】を「135°」、【距離】を「5」、【ブラー】を「40」にしました。</div></div>
+        
+        <div class="article-item item_image " id="item20873" data-item-id="20873" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/873/medium/7b1eccfe-f75e-4060-8e30-4dea61787931.png?1749185293" title=""><img class="img-responsive item-image" alt=" (20873)" data-reference="" src="../../_assets/245ef73a15.png" width="587" height="308"></a><h4 id="heading32"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23319" data-item-id="23319" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20874" data-item-id="20874" data-item-type="ItemText"><div class="item-body-hbr">テロップの調整が終わったら、クリップ「ねこの日常」の右端を右にドラッグして動画クリップの終端の長さまで広げます。</div></div>
+        
+        <div class="article-item item_image " id="item20875" data-item-id="20875" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/875/medium/2ffcc2da-1ab3-4ad5-a6f4-73a7b824d4c0.png?1749185313" title=""><img class="img-responsive item-image" alt=" (20875)" data-reference="" src="../../_assets/1fa0808f99.webp" width="640" height="227"></a><h4 id="heading33"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23320" data-item-id="23320" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20876" data-item-id="20876" data-item-type="ItemText"><div class="item-body-hbr">これで動画にのせるテロップが完成しました。</div></div>
+        
+        <div class="article-item item_heading " id="item20877" data-item-id="20877" data-item-type="ItemHeading"><h2 class="item-body" id="heading34">【3-5】テロップにフェードの効果をつける</h2></div>
+        
+        <div class="article-item item_markdown " id="item20878" data-item-id="20878" data-item-type="ItemMarkdown"><h4 id="heading35">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20879" data-item-id="20879" data-item-type="ItemRichText"><div class="item-body-hbr">テロップに<span class="decoration-02">フェードイン</span>（徐々に出現する）、<span class="decoration-02">フェードアウト</span>（徐々に消えていく）の効果をつけます。</div></div>
+        
+        <div class="article-item item_html " id="item20880" data-item-id="20880" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">フェードイン・フェードアウトとは</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">フェードイン</span>とは、映像においては、<span class="decoration-02">白や黒一色の画面から徐々に映像へと移り変わるような表現手法</span></li>
+     <li>音楽においては、無音の状態から段々と音量が大きくなる効果のこと。</li>
+<li><span class="decoration-02">フェードアウト</span>とは、 フェードインの逆で、映像においては、<span class="decoration-02">映像から徐々に白や黒一色へと移り変わるような表現手法</span></li>
+     <li>音楽においては、通常の音量からだんだんと音量が小さくなり無音になる効果のこと。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item23284" data-item-id="23284" data-item-type="ItemHeading"><h3 class="item-body" id="heading36">作業手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item20882" data-item-id="20882" data-item-type="ItemRichText"><div class="item-body-hbr">1. クリップの左端にマウスポインターを合わせた状態で右クリックするとメニューが表示されるので、**<span class="decoration-02">【デフォルトのトランジションを適用】</span>**を選択します。<br>
+すると、クリップにフェードインの効果が適用されます。</div></div>
+        
+        <div class="article-item item_image " id="item20883" data-item-id="20883" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/883/medium/e9fb9c17-93b7-48d3-8f3b-185c2138b97b.png?1749187306" title=""><img class="img-responsive item-image" alt=" (20883)" data-reference="" src="../../_assets/0a0ec2c08b.png" width="159" height="85"></a><h4 id="heading37"></h4></div></div>
+        
+        <div class="article-item item_image " id="item20884" data-item-id="20884" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/884/medium/cc47adef-9e36-42a1-af4d-3974d236ad25.png?1749187321" title=""><img class="img-responsive item-image" alt=" (20884)" data-reference="" src="../../_assets/71fc8655ea.webp" width="640" height="359"></a><h4 id="heading38"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23321" data-item-id="23321" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20885" data-item-id="20885" data-item-type="ItemRichText"><div class="item-body-hbr">2. 同じように、クリップの右端にマウスポインターを合わせた状態で<span class="decoration-02">右クリック</span>＞<span class="decoration-02">【デフォルトのトランジションを適用】</span>を選択します。<br>
+すると、クリップにフェードアウト（徐々に消えていく）の効果が適用されます。<br>
+3. 動画クリップm3.mp4の右端にも同じように右クリックをして、<span class="decoration-02">【デフォルトのトランジションを適用】</span>を選択して、フェードアウトを適用しましょう。</div></div>
+        
+        <div class="article-item item_image " id="item20886" data-item-id="20886" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/886/medium/b68b517d-0647-4a81-a04f-b335ccd8a46e.png?1749187460" title=""><img class="img-responsive item-image" alt=" (20886)" data-reference="" src="../../_assets/e7d32d2642.webp" width="163" height="84"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_image " id="item20887" data-item-id="20887" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/887/medium/4250444c-140d-4096-8da8-0ebb4cab3fa2.png?1749187476" title=""><img class="img-responsive item-image" alt=" (20887)" data-reference="" src="../../_assets/41006a5321.webp" width="403" height="305"></a><h4 id="heading40"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23322" data-item-id="23322" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item20888" data-item-id="20888" data-item-type="ItemMarkdown"><h4 id="heading41">完成動画</h4>
+</div>
+        
+        <div class="article-item item_link " id="item23969" data-item-id="23969" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hRoTm&amp;item_id=23969" rel="nofollow noopener noreferrer" target="_blank">Premier Pro 3-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Premier Pro 3-1" data-reference="https://www.dropbox.com/scl/fi/sddjjemgzqqyr5psq3elj/kansei_02.mp4?rlkey=mc3xzrueroth2ip48i8m6awr4&amp;st=p2wugrq1&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item20889" data-item-id="20889" data-item-type="ItemHeading"><h2 class="item-body" id="heading42">【3-6】BGMを追加する</h2></div>
+        
+        <div class="article-item item_markdown " id="item20890" data-item-id="20890" data-item-type="ItemMarkdown"><h4 id="heading43">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item20891" data-item-id="20891" data-item-type="ItemText"><div class="item-body-hbr">動画にBGMを追加し、動画に合うように長さや音量を調整します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item20892" data-item-id="20892" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">「BGM」</span>とは、背景音楽（はいけいおんがく）またはバックグラウンド・ミュージック（英: background music）の意味で、特定の空間や映像などの背景に雰囲気を出す目的で、小音量で流される音楽・音響です。<br>
+「BGM」をのせるのには、以下の理由があります。<br>
+・ 演出力を高める<br>
+・ 感情を誘導する<br>
+・ 臨場感を演出する<br>
+・ 視聴者の印象や感情をコントロールする<br>
+・ イメージを決定する<br>
+・ 行動誘導する<br>
+・ 雑音を軽減する<br>
+<br>
+「BGM」を選ぶ際は、シーンや目的、効果を最大化するために、目的に合った音楽を流すことが大切です。</div></div>
+        
+        <div class="article-item item_markdown " id="item20893" data-item-id="20893" data-item-type="ItemMarkdown"><h4 id="heading44">作業手順</h4>
+</div>
+        
+        <div class="article-item item_text " id="item20894" data-item-id="20894" data-item-type="ItemText"><div class="item-body-hbr">まずは「BGM」をのせる前に雑音を消したいので、現在タイムラインにある映像クリップの音声をオフにします。</div></div>
+        
+        <div class="article-item item_rich_text " id="item20895" data-item-id="20895" data-item-type="ItemRichText"><div class="item-body-hbr">1. m1.mp4を選択してから<span class="decoration-02">エフェクトコントロールパネル</span>＞<span class="decoration-02">オーディオ</span>＞<span class="decoration-02">ボリューム</span>＞<span class="decoration-02">レベル</span>と展開し、スライダーを一番左「-∞」に持っていくと、音声が消えます。<br>
+m2.mp4 、 m3.mp4も同様の操作をして音声を消します。</div></div>
+        
+        <div class="article-item item_image " id="item20896" data-item-id="20896" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/896/medium/6d474d1c-90b2-45bf-aa1f-296acc932217.png?1749188309" title=""><img class="img-responsive item-image" alt=" (20896)" data-reference="" src="../../_assets/713ab49136.webp" width="640" height="111"></a><h4 id="heading45"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23323" data-item-id="23323" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20897" data-item-id="20897" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">2.【ファイル】</span>＞<span class="decoration-02">【読み込み】</span>を選択すると、読み込み設定パネルが表示されます。</div></div>
+        
+        <div class="article-item item_image " id="item20898" data-item-id="20898" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/898/medium/c5364e55-8520-4295-a057-58cc45944a7b.png?1749188337" title=""><img class="img-responsive item-image" alt=" (20898)" data-reference="" src="../../_assets/f39dc418b3.webp" width="484" height="272"></a><h4 id="heading46"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23324" data-item-id="23324" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20899" data-item-id="20899" data-item-type="ItemRichText"><div class="item-body-hbr">3.音声のファイルbgm1.mp3を選択して<span class="decoration-02">【開く】</span>をクリックします。</div></div>
+        
+        <div class="article-item item_image " id="item20900" data-item-id="20900" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/900/medium/f0f72543-9ba8-4d5e-bdd0-d6840d46b024.png?1749188366" title=""><img class="img-responsive item-image" alt=" (20900)" data-reference="" src="../../_assets/ca2fa46791.webp" width="640" height="398"></a><h4 id="heading47"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23325" data-item-id="23325" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20901" data-item-id="20901" data-item-type="ItemText"><div class="item-body-hbr">4.これでプロジェクトパネルに音楽クリップbgm1.mp3が読み込まれました。</div></div>
+        
+        <div class="article-item item_image " id="item20902" data-item-id="20902" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/902/medium/f41434ec-2f20-40a4-9c8b-fc7e687dbb56.png?1749188449" title=""><img class="img-responsive item-image" alt=" (20902)" data-reference="" src="../../_assets/4b070bd673.webp" width="640" height="462"></a><h4 id="heading48"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23326" data-item-id="23326" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20903" data-item-id="20903" data-item-type="ItemRichText"><div class="item-body-hbr">映像クリップと同じ要領で音楽クリップbgm1.mp3をタイムラインに配置しましょう。<br>
+<br>
+基本的に音声や音楽のみのファイルはトラック【A1】【A2】【A3】・・・に配置することができます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item20904" data-item-id="20904" data-item-type="ItemRichText"><div class="item-body-hbr">1.現在は映像クリップの音声データがトラック【A1】を使っているので、トラック【A2】にドラッグして配置します。</div></div>
+        
+        <div class="article-item item_image " id="item20905" data-item-id="20905" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/905/medium/6a2a5ccd-21d3-4f98-b05a-020aeee11572.png?1749188502" title=""><img class="img-responsive item-image" alt=" (20905)" data-reference="" src="../../_assets/95535727a3.webp" width="640" height="198"></a><h4 id="heading49"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23327" data-item-id="23327" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20906" data-item-id="20906" data-item-type="ItemText"><div class="item-body-hbr">2.bgm1.mp3を動画クリップの長さと同じ長さに縮めます。<br>ただ、このままでは音声クリップの右端が見切れている状態なので、タイムラインを縮小してから操作をします。</div></div>
+        
+        <div class="article-item item_image " id="item20907" data-item-id="20907" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/907/medium/2560ba36-a951-4778-b257-4b47f4c66277.png?1749188637" title=""><img class="img-responsive item-image" alt=" (20907)" data-reference="" src="../../_assets/401b9c7570.webp" width="640" height="216"></a><h4 id="heading50"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23328" data-item-id="23328" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20908" data-item-id="20908" data-item-type="ItemRichText"><div class="item-body-hbr">3.タイムラインパネルの左下にある<span class="decoration-02">【スクロールバー】</span>の丸い部分をクリックしながら右にドラッグすると、タイムラインを縮小することができます。</div></div>
+        
+        <div class="article-item item_image " id="item20909" data-item-id="20909" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/909/medium/ee20d5cd-8367-4d0d-bf81-c74a15671525.png?1749188670" title=""><img class="img-responsive item-image" alt=" (20909)" data-reference="" src="../../_assets/a59449e590.webp" width="640" height="218"></a><h4 id="heading51"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23329" data-item-id="23329" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20910" data-item-id="20910" data-item-type="ItemText"><div class="item-body-hbr">4.m3.mp4より右にはみ出している部分をbgm1.mp3クリップの右端を選択したまま左にドラッグして動画クリップの長さと同じ長さに縮めます。</div></div>
+        
+        <div class="article-item item_image " id="item20911" data-item-id="20911" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/911/medium/7c082fd9-a6ee-40cd-a094-22351d6b7116.png?1749188704" title=""><img class="img-responsive item-image" alt=" (20911)" data-reference="" src="../../_assets/cd5b381204.webp" width="640" height="217"></a><h4 id="heading52"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23330" data-item-id="23330" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20912" data-item-id="20912" data-item-type="ItemRichText"><div class="item-body-hbr">5. 操作が終わったら、タイムラインパネルの左下にある<span class="decoration-02">【スクロールバー】</span>の丸い部分をクリックしながら左にドラッグして、全体が見えやすいようにタイムラインを拡大しておきましょう。</div></div>
+        
+        <div class="article-item item_image " id="item20913" data-item-id="20913" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/913/medium/9145b3aa-446d-437c-9414-e880113da1c9.png?1749188794" title=""><img class="img-responsive item-image" alt=" (20913)" data-reference="" src="../../_assets/834bfba1bf.webp" width="640" height="216"></a><h4 id="heading53"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23331" data-item-id="23331" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item23286" data-item-id="23286" data-item-type="ItemText"><div class="item-body-hbr">映像の終わりに合わせてBGMを徐々に小さくしたいので、音楽クリップにフェード効果を適用します。</div></div>
+        
+        <div class="article-item item_text " id="item23287" data-item-id="23287" data-item-type="ItemText"><div class="item-body-hbr">1.bgm1.mp3の左端にマウスポインターを合わせた状態で右クリックするとメニューが表示されます。</div></div>
+        
+        <div class="article-item item_image " id="item23288" data-item-id="23288" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/023/288/medium/c6ad779c-4c9c-4c5f-a56d-48352c32208f.png?1749545870" title=""><img class="img-responsive item-image" alt=" (23288)" data-reference="" src="../../_assets/b4f61e3f75.webp" width="160" height="65"></a><h4 id="heading54"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23289" data-item-id="23289" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item23290" data-item-id="23290" data-item-type="ItemRichText"><div class="item-body-hbr">2.今回は、<span class="decoration-02">【デフォルトのトランジションを適用】</span>を選択します。</div></div>
+        
+        <div class="article-item item_image " id="item23291" data-item-id="23291" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/023/291/medium/13a16af3-3b23-43dc-9c8e-5a65be55c09a.png?1749545936" title=""><img class="img-responsive item-image" alt=" (23291)" data-reference="" src="../../_assets/f39512517b.webp" width="400" height="225"></a><h4 id="heading55"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23332" data-item-id="23332" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item23292" data-item-id="23292" data-item-type="ItemText"><div class="item-body-hbr">このままでは書き出した際に音が大きくなるので、最後の仕上げに音楽ファイルの音量を設定します。<br><br>音楽ファイルのデータによって音の大きさはさまざまです。データに合った音量の調整を心がけましょう。</div></div>
+        
+        <div class="article-item item_text " id="item23293" data-item-id="23293" data-item-type="ItemText"><div class="item-body-hbr">1. bgm1.mp3を選択して、エフェクトコントロールパネル＞オーディオ＞ボリューム＞レベルを展開します。<br><br>2. 数値上をクリックすると入力ができる状態になるので、「-5」と入力します。</div></div>
+        
+        <div class="article-item item_image " id="item23294" data-item-id="23294" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/023/294/medium/d3657092-a1fa-4d86-a142-904af62c32f2.png?1749545989" title=""><img class="img-responsive item-image" alt=" (23294)" data-reference="" src="../../_assets/c2410311f3.webp" width="640" height="126"></a><h4 id="heading56"></h4></div></div>
+        
+        <div class="article-item item_html " id="item23333" data-item-id="23333" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item23297" data-item-id="23297" data-item-type="ItemText"><div class="item-body-hbr">これで動画の編集が完成しました。<br><br>最近よくSNSでも見かける「vlog（ビデオブログ）」作品です。</div></div>
+        
+        <div class="article-item item_html " id="item23298" data-item-id="23298" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">注意事項<br></span>
+
+   使用する音楽に関しては基本的に<span class="decoration-02">著作権</span>があるので、必ず著作権をクリアしたものを使用しましょう。（ライセンス購入など）<br>
+また、映像にも<span class="decoration-02">著作権</span>や<span class="decoration-02">肖像権</span>があるので注意が必要となります。
+
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item23299" data-item-id="23299" data-item-type="ItemMarkdown"><h4 id="heading57">完成動画</h4>
+</div>
+        
+        <div class="article-item item_link " id="item23970" data-item-id="23970" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hRoTm&amp;item_id=23970" rel="nofollow noopener noreferrer" target="_blank">Premier Pro 3-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Premier Pro 3-2" data-reference="https://www.dropbox.com/scl/fi/tm1dq1iu15vzmk89co7dx/kansei_03.mp4?rlkey=668mk404wacuvwka7md342ko0&amp;st=t0txkxu6&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item23301" data-item-id="23301" data-item-type="ItemText"><div class="item-body-hbr">これで「第3章：動画にテロップ・BGMを挿入しよう！」の解説を終わります。<br><br>次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25921" data-item-id="25921" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/i2OYz" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/9eWfR" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">第3章：動画にテロップ・BGMを挿入しよう！</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:70分</a></li></ul></li><li><a href="#heading2" class="tocLink">【3-1】フォントについて</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間：15分</a></li></ul><ul><li><a href="#heading4" class="tocLink">フォントをインストールする</a><ul><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading9" class="tocLink">【3-2】動画のタイトルを作成・配置する</a><ul><li><a href="#heading10" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading11" class="tocLink">作業手順</a><ul><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading19" class="tocLink">【3-3】テロップの大きさ・色を調整する</a><ul><li><a href="#heading20" class="tocLink">目安の学習時間：5分</a></li></ul><ul><li><a href="#heading21" class="tocLink">作業手順</a><ul><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading26" class="tocLink">【3-4】テロップを装飾する</a><ul><li><a href="#heading27" class="tocLink">&nbsp;目安の学習時間：10分</a></li></ul><ul><li><a href="#heading28" class="tocLink">作業手順</a><ul><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading34" class="tocLink">【3-5】テロップにフェードの効果をつける</a><ul><li><a href="#heading35" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading36" class="tocLink">作業手順</a><ul><li><a href="#heading37" class="tocLink"></a></li><li><a href="#heading38" class="tocLink"></a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink">完成動画</a></li></ul></li></ul></li><li><a href="#heading42" class="tocLink">【3-6】BGMを追加する</a><ul><li><a href="#heading43" class="tocLink">目安の学習時間：20分</a></li><li><a href="#heading44" class="tocLink">作業手順</a></li><li><a href="#heading45" class="tocLink"></a></li><li><a href="#heading46" class="tocLink"></a></li><li><a href="#heading47" class="tocLink"></a></li><li><a href="#heading48" class="tocLink"></a></li><li><a href="#heading49" class="tocLink"></a></li><li><a href="#heading50" class="tocLink"></a></li><li><a href="#heading51" class="tocLink"></a></li><li><a href="#heading52" class="tocLink"></a></li><li><a href="#heading53" class="tocLink"></a></li><li><a href="#heading54" class="tocLink"></a></li><li><a href="#heading55" class="tocLink"></a></li><li><a href="#heading56" class="tocLink"></a></li><li><a href="#heading57" class="tocLink">完成動画</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/i2OYz" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/Premiere_Pro/9eWfR" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

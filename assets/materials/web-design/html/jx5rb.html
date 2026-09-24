@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/uiux/chap3/jX5rb -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3-1 良いUIを見比べ、模写して、リフトに作り変える — 使いやすい型を手で覚える - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/uiux/chap3/jX5rb">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="3-1 良いUIを見比べ、模写して、リフトに作り変える — 使いやすい型を手で覚える - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="3-1 良いUIを見比べ、模写して、リフトに作り変える — 使いやすい型を手で覚える">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/uiux/chap3/jX5rb">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="z1cNzR241dVvZl_S3YVFSt64rvp6CUD-nN3HoO_ueoLLixNl8Szs_g-dgnVcmc6-foBAqikdPjNR9bjkykw1HA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item51082" data-item-id="51082" data-item-type="ItemHtml"><div class="item-body"><meta charset="UTF-8">
+<!--
+  AI×UX/UIデザイナー育成講座（Reスキル認定申請予定・レベル3）
+  UX/UIデザイン教材 第3章「情報設計とUI設計」 レッスン1（※申請書類上は第Ⅲ部）
+  題材: 良いUIと悪いUIを見比べる → 良いUIを模写して型を覚える → リフトに合わせて作り変える（実践課題型・学習時間150分）
+  流れ: ①良し悪しの見比べ（.dodontで実物ミニUIを左右比較・感覚的な導入）②良いとされる実サービスUIの模写（型を手で覚える）③リフトに合わせた作り変え（なぜ良いか＝レイアウト・コンポーネント・状態・導線を踏まえる）
+  接続: 第1章のUX/UI基礎・UXプロセス、第2章のリサーチ→要件→価値定義（リフトの成果物）を前提に、画面設計の第3章へ。Figma教材で見本を模写して作り方を覚えたやり方の延長
+  通し課題: 前回（2-7）の価値定義シート・コンセプトテスト記録に続く工程。2-4の競合UX/UI分析シートを入力に、良いUIを模写→作り変え。成果物＝模写した参考画面＋リフト向けに作り変えたUI＋作り変えメモ
+  体裁の正: chapter-02_research-requirements/lesson-02.html（F5テンプレ・ClipKit目次対策込み）
+  棲み分け: 本レッスンは良し悪しを感覚でつかむ導入。体系的な原則（ニールセン10・コントラスト比の数値など）は3-2で扱い、ここでは重複させない
+  図版: プレースホルダー（ig-3301-01〜03。画像生成は後日タスク）
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ClipKit対策: アンカージャンプ先が固定ヘッダーに隠れないようオフセット */
+section[id] { scroll-margin-top: 96px; }
+.slide-img { width: 100%; height: auto; display: block; border-radius: 14px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box__time { margin-left: auto; font-size: 13px; font-weight: 700; color: #C2402F; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — ClipKit対策版（高詳細度＋!important） */
+.lesson-wrapper nav.toc { background: #fff !important; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.lesson-wrapper nav.toc .toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lesson-wrapper nav.toc .toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.lesson-wrapper nav.toc .toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.lesson-wrapper nav.toc ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 3px; }
+.lesson-wrapper nav.toc ul li { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.lesson-wrapper nav.toc ul li::before { content: none !important; }
+.lesson-wrapper nav.toc ul li::marker { content: '' !important; }
+.lesson-wrapper nav.toc ul li a { display: flex !important; align-items: center; gap: 12px; padding: 8px 14px !important; background: #FAF9F8; border-radius: 8px; text-decoration: none !important; border-bottom: none !important; box-shadow: none; color: #2D2D2D !important; transition: background 0.2s; }
+.lesson-wrapper nav.toc ul li a:hover { background: #F5EFEC; text-decoration: none !important; color: #2D2D2D !important; }
+.lesson-wrapper nav.toc ul li a:visited { color: #2D2D2D !important; }
+.lesson-wrapper nav.toc .toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.lesson-wrapper nav.toc .toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.lesson-wrapper nav.toc .toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* 注意ボックス */
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+
+/* 良い例・悪い例（Do/Don't）比較 — 実物ミニUIを左右に並べる */
+.dodont { display: flex; flex-direction: column; gap: 16px; margin: 28px 0; }
+.dodont__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 600px) { .dodont__row { grid-template-columns: 1fr; } }
+.dodont__col { border-radius: 14px; padding: 18px 20px; }
+.dodont__col.bad { background: #FFF5F4; border: 1.5px solid #F5A8A0; }
+.dodont__col.good { background: #F1F9F4; border: 1.5px solid #A6D8BB; }
+.dodont__tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; margin-bottom: 10px; }
+.dodont__col.bad .dodont__tag { color: #C2402F; }
+.dodont__col.good .dodont__tag { color: #2E7D4F; }
+.dodont__demo { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+.dodont__note { font-size: 13.5px; line-height: 1.8; color: #555; margin: 0; }
+.dodont__cap { font-size: 13.5px; font-weight: 700; color: #C2402F; margin-top: 8px; }
+
+/* v2テーブル（比較・マッピング） */
+.v2-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 24px 0 28px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 15px; }
+.v2-table th { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-weight: 700; padding: 12px 16px; text-align: left; font-size: 14px; }
+.v2-table td { padding: 12px 16px; border-bottom: 1px solid #F0E6E1; color: #4A4A4A; background: #fff; vertical-align: top; line-height: 1.75; }
+.v2-table tr:last-child td { border-bottom: none; }
+.v2-table td:first-child { font-weight: 700; color: #2D2D2D; white-space: nowrap; }
+
+/* 図版プレースホルダー */
+.fig-ph { font-size: 14px; line-height: 1.8; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* 演習ボックス */
+.work-box { background: #fff; border: 2px solid #F5A64A; border-radius: 14px; padding: 22px 24px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.work-box__badge { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 14px; }
+.work-box h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 16px 0 8px; }
+.work-box ol, .work-box ul { margin: 0 0 8px; padding-left: 1.4em; }
+.work-box li { font-size: 14.5px; color: #4A4A4A; line-height: 1.85; }
+.work-box .v2-table { margin: 10px 0 14px; }
+.prep-list { background: #fff; border-radius: 14px; padding: 24px 28px; margin: 28px 0; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.prep-list .prep-label { font-size: 12px; font-weight: 700; color: #4CAF50; letter-spacing: 0.15em; margin-bottom: 12px; }
+.prep-list ul { list-style: none; padding: 0; margin: 0; }
+.prep-list li { padding: 10px 0; border-bottom: 1px solid #E8F5E9; font-size: 15px; color: #3D3D3D; }
+.prep-list li:last-child { border-bottom: none; }
+.prep-list li .prep-bullet { color: #4CAF50; margin-right: 8px; }
+.submit-note { background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; color: #C2402F; margin-top: 14px; text-align: center; }
+
+/* 理解度チェック — 白カード + グラデピル + 薄グラデ質問（Goalと統一） */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== 図解キット（fig-*）v2 分かりやすさ最適化 ===== */
+.fig { margin: 28px 0; }
+.fig__frame { background:#FBFAF8; border:1px solid #E4E1DB; border-radius:14px; padding:22px 20px; }
+.fig__cap { font-size:13px; color:#6E6A66; text-align:center; margin-top:10px; line-height:1.7; }
+.fig__sample { color:#B8B0A8 !important; font-style:italic; }
+.fig-row { display:flex; gap:16px; flex-wrap:wrap; }
+.fig-row > * { flex:1 1 0; min-width:150px; }
+.fig-card { background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:18px; }
+.fig-card__n { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:#E85D4A; color:#fff; font-size:13px; font-weight:800; margin-bottom:10px; }
+.fig-card__t { font-size:15px; font-weight:700; color:#2D2D2D; margin-bottom:6px; line-height:1.5; }
+.fig-card__d { font-size:13px; color:#555; line-height:1.75; }
+.fig-card__note { margin-top:10px; padding-top:10px; border-top:1px dashed #E4E1DB; font-size:12.5px; color:#C2402F; font-weight:700; }
+.fig-card--accent { border-color:#E85D4A; background:#FDEEE9; }
+.fig-card--fill { background:#E85D4A; border-color:#E85D4A; }
+.fig-card--fill .fig-card__t, .fig-card--fill .fig-card__d { color:#fff; }
+.fig-card--fill .fig-card__n { background:#fff; color:#E85D4A; }
+.fig-card--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-card--mute .fig-card__n { background:#A8A29B; }
+.fig-card--mute .fig-card__t { color:#6E6A66; }
+.fig-flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; }
+.fig-node { flex:1 1 0; min-width:104px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:13px 11px; text-align:center; }
+.fig-node__n { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; margin-bottom:8px; }
+.fig-node__t { font-size:13px; font-weight:700; color:#2D2D2D; line-height:1.45; }
+.fig-node__d { font-size:11.5px; color:#6E6A66; line-height:1.6; margin-top:4px; }
+.fig-node--current { border-color:#E85D4A; background:#FDEEE9; }
+.fig-node--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-node--mute .fig-node__n { background:#A8A29B; }
+.fig-node--mute .fig-node__t { color:#6E6A66; }
+.fig-sep { display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:18px; font-weight:800; flex:0 0 auto; }
+.fig-loop { margin-top:12px; display:flex; align-items:center; gap:10px; color:#C2402F; font-size:12.5px; font-weight:700; }
+.fig-loop__line { flex:1; height:0; border-top:2px dashed #C9C4BD; }
+.fig-two { display:flex; align-items:stretch; gap:12px; flex-wrap:wrap; }
+.fig-two__col { flex:1 1 0; min-width:180px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:16px 18px; }
+.fig-two__h { font-size:14px; font-weight:800; color:#2D2D2D; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.fig-two__col ul { margin:0; padding-left:1.1em; }
+.fig-two__col li { font-size:13px; color:#555; line-height:1.8; }
+.fig-two__mid { flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:22px; font-weight:800; }
+.fig-two__col--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-two__col--mute .fig-two__h, .fig-two__col--mute li { color:#8A8279; }
+.fig-two__col--accent { background:#FDEEE9; border-color:#E85D4A; }
+.fig-mark { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; font-size:12px; font-weight:800; flex:0 0 auto; }
+.fig-mark--ok { background:#E85D4A; color:#fff; }
+.fig-mark--ng { background:#C9C4BD; color:#fff; }
+.fig-tag { display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.04em; padding:2px 8px; border-radius:6px; }
+.fig-tag--mute { background:#E4E1DB; color:#8A8279; }
+.fig-tag--accent { background:#E85D4A; color:#fff; }
+.fig-nest { display:flex; justify-content:center; }
+.fig-nest__outer { position:relative; background:#FDEEE9; border:2px solid #F0A891; border-radius:20px; padding:38px 28px 22px; min-width:280px; max-width:440px; text-align:center; }
+.fig-nest__label { position:absolute; top:12px; left:20px; font-size:12.5px; font-weight:800; color:#C2402F; }
+.fig-nest__inner { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:18px 20px; }
+.fig-nest__inner .t { font-size:14px; font-weight:800; color:#2D2D2D; }
+.fig-nest__inner .d { font-size:12px; color:#6E6A66; margin-top:4px; line-height:1.6; }
+.fig-nest__outerd { font-size:12px; color:#8A6A5A; margin-top:14px; line-height:1.6; }
+.fig-ladder { display:flex; flex-direction:column; gap:8px; }
+.fig-step { border:1px solid #E4E1DB; border-radius:12px; padding:12px 16px; display:flex; gap:12px; align-items:flex-start; }
+.fig-step__n { flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.fig-step__t { font-size:13px; color:#3D3D3D; line-height:1.6; }
+.fig-step.s1{background:#FCF1ED}.fig-step.s2{background:#FADED4}.fig-step.s3{background:#F7C9B8}.fig-step.s4{background:#F3B39B}.fig-step.s5{background:#EE9B7E}
+.fig-step.d2{margin-left:22px}.fig-step.d3{margin-left:44px}.fig-step.d4{margin-left:66px}.fig-step.d5{margin-left:88px}
+.fig-step--root { border-color:#E85D4A; border-width:2px; }
+.fig-why { text-align:center; color:#A8A29B; font-size:12px; font-weight:800; margin:2px 0; }
+.fig-band { display:flex; flex-direction:column; gap:8px; }
+.fig-band__row { display:flex; gap:10px; align-items:center; }
+.fig-band__k { flex:0 0 104px; font-size:12.5px; font-weight:800; color:#C2402F; text-align:right; line-height:1.4; }
+.fig-band__v { flex:1; background:#FDEEE9; border:1px solid #E4E1DB; border-radius:10px; padding:9px 12px; font-size:12.5px; color:#3D3D3D; line-height:1.6; }
+.fig-exchange { display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap; }
+.fig-exchange__end { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:16px 18px; font-size:13.5px; font-weight:800; color:#2D2D2D; text-align:center; min-width:110px; }
+.fig-exchange__mid { flex:1; min-width:150px; display:flex; flex-direction:column; gap:8px; }
+.fig-exchange__req, .fig-exchange__res { border-radius:8px; padding:7px 12px; font-size:12px; font-weight:700; text-align:center; }
+.fig-exchange__req { background:#FDEEE9; color:#C2402F; }
+.fig-exchange__res { background:#F4F2F0; color:#6E6A66; }
+@media (max-width:600px){
+  .fig-two__mid{transform:rotate(90deg)}
+  .fig-step.d2,.fig-step.d3,.fig-step.d4,.fig-step.d5{margin-left:0}
+}
+/* ===== UIモックアップ・キット（ui-*）リフト予約サービス ===== */
+.ui-flow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin:4px 0}
+.ui-sep{color:#B0A79C;font-size:20px;font-weight:800;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;font-size:11px}
+.ui-sep b{font-size:22px;line-height:1}
+.ui-phone{width:188px;background:#fff;border:7px solid #2A2A2E;border-radius:26px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.12);flex:0 0 auto}
+.ui-scr{background:#F6F1E7;min-height:330px;display:flex;flex-direction:column}
+.ui-bar{background:#2F5D50;color:#fff;padding:11px 13px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px}
+.ui-bar .ui-back{opacity:.85;font-weight:400}
+.ui-body{padding:11px;display:flex;flex-direction:column;gap:8px;flex:1}
+.ui-h{font-size:12px;font-weight:800;color:#2D2D2D}
+.ui-sub{font-size:10px;color:#7a726a}
+.ui-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.ui-cal span{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:9px;border-radius:5px;background:#fff;color:#555}
+.ui-cal span.on{background:#2F5D50;color:#fff;font-weight:700}
+.ui-cal span.off{opacity:.35}
+.ui-chips{display:flex;flex-wrap:wrap;gap:5px}
+.ui-chip{font-size:9.5px;padding:5px 8px;border-radius:14px;background:#fff;border:1px solid #DCCFC0;color:#2F5D50}
+.ui-chip.on{background:#2F5D50;color:#fff;border-color:#2F5D50}
+.ui-card{background:#fff;border:1px solid #E8DECF;border-radius:8px;padding:8px 10px;font-size:10px;color:#555}
+.ui-line{height:7px;border-radius:4px;background:#E3D9CB}
+.ui-line.sh{width:58%}
+.ui-field{background:#fff;border:1px solid #DCCFC0;border-radius:6px;padding:7px 9px;font-size:9.5px;color:#9a9088}
+.ui-btn{background:#2F5D50;color:#fff;text-align:center;padding:9px;border-radius:8px;font-size:11px;font-weight:800;margin-top:auto}
+.ui-btn.ghost{background:#fff;color:#9a9088;border:1px solid #DCCFC0}
+/* 参考/大手（ニュートラル・情報多め） */
+.ui-phone--ref .ui-scr{background:#fff}
+.ui-phone--ref .ui-bar{background:#4a4a4a}
+.ui-phone--ref .ui-chip{color:#555;border-color:#ddd}
+.ui-phone--ref .ui-chip.on,.ui-phone--ref .ui-cal span.on,.ui-phone--ref .ui-btn{background:#4a4a4a;border-color:#4a4a4a}
+.ui-phone--ref .ui-card,.ui-phone--ref .ui-field{border-color:#e5e5e5}
+.ui-phone--ref .ui-line{background:#e6e6e6}
+/* ワイヤーフレーム（グレースケール） */
+.ui-phone--wire .ui-scr{background:#fff}
+.ui-phone--wire .ui-bar{background:#cfcfcf;color:#666}
+.ui-phone--wire .ui-btn{background:#bdbdbd}
+.ui-phone--wire .ui-cal span.on,.ui-phone--wire .ui-chip.on{background:#bdbdbd;color:#fff;border-color:#bdbdbd}
+.ui-phone--wire .ui-chip,.ui-phone--wire .ui-card,.ui-phone--wire .ui-field{border-color:#dcdcdc;color:#999}
+.ui-phone--wire .ui-cal span{color:#999}
+.ui-phone--wire .ui-line{background:#e2e2e2}
+.ui-plabel{font-size:10px;color:#7a726a;text-align:center;margin-top:5px;font-weight:700}
+/* 変更メモ（4観点） */
+.ui-memo{display:flex;flex-direction:column;gap:7px;max-width:220px;flex:1 1 180px}
+.ui-memo__item{background:#FDEEE9;border:1px solid #F0C9BC;border-radius:8px;padding:7px 10px;font-size:11px;color:#3D3D3D;line-height:1.6}
+.ui-memo__k{font-weight:800;color:#C2402F;font-size:10.5px;margin-right:4px}
+/* 注記（引き出しメモ） */
+.ui-annos{display:flex;flex-direction:column;gap:7px;max-width:240px;flex:1 1 200px}
+.ui-anno{background:#fff;border:1px solid #E4E1DB;border-left:3px solid #2F5D50;border-radius:6px;padding:7px 10px;font-size:11px;color:#3D3D3D;line-height:1.6}
+.ui-anno.warn{border-left-color:#E85D4A}
+.ui-anno__k{font-weight:800;color:#2F5D50;font-size:10.5px}
+.ui-anno.warn .ui-anno__k{color:#C2402F}
+.ui-split{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">第3章</span>
+  <div class="lesson-hero__title">良いUIを見比べ、模写して、リフトに作り変える — 使いやすい型を手で覚える</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">レッスン 3-1</span>
+    <span class="lesson-hero__topic">情報設計とUI設計</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約150分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+ <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap2/Jmeo1" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap3/Wr7pV" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>   
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+    <div class="goal-box__time">⏱ 約150分</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">良いUIと悪いUIを見比べて、整って見えるかどうかがどこで決まるのかを説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">良いとされるUIを模写し、なぜ良いのかをレイアウト・コンポーネント・状態・導線の観点で説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">模写した型を、リフトに合わせて作り変えたUIまで作成できる</div></li>
+  </ul>
+</div>
+
+<!-- 通し課題の連続性: 前回の成果物 → 今回 → 仕上げる成果物 -->
+<div style="border:1px solid #E8DCC8; background:#FBF8F3; border-radius:14px; padding:18px 22px; margin:0 0 40px;">
+  <div style="display:inline-block; background:#8B6F3F; color:#fff; padding:4px 12px; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.1em; margin-bottom:10px;">通し課題</div>
+  <p style="font-size:14.5px; line-height:1.9; color:#3D3D3D; margin:0;">前回（2-7）では、リフトの提供価値と体験コンセプトを言葉にし、<strong>価値定義シート</strong>と<strong>コンセプトテスト記録</strong>にまとめました。ここからは、その価値を画面の形にしていく第3章です。今回は、2-4で作った<strong>競合UX/UI分析シート</strong>を入力に、良いUIを模写し、リフトに合わせて作り変えます。仕上げる成果物は、<strong>模写した参考画面</strong>・<strong>リフト向けに作り変えたUI</strong>・<strong>作り変えメモ</strong>の3点です。</p>
+</div>
+
+<!-- 目次: ClipKit対策のためインラインstyleを併記 -->
+<nav class="toc" style="background:#fff; border-radius:14px; padding:22px 26px; box-shadow:0 2px 12px rgba(0,0,0,0.05); margin:0 0 48px;">
+  <div class="toc-head" style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <div class="toc-icon" style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#E85D4A,#F5A64A); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700;">≡</div>
+    <div class="toc-title" style="font-size:15px; font-weight:700; color:#2D2D2D;">目次</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;">
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s1" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">01</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">良いUIと悪いUIを見比べる</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s2" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">02</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">良いUIを模写して型を覚える</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s3" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">03</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">リフトに合わせて作り変える</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s4" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">04</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">演習：模写してリフトに作り変える</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+  </ul>
+</nav>
+
+<p>このレッスンでやるのは、良いUIの型を手で覚えて、リフトの予約画面に作り変えるところまでです。進め方は3段に分かれます。まず、良いUIと悪いUIを見比べて、どこで使いやすさが変わるのかを目でつかみます。次に、広く良いとされる実サービスのUIを模写して、使いやすい型を手で覚えます。最後に、なぜその型が良いのかを踏まえて、リフトに合う形へ作り変えます。第2章までのリサーチと要件・価値定義を終えて、ここから画面を設計する工程に入ります。Figma教材で配られた見本を模写して操作を覚えたやり方の、その延長です。</p>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>良いUIと悪いUIを見比べる</h2>
+
+<p>良いUIは、機能が同じでも、整って見えて垢抜けた印象になります。その差は、角丸・余白・色・影といった見た目の作り込み（クラフト）から生まれます。ここではリフトの予約画面によく出てくる部品を題材に、作り込みの甘い例と整えた例を6組並べました。どちらが整って見えるかを目で確かめてください。</p>
+
+<p>ここでの狙いは、整いの差を感覚でつかむことです。余白は8の倍数、文字サイズは何段階までといった数値の網羅や、原則の体系化はレッスン2でまとめて扱います。今は理屈より、見た目の差を体で覚えます。</p>
+
+<div class="dodont">
+  <div class="dodont__cap">① 角丸の一貫性と入れ子則</div>
+  <div class="dodont__row">
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 悪い例</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6E0D6; border-radius:6px; padding:10px;">
+          <div style="background:#EAF0EE; border-radius:20px; padding:10px 12px; margin-bottom:10px;">
+            <div style="font-size:13px; color:#2D2D2D;">パーソナルジム リフト</div>
+            <div style="font-size:12px; color:#7A8783;">7/22（火）の空き枠</div>
+          </div>
+          <span style="display:inline-block; background:#2F5D50; color:#fff; font-size:12px; padding:8px 16px; border-radius:2px;">予約する</span>
+        </div>
+      </div>
+      <p class="dodont__note">角丸が6・20・2pxとバラバラで、内側が外側より丸く同心円がずれ、雑に見えます。</p>
+    </div>
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 良い例</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6E0D6; border-radius:16px; padding:8px;">
+          <div style="background:#EAF0EE; border-radius:8px; padding:12px 14px; margin-bottom:8px;">
+            <div style="font-size:13px; font-weight:700; color:#2D2D2D;">パーソナルジム リフト</div>
+            <div style="font-size:12px; color:#7A8783;">7/22（火）の空き枠</div>
+          </div>
+          <span style="display:inline-block; background:#2F5D50; color:#fff; font-size:12px; font-weight:700; padding:8px 16px; border-radius:8px; margin:0 4px 4px;">予約する</span>
+        </div>
+      </div>
+      <p class="dodont__note">角丸を1スケールにそろえ、内側の角丸＝外側−余白（16−8＝8px）で同心円が重なります。</p>
+    </div>
+  </div>
+
+  <div class="dodont__cap">② 余白のリズム（8ptグリッド）</div>
+  <div class="dodont__row">
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 悪い例</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6E0D6; border-radius:12px; padding:22px 9px 7px 13px;">
+          <div style="font-size:14px; font-weight:700; color:#2D2D2D; margin-bottom:13px;">予約内容</div>
+          <div style="font-size:13px; color:#555; margin-bottom:3px;">日時　7/22（火）10:00</div>
+          <div style="font-size:13px; color:#555; margin-bottom:11px;">メニュー　パーソナル60分</div>
+          <div style="font-size:13px; color:#555;">担当　織田トレーナー</div>
+        </div>
+      </div>
+      <p class="dodont__note">余白が7・13・22pxと半端で、行の間隔がガタついて落ち着きません。</p>
+    </div>
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 良い例</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6E0D6; border-radius:12px; padding:16px;">
+          <div style="font-size:14px; font-weight:700; color:#2D2D2D; margin-bottom:16px;">予約内容</div>
+          <div style="font-size:13px; color:#555; margin-bottom:8px;">日時　7/22（火）10:00</div>
+          <div style="font-size:13px; color:#555; margin-bottom:8px;">メニュー　パーソナル60分</div>
+          <div style="font-size:13px; color:#555;">担当　織田トレーナー</div>
+        </div>
+      </div>
+      <p class="dodont__note">余白を8の倍数でそろえ、内側の余白を外側より狭くして情報がひとまとまりに見えます。</p>
+    </div>
+  </div>
+
+  <div class="dodont__cap">③ タイポグラフィの階層</div>
+  <div class="dodont__row">
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 悪い例</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6E0D6; border-radius:12px; padding:16px;">
+          <div style="font-size:14px; color:#555;">パーソナルトレーニング60分</div>
+          <div style="font-size:14px; color:#555;">7/22（火）10:00〜11:00</div>
+          <div style="font-size:14px; color:#555;">担当：織田トレーナー</div>
+          <div style="font-size:14px; color:#555;">料金：6,000円</div>
+        </div>
+      </div>
+      <p class="dodont__note">サイズも太さも色も同じで、どれが見出しで何が補足か区別がつきません。</p>
+    </div>
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 良い例</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6E0D6; border-radius:12px; padding:16px;">
+          <div style="font-size:16px; font-weight:700; color:#2D2D2D; margin-bottom:4px;">パーソナルトレーニング60分</div>
+          <div style="font-size:14px; font-weight:700; color:#2F5D50; margin-bottom:8px;">7/22（火）10:00〜11:00</div>
+          <div style="font-size:12px; color:#7A8783;">担当：織田トレーナー</div>
+          <div style="font-size:12px; color:#7A8783;">料金：6,000円</div>
+        </div>
+      </div>
+      <p class="dodont__note">サイズ・太さ・色の3つで差をつけ、予約名・日時・補足が一目で分かります。</p>
+    </div>
+  </div>
+
+  <div class="dodont__cap">④ 色の抑制</div>
+  <div class="dodont__row">
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 悪い例</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6E0D6; border-radius:12px; padding:16px;">
+          <div style="font-size:13px; font-weight:700; color:#E11D48; margin-bottom:10px;">7/22（火）の予約</div>
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <span style="background:#2563EB; color:#fff; font-size:12px; padding:6px 10px; border-radius:6px;">10:00</span>
+            <span style="background:#F59E0B; color:#fff; font-size:12px; padding:6px 10px; border-radius:6px;">11:00</span>
+            <span style="background:#10B981; color:#fff; font-size:12px; padding:6px 10px; border-radius:6px;">13:00</span>
+          </div>
+          <span style="display:inline-block; background:#DB2777; color:#fff; font-size:13px; font-weight:700; padding:9px 18px; border-radius:8px;">予約を確定する</span>
+        </div>
+      </div>
+      <p class="dodont__note">原色が何色も競い合って、一番押してほしい予約確定が埋もれます。</p>
+    </div>
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 良い例</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6E0D6; border-radius:12px; padding:16px;">
+          <div style="font-size:13px; font-weight:700; color:#2D2D2D; margin-bottom:10px;">7/22（火）の予約</div>
+          <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <span style="background:#EEF3F1; color:#2F5D50; font-size:12px; font-weight:700; padding:6px 10px; border-radius:6px;">10:00</span>
+            <span style="background:#EEF3F1; color:#2F5D50; font-size:12px; font-weight:700; padding:6px 10px; border-radius:6px;">11:00</span>
+            <span style="background:#EEF3F1; color:#2F5D50; font-size:12px; font-weight:700; padding:6px 10px; border-radius:6px;">13:00</span>
+          </div>
+          <span style="display:inline-block; background:#2F5D50; color:#fff; font-size:13px; font-weight:700; padding:9px 18px; border-radius:8px;">予約を確定する</span>
+        </div>
+      </div>
+      <p class="dodont__note">配色を抑え、主役の予約確定だけに深緑のアクセントを当てて目を導きます。</p>
+    </div>
+  </div>
+
+  <div class="dodont__cap">⑤ 影で分ける（elevation）</div>
+  <div class="dodont__row">
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 悪い例</div>
+      <div class="dodont__demo">
+        <div style="background:#F6F1E7; padding:14px; border-radius:12px;">
+          <div style="background:#fff; border:1px solid #C9C2B4; border-radius:8px; padding:10px 12px; margin-bottom:8px; font-size:13px; color:#2D2D2D;">10:00　空きあり</div>
+          <div style="background:#fff; border:1px solid #C9C2B4; border-radius:8px; padding:10px 12px; margin-bottom:8px; font-size:13px; color:#2D2D2D;">11:00　空きあり</div>
+          <div style="background:#fff; border:1px solid #C9C2B4; border-radius:8px; padding:10px 12px; font-size:13px; color:#2D2D2D;">13:00　空きあり</div>
+        </div>
+      </div>
+      <p class="dodont__note">硬い1px枠でカードを区切っていて、平らで窮屈に見えます。</p>
+    </div>
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 良い例</div>
+      <div class="dodont__demo">
+        <div style="background:#F6F1E7; padding:14px; border-radius:12px;">
+          <div style="background:#fff; border-radius:8px; padding:10px 12px; margin-bottom:10px; font-size:13px; color:#2D2D2D; box-shadow:0 1px 3px rgba(0,0,0,0.08);">10:00　空きあり</div>
+          <div style="background:#fff; border-radius:8px; padding:10px 12px; margin-bottom:10px; font-size:13px; color:#2D2D2D; box-shadow:0 1px 3px rgba(0,0,0,0.08);">11:00　空きあり</div>
+          <div style="background:#fff; border-radius:8px; padding:10px 12px; font-size:13px; font-weight:700; color:#2F5D50; box-shadow:0 6px 16px rgba(47,93,80,0.20);">13:00　選択中</div>
+        </div>
+      </div>
+      <p class="dodont__note">やわらかい影でカードを浮かせ、選択中の枠を一段高く見せて奥行きを出します。</p>
+    </div>
+  </div>
+
+  <div class="dodont__cap">⑥ 整列（グリッド）</div>
+  <div class="dodont__row">
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 悪い例</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6E0D6; border-radius:12px; padding:16px;">
+          <div style="font-size:13px; font-weight:700; color:#2D2D2D; margin-bottom:10px;">時間を選ぶ</div>
+          <div style="margin-left:6px; margin-bottom:8px;"><span style="display:inline-block; background:#EEF3F1; color:#2F5D50; font-size:13px; padding:8px 20px; border-radius:8px;">10:00</span></div>
+          <div style="margin-left:18px; margin-bottom:8px;"><span style="display:inline-block; background:#EEF3F1; color:#2F5D50; font-size:13px; padding:8px 12px; border-radius:8px;">11:00</span></div>
+          <div style="margin-left:2px;"><span style="display:inline-block; background:#EEF3F1; color:#2F5D50; font-size:13px; padding:8px 28px; border-radius:8px;">13:00</span></div>
+        </div>
+      </div>
+      <p class="dodont__note">左端も幅もそろわずガタついて、視線が引っかかります。</p>
+    </div>
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 良い例</div>
+      <div class="dodont__demo">
+        <div style="background:#fff; border:1px solid #E6E0D6; border-radius:12px; padding:16px;">
+          <div style="font-size:13px; font-weight:700; color:#2D2D2D; margin-bottom:10px;">時間を選ぶ</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+            <span style="text-align:center; background:#EEF3F1; color:#2F5D50; font-size:13px; font-weight:700; padding:10px 0; border-radius:8px;">10:00</span>
+            <span style="text-align:center; background:#EEF3F1; color:#2F5D50; font-size:13px; font-weight:700; padding:10px 0; border-radius:8px;">11:00</span>
+            <span style="text-align:center; background:#EEF3F1; color:#2F5D50; font-size:13px; font-weight:700; padding:10px 0; border-radius:8px;">13:00</span>
+          </div>
+        </div>
+      </div>
+      <p class="dodont__note">グリッドで端をそろえ、幅もそろえて視線がまっすぐ流れます。</p>
+    </div>
+  </div>
+</div>
+
+<p>6組に共通するのは、右側のほうが整って見え、作り手が細部まで気を配った印象になる点です。角丸をそろえる、余白にリズムを出す、色を抑える。一つひとつは小さな判断ですが、積み重なると垢抜けた画面になります。まずはこの整いの差を感覚として持って、次の模写に進みます。</p>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 1／3</div></div>
+  <div class="quiz-q">カードの中にボタンを置いたら、なぜか素人っぽく見えました。カードの角丸は16px・余白は8px、ボタンの角丸は24pxです。整えるには、どう直すのが良いでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">ボタンの角丸を24pxよりさらに大きく丸くする</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">内側の角丸＝外側の角丸−余白（16−8＝8px）にそろえる</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">カードの角丸を0にして、四角にする</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">文字を大きくして目立たせる</div></button>
+  </div>
+  <div class="quiz-feedback" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">内側の角丸を外側−余白（16−8＝8px）にそろえると、角が同心円で重なり、意図して整えた見た目になります。角丸をバラバラに発明しないのが、①で見た入れ子則でした。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">素人っぽさの原因は、内側の角丸が外側より大きく同心円がずれている点です。もっと丸くする（A）と余計にずれます。内側の角丸＝外側−余白（16−8＝8px）にそろえます（B）。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>良いUIを模写して型を覚える</h2>
+
+<p>良し悪しの感覚がついたら、次は良いとされるUIを実際に模写します。画面を見ているだけでは、その作りは身につきません。ある程度そのまま写してみると、余白の取り方や部品の並べ方が、手を通して分かってきます。Figma教材で見本を模写して操作を覚えたのと同じで、模写は使いやすい型を体に入れる近道です。</p>
+
+<p>模写する参考は、<strong>広く良いとされる実サービスのUIを1つ選びます</strong>。たとえばAppleのアプリ、よく設計された予約系やEC系のアプリ、または2-4で分析した競合のなかで一番良かった画面です。予約に関わる画面（日時選択・入力・確認・完了など）を中心に写します。</p>
+
+<p>作業は<strong>Figma上で進めます</strong>。まず選んだ参考UIの画面を<strong>スクリーンショットして、Figmaに貼り付けます</strong>。次に、貼り付けた参考画面の<strong>隣に、同じ型を模写して並べて作ります</strong>。余白・部品の並び・階層をそろえる意識で、参考と見比べながら写すのがコツです。写しながら気づいた工夫（なぜこの余白なのか、なぜこの並びなのか）は、<strong>Figmaのコメント機能でその場に残しておきます</strong>。こうして手を通して型を覚えたうえで、次のセクションでリフト向けに作り変えます。</p>
+
+<div class="notice-box">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">模写は学習のためのもの</div>
+  </div>
+  <p>ここでの模写は、良い型を手で覚えるための学習です。写した画面を、自分がゼロから作ったオリジナルとして扱ったり、そのまま公開したりはしません。あくまで型を学ぶ練習として使い、次の作り変えで自分の設計に落とし込みます。</p>
+</div>
+
+<figure class="fig" data-asset-id="ig-3301-01">
+  <div class="ui-flow">
+    <div>
+      <div class="ui-phone ui-phone--ref"><div class="ui-scr">
+        <div class="ui-bar"><span class="ui-back">‹</span> 予約｜日時を選ぶ</div>
+        <div class="ui-body">
+          <div class="ui-h">ご希望日を選択</div>
+          <div class="ui-cal">
+            <span class="off">日</span><span class="off">月</span><span class="off">火</span><span class="off">水</span><span class="off">木</span><span class="off">金</span><span class="off">土</span>
+            <span>15</span><span>16</span><span>17</span><span class="on">18</span><span>19</span><span>20</span><span>21</span>
+            <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+          </div>
+          <div class="ui-h">時間帯</div>
+          <div class="ui-chips"><span class="ui-chip">10:00</span><span class="ui-chip">13:00</span><span class="ui-chip on">19:00</span><span class="ui-chip">20:00</span></div>
+          <div class="ui-btn">この日時で予約</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">① 参考：良いとされる実サービス</div>
+    </div>
+    <div class="ui-sep"><b>→</b>模写</div>
+    <div>
+      <div class="ui-phone ui-phone--ref"><div class="ui-scr">
+        <div class="ui-bar"><span class="ui-back">‹</span> 予約｜日時を選ぶ</div>
+        <div class="ui-body">
+          <div class="ui-h">ご希望日を選択</div>
+          <div class="ui-cal">
+            <span class="off">日</span><span class="off">月</span><span class="off">火</span><span class="off">水</span><span class="off">木</span><span class="off">金</span><span class="off">土</span>
+            <span>15</span><span>16</span><span>17</span><span class="on">18</span><span>19</span><span>20</span><span>21</span>
+            <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+          </div>
+          <div class="ui-h">時間帯</div>
+          <div class="ui-chips"><span class="ui-chip">10:00</span><span class="ui-chip">13:00</span><span class="ui-chip on">19:00</span><span class="ui-chip">20:00</span></div>
+          <div class="ui-btn">この日時で予約</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">② 模写：同じ型を手で写す</div>
+    </div>
+    <div class="ui-memo">
+      <div class="ui-memo__item"><span class="ui-memo__k">レイアウト</span>空き枠を主役に、余白で区切って見せる並び</div>
+      <div class="ui-memo__item"><span class="ui-memo__k">コンポーネント</span>カレンダー＋時間帯チップの部品の組み方</div>
+      <div class="ui-memo__item"><span class="ui-memo__k">状態</span>選択中の日時が色で分かる</div>
+      <div class="ui-memo__item"><span class="ui-memo__k">導線</span>日時→予約へ、CTAは1つだけ</div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">図：完全なコピーが目的ではなく、良い型を手で覚えるのが目的。4観点で「なぜ良いか」を見ながら写す。</figcaption>
+</figure>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">模写で終わらせない</div>
+  </div>
+  <p>模写は型を覚えるための入口です。そこで満足して止めると、参考画面のコピーが1枚できるだけで、リフトの役には立ちません。大事なのは、模写した型を、なぜ良いのかを踏まえてリフトに合う形へ作り変えるところまで進めることです。</p>
+</div>
+
+<h3>なぜ良いかを4つの観点で見る</h3>
+
+<p>模写しながら、同時になぜ良いのかを見ておきます。あとでリフトに作り変えるとき、この理由が判断のよりどころになります。見る観点は、レイアウト・コンポーネント・状態・導線の4つです。</p>
+
+<table class="v2-table">
+  <thead><tr><th>観点</th><th>何を見るか</th><th>予約サービスでの例</th></tr></thead>
+  <tbody>
+    <tr><td>レイアウト</td><td>余白・要素の並び・視線の順序（何が大きく先に目に入るか）</td><td>空き時間の一覧が画面の中心に大きく置かれている</td></tr>
+    <tr><td>コンポーネント</td><td>ボタン・入力欄・カレンダーなど、部品の形と使い方</td><td>日付がカレンダー形式で、押せる日と押せない日がひと目で分かる</td></tr>
+    <tr><td>状態</td><td>通常・押した時・エラー・完了など、状況ごとの見た目の変化</td><td>予約が終わると大きな確認画面が出て、予約できたと分かる</td></tr>
+    <tr><td>導線</td><td>次に何をすればよいかの流れと、今どこにいるか</td><td>今が何ステップ目かが上部に出て、次へ進むボタンが1つだけ目立つ</td></tr>
+  </tbody>
+</table>
+
+<p>この4つは、次の3-2で学ぶUIの基礎知識ともつながっています。今は模写した型のどこが良いのかを見つける観点として使い、その裏にある原則は次のレッスンで詳しく扱います。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">状態は触らないと見えない</div>
+  </div>
+  <p>レイアウトやコンポーネントは画面を見れば分かりますが、状態は実際に操作しないと見えません。模写するときも、画面を眺めるだけでなく、ボタンを押した時・入力を間違えた時・予約が完了した時の変化まで操作して確かめましょう。この変化まで見ると、良いUIがどこで安心感を作っているのかが分かります。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 2／3</div></div>
+  <div class="quiz-q">ある予約サービスで日時を選んで予約ボタンを押したのに、画面がほとんど変わらず、予約できたのかどうか分かりませんでした。これは主にどの観点の弱さでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">レイアウト（余白や要素の並び）</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">状態（完了したことが見た目で伝わっていない）</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">コンポーネント（部品の形そのもの）</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">予約はできているので、特に問題はない</div></button>
+  </div>
+  <div class="quiz-feedback" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">予約できたことが見た目で伝わらないのは、完了の状態が設計されていないからです。状態は操作して初めて見える観点なので、模写するときも実際に触って確かめます。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">余白や部品の形（A・C）ではなく、完了したことが伝わらない点が問題です。これは状態（B）の弱さです。操作の結果が見た目に反映されないと、利用者は予約できたか不安になります。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>リフトに合わせて作り変える</h2>
+
+<p>模写して型を覚え、なぜ良いのかも見えてきました。ここからが本番です。模写した型を、リフトに合う形へ作り変えます。リフトはスマホ縦画面が前提で、織田さんが1人で運用します。ブランドの色は、深緑（<span style="display:inline-block; width:12px; height:12px; border-radius:3px; background:#2F5D50; vertical-align:middle; border:1px solid rgba(0,0,0,0.12);"></span> #2F5D50）と、オフホワイト（<span style="display:inline-block; width:12px; height:12px; border-radius:3px; background:#F6F1E7; vertical-align:middle; border:1px solid rgba(0,0,0,0.18);"></span> #F6F1E7）です。予約で迷わせないことを大事にしています。参考にした大手サービスとは、規模も事情も違います。だから模写した型をそのまま使うのではなく、第2章で定義したリフトの価値と要件に合わせて作り変えます。</p>
+
+<figure class="fig" data-asset-id="ig-3301-02">
+  <div class="ui-split">
+    <div>
+      <div class="ui-phone ui-phone--ref"><div class="ui-scr">
+        <div class="ui-bar"><span class="ui-back">‹</span> 予約｜日時を選ぶ</div>
+        <div class="ui-body">
+          <div class="ui-h">ご希望日を選択</div>
+          <div class="ui-cal">
+            <span class="off">日</span><span class="off">月</span><span class="off">火</span><span class="off">水</span><span class="off">木</span><span class="off">金</span><span class="off">土</span>
+            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+            <span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
+            <span>15</span><span>16</span><span>17</span><span class="on">18</span><span>19</span><span>20</span><span>21</span>
+          </div>
+          <div class="ui-h">時間帯</div>
+          <div class="ui-chips"><span class="ui-chip">09:00</span><span class="ui-chip">09:30</span><span class="ui-chip">10:00</span><span class="ui-chip">10:30</span><span class="ui-chip">13:00</span><span class="ui-chip on">19:00</span><span class="ui-chip">20:00</span></div>
+          <div class="ui-card">会員ランク：ゴールド／保有 1,200pt</div>
+          <div class="ui-card">クーポンを選択　＞</div>
+          <div class="ui-btn">この日時で予約</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">模写した大手サービス（機能が多い）</div>
+    </div>
+    <div class="ui-memo">
+      <div class="ui-memo__item"><span class="ui-memo__k">レイアウト</span>1画面1タスクに絞り、空き枠を主役に</div>
+      <div class="ui-memo__item"><span class="ui-memo__k">コンポーネント</span>会員ランク・ポイント等の余分な部品を外す</div>
+      <div class="ui-memo__item"><span class="ui-memo__k">状態</span>選択中を色で明快にし、迷わせない</div>
+      <div class="ui-memo__item"><span class="ui-memo__k">導線</span>時間帯を絞り、CTAを1つだけに</div>
+    </div>
+    <div>
+      <div class="ui-phone"><div class="ui-scr">
+        <div class="ui-bar"><span class="ui-back">‹</span> リフト｜日時を選ぶ</div>
+        <div class="ui-body">
+          <div class="ui-h">ご希望日を選択</div>
+          <div class="ui-cal">
+            <span class="off">日</span><span class="off">月</span><span class="off">火</span><span class="off">水</span><span class="off">木</span><span class="off">金</span><span class="off">土</span>
+            <span>15</span><span>16</span><span>17</span><span class="on">18</span><span>19</span><span>20</span><span>21</span>
+          </div>
+          <div class="ui-h">時間帯</div>
+          <div class="ui-chips"><span class="ui-chip">18:00</span><span class="ui-chip on">19:00</span><span class="ui-chip">20:00</span></div>
+          <div class="ui-btn">この日時で予約する</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">リフト向けに作り変え（深緑・少ないステップ）</div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">図：模写のコピーで終わらせず、理由を踏まえてリフト向けに作り変えるまでが1セット。</figcaption>
+</figure>
+
+<p>下の表は、模写した日時選択画面の良い点を4観点で押さえ、リフトに作り変えるとどうするかを並べた例です。左が観点、中央が模写でつかんだ良い点、右がリフトへの作り変え方です。</p>
+
+<table class="v2-table">
+  <thead><tr><th>観点</th><th>模写でつかんだ良い点</th><th>リフトに作り変えると</th></tr></thead>
+  <tbody>
+    <tr><td>レイアウト</td><td>空き時間の一覧が画面中央に大きく、余白で区切られて見やすい</td><td>空き枠を画面の主役にし、スマホ縦で1日ずつ大きく見せる</td></tr>
+    <tr><td>コンポーネント</td><td>予約枠が押せるボタンとして並び、埋まった枠は薄いグレーで押せないと分かる</td><td>空き枠と満席を色で区別し、押せる枠と押せない枠をひと目で分ける</td></tr>
+    <tr><td>状態</td><td>枠を選ぶと色が変わり、完了画面で予約内容が大きく表示される</td><td>選択中と完了を見た目で伝え、予約できたと分かる安心感をつくる</td></tr>
+    <tr><td>導線</td><td>日付→時間→確認の3ステップが上部に出て、迷わず進める</td><td>予約を少ないステップに分け、今どこにいるかを常に見せる</td></tr>
+  </tbody>
+</table>
+
+<p>作り変えで手を入れるのは、リフトの事情に合わない部分です。参考にした大手サービスの機能を全部持ち込むのではなく、予約で迷わせないことに効く型だけを残します。そのうえで深緑とオフホワイトのブランドや、織田さんが1人で運用できる範囲に合わせて整えます。</p>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 3／3</div></div>
+  <div class="quiz-q">模写した参考画面には、会員ランクの表示やSNS連携など多くの機能がありました。リフトに作り変えるときの判断として、適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">模写した画面にある機能は、できるだけすべて残して作り変える</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">多機能な画面は参考にならないので、模写ごと捨てる</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">C</div><div class="quiz-opt-text">予約で迷わせないというリフトの目的に効く型だけを残し、合わない機能は落とす</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">見た目が良い機能を、理由を考えずにそのまま残す</div></button>
+  </div>
+  <div class="quiz-feedback" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">作り変えでは、リフトの目的に効く型だけを残します。1人経営でスマホ中心のリフトに、会員ランクやSNS連携が必要とは限りません。目的に効く型を選ぶのが、作り変えの判断です。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">すべて残す（A）や理由を考えず残す（D）では、リフトに合わない機能まで持ち込みます。多機能でも良い型はあるので、模写ごと捨てる（B）のも違います。目的に効く型だけを残す（C）のが正解です。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>演習：模写してリフトに作り変える</h2>
+
+<p>ここからは手を動かします。セクション1で見た良し悪しの観点を持って、良いとされるUIを1つ選んで模写し、リフトに合う形へ作り変えます。模写した画面と、作り変えたUIと、作り変えメモの3点が今回作る成果物です。</p>
+
+<figure class="fig" data-asset-id="ig-3301-03">
+  <div class="ui-split">
+    <div>
+      <div class="ui-phone ui-phone--ref"><div class="ui-scr">
+        <div class="ui-bar"><span class="ui-back">‹</span> 予約｜日時を選ぶ</div>
+        <div class="ui-body">
+          <div class="ui-h">ご希望日を選択</div>
+          <div class="ui-cal">
+            <span class="off">日</span><span class="off">月</span><span class="off">火</span><span class="off">水</span><span class="off">木</span><span class="off">金</span><span class="off">土</span>
+            <span>15</span><span>16</span><span>17</span><span class="on">18</span><span>19</span><span>20</span><span>21</span>
+            <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+          </div>
+          <div class="ui-h">時間帯</div>
+          <div class="ui-chips"><span class="ui-chip">10:00</span><span class="ui-chip">13:00</span><span class="ui-chip on">19:00</span><span class="ui-chip">20:00</span></div>
+          <div class="ui-btn">この日時で予約</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">模写した参考画面</div>
+    </div>
+    <div class="ui-memo">
+      <div class="ui-memo__item"><span class="ui-memo__k">レイアウト</span>スマホ縦で確認内容を上から一列に</div>
+      <div class="ui-memo__item"><span class="ui-memo__k">コンポーネント</span>予約内容を確認カードにまとめる</div>
+      <div class="ui-memo__item"><span class="ui-memo__k">状態</span>確定前に内容を提示して安心させる</div>
+      <div class="ui-memo__item"><span class="ui-memo__k">導線</span>現在地（3/3）を出し、確定は1つのCTA</div>
+    </div>
+    <div>
+      <div class="ui-phone"><div class="ui-scr">
+        <div class="ui-bar"><span class="ui-back">‹</span> リフト｜予約内容の確認</div>
+        <div class="ui-body">
+          <div class="ui-sub">ステップ 3／3　確認</div>
+          <div class="ui-h">この内容で予約します</div>
+          <div class="ui-card">日時　7/18（金）19:00〜</div>
+          <div class="ui-card">メニュー　パーソナル60分</div>
+          <div class="ui-card">担当　織田トレーナー</div>
+          <div class="ui-btn">予約を確定する</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">成果物：作り変えたリフトのUI</div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">図：模写（左）で終わらせず、作り変えたUI（右）まで対で仕上げるのが今回の成果物。</figcaption>
+</figure>
+
+<div class="work-box reveal">
+  <div class="work-box__badge">演習 3-1</div>
+
+  <div class="prep-list">
+    <div class="prep-label">📋 事前準備</div>
+    <ul>
+      <li><span class="prep-bullet">●</span>2-4で作った競合UX/UI分析シートを、手元に開いておく</li>
+      <li><span class="prep-bullet">●</span>模写する実サービスを1つ決めて、スマホで開けるようにしておく（スクリーンショットを撮れる状態に）</li>
+      <li><span class="prep-bullet">●</span>模写と作り変えを行う<strong>Figma</strong>で、新規ファイルを1つ開いておく</li>
+    </ul>
+  </div>
+
+  <h4>STEP 1：良いとされるUIを1つ選んで、Figmaで模写する</h4>
+  <ul>
+    <li>広く良いとされる実サービス（Appleのアプリ・よく設計された予約系やEC系アプリ・2-4の競合のベスト画面など）を1つ選ぶ</li>
+    <li>予約に関わる画面（日時選択・入力・確認・完了など）を<strong>スクリーンショットして、Figmaに貼り付ける</strong></li>
+    <li>貼り付けた参考画面の<strong>隣に、同じ型を模写して並べて作る</strong>。余白・部品の並び・階層をそろえる意識で、参考と見比べながら写す</li>
+    <li>セクション1で見た良し悪しの観点（読める・押せる・迷わない）を持って、押した時・完了時の状態の変化も操作して確かめる</li>
+    <li>写しながら気づいた工夫（なぜこの余白か、なぜこの並びか）を、<strong>Figmaのコメント機能でその場に残す</strong></li>
+  </ul>
+
+  <h4>STEP 2：なぜ良いかを4観点で押さえる</h4>
+  <ul>
+    <li>模写した画面を、<strong>レイアウト・コンポーネント・状態・導線</strong>の4つの観点で見る</li>
+    <li>観点ごとに、良いと感じた理由を短くメモする</li>
+  </ul>
+
+  <h4>STEP 3：リフトに合わせて作り変える</h4>
+  <ul>
+    <li>模写した型を、リフトの事情（スマホ縦画面・織田さん1人の運用・深緑×オフホワイトのブランド・予約で迷わせない）に合わせて作り変える</li>
+    <li>参考の機能をすべて残さず、<strong>予約で迷わせない</strong>ことに効く型だけを選ぶ</li>
+    <li>どこを、なぜ作り変えたかを一言ずつメモに残す</li>
+  </ul>
+
+  <h4>完了条件（作成物）</h4>
+  <ul>
+    <li><strong>模写した参考画面</strong>（押した時・完了時の状態も分かる形で）</li>
+    <li><strong>リフト向けに作り変えたUI</strong>（模写した型を、リフトに合わせて直したもの）</li>
+    <li><strong>作り変えメモ</strong>（どこをなぜ変えたか。レイアウト・コンポーネント・状態・導線のどれに効くかを一言ずつ）</li>
+  </ul>
+
+</div>
+
+<p>ここで模写して作り変えたUIと、手で覚えた型は、次のレッスンからのIA・ワイヤーフレーム・UI設計でそのまま生きます。覚えた型が増えるほど、リフトの画面を組み立てるときに迷いにくくなります。</p>
+</section>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>良いUIと悪いUIを見比べて、整って見える差がどこから生まれるのかを説明できる</summary>
+    <div class="check-box__detail">角丸を1つのスケールにそろえる（内側の角丸＝外側−余白）、余白を8の倍数でリズムよく取る、文字はサイズ・太さ・色で階層をつける、色を抑えて主役の行動に1アクセント、やわらかい影で階層を出す、端をそろえる。一つひとつは小さな判断ですが、積み重なると同じ機能でも整って垢抜けた画面になります。数値の網羅や原則の体系化は、次の3-2で扱います。</div>
+  </details>
+  <details>
+    <summary>良いUIを模写し、なぜ良いのかをレイアウト・コンポーネント・状態・導線の観点で説明できる</summary>
+    <div class="check-box__detail">模写は良い型を手で覚える近道です。広く良いとされる実サービスのUIを1つ選んで写し、レイアウト（余白・階層）・コンポーネント・状態・導線の4観点でなぜ良いのかを見ます。状態は操作しないと見えないので、押した時・完了時の変化まで触って確かめます。模写は学習のためのもので、写した画面を自分がゼロから作ったオリジナルとして扱わないことも押さえておきます。</div>
+  </details>
+  <details>
+    <summary>模写した型を、リフトに合わせて作り変えたUIまで作成できる</summary>
+    <div class="check-box__detail">模写で終わらせず、なぜ良いかを踏まえてリフトに合う形へ作り変えます。スマホ縦・織田さん1人の運用・深緑とオフホワイトのブランド・予約で迷わせないという事情に合わせ、参考の機能を全部持ち込まず、目的に効く型だけを残します。どこをなぜ変えたかをメモに残すところまでが、今回作る成果物でした。</div>
+  </details>
+</div>
+  
+    <!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap3/Wr7pV" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div><!-- /.lesson-wrapper -->
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

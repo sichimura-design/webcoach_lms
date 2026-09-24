@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/qqy8s -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop｜20章 ペンツールをマスターしよう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/qqy8s">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop｜20章 ペンツールをマスターしよう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/711/medium/7e0281a5-5569-435a-b882-f59e37a0e4c3.png?1740022090">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop｜20章 ペンツールをマスターしよう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/qqy8s">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/711/large/7e0281a5-5569-435a-b882-f59e37a0e4c3.png?1740022090">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="5Hof31pJsDLLzSzrdaBC39ajUa6I5K2-cwKwpttMCkiObbB2QU0YqjeIQz8DsJpLRbJgvLk0CoijToNN9hSkeQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop｜20章 ペンツールをマスターしよう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">20章 ペンツールをマスターしよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:240分</a></li></ul></li><li><a href="#heading2" class="tocLink">【20-1】ペンツールとは</a></li><li><a href="#heading3" class="tocLink">【20-2】ペンツールの基本</a><ul><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li></ul></li><li><a href="#heading10" class="tocLink">【20-3】ペンツールの使い方</a><ul><li><a href="#heading11" class="tocLink">1. 直線の書き方</a></li><li><a href="#heading12" class="tocLink">2. 曲線の書き方</a></li><li><a href="#heading13" class="tocLink">3. 直線と曲線の書き方</a></li></ul><ul><li><a href="#heading14" class="tocLink">パスの編集</a><ul><li><a href="#heading15" class="tocLink">Commandを使った操作方法</a></li><li><a href="#heading16" class="tocLink">Optionを使った操作方法</a></li></ul></li></ul></li><li><a href="#heading17" class="tocLink">【20-4】複雑な図形を書いてみよう</a><ul><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">【20-5】模写課題①：ペンツールを使って選択範囲を作成してみよう</a><ul><li><a href="#heading20" class="tocLink">演習課題</a></li><li><a href="#heading21" class="tocLink"></a></li></ul><ul><li><a href="#heading22" class="tocLink">作業手順</a><ul><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink"></a></li><li><a href="#heading35" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading36" class="tocLink">【20-6】模写課題②：PCとスマートフォンへはめ込んでみよう！</a><ul><li><a href="#heading37" class="tocLink">演習課題</a></li><li><a href="#heading38" class="tocLink"></a></li></ul><ul><li><a href="#heading39" class="tocLink">作業画面前半（スマホ）</a></li><li><a href="#heading40" class="tocLink">作業画面後半（デスクトップ）</a></li></ul></li><li><a href="#heading41" class="tocLink">【20-7】模写課題③：ノートにはめ込んでみよう！</a><ul><li><a href="#heading42" class="tocLink">演習課題</a></li><li><a href="#heading43" class="tocLink"></a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25614" data-item-id="25614" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/CeAkM" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/hdZs0" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37002" data-item-id="37002" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">20章 ペンツールをマスターしよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39509" data-item-id="39509" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:240分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37024" data-item-id="37024" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【20-1】ペンツールとは</h2></div>
+        
+        <div class="article-item item_rich_text " id="item8501" data-item-id="8501" data-item-type="ItemRichText"><div class="item-body-hbr">ペンツールは、<span class="decoration-01"><span class="decoration-02">正確なパスやシェイプを作成するためのツール</span></span>です。<br>
+クリックで直線、ドラッグで曲線を描け、アンカーポイントの追加や削除、ハンドルの調整が可能です。<br>
+パスは選択範囲やマスクの作成に利用できます。</div></div>
+        
+        <div class="article-item item_heading " id="item37025" data-item-id="37025" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【20-2】ペンツールの基本</h2></div>
+        
+        <div class="article-item item_rich_text " id="item8503" data-item-id="8503" data-item-type="ItemRichText"><div class="item-body-hbr">点と点を<span class="decoration-01"><span class="decoration-02">ペンツールでクリックして繋ぐ</span></span></div></div>
+        
+        <div class="article-item item_link " id="item12440" data-item-id="12440" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12440" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-1" data-reference="https://www.dropbox.com/scl/fi/y5sn796qv8up6rm1hmi55/Adobe-Photoshop20-_1.0_.mov?rlkey=b14tvhuc94pkawjwtpe4k0pvz&amp;e=1&amp;st=vbd7prkt&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8598" data-item-id="8598" data-item-type="ItemRichText"><div class="item-body-hbr">点と点の間にあるものは<span class="decoration-01"><span class="decoration-02">セグメント（線）</span></span></div></div>
+        
+        <div class="article-item item_image " id="item8620" data-item-id="8620" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/620/medium/1fda34ea-dafb-4c0f-ac92-0d552ca2e0bb.jpg?1740128305" title=""><img class="img-responsive item-image" alt=" (8620)" data-reference="" src="../../_assets/dd91ed71e6.webp" width="362" height="120"></a><h4 id="heading4"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37003" data-item-id="37003" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8599" data-item-id="8599" data-item-type="ItemRichText"><div class="item-body-hbr">点と点を繋ぐセグメント（線）を<span class="decoration-01"><span class="decoration-02">パス</span></span>という</div></div>
+        
+        <div class="article-item item_image " id="item8621" data-item-id="8621" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/621/medium/90d32112-f806-4203-841d-0b752b7aa2a8.jpg?1740128333" title=""><img class="img-responsive item-image" alt=" (8621)" data-reference="" src="../../_assets/373f93a65d.webp" width="376" height="140"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37035" data-item-id="37035" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8600" data-item-id="8600" data-item-type="ItemRichText"><div class="item-body-hbr">囲まれていないパスは<span class="decoration-01"><span class="decoration-02">オープンパス</span></span></div></div>
+        
+        <div class="article-item item_image " id="item8623" data-item-id="8623" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/623/medium/3042eabe-c68a-47e0-8fbc-bac243a44c2e.jpg?1740128391" title=""><img class="img-responsive item-image" alt=" (8623)" data-reference="" src="../../_assets/d0778d4ccd.webp" width="488" height="177"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37004" data-item-id="37004" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8601" data-item-id="8601" data-item-type="ItemRichText"><div class="item-body-hbr">囲むパスは<span class="decoration-01"><span class="decoration-02">クローズパス</span><span class="decoration-02"></span></span></div></div>
+        
+        <div class="article-item item_image " id="item8624" data-item-id="8624" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/624/medium/c536ff88-b9d1-4b6b-b1f5-21bc8616d61c.jpg?1740128439" title=""><img class="img-responsive item-image" alt=" (8624)" data-reference="" src="../../_assets/03e44d3d8d.webp" width="640" height="131"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12441" data-item-id="12441" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12441" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-2" data-reference="https://www.dropbox.com/scl/fi/pbj50v7hwlt5xvmxzyyj2/Adobe-Photoshop20-2_1.0_.mov?rlkey=rdzs0r8egzbfdj611n187emp0&amp;e=1&amp;st=9n944ypy&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8602" data-item-id="8602" data-item-type="ItemRichText"><div class="item-body-hbr">点は<span class="decoration-02"><span class="decoration-01">アンカーポイント</span></span></div></div>
+        
+        <div class="article-item item_image " id="item8625" data-item-id="8625" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/625/medium/21aeabc5-bf81-457a-8c09-0faad444937a.jpg?1740128486" title=""><img class="img-responsive item-image" alt=" (8625)" data-reference="" src="../../_assets/b4102f9965.webp" width="317" height="302"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37005" data-item-id="37005" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8603" data-item-id="8603" data-item-type="ItemRichText"><div class="item-body-hbr">点の周りにある線を<span class="decoration-02"><span class="decoration-01">ハンドル</span></span></div></div>
+        
+        <div class="article-item item_image " id="item8626" data-item-id="8626" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/626/medium/9bf56e1f-f96d-4b12-b1da-2b2bc001568b.jpg?1740128527" title=""><img class="img-responsive item-image" alt=" (8626)" data-reference="" src="../../_assets/f3ca6f1f4a.webp" width="315" height="298"></a><h4 id="heading9"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37026" data-item-id="37026" data-item-type="ItemHeading"><h2 class="item-body" id="heading10">【20-3】ペンツールの使い方</h2></div>
+        
+        <div class="article-item item_markdown " id="item8606" data-item-id="8606" data-item-type="ItemMarkdown"><h4 id="heading11">1. 直線の書き方</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37006" data-item-id="37006" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>クリックでアンカーポイントを追加していきます。（shiftを押しながらクリックすると、水平・垂直・45度の直線を描けます。）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_link " id="item12442" data-item-id="12442" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12442" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-3" data-reference="https://www.dropbox.com/scl/fi/9ef55vf24843al3956hgu/Adobe-Photoshop20-3_1.0_.mov?rlkey=1m0hksvrpfn8tc83nme4a85p8&amp;e=1&amp;st=4i88dwkx&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8608" data-item-id="8608" data-item-type="ItemMarkdown"><h4 id="heading12">2. 曲線の書き方</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37007" data-item-id="37007" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>2つ目のアンカーポイントを、クリックしたままドラッグします。</li>
+  <li>前後の線が同時に動くハンドルが出てきます。ハンドルで曲線を描くことができます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_link " id="item12443" data-item-id="12443" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12443" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-4" data-reference="https://www.dropbox.com/scl/fi/m9mhettjaub0osxp2tadl/Adobe-Photoshop20-4_1.0_.mov?rlkey=hsumh849vnhebatd702zcwam5&amp;e=1&amp;st=mt13qta7&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12444" data-item-id="12444" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12444" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-5" data-reference="https://www.dropbox.com/scl/fi/574qxx15o2nxosths1csk/Adobe-Photoshop20-5_1.0_.mov?rlkey=kr6bdv2vmzaa3u8jl5nseo7iv&amp;e=1&amp;st=sbdqxgfg&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8610" data-item-id="8610" data-item-type="ItemMarkdown"><h4 id="heading13">3. 直線と曲線の書き方</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37008" data-item-id="37008" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>直線と曲線の書き方を合わせて書きましょう。</li>
+</ul></div></div>
+        
+        <div class="article-item item_link " id="item12445" data-item-id="12445" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12445" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-6" data-reference="https://www.dropbox.com/scl/fi/3dn3rlwsoojmw0w0nsucb/Adobe-Photoshop20-6_1.0_.mp4?rlkey=qxfqrx4crakyjjzla5th8tonn&amp;e=1&amp;st=obhl8b95&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37027" data-item-id="37027" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">パスの編集</h3></div>
+        
+        <div class="article-item item_text " id="item8605" data-item-id="8605" data-item-type="ItemText"><div class="item-body-hbr">Command (Windows: Ctrl) や Option (Windows: Alt) キーを押しながら操作すると、アンカーポイントやハンドルを微調整できます。<br>少し練習が必要な操作ですが、慣れると非常に便利なのでマスターしましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item8612" data-item-id="8612" data-item-type="ItemMarkdown"><h4 id="heading15">Commandを使った操作方法</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8613" data-item-id="8613" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">パスを再選択できる</span><br>
+パスの操作後、他のツールを使用した後に、パスを再選択する方法は<span class="decoration-02">C</span><span class="decoration-01"><span class="decoration-02">ommandを押しながらパスをクリックすると再選択</span></span>できる。</div></div>
+        
+        <div class="article-item item_link " id="item12446" data-item-id="12446" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12446" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-7" data-reference="https://www.dropbox.com/scl/fi/s6ckmkwoexz6rafpf0u03/Adobe-Photoshop20-7_1.0_-1.mov?rlkey=xt0cf5dhfoknijthh476yqci0&amp;e=1&amp;st=ab6fg1ex&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8614" data-item-id="8614" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">曲がり加減を直せる</span><br>
+<span class="decoration-01"><span class="decoration-02">Commandを押しながらハンドルをドラッグ</span></span>すると調整できる。</div></div>
+        
+        <div class="article-item item_link " id="item12447" data-item-id="12447" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12447" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-8" data-reference="https://www.dropbox.com/scl/fi/6sq82m65k0c6umgfee4qx/Adobe-Photoshop20-8_1.0_.mov?rlkey=aqopcenu0ig4zn1x6ei1bqtxz&amp;e=1&amp;st=fp5od399&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8615" data-item-id="8615" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">点（アンカーポイント）を移動できる</span><br>
+<span class="decoration-01"><span class="decoration-02">Commandを押しながらアンカーポイントをドラッグ</span></span></div></div>
+        
+        <div class="article-item item_link " id="item12448" data-item-id="12448" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12448" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-9</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-9" data-reference="https://www.dropbox.com/scl/fi/0tb274798vn2z2xktwc5x/Adobe-Photoshop20-9_1.0_.mov?rlkey=f1a1rtxfav4zhl4a6c9jllvl9&amp;e=1&amp;st=p9srnptm&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8616" data-item-id="8616" data-item-type="ItemMarkdown"><h4 id="heading16">Optionを使った操作方法</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8617" data-item-id="8617" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ハンドルを折る</span><br>
+<span class="decoration-01"><span class="decoration-02"></span></span><span class="decoration-02"><span class="decoration-01">Option (Windows: Alt) キーを押しながらハンドルをドラッグ</span></span>すると、ハンドルの片方だけを独立して操作できます（角の作成）。</div></div>
+        
+        <div class="article-item item_link " id="item12449" data-item-id="12449" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12449" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-10</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-10" data-reference="https://www.dropbox.com/scl/fi/qmqlgq0yrzwy6gj568rz7/Adobe-Photoshop20-10_1.0_.mov?rlkey=t5zdud6359nu0p15lmm7hvr3r&amp;e=1&amp;st=pb7apmni&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8618" data-item-id="8618" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ハンドルを無くす</span><br>
+<span class="decoration-01"><span class="decoration-02">Optionを押しながらアンカーポイントをクリック</span></span>するとハンドルが消える。</div></div>
+        
+        <div class="article-item item_link " id="item12450" data-item-id="12450" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12450" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-11</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-11" data-reference="https://www.dropbox.com/scl/fi/i33cjb8bue4g6b36v10u8/Adobe-Photoshop20-11_1.0_.mov?rlkey=sor57lu3nh2zkdofkavlclojn&amp;e=1&amp;st=e1fxgdgq&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8619" data-item-id="8619" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ハンドルを足せる</span><br>
+<span class="decoration-01"><span class="decoration-02"></span></span><span class="decoration-01"><span class="decoration-02">Option (Windows: Alt) キーを押しながらコーナーポイント（ハンドルがないアンカーポイント）をドラッグ</span></span>すると、ハンドルを追加して曲線に変換できます。</div></div>
+        
+        <div class="article-item item_link " id="item12451" data-item-id="12451" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12451" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-12</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-12" data-reference="https://www.dropbox.com/scl/fi/71ohh1hzzchh6b8k1gw8z/Adobe-Photoshop20-12_1.0_.mov?rlkey=m81t5x9pgzjll7c0tfscz9h38&amp;st=m9qw5gwl&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37028" data-item-id="37028" data-item-type="ItemHeading"><h2 class="item-body" id="heading17">【20-4】複雑な図形を書いてみよう</h2></div>
+        
+        <div class="article-item item_html " id="item37009" data-item-id="37009" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>下の画像を右クリックしてダウンロードを行いPhotoshopで読み込みをしてアンカーポイントを目安にトレースを行い実際に書いてみましょう！</li>
+  <li>ペンツールでパスを書くのは難しいので少しずつ慣れましょう！<br>
+    （IllustratorやFigmaで使う機会が多い機能です）<br>
+    ※丸は楕円ツールを使わずに書いてみてください。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item8507" data-item-id="8507" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/507/medium/02871917-67b2-4f17-ae78-d8d02735a0b3.jpg?1740037201" title=""><img class="img-responsive item-image" alt=" (8507)" data-reference="" src="../../_assets/8a334907ac.webp" width="640" height="360"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37029" data-item-id="37029" data-item-type="ItemHeading"><h2 class="item-body" id="heading19">【20-5】模写課題①：ペンツールを使って選択範囲を作成してみよう</h2></div>
+        
+        <div class="article-item item_text " id="item8509" data-item-id="8509" data-item-type="ItemText"><div class="item-body-hbr">パスツールで書いた線はパスパネルで選択範囲へ変換することができます。<br>通常は選択ツールを使用して選択範囲を作成するのが一般的ですが、ペンツールは図形を書くことができるだけではないことを知っておきましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item12908" data-item-id="12908" data-item-type="ItemMarkdown"><h4 id="heading20">演習課題</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8510" data-item-id="8510" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/510/medium/59085602-64d9-44e9-9054-87654b569d45.png?1740037237" title=""><img class="img-responsive item-image" alt=" (8510)" data-reference="" src="../../_assets/e5310e1cbe.webp" width="640" height="640"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_link " id="item37010" data-item-id="37010" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=37010" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 20-1 【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 20-1 【使用素材】" data-reference="https://www.dropbox.com/scl/fo/we858jic3kiqueuyldzn8/AI5eKE6gNgjLqmDxctfeaGo?rlkey=gcnhuslxl3cqx9t5albnsb2iw&amp;st=355hzcc7&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37030" data-item-id="37030" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">作業手順</h3></div>
+        
+        <div class="article-item item_text " id="item8574" data-item-id="8574" data-item-type="ItemText"><div class="item-body-hbr">1. ペンツールで選択範囲にしたい場所に線を書く。<br><br></div></div>
+        
+        <div class="article-item item_image " id="item8585" data-item-id="8585" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/585/medium/c4cfd81a-6fe6-4755-858d-03b011da75aa.jpg?1740123549" title=""><img class="img-responsive item-image" alt=" (8585)" data-reference="" src="../../_assets/0fec7f3786.webp" width="640" height="444"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37012" data-item-id="37012" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8575" data-item-id="8575" data-item-type="ItemRichText"><div class="item-body-hbr">2.Commandを押しながらアンカーポイントをクリックすると、そこが選択されます。</div></div>
+        
+        <div class="article-item item_html " id="item37011" data-item-id="37011" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>青→選択</li>
+  <li>白抜き→選択されていない</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item8597" data-item-id="8597" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/597/medium/6d44e575-9291-45f3-b489-1134dee91a10.jpg?1740123856" title=""><img class="img-responsive item-image" alt=" (8597)" data-reference="" src="../../_assets/44133876ac.webp" width="640" height="444"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37013" data-item-id="37013" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8576" data-item-id="8576" data-item-type="ItemText"><div class="item-body-hbr">3. ペンツールで書いた線を選択範囲へ変換するためにパスパネルを表示させます。</div></div>
+        
+        <div class="article-item item_image " id="item8596" data-item-id="8596" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/596/medium/b6e7a9a2-405e-4f47-afea-c2ba009216b2.jpg?1740123823" title=""><img class="img-responsive item-image" alt=" (8596)" data-reference="" src="../../_assets/c6802b7a50.webp" width="640" height="459"></a><h4 id="heading25"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37014" data-item-id="37014" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8577" data-item-id="8577" data-item-type="ItemText"><div class="item-body-hbr">4. パネル下部にある「パスを選択範囲として読み込む」アイコン（点線の円）をクリックすると、パスが選択範囲に変換されます。</div></div>
+        
+        <div class="article-item item_image " id="item8595" data-item-id="8595" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/595/medium/4272d84e-6937-47be-9ee2-abd464cc9041.jpg?1740123805" title=""><img class="img-responsive item-image" alt=" (8595)" data-reference="" src="../../_assets/5754e80817.webp" width="640" height="443"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37015" data-item-id="37015" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8578" data-item-id="8578" data-item-type="ItemText"><div class="item-body-hbr">5. レイヤーマスクをかけるのでレイヤーを複製する。</div></div>
+        
+        <div class="article-item item_image " id="item8593" data-item-id="8593" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/593/medium/416fc691-6e8a-4b24-89bd-b79cc3d7771f.jpg?1740123713" title=""><img class="img-responsive item-image" alt=" (8593)" data-reference="" src="../../_assets/e23b201770.webp" width="640" height="443"></a><h4 id="heading27"></h4></div></div>
+        
+        <div class="article-item item_image " id="item8594" data-item-id="8594" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/594/medium/a633d669-fcc6-44c9-a71d-c5dafdc47ef5.jpg?1740123783" title=""><img class="img-responsive item-image" alt=" (8594)" data-reference="" src="../../_assets/86bc0414fd.webp" width="640" height="443"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37016" data-item-id="37016" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8579" data-item-id="8579" data-item-type="ItemText"><div class="item-body-hbr">6. レイヤーマスクをかける。</div></div>
+        
+        <div class="article-item item_image " id="item8592" data-item-id="8592" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/592/medium/e07f59fd-a919-4834-a3b7-ab4960e760a3.jpg?1740123688" title=""><img class="img-responsive item-image" alt=" (8592)" data-reference="" src="../../_assets/bf7faa82c5.webp" width="640" height="444"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37017" data-item-id="37017" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8580" data-item-id="8580" data-item-type="ItemText"><div class="item-body-hbr">7. はめ込みたい画像を読み込み、クリッピングマスクをかける。</div></div>
+        
+        <div class="article-item item_image " id="item8591" data-item-id="8591" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/591/medium/c02b34e2-8eba-48bb-a95a-6779fb93359f.jpg?1740123662" title=""><img class="img-responsive item-image" alt=" (8591)" data-reference="" src="../../_assets/beb9317254.webp" width="640" height="445"></a><h4 id="heading30"></h4></div></div>
+        
+        <div class="article-item item_image " id="item8590" data-item-id="8590" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/590/medium/0a716e86-124e-41a4-bb62-7c9e5d89d3f6.jpg?1740123649" title=""><img class="img-responsive item-image" alt=" (8590)" data-reference="" src="../../_assets/916d4ff0d0.webp" width="640" height="445"></a><h4 id="heading31"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37018" data-item-id="37018" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8581" data-item-id="8581" data-item-type="ItemText"><div class="item-body-hbr">8. 自由変形にしてはめ込む画像を調整する。</div></div>
+        
+        <div class="article-item item_image " id="item8589" data-item-id="8589" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/589/medium/0320ed24-58e2-44f0-bd9a-187a940e08ac.jpg?1740123618" title=""><img class="img-responsive item-image" alt=" (8589)" data-reference="" src="../../_assets/3ce04ff74b.webp" width="640" height="458"></a><h4 id="heading32"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37019" data-item-id="37019" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8582" data-item-id="8582" data-item-type="ItemText"><div class="item-body-hbr">9. バウンディングボックスの四隅のハンドルをドラッグすると拡大・縮小できます。</div></div>
+        
+        <div class="article-item item_image " id="item8588" data-item-id="8588" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/588/medium/ab9b8d3d-0f89-437d-b64a-da7e70f0f509.jpg?1740123603" title=""><img class="img-responsive item-image" alt=" (8588)" data-reference="" src="../../_assets/310d800c3d.webp" width="640" height="456"></a><h4 id="heading33"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37020" data-item-id="37020" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8583" data-item-id="8583" data-item-type="ItemText"><div class="item-body-hbr">10. Command (Windows: Ctrl) キーを押しながらバウンディングボックスの四隅のハンドルをドラッグすると、自由な形に変形できます。</div></div>
+        
+        <div class="article-item item_image " id="item8587" data-item-id="8587" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/587/medium/93f524a6-9a3b-47b8-b992-b8236575e5ef.jpg?1740123589" title=""><img class="img-responsive item-image" alt=" (8587)" data-reference="" src="../../_assets/65fc75c2d3.webp" width="640" height="446"></a><h4 id="heading34"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37021" data-item-id="37021" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8584" data-item-id="8584" data-item-type="ItemText"><div class="item-body-hbr">11. はめ込んだ画像が背景と馴染むように、描画モードや調整レイヤーで色や明るさを調整して完成です。</div></div>
+        
+        <div class="article-item item_image " id="item8586" data-item-id="8586" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/586/medium/9af6ef7c-6af7-4a81-afb9-a432c5968246.jpg?1740123573" title=""><img class="img-responsive item-image" alt=" (8586)" data-reference="" src="../../_assets/8548a448ee.webp" width="640" height="457"></a><h4 id="heading35"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12454" data-item-id="12454" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12454" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-13</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-13" data-reference="https://www.dropbox.com/scl/fi/dfyl83hntps98ivuwk01x/Adobe-Photoshop20-13_1.0_.mov?rlkey=cxzlvguoo7agkzxif3o74xl79&amp;e=1&amp;st=a94hqpfx&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37031" data-item-id="37031" data-item-type="ItemHeading"><h2 class="item-body" id="heading36">【20-6】模写課題②：PCとスマートフォンへはめ込んでみよう！</h2></div>
+        
+        <div class="article-item item_markdown " id="item12910" data-item-id="12910" data-item-type="ItemMarkdown"><h4 id="heading37">演習課題</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8514" data-item-id="8514" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/514/medium/5fd27a9e-1736-4ae3-b058-ed35931f9b7b.png?1740037310" title=""><img class="img-responsive item-image" alt=" (8514)" data-reference="" src="../../_assets/9b1e075b80.webp" width="640" height="408"></a><h4 id="heading38"></h4></div></div>
+        
+        <div class="article-item item_link " id="item37022" data-item-id="37022" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=37022" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 20-3 【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 20-3 【使用素材】" data-reference="https://www.dropbox.com/scl/fi/b74ymf2h3ngulyhyl3puw/Adobe-Photoshop_19-3_phone.jpg?rlkey=wqlbjdpv19k8xav5k0bcpo1p0&amp;st=wohkg11r&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37032" data-item-id="37032" data-item-type="ItemHeading"><h3 class="item-body" id="heading39">作業画面前半（スマホ）</h3></div>
+        
+        <div class="article-item item_link " id="item12456" data-item-id="12456" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12456" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-14</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-14" data-reference="https://www.dropbox.com/scl/fi/tj0xiy9xjj2gsid12b17c/Adobe-Photoshop20-14_1.0_.mov?rlkey=ywddzqjr91v6ghslcpmt1xc90&amp;e=1&amp;st=von0yp4t&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37033" data-item-id="37033" data-item-type="ItemHeading"><h3 class="item-body" id="heading40">作業画面後半（デスクトップ）</h3></div>
+        
+        <div class="article-item item_link " id="item12457" data-item-id="12457" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12457" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-15</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-15" data-reference="https://www.dropbox.com/scl/fi/iqhmitt35br1atsbjkzl2/Adobe-Photoshop20-15_1.0_.mov?rlkey=piv42q8srmqupb7ebpty2yexs&amp;e=1&amp;st=4r18b76e&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37034" data-item-id="37034" data-item-type="ItemHeading"><h2 class="item-body" id="heading41">【20-7】模写課題③：ノートにはめ込んでみよう！</h2></div>
+        
+        <div class="article-item item_markdown " id="item12911" data-item-id="12911" data-item-type="ItemMarkdown"><h4 id="heading42">演習課題</h4>
+</div>
+        
+        <div class="article-item item_image " id="item12458" data-item-id="12458" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/458/medium/d5e21d1a-c9c0-46a3-b549-f1c94bb803ff.png?1745410108" title=""><img class="img-responsive item-image" alt=" (12458)" data-reference="" src="../../_assets/384fa582e0.webp" width="640" height="427"></a><h4 id="heading43"></h4></div></div>
+        
+        <div class="article-item item_link " id="item37023" data-item-id="37023" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=37023" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 20-4 【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 20-4 【使用素材】" data-reference="https://www.dropbox.com/scl/fi/1xwjwycsf00k8kmbxp2ra/Adobe-Photoshop_20-4_book.jpg?rlkey=pe1r4l7eiq0t5p6ou0kusaky5&amp;st=nvnk0e09&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12460" data-item-id="12460" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=qqy8s&amp;item_id=12460" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 20-16</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 20-16" data-reference="https://www.dropbox.com/scl/fi/kq8mhs0zldpy135l3qkij/Adobe-Photoshop20-16_1.0_.mov?rlkey=hjkvovf6eyjz6i9jpsnp744d9&amp;e=1&amp;st=7p6fbdlr&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item12461" data-item-id="12461" data-item-type="ItemRichText"><div class="item-body-hbr">これで「20章 ペンツールをマスターしよう」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25615" data-item-id="25615" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/CeAkM" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/hdZs0" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">20章 ペンツールをマスターしよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:240分</a></li></ul></li><li><a href="#heading2" class="tocLink">【20-1】ペンツールとは</a></li><li><a href="#heading3" class="tocLink">【20-2】ペンツールの基本</a><ul><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li></ul></li><li><a href="#heading10" class="tocLink">【20-3】ペンツールの使い方</a><ul><li><a href="#heading11" class="tocLink">1. 直線の書き方</a></li><li><a href="#heading12" class="tocLink">2. 曲線の書き方</a></li><li><a href="#heading13" class="tocLink">3. 直線と曲線の書き方</a></li></ul><ul><li><a href="#heading14" class="tocLink">パスの編集</a><ul><li><a href="#heading15" class="tocLink">Commandを使った操作方法</a></li><li><a href="#heading16" class="tocLink">Optionを使った操作方法</a></li></ul></li></ul></li><li><a href="#heading17" class="tocLink">【20-4】複雑な図形を書いてみよう</a><ul><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">【20-5】模写課題①：ペンツールを使って選択範囲を作成してみよう</a><ul><li><a href="#heading20" class="tocLink">演習課題</a></li><li><a href="#heading21" class="tocLink"></a></li></ul><ul><li><a href="#heading22" class="tocLink">作業手順</a><ul><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink"></a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink"></a></li><li><a href="#heading35" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading36" class="tocLink">【20-6】模写課題②：PCとスマートフォンへはめ込んでみよう！</a><ul><li><a href="#heading37" class="tocLink">演習課題</a></li><li><a href="#heading38" class="tocLink"></a></li></ul><ul><li><a href="#heading39" class="tocLink">作業画面前半（スマホ）</a></li><li><a href="#heading40" class="tocLink">作業画面後半（デスクトップ）</a></li></ul></li><li><a href="#heading41" class="tocLink">【20-7】模写課題③：ノートにはめ込んでみよう！</a><ul><li><a href="#heading42" class="tocLink">演習課題</a></li><li><a href="#heading43" class="tocLink"></a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/CeAkM" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/hdZs0" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

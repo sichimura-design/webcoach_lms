@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/Illustrator/bfXTO -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章：パスとシェイプの操作 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/Illustrator/bfXTO">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章：パスとシェイプの操作 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/118/medium/780b30db-2b2d-4de9-8ba0-12cdced66314.jpg?1752031176">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章：パスとシェイプの操作">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/Illustrator/bfXTO">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/118/large/780b30db-2b2d-4de9-8ba0-12cdced66314.jpg?1752031176">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="6z_oHxP3jZUcQ65qRBjRg55vUqFwP3RUCnbg-h2Sqcormv89L8XFfRFLTcljgd4zwnjZoBX5ASKAEk6m8_uTxA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>Illustrator</div>
+
+          <div class="fw-bold h2">2章：パスとシェイプの操作</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章：パスとシェイプの操作</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:9時間</a></li></ul></li><li><a href="#heading2" class="tocLink">【2-1】ペンツールの基礎</a><ul><li><a href="#heading3" class="tocLink">アンカーポイントとハンドルの概念</a><ul><li><a href="#heading4" class="tocLink">パスとは</a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink">ホバーとは</a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink">オープンとクローズパス</a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">ハンドルとは</a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink">アンカーポイントとは</a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink">ペンツールの位置</a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">直線パスの描画</a><ul><li><a href="#heading20" class="tocLink">直線を描く手順</a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink">作業画面</a></li></ul></li><li><a href="#heading31" class="tocLink">曲線パスの描画</a><ul><li><a href="#heading32" class="tocLink">次に、曲線パスの描き方を学びましょう。</a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink"></a></li><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li><li><a href="#heading37" class="tocLink"></a></li><li><a href="#heading38" class="tocLink"></a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink">作業動画</a></li></ul></li><li><a href="#heading41" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading42" class="tocLink">【2-2】ペンツールの応用</a><ul><li><a href="#heading43" class="tocLink">複雑な形状の描き方</a><ul><li><a href="#heading44" class="tocLink"></a></li><li><a href="#heading45" class="tocLink">複雑な形状を描くためのアプローチ</a></li><li><a href="#heading46" class="tocLink"></a></li><li><a href="#heading47" class="tocLink"></a></li></ul></li><li><a href="#heading48" class="tocLink">パスの編集と修正</a><ul><li><a href="#heading49" class="tocLink">アンカーポイントの編集ツール</a></li></ul></li><li><a href="#heading50" class="tocLink">スムーズポイントとコーナーポイント</a><ul><li><a href="#heading51" class="tocLink">ポイントタイプの変換方法</a></li></ul></li><li><a href="#heading52" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading53" class="tocLink">【2-3】パスファインダーの活用</a><ul><li><a href="#heading54" class="tocLink">基本的なパスファインダー操作</a><ul><li><a href="#heading55" class="tocLink">パスファインダーパネルの主な機能</a></li><li><a href="#heading56" class="tocLink"></a></li><li><a href="#heading57" class="tocLink">1.形状モード（上段）</a></li><li><a href="#heading58" class="tocLink"></a></li><li><a href="#heading59" class="tocLink">2.パスファインダー（下段）</a></li><li><a href="#heading60" class="tocLink">パスファインダーパネルの基本的な使い方</a></li><li><a href="#heading61" class="tocLink"></a></li><li><a href="#heading62" class="tocLink"></a></li><li><a href="#heading63" class="tocLink"></a></li><li><a href="#heading64" class="tocLink">作業動画</a></li></ul></li><li><a href="#heading65" class="tocLink">複合シェイプの作成</a></li><li><a href="#heading66" class="tocLink">パスの統合と分割</a><ul><li><a href="#heading67" class="tocLink">パスの連結</a></li><li><a href="#heading68" class="tocLink">パスの分割</a></li></ul></li><li><a href="#heading69" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading70" class="tocLink">【2-4】演習問題</a><ul><li><a href="#heading71" class="tocLink">ペンツールでロゴマークの制作</a><ul><li><a href="#heading72" class="tocLink"></a></li><li><a href="#heading73" class="tocLink">制作手順</a></li></ul></li><li><a href="#heading74" class="tocLink">パスファインダーを使用した装飾要素の作成</a><ul><li><a href="#heading75" class="tocLink"></a></li><li><a href="#heading76" class="tocLink">制作手順</a></li></ul></li><li><a href="#heading77" class="tocLink">複雑なシェイプの組み合わせ</a><ul><li><a href="#heading78" class="tocLink"></a></li><li><a href="#heading79" class="tocLink">制作手順</a></li></ul></li><li><a href="#heading80" class="tocLink">確認問題とまとめ</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item33415" data-item-id="33415" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/Vtwf1" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/SS3wt" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30110" data-item-id="30110" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">2章：パスとシェイプの操作</h2></div>
+        
+        <div class="article-item item_markdown " id="item39531" data-item-id="39531" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:9時間</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30111" data-item-id="30111" data-item-type="ItemRichText"><div class="item-body-hbr">Illustratorの最も重要な機能の一つであるペンツールとパスファインダーを学ぶことで、あらゆる形状のデザインを作成できるようになります。<br>
+<br>
+この章を修了すると、ロゴデザインやアイコン制作に必要なスキルが身につきます！</div></div>
+        
+        <div class="article-item item_heading " id="item30112" data-item-id="30112" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【2-1】ペンツールの基礎</h2></div>
+        
+        <div class="article-item item_text " id="item51339" data-item-id="51339" data-item-type="ItemText"><div class="item-body-hbr">2-1の解説動画です。<br>以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51340" data-item-id="51340" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-aed78e0594.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30114" data-item-id="30114" data-item-type="ItemHeading"><h3 class="item-body" id="heading3">アンカーポイントとハンドルの概念</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30115" data-item-id="30115" data-item-type="ItemRichText"><div class="item-body-hbr">ペンツールを使いこなすためには、まずパスの基本概念を理解する必要があります。</div></div>
+        
+        <div class="article-item item_markdown " id="item30116" data-item-id="30116" data-item-type="ItemMarkdown"><h4 id="heading4">パスとは</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30117" data-item-id="30117" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>Illustratorにおけるパスとは、アンカーポイント（点）とセグメント（線）で構成される、線や図形の基本構造です。</li>
+  <li>図形や線は、すべてこの「パス」を基に描画され、塗りや線の設定によって見た目が変わります。</li>
+  <li>（線と塗りの設定が「なし」の場合、オブジェクトにマウスカーソルを合わせる（ホバーする）まで輪郭線は表示されません）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30118" data-item-id="30118" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/118/medium/780b30db-2b2d-4de9-8ba0-12cdced66314.jpg?1752031176" title=""><img class="img-responsive item-image" alt=" (30118)" data-reference="" src="../../_assets/3367542ead.webp" width="466" height="367"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30119" data-item-id="30119" data-item-type="ItemMarkdown"><h4 id="heading6">ホバーとは</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30120" data-item-id="30120" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ホバーとは、マウスポインタをウェブ要素上に置いた時に発生するイベントです。</li>
+  <li>視覚的な変化や追加情報の表示などのユーザー操作を促します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item38435" data-item-id="38435" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ホバーしている</li><li>
+</li></ul></div></div>
+        
+        <div class="article-item item_image " id="item30122" data-item-id="30122" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/122/medium/837b23ed-25db-459f-89dd-830791de7660.png?1757080269" title=""><img class="img-responsive item-image" alt=" (30122)" data-reference="" src="../../_assets/104a9ee963.webp" width="640" height="259"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30123" data-item-id="30123" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ホバーしていない</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30124" data-item-id="30124" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/124/medium/5e5a8933-fa56-456d-bcc5-1340f944aac6.png?1757080314" title=""><img class="img-responsive item-image" alt=" (30124)" data-reference="" src="../../_assets/04f58fce25.webp" width="640" height="259"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_html " id="item38434" data-item-id="38434" data-item-type="ItemHtml"><div class="item-body"><span class="decoration-02">パスは「線」や「塗り」を適用することで視認可能になります。</span></div></div>
+        
+        <div class="article-item item_markdown " id="item30125" data-item-id="30125" data-item-type="ItemMarkdown"><h4 id="heading9">オープンとクローズパス</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30126" data-item-id="30126" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">オープンパス</span>（開いたパス）
+    <ul>
+      <li>始点と終点のアンカーポイントが連結していない、一本の「線」の状態。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30127" data-item-id="30127" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/127/medium/5d75d808-b2ec-4da1-9551-7e3d2228db15.png?1752031481" title=""><img class="img-responsive item-image" alt=" (30127)" data-reference="" src="../../_assets/012e7c5cd3.webp" width="640" height="571"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30128" data-item-id="30128" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">クローズパス</span>（閉じたパス）
+    <ul>
+      <li>始点と終点のアンカーポイントが連結している状態で、楕円や長方形の様な図形になっている状態</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30129" data-item-id="30129" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/129/medium/74ce4025-4afe-443d-9a4c-f68fce2de3ce.jpg?1752031508" title=""><img class="img-responsive item-image" alt=" (30129)" data-reference="" src="../../_assets/9047387bfb.webp" width="640" height="553"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30130" data-item-id="30130" data-item-type="ItemMarkdown"><h4 id="heading12">ハンドルとは</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30131" data-item-id="30131" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ハンドルは、アンカーポイントから伸びる「方向線」のことで、パスの曲がり方をコントロールします。</li>
+  <li>ハンドルの長さと角度を調整することで、曲線の形状を細かく制御できます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30132" data-item-id="30132" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/132/medium/aeeaf239-778d-42f7-8dcb-f4f346e58044.jpg?1752031562" title=""><img class="img-responsive item-image" alt=" (30132)" data-reference="" src="../../_assets/9786b3f319.webp" width="640" height="307"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30133" data-item-id="30133" data-item-type="ItemMarkdown"><h4 id="heading14">アンカーポイントとは</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30134" data-item-id="30134" data-item-type="ItemRichText"><div class="item-body-hbr">アンカーポイントは、パスの始点、終点、曲がり角となる点です。<br>
+アンカーポイントには以下の2種類があります。</div></div>
+        
+        <div class="article-item item_html " id="item30135" data-item-id="30135" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">スムーズポイント</span>
+    <ul>
+      <li>ハンドルが一直線に伸び、曲線が自然につながるアンカーポイントのこと</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30136" data-item-id="30136" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/136/medium/15fe4da7-62f7-4a34-a756-defe0b9fb0a3.jpg?1752031647" title=""><img class="img-responsive item-image" alt=" (30136)" data-reference="" src="../../_assets/f852359c00.webp" width="640" height="565"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30137" data-item-id="30137" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">コーナーポイント</span>：
+    <ul>
+      <li>角度をつけて方向が変わるアンカーポイント</li>
+      <li>ハンドルがない場合は直線の角になり、ハンドルがある場合は曲線の折れ曲がるポイント</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30138" data-item-id="30138" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/138/medium/84a08546-2d96-48a5-adad-2f942ca918bb.jpg?1752031700" title=""><img class="img-responsive item-image" alt=" (30138)" data-reference="" src="../../_assets/0ee8d03a99.webp" width="640" height="558"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30139" data-item-id="30139" data-item-type="ItemMarkdown"><h4 id="heading17">ペンツールの位置</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30140" data-item-id="30140" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ペンツールはツールパネルの中ほどにあります。</li>
+  <li>クリックすると選択でき、長押しすると隠れているツールが表示されます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30141" data-item-id="30141" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/141/medium/0a2510ef-d4ee-4d69-ae62-1fa9be92d419.jpg?1752031765" title=""><img class="img-responsive item-image" alt=" (30141)" data-reference="" src="../../_assets/16abb54bc8.webp" width="640" height="475"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item30142" data-item-id="30142" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">直線パスの描画</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30143" data-item-id="30143" data-item-type="ItemRichText"><div class="item-body-hbr">それでは、実際にペンツールを使って直線を描いてみましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item30144" data-item-id="30144" data-item-type="ItemMarkdown"><h4 id="heading20">直線を描く手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30145" data-item-id="30145" data-item-type="ItemRichText"><div class="item-body-hbr">1.ツールパネルからペンツール（<span class="decoration-02">P</span>）を選択します。</div></div>
+        
+        <div class="article-item item_image " id="item30146" data-item-id="30146" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/146/medium/a0883129-d854-43b8-841c-b8c9417184ce.jpg?1752031965" title=""><img class="img-responsive item-image" alt=" (30146)" data-reference="" src="../../_assets/16abb54bc8.webp" width="640" height="475"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item30147" data-item-id="30147" data-item-type="ItemRichText"><div class="item-body-hbr">2.アートボード上でクリックして、パスの始点となるアンカーポイントを配置します。</div></div>
+        
+        <div class="article-item item_image " id="item30148" data-item-id="30148" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/148/medium/0a5f15b0-0414-44f7-a8fd-b42cef939a1c.jpg?1752032294" title=""><img class="img-responsive item-image" alt=" (30148)" data-reference="" src="../../_assets/2fd10bdfbd.webp" width="640" height="444"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item30149" data-item-id="30149" data-item-type="ItemRichText"><div class="item-body-hbr">3.マウスを移動して、別の場所でクリックすると、2つのアンカーポイントを結ぶ直線が描かれます。</div></div>
+        
+        <div class="article-item item_image " id="item30150" data-item-id="30150" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/150/medium/b3e48e65-e7f8-4469-99f8-b559e1f639d5.jpg?1752032405" title=""><img class="img-responsive item-image" alt=" (30150)" data-reference="" src="../../_assets/53463e16a2.webp" width="640" height="454"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item30151" data-item-id="30151" data-item-type="ItemRichText"><div class="item-body-hbr">4.続けてクリックすることで、連続した直線を描くことができます。</div></div>
+        
+        <div class="article-item item_image " id="item30152" data-item-id="30152" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/152/medium/09623e00-0d27-4b4a-8067-c155bbe01185.jpg?1752032985" title=""><img class="img-responsive item-image" alt=" (30152)" data-reference="" src="../../_assets/13bd1fbaaa.webp" width="640" height="455"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item30153" data-item-id="30153" data-item-type="ItemRichText"><div class="item-body-hbr">パスを完成させるには以下のいずれかの方法を使います。</div></div>
+        
+        <div class="article-item item_rich_text " id="item30154" data-item-id="30154" data-item-type="ItemRichText"><div class="item-body-hbr">・最初のアンカーポイントをクリックして閉じたパスを作成</div></div>
+        
+        <div class="article-item item_image " id="item30155" data-item-id="30155" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/155/medium/8ef5a3aa-6182-4a2d-85ce-049fc418c7cd.jpg?1752033264" title=""><img class="img-responsive item-image" alt=" (30155)" data-reference="" src="../../_assets/1452588071.webp" width="640" height="456"></a><h4 id="heading25"></h4></div></div>
+        
+        <div class="article-item item_image " id="item30156" data-item-id="30156" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/156/medium/77d36bf7-e858-4708-a839-81ac4859dfa2.jpg?1752033283" title=""><img class="img-responsive item-image" alt=" (30156)" data-reference="" src="../../_assets/9dd3770652.webp" width="640" height="470"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item30157" data-item-id="30157" data-item-type="ItemRichText"><div class="item-body-hbr">・<span class="decoration-02">Esc</span>キーを押して終了した場合</div></div>
+        
+        <div class="article-item item_rich_text " id="item30158" data-item-id="30158" data-item-type="ItemRichText"><div class="item-body-hbr">・別のツールを選択して終了した場合</div></div>
+        
+        <div class="article-item item_image " id="item30159" data-item-id="30159" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/159/medium/0230f72f-ba32-4cea-9b5e-3ead774bf79d.jpg?1752035553" title=""><img class="img-responsive item-image" alt=" (30159)" data-reference="" src="../../_assets/e2d6a33bc8.webp" width="640" height="339"></a><h4 id="heading27"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item30160" data-item-id="30160" data-item-type="ItemRichText"><div class="item-body-hbr">・ESCキーや別のツールを選択して終了した場合はパスが閉じていない状態で終了しています。</div></div>
+        
+        <div class="article-item item_image " id="item30161" data-item-id="30161" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/161/medium/7a1697bb-e323-4ace-bf1a-55c6f6df9fb6.jpg?1752035587" title=""><img class="img-responsive item-image" alt=" (30161)" data-reference="" src="../../_assets/570f5de67a.webp" width="640" height="306"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_image " id="item30162" data-item-id="30162" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/162/medium/eabee709-3e3e-4c00-bdd9-d2993288b31f.jpg?1752035600" title=""><img class="img-responsive item-image" alt=" (30162)" data-reference="" src="../../_assets/27e5b20b51.webp" width="640" height="357"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30163" data-item-id="30163" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">直線描画のコツ</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">Shift</span>キーを押しながらだと、水平・垂直・45度の直線が描けます。</li>
+            <li><span class="decoration-02">Alt(Option)</span>キーを押しながら直前のアンカーポイントからドラッグすると、スムーズポイントをコーナーポイントに変換できます。</li>
+            <li>描画中に間違えたら、<span class="decoration-02">Ctrl+Z(Command+Z)</span>で直前の操作を取り消せます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item30164" data-item-id="30164" data-item-type="ItemMarkdown"><h4 id="heading30">作業画面</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item30168" data-item-id="30168" data-item-type="ItemHeading"><h3 class="item-body" id="heading31">曲線パスの描画</h3></div>
+        
+        <div class="article-item item_markdown " id="item30169" data-item-id="30169" data-item-type="ItemMarkdown"><h4 id="heading32">次に、曲線パスの描き方を学びましょう。</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30170" data-item-id="30170" data-item-type="ItemRichText"><div class="item-body-hbr">1.ペンツール(<span class="decoration-02">P</span>)を選択します。</div></div>
+        
+        <div class="article-item item_image " id="item30171" data-item-id="30171" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/171/medium/50b13029-e925-48ec-9b2d-f028beff5351.jpg?1752036392" title=""><img class="img-responsive item-image" alt=" (30171)" data-reference="" src="../../_assets/4e53f7297b.webp" width="640" height="398"></a><h4 id="heading33"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30188" data-item-id="30188" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30172" data-item-id="30172" data-item-type="ItemRichText"><div class="item-body-hbr">2.アートボード上でクリックして、パスの始点となるアンカーポイントを配置します。</div></div>
+        
+        <div class="article-item item_image " id="item30173" data-item-id="30173" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/173/medium/65a8839e-d31b-40ed-8728-29bd07f2c6fc.jpg?1752036437" title=""><img class="img-responsive item-image" alt=" (30173)" data-reference="" src="../../_assets/df34959702.webp" width="640" height="403"></a><h4 id="heading34"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item30174" data-item-id="30174" data-item-type="ItemRichText"><div class="item-body-hbr">3.<span class="decoration-02">次の点を配置する場所でクリックしたまま、マウスをドラッグします。</span></div></div>
+        
+        <div class="article-item item_image " id="item30175" data-item-id="30175" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/175/medium/6ce9e49a-85c2-4ac5-b357-58b3954d6a29.jpg?1752036471" title=""><img class="img-responsive item-image" alt=" (30175)" data-reference="" src="../../_assets/6c1f4150b4.webp" width="640" height="389"></a><h4 id="heading35"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30189" data-item-id="30189" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30176" data-item-id="30176" data-item-type="ItemRichText"><div class="item-body-hbr">4.するとハンドルが表示され、ドラッグする方向と距離に応じて曲線の形状が決まります。</div></div>
+        
+        <div class="article-item item_image " id="item30177" data-item-id="30177" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/177/medium/8bd3082a-5cc6-4d36-ad69-11fa3bc30ce7.jpg?1752036515" title=""><img class="img-responsive item-image" alt=" (30177)" data-reference="" src="../../_assets/c556db3e05.webp" width="640" height="446"></a><h4 id="heading36"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30771" data-item-id="30771" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30178" data-item-id="30178" data-item-type="ItemRichText"><div class="item-body-hbr">5.マウスボタンを離すと、アンカーポイントが配置され曲線が確定します。</div></div>
+        
+        <div class="article-item item_image " id="item30179" data-item-id="30179" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/179/medium/ef2d7db4-145e-4b61-abee-ff49977582c4.jpg?1752036547" title=""><img class="img-responsive item-image" alt=" (30179)" data-reference="" src="../../_assets/3940b4b3c8.webp" width="640" height="433"></a><h4 id="heading37"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30190" data-item-id="30190" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30180" data-item-id="30180" data-item-type="ItemRichText"><div class="item-body-hbr">6.続けて別の場所でクリック＆ドラッグすると、次の曲線セグメントが描かれます。</div></div>
+        
+        <div class="article-item item_image " id="item30181" data-item-id="30181" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/181/medium/d649d70e-ebc1-4920-aa8c-fd3081f84800.jpg?1752036584" title=""><img class="img-responsive item-image" alt=" (30181)" data-reference="" src="../../_assets/cae2f5784f.webp" width="640" height="430"></a><h4 id="heading38"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30191" data-item-id="30191" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30182" data-item-id="30182" data-item-type="ItemRichText"><div class="item-body-hbr">7.マウスボタンを離すと、アンカーポイントが配置され曲線が確定します。</div></div>
+        
+        <div class="article-item item_image " id="item30183" data-item-id="30183" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/183/medium/e71b93ec-354d-4c41-ad05-5469438fbc4d.jpg?1752036622" title=""><img class="img-responsive item-image" alt=" (30183)" data-reference="" src="../../_assets/6498abe9a7.webp" width="640" height="430"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30184" data-item-id="30184" data-item-type="ItemMarkdown"><h4 id="heading40">作業動画</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30186" data-item-id="30186" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">曲線描画のコツ</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>ハンドルは曲線の接線方向に引くとなめらかな曲線になります。</li>
+      <li>ハンドルが短いと急カーブに、長いと緩やかなカーブになります。</li>
+      <li>隣接するアンカーポイント同士のハンドルが一直線上にあると、その間の曲線はなめらかになります。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30187" data-item-id="30187" data-item-type="ItemHeading"><h3 class="item-body" id="heading41">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item30192" data-item-id="30192" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">確認問題<br></span>
+  <ol>
+    <li>ペンツールで曲線の形状を制御するものは何ですか？</li>
+    <li>ペンツールで直線を描く場合、どのような操作をしますか？</li>
+    <li>ペンツールで曲線を描く場合、どのような操作をしますか？</li>
+  </ol>
+</div>
+</div></div>
+        
+        <div class="article-item item_html " id="item30193" data-item-id="30193" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">答え<br></span>
+  <ol>
+    <li>ハンドル（方向線）</li>
+    <li>直線の始点と終点でクリックする。</li>
+    <li>曲線の始点をクリックし、終点でクリックしながらドラッグする。</li>
+  </ol>
+</div>
+</div></div>
+        
+        <div class="article-item item_html " id="item30194" data-item-id="30194" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+  <ul>
+    <li>このセクションではパスとシェイプについてを学びました。</li>
+    <li>次のセクションではこれらの知識を応用した描画方法を学びます。</li>
+  </ul>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item30195" data-item-id="30195" data-item-type="ItemHeading"><h2 class="item-body" id="heading42">【2-2】ペンツールの応用</h2></div>
+        
+        <div class="article-item item_text " id="item51341" data-item-id="51341" data-item-type="ItemText"><div class="item-body-hbr">2-2の解説動画です。<br>以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51342" data-item-id="51342" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-8bc94d01b3.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30197" data-item-id="30197" data-item-type="ItemHeading"><h3 class="item-body" id="heading43">複雑な形状の描き方</h3></div>
+        
+        <div class="article-item item_html " id="item30198" data-item-id="30198" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>基本的なペンツールの操作を習得したところで、より複雑な形状を描く方法を学びましょう。</li>
+  <li>複雑な形状を描くコツは、シンプルな要素に分解して考えることです。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30199" data-item-id="30199" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/199/medium/e5f306e9-610e-4766-b635-2f601acf97cc.png?1752037128" title=""><img class="img-responsive item-image" alt=" (30199)" data-reference="" src="../../_assets/868c922df5.webp" width="640" height="417"></a><h4 id="heading44"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30200" data-item-id="30200" data-item-type="ItemMarkdown"><h4 id="heading45">複雑な形状を描くためのアプローチ</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30201" data-item-id="30201" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.下絵を活用する</span></div></div>
+        
+        <div class="article-item item_html " id="item30202" data-item-id="30202" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>参考にしたい画像を配置し、不透明度を下げるか、別レイヤーに配置します。下絵はテンプレートレイヤーに配置します。</li>
+  <li>画像トレースを行う場合は、画像の主要なポイントにアンカーポイントを配置するようにします。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30204" data-item-id="30204" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.曲線と直線の組み合わせ</span></div></div>
+        
+        <div class="article-item item_html " id="item30205" data-item-id="30205" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>曲線と直線を適切に組み合わせることで、さまざまな形状を表現できます。</li>
+  <li>直線から曲線、曲線から直線へ切り替える方法：
+    <ul>
+      <li>直線の後に曲線：次のポイントをクリック&amp;ドラッグします。</li>
+      <li>曲線の後に直線：<span class="decoration-02">Alt(Option)</span>キーを押しながら最後のアンカーポイントをクリックして片方のハンドルを削除し、次の位置でクリックします。</li>
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item30207" data-item-id="30207" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3.適切なアンカーポイント数</span></div></div>
+        
+        <div class="article-item item_html " id="item30208" data-item-id="30208" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>少なすぎると形状を表現できず、多すぎると滑らかさが失われます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30210" data-item-id="30210" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/210/medium/13369c89-8473-484e-b64a-58a91474409e.png?1752037652" title=""><img class="img-responsive item-image" alt=" (30210)" data-reference="" src="../../_assets/66dc3a09a7.webp" width="308" height="201"></a><h4 id="heading46"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30211" data-item-id="30211" data-item-type="ItemHtml"><div class="item-body"><ul>
+ <li>目安としては、<span class="decoration-02">方向が変わる場所や曲率が変化する場所にのみアンカーポイントを配置します。</span></li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item30212" data-item-id="30212" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/212/medium/695e426c-ebc4-4b1b-a3ab-7c81220dd70e.png?1752037700" title=""><img class="img-responsive item-image" alt=" (30212)" data-reference="" src="../../_assets/5ab5345055.webp" width="312" height="201"></a><h4 id="heading47"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item30213" data-item-id="30213" data-item-type="ItemHeading"><h3 class="item-body" id="heading48">パスの編集と修正</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30214" data-item-id="30214" data-item-type="ItemRichText"><div class="item-body-hbr">作成したパスは、後から様々な方法で編集できます。</div></div>
+        
+        <div class="article-item item_markdown " id="item30215" data-item-id="30215" data-item-type="ItemMarkdown"><h4 id="heading49">アンカーポイントの編集ツール</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30216" data-item-id="30216" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.ダイレクト選択ツール（</span><span class="decoration-02">A</span><span class="decoration-01">）</span></div></div>
+        
+        <div class="article-item item_html " id="item30217" data-item-id="30217" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>個々のアンカーポイントやセグメントを選択して移動できます。</li>
+  <li>アンカーポイントを選択してドラッグすると位置を変更できます。</li>
+  <li>セグメントを選択してドラッグするとカーブを変形できます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30219" data-item-id="30219" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.アンカーポイント追加ツール（</span><span class="decoration-02">+</span><span class="decoration-01">）</span></div></div>
+        
+        <div class="article-item item_html " id="item30220" data-item-id="30220" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>既存のパス上をクリックすると、新しいアンカーポイントが追加されます。</li>
+  <li>ペンツールを選択した状態で、既存のパス上をクリックしても同じ操作ができます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30222" data-item-id="30222" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3.アンカーポイント削除ツール（</span><span class="decoration-02">-</span><span class="decoration-01">）</span></div></div>
+        
+        <div class="article-item item_html " id="item30223" data-item-id="30223" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>不要なアンカーポイントをクリックして削除します。</li>
+  <li>ペンツールを選択した状態で、既存のアンカーポイントをクリックしても同じ操作ができます。</li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item30225" data-item-id="30225" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">4.アンカーポイント変換ツール（</span><span class="decoration-02">Shift+C</span><span class="decoration-01">）</span></div></div>
+        
+        <div class="article-item item_html " id="item30226" data-item-id="30226" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>コーナーポイントとスムーズポイントを相互に変換します。</li>
+  <li>コーナーポイントをクリック&amp;ドラッグするとスムーズポイントに変換されます。</li>
+  <li>スムーズポイントをクリックするとコーナーポイントに変換されます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30228" data-item-id="30228" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">パス編集のショートカット</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li><span class="decoration-02">Ctrl(Command)</span>+クリックで、選択ツールを一時的に直接選択ツールに切り替えられます。</li>
+      <li><span class="decoration-02">Alt(Option)</span>+ドラッグでハンドルの片側だけを動かせます（非対称な曲線を作成できます）。</li>
+      <li><span class="decoration-02">Shift</span>キーを押しながらドラッグすると、ハンドルの角度が45度単位に制限されます。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30229" data-item-id="30229" data-item-type="ItemHeading"><h3 class="item-body" id="heading50">スムーズポイントとコーナーポイント</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30230" data-item-id="30230" data-item-type="ItemRichText"><div class="item-body-hbr">スムーズポイントとコーナーポイントの特性を理解し、使い分けることで、より洗練されたパスを描くことができます。</div></div>
+        
+        <div class="article-item item_html " id="item30231" data-item-id="30231" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">スムーズポイントの特徴</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>両側のハンドルが一直線上にあり、なめらかな曲線を形成します。</li>
+      <li>ロゴやイラストの滑らかな曲線部分に適しています。</li>
+      <li>一方のハンドルを動かすと、もう一方も連動して動きます。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item38436" data-item-id="38436" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">コーナーポイントの特徴</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>ハンドルが独立しているか、またはハンドルがない状態です。</li>
+      <li>角や方向が急に変わる箇所に適しています。</li>
+      <li>ハンドルは独立して動かすことができます。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item30232" data-item-id="30232" data-item-type="ItemMarkdown"><h4 id="heading51">ポイントタイプの変換方法</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30233" data-item-id="30233" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.スムーズポイントからコーナーポイントへ</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item30234" data-item-id="30234" data-item-type="ItemRichText"><div class="item-body-hbr">・アンカーポイント変換ツールでクリックする。</div></div>
+        
+        <div class="article-item item_rich_text " id="item30236" data-item-id="30236" data-item-type="ItemRichText"><div class="item-body-hbr">・ペンツールで<span class="decoration-02">Alt(Option)</span>キーを押しながらハンドルをクリックする。</div></div>
+        
+        <div class="article-item item_rich_text " id="item30238" data-item-id="30238" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.コーナーポイントからスムーズポイントへ</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item30239" data-item-id="30239" data-item-type="ItemRichText"><div class="item-body-hbr">・アンカーポイント変換ツールでクリック&amp;ドラッグする。</div></div>
+        
+        <div class="article-item item_rich_text " id="item30241" data-item-id="30241" data-item-type="ItemRichText"><div class="item-body-hbr">・ペンツールでアンカーポイントを選択し、ハンドルを表示させてドラッグする。</div></div>
+        
+        <div class="article-item item_heading " id="item30243" data-item-id="30243" data-item-type="ItemHeading"><h3 class="item-body" id="heading52">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item30244" data-item-id="30244" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">確認問題<br></span>
+  <ol>
+    <li>複雑な形状を描く際に最も効率的なアプローチは？</li>
+    <li>コーナーポイントをスムーズポイントに変換するためのツールは？</li>
+    <li>アンカーポイントを追加せずに曲線の形状を変える方法は？</li>
+  </ol>
+</div>
+</div></div>
+        
+        <div class="article-item item_html " id="item30245" data-item-id="30245" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">答え<br></span>
+  <ol>
+    <li>シンプルな要素に分解して考える。</li>
+    <li>アンカーポイント変換ツール</li>
+    <li>直接選択ツールでセグメントをドラッグする。</li>
+  </ol>
+</div>
+</div></div>
+        
+        <div class="article-item item_html " id="item30246" data-item-id="30246" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+  <ul>
+    <li>このセクションではペンツールを使った応用テクニックを学びました。</li>
+    <li>次のセクションでは複数のパスを組み合わせて複雑な形状を作成する「パスファインダー」の使い方を学びます。</li>
+  </ul>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item30247" data-item-id="30247" data-item-type="ItemHeading"><h2 class="item-body" id="heading53">【2-3】パスファインダーの活用</h2></div>
+        
+        <div class="article-item item_text " id="item51343" data-item-id="51343" data-item-type="ItemText"><div class="item-body-hbr">2-3の解説動画です。<br>以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51344" data-item-id="51344" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-2a88a74de8.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30249" data-item-id="30249" data-item-type="ItemHeading"><h3 class="item-body" id="heading54">基本的なパスファインダー操作</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30250" data-item-id="30250" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">パスファインダー</span>は、<span class="decoration-02">複数のオブジェクトを組み合わせて新しい形状を作成するための強力なツール</span>です。<br>
+基本的な操作方法を学びましょう。</div></div>
+        
+        <div class="article-item item_html " id="item30251" data-item-id="30251" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">パスファインダーパネルの表示</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>ウィンドウ &gt; パスファインダー を選択するか、<span class="decoration-02">Shift+Ctrl(Command)+F9</span>を押すと、パスファインダーパネルが表示されます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item30252" data-item-id="30252" data-item-type="ItemMarkdown"><h4 id="heading55">パスファインダーパネルの主な機能</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30253" data-item-id="30253" data-item-type="ItemRichText"><div class="item-body-hbr">パスファインダーパネルには、大きく分けて「形状モード」と「パスファインダー」の2つのセクションがあります。</div></div>
+        
+        <div class="article-item item_image " id="item30254" data-item-id="30254" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/254/medium/9b288757-84e0-4359-ba0e-16cc7141f12c.png?1752039369" title=""><img class="img-responsive item-image" alt=" (30254)" data-reference="" src="../../_assets/ef5819f2b4.webp" width="640" height="620"></a><h4 id="heading56"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item38533" data-item-id="38533" data-item-type="ItemMarkdown"><h4 id="heading57">1.形状モード（上段）</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30256" data-item-id="30256" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>形状モードには、操作の結果が異なる2通りの使い方があります。
+    <ul>
+      <li><span class="decoration-02">alt（option）</span> を押さず適用する（そのまま実行）</li>
+      <li><span class="decoration-02">alt（option）</span> を押しながら適用する</li>
+    </ul>
+  </li>
+  <li>適用した後に編集を行う可能性がある場合は、<span class="decoration-02">alt（option）</span> を押しながら操作すると効率が良くなります。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item30257" data-item-id="30257" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/257/medium/7f6405eb-6d93-4fd9-a01f-a0e8c2cef16d.png?1752039536" title=""><img class="img-responsive item-image" alt=" (30257)" data-reference="" src="../../_assets/bff86f3df1.webp" width="633" height="405"></a><h4 id="heading58"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38534" data-item-id="38534" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">操作方法</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item30259" data-item-id="30259" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">alt（option）</span>を押さず操作する場合</div></div>
+        
+        <div class="article-item item_html " id="item30260" data-item-id="30260" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>即座に新しいパスを作成し、元のオブジェクトの情報は失われます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30262" data-item-id="30262" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">alt（option）</span>を押しながら操作する場合</div></div>
+        
+        <div class="article-item item_html " id="item30263" data-item-id="30263" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>形状の組み合わせ方を視覚的に表示し、元のオブジェクトの情報を保持します。</li>
+  <li>「拡張」ボタンをクリックするまでは、元のオブジェクトに戻すことができます。</li>
+  <li>元のオブジェクトへの戻し方は、パスファインダーパネルの右端のメニューから「複合シェイプを解除」というボタンを押します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item38535" data-item-id="38535" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">主な形状モード</span></div></div>
+        
+        <div class="article-item item_html " id="item30266" data-item-id="30266" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">合体</span>：複数のオブジェクトを一つにまとめます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30268" data-item-id="30268" data-item-type="ItemHtml"><div class="item-body">
+<ul>
+  <li>
+    <span class="decoration-02">前面オブジェクトで型抜き</span>：最前面にあるオブジェクトの形で、背面にあるオブジェクトを切り抜きます。<br>
+     この操作で作成される穴の空いた図形は<span class="decoration-02">「複合パス」</span>と呼ばれます。<br>
+    複合シェイプとは異なる形状なので混同しないように気をつけましょう。
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item30270" data-item-id="30270" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">交差</span>：オブジェクトが重なっている部分だけを残します。
+</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item30272" data-item-id="30272" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">中マド</span>：重なっている部分を削除します。</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item38536" data-item-id="38536" data-item-type="ItemMarkdown"><h4 id="heading59">2.パスファインダー（下段）</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30275" data-item-id="30275" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>パスファインダーは、形状モードの様に元のオブジェクトの情報を保持することはできません。</li>
+  <li>即座に新しいパスを作成し、元のオブジェクトの情報は失われます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item38537" data-item-id="38537" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">主なパスファインダー</span></div></div>
+        
+        <div class="article-item item_html " id="item30277" data-item-id="30277" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">分割</span>：重なっている部分で分割します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30279" data-item-id="30279" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">前面を削除（切り抜き）</span>：前面オブジェクトと重なる部分を後面オブジェクトから削除します（写真は切り抜けません。図形のみです）。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30281" data-item-id="30281" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">輪郭（アウトライン）</span>：オブジェクトの輪郭部分のみを残します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item30283" data-item-id="30283" data-item-type="ItemMarkdown"><h4 id="heading60">パスファインダーパネルの基本的な使い方</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30284" data-item-id="30284" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.複数のオブジェクトを選択します。</span></div></div>
+        
+        <div class="article-item item_image " id="item30285" data-item-id="30285" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/285/medium/f3328107-cc4e-487b-825b-e46f5f5ca1d8.png?1752040913" title=""><img class="img-responsive item-image" alt=" (30285)" data-reference="" src="../../_assets/93b5aa2973.webp" width="640" height="415"></a><h4 id="heading61"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30286" data-item-id="30286" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30287" data-item-id="30287" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.パスファインダーパネルから、適用したい操作をクリックします。</span></div></div>
+        
+        <div class="article-item item_image " id="item30288" data-item-id="30288" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/288/medium/5d60d649-c09a-46ee-b5c2-f7a22bb1c9f4.png?1752040990" title=""><img class="img-responsive item-image" alt=" (30288)" data-reference="" src="../../_assets/7ed2e4de3e.webp" width="640" height="419"></a><h4 id="heading62"></h4></div></div>
+        
+        <div class="article-item item_html " id="item30289" data-item-id="30289" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30290" data-item-id="30290" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3.形状モードの場合は「拡張」ボタンをクリックして確定します。</span></div></div>
+        
+        <div class="article-item item_image " id="item30291" data-item-id="30291" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/291/medium/94d479bb-f9bc-427f-ab3a-ba8609786d19.png?1752041025" title=""><img class="img-responsive item-image" alt=" (30291)" data-reference="" src="../../_assets/74d62887b6.webp" width="640" height="416"></a><h4 id="heading63"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30292" data-item-id="30292" data-item-type="ItemMarkdown"><h4 id="heading64">作業動画</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item30294" data-item-id="30294" data-item-type="ItemHeading"><h3 class="item-body" id="heading65">複合シェイプの作成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30295" data-item-id="30295" data-item-type="ItemRichText"><div class="item-body-hbr">形状モードで<span class="decoration-02">alt（option）</span>を押しながら操作時に、元のオブジェクトを保持すると学びましたが、この時にオブジェクトは複合シェイプという特殊なシェイプに変換されます。</div></div>
+        
+        <div class="article-item item_html " id="item30296" data-item-id="30296" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">複合シェイプとは</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>形状モードで <span class="decoration-02">alt（option）</span> を押しながら操作時に作成されます。</li>
+      <li><span class="decoration-02">複合シェイプ</span> は、複数のオブジェクトを組み合わせて作成された形状です。</li>
+      <li>元のオブジェクトの情報が保持されているため、後から編集できます。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30297" data-item-id="30297" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">複合シェイプの作成方法：</span></div></div>
+        
+        <div class="article-item item_html " id="item30298" data-item-id="30298" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>複数のオブジェクトを選択します。</li>
+  <li>パスファインダーパネルの <span class="decoration-02">形状モード</span> から、適用したいモード（合体、交差、除外など）を、<span class="decoration-02">Alt（Option）キーを押しながらクリック</span>します。</li>
+  <li>
+    複合シェイプの作成が完了します。<br>
+    元のオブジェクトの情報を保持したまま、1つの複合シェイプとして編集できる状態になります。<br>
+    ※<span class="decoration-02">拡張ボタン</span>を押すと複合シェイプは通常のシェイプへ変換され、元のオブジェクトの情報は保持されず編集もできない状態になります。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30300" data-item-id="30300" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">複合シェイプの編集：</span></div></div>
+        
+        <div class="article-item item_html " id="item30301" data-item-id="30301" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>直接選択ツール（<span class="decoration-02">A</span>）で複合シェイプの個々のオブジェクトを選択できます。</li>
+  <li>選択したオブジェクトの位置や形状を変更すると、複合シェイプ全体が自動的に更新されます。</li>
+  <li>レイヤーパネルで複合シェイプを展開し、個々のオブジェクトの表示/非表示やパスファインダー操作を変更できます。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_html " id="item30303" data-item-id="30303" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">複合シェイプのメリット</span></div>
+    </div>
+    <div class="content-area">
+      <ul>
+        <li>元のオブジェクトの情報を保持するため、後から編集が容易です。</li>
+        <li>複数のパスファインダー操作を組み合わせることができます。</li>
+        <li>ファイルサイズを小さく保つことができます。</li>
+      </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30304" data-item-id="30304" data-item-type="ItemHeading"><h3 class="item-body" id="heading66">パスの統合と分割</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30305" data-item-id="30305" data-item-type="ItemRichText"><div class="item-body-hbr">より複雑なデザインを作成するために、パスの統合と分割のテクニックを学びましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item30306" data-item-id="30306" data-item-type="ItemMarkdown"><h4 id="heading67">パスの連結</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30307" data-item-id="30307" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">「連結」コマンド</span></div></div>
+        
+        <div class="article-item item_html " id="item30308" data-item-id="30308" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>複数の開いたパスを1つのパスに結合します。</li>
+  <li>結合するパス同士のアンカーポイントを選択をする。</li>
+  <li>オブジェクト &gt; パス &gt; 連結（Ctrl(Command)+J）で実行します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item30310" data-item-id="30310" data-item-type="ItemMarkdown"><h4 id="heading68">パスの分割</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30311" data-item-id="30311" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.</span><span class="decoration-02">「分割」</span><br>
+</div></div>
+        
+        <div class="article-item item_html " id="item30313" data-item-id="30313" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>パスファインダーパネルの「分割」を使用する。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30314" data-item-id="30314" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.</span><span class="decoration-02">「はさみ」ツール</span></div></div>
+        
+        <div class="article-item item_html " id="item30315" data-item-id="30315" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>パス上の特定の点で切断します。</li>
+  <li>ツールパネルの <span class="decoration-02">はさみツール（C）</span> を選択し、切断したい場所をクリックします。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30317" data-item-id="30317" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3.</span><span class="decoration-02">「シェイプ形成」ツール</span></div></div>
+        
+        <div class="article-item item_html " id="item30318" data-item-id="30318" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>複数のオブジェクトとの交点でパスを分割します。</li>
+  <li>パスが交差する場所をクリックします。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item30320" data-item-id="30320" data-item-type="ItemHeading"><h3 class="item-body" id="heading69">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item30321" data-item-id="30321" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">確認問題<br></span>
+  <ul>
+    <li>パスファインダーパネルの「形状モード」で<span class="decoration-02">Alt(Option)</span>キーを押しながら操作する利点は？</li>
+    <li>「合体」と「前面オブジェクトで型抜き」の違いは？</li>
+    <li>複数の開いたパスを1つのパスに結合するコマンドは？</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item30322" data-item-id="30322" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">答え<br></span>
+  <ul>
+    <li>元のオブジェクトの情報を保持したまま複合シェイプとして編集できる。</li>
+    <li>「合体」は複数のオブジェクトを一つにまとめ、「前面オブジェクトで型抜き」は前面のオブジェクトの形で後ろのオブジェクトを切り抜く。</li>
+    <li>「結合」コマンド<span class="decoration-02">（Ctrl/Command+J）</span></li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item30323" data-item-id="30323" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+  <ul>
+    <li>この章ではパスファインダーについてを学びました。</li>
+    <li>次の章ではロゴ制作を学びます。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30324" data-item-id="30324" data-item-type="ItemHeading"><h2 class="item-body" id="heading70">【2-4】演習問題</h2></div>
+        
+        <div class="article-item item_rich_text " id="item30326" data-item-id="30326" data-item-type="ItemRichText"><div class="item-body-hbr">ここまで学んだペンツールとパスファインダーの知識を活かして、実践的な演習に取り組みましょう。</div></div>
+        
+        <div class="article-item item_text " id="item51345" data-item-id="51345" data-item-type="ItemText"><div class="item-body-hbr">2-4の解説動画です。<br>以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51346" data-item-id="51346" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-ee550a513d.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30327" data-item-id="30327" data-item-type="ItemHeading"><h3 class="item-body" id="heading71">ペンツールでロゴマークの制作</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30328" data-item-id="30328" data-item-type="ItemRichText"><div class="item-body-hbr">シンプルなロゴマークを作成することで、ペンツールの操作を実践的に習得します。</div></div>
+        
+        <div class="article-item item_html " id="item30329" data-item-id="30329" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">課題内容<br></span>
+  <ul>
+    <li>架空のカフェ「Leaf Cafe」のロゴマークを作成しましょう。</li>
+    <li>葉の形をモチーフにしたシンプルなデザインです。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30330" data-item-id="30330" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">使用素材</span></div></div>
+        
+        <div class="article-item item_link " id="item51427" data-item-id="51427" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=bfXTO&amp;item_id=51427" rel="nofollow noopener noreferrer" target="_blank">使用素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="使用素材" data-reference="https://www.dropbox.com/scl/fi/1l26xfkyfn7dvyy7ar5sg/Illustrator_2.1_v1-0_published.jpg?rlkey=452ucrrjx8679g13ew2pk5ncf&amp;st=iauc752c&amp;dl=0" src="../../_assets/7fa884c4fe.webp"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30332" data-item-id="30332" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">見本</span></div></div>
+        
+        <div class="article-item item_image " id="item30333" data-item-id="30333" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/333/medium/e71bd7c8-30a6-460d-a617-37a61408d66a.jpg?1752042926" title=""><img class="img-responsive item-image" alt=" (30333)" data-reference="" src="../../_assets/bc8e636d54.webp" width="213" height="346"></a><h4 id="heading72"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30334" data-item-id="30334" data-item-type="ItemMarkdown"><h4 id="heading73">制作手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30335" data-item-id="30335" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.</span><span class="decoration-02">下準備</span></div></div>
+        
+        <div class="article-item item_html " id="item30336" data-item-id="30336" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>新規ドキュメントを作成します。（サイズ：250mm×250mm）</li>
+  <li>必要に応じて参考となる葉の画像を配置します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30338" data-item-id="30338" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.</span><span class="decoration-02">基本形状の作成</span></div></div>
+        
+        <div class="article-item item_html " id="item30339" data-item-id="30339" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ペンツールを使って、葉の輪郭を描きます。</li>
+  <li>始点を決め、クリック&amp;ドラッグでハンドルを引き出しながら曲線を描いていきます。</li>
+  <li>葉の付け根から先端に向かって描くと描きやすいです。</li>
+  <li>アンカーポイントは、滑らかな曲線を維持できる必要最小限の数（この図形なら8〜12個程度が目安）に留めましょう。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30341" data-item-id="30341" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3.</span><span class="decoration-02">細部の調整</span></div></div>
+        
+        <div class="article-item item_html " id="item30342" data-item-id="30342" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>直接選択ツール（<span class="decoration-02">A</span>）を使って、各アンカーポイントの位置やハンドルの長さ・角度を調整します。</li>
+  <li>葉の形状が自然になるよう、曲線を微調整します。</li>
+  <li>必要に応じてアンカーポイント変換ツールを使い、ポイントタイプを変更します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30344" data-item-id="30344" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ポイント</span></div>
+    </div>
+    <div class="content-area">
+      <ul>
+        <li>滑らかな曲線を描くには、アンカーポイントの数を最小限にすることがコツです。</li>
+        <li>自然な葉の形状にするために、左右対称にならないよう意識しましょう。</li>
+        <li>完成したら、グループ化（<span class="decoration-02">Ctrl+G</span>）しておくと後の作業がしやすくなります。</li>
+      </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30345" data-item-id="30345" data-item-type="ItemHeading"><h3 class="item-body" id="heading74">パスファインダーを使用した装飾要素の作成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30346" data-item-id="30346" data-item-type="ItemRichText"><div class="item-body-hbr">パスファインダーを使って、ロゴの装飾要素を作成します。</div></div>
+        
+        <div class="article-item item_html " id="item30347" data-item-id="30347" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">課題内容<br></span>
+	  <ul>
+      <li>カフェロゴに使用する装飾的な要素（コーヒーカップをモチーフにしたシンプルなアイコン）を作成しましょう。</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30348" data-item-id="30348" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">使用素材</span><br>
+なし</div></div>
+        
+        <div class="article-item item_rich_text " id="item30349" data-item-id="30349" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">見本</span></div></div>
+        
+        <div class="article-item item_image " id="item30350" data-item-id="30350" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/350/medium/97bb3bc4-274f-4ec1-a912-9aac7b224f81.jpg?1752043494" title=""><img class="img-responsive item-image" alt=" (30350)" data-reference="" src="../../_assets/27f0dfa9f0.webp" width="639" height="515"></a><h4 id="heading75"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30732" data-item-id="30732" data-item-type="ItemMarkdown"><h4 id="heading76">制作手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30733" data-item-id="30733" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.</span><span class="decoration-02">基本図形の作成</span></div></div>
+        
+        <div class="article-item item_html " id="item30734" data-item-id="30734" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>楕円ツールで、カップの形状となる楕円を描きます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30736" data-item-id="30736" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>長方形ツールで、カップの持ち手となる四角を描きます。</li>
+    <li>持ち手の形状を洗練させるため、角を丸めます。（効果 &gt; スタイライズ &gt; 角を丸くする）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30738" data-item-id="30738" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>楕円ツールで、カップの上部（コーヒーの液面）を表す小さめの楕円を描きます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30740" data-item-id="30740" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.</span><span class="decoration-02">パスファインダーの適用</span></div></div>
+        
+        <div class="article-item item_html " id="item30741" data-item-id="30741" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>カップの本体と持ち手を選択し、パスファインダーパネルの「合体」をクリックします。</li>
+  <li>カップの上部（液面）は別の色にするため、独立したオブジェクトとして残しておきます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30743" data-item-id="30743" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3.</span><span class="decoration-02">細部の調整</span></div></div>
+        
+        <div class="article-item item_html " id="item30746" data-item-id="30746" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>直接選択ツールで形状を調整します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30747" data-item-id="30747" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+  <ul>
+    <li>基本的な図形を組み合わせて作成することで、均整の取れたデザインが作りやすくなります。</li>
+    <li>パスファインダーの操作を行う前に、それぞれの図形のコピーを取っておくと安心です。</li>
+    <li>色や線の太さは後からでも変更できるので、まずは形状に集中しましょう。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30748" data-item-id="30748" data-item-type="ItemHeading"><h3 class="item-body" id="heading77">複雑なシェイプの組み合わせ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30749" data-item-id="30749" data-item-type="ItemRichText"><div class="item-body-hbr">最後に、作成した要素を組み合わせて完成させます。</div></div>
+        
+        <div class="article-item item_html " id="item30750" data-item-id="30750" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">課題内容<br></span>
+  <ul>
+    <li>葉のロゴマークとコーヒーカップのアイコンを組み合わせて、「Leaf Cafe」の完成ロゴを作成しましょう。</li>
+    <li>テキスト要素も追加します。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30751" data-item-id="30751" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">使用素材：</span><br>
+なし</div></div>
+        
+        <div class="article-item item_rich_text " id="item30752" data-item-id="30752" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">見本</span></div></div>
+        
+        <div class="article-item item_image " id="item30753" data-item-id="30753" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/753/medium/2c1d409a-8d63-435b-95c6-ac807014246b.png?1752121603" title=""><img class="img-responsive item-image" alt=" (30753)" data-reference="" src="../../_assets/9200470558.webp" width="640" height="639"></a><h4 id="heading78"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item30754" data-item-id="30754" data-item-type="ItemMarkdown"><h4 id="heading79">制作手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30755" data-item-id="30755" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.</span><span class="decoration-02">要素の配置</span></div></div>
+        
+        <div class="article-item item_html " id="item30756" data-item-id="30756" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>作成した葉とコーヒーカップを適切に配置します。</li>
+  <li>文字ツール（<span class="decoration-02">T</span>）を使って「Leaf Cafe」のテキストを追加します。</li>
+  <li>各要素のサイズや位置を調整して、バランスの良いレイアウトにします。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30759" data-item-id="30759" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.</span><span class="decoration-02">パスの編集と調整</span></div></div>
+        
+        <div class="article-item item_html " id="item30760" data-item-id="30760" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>必要に応じて、パスを編集してデザインを調整します。</li>
+  <li>葉とカップを重ねる場合は、パスファインダーの「分割」やシェイプ形成ツールなどを使って調整できます。</li>
+  <li>テキストは、必要に応じてアウトライン化します。（テキストを選択し、文字 &gt; アウトラインを作成）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30762" data-item-id="30762" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3.</span><span class="decoration-02">最終調整とカラーリング</span></div></div>
+        
+        <div class="article-item item_html " id="item30763" data-item-id="30763" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>色を設定して、ロゴに命を吹き込みます。（緑系の配色が葉のモチーフに合うでしょう）</li>
+  <li>線の太さや透明度などを調整して、視覚的な階層を作ります。</li>
+  <li>全体のバランスを確認し、必要に応じて微調整します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item30765" data-item-id="30765" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+  <ul>
+    <li>シンプルなデザインを心がけ、不必要な装飾は避けましょう。</li>
+    <li>ロゴは様々なサイズで使用されるため、細かすぎる要素は避けるのが良いでしょう。</li>
+    <li>完成したデザインは、別名保存しておくと良いでしょう。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30766" data-item-id="30766" data-item-type="ItemHeading"><h3 class="item-body" id="heading80">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item30767" data-item-id="30767" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">確認問題<br></span>
+  <ol>
+    <li>ペンツールでロゴマークを制作する際、アンカーポイントの適切な数はどれくらいですか？</li>
+    <li>カフェロゴの制作において、カップの持ち手の角を丸くするにはどの機能を使いますか？</li>
+    <li>ロゴデザインの要素を組み合わせる際に考慮すべきポイントは何ですか？</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item30768" data-item-id="30768" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">答え<br></span>
+  <ol>
+    <li>必要最小限（8〜12個程度）にとどめる</li>
+    <li>効果 &gt; スタイライズ &gt; 角を丸くする</li>
+    <li>シンプルなデザイン、バランスの良いレイアウト、様々なサイズでの使用を考慮する</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item30769" data-item-id="30769" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+  	<ul>
+      <li>このセクションでは第２章で学んだペンツールとパスファインダーの知識を実践的に活用して、オリジナルのロゴマークを作成しました。</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30770" data-item-id="30770" data-item-type="ItemRichText"><div class="item-body-hbr">これで「2章：パスとシェイプの操作」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item33414" data-item-id="33414" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/Vtwf1" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/SS3wt" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章：パスとシェイプの操作</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:9時間</a></li></ul></li><li><a href="#heading2" class="tocLink">【2-1】ペンツールの基礎</a><ul><li><a href="#heading3" class="tocLink">アンカーポイントとハンドルの概念</a><ul><li><a href="#heading4" class="tocLink">パスとは</a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink">ホバーとは</a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink">オープンとクローズパス</a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">ハンドルとは</a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink">アンカーポイントとは</a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink">ペンツールの位置</a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">直線パスの描画</a><ul><li><a href="#heading20" class="tocLink">直線を描く手順</a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink">作業画面</a></li></ul></li><li><a href="#heading31" class="tocLink">曲線パスの描画</a><ul><li><a href="#heading32" class="tocLink">次に、曲線パスの描き方を学びましょう。</a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink"></a></li><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li><li><a href="#heading37" class="tocLink"></a></li><li><a href="#heading38" class="tocLink"></a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink">作業動画</a></li></ul></li><li><a href="#heading41" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading42" class="tocLink">【2-2】ペンツールの応用</a><ul><li><a href="#heading43" class="tocLink">複雑な形状の描き方</a><ul><li><a href="#heading44" class="tocLink"></a></li><li><a href="#heading45" class="tocLink">複雑な形状を描くためのアプローチ</a></li><li><a href="#heading46" class="tocLink"></a></li><li><a href="#heading47" class="tocLink"></a></li></ul></li><li><a href="#heading48" class="tocLink">パスの編集と修正</a><ul><li><a href="#heading49" class="tocLink">アンカーポイントの編集ツール</a></li></ul></li><li><a href="#heading50" class="tocLink">スムーズポイントとコーナーポイント</a><ul><li><a href="#heading51" class="tocLink">ポイントタイプの変換方法</a></li></ul></li><li><a href="#heading52" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading53" class="tocLink">【2-3】パスファインダーの活用</a><ul><li><a href="#heading54" class="tocLink">基本的なパスファインダー操作</a><ul><li><a href="#heading55" class="tocLink">パスファインダーパネルの主な機能</a></li><li><a href="#heading56" class="tocLink"></a></li><li><a href="#heading57" class="tocLink">1.形状モード（上段）</a></li><li><a href="#heading58" class="tocLink"></a></li><li><a href="#heading59" class="tocLink">2.パスファインダー（下段）</a></li><li><a href="#heading60" class="tocLink">パスファインダーパネルの基本的な使い方</a></li><li><a href="#heading61" class="tocLink"></a></li><li><a href="#heading62" class="tocLink"></a></li><li><a href="#heading63" class="tocLink"></a></li><li><a href="#heading64" class="tocLink">作業動画</a></li></ul></li><li><a href="#heading65" class="tocLink">複合シェイプの作成</a></li><li><a href="#heading66" class="tocLink">パスの統合と分割</a><ul><li><a href="#heading67" class="tocLink">パスの連結</a></li><li><a href="#heading68" class="tocLink">パスの分割</a></li></ul></li><li><a href="#heading69" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading70" class="tocLink">【2-4】演習問題</a><ul><li><a href="#heading71" class="tocLink">ペンツールでロゴマークの制作</a><ul><li><a href="#heading72" class="tocLink"></a></li><li><a href="#heading73" class="tocLink">制作手順</a></li></ul></li><li><a href="#heading74" class="tocLink">パスファインダーを使用した装飾要素の作成</a><ul><li><a href="#heading75" class="tocLink"></a></li><li><a href="#heading76" class="tocLink">制作手順</a></li></ul></li><li><a href="#heading77" class="tocLink">複雑なシェイプの組み合わせ</a><ul><li><a href="#heading78" class="tocLink"></a></li><li><a href="#heading79" class="tocLink">制作手順</a></li></ul></li><li><a href="#heading80" class="tocLink">確認問題とまとめ</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/Vtwf1" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/Illustrator/SS3wt" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

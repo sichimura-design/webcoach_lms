@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="6lzBGP0+zxGrlUWDgmiYiA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="973" data-domain="learn.webcoach.jp" data-url="/web-design/WordPress/bUNul" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>WordPress｜6章：投稿作成の基本とブロックエディタ入門 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/WordPress/bUNul">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="WordPress｜6章：投稿作成の基本とブロックエディタ入門 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/362/medium/dd135d22-537d-4d6b-a6c0-4a0fb78e9b53.png?1746853667">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="WordPress｜6章：投稿作成の基本とブロックエディタ入門">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/WordPress/bUNul">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/362/large/dd135d22-537d-4d6b-a6c0-4a0fb78e9b53.png?1746853667">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/WordPress/bUNul"
+    },
+    "headline": "WordPress｜6章：投稿作成の基本とブロックエディタ入門",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/014/362/medium/dd135d22-537d-4d6b-a6c0-4a0fb78e9b53.png?1746853667",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-05-10T15:15:15+09:00",
+    "dateModified": "2025-12-11T19:49:17+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "a_namatame"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="K31QMwhh5MnWvHAJslxeiFWMKWsYV9yexT0rMgnS1lMbeqvgp1my9J8vOXaAVrF1n9Ot7t3fwB-LE_08p3f-tA" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WordPress</div>
+
+          <div class="fw-bold h2">WordPress｜6章：投稿作成の基本とブロックエディタ入門</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25498" data-item-id="25498" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="054Bb" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="iKzAv" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item14358" data-item-id="14358" data-item-type="ItemHeading"><h2 class="item-body">6章：投稿作成の基本とブロックエディタ入門</h2></div>
+        
+        <div class="article-item item_markdown " id="item45190" data-item-id="45190" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_text " id="item45191" data-item-id="45191" data-item-type="ItemText"><div class="item-body-hbr">本章は、実際にブロックエディタを動かして「読者に届けるための記事」を作り上げる実践パートです。<br />以下の状態になれば、この章はクリアとなります。</div></div>
+        
+        <div class="article-item item_markdown " id="item45192" data-item-id="45192" data-item-type="ItemMarkdown"><ul>
+  <li>ブロックエディタ（編集画面）を使って、見出し・画像・装飾などを組み合わせた「読みやすい記事」を自分で作成し、Web上に公開できる</li>
+  <li>記事を整理する「カテゴリー（フォルダ）」と「タグ（付箋）」の役割の違いを正しく理解し、内容に合わせて適切な分類設定ができる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item14359" data-item-id="14359" data-item-type="ItemHeading"><h3 class="item-body">【6-1】画面構成と基本機能</h3></div>
+        
+        <div class="article-item item_markdown " id="item14360" data-item-id="14360" data-item-type="ItemMarkdown"><h4 id="section">投稿ページの画面の見方</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14361" data-item-id="14361" data-item-type="ItemText"><div class="item-body-hbr">投稿ページの編集画面のことをブロックエディタと言います。<br />ブロックエディタは下記の3つの構成でできています。<br /><br />①メインコンテンツエリア<br />②ツールバー<br />③サイドメニューバー</div></div>
+        
+        <div class="article-item item_image " id="item14362" data-item-id="14362" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/362/medium/dd135d22-537d-4d6b-a6c0-4a0fb78e9b53.png?1746853667" title=""><img class="img-responsive item-image" alt=" (14362)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/362/medium/dd135d22-537d-4d6b-a6c0-4a0fb78e9b53.png?1746853667" width="640" height="334" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item14364" data-item-id="14364" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+            <li>ブロックエディタに備わっている機能はテーマやプラグインによって異なります！</li>
+            <li>どんなことができるのか、実際に触って確かめてみましょう！</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item14365" data-item-id="14365" data-item-type="ItemMarkdown"><h4 id="section">メインコンテンツエリア</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14366" data-item-id="14366" data-item-type="ItemRichText"><div class="item-body-hbr">メインコンテンツエリアとは記事のタイトル・見出し・本文・画像などを<span class="decoration-02">ブロック単位で追加</span>して記事を作成していく場所です。<br>
+テキストを入力するとメニューバーが表示されます。</div></div>
+        
+        <div class="article-item item_image " id="item14367" data-item-id="14367" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/367/medium/d6a0f6f1-d712-4da7-bc41-3646a92d4528.png?1746854205" title=""><img class="img-responsive item-image" alt=" (14367)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/367/medium/d6a0f6f1-d712-4da7-bc41-3646a92d4528.png?1746854205" width="640" height="358" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item15547" data-item-id="15547" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14368" data-item-id="14368" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">メニューバーでできること</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item14369" data-item-id="14369" data-item-type="ItemRichText"><div class="item-body-hbr">①見出し・リスト・引用など、<span class="decoration-02">ブロックのタイプ</span>の変更<br>
+②左寄せ・中央寄せ・右寄せの3種類から選び、<span class="decoration-02">テキストの位置</span>を変更<br>
+③文字を<span class="decoration-02">太字</span>に変換<br>
+④文字を<span class="decoration-02">斜体</span>に変換<br>
+⑤<span class="decoration-02">リンク</span>の挿入<br>
+⑥テキストの装飾<br>
+⑦<span class="decoration-02">コピー・複製・ブロックの移動</span>など</div></div>
+        
+        <div class="article-item item_image " id="item14370" data-item-id="14370" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/370/medium/98792fd8-463c-4070-8997-a520d56c531a.png?1746854315" title=""><img class="img-responsive item-image" alt=" (14370)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/370/medium/98792fd8-463c-4070-8997-a520d56c531a.png?1746854315" width="640" height="358" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item14371" data-item-id="14371" data-item-type="ItemMarkdown"><h4 id="section">ツールバー</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14372" data-item-id="14372" data-item-type="ItemRichText"><div class="item-body-hbr">①<span class="decoration-02">管理画面に移動</span><br>
+②<span class="decoration-02">ブロックの追加</span><br>
+③ブロックの<span class="decoration-02">編集モードと選択モードを切り替え</span><br>
+④1つ前に戻る・進む<br>
+⑤ブロックの構造を一覧で表示<br>
+⑥下書きとして保存<br>
+⑦Web上に公開</div></div>
+        
+        <div class="article-item item_image " id="item14373" data-item-id="14373" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/373/medium/2ebf01ef-9dd3-4ec7-a0dc-533a65946ac9.png?1746854453" title=""><img class="img-responsive item-image" alt=" (14373)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/373/medium/2ebf01ef-9dd3-4ec7-a0dc-533a65946ac9.png?1746854453" width="640" height="307" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item14374" data-item-id="14374" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+            <li>【下書き保存】ボタン：WordPress上では保存されているがWeb上に公開されていない状態</li>
+            <li>【公開】ボタン：Web上に公開される</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item14375" data-item-id="14375" data-item-type="ItemMarkdown"><h4 id="section">サイドメニューバー</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14378" data-item-id="14378" data-item-type="ItemRichText"><div class="item-body-hbr">①ブロックを追加する際に使用するメニュー<br>
+②<span class="decoration-02">記事の公開や非公開、公開するタイミング、パーマリンク、カテゴリーやタグ、アイキャッチ</span>など投稿に関する詳細設定ができるページ</div></div>
+        
+        <div class="article-item item_image " id="item14379" data-item-id="14379" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/379/medium/2e80a582-e2b1-45e8-b912-4d935f79e096.png?1746854653" title=""><img class="img-responsive item-image" alt=" (14379)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/379/medium/2e80a582-e2b1-45e8-b912-4d935f79e096.png?1746854653" width="640" height="307" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item14380" data-item-id="14380" data-item-type="ItemText"><div class="item-body-hbr">投稿ページのブロックエディタの説明が一通り終わったので、次は実際にブログ記事の作成を行って行きましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item14382" data-item-id="14382" data-item-type="ItemHeading"><h3 class="item-body">【6-2】投稿作成ステップ</h3></div>
+        
+        <div class="article-item item_markdown " id="item14384" data-item-id="14384" data-item-type="ItemMarkdown"><h4 id="section">作成素材</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14391" data-item-id="14391" data-item-type="ItemText"><div class="item-body-hbr">以下の素材を使用して投稿を作成していきましょう！</div></div>
+        
+        <div class="article-item item_code " id="item14385" data-item-id="14385" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>タイトル:自然と調和する暮らし
+
+こんにちは！ 
+今日は、都会の喧騒から少し離れて、自然とともに暮らすライフスタイルについてお話ししたいと思います。
+
+自然に囲まれた生活の魅力
+
+自然豊かな場所での生活には多くのメリットがあります。
+例えば、空気が澄んでいるため、深呼吸するだけでも心がリフレッシュされます。
+また、四季折々の美しい風景に囲まれた環境では、心の余裕が生まれやすく、ストレスも軽減されます。
+
+都市から地方へ移住する理由
+
+最近では、リモートワークの普及に伴い、地方への移住を検討する人も増えています。 
+特に、自然環境の中で子育てを考えたいと家族層にとって、地方移住は魅力的な選択肢です。
+また、都市に比べて物価が安い地域も多く、経済的なデメリットもありません。
+
+実際に移住した人の声
+
+ある移住者の方は、以下のように言っています。
+「都会で慌ただしい生活から抜け出して、今は山に囲まれた小さな町で暮らしています。朝は鳥のさえずりで目覚め、夜は満天の星空を毎日見上げる。自然の中で満たされる感覚を初めて知りました。」
+
+まとめ
+
+自然と調和した暮らしは、都会生活では得られない豊かさをもたらします。
+もし移住に興味がある方は、まずはお試し移住などで現地を体験してみるのがおすすめです。
+
+次回もまた、素敵な暮らしのヒントをお届けします！</pre></div>
+</div>
+<div class="cite"><cite class="item-source">テキスト素材（コピペして使用する）</cite></div></div></div>
+        
+        <div class="article-item item_image " id="item14392" data-item-id="14392" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/392/medium/6e960e54-3957-4e9c-83cb-7d94736fca45.jpg?1746854974" title=""><img class="img-responsive item-image" alt=" (14392)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/392/medium/6e960e54-3957-4e9c-83cb-7d94736fca45.jpg?1746854974" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item14393" data-item-id="14393" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/393/medium/5701bff8-4f9f-42eb-956f-2f5c0ae3c733.png?1746854997" title=""><img class="img-responsive item-image" alt=" (14393)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/393/medium/5701bff8-4f9f-42eb-956f-2f5c0ae3c733.png?1746854997" width="640" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item29193" data-item-id="29193" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=bUNul&amp;item_id=29193" rel="nofollow noopener noreferrer" target="_blank">WordPress 6章　演習用素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 6章　演習用素材" data-reference="https://www.dropbox.com/scl/fi/z8zqggrq1trxgbqp60sg5/wordpress_ch6_v1-0_published.zip?rlkey=epnj7burfbiha9qccvnh2i6pb&amp;st=s99djqmh&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/029/193/thumb/85226ddc-bf1c-4116-bf29-8c3f0cfd20b2.png?1756177058" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item14397" data-item-id="14397" data-item-type="ItemMarkdown"><h4 id="section">投稿作成①</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14398" data-item-id="14398" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">タイトル、見出し、段落の入力方法と文字の装飾、段落の装飾を説明します。</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item14399" data-item-id="14399" data-item-type="ItemRichText"><div class="item-body-hbr">①まずは【投稿】→【新規投稿を追加】から新規投稿ページを作成してください。<br>
+②【タイトル】に<span class="decoration-02">「</span><span class="decoration-02">自然と調和する暮らし」</span>と入力してください。<br>
+③【段落】にテキストを入力してください。<br>
+④「自然とともに暮らすライフスタイル」を選択し、<span class="decoration-02">メニューバーから【B】でテキストをボールドに、【ブラシマーク】から黄色マーカーを選択してください。</span><br>
+⑤【＋】からブロックを追加し【すべて表示】→【見出し】→【H2】を選択します。次に、【サイドバー】の設定からテキストの色をピンク、背景の色を白に変更し、テキストを入力してください。</div></div>
+        
+        <div class="article-item item_link " id="item14400" data-item-id="14400" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=bUNul&amp;item_id=14400" rel="nofollow noopener noreferrer" target="_blank">WordPress 6-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 6-1" data-reference="https://www.dropbox.com/scl/fi/7xagbbm9ydt0f8oqmtlpo/wp_6.1.1.0_.mp4?rlkey=eume3zsh50nmjdgjqv7kx3g86&amp;st=e64qbfii&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/014/400/thumb/a79435ab-25f7-4591-86a2-48a802ef755a.png?1756177081" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item14401" data-item-id="14401" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+            <li>記事の本文中に見出しを設定するときは、「h2（見出し2）」を選択します。</li>
+            <li>さらにh3, h4, h5…と、より小さい単位で小見出しを設定することも可能です。</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item14402" data-item-id="14402" data-item-type="ItemMarkdown"><h4 id="section">投稿作成②</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14403" data-item-id="14403" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">画像の追加方法とブロックのコピー方法を説明します。</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item14408" data-item-id="14408" data-item-type="ItemRichText"><div class="item-body-hbr">①【＋】から【すべて表示】→【画像】を選択し、ドラッグ＆ドロップで画像を追加してください。<br>
+②先ほど追加した「自然に囲まれた生活の魅力」を選択し、【︙】→【複写】を選択したら【∨】で画像の下に配置してください。<br>
+③見出しの内容を書き換え、本文もコピー＆ペーストで貼り付けます。</div></div>
+        
+        <div class="article-item item_link " id="item14412" data-item-id="14412" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=bUNul&amp;item_id=14412" rel="nofollow noopener noreferrer" target="_blank">WordPress 6-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 6-2" data-reference="https://www.dropbox.com/scl/fi/c1urdar9ub0jjc2piuy4c/wp_6.2.1.0_.mp4?rlkey=5bh1d7vzyrqhqu5v07yhgn0pr&amp;st=ms1ifdun&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/014/412/thumb/3d5e8859-dab7-40f3-8131-53f1ba62e31b.png?1756177107" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14413" data-item-id="14413" data-item-type="ItemText"><div class="item-body-hbr">ここまでの操作が理解できたら、「実際に移住した人の声」まで反映していきましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item14414" data-item-id="14414" data-item-type="ItemMarkdown"><h4 id="section">投稿作成③</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14415" data-item-id="14415" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">吹き出しの挿入について説明していきます。</span></div></div>
+        
+        <div class="article-item item_text " id="item14416" data-item-id="14416" data-item-type="ItemText"><div class="item-body-hbr">①【＋】から【すべて表示】→【吹き出し】を選択し、アイコン画像をクリックしてドラッグ＆ドロップで画像を追加してください。<br />②吹き出しの部分にテキストを入れてください。</div></div>
+        
+        <div class="article-item item_link " id="item14417" data-item-id="14417" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=bUNul&amp;item_id=14417" rel="nofollow noopener noreferrer" target="_blank">WordPress 6-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 6-3" data-reference="https://www.dropbox.com/scl/fi/nejoash3pjcly27wn42r8/wp_6.3.1.0_.mp4?rlkey=fc88cpf5g6g8cjbe60t2qyu5m&amp;st=23gmgpc8&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/014/417/thumb/b1a84c84-e943-473f-86da-43b310287d79.png?1756177130" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item14418" data-item-id="14418" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+            <li>この吹き出し機能は今回使用している「Cocoon」についている機能です。</li>
+            <li>他のテーマを使用する際はプラグインを使用してください。</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item14419" data-item-id="14419" data-item-type="ItemMarkdown"><h4 id="section">投稿作成④</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14420" data-item-id="14420" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">公開方法について説明していきます。</span></div></div>
+        
+        <div class="article-item item_text " id="item14421" data-item-id="14421" data-item-type="ItemText"><div class="item-body-hbr">①まとめまでの文章を入力しましょう<br />②【サイドメニュー】を【投稿】に変更して【アイキャッチ】の画像を設定していきましょう！<br />※アイキャッチとは、記事一覧などで表示される「サムネイル画像」のことです。<br />③設定できたら【公開】を押し【投稿を表示】から実際の投稿画面を確認してみましょう！</div></div>
+        
+        <div class="article-item item_link " id="item14422" data-item-id="14422" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=bUNul&amp;item_id=14422" rel="nofollow noopener noreferrer" target="_blank">WordPress 6-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 6-4" data-reference="https://www.dropbox.com/scl/fi/xp0p0epvp5ebnkglpxfaj/wp_6.4.1.0_.mp4?rlkey=5zmmp1qgdwpv52ogzkwy5vzbb&amp;st=1ch2yexj&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/014/422/thumb/fd7bbf9c-8d51-45bd-a3de-a11621a33ada.png?1756177150" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14424" data-item-id="14424" data-item-type="ItemText"><div class="item-body-hbr">以上が基本的な投稿の作成方法になります。<br />基本操作を踏まえて自分でアレンジを行い素敵な投稿を作成してみましょう！</div></div>
+        
+        <div class="article-item item_html " id="item14425" data-item-id="14425" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+            <li>アイキャッチ画像は、読者の目を惹き、記事に誘導する役割を持っています。</li>
+          	<li>投稿内容にあったアイキャッチ画像に設定すると良いでしょう。</li>
+          	<li>Canvaなどの画像編集ツールを使って魅力的なアイキャッチを作ることをおすすめします！</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item14426" data-item-id="14426" data-item-type="ItemHeading"><h3 class="item-body">【6-3】タグとカテゴリー</h3></div>
+        
+        <div class="article-item item_text " id="item14427" data-item-id="14427" data-item-type="ItemText"><div class="item-body-hbr">投稿ページはカテゴリーとタグで記事を分類することが可能です。<br />カテゴリーやタグの活用は、ユーザーが見たい記事を探しやすくなるなどSEOの観点で良いとされています！</div></div>
+        
+        <div class="article-item item_markdown " id="item14428" data-item-id="14428" data-item-type="ItemMarkdown"><h4 id="section">タグとカテゴリーの違い</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14429" data-item-id="14429" data-item-type="ItemText"><div class="item-body-hbr">カテゴリーはフォルダの役割をしていてタグは付箋の役割を担っていると考えるとわかりやすいです。</div></div>
+        
+        <div class="article-item item_image " id="item14430" data-item-id="14430" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/430/medium/7bf377d0-457f-4997-82f4-224bcbb4317c.jpg?1746857027" title=""><img class="img-responsive item-image" alt=" (14430)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/430/medium/7bf377d0-457f-4997-82f4-224bcbb4317c.jpg?1746857027" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item14434" data-item-id="14434" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div>　</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>カテゴリー</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>タグ</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>イメージ</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>記事を分類するフォルダのようなイメージ（ジャンル）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>記事につける付箋のようなイメージ（キーワード）</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>重要度</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>必須</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>無くても良い</div>
+                </div>
+            </td>
+        </tr>
+      	<tr>
+            <th scope="row">
+                <div>
+                    <div>段階構造</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>可能</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>不可能</div>
+                </div>
+            </td>
+        </tr>
+     	<tr>
+            <th scope="row">
+                <div>
+                    <div>1記事の設定数</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>1つ</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>複数</div>
+                </div>
+            </td>
+        </tr>
+   </tbody>
+</table></div></div>
+        
+        <div class="article-item item_markdown " id="item14435" data-item-id="14435" data-item-type="ItemMarkdown"><h4 id="section">カテゴリーの作成</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14436" data-item-id="14436" data-item-type="ItemText"><div class="item-body-hbr">では実際にカテゴリーを作成してみましょう！</div></div>
+        
+        <div class="article-item item_text " id="item14440" data-item-id="14440" data-item-type="ItemText"><div class="item-body-hbr">①【投稿】→【カテゴリー】を選択<br />②【名前】：「テスト1」と入力<br />③【スラッグ】：「test1」と入力<br />④【説明】：「これはテストです」と入力<br />⑤【新規カテゴリーを追加】をクリック</div></div>
+        
+        <div class="article-item item_link " id="item14441" data-item-id="14441" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=bUNul&amp;item_id=14441" rel="nofollow noopener noreferrer" target="_blank">WordPress 6-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 6-5" data-reference="https://www.dropbox.com/scl/fi/ja4fva2zp43okc5zucsku/wp_6.5.1.0_.mp4?rlkey=s5glwzc10wprhfoojfc0gwxpi&amp;st=97971bs3&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/014/441/thumb/d5bbfe8c-1217-4f8e-990b-7570f999479c.png?1756177181" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item14442" data-item-id="14442" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+             <li>スラッグはURLになるので必ず半角英数字で入力しましょう！</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item14443" data-item-id="14443" data-item-type="ItemMarkdown"><h4 id="section">タグの作成</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14444" data-item-id="14444" data-item-type="ItemText"><div class="item-body-hbr">では実際にタグを作成してみましょう！</div></div>
+        
+        <div class="article-item item_text " id="item14446" data-item-id="14446" data-item-type="ItemText"><div class="item-body-hbr">①【投稿】→【タグ】を選択<br />②【名前】：「練習用課題」と入力<br />③【スラッグ】：「kadai」と入力<br />④【説明】：「これは練習用課題です」と入力<br />⑤【新規タグを追加】をクリック</div></div>
+        
+        <div class="article-item item_link " id="item14447" data-item-id="14447" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=bUNul&amp;item_id=14447" rel="nofollow noopener noreferrer" target="_blank">WordPress 6-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 6-6" data-reference="https://www.dropbox.com/scl/fi/l9tr9ic0h0w88hchvwbnm/wp_6.6.1.0_.mp4?rlkey=6oaakbcayb139dhbvagysgh74&amp;st=14b35d09&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/014/447/thumb/77a302a6-e2e6-4656-9210-1cc7fcc7489f.png?1756177204" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item14449" data-item-id="14449" data-item-type="ItemMarkdown"><h4 id="section">カテゴリーとタグの設定</h4>
+</div>
+        
+        <div class="article-item item_text " id="item14456" data-item-id="14456" data-item-type="ItemText"><div class="item-body-hbr">①【投稿】→【投稿一覧】を選択し、「自然と調和する暮らし」のタイトル下の「編集」をクリック<br />②サイドバーをスクロールし、【カテゴリ】：「テスト1」にチェックを入れる<br />③【新規タグを追加】で「練習用課題」を選択しクリック<br />④【保存】または【更新】をクリック</div></div>
+        
+        <div class="article-item item_link " id="item14459" data-item-id="14459" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=bUNul&amp;item_id=14459" rel="nofollow noopener noreferrer" target="_blank">WordPress 6-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 6-7" data-reference="https://www.dropbox.com/scl/fi/tdmwnutk2seblu7uqoo0t/wp_6.7.1.0_.mp4?rlkey=7dm4cyhg40zfu66y4u0r90r8f&amp;st=3yty7b7s&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/014/459/thumb/52441418-01c2-4682-a62d-e49673c8df3f.png?1756177234" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14465" data-item-id="14465" data-item-type="ItemText"><div class="item-body-hbr">カテゴリーが機能しているか確認してみましょう！<br />【投稿を表示】→最下部までスクロール→テスト1をクリックしてください。</div></div>
+        
+        <div class="article-item item_text " id="item14467" data-item-id="14467" data-item-type="ItemText"><div class="item-body-hbr">URLを確認してみると【archives/category/test1】になっていると思います！<br />カテゴリーやタグを作成することで、このようにURLが生成されます！</div></div>
+        
+        <div class="article-item item_image " id="item14469" data-item-id="14469" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/469/medium/287102e5-4f23-4a73-8299-462660830b43.png?1746858929" title=""><img class="img-responsive item-image" alt=" (14469)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/469/medium/287102e5-4f23-4a73-8299-462660830b43.png?1746858929" width="640" height="307" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item14466" data-item-id="14466" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=bUNul&amp;item_id=14466" rel="nofollow noopener noreferrer" target="_blank">WordPress 6-8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 6-8" data-reference="https://www.dropbox.com/scl/fi/l1spq16yovdmkao9hba9w/wp_6.8.1.0_.mp4?rlkey=evuapsc2t1r1dl7aogawca5y3&amp;st=zlma76gz&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/014/466/thumb/1eec897b-c4c2-43c9-bd44-ad62f60a43f9.png?1756177254" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item14471" data-item-id="14471" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ポイント<br></span>
+        <ul>
+             <li>テーマによってカテゴリーやタグの表示のされ方は異なりますので使用するテーマを確認してみてください。</li>
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item45193" data-item-id="45193" data-item-type="ItemHeading"><h3 class="item-body">第6章 章末問題</h3></div>
+        
+        <div class="article-item item_markdown " id="item45194" data-item-id="45194" data-item-type="ItemMarkdown"><h4 id="section">目安時間：25分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item45195" data-item-id="45195" data-item-type="ItemText"><div class="item-body-hbr">この章で学んだことを活かして、完成見本に倣って「投稿」を作成してみましょう！<br />今回は2つのステップで進めます。<br />まずは「見た目」を作り、その後に「公開設定」を行いましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item45197" data-item-id="45197" data-item-type="ItemMarkdown"><h4 id="step-1-">【STEP 1】 デザインの再現（見た目を作る）</h4>
+</div>
+        
+        <div class="article-item item_text " id="item45198" data-item-id="45198" data-item-type="ItemText"><div class="item-body-hbr">以下の「完成見本」「素材テキスト」を使って、ブロックエディタで記事の中身を作成してください。<br />「どのブロックを使えばこの見た目になるか？」を自分で考えながら操作しましょう。<br />わからないところがあったら下にあるヒントを見てみてください！</div></div>
+        
+        <div class="article-item item_rich_text " id="item45199" data-item-id="45199" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">▼ 完成見本（ゴール）</span></div></div>
+        
+        <div class="article-item item_image " id="item45200" data-item-id="45200" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/200/medium/08cf90ae-6149-4a9a-b609-19bbbf1cd7f3.png?1765448895" title=""><img class="img-responsive item-image" alt=" (45200)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/200/medium/08cf90ae-6149-4a9a-b609-19bbbf1cd7f3.png?1765448895" width="500" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item45201" data-item-id="45201" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">▼ 素材テキスト（コピーして使用）</span></div></div>
+        
+        <div class="article-item item_code " id="item45202" data-item-id="45202" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>タイトル：架空のカフェサイト制作
+
+サイトのコンセプト
+
+「海辺の隠れ家」をテーマに、20代〜30代の女性をターゲットにしたカフェサイトを制作しました。
+波の音や風を感じられるような、余白を活かしたゆったりとしたデザインに仕上げています。
+特にこだわったのは、トップページの「写真の選び方」と「配色のバランス」です。
+
+使用したスキル
+
+WordPress
+Figma（デザインカンプ作成）
+HTML / CSS</pre></div>
+</div>
+<div class="cite"><cite class="item-source">素材テキスト</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item45203" data-item-id="45203" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn"><span class="decoration-01">制作のヒント</span>(左の▸をクリックすると開きます)</div>
+    <div class="toggle-content"><ol>
+      <li><span class="decoration-01"><span class="decoration-02">タイトル</span></span><ul>
+  <li>場所: 画面一番上の「タイトルを追加」と書かれた部分。</li>
+  <li>操作: ここに「架空のカフェサイト制作」と入力します。</li>
+</ul></li>
+      <li><span class="decoration-01"><span class="decoration-02">見出し「サイトのコンセプト」</span></span><ul>
+  <li>ブロックの変更: テキストを選択し、ツールバー左端のマークから【見出し(H2)】を選びます。</li>
+  <li>色の変更: 画面右側のサイドバー（設定エリア）にある「テキスト」を<span class="decoration-01"><span class="decoration-02">ピンク色</span></span>に、「背景」を<span class="decoration-01"><span class="decoration-02">白</span></span>に選択します。</li>
+  <li>サイドバーが出ていない場合は、画面右上のサイドバーのアイコンをクリックしましょう</li>
+</ul></li>
+      <li><span class="decoration-01"><span class="decoration-02">太字「海辺の隠れ家」</span></span><ul>
+  <li>操作: 「海辺の隠れ家」の文字だけをドラッグして選択し、ツールバーに出てくる【B】ボタンを押します。</li>
+</ul></li>
+      <li><span class="decoration-01"><span class="decoration-02">マーカー「余白を活かした」</span></span><ul>
+  <li>操作: 「余白を活かした」の文字だけを選択し、「マーカー」から黄色を選びます。</li>
+</ul>
+</li>
+      <li><span class="decoration-01"><span class="decoration-02">画像の挿入</span></span><ul>
+  <li>操作: 「＋」ボタンをクリック → 「画像」を選択します。<br>
+「メディアライブラリ」から好きな写真を選んで「選択」ボタンを押してください。</li>
+</ul></li>
+      <li><span class="decoration-01"><span class="decoration-02">見出し「使用したスキル」</span></span><ul>
+  <li>ブロックの変更: ここは「見出し(H3)」に変換します。</li>
+</ul></li>
+      <li><span class="decoration-01"><span class="decoration-02">リスト（箇条書き）</span></span><ul>
+  <li>操作: 「WordPress」から「HTML/CSS」までの3行をマウスでまとめて選択します。<br>
+その状態でツールバー左端の「段落アイコン」をクリックし、「リスト」を選択すると、自動的に3行とも箇条書きになります。</li>
+</ul></li>
+</ol></div>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item45204" data-item-id="45204" data-item-type="ItemText"><div class="item-body-hbr">完成見本と同じ状態になったら【STEP2】に進みましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item45205" data-item-id="45205" data-item-type="ItemMarkdown"><h4 id="step-2-">【STEP 2】 公開設定（裏側の設定をする）</h4>
+</div>
+        
+        <div class="article-item item_text " id="item45206" data-item-id="45206" data-item-type="ItemText"><div class="item-body-hbr">記事が書けたら、画面右側のサイドバーを使って公開設定をしましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item45207" data-item-id="45207" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">▼ 設定完了図（ゴール）(赤枠内が設定すべき領域です。)</span></div></div>
+        
+        <div class="article-item item_image " id="item45208" data-item-id="45208" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/208/medium/d5577822-c548-4d62-ac2b-06af16eaf4c8.png?1765449027" title=""><img class="img-responsive item-image" alt=" (45208)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/208/medium/d5577822-c548-4d62-ac2b-06af16eaf4c8.png?1765449027" width="272" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item45209" data-item-id="45209" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item45210" data-item-id="45210" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/210/medium/4fd5a806-6294-4c1c-a7ca-29bcf7ac4fc1.png?1765449064" title=""><img class="img-responsive item-image" alt=" (45210)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/210/medium/4fd5a806-6294-4c1c-a7ca-29bcf7ac4fc1.png?1765449064" width="313" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item45211" data-item-id="45211" data-item-type="ItemMarkdown"><ul>
+  <li>カテゴリー:「制作実績」にチェックが入っている（「未分類」は外れている）</li>
+  <li>アイキャッチ: 画像が設定されている</li>
+  <li>URL: 「cafe-site」 になっている</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item45212" data-item-id="45212" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn"><span class="decoration-01">設定のヒント</span>(左の▸をクリックすると開きます)</div>
+    <div class="toggle-content">サイドバーの「投稿」タブをクリックしてから始めてください。<br>
+      （※もし「ブロック」タブになっていると、これらのメニューは出てきません）<br>
+      <ol>
+        <li><span class="decoration-01"><span class="decoration-02">カテゴリーの設定</span></span><ul>
+          <li>場所: サイドバーの中段にある「カテゴリー」パネル。</li>
+          <li>操作:<ol>
+            <li>「制作実績」がなければ「カテゴリーを追加」をクリックして追加します。</li>
+            <li>「制作実績」にチェックを入れ、元々ついていた「未分類」のチェックを外します。</li>
+            </ol>
+          </li>
+          </ul>
+        </li>
+        <li><span class="decoration-01"><span class="decoration-02">アイキャッチ画像の設定</span></span><ul>
+          <li>場所: サイドバーの下の方にある「アイキャッチ画像」パネル。</li>
+          <li>操作:<ol>
+            <li>「アイキャッチ画像を設定」というエリアをクリックします。</li>
+            <li>記事の中で使ったものと同じ画像を選び、「設定」ボタンを押します。</li>
+            </ol>
+          </li>
+          </ul>
+        </li>
+        <li><span class="decoration-01"><span class="decoration-02">URL（スラッグ）の設定</span></span><ul>
+          <li>場所: サイドバーの上の方（ステータスの下あたり）にある「スラッグ」という項目。</li>
+          <li>操作:<ol>
+            <li>「スラッグ」の横にある青い文字をクリックします。</li>
+            <li>半角英数字で  「cafe-site」と入力します。</li>
+            </ol>
+          </li>
+          </ul>
+        </li>
+      </ol>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item45213" data-item-id="45213" data-item-type="ItemText"><div class="item-body-hbr">すべて設定できたら「公開」を押し、「投稿を表示」してみましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item45214" data-item-id="45214" data-item-type="ItemMarkdown"><h4 id="section">最終確認</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item45215" data-item-id="45215" data-item-type="ItemMarkdown"><ul>
+  <li>記事のデザインは再現できているか</li>
+  <li>URLは「cafe-site」になっているか</li>
+  <li>（トップページに戻った時）記事一覧に画像が表示されているか(以下画像)</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item45216" data-item-id="45216" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/216/medium/aa5f9dfe-f0cb-4b12-b1c3-0998dbc77687.png?1765449172" title=""><img class="img-responsive item-image" alt=" (45216)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/216/medium/aa5f9dfe-f0cb-4b12-b1c3-0998dbc77687.png?1765449172" width="640" height="192" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item45218" data-item-id="45218" data-item-type="ItemText"><div class="item-body-hbr">できていたら第6章 章末問題完了です！</div></div>
+        
+        <div class="article-item item_html " id="item45217" data-item-id="45217" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14473" data-item-id="14473" data-item-type="ItemText"><div class="item-body-hbr">これで【6章 投稿作成の基本とブロックエディタ入門】の解説を終わります。<br />次の章に進みましょう！</div></div>
+        
+        <div class="article-item item_html " id="item25499" data-item-id="25499" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="054Bb" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="iKzAv" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="6lzBGP0+zxGrlUWDgmiYiA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

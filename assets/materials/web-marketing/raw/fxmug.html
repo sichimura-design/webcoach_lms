@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="qeCuHaOSC0/dSiv4xrl/Wg==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="234" data-domain="learn.webcoach.jp" data-url="/web-marketing/fXMUg" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>ヒートマップ -完成編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-marketing/fXMUg">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="ヒートマップ -完成編- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/599/medium/765301c3-09db-434a-827c-3c32306eafe7.png?1719236749">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="ヒートマップ -完成編-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-marketing/fXMUg">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/599/large/765301c3-09db-434a-827c-3c32306eafe7.png?1719236749">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-marketing/fXMUg"
+    },
+    "headline": "ヒートマップ -完成編-",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/001/599/medium/765301c3-09db-434a-827c-3c32306eafe7.png?1719236749",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2024-07-26T14:48:44+09:00",
+    "dateModified": "2025-09-24T10:51:32+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_ono"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="aaz23tOlBoyqry6tG7sRNOTGzkwt6j7iHMJzFMKi3RVBVeCKypdyS34NlZ4ygzTBe2pJS4dg3ZlCfiYmqZj1GA" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBマーケティング</div>
+
+          <div class="fw-bold h2">ヒートマップ -完成編-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item39598" data-item-id="39598" data-item-type="ItemHeading"><h2 class="item-body">0.はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item39599" data-item-id="39599" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間:62分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item1588" data-item-id="1588" data-item-type="ItemHeading"><h2 class="item-body">1. ヒートマップとは</h2></div>
+        
+        <div class="article-item item_markdown " id="item39600" data-item-id="39600" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:3分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1589" data-item-id="1589" data-item-type="ItemMarkdown"><p>WEBサイトを作ったらこちらも導入を推奨しています。
+大抵のツールでは閲覧エリア・離脱エリア・クリックエリアを分析できます！</p>
+
+<p>ユーザーが「どこを熟読したのか」「どこで離脱したのか」「どこをクリックしたのか」を分析することができます。
+WEBページの改善においては基本的に必須であり導入することをおすすめいたします。</p>
+
+<p>ここからはWEBCOACHで一番おすすめしているヒートマップツール「Clarity」(クラリティ)の使い方を説明します。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1590" data-item-id="1590" data-item-type="ItemHeading"><h2 class="item-body">2. Clarityとは</h2></div>
+        
+        <div class="article-item item_markdown " id="item39601" data-item-id="39601" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1591" data-item-id="1591" data-item-type="ItemMarkdown"><p>ClarityとはMicrosoftが2018年にリリースした比較的新しいヒートマップツールです。
+無料のヒートマップツールの中では圧倒的に機能性が高くおすすめできるツールです。
+普通の有料ツールと比べても性能が高いと言っても過言ではないと思います。</p>
+
+<p>通常のヒートマップツールだと無料版では分析できるページ数に制限があったりユーザー数に制限があったりしますがClarityではそんなことはなく「永久無料で使用できる」と宣言されています。</p>
+
+<p>Clarityはデモアカウントがありデータが既に存在するアカウントでほとんど全ての操作を確認できるのでチェックしてみてください。
+(デモアカウントではSettingsなど一部使えない機能もあることにご注意ください。)</p>
+
+<p>1つだけ懸念を挙げるとすれば日本語対応されていないことです。
+ただ今後英語を使ったツールにも慣れていく必要はあるので頑張って触っていきましょう。</p>
+</div>
+        
+        <div class="article-item item_html " id="item1592" data-item-id="1592" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">WEBツールは英語圏発祥のものが多いので英語に抵抗感を持たずに学習していく姿勢が重要です。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item1593" data-item-id="1593" data-item-type="ItemMarkdown"><p>(翻訳ツールとしてはDeepL翻訳がおすすめです。)</p>
+
+<p>→ <a href="https://clarity.microsoft.com/demo/projects/view/3t0wlogvdz/dashboard?date=Last%203%20days">Clarityデモ画面</a>はこちらから</p>
+</div>
+        
+        <div class="article-item item_html " id="item1594" data-item-id="1594" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">Clarityのデモ画面にアクセスして実際に触りながら理解していくようにしましょう！</div></div></div>
+        
+        <div class="article-item item_markdown " id="item1595" data-item-id="1595" data-item-type="ItemMarkdown"><p>Clarityの公式ドキュメントはこちら！</p>
+
+<p>→ <a href="https://docs.microsoft.com/en-us/clarity/">Clarity公式ドキュメント</a></p>
+</div>
+        
+        <div class="article-item item_html " id="item1596" data-item-id="1596" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">たいていのツールは公式ページが一次情報になります。
+
+わからないときに公式サイトに当たる癖をつけましょう。
+
+基本的に公式サイトに全ての情報があります。</div></div></div>
+        
+        <div class="article-item item_heading " id="item1597" data-item-id="1597" data-item-type="ItemHeading"><h3 class="item-body">Clarityの始め方</h3></div>
+        
+        <div class="article-item item_markdown " id="item1598" data-item-id="1598" data-item-type="ItemMarkdown"><h4 id="step1-">STEP1. まずはアカウント登録</h4>
+</div>
+        
+        <div class="article-item item_image " id="item1599" data-item-id="1599" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/599/medium/765301c3-09db-434a-827c-3c32306eafe7.png?1719236749" title=""><img class="img-responsive item-image" alt=" (1599)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/599/medium/765301c3-09db-434a-827c-3c32306eafe7.png?1719236749" width="640" height="294" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item5787" data-item-id="5787" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://clarity.microsoft.com/projects" class="default-link" target="_blank" rel="nofollow">https://clarity.microsoft.com/projects</a>にアクセスしてください。上図のような画面が出てくるかと思います。<br>
+<br>
+「sign up」を選択してください。<br>
+<br>
+Sign upとは会員登録のことです。Sign inはログインのことを指します。<br>
+<br>
+Sign upの方法はいくつかありますので好きな方法を選んでください。</div></div>
+        
+        <div class="article-item item_image " id="item1600" data-item-id="1600" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/600/medium/4337afe9-fba4-4986-b4d2-a661a240e5d5.png?1719236775" title=""><img class="img-responsive item-image" alt=" (1600)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/600/medium/4337afe9-fba4-4986-b4d2-a661a240e5d5.png?1719236775" width="640" height="416" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item37976" data-item-id="37976" data-item-type="ItemRichText"><div class="item-body-hbr">「Sign up」を押すと図のようにポップアップが出てきて方法を選ぶことができます。</div></div>
+        
+        <div class="article-item item_markdown " id="item1601" data-item-id="1601" data-item-type="ItemMarkdown"><h4 id="step2-">STEP2. プロジェクトを作成する</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item37977" data-item-id="37977" data-item-type="ItemRichText"><div class="item-body-hbr">プロジェクトの名前とWEBサイトのURLを入れてください。<br>
+<br>
+プロジェクトとはGoogle Search Consoleでいうとプロパティに該当します。<br>
+<br>
+基本的に1プロジェクトに1つのWEBサイトが対応します。</div></div>
+        
+        <div class="article-item item_image " id="item1602" data-item-id="1602" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/602/medium/08b02ff1-8db1-4f21-89b5-3ca277299efb.png?1719236805" title=""><img class="img-responsive item-image" alt=" (1602)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/602/medium/08b02ff1-8db1-4f21-89b5-3ca277299efb.png?1719236805" width="640" height="369" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item37978" data-item-id="37978" data-item-type="ItemRichText"><div class="item-body-hbr">インストール方法を選択しましょう！<br>
+<br>
+Install Manually(手動でインストールする)かInstall on a third-party platform(サードパーティプラットフォームを使用してインストールする)のどちらかを選びましょう。<br>
+<br>
+後者についてはShopify, Wix, WordPressなどが対応しています。サードパーティプラットフォームを活用すると各プラットフォームの公式案内に従って、簡単に設定できます。<br>
+<br>
+ただ今回は今後の汎用性を考慮して手動でインストールする方法を紹介します。<br>
+<br>
+手動でのインストールを理解すればどんな場合にも対応できます。</div></div>
+        
+        <div class="article-item item_image " id="item1603" data-item-id="1603" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/603/medium/c80e5d3d-19f0-44d3-8969-d98992faa523.png?1719236828" title=""><img class="img-responsive item-image" alt=" (1603)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/603/medium/c80e5d3d-19f0-44d3-8969-d98992faa523.png?1719236828" width="640" height="293" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item1604" data-item-id="1604" data-item-type="ItemMarkdown"><h4 id="step3-install-manuallyget-tracking-code">STEP3. Install manuallyの「Get tracking code」を選択する</h4>
+</div>
+        
+        <div class="article-item item_image " id="item1605" data-item-id="1605" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/605/medium/28f80290-d2bd-48db-9951-e0126e8eb73b.png?1719236856" title=""><img class="img-responsive item-image" alt=" (1605)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/605/medium/28f80290-d2bd-48db-9951-e0126e8eb73b.png?1719236856" width="640" height="513" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item5788" data-item-id="5788" data-item-type="ItemRichText"><div class="item-body-hbr">「Copy to clipboard」を選択してください。以下のようなコードをコピーできるかと思います。</div></div>
+        
+        <div class="article-item item_code " id="item37979" data-item-id="37979" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>&lt;script type=&quot;text/javascript&quot;&gt;
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src=&quot;https://www.clarity.ms/tag/&quot;+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, &quot;clarity&quot;, &quot;script&quot;, &quot;d9lrsgtvwd&quot;);
+&lt;/script&gt;</pre></div>
+</div>
+<div class="cite"><cite class="item-source">JavaScript</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item5790" data-item-id="5790" data-item-type="ItemRichText"><div class="item-body-hbr">こちらはJavaScriptと呼ばれるプログラミング言語で構成されています。<br>
+<br>
+こちらをHTMLタグの&lt;head&gt;タグの中にペーストしていただくと設定が完了します！</div></div>
+        
+        <div class="article-item item_markdown " id="item1606" data-item-id="1606" data-item-type="ItemMarkdown"><h4 id="wix">Wixの場合どのように設定を行うか？</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item37980" data-item-id="37980" data-item-type="ItemRichText"><div class="item-body-hbr">①の設定ボタンを押して②の「上級設定」&gt; 「カスタムコード」を押してください。<br>
+こちらの機能を活用すると任意のコードをheadタグの中に埋め込むことが可能になります。</div></div>
+        
+        <div class="article-item item_image " id="item1607" data-item-id="1607" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/607/medium/a8ad4e33-da97-4268-bf67-7d47943474a0.png?1719236920" title=""><img class="img-responsive item-image" alt=" (1607)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/607/medium/a8ad4e33-da97-4268-bf67-7d47943474a0.png?1719236920" width="640" height="337" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item37981" data-item-id="37981" data-item-type="ItemRichText"><div class="item-body-hbr">カスタムコードを追加ボタンを押してください。<br>
+(カスタムコードの追加はアップグレードしないとできないのでご注意ください。)</div></div>
+        
+        <div class="article-item item_image " id="item1608" data-item-id="1608" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/608/medium/dbc61496-a686-47e9-899a-9393c64310ef.png?1719236936" title=""><img class="img-responsive item-image" alt=" (1608)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/608/medium/dbc61496-a686-47e9-899a-9393c64310ef.png?1719236936" width="640" height="344" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item37982" data-item-id="37982" data-item-type="ItemRichText"><div class="item-body-hbr">コードを①の箇所にペーストしてください。<br>
+<br>
+ツール名はわかりやすいように「Clarity」と入れるのが良いと思います。<br>
+<br>
+コードを追加するページは全てのページで良いです。追加する箇所はヘッダーにしましょう。<br>
+<br>
+右下の「適用」ボタンを押せば設定は完了です。<br>
+<br>
+</div></div>
+        
+        <div class="article-item item_image " id="item1609" data-item-id="1609" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/609/medium/44f87f8e-a62d-4f25-b4f3-8830dc24dbdd.png?1719236953" title=""><img class="img-responsive item-image" alt=" (1609)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/609/medium/44f87f8e-a62d-4f25-b4f3-8830dc24dbdd.png?1719236953" width="640" height="424" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item37983" data-item-id="37983" data-item-type="ItemRichText"><div class="item-body-hbr">以上でWixへの反映は完了します！</div></div>
+        
+        <div class="article-item item_heading " id="item1610" data-item-id="1610" data-item-type="ItemHeading"><h2 class="item-body">3. Clarityの機能紹介</h2></div>
+        
+        <div class="article-item item_markdown " id="item39602" data-item-id="39602" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1611" data-item-id="1611" data-item-type="ItemMarkdown"><p>機能は実際に触ってみないとわからないと思うので以下のデモページを触りながら理解を進めていってください！</p>
+
+<p>→ <a href="https://clarity.microsoft.com/demo/projects/view/3t0wlogvdz/dashboard?date=Last">Clarityデモ</a></p>
+</div>
+        
+        <div class="article-item item_heading " id="item1612" data-item-id="1612" data-item-type="ItemHeading"><h3 class="item-body">Dashboard</h3></div>
+        
+        <div class="article-item item_markdown " id="item1613" data-item-id="1613" data-item-type="ItemMarkdown"><p>Dashboard画面では様々な指標を確認することができます。こちらに表示されている15個について解説していきます。</p>
+</div>
+        
+        <div class="article-item item_image " id="item1614" data-item-id="1614" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/614/medium/91160b12-d241-4abe-98fa-0918ffa47b6b.png?1719237021" title=""><img class="img-responsive item-image" alt=" (1614)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/614/medium/91160b12-d241-4abe-98fa-0918ffa47b6b.png?1719237021" width="640" height="547" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item1615" data-item-id="1615" data-item-type="ItemMarkdown"><h4 id="sessions">1. Sessions</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1616" data-item-id="1616" data-item-type="ItemMarkdown"><p>トータルのセッション数、ユニークのセッション数が表示されます。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1617" data-item-id="1617" data-item-type="ItemMarkdown"><h4 id="pages-per-session">2. Pages per session</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1618" data-item-id="1618" data-item-type="ItemMarkdown"><p>1.17 averageというのは1セッションあたり平均して1.17ページ閲覧されているということです。これは回遊率という言い方をすることもあります。この数字は高ければ高いほど良いです。1回のセッションあたり多くのページを見られているということはそれだけサイトがユーザーにとって魅力的であることを意味します。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1619" data-item-id="1619" data-item-type="ItemMarkdown"><h4 id="scroll-depth">3. Scroll Depth</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1620" data-item-id="1620" data-item-type="ItemMarkdown"><p>Scroll Depthは読了率を表します。54.06%とはつまり平均してページの上から54%の位置までスクロールされているということです。これがあまりに低い場合はページのコンテンツ内容がユーザーの期待と乖離していると考えられます。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1621" data-item-id="1621" data-item-type="ItemMarkdown"><h4 id="time-spent">4. Time Spent</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1622" data-item-id="1622" data-item-type="ItemMarkdown"><p>Activeはユーザーがサイトをアクティブに閲覧していた時間の平均です。
+inactiveはサイトを開いてはいるものの別のタブで別サイトを見ている場合などが該当します。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1623" data-item-id="1623" data-item-type="ItemMarkdown"><h4 id="dead-clicks">5. Dead clicks</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1624" data-item-id="1624" data-item-type="ItemMarkdown"><p>Dead Clicksはユーザーがクリックしたにもかかわらずページ上でアクションが実行されなかったクリックを指します。
+クリックしたもののリンク先に遷移しなかった場合や、ボタンではない箇所をボタンと勘違いしてユーザーが押している場合などがDead Clicksに該当します。
+Recordingボタンを押すとDead Clicksが行われたレコーディングを閲覧することができ、具体的にどこで発生したか確認できます。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1625" data-item-id="1625" data-item-type="ItemMarkdown"><h4 id="rage-clicks">6. Rage Clicks</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1626" data-item-id="1626" data-item-type="ItemMarkdown"><p>Rage Clicksは短時間で連打するようなクリックのことです。クリックの連打とは、ユーザーが思い通りに反応しないため同じ箇所を何度も押していることを示します。Recordingボタンを押すとRage Clicksが行われたレコーディングを閲覧することができ、具体的にどこで発生したか確認できます。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1627" data-item-id="1627" data-item-type="ItemMarkdown"><h4 id="excessive-scrolling">7. Excessive Scrolling</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1628" data-item-id="1628" data-item-type="ItemMarkdown"><p>標準的なスクロールスピードよりも速い速度でスクロールしたことを示します。読み飛ばされているコンテンツエリアがわかります。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1629" data-item-id="1629" data-item-type="ItemMarkdown"><h4 id="javascript-errors">8. JavaScript errors</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1630" data-item-id="1630" data-item-type="ItemMarkdown"><p>JavaScriptのエラーが発生したセッション数を示します。Recordingsでどこでエラーが発生しているか確認することができます。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1631" data-item-id="1631" data-item-type="ItemMarkdown"><h4 id="quick-backs">9. Quick Backs</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1632" data-item-id="1632" data-item-type="ItemMarkdown"><p>ユーザーが別ページに移動した後すぐに前のページに戻った割合を示しており、Recordingで確認可能です。すぐに戻ってくるということは遷移後のページがユーザーの期待に添えていなかったことを示すので大きな改善のヒントになります。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1633" data-item-id="1633" data-item-type="ItemMarkdown"><h4 id="popular-pages">10. Popular Pages</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1634" data-item-id="1634" data-item-type="ItemMarkdown"><p>人気のページランキングが表示されています。セッション数が多い順に掲載されておりそれぞれ個別ページごとにヒートマップとレコーディングを確認可能です。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1635" data-item-id="1635" data-item-type="ItemMarkdown"><h4 id="referrers">11. Referrers</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1636" data-item-id="1636" data-item-type="ItemMarkdown"><p>リファラーと呼びます。参照元のことを意味します。サイトに訪問したユーザーがサイトに訪問する直前に閲覧していたWEBページのことをリファラーと言います。どの流入経路でWEBサイトに来ているかを分析することは非常に重要です。リファラーによってユーザーの動機・行動特性は大きく異なります。デモではChromeの利用が最も多くなっていますね。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1637" data-item-id="1637" data-item-type="ItemMarkdown"><h4 id="countries">12. Countries</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1638" data-item-id="1638" data-item-type="ItemMarkdown"><p>どの国からの流入が多いのかを表示しています。デモではアメリカ、ブラジル、インドの順にサイト流入が多くなっています。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1639" data-item-id="1639" data-item-type="ItemMarkdown"><h4 id="browsers">13. Browsers</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1640" data-item-id="1640" data-item-type="ItemMarkdown"><p>どのブラウザでのサイト閲覧が多いか表しています。デモではChromeが最も多くなっています。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1641" data-item-id="1641" data-item-type="ItemMarkdown"><h4 id="devices">14. Devices</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1642" data-item-id="1642" data-item-type="ItemMarkdown"><p>どのデバイスからの流入が多いかを閲覧可能です。デモではPCが92%となっていますが、実際のWEBサイトでは多くの場合、モバイルからの流入が多くなります。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1643" data-item-id="1643" data-item-type="ItemMarkdown"><h4 id="operating-systems">15. Operating Systems</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1644" data-item-id="1644" data-item-type="ItemMarkdown"><p>どのOSを使っているユーザーが多いかを閲覧可能です。
+デモではWindows、MacOS、Linuxの順に多くなっていますね。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1645" data-item-id="1645" data-item-type="ItemHeading"><h3 class="item-body">Recordings</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37984" data-item-id="37984" data-item-type="ItemRichText"><div class="item-body-hbr">下の動画のように操作が可能です。<br>
+まずは動画を見てみてください。<br>
+</div></div>
+        
+        <div class="article-item item_link " id="item37986" data-item-id="37986" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=fXMUg&amp;item_id=37986" rel="nofollow noopener noreferrer" target="_blank">【作業動画】ヒートマップ -完成編- 1-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="【作業動画】ヒートマップ -完成編- 1-1" data-reference="https://www.dropbox.com/scl/fi/gsvgfxky94fbudwvgww1j/market-heatmap_1.1.1.0_.mp4?rlkey=jx7h2fb71e5h1yg9q9xt8dann&amp;st=iykihl5y&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/037/986/thumb/84e12e94-838e-4802-9e96-78ce338e04ab.png?1754865638" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37985" data-item-id="37985" data-item-type="ItemRichText"><div class="item-body-hbr">Recordingsタブに移動した後、左のサイドバーからレコーディングを選択すればレコーディングが流れます。<br>
+<br>
+<span class="decoration-02">レコーディング機能を無料で使えるツールは限りなく少ないためこの機能はClarityの圧倒的な強みです。</span><br>
+<br>
+実際のユーザーのページ操作の映像ほどサイト改善する上で重要な情報はありません。<br>
+<br>
+<span class="decoration-02">サイト改善する際にはClarityのRecordingsを見ることで様々な改善アイデアが浮かぶと思います。</span></div></div>
+        
+        <div class="article-item item_heading " id="item1646" data-item-id="1646" data-item-type="ItemHeading"><h3 class="item-body">Heatmaps</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37987" data-item-id="37987" data-item-type="ItemRichText"><div class="item-body-hbr">まずは動画をご覧ください。</div></div>
+        
+        <div class="article-item item_link " id="item37988" data-item-id="37988" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=fXMUg&amp;item_id=37988" rel="nofollow noopener noreferrer" target="_blank">【作業動画】ヒートマップ -完成編- 1-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="【作業動画】ヒートマップ -完成編- 1-2" data-reference="https://www.dropbox.com/scl/fi/4l970er4qmab3k12uc7xr/market-heatmap_1.2.1.0_.mp4?rlkey=6qcnx9o5vizw556q6iey40hyb&amp;st=fdlrrbt2&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/037/988/thumb/bb856390-b91c-48e0-b31b-e6be3b414d84.png?1754865730" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37989" data-item-id="37989" data-item-type="ItemRichText"><div class="item-body-hbr">Heatmapsのタブを選択してください。<br>
+<br>
+ヒートマップを見たいページを選択して「View heatmap」を押しましょう。<br>
+PC・Tablet・Mobileからどのデバイスのヒートマップを見るかをまず選択できます。<br>
+<br>
+<span class="decoration-01">Click・Scroll・Areaについて説明します。</span><br>
+<br>
+ClickではClickされた箇所に番号が振られています。<br>
+番号が1のものが最もクリック率が高いものです。<br>
+<br>
+番号ごとにクリック数とクリック率を見ることができます。<br>
+一般にボタンは1ページの中に何個も設置するためこれを見ることによってどのボタンが最も押されているか分析することができます。<br>
+クリック率が低すぎるボタンは改善したり、削除したりといったアクションが可能になります。<br>
+<br>
+Scrollでは読了率を見ることができます。<br>
+ページのどこまで読了されているかを確認することが可能です。<br>
+特に離脱が激しいページの箇所を特定し改善することが可能になります。<br>
+<br>
+AreaではClickが多いエリアを特定することが可能です。<br>
+左のサイドバーではClickが多いエリア順に表示がされています。</div></div>
+        
+        <div class="article-item item_heading " id="item1647" data-item-id="1647" data-item-type="ItemHeading"><h2 class="item-body">4.Filters・Segments機能で分析を効果的に行おう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39604" data-item-id="39604" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_image " id="item1648" data-item-id="1648" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/648/medium/65bda383-74ec-4d2d-b5b1-1420bd6870cc.png?1719237963" title=""><img class="img-responsive item-image" alt=" (1648)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/648/medium/65bda383-74ec-4d2d-b5b1-1420bd6870cc.png?1719237963" width="640" height="85" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item1649" data-item-id="1649" data-item-type="ItemMarkdown"><p>ClarityではFilters・Segmentsという2つの機能によって分析が行いやすくなっています。</p>
+
+<p>ざっくり言うとデータをいくつかの基準に基づいて絞り込んで分析ができる機能になります。</p>
+
+<p>それぞれ詳細に説明していきます。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1650" data-item-id="1650" data-item-type="ItemHeading"><h3 class="item-body">Filters</h3></div>
+        
+        <div class="article-item item_markdown " id="item1651" data-item-id="1651" data-item-type="ItemMarkdown"><p>Filtersボタンを押すと下の写真のようなポップアップが表示されます。フィルタ機能を使うと特定の基準に沿ってデータを絞って閲覧することができます。それぞれ簡単に説明していきます。フィルタをかけたい基準を入力して右上のApplyボタンを押すとフィルタをかけたデータを見ることができます。</p>
+</div>
+        
+        <div class="article-item item_image " id="item1652" data-item-id="1652" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/652/medium/34d47a6c-8154-4a4e-b32f-24708dfe4d88.png?1719238011" title=""><img class="img-responsive item-image" alt=" (1652)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/652/medium/34d47a6c-8154-4a4e-b32f-24708dfe4d88.png?1719238011" width="640" height="275" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item1653" data-item-id="1653" data-item-type="ItemMarkdown"><h4 id="user-info">■ User info</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1654" data-item-id="1654" data-item-type="ItemMarkdown"><ul>
+  <li>Time frame：期間指定ができます。</li>
+  <li>Device：PC、Tablet、Mobile、Otherからデバイスタイプを選べます。</li>
+  <li>Browser：ブラウザ指定ができます。Chromeのユーザーだけに絞って見ることができるということです。</li>
+  <li>Operating System：OSの指定ができます。</li>
+  <li>Country：国の指定ができます。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item1655" data-item-id="1655" data-item-type="ItemMarkdown"><h4 id="user-actions">■ User actions</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1656" data-item-id="1656" data-item-type="ItemMarkdown"><ul>
+  <li>Insights：Rage clicks, Dead clicks, Excessive scrolling, Quick backsなどを絞ってデータを見ることができます。</li>
+  <li>Actions：カーソル移動、テキスト入力などのアクションで絞ってRecordingの確認をしたい時に便利です。</li>
+  <li>Clicked text：クリックされたテキストの情報で絞ることができます。</li>
+  <li>Page scroll depth：min percentage と max percentageを入力可能です。読了率によってデータを絞って閲覧できます。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item1657" data-item-id="1657" data-item-type="ItemMarkdown"><h4 id="path">■ Path</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1658" data-item-id="1658" data-item-type="ItemMarkdown"><ul>
+  <li>Entry URL：最初に訪れたページ</li>
+  <li>Exit URL：離脱したページ</li>
+  <li>Visited URL：訪れたページ</li>
+</ul>
+
+<p>以上の観点から絞り込みが行えます。例えば商品の購入を行った人のデータだけを見たい場合はVisited URLに商品購入完了ページのURLを入れると絞り込んで分析が可能になります。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1659" data-item-id="1659" data-item-type="ItemMarkdown"><h4 id="traffic">■ Traffic</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1660" data-item-id="1660" data-item-type="ItemMarkdown"><ul>
+  <li>Referring site：参照元のWEBページ</li>
+  <li>Source：流入元のWEBサイト</li>
+  <li>Medium：流入元のタイプ</li>
+  <li>Campaign：流入元のキャンペーンID</li>
+  <li>Channel：Direct、Organic Search, Paid Searchなどの種類</li>
+</ul>
+
+<p>流入経路ごとにフィルタをかけてWEBサイトの分析を行うケースは非常に多いため、この機能は非常に重要です。
+流入経路をまとめてWEBサイトの分析を行うことは、多くの場合効果的ではありません。
+なぜなら流入経路によってユーザーのモチベーションや行動特性が全く異なるからです。
+<strong>Trafficによるセグメンテーションは、WEBサイトの分析でよく使うので覚えておきましょう。</strong></p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1661" data-item-id="1661" data-item-type="ItemMarkdown"><h4 id="session">■  Session</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1662" data-item-id="1662" data-item-type="ItemMarkdown"><ul>
+  <li>Session duration：ユーザーがWEBサイトに滞在した時間のこと</li>
+  <li>Session click count：1回のセッションでクリックした回数のこと</li>
+</ul>
+
+<p>ユーザーのモチベーションによって区切って分析が可能になります。例えば1ページしか見ずに離脱したユーザーに絞って効率的にデータ分析ができたりします。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1663" data-item-id="1663" data-item-type="ItemMarkdown"><h4 id="page">■ Page</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1664" data-item-id="1664" data-item-type="ItemMarkdown"><ul>
+  <li>Page duration：1ページに滞在した時間</li>
+  <li>Page click count：1ページ内でクリックした回数</li>
+  <li>Visible Page：ユーザーがページを実際に閲覧していた時間</li>
+  <li>Hidden Page：ページが非表示だった時間（サイトを開いたものの別タブで他のサイトを閲覧していた時間が該当）</li>
+  <li>Errors：JavaScriptやImageのErrorがあったかどうか</li>
+  <li>Page size：ページの縦横の大きさによって絞り込みができる</li>
+  <li>Screen Resolution：スクリーンの大きさによって絞り込みができる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item1665" data-item-id="1665" data-item-type="ItemMarkdown"><h4 id="custom-filters">■ Custom Filters</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1666" data-item-id="1666" data-item-type="ItemMarkdown"><p>Custom tagの設定は応用編であり、使用頻度は高くありません。
+WEBページの中に任意のタグを仕込むことによってそのタグに応じて分析をかけられます。<br />
+参考ヘルプ→ <a href="https://docs.microsoft.com/en-us/clarity/custom-tags">https://docs.microsoft.com/en-us/clarity/custom-tags</a></p>
+</div>
+        
+        <div class="article-item item_heading " id="item1667" data-item-id="1667" data-item-type="ItemHeading"><h3 class="item-body">Segments</h3></div>
+        
+        <div class="article-item item_rich_text " id="item1668" data-item-id="1668" data-item-type="ItemRichText"><div class="item-body-hbr">SegmentsはFiltersを使用して作成したフィルタをセグメントとして保存し<span class="decoration-02"><span class="decoration-01">後から簡単にアクセスできるようにする機能</span></span>です。<br>
+<br>
+例えば「過去7日間」「モバイル」「日本」という条件でフィルタをかけてみたい場合に、毎回Filtersからチェックをつけてみるのは面倒ですよね？そこを効率化するためにこの機能が存在します。</div></div>
+        
+        <div class="article-item item_image " id="item1669" data-item-id="1669" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/669/medium/0e7d3d78-23d0-4273-8cf3-0538532b0fd9.png?1719238232" title=""><img class="img-responsive item-image" alt=" (1669)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/669/medium/0e7d3d78-23d0-4273-8cf3-0538532b0fd9.png?1719238232" width="640" height="53" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item1670" data-item-id="1670" data-item-type="ItemMarkdown"><p>Filtersでフィルタをかけた状態で上の写真にある「Save as segment」を押してください。
+そうするとまず下の左の写真のようにSave as newかUpdate existingを選択することができます。</p>
+
+<p>下の右の写真は「Save as new」を押した場合になります。
+Segment nameを選択してSaveすることができます。</p>
+</div>
+        
+        <div class="article-item item_image " id="item1672" data-item-id="1672" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/672/medium/a731288c-c7bf-4491-a7a6-1f32e519e4b7.png?1719238320" title=""><img class="img-responsive item-image" alt=" (1672)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/672/medium/a731288c-c7bf-4491-a7a6-1f32e519e4b7.png?1719238320" width="640" height="256" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item1671" data-item-id="1671" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/671/medium/eeb14652-ece6-4c48-ab0f-af003fa5e341.png?1719238259" title=""><img class="img-responsive item-image" alt=" (1671)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/671/medium/eeb14652-ece6-4c48-ab0f-af003fa5e341.png?1719238259" width="640" height="431" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item1673" data-item-id="1673" data-item-type="ItemMarkdown"><p>上記の通りにセグメントを設定したあとは、「Segments」という青い「Filters」というボタンの横にあるボタンを押すと以下の写真のようにSegmentsが一覧で見れるようになります。</p>
+</div>
+        
+        <div class="article-item item_image " id="item1674" data-item-id="1674" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/674/medium/6b8e0d2a-9872-4b71-bd8e-ca97507e701c.png?1719238351" title=""><img class="img-responsive item-image" alt=" (1674)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/674/medium/6b8e0d2a-9872-4b71-bd8e-ca97507e701c.png?1719238351" width="640" height="234" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item1675" data-item-id="1675" data-item-type="ItemHeading"><h2 class="item-body">TIPS：データをダウンロードも可能</h2></div>
+        
+        <div class="article-item item_markdown " id="item1676" data-item-id="1676" data-item-type="ItemMarkdown"><p>データをCSVとしてダウンロードして分析をかけたい場合があります。</p>
+
+<p>赤い箇所で囲まれたダウンロードボタンをクリックすると、CSV・PNG・PDFなどの形式でダウンロードが可能です。</p>
+</div>
+        
+        <div class="article-item item_image " id="item1677" data-item-id="1677" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/677/medium/713f77c4-ed68-4c72-9bda-499de4c16006.png?1719238383" title=""><img class="img-responsive item-image" alt=" (1677)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/677/medium/713f77c4-ed68-4c72-9bda-499de4c16006.png?1719238383" width="640" height="94" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item1678" data-item-id="1678" data-item-type="ItemHeading"><h2 class="item-body">TIPS：Clarityで内部トラフィックを除外して分析する</h2></div>
+        
+        <div class="article-item item_rich_text " id="item37990" data-item-id="37990" data-item-type="ItemRichText"><div class="item-body-hbr">Settings &gt; IP blockingから設定できます。<br>
+<br>
+Google Analyticsでも内部トラフィックの除外を行ったのは覚えていますでしょうか。</div></div>
+        
+        <div class="article-item item_image " id="item1679" data-item-id="1679" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/679/medium/7aa2ed71-acff-46fa-9c2b-fc53b1824edf.png?1719238408" title=""><img class="img-responsive item-image" alt=" (1679)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/679/medium/7aa2ed71-acff-46fa-9c2b-fc53b1824edf.png?1719238408" width="640" height="429" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item1680" data-item-id="1680" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">WEBサイト分析の基本</div>
+    </div>
+    <div class="content-area">
+        どんな分析ツールでも内部トラフィックを除外しないと正確な分析を行えません。
+
+ClarityだけでなくGoogle Analyticsなど今後導入するアクセス解析ツールでは必ずIPアドレスブロックを行い内部トラフィックを排除して分析するようにしましょう。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item1681" data-item-id="1681" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">内部トラフィックとは自社のメンバーや関係者などユーザーではない内部関係者のトラフィックを指します。</span></span></div></div>
+        
+        <div class="article-item item_markdown " id="item1682" data-item-id="1682" data-item-type="ItemMarkdown"><p>例えば毎日ユーザー数が100人の段階で内部からのアクセスが毎日50回程度ある場合を想像してください。内部トラフィックを除外して分析を行わないと完全に誤った結論を導き出してしまう可能性があります。</p>
+
+<p>内部関係者が使っているWi-FiのIPアドレスを取得して登録することで除外ができるのです。</p>
+
+<p>「+ Block IP address 」を押すとNameとIP addressを入力するだけですぐに実装できます。</p>
+
+<p>IPアドレスはこちらのサイトから確認できます。</p>
+
+<p>→ <a href="https://www.cman.jp/network/support/go_access.cgi">https://www.cman.jp/network/support/go_access.cgi</a></p>
+</div>
+        
+        <div class="article-item item_image " id="item1683" data-item-id="1683" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/683/medium/c968bac9-c885-477e-a645-f428a35f62c2.png?1719238482" title=""><img class="img-responsive item-image" alt=" (1683)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/683/medium/c968bac9-c885-477e-a645-f428a35f62c2.png?1719238482" width="590" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item1684" data-item-id="1684" data-item-type="ItemHeading"><h2 class="item-body">その他おすすめのヒートマップツール</h2></div>
+        
+        <div class="article-item item_markdown " id="item39603" data-item-id="39603" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:4分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1685" data-item-id="1685" data-item-type="ItemMarkdown"><p>ヒートマップツールは原則として1つだけ導入すれば十分です。</p>
+
+<p>中でもClarityは機能も豊富で永久無料であるためおすすめしますが、他にもよく使われるヒートマップツールはあるので簡単に紹介しておきます。</p>
+
+<p>機能は大体Clarityと変わらないため、Clarityに慣れておけば必要になったタイミングで公式サイトのマニュアルなどを読めばすぐに使えるようになると思います！</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1686" data-item-id="1686" data-item-type="ItemHeading"><h3 class="item-body">User Heat</h3></div>
+        
+        <div class="article-item item_markdown " id="item1688" data-item-id="1688" data-item-type="ItemMarkdown"><p>User Heatは一部無料で使用することができるヒートマップツールです。</p>
+
+<p>User Heatは、1アカウント1ドメインまで、1アカウント最大1000ページまで、月間30万PVという制限の中で無料で使用できます。</p>
+
+<p>他のツールと比べてもかなり無料で使える幅が大きいので<strong>まずはヒートマップを試してみたい</strong>という方に大変おすすめできるツールです。</p>
+
+<p>User Heatの使い方はとても直感的で公式ページにまとまっていますので、こちらを参照して気になる方は導入してみてください！</p>
+</div>
+        
+        <div class="article-item item_link " id="item1687" data-item-id="1687" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=fXMUg&amp;item_id=1687" rel="nofollow noopener noreferrer" target="_blank">無料ヒートマップ解析ツール User Heat : どこが読まれているか見えるアクセス解析</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="無料ヒートマップ解析ツール User Heat : どこが読まれているか見えるアクセス解析" data-reference="https://userheat.com/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/001/687/thumb/0e16e2e3-252a-4f2e-b444-7ba435720ab6.jpg?1719238519" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item1689" data-item-id="1689" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=fXMUg&amp;item_id=1689" rel="nofollow noopener noreferrer" target="_blank">ヒートマップの使い方 | 無料ヒートマップ解析ツール User Heat</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="ヒートマップの使い方 | 無料ヒートマップ解析ツール User Heat" data-reference="https://userheat.com/howtouse" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/001/689/thumb/cabc4109-d2e6-4408-9fdd-94b62b6c6dce.jpg?1719238542" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item1690" data-item-id="1690" data-item-type="ItemHeading"><h3 class="item-body">Ptengine</h3></div>
+        
+        <div class="article-item item_link " id="item1691" data-item-id="1691" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=fXMUg&amp;item_id=1691" rel="nofollow noopener noreferrer" target="_blank">Ptengineウェブ運営All-in-Oneプラットフォーム | ウェブの改善や改善業務はこれひとつで完結</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Ptengineウェブ運営All-in-Oneプラットフォーム | ウェブの改善や改善業務はこれひとつで完結" data-reference="https://www.ptengine.jp/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/001/691/thumb/b861339a-2f78-4fc5-bf6d-357b23b813c9.png?1719238563" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item1692" data-item-id="1692" data-item-type="ItemMarkdown"><p>Ptengineもよく導入されているおすすめのヒートマップツールです。無料プランでも月3000PVまでは計測が可能です。</p>
+
+<p>ヒートマップ、ファネル計測、A/Bテストなど多彩な機能が搭載されています。</p>
+
+<p>詳しくは公式のヘルプセンターから確認してみてください！</p>
+</div>
+        
+        <div class="article-item item_link " id="item1693" data-item-id="1693" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=fXMUg&amp;item_id=1693" rel="nofollow noopener noreferrer" target="_blank">Help Center</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Help Center" data-reference="https://help.ptengine.jp/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/001/693/thumb/e81fd0ac-f120-455c-a8c7-45edc7e1c68a.png?1754613106" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="qeCuHaOSC0/dSiv4xrl/Wg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

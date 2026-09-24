@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A0%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_Figma%E7%B7%A8/M7ru7 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>4章：実践ワークフローと応用 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A0%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_Figma%E7%B7%A8/M7ru7">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="4章：実践ワークフローと応用 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="4章：実践ワークフローと応用">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A0%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_Figma%E7%B7%A8/M7ru7">
+<meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="X9_IUIygfFKwwd2S58zmFN0ZiJNefuxN-LpOVPu-4H3bsMjjX_naKARKtaLsoP99LOQzMSDEVyOEEOXQ6YjcBw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材3-EX① 特定AIツール深掘り講座_Figma編</div>
+
+          <div class="fw-bold h2">4章：実践ワークフローと応用</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章：実践ワークフローと応用</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1時間30分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【4-1】総合演習：課題の概要と準備</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading5" class="tocLink">演習課題の全体像</a></li><li><a href="#heading6" class="tocLink">制作の準備とワークフローの確認</a></li></ul></li><li><a href="#heading7" class="tocLink">【4-2】総合演習：LPデザインの実践</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading9" class="tocLink">STEP1：Relumeで生成したワイヤーフレームの配置と調整</a></li><li><a href="#heading10" class="tocLink">STEP2：ビジュアル要素の配置と生成</a></li><li><a href="#heading11" class="tocLink">STEP3：リアルなコンテンツの流し込み</a></li><li><a href="#heading12" class="tocLink"> STEP4：最終調整とアクセシビリティチェック</a></li></ul></li><li><a href="#heading13" class="tocLink">【4-3】総合演習：提出と振り返り</a><ul><li><a href="#heading14" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading15" class="tocLink"> 成果物の提出</a></li><li><a href="#heading16" class="tocLink">ワークシートで学習効果を振り返る</a></li></ul></li><li><a href="#heading17" class="tocLink">【4-4】まとめと今後のステップ</a><ul><li><a href="#heading18" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading19" class="tocLink">本教材で学んだことの総括</a></li><li><a href="#heading20" class="tocLink">Figma公式AI（有料）で開ける新たな扉</a></li><li><a href="#heading21" class="tocLink">さらなるスキルアップのために</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item27249" data-item-id="27249" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A0%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_Figma%E7%B7%A8/dsR4X" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27195" data-item-id="27195" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">4章：実践ワークフローと応用</h2></div>
+        
+        <div class="article-item item_markdown " id="item27196" data-item-id="27196" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：1時間30分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item27197" data-item-id="27197" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item27198" data-item-id="27198" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>学んだAI活用術を組み合わせ、一連のワークフローとしてデザインを制作できるようになる</li>
+  <li>AI活用による自身の生産性向上効果を客観的に把握できる</li>
+  <li>学習したスキルを実務やポートフォリオ制作に応用するための具体的なヒントを得られる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item27199" data-item-id="27199" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【4-1】総合演習：課題の概要と準備</h2></div>
+        
+        <div class="article-item item_markdown " id="item27200" data-item-id="27200" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item27201" data-item-id="27201" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">演習課題の全体像</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27202" data-item-id="27202" data-item-type="ItemRichText"><div class="item-body-hbr">いよいよ最後の章です。この章では、これまでに学んだ全ての知識とスキルを総動員して、一つのプロジェクトを完成させます。<br>
+これまでの学習の集大成として、自信を持って取り組みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item27203" data-item-id="27203" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">課題：</span>以下の「要件定義書」に基づき、「新作オーガニックスキンケアのLP」の主要部分（合計3セクション）のデザインカンプを完成させる。</li>
+  <li><span class="decoration-01">制作セクション：</span>
+    <ol>
+      <li>ファーストビュー</li>
+      <li>商品の特長</li>
+      <li>お客様の声</li>
+    </ol>
+  </li>
+  <li><span class="decoration-01">制限時間：</span>90分</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item27204" data-item-id="27204" data-item-type="ItemRichText"><div class="item-body-hbr">この演習は、実際のクライアントワークを想定したものです。<br>
+以下の要件定義書をじっくり読み込み、誰に、何を、どのように伝えるべきかを考えながら制作を進めてください。</div></div>
+        
+        <div class="article-item item_html " id="item27205" data-item-id="27205" data-item-type="ItemHtml"><div class="item-body">
+<table class="simple">
+    <thead>
+        <tr>
+            <th scope="col"><div>項目</div></th>
+            <th scope="col"><div>内容</div></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row"><div>タイトル・概要</div></th>
+            <td>
+                <ul>
+                    <li><strong>制作物：</strong>架空のコスメブランド「Verdure（ヴェルデュール）」の新作オーガニックスキンケア美容液LP</li>
+                    <li><strong>概要：</strong>肌への優しさと高い保湿力を求める30代女性に向けた、製品の魅力を伝え、初回限定トライアルセットの購入を促進するLP。</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><div>制作を通じて達成したい目的</div></th>
+            <td>
+                <ul>
+                    <li><strong>最終ゴール：</strong>初回限定トライアルセットの購入申し込み数を最大化する。</li>
+                    <li>ブランドの価値観（自然との調和、科学的根拠）を伝え、リピート購入に繋がるファンを獲得する。</li>
+                    <li>「Verdure」ブランドの認知度向上と、高品質で信頼できるイメージの確立。</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><div>ペルソナ情報（2章で作成した人物像）</div></th>
+            <td>
+                ◾️<strong>ライフスタイル・価値観</strong>
+                <ul>
+                    <li>30代前半、IT企業勤務の女性。仕事でPCと向き合う時間が長い。</li>
+                    <li>健康や食への意識が高く、休日はヨガやカフェ巡りでリフレッシュしている。</li>
+                    <li>SNSで情報収集をするが、広告よりも信頼できる口コミや成分情報を重視する。</li>
+                    <li>多少価格が高くても、自分の肌に合い、質の良いものを長く使いたいと考えている。</li>
+                </ul>
+                ◾️<strong>課題とニーズ</strong>
+                <ul>
+                    <li>年齢と共に肌の乾燥やコンディションのゆらぎが気になり始めた。</li>
+                    <li>化学的な成分が強い化粧品は避けたいが、効果もしっかりと実感したい。</li>
+                    <li>忙しい毎日でも手軽に続けられる、本格的なスキンケアを探している。</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><div>キャッチコピー案</div></th>
+            <td>
+                <ul>
+                    <li>（以下のいずれか、または複数組み合わせて使用）</li>
+                    <li>①：もう、「ゆらぐ肌」に悩まない。10年後も、自信のある素肌へ。</li>
+                    <li>②：大地の恵みを、一滴に込めて。あなたの肌が、深呼吸する美容液。</li>
+                    <li>③：忙しい毎日でも、妥協しない。本物のオーガニックで、満ちる、潤う。</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><div>LPの構成要素（必須）</div></th>
+            <td>
+                <ul>
+                    <li><strong>ファーストビュー：</strong>キャッチコピー、商品の高品質なイメージ写真、権威性（例：「美容雑誌〇〇で第1位」）、CTAボタンを配置。</li>
+                    <li><strong>商品の特長：</strong>アイコンなどを使い、「無添加処方」「独自の天然成分」「高い保湿力」といった3つのポイントを視覚的に分かりやすく紹介。</li>
+                    <li><strong>お客様の声：</strong>ペルソナに近い年代の利用者の写真付きレビューを3名分掲載。評価（星）や満足度も示す。</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><div>デザインの方向性</div></th>
+            <td>
+                <ul>
+                    <li><strong>色味：</strong>ナチュラルなアースカラー（ベージュ、ソフトグリーン）を基調に、アクセントとして生命力を感じさせるゴールドやテラコッタを使用。</li>
+                    <li><strong>与えたい印象：</strong>自然派、信頼感、高品質、癒し、洗練。</li>
+                    <li><strong>フォント：</strong>可読性の高いゴシック体（例：Noto Sans JP）を基本とする。</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"><div>使用する素材の要件</div></th>
+            <td>
+                <ul>
+                    <li><strong>写真：</strong>自然光を感じさせる、明るく清潔感のある写真。植物や水など、自然のモチーフを取り入れる。</li>
+                    <li><strong>アイコン：</strong>シンプルで繊細なラインアイコンで統一する。</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item27206" data-item-id="27206" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">制作の準備とワークフローの確認</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27207" data-item-id="27207" data-item-type="ItemRichText"><div class="item-body-hbr">演習を始める前に、これまでの章で作成した成果物を準備しましょう。<br>
+Figmaファイル内に、2章で作成した「ペルソナ」や「ユーザーストーリー」、そして3章で<span class="decoration-02">Relume</span>で生成した「ワイヤーフレーム」を整理しておくとスムーズです。<br>
+<br>
+制作は以下のワークフローで進めます。</div></div>
+        
+        <div class="article-item item_html " id="item27208" data-item-id="27208" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">要件定義の理解</span>：上記の要件定義書を熟読し、ゴールとターゲットを再確認する。</li>
+  <li><span class="decoration-01">ワイヤーフレームの配置と調整</span>：<span class="decoration-02">Relume</span>で生成したワイヤーフレームをベースに、3セクションの骨格を組む。</li>
+  <li><span class="decoration-01">ビジュアルデザイン</span>：アイコン（<span class="decoration-02">Iconify</span>）や画像（<span class="decoration-02">Magician</span>）を配置し、LPの世界観を作る。</li>
+  <li><span class="decoration-01">コンテンツ流し込み</span>：キャッチコピーや説明文を<span class="decoration-02">ChatGPT</span>に考えさせ、<span class="decoration-02">Content Reel</span>でダミーデータを挿入する。</li>
+  <li><span class="decoration-01">最終調整</span>：レイアウトを整え、<span class="decoration-02">Stark</span>でアクセシビリティを最終チェックする。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item27209" data-item-id="27209" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【4-2】総合演習：LPデザインの実践</h2></div>
+        
+        <div class="article-item item_markdown " id="item27210" data-item-id="27210" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item27211" data-item-id="27211" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">STEP1：Relumeで生成したワイヤーフレームの配置と調整</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27212" data-item-id="27212" data-item-type="ItemRichText"><div class="item-body-hbr">まずは3章で<span class="decoration-02">Relume</span>を使い生成したワイヤーフレームの中から、要件定義書に合致する「ファーストビュー」「商品の特長」「お客様の声」の3つのセクションをFigmaのキャンバスに配置します。<br>
+<br>
+この段階で、セクションの順番を入れ替えたり、不要な要素を削除したりして、デザインの土台を整えましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item27213" data-item-id="27213" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">STEP2：ビジュアル要素の配置と生成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27214" data-item-id="27214" data-item-type="ItemRichText"><div class="item-body-hbr">次に、ワイヤーフレームに肉付けをしていきます。<br>
+要件定義書にあるデザインの方向性や使用素材の要件を意識しながら、3章で作成・収集したアイコンや画像を配置しましょう。<br>
+<br>
+もし、デザインのクオリティを上げるためにもっと素材が必要だと感じたら、<span class="decoration-02">Iconify</span>で追加のアイコンを探したり、<span class="decoration-02">ImageFX</span>で新しいイメージ画像を生成したりするのも良い方法です。</div></div>
+        
+        <div class="article-item item_html " id="item27215" data-item-id="27215" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>応用テクニック：ChatGPTでコンテンツを深める</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>要件定義書にあるキャッチコピー案をそのまま使うだけでなく、`ChatGPT`にペルソナ情報を与えて「このペルソナに響くように、キャッチコピー案①をリライトしてください」と依頼するのも効果的です。</li>
+            <li>同様に、「商品の特長」セクションの具体的な説明文なども、AIに下書きを作成させるところから始めると効率的です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27217" data-item-id="27217" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">STEP3：リアルなコンテンツの流し込み</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27218" data-item-id="27218" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">Content Reel</span>を使い、デザインにリアルなテキストを流し込みます。<br>
+「お客様の声」セクションのレビューなどを挿入することで、デザインが一気に具体的になります。</div></div>
+        
+        <div class="article-item item_heading " id="item27219" data-item-id="27219" data-item-type="ItemHeading"><h3 class="item-body" id="heading12"> STEP4：最終調整とアクセシビリティチェック</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27220" data-item-id="27220" data-item-type="ItemRichText"><div class="item-body-hbr">最後に、全体のレイアウトや配色、文字サイズなどを微調整し、デザインカンプとしての完成度を高めます。<br>
+仕上げに<span class="decoration-02">Stark</span>を使い、主要なテキストと背景色の組み合わせでコントラスト比が基準を満たしているか、最終確認を行いましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item27221" data-item-id="27221" data-item-type="ItemHeading"><h2 class="item-body" id="heading13">【4-3】総合演習：提出と振り返り</h2></div>
+        
+        <div class="article-item item_markdown " id="item27222" data-item-id="27222" data-item-type="ItemMarkdown"><h4 id="heading14">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item27223" data-item-id="27223" data-item-type="ItemHeading"><h3 class="item-body" id="heading15"> 成果物の提出</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27224" data-item-id="27224" data-item-type="ItemRichText"><div class="item-body-hbr">お疲れ様でした。これで総合演習は終了です。<br>
+完成したLPデザイン（3セクション分）は、本講座の卒業制作となります。</div></div>
+        
+        <div class="article-item item_html " id="item27225" data-item-id="27225" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>完成したデザインをコーチに提出しよう</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>完成したLPデザインは、ポートフォリオの第一歩となる重要な作品です。</li>
+            <li>ぜひFigmaのファイル共有リンクを使ってコーチに提出し、プロの視点から詳細なフィードバックをもらいましょう。</li>
+            <li><span class="decoration-02">「要件定義書のどの部分を、デザインのどこに、どう反映させたのか」を言語化して伝える</span>ことで、デザインの意図を説明する力が飛躍的に向上します。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27226" data-item-id="27226" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">ワークシートで学習効果を振り返る</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27227" data-item-id="27227" data-item-type="ItemRichText"><div class="item-body-hbr">最後に、今回の総合演習を通じて、自身の生産性がどれだけ向上したかを振り返ってみましょう。<br>
+以下の項目を参考に、自身の言葉でまとめてみてください。この振り返りが、スキルの定着に繋がります。</div></div>
+        
+        <div class="article-item item_html " id="item27228" data-item-id="27228" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>制作にかかった合計時間は？（例：75分）</li>
+  <li>AIを使わなかった場合、どの工程が最も時間がかかったと思うか？（例：素材探し、お客様の声の作成）</li>
+  <li>AIの活用で、特に時間短縮効果が大きかったと感じる工程は？（例：Relumeでのワイヤーフレーム一括生成）</li>
+  <li>この講座で学んだ中で、最も便利だと感じたプラグインとその理由は？（例：Relume。情報設計からワイヤー作成まで一気通貫でできるから）</li>
+  <li>今後、AIをどのように自分のデザインワークフローに取り入れていきたいか？</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item27229" data-item-id="27229" data-item-type="ItemHeading"><h2 class="item-body" id="heading17">【4-4】まとめと今後のステップ</h2></div>
+        
+        <div class="article-item item_markdown " id="item27230" data-item-id="27230" data-item-type="ItemMarkdown"><h4 id="heading18">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item27231" data-item-id="27231" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">本教材で学んだことの総括</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27232" data-item-id="27232" data-item-type="ItemRichText"><div class="item-body-hbr">この教材では、Figmaというデザインツールの上で、様々な無料AIプラグインを連携させ、デザインプロセス全体を効率化する具体的なワークフローを学んできました。<br>
+情報設計からビジュアルデザインまで、AIはもはや特別なツールではなく、日々の業務を助けてくれる強力な「アシスタント」です。<br>
+ここで得たスキルは、今後のデザイン制作において大きな武器となるでしょう。</div></div>
+        
+        <div class="article-item item_heading " id="item27233" data-item-id="27233" data-item-type="ItemHeading"><h3 class="item-body" id="heading20">Figma公式AI（有料）で開ける新たな扉</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27234" data-item-id="27234" data-item-type="ItemRichText"><div class="item-body-hbr">本教材では無料のツールに焦点を当ててきましたが、Figmaが公式に提供する有料のAI機能を使えば、さらに高度な効率化が可能です。<br>
+無料プラグインが「便利な道具」だとすれば、Figma公式AIは「優秀な同僚」のような存在です。</div></div>
+        
+        <div class="article-item item_html " id="item27235" data-item-id="27235" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title"><strong>Figma公式AIでできること（一例）</strong></div>
+  </div>
+  <div class="content-area">
+    <ul>
+      <li>
+        <strong>デザインの自動生成と編集</strong>
+        <ul class="nested-ul">
+          <li>簡単な指示から、<span class="decoration-02">オートレイアウトが適用済みのUIデザインを複数パターン、即座に生成</span>できます。</li>
+          <li>既存のデザインシステムに沿った画面の追加や、デザイン全体のテキストのトーンを一括で変更することも可能です。</li>
+        </ul>
+      </li>
+      <li>
+        <strong>情報整理の高度化（FigJam AI）</strong>
+        <ul class="nested-ul">
+          <li>会議の議事録を貼り付けるだけで、<span class="decoration-02">要点をまとめたマインドマップやユーザージャーニーマップを自動で生成</span>します。</li>
+          <li>散らかったアイデア（付箋）を、AIがテーマごとに自動でグルーピングし、整理してくれます。</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27236" data-item-id="27236" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">さらなるスキルアップのために</h3></div>
+        
+        <div class="article-item item_rich_text " id="item27237" data-item-id="27237" data-item-type="ItemRichText"><div class="item-body-hbr">AIの世界は日進月歩です。<br>
+常に新しいツールやテクニックが登場するため、ここで立ち止まらず、継続的に学び続けることが重要です。</div></div>
+        
+        <div class="article-item item_html " id="item27238" data-item-id="27238" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>発展的な学習</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>
+                <strong>専門的な有料プラグインの探求</strong>
+                <ul class="nested-ul">
+                    <li>世の中には、より専門的な機能を持つ有料プラグインも存在します。</li>
+                    <li>例えば、`Uizard`（手書きスケッチからデザイン生成）や、`Attention Insight`（ユーザーの視線を予測するヒートマップ作成）などです。</li>
+                    <li>自分の目的に合ったツールを探求することで、さらなる効率化が図れます。</li>
+                </ul>
+            </li>
+            <li>
+                <strong>デザイン原則の深化</strong>
+                <ul class="nested-ul">
+                    <li>AIは強力なツールですが、最終的なデザインの良し悪しを判断するのはデザイナー自身です。</li>
+                    <li>レイアウト、配色、タイポグラフィといった、<span class="decoration-02">普遍的なデザインの原則を学び続けること</span>が、AIを真に使いこなす上で最も重要になります。</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item27239" data-item-id="27239" data-item-type="ItemRichText"><div class="item-body-hbr">これで「実践ワークフローと応用」の解説を終わります。<br>
+お疲れ様でした！</div></div>
+        
+        <div class="article-item item_html " id="item27248" data-item-id="27248" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A0%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_Figma%E7%B7%A8/dsR4X" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章：実践ワークフローと応用</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1時間30分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【4-1】総合演習：課題の概要と準備</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading5" class="tocLink">演習課題の全体像</a></li><li><a href="#heading6" class="tocLink">制作の準備とワークフローの確認</a></li></ul></li><li><a href="#heading7" class="tocLink">【4-2】総合演習：LPデザインの実践</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading9" class="tocLink">STEP1：Relumeで生成したワイヤーフレームの配置と調整</a></li><li><a href="#heading10" class="tocLink">STEP2：ビジュアル要素の配置と生成</a></li><li><a href="#heading11" class="tocLink">STEP3：リアルなコンテンツの流し込み</a></li><li><a href="#heading12" class="tocLink"> STEP4：最終調整とアクセシビリティチェック</a></li></ul></li><li><a href="#heading13" class="tocLink">【4-3】総合演習：提出と振り返り</a><ul><li><a href="#heading14" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading15" class="tocLink"> 成果物の提出</a></li><li><a href="#heading16" class="tocLink">ワークシートで学習効果を振り返る</a></li></ul></li><li><a href="#heading17" class="tocLink">【4-4】まとめと今後のステップ</a><ul><li><a href="#heading18" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading19" class="tocLink">本教材で学んだことの総括</a></li><li><a href="#heading20" class="tocLink">Figma公式AI（有料）で開ける新たな扉</a></li><li><a href="#heading21" class="tocLink">さらなるスキルアップのために</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%903-EX%E2%91%A0%20%E7%89%B9%E5%AE%9AAI%E3%83%84%E3%83%BC%E3%83%AB%E6%B7%B1%E6%8E%98%E3%82%8A%E8%AC%9B%E5%BA%A7_Figma%E7%B7%A8/dsR4X" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

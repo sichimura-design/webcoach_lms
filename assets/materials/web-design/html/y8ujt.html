@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/uiux/chap5/Y8uJT -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>5-4 修了評価 — ルーブリック7観点で自分の制作を採点する - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/uiux/chap5/Y8uJT">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="5-4 修了評価 — ルーブリック7観点で自分の制作を採点する - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="5-4 修了評価 — ルーブリック7観点で自分の制作を採点する">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/uiux/chap5/Y8uJT">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="1qbNhXtyuliaHuZjg-6iLywbp__Ci3NpMwnfVdzE8OVw9pYr82eih2ogrImv77qcg7PjlX1hko6thbDuxytDWw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item51094" data-item-id="51094" data-item-type="ItemHtml"><div class="item-body"><meta charset="UTF-8">
+<!--
+  AI×UX/UIデザイナー育成講座（Reスキル認定申請予定・レベル3）
+  UX/UIデザイン教材 第5章「修了制作」 lesson-04（5-4）※申請書類上は第Ⅲ部 Ⅲ-5
+  題材: 修了評価（概論型・学習時間60分）
+  範囲: 修了評価の全体像（自己採点→講師によるルーブリック評価→フィードバック→再提出） / ルーブリック7観点×評価レベル（A〜D）で何が評価されるか / 100点満点・70点以上で合格・全観点提出が条件 / ルーブリックによる自己採点と不足観点の洗い出し
+  通し課題: 前回（5-3）のプレゼン資料・修了制作一式を入力に、ルーブリック7観点で自己採点し不足観点を洗い出す。成果物＝自己採点シート・不足観点リスト→コーチとの評価面談へ。合否・点数は講師（011のルーブリック・修了要件）
+  体裁の正: chapter-02_research-requirements/lesson-02.html（F5テンプレ・ClipKit目次対策込み）
+  図版: ルーブリック7観点×評価レベルは表（spec-table）で提示。評価の流れのみGPT画像プレースホルダー（ig-3504-01。画像生成は後日タスク）
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ClipKit対策: アンカージャンプ先が固定ヘッダーに隠れないようオフセット */
+section[id] { scroll-margin-top: 96px; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box__time { margin-left: auto; font-size: 13px; font-weight: 700; color: #C2402F; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — ClipKit対策版（高詳細度＋!important） */
+.lesson-wrapper nav.toc { background: #fff !important; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.lesson-wrapper nav.toc .toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lesson-wrapper nav.toc .toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.lesson-wrapper nav.toc .toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.lesson-wrapper nav.toc ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 3px; }
+.lesson-wrapper nav.toc ul li { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.lesson-wrapper nav.toc ul li::before { content: none !important; }
+.lesson-wrapper nav.toc ul li::marker { content: '' !important; }
+.lesson-wrapper nav.toc ul li a { display: flex !important; align-items: center; gap: 12px; padding: 8px 14px !important; background: #FAF9F8; border-radius: 8px; text-decoration: none !important; border-bottom: none !important; box-shadow: none; color: #2D2D2D !important; transition: background 0.2s; }
+.lesson-wrapper nav.toc ul li a:hover { background: #F5EFEC; text-decoration: none !important; color: #2D2D2D !important; }
+.lesson-wrapper nav.toc ul li a:visited { color: #2D2D2D !important; }
+.lesson-wrapper nav.toc .toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.lesson-wrapper nav.toc .toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.lesson-wrapper nav.toc .toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* 注意ボックス */
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+
+/* v2テーブル（比較・マッピング） */
+.v2-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 24px 0 28px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 15px; }
+.v2-table th { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-weight: 700; padding: 12px 16px; text-align: left; font-size: 14px; }
+.v2-table td { padding: 12px 16px; border-bottom: 1px solid #F0E6E1; color: #4A4A4A; background: #fff; vertical-align: top; line-height: 1.75; }
+.v2-table tr:last-child td { border-bottom: none; }
+.v2-table td:first-child { font-weight: 700; color: #2D2D2D; white-space: nowrap; }
+
+/* ルーブリック表（spec-table） */
+.spec-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table .tbl-num { font-family: 'Inter', sans-serif; font-weight: 800; color: #E85D4A; font-size: 14px; margin-right: 6px; }
+.spec-table .tbl-name { font-weight: 700; color: #2D2D2D; }
+.spec-table .tbl-pt { display: inline-block; font-size: 12px; font-weight: 700; color: #C2402F; margin-top: 3px; }
+.spec-table tr.spec-note td { background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); color: #2D2D2D; font-weight: 700; text-align: center; border-bottom: none; letter-spacing: 0.01em; }
+
+/* 図版プレースホルダー */
+.fig-ph { font-size: 13.5px; line-height: 1.8; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* 演習ボックス */
+.work-box { background: #fff; border: 2px solid #F5A64A; border-radius: 14px; padding: 22px 24px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.work-box__badge { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 14px; }
+.work-box h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 16px 0 8px; }
+.work-box ol, .work-box ul { margin: 0 0 8px; padding-left: 1.4em; }
+.work-box li { font-size: 14.5px; color: #4A4A4A; line-height: 1.85; }
+.submit-note { background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; color: #C2402F; margin-top: 14px; text-align: center; }
+
+/* 理解度チェック */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== 図解キット（fig-*）v2 分かりやすさ最適化 ===== */
+.fig { margin: 28px 0; }
+.fig__frame { background:#FBFAF8; border:1px solid #E4E1DB; border-radius:14px; padding:22px 20px; }
+.fig__cap { font-size:13px; color:#6E6A66; text-align:center; margin-top:10px; line-height:1.7; }
+.fig__sample { color:#B8B0A8 !important; font-style:italic; }
+.fig-row { display:flex; gap:16px; flex-wrap:wrap; }
+.fig-row > * { flex:1 1 0; min-width:150px; }
+.fig-card { background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:18px; }
+.fig-card__n { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:#E85D4A; color:#fff; font-size:13px; font-weight:800; margin-bottom:10px; }
+.fig-card__t { font-size:15px; font-weight:700; color:#2D2D2D; margin-bottom:6px; line-height:1.5; }
+.fig-card__d { font-size:13px; color:#555; line-height:1.75; }
+.fig-card__note { margin-top:10px; padding-top:10px; border-top:1px dashed #E4E1DB; font-size:12.5px; color:#C2402F; font-weight:700; }
+.fig-card--accent { border-color:#E85D4A; background:#FDEEE9; }
+.fig-card--fill { background:#E85D4A; border-color:#E85D4A; }
+.fig-card--fill .fig-card__t, .fig-card--fill .fig-card__d { color:#fff; }
+.fig-card--fill .fig-card__n { background:#fff; color:#E85D4A; }
+.fig-card--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-card--mute .fig-card__n { background:#A8A29B; }
+.fig-card--mute .fig-card__t { color:#6E6A66; }
+.fig-flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; }
+.fig-node { flex:1 1 0; min-width:104px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:13px 11px; text-align:center; }
+.fig-node__n { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; margin-bottom:8px; }
+.fig-node__t { font-size:13px; font-weight:700; color:#2D2D2D; line-height:1.45; }
+.fig-node__d { font-size:11.5px; color:#6E6A66; line-height:1.6; margin-top:4px; }
+.fig-node--current { border-color:#E85D4A; background:#FDEEE9; }
+.fig-node--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-node--mute .fig-node__n { background:#A8A29B; }
+.fig-node--mute .fig-node__t { color:#6E6A66; }
+.fig-sep { display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:18px; font-weight:800; flex:0 0 auto; }
+.fig-loop { margin-top:12px; display:flex; align-items:center; gap:10px; color:#C2402F; font-size:12.5px; font-weight:700; }
+.fig-loop__line { flex:1; height:0; border-top:2px dashed #C9C4BD; }
+.fig-two { display:flex; align-items:stretch; gap:12px; flex-wrap:wrap; }
+.fig-two__col { flex:1 1 0; min-width:180px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:16px 18px; }
+.fig-two__h { font-size:14px; font-weight:800; color:#2D2D2D; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.fig-two__col ul { margin:0; padding-left:1.1em; }
+.fig-two__col li { font-size:13px; color:#555; line-height:1.8; }
+.fig-two__mid { flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:22px; font-weight:800; }
+.fig-two__col--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-two__col--mute .fig-two__h, .fig-two__col--mute li { color:#8A8279; }
+.fig-two__col--accent { background:#FDEEE9; border-color:#E85D4A; }
+.fig-mark { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; font-size:12px; font-weight:800; flex:0 0 auto; }
+.fig-mark--ok { background:#E85D4A; color:#fff; }
+.fig-mark--ng { background:#C9C4BD; color:#fff; }
+.fig-tag { display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.04em; padding:2px 8px; border-radius:6px; }
+.fig-tag--mute { background:#E4E1DB; color:#8A8279; }
+.fig-tag--accent { background:#E85D4A; color:#fff; }
+.fig-nest { display:flex; justify-content:center; }
+.fig-nest__outer { position:relative; background:#FDEEE9; border:2px solid #F0A891; border-radius:20px; padding:38px 28px 22px; min-width:280px; max-width:440px; text-align:center; }
+.fig-nest__label { position:absolute; top:12px; left:20px; font-size:12.5px; font-weight:800; color:#C2402F; }
+.fig-nest__inner { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:18px 20px; }
+.fig-nest__inner .t { font-size:14px; font-weight:800; color:#2D2D2D; }
+.fig-nest__inner .d { font-size:12px; color:#6E6A66; margin-top:4px; line-height:1.6; }
+.fig-nest__outerd { font-size:12px; color:#8A6A5A; margin-top:14px; line-height:1.6; }
+.fig-ladder { display:flex; flex-direction:column; gap:8px; }
+.fig-step { border:1px solid #E4E1DB; border-radius:12px; padding:12px 16px; display:flex; gap:12px; align-items:flex-start; }
+.fig-step__n { flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.fig-step__t { font-size:13px; color:#3D3D3D; line-height:1.6; }
+.fig-step.s1{background:#FCF1ED}.fig-step.s2{background:#FADED4}.fig-step.s3{background:#F7C9B8}.fig-step.s4{background:#F3B39B}.fig-step.s5{background:#EE9B7E}
+.fig-step.d2{margin-left:22px}.fig-step.d3{margin-left:44px}.fig-step.d4{margin-left:66px}.fig-step.d5{margin-left:88px}
+.fig-step--root { border-color:#E85D4A; border-width:2px; }
+.fig-why { text-align:center; color:#A8A29B; font-size:12px; font-weight:800; margin:2px 0; }
+.fig-band { display:flex; flex-direction:column; gap:8px; }
+.fig-band__row { display:flex; gap:10px; align-items:center; }
+.fig-band__k { flex:0 0 104px; font-size:12.5px; font-weight:800; color:#C2402F; text-align:right; line-height:1.4; }
+.fig-band__v { flex:1; background:#FDEEE9; border:1px solid #E4E1DB; border-radius:10px; padding:9px 12px; font-size:12.5px; color:#3D3D3D; line-height:1.6; }
+.fig-exchange { display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap; }
+.fig-exchange__end { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:16px 18px; font-size:13.5px; font-weight:800; color:#2D2D2D; text-align:center; min-width:110px; }
+.fig-exchange__mid { flex:1; min-width:150px; display:flex; flex-direction:column; gap:8px; }
+.fig-exchange__req, .fig-exchange__res { border-radius:8px; padding:7px 12px; font-size:12px; font-weight:700; text-align:center; }
+.fig-exchange__req { background:#FDEEE9; color:#C2402F; }
+.fig-exchange__res { background:#F4F2F0; color:#6E6A66; }
+@media (max-width:600px){
+  .fig-two__mid{transform:rotate(90deg)}
+  .fig-step.d2,.fig-step.d3,.fig-step.d4,.fig-step.d5{margin-left:0}
+}
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">第5章</span>
+  <div class="lesson-hero__title">修了評価 — ルーブリック7観点で自分の制作を採点する</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">レッスン 5-4</span>
+    <span class="lesson-hero__topic">修了制作</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約60分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+  <!-- 前の章に戻るボタンの場合 --> 
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap5/T76A7" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%) rotate(180deg); filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+    前の章に戻る
+  </a>
+</div>  
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+    <div class="goal-box__time">⏱ 約60分</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">修了評価のルーブリック7観点と、各観点で何が評価されるかを説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">自己採点から講師によるルーブリック評価・フィードバック・再提出までの流れを説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">ルーブリックで自分の修了制作を自己採点し、70点の合格ラインに対して不足している観点を洗い出せる</div></li>
+  </ul>
+</div>
+
+<!-- 目次: ClipKit対策のためインラインstyleを併記 -->
+<nav class="toc" style="background:#fff; border-radius:14px; padding:22px 26px; box-shadow:0 2px 12px rgba(0,0,0,0.05); margin:0 0 48px;">
+  <div class="toc-head" style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <div class="toc-icon" style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#E85D4A,#F5A64A); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700;">≡</div>
+    <div class="toc-title" style="font-size:15px; font-weight:700; color:#2D2D2D;">目次</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;">
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s1" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">01</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">修了評価はどう進むか</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s2" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">02</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">ルーブリック7観点で何を見るか</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s3" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">03</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">合格ライン（100点満点・70点）と再提出</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s4" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">04</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">演習：ルーブリックで自己採点する</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- 通し課題の連続性: 前回の成果物 → 今回 → 仕上げる成果物 -->
+<div style="border:1px solid #E8DCC8; background:#FBF8F3; border-radius:14px; padding:18px 22px; margin:0 0 40px;">
+  <div style="display:inline-block; background:#8B6F3F; color:#fff; padding:4px 12px; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.1em; margin-bottom:10px;">通し課題</div>
+  <p style="font-size:14.5px; line-height:1.9; color:#3D3D3D; margin:0;">前回（5-3）では、設計判断の根拠を語る<strong>プレゼン資料</strong>を作り、リフトの修了制作一式を提出しました。今回は、その修了制作が何を基準に評価されるかを理解し、ルーブリックで自己採点します。仕上げる成果物は7観点の<strong>自己採点シート</strong>で、これをもとに次回のコーチングで<strong>修了評価</strong>を受けます。</p>
+</div>
+
+<p>このレッスンは、講座の締めくくりです。第2章でリフトのリサーチと要件定義を行い、第3章で情報設計とUIを作り、第4章でプロトタイプを検証して改善し、5-1から5-3で成果を一式にまとめてプレゼン資料まで仕上げてきました。修了制作は、この一連の成果物を、講師がルーブリックという共通のものさしで評価します。ここでやるのは、その評価が7つの観点でどう行われ、自己採点から講師評価・フィードバック・再提出までどう進むかを、先に知っておくことです。基準を先に理解しておくと、提出する前に自分の制作のどこを見直せばよいかが分かります。</p>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>修了評価はどう進むか</h2>
+
+<p>修了評価は、いきなり講師が採点して終わりではありません。まず自分で採点する自己採点から始まり、講師によるルーブリック評価、フィードバック、必要なら再提出という順で進みます。この流れを先に知っておくと、提出までに何をすればよいかが見通せます。</p>
+
+<figure class="fig" data-asset-id="ig-3504-01"><img src="../../_assets/976707e545.webp" alt="修了評価の流れ。①自己採点→②講師によるルーブリック評価（100点満点・70点以上で合格）→③フィードバック→④再提出、70点に届かない場合は③④を経て②の評価へ戻る4ステップのフロー図" style="width:100%;height:auto;border-radius:14px;border:1px solid #E4E1DB;"><figcaption class="fig__cap">図：自己採点は準備で、合否を決めるのは講師。70点に届かなくても、フィードバックを受けて直し再提出できる。</figcaption></figure>
+
+<p>自己採点は、講師に見てもらう前に、自分でルーブリックの観点に照らして点検する工程です。講師はその成果物を7観点で採点し、点数と合否を判定します。70点に届かないときは、どの観点が不足しているかのフィードバックを受け、直して再提出します。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">自己採点は提出前の準備</div>
+  </div>
+  <p>自己採点は、講師に評価される前に、自分で弱い観点に気づくための準備です。7観点のものさしを自分の制作に当てると、どこが足りないかが具体的に見え、提出前に手を打てます。合否と点数を決めるのは講師で、AI（Gem）は演習の相手役にとどまり、評価はしません。</p>
+</div>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 1／3</div></div>
+  <div class="quiz-q">修了制作を提出する前に、まず自分でルーブリックの7観点に照らして採点しました。この自己採点の位置づけとして正しいものはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">A</div><div class="quiz-opt-text">提出前に不足に気づくための準備で、合否は最終的に講師のルーブリック評価で決まる</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">自己採点でつけた点数が、そのまま修了の合否になる</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">自己採点で70点を超えていれば、講師の評価は受けなくてよい</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">採点はAI（Gem）が行い、その結果が正式な評価として記録される</div></button>
+  </div>
+  <div class="quiz-feedback" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">自己採点は、提出前に自分で弱い観点に気づくための準備です。合否と点数を決めるのは講師のルーブリック評価。AIは相手役で、評価はしません。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">合否と点数を決めるのは講師です。自己採点は準備の工程で、その点がそのまま合否にはならず、AIも評価はしません。正解はAです。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>ルーブリック7観点で何を見るか</h2>
+
+<p>修了評価のものさしは、7つの観点でできています。この7観点は、第1章で学んだUXデザインの7ステップに対応していて、第2章から第4章で作ってきた成果物が、それぞれの観点で評価されます。まず、各観点にどの評価レベルが付くのかを整理します。</p>
+
+<p>評価レベルは、観点ごとにA〜Dの4段階でつきます。下の表が、各レベルの意味と点の目安です。</p>
+
+<table class="v2-table">
+  <thead><tr><th style="width:18%;">評価レベル</th><th>意味と点の目安</th></tr></thead>
+  <tbody>
+    <tr><td>A（満点相当）</td><td>その観点の要求を高い水準で満たし、なぜそうしたかの根拠まで説明できている。目安：配点の約90〜100%。</td></tr>
+    <tr><td>B（合格圏）</td><td>要求をおおむね満たしている。目安：配点の約70〜89%。</td></tr>
+    <tr><td>C（あと一歩）</td><td>一部が不足していたり、判断の根拠が弱い。目安：配点の約40〜69%。</td></tr>
+    <tr><td>D（未達・未提出）</td><td>成果物がない、または要求を満たしていない。目安：配点の約0〜39%。</td></tr>
+  </tbody>
+</table>
+
+<p>次の表が、7観点それぞれで求められる状態を、A〜Dの4段階で示したものです。講師はこの表を共通のものさしとして各観点にA〜Dを付け、上の目安で点数に換算します。自分の制作をこの表に照らせば、どの観点が今どのレベルかが分かります。</p>
+
+<div style="overflow-x:auto; margin:0 0 28px;">
+<table class="spec-table reveal visible" style="min-width:860px;">
+  <thead>
+    <tr>
+      <th style="width:16%;">観点（配点）</th>
+      <th style="width:25%;">A（満点相当）</th>
+      <th style="width:20%;">B（合格圏）</th>
+      <th style="width:19%;">C（あと一歩）</th>
+      <th style="width:20%;">D（未達・未提出）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-num">①</span><span class="tbl-name">リサーチ</span><br><span class="tbl-pt">15点</span></td>
+      <td>インタビューと競合分析から、本人も言語化できていない課題（インサイト）を複数引き出し、根拠と結びつけている</td>
+      <td>事実を整理し、そこから妥当なインサイトを引き出せている</td>
+      <td>事実の書き写しが中心で、インサイトの掘り下げが浅い</td>
+      <td>リサーチ記録が乏しい、または未提出</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">②</span><span class="tbl-name">要件定義・価値定義</span><br><span class="tbl-pt">15点</span></td>
+      <td>ビジネス要件とユーザーニーズを統合し、提供価値を明確に定義。優先順位の根拠も示せている</td>
+      <td>要件と価値がまとまり、提供価値の軸が定まっている</td>
+      <td>要望の羅列にとどまり、価値の軸が弱い</td>
+      <td>要件・価値の定義がない、または未提出</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">③</span><span class="tbl-name">情報設計</span><br><span class="tbl-pt">15点</span></td>
+      <td>IA・画面フロー・WFが明快で、戻り経路や分岐も含め目的の画面まで迷わず到達できる</td>
+      <td>主要な導線が通り、目的の画面に到達できる</td>
+      <td>画面のつながりが不明確で、迷いや行き止まりが残る</td>
+      <td>情報設計が成り立っていない、または未提出</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">④</span><span class="tbl-name">UIデザイン</span><br><span class="tbl-pt">20点</span></td>
+      <td>状態設計・アフォーダンス・コントラスト等を踏まえ、スタイルガイドと完全に一貫したUIになっている</td>
+      <td>基礎を踏まえ、おおむね一貫したUIになっている</td>
+      <td>見た目のばらつき・押下可否の不明確さ・コントラスト不足が残る</td>
+      <td>UIが要求を満たしていない、または未提出</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">⑤</span><span class="tbl-name">プロトタイプ・検証</span><br><span class="tbl-pt">15点</span></td>
+      <td>動くプロトタイプで、定義した価値と要件が体験として成立するかを検証し、結果を根拠に語れている</td>
+      <td>プロトタイプで主要な導線を検証できている</td>
+      <td>プロトタイプが断片的で、検証が不十分</td>
+      <td>プロトタイプ・検証がない、または未提出</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">⑥</span><span class="tbl-name">改善</span><br><span class="tbl-pt">10点</span></td>
+      <td>テスト結果を反映して直し、リリース後の継続改善のしくみまで提案できている</td>
+      <td>テスト結果を反映した改善ができている</td>
+      <td>課題の記録にとどまり、改善につながっていない</td>
+      <td>改善がない、または未提出</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">⑦</span><span class="tbl-name">プレゼン</span><br><span class="tbl-pt">10点</span></td>
+      <td>各設計判断の根拠を、リサーチ→改善のストーリー順に自分の言葉で説明できている</td>
+      <td>主要な判断の根拠を説明できている</td>
+      <td>作ったものの説明にとどまり、根拠が弱い</td>
+      <td>プレゼンがない、または未提出</td>
+    </tr>
+    <tr class="spec-note">
+      <td colspan="5">合計100点満点。7観点すべてを提出し、合計70点以上で修了です</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>配点は観点で異なり、④UIデザインが20点で最も高くなっています。Figma教材で身につけた画面を形にする力を土台に、この講座では見本のない案件でUIを0から設計しました。その設計を最も重く見るために、④の配点を高くしています。</p>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 2／3</div></div>
+  <div class="quiz-q">ユーザーインタビューの記録に、聞いた内容がそのまま書き写されています。ルーブリックの①リサーチで高い評価（A）にするには、あと何が必要でしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">A</div><div class="quiz-opt-text">記録から、ユーザー自身も言葉にできていない課題（インサイト）を読み取ってまとめる</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">インタビューの文字数を増やして、記録をできるだけ長くする</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">競合サービスのボタンの色をそのまま真似て、画面に並べる</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">専門用語を増やして、記録を専門的に見えるようにする</div></button>
+  </div>
+  <div class="quiz-feedback" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">①リサーチで見るのは、事実の量ではなくインサイトを引き出せているかです。書き写しから一歩進めて、本人も気づいていない課題を読み取るとAに近づきます。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">①リサーチは、記録の長さや用語の多さでは評価されません。事実の裏にあるインサイトを読み取れているかを見ます。正解はAです。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>合格ライン（100点満点・70点）と再提出</h2>
+
+<p>修了の条件は2つです。7観点の合計が70点以上であること、そして7観点すべてを提出していることです。点数が足りていても、観点が1つでも欠けていると修了になりません。</p>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">全観点の提出が合格の条件</div>
+  </div>
+  <p>合計が70点を超えていても、7観点のうち1つでも成果物が欠けていると修了にはなりません。<strong>合計点だけでなく、全7観点をそろえて提出すること</strong>が条件です。未提出の観点があれば、まずそこを埋めてから提出しましょう。</p>
+</div>
+
+<p>70点に届かなかったり、未提出の観点があったりしても、そこで終わりではありません。講師から、どの観点が不足しているかのフィードバックを受け、その指摘に沿って直して再提出します。再提出したものを講師がもう一度評価し、合否を判定します。前の工程に戻って直すのは、第1章で学んだ反復のプロセスと同じ考え方です。</p>
+
+<p>修了評価は、次回のコーチングで講師がルーブリックに沿って行います。評価の結果は学習の記録として残り、講座を修了した証明にもなります。だからこそ、自己採点で自分の弱いところをつかんでから臨むと、指摘を受け止めやすく、次の一手を相談しやすくなります。</p>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 3／3</div></div>
+  <div class="quiz-q">自己採点では70点を超えていましたが、講師のルーブリック評価で③情報設計が未達と判定され、合計が70点に届きませんでした。次にすることとして適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">A</div><div class="quiz-opt-text">不足と指摘された③情報設計をフィードバックに沿って直し、再提出して再評価を受ける</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">70点に届かなかったので、修了はあきらめる</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">自己採点では超えていたので、その点で修了と認めてもらう</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">他の観点の点を自分で上げて、合計を70点に書き換える</div></button>
+  </div>
+  <div class="quiz-feedback" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">70点に届かなくても終わりではありません。不足観点のフィードバックを受けて直し、再提出して再評価を受けられます。合否と点数を決めるのは講師で、自己採点で上書きはできません。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">未達でも再提出のしくみがあります。あきらめる必要はなく、自己採点で上書きもできません。指摘された観点を直して再提出するAが適切です。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション4：演習 ===== -->
+<section id="s4">
+<h2>演習：ルーブリックで自己採点する</h2>
+
+<p>ここまでの基準を使って、自分の修了制作を自己採点します。目的は点を出すこと自体ではなく、70点に対してどの観点が不足しているかを、提出前に自分でつかむことです。</p>
+
+<div class="work-box reveal">
+  <div class="work-box__badge">演習 5-4</div>
+
+  <h4>STEP 1：修了制作一式を手元にそろえる</h4>
+  <ul>
+    <li>5-1で統合した完成一式、5-2の改善提案書、5-3のプレゼン資料を開きます</li>
+    <li>配られたルーブリック（7観点・配点）を横に並べ、どの成果物がどの観点にあたるかを確認します</li>
+  </ul>
+
+  <h4>STEP 2：7観点で自己採点する</h4>
+  <ul>
+    <li>各観点に、A〜Dのどのレベルかを付けます（A＝要求を高い水準で満たす、D＝未達・未提出）</li>
+    <li>付けたレベルを配点に照らして、観点ごとの点と合計点を出します</li>
+  </ul>
+
+  <h4>STEP 3：70点に対して不足観点を洗い出す</h4>
+  <ul>
+    <li>合計が70点に届いているか、未提出の観点がないかを確認します</li>
+    <li>点の低い観点を挙げ、何を足せば評価が上がるかを、観点ごとに1〜2行で書きます</li>
+  </ul>
+
+  <h4>完了条件（作成物）</h4>
+  <ul>
+    <li><strong>自己採点シート</strong>（7観点のA〜Dと、観点別の点・合計点）</li>
+    <li><strong>不足観点リスト</strong>（点の低い観点と、それを上げるための具体的な改善アクション）</li>
+  </ul>
+
+  <div class="submit-note">自己採点ができたら、次回のコーチングで修了評価を実施してもらうよう、コーチにお願いしましょう。</div>
+</div>
+</section>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>修了評価のルーブリック7観点を挙げられる</summary>
+    <div class="check-box__detail">①リサーチ ②要件定義・価値定義 ③情報設計 ④UIデザイン ⑤プロトタイプ・検証 ⑥改善 ⑦プレゼンの7つです。第1章で学んだUXデザインの7ステップに対応し、第2章から第4章で作った成果物がそれぞれの観点で評価されます。配点は④UIデザインが20点と最も高く、合計100点です。</div>
+  </details>
+  <details>
+    <summary>修了評価がどう進むかを説明できる</summary>
+    <div class="check-box__detail">まず自分で7観点を自己採点し、次に講師がルーブリックで評価します。70点以上かつ全観点の提出で修了です。届かない場合は不足観点のフィードバックを受け、直して再提出し、再評価を受けます。合否と点数を決めるのは講師で、AIは評価しません。</div>
+  </details>
+  <details>
+    <summary>自分の修了制作で不足している観点を洗い出せる</summary>
+    <div class="check-box__detail">ルーブリックの各観点にA〜Dを付け、配点に照らして観点別の点と合計を出します。70点に届いているか、未提出の観点がないかを確認し、点の低い観点について何を足せば上がるかを書き出します。この自己採点をもとに、次回のコーチングで修了評価を実施してもらうようお願いします。</div>
+  </details>
+</div>
+
+<div style="background:linear-gradient(135deg,#FFF5F0 0%,#FFFAEC 100%); border:2px solid #F5A64A; border-radius:14px; padding:22px 24px; margin:44px 0 8px;">
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+    <span style="display:inline-block; background:linear-gradient(135deg,#F84744,#FB9A3F); color:#fff; padding:6px 16px; border-radius:50px; font-size:12px; font-weight:800; letter-spacing:0.1em;">提出</span>
+    <span style="font-size:15px; font-weight:800; color:#2D2D2D;">修了制作の提出物 — コーチに提出しよう</span>
+  </div>
+  <p style="font-size:14px; color:#555; line-height:1.9; margin:0 0 14px;">これまで積み上げた修了制作の成果物一式です。そろったらコーチへ提出し、<strong>次回のコーチングで修了評価（ルーブリック）</strong>を受けます。</p>
+  <label style="display:flex; align-items:flex-start; gap:10px; padding:11px 14px; background:#fff; border:1px solid #F1DFCB; border-radius:10px; margin-bottom:8px; font-size:14px; color:#3D3D3D; cursor:pointer;"><input type="checkbox" style="margin-top:3px; width:16px; height:16px; accent-color:#E85D4A; flex-shrink:0;"><span>完成一式<span style="color:#9a9088; font-size:12px;">（5-1）</span></span></label>
+  <label style="display:flex; align-items:flex-start; gap:10px; padding:11px 14px; background:#fff; border:1px solid #F1DFCB; border-radius:10px; margin-bottom:8px; font-size:14px; color:#3D3D3D; cursor:pointer;"><input type="checkbox" style="margin-top:3px; width:16px; height:16px; accent-color:#E85D4A; flex-shrink:0;"><span>改善提案書<span style="color:#9a9088; font-size:12px;">（5-2）</span></span></label>
+  <label style="display:flex; align-items:flex-start; gap:10px; padding:11px 14px; background:#fff; border:1px solid #F1DFCB; border-radius:10px; font-size:14px; color:#3D3D3D; cursor:pointer;"><input type="checkbox" style="margin-top:3px; width:16px; height:16px; accent-color:#E85D4A; flex-shrink:0;"><span>プレゼン資料<span style="color:#9a9088; font-size:12px;">（5-3）</span></span></label>
+</div>
+  
+  <!-- 前の章に戻るボタンの場合 --> 
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap5/T76A7" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%) rotate(180deg); filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+    前の章に戻る
+  </a>
+</div>  
+
+      <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+</div><!-- /.lesson-wrapper -->
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

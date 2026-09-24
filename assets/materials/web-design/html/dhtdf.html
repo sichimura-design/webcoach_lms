@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/dhTDF -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>WEBデザイン -基礎編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/dhTDF">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="WEBデザイン -基礎編- - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="WEBデザイン -基礎編-">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/dhTDF">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="rCETCH8PwQrtkXZGCnzQcFEAXFJksyNAIpxjwsFNzJXtWWCKECPwWQ5ZBkfxHGQUAIrc5G0WDEHYcw_DuPMVIw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item50641" data-item-id="50641" data-item-type="ItemHtml"><div class="item-body"><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 17px; font-weight: 700; color: #2D2D2D; margin: 28px 0 12px; padding-left: 14px; border-left: 3px solid #2D2D2D; }
+h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 28px 0 10px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+a { color: #E85D4A; }
+a:visited { color: #E85D4A; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス（GOALピル＋カードアイテム）*/
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 */
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li { list-style: none; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; font-family: 'Inter', sans-serif; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* 画像 */
+.slide-img { max-width: 50%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+.ai-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+.img-label { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; margin: 20px 0 6px; }
+.img-label--ng { color: #E85D4A; }
+.img-label--ok { color: #27AE7E; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* クイズボックス */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* まとめ（グリーンバッジ）*/
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+/* 理解度チェック（CHECKピル）*/
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+/* スペックテーブル */
+.spec-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; overflow: hidden; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.tbl-num { font-family: 'Inter', sans-serif; font-weight: 800; color: #E85D4A; font-size: 13px; margin-right: 4px; }
+.tbl-name { font-weight: 700; color: #2D2D2D; }
+
+
+/* スクロールリビール */
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* チャプター概要動画 */
+.chapter-intro-video { background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.chapter-intro-video::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.chapter-intro-video__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.chapter-intro-video__player { width: 100%; border-radius: 8px; display: block; background: #F7F8FA; }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="../../_assets/e9c67fa5e8.css" rel="stylesheet">
+
+<div class="lesson-wrapper">
+
+<!-- ===== ヘッダー ===== -->
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">イントロダクション</span>
+  <div class="lesson-hero__title">WEBデザイン -基礎編-</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 3</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約120分</span>
+  </div>
+</div>
+  
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/TeRs5" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/Fz4gT" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+<!-- ===== レッスン解説動画 ===== -->
+<div class="chapter-intro-video">
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-2de925bee4.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div>
+
+<!-- ===== ゴールボックス ===== -->
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">WEBデザインとは何か、WEBデザイナーの仕事の範囲を説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">デザイン上達に必要な3つの取り組み（原則・根拠・インプット）を実践できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">WEBサイトの基本構造と4つのレイアウトパターンを区別できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">アートボード幅とコンテンツ幅の違いを説明できる</div></li>
+  </ul>
+</div>
+
+<!-- ===== 目次 ===== -->
+<nav class="toc">
+  <div class="toc-head">
+    <div class="toc-icon">≡</div>
+    <div class="toc-title">目次</div>
+  </div>
+  <ul>
+    <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">WEBデザインとは</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">WEBデザイン上達への道</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s3"><span class="toc-num">03</span><span class="toc-text">WEBサイトの基本構造</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s4"><span class="toc-num">04</span><span class="toc-text">ページを構成する基本4要素</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s5"><span class="toc-num">05</span><span class="toc-text">アートボード幅とコンテンツ幅</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s6"><span class="toc-num">06</span><span class="toc-text">WEBサイトレイアウトの基本パターン</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+
+<p>WEBデザインはセンスがある人だけの仕事ではありません。原則を理解し、根拠を持ってデザインを判断できれば、誰でも一定以上のクオリティを出せます。このレッスンでは、WEBデザイナーの仕事の全体像から、サイト構造・レイアウトの基礎知識までを学びます。</p>
+
+
+<!-- ======== セクション1 ======== -->
+<section id="s1">
+<h2>WEBデザインとは</h2>
+
+<h3>WEBサイトの種類</h3>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th>種類</th>
+      <th>概要</th>
+      <th>例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">企業ホームページ</span></td>
+      <td>企業の顔となるサイト。会社情報・サービス内容を伝える</td>
+      <td>コーポレートサイト</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">WEBサービス</span></td>
+      <td>ユーザーがブラウザ上で機能を利用するサービス</td>
+      <td>SaaS、ツール系サイト</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">ECサイト</span></td>
+      <td>商品を販売するオンラインショッピングサイト</td>
+      <td>通販サイト</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">ランディングページ（LP）</span></td>
+      <td>1ページで商品・サービスの申し込みを促すページ</td>
+      <td>キャンペーンLP</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>WEBデザイン業務には、レイアウト構成・フォント確定・配色の決定・バナー制作など、サイトのクオリティを左右するあらゆるデザイン業務が含まれます。</p>
+
+<h3>WEBデザイナーの仕事</h3>
+
+<p>WEB制作の仕事は、企画・デザイン・実装・納品という流れで進みます。WEBデザイナーは上流工程である<strong>企画・デザイン</strong>を担当します。</p>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th>工程</th>
+      <th>主な作業</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">要件定義</span></td>
+      <td>クライアントへのヒアリングを実施してWEBサイトの仕様を確定する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">ワイヤーフレーム作成</span></td>
+      <td>WEBサイトのコンセプト・構成を考え、ページのレイアウト骨格を設計する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">デザイン確定</span></td>
+      <td>フォント・配色・レイアウトを決定してデザインを完成させる</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>WEBサイトが成果を出せるかはWEBデザインの段階でほぼ決まります。近年は集客・成果につながるデザインが求められるため、デザインスキルに加えてWEBマーケティングの視点も必要です。</p>
+
+<h3>センスより守破離</h3>
+
+<p>WEBデザインに芸術センスは必須ではありません。デザインが思い浮かばない原因の多くは、インプットとアウトプットの絶対量が不足しているためです。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">守破離で着実に上達する</div>
+  </div>
+  <p><strong>守：</strong>参考になるサイトを真似て作る。<strong>破：</strong>一部をカスタマイズして自分流にする。<strong>離：</strong>オリジナルのデザインを生み出す。プロのデザイナーもベンチマークとなるサイトを参考にしながら制作するのが一般的です。</p>
+</div>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">WEBデザイナーが担当する上流工程の作業として正しいものはどれですか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">HTML・CSSによるコーディング実装</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">ワイヤーフレームの作成とデザイン確定</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">サーバーの設定と保守管理</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">SEOキーワードの選定と記事執筆</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">WEBデザイナーはヒアリング・ワイヤーフレーム・デザイン確定といった上流工程を担当します。コーディングはエンジニア、サーバー管理はインフラエンジニアが担当する場合が多いです。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はBです。WEBデザイナーは企画・デザインという上流工程を担当します。ワイヤーフレームの作成やデザインの確定が主な仕事です。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- ======== セクション2 ======== -->
+<section id="s2">
+<h2>WEBデザイン上達への道</h2>
+
+<h3>原則に従う</h3>
+
+<p>初心者が最優先で取り組むべきことは、<strong>原則を学びそれに従うこと</strong>です。顧客視点で優れたデザインには一定の原則があり、原則に従うことで一定以上のクオリティを担保できます。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">いきなりオリジナリティを求めない</div>
+  </div>
+  <p>最初からオリジナリティを追い求めると、判断の基準がなくなって迷走します。まず原則に従ってデザインし、クオリティが安定してきたら少しずつ崩す順番が合理的です。</p>
+</div>
+
+<p><strong>根拠を持つ</strong>とは、なぜその色なのか、なぜそのフォントなのか、なぜこの順番なのか——各判断を言語化できる状態を指します。根拠を持てるようになると、クライアントへの説明力が上がり、デザインの再現性も高まります。</p>
+
+<p>良いデザインには良い理由、悪いデザインには悪い理由が必ずあります。他者の作ったデザインを見て、良し悪しの理由を言語化するトレーニングを日頃から続けることで、デザイン感覚が養われます。</p>
+
+<h3>大量インプット</h3>
+
+<p>頭の中にデザインのイメージが浮かばなければ、デザインは作れません。良質なデザインを徹底的にインプットして、アイデアの引き出しを増やしましょう。</p>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th>サービス</th>
+      <th>特徴・活用方法</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">Instagram</span></td>
+      <td>ハッシュタグやデザイナーアカウントをフォローして、日常的に良いデザインに触れる環境を作る</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name"><a href="https://www.pinterest.jp/" target="_blank" rel="noopener">Pinterest</a></span></td>
+      <td>キーワード検索で世界中の広告・ポスター・WEBデザインを閲覧できる。インスピレーションが湧かないときの参考に最適</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name"><a href="https://dribbble.com/" target="_blank" rel="noopener">Dribbble</a></span></td>
+      <td>招待制のデザイナー向けSNS。高いクオリティの海外デザイナーの作品が集まる（閲覧は誰でも可能）</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">デザインの根拠を言語化する目的として最も適切なものはどれですか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">デザインの制作スピードを大幅に上げるため</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">クライアントへの説明力を高め、再現性のある良いデザインを生み出すため</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">インプット量を減らして効率的に学習するため</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">デザインの原則を無視して自由に作るため</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">根拠を持つことで、クライアントへの説明が具体的になり、修正の意図も正確に伝わります。同じクオリティのデザインを再現できるようになるのも大きなメリットです。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はBです。根拠の言語化は、クライアントへの説明力と、良いデザインの再現性を高めることを目的としています。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- ======== セクション3 ======== -->
+<section id="s3">
+<h2>WEBサイトの基本構造</h2>
+
+<p>WEBサイトには大きく2つの基本構造があります。サイトの目的に合わせて適切な構造を選ぶことが設計の第一歩です。</p>
+
+<p class="img-label">階層型</p>
+<img src="../../_assets/fb6820d944.webp" alt="階層型サイト構造：トップページから各カテゴリページ、詳細ページへと木構造で展開する図" class="slide-img reveal">
+
+<p>トップページを起点に、カテゴリページ・詳細ページへと枝分かれする構造です。人が情報を把握しやすい形であるため、多くのWEBサイトがこの形式で構成されています。</p>
+
+<p class="img-label">データベース型</p>
+<img src="../../_assets/2659ca1127.webp" alt="データベース型サイト構造：検索・フィルタリングでコンテンツにアクセスする構造の図" class="slide-img reveal">
+
+<p>データの検索しやすさと収集しやすさを目的とした構造です。ECサイトや商品一覧ページなど、大量のコンテンツを検索・フィルタリングで絞り込む場面に向いています。</p>
+</section>
+
+
+<!-- ======== セクション4 ======== -->
+<section id="s4">
+<h2>ページを構成する基本4要素</h2>
+
+<p>ほとんどのWEBページは以下の4つのエリアで構成されています。WEBサイトを分析するときは、まずこの4要素を確認する習慣をつけましょう。</p>
+
+<img src="../../_assets/34150d1314.webp" alt="WEBページの基本4要素：ヘッダー・ナビゲーション・コンテンツ・フッターエリアを示す図" class="slide-img reveal">
+
+<p><strong>ヘッダーエリア</strong>はページ最上部に位置します。左にサービス・企業のロゴ、右にお申し込みボタンや電話番号を配置するパターンが一般的です。ロゴをクリックするとトップページに戻る仕様が多く、ナビゲーションをヘッダー内に含める形式も増えています。</p>
+
+<p><strong>ナビゲーションエリア</strong>はユーザーが目的のページへ移動しやすくするナビです。各ページへのリンクが配置され、モバイルではハンバーガーメニューに格納されることが多いです。</p>
+
+<img src="../../_assets/c0d7144500.webp" alt="ハンバーガーメニューのアイコン例（3本線）" class="slide-img reveal" style="max-width: 320px; margin: 12px 0 20px;">
+
+<p><strong>コンテンツエリア</strong>はサイトのメインコンテンツが表示されるエリアです。<strong>フッターエリア</strong>はページ最下部に位置し、会社概要・プライバシーポリシーなどナビゲーションに載せるほどではないページへのリンクを集約します。</p>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">モバイルデバイスでナビゲーションエリアを格納するUIとして一般的なものはどれですか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">フローティングボタン</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">アコーディオンメニュー</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">C</div><div class="quiz-opt-text">ハンバーガーメニュー</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">ドロップダウンセレクト</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">ハンバーガーメニュー（3本線アイコン）は、モバイルの限られた画面にナビゲーションを格納する定番UIです。クリック・タップすると展開してメニューが表示されます。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はCです。モバイルではナビゲーションを3本線のハンバーガーメニューに格納するパターンが一般的です。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- ======== セクション5 ======== -->
+<section id="s5">
+<h2>アートボード幅とコンテンツ幅</h2>
+
+<p><strong>アートボード幅</strong>はデバイスの横幅とほぼ同義です。<strong>コンテンツ幅</strong>はWEBサイト上でコンテンツが表示されている部分の幅を指します。PCでは行長が長すぎると読みづらくなるため、両者は一致しません。</p>
+
+<p class="img-label">PC</p>
+<img src="../../_assets/9c17e06764.webp" alt="PCのアートボード幅とコンテンツ幅：1920px・1366pxのアートボードに対し、コンテンツ幅は1000px前後が一般的であることを示す図" class="slide-img reveal">
+
+<p>日本のデスクトップ横幅シェアは1920pxと1366pxが多いため、これらでアートボード幅を設定します。コンテンツ幅は大手企業サイトの調査で960〜1100px前後が多く、<strong>1000px前後が推奨値</strong>です。1000pxを超えると行長が長すぎて読みづらくなります。</p>
+
+<p class="img-label">スマホ</p>
+<img src="../../_assets/77b3a15eb0.webp" alt="スマホのアートボード幅とコンテンツ幅：375px・390pxを基準に両端16〜24pxのマージンを設ける図" class="slide-img reveal">
+
+<p>モバイルはアートボード幅の基準が<strong>375px・390px</strong>の2サイズです。コンテンツ幅はほぼアートボード幅と等しくなりますが、両端に16〜24px程度のマージンを設けて読みやすさを確保します。</p>
+
+<h3>文字サイズの考え方</h3>
+
+<table class="spec-table reveal">
+  <thead>
+    <tr>
+      <th>要素</th>
+      <th>推奨サイズ</th>
+      <th>補足</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">本文</span></td>
+      <td>16px（14〜18pxの範囲）</td>
+      <td>ターゲット年齢が高いほど18pxなど大きめに設定する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">見出し（h1相当）</span></td>
+      <td>24〜30px</td>
+      <td>本文とのジャンプ率をしっかり設ける</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">最小フォントサイズ</span></td>
+      <td>10px以上</td>
+      <td>Googleも10px未満を使用しないよう推奨している</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>本文フォントサイズはページ内で統一します。あるページでは16px、別のページでは14pxなど一貫性がないと、アマチュアな印象を与えます。</p>
+</section>
+
+
+<!-- ======== セクション6 ======== -->
+<section id="s6">
+<h2>WEBサイトレイアウトの基本パターン</h2>
+
+<p>世の中のWEBサイトのレイアウトは、以下の4パターンにほぼ収束します。それぞれの特徴と向いているサイトの種類を押さえましょう。</p>
+
+<h3>シングルカラムレイアウト</h3>
+
+<p>1つの列でコンテンツが上から並ぶシンプルな構造です。制作しやすく、レスポンシブWEBデザインとの相性が良いため、近年最も多く使われます。コーポレートサイト・LPに向いています。</p>
+
+<div style="display: flex; gap: 16px; margin: 20px 0 24px;" class="reveal">
+  <div style="flex: 1;">
+    <img src="../../_assets/87343bd86c.webp" alt="シングルカラムレイアウトの構造図：1列でコンテンツが縦に並ぶ" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+    <p style="font-size: 12px; color: #888; text-align: center; margin-top: 6px;">シングルカラムの構造</p>
+  </div>
+  <div style="flex: 1;">
+    <img src="../../_assets/0371b99eee.webp" alt="Toyotaのホームページ：シングルカラムレイアウトの実例" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+    <p style="font-size: 12px; color: #888; text-align: center; margin-top: 6px;">実例：Toyotaのホームページ</p>
+  </div>
+</div>
+
+<h3>マルチカラムレイアウト</h3>
+
+<p>コンテンツの左右にサイドメニューなどを持つ複数列の構造です。1画面でより多くの情報を表示できるため、サイトの回遊率を高める効果があります。ニュースサイト・ECサイトに向いています。</p>
+
+<div style="display: flex; gap: 16px; margin: 20px 0 24px;" class="reveal">
+  <div style="flex: 1;">
+    <img src="../../_assets/a5dc833edc.webp" alt="マルチカラムレイアウトの構造図：左側にメインコンテンツ、右側にサイドメニューがある" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+    <p style="font-size: 12px; color: #888; text-align: center; margin-top: 6px;">マルチカラムの構造</p>
+  </div>
+  <div style="flex: 1;">
+    <img src="../../_assets/5efe5657f5.webp" alt="マルチカラムレイアウトの実例サイト" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+    <p style="font-size: 12px; color: #888; text-align: center; margin-top: 6px;">マルチカラムの実例</p>
+  </div>
+</div>
+
+<h3>グリッドレイアウト</h3>
+
+<p>グリッド（格子）状にコンテンツを並べるレイアウトです。1画面に多くのコンテンツを表示したいときに向いています。動画サービス・通販サイトで多く使われます。</p>
+
+<div style="display: flex; gap: 16px; margin: 20px 0 24px;" class="reveal">
+  <div style="flex: 1;">
+    <img src="../../_assets/aed2b2b511.webp" alt="グリッドレイアウトの構造図：格子状にカードが並ぶ" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+    <p style="font-size: 12px; color: #888; text-align: center; margin-top: 6px;">グリッドの構造</p>
+  </div>
+  <div style="flex: 1;">
+    <img src="../../_assets/4083262cf2.webp" alt="グリッドレイアウトの実例サイト" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+    <p style="font-size: 12px; color: #888; text-align: center; margin-top: 6px;">グリッドの実例</p>
+  </div>
+</div>
+
+<h3>フルスクリーンレイアウト</h3>
+
+<p>コンテンツを横幅いっぱいで表示するレイアウトです。情報量は少なくなりますが、デザイン性が高くユーザーに強いビジュアルインパクトを与えます。ブランディング用ページ・通販サイトのトップページで使われます。</p>
+
+<div style="display: flex; gap: 16px; margin: 20px 0 24px;" class="reveal">
+  <div style="flex: 1;">
+    <img src="../../_assets/33fdef1451.webp" alt="フルスクリーンレイアウトの構造図：画像が横幅いっぱいに広がる" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+    <p style="font-size: 12px; color: #888; text-align: center; margin-top: 6px;">フルスクリーンの構造</p>
+  </div>
+  <div style="flex: 1;">
+    <img src="../../_assets/3856b79f32.webp" alt="フルスクリーンレイアウトの実例サイト" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);">
+    <p style="font-size: 12px; color: #888; text-align: center; margin-top: 6px;">フルスクリーンの実例</p>
+  </div>
+</div>
+</section>
+
+
+
+<!-- ===== まとめ ===== -->
+<div class="summary-box reveal">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li>WEBデザイナーはヒアリング・ワイヤーフレーム・デザイン確定という上流工程を担う</li>
+    <li>WEBデザインはセンスより原則・根拠・大量インプットで上達する</li>
+    <li>サイト構造は階層型とデータベース型の2種類がある</li>
+    <li>WEBページはヘッダー・ナビゲーション・コンテンツ・フッターの4要素で構成される</li>
+    <li>PCのコンテンツ幅は1000px前後、スマホのアートボード幅は375〜390pxが基準</li>
+    <li>レイアウトはシングルカラム・マルチカラム・グリッド・フルスクリーンの4パターンに分類できる</li>
+  </ol>
+</div>
+
+<!-- ===== 理解度チェック ===== -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>WEBデザインとアートの違いは何ですか？</summary>
+    <div class="check-box__detail">アートは芸術センスが求められますが、WEBデザインは原則に従い根拠を持ってデザインすることで、センスがなくても一定以上のクオリティを出せます。集客・成果につながるデザインが目的である点もアートとは異なります。</div>
+  </details>
+  <details>
+    <summary>守破離とはどのようなアプローチですか？</summary>
+    <div class="check-box__detail">守（参考サイトをそのまま真似る）→ 破（一部をカスタマイズする）→ 離（オリジナルのデザインを生み出す）という段階的なアプローチです。プロのデザイナーもベンチマークサイトを参考にするため、最初から完全オリジナルを目指す必要はありません。</div>
+  </details>
+  <details>
+    <summary>PCのコンテンツ幅の推奨値はなぜ1000px前後なのですか？</summary>
+    <div class="check-box__detail">1000pxを超えると行長が長すぎて、ユーザーが横に大きく目を動かさなければならず目が疲れやすくなります。大手企業サイトの調査でも960〜1100px前後が多く、1000px前後が一般的な基準です。</div>
+  </details>
+  <details>
+    <summary>4つのレイアウトパターンとそれぞれが向いているサイトを答えてください。</summary>
+    <div class="check-box__detail">①シングルカラム：コーポレートサイト・LP（制作しやすく、レスポンシブ対応が容易）／②マルチカラム：ニュースサイト・ECサイト（1画面で多くの情報を表示し回遊率を高める）／③グリッド：動画サービス・通販サイト（多くのコンテンツを一覧表示）／④フルスクリーン：ブランディングページ・通販トップページ（デザイン性が高く強いビジュアルインパクト）</div>
+  </details>
+</div>
+  
+    <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/TeRs5" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/Fz4gT" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+</div><!-- /.lesson-wrapper -->
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

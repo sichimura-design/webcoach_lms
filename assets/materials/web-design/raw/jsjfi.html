@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="zptIrTcdlmVCP8b0xit3Vg==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="706" data-domain="learn.webcoach.jp" data-url="/web-design/JSjFi" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop｜14章 シェイプをつくってみよう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/JSjFi">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop｜14章 シェイプをつくってみよう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/706/medium/d82b494e-f0cf-43cd-a0b3-b8e961342604.png?1739950103">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop｜14章 シェイプをつくってみよう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/JSjFi">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/706/large/d82b494e-f0cf-43cd-a0b3-b8e961342604.png?1739950103">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/JSjFi"
+    },
+    "headline": "Adobe Photoshop｜14章 シェイプをつくってみよう",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/articles/images/000/000/706/medium/d82b494e-f0cf-43cd-a0b3-b8e961342604.png?1739950103",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-04-18T18:46:53+09:00",
+    "dateModified": "2026-08-23T22:13:14+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "管理者"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="eJC1lYwrJXaNCA9cEyvA57o2p7tOPUc8zzpygQtLHxHnXQs9BFuXznjJImkU06zI0M5Ubdx_9JBxX4350H6asg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop｜14章 シェイプをつくってみよう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25601" data-item-id="25601" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="xEwGd" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Q1UcJ" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36831" data-item-id="36831" data-item-type="ItemHeading"><h2 class="item-body">14章 シェイプをつくってみよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39463" data-item-id="39463" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間:50分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8112" data-item-id="8112" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、図形を作成する上で欠かせない<span class="decoration-01"><span class="decoration-02">シェイプツール</span></span>を解説します。</div></div>
+        
+        <div class="article-item item_heading " id="item36845" data-item-id="36845" data-item-type="ItemHeading"><h2 class="item-body">【14-1】シェイプツールとは</h2></div>
+        
+        <div class="article-item item_html " id="item36832" data-item-id="36832" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>Photoshopのシェイプツールは、<span class="decoration-02">様々な形状（シェイプ）の図形を簡単に作成し、デザインに利用できる機能</span>です。</li>
+  <li>シェイプはベクター形式で作成されるため、<span class="decoration-02">拡大・縮小しても画質が劣化しないという特長</span>があります。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36846" data-item-id="36846" data-item-type="ItemHeading"><h2 class="item-body">【14-2】基本的な使用方法</h2></div>
+        
+        <div class="article-item item_heading " id="item36833" data-item-id="36833" data-item-type="ItemHeading"><h3 class="item-body">共通操作</h3></div>
+        
+        <div class="article-item item_text " id="item8124" data-item-id="8124" data-item-type="ItemText"><div class="item-body-hbr">1.  ツールバーでマウスを長押しすると作成できる形状が選択できます。</div></div>
+        
+        <div class="article-item item_image " id="item8726" data-item-id="8726" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/726/medium/32e98059-a60d-403e-bf20-6d36f1dfee5d.png?1740134397" title=""><img class="img-responsive item-image" alt=" (8726)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/726/medium/32e98059-a60d-403e-bf20-6d36f1dfee5d.png?1740134397" width="423" height="282" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36834" data-item-id="36834" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8125" data-item-id="8125" data-item-type="ItemText"><div class="item-body-hbr">2. 作成したい形状を選択すると、カーソルが十字カーソル（下図参照）になります。<br /></div></div>
+        
+        <div class="article-item item_image " id="item8727" data-item-id="8727" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/727/medium/31d441e7-c733-4862-96c0-3e62d18f0654.png?1740134408" title=""><img class="img-responsive item-image" alt=" (8727)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/727/medium/31d441e7-c733-4862-96c0-3e62d18f0654.png?1740134408" width="515" height="343" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36847" data-item-id="36847" data-item-type="ItemHeading"><h3 class="item-body">シェイプの作成方法</h3></div>
+        
+        <div class="article-item item_text " id="item8126" data-item-id="8126" data-item-type="ItemText"><div class="item-body-hbr">シェイプの作成方法には以下の2通りの方法があります。<br /></div></div>
+        
+        <div class="article-item item_html " id="item36835" data-item-id="36835" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>マウス操作で作成する方法</li>
+  <li>数値を入力して作成する方法</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36836" data-item-id="36836" data-item-type="ItemRichText"><div class="item-body-hbr">以下でそれぞれ手順を詳しく解説していきます。</div></div>
+        
+        <div class="article-item item_markdown " id="item8121" data-item-id="8121" data-item-type="ItemMarkdown"><h4 id="section">1. マウスで作成する方法</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8127" data-item-id="8127" data-item-type="ItemText"><div class="item-body-hbr">1. ドラッグでシェイプを作成してください。</div></div>
+        
+        <div class="article-item item_image " id="item8728" data-item-id="8728" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/728/medium/04d45a7f-61f8-4a67-a753-0933c4b69668.png?1740134428" title=""><img class="img-responsive item-image" alt=" (8728)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/728/medium/04d45a7f-61f8-4a67-a753-0933c4b69668.png?1740134428" width="305" height="203" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36837" data-item-id="36837" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8128" data-item-id="8128" data-item-type="ItemText"><div class="item-body-hbr">2. 十字のカーソルを長押しした状態でドラッグします。</div></div>
+        
+        <div class="article-item item_image " id="item8729" data-item-id="8729" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/729/medium/9a3e20d9-2721-4c53-9129-fe1b5d06298b.png?1740134440" title=""><img class="img-responsive item-image" alt=" (8729)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/729/medium/9a3e20d9-2721-4c53-9129-fe1b5d06298b.png?1740134440" width="291" height="194" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item8129" data-item-id="8129" data-item-type="ItemRichText"><div class="item-body-hbr">3. ドラッグしていた指を離すと、ドラッグした範囲の大きさでシェイプが作成されます。<br>
+<span class="decoration-02">Shiftボタンを押しながら操作すると縦横の比率が維持されます。</span></div></div>
+        
+        <div class="article-item item_markdown " id="item8122" data-item-id="8122" data-item-type="ItemMarkdown"><h4 id="section">2. 数値を入力して作成する方法</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8130" data-item-id="8130" data-item-type="ItemText"><div class="item-body-hbr">1. アートボードの上の十字のカーソルの状態でクリックします。</div></div>
+        
+        <div class="article-item item_image " id="item8730" data-item-id="8730" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/730/medium/47790bec-4414-4df4-a82a-f5dc989221a9.png?1740134464" title=""><img class="img-responsive item-image" alt=" (8730)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/730/medium/47790bec-4414-4df4-a82a-f5dc989221a9.png?1740134464" width="459" height="306" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36838" data-item-id="36838" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8131" data-item-id="8131" data-item-type="ItemRichText"><div class="item-body-hbr">2.「長方形を作成」というパネルが表示されます。（長方形ツールの場合）<br>
+ここで、幅と高さ、半径の数値を入力することができます。</div></div>
+        
+        <div class="article-item item_image " id="item8731" data-item-id="8731" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/731/medium/8091a633-45be-42ff-ba28-704f379b6ce4.png?1740134479" title=""><img class="img-responsive item-image" alt=" (8731)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/731/medium/8091a633-45be-42ff-ba28-704f379b6ce4.png?1740134479" width="276" height="266" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36851" data-item-id="36851" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8132" data-item-id="8132" data-item-type="ItemText"><div class="item-body-hbr">3. 作成したい大きさを入力してOKを押す。</div></div>
+        
+        <div class="article-item item_image " id="item8732" data-item-id="8732" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/732/medium/cd3f9bbe-91d2-4426-b952-5ce31bd1b55f.png?1740134492" title=""><img class="img-responsive item-image" alt=" (8732)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/732/medium/cd3f9bbe-91d2-4426-b952-5ce31bd1b55f.png?1740134492" width="248" height="238" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item36839" data-item-id="36839" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8133" data-item-id="8133" data-item-type="ItemText"><div class="item-body-hbr">4. 設定した数値の大きさでシェイプが作成される。</div></div>
+        
+        <div class="article-item item_image " id="item8733" data-item-id="8733" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/733/medium/77f9e3fb-0e88-4e3f-a3bd-fcbcb281ac4c.png?1740134506" title=""><img class="img-responsive item-image" alt=" (8733)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/733/medium/77f9e3fb-0e88-4e3f-a3bd-fcbcb281ac4c.png?1740134506" width="463" height="308" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36848" data-item-id="36848" data-item-type="ItemHeading"><h3 class="item-body">シェイプを移動させる方法</h3></div>
+        
+        <div class="article-item item_text " id="item8134" data-item-id="8134" data-item-type="ItemText"><div class="item-body-hbr">移動ツールでシェイプを選択状態でマウスでドラッグすると移動できます。</div></div>
+        
+        <div class="article-item item_link " id="item12320" data-item-id="12320" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=JSjFi&amp;item_id=12320" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 14-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 14-1" data-reference="https://www.dropbox.com/scl/fi/ivrecc6vkwiktrtn3x5y1/Adobe-Photoshop14-1_1.0_.mov?rlkey=uin81xl77re6nu9xn7nv8jf5o&amp;e=1&amp;st=jyylqhsq&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/320/thumb/6d8ca06b-9d66-4470-96d5-27aed2f88db7.png?1745434302" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8123" data-item-id="8123" data-item-type="ItemMarkdown"><h4 id="section">選択できる形状例（一部）</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8136" data-item-id="8136" data-item-type="ItemText"><div class="item-body-hbr">シェイプを作成する上で、いくつか選択できる形もあります。<br />ここではその一部を紹介します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item36840" data-item-id="36840" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.長方形ツール</span></div></div>
+        
+        <div class="article-item item_link " id="item12321" data-item-id="12321" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=JSjFi&amp;item_id=12321" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 14-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 14-2" data-reference="https://www.dropbox.com/scl/fi/514awultbtqeyz23rysm2/Adobe-Photoshop14-2_1.0_.mp4?rlkey=2fuppbnk6lq39f3fdqj5om14v&amp;e=1&amp;st=rb7wbtp2&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/321/thumb/2b0c2e49-628b-4a74-8df1-7c2a8aaa2eb8.png?1745434319" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36841" data-item-id="36841" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2.楕円形ツール</span></div></div>
+        
+        <div class="article-item item_link " id="item12322" data-item-id="12322" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=JSjFi&amp;item_id=12322" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 14-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 14-3" data-reference="https://www.dropbox.com/scl/fi/9b2jmsjy8rt2nuhe7ty06/Adobe-Photoshop14-3_1.0_.mp4?rlkey=huwm0bauho70qf7qwfzw2swbb&amp;e=1&amp;st=he8fr2hj&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/322/thumb/0599f004-0a9b-4e5f-ab3b-acca454e2d56.png?1745434332" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36842" data-item-id="36842" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3. カスタムシェイプ</span></div></div>
+        
+        <div class="article-item item_link " id="item12323" data-item-id="12323" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=JSjFi&amp;item_id=12323" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 14-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 14-4" data-reference="https://www.dropbox.com/scl/fi/4oi7jokzkcabufabcifqn/Adobe-Photoshop14-4_1.0_.mp4?rlkey=d079lrlg4vtkrc7x7dzwu91fp&amp;e=1&amp;st=94420lyv&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/323/thumb/1b69de23-5e23-4041-889b-1b06c9d1f82c.png?1745434345" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36849" data-item-id="36849" data-item-type="ItemHeading"><h2 class="item-body">【14-3】オプションバーで編集する　</h2></div>
+        
+        <div class="article-item item_text " id="item8140" data-item-id="8140" data-item-type="ItemText"><div class="item-body-hbr">オプションバーでの操作は下の3つになります。</div></div>
+        
+        <div class="article-item item_image " id="item8141" data-item-id="8141" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/141/medium/76a1cfcf-5e75-4e57-aac6-d7b903fdc459.png?1739957726" title=""><img class="img-responsive item-image" alt=" (8141)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/141/medium/76a1cfcf-5e75-4e57-aac6-d7b903fdc459.png?1739957726" width="640" height="65" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8142" data-item-id="8142" data-item-type="ItemMarkdown"><h4 id="section">1. ツールモードを選択</h4>
+</div>
+        
+        <div class="article-item item_html " id="item8144" data-item-id="8144" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">「シェイプ」「パス」「ピクセル」の違い</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>
+        <span class="decoration-01">シェイプ</span>
+        <ul>
+          <li>塗りと線を指定して図形を描画します。</li>
+          <li>描画した図形は、自由に変形できます。</li>
+          <li>ベクター形式なので拡大縮小では劣化しません。</li>
+        </ul>
+      </li>
+      <li>
+        <span class="decoration-01">パス</span>
+        <ul>
+          <li>図形の輪郭線（パス）を作成します。</li>
+          <li>パス自体に塗りと線の設定はできません。</li>
+          <li>ベクター形式なので拡大縮小では劣化しません。</li>
+        </ul>
+      </li>
+      <li>
+        <span class="decoration-01">ピクセル</span>
+        <ul>
+          <li>直接ピクセルを描画します（ラスター形式）</li>
+          <li>画像の形式がラスター形式なので、塗り、線の設定ができません。</li>
+          <li>拡大縮小を行うと<span class="decoration-02">画像が劣化します。</span></li>
+        </ul>
+      </li>
+    </ul>
+
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item8143" data-item-id="8143" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/143/medium/8d0fe604-5e0f-494c-9bd8-cf8502aded9e.png?1739957768" title=""><img class="img-responsive item-image" alt=" (8143)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/143/medium/8d0fe604-5e0f-494c-9bd8-cf8502aded9e.png?1739957768" width="413" height="232" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8145" data-item-id="8145" data-item-type="ItemMarkdown"><h4 id="section">2. 塗りと線</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8146" data-item-id="8146" data-item-type="ItemText"><div class="item-body-hbr">1. 塗り、線をクリックするとカラー選択をするパネルが表示されます。</div></div>
+        
+        <div class="article-item item_image " id="item8734" data-item-id="8734" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/734/medium/83a0a25d-32c2-4e79-a7dc-cf59ad2171e1.png?1740134528" title=""><img class="img-responsive item-image" alt=" (8734)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/734/medium/83a0a25d-32c2-4e79-a7dc-cf59ad2171e1.png?1740134528" width="275" height="302" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item8147" data-item-id="8147" data-item-type="ItemText"><div class="item-body-hbr">2. パネルの右上をクリックするとカラーピッカーが表示され色を変更することができます。</div></div>
+        
+        <div class="article-item item_link " id="item12324" data-item-id="12324" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=JSjFi&amp;item_id=12324" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 14-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 14-5" data-reference="https://www.dropbox.com/scl/fi/s6conr4aqlmy74o81hzr7/Adobe-Photoshop14-5_1.0_.mov?rlkey=dwoh818521ne3jguyrm8ze77i&amp;e=1&amp;st=vmswftmh&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/324/thumb/c4e93d81-2d85-4684-aaf3-295ce30e8554.png?1745434358" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8148" data-item-id="8148" data-item-type="ItemText"><div class="item-body-hbr">3.  シェイプの線の太さ、線の種類を設定できます。</div></div>
+        
+        <div class="article-item item_link " id="item12325" data-item-id="12325" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=JSjFi&amp;item_id=12325" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 14-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 14-6" data-reference="https://www.dropbox.com/scl/fi/3ghxt2i7zntmgmpvcfzsy/Adobe-Photoshop14-6_1.0_.mov?rlkey=z0nztkgs1se12pvln3e3rnrwr&amp;e=1&amp;st=1i258z6f&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/325/thumb/6f7c133d-9092-4b47-bce5-def7379cfcb1.png?1745434370" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8149" data-item-id="8149" data-item-type="ItemRichText"><div class="item-body-hbr"><span>4.サイズの変更</span><br>
+・ 幅(W)と高さ(H)の設定ができます。<br>
+・ 鎖のアイコンをオンにすると縦横の比率を固定できます。</div></div>
+        
+        <div class="article-item item_link " id="item12326" data-item-id="12326" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=JSjFi&amp;item_id=12326" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 14-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 14-7" data-reference="https://www.dropbox.com/scl/fi/uv69sylblxh4yxlf2j5gu/Adobe-Photoshop14-7_1.0_.mov?rlkey=utypsy739px6ksfc2wblnyru2&amp;e=1&amp;st=cbp4ldwj&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/326/thumb/8b2dba78-d453-4262-8de7-0d7beffeaecf.png?1745434384" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36850" data-item-id="36850" data-item-type="ItemHeading"><h2 class="item-body">【14-4】プロパティパネルで編集する</h2></div>
+        
+        <div class="article-item item_rich_text " id="item8150" data-item-id="8150" data-item-type="ItemRichText"><div class="item-body-hbr">移動ツールでシェイプを選択している状態で、<span class="decoration-01"><span class="decoration-02">プロパティパネル</span></span>を使用して編集を行うことができます。<br>
+プロパティパネルでの操作は以下の2つです。</div></div>
+        
+        <div class="article-item item_image " id="item8735" data-item-id="8735" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/735/medium/5d2f94b5-d6df-47da-856a-478ca7ab8ee4.png?1740134557" title=""><img class="img-responsive item-image" alt=" (8735)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/735/medium/5d2f94b5-d6df-47da-856a-478ca7ab8ee4.png?1740134557" width="425" height="283" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item8151" data-item-id="8151" data-item-type="ItemText"><div class="item-body-hbr">※プロパティパネルが見当たらない場合は、メニューバーのウィンドウからプロパティを表示</div></div>
+        
+        <div class="article-item item_link " id="item12327" data-item-id="12327" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=JSjFi&amp;item_id=12327" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 14-8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 14-8" data-reference="https://www.dropbox.com/scl/fi/s3jy8ex5ozv5w3erhcips/Adobe-Photoshop14-8_1.0_.mov?rlkey=hwjvpfaz0r3mhewx1vd4vjno7&amp;e=1&amp;st=focm8r4j&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/327/thumb/dbd62cb5-b78f-4922-8cf5-b4bde1cf7653.png?1745434396" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8152" data-item-id="8152" data-item-type="ItemRichText"><div class="item-body-hbr">1. サイズ変更<br>
+・ 幅(W)と高さ(H)の設定ができます。<br>
+・ 鎖のアイコンをオンにすると縦横の比率を固定できます。</div></div>
+        
+        <div class="article-item item_link " id="item12328" data-item-id="12328" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=JSjFi&amp;item_id=12328" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 14-9</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 14-9" data-reference="https://www.dropbox.com/scl/fi/8kcqvtj5i136m96p56it8/Adobe-Photoshop14-9_1.0_.mov?rlkey=4tk8zzlavjo7majy3yebagzcr&amp;st=shz0leo9&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/328/thumb/9949cc7c-8a01-453e-895a-2ed673dab048.png?1745434408" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item8153" data-item-id="8153" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01"></span>塗りと線<br>
+・ 塗り、線をクリックするとカラー選択をするパネルが表示されます。<br>
+・ パネルの右上をクリックするとカラーピッカーが表示され色を変更することができます。</div></div>
+        
+        <div class="article-item item_link " id="item12329" data-item-id="12329" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=JSjFi&amp;item_id=12329" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 14-10</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 14-10" data-reference="https://www.dropbox.com/scl/fi/e41l627s9l3nuenrjusc2/Adobe-Photoshop14-10_1.0_.mov?rlkey=vahqptk8l6oxz44yzrbvi4pgr&amp;e=1&amp;st=2r882ai5&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/329/thumb/47595aa8-4efa-427c-87a0-733315310c70.png?1745434421" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36844" data-item-id="36844" data-item-type="ItemRichText"><div class="item-body-hbr">これで「14章 シェイプをつくってみよう」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25602" data-item-id="25602" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="xEwGd" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Q1UcJ" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="zptIrTcdlmVCP8b0xit3Vg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

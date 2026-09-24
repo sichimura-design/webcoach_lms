@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/sZqWY -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>WEBデザイン -画像編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/sZqWY">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="WEBデザイン -画像編- - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="WEBデザイン -画像編-">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/sZqWY">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="WHAnY8JOw3DvafKLsYl2oR2XYobWWpIsK5Ea34Zj9GHZtsFcvEvEdwwD_sM8nsySJOkxa5-J2xRmtZPD_UQRTw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item50968" data-item-id="50968" data-item-type="ItemHtml"><div class="item-body"><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h2 .h2-time { font-size: 12px; font-weight: 600; color: #999; margin-left: 12px; letter-spacing: 0; }
+h3 { font-size: 17px; font-weight: 700; color: #2D2D2D; margin: 28px 0 12px; padding-left: 14px; border-left: 3px solid #2D2D2D; }
+h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 28px 0 10px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+a { color: #E85D4A; }
+a:visited { color: #E85D4A; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 */
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li { list-style: none; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; font-family: 'Inter', sans-serif; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* 画像 */
+.slide-img { max-width: 50%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 20px 0 24px; }
+
+/* 特徴グリッド */
+.feature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 4px 0 24px; }
+.feature-card { background: #fff; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); font-size: 13.5px; color: #444; line-height: 1.6; display: flex; gap: 8px; align-items: flex-start; }
+.feature-card__icon { color: #27AE7E; font-weight: 800; flex-shrink: 0; }
+@media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* スペックテーブル */
+.spec-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 4px 0 28px; overflow: hidden; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.tbl-name { font-weight: 700; color: #2D2D2D; }
+
+/* クイズボックス */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* まとめ */
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+/* 理解度チェック */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+/* スクロールリビール */
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* レッスン解説動画 */
+.chapter-intro-video { background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.chapter-intro-video::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.chapter-intro-video__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.chapter-intro-video__player { width: 100%; border-radius: 8px; display: block; background: #F7F8FA; }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="../../_assets/e9c67fa5e8.css" rel="stylesheet">
+
+<div class="lesson-wrapper">
+
+<!-- ===== ヘッダー ===== -->
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">イントロダクション</span>
+  <div class="lesson-hero__title">WEBデザイン -画像編-</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 6</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約85分</span>
+  </div>
+</div>
+  
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/kGhbi" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/oKYkk" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+
+<!-- ===== レッスン解説動画 ===== -->
+<div class="chapter-intro-video">
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-012f8281b9.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div>
+
+<!-- ===== ゴールボックス ===== -->
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">ビットマップ形式とベクター形式の違いを説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">JPEG・PNG・GIF・SVG・WebPそれぞれの特徴を理解し、用途に応じて使い分けられる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">画像が粗く表示されるときの対処法を説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">画像変換ツール・背景切り抜きツールを目的に応じて選べる</div></li>
+  </ul>
+</div>
+
+<!-- ===== 目次 ===== -->
+<nav class="toc">
+  <div class="toc-head">
+    <div class="toc-icon">≡</div>
+    <div class="toc-title">目次</div>
+  </div>
+  <ul>
+    <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">画像ファイルの形式</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">画像編集の便利ツール</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+
+<p>WEBサイトで使う画像には複数のファイル形式があり、それぞれ得意な用途が異なります。このレッスンでは画像ファイル形式の基礎知識と、画像編集・変換に使える便利なツールを学びます。</p>
+
+
+<!-- ======== セクション1 ======== -->
+<section id="s1">
+<h2>画像ファイルの形式<span class="h2-time">⏱ 目安45分</span></h2>
+
+<p>一般的に、画像データは「ビットマップ」と「ベクター」の二つに分かれます。これらは画像の表現方法が異なるため、用途に適した形式を選ぶことが重要です。</p>
+
+<h3>a. ビットマップ（Bitmap）形式</h3>
+
+<p>ビットマップ形式は、画像を小さな点（ピクセル）の集合として表現する形式です。画像を細かい格子状に分割し、正方形の点ひとつひとつに色や輝度の情報を与えることで表現します。<strong>ラスター形式</strong>と呼ばれることもあります。</p>
+
+<p>見た目が綺麗な画像を拡大すると、ドット絵のように見えたり縁が粗くなったりすることがあります。拡大時にピクセルそのものも大きくなるため、<strong>ジャギー</strong>と呼ばれるギザギザが発生するのが原因です。ほとんどの画像ファイルは、このビットマップ形式に当たります。</p>
+
+<img src="../../_assets/571af15212.webp" alt="ビットマップ画像を拡大した図。曲線の縁がギザギザのジャギーになっている" class="slide-img reveal visible">
+
+<div class="feature-grid reveal visible">
+  <div class="feature-card"><span class="feature-card__icon">✓</span>拡大すると画質が荒くなる</div>
+  <div class="feature-card"><span class="feature-card__icon">✓</span>ピクセルが集まって作られている</div>
+  <div class="feature-card"><span class="feature-card__icon">✓</span>色を細かく表現できる</div>
+  <div class="feature-card"><span class="feature-card__icon">✓</span>複雑な色の画像に最適</div>
+</div>
+
+<h3>b. ベクター（Vector）形式</h3>
+
+<p>ベクター形式は、複雑な計算式によって画像の色や形を表現する形式です。「ベクトル」と発音される場合もあります。点・線・多角形などの情報を座標値や属性として保持し、数値データから演算される図形として画像を表現します。</p>
+
+<p>拡大しても数値データを再計算して描き直されるため、ジャギーが発生せず、<strong>拡大・縮小や変形処理に強い</strong>のが利点です。一方で、写真のように多彩な配色や複雑な輪郭を計算式で表現するのは困難で、編集にも膨大な演算が必要になります。</p>
+
+<div class="feature-grid reveal visible">
+  <div class="feature-card"><span class="feature-card__icon">✓</span>ロゴやアイコンなど単純な画像に向いている</div>
+  <div class="feature-card"><span class="feature-card__icon">✓</span>拡大しても画像が荒くならない</div>
+</div>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">拡大してもジャギーが発生しにくい画像形式はどれですか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">ビットマップ形式</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">ベクター形式</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">JPEG</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">GIF</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">ベクター形式は点や線を数値データとして保持し、拡大時も再計算して描き直すためジャギーが発生しません。JPEG・GIFはビットマップ形式のため、拡大するとジャギーが目立ちます。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はBです。ベクター形式は拡大・縮小に強く、ジャギーが発生しません。ビットマップ形式（JPEG・GIFなど）は拡大するとジャギーが目立ちます。</div>
+    </div>
+  </div>
+</div>
+
+<h3>c. よくある画像ファイルの形式と使い分け</h3>
+
+<p>画像ファイルにはJPG・PNG・WebP・SVGなど様々な形式があり、それぞれメリット・デメリットがあるため用途に応じた使い分けが必要です。画像ファイル形式は、ファイル名の「.」以降に付く<strong>拡張子</strong>から判断できます。</p>
+
+<p>画像ファイルはJPG、PNG、WebP、SVGなどの形式間で簡単に変換できます。おすすめの変換ツールは<a href="https://www.iloveimg.com/ja" target="_blank" rel="noopener">iLoveIMG</a>です。</p>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th>拡張子</th>
+      <th>形式</th>
+      <th>メリット</th>
+      <th>デメリット</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">JPEG</span><br>.jpg / .jpeg</td>
+      <td>ビットマップ</td>
+      <td>データ容量が小さくWEBでよく使われる。フルカラー約1677万色を扱え複雑な色の画像に適している</td>
+      <td>背景の透過処理ができない。保存のたびに不可逆圧縮で画質が悪化するため、編集にはPNGが向いている</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">PNG</span><br>.png</td>
+      <td>ビットマップ</td>
+      <td>フルカラー約1677万色を扱え透過処理もできる。可逆圧縮で画質が悪化しないため編集に向いている</td>
+      <td>ファイルサイズが大きくなりがち</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">GIF</span><br>.gif</td>
+      <td>ビットマップ</td>
+      <td>アニメーションを表現できる。扱える色数に制限がある分、ファイルサイズを小さくできる</td>
+      <td>1枚の画像で使用できる色が256色に限定される</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">SVG</span><br>.svg</td>
+      <td>ベクター</td>
+      <td>拡大・縮小しても画像が荒れずに綺麗に表現できる。マークアップ言語のため、CSSやデザインツールで色や形を変えやすい</td>
+      <td>複雑な画像では計算量が膨大になり、ファイルサイズが大きくなってしまう</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">WebP</span><br>.webp</td>
+      <td>ビットマップ</td>
+      <td>Googleによると、ファイルサイズはJPEG比25〜34%、PNG比26%ほど減り、サイトスピードの高速化が期待できる</td>
+      <td>ごく一部、未対応のブラウザがある</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>画像の編集作業やPCへの保存はPNG形式で行い、WEBサイトにアップロードするときは基本的に<strong>WebP形式</strong>がおすすめです。画質の悪化を防ぎながら編集でき、ファイルサイズを抑えてサイトスピードを高速化できるためです。ブラウザ対応が気になる場合は、JPG・SVG・GIF形式を検討しましょう。WebPへの変換には<a href="https://saruwakakun.com/tools/png-jpeg-to-webp/" target="_blank" rel="noopener">こちらのツール</a>が使えます。</p>
+
+<h4>TIPS：画像が粗いときの対処法</h4>
+
+<p>このTIPSは、今後のレッスンで学ぶデザインツールFigmaの操作を想定しています。今の時点では、画像を書き出す際に表示したいサイズより大きめに書き出すと綺麗になることがある、という点だけ覚えておきましょう。</p>
+
+<p>画像が粗くなるのは、サイズの小さい画像を無理に大きく表示しようとしたときによく起こります。Figmaでエクスポートする際に1xではなく2xや4xを選ぶと、画質が改善するケースが多いです。</p>
+
+<img src="../../_assets/9741fc068f.webp" alt="Figmaのエクスポートパネル。赤枠で囲まれた部分に倍率設定欄があり、1xで書き出すと1倍、2xなら2倍、4xなら4倍のサイズで画像が出力される" class="slide-img reveal visible">
+
+<p>サイズを上げると画像の容量は増えるため、WebP形式への変換や圧縮ツールでの調整を組み合わせましょう。画質が目に見えて悪くなるほど圧縮する必要はなく、綺麗な画質を保ったままできるだけ容量を抑えるという考え方で扱うのが基本です。</p>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">WEBサイトに画像をアップロードする際に、基本的におすすめの形式はどれですか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">JPEG</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">PNG</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">C</div><div class="quiz-opt-text">WebP</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">GIF</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">WebPはJPEGやPNGに比べてファイルサイズを抑えられ、サイトスピードの高速化につながります。ごく一部のブラウザが未対応な点だけ注意しましょう。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はCです。WebPはファイルサイズを削減できるため、WEBサイトへのアップロードにおすすめの形式です。PNGは画質が悪化しないため編集・保存に向いています。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- ======== セクション2 ======== -->
+<section id="s2">
+<h2>画像編集の便利ツール<span class="h2-time">⏱ 目安40分</span></h2>
+
+<h3>a. 画像変換ツール</h3>
+
+<p>画像ファイルの形式を変換したい場面は多くあります。ツールを使えば無料かつ簡単に変換できます。Googleで「画像ファイル形式 + 変換」のようなキーワードで調べれば、目的のツールにすぐたどり着けます。</p>
+
+<h4>▼ iLoveIMG</h4>
+
+<p>iLoveIMGでは、画像の圧縮・サイズ変更・切り抜き・ファイル変換・回転など、あらゆる画像編集が一括で簡単に行えます。画像の圧縮は品質と圧縮率のバランスを保って処理してくれるため重宝します。</p>
+
+<img src="../../_assets/5bb49547bb.webp" alt="iLoveIMGのトップページ。画像の圧縮・サイズ変更・切り抜き・JPGに変換など、画像編集ツールがカード形式で並んでいる" class="slide-img reveal">
+
+<p>画像のファイルサイズはサイトスピードに大きく影響します。サイトスピードの速さはGoogleのSEOスコアやユーザーの離脱率にも関わるため、画質が荒くなりすぎない範囲で圧縮することが実務では重要です。</p>
+
+<h3>b. 背景切り抜きツール</h3>
+
+<p>人物だけ、あるいは建物だけを使いたいときなど、背景を切り抜きたい場面があります。近年は自動で背景を切り抜いてくれるサービスが登場し、高精度かつ短時間で切り抜けるため活用がおすすめです。</p>
+
+<h4>▼ remove.bg</h4>
+
+<p>remove.bgは画像をアップロードすると、自動で背景を削除して人物などを切り抜いてくれるツールです。高画質でダウンロードする場合は料金がかかりますが、リーズナブルな価格です。低い画質であれば無制限にダウンロードできるため、試しに使ってみるとよいでしょう。</p>
+
+<img src="../../_assets/b6e7cb95d0.webp" alt="remove.bgのトップページ。「写真・画像の背景を一瞬で消す」というコピーと画像アップロードボタン、人物写真の背景除去サンプルが表示されている" class="slide-img reveal">
+
+<h4>▼ Adobe Express</h4>
+
+<p>Adobe Expressでも、画像をアップロードすれば自動で背景を除去できます。無料で使えるため、こちらも重宝するツールです。</p>
+
+<img src="../../_assets/bff6a2429d.webp" alt="Adobe Expressの背景除去ページ。「無料で背景除去」という見出しと画像アップロードボタン、背景除去前後の写真サンプルが表示されている" class="slide-img reveal">
+
+<div class="quiz-box reveal">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">画像をアップロードすると自動で背景を切り抜いてくれるツールはどれですか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">iLoveIMG</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">remove.bg</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">JPEG</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">SVG</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">remove.bgは画像をアップロードするだけで背景を自動削除できます。Adobe Expressも同様に背景除去ができます。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はBです。remove.bgは画像をアップロードするだけで背景を自動削除してくれるツールです。iLoveIMGは画像の圧縮・変換などが得意なツールです。</div>
+    </div>
+  </div>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">画像の圧縮・サイズ変更・切り抜き・ファイル変換などを一括で行えるツールはどれですか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q4" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">remove.bg</div></button>
+    <button class="quiz-opt" data-q="q4" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">iLoveIMG</div></button>
+    <button class="quiz-opt" data-q="q4" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">Adobe Express</div></button>
+    <button class="quiz-opt" data-q="q4" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">ベクター形式</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q4-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">iLoveIMGは画像の圧縮・サイズ変更・切り抜き・ファイル変換・回転などを一括で行えるツールです。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q4-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はBです。iLoveIMGは画像の圧縮・サイズ変更・切り抜き・ファイル変換・回転などをまとめて行えるツールです。remove.bgとAdobe Expressは背景切り抜きが得意なツールです。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<!-- ===== まとめ ===== -->
+<div class="summary-box reveal">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li>画像データはビットマップ（点の集合）とベクター（計算式）の2種類に分かれる</li>
+    <li>ビットマップは拡大するとジャギーが出るが複雑な色の表現に強く、ベクターは拡大に強いが複雑な画像には不向き</li>
+    <li>JPEG・PNG・GIF・SVG・WebPにはそれぞれ得意分野があり、編集・保存はPNG、WEBアップロードはWebPが基本</li>
+    <li>画像が粗いときはFigmaなどで2x・4xなど大きめにエクスポートすると改善する</li>
+    <li>画像変換にはiLoveIMG、背景切り抜きにはremove.bgやAdobe Expressが使える</li>
+  </ol>
+</div>
+
+<!-- ===== 理解度チェック ===== -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>ビットマップ形式とベクター形式の違いは何ですか？</summary>
+    <div class="check-box__detail">ビットマップ形式は画像を小さな点（ピクセル）の集合として表現し、拡大するとジャギーが発生します。ベクター形式は点・線・多角形を数値データとして保持し、拡大・縮小しても再計算して描き直されるため画質が荒れません。</div>
+  </details>
+  <details>
+    <summary>JPEG・PNG・WebPはそれぞれWEBサイトのどんな場面で使うのが向いていますか？</summary>
+    <div class="check-box__detail">JPEGはデータ容量が小さくWEBでよく使われますが背景透過ができません。PNGは可逆圧縮で画質が悪化しないため編集・保存に向いています。WebPはファイルサイズを抑えられサイトスピードの高速化に有効なため、WEBサイトへのアップロードにおすすめです。</div>
+  </details>
+  <details>
+    <summary>画像がWEBサイトで粗く表示されるときの対処法は何ですか？</summary>
+    <div class="check-box__detail">サイズの小さい画像を無理に大きく表示しようとすると粗くなりやすいです。Figmaなどでエクスポートする際に1xではなく2xや4xを選び、大きめのサイズで書き出すと画質が改善します。容量が増える分は、WebP形式への変換や圧縮ツールでの調整と組み合わせましょう。</div>
+  </details>
+  <details>
+    <summary>画像編集・変換・背景切り抜きには、それぞれどんなツールが使えますか？</summary>
+    <div class="check-box__detail">画像の圧縮・サイズ変更・切り抜き・ファイル変換などを一括で行いたいときはiLoveIMGが使えます。背景を自動で切り抜きたいときはremove.bgやAdobe Expressが使えます。remove.bgは高画質ダウンロードのみ有料、Adobe Expressは無料で利用できます。</div>
+  </details>
+</div>
+  
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/kGhbi" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/oKYkk" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+</div><!-- /.lesson-wrapper -->
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-3/2eija -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48609" data-item-id="48609" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>コンバージョンを設計するデザイン思考——「見た目」から「動線」へ</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* LP構成要素 */
+  .lp-wireframe { background: white; border: 2px solid #E85D4A; border-radius: 12px; overflow: hidden; margin: 20px 0; }
+  .lp-section { padding: 14px 18px; border-bottom: 1px solid #F0F0F0; display: flex; gap: 14px; align-items: flex-start; }
+  .lp-section:last-child { border-bottom: none; }
+  .lp-section__num { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: white; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .lp-section__name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+  .lp-section__role { font-size: 12px; color: #888; line-height: 1.65; }
+  .lp-section__focus { font-size: 12px; color: #E85D4A; font-weight: 600; margin-top: 4px; }
+  .lp-header { background: linear-gradient(135deg, #E85D4A, #F5A64A); padding: 10px 18px; color: white; font-size: 12px; font-weight: 700; }
+
+  /* CROとは */
+  .cro-def {
+    background: linear-gradient(135deg, #3D3D3D, #555);
+    border-radius: 12px;
+    padding: 24px;
+    color: white;
+    text-align: center;
+    margin: 20px 0;
+  }
+  .cro-def__label { font-size: 12px; opacity: 0.65; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .cro-def__formula { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+  .cro-def__formula em { color: #F5A64A; font-style: normal; }
+  .cro-def__example { font-size: 13px; opacity: 0.8; line-height: 1.7; }
+
+  /* ヒートマップ活用 */
+  .heatmap-findings { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+  .finding-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border-radius: 8px; }
+  .finding-item--problem { background: #FFF5F5; }
+  .finding-item--action { background: #F0FBF4; }
+  .finding-icon { font-size: 20px; flex-shrink: 0; }
+  .finding-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .finding-item--problem .finding-title { color: #C0392B; }
+  .finding-item--action .finding-title { color: #2E9B6E; }
+  .finding-desc { font-size: 12px; color: #555; line-height: 1.65; }
+
+  /* デザイン判断の比較 */
+  .design-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+  .dc-card { border-radius: 10px; padding: 18px; }
+  .dc-card--old { background: #F7F7F7; border: 1.5px solid #DDD; }
+  .dc-card--new { background: #FFF0ED; border: 1.5px solid #E85D4A; }
+  .dc-card__badge { font-size: 11px; font-weight: 700; display: inline-block; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; }
+  .dc-card--old .dc-card__badge { background: #DDD; color: #666; }
+  .dc-card--new .dc-card__badge { background: #E85D4A; color: white; }
+  .dc-card__area { font-size: 12px; color: #888; font-weight: 700; margin-bottom: 4px; }
+  .dc-card__desc { font-size: 13px; line-height: 1.65; color: #4A4A4A; margin-bottom: 6px; }
+  .dc-card__reason { font-size: 12px; font-style: italic; }
+  .dc-card--old .dc-card__reason { color: #C0392B; }
+  .dc-card--new .dc-card__reason { color: #2E9B6E; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .design-compare { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="rpSl_mC1gpSbo8oSsSnaa7wJ9-9b1WZi5KXqBn70enEdIjHGjDsYgqHXPP0G45HuoueiWnpC99nP5e2diK63ew"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+
+<div class="hero">
+  <div class="hero__label">Course B — Chapter 3 / Lesson 1 【Webデザイナー向け】</div>
+  <div class="hero__title">コンバージョンを設計するデザイン思考<br>——「見た目」から「動線」へ</div>
+  <div class="hero__meta">
+    <span>⏱ 35分</span>
+    <span>📖 知識</span>
+    <span>🎨 Webデザイナー向け</span>
+  </div>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-3/1UU2r" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<div class="container">
+
+  <div class="intro-box reveal visible">
+    <div class="intro-box__text">
+      「デザインは綺麗なのに、問い合わせが来ない」——この問題の根本は「見た目を整えること」と「コンバージョンを設計すること」を混同していることです。<br>
+      <strong>CRO（コンバージョン率最適化）の視点を持つデザイナー</strong>は、クライアントに「成果」で選ばれます。このレッスンで土台を作りましょう。
+    </div>
+  </div>
+
+  <!-- CROとは -->
+  <div class="card reveal visible">
+    <div class="card__title">CRO（コンバージョン率最適化）とは</div>
+
+    <div class="cro-def">
+      <div class="cro-def__label">CRO — Conversion Rate Optimization</div>
+      <div class="cro-def__formula">CVR = コンバージョン数 ÷ セッション数 × 100<br>
+      <em>「同じ訪問者数でも、もっと多くの人に行動してもらう」</em></div>
+      <div class="cro-def__example">例: 月1,000人が訪問、10人が申し込む → CVR = 1%<br>
+      LP改善で申し込みが20人に → CVR = 2%（同じ広告費で成果が2倍）</div>
+    </div>
+
+    <p>
+      CROはデザイナーが直接関与できる数字です。「どこで迷っているか」「何が不安か」「どこで離脱しているか」——ユーザーの行動をデータで把握し、それを改善するデザインが「CROを設計するデザイン」です。
+    </p>
+  </div>
+
+  <!-- LPの構成要素 -->
+  <div class="card reveal visible">
+    <div class="card__title">LPの構成要素と各セクションの役割</div>
+    <p>LPの各セクションには、ユーザーが「認知→信頼→行動」に至るための役割があります。</p>
+
+    <div class="lp-wireframe">
+      <div class="lp-header">LPの基本構成（ファーストビューから下まで）</div>
+      <div class="lp-section">
+        <div class="lp-section__num">1</div>
+        <div>
+          <div class="lp-section__name">ファーストビュー（FV）</div>
+          <div class="lp-section__role">ページを開いて最初に見える部分。「このページは自分に関係あるか」を0.5秒で判断される。</div>
+          <div class="lp-section__focus">CROポイント: キャッチコピー（ペルソナの悩みに直撃）・ビジュアル・CTAボタンの存在</div>
+        </div>
+      </div>
+      <div class="lp-section">
+        <div class="lp-section__num">2</div>
+        <div>
+          <div class="lp-section__name">問題提起・共感</div>
+          <div class="lp-section__role">「こういう悩みありませんか？」でペルソナに「これ私のことだ」と感じさせる。</div>
+          <div class="lp-section__focus">CROポイント: インサイトを言語化できているか。「わかってくれる」と感じさせる</div>
+        </div>
+      </div>
+      <div class="lp-section">
+        <div class="lp-section__num">3</div>
+        <div>
+          <div class="lp-section__name">解決策・ベネフィット提示</div>
+          <div class="lp-section__role">「私たちはこうやって解決します」「あなたはこうなれます」を伝える。</div>
+          <div class="lp-section__focus">CROポイント: 機能ではなくベネフィット（感情的価値）で語る</div>
+        </div>
+      </div>
+      <div class="lp-section">
+        <div class="lp-section__num">4</div>
+        <div>
+          <div class="lp-section__name">信頼・実績・口コミ</div>
+          <div class="lp-section__role">「本当に大丈夫か」という不安を払拭する。実績・受賞・口コミ・メディア掲載など。</div>
+          <div class="lp-section__focus">CROポイント: 具体的な数字と顔写真付きの口コミが最も効果的</div>
+        </div>
+      </div>
+      <div class="lp-section">
+        <div class="lp-section__num">5</div>
+        <div>
+          <div class="lp-section__name">FAQ・不安解消</div>
+          <div class="lp-section__role">「でも…」という残った懸念を先回りして解消する。</div>
+          <div class="lp-section__focus">CROポイント: ペルソナが持つ典型的な不安をブリーフから洗い出して掲載</div>
+        </div>
+      </div>
+      <div class="lp-section">
+        <div class="lp-section__num">6</div>
+        <div>
+          <div class="lp-section__name">CTA（最終行動促進）</div>
+          <div class="lp-section__role">「今すぐ申し込む」「無料体験へ」など明確なアクションを促す。</div>
+          <div class="lp-section__focus">CROポイント: ボタンの文言・色・大きさ・「今やる理由」の添え書き</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ヒートマップで離脱箇所を発見 -->
+  <div class="card reveal visible">
+    <div class="card__title">ヒートマップで「どこで離脱しているか」を発見する</div>
+    <p>Microsoft Clarity（無料）などのヒートマップツールを使うと、ユーザーがどこで止まり、どこで離脱するかが見えます。</p>
+
+    <div class="heatmap-findings">
+      <div class="finding-item finding-item--problem">
+        <div class="finding-icon">🔴</div>
+        <div>
+          <div class="finding-title">よくある問題①: FVで50%離脱</div>
+          <div class="finding-desc">ファーストビューのキャッチコピーが「会社紹介」になっており、ペルソナの悩みに触れていない。「誰のためのページか」が0.5秒で伝わっていない。</div>
+        </div>
+      </div>
+      <div class="finding-item finding-item--action">
+        <div class="finding-icon">🟢</div>
+        <div>
+          <div class="finding-title">改善アクション: FVキャッチを「ペルソナの悩み直撃型」に変更</div>
+          <div class="finding-desc">「残業後でも来られる夜ヨガで、体の疲れと心のストレスをリセット」→ ペルソナがFVを見た瞬間「これ私のことだ」と感じる設計に。</div>
+        </div>
+      </div>
+      <div class="finding-item finding-item--problem">
+        <div class="finding-icon">🔴</div>
+        <div>
+          <div class="finding-title">よくある問題②: 料金セクションで大量離脱</div>
+          <div class="finding-desc">料金が「高い」のではなく、料金に対する「価値の根拠」が示されていない。「なぜこの値段なのか」が伝わっていない。</div>
+        </div>
+      </div>
+      <div class="finding-item finding-item--action">
+        <div class="finding-icon">🟢</div>
+        <div>
+          <div class="finding-title">改善アクション: 料金セクションに「価値の根拠」と「不安解消」を追加</div>
+          <div class="finding-desc">「体験後の強引な勧誘はありません」「月4回通えば1回あたり〇〇円」という形式で価値と安心を見せる。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- デザイン判断の変化 -->
+  <div class="card reveal visible">
+    <div class="card__title">CRO視点が入るとデザイン判断がどう変わるか</div>
+
+    <div class="design-compare">
+      <div class="dc-card dc-card--old">
+        <span class="dc-card__badge">デザイン思考のみ</span>
+        <div class="dc-card__area">CTAボタン</div>
+        <div class="dc-card__desc">「ブランドカラーに合わせて薄いグリーンのアウトラインボタン」</div>
+        <div class="dc-card__reason">デザインとしては整っているが、ボタンが「見えにくい」→クリック率が低い</div>
+      </div>
+      <div class="dc-card dc-card--new">
+        <span class="dc-card__badge">CRO視点あり</span>
+        <div class="dc-card__area">CTAボタン</div>
+        <div class="dc-card__desc">「背景と対比が高いコーラルの塗りつぶしボタン。文言は"今すぐ無料で体験する"」</div>
+        <div class="dc-card__reason">視認性が高く、行動を促す文言が明確 → クリック率が向上</div>
+      </div>
+      <div class="dc-card dc-card--old">
+        <span class="dc-card__badge">デザイン思考のみ</span>
+        <div class="dc-card__area">FVビジュアル</div>
+        <div class="dc-card__desc">「インスタ映えするオシャレなヨガポーズ写真」</div>
+        <div class="dc-card__reason">綺麗だが「自分ができるか」のイメージがわかない → 初心者が離脱</div>
+      </div>
+      <div class="dc-card dc-card--new">
+        <span class="dc-card__badge">CRO視点あり</span>
+        <div class="dc-card__area">FVビジュアル</div>
+        <div class="dc-card__desc">「夜の落ち着いたスタジオで、スーツ姿から着替えて1人でリラックスしている写真」</div>
+        <div class="dc-card__reason">「仕事帰りのさつきさん」がそのまま投影できる。「これが自分の未来」と感じさせる</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">デザインの目的は「見た目を整えること」ではなく<br>「行動してもらうこと」。</div>
+    <div class="summary-card__sub">
+      CRO: 同じ訪問者数でより多く行動してもらう設計<br>
+      LP6構成: FV→問題提起→ベネフィット→信頼→FAQ→CTA<br>
+      ヒートマップで「どこで離脱しているか」を可視化→改善<br><br>
+      次のレッスンでは、ペルソナと行動モデルをLP設計に落とし込む実践的なUI設計を学びます。
+    </div>
+  </div>
+
+</div>
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-3/1UU2r" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

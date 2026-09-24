@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/SNS/2A-1/AkRDI -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1章 デザインは構成で9割決まる！情報設計入門 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/SNS/2A-1/AkRDI">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="1章 デザインは構成で9割決まる！情報設計入門 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/042/194/medium/b493a39f-543e-4739-959c-f8a6591b585c.png?1761358562">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="1章 デザインは構成で9割決まる！情報設計入門">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/SNS/2A-1/AkRDI">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/042/194/large/b493a39f-543e-4739-959c-f8a6591b585c.png?1761358562">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="_lb0tMz2e47Na-yXQRmK5pIIp9p24btt2uiRqQ8gn-fe-DJGz-bw5kKv6fcmMDPO92z1Lgplu1DFfk8v65xv2w"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>2A-1 Canvaフィードデザイン実践テクニック</div>
+
+          <div class="fw-bold h2">1章 デザインは構成で9割決まる！情報設計入門</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章 デザインは構成で9割決まる！情報設計入門</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1.5時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】デザインの土台となるコンセプトを定義する</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">デザインの前に目的を明確にする</a></li><li><a href="#heading6" class="tocLink">情報を整理するマインドマップ活用術</a></li></ul></li><li><a href="#heading7" class="tocLink">【1-2】読者を惹きつけるストーリーの構成術</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading9" class="tocLink">カルーセル投稿の基本構成</a><ul><li><a href="#heading10" class="tocLink"></a></li></ul></li><li><a href="#heading11" class="tocLink">ワーク：構成案を作成してみよう</a></li><li><a href="#heading12" class="tocLink">考えてみよう！</a></li></ul></li><li><a href="#heading13" class="tocLink">【1-3】1章 -章末課題- カルーセル投稿の構成案を作成しよう</a><ul><li><a href="#heading14" class="tocLink">問題</a></li></ul><ul><li><a href="#heading15" class="tocLink">テーマA：職場の人間関係（MBTI）</a></li><li><a href="#heading16" class="tocLink">テーマB：面接の基本マナー</a></li><li><a href="#heading17" class="tocLink">テーマC：週末の作り置き術</a><ul><li><a href="#heading18" class="tocLink">解答例</a></li></ul></li><li><a href="#heading19" class="tocLink">【解答例A：職場の人間関係（MBTI） を選択した場合】</a></li><li><a href="#heading20" class="tocLink">【解答例B：面接の基本マナー を選択した場合】</a></li><li><a href="#heading21" class="tocLink">【解答例C：週末の作り置き術 を選択した場合】</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item42357" data-item-id="42357" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/SNS/2A-1/oXv4l" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/SNS/2A-1/pGSto" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item42185" data-item-id="42185" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">1章 デザインは構成で9割決まる！情報設計入門</h2></div>
+        
+        <div class="article-item item_markdown " id="item42186" data-item-id="42186" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：1.5時間</h4>
+
+<h4 id="heading2">この章で到達できるゴール：</h4>
+
+<ul>
+  <li>伝えたい情報を整理し、ターゲットに最も伝わる構成を考えられるようになる</li>
+  <li>カルーセル投稿の各ページ（1〜10枚）の役割を設計し、構成案を作成できるようになる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item42187" data-item-id="42187" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【1-1】デザインの土台となるコンセプトを定義する</h2></div>
+        
+        <div class="article-item item_markdown " id="item42188" data-item-id="42188" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item42189" data-item-id="42189" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">デザインの前に目的を明確にする</h3></div>
+        
+        <div class="article-item item_rich_text " id="item42190" data-item-id="42190" data-item-type="ItemRichText"><div class="item-body-hbr">優れたデザインは、必ず明確な目的から始まります。<br>
+いきなりCanvaを開く前に、まずは<span class="decoration-02"><span class="decoration-01">「この投稿で、誰に、どうなってほしいのか」</span></span>を言語化することが、成果に繋がるデザインの第一歩です。</div></div>
+        
+        <div class="article-item item_markdown " id="item42191" data-item-id="42191" data-item-type="ItemMarkdown"><ul>
+  <li><strong>誰に？（ターゲット）</strong>：ターゲットを、より具体的にイメージします。（例：都内で働く20代後半の女性、仕事で忙しいけど健康にも気を使いたい）</li>
+  <li><strong>どうなってほしい？（ゴール）</strong>：投稿を読んだ後、ユーザーに取ってほしい具体的な行動は何かを定義します。（例：投稿内容に共感し、後で見返せるように「保存」してほしい）</li>
+</ul>
+
+<p>この「ターゲット」と「ゴール」が、情報設計の重要な指針となります。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item42192" data-item-id="42192" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">情報を整理するマインドマップ活用術</h3></div>
+        
+        <div class="article-item item_rich_text " id="item42193" data-item-id="42193" data-item-type="ItemRichText"><div class="item-body-hbr">目的が明確になったら、次に投稿で伝えたい情報を洗い出していきます。<br>
+この時、頭の中だけで考えると情報が散らかってしまうため、<span class="decoration-02"><span class="decoration-01">マインドマップ</span></span>を活用するのがおすすめです。<br>
+<br>
+Canvaには「<span class="decoration-01"><span class="decoration-02">Whiteboards</span></span>」という、無限に広がるキャンバスに付箋を貼るような感覚でアイデアを整理できる機能があり、マインドマップ作成に最適です。</div></div>
+        
+        <div class="article-item item_link " id="item42194" data-item-id="42194" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=AkRDI&amp;item_id=42194" rel="nofollow noopener noreferrer" target="_blank">SNS 2A-1-1①</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="SNS 2A-1-1①" data-reference="https://www.dropbox.com/scl/fi/gi8uioch6jxcwumndtlg6/_2025-09-30_192456.mp4?rlkey=xb0my4qmzq3yvl6zsbhdose7b&amp;st=vz2jag49&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item42195" data-item-id="42195" data-item-type="ItemRichText"><div class="item-body-hbr">この作業によって、伝えたい情報の全体像が可視化され、後の構成作りが格段に楽になります。</div></div>
+        
+        <div class="article-item item_heading " id="item42196" data-item-id="42196" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【1-2】読者を惹きつけるストーリーの構成術</h2></div>
+        
+        <div class="article-item item_markdown " id="item42197" data-item-id="42197" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item42198" data-item-id="42198" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">カルーセル投稿の基本構成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item42199" data-item-id="42199" data-item-type="ItemRichText"><div class="item-body-hbr">マインドマップで整理した情報を、次は読者の心を動かす「ストーリー」に組み立てていきます。<br>
+<br>
+特に、複数枚で構成されるカルーセル投稿では、読者を飽きさせず最後まで読ませるための「型」が存在します。<br>
+ここではカルーセル投稿の型の一つを紹介します。<br>
+<br>
+カルーセル投稿の型は投稿したい内容によっていくつかのパターンがあるため、競合の分析などを通して、どんな型を使って投稿するのが良いかを調べてみることも効果的です。</div></div>
+        
+        <div class="article-item item_image " id="item42200" data-item-id="42200" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/200/medium/c05d53cf-42e2-472d-bd12-287433a24a8e.jpg?1761358635" title=""><img class="img-responsive item-image" alt=" (42200)" data-reference="" src="../../_assets/b112e51e43.webp" width="640" height="427"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_html " id="item42201" data-item-id="42201" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+&nbsp; <span class="bold">ポイント<br></span>
+	&nbsp; <ul>
+&nbsp; &nbsp; &nbsp; <li>長い文章は避け、要点を簡潔にまとめましょう。</li>
+&nbsp; &nbsp; &nbsp; <li>専門用語や難しい言葉は使わず、誰にでも伝わる言葉を選びましょう。</li>
+&nbsp; &nbsp; &nbsp; <li>箇条書きや図を使い、パッと見て内容がわかるように工夫しましょう。</li>
+&nbsp; &nbsp; &nbsp; <li>新聞のような文字だけの説明ではなく、絵本のように分かりやすく伝えることを意識しましょう。</li>
+&nbsp; &nbsp; </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item42202" data-item-id="42202" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">ワーク：構成案を作成してみよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item42203" data-item-id="42203" data-item-type="ItemRichText"><div class="item-body-hbr">それでは、このフレームワークを使って、実際に構成案を作成してみましょう。<br>
+<br>
+マインドマップで洗い出した情報を、どのページに配置すれば最もストーリーが伝わるかを考えながら、各ページの役割と内容をテキストで書き出していきます。</div></div>
+        
+        <div class="article-item item_html " id="item42204" data-item-id="42204" data-item-type="ItemHtml"><div class="item-body">
+<div class="card-with-icon point">
+    <span class="bold"><strong>ポイント</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>なぜその順番なのか、「読者はこのページでこう感じて、次のページではこう思うだろう」と、<span class="decoration-02">読者の感情の動き</span>を想像しながら組み立てることが重要です。</li>
+            <li>この構成案が、デザイン制作の「設計図」となります。ここでしっかりと骨組みを作っておくことで、デザイン制作がスムーズに進み、手戻りを防ぐことができます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item42205" data-item-id="42205" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">考えてみよう！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item42206" data-item-id="42206" data-item-type="ItemRichText"><div class="item-body-hbr">1枚目の「フック」が魅力的でないと、どんなに良い内容でも読まれません。<br>
+思わずスワイプしてしまった投稿の表紙には、どんな工夫がありましたか？<br>
+3つ思い出してみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item42207" data-item-id="42207" data-item-type="ItemHtml"><div class="item-body"><strong>解答例</strong>
+<ol>
+  <li>「<span class="decoration-02">【悪用厳禁】</span>」という、少し過激で興味をそそる言葉が使われていた。</li>
+  <li>「<span class="decoration-02">たった3分で分かる</span>」という具体的な数字で、得られるメリットと手軽さが瞬時に伝わってきた。</li>
+  <li>「<span class="decoration-02">そのやり方、損してます</span>」と、自分事としてドキッとするような、少しネガティブな問いかけがあった。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item42208" data-item-id="42208" data-item-type="ItemHeading"><h2 class="item-body" id="heading13">【1-3】1章 -章末課題- カルーセル投稿の構成案を作成しよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item42209" data-item-id="42209" data-item-type="ItemMarkdown"><h4 id="heading14">問題</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42210" data-item-id="42210" data-item-type="ItemRichText"><div class="item-body-hbr">以下の<span class="decoration-02"><span class="decoration-01">3つのテーマから1つ</span></span>を選び、10枚構成のカルーセル投稿の構成案を作成してください。<br>
+この章で学んだフレームワークを使い、各ページに何を書くかを具体的に記述しましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item42211" data-item-id="42211" data-item-type="ItemMarkdown"><p><strong>【選択テーマ一覧】</strong></p>
+
+<h3 id="heading15"><strong>テーマA：職場の人間関係（MBTI）</strong></h3>
+
+<ul>
+  <li>ターゲット
+    <ul>
+      <li>MBTI診断や性格タイプ診断に興味がある20〜30代の社会人女性</li>
+    </ul>
+  </li>
+  <li>ゴール
+    <ul>
+      <li>「あるある！」と共感してもらい、他の投稿も見てもらう</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="heading16"><strong>テーマB：面接の基本マナー</strong></h3>
+
+<ul>
+  <li>ターゲット
+    <ul>
+      <li>これから就職活動を本格的に始める大学3年生</li>
+    </ul>
+  </li>
+  <li>ゴール
+    <ul>
+      <li>面接に対する漠然とした不安を解消し、「役に立った！」と感じて「フォロー」してもらう</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="heading17"><strong>テーマC：週末の作り置き術</strong></h3>
+
+<ul>
+  <li>ターゲット
+    <ul>
+      <li>平日は仕事で忙しい20代の社会人女性</li>
+    </ul>
+  </li>
+  <li>ゴール
+    <ul>
+      <li>「真似したい！」と思ってもらい、週末にレシピを見返せるよう「保存」してもらう</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item42212" data-item-id="42212" data-item-type="ItemMarkdown"><h4 id="heading18">解答例</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item42213" data-item-id="42213" data-item-type="ItemMarkdown"><h3 id="heading19"><strong>【解答例A：職場の人間関係（MBTI） を選択した場合】</strong></h3>
+
+<ul>
+  <li><strong>1枚目（フック）：</strong>「【MBTIタイプ別】職場でのすれ違い」</li>
+  <li><strong>2枚目（価値提供①：シーン1）：</strong>「落ち込んでいるときの会話」「ENTJとISFJ」</li>
+  <li><strong>3枚目（価値提供①：シーン1）：</strong>「実際の会話形式での事例」「感情型（F）がしてほしいこと」</li>
+  <li><strong>4枚目（価値提供②：シーン2）：</strong>「遅刻してきたときの会話」「INTJとESFP」</li>
+  <li><strong>5枚目（価値提供②：シーン2）：</strong>「実際の会話形式での事例」「謝るときの違い」</li>
+  <li><strong>6枚目（価値提供③：シーン3）：</strong>「会議での会話」</li>
+  <li><strong>7枚目（価値提供③：シーン3）：</strong>「実際の会話形式での事例」「提案方法の違い」</li>
+  <li><strong>8枚目（価値提供④：シーン4）：</strong>「会議が終わるときの会話」</li>
+  <li><strong>9枚目（価値提供④：シーン4）：</strong>「実際の会話形式での事例」「終了時間に対しての考え方の違い」</li>
+  <li><strong>10枚目（CTA）：</strong>「人気投稿を紹介」「他の投稿への誘導」</li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item42214" data-item-id="42214" data-item-type="ItemMarkdown"><h3 id="heading20"><strong>【解答例B：面接の基本マナー を選択した場合】</strong></h3>
+
+<ul>
+  <li><strong>1枚目（フック）：</strong>&nbsp;「【これだけは押さえとけ】面接官が意外と見てる基本マナー5選」</li>
+  <li><strong>2枚目（共感・問題提起）：</strong>&nbsp;「面接って何から準備すればいいの？」「変なことして落とされたらどうしよう…」そんな不安、ありませんか？</li>
+  <li><strong>3枚目（解決策の提示）：</strong>&nbsp;「大丈夫！今日紹介する5つのマナーを守れば、第一印象は格段に良くなります！」</li>
+  <li><strong>4枚目（価値提供①）：</strong>&nbsp;「1.【入室時】焦らない！3つのステップ」→ノック、挨拶、お辞儀を具体的に解説。</li>
+  <li><strong>5枚目（価値提供②）：</strong>&nbsp;「2.【着席時】意外と見られてる座り方」→座るタイミング、姿勢、カバンの置き方を解説。</li>
+  <li><strong>6枚目（価値提供③）：</strong>&nbsp;「3.【会話中】相槌と視線のポイント」→相手の目を見て話す、適度な相槌などを解説。</li>
+  <li><strong>7枚目（価値提供④）：</strong>&nbsp;「4.【逆質問】『特にありません』は絶対NG！」→準備しておくべき逆質問の例を紹介。</li>
+  <li><strong>8枚目（価値提供⑤）：</strong>&nbsp;「5.【退出時】終わりよければ全てよし！」→お礼の伝え方、お辞儀、ドアの閉め方までを解説。</li>
+  <li><strong>9枚目（まとめ）：</strong>&nbsp;「【おさらい】面接マナー5選チェックリスト」→5つのポイントを1枚に凝縮。</li>
+  <li><strong>10枚目（CTA）：</strong>&nbsp;「役に立った！と思ったら【フォロー】で、他の就活情報もチェックしてね！応援コメントも待ってます！」</li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item42215" data-item-id="42215" data-item-type="ItemMarkdown"><h3 id="heading21"><strong>【解答例C：週末の作り置き術 を選択した場合】</strong></h3>
+
+<ul>
+  <li><strong>1枚目（フック）：</strong>&nbsp;「【平日が劇的に楽になる】社会人のための週末作り置き術」</li>
+  <li><strong>2枚目（共感・問題提起）：</strong>&nbsp;「仕事でヘトヘト…帰ってからご飯作る気力、残ってないよね？でも、健康的なものは食べたい…」</li>
+  <li><strong>3枚目（解決策の提示）：</strong>&nbsp;「その悩み、『週末3時間の作り置き』で解決できます！メリットだらけの作り置きライフ、始めませんか？」</li>
+  <li><strong>4枚目（価値提供①：メリット）：</strong>&nbsp;「作り置きの3大メリット」→①時間の節約 ②食費の節約 ③健康的な食生活 を図解で紹介。</li>
+  <li><strong>5枚目（価値提供②：始め方）：</strong>&nbsp;「何から始める？買い物リストのコツ」→1週間の献立をざっくり考える、使い回せる食材を選ぶなど。</li>
+  <li><strong>6枚目（価値提供③：主菜レシピ）：</strong>&nbsp;「おすすめメインおかず① 鶏むね肉のハーブ焼き」→簡単なレシピを紹介。</li>
+  <li><strong>7枚目（価値提供④：副菜レシピ）：</strong>&nbsp;「おすすめ副菜② 彩り野菜のピクルス」→簡単なレシピを紹介。</li>
+  <li><strong>8枚目（価値提供⑤：保存方法）：</strong>&nbsp;「長持ちさせる保存のコツ」→消毒した容器を使う、しっかり冷ますなど、注意点を解説。</li>
+  <li><strong>9枚目（まとめ）：</strong>&nbsp;「今週の作り置きポイントまとめ」→3大メリットと紹介したレシピをおさらい。</li>
+  <li><strong>10枚目（CTA）：</strong>&nbsp;「『これならできそう！』と思ったら【保存】して、週末の買い出しに役立ててね！」</li>
+</ul>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42216" data-item-id="42216" data-item-type="ItemRichText"><div class="item-body-hbr">これで「1章 デザインは構成で9割決まる！情報設計入門」の解説を終わります。<br>
+<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item42358" data-item-id="42358" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/SNS/2A-1/oXv4l" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/SNS/2A-1/pGSto" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章 デザインは構成で9割決まる！情報設計入門</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1.5時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】デザインの土台となるコンセプトを定義する</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">デザインの前に目的を明確にする</a></li><li><a href="#heading6" class="tocLink">情報を整理するマインドマップ活用術</a></li></ul></li><li><a href="#heading7" class="tocLink">【1-2】読者を惹きつけるストーリーの構成術</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading9" class="tocLink">カルーセル投稿の基本構成</a><ul><li><a href="#heading10" class="tocLink"></a></li></ul></li><li><a href="#heading11" class="tocLink">ワーク：構成案を作成してみよう</a></li><li><a href="#heading12" class="tocLink">考えてみよう！</a></li></ul></li><li><a href="#heading13" class="tocLink">【1-3】1章 -章末課題- カルーセル投稿の構成案を作成しよう</a><ul><li><a href="#heading14" class="tocLink">問題</a></li></ul><ul><li><a href="#heading15" class="tocLink">テーマA：職場の人間関係（MBTI）</a></li><li><a href="#heading16" class="tocLink">テーマB：面接の基本マナー</a></li><li><a href="#heading17" class="tocLink">テーマC：週末の作り置き術</a><ul><li><a href="#heading18" class="tocLink">解答例</a></li></ul></li><li><a href="#heading19" class="tocLink">【解答例A：職場の人間関係（MBTI） を選択した場合】</a></li><li><a href="#heading20" class="tocLink">【解答例B：面接の基本マナー を選択した場合】</a></li><li><a href="#heading21" class="tocLink">【解答例C：週末の作り置き術 を選択した場合】</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/SNS/2A-1/oXv4l" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/SNS/2A-1/pGSto" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

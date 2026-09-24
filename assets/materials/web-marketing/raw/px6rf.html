@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="7cuZQAfPrPDr1FeGUSOqnQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="232" data-domain="learn.webcoach.jp" data-url="/web-marketing/px6RF" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Google Analytics -実践編 -  - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-marketing/px6RF">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Google Analytics -実践編 -  - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/001/481/medium/51052aa3-96b9-4dd9-ad48-1f711c8bfde9.png?1754612795">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Google Analytics -実践編 - ">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-marketing/px6RF">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/001/481/large/51052aa3-96b9-4dd9-ad48-1f711c8bfde9.png?1754612795">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-marketing/px6RF"
+    },
+    "headline": "Google Analytics -実践編 - ",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_links/images/000/001/481/medium/51052aa3-96b9-4dd9-ad48-1f711c8bfde9.png?1754612795",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2024-07-26T14:48:45+09:00",
+    "dateModified": "2026-01-16T18:19:37+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_ono"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="IQwkKQHHp2rApFB5RrTSIrp6qkjsd8JkPlYAKk1yFR4uxN4WihNScfRLiQ-94UMF1O8JyXZ-TCr3dBoJcn6w5Q" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBマーケティング</div>
+
+          <div class="fw-bold h2">Google Analytics -実践編 - </div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item1475" data-item-id="1475" data-item-type="ItemHeading"><h2 class="item-body">0. はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item39590" data-item-id="39590" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間:130分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1476" data-item-id="1476" data-item-type="ItemMarkdown"><p>Google Analyticsを学習する際、実際のデータがないと実践的な学習が難しいものです。</p>
+
+<p>デモアカウントを追加することで、実際のWebデータをもとにGoogle Analyticsでの分析手法を学習することができます。</p>
+
+<p>まずGoogle Analyticsにデモアカウントを追加しましょう。</p>
+</div>
+        
+        <div class="article-item item_rich_text " id="item1477" data-item-id="1477" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">こちらのURLから追加してください ↓↓</span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_link " id="item1481" data-item-id="1481" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=px6RF&amp;item_id=1481" rel="nofollow noopener noreferrer" target="_blank">https://support.google.com/analytics/answer/6367342</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="" data-reference="https://support.google.com/analytics/answer/6367342" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/001/481/thumb/51052aa3-96b9-4dd9-ad48-1f711c8bfde9.png?1754612795" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item1482" data-item-id="1482" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">デモアカウントの追加 ＞「Google アナリティクス4プロパティ：Google Merchandise Store(ウェブデータ)」を追加しましょう。</span></span></div></div>
+        
+        <div class="article-item item_rich_text " id="item1483" data-item-id="1483" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Google Merchandise Storeの実際のWEBサイトはこちら ↓↓</span></div></div>
+        
+        <div class="article-item item_link " id="item1484" data-item-id="1484" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=px6RF&amp;item_id=1484" rel="nofollow noopener noreferrer" target="_blank">Home</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Home" data-reference="https://shop.googlemerchandisestore.com/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/001/484/thumb/a6618396-38a0-4441-bb4f-2387bd951688.png?1754612811" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item1485" data-item-id="1485" data-item-type="ItemRichText"><div class="item-body-hbr">このページでは頻繁に必要となる分析タスクに絞って、Q&amp;A方式で解説しています。<br>
+<br>
+まずはQを見て実際にGoogle Analyticsのデモアカウント活用して、どうやってその分析ができるかトライしてみてください。<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">「Answerボタン」</span></span>を押すと解答を見ることができます。</div></div>
+        
+        <div class="article-item item_html " id="item1486" data-item-id="1486" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">TIPS</div>
+    </div>
+    <div class="content-area">
+        <p>Google Analyticsの使い方はGoogle上に必ず答えがあります。</p>
+        <p>今後様々な分析に対応できるようにするにはやはり「検索スキル」が必要不可欠です。</p>
+        <p>検索スキルを向上させるためにも、すぐに「Answer」を見る前にGoogleで検索して解決方法を自分で考えてみましょう。</p>
+        <p>プロフェッショナルも全てのGoogle Analytics機能を暗記しているわけではなく、必要に応じて検索を活用しながら効果的に利用しています。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item1487" data-item-id="1487" data-item-type="ItemHeading"><h2 class="item-body">Q1. リアルタイムのユーザー数は何人でしょうか？</h2></div>
+        
+        <div class="article-item item_markdown " id="item39582" data-item-id="39582" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item1488" data-item-id="1488" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">必要になるシーン例：</div>
+    </div>
+    <div class="content-area">
+      大規模な集客施策を実施した際に、リアルタイムでユーザー数の増加を確認する必要があります。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item5770" data-item-id="5770" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Answer</div>
+    <div class="toggle-content">
+        「レポート」>「リアルタイムの概要」ページから確認できます。過去30分間の合計ユーザー数、そして過去30分間の1分刻みでのユーザー数が確認できます。
+        <img src=https://cdn.clipkit.co/tenants/589/resources/assets/000/001/425/original/Q1.png?1768553753>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item1490" data-item-id="1490" data-item-type="ItemHeading"><h2 class="item-body">Q2. リアルタイムのユーザーの参照元で一番多いのはどこでしょうか？</h2></div>
+        
+        <div class="article-item item_markdown " id="item39583" data-item-id="39583" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item1491" data-item-id="1491" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">必要になるシーン例：</div>
+    </div>
+    <div class="content-area">
+        <p>合計ユーザー数だけでは十分な分析とならないことが多く、集客チャネル別にセグメント化して分析することが重要です。</p>
+        <p>「本日300ユーザーが訪問した」という情報だけでは、具体的な改善アクションにつながりません。</p>
+        <p>参照元で確認することで「100ユーザーがGoogle検索、50がダイレクト、150がSNS経由」とわかればより詳細度の高い良い分析になります。</p>
+        <p>「SNS経由の流入は目標200ユーザーに対して実績150ユーザーで50ユーザー不足」という分析ができれば、SNS経由の集客強化という具体的アクションにつながります。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item5771" data-item-id="5771" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Answer</div>
+    <div class="toggle-content">
+        <p>「レポート」>「リアルタイムの概要」の「アクティブユーザー(最初のユーザーの参照元)」セクションで確認できます。サンプルケースでは「(direct)」、「google」が4で最も多いと表示されています。</p>
+        <p>「参照元」と「メディア」の違いを正確に理解することが重要です。</p>
+        <p>Google Analyticsでは以下のように定義されています。これらの違いを理解しておくことが重要です。今回の写真の場合は、(direct)が多くなっておりますが、(direct)は直接URLにアクセスした場合を示します。ブラウザのアドレスバーに直接URLを入力した場合や、ブックマークなどから入力した場合が該当します。これらの参照元とメディアの定義はGoogle Analyticsによって規定されており、詳細は公式ヘルプページで確認することができます。
+        </p>
+        <div class="quote">
+            <p><span class="decoration-01">参照元</span>とはトラフィックの流入元、たとえば検索エンジン（googleなど）やドメイン（example.com）を指します。</p>
+            <p><span
+                    class="decoration-01">メディア</span>とは、参照元の一般的な分類、たとえばオーガニック検索（organic）、クリック単価による有料検索（cpc）、ウェブサイトからの紹介（referral）などです。
+            </p>
+        </div>
+        <img src="https://cdn.clipkit.co/tenants/589/resources/assets/000/001/426/original/Q2.png?1768553767">
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item1493" data-item-id="1493" data-item-type="ItemHeading"><h2 class="item-body">Q3. 過去30日間のユーザーはどの集客チャネルから多く流入しているでしょうか？</h2></div>
+        
+        <div class="article-item item_markdown " id="item39584" data-item-id="39584" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item1494" data-item-id="1494" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">必要になるシーン例：</div>
+    </div>
+    <div class="content-area">
+        1ヶ月間を振り返ってユーザーがどの集客経路からどれくらいきたのか、そしてどの集客チャネルを強化すべきなのかなどを分析する際に必要となります。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item5772" data-item-id="5772" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Answer</div>
+    <div class="toggle-content">
+        <p>「レポート」>「ライフサイクル」>「集客」>「ユーザー獲得」を選択して表示します。右上の期間指定から「過去30日間」を選択してください。</p>
+        <p>ユーザーのチャネルを確認すると、デモサイトでは「Direct」>「Organic Search」>「Paid Search」>「Cross-network」>「Referral」の順に流入量が多いことがわかります。</p>
+        <p>この分析は、複数の集客経路がある場合に、どの集客手法が効果的かを正確に把握するために使用します。</p>
+        <p>この分析は頻繁に利用される重要な指標です。Googleからの通常検索からの流入、ディスプレイ広告経由の流入、Googleの検索広告経由の流入などそれぞれから何ユーザーが流入しているのか知りたい場合に便利です。</p>
+        <img src="https://cdn.clipkit.co/tenants/589/resources/assets/000/001/427/original/Q3.png?1768553775">
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item1496" data-item-id="1496" data-item-type="ItemHeading"><h2 class="item-body">Q4. エンゲージメント率(or 直帰率)を把握してユーザーの期待とページ内容に乖離がないか知るにはどうすべきでしょうか？</h2></div>
+        
+        <div class="article-item item_markdown " id="item39585" data-item-id="39585" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item1497" data-item-id="1497" data-item-type="ItemHtml"><div class="item-body"><div class="callout">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">前提知識 - エンゲージメントとは</div>
+    </div>
+    <div class="content-area">
+        <p>ユーザーエンゲージメント：サイトまたはアプリがユーザーのデバイスのフォアグラウンドとして動作している時間の合計(秒)</p>
+        <p>エンゲージのあったセッションの定義：10秒を超えて継続した、1件以上のコンバージョンイベントの発生、ページビューが2回以上発生</p>
+        <p>平均エンゲージメント時間：サイトまたはアプリでのエンゲージメントセッションの長さの平均</p>
+        <p>エンゲージメントのあったセッション数(1ユーザーあたり)：エンゲージメント率:エンゲージメントのあったセッション数をセッション数で割った値</p>
+    </div>
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">前提知識 - 直帰率とは</div>
+    </div>
+    <div class="content-area">
+        <p>「1ページのみのセッション数をすべてのセッション数で割った値のこと」を指します。</p>
+        <p>つまり、直帰率が高いということは多くのユーザーが1ページだけみて離脱していることを指します。</p>
+        <p>直帰率が高いページは改善余地が高いということです。</p>
+    </div>
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">エンゲージメントと直帰率とは</div>
+    </div>
+    <div class="content-area">
+        <p>GA4になってからGoogleは直帰率ではなくエンゲージメント率を重視するようになっています。</p>
+        <p>エンゲージメント率の方がより正確にユーザーがそのページに興味を持っているかの指標になりますので、エンゲージメント率を見ていくことは今後極めて重要になります。</p>
+        <p>ざっくりと1直帰率=エンゲージメント率と考えることもできます。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item1498" data-item-id="1498" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">必要になるシーン例：</div>
+    </div>
+    <div class="content-area">
+        ユーザーのエンゲージメント率を調べることでどのページが離脱率が高くボトルネックになっているか確認することができます。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item5773" data-item-id="5773" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Answer</div>
+    <div class="toggle-content">
+        <p>「レポート」>「エンゲージメント」>「概要」から確認できます。</p>
+        <p>「アクティブ ユーザーあたりのオンライン エンゲージメント セッション数」という指標を確認します。サンプルデータでは0.82となっており、エンゲージメント率は82%であることを示しています。</p>
+
+        <img src="https://cdn.clipkit.co/tenants/589/resources/assets/000/001/428/original/Q4.png?1768553780">
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item1500" data-item-id="1500" data-item-type="ItemHeading"><h2 class="item-body">Q5.  過去30日間で Shopping Cartページに辿り着いたユーザー数は何人かを把握し、カート追加率を計算するには？</h2></div>
+        
+        <div class="article-item item_markdown " id="item39586" data-item-id="39586" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item1501" data-item-id="1501" data-item-type="ItemHtml"><div class="item-body"><div class="callout">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">前提知識：</div>
+    </div>
+    <div class="content-area">
+        <p>カート追加率は、サイト訪問者のうちカートに商品を追加したユーザーの割合を指します。</p>
+        <p>この指標はECサイトにおいて極めて重要な成果指標です。</p>
+        <p>カート追加率は「カート追加ページのユーザー数÷総ユーザー数」で計算できます。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item1502" data-item-id="1502" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">必要になるシーン例：
+        </div>
+    </div>
+    <div class="content-area">
+        <p>EC売上は「総ユーザー数×カート追加率×カート購入率×平均購入単価」という式で表すことができます。</p>
+        <p>カート追加率の向上は重要なKPIとなることが多く、定期的な確認と最適化が必要です。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item5774" data-item-id="5774" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Answer</div>
+    <div class="toggle-content">
+        <p>「レポート」>「エンゲージメント」>「ページとスクリーン」を選択します。</p>
+        <p>分析期間は「過去30日間」に設定してください。</p>
+        <p>「HOME」行でトップページへの訪問ユーザー数、「curt」と検索するとカート追加ページへの訪問ユーザー数を確認できます。</p>
+        <p>「Cart」ページのユーザー数÷「HOME」ページのユーザー数を計算することで、カート追加率を算出できます。</p>
+        <img src="https://cdn.clipkit.co/tenants/589/resources/assets/000/001/429/original/Q5.png?1768553786">
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item1504" data-item-id="1504" data-item-type="ItemHeading"><h2 class="item-body">Q6. 過去30日間でどの国のユーザー数が多いのか、トップ3の国を知りたい</h2></div>
+        
+        <div class="article-item item_markdown " id="item39587" data-item-id="39587" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item1505" data-item-id="1505" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">必要になるシーン例：</div>
+    </div>
+    <div class="content-area">
+        <p>どの国や地域からのユーザーが多いのかを知ることはユーザー理解を深める上で重要です。</p>
+        <p>国や地域によって求められる商品やデザイン要素が異なるため、この情報は戦略策定において重要です。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item5775" data-item-id="5775" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Answer</div>
+    <div class="toggle-content">
+        <p>「レポート」>「ユーザー属性」>「概要」の左上にある「アクティブユーザーユーザー(国別)」セクションから確認できます。ユーザー数は多い順に表示されており、</p>
+        <p>サンプルデータでは「United States」「India」「Canada」の順にユーザー数が多いことがわかります。</p>
+        <img src="https://cdn.clipkit.co/tenants/589/resources/assets/000/001/430/original/Q6.png?1768553790">
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item1507" data-item-id="1507" data-item-type="ItemHeading"><h2 class="item-body">Q7. 過去30日間でどのOS(オペレーティングシステム)のユーザーが多いのか把握しておきたい</h2></div>
+        
+        <div class="article-item item_markdown " id="item39588" data-item-id="39588" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item1508" data-item-id="1508" data-item-type="ItemHtml"><div class="item-body"><div class="callout">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">前提知識：OS</div>
+    </div>
+    <div class="content-area">
+        <p>OS(オペレーティングシステム)とは、パソコンやスマートフォンの動作基盤となる基本ソフトウェアです。</p>
+        <p>主なOSには「Android」「iOS」「Windows」「macOS」などがあります。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item1509" data-item-id="1509" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">必要になるシーン例：</div>
+    </div>
+    <div class="content-area">
+        <p>ユーザー特性を理解するために、どのOSからのアクセスが多いかという基本情報は重要な分析指標です。</p>
+        <p>ユーザーが使用しているOSによってサイトの表示スピードが異なったりデザインの見え方が微妙にずれることがあります。</p>
+        <p>全てのOSのデバイスでテストして問題がないか確認することがあります。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item38432" data-item-id="38432" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Answer</div>
+    <div class="toggle-content">
+        <p>レポート > ユーザー > テクノロジー > 概要を選択してください</p>
+        <p>一番右の「アクティブユーザー オペレーティングシステム別」をご覧ください。</p>
+      <p>Macintosh, Android, Windows, IOS, Chrome OSなどが表示されておりますが、こちらがOSになります。ここで確認可能です。 </p>
+        <img src="https://cdn.clipkit.co/tenants/589/resources/assets/000/001/431/original/Q7.png?1768553793">
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item1510" data-item-id="1510" data-item-type="ItemHeading"><h2 class="item-body">Q8. 1ユーザーあたりのページビュー回数(回遊率)を知りたい</h2></div>
+        
+        <div class="article-item item_markdown " id="item39589" data-item-id="39589" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item1511" data-item-id="1511" data-item-type="ItemHtml"><div class="item-body"><div class="callout">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">前提知識：</div>
+    </div>
+    <div class="content-area">
+        <p>回遊率とは1ユーザーあたり(1回の訪問あたり)のPV数のことを示します。</p>
+        <p>回遊率は「ページビュー数÷セッション数」で算出します。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item1512" data-item-id="1512" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">必要になるシーン例：</div>
+    </div>
+    <div class="content-area">
+        <p>回遊率が高いほど、1回のセッションでより多くのページが閲覧されており、コンテンツの魅力度や関連性が高いことを示しています。</p>
+        <p>メディアサイトやECサイトの運営において、回遊率は重要なエンゲージメント指標であり、定期的な分析と最適化が必要です。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item38433" data-item-id="38433" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Answer</div>
+    <div class="toggle-content">
+        <p>レポート > エンゲージメント > イベントよりイベント名がpage_viewである行を参照しましょう。</p>
+        <p>列名が「アクティブユーザーあたりのイベント数」というところをご覧ください。</p>
+      <p>page_viewというイベントがユーザーあたりに何件発生しているか見ることができます。今回の写真ですと、1ユーザーあたり6.18回と表示されています。 </p>
+        <img src="https://cdn.clipkit.co/tenants/589/resources/assets/000/001/432/original/Q8.png?1768553796">
+    </div>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="7cuZQAfPrPDr1FeGUSOqnQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

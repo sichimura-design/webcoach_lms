@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/zNEDj -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48544" data-item-id="48544" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【実践②】文脈と制約条件で出力をコントロールする | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p, .card ul { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .card ul { padding-left: 16px; }
+  .principle-card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px; margin: 16px 0;
+    display: flex; align-items: flex-start; gap: 16px;
+  }
+  .principle-num {
+    flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #E85D4A, #F5A64A);
+    color: #fff; font-weight: 700; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .principle-card h3 { font-size: 17px; font-weight: 700; color: #3D3D3D; margin: 0 0 4px; }
+  .principle-card p { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .prompt-example {
+    background: #2D2D2D; color: #E8E8E8; border-radius: 12px;
+    padding: 20px 24px; margin: 16px 0; font-size: 14px; line-height: 1.8;
+    font-family: 'Noto Sans JP', monospace; white-space: pre-wrap;
+  }
+  .prompt-example .prompt-label {
+    font-size: 11px; color: #F5A64A; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 8px;
+  }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .compare-bad { background: #FFF3F0; border: 2px solid #E85D4A; border-radius: 16px; padding: 20px; }
+  .compare-good { background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 16px; padding: 20px; }
+  .compare-bad .compare-label { font-size: 12px; font-weight: 700; color: #E85D4A; margin-bottom: 8px; }
+  .compare-good .compare-label { font-size: 12px; font-weight: 700; color: #4CAF50; margin-bottom: 8px; }
+  .try-box {
+    background: #fff; border: 2px dashed #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .try-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    .card-grid, .compare-grid { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+  }
+  .toc-link { color: #555; text-decoration: none; }
+  .toc-link:hover { color: #E85D4A; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="o31pfq7caQQUtiQx6eZqs2M9XM14-NLD9lBVjmQHZS6qLlXwH87K5STqJZLDbPwtfNsPt7TS0B2UF0XzH-qvBA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 5-4</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color\: #fff;">【実践②】文脈と制約条件で出力をコントロールする</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 5: プロンプトエンジニアリング ／ 所要時間：約20分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約20分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">「文脈」「制約条件」「ステップ指示」を使い、AIから複雑で質の高い回答を引き出せるようになる</p>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/QU9Hm" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/6gMwf" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">「文脈(Context)」がAIの理解度を左右する</a></li>
+    <li><a href="#sec2" class="toc-link">「制約条件」と「ステップ・バイ・ステップ指示」</a></li>
+    <li><a href="#sec3" class="toc-link">章末課題 - 総合実践</a></li>
+  </ol>
+</div>
+
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    新人デザイナーに「ポスター作って」とだけ伝えたら、どうなるでしょう？<br>
+    <strong class="accent">何のイベント？ 誰向け？ サイズは？ 色のイメージは？</strong><br><br>
+    聞きたいことが山ほどありますよね。新人は困り果てて、見当違いのポスターを作ってしまうかもしれません。<br><br>
+    AIも全く同じです。<strong class="accent">必要な「文脈」を伝え、「制約条件」で枠を設け、「ステップ」で手順を示す</strong>ことで、AIは驚くほど的確なアウトプットを返してくれます。
+  </p>
+</div>
+
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>文脈を「たくさん書けば良い」と思いがち → <strong class="accent">必要な情報を整理して簡潔に</strong>伝えることが大切</li>
+    <li>制約条件を付けすぎてAIが動けなくなる → <strong class="accent">矛盾する条件がないか確認</strong>しよう</li>
+    <li>一度に全部の技術を使おうとする → まずは1つずつ試して効果を体感しよう</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  セクション 1: 文脈
+============================================================ -->
+<h2 class="section-heading" id="sec1">1. 「文脈(Context)」がAIの理解度を左右する</h2>
+
+<p class="text-body">
+  人間同士のコミュニケーションでは「空気を読む」ことができますが、AIにはその能力がありません。AIは<strong class="accent">書かれていない背景情報や暗黙の了解を推測することが苦手</strong>です。
+</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>プロンプトにおける「文脈」とは、AIが指示をより深く正確に理解するための<strong class="accent">補足情報全般</strong>を指します。前提知識、背景情報、目的、ターゲット読者、関連情報などが含まれます。</p>
+</div>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 32px 0 16px;">【実践】文脈の有無で結果がどう変わるか</h3>
+
+<p class="text-body">
+  共通の指示「新しいスマートフォンのキャッチコピーを考えて」で比較してみましょう。
+</p>
+
+<div class="compare-grid">
+  <div class="compare-bad">
+    <div class="compare-label">文脈なし</div>
+    <p style="font-size: 14px; color: #555; margin: 0; line-height: 1.7;">一般的で当たり障りのないキャッチコピーになりがち</p>
+  </div>
+  <div class="compare-good">
+    <div class="compare-label">文脈あり</div>
+    <p style="font-size: 14px; color: #555; margin: 0; line-height: 1.7;">ターゲットの特徴を活かした、響きやすく魅力的なコピーに</p>
+  </div>
+</div>
+
+<div class="prompt-example">
+  <div class="prompt-label">文脈ありのプロンプト例</div>
+あなたは経験豊富なコピーライターです。
+
+ターゲットは最新技術に敏感な20代男性で、
+商品の特徴はバッテリー持続時間が従来比2倍、
+かつ超軽量であることです。
+
+このスマートフォンのキャッチコピーを3つ提案してください。</div>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 32px 0 16px;">効果的な文脈の与え方</h3>
+
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">テクニック</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">5W1Hを意識する</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">誰に・何を・いつ・どこで・なぜ・どのように を明確にする</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">箇条書きで整理する</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">複数の情報は箇条書きで提示すると、AIが処理しやすい</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">参考資料を提示する</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">AIが参照できる情報源を提供する（ファイルアップロード等）</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; font-weight: 700;">区切り文字を使う</td>
+        <td style="padding: 12px 16px;">--- や ### で文脈・指示・制約を明確に区別する</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">プロンプトに「文脈」を加える最大の目的は？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. プロンプトを長くして見栄えを良くするため</button>
+    <button class="quiz-opt" data-correct="true">B. AIが指示の意図をより正確に理解し、期待に近い成果物を生み出すため</button>
+    <button class="quiz-opt" data-correct="false">C. AIの処理時間を増やして丁寧に回答させるため</button>
+    <button class="quiz-opt" data-correct="false">D. AIに空気を読む能力を持たせるため</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> AIは「空気を読む」ことができないため、私たちが明確な文脈を提供する必要があります。文脈は<strong>AIの思考の方向性を定め、アウトプットの質を大きく左右する</strong>重要な要素です。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>クライアントへの提案メールを作るとき、「メール書いて」だけでなく「相手は40代の経営者で、初回面談後のフォローアップ。当社のWebデザインサービスに興味を示している」と文脈を添えれば、的確なメールが生成されます。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 2: 制約条件とステップ指示
+============================================================ -->
+<h2 class="section-heading" id="sec2">2. 「制約条件」と「ステップ・バイ・ステップ指示」</h2>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 32px 0 16px;">「制約条件」でアウトプットをコントロールする</h3>
+
+<p class="text-body">
+  <strong class="accent">制約条件（Constraints）</strong>とは、AIが生成するアウトプットに対して設ける「守ってほしいルールや制限」のことです。AIの自由な発想を活かしつつ、期待する範囲内に収めるために重要です。
+</p>
+
+<!-- 制約条件テーブル -->
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">制約の種類</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">具体例</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">文字数・単語数</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">「300字以内で要約して」「各アイデアは50単語以内で」</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">キーワード指定</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">「必ず『イノベーション』を含めて」「ネガティブな言葉は使わない」</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">表現のトーン</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">「フォーマルな言葉遣いで」「フレンドリーで親しみやすい口調で」</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">視点・立場</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">「顧客の視点からメリットを説明して」「経営者の立場で分析して」</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-weight: 700;">情報源の制限</td>
+        <td style="padding: 12px 16px;">「2023年以降の情報のみ参考に」</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 32px 0 16px;">【実践】制約付きキャッチコピー生成</h3>
+
+<div class="prompt-example">
+  <div class="prompt-label">プロンプト例</div>
+あなたはプロのコピーライターです。
+
+新発売の「AI搭載コーヒーメーカー」のキャッチコピーを
+5つ提案してください。
+
+ただし、以下の制約条件を守ってください。
+
+#制約条件
+- 各キャッチコピーは30文字以内
+- 「簡単」「便利」という言葉は使わない
+- ターゲットは忙しいビジネスパーソン
+- 必ず「未来」というキーワードを入れる
+- 出力は箇条書きでお願いします</div>
+
+<p class="text-body">
+  AIに入力し、すべての制約条件を満たしているか確認してみましょう。もし条件が守られていない場合は、プロンプトの表現をより明確にすることで改善できます。
+</p>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">制約条件を設定する主な目的は？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIの処理を遅くして慎重に回答させるため</button>
+    <button class="quiz-opt" data-correct="false">B. AIの創造性を完全に封じるため</button>
+    <button class="quiz-opt" data-correct="true">C. AIの自由な発想を活かしつつ、期待する範囲内にアウトプットを収めるため</button>
+    <button class="quiz-opt" data-correct="false">D. AIに難しいタスクを与えて性能をテストするため</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 制約条件は「枠」を設けるもので、AIの創造性を封じるものではありません。適切な制約を設けることで、<strong>的外れな回答や冗長すぎる回答を防ぎ</strong>、品質をコントロールできます。
+  </div>
+</div>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 32px 0 16px;">「ステップ・バイ・ステップ指示」で複雑なタスクも実行可能に</h3>
+
+<p class="text-body">
+  AIに一度に多くのことや複雑なタスクを依頼すると、混乱して指示の一部を見落とすことがあります。そんなときは<strong class="accent">ステップ・バイ・ステップ指示</strong>が有効です。
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>ステップ指示のメリット</h3>
+    <ul>
+      <li>一度に処理する情報量を減らし混乱を防ぐ</li>
+      <li>各ステップで期待するアウトプットが明確に</li>
+      <li>AIに「思考のプロセス」を意識させられる</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>効果的な場面</h3>
+    <ul>
+      <li>長い文章の生成</li>
+      <li>複数要素を組み合わせる企画立案</li>
+      <li>問題解決のプロセス</li>
+    </ul>
+  </div>
+</div>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 32px 0 16px;">【実践】ステップ指示でブログ記事構成案を作成</h3>
+
+<div class="prompt-example">
+  <div class="prompt-label">プロンプト例</div>
+あなたはSEOに詳しいブログ記事の専門家です。
+
+以下のステップで、「プロンプトエンジニアリング入門」
+というテーマのブログ記事構成案を作成してください。
+
+#ステップ
+ステップ1：ターゲット読者を定義してください
+ステップ2：読者が得られるメリットを3つ挙げてください
+ステップ3：記事全体の構成（導入、見出し3〜5つ、まとめ）を提案
+ステップ4：各見出しで含めるべきキーワードを3つずつ挙げてください
+ステップ5：読者に最も伝えたいメッセージを記述してください
+
+出力はMarkdown形式で、各ステップの回答が明確に分かるように。</div>
+
+<p class="text-body">
+  AIは各ステップに従って構成案を具体的に提案してくれます。確認ポイントは以下のとおりです。
+</p>
+
+<ul style="font-size: 15px; line-height: 2.2; color: #555; padding-left: 20px;">
+  <li>ターゲット読者は明確か？</li>
+  <li>読者のメリットは魅力的か？</li>
+  <li>記事の構成は論理的か？</li>
+  <li>キーワードは適切か？</li>
+  <li>結論のメッセージは心に響くか？</li>
+</ul>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>複雑なタスクもステップに分解することで、AIは一つ一つの処理に集中でき、<strong class="accent">最終的により質の高い、網羅的なアウトプット</strong>を生成しやすくなります。</p>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>企画書やレポートなど、複数のセクションが必要な文書を作るとき、「ステップ1: 背景を整理して → ステップ2: 課題を3つ挙げて → ステップ3: 解決策を提案して」のように分解すると、一貫性のある高品質な文書が得られます。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 3: 章末課題
+============================================================ -->
+<h2 class="section-heading" id="sec3">3. 章末課題 - AIと作る！「夢の旅行プラン」</h2>
+
+<p class="text-body">
+  これまで学んだ全技術を総動員して、友人グループの「最高の卒業旅行」プレゼン資料の骨子をAIに作成させましょう。
+</p>
+
+<div class="try-box">
+  <div class="label">やってみよう</div>
+  <p style="font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0 0 16px;">
+    <strong>課題：</strong>1章の「4大構成要素」と3章の「文脈」「制約条件」「ステップ指示」「Markdown出力」をすべて盛り込んだ総合プロンプトを設計し、プレゼン資料の骨子を作成してもらいましょう。
+  </p>
+  <p style="font-size: 15px; line-height: 1.8; color: #555; margin: 0;">
+    <strong>資料に含めるべき項目：</strong><br>
+    1. 旅行のコンセプト<br>
+    2. 行き先の候補地（3ヶ所、選定理由付き）<br>
+    3. 各候補地の魅力とアクティビティ（各3つ）<br>
+    4. 3泊4日のモデルコース概要<br>
+    5. おおよその予算感（1人あたり）<br>
+    6. 締めのメッセージ
+  </p>
+</div>
+
+<div class="prompt-example">
+  <div class="prompt-label">プロンプト設計のヒント</div>
+#役割
+あなたは[役割]です。
+
+#指示
+以下のステップと制約条件に基づいて、
+「最高の卒業旅行」のプレゼン資料の骨子を
+Markdown形式で作成してください。
+
+#文脈
+[旅行の基本情報：誰と、いつ、予算、目的など]
+
+#ステップ
+ステップ1：旅行のコンセプトを提案
+ステップ2：行き先の候補地を3ヶ所提案
+ステップ3：各候補地の魅力とアクティビティ
+ステップ4：3泊4日のモデルコース概要
+ステップ5：おおよその予算感
+ステップ6：締めのメッセージ
+
+#制約条件
+- [制約1]
+- [制約2]
+
+#出力形式
+Markdown形式で見出し・リスト・太字を効果的に使用</div>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>いきなり完璧なプロンプトを作るのは難しいものです。<strong class="accent">まずは思いつく要素を書き出し、徐々に肉付けしていく</strong>のがコツです。期待通りでなければ、どの部分を改善すればいいか考えて再度試してみましょう。この試行錯誤こそがスキル向上の鍵です！</p>
+</div>
+
+<!-- 確認クイズ #3 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">文脈・制約条件・ステップ指示を組み合わせることで得られる最大の効果は？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIが自動的に画像付きのプレゼン資料を完成させてくれる</button>
+    <button class="quiz-opt" data-correct="true">B. AIがこちらの意図を汲み取った、質の高い構造化されたアウトプットを生成してくれる</button>
+    <button class="quiz-opt" data-correct="false">C. AIの回答速度が3倍になる</button>
+    <button class="quiz-opt" data-correct="false">D. AIが人間と同じように空気を読めるようになる</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 役割設定で専門性を引き出し、文脈でAIの理解を助け、制約条件で方向性をコントロールし、ステップ指示で複雑な要求を整理し、Markdown形式で分かりやすい出力を得る。<strong>これらの要素を組み合わせることで、AIはまるで優秀なアシスタント</strong>のように動いてくれます。
+  </div>
+</div>
+
+
+<!-- まとめ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">文脈</strong> — AIの思考の方向性を定め、アウトプットの質を左右する。5W1Hを意識して簡潔に</li>
+    <li><strong style="color: #3D3D3D;">制約条件</strong> — AIの自由な発想を活かしつつ、期待する範囲内に収める「枠」</li>
+    <li><strong style="color: #3D3D3D;">ステップ指示</strong> — 複雑なタスクを小さなステップに分解し、順番に処理させる方法</li>
+    <li><strong style="color: #3D3D3D;">総合活用</strong> — 役割 × 指示 × 文脈 × 制約 × ステップ × Markdown で、最高品質のアウトプット</li>
+  </ul>
+</div>
+
+
+<!-- 理解度チェック -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">「文脈」がAIの出力に与える影響を実例で説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">文脈なしのキャッチコピー生成は一般的な結果に、文脈あり（ターゲット・商品特徴を提示）では具体的で魅力的な結果になります。文脈はAIの「空気を読む力」の代わりになるものです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">制約条件の5つの種類を挙げられる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">文字数・単語数、含める/含めないキーワード、表現のトーン、視点・立場、情報源の制限の5種類です。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">ステップ・バイ・ステップ指示を使って複雑なタスクを実行できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">ブログ記事構成案の例のように、複雑なタスクを「ステップ1: 〜」「ステップ2: 〜」と分解して指示を出せればOKです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">全要素を組み合わせた総合プロンプトを設計できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">章末課題の旅行プランのように、役割・指示・文脈・制約条件・ステップ指示・出力形式をすべて盛り込んだプロンプトを書けるようになっていれば合格です。</div>
+    </details>
+
+  </div>
+</details>
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/QU9Hm" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/6gMwf" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- JavaScript -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

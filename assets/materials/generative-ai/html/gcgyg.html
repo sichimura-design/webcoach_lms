@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-2/gcGyG -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48594" data-item-id="48594" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ターゲットとペルソナの違い——「全員向け」が刺さらない理由</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+  .hero__meta span { display: flex; align-items: center; gap: 4px; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* 比較テーブル */
+  .diff-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+  .diff-table th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; }
+  .diff-table th:first-child { background: #F0F0F0; color: #666; width: 22%; }
+  .diff-table th.th-target { background: linear-gradient(135deg, #5B7BE8, #7A9AF0); color: white; width: 39%; }
+  .diff-table th.th-persona { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: white; width: 39%; }
+  .diff-table td { padding: 12px 16px; border-bottom: 1px solid #F0F0F0; vertical-align: top; }
+  .diff-table td:first-child { background: #F7F8FA; font-weight: 700; font-size: 12px; color: #666; }
+  .diff-table tr:last-child td { border-bottom: none; }
+
+  /* 段階イメージ */
+  .segment-flow { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+  .segment-layer {
+    border-radius: 0;
+    padding: 16px 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .segment-layer:first-child { border-radius: 10px 10px 0 0; }
+  .segment-layer:last-child { border-radius: 0 0 10px 10px; }
+  .segment-layer--all { background: #F0F4FF; border-left: 4px solid #A0B4E8; }
+  .segment-layer--target { background: #FFF8F0; border-left: 4px solid #F5A64A; }
+  .segment-layer--persona { background: #FFF0ED; border-left: 4px solid #E85D4A; }
+  .segment-icon { font-size: 24px; flex-shrink: 0; }
+  .segment-label { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+  .segment-layer--all .segment-label { color: #5B7BE8; }
+  .segment-layer--target .segment-label { color: #E0882A; }
+  .segment-layer--persona .segment-label { color: #E85D4A; }
+  .segment-text { font-size: 13px; color: #4A4A4A; line-height: 1.6; }
+  .segment-arrow { text-align: center; font-size: 18px; color: #CCC; padding: 4px 0; }
+
+  /* なぜ刺さらないか */
+  .problem-visual {
+    background: #F7F8FA;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .problem-visual__title { font-size: 13px; font-weight: 700; color: #888; margin-bottom: 16px; }
+  .target-circle-row { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; }
+  .target-circle {
+    width: 80px; height: 80px; border-radius: 50%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; font-size: 11px; font-weight: 600;
+  }
+  .target-circle--big { background: #E8EEFF; border: 2px dashed #A0B4E8; width: 110px; height: 110px; color: #5B7BE8; }
+  .target-circle--small { background: #FFF0ED; border: 2px solid #E85D4A; color: #E85D4A; font-size: 12px; font-weight: 700; }
+  .target-circle__num { font-size: 22px; font-weight: 900; display: block; }
+  .target-circle__label { font-size: 10px; }
+  .problem-arrow { font-size: 24px; color: #CCC; display: flex; align-items: center; }
+
+  /* クイズ */
+  .quiz-section {
+    background: #F7F8FA;
+    border-radius: 12px;
+    padding: 24px;
+    margin: 20px 0;
+  }
+  .quiz-q { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: #3D3D3D; }
+  .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+  .quiz-btn {
+    background: white;
+    border: 2px solid #DDD;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    color: #3D3D3D;
+  }
+  .quiz-btn:hover { border-color: #E85D4A; transform: translateY(-1px); }
+  .quiz-btn.correct { border-color: #4CAF7C; background: #F0FBF4; color: #2E9B6E; }
+  .quiz-btn.wrong { border-color: #FFBDBD; background: #FFF5F5; color: #C0392B; }
+  .quiz-btn.faded { opacity: 0.4; pointer-events: none; }
+  .quiz-btn.answered { pointer-events: none; }
+  .quiz-feedback { margin-top: 14px; padding: 14px; border-radius: 8px; font-size: 13px; line-height: 1.7; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback--correct { background: #F0FBF4; border-left: 3px solid #4CAF7C; color: #2E9B6E; }
+  .quiz-feedback--wrong { background: #FFF5F5; border-left: 3px solid #FFBDBD; color: #C0392B; }
+
+  /* 実例 */
+  .example-before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .example-card { border-radius: 10px; padding: 18px; }
+  .example-card--before { background: #F0F4FF; border: 1.5px solid #A0B4E8; }
+  .example-card--after { background: #FFF0ED; border: 1.5px solid #E85D4A; }
+  .example-card__label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .example-card--before .example-card__label { color: #5B7BE8; }
+  .example-card--after .example-card__label { color: #E85D4A; }
+  .example-card__type { font-size: 12px; color: #888; margin-bottom: 6px; }
+  .example-card__text { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+  .example-card__issue { font-size: 12px; line-height: 1.6; }
+  .example-card--before .example-card__issue { color: #5B7BE8; }
+  .example-card--after .example-card__issue { color: #E85D4A; }
+
+  /* ポイントボックス */
+  .point-box {
+    background: linear-gradient(135deg, #3D3D3D 0%, #555 100%);
+    border-radius: 10px;
+    padding: 22px 24px;
+    color: white;
+    margin: 20px 0;
+  }
+  .point-box__title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin-bottom: 10px; }
+  .point-box__text { font-size: 15px; line-height: 1.75; }
+  .point-box__text strong { color: #F5A64A; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .example-before-after { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+    .diff-table { font-size: 12px; }
+    .diff-table th, .diff-table td { padding: 8px 10px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="A_zccZ1ZWO-R_m5rensvfn_LgahN5yerNxa7ODdD0KMZzxmh50yUSMQOR483QLxQiP5tXIlLdDvOUX28jgUY0w"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+
+<div class="hero">
+  <div class="hero__label">Course A — Chapter 2 / Lesson 1</div>
+  <div class="hero__title">ターゲットとペルソナの違い<br>——「全員向け」が刺さらない理由</div>
+  <div class="hero__meta">
+    <span>⏱ 30分</span>
+    <span>📖 知識</span>
+    <span>🎯 SNS運用者・Webデザイナー・動画編集者</span>
+  </div>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-2/Hf1EA" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+<div class="container">
+
+  <div class="intro-box reveal visible">
+    <div class="intro-box__text">
+      「ターゲットは20〜40代の女性です」——こんなターゲット設定を聞いたことがありますか？<br>
+      実はこの設定、<strong>「誰にも刺さらない」制作物を生みやすい罠</strong>があります。ターゲットとペルソナ、それぞれの役割と使い方を正しく理解しましょう。
+    </div>
+  </div>
+
+  <!-- セクション1: 「全員向け」問題 -->
+  <div class="card reveal visible">
+    <div class="card__title">「全員に届けたい」は「誰にも届かない」になりやすい</div>
+    <p>メッセージを広くしようとするほど、具体性が失われます。下の図は、ターゲットを広くしたときに起こることを表しています。</p>
+
+    <div class="problem-visual">
+      <div class="problem-visual__title">ターゲットが広いほど、メッセージの「密度」が下がる</div>
+      <div class="target-circle-row">
+        <div class="target-circle target-circle--big">
+          <span class="target-circle__num">100</span>
+          <span class="target-circle__label">万人に届ける</span>
+          <span style="font-size: 10px; color: #888; margin-top: 2px;">「なんとなく共感」</span>
+        </div>
+        <div class="problem-arrow">→</div>
+        <div class="target-circle target-circle--small">
+          <span class="target-circle__num">1</span>
+          <span class="target-circle__label">人に深く刺さる</span>
+          <span style="font-size: 10px; margin-top: 2px;">「これ私のこと！」</span>
+        </div>
+      </div>
+      <p style="font-size: 12px; color: #888; margin-top: 14px;">「刺さる」コンテンツは、特定の誰かに向けて書かれている。でも実は似たような人が大勢いる。</p>
+    </div>
+
+    <div class="example-before-after">
+      <div class="example-card example-card--before">
+        <div class="example-card__label">広すぎるターゲット設定</div>
+        <div class="example-card__type">インスタ投稿の場合</div>
+        <div class="example-card__text">「20〜40代の仕事をしている女性へ」</div>
+        <div class="example-card__issue">→ 20代派遣社員と40代管理職では悩みがまったく違う。どちらにも「自分向けじゃない」と感じさせてしまう</div>
+      </div>
+      <div class="example-card example-card--after">
+        <div class="example-card__label">絞り込んだペルソナ設定</div>
+        <div class="example-card__type">同じインスタ投稿の場合</div>
+        <div class="example-card__text">「残業が多く休日も仕事が頭から離れない27歳の会社員・田中さつきさん」</div>
+        <div class="example-card__issue">→ 同じ状況の人全員に「これ私のことだ！」と感じさせる。結果、保存・フォローが増える</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション2: ターゲットとペルソナの違い -->
+  <div class="card reveal visible">
+    <div class="card__title">ターゲットとペルソナ——それぞれの役割</div>
+    <p>「ターゲット」と「ペルソナ」は似ていますが、使う場面と目的が違います。</p>
+
+    <div class="segment-flow">
+      <div class="segment-layer segment-layer--all">
+        <div class="segment-icon">🌏</div>
+        <div>
+          <div class="segment-label">マーケット（全体市場）</div>
+          <div class="segment-text">製品・サービスが届きうるすべての人々。例:「スマートフォンを使う人全員」</div>
+        </div>
+      </div>
+      <div class="segment-arrow">↓ 絞り込む</div>
+      <div class="segment-layer segment-layer--target">
+        <div class="segment-icon">🎯</div>
+        <div>
+          <div class="segment-label">ターゲット（属性で絞り込んだ集団）</div>
+          <div class="segment-text">年齢・性別・職業・地域など属性で絞った層。例:「30代・女性・都市部・共働き」。戦略策定・媒体選定に使う。</div>
+        </div>
+      </div>
+      <div class="segment-arrow">↓ 人格化する</div>
+      <div class="segment-layer segment-layer--persona">
+        <div class="segment-icon">👤</div>
+        <div>
+          <div class="segment-label">ペルソナ（一人の具体的な人物像）</div>
+          <div class="segment-text">名前・職業・生活習慣・悩み・価値観まで具体化した架空の1人。例:「田中さつき・27歳・IT企業勤務・週3でヨガ・睡眠の質が気になっている」。制作・コピーに使う。</div>
+        </div>
+      </div>
+    </div>
+
+    <table class="diff-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th class="th-target">ターゲット</th>
+          <th class="th-persona">ペルソナ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>定義</td>
+          <td>属性で絞り込んだ「集団」</td>
+          <td>一人の「具体的な人物像」</td>
+        </tr>
+        <tr>
+          <td>情報量</td>
+          <td>少ない（デモグラフィック中心）</td>
+          <td>多い（心理・行動・価値観まで）</td>
+        </tr>
+        <tr>
+          <td>使う場面</td>
+          <td>媒体選定・予算配分・戦略</td>
+          <td>コピー・デザイン・コンテンツ制作</td>
+        </tr>
+        <tr>
+          <td>具体例</td>
+          <td>「30代・女性・子育て中」</td>
+          <td>「山田花子・34歳・2歳の子を持つ・時短正社員・夜時間がなく自分時間が欲しい」</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="point-box">
+      <div class="point-box__title">使い分けの原則</div>
+      <div class="point-box__text">
+        「<strong>誰に媒体を出すか</strong>」を決めるときはターゲット。「<strong>何を書くか・どうデザインするか</strong>」を決めるときはペルソナ。クリエイターは<strong>ペルソナを常に手元に置いておく</strong>ことが重要。
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション3: 年齢・性別だけでは足りない -->
+  <div class="card reveal visible">
+    <div class="card__title">「年齢・性別・職業」だけでは足りない理由</div>
+    <p>
+      「30代女性・会社員」というターゲット設定は、同じ条件の人が何十万人もいます。でも、その人たちの「悩み」「動機」「価値観」はバラバラです。
+    </p>
+
+    <div style="background: #F7F8FA; border-radius: 10px; padding: 20px; margin: 16px 0;">
+      <p style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 14px;">「30代女性・会社員」でも全然違う3人の例</p>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; gap: 14px; align-items: flex-start; padding: 14px; background: white; border-radius: 8px;">
+          <span style="font-size: 28px; flex-shrink: 0;">A</span>
+          <div>
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">渡辺彩さん（32歳・マーケター・独身・趣味：ジム）</div>
+            <div style="font-size: 12px; color: #666;">悩み: キャリアアップしたい。週末は自己投資に使いたい。価格より価値を重視。</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start; padding: 14px; background: white; border-radius: 8px;">
+          <span style="font-size: 28px; flex-shrink: 0;">B</span>
+          <div>
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">中田あずさん（35歳・事務職・育休明け・2歳の子あり）</div>
+            <div style="font-size: 12px; color: #666;">悩み: 時間が全然ない。コスパ重視。自分の時間を確保したい。</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: flex-start; padding: 14px; background: white; border-radius: 8px;">
+          <span style="font-size: 28px; flex-shrink: 0;">C</span>
+          <div>
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">小林千尋さん（38歳・営業職・既婚・子なし・副業中）</div>
+            <div style="font-size: 12px; color: #666;">悩み: 本業を辞めて独立したい。副収入を増やしたい。チャレンジを後押ししてほしい。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p>同じ「30代女性・会社員」でも、刺さるコピー・デザイン・コンテンツはまったく異なります。属性の先にある<strong>「インサイト（心の奥底にある欲求）」</strong>まで掘り下げて初めて、制作物が刺さります。</p>
+  </div>
+
+  <!-- クイズ -->
+  <div class="card reveal visible">
+    <div class="card__title">理解度チェック</div>
+    <div class="quiz-section">
+      <div class="quiz-q">Q. InstagramのLP（商品ページ）を制作するとき、「どんなコピーを書くか」「どんなビジュアルにするか」を決める際に使うべきなのはどちら？</div>
+      <div class="quiz-options">
+        <button class="quiz-btn" data-correct="false" onclick="answerQuiz(this)">ターゲット（30代・女性・都市部）</button>
+        <button class="quiz-btn" data-correct="true" onclick="answerQuiz(this)">ペルソナ（田中さつき・27歳・残業多め・週末に自分時間を作りたい）</button>
+        <button class="quiz-btn" data-correct="false" onclick="answerQuiz(this)">どちらも使わなくてよい</button>
+      </div>
+      <div class="quiz-feedback quiz-feedback--correct" id="quiz-feedback-correct">
+        ✓ 正解です！ コピーやビジュアルの制作判断には「ペルソナ」を使います。「田中さつきさんなら、この言葉を見てどう感じるか？」と問いかけながら制作することで、具体的な意思決定ができます。
+      </div>
+      <div class="quiz-feedback quiz-feedback--wrong" id="quiz-feedback-wrong">
+        ✗ 残念。コピーやデザインは「ペルソナ」を使って判断します。ターゲットは媒体選定や戦略策定に使うもの。制作の現場ではペルソナに語りかけるように作ることが重要です。
+      </div>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">「全員向け」は誰にも刺さらない。<br>ターゲットで集団を絞り、ペルソナで1人に人格化する。</div>
+    <div class="summary-card__sub">
+      ターゲット → 戦略・媒体選定に使う属性の集団<br>
+      ペルソナ → 制作・コピーに使う1人の具体的な人物像<br>
+      「年齢・性別」の先にある「インサイト」まで掘り下げることが鍵<br><br>
+      次のレッスンでは、ペルソナの具体的な作り方とインサイトの発掘方法を学びます。
+    </div>
+  </div>
+
+</div>
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-2/Hf1EA" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

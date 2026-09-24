@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="rB0rV+f53LhahOHCUkFKAA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1475" data-domain="learn.webcoach.jp" data-url="/web-design/SNS%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E5%AE%9F%E8%B7%B5%E8%AA%B2%E9%A1%8C/C2PjG" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>要件定義書１ - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/SNS%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E5%AE%9F%E8%B7%B5%E8%AA%B2%E9%A1%8C/C2PjG">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="要件定義書１ - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/655/medium/70e44031-95a1-416a-9e28-d5ec4379acce.png?1754451293">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="要件定義書１">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/SNS%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E5%AE%9F%E8%B7%B5%E8%AA%B2%E9%A1%8C/C2PjG">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/655/large/70e44031-95a1-416a-9e28-d5ec4379acce.png?1754451293">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/SNS%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3%E5%AE%9F%E8%B7%B5%E8%AA%B2%E9%A1%8C/C2PjG"
+    },
+    "headline": "要件定義書１",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_links/images/000/028/655/medium/70e44031-95a1-416a-9e28-d5ec4379acce.png?1754451293",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-01T17:41:54+09:00",
+    "dateModified": "2025-08-21T19:01:51+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_motoyama"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="ZLQbs74o8KkM7wGHzC_jqwz8Ows8eE1u31fzgH9tv6ruCI6OSN_F1k8LB0iWMTUxkSDcl9cm2p140n5TGJ0adw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>SNSデザイン実践課題</div>
+
+          <div class="fw-bold h2">要件定義書１</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item28099" data-item-id="28099" data-item-type="ItemHeading"><h2 class="item-body">要件定義書</h2></div>
+        
+        <div class="article-item item_html " id="item28100" data-item-id="28100" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <tbody>
+    <thead>
+      <tr>
+        <th scope="col">
+          <div>タイトル</div>
+        </th>
+        <th scope="col">
+          <div>補足情報</div>
+        </th>
+        <th scope="col">
+          <div>内容</div>
+        </th>
+      </tr>
+    </thead>
+    <tr>
+      <th scope="row">
+        <div>制作物を通じて達成したい目的</div>
+      </th>
+      <td>
+        <div></div>
+      </td>
+      <td>
+        <div>ドーナツショップ「SWEET TIME DONUTS」の期間限定商品のラズベリーのアイシングドーナツ「ラズベリーグレイス（商品名）」の<span class="decoration-02">LPへの導線用のバナーを作成</span>する。達成したい目標は、<span class="decoration-02">特設サイトへのユーザーの誘導</span>です。</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>ターゲット</div>
+      </th>
+      <td>
+        <div>デモグラ情報（性別・年齢・etc…）</div>
+      </td>
+      <td>
+        <div>年齢：顧客層は20〜40代の女性<br>居住地：都心在住<br>職業：出版社の編集者</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div></div>
+      </th>
+      <td>
+        <div>ペルソナ情報（検討度・どういった顧客体験を辿っているか・どんな悩みを持っているか・どんな理想があるか・etc…）</div>
+      </td>
+      <td>
+        <div>◾️ライフスタイル<br>・平日は忙しく働いている<br>・季節限定商品に弱い<br>・SNSで話題の商品やオシャレな場所などをチェックする習慣がある（映えるものに敏感）<br><br>◾️趣味<br>・カフェ巡りと写真撮影をしてSNSへ投稿<br>・料理なども趣味で食材へ興味がある<br><br>◾️価値観<br>・毎日が忙しいため、少しの贅沢が心のゆとりを生むと考えている<br>・自分の時間を大切にしリフレッシュするために使いたい<br>・限られた予算の中で楽しめる「プチ贅沢」をしたい<br><br>◾️課題とニーズ<br>・平日の仕事後にリフレッシュできる時間や場所が欲しい<br>・手軽に購入できるオシャレなスイーツを探している<br><br>◾️購買行動<br>・忙しいため、自宅やオフィスからアクセスしやすい場所で気軽に購入できる商品を好む<br>・SNSで見かけた話題性のあるものを試してみる傾向がある<br>・季節感や限定性のあるものに心を動かされる傾向がある</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>キャッチコピー・文言とその優先順位</div>
+      </th>
+      <td>
+        <div>①：XXXXXX<br>②：XXXXXX</div>
+      </td>
+      <td>
+        <div>① 自分へのご褒美<br>② 期間限定（季節限定）</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div></div>
+      </th>
+      <td>
+        <div>コピー表示上の注意点や補足</div>
+      </td>
+      <td>
+        <div>11月30日より発売開始</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>マイクロコピーとその配置</div>
+      </th>
+      <td>
+        <div>XXXXXX<br>XXXXXX</div>
+      </td>
+      <td>
+        <div>・甘酸っぱい、私の時間は今だけ<br>・ひとくちで、幸せが広がるご褒美時間</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div></div>
+      </th>
+      <td>
+        <div>配置や優先順位の注意点や補足</div>
+      </td>
+      <td>
+        <div></div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>制作物の縦横比</div>
+      </th>
+      <td>
+        <div>①：1080px × 1800px<br>②：1080px × 1080px<br>etc…</div>
+      </td>
+      <td>
+        <div>1080px × 1080px</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>掲載・配信箇所</div>
+      </th>
+      <td>
+        <div>リンクなどとセットで詳細に記載</div>
+      </td>
+      <td>
+        <div>自社サイトのトップページへのバナー設置<br>SNS広告への出稿（インスタグラム）</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>色味</div>
+      </th>
+      <td>
+        <div>特にない場合、やめてほしい色味など記載</div>
+      </td>
+      <td>
+        <div>・ラズベリーの深みある赤色（暖色）をベースにした色味にしてください。<br>・食品の広告なので、食べ物が美味しそうに見える配色を意識してください。</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>与えたい印象</div>
+      </th>
+      <td>
+        <div>特にない場合、与えたくない印象など記載</div>
+      </td>
+      <td>
+        <div>「特別感」と「ご褒美」を感じさせる雰囲気にしてください。</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>使用する素材の要件</div>
+      </th>
+      <td>
+        <div>素材を指定しない場合には必須</div>
+      </td>
+      <td>
+        <div>・ラズベリー色のドーナツの画像（該当する色味のドーナツがない場合は加工で色を変更する作業をしてもOK）<br>・補足情報になりますが、使用するラズベリーは自社農園で栽培しているラズベリーを使用するのでラズベリーを配置してほしいです（サンプルバナーを参考にして下さい）<br>・ロゴの挿入は必須ではありませんが、使用できるよう配布します。（禁止事項：色変更・変形はしないようにしてください。拡大縮小に関しては許可しますが拡大は解像度に注意しましょう。）ご自身で自作してもOKです。<br><br>指定素材の準備はしていますが、素材はご自身で自由に選定いただいても大丈夫です</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>その他意識して欲しいこと</div>
+      </th>
+      <td>
+        <div>注意点や避けて欲しいことがあれば記載</div>
+      </td>
+      <td>
+        <div>・カフェでのご褒美時間と持ち帰って家でのご褒美時間という表現でもOKです。<br>・ラズベリーグレイスというドーナツで特別なご褒美時間が経験できるという点を意識して欲しいです。</div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>難易度</div>
+      </th>
+      <td>
+        <div>★★★★★5段階中</div>
+      </td>
+      <td>
+        <div>★★☆☆☆2<br>Photoshopの切り抜きと色変更の作業があるため</div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_heading " id="item28101" data-item-id="28101" data-item-type="ItemHeading"><h2 class="item-body">指定素材・参考デザイン</h2></div>
+        
+        <div class="article-item item_html " id="item28102" data-item-id="28102" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title">指定素材</div>
+  </div>
+  <div class="content-area">
+    <a href="https://www.dropbox.com/scl/fi/pd2bxw28nivkn7ez6abtu/sns_design_assignment_ch1_v1-0_published.zip?rlkey=5vqhmuwcrmqq0cf9koefecy7g&st=uz8376lx&dl=0">指定素材ダウンロード</a>
+    <a href="https://unsplash.com/ja/%E5%86%99%E7%9C%9F/%E3%83%A9%E3%82%BA%E3%83%99%E3%83%AA%E3%83%BC%E3%82%92%E3%81%AE%E3%81%9B%E3%81%9F%E4%B8%80%E6%9D%AF%E3%81%AE%E3%82%B3%E3%83%BC%E3%83%92%E3%83%BC-dv_E68uCYaE">Unsplash</a>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item28103" data-item-id="28103" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title">参考デザイン</div>
+  </div>
+  <div class="content-area">
+    <img src="/theme/webcoach/img/web-designs/SNS-design-kadai/STD_banner.jpg">
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item28104" data-item-id="28104" data-item-type="ItemHeading"><h2 class="item-body">制作チュートリアル</h2></div>
+        
+        <div class="article-item item_rich_text " id="item28105" data-item-id="28105" data-item-type="ItemRichText"><div class="item-body-hbr">Photoshopを使用した作成方法です。<br>
+一部省略していますのでご了承ください。</div></div>
+        
+        <div class="article-item item_markdown " id="item28106" data-item-id="28106" data-item-type="ItemMarkdown"><h4 id="section">1-1 ファイル作成</h4>
+</div>
+        
+        <div class="article-item item_link " id="item28655" data-item-id="28655" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=C2PjG&amp;item_id=28655" rel="nofollow noopener noreferrer" target="_blank">要件定義書1 1-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="要件定義書1 1-1" data-reference="https://www.dropbox.com/scl/fi/kbbquvpvijmkd3bmh6ogt/1.1_1.0_.mp4?rlkey=dod7tg7w8x2p4lc2ecc8rwldz&amp;st=9mrsc4wy&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/655/thumb/70e44031-95a1-416a-9e28-d5ec4379acce.png?1754451293" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item28107" data-item-id="28107" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28113" data-item-id="28113" data-item-type="ItemMarkdown"><h4 id="section">1-2 素材切り抜き</h4>
+</div>
+        
+        <div class="article-item item_link " id="item28656" data-item-id="28656" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=C2PjG&amp;item_id=28656" rel="nofollow noopener noreferrer" target="_blank">要件定義書1 2-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="要件定義書1 2-1" data-reference="https://www.dropbox.com/scl/fi/82o3fcy6pjknntyyqzusm/1.2_1.0_.mp4?rlkey=9enh4t8nf1963rzby47xzcsut&amp;st=s5e7u3r1&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/656/thumb/311416fa-7199-4428-9665-8bd719bcf844.png?1754451271" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item28108" data-item-id="28108" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28114" data-item-id="28114" data-item-type="ItemMarkdown"><h4 id="section">1-3 背景挿入</h4>
+</div>
+        
+        <div class="article-item item_link " id="item28657" data-item-id="28657" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=C2PjG&amp;item_id=28657" rel="nofollow noopener noreferrer" target="_blank">要件定義書1 3-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="要件定義書1 3-1" data-reference="https://www.dropbox.com/scl/fi/npc9tgye81txk6tai45y4/1.3_1.0_.mp4?rlkey=c6tzgs4945prhtt9wq8l4ezia&amp;st=mq86qddh&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/657/thumb/ca515eee-85d5-4759-9561-49658f974b4b.png?1754451262" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item28109" data-item-id="28109" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28115" data-item-id="28115" data-item-type="ItemMarkdown"><h4 id="section">1-4 画像のサイズ調整</h4>
+</div>
+        
+        <div class="article-item item_link " id="item28658" data-item-id="28658" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=C2PjG&amp;item_id=28658" rel="nofollow noopener noreferrer" target="_blank">要件定義書1 4-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="要件定義書1 4-1" data-reference="https://www.dropbox.com/scl/fi/x221ofodxbi9hraxvffnu/1.4_1.0_.mp4?rlkey=ypo005tr1btpguqq781cq33dg&amp;st=z94cgduh&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/658/thumb/0cd0116c-98c6-48c2-af65-979769ce396c.png?1754451251" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item28110" data-item-id="28110" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28116" data-item-id="28116" data-item-type="ItemMarkdown"><h4 id="section">1-5 ドーナツ色変更</h4>
+</div>
+        
+        <div class="article-item item_link " id="item28659" data-item-id="28659" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=C2PjG&amp;item_id=28659" rel="nofollow noopener noreferrer" target="_blank">要件定義書1 5-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="要件定義書1 5-1" data-reference="https://www.dropbox.com/scl/fi/wxyxlg6syjnwfmrlqwg14/1.5_1.0_.mp4?rlkey=9zm545debk5hxrpvgikrasdyl&amp;st=24xogrqz&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/659/thumb/2541d1ff-5ca6-42ff-b342-ef0e50b5c746.png?1754451238" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item28111" data-item-id="28111" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28117" data-item-id="28117" data-item-type="ItemMarkdown"><h4 id="section">1-6 タイトル作成</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item28118" data-item-id="28118" data-item-type="ItemRichText"><div class="item-body-hbr">※文字間の調整は各自で調整をお願いします。</div></div>
+        
+        <div class="article-item item_link " id="item28660" data-item-id="28660" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=C2PjG&amp;item_id=28660" rel="nofollow noopener noreferrer" target="_blank">要件定義書1 6-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="要件定義書1 6-1" data-reference="https://www.dropbox.com/scl/fi/rvc91odjepc70lb7r7836/1.6_1.0_.mp4?rlkey=oza17z3su9owjdr7z6n7yrub0&amp;st=mxm573on&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/660/thumb/0328d3a2-1a5c-4413-bf03-1cbc71b903a0.png?1754451218" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item28112" data-item-id="28112" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28119" data-item-id="28119" data-item-type="ItemMarkdown"><h4 id="section">1-7 完成品書き出し</h4>
+</div>
+        
+        <div class="article-item item_link " id="item28661" data-item-id="28661" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=C2PjG&amp;item_id=28661" rel="nofollow noopener noreferrer" target="_blank">要件定義書1 7-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="要件定義書1 7-1" data-reference="https://www.dropbox.com/scl/fi/eq8wu4w7qro26m6or1mg6/1.7_1.0_.mp4?rlkey=u6b7r8th6k3eo1nubclt9c3o1&amp;st=br691tov&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/661/thumb/6e5382c2-174c-43b4-b352-e1ad277f5867.png?1754451206" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="rB0rV+f53LhahOHCUkFKAA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

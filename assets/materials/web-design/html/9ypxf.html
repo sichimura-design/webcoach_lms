@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/9yPXf -->
+<!-- clipkit-fetched-at: 2026-09-17T11:10:31.246Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop -実践編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/9yPXf">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop -実践編- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop -実践編-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/9yPXf">
+<meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="FhdIBXC8mimvfauZexpWXaZ6U8HR_DPe3FBI9beDm9qdcE8m4s8wsYXs611y0vD0y-NJuM3TU5wrzReYcVFeng"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop -実践編-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0. はじめに</a></li><li><a href="#heading1" class="tocLink">1. 学習のポイント</a></li><li><a href="#heading2" class="tocLink">2. Adobe Photoshop 中級編</a><ul><li><a href="#heading3" class="tocLink">a. パペットワープ機能</a><ul><li><a href="#heading4" class="tocLink">使用教材</a></li><li><a href="#heading5" class="tocLink">学習のポイント</a></li></ul></li><li><a href="#heading6" class="tocLink">b. 遠近法ワープ機能</a><ul><li><a href="#heading7" class="tocLink">使用教材</a></li><li><a href="#heading8" class="tocLink">学習のポイント</a></li><li><a href="#heading9" class="tocLink">ショートカットキー</a></li></ul></li></ul></li><li><a href="#heading10" class="tocLink">3. Adobe Photoshop 上級編</a><ul><li><a href="#heading11" class="tocLink">a. 奥行きがあるアニメーションを作成しよう！</a><ul><li><a href="#heading12" class="tocLink">学習のポイント</a></li></ul></li><li><a href="#heading13" class="tocLink">b. アート作品を作成しよう！</a><ul><li><a href="#heading14" class="tocLink">使用教材</a></li><li><a href="#heading15" class="tocLink">学習のポイント</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item4423" data-item-id="4423" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">0. はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item4424" data-item-id="4424" data-item-type="ItemMarkdown"><p><a href="https://learn.webcoach.jp/web-design/59zf7">Adobe <strong>Photoshop -基礎編-</strong> </a>  では、Photoshopの基本的な操作方法を学んでいただき、基本的なスキルに関しては網羅できていると思います。</p>
+
+<p>Adobe Photoshop 実践編では、中級編で2つのスキル、そして上級編では更なるデザイン性向上のために役立つスキルを学習していただきます。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item4425" data-item-id="4425" data-item-type="ItemHeading"><h2 class="item-body" id="heading1">1. 学習のポイント</h2></div>
+        
+        <div class="article-item item_markdown " id="item4426" data-item-id="4426" data-item-type="ItemMarkdown"><p>上級編では今まで学んだスキルを活かして、課題に取り組んでもらおうと思います！</p>
+
+<p>まずは、基礎編の内容を完璧にマスターすること、そして次に中級編をマスターしてから上級編に進むと良いでしょう！</p>
+</div>
+        
+        <div class="article-item item_html " id="item4427" data-item-id="4427" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">”実際に手を動かしてやること”
+が一番のスキル向上への近道です。面倒がらずに手を動かして頑張りましょう。</div></div></div>
+        
+        <div class="article-item item_heading " id="item4428" data-item-id="4428" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">2. Adobe Photoshop 中級編</h2></div>
+        
+        <div class="article-item item_heading " id="item4429" data-item-id="4429" data-item-type="ItemHeading"><h3 class="item-body" id="heading3">a. パペットワープ機能</h3></div>
+        
+        <div class="article-item item_markdown " id="item4430" data-item-id="4430" data-item-type="ItemMarkdown"><h4 id="heading4">使用教材</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item4431" data-item-id="4431" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">パペットワープ機能を用いて</span></span>猫ちゃんの顔の表情を変えてみましょう！<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">※ 実際に手を動かしてみましょう！</span></span><br>
+<br>
+以下の教材・素材を利用してください！</div></div>
+        
+        <div class="article-item item_link " id="item4432" data-item-id="4432" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=9yPXf&amp;item_id=4432" rel="nofollow noopener noreferrer" target="_blank">使用教材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="使用教材" data-reference="https://helpx.adobe.com/jp/photoshop/how-to/gbn03-cat-puppet-warp.html?playlist=/services/playlist.helpx/products:SG_PHOTOSHOP_1_1/set-header:ccx-photographer/playlist:continuinged/learn-path:key-techniques/learn-path:tips-techniques/ja_JP.json&amp;ref=helpx.adobe.com" src="../../_assets/7fa884c4fe.webp"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item4433" data-item-id="4433" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=9yPXf&amp;item_id=4433" rel="nofollow noopener noreferrer" target="_blank">使用素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="使用素材" data-reference="https://www.pexels.com/ja-jp/photo/3777622/" src="../../_assets/7fa884c4fe.webp"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item4434" data-item-id="4434" data-item-type="ItemMarkdown"><h4 id="heading5">学習のポイント</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item4435" data-item-id="4435" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">Adobe Photoshopのパペットワープ機能は、画像を三角メッシュで分割してピンを打って動かすことで、操り人形のように引っ張って変形させることができます。</span></span><br>
+<br>
+主に<span class="decoration-01"><span class="decoration-02">ポーズ・表情を変化させるときに便利です！！</span></span></div></div>
+        
+        <div class="article-item item_markdown " id="item4436" data-item-id="4436" data-item-type="ItemMarkdown"><p>以下の項目を教材で確認してください！</p>
+
+<p>==</p>
+
+<ul>
+  <li>画面左上にある「編集」メニューから「パペットワープ」を選択</li>
+  <li>多めにピンを打って固定させると操作しやすい</li>
+</ul>
+
+<p>==</p>
+</div>
+        
+        <div class="article-item item_heading " id="item4437" data-item-id="4437" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">b. 遠近法ワープ機能</h3></div>
+        
+        <div class="article-item item_markdown " id="item4438" data-item-id="4438" data-item-type="ItemMarkdown"><h4 id="heading7">使用教材</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item4439" data-item-id="4439" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"><span class="decoration-01">遠近法ワープ機能を用いて</span></span>写真の撮影位置の遠近を調整してみましょう！<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">※ 実際に手を動かしてみましょう！</span></span><br>
+<br>
+以下の教材・素材を利用してください！</div></div>
+        
+        <div class="article-item item_link " id="item4440" data-item-id="4440" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=9yPXf&amp;item_id=4440" rel="nofollow noopener noreferrer" target="_blank">使用教材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="使用教材" data-reference="https://helpx.adobe.com/jp/photoshop/how-to/photoshop-perspective-warp.html?playlistPath=/services/playlist.helpx/products:SG_PHOTOSHOP_1_1/learn-path:intermediate-advanced/set-header:ccx-designer/playlist:continuinged/ja_JP.json" src="../../_assets/7fa884c4fe.webp"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item5722" data-item-id="5722" data-item-type="ItemHtml"><div class="item-body"><a href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/387/original/adobe_photoshop_photo_material_1.jpg" download="">使用素材</a></div></div>
+        
+        <div class="article-item item_markdown " id="item4442" data-item-id="4442" data-item-type="ItemMarkdown"><h4 id="heading8">学習のポイント</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item4443" data-item-id="4443" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"><span class="decoration-01">Adobe Photoshopの遠近法ワープ機能は、画像の遠近法を簡単に調整できます。</span></span><br>
+<br>
+この機能は、<span class="decoration-01"><span class="decoration-02">直線や平面がある画像（建築図面や建物の画像など）に特に有効です。</span></span></div></div>
+        
+        <div class="article-item item_markdown " id="item4444" data-item-id="4444" data-item-type="ItemMarkdown"><p>以下の項目を教材で確認してください！</p>
+
+<p>==</p>
+
+<ul>
+  <li>画面左上にある「編集」メニュー →「&nbsp;遠近法ワープ&nbsp;」を選択</li>
+  <li>単一の画像内で遠近法の異なるオブジェクトを合成することができる</li>
+</ul>
+
+<p>==</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item4445" data-item-id="4445" data-item-type="ItemMarkdown"><h4 id="heading9">ショートカットキー</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item4446" data-item-id="4446" data-item-type="ItemMarkdown"><p>以下の次のショートカットキーを使うと、より簡単に遠近法を調整できます。</p>
+</div>
+        
+        <div class="article-item item_html " id="item4447" data-item-id="4447" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">ショートカットキーを使いこなせると業務のスピードが格段にアップします。
+ショートカットキーを常に使うように意識しましょう！！</div></div></div>
+        
+        <div class="article-item item_markdown " id="item4448" data-item-id="4448" data-item-type="ItemMarkdown"><p>下記のショートカットキーをすべて覚えれば作業効率が大幅に向上します。確認してみましょう。</p>
+</div>
+        
+        <div class="article-item item_html " id="item4449" data-item-id="4449" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">矢印キー</div>
+    <div class="toggle-content">クアッド（ピン）のコーナーをわずかに移動します。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item4450" data-item-id="4450" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">H</div>
+    <div class="toggle-content">ワープモードでの作業時、グリッドを非表示にします。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item4451" data-item-id="4451" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">L</div>
+    <div class="toggle-content">レイアウトモードに切り替えます。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item4452" data-item-id="4452" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">W</div>
+    <div class="toggle-content">ワープモードに切り替えます。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item4453" data-item-id="4453" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Enter キー</div>
+    <div class="toggle-content">レイアウトモードで Enter キーを押すと、簡単にワープモードに切り替えることができます。ワープモードで、Enter キーを押すと、遠近法に対する現在の変更が確定します。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item4454" data-item-id="4454" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Shift + クリック</div>
+    <div class="toggle-content">（ワープモード）クアッドの各エッジを直線上に整列させます。さらに遠近法を操作する際は、これらのエッジが直線から外れないようにします。直線上に整列したエッジの配置を変更する場合は、Shift キーを押しながら、もう一度エッジをクリックします。</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item4455" data-item-id="4455" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Shift キーを押しながら（エッジをドラッグ）</div>
+    <div class="toggle-content">（ワープモード）平面を延長しながら、シェイプを固定します。</div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item4456" data-item-id="4456" data-item-type="ItemHeading"><h2 class="item-body" id="heading10">3. Adobe Photoshop 上級編</h2></div>
+        
+        <div class="article-item item_markdown " id="item4457" data-item-id="4457" data-item-type="ItemMarkdown"><p>上級編は基礎編で学んだ内容と、中級編で学んだ内容を生かして進める必要があります！</p>
+
+<p>ここまでマスターした方はPhotoshopの上級者と言っても過言ではないでしょう。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item4458" data-item-id="4458" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">a. 奥行きがあるアニメーションを作成しよう！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item4459" data-item-id="4459" data-item-type="ItemRichText"><div class="item-body-hbr">これまで学んできたスキルを用いて、<span class="decoration-02"><span class="decoration-01">奥行きがあるアニメーションを作成してみましょう。</span></span><br>
+<br>
+以下の教材・素材を利用してください！</div></div>
+        
+        <div class="article-item item_link " id="item4460" data-item-id="4460" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=9yPXf&amp;item_id=4460" rel="nofollow noopener noreferrer" target="_blank">使用教材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="使用教材" data-reference="https://helpx.adobe.com/jp/photoshop/how-to/animation-from-photo-parallax.html?playlist=/services/playlist.helpx/products:SG_PHOTOSHOP_1_1/learn-path:tips-techniques/set-header:advanced-topics/playlist:topic/set-header:advanced-photo-editing/ja_JP.json&amp;ref=helpx.adobe.com" src="../../_assets/7fa884c4fe.webp"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item4461" data-item-id="4461" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=9yPXf&amp;item_id=4461" rel="nofollow noopener noreferrer" target="_blank">使用素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="使用素材" data-reference="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/57d629a8-7813-4eee-bde0-b95cf9f8d4c3/parallax_effect_skycar.psd" src="../../_assets/7fa884c4fe.webp"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item4462" data-item-id="4462" data-item-type="ItemMarkdown"><h4 id="heading12">学習のポイント</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item4463" data-item-id="4463" data-item-type="ItemMarkdown"><p>この課題に取り組むにあたって、キーポイントは、</p>
+
+<p>==</p>
+
+<ul>
+  <li><strong>レイヤーについてのスキルが使いこなせるか</strong></li>
+  <li><strong>アニメーションについてのスキルが使いこなせるか</strong></li>
+</ul>
+
+<p>==</p>
+
+<p>となっています。</p>
+</div>
+        
+        <div class="article-item item_rich_text " id="item4464" data-item-id="4464" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">わからないところ・不安なところがあれば、すぐに基礎編のチュートリアルで確認しましょう。</span></span></div></div>
+        
+        <div class="article-item item_heading " id="item4465" data-item-id="4465" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">b. アート作品を作成しよう！</h3></div>
+        
+        <div class="article-item item_markdown " id="item4466" data-item-id="4466" data-item-type="ItemMarkdown"><h4 id="heading14">使用教材</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item4467" data-item-id="4467" data-item-type="ItemMarkdown"><p>これまで学んできたスキルを用いて、アート作品を作成してみましょう！</p>
+
+<p>以下の教材・素材を利用してください！</p>
+</div>
+        
+        <div class="article-item item_link " id="item4468" data-item-id="4468" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=9yPXf&amp;item_id=4468" rel="nofollow noopener noreferrer" target="_blank">使用教材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="使用教材" data-reference="https://helpx.adobe.com/jp/photoshop/how-to/photo-composite-technique.html?playlist=/services/playlist.helpx/products:SG_PHOTOSHOP_1_1/learn-path:tips-techniques/set-header:advanced-topics/playlist:topic/set-header:advanced-photo-editing/ja_JP.json&amp;ref=helpx.adobe.com" src="../../_assets/7fa884c4fe.webp"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item4470" data-item-id="4470" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">使用素材</span></div></div>
+        
+        <div class="article-item item_markdown " id="item4469" data-item-id="4469" data-item-type="ItemMarkdown"><p><a href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/389/original/adobe_photoshop_photo_material_2.psd">adobe photoshop photo material 2.psd</a></p>
+
+<p><a href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/388/original/adobe_photoshop_photo_material_3.psd">adobe photoshop photo material 3.psd</a></p>
+</div>
+        
+        <div class="article-item item_markdown " id="item4471" data-item-id="4471" data-item-type="ItemMarkdown"><h4 id="heading15">学習のポイント</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item4472" data-item-id="4472" data-item-type="ItemMarkdown"><p>この課題に取り組むにあたって、キーポイントは、、</p>
+
+<p>==</p>
+
+<ul>
+  <li><strong>ワープについてのスキルが使いこなせるか</strong></li>
+  <li><strong>レイヤーマスクについてのスキルが使いこなせるか</strong></li>
+  <li><strong>ブラシツールが使いこなせるか</strong></li>
+</ul>
+
+<p>==</p>
+
+<p>となっております！！</p>
+</div>
+        
+        <div class="article-item item_rich_text " id="item4473" data-item-id="4473" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">わからないところ・不安なところが出たらすぐに初級編のチュートリアルで確認しましょう！</span></span></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0. はじめに</a></li><li><a href="#heading1" class="tocLink">1. 学習のポイント</a></li><li><a href="#heading2" class="tocLink">2. Adobe Photoshop 中級編</a><ul><li><a href="#heading3" class="tocLink">a. パペットワープ機能</a><ul><li><a href="#heading4" class="tocLink">使用教材</a></li><li><a href="#heading5" class="tocLink">学習のポイント</a></li></ul></li><li><a href="#heading6" class="tocLink">b. 遠近法ワープ機能</a><ul><li><a href="#heading7" class="tocLink">使用教材</a></li><li><a href="#heading8" class="tocLink">学習のポイント</a></li><li><a href="#heading9" class="tocLink">ショートカットキー</a></li></ul></li></ul></li><li><a href="#heading10" class="tocLink">3. Adobe Photoshop 上級編</a><ul><li><a href="#heading11" class="tocLink">a. 奥行きがあるアニメーションを作成しよう！</a><ul><li><a href="#heading12" class="tocLink">学習のポイント</a></li></ul></li><li><a href="#heading13" class="tocLink">b. アート作品を作成しよう！</a><ul><li><a href="#heading14" class="tocLink">使用教材</a></li><li><a href="#heading15" class="tocLink">学習のポイント</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

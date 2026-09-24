@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/sVcMV -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48515" data-item-id="48515" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIとは何か - 基本を理解する | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading { font-size: 20px; font-weight: 700; color: #3D3D3D; margin: 32px 0 14px; }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p, .card ul { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .card ul { padding-left: 16px; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .styled-list { padding-left: 22px; margin: 16px 0; }
+  .styled-list li { font-size: 15px; line-height: 2; color: #444; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    .card-grid { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+  }
+  .toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+  .toc-link:hover { color: #E85D4A; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="du-KMIkEAheLiR58VzSHHonm5l26qebA5njnqQov-UTESNfQ5uMujehATAlepDnrjQkzDELQd0YXnO52xREKgQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 1-2</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">AIとは何か - 基本を理解する</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 1: AI基礎知識 ／ 所要時間：約15分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約15分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">AIと生成AIの違いと関係性を、簡単な言葉で説明できるようになる</p>
+</div>
+  
+ 
+  
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+  <div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/Xl1go" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/igUQp" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">AI（人工知能）の正体</a></li>
+    <li><a href="#sec2" class="toc-link">AIの歴史と今のブーム</a></li>
+    <li><a href="#sec3" class="toc-link">身近なAI技術</a></li>
+    <li><a href="#sec4" class="toc-link">AIと「生成AI」の関係</a></li>
+    <li><a href="#sec5" class="toc-link">章末課題：AIと生成AIの分類ゲーム</a></li>
+  </ol>
+</div>
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    朝、スマホの顔認証でロックを解除。<br>
+    通勤中、音楽アプリがあなた好みの曲をおすすめ。<br>
+    ランチの後、ネットショッピングで「あなたへのおすすめ」が表示される。<br><br>
+    実はこれらすべてに<strong class="accent">AI（人工知能）</strong>が使われています。<br>
+    「AI＝映画のロボット」ではなく、<strong class="accent">すでにあなたの日常に溶け込んでいる</strong>テクノロジーなのです。
+  </p>
+</div>
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>「強いAI」と「弱いAI」の違いを混同しやすい — <strong class="accent">今使われているのはほぼ「弱いAI」（特定タスク特化型）</strong></li>
+    <li>「従来のAI」と「生成AI」の違いがピンとこない — <strong class="accent">「答えを見つける」vs「新しいものを創る」と覚える</strong></li>
+  </ul>
+</div>
+
+
+<!-- セクション 1 -->
+<h2 class="section-heading" id="sec1">1. AI（人工知能）の正体</h2>
+
+<p class="text-body">
+  AIとは、<strong class="accent">Artificial Intelligence（アーティフィシャル インテリジェンス）</strong>の略で、日本語では「人工知能」と訳されます。簡単に言うと、「<strong class="accent">人間のように物事を考えたり、学んだりするコンピュータのプログラム</strong>」のことです。
+</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p><strong style="color: #3D3D3D;">AI (Artificial Intelligence)</strong>：人間の知的な振る舞い（学習、推論、判断など）をコンピュータプログラムによって人工的に再現したもの。ポイントは「人間のように」という部分です。</p>
+</div>
+
+<p class="text-body">
+  一口にAIと言っても、その能力によって大きく2つに分けられます。
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>強いAI</h3>
+    <p>人間と同等以上の知能を持つAI。SF映画に出てくるような、感情豊かに対話し自分で考えて行動するロボットのイメージ。<strong class="accent">現時点ではまだ実現していません。</strong></p>
+  </div>
+  <div class="card">
+    <h3>弱いAI</h3>
+    <p>特定のタスク（画像認識、翻訳、メール仕分けなど）に特化して能力を発揮するAI。<strong class="accent">現在活用されているAIのほとんどがこちら。</strong></p>
+  </div>
+</div>
+
+<p class="text-body">この教材では、主に「弱いAI」、特にその中でも新しいものを創り出す能力を持つ<strong class="accent">「生成AI」</strong>について学んでいきます。</p>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>「AIが人間の仕事を全部奪うの？」と聞かれたとき、「今のAIは特定のタスクに特化した"弱いAI"で、映画のような万能AIはまだ実現していないよ」と説明できます。</p>
+</div>
+
+
+<!-- セクション 2 -->
+<h2 class="section-heading" id="sec2">2. AIの歴史と今のブーム</h2>
+
+<p class="text-body">
+  「AI」という言葉は最近よく聞くようになりましたが、実はその研究の歴史は古く、<strong class="accent">1950年代</strong>にまで遡ります。これまでに大きく3回のブームがありました。
+</p>
+
+<!-- AI歴史テーブル -->
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">時代</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">中心技術</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">結果</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">第1次（1950〜60年代）</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">推論・探索（パズルや迷路）</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">現実の複雑な問題には対応できず下火に</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">第2次（1980年代）</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">エキスパートシステム（専門家の知識）</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">知識管理の難しさから再び停滞</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-weight: 700;">第3次（2000年代〜現在）</td>
+        <td style="padding: 12px 16px;">機械学習・ディープラーニング</td>
+        <td style="padding: 12px 16px;"><strong class="accent">大きなブレイクスルー！現在進行中</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p class="text-body">なぜ「今」こんなにもAIが盛り上がっているのか。その背景には<strong class="accent">3つの要因</strong>があります。</p>
+
+<div style="display: flex; flex-direction: column; gap: 12px; margin: 24px 0;">
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">1</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">計算能力の向上</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">コンピュータの処理速度が大幅に向上し（特にGPUの進化）、大量の計算を高速に行えるようになった</p>
+    </div>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">2</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">ビッグデータの普及</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">インターネットやスマートフォンの普及により、AIが学習するための膨大な量のデータが手軽に入手できるようになった</p>
+    </div>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">3</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">アルゴリズムの進化</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">ディープラーニングをはじめとする、より効率的で高性能なAIアルゴリズムが開発された</p>
+    </div>
+  </div>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">現在のAIブーム（第3次）の主な原動力となった技術はどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. エキスパートシステム</button>
+    <button class="quiz-opt" data-correct="true">B. ディープラーニング（深層学習）</button>
+    <button class="quiz-opt" data-correct="false">C. ルールベースの推論</button>
+    <button class="quiz-opt" data-correct="false">D. 量子コンピューティング</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 第3次AIブームは「ディープラーニング（深層学習）」の登場が大きなブレイクスルーとなりました。計算能力の向上、ビッグデータの普及と合わせて、AIは飛躍的な進化を遂げています。
+  </div>
+</div>
+
+
+<!-- セクション 3 -->
+<h2 class="section-heading" id="sec3">3. 身近なAI技術</h2>
+
+<p class="text-body">AIは決して遠い未来の話ではなく、すでに私たちの生活に溶け込んでいます。</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>お掃除ロボット</h3>
+    <p>部屋の形や障害物をセンサーで感知し、効率的な掃除ルートを自分で考えて動きます。AIが「学習」し「判断」している一例です。</p>
+  </div>
+  <div class="card">
+    <h3>顔認証</h3>
+    <p>カメラに顔を向けるだけでロックが解除。AIが顔の特徴を記憶し、登録された人物かどうかを「認識」しています。</p>
+  </div>
+  <div class="card">
+    <h3>ECサイトのおすすめ</h3>
+    <p>「この商品を買った人は…」という表示。AIが購買履歴を分析し、あなたに合った商品を「予測」して提案しています。</p>
+  </div>
+  <div class="card">
+    <h3>迷惑メールフィルター</h3>
+    <p>受信メールが迷惑メールかどうかを自動で「分類」し、専用フォルダに振り分けてくれます。</p>
+  </div>
+  <div class="card">
+    <h3>検索エンジン</h3>
+    <p>Googleなどで検索すると関連性の高い情報が瞬時に表示。AIがキーワードの意図を理解して最適な結果を「判断」しています。</p>
+  </div>
+  <div class="card">
+    <h3>翻訳アプリ</h3>
+    <p>外国語を瞬時に日本語に翻訳。AIが言語のパターンを学習し、自然な翻訳文を出力します。</p>
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>「AIって自分には関係ない」と思っている人に、「実はスマホの顔認証もメールの迷惑フィルターもAIだよ」と伝えると、AIがぐっと身近に感じられるようになります。</p>
+</div>
+
+
+<!-- セクション 4 -->
+<h2 class="section-heading" id="sec4">4. AIと「生成AI」の関係</h2>
+
+<p class="text-body">
+  では、最近特に注目を集めている「<strong class="accent">生成AI（Generative AI）</strong>」とは何なのでしょうか？AIと生成AIの関係は、<strong class="accent">大きな円（AI全体）の中に、比較的小さな円（生成AI）が含まれている</strong>イメージです。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/ai-fundamentals/img1.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/95b311420c.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">AIと生成AIの関係図</p>
+</div>
+
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;"></th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">従来のAI</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">生成AI</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">得意なこと</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">答えを見つける（分類・予測）</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">新しいものを創り出す（生成）</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">具体例</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">迷惑メール判定、天気予報、不良品検知</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">ブログ記事作成、イラスト生成、作曲</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-weight: 700;">料理で例えると</td>
+        <td style="padding: 12px 16px;">レシピ通りに完璧に料理を再現する</td>
+        <td style="padding: 12px 16px;">知識を組み合わせてオリジナルレシピを考え出す</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>生成AIは「<strong class="accent">創り出す</strong>」という点で、従来のAIとは一線を画す能力を持っています。「和風とイタリアンを融合させた新しいパスタを作って」とお願いすると、それっぽいレシピを提案してくれる——それが生成AIのイメージです。</p>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">スマートフォンの天気予報アプリは、「従来のAI」と「生成AI」のどちらの働きに近い？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="true">A. 従来のAI — 過去のデータから未来の天気を「予測」しているから</button>
+    <button class="quiz-opt" data-correct="false">B. 生成AI — 新しい天気のパターンを「生成」しているから</button>
+    <button class="quiz-opt" data-correct="false">C. どちらでもない — 天気予報にAIは使われていない</button>
+    <button class="quiz-opt" data-correct="false">D. 両方 — 予測と生成を同時に行っているから</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 天気予報アプリは、過去の膨大な気象データを分析し、未来の天気を「予測」しています。新しいコンテンツを「生成」しているわけではないので、従来のAIの働きに近いと言えます。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>ニュースで「AI」という言葉を見たとき、「これは従来のAI（分類・予測）の話？それとも生成AI（新しいものを創る）の話？」と区別できるようになります。</p>
+</div>
+
+
+<!-- セクション 5 -->
+<h2 class="section-heading" id="sec5">5. 章末課題：AIと生成AIの分類ゲーム</h2>
+
+<p class="text-body">以下の具体例を「従来のAI」か「生成AI」に分類してみましょう。</p>
+
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">具体例</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">分類</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">理由</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">クレジットカードの不正利用検知</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">従来のAI</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">過去の不正パターンから「予測・検知」している</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">「宇宙を旅する猫」の物語あらすじ提案</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700; color: #E85D4A;">生成AI</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">新しい物語のアイデアを「生成」している</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">工場の製品品質判定</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">従来のAI</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">良品/不良品を「分類」している</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px;">歌詞に合わせた自動作曲</td>
+        <td style="padding: 12px 16px; font-weight: 700; color: #E85D4A;">生成AI</td>
+        <td style="padding: 12px 16px;">オリジナルのメロディを「生成」している</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>分類に迷ったら、そのAIが<strong class="accent">「何か新しいものをゼロから生み出しているか？」</strong>を考えてみましょう。答えを見つけるなら従来のAI、新しいものを創るなら生成AIです。</p>
+</div>
+
+
+<!-- まとめ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">AIとは</strong> — 人間のように考えたり学んだりするコンピュータプログラム。「強いAI」と「弱いAI」がある</li>
+    <li><strong style="color: #3D3D3D;">第3次AIブーム</strong> — ディープラーニング、計算能力の向上、ビッグデータの3要素が原動力</li>
+    <li><strong style="color: #3D3D3D;">身近なAI</strong> — 顔認証、迷惑メールフィルター、検索エンジンなど、すでに日常に浸透</li>
+    <li><strong style="color: #3D3D3D;">従来のAI vs 生成AI</strong> — 「答えを見つける（分類・予測）」vs「新しいものを創り出す（生成）」</li>
+  </ul>
+</div>
+
+
+<!-- 理解度チェック -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">AIの意味と「強いAI」「弱いAI」の違いを説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">AI＝人間の知的な振る舞いをコンピュータで再現したもの。「強いAI」は人間と同等以上の汎用知能（未実現）、「弱いAI」は特定タスクに特化したAI（現在主流）です。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">第3次AIブームの3つの原動力を挙げられる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">①計算能力の向上（GPUの進化） ②ビッグデータの普及 ③アルゴリズムの進化（ディープラーニング）の3つです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">従来のAIと生成AIの違いを具体例を交えて説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">従来のAI＝「答えを見つける」（例：迷惑メール判定、天気予報）。生成AI＝「新しいものを創る」（例：ブログ記事作成、イラスト生成）。料理で例えると、レシピ再現 vs オリジナルレシピ考案です。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">身近なAI技術の例を3つ以上挙げられる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">お掃除ロボット、スマホの顔認証、ECサイトのおすすめ機能、検索エンジン、迷惑メールフィルター、翻訳アプリなどが代表例です。</div>
+    </details>
+
+  </div>
+</details>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/Xl1go" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/igUQp" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- JavaScript -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

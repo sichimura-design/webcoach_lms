@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/0WUlb -->
+<!-- clipkit-fetched-at: 2026-09-17T11:10:31.246Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop｜3章 新規ファイルの作成と保存をしてみよう  - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/0WUlb">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop｜3章 新規ファイルの作成と保存をしてみよう  - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/695/medium/ec6f217a-88bc-4ad3-824b-6dc0d0c22796.png?1739683599">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop｜3章 新規ファイルの作成と保存をしてみよう ">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/0WUlb">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/695/large/ec6f217a-88bc-4ad3-824b-6dc0d0c22796.png?1739683599">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="cvpGWbecEkhtijqhsZW_a8zo3dOfXq5Ivx5AyKDeWdwVyTzTgq3CYDuOihwiX9U7tTuED9ErW0EUwyrmh9XSVA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop｜3章 新規ファイルの作成と保存をしてみよう </div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 新規ファイルの作成と保存をしてみよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:100分</a></li></ul></li><li><a href="#heading2" class="tocLink">【3-1】 新規ファイルを作成しよう</a><ul><li><a href="#heading3" class="tocLink">新規ファイル作成方法</a><ul><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li></ul></li><li><a href="#heading12" class="tocLink">塗りつぶしの方法</a><ul><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading16" class="tocLink">【3-2】ファイルを保存しよう</a><ul><li><a href="#heading17" class="tocLink"></a></li></ul><ul><li><a href="#heading18" class="tocLink">保存先を選択する</a><ul><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li></ul></li><li><a href="#heading22" class="tocLink">ファイルを閉じる</a><ul><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25570" data-item-id="25570" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/0FcCm" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/Vpdcs" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36438" data-item-id="36438" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">3章 新規ファイルの作成と保存をしてみよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39423" data-item-id="39423" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:100分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item36440" data-item-id="36440" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、<span class="decoration-02">Photoshopでの新規ファイルの作成と保存の方法</span>を学びます。<br>
+Photoshopを使用して、<span class="decoration-02">一から画像ファイルを編集・作成する方法</span>には、大きく二つあります。</div></div>
+        
+        <div class="article-item item_html " id="item36439" data-item-id="36439" data-item-type="ItemHtml"><div class="item-body"><ol class="decoration-01">
+  <li>新規ファイルを作成し、まっさらな状態から描画したり、画像素材を貼り付けたりして編集する方法</li>
+  <li>写真などの画像素材をPhotoshopで開き、編集・加工していく方法</li>
+</ol></div></div>
+        
+        <div class="article-item item_text " id="item7281" data-item-id="7281" data-item-type="ItemText"><div class="item-body-hbr">今回は１の方法を用いて、ファイルを作成し、PCに保存するまでの流れを解説します。</div></div>
+        
+        <div class="article-item item_heading " id="item36481" data-item-id="36481" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【3-1】 新規ファイルを作成しよう</h2></div>
+        
+        <div class="article-item item_heading " id="item36482" data-item-id="36482" data-item-type="ItemHeading"><h3 class="item-body" id="heading3">新規ファイル作成方法</h3></div>
+        
+        <div class="article-item item_text " id="item7284" data-item-id="7284" data-item-type="ItemText"><div class="item-body-hbr">1. Photoshopを起動。下図のような画面が表示される</div></div>
+        
+        <div class="article-item item_image " id="item7285" data-item-id="7285" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/285/medium/c040e6f6-e97a-4443-80e3-a8e692602a49.png?1739672535" title=""><img class="img-responsive item-image" alt=" (7285)" data-reference="" src="../../_assets/0b09c271f9.webp" width="640" height="427"></a><h4 id="heading4"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36441" data-item-id="36441" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7286" data-item-id="7286" data-item-type="ItemText"><div class="item-body-hbr">2. 新規ファイルを作成するためには、左上に表示されている「新規ファイル」ボタンをクリック。</div></div>
+        
+        <div class="article-item item_image " id="item7287" data-item-id="7287" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/287/medium/6ffd7afc-10d5-425d-9d35-3a5f2b395bd5.png?1739672560" title=""><img class="img-responsive item-image" alt=" (7287)" data-reference="" src="../../_assets/5242111ad4.webp" width="640" height="426"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36442" data-item-id="36442" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7288" data-item-id="7288" data-item-type="ItemText"><div class="item-body-hbr">3. または、メニューバーの「ファイル」から「新規」を選択しても、新規ファイルを作成できます。</div></div>
+        
+        <div class="article-item item_image " id="item7289" data-item-id="7289" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/289/medium/ff6482e1-2267-4667-a16e-ef817f55c591.png?1739672611" title=""><img class="img-responsive item-image" alt=" (7289)" data-reference="" src="../../_assets/71547da556.webp" width="640" height="427"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36443" data-item-id="36443" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7290" data-item-id="7290" data-item-type="ItemText"><div class="item-body-hbr">4. いずれかの方法で新規ファイル作成の操作を行うと、こちらの「新規ドキュメント」設定画面が表示されます。</div></div>
+        
+        <div class="article-item item_image " id="item7291" data-item-id="7291" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/291/medium/0dd19c82-1a62-4bf2-964e-acb7a6424168.png?1739672638" title=""><img class="img-responsive item-image" alt=" (7291)" data-reference="" src="../../_assets/217f4b1698.webp" width="640" height="426"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36444" data-item-id="36444" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7292" data-item-id="7292" data-item-type="ItemText"><div class="item-body-hbr">5. このウインドウの上部に並んでいるタブメニューから、「Web」をクリックして選択。</div></div>
+        
+        <div class="article-item item_image " id="item7293" data-item-id="7293" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/293/medium/1c08da00-a53d-44fc-8408-abb226c7de0e.png?1739672673" title=""><img class="img-responsive item-image" alt=" (7293)" data-reference="" src="../../_assets/eaa66b7ae3.webp" width="640" height="427"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36445" data-item-id="36445" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7294" data-item-id="7294" data-item-type="ItemText"><div class="item-body-hbr">6. 「Web一般」を選んでから、右下の「作成」ボタンをクリック。</div></div>
+        
+        <div class="article-item item_image " id="item7295" data-item-id="7295" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/295/medium/3a2d2e55-1081-45cd-b30f-09bb3f3c1815.png?1739672700" title=""><img class="img-responsive item-image" alt=" (7295)" data-reference="" src="../../_assets/99001f9bcb.webp" width="640" height="426"></a><h4 id="heading9"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36456" data-item-id="36456" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7296" data-item-id="7296" data-item-type="ItemText"><div class="item-body-hbr">上記の手順を踏むことで、選択したサイズの新規ファイルが作成されます。</div></div>
+        
+        <div class="article-item item_image " id="item36455" data-item-id="36455" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/455/medium/ce012e50-5de7-43dc-92bd-42608443b58f.png?1753483340" title=""><img class="img-responsive item-image" alt=" (36455)" data-reference="" src="../../_assets/ae81bb5182.webp" width="640" height="426"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_html " id="item7297" data-item-id="7297" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">「作成したて」のファイルは選べない？<br></span>
+    <ul>
+      <li>先ほど作成した新規ファイルを開いたまま、メニューバーの「ファイル」を選択してみてください。<br>
+        ※新規ファイルを作成しただけの段階では、<span class="decoration-01">「保存」を選択することができません。</span></li>
+      <li>編集作業を一度でも行うと「保存」が選択可能になります。次の項目で「塗りつぶしツール」を使い、画面を塗りつぶしてみましょう。<br>
+        ※「塗りつぶしツール」の詳しい使用方法は、<span class="decoration-02">「6章 塗りつぶしツールとグラデーションツールで描画してみよう」</span>で学びます。</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item7298" data-item-id="7298" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">MEMO：ショートカットキーを覚えよう<br></span>
+  <ul>
+    <li>メニューバーから行う操作の多くは、<span class="decoration-02">ショートカットキー</span>と呼ばれるキー入力の組み合わせでも行うことができます。</li>
+    <li>これを覚えておくと、キーボード操作だけで「保存」作業を行えるので便利です。<br>
+      ※<span class="decoration-02">⌘はCommandキー、⇧はShiftキー、⌥はOptionキー、^はControlキー</span>を表しています。<br>
+      ※Windows PCの場合は、<span class="decoration-02">⌘をCtrlキーに、OptionをAltキー</span>に置き換えて操作します。
+    </li>
+  </ul>
+</div>
+     
+            </div></div>
+        
+        <div class="article-item item_image " id="item7299" data-item-id="7299" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/299/medium/0e5e8a61-97b5-44b4-ba11-38e983065f47.jpg?1739673324" title=""><img class="img-responsive item-image" alt=" (7299)" data-reference="" src="../../_assets/9662564c0b.webp" width="640" height="181"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36483" data-item-id="36483" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">塗りつぶしの方法</h3></div>
+        
+        <div class="article-item item_text " id="item7301" data-item-id="7301" data-item-type="ItemText"><div class="item-body-hbr">1. ツールパネルから「塗りつぶしツール」を選択</div></div>
+        
+        <div class="article-item item_image " id="item7305" data-item-id="7305" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/305/medium/52d722e2-a422-4978-9ffd-ae62faf656c0.png?1739673607" title=""><img class="img-responsive item-image" alt=" (7305)" data-reference="" src="../../_assets/4dc2c66f30.webp" width="470" height="313"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36446" data-item-id="36446" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7302" data-item-id="7302" data-item-type="ItemText"><div class="item-body-hbr">2. カラーパネルを表示させる</div></div>
+        
+        <div class="article-item item_link " id="item12695" data-item-id="12695" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=0WUlb&amp;item_id=12695" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop3-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop3-1" data-reference="https://www.dropbox.com/scl/fi/r1aemj58oacfo9gitf07j/Adobe-Photoshop3-2_1.0_.mov?rlkey=e42k846h3rjj0otzhksq8jkwq&amp;st=51b3lpxj&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item36448" data-item-id="36448" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item7303" data-item-id="7303" data-item-type="ItemRichText"><div class="item-body-hbr">3. 「カラーパネル」で色を選択する<br>
+　「カラーパネル」内の虹色のバー横のつまみを上下に動かして「<span class="decoration-02">色相</span>」を決めてから、隣の四角い領域で「<span class="decoration-02">明度と彩</span><span class="decoration-02">度</span>」を決める</div></div>
+        
+        <div class="article-item item_image " id="item7307" data-item-id="7307" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/307/medium/792b3de6-425c-4267-8ad5-4abbc42ed546.png?1739673652" title=""><img class="img-responsive item-image" alt=" (7307)" data-reference="" src="../../_assets/871c5a30d8.webp" width="544" height="618"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36447" data-item-id="36447" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7304" data-item-id="7304" data-item-type="ItemText"><div class="item-body-hbr">4. 色を選択したら、新規ファイルの画面内をクリックし、塗りつぶしを行う</div></div>
+        
+        <div class="article-item item_image " id="item7308" data-item-id="7308" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/308/medium/515e7025-8e70-4a98-a20d-37faf98d3be7.png?1739673672" title=""><img class="img-responsive item-image" alt=" (7308)" data-reference="" src="../../_assets/d69a5cde09.webp" width="640" height="427"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36484" data-item-id="36484" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">【3-2】ファイルを保存しよう</h2></div>
+        
+        <div class="article-item item_html " id="item7310" data-item-id="7310" data-item-type="ItemHtml"><div class="item-body">それでは、単色で塗りつぶしたこちらのファイルを、<span class="decoration-02">自分のパソコン</span>に保存してみましょう。<br>
+今度は下図のように<span class="decoration-02">「保存」</span>が選べるようになっているはずなので、メニューバーの「ファイル」をクリックしてみましょう。<br>
+<ul>
+  <li>メニューバーの「ファイル」から「保存」を選ぶ</li>
+  </ul></div></div>
+        
+        <div class="article-item item_image " id="item7311" data-item-id="7311" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/311/medium/2bc399e1-2666-4b0a-8661-65256c701a68.png?1739674046" title=""><img class="img-responsive item-image" alt=" (7311)" data-reference="" src="../../_assets/fdee73c5e0.webp" width="640" height="427"></a><h4 id="heading17"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36485" data-item-id="36485" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">保存先を選択する</h3></div>
+        
+        <div class="article-item item_html " id="item7314" data-item-id="7314" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>「保存」の操作を行うと、こちらの画面が表示されます</li>
+  	<ul>
+      <li>保存先をAdobe Creative Cloudのサーバーにするか、自分のパソコン上にするかを決めます。<br>
+        <span>※「クラウドドキュメント」は、<span class="decoration-02">同じアカウントでログインすれば別のPCでも作業できる</span>利点がありますが、慣れないうちはPC上にファイルを保存する方が分かりやすいでしょう。</span>
+      </li>
+      </ul>
+  </ul>
+<ul>
+  <li>ここでは、左下の「コンピューター」を選び、「ローカルドキュメント」として自分のPC上にファイルを保存します。</li>
+  </ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item7315" data-item-id="7315" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/315/medium/4b838f18-9133-4638-9c86-b67bbe84bdaf.png?1739674816" title=""><img class="img-responsive item-image" alt=" (7315)" data-reference="" src="../../_assets/3028f1ddf8.webp" width="640" height="427"></a><h4 id="heading19"></h4></div></div>
+        
+        <div class="article-item item_html " id="item7313" data-item-id="7313" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+  <span class="bold">用語解説<br></span>
+     <ul>
+       <li><span class="decoration-01">クラウドドキュメント</span></li>
+       	<ul>
+          <li>サーバーに保存するファイル</li>
+        </ul>
+       <li><span class="decoration-01">ローカルドキュメント</span></li>
+       	<ul>
+          <li>PC上に保存するファイル</li>
+       </ul>
+      </ul>
+</div>
+</div></div>
+        
+        <div class="article-item item_html " id="item7316" data-item-id="7316" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>デスクトップに「Photoshop基礎」という新規フォルダを作成してください。</li>
+  <li>ファイル名を付けます。「保存練習.psd」としてから、右下の「保存」をクリックします。</li>
+</ul>
+      </div></div>
+        
+        <div class="article-item item_image " id="item7317" data-item-id="7317" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/317/medium/2a70ec64-a900-4980-96f7-372ed98c3378.png?1739674989" title=""><img class="img-responsive item-image" alt=" (7317)" data-reference="" src="../../_assets/bcda55cf02.webp" width="640" height="427"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_html " id="item7318" data-item-id="7318" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+  <span class="bold">MEMO：PSD形式とは<br></span>
+  	<ul>
+      <span>Photoshopで作成したファイルは、通常、
+    <span class="decoration-02">拡張子が「.psd」のPhotoshop形式で保存されます。</span><br>
+    Photoshop形式（.psd）は、レイヤーやマスク、パス、スマートオブジェクトといったPhotoshop独自の編集情報を保持します。<br>
+    そのため、元の画像データを変更せずに、作成した後からの編集・修正が可能です。<br>
+    ただし、<span class="decoration-02">Photoshop以外のアプリケーションで編集することはできません。</span></span>
+      <li><span class="decoration-01">PSD形式の利点</span>
+        <ul>
+          <li>Photoshop上で画像の再編集・修正が可能</li>
+        </ul>
+      </li>
+      <li><span class="decoration-01">PSD形式を扱うときの注意点</span>
+        <ul>
+          <li>Photoshop以外のアプリケーションでの互換性には制限がある</li>
+        </ul>
+      </li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item7320" data-item-id="7320" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/320/medium/138176cd-e943-4afd-b6e5-ba974a8e6727.png?1739675231" title=""><img class="img-responsive item-image" alt=" (7320)" data-reference="" src="../../_assets/41e8b3f3d7.webp" width="640" height="427"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item12193" data-item-id="12193" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">作業画面</span></div></div>
+        
+        <div class="article-item item_link " id="item38426" data-item-id="38426" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=0WUlb&amp;item_id=38426" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop3-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop3-2" data-reference="https://www.dropbox.com/scl/fi/bhxvh26t5jt0lo4brclqc/Adobe-Photoshop3-1_1.0_.mp4?rlkey=r0wgtrjxewnjnqt30k046ibfm&amp;st=b0ale6po&amp;dl=0" src="../../_assets/7d7fde7a64.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36486" data-item-id="36486" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">ファイルを閉じる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36457" data-item-id="36457" data-item-type="ItemRichText"><div class="item-body-hbr">ファイルがPC上に保存できました。<br>
+ドキュメントウィンドウ上部のタブに「保存練習.psd」とファイル名が表示されています。</div></div>
+        
+        <div class="article-item item_text " id="item7322" data-item-id="7322" data-item-type="ItemText"><div class="item-body-hbr">1. タブの「×」ボタン（閉じるボタン）をクリックしてファイルを閉じましょう。</div></div>
+        
+        <div class="article-item item_image " id="item7326" data-item-id="7326" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/326/medium/96f27894-8278-41e3-8980-afe0793ea646.png?1739675344" title=""><img class="img-responsive item-image" alt=" (7326)" data-reference="" src="../../_assets/40fa048d89.webp" width="457" height="305"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36449" data-item-id="36449" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7323" data-item-id="7323" data-item-type="ItemText"><div class="item-body-hbr">2. ホーム画面が表示されます。</div></div>
+        
+        <div class="article-item item_image " id="item7327" data-item-id="7327" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/327/medium/d3bdd5cd-fa98-4cd5-b5ec-f2a18d7361b3.png?1739675362" title=""><img class="img-responsive item-image" alt=" (7327)" data-reference="" src="../../_assets/e41b3418d2.webp" width="640" height="427"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36450" data-item-id="36450" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7324" data-item-id="7324" data-item-type="ItemText"><div class="item-body-hbr">3. 次回、同じファイルを開いて作業を再開するときは、「開く」ボタンから対象のファイルを選択します。</div></div>
+        
+        <div class="article-item item_image " id="item7328" data-item-id="7328" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/328/medium/2dab8179-666a-4919-b387-da021736467c.png?1739675381" title=""><img class="img-responsive item-image" alt=" (7328)" data-reference="" src="../../_assets/fb8555dd18.webp" width="640" height="427"></a><h4 id="heading25"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36451" data-item-id="36451" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item7325" data-item-id="7325" data-item-type="ItemText"><div class="item-body-hbr">4. ファイルアイコンをダブルクリックすることによっても、Photoshopで開くことができます。</div></div>
+        
+        <div class="article-item item_image " id="item7329" data-item-id="7329" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/329/medium/624bd99d-4ddb-4f03-a26b-e594a1ecdc8d.png?1739675405" title=""><img class="img-responsive item-image" alt=" (7329)" data-reference="" src="../../_assets/78b8e968c9.webp" width="640" height="427"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36453" data-item-id="36453" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36452" data-item-id="36452" data-item-type="ItemRichText"><div class="item-body-hbr">これで「3章 新規ファイルの作成と保存をしてみよう」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25571" data-item-id="25571" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/0FcCm" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/Vpdcs" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 新規ファイルの作成と保存をしてみよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:100分</a></li></ul></li><li><a href="#heading2" class="tocLink">【3-1】 新規ファイルを作成しよう</a><ul><li><a href="#heading3" class="tocLink">新規ファイル作成方法</a><ul><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li></ul></li><li><a href="#heading12" class="tocLink">塗りつぶしの方法</a><ul><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading16" class="tocLink">【3-2】ファイルを保存しよう</a><ul><li><a href="#heading17" class="tocLink"></a></li></ul><ul><li><a href="#heading18" class="tocLink">保存先を選択する</a><ul><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li></ul></li><li><a href="#heading22" class="tocLink">ファイルを閉じる</a><ul><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/0FcCm" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/Vpdcs" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

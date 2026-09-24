@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/ujv1o -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48513" data-item-id="48513" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>はじめに - なぜ今、AIを学ぶのか？ | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading { font-size: 20px; font-weight: 700; color: #3D3D3D; margin: 32px 0 14px; }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .styled-list { padding-left: 22px; margin: 16px 0; }
+  .styled-list li { font-size: 15px; line-height: 2; color: #444; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    h2.section-heading { font-size: 20px; }
+    .lesson-wrapper { max-width: 92%; }
+  }
+  .toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+  .toc-link:hover { color: #E85D4A; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="mu2wSA536LXewIqEjOIPRSbPrL6KT6IR4QBEoE4N4wBxwUqxH8oG5_L7PfT0L_IuXENjA_rEfguYl7JQJgnZZw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 1-1</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">はじめに - なぜ今、AIを学ぶのか？</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 1: AI基礎知識 ／ 所要時間：約10分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約10分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">この教材で学ぶ内容の全体像を把握し、AIに対する自分のイメージを言語化できる</p>
+</div>
+
+<!-- 次の章に進むボタンとロードマップに戻るボタンの場合 -->  
+<div style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <div></div>
+  <div style="text-align: center;">
+    <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">
+      ロードマップに戻る
+    </a>
+  </div>
+  <div style="text-align: right;">
+    <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/SXwKv" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">
+      次の章に進む
+      <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+    </a>
+  </div>
+</div>  
+  
+  
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">この教材について</a></li>
+    <li><a href="#sec2" class="toc-link">この教材がおすすめの人</a></li>
+    <li><a href="#sec3" class="toc-link">到達できるゴール</a></li>
+    <li><a href="#sec4" class="toc-link">AIイメージマップ作成</a></li>
+  </ol>
+</div>
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    ある日の昼休み、同僚がこう言いました。<br>
+    「ChatGPTで企画書を30分で作ったよ」<br><br>
+    あなたは驚きつつも、心のどこかでこう思いませんでしたか？<br>
+    「すごそうだけど、自分には難しそう…」「そもそもAIって何なの？」<br><br>
+    <strong class="accent">その疑問こそが、学びの最高のスタート地点です。</strong><br>
+    この教材は、AIの知識ゼロから始められる「最初の一歩」です。
+  </p>
+</div>
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>「AIの知識がないと始められない」と思いがちだが、<strong class="accent">予備知識は一切不要</strong></li>
+    <li>教材全体の範囲が広く見えるが、<strong class="accent">1章ずつ進めれば必ず理解できる構成</strong>になっている</li>
+  </ul>
+</div>
+
+
+<!-- セクション 1 -->
+<h2 class="section-heading" id="sec1">1. この教材について</h2>
+
+<p class="text-body">
+  「ChatGPTが東大の入試問題を解き合格点を超えた」「AIが描いた絵画が美術コンクールで優勝」「小説もAIが書く時代に」——最近、こんなニュースを目にすることが増えていませんか？
+</p>
+
+<p class="text-body">
+  しかし、「なんだかすごそうだけど、正直よくわからない…」「自分にも関係あるのかな？」そう感じている方も多いのではないでしょうか。<strong class="accent">この教材は、そのようなAIの知識がほとんどない方を対象</strong>としています。
+</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>
+    <strong style="color: #3D3D3D;">本教材の目的：</strong>AI、特に<strong class="accent">「生成AI」の基本的な知識と考え方を体系的に学び、全体像を掴む</strong>こと。<br>
+    <strong style="color: #3D3D3D;">学習の進め方：</strong>専門用語はできるだけ避け、図解や身近なものに例えた話を豊富に使いながら、<strong class="accent">クイズ形式なども交えて楽しく学べる</strong>ように工夫しています。
+  </p>
+</div>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>本教材は、AIの概要や主要なツールの特徴を理解することに特化しています。<strong class="accent">具体的なAIツールの詳しい操作方法や、専門的なプログラミング知識などは扱いません。</strong>これらは、本教材で基礎を固めた後の、次のステップの教材で学ぶことができます。</p>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">この教材の主な目的として、最も適切なものはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIツールの詳しい操作方法をマスターする</button>
+    <button class="quiz-opt" data-correct="true">B. 生成AIの基本的な知識と考え方を体系的に学び、全体像を掴む</button>
+    <button class="quiz-opt" data-correct="false">C. プログラミングを使ってAIを開発する</button>
+    <button class="quiz-opt" data-correct="false">D. AIを使った副業の具体的な始め方を学ぶ</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> この教材は、AIの概要を体系的に学ぶことが目的です。具体的なツール操作やプログラミングは、基礎を固めた後の次のステップで学びます。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>上司や同僚に「最近のAIってどうなの？」と聞かれたとき、この教材の知識があれば自信を持って概要を説明できるようになります。</p>
+</div>
+
+
+<!-- セクション 2 -->
+<h2 class="section-heading" id="sec2">2. この教材がおすすめの人</h2>
+
+<p class="text-body">この教材は、以下のような方に特におすすめです。</p>
+
+<ul class="styled-list">
+  <li>「AI」や「生成AI」という言葉はよく聞くけれど、<strong class="accent">具体的にそれが何なのか、他の人に説明する自信がない</strong>方</li>
+  <li>AIに対して、「なんだかすごそう」という期待と同時に、「仕事が奪われるかも」「難しそう」といった<strong class="accent">漠然とした不安</strong>を感じている方</li>
+  <li>AIを仕事や学習に<strong class="accent">活用するための最初の一歩</strong>となる知識を身につけたい方</li>
+  <li>専門知識はまだないけれど、<strong class="accent">AIの可能性や面白さに触れてみたい</strong>方</li>
+  <li>5年後、10年後も今の仕事を続けていけるか不安だが、<strong class="accent">具体的な対策を取れていない</strong>方</li>
+</ul>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>AIに関する予備知識は<strong class="accent">一切必要ありません</strong>。PCの基本的な操作とインターネット検索ができれば、どなたでも安心して学習を始められます。</p>
+</div>
+
+
+<!-- セクション 3 -->
+<h2 class="section-heading" id="sec3">3. 到達できるゴール</h2>
+
+<p class="text-body">この教材を最後まで学習することで、以下のことができるようになります。</p>
+
+<!-- ゴールカード -->
+<div style="display: flex; flex-direction: column; gap: 12px; margin: 24px 0;">
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">1</div>
+    <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #444;">AIと生成AIの基本的な違いを理解し、<strong class="accent">30分かかっていたメール作成が5分で終わる</strong>など、業務効率化の具体的な方法がわかる</p>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">2</div>
+    <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #444;">AIが文章や画像を創り出す仕組みの概要がわかり、<strong class="accent">企画書やプレゼン資料のアイデア出しで悩む時間がゼロ</strong>になる</p>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">3</div>
+    <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #444;">AIの得意・不得意がわかり、<strong class="accent">クリエイティブな作業により多くの時間を使い、仕事の質を高める</strong>ことができる</p>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">4</div>
+    <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #444;">主要なAIツールの特徴がわかり、<strong class="accent">副業やフリーランスで「AI活用」を強みに</strong>案件を獲得できる</p>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">5</div>
+    <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #444;">AIへの漠然とした不安が自信に変わり、<strong class="accent">面倒な情報収集や資料整理はAIに任せ、家族や趣味の時間を増やす</strong>ことができる</p>
+  </div>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">この教材で学ぶ内容として、含まれないものはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIと生成AIの基本的な違い</button>
+    <button class="quiz-opt" data-correct="false">B. 生成AIが文章や画像を創り出す仕組み</button>
+    <button class="quiz-opt" data-correct="true">C. AIツールの詳細な操作手順とプログラミング</button>
+    <button class="quiz-opt" data-correct="false">D. 主要なAIツールの特徴と使い分け</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> この教材はAIの基礎知識の習得に特化しています。具体的なツール操作やプログラミングは扱わず、それらは次のステップの教材で学びます。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>「AIを使って何ができるの？」と聞かれたとき、具体的な活用シーンを挙げて説明できるようになります。業務効率化からクリエイティブ作業まで、幅広い可能性を伝えられます。</p>
+</div>
+
+
+<!-- セクション 4 -->
+<h2 class="section-heading" id="sec4">4. AIイメージマップ作成</h2>
+
+<p class="text-body">
+  学習を始める前に、今のあなたが持っている「AI」のイメージを自由に書き出してみましょう。<strong class="accent">正解はありません。</strong>頭に浮かんだことを素直に書き出すことが大切です。
+</p>
+
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <h3 style="font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 12px;">ワーク：AIイメージマップを作ろう</h3>
+  <p style="font-size: 15px; line-height: 1.8; color: #555; margin: 0 0 12px;">「すごい」「こわい」といった感情的な言葉や、「自動運転」「ChatGPT」といった具体的なキーワードなど、思いつくままに<strong class="accent">5つ以上</strong>書き出してみてください。</p>
+  <ul style="font-size: 14px; line-height: 2; color: #555; padding-left: 18px; margin: 0;">
+    <li>ノートや紙に手書きする</li>
+    <li>テキストエディタやメモアプリに打ち込む</li>
+    <li>マインドマップツールを使って視覚的に表現する</li>
+  </ul>
+</div>
+
+<p class="text-body">書き出し例としては、「すごそう」「仕事がなくなるかも」「ChatGPT」「絵を描いてくれる」「よくわからないけど便利」など——どんなイメージでもOKです。</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <img src="https://cdn.clipkit.co/tenants/589/item_images/images/000/022/916/medium/4bb47e36-a0bd-456e-8822-04114f349205.png?1749449542" alt="AIイメージマップの作成例" style="border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">マインドマップの作成例</p>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>この課題は、学習の<strong class="accent">スタートラインでの立ち位置を確認するため</strong>のものです。教材の最後に振り返ることで、自分の成長をより明確に実感できます。</p>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>書き出したイメージをコーチに共有してみましょう。客観的な視点からアドバイスがもらえるかもしれません。学習前の「現在地」を記録しておくと、後で振り返ったときの成長が明確になります。</p>
+</div>
+
+
+<!-- まとめ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">教材の目的</strong> — 生成AIの基本的な知識と考え方を体系的に学び、全体像を掴む</li>
+    <li><strong style="color: #3D3D3D;">対象</strong> — AIの予備知識がない方でもOK。専門用語を避け、図解とクイズで楽しく学べる</li>
+    <li><strong style="color: #3D3D3D;">ゴール</strong> — AIの基礎を固め、業務効率化やAI活用の具体的なイメージを持てるようになる</li>
+    <li><strong style="color: #3D3D3D;">AIイメージマップ</strong> — 学習前の自分の認識を記録し、学習後の成長を実感する材料にする</li>
+  </ul>
+</div>
+
+
+<!-- 理解度チェック -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">この教材の目的を自分の言葉で説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">「生成AIの基本的な知識と考え方を体系的に学び、全体像を掴むこと」が目的です。ツールの操作方法やプログラミングは扱いません。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">教材で到達できるゴールを3つ以上挙げられる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">①AIと生成AIの違いの理解 ②AIが文章・画像を創る仕組みの把握 ③AIの得意・不得意の理解 ④主要ツールの特徴と使い分け ⑤AIへの不安が自信に変わる の5つです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">AIに対する自分のイメージを5つ以上書き出した</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">ポジティブなもの、ネガティブなもの、具体的なもの、抽象的なもの、どんなイメージでもOKです。教材の最後に振り返ることで、学習の成果を実感できます。</div>
+    </details>
+
+  </div>
+</details>
+
+
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- JavaScript -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

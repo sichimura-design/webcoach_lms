@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/wqWzv -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop｜16章 レイヤースタイルを使ってみよう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/wqWzv">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop｜16章 レイヤースタイルを使ってみよう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/708/medium/8bc0565a-8199-4622-b418-1d93c48c20ff.png?1739958954">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop｜16章 レイヤースタイルを使ってみよう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/wqWzv">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/708/large/8bc0565a-8199-4622-b418-1d93c48c20ff.png?1739958954">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="_Q_42tJZ7-wwIM-iK4kD-XBp5nMf9nyOBW0AAAhE_20Y2X_FZXuC3okKKr5sxKdqh9ZkfmV60SFxjp9pK7oq8A"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop｜16章 レイヤースタイルを使ってみよう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">16章 レイヤースタイルを使ってみよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:100分</a></li></ul></li><li><a href="#heading2" class="tocLink">【16-1】レイヤースタイルとは</a></li><li><a href="#heading3" class="tocLink">【16-2】レイヤースタイルの適用方法</a></li><li><a href="#heading4" class="tocLink">【16-3】適用できるスタイル（一部）</a><ul><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink">1. ベベルとエンボス</a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink">2. 境界線</a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink">3. ドロップシャドウ</a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">4.光彩（外側）</a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink">5. グラデーションオーバーレイ</a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li><li><a href="#heading16" class="tocLink">【16-4】レイヤースタイルの利点</a><ul><li><a href="#heading17" class="tocLink">1. 非破壊編集</a></li><li><a href="#heading18" class="tocLink">2. 再利用可能</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25605" data-item-id="25605" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/Q1UcJ" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/ybi9F" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36868" data-item-id="36868" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">16章 レイヤースタイルを使ってみよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39475" data-item-id="39475" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:100分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8174" data-item-id="8174" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、画像・テキスト・シェイプレイヤーなどにさまざまな効果を設定できる<span class="decoration-01"><span class="decoration-02">レイヤースタイル</span></span>を解説します。<br>
+Photoshopのレイヤースタイルは、レイヤーに視覚的な効果を追加するためのツールです。<br>
+これらのスタイルを適用してカスタマイズすることで、デザインに深みや立体感、特定のエフェクトを簡単に追加できます。</div></div>
+        
+        <div class="article-item item_heading " id="item36875" data-item-id="36875" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【16-1】レイヤースタイルとは</h2></div>
+        
+        <div class="article-item item_rich_text " id="item8176" data-item-id="8176" data-item-type="ItemRichText"><div class="item-body-hbr">レイヤースタイルを利用すると、<span class="decoration-01"><span class="decoration-02">レイヤーごとにさまざまな効果を設定することができます。</span></span><br>
+画像・テキスト・シェイプレイヤーに対してさまざまな効果を設定することができる機能で、1つのレイヤーに複数のスタイルを適用したり、「境界線」など一部のスタイルは、同じ効果を重ねがけしたりすることも可能です。</div></div>
+        
+        <div class="article-item item_html " id="item8177" data-item-id="8177" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">レイヤースタイルを適用できる対象</span></div>
+    </div>
+    <div class="content-area">
+      <ul>
+  　　　<li>文字</li>
+        <li>シェイプ</li>
+        <li>写真・切り取り写真</li>
+        <li>イラスト</li>
+        <li>塗りつぶしレイヤー</li>
+        <li>グループ</li>
+        <span>※完全に透明なピクセルで構成されるレイヤーには、効果を適用する対象がないため、レイヤースタイルは表示されません。</span>
+      </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36876" data-item-id="36876" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【16-2】レイヤースタイルの適用方法</h2></div>
+        
+        <div class="article-item item_text " id="item8204" data-item-id="8204" data-item-type="ItemText"><div class="item-body-hbr">方法1. レイヤーパネル下部にある「fx」アイコンをクリックする</div></div>
+        
+        <div class="article-item item_link " id="item12341" data-item-id="12341" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=wqWzv&amp;item_id=12341" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 16-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 16-1" data-reference="https://www.dropbox.com/scl/fi/0oml5noeq6l5nbu3ow2be/Adobe-Photoshop16_1.0_.mov?rlkey=37n172604v8v3ge6ka318i0b0&amp;e=1&amp;st=8q5snid6&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8205" data-item-id="8205" data-item-type="ItemText"><div class="item-body-hbr">方法2. レイヤーを右クリックして「レイヤー効果」を選ぶ</div></div>
+        
+        <div class="article-item item_link " id="item12342" data-item-id="12342" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=wqWzv&amp;item_id=12342" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 16-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 16-2" data-reference="https://www.dropbox.com/scl/fi/xlzowx6vwc91alhc7e8cj/Adobe-Photoshop16-2_1.0_.mov?rlkey=69pblug6ymn6x9ysvtq22xbtz&amp;e=1&amp;st=4jh1podc&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8206" data-item-id="8206" data-item-type="ItemText"><div class="item-body-hbr">※レイヤーをダブルクリックすることでも表示することが可能です。</div></div>
+        
+        <div class="article-item item_link " id="item12343" data-item-id="12343" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=wqWzv&amp;item_id=12343" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 16-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 16-3" data-reference="https://www.dropbox.com/scl/fi/f31d6214p7rxjju75lcq4/Adobe-Photoshop16-3_1.0_.mov?rlkey=smlnmjn2iczpsesutmtmg0p56&amp;e=1&amp;st=zfhveffr&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36877" data-item-id="36877" data-item-type="ItemHeading"><h2 class="item-body" id="heading4">【16-3】適用できるスタイル（一部）</h2></div>
+        
+        <div class="article-item item_text " id="item8187" data-item-id="8187" data-item-type="ItemText"><div class="item-body-hbr">レイヤースタイルの中から、適用できるスタイルをいくつか紹介します。</div></div>
+        
+        <div class="article-item item_image " id="item8188" data-item-id="8188" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/188/medium/c18b670d-25ed-4dd1-8687-fbe2b0721966.jpg?1740016590" title=""><img class="img-responsive item-image" alt=" (8188)" data-reference="" src="../../_assets/c63240012e.webp" width="640" height="419"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8189" data-item-id="8189" data-item-type="ItemMarkdown"><h4 id="heading6">1. ベベルとエンボス</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36869" data-item-id="36869" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">レイヤーに立体感を与える効果です</span>。</li>
+  <li>
+    ベベルのスタイル（インナー、アウター、エンボスなど）、深さ、サイズ、ソフト、ハイライトやシャドウのモードを調整できます。
+    <ul>
+      <li><span class="decoration-02">ベベル</span>「斜面」を意味し、レイヤーの縁に立体的な傾斜をつけます。</li>
+      <li><span class="decoration-02">エンボス</span>は「浮き彫り」を意味し、レイヤーが背景から浮き出ている、または押し込まれているような効果を与えます。</li>
+    </ul>
+  </li>
+  <li>両方とも立体感を演出できます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item8201" data-item-id="8201" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/201/medium/0382bc75-84bf-427e-aa20-824cf76fd537.png?1740016952" title=""><img class="img-responsive item-image" alt=" (8201)" data-reference="" src="../../_assets/9107522680.webp" width="640" height="326"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12344" data-item-id="12344" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=wqWzv&amp;item_id=12344" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 16-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 16-4" data-reference="https://www.dropbox.com/scl/fi/9uvzcwiidsy8g20nmqc36/Adobe-Photoshop16-4_1.0_.mov?rlkey=zl2j9oosrndbpqnosgouaew5n&amp;e=1&amp;st=z84cukzz&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8191" data-item-id="8191" data-item-type="ItemMarkdown"><h4 id="heading8">2. 境界線</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36870" data-item-id="36870" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>レイヤーの<span class="decoration-02">輪郭に線を追加します。</span></li>
+  <li>
+    ストロークのサイズ、位置（内側、中央、外側）、カラー、グラデーション、パターン、ブレンドモードを調整できます。
+  </li>
+  <li>境界線は、複数追加することが可能です。</li>
+</ul>
+
+
+
+
+
+
+</div></div>
+        
+        <div class="article-item item_image " id="item8202" data-item-id="8202" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/202/medium/5ac62b40-afd6-4abd-95e6-9e32e8322a4b.png?1740016980" title=""><img class="img-responsive item-image" alt=" (8202)" data-reference="" src="../../_assets/222cef386a.webp" width="640" height="291"></a><h4 id="heading9"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12345" data-item-id="12345" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=wqWzv&amp;item_id=12345" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 16-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 16-5" data-reference="https://www.dropbox.com/scl/fi/prjcctfklxta0ab302hms/Adobe-Photoshop16-5_1.0_.mov?rlkey=nlj4tc67b1ooi680ukdib7qdu&amp;e=1&amp;st=y31m7owh&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8192" data-item-id="8192" data-item-type="ItemMarkdown"><h4 id="heading10">3. ドロップシャドウ</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36871" data-item-id="36871" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>レイヤーの背後に影を追加し、立体感や奥行きを与えます。</li>
+  <li>影の角度、距離、スプレッド、サイズなどを調整できます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item8203" data-item-id="8203" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/203/medium/6f823782-4120-4b51-b64c-67df667ca47e.png?1740016998" title=""><img class="img-responsive item-image" alt=" (8203)" data-reference="" src="../../_assets/cc850ce440.webp" width="640" height="286"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12346" data-item-id="12346" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=wqWzv&amp;item_id=12346" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 16-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 16-6" data-reference="https://www.dropbox.com/scl/fi/th724as70yxhpe3omz7tc/Adobe-Photoshop16-6_1.0_.mov?rlkey=ib2kd3vtw19vcmwguhncf3959&amp;e=1&amp;st=5nudvzdr&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8193" data-item-id="8193" data-item-type="ItemMarkdown"><h4 id="heading12">4.光彩（外側）</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36872" data-item-id="36872" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>レイヤーの外側に発光効果を追加します。</li>
+  <li>
+    発光の色やサイズ、スプレッド、範囲などを調整できます。
+    <ul>
+      <li>背景を黒くするとネオンのような効果をつけられます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item8198" data-item-id="8198" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/198/medium/51a31294-f233-4f1b-bf74-4dd27d2a6d3a.png?1740016892" title=""><img class="img-responsive item-image" alt=" (8198)" data-reference="" src="../../_assets/8fc7f6fd44.webp" width="640" height="340"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12347" data-item-id="12347" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=wqWzv&amp;item_id=12347" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 16-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 16-7" data-reference="https://www.dropbox.com/scl/fi/hutnmwpiumajut2x4bi72/Adobe-Photoshop16-7_1.0_.mov?rlkey=un13fyp950v0pq8korl4bcsxd&amp;e=1&amp;st=5unmt8xo&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8194" data-item-id="8194" data-item-type="ItemMarkdown"><h4 id="heading14">5. グラデーションオーバーレイ</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36873" data-item-id="36873" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>レイヤーにグラデーションのオーバーレイを適用します。</li>
+  <li>グラデーションの種類、角度、スケール、不透明度、ブレンドモードを設定できます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item8197" data-item-id="8197" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/197/medium/6697fd60-8593-4281-97f4-00c405e07c75.png?1740016864" title=""><img class="img-responsive item-image" alt=" (8197)" data-reference="" src="../../_assets/5357cb72cc.webp" width="640" height="333"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_link " id="item12348" data-item-id="12348" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=wqWzv&amp;item_id=12348" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 16-8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 16-8" data-reference="https://www.dropbox.com/scl/fi/lechlitlhe4nup1s1gvhe/Adobe-Photoshop16-8_1.0_.mov?rlkey=j7lgmfxwz3gfn24uo0zd7u9n3&amp;e=1&amp;st=tvrapoik&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item36878" data-item-id="36878" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">【16-4】レイヤースタイルの利点</h2></div>
+        
+        <div class="article-item item_markdown " id="item8181" data-item-id="8181" data-item-type="ItemMarkdown"><h4 id="heading17">1. 非破壊編集</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8183" data-item-id="8183" data-item-type="ItemText"><div class="item-body-hbr">レイヤースタイルは後から何度でも編集可能です。<br>（レイヤーパネルで、適用したエフェクト名をダブルクリックすると、設定パネルが再度表示されます。）</div></div>
+        
+        <div class="article-item item_link " id="item12349" data-item-id="12349" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=wqWzv&amp;item_id=12349" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 16-9</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 16-9" data-reference="https://www.dropbox.com/scl/fi/3knolqy6ntbuis33lzv3r/Adobe-Photoshop16-9_1.0_.mov?rlkey=l63vhvb88hwky7maiinhm0d6o&amp;e=1&amp;st=3fa14jte&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8182" data-item-id="8182" data-item-type="ItemMarkdown"><h4 id="heading18">2. 再利用可能</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36874" data-item-id="36874" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>一度設定したレイヤースタイルは他のレイヤーにコピーして再利用できます。
+    <ol>
+      <li>右クリックでレイヤースタイルをコピーします。</li>
+      <li>コピーしたいオブジェクトのレイヤーでレイヤースタイルをペーストします。</li>
+      <li>レイヤーパネルで、コピーしたいレイヤースタイルを <span class="decoration-02">Option(Alt)</span>キーを押しながら、適用したい別のレイヤーへドラッグ＆ドロップします。</li>
+    </ol>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_link " id="item12847" data-item-id="12847" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=wqWzv&amp;item_id=12847" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 16-10</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 16-10" data-reference="https://www.dropbox.com/scl/fi/a40xpwjpy2u7n5ndfhfjo/Adobe-Photoshop16-10.mov?rlkey=l0ctqsq0evld819ntjc8jadzn&amp;st=olkhtdun&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item12350" data-item-id="12350" data-item-type="ItemRichText"><div class="item-body-hbr">これで「16章 レイヤースタイルを使ってみよう」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25606" data-item-id="25606" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/Q1UcJ" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/ybi9F" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">16章 レイヤースタイルを使ってみよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:100分</a></li></ul></li><li><a href="#heading2" class="tocLink">【16-1】レイヤースタイルとは</a></li><li><a href="#heading3" class="tocLink">【16-2】レイヤースタイルの適用方法</a></li><li><a href="#heading4" class="tocLink">【16-3】適用できるスタイル（一部）</a><ul><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink">1. ベベルとエンボス</a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink">2. 境界線</a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink">3. ドロップシャドウ</a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink">4.光彩（外側）</a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink">5. グラデーションオーバーレイ</a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li><li><a href="#heading16" class="tocLink">【16-4】レイヤースタイルの利点</a><ul><li><a href="#heading17" class="tocLink">1. 非破壊編集</a></li><li><a href="#heading18" class="tocLink">2. 再利用可能</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/Q1UcJ" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/ybi9F" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

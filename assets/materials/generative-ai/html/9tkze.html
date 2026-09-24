@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap2/9tKze -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48859" data-item-id="48859" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>どんな情報を登録するか | Claude活用講座</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/edbf4ebbd2.css" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #F7F8FA; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+h2 { font-size: 22px; font-weight: 900; color: #2D2D2D; margin: 56px 0 20px; padding: 0 0 12px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 900; color: #2D2D2D; margin: 32px 0 14px; }
+p { font-size: 15px; line-height: 2.0; color: #555; margin: 0 0 14px; }
+.accent { color: #E85D4A; font-weight: 700; }
+.goal-box { background: #fff; padding: 24px 28px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.goal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.goal-box__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.goal-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.goal-box__time { font-size: 11px; font-weight: 500; color: #E85D4A; }
+.goal-box__text { font-size: 15px; font-weight: 700; color: #3D3D3D; line-height: 1.7; margin: 0; }
+.toc-box { background: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.toc-box .label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 10px; }
+.toc-box ol { margin: 0; padding-left: 20px; font-size: 14px; color: #555; line-height: 2.2; }
+.toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+.toc-link:hover { color: #E85D4A; }
+.point-box { background: #fff; border-left: 4px solid #E85D4A; padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+.point-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+.point-box p { margin: 0; font-size: 14px; line-height: 1.8; color: #555; }
+.info-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+@media (max-width: 600px) { .info-grid { grid-template-columns: 1fr; } }
+.info-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+.info-card__icon { font-size: 28px; margin-bottom: 10px; }
+.info-card__cat { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 6px; }
+.info-card__title { font-size: 15px; font-weight: 900; color: #2D2D2D; margin-bottom: 10px; }
+.info-card ul { list-style: none; padding: 0; margin: 0; }
+.info-card li { font-size: 13px; color: #555; padding: 3px 0; display: flex; gap: 6px; line-height: 1.5; }
+.info-card li::before { content: '・'; color: #F5A64A; flex-shrink: 0; }
+.example-box { background: #1A1A2E; border-radius: 14px; padding: 22px 24px; margin: 24px 0; }
+.example-box__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.example-box__text { font-size: 13px; color: #E8E8F0; line-height: 2.0; white-space: pre-line; }
+.example-box__text strong { color: #F5A64A; }
+.tip-list { list-style: none; padding: 0; margin: 20px 0; display: flex; flex-direction: column; gap: 12px; }
+.tip-list li { display: flex; gap: 12px; background: #fff; border-radius: 12px; padding: 14px 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); font-size: 14px; color: #3D3D3D; align-items: flex-start; line-height: 1.6; }
+.tip-list li::before { content: '💡'; flex-shrink: 0; }
+.quiz-block { background: #fff; border-radius: 16px; padding: 24px; margin: 32px 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.quiz-block__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 12px; }
+.quiz-block__q { font-size: 15px; font-weight: 700; color: #2D2D2D; margin-bottom: 16px; line-height: 1.6; }
+.quiz-choices { display: flex; flex-direction: column; gap: 8px; }
+.quiz-btn { background: #F7F8FA; border: 2px solid #E8E8E8; border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: inherit; color: #3D3D3D; cursor: pointer; text-align: left; transition: all 0.2s; line-height: 1.5; }
+.quiz-btn:hover:not(:disabled) { border-color: #E85D4A; background: #FFF0ED; }
+.quiz-btn.correct { background: #E8F5E9; border-color: #4CAF7C; color: #2E7D52; }
+.quiz-btn.wrong { background: #FFEBEE; border-color: #EF5350; color: #C62828; }
+.correct-fb, .wrong-fb { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 10px; font-size: 13px; line-height: 1.7; }
+.correct-fb { background: #E8F5E9; color: #2E7D52; }
+.wrong-fb { background: #FFEBEE; color: #C62828; }
+.summary-box { background: #fff; border-radius: 16px; padding: 28px; margin: 48px 0 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.summary-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 16px; }
+.summary-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.summary-box li { font-size: 14px; color: #3D3D3D; display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
+.summary-box li::before { content: '✅'; flex-shrink: 0; }
+.check-outer { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); overflow: hidden; margin: 24px 0; }
+.check-outer > summary { cursor: pointer; padding: 20px 24px; font-size: 15px; font-weight: 700; color: #2D2D2D; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.check-outer > summary::-webkit-details-marker { display: none; }
+.check-outer > summary::after { content: '▼'; font-size: 12px; color: #AAA; transition: transform 0.2s; }
+.check-outer[open] > summary::after { transform: rotate(180deg); }
+.check-outer__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.check-inner { border-top: 1px solid #F0F0F0; padding: 20px 24px; }
+.check-item { margin-bottom: 12px; }
+.check-item details summary { cursor: pointer; font-size: 14px; color: #3D3D3D; list-style: none; padding: 8px 0; display: flex; gap: 10px; align-items: flex-start; line-height: 1.6; }
+.check-item details summary::-webkit-details-marker { display: none; }
+.check-item details summary::before { content: '☐'; color: #E85D4A; flex-shrink: 0; font-size: 16px; }
+.check-item details[open] summary::before { content: '☑'; color: #4CAF7C; }
+.check-item__answer { background: #F7F8FA; border-radius: 8px; padding: 12px 14px; margin-top: 6px; font-size: 13px; color: #555; line-height: 1.7; }
+.hero { background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%); border-radius: 16px; padding: 48px 40px; margin-bottom: 40px; color: #fff; }
+.hero__label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+.hero__title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.hero__meta { display: flex; gap: 20px; font-size: 14px; opacity: 0.9; flex-wrap: wrap; }
+.hero__meta span { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; }
+.plan-note { background: #FFF8F0; border: 1.5px solid #F5A64A; border-radius: 12px; padding: 14px 18px; margin: 20px 0; display: flex; align-items: flex-start; gap: 12px; font-size: 14px; color: #555; line-height: 1.7; }
+.plan-note__badge { background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="RWlYB8hGI6C2I1dXJkvNruaCVvP3pK2dVWLvmiyHisnaxQfmtxEirw8UEtx0LzwSwQ8uSb93b2lL8upFnpGm3Q"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="hero">
+    <div class="hero__label">Chapter 2 — Lesson 2</div>
+    <div class="hero__title">どんな情報を登録するか</div>
+    <div class="hero__meta">
+      <span>🕐 約8分</span>
+      <span>📚 知識型</span>
+      <span>🔖 情報整理</span>
+    </div>
+  </div>
+  
+ <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap2/VtsxF" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap2/P8Kpj" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+  <div class="goal-box">
+    <div class="goal-box__header">
+      <span class="goal-box__label">このレッスンのゴール</span>
+      <span class="goal-box__time">目安 8分</span>
+    </div>
+    <p class="goal-box__text">プロジェクトに登録すべき2種類の情報を把握し、<span class="accent">実際のクライアント情報を元に登録文を書ける</span>ようになる。</p>
+  </div>
+
+  <div class="plan-note">
+    <span class="plan-note__badge">Pro 以上</span>
+    <span>このChapterで紹介するプロジェクトは、<strong>Proプラン以上が必要</strong>です。Freeプランをご利用の方は、このChapterをスキップして<strong>Chapter 3「Artifacts」</strong>に進んでください。ArtifactsはFreeプランでも利用できます。</span>
+  </div>
+
+  <div class="toc-box">
+    <div class="label">このレッスンの内容</div>
+    <ol>
+      <li><a href="#sec1" class="toc-link">3種類の登録情報カテゴリ</a></li>
+      <li><a href="#sec2" class="toc-link">具体的な登録文例</a></li>
+      <li><a href="#sec3" class="toc-link">登録精度を上げるコツ</a></li>
+    </ol>
+  </div>
+
+  <h2 id="sec1">2種類の登録情報カテゴリ</h2>
+  <p>プロジェクトに登録する情報は、大きく2つのカテゴリに分けて考えると整理しやすくなります。</p>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card__icon">🏢</div>
+      <div class="info-card__cat">カテゴリ 1</div>
+      <div class="info-card__title">クライアント情報</div>
+      <ul>
+        <li>業種・業態</li>
+        <li>ターゲット顧客</li>
+        <li>ブランドのトンマナ</li>
+        <li>NG表現・禁止ワード</li>
+        <li>競合の傾向</li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <div class="info-card__icon">📋</div>
+      <div class="info-card__cat">カテゴリ 2</div>
+      <div class="info-card__title">案件情報</div>
+      <ul>
+        <li>サービス・商品の概要</li>
+        <li>制作物の種類と目的</li>
+        <li>よく使うフォーマット</li>
+        <li>過去の参考資料の特徴</li>
+        <li>現在の進捗・方向性</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="point-box">
+    <div class="point-box__label">ポイント</div>
+    <p>まずクライアント情報だけでも登録すれば効果が出ます。案件が進むにつれて少しずつ情報を追加していきましょう。なお「自分のスキル・スタイル」など<strong>自分自身に関する情報はカスタム指示</strong>（Chapter 5で学習）に登録するのが正しい場所です。</p>
+  </div>
+
+  <h2 id="sec2">具体的な登録文例</h2>
+  <p>登録文を書くときは、箇条書きが読みやすくおすすめです。以下は飲食店のLP制作案件を想定した例です。</p>
+
+  <div class="example-box">
+    <div class="example-box__label">登録文の例（飲食店 LP 制作案件）</div>
+    <div class="example-box__text"><strong>【クライアント情報】</strong>
+・業種：東京都内のカフェ（1店舗、席数20）
+・ターゲット：20〜30代の女性、インスタ映えを重視
+・トンマナ：ナチュラル・温かみ・親しみやすい（堅いビジネス語はNG）
+・NG表現：「最安値」「業界No.1」などの誇大表現は避ける
+・競合：〇〇カフェ系チェーンと差別化したい（こぢんまり感を前面に）
+
+<strong>【案件情報】</strong>
+・制作物：LPのコピーライティングとワイヤーフレーム提案
+・目標：来店予約数の増加（目標：月50件 → 80件）
+・使用ツール：STUDIOで実装予定
+
+</div>
+  </div>
+
+  <h2 id="sec3">登録精度を上げるコツ</h2>
+  <p>登録する情報の「書き方」を少し工夫するだけで、Claudeの回答精度が大きく変わります。</p>
+
+  <ul class="tip-list">
+    <li>「〜してください」より「私は〜です」で書く — 指示より事実として書く方がClaude が文脈として認識しやすい</li>
+    <li>抽象的な表現を避けて具体的に書く — 「シンプルなデザイン」ではなく「余白を多くとり、テキストは最小限に」</li>
+    <li>NG事項は「なぜNGか」を添えると精度が上がる — 「〇〇表現はNG（クライアントが過去に指摘された経緯あり）」</li>
+    <li>定期的に見直して古い情報は更新する — 案件が進むと方向性が変わることがある</li>
+  </ul>
+
+  <div class="quiz-block" id="q1">
+    <div class="quiz-block__label">確認クイズ</div>
+    <p class="quiz-block__q">プロジェクトへの登録文を書くとき、より効果的な書き方はどちらですか？</p>
+    <div class="quiz-choices">
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">① 「堅い言葉は使わないようにしてください」</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',true)">② 「クライアントのトンマナはナチュラル・温かみ。堅いビジネス用語はNG」</button>
+    </div>
+    <div class="correct-fb">正解！ 「〜してください」という指示より「〇〇です」という事実の描写として書いた方が、Claudeが文脈として認識しやすくなります。具体的な内容も含めるとさらに効果的です。</div>
+    <div class="wrong-fb">①は「〜してください」という指示形式です。プロジェクトへの登録は「事実・説明」として書く方が、Claudeが文脈として認識しやすくなります。</div>
+  </div>
+
+  <div class="summary-box">
+    <div class="summary-box__label">このレッスンのまとめ</div>
+    <ul>
+      <li>登録情報は「<strong>クライアント情報</strong>」「<strong>案件情報</strong>」の2カテゴリで整理する</li>
+      <li>最初は完璧でなくていい — まずクライアント情報だけでも登録して始める</li>
+      <li>「〜してください」より<strong>「〇〇です」という事実として書く</strong>と精度が上がる</li>
+      <li>抽象的な表現を具体的に書き直すと Claudeの回答が格段に良くなる</li>
+    </ul>
+  </div>
+
+  <details class="check-outer">
+    <summary>
+      <span class="check-outer__label">理解度チェック</span>
+      <span>2項目で自分の理解を確認しよう</span>
+    </summary>
+    <div class="check-inner">
+      <div class="check-item">
+        <details>
+          <summary>2つのカテゴリを挙げて、各カテゴリに何を書くか言える</summary>
+          <div class="check-item__answer">①<strong>クライアント情報</strong>：業種・ターゲット・トンマナ・NG表現。②<strong>案件情報</strong>：サービス概要・制作物の目的・使用ツール・参考スタイル。なお自分のスキル・スタイルなど自分自身の情報はカスタム指示（Chapter 5）に登録する。</div>
+        </details>
+      </div>
+      <div class="check-item">
+        <details>
+          <summary>「登録精度を上げるコツ」を1つ具体的に説明できる</summary>
+          <div class="check-item__answer">例）抽象的な表現を具体化する：「シンプルなデザインが好き」→「余白を多くとり、使うフォントは1〜2種類に絞る。装飾的な要素は最小限」のように書き直すと、Claudeが具体的なイメージを持って回答できるようになる。</div>
+        </details>
+      </div>
+    </div>
+  </details>
+  
+   <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap2/VtsxF" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap2/P8Kpj" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

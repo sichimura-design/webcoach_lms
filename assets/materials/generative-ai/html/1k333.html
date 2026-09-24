@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_design/AI_banner/1k333 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3章 AI生成物にCanvaでCTAと装飾を追加する仕上げ技術 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_design/AI_banner/1k333">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="3章 AI生成物にCanvaでCTAと装飾を追加する仕上げ技術 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/517/medium/d5ad1b93-455c-47dc-9910-a98d9b2a4b0d.png?1764157768">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="3章 AI生成物にCanvaでCTAと装飾を追加する仕上げ技術">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_design/AI_banner/1k333">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/517/large/d5ad1b93-455c-47dc-9910-a98d9b2a4b0d.png?1764157768">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="jAIuyZA3f9ZG5XNOyU4LGcdsD5vZuH0IgTmaPZ7Ts2qq4YNWnKFsaVm__X-4JsK01ncHqiBuDHJvPA6Y_x7ArA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>AI活用バナー制作講座</div>
+
+          <div class="fw-bold h2">3章 AI生成物にCanvaでCTAと装飾を追加する仕上げ技術</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 生成画像の品質を高めるCanva仕上げ技術</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：180分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】AI生成画像の特性とCanvaでの編集方針</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AI生成画像は「一枚の絵」である</a></li><li><a href="#heading6" class="tocLink">Canvaでの編集方針：「修正」ではなく「調整・仕上げ」</a></li></ul></li><li><a href="#heading7" class="tocLink">【3-2】色調補正と視認性向上のテクニック</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading9" class="tocLink">全体のトーンを整える色調補正とフィルター</a><ul><li><a href="#heading10" class="tocLink"></a></li></ul></li><li><a href="#heading11" class="tocLink">AI生成テキストの視認性を高める「座布団」テクニック</a><ul><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink">練習問題：色調補正と視認性確保</a></li></ul></li></ul></li><li><a href="#heading14" class="tocLink">【3-3】実務で必須となるバナーのリサイズとファイル出力</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading16" class="tocLink">媒体に合わせたバナーのリサイズとAIツールを活用した調整</a><ul><li><a href="#heading17" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading18" class="tocLink">【3-3】構図の微調整と装飾の追加</a><ul><li><a href="#heading19" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading20" class="tocLink">トリミングによる構図の微調整</a></li><li><a href="#heading21" class="tocLink">全体の雰囲気を高める装飾の追加</a></li></ul></li><li><a href="#heading22" class="tocLink">【3-4】3章 -章末課題- [AI生成物の実務レベルへのブラッシュアップ]</a><ul><li><a href="#heading23" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading24" class="tocLink">問題</a><ul><li><a href="#heading25" class="tocLink">解答手順</a></li></ul></li><li><a href="#heading26" class="tocLink">解答例</a><ul><li><a href="#heading27" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item43261" data-item-id="43261" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/AI_banner/oq3cn" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/AI_banner/eI0il" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item43199" data-item-id="43199" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">3章 生成画像の品質を高めるCanva仕上げ技術</h2></div>
+        
+        <div class="article-item item_markdown " id="item43200" data-item-id="43200" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：180分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item43201" data-item-id="43201" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43375" data-item-id="43375" data-item-type="ItemRichText"><div class="item-body-hbr">・AI生成画像（一枚絵）の特性を理解し、Canvaで可能な修正範囲を把握する<br>
+・色調補正やフィルターを用いて、バナー全体のトーン＆マナーを整えることができる<br>
+・AIが生成したテキストが読みにくい場合に、Canvaの機能で視認性を向上させるテクニックを習得する</div></div>
+        
+        <div class="article-item item_heading " id="item43203" data-item-id="43203" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【3-1】AI生成画像の特性とCanvaでの編集方針</h2></div>
+        
+        <div class="article-item item_markdown " id="item43204" data-item-id="43204" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item43205" data-item-id="43205" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">AI生成画像は「一枚の絵」である</h3></div>
+        
+        <div class="article-item item_text " id="item43206" data-item-id="43206" data-item-type="ItemText"><div class="item-body-hbr">2章でNano Banana Proが生成したバナー画像は、テキストもボタンも背景もすべてが統合された「一枚の画像ファイル」です。<br>Canvaのようなデザインツールで作成したデータとは異なり、テキストボックスや図形がレイヤー（層）として分かれていません。</div></div>
+        
+        <div class="article-item item_rich_text " id="item43376" data-item-id="43376" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">そのため、以下の作業はCanvaでは（基本的には）できません。</span></span><br>
+<br>
+・生成されたテキストの内容を打ち替える（例：「50%OFF」を「30%OFF」に変更）<br>
+・生成されたテキストやボタンの位置を移動させる<br>
+・生成されたテキストのフォントだけを変更する</div></div>
+        
+        <div class="article-item item_heading " id="item44514" data-item-id="44514" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">Canvaでの編集方針：「修正」ではなく「調整・仕上げ」</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44515" data-item-id="44515" data-item-type="ItemRichText"><div class="item-body-hbr">本ワークフローにおけるCanvaの役割は、AIが生成した「ほぼ完成した絵」を、最終的な納品レベルに引き上げるための<span class="decoration-02">「調整・仕上げ」</span>です。</div></div>
+        
+        <div class="article-item item_html " id="item44516" data-item-id="44516" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>Canvaで行う主な作業</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li><strong>全体の色調補正</strong>：明るさ、コントラスト、彩度を調整し、バナーの印象を整える。</li>
+            <li><strong>テキストの視認性向上</strong>：背景と同化して読みにくい文字の下に、半透明の図形などを敷いて読みやすくする。</li>
+            <li><strong>トリミング</strong>：不要な部分をカットしたり、構図を微調整したりする。</li>
+            <li><strong>装飾の追加</strong>：全体の雰囲気を壊さない範囲で、キラキラや集中線などの効果を足す。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item43226" data-item-id="43226" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【3-2】色調補正と視認性向上のテクニック</h2></div>
+        
+        <div class="article-item item_markdown " id="item43227" data-item-id="43227" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item43228" data-item-id="43228" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">全体のトーンを整える色調補正とフィルター</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43229" data-item-id="43229" data-item-type="ItemRichText"><div class="item-body-hbr">Nano Banana Proが生成した画像が、意図した雰囲気より「少し暗い」「色がくすんでいる」と感じる場合、Canvaの機能で簡単に調整できます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item43614" data-item-id="43614" data-item-type="ItemRichText"><div class="item-body-hbr">1.<span class="decoration-01"><span class="decoration-02"> 画像のアップロードと配置</span></span>: Nano Banana Proでダウンロードした画像をCanvaにアップロードし、キャンバスに配置します。<br>
+2. <span class="decoration-01"><span class="decoration-02">色調調整</span></span>: 画像を選択し、上部メニューの「画像を編集」→「調整」を開きます。<br>
+ &nbsp; ・明るさ / コントラスト: メリハリをつけたい場合はコントラストを上げ、全体を明るくしたい場合は明るさを上げます。<br>
+ &nbsp; ・彩度 / 自然な彩度: 色を鮮やかにしたい場合は上げますが、やりすぎると不自然になるので注意が必要です。<br>
+ &nbsp; ・色温度 / 色合い: 「温かみ」を出したい場合は色温度をオレンジ寄りに、「クールさ」を出したい場合は青寄りに調整します。<br>
+3. <span class="decoration-01"><span class="decoration-02">フィルターの活用</span></span>: 「フィルター」メニューから、好みの雰囲気（例：レトロ、ビビッド）を選ぶだけで、一括でトーンを整えることもできます。</div></div>
+        
+        <div class="article-item item_image " id="item44517" data-item-id="44517" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/517/medium/d5ad1b93-455c-47dc-9910-a98d9b2a4b0d.png?1764157768" title=""><img class="img-responsive item-image" alt=" (44517)" data-reference="" src="../../_assets/535cb5247f.webp" width="640" height="346"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item43232" data-item-id="43232" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">AI生成テキストの視認性を高める「座布団」テクニック</h3></div>
+        
+        <div class="article-item item_text " id="item43233" data-item-id="43233" data-item-type="ItemText"><div class="item-body-hbr">AIはデザイン性を重視するあまり、複雑な背景の上にテキストを配置してしまい、文字が読みにくくなることがあります。<br><br>テキスト自体を編集することはできませんが、Canvaでテキストの下に半透明の図形（通称：座布団）を敷くことで、視認性を劇的に向上させることができます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44518" data-item-id="44518" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">図形の追加</span>: Canvaの「素材」から「四角形」を選びます。<br>
+2. <span class="decoration-01">配置と色変更</span>: 図形を読みにくいテキスト（またはCTAボタン）の上に重ね、テキストが隠れないギリギリのサイズに調整します。図形の色は黒や白、またはバナーのメインカラーに設定します。<br>
+3. <span class="decoration-01">透明度の調整</span>: 上部メニューの「透明度」アイコンをクリックし、背景が少し透けて見える程度（例：30%〜70%）に調整します。<br>
+4. <span class="decoration-01">順序の変更:</span> 最後に、配置した図形を選択し、「配置」メニューから「背面へ」を何度かクリックして、テキストが図形よりも前面に見えるように調整します。</div></div>
+        
+        <div class="article-item item_image " id="item43235" data-item-id="43235" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/043/235/medium/c78377ae-c24d-4cb3-aa06-149cd0633828.png?1764158571" title=""><img class="img-responsive item-image" alt=" (43235)" data-reference="" src="../../_assets/b7b25461bd.webp" width="640" height="346"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item43236" data-item-id="43236" data-item-type="ItemMarkdown"><h4 id="heading13">練習問題：色調補正と視認性確保</h4>
+</div>
+        
+        <div class="article-item item_text " id="item43237" data-item-id="43237" data-item-type="ItemText"><div class="item-body-hbr">バナーの訴求力を高めるために、矢印や吹き出し、キラキラなどの装飾要素を追加することがあります。<br>これらの装飾を追加する際に、デザインの統一性を保ち、情報過多にならないために特に注意すべき点を考えてみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item43381" data-item-id="43381" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答例</span></div></div>
+        
+        <div class="article-item item_markdown " id="item43239" data-item-id="43239" data-item-type="ItemMarkdown">
+<ol>
+  <li>装飾の色を使いすぎない：装飾の色は、バナー全体の配色（AI生成画像の色、テキストの色）を崩さないよう、既存の色（またはその近似色）に限定する。</li>
+  <li>装飾は「主役」ではない：装飾はあくまでキャッチコピーやCTAを目立たせるための脇役。装飾が目立ちすぎると、本当に伝えたい情報が埋もれてしまう。</li>
+  <li>装飾のスタイルを統一する：AI生成画像が「モダンな写真」なのに、装飾だけ「可愛い手書き風」だとチグハグになる。デザインのトーン＆マナーを合わせる。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_heading " id="item43240" data-item-id="43240" data-item-type="ItemHeading"><h2 class="item-body" id="heading14">【3-3】実務で必須となるバナーのリサイズとファイル出力</h2></div>
+        
+        <div class="article-item item_markdown " id="item43241" data-item-id="43241" data-item-type="ItemMarkdown"><h4 id="heading15">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item43242" data-item-id="43242" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">媒体に合わせたバナーのリサイズとAIツールを活用した調整</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43243" data-item-id="43243" data-item-type="ItemRichText"><div class="item-body-hbr">2章で生成したバナー画像（どれでも可）をCanvaにアップロードし、以下の調整を行ってください。<br>
+<br>
+1. 色調補正: 「明るさ」と「コントラスト」を調整し、バナー全体の印象をより鮮やかで魅力的にしてください。<br>
+2. 視認性確保: もし読みにくいテキスト（メイン、サブ、CTAのいずれか）がある場合は、その部分に半透明の図形（座布団）を敷いて読みやすくしてください。読みにくい箇所がなければ、座布団を敷いた上で新しいテキストを追加してみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44519" data-item-id="44519" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答例</span></div></div>
+        
+        <div class="article-item item_image " id="item44520" data-item-id="44520" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/520/medium/d9863876-e54a-4853-8db6-39bc8f33b77d.png?1764158764"><img class="img-responsive item-image" alt=" (44520)" src="../../_assets/1497a5edf4.webp" width="640" height="358"></a><h4 id="heading17"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item44521" data-item-id="44521" data-item-type="ItemHeading"><h2 class="item-body" id="heading18">【3-3】構図の微調整と装飾の追加</h2></div>
+        
+        <div class="article-item item_markdown " id="item44522" data-item-id="44522" data-item-type="ItemMarkdown"><h4 id="heading19">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item44526" data-item-id="44526" data-item-type="ItemHeading"><h3 class="item-body" id="heading20">トリミングによる構図の微調整</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44525" data-item-id="44525" data-item-type="ItemRichText"><div class="item-body-hbr">AIが生成した画像の構図が「少しだけずれている」「端に不要なものが写り込んでいる」という場合、Canvaの<span class="decoration-02">トリミング機能で調整</span>します。<br>
+<br>
+1. 画像を選択し、上部メニューの「切り抜き」をクリックします（または画像をダブルクリック）。<br>
+2. 画像の四隅や辺をドラッグして、表示範囲を調整します。<br>
+3. 被写体を中央に寄せたり、不要な部分をカットしたりして、構図を整えます。</div></div>
+        
+        <div class="article-item item_heading " id="item44527" data-item-id="44527" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">全体の雰囲気を高める装飾の追加</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44528" data-item-id="44528" data-item-type="ItemRichText"><div class="item-body-hbr">バナーの訴求力をさらに高めるために、Canvaの「素材」を使って装飾を追加します。<br>
+ただし、<span class="decoration-02">生成画像の世界観を壊さないよう注意</span>が必要です。<br>
+<br>
+・<span class="decoration-01">効果的な装飾例</span><br>
+　・セールや強調したい部分に「キラキラ」「集中線」などのエフェクト素材を小さく配置する。<br>
+　・季節感を出したい場合に「桜の花びら」「紅葉」などを散らす。<br>
+<span class="decoration-01">・注意点</span><br>
+　・装飾はあくまで「脇役」です。目立ちすぎないように、サイズや透明度を調整しましょう。<br>
+　・AI画像の画風（リアル調、イラスト調など）と合わない素材は避けましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item43251" data-item-id="43251" data-item-type="ItemHeading"><h2 class="item-body" id="heading22">【3-4】3章 -章末課題- [AI生成物の実務レベルへのブラッシュアップ]</h2></div>
+        
+        <div class="article-item item_markdown " id="item44524" data-item-id="44524" data-item-type="ItemMarkdown"><h4 id="heading23">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item43355" data-item-id="43355" data-item-type="ItemHeading"><h3 class="item-body" id="heading24">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43254" data-item-id="43254" data-item-type="ItemRichText"><div class="item-body-hbr">2章の章末課題で生成した「ハンドメイドマーケット」のバナー画像（テキスト・CTA込み）をCanvaに読み込み、以下の仕上げを行って、<span class="decoration-02">最終的な納品データ</span>（PNG形式）として出力してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item43383" data-item-id="43383" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">要件1（色調補正）</span>: 「温かみのある、楽しげな」雰囲気がより伝わるように、明るさや色温度を調整する。<br>
+2. <span class="decoration-01">要件2（視認性確保）</span>: メインテキスト、サブテキスト、CTAのいずれかが背景と同化して読みにくい場合は、半透明の図形を使って視認性を高める。（全て読みやすい場合は、この工程はスキップ可）<br>
+3. <span class="decoration-01">要件3（装飾追加）</span>: バナーの雰囲気に合う装飾（例：小さな光のエフェクト、手書き風のラインなど）を控えめに追加し、完成度を高める。<br>
+4. <span class="decoration-01">要件4（出力）</span>: 完成したバナーをPNG形式でダウンロードする。</div></div>
+        
+        <div class="article-item item_markdown " id="item43256" data-item-id="43256" data-item-type="ItemMarkdown"><h4 id="heading25">解答手順</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item43257" data-item-id="43257" data-item-type="ItemMarkdown"><ol>
+  <li>2章で生成した画像をCanvaにアップロードし、配置する。</li>
+  <li>「画像を編集」→「調整」から、明るさを少し上げ、色温度を暖色寄り（オレンジ側）に調整して温かみを強調する。</li>
+  <li>（必要に応じて）「素材」から四角形を出し、読みにくいテキストの上に重ねて、色を白やベージュにして透明度を下げ、「座布団」を作る。</li>
+  <li>「素材」で「キラキラ 手書き」などを検索し、バナーの隅やテキストの周りに小さく配置する。透明度を下げて馴染ませる。</li>
+  <li>「共有」→「ダウンロード」から「PNG」を選択して出力する。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_heading " id="item43356" data-item-id="43356" data-item-type="ItemHeading"><h3 class="item-body" id="heading26">解答例</h3></div>
+        
+        <div class="article-item item_image " id="item43361" data-item-id="43361" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/043/361/medium/6ce49a30-b0ad-4980-aa68-9c01bb8a72f4.jpg?1764160383" title=""><img class="img-responsive item-image" alt=" (43361)" data-reference="" src="../../_assets/0eff34571d.webp" width="640" height="366"></a><h4 id="heading27"></h4></div></div>
+        
+        <div class="article-item item_html " id="item43259" data-item-id="43259" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>仕上げたバナーをチェックしよう</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>色調補正によって、バナーの目的（温かみ、楽しさ）がより強調されているか？</li>
+            <li>全てのテキスト（メイン、サブ、CTA）が、パッと見てストレスなく読める状態になっているか？</li>
+            <li>追加した装飾は、AI画像の雰囲気を壊さず、自然に馴染んでいるか？</li>
+            <li>「修正」しようとして不自然になっていないか？（Canvaでは「調整」に留めるのがポイント）</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item43260" data-item-id="43260" data-item-type="ItemText"><div class="item-body-hbr">これで「生成画像の品質を高めるCanva仕上げ技術」の解説を終わります。<br>次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item43015" data-item-id="43015" data-item-type="ItemHtml"><div class="item-body">
+<div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/AI_banner/oq3cn" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/AI_banner/eI0il" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 生成画像の品質を高めるCanva仕上げ技術</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：180分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】AI生成画像の特性とCanvaでの編集方針</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AI生成画像は「一枚の絵」である</a></li><li><a href="#heading6" class="tocLink">Canvaでの編集方針：「修正」ではなく「調整・仕上げ」</a></li></ul></li><li><a href="#heading7" class="tocLink">【3-2】色調補正と視認性向上のテクニック</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading9" class="tocLink">全体のトーンを整える色調補正とフィルター</a><ul><li><a href="#heading10" class="tocLink"></a></li></ul></li><li><a href="#heading11" class="tocLink">AI生成テキストの視認性を高める「座布団」テクニック</a><ul><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink">練習問題：色調補正と視認性確保</a></li></ul></li></ul></li><li><a href="#heading14" class="tocLink">【3-3】実務で必須となるバナーのリサイズとファイル出力</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading16" class="tocLink">媒体に合わせたバナーのリサイズとAIツールを活用した調整</a><ul><li><a href="#heading17" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading18" class="tocLink">【3-3】構図の微調整と装飾の追加</a><ul><li><a href="#heading19" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading20" class="tocLink">トリミングによる構図の微調整</a></li><li><a href="#heading21" class="tocLink">全体の雰囲気を高める装飾の追加</a></li></ul></li><li><a href="#heading22" class="tocLink">【3-4】3章 -章末課題- [AI生成物の実務レベルへのブラッシュアップ]</a><ul><li><a href="#heading23" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading24" class="tocLink">問題</a><ul><li><a href="#heading25" class="tocLink">解答手順</a></li></ul></li><li><a href="#heading26" class="tocLink">解答例</a><ul><li><a href="#heading27" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/AI_banner/oq3cn" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/AI_banner/eI0il" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

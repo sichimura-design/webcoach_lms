@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-marketing/LsoPK -->
+<!-- clipkit-fetched-at: 2026-09-18T09:16:03.297Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Google広告 -基礎編-  - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-marketing/LsoPK">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Google広告 -基礎編-  - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/095/medium/f1e5123c-563a-4a8f-abf5-5b16579447a6.png?1719298984">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Google広告 -基礎編- ">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-marketing/LsoPK">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/095/large/f1e5123c-563a-4a8f-abf5-5b16579447a6.png?1719298984">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="cTMwyoxHbnDqEu3eKHVsDt8YnCmO84Vpck6-ef_E0uG5yUtXjVuVhZXxbv-wSH4QOq74_gIeSGZE2nan5Kuk3Q"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBマーケティング</div>
+
+          <div class="fw-bold h2">Google広告 -基礎編- </div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1. Google広告概要</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:15分</a></li></ul><ul><li><a href="#heading2" class="tocLink">a. Google広告とは？</a></li><li><a href="#heading3" class="tocLink">b. Google広告の具体例① -リスティング広告</a><ul><li><a href="#heading4" class="tocLink">リスティング広告とは？</a></li><li><a href="#heading5" class="tocLink">リスティング広告でできること</a></li><li><a href="#heading6" class="tocLink">リスティング広告が掲載される場所</a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink">リスティング広告の課金方式</a></li><li><a href="#heading10" class="tocLink">リスティング広告の掲載順位の決まり方</a></li><li><a href="#heading11" class="tocLink">リスティング広告のメリット</a></li></ul></li><li><a href="#heading12" class="tocLink">c. Google広告の具体例② -ディスプレイ広告</a><ul><li><a href="#heading13" class="tocLink">ディスプレイ広告とは</a></li><li><a href="#heading14" class="tocLink">配信場所のターゲティング</a></li><li><a href="#heading15" class="tocLink">配信ユーザーのターゲティング</a></li><li><a href="#heading16" class="tocLink">ディスプレイ広告の課金方式</a></li><li><a href="#heading17" class="tocLink">ディスプレイ広告のメリット</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item2086" data-item-id="2086" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">1. Google広告概要</h2></div>
+        
+        <div class="article-item item_markdown " id="item39633" data-item-id="39633" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item2087" data-item-id="2087" data-item-type="ItemHeading"><h3 class="item-body" id="heading2">a. Google広告とは？</h3></div>
+        
+        <div class="article-item item_markdown " id="item2088" data-item-id="2088" data-item-type="ItemMarkdown"><p>Google広告とは、Googleが提供しているオンライン広告のことです。</p>
+
+<p>Google広告では、自社のビジネス等に関連したキーワードを検索するユーザーや、興味を持っている潜在顧客に広告を表示できます。Googleが保有するプラットフォーム上に掲載することができるため、自社サイトへのアクセスを促したり、問い合わせ件数を増加させたりできるようになります。</p>
+
+<p>Google広告には様々な種類がありますが、例えば、PRするリスティング広告や画像を使ったディスプレイ広告、ムービーで宣伝できる動画広告が挙げられます。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2089" data-item-id="2089" data-item-type="ItemHeading"><h3 class="item-body" id="heading3">b. Google広告の具体例① -リスティング広告</h3></div>
+        
+        <div class="article-item item_markdown " id="item2090" data-item-id="2090" data-item-type="ItemMarkdown"><h4 id="heading4">リスティング広告とは？</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item2091" data-item-id="2091" data-item-type="ItemMarkdown"><p>検索エンジンの検索結果にユーザーが検索したキーワードに連動して掲載される広告です。広告がクリックされると費用が発生します。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2092" data-item-id="2092" data-item-type="ItemMarkdown"><h4 id="heading5">リスティング広告でできること</h4>
+</div>
+        
+        <div class="article-item item_html " id="item2093" data-item-id="2093" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">
+    <p>リスティング広告を使用することで、PCやスマートフォンで検索して探し物をしている人を広告主のWebサイトへ誘導することが可能です。</p>
+    <p>実際に以下のような特徴があります。</p>
+    <ul class="decoration-01 decoration-02">
+        <li>誰でも簡単にアカウントの発行ができる</li>
+        <li>月1,000円程度から出稿できる</li>
+        <li>設定すれば今日からでも広告を出せる</li>
+        <li>広告を表示するユーザーの検索する語句を自分で決められる</li>
+        <li>掲載する広告文を自分で作成できる</li>
+        <li>支払うことができる、クリックあたりの上限額を自分で決められる</li>
+        <li>1日あたりの予算や目標獲得単価を自由に設定できる</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2094" data-item-id="2094" data-item-type="ItemMarkdown"><h4 id="heading6">リスティング広告が掲載される場所</h4>
+</div>
+        
+        <div class="article-item item_image " id="item2095" data-item-id="2095" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/095/medium/f1e5123c-563a-4a8f-abf5-5b16579447a6.png?1719298984" title=""><img class="img-responsive item-image" alt=" (2095)" data-reference="" src="../../_assets/3c80cc8e4f.webp" width="315" height="640"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_image " id="item2096" data-item-id="2096" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/096/medium/93bd15dc-99d7-4637-a6aa-af92f13e343a.png?1719298998" title=""><img class="img-responsive item-image" alt=" (2096)" data-reference="" src="../../_assets/7fbe600392.webp" width="640" height="434"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item2097" data-item-id="2097" data-item-type="ItemMarkdown"><p>上記のような広告を見たことがあるのではないでしょうか？
+このような広告がリスティング広告と呼ばれるものになっています。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2098" data-item-id="2098" data-item-type="ItemMarkdown"><h4 id="heading9">リスティング広告の課金方式</h4>
+</div>
+        
+        <div class="article-item item_html " id="item2099" data-item-id="2099" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">クリック課金制</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2100" data-item-id="2100" data-item-type="ItemMarkdown"><p>リスティング広告では、ユーザーが広告をクリックした場合にのみ料金が発生します。</p>
+
+<p>これは、CPC(Cost Per Click)と呼ばれる課金形態となっており、オークション形式でクリック単価が決まります。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2101" data-item-id="2101" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">入札によるオークション</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2102" data-item-id="2102" data-item-type="ItemMarkdown"><p>広告主は、「このキーワードで検索された場合に、広告を出稿したい。クリック単価は最高いくらまで支払う。」という形で入札を行い、同様に入札した企業によりオークションが実施されます。</p>
+
+<p>そのオークション結果に応じて、何位に広告を出稿するかが決定されます。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2116" data-item-id="2116" data-item-type="ItemMarkdown"><h4 id="heading10">リスティング広告の掲載順位の決まり方</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item2104" data-item-id="2104" data-item-type="ItemMarkdown"><p>検索結果の順位は、主にクリック率や広告との関連性、LP（ランディングページ）の品質などによって評価される「品質スコア」と、上限クリック単価の掛け合わせによる「広告ランク」に基づいて決まります。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2115" data-item-id="2115" data-item-type="ItemMarkdown"><h4 id="heading11">リスティング広告のメリット</h4>
+</div>
+        
+        <div class="article-item item_html " id="item2106" data-item-id="2106" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">購買意欲の高い潜在顧客にアプローチできる</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2107" data-item-id="2107" data-item-type="ItemMarkdown"><p>広告が表示されるユーザーは、検索ワードに対して何らかのニーズを持っているため、現状の解決策として、「自分が求めているのはこれだ」と広告をクリックします。</p>
+
+<p>つまり、コンバージョンする可能性の高いユーザーと接触できるため、リスティング広告経由のユーザーはコンバージョン率（CVR）が高くなる傾向にあります。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2108" data-item-id="2108" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">即日配信をスタートすることができる</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2109" data-item-id="2109" data-item-type="ItemMarkdown"><p>リスティング広告には、専用の広告管理画面が用意されており、メールや原稿チェック等も不要であるため、広告を押した後の遷移先のページさえ用意できれば、数時間で掲載をスタートすることができます。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2110" data-item-id="2110" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">リアルタイムで改善できる</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2111" data-item-id="2111" data-item-type="ItemMarkdown"><p>リスティング広告専用の管理画面では、リアルタイムで成果を確認することができ、成果が悪い場合にその場で配信を停止し、改善してから再出稿。ということも可能となります。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2112" data-item-id="2112" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">予算が少なくてもスタートすることができる</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2113" data-item-id="2113" data-item-type="ItemMarkdown"><p>Googleのリスティング広告では、￥1,000~で配信が可能なため、多額の広告費を確保できない個人事業主・フリーランス・自営業の方でも取り組みやすいです。</p>
+
+<p>※もちろん続けていけば予算を消化していくため、コストがかかる場合がほとんどです。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2114" data-item-id="2114" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">c. Google広告の具体例② -ディスプレイ広告</h3></div>
+        
+        <div class="article-item item_markdown " id="item2117" data-item-id="2117" data-item-type="ItemMarkdown"><p>ディスプレイ広告とは、Webサイトやアプリなどに表示される画像や動画形式の広告です。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2118" data-item-id="2118" data-item-type="ItemMarkdown"><h4 id="heading13">ディスプレイ広告とは</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item2119" data-item-id="2119" data-item-type="ItemMarkdown"><p>ディスプレイ広告とは、Googleが運営するGmailやYouTubeに、自社の商品やサービスの広告を出すことができる広告です。</p>
+
+<p>ディスプレイ広告は興味を持った特定のキーワードに反応するリスティング広告とは仕組みが異なり、幅広いターゲットに向けて広告を表示できるサービスです。</p>
+
+<p>動画を使って視覚的なアプローチができるので、認知獲得やブランディングに向いている点でもテキストのみのリスティング広告とは異なります。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2120" data-item-id="2120" data-item-type="ItemMarkdown"><h4 id="heading14">配信場所のターゲティング</h4>
+</div>
+        
+        <div class="article-item item_html " id="item2121" data-item-id="2121" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">自動プレースメント</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2122" data-item-id="2122" data-item-type="ItemMarkdown"><p>広告を表示するサイトを「トピック」や「キーワード」を使って表示する場所をカスタム化できます。キーワードに、自社の商品やサービスに関連する言葉をあげておけば、自動的に関連度の高い場所に広告が表示されやすくなります。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2123" data-item-id="2123" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">手動プレースメント</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2124" data-item-id="2124" data-item-type="ItemMarkdown"><p>広告を表示するサイトを、手動でURL単位で指定することができます。</p>
+
+<p>コンバージョン可能なユーザーへの表示機会を最大化するためにも、自動プレースメントで配信場所を設定してから、不要なプレースメントを手動プレースメントで除外していくことが無難です。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2125" data-item-id="2125" data-item-type="ItemMarkdown"><h4 id="heading15">配信ユーザーのターゲティング</h4>
+</div>
+        
+        <div class="article-item item_html " id="item2126" data-item-id="2126" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">リマーケティング</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2127" data-item-id="2127" data-item-type="ItemMarkdown"><p>リマーケティングは、過去に何らかの方法で自社広告にアプローチしたことがあるターゲットや、購入履歴があるターゲットを追跡する機能です。こちらはユーザーリストが一定の数を超えないと広告配信されません。</p>
+
+<p>また、過去にアクセスしたものの購買意欲はないというオーディエンスからしてみれば、興味がないのに同じ広告を見せられ強い不快感を持たれるケースもあります。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2128" data-item-id="2128" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">類似ユーザー</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2129" data-item-id="2129" data-item-type="ItemMarkdown"><p>類似ユーザーは、すでに自社製品のユーザーとなった人と、類似の行動をする人をターゲットにする機能です。コンバージョンできる率は高いですが、商品によっては対象となるオーディエンスが少ないので、広告配信量は上がらない可能性があります。また、類似元ユーザー像をどのように設定するかも重要なポイントです。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2130" data-item-id="2130" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">アフィニティ（カスタムアフィニティ）</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2131" data-item-id="2131" data-item-type="ItemMarkdown"><p>ユーザーがネット上で示す行動履歴から興味や習慣をカテゴライズして比較的長期的に関心を持つ分野にアピールすることを指します。</p>
+
+<p>カスタムアフィニティは、広告主が入力した要素を組み合わせてユーザーの関心にアプローチする方法です。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2132" data-item-id="2132" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">カスタムオーディエンス</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2133" data-item-id="2133" data-item-type="ItemMarkdown"><p>オーディエンスは、購買意欲が強いユーザーをカテゴライズして広告を表示していくための設定です。アフィニティと同様にキーワードやURLを設定しますが、購入履歴や購入検討をしているユーザーをターゲットにするので、広告の費用対効果を上げることができます。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2134" data-item-id="2134" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">ユーザー属性（デモグラフィック）</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2135" data-item-id="2135" data-item-type="ItemMarkdown"><p>ユーザーの年齢や性別を属性から絞り込んで、広告を配信するオーディエンスを特定していく機能です。ユーザー層を絞らずに発信した場合、広告費が高額になるだけでコンバージョンを獲得できなくなってしまいがちです。自社の商品やサービスの特性、キャンペーンの内容をしっかり踏まえてユーザー属性を設定する必要があります。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2136" data-item-id="2136" data-item-type="ItemMarkdown"><h4 id="heading16">ディスプレイ広告の課金方式</h4>
+</div>
+        
+        <div class="article-item item_html " id="item2137" data-item-id="2137" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">クリック課金</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2138" data-item-id="2138" data-item-type="ItemMarkdown"><p>リスティング広告と同じで、ユーザーが広告をクリックした場合にのみ料金が発生します。</p>
+
+<p>これは、CPC(Cost Per Click)と呼ばれる課金形態となっており、以下のようなオークション形式でクリック単価が決まります。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2139" data-item-id="2139" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">インプレッション課金</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2140" data-item-id="2140" data-item-type="ItemMarkdown"><p>インプレッション課金は、CPMと表示される課金方式です。広告表示が1000回行われた結果に対して課金する仕組みになっています。</p>
+
+<p>Googleディスプレイ広告の運用では、上の広告に記載しているクリック課金が主流ですが、ブランドの認知拡大や既存ユーザーへのリマインド目的として使うのであれば、インプレッション課金も価値があります。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2141" data-item-id="2141" data-item-type="ItemMarkdown"><h4 id="heading17">ディスプレイ広告のメリット</h4>
+</div>
+        
+        <div class="article-item item_html " id="item2142" data-item-id="2142" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">潜在層へのアプローチが可能</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2143" data-item-id="2143" data-item-type="ItemMarkdown"><p>顕在層ではないが、今後、購入やサービス利用の可能性があるユーザーに向けて広告を配信するのであれば、ユーザーがいざ自社の商品やサービスを使用するタイミングが来たときの第一想起を獲得するのに有効であるため、ディスプレイ広告は潜在層へのアプローチが可能です。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2144" data-item-id="2144" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">テキストだけでなく画像と動画で訴求できる</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2145" data-item-id="2145" data-item-type="ItemMarkdown"><p>実際の商品の写真や使用例を見せ、テキストで補足することができるので、ユーザーも具体的なイメージが湧いてきます。</p>
+
+<p>また、潜在層に対して、商品購入やサービス利用の前段階の資料請求や、メールマガジンの登録を促したりする広告を配信できます。</p>
+
+<p>つまり、ディスプレイ広告では、将来的にコンバージョンにつながるような画像・動画を設定することが重要です。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2146" data-item-id="2146" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">クリック単価を抑えられる</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2147" data-item-id="2147" data-item-type="ItemMarkdown"><p>リスティング広告の場合は、競合サイトが広告を出稿しており、オークション形式での広告配信になっているので、自然とクリック単価が釣り上げられてしまいます。</p>
+
+<p>対して、ディスプレイ広告の場合には、関連するWEBサイトやアプリへの配信がメインになるので、一定以上の興味のあるユーザーへ多く配信するためクリック単価を抑えることができます。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2148" data-item-id="2148" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">リマーケティングで後追いできる</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2149" data-item-id="2149" data-item-type="ItemMarkdown"><p>一度自社のホームページやLP（ランディングページ）に訪れたことのあるユーザーに対して広告を配信できます。</p>
+
+<p>もし購入やサービス利用を検討する段階になった際に、想起するもしくは広告を見ることによって自社のLPに遷移し、コンバージョンにつながることも考えられます。</p>
+</div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1. Google広告概要</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:15分</a></li></ul><ul><li><a href="#heading2" class="tocLink">a. Google広告とは？</a></li><li><a href="#heading3" class="tocLink">b. Google広告の具体例① -リスティング広告</a><ul><li><a href="#heading4" class="tocLink">リスティング広告とは？</a></li><li><a href="#heading5" class="tocLink">リスティング広告でできること</a></li><li><a href="#heading6" class="tocLink">リスティング広告が掲載される場所</a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink">リスティング広告の課金方式</a></li><li><a href="#heading10" class="tocLink">リスティング広告の掲載順位の決まり方</a></li><li><a href="#heading11" class="tocLink">リスティング広告のメリット</a></li></ul></li><li><a href="#heading12" class="tocLink">c. Google広告の具体例② -ディスプレイ広告</a><ul><li><a href="#heading13" class="tocLink">ディスプレイ広告とは</a></li><li><a href="#heading14" class="tocLink">配信場所のターゲティング</a></li><li><a href="#heading15" class="tocLink">配信ユーザーのターゲティング</a></li><li><a href="#heading16" class="tocLink">ディスプレイ広告の課金方式</a></li><li><a href="#heading17" class="tocLink">ディスプレイ広告のメリット</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

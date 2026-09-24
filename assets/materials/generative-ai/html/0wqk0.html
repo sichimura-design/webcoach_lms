@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_writing/3-3%20%E3%80%90%E5%AE%9F%E8%B7%B5%E3%80%91%E9%81%B8%E3%81%B9%E3%82%8B%E3%82%BB%E3%83%BC%E3%83%AB%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%BF%9C%E7%94%A8/0WqK0 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>【B-2章】制作フロー追体験：見本制作物をAIとゼロから作る - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_writing/3-3%20%E3%80%90%E5%AE%9F%E8%B7%B5%E3%80%91%E9%81%B8%E3%81%B9%E3%82%8B%E3%82%BB%E3%83%BC%E3%83%AB%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%BF%9C%E7%94%A8/0WqK0">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="【B-2章】制作フロー追体験：見本制作物をAIとゼロから作る - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="【B-2章】制作フロー追体験：見本制作物をAIとゼロから作る">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_writing/3-3%20%E3%80%90%E5%AE%9F%E8%B7%B5%E3%80%91%E9%81%B8%E3%81%B9%E3%82%8B%E3%82%BB%E3%83%BC%E3%83%AB%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%BF%9C%E7%94%A8/0WqK0">
+<meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="DZ93P8B-rACZQS17nT5sE8VWDIchhxjEuwaZk5xjgapAOedJZdsWGaPWJas9M_sIDkq8opWWkRzUUfQIGPJAtg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>3-3 【実践】選べるセールスライティング応用</div>
+
+          <div class="fw-bold h2">【B-2章】制作フロー追体験：見本制作物をAIとゼロから作る</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">B-2章 1つの商品から複数のセールスコピーを書き分ける実践フロー</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1時間20分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【B-2-1】実演：要件定義からコンセプトシート作成まで</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">架空クライアントからの依頼内容（要件定義書）</a></li><li><a href="#heading6" class="tocLink">2つのペルソナからコンセプトを導き出す思考法</a><ul><li><a href="#heading7" class="tocLink">ステップ1：2つのペルソナ、2つのインサイト（本音）を深掘りする</a></li><li><a href="#heading8" class="tocLink">ステップ2：1つの特徴を、2つの価値（ベネフィット）に翻訳する</a></li><li><a href="#heading9" class="tocLink">ステップ3：2つのインサイトを貫く、1つのUVP（独自の価値提案）を定義する</a></li></ul></li><li><a href="#heading10" class="tocLink">コンセプトシートの完成</a></li></ul></li><li><a href="#heading11" class="tocLink">【B-2-2】実演：AIと共に制作物一式を書き分ける</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：40分</a></li></ul><ul><li><a href="#heading13" class="tocLink">AIライティングにおける「書き分け」の基本戦略</a></li><li><a href="#heading14" class="tocLink">媒体別のAIライティング手順とプロンプト例</a><ul><li><a href="#heading15" class="tocLink">1. 【土台作成】ECサイト商品ページのライティング</a></li><li><a href="#heading16" class="tocLink">2. 【最適化①】SNS広告文（Instagram）のライティング</a></li><li><a href="#heading17" class="tocLink">3. 【最適化②】リスティング広告文のライティング</a></li></ul></li></ul></li><li><a href="#heading18" class="tocLink">【B-2-3】 B-2章 -章末課題- [複数制作物のAIライティング]</a><ul><li><a href="#heading19" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading20" class="tocLink">問題</a></li><li><a href="#heading21" class="tocLink">解答手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item38055" data-item-id="38055" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_writing/3-3%20%E3%80%90%E5%AE%9F%E8%B7%B5%E3%80%91%E9%81%B8%E3%81%B9%E3%82%8B%E3%82%BB%E3%83%BC%E3%83%AB%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%BF%9C%E7%94%A8/sNuib" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_writing/3-3%20%E3%80%90%E5%AE%9F%E8%B7%B5%E3%80%91%E9%81%B8%E3%81%B9%E3%82%8B%E3%82%BB%E3%83%BC%E3%83%AB%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%BF%9C%E7%94%A8/nqEA1" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item33976" data-item-id="33976" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">B-2章 1つの商品から複数のセールスコピーを書き分ける実践フロー</h2></div>
+        
+        <div class="article-item item_markdown " id="item33977" data-item-id="33977" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：1時間20分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item33978" data-item-id="33978" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item33979" data-item-id="33979" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>1つの商品に対し、「商品ページ」と「複数パターンの広告文」を書き分けるプロセスを理解する</li>
+  <li>コンセプトに基づき、各媒体に最適化された文章をAIで効率的に作成する流れを体験する</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item33980" data-item-id="33980" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【B-2-1】実演：要件定義からコンセプトシート作成まで</h2></div>
+        
+        <div class="article-item item_markdown " id="item33981" data-item-id="33981" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item33982" data-item-id="33982" data-item-type="ItemRichText"><div class="item-body-hbr">このセクションでは、1つの商品から複数の制作物を生み出すための土台となる「コンセプト設計」を学びます。<br>
+今回は制作物の種類が多いため、より戦略的な情報の整理と分析が求められます。<br>
+プロがどのように要件を読み解き、一貫性のあるコンセプトを設計するのか、その思考フローを追体験しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item33983" data-item-id="33983" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">架空クライアントからの依頼内容（要件定義書）</h3></div>
+        
+        <div class="article-item item_rich_text " id="item33984" data-item-id="33984" data-item-type="ItemRichText"><div class="item-body-hbr">まずは、今回のプロジェクトの起点となる、架空のアウトドア・ガジェットブランド「SURVIVE-GEAR」から提供された要件定義書を確認します。<br>
+商品、ターゲット、そして複数の制作物に求められる要件を正確に把握することが、最初のステップです。</div></div>
+        
+        <div class="article-item item_html " id="item33985" data-item-id="33985" data-item-type="ItemHtml"><div class="item-body">
+&nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; <table class="simple"><thead><tr><th scope="col"><div>タイトル</div></th><th scope="col"><div>内容</div></th></tr></thead><tbody><tr><th scope="row"><div>タイトル補足情報</div></th><td>
+                <ul>
+                    <li>制作物：
+                        <ol>
+                            <li>新商品「SURVIVE-GEAR 1000」ECサイト商品ページ</li>
+                            <li>SNS広告（Instagram, Facebook）用クリエイティブ（画像＋テキスト）</li>
+                            <li>リスティング広告（Google, Yahoo）用テキスト広告文</li>
+                        </ol>
+                    </li>
+                    <li>概要：アウトドア及び防災市場向けに新開発した多機能ポータブル電源の販売促進を目的とした、一連のセールスライティング。</li>
+                </ul>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td></tr><tr><th scope="row"><div>制作物を通じて達成したい目的</div></th><td>
+                <ul>
+                    <li>公式ECサイトにおける「SURVIVE-GEAR 1000」の販売台数を最大化する。（最終ゴール）</li>
+                    <li>「日常（アウトドア）と非日常（防災）の両方で頼りになる」という商品のコアバリューをターゲットに浸透させる。</li>
+                    <li>「SURVIVE-GEAR」ブランドを、高機能かつデザイン性の高いアウトドア・ガジェットブランドとして認知させる。</li>
+                </ul>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td></tr><tr><th scope="row"><div>ターゲットデモグラ情報</div></th><td>
+                <ul>
+                    <li>年齢：30代～50代</li>
+                    <li>性別：男性</li>
+                    <li>趣味・関心：キャンプ、車中泊、釣り、DIY、防災、最新ガジェット</li>
+                </ul>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td></tr><tr><th scope="row"><div>ペルソナ情報</div></th><td>
+                <b>◾️ペルソナ1：週末キャンパー（38歳・Webディレクター）</b>
+                <ul>
+                    <li>平日は多忙だが、週末は家族や友人とキャンプに出かけてリフレッシュするのが生きがい。</li>
+                    <li>快適性を重視し、夏は扇風機、冬は電気毛布を使いたい。プロジェクターで映画鑑賞も楽しみたい。そのため、大容量の電源は必須。</li>
+                    <li>キャンプギアは性能だけでなく、見た目やブランドの世界観も重視する。サイトの雰囲気を壊さない、無骨でスタイリッシュなデザインを好む。</li>
+                </ul>
+                <b>◾️ペルソナ2：防災意識の高い家庭の父（45歳・メーカー勤務）</b>
+                <ul>
+                    <li>過去の台風による停電経験から、家族を守るための備えの重要性を痛感している。</li>
+                    <li>災害時でも最低限の電力を確保し、スマートフォンの充電や情報収集、冷蔵庫の稼働を維持したい。</li>
+                    <li>「いざという時に使えない」事態を最も恐れるため、製品の安全性（PSEマーク等）とメーカーの長期保証を絶対条件として探している。普段は倉庫に置くが、持ち運びやすい軽量設計だと嬉しい。</li>
+                </ul>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td></tr>
+        <tr><th scope="row"><div>制作物の構成要素・要件</div></th><td>
+                <b>1. ECサイト商品ページ</b>
+                <ul>
+                    <li>競合優位性：①ミニマルで洗練されたデザイン性、②業界最長クラスの「5年長期保証」を他社製品比較表などを用いて強調。</li>
+                </ul>
+                <b>2. SNS広告</b>
+                <ul>
+                    <li>ターゲット：ペルソナ1（キャンパー）に最適化。</li>
+                    <li>訴求軸：①ギアとしてのカッコよさ・デザイン性、②キャンプがより楽しく、快適になるベネフィットを訴求。</li>
+                </ul>
+                <b>3. リスティング広告</b>
+                <ul>
+                    <li>ターゲット：ペルソナ1と2、両方の検索意図に対応。</li>
+                    <li>キーワード例：「ポータブル電源 大容量」「キャンプ 電源 おすすめ」「防災 ポータブル電源 ソーラー」など</li>
+                </ul>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td></tr><tr><th scope="row"><div>与えたい印象</div></th><td>
+                <ul>
+                    <li>タフ、信頼性、高機能、スタイリッシュ、先進的</li>
+                </ul>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </td></tr></tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item33986" data-item-id="33986" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">2つのペルソナからコンセプトを導き出す思考法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item33987" data-item-id="33987" data-item-type="ItemRichText"><div class="item-body-hbr">今回はターゲットとして「週末キャンパー」と「防災意識の高い父」という、異なる動機を持つ2つのペルソナが設定されています。<br>
+このような場合、両者に共通する価値を見出しつつ、それぞれに響くメッセージを設計する、複眼的な思考が求められます。</div></div>
+        
+        <div class="article-item item_markdown " id="item33988" data-item-id="33988" data-item-type="ItemMarkdown"><h4 id="heading7">ステップ1：2つのペルソナ、2つのインサイト（本音）を深掘りする</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item33989" data-item-id="33989" data-item-type="ItemRichText"><div class="item-body-hbr">まず、それぞれのペルソナが持つ表面的なニーズの奥にある、<span class="decoration-02">インサイト（本音・隠れた欲求）</span>をえぐり出します。</div></div>
+        
+        <div class="article-item item_html " id="item33990" data-item-id="33990" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">ペルソナ1：週末キャンパー</span>
+    <ul>
+      <li><span class="decoration-01">ニーズ（表面）：</span> キャンプを快適にしたい。格好いいギアが欲しい。</li>
+      <li><span class="decoration-01">インサイト（本音）：</span> どうせならスマートに、格好良く、快適に過ごしたい。こだわりのギアで、<span class="decoration-02">仲間から「センスいいね」と一目置かれたい（承認欲求）。</span> キャンプという非日常体験を、<span class="decoration-02">もっと自由に、自分らしく楽しみたい（自己表現欲）。</span></li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">ペルソナ2：防災意識の高い家庭の父</span>
+    <ul>
+      <li><span class="decoration-01">ニーズ（表面）：</span> 災害に備えたい。安全な製品が欲しい。</li>
+      <li><span class="decoration-01">インサイト（本音）：</span> 「いざという時に家族を守れなかったらどうしよう」という、<span class="decoration-02">万が一への恐怖や不安を解消したい（危機回避欲）。</span> 信頼できる備えを持つことで、<span class="decoration-02">精神的な平穏・安心感を得たい（安心欲求）。</span></li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item33991" data-item-id="33991" data-item-type="ItemRichText"><div class="item-body-hbr">このインサイトの違いを理解することが、後の「書き分け」の絶対的な基礎となります。</div></div>
+        
+        <div class="article-item item_markdown " id="item33992" data-item-id="33992" data-item-type="ItemMarkdown"><h4 id="heading8">ステップ2：1つの特徴を、2つの価値（ベネフィット）に翻訳する</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item33993" data-item-id="33993" data-item-type="ItemRichText"><div class="item-body-hbr">1つの製品特徴も、誰に伝えるかによってその価値（ベネフィット）の響き方が全く異なります。<br>
+ペルソナごとにベネフィットを翻訳し、訴求の切り口を明確にします。</div></div>
+        
+        <div class="article-item item_html " id="item33994" data-item-id="33994" data-item-type="ItemHtml"><div class="item-body">
+&nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; <table class="simple"><thead><tr><th scope="col"><div>特徴（Feature）：製品の事実</div></th><th scope="col"><div>ベネフィット（for キャンパー）</div></th>
+            <th scope="col"><div>ベネフィット（for 防災パパ）</div></th></tr></thead><tbody><tr><th scope="row"><div>1000Whの大容量</div></th><td>プロジェクターや電気毛布も余裕で使える。<span class="decoration-02">キャンプの楽しみ方が無限に広がる。</span></td>
+            <td>停電時でも冷蔵庫やスマホを長時間使える。<span class="decoration-02">万が一の時も、家族の生活を守れる。</span></td></tr><tr><th scope="row"><div>洗練されたデザイン</div></th><td>キャンプサイトの雰囲気を壊さず、むしろ格上げしてくれる。<span class="decoration-02">「所有する喜び」を満たしてくれる。</span></td>
+            <td>いかにもな防災グッズ感がなく、リビングに置いても馴染む。<span class="decoration-02">普段から身近に置けるので、いざという時すぐ使える。</span></td></tr><tr><th scope="row"><div>業界最長クラスの5年保証</div></th><td>高価な買い物だからこそ、長く安心して使える。<span class="decoration-02">ハードな環境でも気兼ねなく使える相棒になる。</span></td>
+            <td>「いざという時に動かない」という最悪の事態を避けられる。<span class="decoration-02">家族の命を守るための、信頼の証。</span></td></tr></tbody>
+</table></div></div>
+        
+        <div class="article-item item_markdown " id="item33995" data-item-id="33995" data-item-type="ItemMarkdown"><h4 id="heading9">ステップ3：2つのインサイトを貫く、1つのUVP（独自の価値提案）を定義する</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item33996" data-item-id="33996" data-item-type="ItemRichText"><div class="item-body-hbr">次に、ペルソナごとのベネフィットを包含しつつ、競合優位性（デザイン性、長期保証）を核とした、この商品だけの<span class="decoration-02">UVP (Unique Value Proposition) </span>を言語化します。</div></div>
+        
+        <div class="article-item item_html " id="item33997" data-item-id="33997" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">競合優位性：</span> 「デザイン性」＋「5年長期保証」</li>
+  <li><span class="decoration-01">ペルソナ1の欲求：</span> 「格好よさ」「自由」</li>
+  <li><span class="decoration-01">ペルソナ2の欲求：</span> 「信頼」「安心」</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item33998" data-item-id="33998" data-item-type="ItemRichText"><div class="item-body-hbr">これらを束ねるUVPは、まさに要件定義書にあった「日常（アウトドア）と非日常（防災）の両方で頼りになる」という言葉そのものです。<br>
+これを、より力強いメッセージに磨き上げます。<br>
+<br>
+<span class="decoration-02">UVP：「遊びも、備えも、最高レベルで。圧倒的な安心感を、洗練されたデザインで提供するポータブル電源」</span><br>
+このUVPが、これから作るすべての制作物の一貫性を担保する、北極星のような役割を果たします。</div></div>
+        
+        <div class="article-item item_heading " id="item33999" data-item-id="33999" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">コンセプトシートの完成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34031" data-item-id="34031" data-item-type="ItemRichText"><div class="item-body-hbr">ここまでの思考プロセスをへて、以下のコンセプトを作成します。<br>
+特に「ペルソナ別訴求ポイント」の欄を設けることで、この後の「書き分け」がスムーズに行えるよう設計している点に注目してください。</div></div>
+        
+        <div class="article-item item_html " id="item34000" data-item-id="34000" data-item-type="ItemHtml"><div class="item-body">
+&nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; <table class="simple"><thead><tr><th scope="col" colspan="2"><div>コンセプトシート：SURVIVE-GEAR 1000</div></th></tr></thead><tbody><tr><th scope="row"><div>プロダクト/サービス名</div></th><td>SURVIVE-GEAR 1000</td></tr><tr><th scope="row"><div>最終目的 (KGI)</div></th><td>公式ECサイトでの販売台数最大化</td></tr>
+        <tr><th scope="row"><div>UVP (独自の価値提案)</div></th><td>遊びも、備えも、最高レベルで。圧倒的な安心感を、洗練されたデザインで提供するポータブル電源。</td></tr>
+        <tr><th scope="row" rowspan="2"><div>ペルソナ別訴求ポイント</div></th><td><b>P1：週末キャンパー</b><br>
+                <ul>
+                    <li><b>インサイト：</b>自己表現欲、承認欲求（格好良く、自由に楽しみたい）</li>
+                    <li><b>響くベネフィット：</b>楽しみ方の拡張、所有する喜び、サイトが映えるデザイン</li>
+                    <li><b>キーワード：</b>#キャンプギア #おしゃれキャンプ #ガジェット #冬キャンプの必需品</li>
+                </ul>
+            </td></tr>
+        <tr><td><b>P2：防災意識の高い父</b><br>
+                <ul>
+                    <li><b>インサイト：</b>危機回避欲、安心欲求（家族を守りたい、不安を解消したい）</li>
+                    <li><b>響くベネフィット：</b>万が一の備え、生活の維持、信頼の証（長期保証）</li>
+                    <li><b>キーワード：</b>防災、停電対策、非常用電源、長期保証、安全</li>
+                </ul>
+            </td></tr><tr><th scope="row"><div>トーン＆マナー</div></th><td>タフで信頼性が高く、それでいてスタイリッシュ。専門用語は避けつつも、ガジェット好きの心をくすぐるような、少し専門的でクールな語り口。</td></tr></tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item34001" data-item-id="34001" data-item-type="ItemHeading"><h2 class="item-body" id="heading11">【B-2-2】実演：AIと共に制作物一式を書き分ける</h2></div>
+        
+        <div class="article-item item_markdown " id="item34002" data-item-id="34002" data-item-type="ItemMarkdown"><h4 id="heading12">目安の学習時間：40分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item34003" data-item-id="34003" data-item-type="ItemRichText"><div class="item-body-hbr">1つの強力なコンセプトシートから、媒体の特性とターゲットの心理状態に合わせて、複数の異なる制作物を生み出す「書き分け」の技術は、セールスライターにとって必須のスキルです。<br>
+<br>
+ここでは、AIを優秀なアシスタントとして活用し、3種類の制作物を効率的に作成する具体的な手順を解説します。</div></div>
+        
+        <div class="article-item item_heading " id="item34004" data-item-id="34004" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">AIライティングにおける「書き分け」の基本戦略</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34005" data-item-id="34005" data-item-type="ItemRichText"><div class="item-body-hbr">書き分けの基本は、「土台となる包括的な文章」をまず作成し、それを各媒体に合わせて「要約・抜粋・最適化」していくことです。</div></div>
+        
+        <div class="article-item item_html " id="item34006" data-item-id="34006" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">Step.1【土台作成】→ ECサイト商品ページ：</span><br>
+    最も情報量が多く、商品の魅力を網羅的に伝える文章をAIで作成します。これが全ての制作物の元ネタになります。
+  </li>
+  <li>
+    <span class="decoration-01">Step.2【最適化①】→ SNS広告文：</span><br>
+    商品ページの情報から、特定のペルソナ（今回はキャンパー）に響く「感情的価値」を抜き出し、視覚的なクリエイティブと連動する短い文章を作成します。
+  </li>
+  <li>
+    <span class="decoration-01">Step.3【最適化②】→ リスティング広告文：</span><br>
+    ユーザーの明確な「検索意図」にダイレクトに応えるため、商品ページの情報から「スペック」や「信頼性」に関する事実を抜き出し、規定の文字数内に収めます。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item34007" data-item-id="34007" data-item-type="ItemRichText"><div class="item-body-hbr">この流れに沿って、具体的なプロンプトを見ていきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item34008" data-item-id="34008" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">媒体別のAIライティング手順とプロンプト例</h3></div>
+        
+        <div class="article-item item_markdown " id="item34009" data-item-id="34009" data-item-type="ItemMarkdown"><h4 id="heading15">1. 【土台作成】ECサイト商品ページのライティング</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item34010" data-item-id="34010" data-item-type="ItemRichText"><div class="item-body-hbr">まずは、商品の全ての情報を盛り込んだ、包括的な商品ページをAIに作成させます。</div></div>
+        
+        <div class="article-item item_code " id="item34011" data-item-id="34011" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>あなたは、アウトドアガジェットに精通したセールスコピーライターです。
+以下の【コンセプトシート】に基づいて、新商品「SURVIVE-GEAR 1000」の
+ECサイト用商品ページを、魅力的な文章で1500字程度で執筆してください。
+特に、UVPである「遊びも、備えも、最高レベルで」というメッセージが伝わるように、
+キャンプシーンでの楽しさと、防災シーンでの安心感の両方を、
+具体的な利用シーンを交えながら描写してください。
+
+【コンセプトシート】
+
+（ここにB-2-1で作成したコンセプトシートの全内容を貼り付ける）</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item34012" data-item-id="34012" data-item-type="ItemRichText"><div class="item-body-hbr">このプロンプトにより、商品のキャッチコピーから特徴紹介、利用シーン、FAQまで網羅した、リッチな商品ページの文章が生成されます。</div></div>
+        
+        <div class="article-item item_code " id="item34013" data-item-id="34013" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>【SURVIVE-GEAR 1000 ECサイト商品ページ】
+(メインキャッチコピー)
+
+遊びも、備えも、最高レベルで。
+週末の冒険も、万が一の不安も、これ一台で過去にする。
+ポータブル電源の常識を覆す、「SURVIVE-GEAR 1000」誕生。
+その圧倒的なパワーと信頼性は、あなたのライフスタイルを根底から変える。
+これは単なるバッテリーではない。最高の「体験」と「安心」をデザインした、未来へのギアだ。
+
+(ボディコピー1：遊びの拡張 - 週末キャンパーへの訴求)
+
+フィールドを、無限の遊び場に変える。
+金曜の夜、街の喧騒を背に、相棒のギアをクルマに詰め込む。胸の高鳴りを抑えられないまま、
+目指すは自由が待つフィールド。SURVIVE-GEAR 1000は、そんなあなたの冒険心を、
+かつてないレベルへと解き放つ。
+
+夜の帳が下りたキャンプサイト。ランタンの灯りだけでは物足りない。
+SURVIVE-GEAR 1000にプロジェクターを繋げば、そこは満天の星空の下に現れるプライベートシアターだ。
+仲間と肩を寄せ合い、大画面で観る映画の感動は、きっと忘れられない記憶になる。
+
+朝日が昇れば、遊びはさらに加速する。ドローンのバッテリー残量を気にすることなく、
+心ゆくまでダイナミックな空撮を楽しむ。湖畔を駆け抜ける友の姿、燃えるような紅葉の稜線。
+これまで諦めていた一瞬を、永遠の作品として切り取る。SURVIVE-GEAR 1000が、
+あなたのクリエイティビティの限界を押し上げる。
+
+挽きたての豆を電動ミルで挽き、エスプレッソマシンで淹れる一杯のコーヒー。
+大自然の静寂の中で広がる芳醇な香りは、まさに至福のひととき。冬のキャンプでは、
+電気毛布や小型ファンヒーターが、凍える夜を快適な空間へと変える。寒さを理由に、
+最高のシーズンを諦める必要はもうない。
+
+洗練されたマットブラックのボディと、堅牢性を物語るアルミニウムのハンドル。
+無骨でありながら、どこかモダンな佇まいは、あなたのこだわり抜いたキャンプギアの中でも、
+ひときわ異彩を放つだろう。サイトの景観を格上げし、仲間から羨望の眼差しを向けられる。
+それは、ただの「道具」を所有する以上の、「スタイル」を持つ喜びだ。
+#キャンプギア #おしゃれキャンプ #ガジェット #冬キャンプの必需品
+
+(ボディコピー2：備えの絶対的安心感 - 防災意識の高い父への訴求)
+
+その日、家族を守る最後の砦となる。
+けたたましい警報音。突然、世界から光と音が消える。暗闇の中、不安げな家族の声が響く。
+そんな予測不能な「万が一」は、ある日突然、日常を奪いに来る。
+その時、あなたは家族を守るための、確かな術を持っているだろうか。
+
+SURVIVE-GEAR 1000。それは、平時には最高の遊びを提供し、有事には家族の生命線となる、
+究極の備えだ。
+
+停電。まず確保すべきは情報と通信手段。家族のスマートフォンを同時にフル充電し、
+外部との連絡を保ち、最新の災害情報を入手する。この一台があるだけで、
+情報から遮断される恐怖はなくなる。
+
+次に守るべきは、「日常」という名の心の平穏だ。ポータブル冷蔵庫を稼働させれば、
+貴重な食料や薬を腐敗から守ることができる。卓上IHクッキングヒーターで温かい食事を作り、
+暗闇に明かりを灯す。パニックに陥りがちな非常時において、温かいスープと食卓の明かりが、
+どれほど家族を勇気づけ、安心させることか。
+
+幼い子供がいれば、その不安は計り知れない。SURVIVE-GEAR 1000は、
+ポータブルゲーム機やタブレットを充電し、子供たちの笑顔を守るための時間も作り出す。
+不安な夜を、少しでも和らげるための、父親としての最後の砦となるのだ。
+
+私たちは、この心臓部に、一切の妥協なく設計されたバッテリーマネジメントシステムを搭載した。
+過充電、過放電、ショートから守る多重の保護機能が、いかなる状況下でも安定した電力供給を約束する。
+そして、その絶対的な自信の証が、業界最高クラスの長期保証だ。あなたの家族に寄り添い続けるという、
+私たちの固い決意でもある。
+#防災 #停電対策 #非常用電源 #長期保証 #安全
+
+(スペックと機能紹介)
+
+常識を凌駕する、スペックという名の信頼。
+「遊び」と「備え」を最高レベルで両立させる、SURVIVE-GEAR 1000の心臓部。
+その圧倒的なスペックは、あらゆるユーザーを満足させるために、考え抜かれた結論だ。
+
+1024Whの大容量 &amp; 1000Wの高出力
+スマートフォンなら約80回、ノートPCなら約15回の充電が可能。
+キャンプでは扇風機や電気毛布を朝まで稼働させ、災害時には小型冷蔵庫を約15時間、
+TVを約10時間動かし続ける。定格1000W（瞬間最大2000W）の高出力で、
+コーヒーメーカーやドライヤー、DIYの電動工具まで、
+これまでポータブル電源では無理だと諦めていた電化製品も動かせる。
+あなたの「やりたい」を、スペックで制限させない。
+
+最速1.5時間の超速充電
+ACコンセントからなら、わずか1.5時間でフル充電が完了。週末の冒険に出かける直前でも、
+災害の合間のわずかな通電時間でも、即座にエネルギーをチャージできる。
+別売りのソーラーパネルを組み合わせれば、太陽光さえあれば、
+どこでもエネルギーを生み出す独立した発電所となる。
+
+全9ポート、あらゆるデバイスに対応
+AC、USB-A、USB-C (PD100W対応)、DC、シガーソケット。全9つの多彩なポートを搭載し、
+家族全員のデバイスや複数のギアを同時に充電・給電可能。もう、ポートの取り合いは起こらない。
+
+直感的なスマートディスプレイ
+バッテリー残量、入出力W数、残り使用可能時間。必要な情報が一目でわかる大型ディスプレイを搭載。
+ガジェットに不慣れな人でも、直感的に状況を把握し、安心して使用できる。
+
+(クロージング)
+
+未来は、選べる。
+SURVIVE-GEAR 1000のない日常は、これからも続くだろう。
+しかし、それを手にした瞬間、あなたの日常は、より自由で、より安心なものへと進化する。
+
+それは、週末の可能性を無限に広げ、家族の未来を守るための、最も賢明な投資。
+さあ、SURVIVE-GEAR 1000と共に、新たな日常へ。
+
+遊びも、備えも、最高レベルで。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">出力例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item34014" data-item-id="34014" data-item-type="ItemRichText"><div class="item-body-hbr">これが全ての基本となります。</div></div>
+        
+        <div class="article-item item_markdown " id="item34015" data-item-id="34015" data-item-type="ItemMarkdown"><h4 id="heading16">2. 【最適化①】SNS広告文（Instagram）のライティング</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item34016" data-item-id="34016" data-item-type="ItemRichText"><div class="item-body-hbr">次に、商品ページの内容を元に、ペルソナ1（週末キャンパー）にターゲットを絞り、Instagram広告に最適化させます。</div></div>
+        
+        <div class="article-item item_code " id="item34017" data-item-id="34017" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>次に、この商品ページの内容とコンセプトを基に、Instagram広告用の広告文を3パターン作成してください
+ターゲットは【ペルソナ1：週末キャンパー】です。
+彼らのインサイトである「承認欲求」や「自己表現欲」を刺激するような、
+ワクワクするエモーショナルな文章をお願いします。
+
+また、キャンプサイトで製品がスタイリッシュに写っている写真に添えることを想定し、
+視覚的なイメージと連動するような言葉を選んでください。最後に、関連するハッシュタグを5つ付けてください。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト例</cite></div></div></div>
+        
+        <div class="article-item item_code " id="item34018" data-item-id="34018" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>- **パターン1（デザイン訴求）：**
+サイトが、もっと格好良くなる。
+漆黒のボディに、ミニマルなデザイン。ただの電源じゃない、
+君のキャンプサイトを格上げする新しいギア「SURVIVE-GEAR 1000」
+    #キャンプギア #おしゃれキャンプ #ガジェット #ポータブル電源 #サバイブギア
+    
+- **パターン2（体験価値訴求）：**
+冬キャンプの常識が変わる。
+プロジェクターで満点の星空シアター。電気毛布で朝までぐっすり。
+SURVIVE-GEAR 1000があれば、キャンプの楽しみ方は無限大だ。
+    #冬キャンプ #ポータブル電源 #キャンプ飯 #車中泊 #サバイブギア
+    
+- **パターン3（問いかけ訴求）：**
+その電源、サイトの雰囲気、壊してない？
+性能だけでギアを選ぶ時代は終わり。タフで、パワフルで、何より美しい。
+本物がわかる大人のための「SURVIVE-GEAR 1000」誕生。
+    
+    #キャンプ好きな人と繋がりたい #キャンプ初心者 #アウトドア #ポータブル電源 #サバイブギア
+   </pre></div>
+</div>
+<div class="cite"><cite class="item-source">AIによる生成例</cite></div></div></div>
+        
+        <div class="article-item item_markdown " id="item34019" data-item-id="34019" data-item-type="ItemMarkdown"><h4 id="heading17">3. 【最適化②】リスティング広告文のライティング</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item34020" data-item-id="34020" data-item-type="ItemRichText"><div class="item-body-hbr">最後に、検索キーワードという明確なニーズに応えるため、リスティング広告文を作成します。</div></div>
+        
+        <div class="article-item item_code " id="item34021" data-item-id="34021" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>最後に、Google検索広告で使用するテキスト広告を3セット作成してください。
+ターゲットは【ペルソナ1】と【ペルソナ2】両方の検索意図をカバーします。
+想定キーワードは「ポータブル電源 大容量 保証」です。
+このキーワードで検索するユーザーが求める「機能性」と「信頼性」が、
+見出しと説明文で端的に伝わるようにしてください。
+
+
+【見出し1（30文字以内）】
+【見出し2（30文字以内）】
+【見出し3（30文字以内）】
+【説明文（90文字以内）】の形式でお願いします。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト例</cite></div></div></div>
+        
+        <div class="article-item item_code " id="item34022" data-item-id="34022" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>- **セット1：**
+【見出し1】大容量ポータブル電源 1000Wh
+【見出し2】業界最長クラスの5年長期保証
+【見出し3】SURVIVE-GEAR 公式サイト
+【説明文】キャンプから防災まで、あらゆるシーンで活躍。デザインと性能を両立した一台。
+ソーラー充電対応。送料無料。
+    
+- **セット2：**
+【見出し1】5年保証付きポータブル電源
+【見出し2】キャンプ・防災に最適な1000Wh
+【見出し3】スタイリッシュなSURVIVE-GEAR
+【説明文】いざという時の安心を、特別なデザインで。PCも小型冷蔵庫もOK。
+今なら限定クーポン配布中。公式サイトへ。
+    
+- **セット3：**
+【見出し1】後悔しないポータブル電源の選び方
+【見出し2】決め手は「容量」と「長期保証」
+【見出し3】SURVIVE-GEARなら5年保証
+【説明文】デザインも性能も妥協しない、本物志向のポータブル電源。
+アウトドアにも防災にも。公式サイトで詳細をチェック。
+   </pre></div>
+</div>
+<div class="cite"><cite class="item-source">AIによる生成例</cite></div></div></div>
+        
+        <div class="article-item item_html " id="item34023" data-item-id="34023" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+&nbsp; &nbsp; <div class="title-area">
+&nbsp; &nbsp; &nbsp; &nbsp; <div class="icon bulb"></div>
+&nbsp; &nbsp; &nbsp; &nbsp; <div class="title"><strong>「書き分け」のポイントまとめ</strong></div>
+&nbsp; &nbsp; </div>
+&nbsp; &nbsp; <div class="content-area">
+&nbsp; &nbsp; &nbsp; &nbsp; <ul>
+            <li><strong>ECサイト商品ページ：</strong><span class="decoration-02">網羅性</span>が命。全てのペルソナに向け、全ての情報をリッチに伝える。購入前の不安を払拭する役割。</li>
+            <li><strong>SNS広告：</strong><span class="decoration-02">共感と憧れ</span>が命。特定のペルソナに絞り、感情を揺さぶる。潜在顧客に「発見」してもらう役割。</li>
+            <li><strong>リスティング広告：</strong><span class="decoration-02">検索意図への回答</span>が命。キーワードに隠れたニーズに対し、簡潔かつ的確に答えを示す。顕在顧客を「獲得」する役割。</li>
+        </ul>
+&nbsp; &nbsp; </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item34024" data-item-id="34024" data-item-type="ItemHeading"><h2 class="item-body" id="heading18">【B-2-3】 B-2章 -章末課題- [複数制作物のAIライティング]</h2></div>
+        
+        <div class="article-item item_markdown " id="item40135" data-item-id="40135" data-item-type="ItemMarkdown"><h4 id="heading19">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item34025" data-item-id="34025" data-item-type="ItemHeading"><h3 class="item-body" id="heading20">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34026" data-item-id="34026" data-item-type="ItemRichText"><div class="item-body-hbr">あなたは、新開発された高性能ドローン「SKY-CRUISER X1」のセールスライターです。<br>
+<br>
+以下の簡易的な要件定義書に基づき、コンセプトシートを作成し、それを用いて「ECサイト商品ページ」「Instagram広告文」「リスティング広告文」の3点セットをAIで作成してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item34027" data-item-id="34027" data-item-type="ItemRichText"><div class="item-body-hbr">【簡易要件定義書：SKY-CRUISER X1】</div></div>
+        
+        <div class="article-item item_html " id="item34028" data-item-id="34028" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">商品：</span> 4K撮影、長時間飛行（30分）、自動追尾機能付きの高性能ドローン。</li>
+  <li><span class="decoration-01">ペルソナ1（映像クリエイター）：</span> 作品のクオリティを上げたい。滑らかな空撮映像が欲しい。プロ向けの機材は高すぎる。</li>
+  <li><span class="decoration-01">ペルソナ2（旅行好きのファミリー層）：</span> 家族旅行の思い出を、今までと違う特別な形で残したい。操作が簡単なものがいい。</li>
+  <li><span class="decoration-01">UVP：</span> プロ級の映像体験を、驚くほど簡単な操作で。</li>
+  <li>
+    <span class="decoration-01">制作物：</span>
+    <ol>
+      <li>ECサイト商品ページ</li>
+      <li>Instagram広告文（ペルソナ1向け。映像美を訴求）</li>
+      <li>リスティング広告文（キーワード「ドローン 4K 長時間」を想定）</li>
+    </ol>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item34029" data-item-id="34029" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item34030" data-item-id="34030" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">コンセプトシートの作成：</span><br>
+    まず、上記の簡易要件定義書を基に、B-2-1で学んだ形式でコンセプトシートを自ら作成します。2つのペルソナそれぞれのインサイトとベネフィットを明確に定義することが重要です。
+  </li>
+  <li>
+    <span class="decoration-01">AIへのインプット：</span><br>
+    完成したコンセプトシートをAIにインプットし、役割（ドローンに詳しいセールスコピーライター）を与えます。
+  </li>
+  <li>
+    <span class="decoration-01">【土台作成】商品ページの生成：</span><br>
+    コンセプトシートに基づき、ECサイト商品ページ全体の文章を生成させます。
+  </li>
+  <li>
+    <span class="decoration-01">【最適化①】SNS広告文の生成：</span><br>
+    次に、ペルソナ1（映像クリエイター）にターゲットを絞り、「作品のクオリティが劇的に向上する」といった感情的ベネフィットを訴求するInstagram広告文を作成させます。
+  </li>
+  <li>
+    <span class="decoration-01">【最適化②】リスティング広告文の生成：</span><br>
+    最後に、「ドローン 4K 長時間」という検索意図に応えるため、「4K撮影」「飛行時間30分」といったスペックを前面に出したリスティング広告文を作成させます。
+  </li>
+  <li>
+    <span class="decoration-01">推敲と提出：</span><br>
+    生成された3つの制作物を1つのGoogleドキュメントにまとめ、それぞれの意図が伝わるように簡単な見出しをつけ、文章を整えて提出してください。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_html " id="item38054" data-item-id="38054" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_writing/3-3%20%E3%80%90%E5%AE%9F%E8%B7%B5%E3%80%91%E9%81%B8%E3%81%B9%E3%82%8B%E3%82%BB%E3%83%BC%E3%83%AB%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%BF%9C%E7%94%A8/sNuib" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_writing/3-3%20%E3%80%90%E5%AE%9F%E8%B7%B5%E3%80%91%E9%81%B8%E3%81%B9%E3%82%8B%E3%82%BB%E3%83%BC%E3%83%AB%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%BF%9C%E7%94%A8/nqEA1" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">B-2章 1つの商品から複数のセールスコピーを書き分ける実践フロー</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1時間20分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【B-2-1】実演：要件定義からコンセプトシート作成まで</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">架空クライアントからの依頼内容（要件定義書）</a></li><li><a href="#heading6" class="tocLink">2つのペルソナからコンセプトを導き出す思考法</a><ul><li><a href="#heading7" class="tocLink">ステップ1：2つのペルソナ、2つのインサイト（本音）を深掘りする</a></li><li><a href="#heading8" class="tocLink">ステップ2：1つの特徴を、2つの価値（ベネフィット）に翻訳する</a></li><li><a href="#heading9" class="tocLink">ステップ3：2つのインサイトを貫く、1つのUVP（独自の価値提案）を定義する</a></li></ul></li><li><a href="#heading10" class="tocLink">コンセプトシートの完成</a></li></ul></li><li><a href="#heading11" class="tocLink">【B-2-2】実演：AIと共に制作物一式を書き分ける</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：40分</a></li></ul><ul><li><a href="#heading13" class="tocLink">AIライティングにおける「書き分け」の基本戦略</a></li><li><a href="#heading14" class="tocLink">媒体別のAIライティング手順とプロンプト例</a><ul><li><a href="#heading15" class="tocLink">1. 【土台作成】ECサイト商品ページのライティング</a></li><li><a href="#heading16" class="tocLink">2. 【最適化①】SNS広告文（Instagram）のライティング</a></li><li><a href="#heading17" class="tocLink">3. 【最適化②】リスティング広告文のライティング</a></li></ul></li></ul></li><li><a href="#heading18" class="tocLink">【B-2-3】 B-2章 -章末課題- [複数制作物のAIライティング]</a><ul><li><a href="#heading19" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading20" class="tocLink">問題</a></li><li><a href="#heading21" class="tocLink">解答手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_writing/3-3%20%E3%80%90%E5%AE%9F%E8%B7%B5%E3%80%91%E9%81%B8%E3%81%B9%E3%82%8B%E3%82%BB%E3%83%BC%E3%83%AB%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%BF%9C%E7%94%A8/sNuib" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_writing/3-3%20%E3%80%90%E5%AE%9F%E8%B7%B5%E3%80%91%E9%81%B8%E3%81%B9%E3%82%8B%E3%82%BB%E3%83%BC%E3%83%AB%E3%82%B9%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%BF%9C%E7%94%A8/nqEA1" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="L0Py4e86E7o1T4emvsklxQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="243" data-domain="learn.webcoach.jp" data-url="/web-marketing/98RPj" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>LINE広告 -基礎編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-marketing/98RPj">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="LINE広告 -基礎編- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_movies/images/000/002/267/medium/9360e9f7-8f5d-44f8-8b98-829cefeb6f46.jpg?1719302321">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="LINE広告 -基礎編-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-marketing/98RPj">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_movies/images/000/002/267/large/9360e9f7-8f5d-44f8-8b98-829cefeb6f46.jpg?1719302321">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-marketing/98RPj"
+    },
+    "headline": "LINE広告 -基礎編-",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_movies/images/000/002/267/medium/9360e9f7-8f5d-44f8-8b98-829cefeb6f46.jpg?1719302321",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2024-07-26T14:48:41+09:00",
+    "dateModified": "2025-09-24T11:28:47+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_ono"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="26fjSlzxm9iHNrycKE1VKIfVyvuolmd_RYK3OZQJxbiHM71Cgp_0ESZeZek3231yFFi4t5uIWUIvUjG8tUdMvQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBマーケティング</div>
+
+          <div class="fw-bold h2">LINE広告 -基礎編-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item2264" data-item-id="2264" data-item-type="ItemHeading"><h2 class="item-body">1. LINE広告概要</h2></div>
+        
+        <div class="article-item item_markdown " id="item39644" data-item-id="39644" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item2265" data-item-id="2265" data-item-type="ItemHeading"><h3 class="item-body">a. LINE広告とは？</h3></div>
+        
+        <div class="article-item item_markdown " id="item2266" data-item-id="2266" data-item-type="ItemMarkdown"><p>LINE広告は、月間アクティブユーザー(MAU)9,600万人のLINEユーザーに向けて広告を配信することができる運用型広告です。</p>
+
+<p>LINE広告では、LINE内のトーク一覧の最上部「トークリスト」、企業・店舗のさまざまな投稿を見られる「LINE VOOM（旧タイムライン）」、「LINE NEWS」や、LINEの各種ファミリーサービスへ配信が可能で、多くのユーザーへの広告の露出が見込めます。</p>
+</div>
+        
+        <div class="article-item item_movie " id="item2267" data-item-id="2267" data-item-type="ItemMovie"><div class="image-large"><iframe width="560" height="113" src="https://www.youtube.com/embed/Png8cNuKfbU?start=1&feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen title="【動画でわかるLINE広告】LINE広告ってどんなサービス？"></iframe><h4>【動画でわかるLINE広告】LINE広告ってどんなサービス？</h4></div><div class="cite">via <cite class="item-source"><a title="YouTube" target="_blank" rel="nofollow" href="https://www.youtube.com/watch?t=1s&amp;v=Png8cNuKfbU">www.youtube.com</a></cite></div></div>
+        
+        <div class="article-item item_heading " id="item2268" data-item-id="2268" data-item-type="ItemHeading"><h3 class="item-body">b. LINE広告の豊富な配信先</h3></div>
+        
+        <div class="article-item item_markdown " id="item2269" data-item-id="2269" data-item-type="ItemMarkdown"><h4 id="section">トークリスト</h4>
+</div>
+        
+        <div class="article-item item_image " id="item2270" data-item-id="2270" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/270/medium/3b8f44b0-b2ef-4772-848e-1b58a5de4190.png?1719302356" title="参照：LINE for Business"><img class="img-responsive item-image" alt="参照：LINE for Business (2270)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/270/medium/3b8f44b0-b2ef-4772-848e-1b58a5de4190.png?1719302356" width="238" height="456" /></a><h4></h4></div><div class="cite">via <cite class="item-source">参照：LINE for Business</cite></div></div>
+        
+        <div class="article-item item_markdown " id="item2271" data-item-id="2271" data-item-type="ItemMarkdown"><p>LINEアプリの中でも最もユーザーのアクティブ率が高いのがトーク一覧です。
+その最上部に位置する「トークリスト」に広告が表示されるため、大規模なプロモーションに活用が可能で、広告をタップすると商品やサービスのランディングページ(LP)に遷移します。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2272" data-item-id="2272" data-item-type="ItemMarkdown"><h4 id="line-news">LINE NEWS</h4>
+</div>
+        
+        <div class="article-item item_image " id="item2273" data-item-id="2273" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/273/medium/70b6074e-b6ca-4fdb-a852-6c1ba9694e97.png?1719302402" title="参照：LINE for Business"><img class="img-responsive item-image" alt="参照：LINE for Business (2273)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/273/medium/70b6074e-b6ca-4fdb-a852-6c1ba9694e97.png?1719302402" width="240" height="452" /></a><h4></h4></div><div class="cite">via <cite class="item-source">参照：LINE for Business</cite></div></div>
+        
+        <div class="article-item item_markdown " id="item2274" data-item-id="2274" data-item-type="ItemMarkdown"><p>高いアクティブユーザー数が特徴のLINE NEWSでは、LINEアプリ内の「ニュースタブ」トップページや記事一覧ページに加え、アカウントメディアの記事一覧ページに広告が配信できます。新製品の発売情報や即時性のあるコンテンツとの相性が良い掲載面です。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2275" data-item-id="2275" data-item-type="ItemMarkdown"><h4 id="line-voom">LINE VOOM（旧タイムライン）</h4>
+</div>
+        
+        <div class="article-item item_image " id="item2276" data-item-id="2276" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/276/medium/8703579c-ed9e-42f1-ae5a-c1163f6f068c.png?1719302447" title="参照：LINE for Business"><img class="img-responsive item-image" alt="参照：LINE for Business (2276)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/276/medium/8703579c-ed9e-42f1-ae5a-c1163f6f068c.png?1719302447" width="238" height="501" /></a><h4></h4></div><div class="cite">via <cite class="item-source">参照：LINE for Business</cite></div></div>
+        
+        <div class="article-item item_markdown " id="item2277" data-item-id="2277" data-item-type="ItemMarkdown"><p>投稿を見たユーザーが気軽に「いいね」などのアクションを取ったり、コメントするなどの機能が備わっているLINE VOOMに広告を配信できます。自社のLINE公式アカウントのブロック状況を問わず、全ユーザーに広告を表示させることができます。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2278" data-item-id="2278" data-item-type="ItemMarkdown"><h4 id="line">LINEマンガ</h4>
+</div>
+        
+        <div class="article-item item_image " id="item2279" data-item-id="2279" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/279/medium/e107f7fc-a8e4-4c1d-b257-4e6801bbaa2c.png?1719302481" title="参照：LINE for Business"><img class="img-responsive item-image" alt="参照：LINE for Business (2279)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/279/medium/e107f7fc-a8e4-4c1d-b257-4e6801bbaa2c.png?1719302481" width="269" height="449" /></a><h4></h4></div><div class="cite">via <cite class="item-source">参照：LINE for Business</cite></div></div>
+        
+        <div class="article-item item_markdown " id="item2280" data-item-id="2280" data-item-type="ItemMarkdown"><p>LINEマンガは、スマートフォン向け電子コミックサービスです。ユーザーの属性に男女比率の差はなく、15～19歳の利用が27％、20～30代の利用が60％と、若年層を中心に幅広い世代に利用されています。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2284" data-item-id="2284" data-item-type="ItemMarkdown"><h4 id="line">LINEポイントクラブ</h4>
+</div>
+        
+        <div class="article-item item_image " id="item2286" data-item-id="2286" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/286/medium/264504e7-67e8-4732-a6ba-4e65d3e7bdfa.png?1719302589" title="参照：LINE for Business"><img class="img-responsive item-image" alt="参照：LINE for Business (2286)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/286/medium/264504e7-67e8-4732-a6ba-4e65d3e7bdfa.png?1719302589" width="286" height="474" /></a><h4></h4></div><div class="cite">via <cite class="item-source">参照：LINE for Business</cite></div></div>
+        
+        <div class="article-item item_markdown " id="item2287" data-item-id="2287" data-item-type="ItemMarkdown"><p>「友だち追加」「動画視聴」「ミッション」などの指定条件をクリアするとポイントがもらえるLINEポイントクラブは、40～50代という比較的年齢層が高めのユーザーに多く利用されています。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2288" data-item-id="2288" data-item-type="ItemMarkdown"><h4 id="line">LINEショッピング</h4>
+</div>
+        
+        <div class="article-item item_image " id="item2289" data-item-id="2289" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/289/medium/9abb0d8f-5775-4a9f-95ca-bef40a1edb13.png?1719302619" title="参照：LINE for Business"><img class="img-responsive item-image" alt="参照：LINE for Business (2289)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/289/medium/9abb0d8f-5775-4a9f-95ca-bef40a1edb13.png?1719302619" width="212" height="463" /></a><h4></h4></div><div class="cite">via <cite class="item-source">参照：LINE for Business</cite></div></div>
+        
+        <div class="article-item item_markdown " id="item2290" data-item-id="2290" data-item-type="ItemMarkdown"><p>ファッションや雑貨、スポーツ、インテリア、家電、コスメなどの商品をLINEアプリ上から検索・比較・購入できる「LINEショッピング」は、ユーザー数の約7割が女性で、主に20代後半～40代前半の女性へのリーチに優れています。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2291" data-item-id="2291" data-item-type="ItemHeading"><h3 class="item-body">c. LINE広告の課金方式について</h3></div>
+        
+        <div class="article-item item_markdown " id="item2292" data-item-id="2292" data-item-type="ItemMarkdown"><h4 id="section">クリック課金</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item2293" data-item-id="2293" data-item-type="ItemMarkdown"><p>ユーザーが広告をクリックし、リンク先のページに遷移すると課金が発生する方式です。広告が表示されるだけでは費用が発生しないため、クリックを多く獲得したい場合に適しています。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2294" data-item-id="2294" data-item-type="ItemMarkdown"><h4 id="section">インプレッション課金</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item2295" data-item-id="2295" data-item-type="ItemMarkdown"><p>広告クリエイティブがユーザーの画面に1ピクセルでも表示されると料金が発生する方式です。より多くのユーザーに広告を見てもらいたい場合に適しており、広告が1,000回表示されるごとの費用をCPMと呼びます。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2296" data-item-id="2296" data-item-type="ItemHeading"><h3 class="item-body">d. LINE広告の入札方法について</h3></div>
+        
+        <div class="article-item item_markdown " id="item2297" data-item-id="2297" data-item-type="ItemMarkdown"><p>LINE広告の入札方法は、大きく「自動入札」と「手動入札」に分けられます。広告を配信する対象やそれにより得たい効果に合わせて、適切に使い分けましょう。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item2298" data-item-id="2298" data-item-type="ItemMarkdown"><h4 id="section">自動入札</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item2299" data-item-id="2299" data-item-type="ItemMarkdown"><p>あらかじめ設定したイベント単価や予算内で、入札額が自動調整される方式が「自動入札」です。自動入札の機械学習が進むと（※）、人的工数をかけずに最適な広告配信を行うことができます。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2300" data-item-id="2300" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">目安として、1つの広告グループで過去7日間に15件以上のコンバージョン獲得が推奨されています。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2301" data-item-id="2301" data-item-type="ItemMarkdown"><h4 id="section">手動入札</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item2302" data-item-id="2302" data-item-type="ItemMarkdown"><p>運用状況を踏まえて、広告主が手動で入札額をその都度変更できる方式が「手動入札」です。確実にコンバージョンを狙いたいときは、自身で高めの入札単価を設定することも可能です。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2303" data-item-id="2303" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">運用型広告における自動入札と手動入札の違い</div></div></div>
+        
+        <div class="article-item item_html " id="item5810" data-item-id="5810" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div></div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>自動入札</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>手動入札</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>特徴</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>適切な入札価格をシステムが調整してくれる</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>運用者が入札価格を自分で決めて入札することができる </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>最適化</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>広告が表示されるたびに入札価格が自動で調節される</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>広告効果を確認しながら、1日に数回、手動で調整される</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>工数</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>ほぼかからない</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>かかる</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>判断基準</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>学習元のデータ蓄積量</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>調整を行う担当者の経験知</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item2305" data-item-id="2305" data-item-type="ItemHeading"><h3 class="item-body">e. LINE広告のメリット</h3></div>
+        
+        <div class="article-item item_html " id="item2306" data-item-id="2306" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">他媒体と比較して新規顧客獲得率が高い</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2307" data-item-id="2307" data-item-type="ItemMarkdown"><p>LINE VOOM（旧タイムライン）面では、他のフィード型のSNSであるFacebookやXを利用せず、LINEのみを利用しているユーザーが30%以上と多く存在し、他の媒体ではリーチすることができなかった新規顧客層に、LINEだからこそ広告を配信することが可能です。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2308" data-item-id="2308" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">LINEの圧倒的ユーザー</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2309" data-item-id="2309" data-item-type="ItemMarkdown"><p>LINEは日本においてユーザー数が圧倒的に多く、実に9,600万人以上に上ると言われています。さらにLINEはもはやインフラの領域に入っており、若い世代から年配の世代まで幅広いユーザーが利用しているという特徴もあります。</p>
+
+<p>また、他の媒体と比較してアクティブなユーザーの比率が非常に高く、実に70%にも上るとされています。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2310" data-item-id="2310" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">LINEならではのターゲティング</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2311" data-item-id="2311" data-item-type="ItemMarkdown"><p>他媒体と同じように、性別・年齢・地域やその他の特定のカテゴリーに示す興味関心のあるユーザーに向けた広告の配信やリマーケティング（一度サイトを訪れたことのあるユーザーへの配信）をすることも可能です。</p>
+
+<p>また、LINE公式スタンプの購入履歴や公式アカウントの登録情報等からターゲティングが決定されるため、「みなし属性」という表現が利用されます。</p>
+
+<p>つまり、「おそらく男性であろう人」「おそらく旅行に興味があろう人」に配信されることになります。</p>
+</div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="L0Py4e86E7o1T4emvsklxQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/DHtba -->
+<!-- clipkit-fetched-at: 2026-09-17T11:10:31.246Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Canva -応用編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/DHtba">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Canva -応用編- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/003/736/medium/a6adc5ed-0ddb-4c69-9422-e353001bd4ab.png?1754449606">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Canva -応用編-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/DHtba">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/003/736/large/a6adc5ed-0ddb-4c69-9422-e353001bd4ab.png?1754449606">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="YqQKiU-d4fsteagupZb_IAL2pqUhafNHnUcIeqrXbLYV_MI-7Mles0W4ubam1P34Q9vy6dFmkvWCLlzVZFLvXg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Canva -応用編-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0. できるようになること</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:90分</a></li></ul></li><li><a href="#heading2" class="tocLink">1. 学習のポイント</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間:5分</a></li></ul></li><li><a href="#heading4" class="tocLink">2. 作成課題の確認</a><ul><li><a href="#heading5" class="tocLink">目安の学習時間:20分</a></li></ul></li><li><a href="#heading6" class="tocLink">3. ヒント</a><ul><li><a href="#heading7" class="tocLink">注意. Canvaの著作権について</a></li></ul></li><li><a href="#heading8" class="tocLink">4. 解説教材</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間:60分</a></li></ul><ul><li><a href="#heading10" class="tocLink"> a. Canva -SNSクリエイティブ制作-</a><ul><li><a href="#heading11" class="tocLink">Canva -応用編- SNSクリエイティブ制作</a></li></ul></li><li><a href="#heading12" class="tocLink">b. 学習時の注意</a></li><li><a href="#heading13" class="tocLink">✅ 学習理解度チェック</a></li></ul></li><li><a href="#heading14" class="tocLink">5. まとめ</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間:5分</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25558" data-item-id="25558" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/web-design/qPnfO" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item3730" data-item-id="3730" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">0. できるようになること</h2></div>
+        
+        <div class="article-item item_markdown " id="item39371" data-item-id="39371" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:90分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item3731" data-item-id="3731" data-item-type="ItemMarkdown"><ul>
+  <li>実践編では、Instagramへの投稿を想定した<strong>SNSクリエイティブ制作</strong>にチャレンジします。</li>
+  <li>最新の<strong>AI機能を使用した時短技</strong>も多数解説しますので、効率よく制作することができます。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item3732" data-item-id="3732" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">1. 学習のポイント</h2></div>
+        
+        <div class="article-item item_markdown " id="item39372" data-item-id="39372" data-item-type="ItemMarkdown"><h4 id="heading3">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item3733" data-item-id="3733" data-item-type="ItemMarkdown"><ul>
+  <li>Canvaの操作は非常に直感的なので、気楽に動かしながらやっていきましょう。まずは「Canvaの基本操作を学ぶ」で動画を見ながら実際に動かしてみましょう。</li>
+  <li>Canvaは直感で操作しやすいので、<strong>「とりあえず触ってみる」精神</strong>でやっていくのがおすすめです。</li>
+  <li>困ったときは、Googleで「Canva XXXX」(XXXXにはキーワード)を入れると大体解決策が出てきます。
+    <ul>
+      <li>WEBサイト開発などにおいては<strong>自身で調べる能力</strong>が極めて重要なので、検索スキルも鍛えていきましょう。</li>
+    </ul>
+  </li>
+  <li>また、YouTubeで大変参考になる教材も多くあるので、困ったときにはYouTubeもうまく活用できるとよいでしょう。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item3734" data-item-id="3734" data-item-type="ItemHeading"><h2 class="item-body" id="heading4">2. 作成課題の確認</h2></div>
+        
+        <div class="article-item item_markdown " id="item39373" data-item-id="39373" data-item-type="ItemMarkdown"><h4 id="heading5">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item3735" data-item-id="3735" data-item-type="ItemMarkdown"><p>こちらが作成課題となります。</p>
+</div>
+        
+        <div class="article-item item_link " id="item3736" data-item-id="3736" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=DHtba&amp;item_id=3736" rel="nofollow noopener noreferrer" target="_blank">Canva応用編</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Canva応用編" data-reference="https://www.canva.com/design/DAFxx7quCa4/utAefK9R027paMEC7OAn1Q/edit?utm_content=DAFxx7quCa4&amp;utm_campaign=designshare&amp;utm_medium=link2&amp;utm_source=sharebutton" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item3737" data-item-id="3737" data-item-type="ItemHeading"><h2 class="item-body" id="heading6">3. ヒント</h2></div>
+        
+        <div class="article-item item_markdown " id="item3738" data-item-id="3738" data-item-type="ItemMarkdown"><p>初級編・実践編では扱わなかったスキルについてです。</p>
+
+<p>操作に困った時は以下を参考にして、挑戦してみてください。</p>
+</div>
+        
+        <div class="article-item item_link " id="item3739" data-item-id="3739" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=DHtba&amp;item_id=3739" rel="nofollow noopener noreferrer" target="_blank">グラデーション機能を使ったデザイン方法</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="グラデーション機能を使ったデザイン方法" data-reference="https://www.canva.com/ja_jp/features/graduation-design/" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item3740" data-item-id="3740" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=DHtba&amp;item_id=3740" rel="nofollow noopener noreferrer" target="_blank">Canvaの便利なAI機能</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Canvaの便利なAI機能" data-reference="https://www.canva.com/ja_jp/magic-write/" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item3741" data-item-id="3741" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=DHtba&amp;item_id=3741" rel="nofollow noopener noreferrer" target="_blank">Canvaの便利なAI機能２</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Canvaの便利なAI機能２" data-reference="https://www.canva.com/ja_jp/features/ai-brushes/" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item3742" data-item-id="3742" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=DHtba&amp;item_id=3742" rel="nofollow noopener noreferrer" target="_blank">Canvaの便利なAI機能３</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Canvaの便利なAI機能３" data-reference="https://www.canva.com/ja_jp/ai-image-generator/" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item3743" data-item-id="3743" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">注意. Canvaの著作権について</h3></div>
+        
+        <div class="article-item item_link " id="item3744" data-item-id="3744" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=DHtba&amp;item_id=3744" rel="nofollow noopener noreferrer" target="_blank">Canvaは商用利用可能</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Canvaは商用利用可能" data-reference="https://www.canva.com/ja_jp/learn/commercial-use/" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item3745" data-item-id="3745" data-item-type="ItemHeading"><h2 class="item-body" id="heading8">4. 解説教材</h2></div>
+        
+        <div class="article-item item_markdown " id="item39374" data-item-id="39374" data-item-type="ItemMarkdown"><h4 id="heading9">目安の学習時間:60分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item3746" data-item-id="3746" data-item-type="ItemMarkdown"><p>お疲れ様でした！</p>
+
+<p>作成課題、いかがでしたでしょうか？</p>
+
+<p>行き詰まるところも少なくなかったと思います。以下の動画教材を用いて自己添削をしましょう！</p>
+
+<p>もしご自身で合っていると思っていても、より効率的な方法が紹介されているかもしれません。一つ一つ丁寧に動画を視聴しましょう！</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3747" data-item-id="3747" data-item-type="ItemHeading"><h3 class="item-body" id="heading10"> a. Canva -SNSクリエイティブ制作-</h3></div>
+        
+        <div class="article-item item_movie " id="item3748" data-item-id="3748" data-item-type="ItemMovie"><div class="image-large"><iframe width="560" height="113" src="https://www.youtube.com/embed/0ELruolyn8A?feature=oembed" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" title="Canva -応用編- SNSクリエイティブ制作"></iframe><h4 id="heading11">Canva -応用編- SNSクリエイティブ制作</h4></div><div class="cite">via <cite class="item-source"><a title="YouTube" target="_blank" rel="nofollow" href="https://www.youtube.com/watch?v=0ELruolyn8A&amp;feature=youtu.be">www.youtube.com</a></cite></div></div>
+        
+        <div class="article-item item_heading " id="item3749" data-item-id="3749" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">b. 学習時の注意</h3></div>
+        
+        <div class="article-item item_markdown " id="item3750" data-item-id="3750" data-item-type="ItemMarkdown"><ul>
+  <li>動画を見るだけでは、学習効果が大幅に下がります。</li>
+  <li>動画を止めたりしながら必ず手元でCanvaを動かし同じようなデザインを作りながら進めていきましょう。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3751" data-item-id="3751" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">アウトプットを増やすことが実践的なスキルを身につける最短ルートです！SNSクリエイティブ制作に挑戦し、ポートフォリオへの掲載やプライベートに活用してみましょう。</div></div></div>
+        
+        <div class="article-item item_heading " id="item3752" data-item-id="3752" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">✅ 学習理解度チェック</h3></div>
+        
+        <div class="article-item item_markdown " id="item3753" data-item-id="3753" data-item-type="ItemMarkdown"><p>チェックリストの項目でわからないことがある場合には、再度動画に戻って不明点を解消しましょう。</p>
+
+<p>適宜Q&amp;Aもご用意していますので、その内容も確認するといいでしょう！</p>
+</div>
+        
+        <div class="article-item item_html " id="item3754" data-item-id="3754" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">チェックリストの全ての項目を理解してから次に進みましょう。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3755" data-item-id="3755" data-item-type="ItemMarkdown"><ul>
+  <li>SNSクリエイティブのポイント</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3756" data-item-id="3756" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q. SNSのサムネイルや表紙に大切なポイントは何ですか？</div>
+    <div class="toggle-content">A. 思わずタップしたくなるような、目を惹くインパクトがあること</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item3757" data-item-id="3757" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>各SNSごとの推奨画像サイズを理解している</li>
+    <li>テキストや内容に沿った強調・配置ができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3758" data-item-id="3758" data-item-type="ItemMarkdown"><ul>
+  <li>画像編集機能</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3759" data-item-id="3759" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>画像の上に色やグラデーションを重ねることができる</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3760" data-item-id="3760" data-item-type="ItemMarkdown"><ul>
+  <li>文字の配置</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3761" data-item-id="3761" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q. 文字ごとにサイズを変える場合はどうすれば良いですか？</div>
+    <div class="toggle-content">A.  レイヤー内で複数の文字サイズを設定できないため、レイヤーを分ける必要がある</div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3763" data-item-id="3763" data-item-type="ItemMarkdown"><ul>
+  <li>AI機能</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3764" data-item-id="3764" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>Magic Writeを使用できる</li>
+    <li>Magic Editを使用できる</li>
+    <li>Text to Imageを使用できる</li>
+    <li>それぞれの機能の違いを理解している</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item3765" data-item-id="3765" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q. 無料プランの場合、Magic Write・Magic Editの使用回数に制限はありますか？</div>
+    <div class="toggle-content">A.  Magic Writeは無料会員が50回まで、有料会員は毎月500回まで使えます。Magic Editは有料会員のみ使うことが出来ます。変更されている可能性もあるため公式サイトで最新情報をチェックしましょう！</div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3766" data-item-id="3766" data-item-type="ItemMarkdown"><ul>
+  <li>定規・ガイド</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3767" data-item-id="3767" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>キャンバス内に定規・ガイドを表示できる</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item3768" data-item-id="3768" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q.  定規・ガイド出現のショートカットキーは何ですか？</div>
+    <div class="toggle-content">A.  Shift + R</div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3769" data-item-id="3769" data-item-type="ItemMarkdown"><ul>
+  <li>Canvaアシスタント</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3770" data-item-id="3770" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>Canvaアシスタントから文字や画像を追加できる</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item3771" data-item-id="3771" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q.  Canvaアシスタントのショートカットキーは何ですか？</div>
+    <div class="toggle-content">A.  ／キー</div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item3772" data-item-id="3772" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">ショートカットキーを活用することで格段に作業効率が上がります！<br>
+少しずつ覚えながら積極的に取り入れていきましょう！</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3773" data-item-id="3773" data-item-type="ItemMarkdown"><ul>
+  <li>画像保存</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item3774" data-item-id="3774" data-item-type="ItemHtml"><div class="item-body"><div class="toggle">
+    <div class="open-btn">Q. 動画やアニメーションを含んだ画像を制作した場合の保存形式は何ですか？</div>
+    <div class="toggle-content">A. MP4形式の動画</div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item3775" data-item-id="3775" data-item-type="ItemHeading"><h2 class="item-body" id="heading14">5. まとめ</h2></div>
+        
+        <div class="article-item item_markdown " id="item39375" data-item-id="39375" data-item-type="ItemMarkdown"><h4 id="heading15">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item3776" data-item-id="3776" data-item-type="ItemRichText"><div class="item-body-hbr">動画視聴お疲れ様でした！<br>
+<br>
+応用編、いかがだったでしょうか？<br>
+<br>
+Canva初級編・実践編で学んだスキルに加えて、最新AIを活用した機能も使用しました。<br>
+AIに対して苦手意識を持っていた方も、その便利さを知ることができたのではないでしょうか。<br>
+<br>
+それでは、<span class="decoration-01"><span class="decoration-02">自己添削に取り組んでください！現在の自分ができる100%の状態のSNSクリエイティブを完成させましょう。</span></span><br>
+<br>
+そして、下記のテンプレートを参考にし、<span class="decoration-02"><span class="decoration-01">Slackの「 c-【受講ID】-【お名前】」のチャンネルでコーチをメンションし、制作課題を共有してください。</span></span></div></div>
+        
+        <div class="article-item item_html " id="item3777" data-item-id="3777" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">注意</div>
+    </div>
+    <div class="content-area">
+閲覧専用リンク または コラボレーションリンク（表示可/コメント可）に設定したURLを送付しましょう！
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item3778" data-item-id="3778" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">コーチにSlackで共有する際のテンプレート</span></div></div>
+        
+        <div class="article-item item_html " id="item3779" data-item-id="3779" data-item-type="ItemHtml"><div class="item-body"><div class="quote">〇〇コーチ (@メンション)<br>
+<br>
+お世話になっております。<br>
+Canva -〇〇編-の制作課題が終了いたしました。<br>
+以下のURLから確認可能ですので、添削をよろしくお願いいたします。<br>
+<br>
+==<br>
+共有用URL<br>
+==</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item3780" data-item-id="3780" data-item-type="ItemRichText"><div class="item-body-hbr">Canva -応用編-お疲れ様でした！<br>
+<br>
+もう皆様は、<span class="decoration-02"><span class="decoration-01">Canvaについて様々なスキルを身に付けたので、名刺やチラシなどのグラフィックデザインから、SNSクリエイティブやサムネイルなど幅広いコンテンツの制作が可能です！</span></span><br>
+<br>
+Canvaは定期的に新機能追加やリニューアルが行われるのも魅力のひとつですので、新着情報をチェックしながらたくさん活用していきましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25559" data-item-id="25559" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/web-design/qPnfO" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0. できるようになること</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:90分</a></li></ul></li><li><a href="#heading2" class="tocLink">1. 学習のポイント</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間:5分</a></li></ul></li><li><a href="#heading4" class="tocLink">2. 作成課題の確認</a><ul><li><a href="#heading5" class="tocLink">目安の学習時間:20分</a></li></ul></li><li><a href="#heading6" class="tocLink">3. ヒント</a><ul><li><a href="#heading7" class="tocLink">注意. Canvaの著作権について</a></li></ul></li><li><a href="#heading8" class="tocLink">4. 解説教材</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間:60分</a></li></ul><ul><li><a href="#heading10" class="tocLink"> a. Canva -SNSクリエイティブ制作-</a><ul><li><a href="#heading11" class="tocLink">Canva -応用編- SNSクリエイティブ制作</a></li></ul></li><li><a href="#heading12" class="tocLink">b. 学習時の注意</a></li><li><a href="#heading13" class="tocLink">✅ 学習理解度チェック</a></li></ul></li><li><a href="#heading14" class="tocLink">5. まとめ</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間:5分</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/qPnfO" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

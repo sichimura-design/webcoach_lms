@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%902%20AI%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E6%B4%BB%E7%94%A8%EF%BC%81%E4%BC%81%E7%94%BB%E3%83%BB%E5%8F%B0%E6%9C%AC%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90/nHjus -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>4章：AIで「刺さる構成」を作る - 動画台本生成の実践 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%902%20AI%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E6%B4%BB%E7%94%A8%EF%BC%81%E4%BC%81%E7%94%BB%E3%83%BB%E5%8F%B0%E6%9C%AC%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90/nHjus">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="4章：AIで「刺さる構成」を作る - 動画台本生成の実践 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="4章：AIで「刺さる構成」を作る - 動画台本生成の実践">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%902%20AI%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E6%B4%BB%E7%94%A8%EF%BC%81%E4%BC%81%E7%94%BB%E3%83%BB%E5%8F%B0%E6%9C%AC%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90/nHjus">
+<meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="Gt0pBLRUjxzgw-xgXVIVh2Q2Zl2U2YE8cehI0gEpsd4ZXPIVja7LwqoK8EU6lKTrV0Jm9CAVHdEj5HpzBNPHDg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材2 AIプロンプト活用！企画・台本自動生成</div>
+
+          <div class="fw-bold h2">4章：AIで「刺さる構成」を作る - 動画台本生成の実践</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章：AIで「刺さる構成」を作る - 動画台本生成の実践</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：60分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【4-1】フレームワーク活用！動画構成案プロンプト</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AIDAをプロンプトに組み込む</a></li><li><a href="#heading6" class="tocLink">【実践】AIDAでサービスの魅力を伝える構成案を作る</a></li></ul></li><li><a href="#heading7" class="tocLink">【4-2】コピペで使える！ジャンル別・台本生成プロンプト</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading9" class="tocLink">【SNS広告編】15秒で心を掴むショート動画台本</a></li><li><a href="#heading10" class="tocLink">【YouTube解説編】視聴者を飽きさせない5分尺の動画構成</a></li><li><a href="#heading11" class="tocLink"> 「絵が浮かぶ」台本にする追加指示</a></li></ul></li><li><a href="#heading12" class="tocLink">【4-3】練習問題：ガジェット紹介動画の台本を作ろう</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading14" class="tocLink">問題</a></li><li><a href="#heading15" class="tocLink">解答</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item34820" data-item-id="34820" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%902%20AI%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E6%B4%BB%E7%94%A8%EF%BC%81%E4%BC%81%E7%94%BB%E3%83%BB%E5%8F%B0%E6%9C%AC%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90/VYxKt" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%902%20AI%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E6%B4%BB%E7%94%A8%EF%BC%81%E4%BC%81%E7%94%BB%E3%83%BB%E5%8F%B0%E6%9C%AC%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90/nu6ZE" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item34705" data-item-id="34705" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">4章：AIで「刺さる構成」を作る - 動画台本生成の実践</h2></div>
+        
+        <div class="article-item item_markdown " id="item34738" data-item-id="34738" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item34706" data-item-id="34706" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item34707" data-item-id="34707" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>1章で学んだフレームワークをプロンプトに組み込み、論理的な動画構成案をAIに作らせることができる。</li>
+  <li>SNS広告、YouTube解説動画など、作りたい動画のジャンルに応じた台本をテンプレートを使って生成できる。</li>
+  <li>AIの出力を微調整し、より具体的なシーン描写やナレーション原稿を完成させられる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item34708" data-item-id="34708" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【4-1】フレームワーク活用！動画構成案プロンプト</h2></div>
+        
+        <div class="article-item item_markdown " id="item34709" data-item-id="34709" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item34710" data-item-id="34710" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">AIDAをプロンプトに組み込む</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34711" data-item-id="34711" data-item-type="ItemRichText"><div class="item-body-hbr">1章で学んだマーケティングフレームワーク「AIDA」をプロンプトに組み込むことで、より戦略的な動画構成案をAIに作成させることができます。<br>
+指示の仕方は非常にシンプルです。プロンプトの「制約条件」の部分に、<span class="decoration-02">「</span><span class="decoration-02">AIDAの法則に沿って構成案を作成してください」と一文加えるだけ</span>です。<br>
+さらに、<span class="decoration-02">「表形式で出力してください」</span>と指示することで、各パートで何を伝えるべきかが視覚的に整理され、非常に分かりやすい構成案を得ることができます。</div></div>
+        
+        <div class="article-item item_heading " id="item34712" data-item-id="34712" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">【実践】AIDAでサービスの魅力を伝える構成案を作る</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34713" data-item-id="34713" data-item-type="ItemRichText"><div class="item-body-hbr">3章で扱った「オンライン英会話サービス」をテーマに、実際にAIDAに基づいた構成案をAIに作らせてみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item34714" data-item-id="34714" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>実践：AIDAフレームワークで構成案を作成する手順</strong><br></span>
+    <div class="content-area">
+        <p>3章で設計したペルソナとコンセプトを元に、AIDAフレームワークを活用して具体的な構成案をAIに作成させる手順を確認しましょう。</p>
+        <ol>
+            <li>3章でペルソナとコンセプトを設計したChatGPTのチャットを続けます。</li>
+            <li>新しいプロンプトとして、「ありがとうございます。では、コンセプト案1『スキマ時間でキャリア直結の英語力を』を元に、Instagram広告用の15秒動画の構成案を作成してください。」と入力します。</li>
+            <li>続けて、「<span class="decoration-02">AIDAの法則に沿って、各パートの内容を表形式で出力してください。</span>」という、フレームワークと出力形式の指定を加えて送信します。</li>
+            <li>ChatGPTが、Attention, Interest, Desire, Actionの4つの項目で、具体的な構成案を表形式で生成するのを確認します。</li>
+            <li>生成された表の内容が、「注意を引く→興味を持たせる→欲求を喚起する→行動を促す」という<span class="decoration-02">論理的な流れになっているか</span>を確認することが重要です。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item34715" data-item-id="34715" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【4-2】コピペで使える！ジャンル別・台本生成プロンプト</h2></div>
+        
+        <div class="article-item item_markdown " id="item34716" data-item-id="34716" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item34717" data-item-id="34717" data-item-type="ItemRichText"><div class="item-body-hbr">構成案が決まったら、いよいよ具体的な台本作成です。<br>
+ここでは、様々な動画ジャンルですぐに使える、実践的なプロンプトテンプレートを紹介します。</div></div>
+        
+        <div class="article-item item_heading " id="item34718" data-item-id="34718" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">【SNS広告編】15秒で心を掴むショート動画台本</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34719" data-item-id="34719" data-item-type="ItemRichText"><div class="item-body-hbr">視聴者が次々とスワイプしていくSNSでは、冒頭の3秒（フック）で心を掴めるかが全てです。</div></div>
+        
+        <div class="article-item item_html " id="item34720" data-item-id="34720" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>SNS広告用 台本生成プロンプト</strong><br></span>
+    <div class="content-area">
+        <p>#役割</p>
+        <p>あなたは、バイラルヒットするショート動画を数多く生み出してきたトップクリエイターです。</p>
+        <br>
+        <p>#目的とコンテキスト</p>
+        <p>（商品・サービス名）のInstagramリール広告（15秒）の台本を作成します。</p>
+        <p>コンセプトは「〇〇」で、ターゲットは△△です。</p>
+        <br>
+        <p>#制約条件と出力形式</p>
+        <ul>
+            <li>AIDAの法則に基づいた構成にしてください。</li>
+            <li>特に冒頭3秒のフックは、視聴者が思わず指を止めてしまうような、インパクトのある言葉にしてください。</li>
+            <li>テンポの速いシーン展開を想定し、ナレーションは簡潔にお願いします。</li>
+            <li>以下の形式で、ナレーションとシーン描写をセットで出力してください。<br>
+            【タイトル案】：<br>
+            【ナレーション】：<br>
+            【シーン描写】：</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item34721" data-item-id="34721" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">【YouTube解説編】視聴者を飽きさせない5分尺の動画構成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34722" data-item-id="34722" data-item-type="ItemRichText"><div class="item-body-hbr">ある程度の長さがある解説系の動画では、視聴者を飽きさせず、最後まで見てもらうための構成が重要になります。<br>
+ビジネスシーンでもよく使われるPREP法を応用するのが効果的です。</div></div>
+        
+        <div class="article-item item_html " id="item34723" data-item-id="34723" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>PREP法</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>Point（結論）、Reason（理由）、Example（具体例）、Point（結論を繰り返す）の頭文字を取った、説得力のある文章構成の型です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item34724" data-item-id="34724" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>YouTube解説動画用 台本生成プロンプト</strong><br></span>
+    <div class="content-area">
+        <p>#役割</p>
+        <p>あなたは、登録者数100万人の教育系YouTuberです。</p>
+        <br>
+        <p>#目的とコンテキスト</p>
+        <p>「〇〇」というテーマで、約5分間のYouTube解説動画の台本を作成します。ターゲットは△△です。</p>
+        <br>
+        <p>#制約条件と出力形式</p>
+        <ul>
+            <li>PREP法に基づき、「導入（今回のテーマと結論）」「本編（理由と具体例）」「まとめ（結論の繰り返しと次のアクション）」の3部構成で作成してください。</li>
+            <li>専門用語は避け、中学生にも分かるような平易な言葉で説明してください。</li>
+            <li>視聴者が飽きないように、1分に1回は興味を引くような豆知識や問いかけを入れてください。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item34725" data-item-id="34725" data-item-type="ItemHeading"><h3 class="item-body" id="heading11"> 「絵が浮かぶ」台本にする追加指示</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34726" data-item-id="34726" data-item-type="ItemRichText"><div class="item-body-hbr">AIが生成した台本に、<span class="decoration-02">「このナレーションに合わせて、どのような映像が考えられるか、シーン描写を具体的に記述してください」</span>と追加で指示するだけで、台本のクオリティは格段に上がります。<br>
+AIは映像のアイデア（ト書き）や、効果音のアイデアまで提案してくれ、動画の完成イメージをより鮮明にすることができます。</div></div>
+        
+        <div class="article-item item_heading " id="item34727" data-item-id="34727" data-item-type="ItemHeading"><h2 class="item-body" id="heading12">【4-3】練習問題：ガジェット紹介動画の台本を作ろう</h2></div>
+        
+        <div class="article-item item_markdown " id="item40144" data-item-id="40144" data-item-type="ItemMarkdown"><h4 id="heading13">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item34728" data-item-id="34728" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34729" data-item-id="34729" data-item-type="ItemRichText"><div class="item-body-hbr">「最新のノイズキャンセリング機能付きワイヤレスイヤホン」を紹介する、1分程度のYouTubeショート動画の台本を作成します。<br>
+このセクションで学んだプロンプトを参考に、以下の要素を含んだ台本をChatGPTに生成させてください。</div></div>
+        
+        <div class="article-item item_html " id="item34730" data-item-id="34730" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">構成</span>：PREP法を意識した構成
+  </li>
+  <li>
+    <span class="decoration-01">表現</span>：どのような映像にするかの「シーン描写」を含む
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item34731" data-item-id="34731" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">解答</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34732" data-item-id="34732" data-item-type="ItemRichText"><div class="item-body-hbr">この課題では、これまでに学んだ複数の要素（役割、目的、コンテキスト、制約、形式）を組み合わせた、応用的なプロンプトを作成する力が試されます。</div></div>
+        
+        <div class="article-item item_code " id="item34733" data-item-id="34733" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>#役割
+あなたはガジェット紹介で人気のYoutuberです。
+
+#目的とコンテキスト
+「最新のノイズキャンセリング機能付きワイヤレスイヤホン」を紹介する、
+1分程度のYouTubeショート動画の台本を作成します。ターゲットは通学・通勤中に音楽や勉強をする20代の男女です。
+
+#制約条件と出力形式
+- PREP法を意識した構成にしてください。
+- 1分程度（約300字）のナレーションにしてください。
+- 以下の形式で、ナレーションとシーン描写をセットで出力してください。
+
+【タイトル】雑音よ、さらば。世界が変わるイヤホン体験。
+
+【台本】
+---
+- ナレーション：「（ここにナレーション）」
+- シーン描写：「（ここにシーン描写）」
+---</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト例</cite></div></div></div>
+        
+        <div class="article-item item_code " id="item34734" data-item-id="34734" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>【タイトル】雑音よ、さらば。世界が変わるイヤホン体験。
+
+【台本】
+ナレーション：
+「通勤・通学中、騒がしい電車の中で集中したい…
+そんなあなたに、最新のノイズキャンセリング付きワイヤレスイヤホンが登場！
+ポイントは“没入感”。雑音をシャットアウトし、まるで静かな図書館にいるかのような音の世界へ。
+音楽はもちろん、語学学習や読書にもぴったり。しかも、長時間バッテリーと軽量設計で、装着感も抜群。
+今の音環境に満足していないなら、これは一度試す価値アリです。」
+
+シーン描写：
+「満員電車でうるさい周囲にイライラする男女 → イヤホンを装着すると一気に静寂 → 
+音楽や英語の音声がクリアに響く → リラックスした表情で移動時間を過ごす 
+→ イヤホンのスタイリッシュな外観と充電ケースを映す」</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item34735" data-item-id="34735" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">評価のポイント：</span><br>
+生成された台本が、以下の点を満たしているか確認しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item34736" data-item-id="34736" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>結論（Point）が最初に述べられていますか？</li>
+  <li>なぜそのイヤホンが素晴らしいのかの理由（Reason）が分かりやすいですか？</li>
+  <li>具体的な使用シーン（Example）がイメージできますか？</li>
+  <li>シーン描写とナレーションがマッチしていますか？</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item34737" data-item-id="34737" data-item-type="ItemRichText"><div class="item-body-hbr">もし意図した通りの出力でなかった場合は、プロンプトのどこに改善の余地があるか、あるいはどのような追加指示を出せば良いか、コーチと共に考えてみましょう。<br>
+<br>
+これで「4章：AIで「刺さる構成」を作る - 動画台本生成の実践」の解説を終わります。次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item34819" data-item-id="34819" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%902%20AI%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E6%B4%BB%E7%94%A8%EF%BC%81%E4%BC%81%E7%94%BB%E3%83%BB%E5%8F%B0%E6%9C%AC%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90/VYxKt" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%902%20AI%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E6%B4%BB%E7%94%A8%EF%BC%81%E4%BC%81%E7%94%BB%E3%83%BB%E5%8F%B0%E6%9C%AC%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90/nu6ZE" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章：AIで「刺さる構成」を作る - 動画台本生成の実践</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：60分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【4-1】フレームワーク活用！動画構成案プロンプト</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AIDAをプロンプトに組み込む</a></li><li><a href="#heading6" class="tocLink">【実践】AIDAでサービスの魅力を伝える構成案を作る</a></li></ul></li><li><a href="#heading7" class="tocLink">【4-2】コピペで使える！ジャンル別・台本生成プロンプト</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading9" class="tocLink">【SNS広告編】15秒で心を掴むショート動画台本</a></li><li><a href="#heading10" class="tocLink">【YouTube解説編】視聴者を飽きさせない5分尺の動画構成</a></li><li><a href="#heading11" class="tocLink"> 「絵が浮かぶ」台本にする追加指示</a></li></ul></li><li><a href="#heading12" class="tocLink">【4-3】練習問題：ガジェット紹介動画の台本を作ろう</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading14" class="tocLink">問題</a></li><li><a href="#heading15" class="tocLink">解答</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%902%20AI%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E6%B4%BB%E7%94%A8%EF%BC%81%E4%BC%81%E7%94%BB%E3%83%BB%E5%8F%B0%E6%9C%AC%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90/VYxKt" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%902%20AI%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E6%B4%BB%E7%94%A8%EF%BC%81%E4%BC%81%E7%94%BB%E3%83%BB%E5%8F%B0%E6%9C%AC%E8%87%AA%E5%8B%95%E7%94%9F%E6%88%90/nu6ZE" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="IuTL4VsmPktBJW7hSkDTHw==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1692" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%904%20%E3%80%90%E4%BB%BB%E6%84%8F%E3%80%91Premiere%20Pro%20AI%E6%A9%9F%E8%83%BD%E5%BE%B9%E5%BA%95%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC/CkmhM" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章：映像編集の自動化 - AIによる品質向上テクニック - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%904%20%E3%80%90%E4%BB%BB%E6%84%8F%E3%80%91Premiere%20Pro%20AI%E6%A9%9F%E8%83%BD%E5%BE%B9%E5%BA%95%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC/CkmhM">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章：映像編集の自動化 - AIによる品質向上テクニック - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/337/medium/6a5e8fa5-c2e4-4d33-8141-ce74f1b3c6f6.png?1754962534">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章：映像編集の自動化 - AIによる品質向上テクニック">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%904%20%E3%80%90%E4%BB%BB%E6%84%8F%E3%80%91Premiere%20Pro%20AI%E6%A9%9F%E8%83%BD%E5%BE%B9%E5%BA%95%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC/CkmhM">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/337/large/6a5e8fa5-c2e4-4d33-8141-ce74f1b3c6f6.png?1754962534">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%904%20%E3%80%90%E4%BB%BB%E6%84%8F%E3%80%91Premiere%20Pro%20AI%E6%A9%9F%E8%83%BD%E5%BE%B9%E5%BA%95%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC/CkmhM"
+    },
+    "headline": "2章：映像編集の自動化 - AIによる品質向上テクニック",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_links/images/000/035/337/medium/6a5e8fa5-c2e4-4d33-8141-ce74f1b3c6f6.png?1754962534",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-22T12:46:42+09:00",
+    "dateModified": "2026-08-07T11:08:29+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="RBQcv6XGBOil8a4JsrjxBa5Y8rsQYXZLooLRxMgVZUYCB0-CoJ3yL3WVuP7IvAJQKR6Beyf6d4z1VSyXmVGQIw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材4 【任意】Premiere Pro AI機能徹底マスター</div>
+
+          <div class="fw-bold h2">2章：映像編集の自動化 - AIによる品質向上テクニック</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item35449" data-item-id="35449" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="9eMD6" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="DxsXm" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35323" data-item-id="35323" data-item-type="ItemHeading"><h2 class="item-body">2章：映像編集の自動化 - AIによる品質向上テクニック</h2></div>
+        
+        <div class="article-item item_markdown " id="item35324" data-item-id="35324" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：1時間20分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item35325" data-item-id="35325" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item35326" data-item-id="35326" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>複数のカメラや異なる環境で撮影された映像の色味を、AI機能で自然に統一できるようになる。</li>
+  <li>AIによる自動補正機能を活用し、ワンクリックで映像の見た目を向上させられるようになる。</li>
+  <li>長回しで撮影された1本の動画ファイルから、カットの変わり目をAIで自動検出し、効率的に編集できるようになる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item35327" data-item-id="35327" data-item-type="ItemHeading"><h2 class="item-body">【2-1】複数カメラの色味を瞬時に統一「カラーマッチ」</h2></div>
+        
+        <div class="article-item item_markdown " id="item35328" data-item-id="35328" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：25分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item35329" data-item-id="35329" data-item-type="ItemRichText"><div class="item-body-hbr">インタビューやイベント撮影など、複数のカメラで撮影した映像を編集する際、多くの編集者が頭を悩ませるのが「色味の違い」です。<br>
+このセクションでは、その悩みを一瞬で解決する「カラーマッチ」機能を学びます。</div></div>
+        
+        <div class="article-item item_heading " id="item35330" data-item-id="35330" data-item-type="ItemHeading"><h3 class="item-body"> なぜカラーマッチが必要か</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35331" data-item-id="35331" data-item-type="ItemRichText"><div class="item-body-hbr">カメラの機種やメーカー、設定、撮影した場所の照明など、様々な要因で映像の色味はバラバラになりがちです。</div></div>
+        
+        <div class="article-item item_html " id="item35332" data-item-id="35332" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">色味のズレがもたらす問題</span>：映像の色味がカットごとに異なると、視聴者は無意識に違和感を覚え、動画の世界観に集中できなくなってしまいます。</li>
+  <li>プロフェッショナルな映像制作において、<span class="decoration-02">色調の統一感は品質を担保する上で非常に重要な要素</span>です。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item35333" data-item-id="35333" data-item-type="ItemRichText"><div class="item-body-hbr">従来、この色合わせの作業は、専門的な知識を持つクリエイターが感覚を頼りに時間をかけて行っていました。<br>
+しかし、AIを使えば、この工程を劇的に短縮できます。</div></div>
+        
+        <div class="article-item item_heading " id="item35334" data-item-id="35334" data-item-type="ItemHeading"><h3 class="item-body">カラーマッチの適用方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35335" data-item-id="35335" data-item-type="ItemRichText"><div class="item-body-hbr">「カラーマッチ」は、基準となるクリップの色味をAIが解析し、その色味に他のクリップを自動的に合わせてくれる機能です。</div></div>
+        
+        <div class="article-item item_html " id="item35336" data-item-id="35336" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>カラーマッチの操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>タイムラインに色味を合わせたいクリップを並べます。</li>
+            <li>色を合わせたい（変更したい）方のクリップを選択します。</li>
+            <li>「Lumetriカラー」パネルを開き、「カラーホイールとカラーマッチ」のセクションにある<span class="decoration-02">「比較表示」ボタンをクリック</span>します。</li>
+            <li>プログラムモニターが2画面に分割され、左に参照フレーム（基準）、右に現在のフレーム（変更対象）が表示されます。</li>
+            <li>左画面のスライダーを動かし、基準にしたいクリップの、色味が最もよく分かるフレームを表示させます。</li>
+            <li>「Lumetriカラー」パネルに戻り、<span class="decoration-02">「マッチを適用」ボタンをクリック</span>します。</li>
+            <li>AIが色を解析し、右画面のクリップの色味が左画面に自動で統一されます。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item35337" data-item-id="35337" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=CkmhM&amp;item_id=35337" rel="nofollow noopener noreferrer" target="_blank">教材4 【任意】Premiere Pro AI機能徹底マスター 2-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材4 【任意】Premiere Pro AI機能徹底マスター 2-1" data-reference="https://www.dropbox.com/scl/fi/t18z5fk3pgeczdqn7yxtz/VideoEditor-AiPremierPro_2.1.1.0_.mp4?rlkey=usje6g9gb87cu7if78u4j41qd&amp;st=kr4akwgb&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/337/thumb/6a5e8fa5-c2e4-4d33-8141-ce74f1b3c6f6.png?1754962534" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item35338" data-item-id="35338" data-item-type="ItemHeading"><h3 class="item-body">【実践】先生のインタビューに園児の映像を馴染ませよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35339" data-item-id="35339" data-item-type="ItemRichText"><div class="item-body-hbr">動画編集で頻繁に行われる、「インタビュー映像（Aロール）の途中に、関連するイメージ映像（Bロール）を挿入する」という作業を想定して、カラーマッチを実践します。<br>
+<br>
+提供される「室内で撮影された幼稚園の先生のインタビュー映像（暖色系）」と、「屋外で撮影された園児の笑顔の映像（寒色系）」の2つのクリップの色味を統一し、園児の映像をインタビューの途中に挿入しても違和感のない、プロフェッショナルな見た目に仕上げてみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item35340" data-item-id="35340" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>課題の補足</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>今回提供する映像素材は無音のフリー素材にelevenlabsを用いて出力した音声を合成したものです。</li>
+            <li><span class="decoration-02">ご自身が最も効果的だと考えるタイミング</span>で、園児の映像を挿入する練習をしてみてください。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35341" data-item-id="35341" data-item-type="ItemHeading"><h3 class="item-body">素材</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35342" data-item-id="35342" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">インタビュー映像（Aロール）</span></div></div>
+        
+        <div class="article-item item_link " id="item35343" data-item-id="35343" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=CkmhM&amp;item_id=35343" rel="nofollow noopener noreferrer" target="_blank">教材4 【任意】Premiere Pro AI機能徹底マスター 2-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材4 【任意】Premiere Pro AI機能徹底マスター 2-2" data-reference="https://www.dropbox.com/scl/fi/v1ec93n818pu2pokjx4ko/VideoEditor-AiPremierPro_2.2.1.0_.mp4?rlkey=chkk8ue6md78m3a2qc6vjk9cl&amp;st=hyf8wtdx&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/343/thumb/f556759c-3864-44a5-a53f-9dd35d488271.png?1754962545" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item35344" data-item-id="35344" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">関連するイメージ映像（Bロール）</span></div></div>
+        
+        <div class="article-item item_link " id="item35345" data-item-id="35345" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=CkmhM&amp;item_id=35345" rel="nofollow noopener noreferrer" target="_blank">教材4 【任意】Premiere Pro AI機能徹底マスター 2-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材4 【任意】Premiere Pro AI機能徹底マスター 2-3" data-reference="https://www.dropbox.com/scl/fi/gx3bc1don312lqmty58gx/VideoEditor-AiPremierPro_2.3.1.0_.mp4?rlkey=5ry57ac1s1yyf5jcapsd35xpd&amp;st=9iqlhoht&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/345/thumb/d8c7c430-5e5c-4850-bf8b-af32ebf4d62f.png?1754962633" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item35346" data-item-id="35346" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">制作例</span></div></div>
+        
+        <div class="article-item item_link " id="item35347" data-item-id="35347" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=CkmhM&amp;item_id=35347" rel="nofollow noopener noreferrer" target="_blank">教材4 【任意】Premiere Pro AI機能徹底マスター 2-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材4 【任意】Premiere Pro AI機能徹底マスター 2-4" data-reference="https://www.dropbox.com/scl/fi/ln59plhuzjeyoi863690r/VideoEditor-AiPremierPro_2.4.1.0_.mp4?rlkey=fcex9lwrq6fnk9l6ee0d5qdu7&amp;st=5kp7nhxi&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/347/thumb/4003d24d-d411-4c4c-93cc-645f80c58c87.png?1754962555" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item35348" data-item-id="35348" data-item-type="ItemHeading"><h2 class="item-body">【2-2】ワンクリックで最適化「自動カラー補正」</h2></div>
+        
+        <div class="article-item item_markdown " id="item35349" data-item-id="35349" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item35350" data-item-id="35350" data-item-type="ItemRichText"><div class="item-body-hbr">カラーマッチほど厳密な色合わせは不要で、単に「このクリップの見た目を手軽に良くしたい」という場合に役立つのが、ワンクリックで適用できる自動補正機能です。</div></div>
+        
+        <div class="article-item item_heading " id="item35351" data-item-id="35351" data-item-type="ItemHeading"><h3 class="item-body">「自動補正」と「自動トーン」</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35352" data-item-id="35352" data-item-type="ItemRichText"><div class="item-body-hbr">「Lumetriカラー」パネルの「基本補正」セクション最上部にある「自動」ボタン（以前のバージョンでは「自動トーン」）が、AIによる自動カラー補正機能です。</div></div>
+        
+        <div class="article-item item_html " id="item35353" data-item-id="35353" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>自動補正の仕組み</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>「自動」ボタンをクリックすると、AIが映像の輝度（明るさ）やコントラスト、彩度（色の鮮やかさ）などを解析し、<span class="decoration-02">ワンクリックで「いい感じ」の見た目に自動で調整</span>してくれます。</li>
+            <li>露光量やハイライト、シャドウなどの各スライダーが自動で動くため、AIの調整をベースに、そこから手動で微調整することも可能です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item35354" data-item-id="35354" data-item-type="ItemRichText"><div class="item-body-hbr">【時短効果の可視化】<br>
+基本的な色調補正：手作業での試行錯誤に5分 → AIなら1クリック</div></div>
+        
+        <div class="article-item item_image " id="item35355" data-item-id="35355" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/355/medium/5621674f-3eef-4dbf-bfae-6263cbf7565c.png?1753155557" title=""><img class="img-responsive item-image" alt=" (35355)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/355/medium/5621674f-3eef-4dbf-bfae-6263cbf7565c.png?1753155557" width="640" height="382" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item35356" data-item-id="35356" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/356/medium/3ce8bcd6-29cd-4bd3-8d8b-002a2f396a05.png?1753155582" title=""><img class="img-responsive item-image" alt=" (35356)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/356/medium/3ce8bcd6-29cd-4bd3-8d8b-002a2f396a05.png?1753155582" width="640" height="382" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item35357" data-item-id="35357" data-item-type="ItemHeading"><h2 class="item-body">【2-3】長回し映像の救世主「シーン編集の検出」</h2></div>
+        
+        <div class="article-item item_markdown " id="item35358" data-item-id="35358" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：15分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item35359" data-item-id="35359" data-item-type="ItemRichText"><div class="item-body-hbr">イベントやセミナーの記録映像など、すでに編集済みの動画ファイルを素材として受け取り、「この中から一部を切り出して使ってほしい」と依頼されるケースは少なくありません。<br>
+従来は、映像を最初から最後まで再生してカットの変わり目を探す必要がありましたが、この作業もAIで自動化できます。</div></div>
+        
+        <div class="article-item item_heading " id="item35360" data-item-id="35360" data-item-type="ItemHeading"><h3 class="item-body">活用シーンと適用方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35361" data-item-id="35361" data-item-type="ItemRichText"><div class="item-body-hbr">「シーン編集の検出」は、1本の動画クリップの中に含まれるカットの変わり目をAIが自動で検出し、その箇所に切れ目（カット）を入れてくれる機能です。</div></div>
+        
+        <div class="article-item item_html " id="item35362" data-item-id="35362" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>シーン編集の検出 操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>複数のシーンが繋がった、1本の長い動画クリップをタイムラインに配置します。</li>
+            <li>そのクリップを右クリックします。</li>
+            <li>表示されたメニューから「シーン編集の検出」を選択します。</li>
+            <li>ダイアログボックスが表示されたら、「検出された各カットポイントにカットを適用」がオンになっていることを確認し、「分析」ボタンをクリックします。</li>
+            <li>AIによる分析が完了すると、元の1本のクリップが、カットの変わり目ごとに自動で分割されます。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item35363" data-item-id="35363" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=CkmhM&amp;item_id=35363" rel="nofollow noopener noreferrer" target="_blank">教材4 【任意】Premiere Pro AI機能徹底マスター 2−5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材4 【任意】Premiere Pro AI機能徹底マスター 2−5" data-reference="https://www.dropbox.com/scl/fi/z0vino46afoire7kkfiin/VideoEditor-AiPremierPro_2.5.1.0_.mp4?rlkey=ob4hqs7ws15rq5w5h72zb1r13&amp;st=taocz1xr&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/363/thumb/f2bd9db3-0aae-4825-803b-1ea419da6b38.png?1754962572" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item35364" data-item-id="35364" data-item-type="ItemRichText"><div class="item-body-hbr">この機能を使えば、長回しの映像を効率的に整理し、必要なシーンだけを素早く抜き出して編集作業に入ることができます。</div></div>
+        
+        <div class="article-item item_heading " id="item35365" data-item-id="35365" data-item-type="ItemHeading"><h3 class="item-body">【実践】提供素材を自動で分割しよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35366" data-item-id="35366" data-item-type="ItemRichText"><div class="item-body-hbr">提供される「複数のシーンが繋がった1本の動画ファイル」に「シーン編集の検出」を適用し、クリップが自動で分割されることを確認してみましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item35367" data-item-id="35367" data-item-type="ItemMarkdown"><h4 id="section">素材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item35368" data-item-id="35368" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=CkmhM&amp;item_id=35368" rel="nofollow noopener noreferrer" target="_blank">教材4 【任意】Premiere Pro AI機能徹底マスター 2-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材4 【任意】Premiere Pro AI機能徹底マスター 2-6" data-reference="https://www.dropbox.com/scl/fi/2awb74nt41dihv1xkli5v/VideoEditor-AiPremierPro_2.6.1.0_.mp4?rlkey=ai0c6s4qzib10rjf25ueubohe&amp;st=2z4blc9y&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/368/thumb/a656f1eb-3e8a-4f0d-a3bf-899ba70813af.png?1754962582" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item35369" data-item-id="35369" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/369/medium/19ea886a-b8ae-466f-ab88-60ec675db249.png?1753155754" title=""><img class="img-responsive item-image" alt=" (35369)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/035/369/medium/19ea886a-b8ae-466f-ab88-60ec675db249.png?1753155754" width="640" height="382" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item35370" data-item-id="35370" data-item-type="ItemHeading"><h2 class="item-body">【2-4】2章 -章末課題- [マルチカム風映像の色調統一]</h2></div>
+        
+        <div class="article-item item_markdown " id="item40151" data-item-id="40151" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item35371" data-item-id="35371" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35372" data-item-id="35372" data-item-type="ItemRichText"><div class="item-body-hbr">提供される「色味がバラバラな複数クリップを繋げた1本の動画ファイル」に対し、この章で学んだ以下の2つのAI機能を連携させて、<span class="decoration-02">「カットごとに分割され、かつ全体の色調が統一された映像」</span>に仕上げてください。</div></div>
+        
+        <div class="article-item item_html " id="item35373" data-item-id="35373" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><strong>シーン編集の検出</strong>：1本の動画ファイルを、カットごとに分割する。</li>
+  <li><strong>カラーマッチ</strong>：分割された各クリップの色味を、基準となるクリップの色味に統一する。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item35374" data-item-id="35374" data-item-type="ItemMarkdown"><h4 id="section">素材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item35375" data-item-id="35375" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=CkmhM&amp;item_id=35375" rel="nofollow noopener noreferrer" target="_blank">教材4 【任意】Premiere Pro AI機能徹底マスター 2-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材4 【任意】Premiere Pro AI機能徹底マスター 2-7" data-reference="https://www.dropbox.com/scl/fi/naurd0qzavlpm9flfgpfx/VideoEditor-AiPremierPro_2.7.1.0_.mp4?rlkey=wzvt7nzkpij5zvt9vpv8p2epx&amp;st=zul7tf13&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/375/thumb/3c2b4f80-3cca-43c6-9837-800182afaf52.png?1754962594" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item35376" data-item-id="35376" data-item-type="ItemHeading"><h3 class="item-body">解答解説</h3></div>
+        
+        <div class="article-item item_html " id="item35377" data-item-id="35377" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>提供された動画ファイルをタイムラインに配置します。</li>
+            <li>クリップを右クリックし、「シーン編集の検出」を実行して、クリップをカットごとに分割します。</li>
+            <li>分割されたクリップの中から、最も基準にしたいクリップを1つ選びます。</li>
+            <li>「カラーマッチ」機能を使い、他のすべてのクリップの色味を、基準のクリップの色味に一つずつ合わせていきます。</li>
+            <li>全てのクリップの色調に統一感が生まれれば完成です。不明点があれば、コーチに相談してみましょう。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item35378" data-item-id="35378" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">制作例</span></div></div>
+        
+        <div class="article-item item_link " id="item35379" data-item-id="35379" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=CkmhM&amp;item_id=35379" rel="nofollow noopener noreferrer" target="_blank">教材4 【任意】Premiere Pro AI機能徹底マスター 2-8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材4 【任意】Premiere Pro AI機能徹底マスター 2-8" data-reference="https://www.dropbox.com/scl/fi/a0awobzmr0volpe1t2m0q/VideoEditor-AiPremierPro_2.8.1.0_.mp4?rlkey=nogmjepzq8t5f6xogjn5ufurk&amp;st=4d218khj&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/379/thumb/069548ff-130c-4597-9be0-dbf2fd1ac990.png?1754962604" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item35380" data-item-id="35380" data-item-type="ItemRichText"><div class="item-body-hbr">これで「2章：映像編集の自動化 - AIによる品質向上テクニック」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item35448" data-item-id="35448" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="9eMD6" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="DxsXm" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="IuTL4VsmPktBJW7hSkDTHw==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

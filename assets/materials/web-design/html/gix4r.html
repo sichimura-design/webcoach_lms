@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/GiX4r -->
+<!-- clipkit-fetched-at: 2026-09-17T11:10:31.246Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>【1-2】商品販売のランディングページの制作 -基礎編-  - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/GiX4r">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="【1-2】商品販売のランディングページの制作 -基礎編-  - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/588/medium/18e04e27-13a8-4387-9b7b-5d50329ee2e1.png?1743735607">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="【1-2】商品販売のランディングページの制作 -基礎編- ">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/GiX4r">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/588/large/18e04e27-13a8-4387-9b7b-5d50329ee2e1.png?1743735607">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="KrTJ2DDxAr0buM84iFszWdv9sd6NcMAuXIaZAlzpwCs0v66by-O3bE3ZTOca9XpTtKgvFeZccjEfGrnWGNv6AQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">【1-2】商品販売のランディングページの制作 -基礎編- </div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1. 要件定義書読み込み（ヒアリング）</a><ul><li><a href="#heading1" class="tocLink">要件定義書 ・商品（飲料水）販売ランディングページ</a><ul><li><a href="#heading2" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading3" class="tocLink">2. 構成・テキスト原稿の制作</a><ul><li><a href="#heading4" class="tocLink">構成・テキスト原稿の制作で確認すべき内容と思考工程</a></li><li><a href="#heading5" class="tocLink">3C分析</a></li><li><a href="#heading6" class="tocLink">ターゲティング</a></li><li><a href="#heading7" class="tocLink">ペルソナ設定</a></li></ul></li><li><a href="#heading8" class="tocLink">3. ワイヤーフレームの制作</a><ul><li><a href="#heading9" class="tocLink">ワイヤーフレーム制作で確認すべき内容と思考工程</a></li><li><a href="#heading10" class="tocLink">フローティングボタンとは</a></li><li><a href="#heading11" class="tocLink">1. CTAボタンの設置場所の例</a><ul><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">2. フローティングボタンの具体例</a><ul><li><a href="#heading16" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25651" data-item-id="25651" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/hA1XN" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/j0lbf" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item9247" data-item-id="9247" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">1. 要件定義書読み込み（ヒアリング）</h2></div>
+        
+        <div class="article-item item_rich_text " id="item9250" data-item-id="9250" data-item-type="ItemRichText"><div class="item-body-hbr">要件定義書は依頼者によって内容が違うためまずはしっかり読み込み、<span class="decoration-01">解らない点や知りたい点が要件定義書に組み込まれていない場合はヒアリングを実施しましょう。</span><br>
+<br>
+では、早速ですが以下の要件定義書を読み込んでいきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item9251" data-item-id="9251" data-item-type="ItemHeading"><h3 class="item-body" id="heading1">要件定義書 ・商品（飲料水）販売ランディングページ</h3></div>
+        
+        <div class="article-item item_image " id="item10588" data-item-id="10588" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/588/medium/18e04e27-13a8-4387-9b7b-5d50329ee2e1.png?1743735607" title=""><img class="img-responsive item-image" alt=" (10588)" data-reference="" src="../../_assets/8c5f56d324.webp" width="640" height="395"></a><h4 id="heading2"></h4></div></div>
+        
+        <div class="article-item item_text " id="item9253" data-item-id="9253" data-item-type="ItemText"><div class="item-body-hbr">上記要件定義書を読み込んで、実際であれば解らない部分・質問事項のヒアリング実施となりますが、今回は要件定義書のみで進めていきましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item9270" data-item-id="9270" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_heading " id="item9248" data-item-id="9248" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">2. 構成・テキスト原稿の制作</h2></div>
+        
+        <div class="article-item item_html " id="item9254" data-item-id="9254" data-item-type="ItemHtml"><div class="item-body"><div>実際の作業で、重要となるのが、<span class="decoration-02">構成・テキスト原稿の制作</span>となります。</div>
+<div>今回は要件定義書内のキャッチコピーとマイクロコピーを使用しても良いと記載されていますが、実作業では、<span class="decoration-01">ベースとなるこの部分もデザイナーが考える事も多く、最も力をかけるべきところ</span>といっても過言ではありません。</div></div></div>
+        
+        <div class="article-item item_heading " id="item9261" data-item-id="9261" data-item-type="ItemHeading"><h3 class="item-body" id="heading4">構成・テキスト原稿の制作で確認すべき内容と思考工程</h3></div>
+        
+        <div class="article-item item_html " id="item9256" data-item-id="9256" data-item-type="ItemHtml"><div class="item-body">    <div class="content-area">
+          <ol>
+            <li><span class="decoration-02">分析をし、根拠を掘り下げて構成・テキスト原稿を制作：</span>
+                <ul><li>ユーザーが最初に目にする、ファーストビューやCTA（コールトゥーアクション）周辺は特に企業分析を実施し、顧客の行動や気持ちを洞察し根拠を掘り下げ、そこから得られる隠れた本音や動機を考えながら構成を考え、テキスト原稿を制作していきましょう。</li></ul><br>
+            </li><li><span class="decoration-02">参考サイトの確認</span>
+          <ul><li>参考サイトや参考LPを探し、最低でも5個以上参考LPをリサーチした上で構成</li>
+            <li>テキスト原稿の制作に取り掛かると、ランディングページ（LP）制作を初めたばかりの方は特に制作しやすくなります。</li><div>
+                  <li>参考サイトの例：</li></div><a href="https://lp-web.com/">ランディングページ(LP)集めました。</a><div><a href="https://rdlp.jp/lp-archive/">LPの最新デザインまとめ参考サイト</a></div><div><a href="https://site-advance.info/">LPデザインに参考になるランディングページ集</a></div></ul><br>
+            </li><li><span class="decoration-02">ユーザーのために必要なコンテンツの確認</span>
+                <ul><li>上記2つを終えた後に、よくある質問やQ＆A・お客様の声など、必要と思われるコンテンツの素材やテキストが無い場合にはクライアントに依頼をしなくてはいけません。<div>
+                  </div></li><li>そのため、必要なコンテンツはこの段階で確認し依頼をしておく必要があります。</li></ul></li></ol></div><br>
+    </div></div></div>
+        
+        <div class="article-item item_markdown " id="item10591" data-item-id="10591" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_heading " id="item9262" data-item-id="9262" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">3C分析</h3></div>
+        
+        <div class="article-item item_html " id="item9260" data-item-id="9260" data-item-type="ItemHtml"><div class="item-body"><div>3C分析とは<span class="decoration-02">「Company（自社）」「Customer（顧客）」「Competitor（競合）」</span>の視点から戦略を立てるフレームワーク</div></div></div>
+        
+        <div class="article-item item_markdown " id="item9265" data-item-id="9265" data-item-type="ItemMarkdown"><ol>
+  <li>まず自社がどんな強みや独自性（USP）を持ち、どんな価値を提供できるかを整理します。</li>
+  <li>次に顧客が抱える問題や要望を掘り下げ、具体的なニーズや購買動機を把握します。</li>
+  <li>競合との比較では、価格帯やサービス内容、集客チャネルなどを確認し、差別化ポイントを見極めます。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_markdown " id="item9266" data-item-id="9266" data-item-type="ItemMarkdown"><p>3C分析を踏まえると、LPで強調すべき魅力や訴求角度が明確になり、コンバージョン向上に直結しますので、定期的に市場動向をチェックし、分析結果を更新しましょう。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item10589" data-item-id="10589" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_heading " id="item9263" data-item-id="9263" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">ターゲティング</h3></div>
+        
+        <div class="article-item item_markdown " id="item9267" data-item-id="9267" data-item-type="ItemMarkdown"><ul>
+  <li>ターゲットを明確化する第一歩として、年齢・性別・職業などのデモグラ情報を整理します。</li>
+  <li>続いて行動パターンや利用シーンを想定し、商品・サービスがどのような場面で役立つかを分析します。</li>
+  <li>SNSや口コミサイト、検索キーワードなどを調べ、リアルな声やトレンドを掴むのも有効です。</li>
+  <li>ターゲットが抱える潜在的な課題や欲求を洗い出し、「自分にも当てはまる」と思わせる訴求を用意することで、LPの構成やコピーライティングの考える際に活用できます。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item10590" data-item-id="10590" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_heading " id="item9264" data-item-id="9264" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">ペルソナ設定</h3></div>
+        
+        <div class="article-item item_markdown " id="item9268" data-item-id="9268" data-item-type="ItemMarkdown"><ul>
+  <li>ペルソナ設定とは、具体的な「理想顧客像」を設定することで、発信内容を最適化する手法です。</li>
+  <li>年齢や職業だけでなく、価値観、ライフスタイル、趣味など内面的な要素を深堀りする点が、ターゲティングとの違いです。</li>
+  <li>「忙しい朝でも時短でケアしたい」「オーガニック志向」など、潜在的な欲求や悩みをあぶり出します。</li>
+  <li>こうした内面のリアルな動機に合わせたコピーやデザインは、共感を呼びやすく説得力が増します。</li>
+  <li>ペルソナ設定を丁寧に行うと、LP全体のメッセージが「自分ごと」として捉えられやすくなります。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item9269" data-item-id="9269" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_heading " id="item9249" data-item-id="9249" data-item-type="ItemHeading"><h2 class="item-body" id="heading8">3. ワイヤーフレームの制作</h2></div>
+        
+        <div class="article-item item_text " id="item9271" data-item-id="9271" data-item-type="ItemText"><div class="item-body-hbr">ワイヤーフレームとは、今回制作するランディングページ（LP）の構成やレイアウトを視覚的に解るようにする設計図ということです。<br><br>パソコンとスマートフォンで同じものを使用する場合もありますが、各デバイスに合わせたレスポンシブ仕様にすることもありますので、実際のお仕事ではこちらも確認しておきましょう。（今回は同じものを使用と考えてワイヤーフレームは1つで制作します。）</div></div>
+        
+        <div class="article-item item_html " id="item9272" data-item-id="9272" data-item-type="ItemHtml"><div class="item-body"><div>ワイヤーフレーム制作のポイントは、ランディングページをしっかりと表現するというより<span class="decoration-02">最低限のテキスト/構成/レイアウトが解るように配置する程度にする</span>ことです。</div></div></div>
+        
+        <div class="article-item item_html " id="item9273" data-item-id="9273" data-item-type="ItemHtml"><div class="item-body"><div>ワイヤーフレームの制作は<span class="decoration-01">Canva・Figma・illustrator・Photoshop</span>などを使用すると良いでしょう。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item10592" data-item-id="10592" data-item-type="ItemMarkdown"><blockquote>
+  <p><strong>💡補足</strong></p>
+
+  <ul>
+    <li>要件定義書・ワイヤーフレーム制作までをクライアントが実施し、次のデザインカンプからデザイナーが実施するという事も多くあります。</li>
+    <li>ワイヤーフレームを自身で作らず、クライアントの作成したものであれば、要件定義書同様、ヒアリングで解らない事はしっかり確認しましょう。</li>
+  </ul>
+</blockquote>
+</div>
+        
+        <div class="article-item item_heading " id="item9275" data-item-id="9275" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">ワイヤーフレーム制作で確認すべき内容と思考工程</h3></div>
+        
+        <div class="article-item item_html " id="item9277" data-item-id="9277" data-item-type="ItemHtml"><div class="item-body">    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">1. 図形やイラスト・写真を使用</span><div>
+                ・<span class="decoration-01">必要なポイントを図形やイラストで制作し、このような写真を使用して欲しい（使用したい）という場合はイメージ写真も添付</span>しておく事が大切です。</div></li><br>
+            <li><span class="decoration-02">2. 必要コンテンツの再確認</span><div>
+                ・構成の段階で提案した必要なコンテンツや素材が集められているのか、変更が必要なコンテンツであるのかもこの段階で確認しておきましょう。</div></li><br>
+            <li><span class="decoration-02">3. 購入ボタンの設置場所の再確認</span><div>
+                ・購入ボタンは、<span class="decoration-01">上中下の3箇所に設置するか、フローティングボタンで常に追尾</span>するようにしておくと良いでしょう。</div><div>・<span class="decoration-01">CTAボタン</span>は目立つ色や大きさを用い、ユーザーの視線を自然に誘導しましょう。</div><div>・購入や問い合わせを促す文言は、短く行動をイメージしやすいフレーズが理想です。（例：「今すぐ試す」など）</div></li><br>
+            <li><span class="decoration-02">4. メールフォームの最適化</span><div>
+                ・フォームは入力項目を絞り、なるべく短時間で完了できるようにしましょう。さらに、エラー表示や入力補助（郵便番号自動入力、スマホ最適化など）を整え、離脱を防義ましょう。</div><div>・フォーム送信後のサンクスページやフォローメールで、追加情報や特典を提示すると効果的です。定期的なABテストで、ボタンデザインやフォーム項目を検証し、コンバージョン率を高めましょう。</div></li>      </ul>
+      <div class="content-area"></div></div>
+        
+        <div class="article-item item_heading " id="item9311" data-item-id="9311" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">フローティングボタンとは</h3></div>
+        
+        <div class="article-item item_link " id="item13216" data-item-id="13216" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=GiX4r&amp;item_id=13216" rel="nofollow noopener noreferrer" target="_blank">作業動画 LP制作の手順を学ぼう！2-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 LP制作の手順を学ぼう！2-1" data-reference="https://www.dropbox.com/scl/fi/xikyrnfdzlk45xy3vik21/LP.mov?rlkey=mxn652ih30h240fihtgmo4vv6&amp;st=jujr22qi&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item9279" data-item-id="9279" data-item-type="ItemHtml"><div class="item-body"><div>・<span class="decoration-02">スクロールしてもついてくるコンテンツ</span>のことです。</div>
+<div>・フローティングメニューという言葉も聞いたことがあるという方は、フローティングメニューとボタンの違いを、下記のように使い分けると良いでしょう。</div><br>
+<div>・<span class="decoration-01">フローティングメニューは、</span><span class="decoration-02">ユーザーがスクーロールすることなく追従されるメニューで、すぐメニューのページに戻る事が出来ます。</span></div><br>
+<div>・<span class="decoration-01">フローティングボタンは、</span><span class="decoration-02">ユーザーに常にクリックをさせることが出来るボタン</span>ですが、フローティングボタンのデメリットは直接的な購入ボタンを配置すると離脱される傾向も見られるということです。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item10596" data-item-id="10596" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_heading " id="item9287" data-item-id="9287" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">1. CTAボタンの設置場所の例</h3></div>
+        
+        <div class="article-item item_markdown " id="item9292" data-item-id="9292" data-item-type="ItemMarkdown"><p><strong>(1) ファーストビュー（上部）</strong></p>
+
+<ul>
+  <li><strong>設置理由：</strong>最初に「LINE登録」を促す</li>
+  <li><strong>ボタン文言：</strong>「まずはLINEで無料体験」</li>
+  <li><strong>デザイン：</strong>
+    <ul>
+      <li>アニメーション：キラッと光る
+  特徴：目を引くアニメーションにて、目立ちしやすい</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item9294" data-item-id="9294" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/294/medium/797f7480-dd8c-4d37-ab51-7217c41e681e.png?1743147810" title=""><img class="img-responsive item-image" alt=" (9294)" data-reference="" src="../../_assets/475f0a1e74.webp" width="640" height="360"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item10594" data-item-id="10594" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_markdown " id="item9296" data-item-id="9296" data-item-type="ItemMarkdown"><p><strong>(2) 商品説明セクション直後（中部）</strong></p>
+
+<ul>
+  <li><strong>設置理由：</strong>商品ベネフィットを読んだ後の自然なタイミング</li>
+  <li><strong>ボタン文言：</strong>「まずはLINEで無料体験」
+    <ul>
+      <li>補足テキスト：「さらに今ならLINE登録で7大講義プレゼント！」</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item9298" data-item-id="9298" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/298/medium/54710fe6-dcfa-465e-99ea-e4ee2b13a920.png?1743147866" title=""><img class="img-responsive item-image" alt=" (9298)" data-reference="" src="../../_assets/c53ec4b91e.webp" width="640" height="360"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item10595" data-item-id="10595" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_markdown " id="item9297" data-item-id="9297" data-item-type="ItemMarkdown"><p><strong>(3) クロージングセクション（下部）</strong></p>
+
+<ul>
+  <li><strong>設置理由：</strong>全体を読み終えたユーザーに最後の後押し</li>
+  <li><strong>ボタン文言：</strong>「まずはLINEで無料体験」
+    <ul>
+      <li>補足テキスト：「さらに提携企業への就職も」</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item9299" data-item-id="9299" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/299/medium/b19d360e-0299-4609-8c7a-2a6ed4ab8d8e.png?1743147891" title=""><img class="img-responsive item-image" alt=" (9299)" data-reference="" src="../../_assets/3553cbe00e.webp" width="640" height="360"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item10593" data-item-id="10593" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_heading " id="item9288" data-item-id="9288" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">2. フローティングボタンの具体例</h3></div>
+        
+        <div class="article-item item_markdown " id="item9300" data-item-id="9300" data-item-type="ItemMarkdown"><ul>
+  <li><strong>概要：</strong>
+    <ul>
+      <li>ページ左下（PCの場合のみ）とスクロールした際の下部、に常に表示し、購入意欲を逃さない仕組み</li>
+    </ul>
+  </li>
+  <li><strong>動作例：</strong>
+    <ul>
+      <li>スクロール固定表示</li>
+      <li>クリック時にLINEを起動（SPの場合のみ）</li>
+    </ul>
+  </li>
+  <li><strong>注意点：</strong>
+    <ul>
+      <li>サイズや色が目立ちすぎると逆効果になる恐れがある</li>
+      <li>クリック率をモニタリングし、効果が低ければ配置やデザインを再検討</li>
+    </ul>
+  </li>
+</ul>
+
+<p>これらを実践することで、ページ上の各ポイントで購入ボタンを自然に提示し、フローティング　ボタンで購入機会を取りこぼさないランディングページを構築できます。</p>
+
+</div>
+        
+        <div class="article-item item_image " id="item9302" data-item-id="9302" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/302/medium/ca649b10-31b9-4194-90be-0d928d5e369f.png?1743148160" title=""><img class="img-responsive item-image" alt=" (9302)" data-reference="" src="../../_assets/3846ab809b.webp" width="640" height="360"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item9301" data-item-id="9301" data-item-type="ItemMarkdown"><hr>
+<p>以上で、商品販売のランディングページの制作工程を学びました。</p>
+
+<p>次の『商品販売のランディングページの制作 -実践編-』では、上記の学習した内容を基に実際に制作します。</p>
+</div>
+        
+        <div class="article-item item_html " id="item25652" data-item-id="25652" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/hA1XN" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/j0lbf" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1. 要件定義書読み込み（ヒアリング）</a><ul><li><a href="#heading1" class="tocLink">要件定義書 ・商品（飲料水）販売ランディングページ</a><ul><li><a href="#heading2" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading3" class="tocLink">2. 構成・テキスト原稿の制作</a><ul><li><a href="#heading4" class="tocLink">構成・テキスト原稿の制作で確認すべき内容と思考工程</a></li><li><a href="#heading5" class="tocLink">3C分析</a></li><li><a href="#heading6" class="tocLink">ターゲティング</a></li><li><a href="#heading7" class="tocLink">ペルソナ設定</a></li></ul></li><li><a href="#heading8" class="tocLink">3. ワイヤーフレームの制作</a><ul><li><a href="#heading9" class="tocLink">ワイヤーフレーム制作で確認すべき内容と思考工程</a></li><li><a href="#heading10" class="tocLink">フローティングボタンとは</a></li><li><a href="#heading11" class="tocLink">1. CTAボタンの設置場所の例</a><ul><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">2. フローティングボタンの具体例</a><ul><li><a href="#heading16" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/hA1XN" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/j0lbf" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

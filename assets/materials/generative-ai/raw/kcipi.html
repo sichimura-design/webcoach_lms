@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="V4e8PbpHNfg9xQehXZBs8g==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1495" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_design/%E6%95%99%E6%9D%902-%E2%91%A1%20AI%E3%81%AB%E3%82%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%83%87%E3%82%A2%E7%99%BA%E6%83%B3%E3%81%A8%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E3%83%95%E3%83%AD%E3%83%BC%EF%BC%9A%20%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E7%B7%A8/KcIPi" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1章 AI素材作成の基礎知識と戦略 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%902-%E2%91%A1%20AI%E3%81%AB%E3%82%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%83%87%E3%82%A2%E7%99%BA%E6%83%B3%E3%81%A8%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E3%83%95%E3%83%AD%E3%83%BC%EF%BC%9A%20%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E7%B7%A8/KcIPi">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="1章 AI素材作成の基礎知識と戦略 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="1章 AI素材作成の基礎知識と戦略">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%902-%E2%91%A1%20AI%E3%81%AB%E3%82%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%83%87%E3%82%A2%E7%99%BA%E6%83%B3%E3%81%A8%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E3%83%95%E3%83%AD%E3%83%BC%EF%BC%9A%20%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E7%B7%A8/KcIPi">
+<meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%902-%E2%91%A1%20AI%E3%81%AB%E3%82%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%83%87%E3%82%A2%E7%99%BA%E6%83%B3%E3%81%A8%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E3%83%95%E3%83%AD%E3%83%BC%EF%BC%9A%20%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E7%B7%A8/KcIPi"
+    },
+    "headline": "1章 AI素材作成の基礎知識と戦略",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/clipkit/images/medium/missing.png",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-03T10:22:58+09:00",
+    "dateModified": "2025-09-21T18:11:00+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="ULu6C2J6RPdrnB617FRwH3gg_uKwmvGMiLFe9LDlbRjOi8Zv7MWPrZO0EFxrgjon4X3X89dm2V19HelS6tTtRw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材2-② AIによるアイデア発想と素材作成フロー： 素材作成編</div>
+
+          <div class="fw-bold h2">1章 AI素材作成の基礎知識と戦略</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item28996" data-item-id="28996" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="o7Lc4" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="uMGnZ" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item28845" data-item-id="28845" data-item-type="ItemHeading"><h2 class="item-body">1章 AI素材作成の基礎知識と戦略</h2></div>
+        
+        <div class="article-item item_markdown " id="item28846" data-item-id="28846" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：55分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item28847" data-item-id="28847" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28848" data-item-id="28848" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>前教材で作成したコンセプトを、具体的な素材の仕様に落とし込める。</li>
+  <li>複数のAIで一貫したスタイルの素材を生成するための「共通プロンプト」戦略を理解できる。</li>
+  <li>「コンセプトキーワード」と「共通プロンプト」の違いを明確に説明できる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item28849" data-item-id="28849" data-item-type="ItemHeading"><h2 class="item-body">【1-1】イントロダクション：アイデアをプロ品質の「素材」に昇華させる</h2></div>
+        
+        <div class="article-item item_markdown " id="item28850" data-item-id="28850" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：5分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item28851" data-item-id="28851" data-item-type="ItemHeading"><h3 class="item-body">本章のゴールと学習の流れ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28852" data-item-id="28852" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、具体的な素材作成に入る前の「戦略」と「準備」について学びます。<br>
+優れた設計図があれば、AIはより精度の高いアウトプットを返してくれます。<br>
+<br>
+この章のゴールは、<span class="decoration-02">素材作成の全体像を掴み、デザインに一貫性を保たせるための戦略を立てること</span>です。<br>
+これから制作するすべての素材の品質を左右する、非常に重要な工程となります。</div></div>
+        
+        <div class="article-item item_heading " id="item28853" data-item-id="28853" data-item-type="ItemHeading"><h2 class="item-body">【1-2】制作の準備：コンセプトの再確認</h2></div>
+        
+        <div class="article-item item_markdown " id="item28854" data-item-id="28854" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：5分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item28855" data-item-id="28855" data-item-type="ItemHeading"><h3 class="item-body">「発想支援編」の成果物を確認する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28856" data-item-id="28856" data-item-type="ItemRichText"><div class="item-body-hbr">まず、前教材「2-① 発想支援編」の最終課題で作成した「初期デザイン提案シート」を手元に準備しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item28857" data-item-id="28857" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>これからの制作の土台となる要素</strong><br></span>
+    <div class="content-area">
+<body>
+    <ul>
+        <li>デザインコンセプト（ステートメントとキーワード）</li>
+        <li>ターゲットペルソナ</li>
+        <li>ムードボード</li>
+        <li>サイト構成案</li>
+    </ul>
+    <p>これらの要素、特に<strong>コンセプト</strong>と<strong>ムードボード</strong>が、これから作成する全ての素材のクオリティと一貫性を左右する重要な基盤となります。</p>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="V4e8PbpHNfg9xQehXZBs8g==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item28858" data-item-id="28858" data-item-type="ItemHeading"><h2 class="item-body">【1-3】素材作成の計画立案</h2></div>
+        
+        <div class="article-item item_markdown " id="item28859" data-item-id="28859" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item28860" data-item-id="28860" data-item-type="ItemHeading"><h3 class="item-body">必要なアセットの洗い出し</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28861" data-item-id="28861" data-item-type="ItemRichText"><div class="item-body-hbr">LP（ランディングページ）を一枚のデザインとして完成させるには、様々なデザイン素材（=<span class="decoration-02">アセット</span>）が必要です。<br>
+いきなり作り始めるのではなく、まずは「初期デザイン提案シート」とサイト構成案を基に、どのようなアセットが必要になるかをリストアップします。</div></div>
+        
+        <div class="article-item item_html " id="item28862" data-item-id="28862" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">ビジュアルアセットリストの例</span>
+    <ul>
+      <li>キービジュアル：1点</li>
+      <li>サービス特徴を説明するためのイラスト：3点</li>
+      <li>お客様の声に使う利用者のアイコン：4点</li>
+      <li>CTAボタンの背景に敷く装飾パターン：1点</li>
+      <li>外部SNSで告知するための広告バナー：2サイズ</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">テキストアセットリストの例</span>
+    <ul>
+      <li>ヒーローセクションの最終的なキャッチコピーとリード文</li>
+      <li>各セクションの見出しと説明文</li>
+      <li>お客様の声の具体的なテキスト</li>
+      <li>FAQの質問と回答文</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28863" data-item-id="28863" data-item-type="ItemRichText"><div class="item-body-hbr">このように、<span class="decoration-02">事前に必要なものを洗い出すこと</span>で、計画的に、そして抜け漏れなく素材作成を進めることができます。</div></div>
+        
+        <div class="article-item item_heading " id="item28864" data-item-id="28864" data-item-type="ItemHeading"><h3 class="item-body">アセットの調達戦略</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28865" data-item-id="28865" data-item-type="ItemRichText"><div class="item-body-hbr">洗い出したアセットを、どのように調達するかの判断基準を学びましょう。<br>
+全てをAIで生成するのではなく、適材適所でツールや手法を使い分ける視点が重要です。</div></div>
+        
+        <div class="article-item item_html " id="item28866" data-item-id="28866" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col"><div>調達方法</div></th>
+                <th scope="col"><div>特徴</div></th>
+                <th scope="col"><div>こんな時におすすめ</div></th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row"><div>AI生成</div></th>
+            <td><div>オリジナリティの高い素材を高速に作成できるが、意図通りの調整には技術が必要。</div></td>
+            <td><div>ブランドの世界観を象徴するキービジュアル、ユニークなイラストが欲しい時。</div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div>ストック素材</div></th>
+            <td><div>高品質な写真やイラストがすぐ手に入るが、他と被る可能性があり、コストもかかる。</div></td>
+            <td><div>一般的なイメージ写真や、AIでの生成が難しい特定のシチュエーションの写真が欲しい時。</div></td>
+        </tr>
+        <tr>
+            <th scope="row"><div>自作</div></th>
+            <td><div>完全にオリジナリティを担保できるが、最も時間とスキルを要する。</div></td>
+            <td><div>ブランドロゴや、非常に精密な図解など、AIや素材サイトでは対応できないもの。</div></td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item28867" data-item-id="28867" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>注意：AIでの作成が難しい素材の例</strong><br></span>
+    <div class="content-area">
+<body>
+    <ul>
+        <li><strong>特定のロゴや精密なテキストを含む画像：</strong>AIは文字やロゴを正確に描くのが苦手です。これらはIllustratorなどで作成し、後から合成するのが基本です。</li>
+        <li><strong>複数の人物が複雑に絡み合う特定のシーン：</strong>人物の指の本数や手足の繋がりなどが不自然になりやすい傾向があります。</li>
+        <li><strong>ブランドキャラクターなど、完全な一貫性が求められる連続したイラスト：</strong>同じキャラクターを、全く同じ特徴で、異なるポーズで何枚も生成するのは非常に高度な技術を要します。</li>
+    </ul>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="V4e8PbpHNfg9xQehXZBs8g==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item28868" data-item-id="28868" data-item-type="ItemHeading"><h2 class="item-body">【1-4】一貫性を保つための「共通プロンプト」戦略</h2></div>
+        
+        <div class="article-item item_markdown " id="item28869" data-item-id="28869" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：15分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item28870" data-item-id="28870" data-item-type="ItemHeading"><h3 class="item-body">「コンセプトキーワード」と「共通プロンプト」の違い</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28871" data-item-id="28871" data-item-type="ItemRichText"><div class="item-body-hbr">AIで複数のビジュアル素材を作成する際、デザイン全体で一貫したトーン＆マナーを保つことが非常に重要です。<br>
+そのために、「共通プロンプト」という考え方を活用します。<br>
+ここで、前教材で扱った「コンセプトキーワード」との違いを明確にしておきましょう。</div></div>
+        
+        <div class="article-item item_html " id="item28872" data-item-id="28872" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">コンセプトキーワード</span>は、デザインの<span class="decoration-02">「何を（What）」伝えるか</span>を定義する、抽象的・概念的な言葉です。（例：「透明性」「心地よさ」「知的」）</li>
+  <li><span class="decoration-01">共通プロンプト</span>は、そのコンセプトをビジュアルとして<span class="decoration-02">「どのように（How）」見せるか</span>をAIに指示する、具体的・視覚的な言葉です。（例：「柔らかい朝の光」「ミニマルな構図」）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28873" data-item-id="28873" data-item-type="ItemRichText"><div class="item-body-hbr">つまり、デザインの魂である「コンセプト」を、<span class="decoration-02">AIが理解できる「共通プロンプト」に翻訳する作業</span>が、このパートの目的です。</div></div>
+        
+        <div class="article-item item_heading " id="item28874" data-item-id="28874" data-item-type="ItemHeading"><h3 class="item-body">練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28875" data-item-id="28875" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+「発想支援編」で作成した自身のプロジェクトの「コンセプトキーワード」と「ムードボード」を基に、画像生成AIでビジュアルのトーン＆マナーを統一するための「共通プロンプト」を、具体的なキーワードや文章で5つ以上作成してみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item28876" data-item-id="28876" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"></span><span class="decoration-01">解答例（テーマA：サステナブルファッションブランドの場合）：</span> </div></div>
+        
+        <div class="article-item item_code " id="item29680" data-item-id="29680" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>1. 柔らかい朝の光、自然光
+2. ミニマルでクリーンな構図、シンプルな背景
+3. 穏やかで静かな雰囲気
+4. アースカラー、ニュートラルカラー
+5. 高品質な写真、シャープな焦点、35mmフィルム風</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item28878" data-item-id="28878" data-item-type="ItemHeading"><h2 class="item-body">【1-5】章末課題：素材作成計画シートの作成</h2></div>
+        
+        <div class="article-item item_markdown " id="item28879" data-item-id="28879" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item28880" data-item-id="28880" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28881" data-item-id="28881" data-item-type="ItemRichText"><div class="item-body-hbr">この章で学んだことを基に、1章で選択した自身のプロジェクトテーマについて、「素材作成計画シート」を作成してください。<br>
+<br>
+以下の項目を記述して、具体的な制作の準備を整えましょう。</div></div>
+        
+        <div class="article-item item_html " id="item28882" data-item-id="28882" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>必要なビジュアルアセットリスト（箇条書きで5つ以上）</li>
+  <li>必要なテキストアセットリスト（箇条書きで3つ以上）</li>
+  <li>デザインのトーン＆マナーを維持するための共通プロンプト（キーワードや文章）</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item28884" data-item-id="28884" data-item-type="ItemHeading"><h3 class="item-body"> 解答解説</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28885" data-item-id="28885" data-item-type="ItemRichText"><div class="item-body-hbr">この課題は、本格的な制作に入る前の重要な設計図となります。<br>
+<br>
+以下に、完成形のイメージとして「素材作成計画シート」の見本を提示します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item28886" data-item-id="28886" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">▼解答例</span></div></div>
+        
+        <div class="article-item item_html " id="item28887" data-item-id="28887" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">1. ビジュアルアセットリスト：</span>
+    <ul>
+      <li>LP用キービジュアル 1点</li>
+      <li>ブランドイメージを伝えるサブ画像 3点</li>
+      <li>「素材のこだわり」「透明性」など特徴を示すアイコン 4点</li>
+      <li>Instagram告知用バナー（正方形） 2点</li>
+      <li>Web広告用バナー（レクタングル） 2点</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">2. テキストアセットリスト：</span>
+    <ul>
+      <li>LP全体のキャッチコピーとリード文</li>
+      <li>「私たちの想い」セクションのコンセプト説明文</li>
+      <li>「3つの特徴」セクションの各解説文</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">3. 共通プロンプト：</span>
+    <ul>
+      <li>柔らかい朝の光, ミニマルでクリーン, 自然な質感, 穏やかで静かな, 洗練された, アースカラー, 高品質な写真, フィルムのような質感</li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28888" data-item-id="28888" data-item-type="ItemRichText"><div class="item-body-hbr">これで「1章 AI素材作成の基礎知識と戦略」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item28995" data-item-id="28995" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="o7Lc4" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="uMGnZ" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="V4e8PbpHNfg9xQehXZBs8g==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

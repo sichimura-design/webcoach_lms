@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/bE64f -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48517" data-item-id="48517" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生成AIの得意なこと・苦手なこと | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading { font-size: 20px; font-weight: 700; color: #3D3D3D; margin: 32px 0 14px; }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .styled-list { padding-left: 22px; margin: 16px 0; }
+  .styled-list li { font-size: 15px; line-height: 2; color: #444; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    h2.section-heading { font-size: 20px; }
+  }
+  .toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+  .toc-link:hover { color: #E85D4A; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="CVCpyMTFqN3d-ZABeBnT-mcLXO9brdKgorj4XDPsZVx8nmzZAQUcfG5z71ELmM187o9rpeA85dvBm_DmpBUs4A"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 1-4</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">生成AIの得意なこと・苦手なこと</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 1: AI基礎知識 ／ 所要時間：約15分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約15分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">生成AIの具体的な活用シーンと、利用上の注意点・限界を理解し、適切に使い分ける判断ができるようになる</p>
+</div>
+
+  <!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/igUQp" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/hxQW8" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">生成AIの得意なこと（活用シーン具体例）</a></li>
+    <li><a href="#sec2" class="toc-link">生成AIの苦手なこと（注意点と限界）</a></li>
+    <li><a href="#sec3" class="toc-link">得意・不得意 仕分けクイズ</a></li>
+  </ol>
+</div>
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    新しい商品のキャッチコピーを考えなければいけないのに、まったくアイデアが浮かばない…。<br>
+    そんなとき、AIに「10個アイデアを出して」とお願いしたら、ものの数秒で多様な案が出てきました。<br><br>
+    一方で、AIに「この薬を飲んでも大丈夫？」と聞いたら、もっともらしい回答が…。でもそれ、本当に正しい？<br><br>
+    <strong class="accent">AIの「得意」と「苦手」を知ることが、上手に付き合うための最重要ポイントです。</strong>
+  </p>
+</div>
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>「AIは何でもできる」と過信しがちだが、<strong class="accent">苦手な領域を理解することが安全な活用の第一歩</strong></li>
+    <li>ハルシネーションは「AIの不具合」ではなく<strong class="accent">仕組み上の特性</strong>。正しく理解すれば怖くない</li>
+  </ul>
+</div>
+
+
+<!-- セクション 1 -->
+<h2 class="section-heading" id="sec1">1. 生成AIの得意なこと（活用シーン具体例）</h2>
+
+<p class="text-body">
+  生成AIは、私たちの仕事や創造活動、情報収集のあり方を大きく変える可能性があります。ここでは、特にテキスト生成AIや画像生成AIを中心に、どのようなことが得意で、どんな場面で役立つのか、具体的な活用シーンを見ていきましょう。
+</p>
+
+<h3 class="sub-heading">アイデアの壁打ち相手</h3>
+
+<p class="text-body">
+  何か新しいことを始めようとするとき、アイデアがなかなか浮かばなかったり、考えがまとまらなかったりすることがあります。そんなとき、生成AIは優秀な<strong class="accent">「アイデアの壁打ち相手」</strong>になってくれます。
+</p>
+
+<ul class="styled-list">
+  <li><strong class="accent">ブレインストーミング</strong> — 新商品のキャッチコピー、イベント企画、ブログ記事のテーマなど、様々なアイデアを大量に出してくれます</li>
+  <li><strong class="accent">思考の整理・深掘り</strong> — 漠然としたアイデアに対して質問を投げかけてもらうことで、考えを具体化できます</li>
+  <li><strong class="accent">多角的な視点の獲得</strong> — 賛成意見・反対意見・中立的な意見など、異なる立場からの意見を得られます</li>
+</ul>
+
+<!-- 活用例ボックス -->
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <h3 style="font-size: 15px; font-weight: 700; color: #E85D4A; margin: 0 0 12px;">活用例：「夏の新メニューのアイデアをカフェ向けに20個提案して」</h3>
+  <div style="background: #F9F9F9; border-radius: 10px; padding: 16px 20px; font-size: 14px; line-height: 1.9; color: #555;">
+    <strong style="color: #3D3D3D;">出力例（一部抜粋）</strong><br>
+    1. トロピカル・マンゴーラッシー（ヨーグルト×マンゴー×ライム）<br>
+    2. 自家製ジンジャーエール（生姜・レモングラス・ソーダ）<br>
+    3. 冷やし抹茶アフォガート（抹茶＋バニラアイス）<br>
+    4. スイカとミントのスムージー<br>
+    5. パッションフルーツのアイスハーブティー（ハイビスカスベース）<br>
+    …このように<strong class="accent">20個のアイデアが数秒で生成</strong>されます。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>「新規事業のコンセプトを考えて」「小学生向け環境イベントの企画案を出して」など、アイデアの種が欲しいときにAIに相談するだけで、自分では思いつかなかった斬新な切り口が見つかることがあります。</p>
+</div>
+
+<h3 class="sub-heading">面倒な作業の自動化・効率化</h3>
+
+<p class="text-body">
+  日々の業務には、時間がかかる割に創造性をあまり必要としない定型的な作業も存在します。生成AIは、こうした作業を自動化・効率化し、<strong class="accent">より本質的な業務に集中する時間を生み出して</strong>くれます。
+</p>
+
+<ul class="styled-list">
+  <li><strong>文章の要約</strong> — 長い報告書やニュース記事を短時間で簡潔にまとめる</li>
+  <li><strong>議事録の作成サポート</strong> — 会議のメモを元に議事録の骨子や清書案を作成</li>
+  <li><strong>メールの作成・返信案</strong> — ビジネスメールのドラフト作成や翻訳をサポート</li>
+  <li><strong>文章の校正・リライト</strong> — 誤字脱字チェックや、より分かりやすい表現への修正</li>
+  <li><strong>プログラミングの補助</strong> — 簡単なコードの生成やバグチェック、コードの解説</li>
+</ul>
+
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <h3 style="font-size: 15px; font-weight: 700; color: #E85D4A; margin: 0 0 12px;">活用例：商品説明文のリライト</h3>
+  <div style="background: #F9F9F9; border-radius: 10px; padding: 16px 20px; font-size: 14px; line-height: 1.9; color: #555; margin-bottom: 12px;">
+    <strong style="color: #999;">元の文章：</strong><br>
+    このトースターはパンを焼くだけでなく、温め直しや冷凍パンの解凍もできます。コンパクトなのでキッチンにも置きやすいです。
+  </div>
+  <div style="background: #FFF8F0; border-radius: 10px; padding: 16px 20px; font-size: 14px; line-height: 1.9; color: #555;">
+    <strong style="color: #E85D4A;">AIによるリライト：</strong><br>
+    朝のひとときを、もっとおいしく。このスマートトースターは、ただパンを焼くだけではありません。ふわっと香ばしく焼き上げるのはもちろん、冷凍パンもまるで焼きたてのように復元し、昨日のクロワッサンもサクサクに温め直せます。
+  </div>
+</div>
+
+<h3 class="sub-heading">多様な表現の生成・選択肢の拡大</h3>
+
+<p class="text-body">
+  一つのアイデアや情報でも、伝え方や表現方法は数多くあります。生成AIは、多様なパターンの表現を瞬時に生成することで、<strong class="accent">私たちの選択肢を広げ、より効果的なコミュニケーションや創造活動を支援</strong>します。
+</p>
+
+<ul class="styled-list">
+  <li><strong>キャッチコピーやタイトルの複数案作成</strong> — 商品やサービスの魅力を伝えるコピーを多数生成</li>
+  <li><strong>デザインのバリエーション出し</strong> — 画像生成AIで同じテーマでも異なるスタイルや構図を生成</li>
+  <li><strong>プレゼンテーションの構成案作成</strong> — 伝えたいポイントから章立てやスライドの骨子を提案</li>
+</ul>
+
+
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">次のうち、生成AIが最も得意とする活用シーンはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. 特定の病気に対する治療法の判断</button>
+    <button class="quiz-opt" data-correct="true">B. 新商品のキャッチコピーを多数のパターンで生成する</button>
+    <button class="quiz-opt" data-correct="false">C. 今日のリアルタイムの株価を正確に教える</button>
+    <button class="quiz-opt" data-correct="false">D. 個人情報を含む顧客データの分析</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 多様な表現パターンを瞬時に大量生成することは、生成AIの最も得意とする分野の一つです。医学的判断やリアルタイム情報、個人情報の扱いには注意が必要です。
+  </div>
+</div>
+
+
+<!-- セクション 2 -->
+<h2 class="section-heading" id="sec2">2. 生成AIの苦手なこと（注意点と限界）</h2>
+
+<p class="text-body">
+  生成AIは非常に強力なツールですが、<strong class="accent">万能ではありません</strong>。得意なことがある一方で、苦手なことや限界、そして利用する上で注意すべき点も存在します。
+</p>
+
+<h3 class="sub-heading">嘘をつくことがある（ハルシネーション）</h3>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p><strong style="color: #3D3D3D;">最重要注意点：ハルシネーション（Hallucination：幻覚）</strong><br>
+  生成AIは、学習データに基づいてもっともらしい文章を生成しますが、<strong class="accent">その内容が常に事実に基づいているとは限りません</strong>。事実と異なる情報や、存在しない出来事を、あたかも真実であるかのように自然な文章で生成してしまうことがあります。</p>
+</div>
+
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <h3 style="font-size: 15px; font-weight: 700; color: #E85D4A; margin: 0 0 12px;">ハルシネーションの具体例</h3>
+  <ul style="font-size: 15px; line-height: 2; color: #555; padding-left: 18px; margin: 0;">
+    <li>「〇〇というマイナーな歴史上の人物について教えて」と質問したら、<strong class="accent">実在しない人物の経歴</strong>がもっともらしく語られた</li>
+    <li>最新の法律について質問したら、<strong class="accent">古い情報や誤った解釈</strong>に基づいて回答された</li>
+  </ul>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>生成された情報は鵜呑みにせず、<strong class="accent">必ずファクトチェック（事実確認）を行う習慣</strong>をつけましょう。特に重要な意思決定に関わる情報は、複数の信頼できる情報源で裏取りすることが大切です。</p>
+</div>
+
+<h3 class="sub-heading">著作権や倫理の問題</h3>
+
+<ul class="styled-list">
+  <li><strong>学習データの著作権</strong> — 著作権保護されたコンテンツが含まれている可能性があり、法的な議論が続いている</li>
+  <li><strong>生成物の著作権</strong> — AI生成物の著作権帰属は国や地域で解釈が異なり、商用利用には注意が必要</li>
+  <li><strong class="accent">個人情報・機密情報の入力リスク</strong> — 個人情報や会社の機密情報を入力することは絶対に避ける。情報漏洩に繋がるリスクあり</li>
+  <li><strong>悪意のある利用</strong> — フェイクニュース作成や差別的コンテンツ生成に悪用されるリスク</li>
+</ul>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>著作権や情報倫理に関する詳細は、後続の教材<strong class="accent">『知らないと怖い！生成AIを使う前のルールブック』</strong>で専門的に扱います。まずは「注意が必要な領域がある」ことを認識しておきましょう。</p>
+</div>
+
+<h3 class="sub-heading">最新の情報やリアルタイム情報には弱い</h3>
+
+<p class="text-body">
+  多くの生成AIモデルは、ある特定の時点までに収集されたデータ（<strong class="accent">カットオフデータ</strong>）を元に学習されています。最近ではWeb検索機能を標準搭載するサービスも増えてきましたが、リアルタイム性や正確性には限界があります。
+</p>
+
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <h3 style="font-size: 15px; font-weight: 700; color: #E85D4A; margin: 0 0 12px;">考えてみよう</h3>
+  <p style="font-size: 15px; line-height: 1.8; color: #555; margin: 0 0 12px;">
+    「明日の〇〇駅周辺の天気と、おすすめの傘がいらないランチスポットを3つ教えて」とAIに質問した場合…
+  </p>
+  <ul style="font-size: 14px; line-height: 2; color: #555; padding-left: 18px; margin: 0;">
+    <li><strong style="color: #3D3D3D;">AIの注意点：</strong>最新の予報データにアクセスできない場合がある。営業状況の変更可能性</li>
+    <li><strong style="color: #3D3D3D;">あなたが気をつけるべき点：</strong>天気は専門サイトで再確認。店舗の営業情報は自分で調べる。<strong class="accent">最終判断は自分で行う</strong></li>
+  </ul>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">「ハルシネーション（幻覚）」の説明として最も正しいものはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIが意図的に嘘をつく現象</button>
+    <button class="quiz-opt" data-correct="false">B. AIが古い情報しか持っていないために起こるエラー</button>
+    <button class="quiz-opt" data-correct="true">C. AIが事実と異なる情報を、もっともらしい文章で生成してしまう現象</button>
+    <button class="quiz-opt" data-correct="false">D. AIが個人情報を勝手に公開してしまう現象</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> ハルシネーションとは、AIが学習データの統計的パターンに基づいて、事実ではない情報をあたかも真実のように自然な文章で生成してしまう現象です。AIは「理解」しているわけではなく、確率的に言葉を繋げているために起こります。
+  </div>
+</div>
+
+
+<!-- セクション 3 -->
+<h2 class="section-heading" id="sec3">3. 得意・不得意 仕分けクイズ</h2>
+
+<p class="text-body">
+  以下のタスクについて、現在の一般的な生成AIが「得意そう」か「苦手そう（または注意が必要）」か、仕分けしてみましょう。
+</p>
+
+<!-- 仕分けテーブル -->
+<div style="overflow-x: auto; margin: 24px 0;">
+  <table style="width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.7;">
+    <thead>
+      <tr style="background: linear-gradient(135deg, #E85D4A, #F5A64A);">
+        <th style="color: #fff; padding: 12px 16px; text-align: left; border-radius: 10px 0 0 0;">タスク</th>
+        <th style="color: #fff; padding: 12px 16px; text-align: center; width: 100px;">分類</th>
+        <th style="color: #fff; padding: 12px 16px; text-align: left; border-radius: 0 10px 0 0;">理由</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="background: #E8F5E9;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #E8E8E8;">社内イベントの企画案リストアップ</td>
+        <td style="padding: 12px 16px; text-align: center; border-bottom: 1px solid #E8E8E8; font-weight: 700; color: #2E7D32;">得意</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #E8E8E8;">アイデアのブレインストーミングや多様なパターンの提案は得意分野</td>
+      </tr>
+      <tr style="background: #FFF3F0;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #E8E8E8;">特定の病気の治療法の医学的アドバイス</td>
+        <td style="padding: 12px 16px; text-align: center; border-bottom: 1px solid #E8E8E8; font-weight: 700; color: #E85D4A;">注意</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #E8E8E8;">ハルシネーションのリスクあり。専門的な判断は医師に相談すべき</td>
+      </tr>
+      <tr style="background: #E8F5E9;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #E8E8E8;">プレスリリース初稿の作成</td>
+        <td style="padding: 12px 16px; text-align: center; border-bottom: 1px solid #E8E8E8; font-weight: 700; color: #2E7D32;">得意</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #E8E8E8;">文章作成サポートは得意。ただし人間のファクトチェックが必要</td>
+      </tr>
+      <tr style="background: #E8F5E9;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #E8E8E8;">冷蔵庫の食材で献立提案</td>
+        <td style="padding: 12px 16px; text-align: center; border-bottom: 1px solid #E8E8E8; font-weight: 700; color: #2E7D32;">得意</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #E8E8E8;">条件に基づいたアイデア出しは得意。創造的なレシピを提案</td>
+      </tr>
+      <tr style="background: #FFF3F0;">
+        <td style="padding: 12px 16px;">個人情報を含む顧客リストの分析</td>
+        <td style="padding: 12px 16px; text-align: center; font-weight: 700; color: #C62828;">危険</td>
+        <td style="padding: 12px 16px;">個人情報の入力は情報漏洩リスクがあり非常に危険</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>生成AIは「賢いアシスタント」として活用しつつ、<strong class="accent">ハルシネーションの可能性</strong>、<strong class="accent">著作権・倫理・セキュリティの問題</strong>、<strong class="accent">最新情報の限界</strong>を常に意識し、最終的な判断は人間が行うことが重要です。</p>
+</div>
+
+<!-- 確認クイズ #3 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">生成AIの利用で「絶対にやってはいけない」こととして最も適切なものはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. キャッチコピーのアイデアを大量に出してもらう</button>
+    <button class="quiz-opt" data-correct="false">B. 長い報告書の要約を作成してもらう</button>
+    <button class="quiz-opt" data-correct="true">C. 個人情報や会社の機密情報をAIに入力する</button>
+    <button class="quiz-opt" data-correct="false">D. AIの回答内容をファクトチェックする</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 個人情報や機密情報をAIに入力することは、情報漏洩に繋がるリスクがあり、絶対に避けるべきです。AIの活用は便利ですが、入力するデータの取り扱いには細心の注意が必要です。
+  </div>
+</div>
+
+
+<!-- まとめ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">得意なこと</strong> — アイデア出し、文章の要約・リライト、多様な表現パターンの生成など、創造的支援と効率化</li>
+    <li><strong style="color: #3D3D3D;">ハルシネーション</strong> — AIが事実と異なる情報をもっともらしく生成する現象。必ずファクトチェックを</li>
+    <li><strong style="color: #3D3D3D;">著作権・倫理</strong> — 個人情報・機密情報の入力は絶対NG。生成物の著作権にも注意が必要</li>
+    <li><strong style="color: #3D3D3D;">最新情報の限界</strong> — リアルタイム情報には弱い。重要な情報は必ず別の情報源で確認</li>
+  </ul>
+</div>
+
+
+<!-- 理解度チェック -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">生成AIが得意な活用シーンを3つ以上挙げられる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">①アイデアのブレインストーミング ②文章の要約・リライト ③キャッチコピーの大量生成 ④メール作成サポート ⑤プレゼン構成案の作成 など、創造的支援と定型作業の効率化が得意です。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">ハルシネーションとは何か、なぜ起こるのか説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">AIが事実と異なる情報をもっともらしく生成する現象です。AIは言葉の意味を「理解」しているわけではなく、学習データの統計的パターンに基づいて確率的に文章を生成しているため、事実でない情報も自然な文章で出力してしまいます。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">AIに入力してはいけない情報の種類を説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">個人情報（氏名、住所、電話番号、メールアドレスなど）や会社の機密情報（未発表の製品情報、ソースコード、顧客データなど）は絶対に入力してはいけません。情報漏洩のリスクがあります。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">タスクがAIの「得意」か「苦手」かを判断できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">創造的なアイデア出しや文章作成は得意、医学的判断や法的アドバイスなど専門知識が必要なものは注意が必要、個人情報の取り扱いは禁止、リアルタイム情報は限界あり、という基準で判断できればOKです。</div>
+    </details>
+
+  </div>
+</details>
+    <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/igUQp" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%81%A3%E3%81%A6%E3%81%9D%E3%81%86%E3%81%84%E3%81%86%E3%81%93%E3%81%A8%EF%BC%9FAI%E3%82%AD%E3%83%9B%E3%83%B3%E3%81%A8%E6%9C%AA%E6%9D%A5/hxQW8" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+ <!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- JavaScript -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

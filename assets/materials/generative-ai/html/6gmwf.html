@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/6gMwf -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48545" data-item-id="48545" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>まとめ - プロンプトスキルの活かし方 | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading { font-size: 20px; font-weight: 700; color: #3D3D3D; margin: 32px 0 14px; }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .styled-list { padding-left: 22px; margin: 16px 0; }
+  .styled-list li { font-size: 15px; line-height: 2; color: #444; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    h2.section-heading { font-size: 20px; }
+  }
+  .toc-link { color: #555; text-decoration: none; }
+  .toc-link:hover { color: #E85D4A; }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="AnGKecZkRx8lQKeyrDRm2sWhcB8h_7pQEJtVSQta4JI8L7-c3IxormXsKB8T5emdWzYVnu4QQKBXrE5A2f8g1A"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 5-5</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">まとめ - プロンプトスキルの活かし方</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 5: プロンプトエンジニアリング ／ 所要時間：約15分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約15分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">プロンプトスキルの応用場面を具体的にイメージし、困ったときの改善方法と今後の学習ロードマップを理解する</p>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/zNEDj" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">プロンプト思考で変わるあなたの日常</a></li>
+    <li><a href="#sec2" class="toc-link">困ったときのプロンプト改善ガイド</a></li>
+    <li><a href="#sec3" class="toc-link">さらなる高みへ：専門分野でのAI活用を見据えて</a></li>
+  </ol>
+</div>
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    この教材を始める前、AIは「指示待ちの部下」のように感じていたかもしれません。<br>
+    何を聞いても的外れな答えが返ってきて、「使えないな…」と思ったこともあったのでは？<br><br>
+    でも今は違います。<strong class="accent">プロンプトの「型」を使いこなすことで、AIは「頼れるアシスタント」に変わった</strong>はず。<br>
+    そのスキルは、仕事にも、学習にも、日常生活にも、幅広く応用できます。
+  </p>
+</div>
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>「完璧なプロンプトを書かなきゃ」と思いがちだが、<strong class="accent">試行錯誤こそが上達の秘訣</strong></li>
+    <li>応用範囲が広くて何から始めるか迷うが、<strong class="accent">まずは身近な作業から試す</strong>のがコツ</li>
+  </ul>
+</div>
+
+
+<!-- セクション 1 -->
+<h2 class="section-heading" id="sec1">1. プロンプト思考で変わるあなたの日常</h2>
+
+<p class="text-body">
+  この教材を通じて、AIに的確な指示を出すための「プロンプトの型」と、その具体的な技術を学んできました。最初は「指示待ちの部下」のように感じられたAIも、プロンプトの技術を磨くことで、<strong class="accent">こちらの意図を深く理解し、期待以上の成果を返してくれる「頼れるアシスタント」へと変わっていく</strong>ことを実感できたのではないでしょうか。
+</p>
+
+<!-- 活用場面カード -->
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 24px 0;">
+  <div style="background: #FFF8F0; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px; text-align: center;">
+    <div style="font-size: 28px; margin-bottom: 8px;">💼</div>
+    <p style="font-size: 14px; font-weight: 700; color: #E85D4A; margin: 0 0 8px;">仕事で</p>
+    <ul style="font-size: 13px; line-height: 1.8; color: #555; padding-left: 14px; margin: 0; text-align: left;">
+      <li>議事録の要約</li>
+      <li>アイデアのブレスト</li>
+      <li>提案メール作成</li>
+      <li>レポート骨子作成</li>
+    </ul>
+  </div>
+  <div style="background: #F0F7FF; border: 2px solid #C2DFF5; border-radius: 16px; padding: 18px; text-align: center;">
+    <div style="font-size: 28px; margin-bottom: 8px;">📚</div>
+    <p style="font-size: 14px; font-weight: 700; color: #2E86DE; margin: 0 0 8px;">学習で</p>
+    <ul style="font-size: 13px; line-height: 1.8; color: #555; padding-left: 14px; margin: 0; text-align: left;">
+      <li>専門用語の解説</li>
+      <li>情報収集と整理</li>
+      <li>学習計画の立案</li>
+      <li>英会話の練習</li>
+    </ul>
+  </div>
+  <div style="background: #F0FAF0; border: 2px solid #C8E6C9; border-radius: 16px; padding: 18px; text-align: center;">
+    <div style="font-size: 28px; margin-bottom: 8px;">🏠</div>
+    <p style="font-size: 14px; font-weight: 700; color: #4CAF50; margin: 0 0 8px;">日常生活で</p>
+    <ul style="font-size: 13px; line-height: 1.8; color: #555; padding-left: 14px; margin: 0; text-align: left;">
+      <li>献立の提案</li>
+      <li>旅行プラン作成</li>
+      <li>手紙の添削</li>
+      <li>悩み事の相談</li>
+    </ul>
+  </div>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>プロンプトの「型」を理解し、AIに明確な指示を出すスキルは、<strong class="accent">あらゆる場面であなたの思考を助け、作業を効率化し、創造性を刺激</strong>してくれます。これらはほんの一例です。</p>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">プロンプトスキルが「仕事」「学習」「日常生活」のすべてで役立つ理由として、最も適切なものはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIが全自動で何でもやってくれるから</button>
+    <button class="quiz-opt" data-correct="true">B. 思考を整理し、明確に伝え、AIという強力なツールを目的に合わせて使いこなす力だから</button>
+    <button class="quiz-opt" data-correct="false">C. プロンプトを書くこと自体が楽しいから</button>
+    <button class="quiz-opt" data-correct="false">D. 有料プランに加入すれば制限なく使えるから</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> プロンプトスキルの本質は「思考を整理し、明確に伝える力」と「AIを目的に合わせて使いこなす力」です。これはあらゆる場面で応用可能な汎用スキルです。
+  </div>
+</div>
+
+
+<!-- セクション 2 -->
+<h2 class="section-heading" id="sec2">2. 困ったときのプロンプト改善ガイド</h2>
+
+<p class="text-body">
+  プロンプトを作成していると、「何度試してもうまくいかない」「AIが全然言うことを聞いてくれない」といった壁にぶつかることもあるでしょう。しかし、それは決してあなたの能力が低いからではありません。<strong class="accent">プロのプロンプトエンジニアでさえ、最初から完璧なプロンプトを書けるわけではなく</strong>、試行錯誤を繰り返しています。
+</p>
+
+<!-- 改善チェックポイント -->
+<div style="display: flex; flex-direction: column; gap: 12px; margin: 24px 0;">
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: #FFF3F0; color: #E85D4A; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; border: 2px solid #E85D4A;">1</div>
+    <div>
+      <p style="margin: 0 0 4px; font-size: 15px; font-weight: 700; color: #3D3D3D;">指示が曖昧・不足している</p>
+      <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #555;">→ 「4大構成要素」（特に「指示」と「文脈」）が十分か見直す。具体例を添えたり、言葉の定義を明確にする</p>
+    </div>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: #FFF3F0; color: #E85D4A; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; border: 2px solid #E85D4A;">2</div>
+    <div>
+      <p style="margin: 0 0 4px; font-size: 15px; font-weight: 700; color: #3D3D3D;">制約が強すぎる・矛盾している</p>
+      <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #555;">→ 条件が厳しすぎないか、複数の条件が矛盾していないか確認。条件を緩めたり、優先順位を伝える</p>
+    </div>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: #FFF3F0; color: #E85D4A; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; border: 2px solid #E85D4A;">3</div>
+    <div>
+      <p style="margin: 0 0 4px; font-size: 15px; font-weight: 700; color: #3D3D3D;">AIの得意分野と合っていない</p>
+      <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #555;">→ 役割設定を変えてみたり、別のAIツールを試してみることも検討する</p>
+    </div>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: #FFF3F0; color: #E85D4A; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; border: 2px solid #E85D4A;">4</div>
+    <div>
+      <p style="margin: 0 0 4px; font-size: 15px; font-weight: 700; color: #3D3D3D;">一度に多くのことを求めすぎている</p>
+      <p style="margin: 0; font-size: 14px; line-height: 1.7; color: #555;">→ 「ステップ・バイ・ステップ指示」を活用し、複雑なタスクは小さなステップに分解して段階的に指示する</p>
+    </div>
+  </div>
+</div>
+
+<div style="background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A; border-radius: 16px; padding: 24px; margin: 24px 0;">
+  <p style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin: 0 0 10px;">試行錯誤こそ上達の秘訣</p>
+  <ul style="margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555;">
+    <li>完璧なプロンプトは最初から書けるものではない。<strong class="accent">「AIとの対話を通じて、徐々に理想の形に近づけていく」</strong>感覚が大切</li>
+    <li>期待通りの出力が得られなかったら、それは「失敗」ではなく<strong class="accent">「改善のチャンス」</strong></li>
+    <li>この試行錯誤のプロセス自体が、プロンプトスキルを高める<strong class="accent">最良のトレーニング</strong></li>
+  </ul>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>AIの回答がイマイチだったとき、すぐに諦めるのではなく「どこを変えればもっと良い回答が返ってくるか？」と考える習慣をつけましょう。プロンプトの微調整で劇的に結果が変わることがよくあります。</p>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">AIが期待通りの出力を返してくれないとき、最初に確認すべきことはどれ？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. 有料プランにアップグレードする</button>
+    <button class="quiz-opt" data-correct="false">B. 別のAIツールに切り替える</button>
+    <button class="quiz-opt" data-correct="true">C. プロンプトの「指示」と「文脈」が十分に盛り込まれているか見直す</button>
+    <button class="quiz-opt" data-correct="false">D. AIに「もっと頑張って」と伝える</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> まずはプロンプトの基本要素（特に「指示」と「文脈」）が十分かどうかを確認しましょう。多くの場合、プロンプトの改善で出力の質は大きく向上します。
+  </div>
+</div>
+
+
+<!-- セクション 3 -->
+<h2 class="section-heading" id="sec3">3. さらなる高みへ：専門分野でのAI活用を見据えて</h2>
+
+<p class="text-body">
+  この教材を通じて、あなたはAIに的確な指示を出し、意図通りの成果物を引き出すための<strong class="accent">「プロンプトの基本」をマスター</strong>しました。
+</p>
+
+<h3 class="sub-heading">あなたが手に入れた「プロンプト力」</h3>
+
+<!-- スキルカード -->
+<div style="display: flex; flex-direction: column; gap: 12px; margin: 24px 0;">
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: center; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">1</div>
+    <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #444;"><strong class="accent">思考を整理し、明確に伝える力</strong></p>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: center; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">2</div>
+    <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #444;"><strong class="accent">複雑な問題を分解し、解決に導く力</strong></p>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 18px 22px; display: flex; align-items: center; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">3</div>
+    <p style="margin: 0; font-size: 15px; line-height: 1.7; color: #444;"><strong class="accent">AIという強力なツールを、自らの目的に合わせて使いこなす力</strong></p>
+  </div>
+</div>
+
+<p class="text-body">
+  これらの力は、これからのAI時代を生き抜く上で、<strong class="accent">最も汎用性が高く、実践的なスキルの一つ</strong>になると言っても過言ではありません。
+</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>プロンプトの力は、あなたのアイデア次第で幅広く応用できます。<strong class="accent">この教材で得た知識とスキルを土台に、ぜひ様々な分野でAIとの協働を試し、今後のキャリアに活かしていってください。</strong></p>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>Webデザイン、ライティング、マーケティングなど、具体的な業務でAIを活用する場面が次の教材で待っています。プロンプトの基礎があれば、どの分野でもAIを「頼れるアシスタント」として活用できます。</p>
+</div>
+
+
+<!-- まとめ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">プロンプト思考の応用</strong> — 仕事・学習・日常生活のあらゆる場面で、AIを効果的に活用できる</li>
+    <li><strong style="color: #3D3D3D;">改善の4つのチェックポイント</strong> — 指示の明確さ、制約のバランス、AIの得意分野、タスクの分解</li>
+    <li><strong style="color: #3D3D3D;">試行錯誤が上達の鍵</strong> — 完璧を目指すより、AIとの対話を通じて徐々に精度を高めていく</li>
+    <li><strong style="color: #3D3D3D;">プロンプト力の本質</strong> — 思考の整理力、問題分解力、ツール活用力の3つ</li>
+  </ul>
+</div>
+
+
+<!-- 理解度チェック -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">プロンプトスキルが活きる場面を仕事・学習・日常から各2つ以上挙げられる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">仕事: 議事録要約、提案メール作成、ブレインストーミングなど。学習: 専門用語の解説、学習計画の立案など。日常: 献立提案、旅行プラン作成など。具体例が挙げられればOKです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">AIが期待通りに動かないときの改善ステップを説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">①指示と文脈が十分か確認 ②制約条件が厳しすぎ/矛盾していないか確認 ③AIの得意分野と合っているか確認 ④タスクが大きすぎないかステップ分解を検討、の4つです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">プロンプト力の3つの本質を説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">①思考を整理し、明確に伝える力 ②複雑な問題を分解し、解決に導く力 ③AIという強力なツールを、自らの目的に合わせて使いこなす力、の3つです。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">次の学習ステップ（Web業界でのAI活用）への期待を語れる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">プロンプトの基礎を土台に、Webデザイン・ライティング・マーケティングなどの専門分野で、AIが具体的にどう活用されているかを事例やデモを通じて学ぶ教材です。</div>
+    </details>
+
+  </div>
+</details>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/zNEDj" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- JavaScript -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

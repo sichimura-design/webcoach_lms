@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/WRclF -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>ポートフォリオサイトを作ろう！ - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/WRclF">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="ポートフォリオサイトを作ろう！ - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/003/425/medium/9a8f764e-2d21-4b68-aa9f-490ab53fb40b.png?1719559654">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="ポートフォリオサイトを作ろう！">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/WRclF">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/003/425/large/9a8f764e-2d21-4b68-aa9f-490ab53fb40b.png?1719559654">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="NZ7bsrDLrXrwPG2sv4ohSL7QINT6CZhYLRw8eEpq6bfGCvNZlFT6-nz30bdIn3XvyesQKFMKu2cBVO3C8KIGEQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">ポートフォリオサイトを作ろう！</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0. はじめに</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:  6時間</a></li></ul><ul><li><a href="#heading2" class="tocLink">a. なぜ今ポートフォリオの話をするのか？</a></li><li><a href="#heading3" class="tocLink">b. ポートフォリオとは？単なる作品集ではない！</a></li><li><a href="#heading4" class="tocLink">c. ポートフォリオがなければ何も始まらない</a></li></ul></li><li><a href="#heading5" class="tocLink">1. サイトのデザインイメージを考える</a><ul><li><a href="#heading6" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading7" class="tocLink">a. サイトデザインは0→1じゃない？</a></li><li><a href="#heading8" class="tocLink">b. まずはサイトデザインは徹底的に調べるところから！</a></li></ul></li><li><a href="#heading9" class="tocLink">2. サイトのターゲット（見て欲しい相手）と目的を明確にする</a><ul><li><a href="#heading10" class="tocLink">目安の学習時間:15分</a></li></ul><ul><li><a href="#heading11" class="tocLink">a. ターゲットを変えるだけで大成功も！ </a></li><li><a href="#heading12" class="tocLink">b. ターゲットと目的を明確にしてみる</a></li></ul></li><li><a href="#heading13" class="tocLink">3. サイトに載せたい情報をリストアップする</a><ul><li><a href="#heading14" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading15" class="tocLink"> オーソドックスな内容例</a></li></ul></li><li><a href="#heading16" class="tocLink">4. サイトマップを作成する</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間:25分</a></li></ul><ul><li><a href="#heading18" class="tocLink">a. サイトマップとは?</a></li><li><a href="#heading19" class="tocLink">b. サイトマップ集</a></li><li><a href="#heading20" class="tocLink">c. サイトマップを作ろう</a><ul><li><a href="#heading21" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading22" class="tocLink">5. ワイヤーフレームを作成する</a><ul><li><a href="#heading23" class="tocLink">目安の学習時間:60分</a></li></ul><ul><li><a href="#heading24" class="tocLink">a. ワイヤーフレームとは？</a></li><li><a href="#heading25" class="tocLink">b. ワイヤーフレームを作ろう</a><ul><li><a href="#heading26" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading27" class="tocLink">6. デザインカンプ作成</a><ul><li><a href="#heading28" class="tocLink">目安の学習時間:120分</a></li></ul><ul><li><a href="#heading29" class="tocLink">a. デザインカンプとは？</a></li><li><a href="#heading30" class="tocLink">b. デザインカンプを作ろう</a></li></ul></li><li><a href="#heading31" class="tocLink">7. 実装</a><ul><li><a href="#heading32" class="tocLink">目安の学習時間:120分</a></li></ul><ul><li><a href="#heading33" class="tocLink">a. WIXで実際の機能・デザインを作成</a></li><li><a href="#heading34" class="tocLink">b. 動作確認・テストを行う</a></li><li><a href="#heading35" class="tocLink">c. 一般公開する</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item3414" data-item-id="3414" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">0. はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item39408" data-item-id="39408" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:  6時間</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item3415" data-item-id="3415" data-item-type="ItemHeading"><h3 class="item-body" id="heading2">a. なぜ今ポートフォリオの話をするのか？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item3416" data-item-id="3416" data-item-type="ItemRichText"><div class="item-body-hbr">これからWebデザイナーとしてのスキルを学ぶにあたり、重要なことをお伝えします。それは<span class="decoration-01"><span class="decoration-02">ポートフォリオの重要性</span></span>です。<br>
+<br>
+なぜなら、この教材で学ぶすべての知識やスキルは、最終的に「質の高いポートフォリオを制作し、案件を獲得する」というゴールに繋がっているからです。<br>
+<br>
+Webデザイナーの世界では、「何を作れるのか」が問われます。ポートフォリオは、その問いに対する唯一かつ最強の答えとなります。</div></div>
+        
+        <div class="article-item item_heading " id="item3417" data-item-id="3417" data-item-type="ItemHeading"><h3 class="item-body" id="heading3">b. ポートフォリオとは？単なる作品集ではない！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38524" data-item-id="38524" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">ポートフォリオ</span></span>とは、自身のスキル、実績、デザインへの考え方などをまとめた「作品集」のことです。しかし、単なる作品集だと捉えてはいけません。<br>
+<br>
+クライアント（案件発注者）や採用担当者は、ポートフォリオを通じてあなたの力量を判断します。つまり、ポートフォリオは<span class="decoration-01"><span class="decoration-02">あなた自身に関する営業ツール</span></span>なのです。<br>
+<br>
+優れたポートフォリオは、以下の3つの役割を同時に果たします。</div></div>
+        
+        <div class="article-item item_html " id="item38525" data-item-id="38525" data-item-type="ItemHtml"><div class="item-body">
+
+    <ul>
+        <li><span class="decoration-02">スキルと実力の証明</span>：どんなツールが使え、どのようなデザインができるのかを具体的に示します。</li>
+        <li><span class="decoration-02">未来のクライアントへの提案</span>：自分が提供できる価値や、一緒に仕事をするメリットを伝えます。</li>
+        <li><span class="decoration-02">あなたの人柄や熱意を伝えるメディア</span>：デザインの意図や工夫した点を伝えることで、仕事への姿勢や人柄を示します。</li>
+    </ul>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</div></div>
+        
+        <div class="article-item item_html " id="item38526" data-item-id="38526" data-item-type="ItemHtml"><div class="item-body">
+<div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>重要：ポートフォリオの3つの顔</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>ポートフォリオは、あなたが何を作れるかを示すだけのものではありません。</li>
+            <li>以下の3つの側面を持っていることを常に意識しましょう。
+                <ul>
+                    <li><strong>スキル証明</strong>：制作物を通して、自身の技術レベルを客観的に証明する。</li>
+                    <li><strong>営業ツール</strong>：クライアントに「この人に仕事を頼みたい」と思わせるためのプレゼンテーション資料。</li>
+                    <li><strong>自己表現</strong>：デザインへの情熱や考え方、人柄までを伝えるコミュニケーションツール。</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item38527" data-item-id="38527" data-item-type="ItemHeading"><h3 class="item-body" id="heading4">c. ポートフォリオがなければ何も始まらない</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38528" data-item-id="38528" data-item-type="ItemRichText"><div class="item-body-hbr">もしポートフォリオがなかったら、どうなるでしょうか？結論から言うと、<span class="decoration-01"><span class="decoration-02">Webデザイナーとして仕事を得ることは極めて困</span></span><span class="decoration-01"><span class="decoration-02">難</span></span>になります。<br>
+<br>
+例えば、あなたがレストランを探している時、メニューや料理の写真が一切ないお店に入りたいと思うでしょうか？おそらく、ほとんどの人が避けるはずです。ポートフォリオがない状態は、まさにこれと同じです。</div></div>
+        
+        <div class="article-item item_html " id="item38529" data-item-id="38529" data-item-type="ItemHtml"><div class="item-body">
+<div class="card-with-icon attention">
+    <span class="bold"><strong>注意</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>ポートフォリオがないと、そもそも案件獲得の<span class="decoration-02">選考の土俵に上がることすらできません。</span></li>
+            <li>「スキルはあります」と口で言うだけでは、何の証明にもなりません。</li>
+            <li>制作実績こそが、Webデザイナーにとっての信頼の証です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38530" data-item-id="38530" data-item-type="ItemRichText"><div class="item-body-hbr">この教材を通じて、クライアントから「ぜひあなたにお願いしたい」と言われるような、魅力的なポートフォリオを一緒に作っていきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item3420" data-item-id="3420" data-item-type="ItemHeading"><h2 class="item-body" id="heading5">1. サイトのデザインイメージを考える</h2></div>
+        
+        <div class="article-item item_markdown " id="item39409" data-item-id="39409" data-item-type="ItemMarkdown"><h4 id="heading6">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item3421" data-item-id="3421" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">a. サイトデザインは0→1じゃない？</h3></div>
+        
+        <div class="article-item item_markdown " id="item3422" data-item-id="3422" data-item-type="ItemMarkdown"><p>「デザインは、センスがないとできなさそう…」そう思っている方が多くいます。
+実は、デザインに自信のない人でもあることを意識すれば、それなりのデザインを作成することができるんです。</p>
+</div>
+        
+        <div class="article-item item_html " id="item48919" data-item-id="48919" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">外部サイト閲覧時の注意<br></span>
+  <ul>
+    <li>参考サイトは外部サイトのため、掲載先の一部リンクが変更・削除・安全性が変化している場合があります。閲覧時はご注意ください。</li>
+    <li>万が一、不審な警告画面やポップアップが表示された場合は、画面内のボタン等は押さずにブラウザを閉じてください。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item3423" data-item-id="3423" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">b. まずはサイトデザインは徹底的に調べるところから！</h3></div>
+        
+        <div class="article-item item_link " id="item3425" data-item-id="3425" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=WRclF&amp;item_id=3425" rel="nofollow noopener noreferrer" target="_blank">おしゃれなWebデザインのポートフォリオサイト36選。現役デザイナーが厳選！ - Workship MAGAZINE(ワークシップマガジン)</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="おしゃれなWebデザインのポートフォリオサイト36選。現役デザイナーが厳選！ - Workship MAGAZINE(ワークシップマガジン)" data-reference="https://goworkship.com/magazine/portfolio-webdesigner/" src="../../_assets/0d3abc7be7.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">転職活動のためにポートフォリオサイトを作りたい。そのために、有名なWebデザイナーのポートフォリオをたくさん見て勉強したい！という人へ。現役デザイナーおすすめのおしゃれなポートフォリオサイトを35個集めました。Webデザイナーの作品だけでなく、フォトグラファーやエンジニアのものまで網羅しています。ポートフォリオサイトを作るときの参考にしてください。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item3426" data-item-id="3426" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">良いデザインアイデアを出すためには「良いサイトデザインをたくさん見る」というインプットが実は大切です。WEBデザインを無から作り出す必要はありません。ある程度良さそうなWEBサイトを見つけてそれを少し真似たり、複数のサイトのデザインを組み合わせたりしてデザインを考えるのがおすすめです。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3427" data-item-id="3427" data-item-type="ItemMarkdown"><p>上記のサイトには様々なフリーランスの方のポートフォリオサイトが載っています。</p>
+
+<p>一流フリーランスのポートフォリオサイト、同業他社のサイト分析、他業種のイメージに近いサイトの分析などを行うことで新たなインスピレーションが生まれることがよくあります。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3429" data-item-id="3429" data-item-type="ItemHeading"><h2 class="item-body" id="heading9">2. サイトのターゲット（見て欲しい相手）と目的を明確にする</h2></div>
+        
+        <div class="article-item item_markdown " id="item39410" data-item-id="39410" data-item-type="ItemMarkdown"><h4 id="heading10">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item3430" data-item-id="3430" data-item-type="ItemRichText"><div class="item-body-hbr">サイトは常に読者のためにあります。自己満足で書きたいことを書いても意味はありません。<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">ターゲットを想定し、その相手にどういう行動を起こして欲しいのかを念頭においてサイトを作っていきましょう</span></span>。<br>
+<br>
+<span class="decoration-01">「誰に」「何を」「どう」</span>伝えるのか。それを常に考えて一貫性のあるポートフォリオを作成しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item3431" data-item-id="3431" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">a. ターゲットを変えるだけで大成功も！ </h3></div>
+        
+        <div class="article-item item_link " id="item3432" data-item-id="3432" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=WRclF&amp;item_id=3432" rel="nofollow noopener noreferrer" target="_blank">「マーケティングマジック」は実在するか!? 売り方を変えてヒットした商品まとめ｜ferret</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="「マーケティングマジック」は実在するか!? 売り方を変えてヒットした商品まとめ｜ferret" data-reference="https://ferret-plus.com/16455" src="../../_assets/44b8df88a2.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">マーケティングマジックとは、商品の質自体はそのままで売り方・見せ方を変えるだけで大ヒット商品に変わることを指します。本記事では実際に、マーケティングマジックを起こした商品とその理由を解説します。他社事例を参考に、自社商品のマーケティングのヒントにしてみましょう。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item3433" data-item-id="3433" data-item-type="ItemMarkdown"><p>ポートフォリオではないですが、ターゲットを変えただけで売上が爆増した商品をまとめたサイトを掲載しておきます。
+この記事を読んでいただければ、ターゲットを想定してポートフォリオを作成する重要性が分かるかと思います。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3434" data-item-id="3434" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">b. ターゲットと目的を明確にしてみる</h3></div>
+        
+        <div class="article-item item_markdown " id="item3435" data-item-id="3435" data-item-type="ItemMarkdown"><p>今回だと、ターゲットは誰になるでしょうか？</p>
+
+<p>例えば、案件を発注する相手を選ぶ依頼主や周囲で発注してもらえる可能性のある友人や知人がターゲットになります。</p>
+
+<p>その相手がどのような情報を求めていて、サイトを見た結果どんな行動を起こしてほしいのか。それらを事前に考え尽くすことが大切です。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3436" data-item-id="3436" data-item-type="ItemHeading"><h2 class="item-body" id="heading13">3. サイトに載せたい情報をリストアップする</h2></div>
+        
+        <div class="article-item item_markdown " id="item39411" data-item-id="39411" data-item-type="ItemMarkdown"><h4 id="heading14">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item3437" data-item-id="3437" data-item-type="ItemRichText"><div class="item-body-hbr">ポートフォリオサイトの場合は以下のような情報を掲載することが多いですが、ここは皆さんご自身で検討して決めましょう！<br>
+<br>
+<span class="decoration-02"><span class="decoration-01">独自性を出していくことは大切</span></span>です。</div></div>
+        
+        <div class="article-item item_html " id="item3438" data-item-id="3438" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">※まずは自分で考えてみてから、以下の内容を確認しましょう</div></div></div>
+        
+        <div class="article-item item_heading " id="item3440" data-item-id="3440" data-item-type="ItemHeading"><h3 class="item-body" id="heading15"> オーソドックスな内容例</h3></div>
+        
+        <div class="article-item item_markdown " id="item3441" data-item-id="3441" data-item-type="ItemMarkdown"><p>==</p>
+
+<ul>
+  <li><strong>プロフィール</strong>
+    <ul>
+      <li><strong>経歴</strong></li>
+      <li><strong>使えるスキル一覧</strong></li>
+    </ul>
+  </li>
+  <li><strong>ポートフォリオ一覧</strong></li>
+  <li><strong>各作品の説明</strong>
+    <ul>
+      <li><strong>工夫したポイント</strong></li>
+      <li><strong>使用した技術など</strong></li>
+    </ul>
+  </li>
+  <li><strong>問い合わせフォーム</strong></li>
+</ul>
+
+<p>==</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3442" data-item-id="3442" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">4. サイトマップを作成する</h2></div>
+        
+        <div class="article-item item_markdown " id="item39412" data-item-id="39412" data-item-type="ItemMarkdown"><h4 id="heading17">目安の学習時間:25分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item3443" data-item-id="3443" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">a. サイトマップとは?</h3></div>
+        
+        <div class="article-item item_markdown " id="item3444" data-item-id="3444" data-item-type="ItemMarkdown"><p>サイトマップとは、サイト全体のページ構成を地図のように一覧で表示したページのことです。
+サイトマップは、ユーザーや検索エンジンにサイト内容をわかりやすく伝える役割を担っています。
+サイトマップを用意しておくことで、ユーザーが目的のページを見つけやすくなります。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3451" data-item-id="3451" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">b. サイトマップ集</h3></div>
+        
+        <div class="article-item item_markdown " id="item3452" data-item-id="3452" data-item-type="ItemMarkdown"><p>以下に、サイトマップがたくさん載っているサイトを掲載します。</p>
+</div>
+        
+        <div class="article-item item_link " id="item3453" data-item-id="3453" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=WRclF&amp;item_id=3453" rel="nofollow noopener noreferrer" target="_blank">見やすくて使いやすいサイトマップページのデザイン例をご紹介【2024年6月最新版】 | Web幹事</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="見やすくて使いやすいサイトマップページのデザイン例をご紹介【2024年6月最新版】 | Web幹事" data-reference="https://web-kanji.com/posts/sitemap-design" src="../../_assets/521dc6de45.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">訪問ユーザーに情報を分かりやすく提示するために欠かせないHTMLサイトマップ。きちんと制作することでホームページの利便性がグンとアップします。この記事ではHTMLサイトマップを効果的に活用するためのデザインパターンを紹介いたします。これからホームページを制作する担当者必見の記事です。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item3445" data-item-id="3445" data-item-type="ItemHeading"><h3 class="item-body" id="heading20">c. サイトマップを作ろう</h3></div>
+        
+        <div class="article-item item_markdown " id="item3446" data-item-id="3446" data-item-type="ItemMarkdown"><p>サイト全体でどのようなページを作成するか決める必要があります。これはFigmaやPowerPointなど好きなツールを使って簡単に作成してください。以下はXDで作成した架空のコーポレートサイトのサイトマップの例です。四角が１ページに相当しています。これよりは数が少なくなると思いますが、試しに作ってみましょう。</p>
+</div>
+        
+        <div class="article-item item_image " id="item3447" data-item-id="3447" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/003/447/medium/b0c6ce2d-e0ca-40c2-92a3-2cda885bb30e.png?1719560118" title=""><img class="img-responsive item-image" alt=" (3447)" data-reference="" src="../../_assets/dd59962ba9.webp" width="640" height="330"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item3448" data-item-id="3448" data-item-type="ItemRichText"><div class="item-body-hbr">サイトマップが完成しましたら、下記のテンプレートを参考に、<span class="decoration-02"><span class="decoration-01">Slackの「 c-【受講ID】-【お名前】」のチャンネルでコーチをメンションし</span></span>、制作課題を共有してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item3449" data-item-id="3449" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">コーチにSlackで共有する際のテンプレート</span></div></div>
+        
+        <div class="article-item item_html " id="item3450" data-item-id="3450" data-item-type="ItemHtml"><div class="item-body"><div class="quote">〇〇コーチ (@メンション)<br>
+<br>
+お世話になっております。<br>
+サイトマップの制作が終了しました。<br>
+以下のファイルがサイトマップとなっておりますのでご確認いただき、添削をよろしくお願いいたします。<br>
+<br>
+※ ここにファイルを添付</div></div></div>
+        
+        <div class="article-item item_html " id="item3454" data-item-id="3454" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">デザインに限らず、調べることによってイメージが湧くことが実感できたのではないでしょうか？
+
+これからはロードマップに記載されていないことも自主的に積極的に調べていきましょう！</div></div></div>
+        
+        <div class="article-item item_heading " id="item3455" data-item-id="3455" data-item-type="ItemHeading"><h2 class="item-body" id="heading22">5. ワイヤーフレームを作成する</h2></div>
+        
+        <div class="article-item item_markdown " id="item39413" data-item-id="39413" data-item-type="ItemMarkdown"><h4 id="heading23">目安の学習時間:60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item3456" data-item-id="3456" data-item-type="ItemHeading"><h3 class="item-body" id="heading24">a. ワイヤーフレームとは？</h3></div>
+        
+        <div class="article-item item_markdown " id="item3457" data-item-id="3457" data-item-type="ItemMarkdown"><p>WEBページのレイアウトを定める設計図のことです。</p>
+
+<p>WEBサイトの制作現場で聞かない日がないといえるほど、重要な用語であり、サイト制作において決して欠かせない要素です。</p>
+</div>
+        
+        <div class="article-item item_html " id="item3458" data-item-id="3458" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">些細なことですが、聞き覚えのない用語が出てきたときに都度調べていくことも大切です。</div></div></div>
+        
+        <div class="article-item item_heading " id="item3459" data-item-id="3459" data-item-type="ItemHeading"><h3 class="item-body" id="heading25">b. ワイヤーフレームを作ろう</h3></div>
+        
+        <div class="article-item item_markdown " id="item3460" data-item-id="3460" data-item-type="ItemMarkdown"><p>ワイヤーフレームの目的は、情報設計、レイアウトを決める、案件の最初に完成図を簡単に作ってクライアントと認識をすり合わせるといったものがあります。</p>
+
+<p>デザインに必要以上に凝りすぎないようにしましょう。</p>
+
+<p>線と文字で情報の配置がわかれば十分です。例えば先程のサイトマップに沿ってTOPページの簡単なワイヤーフレームを作ると以下のようになります。</p>
+</div>
+        
+        <div class="article-item item_image " id="item3461" data-item-id="3461" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/003/461/medium/2397a77a-3c90-40f8-9ec4-d71e16c6128e.png?1719560379" title=""><img class="img-responsive item-image" alt=" (3461)" data-reference="" src="../../_assets/4e779960f4.webp" width="362" height="640"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item3462" data-item-id="3462" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">参考になりそうなものを調べながら実際に作成してみましょう！</span></div></div>
+        
+        <div class="article-item item_heading " id="item3463" data-item-id="3463" data-item-type="ItemHeading"><h2 class="item-body" id="heading27">6. デザインカンプ作成</h2></div>
+        
+        <div class="article-item item_markdown " id="item39414" data-item-id="39414" data-item-type="ItemMarkdown"><h4 id="heading28">目安の学習時間:120分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item3464" data-item-id="3464" data-item-type="ItemHeading"><h3 class="item-body" id="heading29">a. デザインカンプとは？</h3></div>
+        
+        <div class="article-item item_markdown " id="item3465" data-item-id="3465" data-item-type="ItemMarkdown"><p>デザインカンプとは完成版のデザインのことです。</p>
+
+<p>レスポンシブデザイン対応は必須となるので、タブレット、スマホ版も作成しましょう。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3466" data-item-id="3466" data-item-type="ItemHeading"><h3 class="item-body" id="heading30">b. デザインカンプを作ろう</h3></div>
+        
+        <div class="article-item item_markdown " id="item3467" data-item-id="3467" data-item-type="ItemMarkdown"><p>デザインカンプを作る際は、Figmaを使うと良いでしょう。</p>
+
+<p><a href="https://learn.webcoach.jp/web-design/VBc77">Figma -完成編-</a> で学んだ内容を全て生かして作業にあたりましょう！</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3468" data-item-id="3468" data-item-type="ItemHeading"><h2 class="item-body" id="heading31">7. 実装</h2></div>
+        
+        <div class="article-item item_markdown " id="item39415" data-item-id="39415" data-item-type="ItemMarkdown"><h4 id="heading32">目安の学習時間:120分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item3469" data-item-id="3469" data-item-type="ItemHeading"><h3 class="item-body" id="heading33">a. WIXで実際の機能・デザインを作成</h3></div>
+        
+        <div class="article-item item_markdown " id="item3470" data-item-id="3470" data-item-type="ItemMarkdown"><p><a href="https://learn.webcoach.jp/web-design/AhzBP">WIX -実践編-</a>  で学習した内容を活かして、Figmaで作成したデザインカンプ・必要な機能を実装しましょう！</p>
+
+<p>技術的にわからないことがある場合には、<a href="https://learn.webcoach.jp/knowledge/M7Yn3">試行錯誤の心得</a> や<a href="https://learn.webcoach.jp/knowledge/2eNJV">質問の心得</a> を思い出して、効率的な学習ができるよう「アウトプットしながら学ぶ」を実践してください！</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3471" data-item-id="3471" data-item-type="ItemHeading"><h3 class="item-body" id="heading34">b. 動作確認・テストを行う</h3></div>
+        
+        <div class="article-item item_markdown " id="item3472" data-item-id="3472" data-item-type="ItemMarkdown"><p>テストでは以下の内容を確認すると良いでしょう。
+また、それ以外にも実際に自分が顧客目線に立ち、疑問点が生じないかを考えることは非常に大切です。</p>
+
+<p>==</p>
+</div>
+        
+        <div class="article-item item_html " id="item3473" data-item-id="3473" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>スマホ、タブレット、PC各サイズにおいてデザインの崩れはないか？</li>
+    <li>マージンに一貫性があるか？</li>
+    <li>配色に一貫性があるか？色を多用しすぎて見づらくなっていないか？</li>
+    <li>フォントやサイズに一貫性があるか？バラバラで見づらくないか？</li>
+    <li>誤字脱字はないか？</li>
+    <li>各リンクやボタンは正常に動作しているか？</li>
+    <li>問い合わせは送れるか？</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item3474" data-item-id="3474" data-item-type="ItemMarkdown"><p>==</p>
+</div>
+        
+        <div class="article-item item_heading " id="item3475" data-item-id="3475" data-item-type="ItemHeading"><h3 class="item-body" id="heading35">c. 一般公開する</h3></div>
+        
+        <div class="article-item item_markdown " id="item3476" data-item-id="3476" data-item-type="ItemMarkdown"><p>独自ドメイン を接続して公開しましょう！</p>
+</div>
+        
+        <div class="article-item item_html " id="item3477" data-item-id="3477" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">公開の仕方が分からない場合は、まずご自身で調べてみて、どうしても解決しないときはコーチに相談してみましょう。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item3478" data-item-id="3478" data-item-type="ItemMarkdown"><p><strong>注意点</strong></p>
+
+<ul>
+  <li>独自ドメインを接続してサイトを公開する場合はWIXのアップグレードが必要となり月額料金が発生します。</li>
+  <li>しばらく案件獲得をする予定のない方は、一旦アップグレードせずに、案件獲得フェーズに入った際に独自ドメインを接続してサイトを公開しましょう。</li>
+</ul>
+</div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0. はじめに</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:  6時間</a></li></ul><ul><li><a href="#heading2" class="tocLink">a. なぜ今ポートフォリオの話をするのか？</a></li><li><a href="#heading3" class="tocLink">b. ポートフォリオとは？単なる作品集ではない！</a></li><li><a href="#heading4" class="tocLink">c. ポートフォリオがなければ何も始まらない</a></li></ul></li><li><a href="#heading5" class="tocLink">1. サイトのデザインイメージを考える</a><ul><li><a href="#heading6" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading7" class="tocLink">a. サイトデザインは0→1じゃない？</a></li><li><a href="#heading8" class="tocLink">b. まずはサイトデザインは徹底的に調べるところから！</a></li></ul></li><li><a href="#heading9" class="tocLink">2. サイトのターゲット（見て欲しい相手）と目的を明確にする</a><ul><li><a href="#heading10" class="tocLink">目安の学習時間:15分</a></li></ul><ul><li><a href="#heading11" class="tocLink">a. ターゲットを変えるだけで大成功も！ </a></li><li><a href="#heading12" class="tocLink">b. ターゲットと目的を明確にしてみる</a></li></ul></li><li><a href="#heading13" class="tocLink">3. サイトに載せたい情報をリストアップする</a><ul><li><a href="#heading14" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading15" class="tocLink"> オーソドックスな内容例</a></li></ul></li><li><a href="#heading16" class="tocLink">4. サイトマップを作成する</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間:25分</a></li></ul><ul><li><a href="#heading18" class="tocLink">a. サイトマップとは?</a></li><li><a href="#heading19" class="tocLink">b. サイトマップ集</a></li><li><a href="#heading20" class="tocLink">c. サイトマップを作ろう</a><ul><li><a href="#heading21" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading22" class="tocLink">5. ワイヤーフレームを作成する</a><ul><li><a href="#heading23" class="tocLink">目安の学習時間:60分</a></li></ul><ul><li><a href="#heading24" class="tocLink">a. ワイヤーフレームとは？</a></li><li><a href="#heading25" class="tocLink">b. ワイヤーフレームを作ろう</a><ul><li><a href="#heading26" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading27" class="tocLink">6. デザインカンプ作成</a><ul><li><a href="#heading28" class="tocLink">目安の学習時間:120分</a></li></ul><ul><li><a href="#heading29" class="tocLink">a. デザインカンプとは？</a></li><li><a href="#heading30" class="tocLink">b. デザインカンプを作ろう</a></li></ul></li><li><a href="#heading31" class="tocLink">7. 実装</a><ul><li><a href="#heading32" class="tocLink">目安の学習時間:120分</a></li></ul><ul><li><a href="#heading33" class="tocLink">a. WIXで実際の機能・デザインを作成</a></li><li><a href="#heading34" class="tocLink">b. 動作確認・テストを行う</a></li><li><a href="#heading35" class="tocLink">c. 一般公開する</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

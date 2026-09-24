@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/movie-editing/practice/web/ddzau -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章 広告クリエイティブの「ルール」 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/movie-editing/practice/web/ddzau">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章 広告クリエイティブの「ルール」 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章 広告クリエイティブの「ルール」">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/movie-editing/practice/web/ddzau">
+<meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="LaU6QpB7g6LO5PmjWIus0rc1rnOQ2YIEZ8L-SqPUjpZN9unUS75oUMItgRnT_zerQ-6gsQywQZXcmG__G1Srxw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>Web広告動画制作</div>
+
+          <div class="fw-bold h2">2章 広告クリエイティブの「ルール」</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 広告クリエイティブの「ルール」</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1.5時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】信頼を守るコンプライアンスの知識</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">広告で嘘はつけない！景品表示法</a></li><li><a href="#heading6" class="tocLink">特に注意が必要なジャンル！薬機法</a></li></ul></li><li><a href="#heading7" class="tocLink">【2-2】プラットフォーム別 動画規格とクリエイティブ戦略</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：40分</a></li></ul><ul><li><a href="#heading9" class="tocLink">Meta（Facebook / Instagram）広告</a></li><li><a href="#heading10" class="tocLink">YouTubeインストリーム広告</a></li><li><a href="#heading11" class="tocLink">TikTok広告</a></li></ul></li><li><a href="#heading12" class="tocLink">【2-3】2章 -章末課題- 広告表現をチェックしよう</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間: 20分</a></li></ul><ul><li><a href="#heading14" class="tocLink">問題</a></li><li><a href="#heading15" class="tocLink">解答例</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item44496" data-item-id="44496" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/H4baI" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/dTs5M" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item43686" data-item-id="43686" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">2章 広告クリエイティブの「ルール」</h2></div>
+        
+        <div class="article-item item_markdown " id="item43687" data-item-id="43687" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：1.5時間</h4>
+
+<h4 id="heading2">この章で到達できるゴール</h4>
+
+<ul>
+  <li>広告制作でトラブルを避けるための、基本的な関連法規を説明できる</li>
+  <li>主要3大広告プラットフォームの動画規格と、クリエイティブの傾向を理解できる</li>
+  <li>配信先に最適化された広告動画の企画方針を立てられる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item43688" data-item-id="43688" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【2-1】信頼を守るコンプライアンスの知識</h2></div>
+        
+        <div class="article-item item_markdown " id="item43689" data-item-id="43689" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43690" data-item-id="43690" data-item-type="ItemRichText"><div class="item-body-hbr">広告動画を制作する上で、編集技術と同じくらい重要なのが、法律や規制、すなわち<span class="decoration-02"><span class="decoration-01">「コンプライアンス」</span></span>に関する知識です。<br>
+<br>
+自由な表現が魅力の動画制作ですが、広告として世に出す以上、消費者を守るためのルールに従う必要があります。<br>
+これを知らないと意図せず法律に違反してしまい、クライアントに多大な迷惑をかけるだけでなく、自身の信頼も失いかねません。<br>
+<br>
+ここでは、動画クリエイターとして最低限知っておくべき2つの重要な法律の基本を学びます。</div></div>
+        
+        <div class="article-item item_heading " id="item43691" data-item-id="43691" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">広告で嘘はつけない！景品表示法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43692" data-item-id="43692" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"><span class="decoration-01">景品表示法</span></span>（景表法）は、消費者がより良い商品を自主的かつ合理的に選べる環境を守るための法律です。<br>
+簡単に言えば、<span class="decoration-02"><span class="decoration-01">商品やサービスの内容について、実際よりも大げさに良く見せかける「嘘」や「紛らわしい表現」を禁止する</span></span>法律です。<br>
+<br>
+動画クリエイターが特に注意すべきなのは、主に以下の2つの表示です。</div></div>
+        
+        <div class="article-item item_html " id="item44919" data-item-id="44919" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">優良誤認表示</span></span><ul>
+  <li>商品やサービスの内容が、事実と異なり「実際のものよりも著しく優れている」と誤解させるような表示のことです。</li>
+  <li>例：「このPCは世界最速！」「必ず効果が出ます！」など、客観的な根拠がないのにNo.1や最高級、効果を保証する表現</li>
+</ul></li>
+  <li><span class="decoration-01"><span class="decoration-02">有利誤認表示</span></span><ul>
+  <li>商品やサービスの価格などの取引条件が、「実際のものよりも著しく有利である」と誤解させるような表示のことです。</li>
+  <li>例：「今だけ半額！」と表示しているが、実際にはずっとその価格で販売している（二重価格表示）</li>
+</ul></li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item43694" data-item-id="43694" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention"><span class="bold"><strong>クリエイターの責任</strong><br></span>
+  <div class="content-area"><ul><li>「広告主から指示された表現をそのまま使っただけ」という言い訳は通用しない場合があります。</li>
+    <li>制作に関わったクリエイターも責任を問われる可能性があるため、疑わしい表現についてはクライアントに確認する姿勢が重要です。</li>
+    <li>コンプライアンス意識を持つことは、自身の身を守り、クライアントからの信頼を得ることに繋がります。</li></ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item43695" data-item-id="43695" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">特に注意が必要なジャンル！薬機法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43696" data-item-id="43696" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"><span class="decoration-01">薬機法</span></span>（旧・薬事法）は、医薬品や化粧品、健康食品などの品質・有効性・安全性を確保するための法律です。<br>
+<br>
+特に、化粧品や健康食品、サプリメントなどの広告動画を制作する際には、この法律で定められた<span class="decoration-02"><span class="decoration-01">誇大な広告の禁止</span></span>というルールを厳守する必要があります。<br>
+具体的には、医薬品と誤解されるような効果効能をうたうことは固く禁じられています。<br>
+<br>
+例えば、化粧品の広告で「シミが消える」「シワがなくなる」といった表現は、効果を保証しており医薬品的な効能を示唆するためNGとなります。</div></div>
+        
+        <div class="article-item item_html " id="item43699" data-item-id="43699" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <thead>
+    <tr>
+      <th scope="col">ジャンル</th>
+      <th scope="col">NG表現の例</th>
+      <th scope="col">OK表現の例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">化粧品</th>
+      <td>
+        アンチエイジング、肌が再生する、シミが消える
+      </td>
+      <td>
+        エイジングケア、乾燥による小じわを目立たなくする、日焼けによるシミ・ソバカスを防ぐ
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">健康食品</th>
+      <td>
+        疲労回復、免疫力アップ、痩せる
+      </td>
+      <td>
+        元気をサポート、毎日の健康維持に、ダイエット時の栄養補助に
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_html " id="item43698" data-item-id="43698" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold"><strong>Before/After表現の注意点</strong><br></span>
+  <div class="content-area"><ul><li>使用前後の写真を並べて変化を見せる「Before/After」表現は、それ自体が効果を保証していると見なされるため、原則としてNGです。</li>
+    <li>「※個人の感想です」といった注釈（ディスクレーマー）を入れれば良いというわけではなく、表現全体で判断されるため、特に注意が必要です。</li></ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item43700" data-item-id="43700" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【2-2】プラットフォーム別 動画規格とクリエイティブ戦略</h2></div>
+        
+        <div class="article-item item_markdown " id="item43701" data-item-id="43701" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：40分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43702" data-item-id="43702" data-item-type="ItemRichText"><div class="item-body-hbr">守るべき法律を理解したら、次は広告を配信する「場所」、すなわち各プラットフォームのルールと特性を学びます。<br>
+同じ動画でも、配信する場所に合わせて見せ方を変える<span class="decoration-02"><span class="decoration-01">「最適化」</span></span>を行うことで、広告効果は大きく向上します。<br>
+<br>
+ここでは、主要3大プラットフォームであるMeta、YouTube、TikTokの動画規格とクリエイティブの勘所を比較します。</div></div>
+        
+        <div class="article-item item_html " id="item43703" data-item-id="43703" data-item-type="ItemHtml"><div class="item-body">
+
+&nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; &nbsp; &nbsp; 
+&nbsp; &nbsp; <table class="simple"><tbody></tbody><thead><tr><th scope="col"><div>比較項目</div></th><th scope="col"><div>Meta (Facebook / Instagram)</div></th><th scope="col"><div>YouTube</div></th><th scope="col"><div>TikTok</div></th></tr></thead><tbody><tr><th scope="row"><div>推奨アスペクト比</div></th><td><div>1:1 (スクエア), 4:5 (縦長)</div></td><td><div>16:9 (横長)</div></td><td><div>9:16 (縦型)</div></td></tr><tr><th scope="row"><div>視聴環境</div></th><td><div>フィード、ストーリーズ<br><span class="decoration-02">サイレント再生</span>が基本</div></td><td><div>動画本編の前後・途中<br><span class="decoration-02">音声あり</span>が基本</div></td><td><div>おすすめフィード<br><span class="decoration-02">音声あり</span>が基本</div></td></tr><tr><th scope="row"><div>クリエイティブの勘所</div></th><td><div>冒頭の<span class="decoration-02">テキスト情報</span>と視覚的な美しさで指を止めさせる</div></td><td><div>冒頭5秒で<span class="decoration-02">ストーリー</span>に引き込み、スキップさせない</div></td><td><div><span class="decoration-02">「広告感」を消し</span>、一般投稿(UGC)に溶け込ませる</div></td></tr></tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item43704" data-item-id="43704" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">Meta（Facebook / Instagram）広告</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43705" data-item-id="43705" data-item-type="ItemRichText"><div class="item-body-hbr">Meta広告は、友人やフォローしているアカウントの投稿を眺める「フィード」や「ストーリーズ」に表示されます。<br>
+そのため、<span class="decoration-02"><span class="decoration-01">いかにスクロールする指を止め、次の投稿に移動させないか</span></span>が勝負です。<br>
+多くのユーザーが音声をオフにして視聴しているため、音なしでも内容が完全に伝わるように、テロップや視覚情報でメッセージを伝える構成が求められます。</div></div>
+        
+        <div class="article-item item_heading " id="item43706" data-item-id="43706" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">YouTubeインストリーム広告</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43707" data-item-id="43707" data-item-type="ItemRichText"><div class="item-body-hbr">YouTube広告は、ユーザーが見たい動画の前に流れる「インストリーム広告」が主流です。<br>
+最大の特徴は、<span class="decoration-01"><span class="decoration-02">5秒後に表示される「広告をスキップ」ボタン</span></span>の存在​です。<br>
+この「5秒の壁」をいかに突破し、続きを見てもらうかが最大の課題です。<br>
+音声ありで視聴されることが多いため、ナレーションやBGMを効果的に使ったストーリーテリングで、視聴者の感情に訴えかける手法が有効です。</div></div>
+        
+        <div class="article-item item_heading " id="item43708" data-item-id="43708" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">TikTok広告</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43709" data-item-id="43709" data-item-type="ItemRichText"><div class="item-body-hbr">TikTok広告は、ユーザーの「おすすめ」フィードに、一般の投稿と同じフォーマットで表示されます。<br>
+TikTokユーザーは特に広告に対する警戒心が強いため、<span class="decoration-02"><span class="decoration-01">作り込まれた「広告感」のある動画はすぐにスワイプされてしまいます</span></span>。<br>
+トレンドの音源を使ったり、インフルエンサーを起用したりして、一般ユーザーの投稿（UGC）のような「リアルさ」や「エンタメ性」を演出し、コンテンツとして楽しんでもらう工夫が不可欠です。</div></div>
+        
+        <div class="article-item item_heading " id="item43710" data-item-id="43710" data-item-type="ItemHeading"><h2 class="item-body" id="heading12">【2-3】2章 -章末課題- 広告表現をチェックしよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item43711" data-item-id="43711" data-item-type="ItemMarkdown"><h4 id="heading13">目安の学習時間: 20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item43712" data-item-id="43712" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43713" data-item-id="43713" data-item-type="ItemRichText"><div class="item-body-hbr">あなたは、新しいダイエットサプリの広告動画クリエイターです。<br>
+クライアントから以下の3つの表現案が提示されました。<br>
+2章で学んだ景品表示法や薬機法の観点から、それぞれの表現の問題点と、動画クリエイターとして提案すべき修正案を記述してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item43715" data-item-id="43715" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">【表現案A】<br>
+</span>「このサプリは、飲むだけで絶対に痩せます！」<br>
+<span class="decoration-01">【表現案B】</span><br>
+個人の感想として、使用前後の比較写真を並べて劇的な変化を見せる。テロップには小さく「※個人の感想です」と記載。<br>
+<span class="decoration-01">【表現案C】</span><br>
+「​通常価格10,000円のところ、本日限定で5,000円！」と表示するが、実際には常に5,000円で販売している。</div></div>
+        
+        <div class="article-item item_heading " id="item43716" data-item-id="43716" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">解答例</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43718" data-item-id="43718" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">【表現案A】　</span>「このサプリは、飲むだけで絶対に痩せます！」​</div></div>
+        
+        <div class="article-item item_html " id="item44920" data-item-id="44920" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">問題点</span></span><br>
+    効果を保証する表現は、薬機法違反であり、景品表示法の「優良誤認表示」にあたる可能性が非常に高いです。<br>
+    「絶対に痩せる」という断定的で客観的根拠のない表現は使用できません。</li>
+  <li><span class="decoration-01"><span class="decoration-02">修正案</span></span><br>
+    「毎日の適度な運動とバランスの取れた食事と組み合わせることで、あなたの健康的なダイエットをサポートします。」のように、あくまで健康食品として、ダイエットを補助する役割であることを示す表現に修正することを提案します。</li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item43719" data-item-id="43719" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">【表現案B】</span>​個人の感想として、使用前後の比較写真を並べて劇的な変化を見せる。テロップには小さく「※個人の感想です」と記載。</div></div>
+        
+        <div class="article-item item_html " id="item44921" data-item-id="44921" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">問題点</span></span><br>
+    使用前後の比較写真（Before/After表現）は、それ自体が医薬品的な効果を保証していると見なされるリスクが極めて高いです。<br>
+    「個人の感想です」と記載しても、法律違反のリスクを回避することは困難です。</li>
+  <li><span class="decoration-01"><span class="decoration-02">修正案</span></span><br>
+    Before/After写真の使用は中止し、代わりに利用者のポジティブな体験談をインタビュー形式で紹介することを提案します。<br>
+    例えば、「飲み始めてから、毎日のウォーキングが楽しくなりました！」といった、ライフスタイルの変化に焦点を当てた表現を検討します。</li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item43720" data-item-id="43720" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02"></span><span class="decoration-03"></span>【表現案C】<span class="decoration-02"></span></span>​「​通常価格10,000円のところ、本日限定で5,000円！」と表示するが、実際には常に5,000円で販売している。</div></div>
+        
+        <div class="article-item item_html " id="item44922" data-item-id="44922" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">問題点</span></span><br>
+    実際には行われていない割引を「限定」と偽って表示するのは、景品表示法の「有利誤認表示（二重価格表示）」に明確に違反します。<br>
+    これは消費者の信頼を著しく損なう行為です。</li>
+  <li><span class="decoration-01"><span class="decoration-02">修正案</span></span><br>
+    この表現は使用できないことをクライアントに伝え、事実に基づいた価格表示に修正するよう提案します。<br>
+    例えば、本当に初回購入者限定の価格なのであれば、「お得な初回限定価格5,000円から始められます！」といった、事実に即した表現にする必要があります。</li>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item43724" data-item-id="43724" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item43725" data-item-id="43725" data-item-type="ItemRichText"><div class="item-body-hbr">これで「2章 広告クリエイティブの「ルール」」の解説を終わります。<br>
+<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item44497" data-item-id="44497" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/H4baI" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/dTs5M" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 広告クリエイティブの「ルール」</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1.5時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】信頼を守るコンプライアンスの知識</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">広告で嘘はつけない！景品表示法</a></li><li><a href="#heading6" class="tocLink">特に注意が必要なジャンル！薬機法</a></li></ul></li><li><a href="#heading7" class="tocLink">【2-2】プラットフォーム別 動画規格とクリエイティブ戦略</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：40分</a></li></ul><ul><li><a href="#heading9" class="tocLink">Meta（Facebook / Instagram）広告</a></li><li><a href="#heading10" class="tocLink">YouTubeインストリーム広告</a></li><li><a href="#heading11" class="tocLink">TikTok広告</a></li></ul></li><li><a href="#heading12" class="tocLink">【2-3】2章 -章末課題- 広告表現をチェックしよう</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間: 20分</a></li></ul><ul><li><a href="#heading14" class="tocLink">問題</a></li><li><a href="#heading15" class="tocLink">解答例</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/H4baI" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/dTs5M" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

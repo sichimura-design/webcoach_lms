@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap1/WthR8 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Lesson1 ClaudeとChatGPTの違い | Claude活用講座 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap1/WthR8">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="Lesson1 ClaudeとChatGPTの違い | Claude活用講座 - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="Lesson1 ClaudeとChatGPTの違い | Claude活用講座">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap1/WthR8">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="sGM2z_LXKLKUgY47UOeFrNA8_wCJUVsTuKiGKBjs3lEBav5fdFXINot5clrKhwJo8KPQCbll5ERnb-VqAurXnA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48854" data-item-id="48854" data-item-type="ItemHtml"><div class="item-body"><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #F7F8FA; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; height: auto; display: block; }
+
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 22px; font-weight: 900; color: #2D2D2D; margin: 56px 0 20px; padding: 0 0 12px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 900; color: #2D2D2D; margin: 32px 0 14px; }
+p { font-size: 15px; line-height: 2.0; color: #555; margin: 0 0 14px; }
+.accent { color: #E85D4A; font-weight: 700; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; padding: 24px 28px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.goal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.goal-box__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.goal-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.goal-box__time  { font-size: 11px; font-weight: 500; color: #E85D4A; }
+.goal-box__text  { font-size: 15px; font-weight: 700; color: #3D3D3D; line-height: 1.7; margin: 0; }
+
+/* 目次 */
+.toc-box { background: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.toc-box .label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 10px; }
+.toc-box ol { margin: 0; padding-left: 20px; font-size: 14px; color: #555; line-height: 2.2; }
+.toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+.toc-link:hover { color: #E85D4A; }
+
+/* イメージボックス */
+.image-box { background: #FFF8F6; border-left: 4px solid #F5A64A; border-radius: 0 14px 14px 0; padding: 20px 24px; margin: 24px 0; }
+.image-box__label { font-size: 11px; font-weight: 700; color: #E0882A; letter-spacing: 0.12em; margin-bottom: 10px; }
+.image-box p { font-size: 14px; color: #6A5A50; line-height: 1.85; margin: 0; }
+
+/* 躓きポイント */
+.stumble-box { background: #FFF3F0; border-left: 4px solid #E85D4A; border-radius: 0 14px 14px 0; padding: 20px 24px; margin: 24px 0; }
+.stumble-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.12em; margin-bottom: 10px; }
+.stumble-box p { font-size: 14px; color: #6A4A40; line-height: 1.85; margin: 0; }
+
+/* ポイントボックス */
+.point-box { background: #fff; border-left: 4px solid #E85D4A; padding: 20px 24px; border-radius: 0 12px 12px 0; margin: 24px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.05); }
+.point-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+.point-box p { margin: 0; font-size: 14px; line-height: 1.8; color: #555; }
+
+/* 活用場面ボックス */
+.usage-box { background: linear-gradient(135deg, #FFF8F0, #FFF0EC); border-radius: 14px; padding: 20px 24px; margin: 24px 0; }
+.usage-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.12em; margin-bottom: 10px; }
+.usage-box ul { list-style: none; padding: 0; margin: 0; }
+.usage-box li { font-size: 14px; color: #5A3A30; padding: 5px 0; display: flex; gap: 8px; line-height: 1.6; }
+.usage-box li::before { content: '→'; color: #E85D4A; font-weight: 700; flex-shrink: 0; }
+
+/* 比較テーブル */
+.compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
+.compare-table th { background: #E85D4A; color: white; padding: 12px 16px; text-align: left; font-weight: 700; font-size: 13px; }
+.compare-table th:first-child { border-radius: 10px 0 0 0; }
+.compare-table th:last-child  { border-radius: 0 10px 0 0; }
+.compare-table td { padding: 12px 16px; border-bottom: 1px solid #F0F0F0; background: #fff; line-height: 1.6; vertical-align: top; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+.compare-table tr:last-child td:last-child  { border-radius: 0 0 10px 0; }
+.compare-table td.highlight { background: #FFF3F0; font-weight: 700; color: #E85D4A; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.badge--good { background: #E8F5E9; color: #2E7D52; }
+.badge--avg  { background: #F3F3F3; color: #888; }
+
+/* 深掘りトグル */
+.deepdive { margin: 20px 0; }
+.deepdive summary { cursor: pointer; font-size: 13px; font-weight: 700; color: #E85D4A; padding: 10px 0; list-style: none; display: flex; align-items: center; gap: 6px; }
+.deepdive summary::before { content: '🔍'; }
+.deepdive summary::-webkit-details-marker { display: none; }
+.deepdive__body { background: #FFF8F6; border-radius: 10px; padding: 16px 20px; margin-top: 8px; font-size: 14px; color: #5A4A40; line-height: 1.8; }
+
+/* クイズ */
+.quiz-block { background: #fff; border-radius: 16px; padding: 24px; margin: 32px 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.quiz-block__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 12px; }
+.quiz-block__q { font-size: 15px; font-weight: 700; color: #2D2D2D; margin-bottom: 16px; line-height: 1.6; }
+.quiz-choices { display: flex; flex-direction: column; gap: 8px; }
+.quiz-btn { background: #F7F8FA; border: 2px solid #E8E8E8; border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: inherit; color: #3D3D3D; cursor: pointer; text-align: left; transition: all 0.2s; line-height: 1.5; }
+.quiz-btn:hover:not(:disabled) { border-color: #E85D4A; background: #FFF0ED; }
+.quiz-btn.correct  { background: #E8F5E9; border-color: #4CAF7C; color: #2E7D52; }
+.quiz-btn.wrong    { background: #FFEBEE; border-color: #EF5350; color: #C62828; }
+.correct-fb, .wrong-fb { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 10px; font-size: 13px; line-height: 1.7; }
+.correct-fb { background: #E8F5E9; color: #2E7D52; }
+.wrong-fb   { background: #FFEBEE; color: #C62828; }
+
+/* まとめ */
+.summary-box { background: #fff; border-radius: 16px; padding: 28px; margin: 48px 0 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.summary-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 16px; }
+.summary-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.summary-box li { font-size: 14px; color: #3D3D3D; display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
+.summary-box li::before { content: '✅'; flex-shrink: 0; }
+
+/* 理解度チェック（2層details） */
+.check-outer { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); overflow: hidden; margin: 24px 0; }
+.check-outer > summary { cursor: pointer; padding: 20px 24px; font-size: 15px; font-weight: 700; color: #2D2D2D; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.check-outer > summary::-webkit-details-marker { display: none; }
+.check-outer > summary::after { content: '▼'; font-size: 12px; color: #AAA; transition: transform 0.2s; }
+.check-outer[open] > summary::after { transform: rotate(180deg); }
+.check-outer__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.check-inner { border-top: 1px solid #F0F0F0; padding: 20px 24px; }
+.check-item { margin-bottom: 12px; }
+.check-item details summary { cursor: pointer; font-size: 14px; color: #3D3D3D; list-style: none; padding: 8px 0; display: flex; gap: 10px; align-items: flex-start; line-height: 1.6; }
+.check-item details summary::-webkit-details-marker { display: none; }
+.check-item details summary::before { content: '☐'; color: #E85D4A; flex-shrink: 0; font-size: 16px; }
+.check-item details[open] summary::before { content: '☑'; color: #4CAF7C; }
+.check-item__answer { background: #F7F8FA; border-radius: 8px; padding: 12px 14px; margin-top: 6px; font-size: 13px; color: #555; line-height: 1.7; }
+.hero { background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%); border-radius: 16px; padding: 48px 40px; margin-bottom: 40px; color: #fff; }
+.hero__label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+.hero__title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.hero__meta { display: flex; gap: 20px; font-size: 14px; opacity: 0.9; flex-wrap: wrap; }
+.hero__meta span { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; }
+
+/* チャプター概要動画 */
+.chapter-intro-video { background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.chapter-intro-video::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.chapter-intro-video__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.chapter-intro-video__player { width: 100%; border-radius: 8px; display: block; background: #F7F8FA; }
+</style>
+
+<div class="lesson-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="hero">
+    <div class="hero__label">Chapter 1 — Lesson 1</div>
+    <div class="hero__title">ClaudeとChatGPTの違い</div>
+    <div class="hero__meta">
+      <span>🕐 約15分</span>
+      <span>📚 知識型</span>
+      <span>🔖 AI比較</span>
+    </div>
+  </div>  
+  
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap1/nGqUF" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>  
+  
+  <!-- チャプター概要動画 -->
+  <!-- Dropbox URL: 共有リンクの末尾 ?dl=0 を ?raw=1 に変えてsrcに設定 -->
+  <div class="chapter-intro-video">
+    <div class="chapter-intro-video__label">チャプター概要動画</div>
+    <video src="../media/med-4689e7af89.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+  </div>
+
+  <!-- ゴールボックス -->
+  <div class="goal-box">
+    <div class="goal-box__header">
+      <span class="goal-box__label">このレッスンのゴール</span>
+      <span class="goal-box__time">⏱ 約15分</span>
+    </div>
+    <p class="goal-box__text">ClaudeとChatGPTの違いを説明でき、自分の業務でClaudeを使う理由を言葉にできる</p>
+  </div>
+
+  <!-- 目次 -->
+  <div class="toc-box">
+    <div class="label">目次</div>
+    <ol>
+      <li><a href="#s1" class="toc-link">生成AIツールの全体像</a></li>
+      <li><a href="#s2" class="toc-link">Claudeが得意な3つのこと</a></li>
+      <li><a href="#s3" class="toc-link">この講座でのClaudeの位置づけ</a></li>
+    </ol>
+  </div>
+
+  <!-- イメージボックス -->
+  <div class="image-box">
+    <div class="image-box__label">🎬 イメージしてみよう</div>
+    <p>クライアントから「LP文章をAIで作りたいんですが、ChatGPTとClaude、どっちがいいですか？」と聞かれた。「なんとなくClaude使ってます」とは言えるけど、なぜそちらが良いのか、言葉で説明しようとしたら詰まってしまった…</p>
+  </div>
+
+  <!-- 躓きポイント -->
+  <div class="stumble-box">
+    <div class="stumble-box__label">⚡ このレッスンで躓きやすいポイント</div>
+    <p>「どれも同じじゃないの？」と感じやすいポイントです。違いを実感するには、同じ文章を両方のAIで生成して比べてみるのが一番の近道。まずは「Claudeは長文が得意」という1点だけ覚えるところから始めましょう。</p>
+  </div>
+
+  <!-- Section 1 -->
+  <h2 id="s1">生成AIツールの全体像</h2>
+  <p>まず、主要な生成AIチャットツールを整理します。<span class="accent">ChatGPT・Gemini・Claude</span>の3つはいずれも「チャット型AI」です。テキストで質問すると回答が返ってくる—基本的な使い方は同じです。</p>
+  <p>では、何が違うのか。以下の比較で確認してみましょう。</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>ツール</th>
+        <th>提供元</th>
+        <th>特に得意なこと</th>
+        <th>デザイナー・フリーランス向け評価</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>ChatGPT</strong></td>
+        <td>OpenAI</td>
+        <td>汎用性が高い。プラグイン・画像生成など機能が豊富</td>
+        <td><span class="badge badge--good">◎ 汎用性</span></td>
+      </tr>
+      <tr>
+        <td><strong>Gemini</strong></td>
+        <td>Google</td>
+        <td>Google Workspace・検索との連携が得意</td>
+        <td><span class="badge badge--good">◎ Google連携</span></td>
+      </tr>
+      <tr>
+        <td class="highlight"><strong>Claude</strong></td>
+        <td class="highlight">Anthropic</td>
+        <td class="highlight">長文処理・論理的な文章・コード生成が特に強い</td>
+        <td class="highlight"><span class="badge badge--good">◎ 長文・論理</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="point-box">
+    <div class="point-box__label">ポイント</div>
+    <p>「どれが一番いいか」という答えはありません。<strong>業務の内容によって使い分ける</strong>のが現実的です。この講座では、デザイナー・フリーランスの業務でClaudeが特に活きる場面に絞って学びます。</p>
+  </div>
+
+  <!-- クイズ1 -->
+  <div class="quiz-block">
+    <div class="quiz-block__label">✏️ 確認クイズ</div>
+    <div class="quiz-block__q">Q1. クライアントからLPの文章を長文で作ってほしいと依頼された。Claudeが特に向いている理由は？</div>
+    <div class="quiz-choices" id="q1">
+      <button class="quiz-btn" onclick="answer('q1',this,false)">A. ChatGPTより安いから</button>
+      <button class="quiz-btn" onclick="answer('q1',this,true)">B. 長文を正確に処理するのが得意だから</button>
+      <button class="quiz-btn" onclick="answer('q1',this,false)">C. 画像も生成できるから</button>
+      <button class="quiz-btn" onclick="answer('q1',this,false)">D. Googleと連携しているから</button>
+    </div>
+    <div class="correct-fb" id="q1-ok">正解です！Claudeはコンテキストウィンドウ（一度に処理できる情報量）が大きく、長い文章を精度高く処理するのが得意です。LP文章や提案書など、長くて複雑な文章生成に特に向いています。</div>
+    <div class="wrong-fb" id="q1-ng">Claudeが選ばれる理由は料金や画像生成ではなく「長文処理の精度」です。コンテキストウィンドウが大きいため、長い文章を渡しても精度が落ちにくいのが特徴です。</div>
+  </div>
+
+  <!-- Section 2 -->
+  <h2 id="s2">Claudeが得意な3つのこと</h2>
+  <p>デザイナー・フリーランスの業務でClaudeが特に活きる強みを3つ紹介します。</p>
+
+  <h3>① 長文処理</h3>
+  <p>Claudeは<span class="accent">一度に読める情報量（コンテキストウィンドウ）が非常に大きい</span>のが特徴です。A4数十〜数百ページ分のテキストを渡しても処理できます。競合サイトを丸ごと貼り付けてコピー分析させる、PDFを要約させるといった使い方が得意です。</p>
+
+  <details class="deepdive">
+    <summary>もっと深掘り！ コンテキストウィンドウとは？</summary>
+    <div class="deepdive__body">AIが「一度に記憶しながら処理できる情報量」のことです。コンテキストウィンドウが小さいと、長い文章を渡すと途中から忘れたり、回答の精度が落ちたりします。Claudeは現時点でこのウィンドウが非常に大きく、長いプロジェクトの資料を丸ごと渡して「これをもとに提案書を書いて」といった指示が通りやすいのが強みです。</div>
+  </details>
+
+  <h3>② 論理的で自然な日本語</h3>
+  <p>提案書・LPコピー・ブログ記事など、<span class="accent">読み手を説得する文章</span>を自然な日本語で生成することが得意です。「です・ます調で、専門用語を使わずに」といった細かい条件指定にも対応します。</p>
+
+  <h3>③ コード・HTML生成</h3>
+  <p>コードを書かなくてもHTMLやCSSを生成してプレビューできます。「Artifacts」機能を使えば、チャット画面の中でLPの構成案をすぐに確認できます（Chapter 3で詳しく学びます）。</p>
+
+  <div class="usage-box">
+    <div class="usage-box__label">💡 こんな場面で使える！</div>
+    <ul>
+      <li>競合サイトのテキストを貼り付けて「このサイトの訴求ポイントを分析して」</li>
+      <li>ヒアリングシートを渡して「これをもとにLP文章の下書きを作って」</li>
+      <li>「提案書の構成案を箇条書きで出して、論理的な流れにして」</li>
+    </ul>
+  </div>
+
+  <!-- クイズ2 -->
+  <div class="quiz-block">
+    <div class="quiz-block__label">✏️ 確認クイズ</div>
+    <div class="quiz-block__q">Q2. デザイナーがクライアントの提案書を作成する際、Claudeを使うメリットとして最も適切なものは？</div>
+    <div class="quiz-choices" id="q2">
+      <button class="quiz-btn" onclick="answer('q2',this,false)">A. クライアントのロゴを自動生成できる</button>
+      <button class="quiz-btn" onclick="answer('q2',this,true)">B. ヒアリング内容を渡すと論理的な文章の下書きを生成してくれる</button>
+      <button class="quiz-btn" onclick="answer('q2',this,false)">C. Figmaと直接連携して自動でデザインしてくれる</button>
+      <button class="quiz-btn" onclick="answer('q2',this,false)">D. 日本語より英語の文章生成が得意</button>
+    </div>
+    <div class="correct-fb" id="q2-ok">正解です！ヒアリングシートや資料をClaudeに渡して「これをもとに提案書の文章を書いて」と指示するだけで、論理的な文章の下書きができます。ゼロから文章を考える時間を大幅に減らせます。</div>
+    <div class="wrong-fb" id="q2-ng">ClaudeはFigma連携や画像生成はできませんが、テキスト生成では高い性能を発揮します。特にヒアリング内容を渡すだけで提案書の論理的な文章の下書きを作れるのが強みです。</div>
+  </div>
+
+  <!-- Section 3 -->
+  <h2 id="s3">この講座でのClaudeの位置づけ</h2>
+  <p>Claudeにはいくつかの使い方があります。この講座が対象とするのは「ブラウザ版Claude（claude.ai）」です。</p>
+
+  <table class="compare-table">
+    <thead>
+      <tr><th>使い方</th><th>特徴</th><th>この講座</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="highlight"><strong>ブラウザ版 Claude.ai</strong></td>
+        <td class="highlight">ブラウザで開いてすぐ使える。Projects・Artifacts・カスタム指示が使える</td>
+        <td class="highlight">✅ この講座の対象</td>
+      </tr>
+      <tr>
+        <td><strong>Claude Code</strong></td>
+        <td>ターミナルで動くエージェント型。ファイル操作・コマンド実行ができる</td>
+        <td>→ 別コースで学ぶ</td>
+      </tr>
+      <tr>
+        <td><strong>Claude API</strong></td>
+        <td>自動化・開発向け。Make/Zapierと連携してノーコード自動化もできる</td>
+        <td>→ Chapter 6で紹介</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="point-box">
+    <div class="point-box__label">ポイント</div>
+    <p>「Claude = claude.ai のチャット画面」と覚えれば十分です。この講座ではブラウザで開いて使う機能に絞って学んでいきます。</p>
+  </div>
+
+  <div class="usage-box">
+    <div class="usage-box__label">💡 こんな場面で使える！</div>
+    <ul>
+      <li>クライアント対応のメール文章を短時間でドラフト</li>
+      <li>競合調査のまとめレポートを素早く作成</li>
+      <li>「〇〇業種のLPで使えるキャッチコピーを10案出して」</li>
+    </ul>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-box">
+    <div class="summary-box__label">まとめ</div>
+    <ul>
+      <li>ChatGPT・Gemini・Claudeはいずれもチャット型AI。得意なことが異なる</li>
+      <li>Claudeの強みは「長文処理・論理的な日本語・コード生成」の3つ</li>
+      <li>この講座はブラウザ版Claude（claude.ai）の使い方を学ぶ</li>
+    </ul>
+  </div>
+
+  <!-- 理解度チェック（2層details） -->
+  <details class="check-outer">
+    <summary>
+      <span class="check-outer__label">理解度チェック</span>
+    </summary>
+    <div class="check-inner">
+      <div class="check-item">
+        <details>
+          <summary>Claudeが長文処理に強い理由を自分の言葉で説明できる</summary>
+          <div class="check-item__answer">コンテキストウィンドウ（一度に処理できる情報量）が大きいため、長い文章を渡しても精度が落ちにくい。A4数十〜数百ページ分の情報を一度に処理できる。</div>
+        </details>
+      </div>
+      <div class="check-item">
+        <details>
+          <summary>ChatGPT・Gemini・Claudeの主な違いを1つずつ言える</summary>
+          <div class="check-item__answer">ChatGPT→汎用性◎ / Gemini→Google連携◎ / Claude→長文・論理・コード生成◎。どれが優れているかではなく、用途に合わせて使い分けるもの。</div>
+        </details>
+      </div>
+      <div class="check-item">
+        <details>
+          <summary>「この講座で学ぶClaude」がブラウザ版（claude.ai）であることを理解している</summary>
+          <div class="check-item__answer">claude.aiをブラウザで開いて使うのがこの講座の対象。Claude CodeやAPIは別の使い方で、この講座では扱わない（Claude Codeは別コース）。</div>
+        </details>
+      </div>
+    </div>
+  </details>
+
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/claude-chap1/nGqUF" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>   
+  
+</div>
+
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

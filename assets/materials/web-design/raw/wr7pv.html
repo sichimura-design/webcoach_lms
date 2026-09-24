@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="S1dT/IaN9U5jUhAUHa6KjQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2754" data-domain="learn.webcoach.jp" data-url="/web-design/uiux/chap3/Wr7pV" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3-2 UIデザインの基礎知識 — なぜそのUIにするかを判断する - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/002/350/original/script.js?1779642402"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/uiux/chap3/Wr7pV">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="3-2 UIデザインの基礎知識 — なぜそのUIにするかを判断する - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="3-2 UIデザインの基礎知識 — なぜそのUIにするかを判断する">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/uiux/chap3/Wr7pV">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/uiux/chap3/Wr7pV"
+    },
+    "headline": "3-2 UIデザインの基礎知識 — なぜそのUIにするかを判断する",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/clipkit/images/medium/missing.png",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2026-07-28T15:45:00+09:00",
+    "dateModified": "2026-07-28T19:44:41+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "l_kamezaki"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="UihTF_K2NihbPMyAvT0p0OeghYRf0N_y1qvFsKS72qsJrjh1x7J64T7o3KxYmPwtaNG6wIG5o_NuyB6-7SXmEg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item51083" data-item-id="51083" data-item-type="ItemHtml"><div class="item-body"><meta charset="UTF-8">
+<!--
+  AI×UX/UIデザイナー育成講座（Reスキル認定申請予定・レベル3）
+  UX/UIデザイン教材 第3章「情報設計とUI設計」 レッスン2（※申請書類上は第Ⅲ部）
+  ※申請内部ID（章・レッスンの通し番号やⅢ-x等）は学習者向けラベルに出さない。badge=「第3章」／chip=「レッスン 3-2」
+  題材: UIデザインの基礎知識（知識型・学習時間150分・UXプロセス④UI設計）
+  範囲: コンポーネントの定石（ボタンの状態設計＝通常/ホバー/押下/無効・フォーム・ナビ） / アフォーダンス / タッチターゲット / プラットフォーム標準（HIG・Material） / ニールセンの10ヒューリスティック / アクセシビリティ基礎（コントラスト・文字サイズ） / UXライティング基礎
+  接続: 第1章（UX/UI基礎・UXの7ステップ・Web基礎）と第2章（リフトのリサーチ→要件→価値定義）を前提に接続。前レッスン（第3章レッスン1）で参考UIを模写しリフトに合わせて作り変えた「引き出し」を、本レッスンの原則で言語化・解説できるようにする
+  演習: 引き出した画面（または身近なアプリ画面）を学んだ原則で解説する形成的演習（自己添削・提出強制なし＝通し課題の必須成果物13点に含まれない工程内演習）。締めは「コーチに相談」
+  体裁の正: chapter-02_research-requirements/lesson-02.html（承認済み・踏襲）
+  図版: 一部は後日画像生成（fig-ph）
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ClipKit対策: アンカージャンプ先が固定ヘッダーに隠れないようオフセット */
+section[id] { scroll-margin-top: 96px; }
+.slide-img { width: 100%; height: auto; display: block; border-radius: 14px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box__time { margin-left: auto; font-size: 13px; font-weight: 700; color: #C2402F; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — ClipKit対策版（高詳細度＋!important） */
+.lesson-wrapper nav.toc { background: #fff !important; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.lesson-wrapper nav.toc .toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lesson-wrapper nav.toc .toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.lesson-wrapper nav.toc .toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.lesson-wrapper nav.toc ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 3px; }
+.lesson-wrapper nav.toc ul li { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.lesson-wrapper nav.toc ul li::before { content: none !important; }
+.lesson-wrapper nav.toc ul li::marker { content: '' !important; }
+.lesson-wrapper nav.toc ul li a { display: flex !important; align-items: center; gap: 12px; padding: 8px 14px !important; background: #FAF9F8; border-radius: 8px; text-decoration: none !important; border-bottom: none !important; box-shadow: none; color: #2D2D2D !important; transition: background 0.2s; }
+.lesson-wrapper nav.toc ul li a:hover { background: #F5EFEC; text-decoration: none !important; color: #2D2D2D !important; }
+.lesson-wrapper nav.toc ul li a:visited { color: #2D2D2D !important; }
+.lesson-wrapper nav.toc .toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.lesson-wrapper nav.toc .toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.lesson-wrapper nav.toc .toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* 注意ボックス */
+.notice-box { background: #FFF4F2; border: 1.5px solid #F3B4A8; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #E85D4A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* v2テーブル（比較・マッピング） */
+.v2-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 24px 0 28px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 15px; }
+.v2-table th { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-weight: 700; padding: 12px 16px; text-align: left; font-size: 14px; }
+.v2-table td { padding: 12px 16px; border-bottom: 1px solid #F0E6E1; color: #4A4A4A; background: #fff; vertical-align: top; line-height: 1.75; }
+.v2-table tr:last-child td { border-bottom: none; }
+.v2-table td:first-child { font-weight: 700; color: #2D2D2D; white-space: nowrap; }
+
+/* 図版プレースホルダー */
+.fig-ph { font-size: 14px; line-height: 1.8; }
+
+/* HTML実物見本 */
+.uidemo { background: #fff; border: 1px solid #ECE7DE; border-radius: 14px; padding: 18px 20px; margin: 20px 0; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+.uidemo__cap { font-size: 12px; font-weight: 700; color: #7A7A7A; letter-spacing: 0.08em; margin-bottom: 12px; }
+
+/* 良い例・悪い例（Do/Don't）実物比較（visual.md定義どおり） */
+.dodont { display: flex; flex-direction: column; gap: 16px; margin: 28px 0; }
+.dodont__cap { font-size: 13.5px; font-weight: 800; color: #2D2D2D; margin: 4px 0 -6px; }
+.dodont__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 600px) { .dodont__row { grid-template-columns: 1fr; } }
+.dodont__col { border-radius: 14px; padding: 18px 20px; }
+.dodont__col.bad { background: #FFF5F4; border: 1.5px solid #F5A8A0; }
+.dodont__col.good { background: #F1F9F4; border: 1.5px solid #A6D8BB; }
+.dodont__tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; margin-bottom: 10px; }
+.dodont__col.bad .dodont__tag { color: #C2402F; }
+.dodont__col.good .dodont__tag { color: #2E7D4F; }
+.dodont__demo { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+.dodont__note { font-size: 13.5px; line-height: 1.8; color: #555; margin: 0; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* 演習ボックス */
+.work-box { background: #fff; border: 2px solid #F5A64A; border-radius: 14px; padding: 22px 24px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.work-box__badge { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 14px; }
+.work-box h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 16px 0 8px; }
+.work-box ol, .work-box ul { margin: 0 0 8px; padding-left: 1.4em; }
+.work-box li { font-size: 14.5px; color: #4A4A4A; line-height: 1.85; }
+.work-box .v2-table { margin: 10px 0 14px; }
+.prep-list { background: #fff; border-radius: 14px; padding: 24px 28px; margin: 28px 0; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.prep-list .prep-label { font-size: 12px; font-weight: 700; color: #4CAF50; letter-spacing: 0.15em; margin-bottom: 12px; }
+.prep-list ul { list-style: none; padding: 0; margin: 0; }
+.prep-list li { padding: 10px 0; border-bottom: 1px solid #E8F5E9; font-size: 15px; color: #3D3D3D; }
+.prep-list li:last-child { border-bottom: none; }
+.prep-list li .prep-bullet { color: #4CAF50; margin-right: 8px; }
+.submit-note { background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; color: #C2402F; margin-top: 14px; text-align: center; }
+
+/* 理解度チェック — 白カード + グラデピル + 薄グラデ質問（Goalと統一） */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== 図解キット（fig-*）v2 分かりやすさ最適化 ===== */
+.fig { margin: 28px 0; }
+.fig__frame { background:#FBFAF8; border:1px solid #E4E1DB; border-radius:14px; padding:22px 20px; }
+.fig__cap { font-size:13px; color:#6E6A66; text-align:center; margin-top:10px; line-height:1.7; }
+.fig__sample { color:#B8B0A8 !important; font-style:italic; }
+.fig-row { display:flex; gap:16px; flex-wrap:wrap; }
+.fig-row > * { flex:1 1 0; min-width:150px; }
+.fig-card { background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:18px; }
+.fig-card__n { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:#E85D4A; color:#fff; font-size:13px; font-weight:800; margin-bottom:10px; }
+.fig-card__t { font-size:15px; font-weight:700; color:#2D2D2D; margin-bottom:6px; line-height:1.5; }
+.fig-card__d { font-size:13px; color:#555; line-height:1.75; }
+.fig-card__note { margin-top:10px; padding-top:10px; border-top:1px dashed #E4E1DB; font-size:12.5px; color:#C2402F; font-weight:700; }
+.fig-card--accent { border-color:#E85D4A; background:#FDEEE9; }
+.fig-card--fill { background:#E85D4A; border-color:#E85D4A; }
+.fig-card--fill .fig-card__t, .fig-card--fill .fig-card__d { color:#fff; }
+.fig-card--fill .fig-card__n { background:#fff; color:#E85D4A; }
+.fig-card--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-card--mute .fig-card__n { background:#A8A29B; }
+.fig-card--mute .fig-card__t { color:#6E6A66; }
+.fig-flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; }
+.fig-node { flex:1 1 0; min-width:104px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:13px 11px; text-align:center; }
+.fig-node__n { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; margin-bottom:8px; }
+.fig-node__t { font-size:13px; font-weight:700; color:#2D2D2D; line-height:1.45; }
+.fig-node__d { font-size:11.5px; color:#6E6A66; line-height:1.6; margin-top:4px; }
+.fig-node--current { border-color:#E85D4A; background:#FDEEE9; }
+.fig-node--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-node--mute .fig-node__n { background:#A8A29B; }
+.fig-node--mute .fig-node__t { color:#6E6A66; }
+.fig-sep { display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:18px; font-weight:800; flex:0 0 auto; }
+.fig-loop { margin-top:12px; display:flex; align-items:center; gap:10px; color:#C2402F; font-size:12.5px; font-weight:700; }
+.fig-loop__line { flex:1; height:0; border-top:2px dashed #C9C4BD; }
+.fig-two { display:flex; align-items:stretch; gap:12px; flex-wrap:wrap; }
+.fig-two__col { flex:1 1 0; min-width:180px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:16px 18px; }
+.fig-two__h { font-size:14px; font-weight:800; color:#2D2D2D; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.fig-two__col ul { margin:0; padding-left:1.1em; }
+.fig-two__col li { font-size:13px; color:#555; line-height:1.8; }
+.fig-two__mid { flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:22px; font-weight:800; }
+.fig-two__col--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-two__col--mute .fig-two__h, .fig-two__col--mute li { color:#8A8279; }
+.fig-two__col--accent { background:#FDEEE9; border-color:#E85D4A; }
+.fig-mark { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; font-size:12px; font-weight:800; flex:0 0 auto; }
+.fig-mark--ok { background:#E85D4A; color:#fff; }
+.fig-mark--ng { background:#C9C4BD; color:#fff; }
+.fig-tag { display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.04em; padding:2px 8px; border-radius:6px; }
+.fig-tag--mute { background:#E4E1DB; color:#8A8279; }
+.fig-tag--accent { background:#E85D4A; color:#fff; }
+.fig-nest { display:flex; justify-content:center; }
+.fig-nest__outer { position:relative; background:#FDEEE9; border:2px solid #F0A891; border-radius:20px; padding:38px 28px 22px; min-width:280px; max-width:440px; text-align:center; }
+.fig-nest__label { position:absolute; top:12px; left:20px; font-size:12.5px; font-weight:800; color:#C2402F; }
+.fig-nest__inner { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:18px 20px; }
+.fig-nest__inner .t { font-size:14px; font-weight:800; color:#2D2D2D; }
+.fig-nest__inner .d { font-size:12px; color:#6E6A66; margin-top:4px; line-height:1.6; }
+.fig-nest__outerd { font-size:12px; color:#8A6A5A; margin-top:14px; line-height:1.6; }
+.fig-ladder { display:flex; flex-direction:column; gap:8px; }
+.fig-step { border:1px solid #E4E1DB; border-radius:12px; padding:12px 16px; display:flex; gap:12px; align-items:flex-start; }
+.fig-step__n { flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.fig-step__t { font-size:13px; color:#3D3D3D; line-height:1.6; }
+.fig-step.s1{background:#FCF1ED}.fig-step.s2{background:#FADED4}.fig-step.s3{background:#F7C9B8}.fig-step.s4{background:#F3B39B}.fig-step.s5{background:#EE9B7E}
+.fig-step.d2{margin-left:22px}.fig-step.d3{margin-left:44px}.fig-step.d4{margin-left:66px}.fig-step.d5{margin-left:88px}
+.fig-step--root { border-color:#E85D4A; border-width:2px; }
+.fig-why { text-align:center; color:#A8A29B; font-size:12px; font-weight:800; margin:2px 0; }
+.fig-band { display:flex; flex-direction:column; gap:8px; }
+.fig-band__row { display:flex; gap:10px; align-items:center; }
+.fig-band__k { flex:0 0 104px; font-size:12.5px; font-weight:800; color:#C2402F; text-align:right; line-height:1.4; }
+.fig-band__v { flex:1; background:#FDEEE9; border:1px solid #E4E1DB; border-radius:10px; padding:9px 12px; font-size:12.5px; color:#3D3D3D; line-height:1.6; }
+.fig-exchange { display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap; }
+.fig-exchange__end { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:16px 18px; font-size:13.5px; font-weight:800; color:#2D2D2D; text-align:center; min-width:110px; }
+.fig-exchange__mid { flex:1; min-width:150px; display:flex; flex-direction:column; gap:8px; }
+.fig-exchange__req, .fig-exchange__res { border-radius:8px; padding:7px 12px; font-size:12px; font-weight:700; text-align:center; }
+.fig-exchange__req { background:#FDEEE9; color:#C2402F; }
+.fig-exchange__res { background:#F4F2F0; color:#6E6A66; }
+@media (max-width:600px){
+  .fig-two__mid{transform:rotate(90deg)}
+  .fig-step.d2,.fig-step.d3,.fig-step.d4,.fig-step.d5{margin-left:0}
+}
+/* ===== UIモックアップ・キット（ui-*）リフト予約サービス ===== */
+.ui-flow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin:4px 0}
+.ui-sep{color:#B0A79C;font-size:20px;font-weight:800;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;font-size:11px}
+.ui-sep b{font-size:22px;line-height:1}
+.ui-phone{width:188px;background:#fff;border:7px solid #2A2A2E;border-radius:26px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.12);flex:0 0 auto}
+.ui-scr{background:#F6F1E7;min-height:330px;display:flex;flex-direction:column}
+.ui-bar{background:#2F5D50;color:#fff;padding:11px 13px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px}
+.ui-bar .ui-back{opacity:.85;font-weight:400}
+.ui-body{padding:11px;display:flex;flex-direction:column;gap:8px;flex:1}
+.ui-h{font-size:12px;font-weight:800;color:#2D2D2D}
+.ui-sub{font-size:10px;color:#7a726a}
+.ui-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.ui-cal span{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:9px;border-radius:5px;background:#fff;color:#555}
+.ui-cal span.on{background:#2F5D50;color:#fff;font-weight:700}
+.ui-cal span.off{opacity:.35}
+.ui-chips{display:flex;flex-wrap:wrap;gap:5px}
+.ui-chip{font-size:9.5px;padding:5px 8px;border-radius:14px;background:#fff;border:1px solid #DCCFC0;color:#2F5D50}
+.ui-chip.on{background:#2F5D50;color:#fff;border-color:#2F5D50}
+.ui-card{background:#fff;border:1px solid #E8DECF;border-radius:8px;padding:8px 10px;font-size:10px;color:#555}
+.ui-line{height:7px;border-radius:4px;background:#E3D9CB}
+.ui-line.sh{width:58%}
+.ui-field{background:#fff;border:1px solid #DCCFC0;border-radius:6px;padding:7px 9px;font-size:9.5px;color:#9a9088}
+.ui-btn{background:#2F5D50;color:#fff;text-align:center;padding:9px;border-radius:8px;font-size:11px;font-weight:800;margin-top:auto}
+.ui-btn.ghost{background:#fff;color:#9a9088;border:1px solid #DCCFC0}
+/* 参考/大手（ニュートラル・情報多め） */
+.ui-phone--ref .ui-scr{background:#fff}
+.ui-phone--ref .ui-bar{background:#4a4a4a}
+.ui-phone--ref .ui-chip{color:#555;border-color:#ddd}
+.ui-phone--ref .ui-chip.on,.ui-phone--ref .ui-cal span.on,.ui-phone--ref .ui-btn{background:#4a4a4a;border-color:#4a4a4a}
+.ui-phone--ref .ui-card,.ui-phone--ref .ui-field{border-color:#e5e5e5}
+.ui-phone--ref .ui-line{background:#e6e6e6}
+/* ワイヤーフレーム（グレースケール） */
+.ui-phone--wire .ui-scr{background:#fff}
+.ui-phone--wire .ui-bar{background:#cfcfcf;color:#666}
+.ui-phone--wire .ui-btn{background:#bdbdbd}
+.ui-phone--wire .ui-cal span.on,.ui-phone--wire .ui-chip.on{background:#bdbdbd;color:#fff;border-color:#bdbdbd}
+.ui-phone--wire .ui-chip,.ui-phone--wire .ui-card,.ui-phone--wire .ui-field{border-color:#dcdcdc;color:#999}
+.ui-phone--wire .ui-cal span{color:#999}
+.ui-phone--wire .ui-line{background:#e2e2e2}
+.ui-plabel{font-size:10px;color:#7a726a;text-align:center;margin-top:5px;font-weight:700}
+/* 変更メモ（4観点） */
+.ui-memo{display:flex;flex-direction:column;gap:7px;max-width:220px;flex:1 1 180px}
+.ui-memo__item{background:#FDEEE9;border:1px solid #F0C9BC;border-radius:8px;padding:7px 10px;font-size:11px;color:#3D3D3D;line-height:1.6}
+.ui-memo__k{font-weight:800;color:#C2402F;font-size:10.5px;margin-right:4px}
+/* 注記（引き出しメモ） */
+.ui-annos{display:flex;flex-direction:column;gap:7px;max-width:240px;flex:1 1 200px}
+.ui-anno{background:#fff;border:1px solid #E4E1DB;border-left:3px solid #2F5D50;border-radius:6px;padding:7px 10px;font-size:11px;color:#3D3D3D;line-height:1.6}
+.ui-anno.warn{border-left-color:#E85D4A}
+.ui-anno__k{font-weight:800;color:#2F5D50;font-size:10.5px}
+.ui-anno.warn .ui-anno__k{color:#C2402F}
+.ui-split{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">第3章</span>
+  <div class="lesson-hero__title">UIデザインの基礎知識 — なぜそのUIにするかを判断する</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">レッスン 3-2</span>
+    <span class="lesson-hero__topic">情報設計とUI設計</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約150分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="jX5rb" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="kCEXo" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+    <div class="goal-box__time">⏱ 約150分</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">ボタンの状態設計・アフォーダンス・タッチターゲットなど、UIコンポーネントの定石を説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">HIG・Material、ニールセンの10ヒューリスティック、アクセシビリティとUXライティングの基礎を、画面を点検する観点として使える</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">前回引き出した参考UIパターンを、これらの原則でなぜこう作られているか言語化できる</div></li>
+  </ul>
+</div>
+
+<!-- 目次: ClipKit対策のためインラインstyleを併記 -->
+<nav class="toc" style="background:#fff; border-radius:14px; padding:22px 26px; box-shadow:0 2px 12px rgba(0,0,0,0.05); margin:0 0 48px;">
+  <div class="toc-head" style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <div class="toc-icon" style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#E85D4A,#F5A64A); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700;">≡</div>
+    <div class="toc-title" style="font-size:15px; font-weight:700; color:#2D2D2D;">目次</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;">
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s1" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">01</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">コンポーネントには定石がある</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s2" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">02</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">アフォーダンスとタッチターゲット</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s3" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">03</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">プラットフォームの標準に従う（HIG・Material）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s4" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">04</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">ニールセンの10ヒューリスティック</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s5" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">05</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">アクセシビリティとUXライティングの基礎</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s6" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">06</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">演習：引き出した画面を原則で解説する</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- 通し課題の連続性: 前回の成果物 → 今回 → 仕上げる成果物 -->
+<div style="border:1px solid #E8DCC8; background:#FBF8F3; border-radius:14px; padding:18px 22px; margin:0 0 40px;">
+  <div style="display:inline-block; background:#8B6F3F; color:#fff; padding:4px 12px; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.1em; margin-bottom:10px;">通し課題</div>
+  <p style="font-size:14.5px; line-height:1.9; color:#3D3D3D; margin:0;">第2章では、リフトの案件でゴールを定義し、リサーチから要件と価値までまとめてきました。前回（第3章レッスン1）は、参考にしたアプリのUIを模写し、リフトに合わせて作り変えて、<strong>参考UIパターンの引き出し</strong>にしました。今回はUIの基礎知識を学び、その引き出しがなぜこう作られているかを<strong>原則で言語化</strong>できるようにします。仕上げる成果物は、<strong>引き出した画面を学んだ原則で解説したメモ</strong>です。</p>
+</div>
+
+<p>このレッスンでやるのは、良いUIに共通する基礎知識を身につけ、前回の引き出しを、なぜこう作られているかで説明できるようにすることです。第1章で学んだUXデザインの7ステップのうち、ここはUIを設計する段階にあたります。第2章では、リフトの案件でゴールを定義し、リサーチから要件と価値をまとめてきました。前回（第3章レッスン1）は、参考にしたアプリのUIを模写し、リフトに合わせて作り変えて、UIパターンの引き出しにしました。ただ、形を作り変えられても、なぜその形がよいのかを説明できないと、次の画面で応用できません。今回はその理由を、コンポーネントの定石・アフォーダンス・タッチターゲット・プラットフォームの標準・ニールセンの10ヒューリスティック・アクセシビリティ・UXライティングという順で学びます。ここで身につけた観点は、このあとリフトのUIを設計するとき、なぜこの形にしたかを説明する判断基準になります。</p>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>コンポーネントには定石がある</h2>
+
+<p>ボタン・フォーム・ナビゲーションのような画面部品（コンポーネント）には、使いやすくするための決まった作り方があります。ゼロから考えるより、この定石を土台にするほうが、利用者が迷わない画面になります。</p>
+
+<p>分かりやすいのがボタンの状態設計です。ボタンには、通常・ホバー（カーソルを重ねた状態）・押下（押している状態）・無効（押せない状態）の4つの状態があり、それぞれ見た目を変えます。見た目が変わることで、いまこのボタンがどういう状態かが画面から伝わります。とくに無効状態は、なぜ今は押せないのかを示す役割を持ちます。必須項目が空のうちは予約ボタンを薄い無効の見た目にし、入力が埋まると押せる見た目に変える、という作り方です。</p>
+
+<div class="uidemo">
+  <div class="uidemo__cap">見本：リフトの予約ボタンの4状態</div>
+  <div style="display:flex; flex-wrap:wrap; gap:18px 24px; align-items:flex-start; padding:8px 4px 4px;">
+    <div style="flex:1; min-width:130px; text-align:center;">
+      <button type="button" style="background:#2F5D50; color:#fff; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:700; font-family:inherit; box-shadow:0 2px 6px rgba(47,93,80,0.30);">予約する</button>
+      <div style="font-size:13px; font-weight:700; color:#2D2D2D; margin-top:14px;">① 通常</div>
+      <div style="font-size:12px; color:#777; line-height:1.6; margin-top:2px;">押せる（濃い色で存在感）</div>
+    </div>
+    <div style="flex:1; min-width:130px; text-align:center;">
+      <button type="button" style="background:#3A6E5F; color:#fff; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:700; font-family:inherit; box-shadow:0 9px 18px rgba(47,93,80,0.38); transform:translateY(-2px);">予約する</button>
+      <div style="font-size:13px; font-weight:700; color:#2D2D2D; margin-top:14px;">② ホバー</div>
+      <div style="font-size:12px; color:#777; line-height:1.6; margin-top:2px;">少し明るく・浮く（反応の予告）</div>
+    </div>
+    <div style="flex:1; min-width:130px; text-align:center;">
+      <button type="button" style="background:#24473C; color:#EAF1EE; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:700; font-family:inherit; box-shadow:inset 0 3px 7px rgba(0,0,0,0.32); transform:translateY(1px);">予約する</button>
+      <div style="font-size:13px; font-weight:700; color:#2D2D2D; margin-top:14px;">③ 押下</div>
+      <div style="font-size:12px; color:#777; line-height:1.6; margin-top:2px;">濃く・沈む（押している最中）</div>
+    </div>
+    <div style="flex:1; min-width:130px; text-align:center;">
+      <button type="button" disabled style="background:#D9DDDB; color:#9AA3A0; border:none; border-radius:10px; padding:12px 22px; font-size:15px; font-weight:700; font-family:inherit; box-shadow:none; cursor:not-allowed;">予約する</button>
+      <div style="font-size:13px; font-weight:700; color:#2D2D2D; margin-top:14px;">④ 無効</div>
+      <div style="font-size:12px; color:#777; line-height:1.6; margin-top:2px;">今は押せない（必須が未入力）</div>
+    </div>
+  </div>
+  <div style="margin-top:16px; padding-top:14px; border-top:1px dashed #ECE7DE;">
+    <span style="display:inline-flex; align-items:center; gap:8px; font-size:13px;">
+      <span style="width:22px; height:22px; border-radius:6px; background:#2F5D50; border:1px solid rgba(0,0,0,0.12);"></span>
+      ベースの色：深緑 #2F5D50（リフトのブランドカラー）
+    </span>
+  </div>
+</div>
+
+<p>フォームでは、入力欄が何を入れる場所か分かるラベルを添え、必須項目を示し、入力を間違えたときはどこがどう違うかを伝えます。ナビゲーションでは、利用者がいまどの画面にいるか（現在地）を示し、元の画面へ戻れるようにします。どれも、利用者が迷わないための共通の工夫です。入力欄も、いま操作している欄（フォーカス）や間違い（エラー）を見た目で返します。</p>
+
+<div class="uidemo">
+  <div class="uidemo__cap">見本：入力欄の3状態（通常・フォーカス・エラー）</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(190px, 1fr)); gap:18px;">
+    <div>
+      <div style="font-size:13px; font-weight:700; color:#2D2D2D; margin-bottom:8px;">① 通常</div>
+      <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:5px;">お名前 <span style="color:#C2402F;">＊必須</span></label>
+      <input type="text" value="" placeholder="山田 太郎" readonly style="width:100%; border:1.5px solid #CBD2CF; border-radius:8px; padding:10px 12px; font-size:14px; font-family:inherit; color:#3D3D3D; background:#fff;">
+      <div style="font-size:11.5px; color:#888; margin-top:6px; line-height:1.6;">ラベルと必須の印で、何を入れる欄か分かる</div>
+    </div>
+    <div>
+      <div style="font-size:13px; font-weight:700; color:#2D2D2D; margin-bottom:8px;">② フォーカス</div>
+      <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:5px;">お名前 <span style="color:#C2402F;">＊必須</span></label>
+      <input type="text" value="山田" readonly style="width:100%; border:1.5px solid #2F5D50; border-radius:8px; padding:10px 12px; font-size:14px; font-family:inherit; color:#3D3D3D; background:#fff; box-shadow:0 0 0 3px rgba(47,93,80,0.18);">
+      <div style="font-size:11.5px; color:#888; margin-top:6px; line-height:1.6;">枠の色とリングで、いま入力中の欄が分かる</div>
+    </div>
+    <div>
+      <div style="font-size:13px; font-weight:700; color:#2D2D2D; margin-bottom:8px;">③ エラー</div>
+      <label style="display:block; font-size:12px; font-weight:600; color:#555; margin-bottom:5px;">メールアドレス <span style="color:#C2402F;">＊必須</span></label>
+      <input type="text" value="yamada.example" readonly style="width:100%; border:1.5px solid #D64535; border-radius:8px; padding:10px 12px; font-size:14px; font-family:inherit; color:#3D3D3D; background:#FFFBFA; box-shadow:0 0 0 3px rgba(214,69,53,0.14);">
+      <div style="display:flex; align-items:center; gap:5px; font-size:11.5px; color:#C2402F; margin-top:6px; line-height:1.6;"><span style="font-weight:700;">⚠</span>「@」が含まれていません。例：name@example.com</div>
+    </div>
+  </div>
+</div>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">状態や現在地は、見た目で伝える</div>
+  </div>
+  <p>押せる・押せない、いまどこにいる、といった状態は、文字で説明しなくても色や形の違いで伝わります。利用者が画面を見た瞬間に判断できるので、操作の迷いが減ります。文章の注意書きに頼るより、見た目そのもので状態を示すのが定石です。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 1／3</div></div>
+  <div class="quiz-q">予約フォームで、必須項目がまだ入力されていません。予約ボタンの扱いとして、コンポーネントの定石に沿っているのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">押せる見た目のままにして、押されたらエラーを出す</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">薄い色で無効の見た目にし、必須が埋まると押せる見た目に変える</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">ボタンを画面から消しておき、入力が終わると現れるようにする</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">見た目は変えず、押しても何も起こらないようにする</div></button>
+  </div>
+  <div class="quiz-feedback" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">無効状態を見た目で示すと、今は押せないことと、埋めれば押せることの両方が伝わります。押せる見た目のまま無反応（D）だと故障を疑われ、ボタンを消す（C）と次に何をすればよいかが見えなくなります。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">押せる見た目のまま押させてエラー（A）や、無反応（D）では、なぜ進めないかが伝わりません。定石は、無効状態を薄い色などで見せ、条件が整うと押せる見た目に変える（B）ことです。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>アフォーダンスとタッチターゲット</h2>
+
+<p>アフォーダンスとは、形がその使い方を示すことです。少し浮き上がって見えるボタンは押せそうに見え、下線のついた青い文字はリンクだと分かります。利用者は説明を読まなくても、見た目から操作を予想します。逆に、押せないただの飾りを押せそうな見た目にすると、利用者は押しても反応がなく戸惑います。押せるものは押せるように、押せないものはそう見えないように作ります。</p>
+
+<div class="dodont">
+  <div class="dodont__cap">アフォーダンス：押せることが見た目で伝わるか</div>
+  <div class="dodont__row">
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 悪い例</div>
+      <div class="dodont__demo" style="display:flex; align-items:center; justify-content:center; min-height:78px;">
+        <span style="color:#2F5D50; font-size:15px; font-weight:600;">予約する</span>
+      </div>
+      <p class="dodont__note">ただの文字にしか見えず、押せることが伝わらない（平坦で境界も影もない）。</p>
+    </div>
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 良い例</div>
+      <div class="dodont__demo" style="display:flex; align-items:center; justify-content:center; min-height:78px;">
+        <button type="button" style="background:#2F5D50; color:#fff; border:none; border-radius:10px; padding:12px 24px; font-size:15px; font-weight:700; font-family:inherit; box-shadow:0 3px 8px rgba(47,93,80,0.32);">予約する</button>
+      </div>
+      <p class="dodont__note">色・厚み（影）・余白があり、押せそうだと一目で分かる。</p>
+    </div>
+  </div>
+</div>
+
+<p>スマホでは指で操作するため、押せる部分の大きさも重要です。小さすぎるボタンは狙って押せず、隣を誤って押してしまいます。この押せる領域の大きさをタッチターゲットと呼び、iOSは約44ポイント、Androidは約48dpを最小サイズの目安とします。ボタン同士の間隔も十分に取り、指先はマウスのカーソルより太いことを前提に設計します。</p>
+
+<div class="dodont">
+  <div class="dodont__cap">タッチターゲット：指で正確に押せる大きさと間隔か</div>
+  <div class="dodont__row">
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 悪い例</div>
+      <div class="dodont__demo" style="min-height:78px; display:flex; align-items:center; justify-content:center;">
+        <div style="display:flex; gap:3px; flex-wrap:wrap; justify-content:center;">
+          <button type="button" style="min-width:0; padding:3px 5px; font-size:10px; background:#2F5D50; color:#fff; border:none; border-radius:4px; font-family:inherit;">9:00</button>
+          <button type="button" style="min-width:0; padding:3px 5px; font-size:10px; background:#2F5D50; color:#fff; border:none; border-radius:4px; font-family:inherit;">9:30</button>
+          <button type="button" style="min-width:0; padding:3px 5px; font-size:10px; background:#2F5D50; color:#fff; border:none; border-radius:4px; font-family:inherit;">10:00</button>
+          <button type="button" style="min-width:0; padding:3px 5px; font-size:10px; background:#2F5D50; color:#fff; border:none; border-radius:4px; font-family:inherit;">10:30</button>
+        </div>
+      </div>
+      <p class="dodont__note">小さく密集し、指では隣を誤って押しやすい。</p>
+    </div>
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 良い例</div>
+      <div class="dodont__demo" style="min-height:78px; display:flex; align-items:center; justify-content:center;">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <button type="button" style="min-width:66px; min-height:44px; padding:0 14px; font-size:14px; font-weight:600; background:#2F5D50; color:#fff; border:none; border-radius:9px; font-family:inherit;">9:00</button>
+          <button type="button" style="min-width:66px; min-height:44px; padding:0 14px; font-size:14px; font-weight:600; background:#2F5D50; color:#fff; border:none; border-radius:9px; font-family:inherit;">9:30</button>
+          <button type="button" style="min-width:66px; min-height:44px; padding:0 14px; font-size:14px; font-weight:600; background:#2F5D50; color:#fff; border:none; border-radius:9px; font-family:inherit;">10:00</button>
+        </div>
+      </div>
+      <p class="dodont__note">44pt（iOS）／48dp（Android）を目安に、十分な大きさと間隔で正確に押せる。</p>
+    </div>
+  </div>
+</div>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">見た目とサイズは、操作の合図</div>
+  </div>
+  <p>押せそうに見えて押せない、押せるのに小さくて押しにくい。こうした見た目と操作のズレが、利用者の迷いや誤操作を生みます。押せるものだけを押せる見た目にし、指で確実に押せる大きさを確保するのが基本です。</p>
+</div>
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>プラットフォームの標準に従う（HIG・Material）</h2>
+
+<p>スマホアプリのデザインには、OSごとの標準ガイドラインがあります。iPhoneやiPadはAppleのヒューマンインターフェイスガイドライン（HIG）、AndroidはGoogleのマテリアルデザインです。ボタンやアイコン、画面の切り替え方の作法が、それぞれ細かく決められています。</p>
+
+<p>なぜ標準に従うのかというと、利用者はすでに他のアプリで操作を覚えているからです。戻るボタンの位置や共有アイコンの形が標準どおりなら、初めて開いたアプリでも迷わず操作できます。独自の作法にすると、見た目は新しくても使い方を一から覚え直すことになり、利用者の負担が増えます。</p>
+
+<table class="v2-table">
+  <thead><tr><th>観点</th><th>HIG（iOS）</th><th>マテリアルデザイン（Android）</th></tr></thead>
+  <tbody>
+    <tr><td>提供元</td><td>Apple</td><td>Google</td></tr>
+    <tr><td>主な対象</td><td>iPhone・iPad</td><td>Androidスマホ・タブレット</td></tr>
+    <tr><td>見た目の考え方</td><td>余白とシンプルさを重視し、内容を主役にする</td><td>影と動きで、要素の重なりや階層を示す</td></tr>
+  </tbody>
+</table>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">標準を土台に、必要なところだけ変える</div>
+  </div>
+  <p>まず標準に従うと、利用者の学習コストを下げられます。そのうえで、ブランドらしさを出したいところだけ、意図を持って変えます。理由なく標準を崩すと、目新しさより使いにくさが残ります。</p>
+</div>
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>ニールセンの10ヒューリスティック</h2>
+
+<p>できあがった画面が使いやすいかを点検するとき、便利な物差しがあります。ヤコブ・ニールセンがまとめた10のユーザビリティ・ヒューリスティックです。ヒューリスティックとは、経験から導かれた点検の目安のことです。</p>
+
+<figure class="fig" data-asset-id="ig-3302-03">
+  <div class="fig-row">
+    <div class="fig-card" style="flex-basis:calc(50% - 8px)"><div class="fig-card__n">1</div><div class="fig-card__t">システムの状態を見せる</div><div class="fig-card__d">読み込み中や完了など、いま何が起きているかを必ず返す。</div></div>
+    <div class="fig-card" style="flex-basis:calc(50% - 8px)"><div class="fig-card__n">2</div><div class="fig-card__t">現実の言葉に合わせる</div><div class="fig-card__d">専門用語でなく、利用者になじみのある表現で伝える。</div></div>
+    <div class="fig-card" style="flex-basis:calc(50% - 8px)"><div class="fig-card__n">3</div><div class="fig-card__t">取り消し・やり直しができる</div><div class="fig-card__d">間違えても戻れる出口（キャンセル・元に戻す）を用意する。</div></div>
+    <div class="fig-card" style="flex-basis:calc(50% - 8px)"><div class="fig-card__n">4</div><div class="fig-card__t">一貫性と標準を保つ</div><div class="fig-card__d">同じものは同じ見せ方にそろえ、世の中の標準に従う。</div></div>
+    <div class="fig-card" style="flex-basis:calc(50% - 8px)"><div class="fig-card__n">5</div><div class="fig-card__t">エラーを予防する</div><div class="fig-card__d">そもそも間違えにくい作りにして、ミスを未然に防ぐ。</div></div>
+    <div class="fig-card" style="flex-basis:calc(50% - 8px)"><div class="fig-card__n">6</div><div class="fig-card__t">覚えさせず、見て分かる</div><div class="fig-card__d">記憶に頼らせず、選択肢や情報を画面に見せる。</div></div>
+    <div class="fig-card" style="flex-basis:calc(50% - 8px)"><div class="fig-card__n">7</div><div class="fig-card__t">効率よく使える近道</div><div class="fig-card__d">慣れた人が速く操作できるショートカットを用意する。</div></div>
+    <div class="fig-card" style="flex-basis:calc(50% - 8px)"><div class="fig-card__n">8</div><div class="fig-card__t">最小限で整理された表示</div><div class="fig-card__d">余計な要素を削ぎ、いま必要な要点だけを見せる。</div></div>
+    <div class="fig-card" style="flex-basis:calc(50% - 8px)"><div class="fig-card__n">9</div><div class="fig-card__t">エラーから回復できる</div><div class="fig-card__d">何が起きたかと、次にどう直せばよいかまで伝える。</div></div>
+    <div class="fig-card" style="flex-basis:calc(50% - 8px)"><div class="fig-card__n">10</div><div class="fig-card__t">必要なときにヘルプを見られる</div><div class="fig-card__d">困ったときに手引きへたどり着ける導線を置く。</div></div>
+  </div>
+  <figcaption class="fig__cap">図：暗記用ではなく、できあがった画面を点検するチェックリストとして使う10項目。</figcaption>
+</figure>
+
+<p>10項目には、システムの状態を見せる、利用者になじみのある言葉を使う、操作を取り消せるようにする、一貫性を保つ、エラーを予防する、などが含まれます。すべてを暗記する必要はありません。前回作った引き出しの画面を、この10項目で一つずつ点検すると、なぜ使いやすいのか、どこが惜しいのかを言葉にできます。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">システムの状態は、必ず利用者に返す</div>
+  </div>
+  <p>予約が完了したのか、まだ処理中なのか。画面が何も返さないと、利用者は自分の操作が届いたか分からず不安になります。読み込み中の表示や完了メッセージのように、いまどうなっているかを必ず見せます。これは、セクション1で見たボタンの状態設計と同じ考え方です。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 2／3</div></div>
+  <div class="quiz-q">予約ボタンを押したあと、画面が数秒変わらず、予約できたのかどうか分かりません。ニールセンの10ヒューリスティックから、まず改善すべき点はどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">A</div><div class="quiz-opt-text">システムの状態を見せる（読み込み中や完了を必ず表示する）</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">画面の配色を明るくして、印象をよくする</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">ボタンの数を減らして、画面をすっきりさせる</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">ヘルプページに、予約の手順を詳しく書いておく</div></button>
+  </div>
+  <div class="quiz-feedback" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">いまどうなっているかを利用者に返すのが、システムの状態を見せるという項目です。読み込み中の表示や完了メッセージがないと、利用者は不安になり、二重に押してしまうこともあります。配色やヘルプでは、この不安は解決しません。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">問題は、押した後に何が起きたか分からないことです。ニールセンの1つ目、システムの状態を見せる（A）が該当します。読み込み中や完了を表示すれば、利用者は安心して待てます。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション5 ===== -->
+<section id="s5">
+<h2>アクセシビリティとUXライティングの基礎</h2>
+
+<p>使いやすさは、できるだけ多くの人に届く形で考えます。これがアクセシビリティです。基本は2つあります。1つは色のコントラストで、背景と文字の明るさの差が小さいと読みにくくなります。もう1つは文字サイズで、本文が小さすぎると読めません。スマホの本文は16ピクセル前後を目安にします。</p>
+
+<p>色の使い方にも注意します。エラーを赤い色だけで示すと、色の見え方が異なる人には伝わりません。色に加えて、文字やアイコンでも意味を示すようにします。</p>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab">! 注意</div>
+    <div class="notice-box__sub">色だけで意味を伝えない</div>
+  </div>
+  <p>赤で必須、緑で完了のように色だけで区別すると、色覚の特性によっては違いが分かりません。色と一緒に、文字やマークでも同じ意味を示してください。これは、後の通し課題でUIを作るときにも守るべき基本です。</p>
+</div>
+
+<p>画面に出す言葉も設計の一部です。これがUXライティングです。ボタンのラベルは、<strong>送信</strong>のような一般的な言葉より、<strong>予約する</strong>のように押した後に何が起きるかが分かる言葉にします。エラーメッセージは、何が起きたかだけでなく、次にどうすれば直るかまで伝えます。短く、利用者の言葉で書くのが基本です。</p>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 3／3</div></div>
+  <div class="quiz-q">ある予約アプリの決定ボタンが、薄いグレーの小さな文字で表示され、背景との明暗差もほとんどありません。改善案として最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">文字を装飾的なフォントに変えて、目立たせる</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">背景との明暗差（コントラスト）を十分にとり、指で押せる大きさに広げる</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">ボタンを赤くして、赤い色だけで重要さを伝える</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">ボタンはそのままにして、使い方をヘルプに書いておく</div></button>
+  </div>
+  <div class="quiz-feedback" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">読みにくさはコントラスト不足、押しにくさはタッチターゲットの小ささが原因です。両方を直すBが適切です。赤い色だけ（C）は色覚の特性によって伝わらず、ヘルプ頼み（D）は設計での解決を先送りにしています。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">原因は、明暗差の小ささ（コントラスト）とボタンの小ささ（タッチターゲット）の2つです。装飾フォント（A）は読みやすさを下げ、赤だけ（C）は色に頼りすぎです。両方を直すBが、アクセシビリティとタッチターゲットの両方に沿っています。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション6 ===== -->
+<section id="s6">
+<h2>演習：引き出した画面を原則で解説する</h2>
+
+<p>ここからは、学んだ原則を実際に使ってみます。前回（3-1）でまとめた参考UIパターンの引き出しから画面を1つ選び、なぜこう作られているかを原則で解説します。</p>
+
+<figure class="fig" data-asset-id="ig-3302-04">
+  <div class="ui-split">
+    <div>
+      <div class="ui-phone"><div class="ui-scr">
+        <div class="ui-bar"><span class="ui-back">‹</span> リフト｜予約内容の入力</div>
+        <div class="ui-body">
+          <div class="ui-sub">ステップ 2／3　お客様情報</div>
+          <div class="ui-h">お名前　＊必須</div>
+          <div class="ui-field">山田 太郎</div>
+          <div class="ui-h">メールアドレス　＊必須</div>
+          <div class="ui-field">yamada@example.com</div>
+          <div class="ui-btn">予約を確定する</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">リフトの予約内容の入力画面</div>
+    </div>
+    <div class="ui-annos">
+      <div class="ui-anno"><div class="ui-anno__k">アフォーダンス</div>予約ボタンは濃い色で押せそう。入力前は薄い無効表示にする</div>
+      <div class="ui-anno"><div class="ui-anno__k">ラベル</div>各入力欄にラベルと「＊必須」を明示し、何を入れるか分かる</div>
+      <div class="ui-anno"><div class="ui-anno__k">現在地</div>上部の「ステップ 2／3」で今どこにいるか分かる</div>
+      <div class="ui-anno warn"><div class="ui-anno__k">惜しい点</div>補助テキストの色が薄く、コントラストが弱い箇所がある</div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">図：原則で画面を読み解いた解説メモが、今回の成果物のゴール。</figcaption>
+</figure>
+
+<div class="work-box reveal">
+  <div class="work-box__badge">演習 3-2</div>
+
+  <div class="prep-list">
+    <div class="prep-label">📋 事前準備</div>
+    <ul>
+      <li><span class="prep-bullet">●</span>前回（第3章レッスン1）でまとめた参考UIパターンの引き出しを開いておく</li>
+      <li><span class="prep-bullet">●</span>解説する画面のスクリーンショットを1枚用意する</li>
+      <li><span class="prep-bullet">●</span>解説を書き込む場所（メモ帳やドキュメント、Figmaの注記など）を用意する</li>
+    </ul>
+  </div>
+
+  <h4>STEP 1：解説する画面を1つ選ぶ</h4>
+  <ul>
+    <li>引き出しの中から、予約や入力など操作のある画面を1つ選ぶ</li>
+    <li>その画面のスクリーンショットを手元に開く</li>
+  </ul>
+
+  <h4>STEP 2：原則ごとに点検する</h4>
+  <ul>
+    <li><strong>コンポーネントの定石</strong>：ボタンの状態・フォーム・ナビは、どんな理由でその形か</li>
+    <li><strong>アフォーダンス</strong>：押せる部分は押せそうに見えるか。押せない飾りを押せそうに見せていないか</li>
+    <li><strong>タッチターゲット</strong>：指で押せる大きさ・間隔があるか</li>
+    <li><strong>プラットフォームの標準</strong>：戻る操作やアイコンが、OSの作法に沿っているか</li>
+    <li><strong>ニールセンの10ヒューリスティック</strong>：気になる項目で点検する（例：システムの状態を見せる・一貫性）</li>
+    <li><strong>アクセシビリティ・UXライティング</strong>：コントラスト・文字サイズ・色の使い方・画面の言葉はどうか</li>
+  </ul>
+
+  <h4>STEP 3：解説メモにまとめる</h4>
+  <p style="font-size:14.5px; color:#4A4A4A; margin:0 0 6px;">気づいたことを、次の観点で1画面ぶんまとめます。良い点だけでなく惜しい点も書くと、自分で設計するときの判断材料になります。</p>
+  <table class="v2-table">
+    <thead><tr><th>観点</th><th>書くこと</th></tr></thead>
+    <tbody>
+      <tr><td>コンポーネントの定石</td><td>ボタンの状態・フォーム・ナビが、どんな理由でその形になっているか</td></tr>
+      <tr><td>アフォーダンス・タッチターゲット</td><td>押せそうに見えるか、指で押せる大きさと間隔があるか</td></tr>
+      <tr><td>標準・ニールセン点検</td><td>OSの作法どおりか。10項目で気づいた良い点・惜しい点</td></tr>
+      <tr><td>アクセシビリティ・UXライティング</td><td>コントラスト・文字サイズ・色の使い方・ボタンやメッセージの言葉</td></tr>
+    </tbody>
+  </table>
+
+  <h4>完了条件（成果物）</h4>
+  <ul>
+    <li><strong>解説メモ</strong>：選んだ画面1つについて、上の観点でなぜこう作られているかを言語化したもの</li>
+    <li><strong>惜しい点と改善案</strong>：1つ以上、こうすればもっと使いやすいという改善案を添える</li>
+  </ul>
+
+  <div class="submit-note">不安なところがあれば、コーチに相談してみましょう。</div>
+</div>
+
+<p>ここで言葉にした理由は、通し課題で自分のUIを設計するとき、なぜこの形にしたかを説明する根拠になります。良いUIの理由を言葉にできると、そのまま自分の設計にも使えます。</p>
+</section>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>UIコンポーネントの定石（ボタンの状態設計・フォーム・ナビ）を説明できる</summary>
+    <div class="check-box__detail">ボタンには通常・ホバー・押下・無効の4状態があり、見た目を変えることで今の状態を伝えます。無効状態は、なぜ今は押せないかと、埋めれば押せることを示す役割でした。フォームはラベルと必須表示、ナビは現在地と戻り先を示すのが定石です。</div>
+  </details>
+  <details>
+    <summary>アフォーダンス・タッチターゲット・プラットフォーム標準を、画面を点検する観点として使える</summary>
+    <div class="check-box__detail">アフォーダンスは、形で使い方を示すことです。押せるものは押せる見た目にし、押せない飾りを押せそうに見せません。タッチターゲットは指で押せる大きさ（iOS約44ポイント・Android約48dpが目安）。HIGとマテリアルデザインの標準に従うと、利用者の学習コストを下げられます。</div>
+  </details>
+  <details>
+    <summary>ニールセン10・アクセシビリティ・UXライティングの基礎を押さえ、参考UIパターンを原則で言語化できる</summary>
+    <div class="check-box__detail">ニールセンの10ヒューリスティックは、画面を点検するチェックリストとして使います。アクセシビリティの基本はコントラストと文字サイズで、色だけに頼らないこと。UXライティングは、押した後が分かるボタンの言葉と、直し方まで伝えるエラーメッセージが基本です。これらの観点で、引き出した画面がなぜこう作られているかを言語化できます。</div>
+  </details>
+</div>
+
+    <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="jX5rb" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="kCEXo" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+</div><!-- /.lesson-wrapper -->
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.quiz-opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const q = this.dataset.q;
+    const correct = this.dataset.correct === 'true';
+    const opts = document.querySelectorAll(`[data-q="${q}"]`);
+    opts.forEach(o => o.disabled = true);
+    this.classList.add(correct ? 'correct' : 'wrong');
+    opts.forEach(o => {
+      if (o === this) return;
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+      else o.classList.add('dim');
+    });
+    document.getElementById(`${q}-${correct ? 'ok' : 'ng'}`).classList.add('show');
+  });
+});
+</script></div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="S1dT/IaN9U5jUhAUHa6KjQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>

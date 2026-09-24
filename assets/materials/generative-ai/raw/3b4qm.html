@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="nzYhnpKPhxFUaBv4peU50A==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1559" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_writing/%EF%BC%92%EF%BC%8E%E3%80%90%E5%85%B1%E9%80%9A%E3%82%B9%E3%82%AD%E3%83%AB%EF%BC%8F%E5%BF%85%E9%A0%88%E3%80%91AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%20%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%9F%BA%E7%A4%8E/3B4qM" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1章 良いプロンプトでAIを思考パートナーにしよう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_writing/%EF%BC%92%EF%BC%8E%E3%80%90%E5%85%B1%E9%80%9A%E3%82%B9%E3%82%AD%E3%83%AB%EF%BC%8F%E5%BF%85%E9%A0%88%E3%80%91AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%20%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%9F%BA%E7%A4%8E/3B4qM">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="1章 良いプロンプトでAIを思考パートナーにしよう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/523/medium/7877340b-bd17-43d6-afd2-1a260198a6eb.png?1752110047">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="1章 良いプロンプトでAIを思考パートナーにしよう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_writing/%EF%BC%92%EF%BC%8E%E3%80%90%E5%85%B1%E9%80%9A%E3%82%B9%E3%82%AD%E3%83%AB%EF%BC%8F%E5%BF%85%E9%A0%88%E3%80%91AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%20%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%9F%BA%E7%A4%8E/3B4qM">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/523/large/7877340b-bd17-43d6-afd2-1a260198a6eb.png?1752110047">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_writing/%EF%BC%92%EF%BC%8E%E3%80%90%E5%85%B1%E9%80%9A%E3%82%B9%E3%82%AD%E3%83%AB%EF%BC%8F%E5%BF%85%E9%A0%88%E3%80%91AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%20%E3%83%A9%E3%82%A4%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E5%9F%BA%E7%A4%8E/3B4qM"
+    },
+    "headline": "1章 良いプロンプトでAIを思考パートナーにしよう",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/030/523/medium/7877340b-bd17-43d6-afd2-1a260198a6eb.png?1752110047",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-10T10:12:58+09:00",
+    "dateModified": "2025-09-26T09:38:52+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="aNu03vl3oJA-QWKNvxrt0nLG3KRjYOFvQhgAHe0RP6xlvn35o02VhJCgMhHaUopgnYu2IgJBIuLxVLvtNTn2gg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>２．【共通スキル／必須】AIアシスト ライティング基礎</div>
+
+          <div class="fw-bold h2">1章 良いプロンプトでAIを思考パートナーにしよう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item30721" data-item-id="30721" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="CHEEu" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="ZZJ1Z" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30510" data-item-id="30510" data-item-type="ItemHeading"><h2 class="item-body">1章 良いプロンプトでAIを思考パートナーにしよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item30511" data-item-id="30511" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item30512" data-item-id="30512" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item30513" data-item-id="30513" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>AIの性能は「指示（プロンプト）の質」で決まることを理解できる</li>
+  <li>AIの能力を最大限に引き出すための「基本の型」を習得する</li>
+  <li>基本の型を使って、意図した通りの文章をAIに生成させることができる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item30514" data-item-id="30514" data-item-type="ItemHeading"><h2 class="item-body">【1-1】AIの性能は“あなた次第”：プロンプトの重要性</h2></div>
+        
+        <div class="article-item item_markdown " id="item30515" data-item-id="30515" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item30516" data-item-id="30516" data-item-type="ItemHeading"><h3 class="item-body">なぜ、同じAIを使っても結果が違うのか？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30517" data-item-id="30517" data-item-type="ItemRichText"><div class="item-body-hbr">「AIはたいしたことない」と言う人がいる一方で、「AIは最高のパートナーだ」と言う人もいます。同じAIを使っているはずなのに、なぜこれほど評価が分かれるのでしょうか。<br>
+<br>
+その答えは、<span class="decoration-02">AIへの「指示の質」</span>にあります。<br>
+AIは、非常に優秀ですが、あくまで指示を待つ存在です。<br>
+<br>
+どんなに腕の良いシェフでも、注文が「何か美味しいもの作って」という漠然としたものでは、本当に望む料理は出てきません。<br>
+「鶏肉を使って、アッサリした和食を、30分以内で作ってほしい」というように、<span class="decoration-02">具体的な注文があって初めて、その能力を最大限に発揮できる</span>のです。<br>
+<br>
+このAIへの「注文方法」こそが、<span class="decoration-02">プロンプトエンジニアリング</span>です。</div></div>
+        
+        <div class="article-item item_html " id="item30518" data-item-id="30518" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>プロンプトエンジニアリング</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>AIから望ましい出力を得るために、指示や質問（プロンプト）を設計し、最適化する技術のこと。</li>
+            <li>本講座では、ライティングに特化した実践的なプロンプトエンジニアリングを学びます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item30519" data-item-id="30519" data-item-type="ItemHeading"><h3 class="item-body"> 良いプロンプト、悪いプロンプト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30520" data-item-id="30520" data-item-type="ItemRichText"><div class="item-body-hbr">ここで、プロンプトの質によってAIの出力がどれだけ変わるか、具体例を見てみましょう。<br>
+<br>
+<span class="decoration-01">お題：</span><br>
+新発売される高機能ドライヤーのキャッチコピー作成</div></div>
+        
+        <div class="article-item item_html " id="item30521" data-item-id="30521" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">悪いプロンプト</span>:<br>「ドライヤーのキャッチコピーを考えて」
+    <ul>
+      <li><span class="decoration-01">AIの出力例</span>:<br>「新しい風、美しい髪へ。」</li>
+      <li>→ 漠然としていて、商品の魅力が全く伝わりません。</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">良いプロンプト</span>:<br>「あなたは敏腕コピーライターです。20代の美容に関心が高い女性向けに、新発売の高機能ドライヤーのキャッチコピーを考えてください。特徴は『髪が潤う特殊なイオン技術』と『驚くほど軽い設計』です。ベネフィットを強調して、5案提案してください。」
+    <ul>
+      <li><span class="decoration-01">AIの出力例</span>:
+        <ol>
+          <li>乾かすほど、潤う髪へ。サロン帰りのツヤを、その手に。</li>
+          <li>もう腕は疲れない。羽のように軽いドライヤーで、ヘアケアを至福のひとときに。</li>
+          <li>（他3案）</li>
+        </ol>
+      </li>
+      <li>→ ターゲットと商品の魅力が明確で、心に響くコピーになっています。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30522" data-item-id="30522" data-item-type="ItemRichText"><div class="item-body-hbr">このように、<span class="decoration-02">プロンプトを少し工夫するだけで、アウトプットの質は劇的に向上します。</span></div></div>
+        
+        <div class="article-item item_image " id="item30523" data-item-id="30523" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/523/medium/7877340b-bd17-43d6-afd2-1a260198a6eb.png?1752110047" title=""><img class="img-responsive item-image" alt=" (30523)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/030/523/medium/7877340b-bd17-43d6-afd2-1a260198a6eb.png?1752110047" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item30524" data-item-id="30524" data-item-type="ItemHeading"><h2 class="item-body">【1-2】これだけは押さえよう！AIの能力を引き出す基本の型</h2></div>
+        
+        <div class="article-item item_markdown " id="item30525" data-item-id="30525" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item30526" data-item-id="30526" data-item-type="ItemRichText"><div class="item-body-hbr">良いプロンプトを書くために、複雑な知識は必要ありません。<br>
+まずは、以下の「基本の型」を覚えるだけで、AIの反応は大きく変わります。</div></div>
+        
+        <div class="article-item item_heading " id="item30527" data-item-id="30527" data-item-type="ItemHeading"><h3 class="item-body">「あなたは〇〇です」：役割を与える</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30528" data-item-id="30528" data-item-type="ItemRichText"><div class="item-body-hbr">プロンプトの冒頭で「あなたはプロの編集者です」「あなたは敏腕マーケターです」のように役割を与えるだけで、AIはその役割になりきって、より専門的で質の高い回答を生成しようとします。これは最も簡単で効果的なテクニックの一つです。</div></div>
+        
+        <div class="article-item item_heading " id="item30529" data-item-id="30529" data-item-type="ItemHeading"><h3 class="item-body">具体的な指示と制約条件</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30530" data-item-id="30530" data-item-type="ItemRichText"><div class="item-body-hbr">次に、「何をしてほしいのか」という指示を具体的に伝えます。</div></div>
+        
+        <div class="article-item item_html " id="item30531" data-item-id="30531" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">良い指示</span>: 「以下の文章を、小学生にも分かるように書き換えてください」</li>
+  <li><span class="decoration-02">悪い指示</span>: 「以下の文章を分かりやすくしてください」</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30532" data-item-id="30532" data-item-type="ItemRichText"><div class="item-body-hbr">さらに、文字数、トーン、ターゲット読者といった<span class="decoration-02">制約条件</span>を加えることで、アウトプットをより理想の形に近づけることができます。</div></div>
+        
+        <div class="article-item item_heading " id="item30533" data-item-id="30533" data-item-type="ItemHeading"><h3 class="item-body">出力形式を指定する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30534" data-item-id="30534" data-item-type="ItemRichText"><div class="item-body-hbr">最後に、どのような形式で回答してほしいかを指定します。<br>
+これにより、後から手作業で修正する手間を省くことができます。</div></div>
+        
+        <div class="article-item item_html " id="item30535" data-item-id="30535" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>文章形式</li>
+  <li>箇条書き</li>
+  <li>マークダウン形式</li>
+  <li>表形式</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30536" data-item-id="30536" data-item-type="ItemRichText"><div class="item-body-hbr">これら「役割」「指示」「制約」「出力形式」を組み合わせることが、<span class="decoration-02">質の高いアウトプットを得るための基本</span>です。</div></div>
+        
+        <div class="article-item item_heading " id="item30537" data-item-id="30537" data-item-type="ItemHeading"><h3 class="item-body"> 練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30538" data-item-id="30538" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span></div></div>
+        
+        <div class="article-item item_html " id="item30539" data-item-id="30539" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>1章で学んだ「基本の型（役割・指示・制約・出力形式）」を意識して、自己紹介文（150字程度）をAIに作成させてみましょう。</li>
+  <li><span class="decoration-01">役割</span>: 優秀な採用担当者</li>
+  <li><span class="decoration-01">指示</span>: 強みをアピールする自己紹介文を作成してください。</li>
+  <li><span class="decoration-01">制約</span>: 150字程度、誠実で熱意が伝わるトーン、Web業界の採用担当者向け</li>
+  <li><span class="decoration-01">出力形式</span>: 文章</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30540" data-item-id="30540" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答</span><br>
+実際に上記のプロンプトをAIに入力し、どのような自己紹介文が生成されるか試してみましょう。<br>
+以下は出力の一例です。</div></div>
+        
+        <div class="article-item item_code " id="item30541" data-item-id="30541" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>Webライティングの基礎を学び、AIを活用した効率的な執筆を得意としております。
+貴社メディアのコンセプトに深く共感し、読者の心を動かす質の高い記事で貢献したいという熱意では誰にも負けません。
+リサーチ力と学習意欲を武器に、一日も早く戦力となれるよう尽力いたします。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">AIの出力例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item30542" data-item-id="30542" data-item-type="ItemHeading"><h2 class="item-body">【1-3】1章 -章末課題- [最高のプロフィール文を作ろう]</h2></div>
+        
+        <div class="article-item item_markdown " id="item40121" data-item-id="40121" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item30543" data-item-id="30543" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item30544" data-item-id="30544" data-item-type="ItemRichText"><div class="item-body-hbr">1章の学習の総仕上げとして、架空のSNS（ビジネス特化型）のプロフィール文をAIに作成させましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item30545" data-item-id="30545" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">テーマ:</span><br>
+ 副業でWebライターを目指している人が、企業担当者の目に留まるようなプロフィール文</div></div>
+        
+        <div class="article-item item_rich_text " id="item30546" data-item-id="30546" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">条件:</span></div></div>
+        
+        <div class="article-item item_html " id="item30547" data-item-id="30547" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>AIに与える「役割」を自分で考えて設定する</li>
+  <li>SEOとコピーライティングの基礎を学習済みであることが伝わるようにする</li>
+  <li>文字数は200字以内</li>
+  <li>ハッシュタグを5つ含める</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item30548" data-item-id="30548" data-item-type="ItemRichText"><div class="item-body-hbr">作成したプロフィール文と、その際にAIに与えたプロンプトの両方を提出してください。</div></div>
+        
+        <div class="article-item item_heading " id="item30549" data-item-id="30549" data-item-type="ItemHeading"><h3 class="item-body">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item30550" data-item-id="30550" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>AIに与える役割を考えます。（例：「あなたは企業の採用担当者の心を見抜く、転職エージェントのプロです」）</li>
+            <li>プロフィール文に含めたい要素（SEO、コピーライティング、AI活用、副業、実績など）を箇条書きで整理します。</li>
+            <li>1と2の内容を「基本の型」に当てはめて、プロンプトを作成します。</li>
+            <li>AIにプロンプトを入力し、生成されたプロフィール文を確認します。</li>
+            <li>必要であれば、プロンプトを修正し、再度AIに生成させ、最も良いと思ったものを完成形とします。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item30551" data-item-id="30551" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=3B4qM&amp;item_id=30551" rel="nofollow noopener noreferrer" target="_blank">AIアシスト ライティング基礎 1-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="AIアシスト ライティング基礎 1-1" data-reference="https://www.dropbox.com/scl/fi/oe2yogn5fhmi6pr1wiec8/AI-assist-writing_1.1.1.0_.mp4?rlkey=qfoali0bh4mygcwjguh5a7vfa&amp;st=blo09d6g&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/030/551/thumb/ebd7b360-23ce-48df-b982-78124eab6e35.png?1754958977" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_code " id="item30552" data-item-id="30552" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre># 役割
+あなたは数多くの候補者の中から逸材を見つけ出してきた「敏腕リクルーター」です。
+特にIT・Web業界の採用に精通しており、どのようなプロフィールが企業担当者の心に響くかを知り尽くしています。
+
+# 指示
+副業でWebライターを目指している人材が、ビジネス特化型SNSに掲載するための、魅力的で簡潔なプロフィール文を作成してください。
+
+# 制約条件
+* SEOとコピーライティングの基礎を学習済みであることが、具体的な言葉で伝わるようにしてください。
+* ターゲットは企業の採用担当者です。
+* プロフィール文の文字数は200字以内とします。
+* 文章の最後に、関連性の高いハッシュタグを5つ付けてください。
+* 「この人に仕事を依頼したい」と思わせるような、プロフェッショナルな信頼感と、学習意欲の高さが伝わるトーンで記述してください。
+
+# 出力形式
+以下の形式で、プロフィール文とハッシュタグを明確に分けて出力してください。
+
+【プロフィール文】
+（ここに文章を生成）
+
+【ハッシュタグ】
+（ここにハッシュタグを5つ生成）</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト見本</cite></div></div></div>
+        
+        <div class="article-item item_code " id="item30553" data-item-id="30553" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>【プロフィール文】
+読者の課題を解決し、検索エンジンから評価されるコンテンツを制作します。
+SEOの知識を活かしたキーワード選定・構成案作成から、セールスファネルを意識したコピーライティングまで一気通貫で対応可能です。
+特に「PASONAの法則」など、顧客心理に基づいたライティングを得意とし、貴社のリード獲得や売上向上に貢献します。
+迅速かつ丁寧なコミュニケーションを徹底し、事業の成長を加速させるパートナーとして信頼をお約束します。
+
+【ハッシュタグ】
+#Webライター
+#SEOライティング
+#コピーライティング
+#コンテンツマーケティング
+#セールスライティング</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item30554" data-item-id="30554" data-item-type="ItemRichText"><div class="item-body-hbr">これで「1章 良いプロンプトでAIを思考パートナーにしよう」の解説を終わります。 <br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item30720" data-item-id="30720" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="CHEEu" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="ZZJ1Z" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="nzYhnpKPhxFUaBv4peU50A==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

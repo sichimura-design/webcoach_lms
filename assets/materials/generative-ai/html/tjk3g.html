@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/Tjk3G -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章 AIで成果を可視化する：効果測定・改善編 (Check &amp; Action) - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/Tjk3G">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章 AIで成果を可視化する：効果測定・改善編 (Check &amp; Action) - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/029/087/medium/63cb6390-bfc2-4319-89b0-ef16eb23b9fe.png?1754883739">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章 AIで成果を可視化する：効果測定・改善編 (Check &amp; Action)">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/Tjk3G">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/029/087/large/63cb6390-bfc2-4319-89b0-ef16eb23b9fe.png?1754883739">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="kVfNP-nRSmwm6qMZgbFFC5znq0Vzeqz3ZtEQUgRK1A7u8itEpRiPQgDZgO9gHTS7nGIngZyGNzA8LrPr3LhqWQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材３AIで加速するデータドリブンSNS運用</div>
+
+          <div class="fw-bold h2">2章 AIで成果を可視化する：効果測定・改善編 (Check &amp; Action)</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 AIで成果を可視化する：効果測定・改善編 (Check &amp; Action)</a><ul><li><a href="#heading1" class="tocLink">この章の学習時間:120分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】AIとデータを見る：パフォーマンス分析</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">数字の羅列から「意味」を読み解く</a></li><li><a href="#heading6" class="tocLink">実践：パフォーマンスデータをAIに要約・分析させるプロンプト</a></li></ul></li><li><a href="#heading7" class="tocLink">【2-2】AIと顧客の声を聞く：コメント感情分析</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading9" class="tocLink">コメントは改善のヒントの宝庫</a></li><li><a href="#heading10" class="tocLink">実践：コメントをAIにポジネガ判定・要約させるプロンプト</a></li></ul></li><li><a href="#heading11" class="tocLink">【2-3】AIと次の一手を考える：改善施策の立案</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading13" class="tocLink">分析して終わり、では意味がない</a></li><li><a href="#heading14" class="tocLink">実践：改善策のアイデアをAIにブレストさせるプロンプト</a></li><li><a href="#heading15" class="tocLink"> 練習問題</a></li></ul></li><li><a href="#heading16" class="tocLink">【2-4】AIと成果を報告する：レポート作成補助</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading18" class="tocLink">価値が伝わるレポートの構成</a></li><li><a href="#heading19" class="tocLink">実践：レポートの骨子をAIに作らせるプロンプト</a></li></ul></li><li><a href="#heading20" class="tocLink">【2-5】3章 -章末課題- [AIデータ分析・改善提案演習]</a><ul><li><a href="#heading21" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading22" class="tocLink">問題</a></li><li><a href="#heading23" class="tocLink">解答手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item29138" data-item-id="29138" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/3mzBc" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item29074" data-item-id="29074" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">2章 AIで成果を可視化する：効果測定・改善編 (Check &amp; Action)</h2></div>
+        
+        <div class="article-item item_markdown " id="item40097" data-item-id="40097" data-item-type="ItemMarkdown"><h4 id="heading1">この章の学習時間:120分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item29075" data-item-id="29075" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_html " id="item29076" data-item-id="29076" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>SNSの主要なパフォーマンスデータをAIに入力し、その傾向や課題点を要約させることができるようになる</li>
+  <li>AIを活用してユーザーのコメントからポジティブ・ネガティブな意見を抽出し、顧客の声を分析できるようになる</li>
+  <li>分析結果に基づいて、具体的な改善施策の仮説をAIと協力して複数立案できるようになる</li>
+  <li>クライアントへの報告にも使える、パフォーマンスレポートの構成案をAIに作成させることができるようになる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item29077" data-item-id="29077" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【2-1】AIとデータを見る：パフォーマンス分析</h2></div>
+        
+        <div class="article-item item_markdown " id="item29078" data-item-id="29078" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item29079" data-item-id="29079" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">数字の羅列から「意味」を読み解く</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29080" data-item-id="29080" data-item-type="ItemRichText"><div class="item-body-hbr">1章で「計画(Plan)」を立て、それに基づき「実行(Do)」した後は、いよいよ「測定(Check)」のフェーズです。<br>
+ここでは、投稿によって得られたパフォーマンスデータを分析し、成果を客観的に評価します。<br>
+<br>
+まずは、SNSの公式インサイト機能で確認できる主要な指標をおさらいしましょう。</div></div>
+        
+        <div class="article-item item_html " id="item29081" data-item-id="29081" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">リーチ：</span>投稿を閲覧したユニークユーザーの数。何人に届いたか。</li>
+  <li><span class="decoration-01">インプレッション：</span>投稿が表示された合計回数。延べ何回見られたか。</li>
+  <li><span class="decoration-01">エンゲージメント：</span>いいね、コメント、シェア、保存など、投稿に対するユーザーからの反応の総数。</li>
+  <li><span class="decoration-01">エンゲージメント率：</span>リーチ数やインプレッション数に対して、どれくらいのエンゲージメントがあったかを示す割合。投稿の質を測る重要な指標。</li>
+  <li><span class="decoration-01">保存数：</span>ユーザーが「後で見返したい」と思って投稿を保存した数。特にInstagramでは、有益さを示す重要な指標とされています。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item29082" data-item-id="29082" data-item-type="ItemRichText"><div class="item-body-hbr">これらの数字をただ眺めるだけでは意味がありません。「先月の平均値と比べてどうか」「他の投稿と比べてどうか」といった比較対象を持つことで、初めてその数字が持つ「意味」を読み解くことができます。</div></div>
+        
+        <div class="article-item item_html " id="item29083" data-item-id="29083" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>注意：データは手動でAIに渡す</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>【2-2】の競合分析と同様に、現時点のAIは自動でSNSアカウントにログインし、インサイトデータを取得することはできません。</li>
+            <li>そのため、<span class="decoration-02">インサイト画面の数字を手動でコピーし、テキストや表としてAIに貼り付けて渡す</span>必要があります。</li>
+            <li>少し手間に感じるかもしれませんが、この一手間が精度の高い分析の第一歩です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item29084" data-item-id="29084" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">実践：パフォーマンスデータをAIに要約・分析させるプロンプト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29085" data-item-id="29085" data-item-type="ItemRichText"><div class="item-body-hbr">投稿ごとの主要な指標をスプレッドシートなどにまとめ、そのデータをAIに分析させてみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item29086" data-item-id="29086" data-item-type="ItemHtml"><div class="item-body"><pre><code class="hljs ruby">
+<span class="hljs-comment"># 指示</span><br>
+あなたはプロのSNSデータアナリストです。<br>
+以下の投稿パフォーマンスデータに基づき、分析レポートを作成してください。<br>
+
+<span class="hljs-comment"># パフォーマンスデータ</span><br>
+<span class="hljs-params">| 投稿 |</span> リーチ <span class="hljs-params">| いいね |</span> コメント <span class="hljs-params">| 保存 |</span><br>
+<span class="hljs-params">|---|</span>---<span class="hljs-params">|---|</span>---<span class="hljs-params">|---|</span><br>
+<span class="hljs-params">| 投稿A（新作ケーキの写真） |</span> <span class="hljs-number">3000</span> <span class="hljs-params">| 250 |</span> <span class="hljs-number">10</span> <span class="hljs-params">| 80 |</span><br>
+<span class="hljs-params">| 投稿B（店内の様子の動画） |</span> <span class="hljs-number">2500</span> <span class="hljs-params">| 150 |</span> <span class="hljs-number">5</span> <span class="hljs-params">| 20 |</span><br>
+<span class="hljs-params">| 投稿C（コーヒー豆の解説） |</span> <span class="hljs-number">1500</span> <span class="hljs-params">| 80 |</span> <span class="hljs-number">2</span> <span class="hljs-params">| 50 |</span><br>
+<span class="hljs-params">| 投稿D（スタッフ紹介） |</span> <span class="hljs-number">2000</span> <span class="hljs-params">| 180 |</span> <span class="hljs-number">25</span> <span class="hljs-params">| 30 |</span><br>
+
+<span class="hljs-comment"># 分析レポートの項目</span><br>
+<span class="hljs-number">1</span>.  **全体の傾向**：データ全体から読み取れる特徴を要約してください。<br>
+<span class="hljs-number">2</span>.  **パフォーマンスが良い投稿**：最もパフォーマンスが良い投稿はどれですか。その要因を推測してください。<br>
+<span class="hljs-number">3</span>.  **改善すべき投稿**：最も改善の余地がある投稿はどれですか。その要因を推測してください。<br>
+<span class="hljs-number">4</span>.  **注目すべき指標**：特に注目すべき指標の動きがあれば指摘してください。（例：コメント数が突出して多い投稿など）<br>
+</code></pre></div></div>
+        
+        <div class="article-item item_link " id="item29087" data-item-id="29087" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Tjk3G&amp;item_id=29087" rel="nofollow noopener noreferrer" target="_blank">AIで加速するデータドリブンSNS運用 2−1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="AIで加速するデータドリブンSNS運用 2−1" data-reference="https://www.dropbox.com/scl/fi/nlgc9u8rqdpe6qzpv66ce/ai-sns-data-driven_2.1.1.0_.mp4?rlkey=z90cjynbupel72sypd885x0x1&amp;st=3giwqt6m&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item29088" data-item-id="29088" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【2-2】AIと顧客の声を聞く：コメント感情分析</h2></div>
+        
+        <div class="article-item item_markdown " id="item29089" data-item-id="29089" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item29090" data-item-id="29090" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">コメントは改善のヒントの宝庫</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29091" data-item-id="29091" data-item-type="ItemRichText"><div class="item-body-hbr">リーチやいいねといった<span class="decoration-02">定量データ（数値データ）</span>だけでは、ユーザーが「なぜ」その反応をしたのかまでは分かりません。そこで重要になるのが、コメント欄に書かれた<span class="decoration-02">定性データ（言葉のデータ）</span>、つまりユーザーの「本音」です。</div></div>
+        
+        <div class="article-item item_html " id="item29092" data-item-id="29092" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">ポジティブな意見：</span>「かわいい！」「参考になります！」といった声は、アカウントの<span class="decoration-02">強み</span>を教えてくれます。</li>
+  <li><span class="decoration-01">ネガティブな意見：</span>「使い方がわからない」「価格が高い」といった声は、率直な<span class="decoration-02">改善点</span>のヒントになります。</li>
+  <li><span class="decoration-01">質問：</span>ユーザーが何に疑問を感じているのかが分かり、次のコンテンツのネタになります。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item29093" data-item-id="29093" data-item-type="ItemRichText"><div class="item-body-hbr">AIを使えば、多数のコメントを手作業で読む手間を削減し、効率的にユーザーの声を分析することができます。</div></div>
+        
+        <div class="article-item item_heading " id="item29094" data-item-id="29094" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">実践：コメントをAIにポジネガ判定・要約させるプロンプト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29095" data-item-id="29095" data-item-type="ItemRichText"><div class="item-body-hbr">特定の投稿に寄せられたコメント群をコピーし、AIに分類・要約させてみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item29096" data-item-id="29096" data-item-type="ItemHtml"><div class="item-body"><pre><code class="hljs markdown">
+<span class="hljs-section"># 指示</span><br>
+あなたはカスタマーサポートの責任者です。<br>
+以下のコメント群を分析し、レポートを作成してください。<br>
+
+<span class="hljs-section"># コメント群</span><br>
+<span class="hljs-bullet">- </span>"このリュック、デザインは最高！でも、もう少しポケットが多いと嬉しいな。"<br>
+<span class="hljs-bullet">- </span>"買いました！通勤で毎日使ってます！"<br>
+<span class="hljs-bullet">- </span>"防水機能はありますか？"<br>
+<span class="hljs-bullet">- </span>"思ってたより少し重かったかも…"<br>
+<span class="hljs-bullet">- </span>"次の新色はいつ出ますか？楽しみ！"<br>
+<span class="hljs-bullet">- </span>"素敵ですね！"<br>
+
+<span class="hljs-section"># レポートの項目</span><br>
+<span class="hljs-bullet">1.  </span><span class="hljs-strong">**感情分析**</span>：各コメントを「ポジティブ」「ネガティブ」「中立」「質問」の4つに分類してください。<br>
+<span class="hljs-bullet">2.  </span><span class="hljs-strong">**要約**</span>：それぞれの分類ごとに、コメントの要点をまとめてください。<br>
+<span class="hljs-bullet">3.  </span><span class="hljs-strong">**インサイト**</span>：これらのコメントから推測できる、顧客が感じている「価値」と「不満」をそれぞれ挙げてください。
+</code></pre>
+</div></div>
+        
+        <div class="article-item item_link " id="item29097" data-item-id="29097" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Tjk3G&amp;item_id=29097" rel="nofollow noopener noreferrer" target="_blank">教材３AIで加速するデータドリブンSNS運用 2-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材３AIで加速するデータドリブンSNS運用 2-2" data-reference="https://www.dropbox.com/scl/fi/1lplr26v11zpiiibu8x2y/ai-sns-data-driven_2.2.1.0_.mp4?rlkey=p7qni2rfzsap4kottx079432l&amp;st=9pjvne53&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item29098" data-item-id="29098" data-item-type="ItemHeading"><h2 class="item-body" id="heading11">【2-3】AIと次の一手を考える：改善施策の立案</h2></div>
+        
+        <div class="article-item item_markdown " id="item29099" data-item-id="29099" data-item-type="ItemMarkdown"><h4 id="heading12">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item29100" data-item-id="29100" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">分析して終わり、では意味がない</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29101" data-item-id="29101" data-item-type="ItemRichText"><div class="item-body-hbr">データ分析（Check）のフェーズで最も重要なのは、<span class="decoration-02">分析結果を次の行動（Action）に繋げること</span>です。分析で終わってしまっては、何も改善されません。<br>
+<br>
+「なぜそうなったのか？」という<span class="decoration-02">原因の仮説</span>を立て、<br>
+「では、次は何を試すか？」という<span class="decoration-02">具体的なアクション</span>に落とし込む。<br>
+<br>
+この思考プロセスにおいて、AIは優れた壁打ち相手となり、施策のアイデアを大量に出してくれます。</div></div>
+        
+        <div class="article-item item_heading " id="item29102" data-item-id="29102" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">実践：改善策のアイデアをAIにブレストさせるプロンプト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29103" data-item-id="29103" data-item-type="ItemRichText"><div class="item-body-hbr">【2-1】や【2-2】で得られた分析結果をAIに伝え、具体的な改善策を提案させてみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item29104" data-item-id="29104" data-item-type="ItemHtml"><div class="item-body"><pre><code class="hljs markdown">
+<span class="hljs-section"># 指示</span><br>
+あなたはプロのSNSコンサルタントです。<br>
+以下の課題を解決するための、具体的な改善施策のアイデアを5つ提案してください。<br>
+
+<span class="hljs-section"># アカウント情報と課題</span><br>
+<span class="hljs-bullet">- </span>ジャンル：料理レシピを紹介するInstagramアカウント<br>
+<span class="hljs-bullet">- </span>課題：リール動画の再生数は多いが、「後で見返したい」と思わせるような価値を提供できていないようで、<br>
+コメントや保存といったエンゲージメントが低い。<br>
+
+<span class="hljs-section"># 提案の切り口</span><br>
+<span class="hljs-bullet">- </span>ユーザーがコメントや保存をしたくなるような仕掛け<br>
+<span class="hljs-bullet">- </span>動画の内容や構成の改善<br>
+<span class="hljs-bullet">- </span>投稿文（キャプション）の工夫<br>
+</code></pre></div></div>
+        
+        <div class="article-item item_rich_text " id="item29105" data-item-id="29105" data-item-type="ItemRichText"><div class="item-body-hbr">このように、課題といくつかの「切り口」を与えることで、AIは多角的な視点からアイデアを生成してくれます。<br>
+また、<span class="decoration-02">ABテスト</span>の仮説を立てさせるのも有効です。「投稿文のCTAをAパターンとBパターンでテストする場合、どのような仮説が考えられますか？」のように質問することで、よりデータドリブンな改善活動に進むことができます。</div></div>
+        
+        <div class="article-item item_heading " id="item29106" data-item-id="29106" data-item-type="ItemHeading"><h3 class="item-body" id="heading15"> 練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29107" data-item-id="29107" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+ある料理レシピのアカウントで、「調理工程を早送りで見せるリール動画」の再生数は多いものの、コメントや保存が少ない、という課題がデータから分かりました。この課題を解決するための改善施策のアイデアを、AIを使って3つ以上立案させてください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item29108" data-item-id="29108" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答<br>
+<br>
+プロンプト例</span></div></div>
+        
+        <div class="article-item item_html " id="item29109" data-item-id="29109" data-item-type="ItemHtml"><div class="item-body"><pre><code class="hljs markdown">
+<span class="hljs-section"># あなたへのお願い</span><br>
+あなたはプロのSNSコンサルタントです。以下の課題を解決するための、<br>具体的な改善施策のアイデアを3つ以上提案してください。<br>
+
+<span class="hljs-section"># アカウント情報</span><br>
+<span class="hljs-bullet">- </span>ジャンル：料理レシピを紹介するInstagramアカウント<br>
+<span class="hljs-bullet">- </span>課題：リール動画の再生数は多いが、コメントや保存といったエンゲージメントが低い。<br>
+
+<span class="hljs-section"># 提案の切り口</span><br>
+<span class="hljs-bullet">- </span>ユーザーがコメントや保存をしたくなるような仕掛け<br>
+<span class="hljs-bullet">- </span>動画の内容や構成の改善
+</code></pre></div></div>
+        
+        <div class="article-item item_rich_text " id="item29110" data-item-id="29110" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">AIによる生成アイデア例</span></div></div>
+        
+        <div class="article-item item_html " id="item29111" data-item-id="29111" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">「レシピカード」の追加：</span><br>
+    動画の最後に、材料と手順をまとめた静止画の「レシピカード」を1〜2秒表示する。「保存して使ってね！」とテキストで促すことで、保存率の向上が期待できる。
+  </li>
+  <li>
+    <span class="decoration-01">インタラクティブな問いかけ：</span><br>
+    投稿文の最後に「このレシピで作ってみたいと思った人は、🍳の絵文字でコメントしてね！」のような、簡単なアクションを促す一文を追加し、コメントのハードルを下げる。
+  </li>
+  <li>
+    <span class="decoration-01">「ちょい足しテクニック」の紹介：</span><br>
+    単に工程を見せるだけでなく、「ここで〇〇を加えるのがプロの隠し味！」のような、ユーザーにとって有益な豆知識をテロップで加えることで、投稿の価値を高め、保存に繋げる。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item29112" data-item-id="29112" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">【2-4】AIと成果を報告する：レポート作成補助</h2></div>
+        
+        <div class="article-item item_markdown " id="item29113" data-item-id="29113" data-item-type="ItemMarkdown"><h4 id="heading17">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item29114" data-item-id="29114" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">価値が伝わるレポートの構成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29115" data-item-id="29115" data-item-type="ItemRichText"><div class="item-body-hbr">SNS運用代行などの仕事では、クライアントに活動の成果を報告する「パフォーマンスレポート」の作成が必須です。価値が伝わるレポートとは、単なる数字の羅列ではありません。</div></div>
+        
+        <div class="article-item item_html " id="item29116" data-item-id="29116" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>良かった点（事実）と、<span class="decoration-02">その成功要因（考察）</span></li>
+  <li>悪かった点（事実）と、<span class="decoration-02">その課題の原因（考察）</span></li>
+  <li>そして、それらを踏まえて<span class="decoration-02">「次に何をするか」（改善アクション）</span></li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item29117" data-item-id="29117" data-item-type="ItemRichText"><div class="item-body-hbr">この3点を明確に伝えることが重要です。専門用語を避け、誰が読んでも分かる言葉でまとめることも心がけましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item29118" data-item-id="29118" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">実践：レポートの骨子をAIに作らせるプロンプト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29119" data-item-id="29119" data-item-type="ItemRichText"><div class="item-body-hbr">これまでの分析結果の要点をAIに渡し、レポートの構成案や要約文を作成させることができます。</div></div>
+        
+        <div class="article-item item_html " id="item29120" data-item-id="29120" data-item-type="ItemHtml"><div class="item-body"><pre><code class="hljs markdown">
+<span class="hljs-section"># 指示</span><br>
+あなたは優秀なアシスタントです。<br>
+以下の情報を元に、クライアント向けの月次パフォーマンスレポートの「サマリー（要約）」部分の文章を作成してください。<br>
+
+<span class="hljs-section"># レポートに盛り込む情報</span><br>
+<span class="hljs-bullet">- </span>期間：2025年6月1日〜6月30日<br>
+<span class="hljs-bullet">- </span>良かった点：新作ケーキの投稿（投稿A）がリーチ・保存数ともに過去最高を記録。シズル感のある写真が好評だったと推測。<br>
+<span class="hljs-bullet">- </span>課題点：動画コンテンツ（投稿B）が、制作コストに見合うエンゲージメントを得られていない。<br>
+<span class="hljs-bullet">- </span>来月の改善提案：好評だった写真コンテンツの投稿頻度を上げる。<br>
+動画は、よりコメントを誘発するような企画（例：Q&amp;Aコーナー）をテストする。<br>
+
+<span class="hljs-section"># トーン＆マナー</span><br>
+<span class="hljs-bullet">- </span>プロフェッショナルかつ、分かりやすい言葉で。<br>
+<span class="hljs-bullet">- </span>ポジティブな要素を先に伝え、期待感を持たせる構成でお願いします。<br>
+</code></pre></div></div>
+        
+        <div class="article-item item_link " id="item29121" data-item-id="29121" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Tjk3G&amp;item_id=29121" rel="nofollow noopener noreferrer" target="_blank">AIで加速するデータドリブンSNS運用 2−3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="AIで加速するデータドリブンSNS運用 2−3" data-reference="https://www.dropbox.com/scl/fi/he5ihf2x4yvg7i19zb498/ai-sns-data-driven_2.3.1.0_.mp4?rlkey=pry7mazyikzdvak2acoy9dpb3&amp;st=caft0pvm&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item29122" data-item-id="29122" data-item-type="ItemHeading"><h2 class="item-body" id="heading20">【2-5】3章 -章末課題- [AIデータ分析・改善提案演習]</h2></div>
+        
+        <div class="article-item item_markdown " id="item29123" data-item-id="29123" data-item-type="ItemMarkdown"><h4 id="heading21">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item29124" data-item-id="29124" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item29125" data-item-id="29125" data-item-type="ItemRichText"><div class="item-body-hbr">あなたは「個人経営のカフェ」のSNS運用代行を担当しています。オーナーから、以下のような先月のInstagram投稿の簡易データ（模擬データ）を渡されました。<br>
+このデータを元に、AIを活用して「現状の分析」と「来月の改善提案」をまとめてください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item29126" data-item-id="29126" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">簡易データ：</span><br>
+- 投稿A（新作ケーキの写真）：いいね 250, コメント 10, 保存 80, リーチ 3000<br>
+- 投稿B（店内の様子の動画）：いいね 150, コメント 5, 保存 20, リーチ 2500<br>
+- 投稿C（コーヒー豆のこだわり解説）：いいね 80, コメント 2, 保存 50, リーチ 1500<br>
+- 投稿D（スタッフ紹介）：いいね 180, コメント 25, 保存 30, リーチ 2000</div></div>
+        
+        <div class="article-item item_rich_text " id="item29127" data-item-id="29127" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">作成するもの：</span></div></div>
+        
+        <div class="article-item item_html " id="item29128" data-item-id="29128" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>このデータ全体から読み取れる「傾向」と「課題」の分析（AIに要約させる）</li>
+  <li>最も改善が必要な投稿（または投稿カテゴリ）を1つ選び、その理由を述べる</li>
+  <li>選んだ投稿カテゴリを改善するための、具体的なアクションプランをAIと協力して2つ以上提案する</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item29129" data-item-id="29129" data-item-type="ItemHeading"><h3 class="item-body" id="heading23">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item29130" data-item-id="29130" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>AIに対し、「あなたはSNSデータアナリストです」と役割を設定します。</li>
+  <li>上記の簡易データをAIに貼り付け、「このデータから読み取れる全体的な傾向、パフォーマンスが良い投稿と悪い投稿の特徴、そして考えられる課題を分析・要約してください」と依頼します。</li>
+  <li>AIの分析結果（例：「投稿Dはいいね数に比してコメント数が多く、ファンとの交流に繋がっている」「投稿Cはリーチが低いが保存率は高く、熱心なファンに響いている」など）を元に、最も改善すべき投稿カテゴリを自分で判断します。（例：リソースをかけている割に反応が薄い「投稿B：店内の様子の動画」を改善対象とする、など）</li>
+  <li>改善すべきと判断したカテゴリについて、【3-3】を参考に「この投稿カテゴリのエンゲージメントを高めるための具体的な改善アイデアを3つ提案してください」とAIに依頼します。</li>
+  <li>AIからの提案を元に、最終的な分析結果と改善提案をレポート形式でまとめます。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item29131" data-item-id="29131" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">制作例</span><br>
+<br>
+Sato Coffee Roasters様 Instagramアカウント パフォーマンス分析・改善提案レポート<br>
+期間：202X年 X月1日〜X月31日<br>
+作成日：202X年 Y月Y日<br>
+<br>
+1. 分析サマリー<br>
+当月のアカウントパフォーマンスについて、全体の傾向、好調だった点、課題点を以下にまとめます。<br>
+全体の傾向:<br>
+投稿コンテンツによって、ユーザーからの反応（エンゲージメント率）に大きな差が見られます。特に「食」に関連する具体的な商品の投稿への関心が高い傾向にあります。<br>
+好調な点（Good Point）:<br>
+新作「バスクチーズケーキ」の紹介投稿（投稿A）は、リーチ数・保存数ともに当月トップクラスの数値を記録しました。ユーザーの「食べたい」「行ってみたい」という欲求を刺激し、来店動機に繋がる可能性の高い優良コンテンツです。<br>
+課題点（Improvement Point）:<br>
+店内の様子を撮影した動画コンテンツ（投稿B）は、リーチ数は比較的高いものの、いいねや保存、コメントといったエンゲージメントに繋がっていません。投下した労力に対し、アカウントへの貢献度が低い状態です。<br>
+<br>
+2. 重点改善項目<br>
+分析結果に基づき、次月は以下のコンテンツを重点的に改善することを提案します。<br>
+改善対象: 店内の様子の動画（投稿B）<br>
+選定理由:<br>
+この投稿は多くのユーザーの目に触れている（リーチ数が高い）にも関わらず、価値が伝わりきっていない（エンゲージメントが低い）という大きな改善機会（伸びしろ）があるためです。この投稿の質を高めることで、アカウント全体のエンゲージメントを効果的に底上げできると判断しました。<br>
+<br>
+3. 改善アクションプラン<br>
+上記「店内の様子の動画」を改善するための、具体的なアクションプランを3つ提案します。<br>
+プランA：シズル感の演出で「体験価値」を向上させる<br>
+内容: 単に店内を映すのではなく、スタッフが丁寧にコーヒーを淹れる「手元」をクローズアップで撮影。湯気や豆を挽く音、美しいラテアートが出来上がる過程などを盛り込み、「飲みたくなる」動画を制作します。<br>
+目的: 保存数の向上、来店意欲の促進<br>
+プランB：参加型企画で「エンゲージメント」を獲得する<br>
+内容: 「当店の隠れたこだわりポイントはどこでしょう？」といったクイズ形式の動画にします（例：壁のアート、BGMのレコードなど）。コメント欄で回答を募集し、正解者から抽選でドリップバッグをプレゼントする企画に繋げます。<br>
+目的: コメント数の増加、フォロワーとの関係性強化<br>
+プランC：Tips発信で「保存」を促す<br>
+内容: 「プロが教える！おうちで美味しいコーヒーを淹れる3つのコツ」といったお役立ち情報（Tips）を、店内のVlog風動画の中で紹介します。<br>
+目的: 保存数の向上、専門家としてのアカウント価値向上<br>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item29132" data-item-id="29132" data-item-type="ItemRichText"><div class="item-body-hbr">これで「2章 AIで成果を可視化する：効果測定・改善編 (Check &amp; Action)」の解説を終わります。<br>
+お疲れ様でした！</div></div>
+        
+        <div class="article-item item_html " id="item29137" data-item-id="29137" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/3mzBc" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 AIで成果を可視化する：効果測定・改善編 (Check &amp; Action)</a><ul><li><a href="#heading1" class="tocLink">この章の学習時間:120分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】AIとデータを見る：パフォーマンス分析</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">数字の羅列から「意味」を読み解く</a></li><li><a href="#heading6" class="tocLink">実践：パフォーマンスデータをAIに要約・分析させるプロンプト</a></li></ul></li><li><a href="#heading7" class="tocLink">【2-2】AIと顧客の声を聞く：コメント感情分析</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading9" class="tocLink">コメントは改善のヒントの宝庫</a></li><li><a href="#heading10" class="tocLink">実践：コメントをAIにポジネガ判定・要約させるプロンプト</a></li></ul></li><li><a href="#heading11" class="tocLink">【2-3】AIと次の一手を考える：改善施策の立案</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading13" class="tocLink">分析して終わり、では意味がない</a></li><li><a href="#heading14" class="tocLink">実践：改善策のアイデアをAIにブレストさせるプロンプト</a></li><li><a href="#heading15" class="tocLink"> 練習問題</a></li></ul></li><li><a href="#heading16" class="tocLink">【2-4】AIと成果を報告する：レポート作成補助</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading18" class="tocLink">価値が伝わるレポートの構成</a></li><li><a href="#heading19" class="tocLink">実践：レポートの骨子をAIに作らせるプロンプト</a></li></ul></li><li><a href="#heading20" class="tocLink">【2-5】3章 -章末課題- [AIデータ分析・改善提案演習]</a><ul><li><a href="#heading21" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading22" class="tocLink">問題</a></li><li><a href="#heading23" class="tocLink">解答手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%93AI%E3%81%A7%E5%8A%A0%E9%80%9F%E3%81%99%E3%82%8B%E3%83%87%E3%83%BC%E3%82%BF%E3%83%89%E3%83%AA%E3%83%96%E3%83%B3SNS%E9%81%8B%E7%94%A8/3mzBc" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="xhnldQ0aZ5j1tw2hQtN4WA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="230" data-domain="learn.webcoach.jp" data-url="/web-marketing/0pin2" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Google Analytics -基礎編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-marketing/0pin2">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Google Analytics -基礎編- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/406/medium/3d58d8b3-56ee-4853-b378-4222eab51abb.png?1719230175">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Google Analytics -基礎編-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-marketing/0pin2">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/406/large/3d58d8b3-56ee-4853-b378-4222eab51abb.png?1719230175">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-marketing/0pin2"
+    },
+    "headline": "Google Analytics -基礎編-",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/001/406/medium/3d58d8b3-56ee-4853-b378-4222eab51abb.png?1719230175",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2024-07-26T14:48:46+09:00",
+    "dateModified": "2025-09-24T10:25:43+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_ono"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="zT6vesTomdxlcGRsjMelnxgFsktjJh8Z5LyE6TiwqSjErdJ4XjLWh8Y2eZjMOmkHYCoNbOECQWr90bHJKRAh_w" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBマーケティング</div>
+
+          <div class="fw-bold h2">Google Analytics -基礎編-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_markdown " id="item39573" data-item-id="39573" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間:40分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item1393" data-item-id="1393" data-item-type="ItemHeading"><h2 class="item-body">1. Google Analyticsとは</h2></div>
+        
+        <div class="article-item item_markdown " id="item39570" data-item-id="39570" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item1394" data-item-id="1394" data-item-type="ItemRichText"><div class="item-body-hbr">Google AnalyticsはGoogleが提供している無料のアクセス解析ツールです。<br>
+<br>
+WEBサイトを訪れたユーザーがどのような行動を取ったか分析できるツールとなっています。<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">WEBサイトを構築した際は導入を強くお勧めします。</span></span><br>
+<br>
+WEBサイトは作って放置しては意味がありません。目的はあくまで「集客」なので、実際にどれくらいのユーザーが訪れたのか明確にし、集客を改善できるようにしないといけません。</div></div>
+        
+        <div class="article-item item_heading " id="item1395" data-item-id="1395" data-item-type="ItemHeading"><h2 class="item-body">2. Google Analyticsを使うメリット・デメリット</h2></div>
+        
+        <div class="article-item item_markdown " id="item39571" data-item-id="39571" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1396" data-item-id="1396" data-item-type="ItemMarkdown"><p>Google Analyticsはアクセス解析ツールにおいてシェアNo.1なので、「アクセス解析したい」と言われたら、Google Analyticsを導入すればOKです。</p>
+
+<p>ただし、一応メリット・デメリットも把握しておきましょう。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1397" data-item-id="1397" data-item-type="ItemHeading"><h3 class="item-body">a. メリット</h3></div>
+        
+        <div class="article-item item_markdown " id="item1398" data-item-id="1398" data-item-type="ItemMarkdown"><ul>
+  <li>完全無料で使える</li>
+  <li>ユーザーのアクセス状況、サイト内の行動が細かくわかる
+以下のような細かい情報が全部わかります！
+    <ul>
+      <li>1日あたり何経由で何人来たか</li>
+      <li>どのページに何分くらい滞在したのか</li>
+      <li>特定のボタンを押したかどうか</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item1399" data-item-id="1399" data-item-type="ItemHeading"><h3 class="item-body">b. デメリット</h3></div>
+        
+        <div class="article-item item_markdown " id="item1400" data-item-id="1400" data-item-type="ItemMarkdown"><p>初心者にとっては項目が多く少し見づらいかもしれません。そのため、使いこなすには多少の勉強が必要になります！</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1401" data-item-id="1401" data-item-type="ItemHeading"><h2 class="item-body">3. Google Analyticsの導入方法</h2></div>
+        
+        <div class="article-item item_markdown " id="item39572" data-item-id="39572" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:30分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1402" data-item-id="1402" data-item-type="ItemMarkdown"><p>Google Analyticsをixに導入する方法を記載します！</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1403" data-item-id="1403" data-item-type="ItemHeading"><h3 class="item-body">1. Googleアカウントを作成</h3></div>
+        
+        <div class="article-item item_markdown " id="item1404" data-item-id="1404" data-item-type="ItemMarkdown"><p>こちらはほとんどの方はすでにお持ちだと思うので、今お使いのGoogleアカウントがあればそれでOKです。</p>
+
+<p>Google Analyticsを作成した後、他の人にも閲覧して欲しい場合は、その人ごとにGoogleアカウントが必要となります。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1405" data-item-id="1405" data-item-type="ItemHeading"><h3 class="item-body">2. Google Analyticsに登録</h3></div>
+        
+        <div class="article-item item_image " id="item1406" data-item-id="1406" data-item-type="ItemImage"><div class="media"><div class="pull-sm-left"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/406/medium/3d58d8b3-56ee-4853-b378-4222eab51abb.png?1719230175" title=""><span class="inline-image"><img class="img-responsive item-image" alt=" (1406)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/406/medium/3d58d8b3-56ee-4853-b378-4222eab51abb.png?1719230175" width="619" height="640" /></span></a></div><div class="media-body"><h4 class="media-heading item-body"></h4><div class="item-comment">Googleで「Google Analytics」と検索しましょう。<br /><br />リンクをクリックすると、画面が表示されるのでログインしてください！</div></div></div></div>
+        
+        <div class="article-item item_image " id="item1407" data-item-id="1407" data-item-type="ItemImage"><div class="media"><div class="pull-sm-left"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/407/medium/07826339-2785-40fe-8b31-3e003fb91375.png?1719230199" title=""><span class="inline-image"><img class="img-responsive item-image" alt=" (1407)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/407/medium/07826339-2785-40fe-8b31-3e003fb91375.png?1719230199" width="640" height="329" /></span></a></div><div class="media-body"><h4 class="media-heading item-body"></h4><div class="item-comment">ログインすると以下のような画面が表示されます！<br /><br />「測定開始」をクリックしてください。</div></div></div></div>
+        
+        <div class="article-item item_image " id="item1408" data-item-id="1408" data-item-type="ItemImage"><div class="media"><div class="pull-sm-left"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/408/medium/fc71c223-16e7-48f3-a5b5-87e10fe45e89.png?1719230223" title=""><span class="inline-image"><img class="img-responsive item-image" alt=" (1408)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/408/medium/fc71c223-16e7-48f3-a5b5-87e10fe45e89.png?1719230223" width="640" height="314" /></span></a></div><div class="media-body"><h4 class="media-heading item-body"></h4><div class="item-comment">次に新しいアカウント名を入力してください！<br /><br />ここは実際に導入したいWEBサイトの名前が良いでしょう。ここでは「test」とします。<br /><br />「アカウントのデータ共有設定」のところは全てチェックマークをつけておくことをお勧めします。</div></div></div></div>
+        
+        <div class="article-item item_image " id="item1409" data-item-id="1409" data-item-type="ItemImage"><div class="media"><div class="pull-sm-left"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/409/medium/d164e5b9-560d-482d-8b7e-9e44f11bdaeb.png?1719230247" title=""><span class="inline-image"><img class="img-responsive item-image" alt=" (1409)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/409/medium/d164e5b9-560d-482d-8b7e-9e44f11bdaeb.png?1719230247" width="640" height="421" /></span></a></div><div class="media-body"><h4 class="media-heading item-body"></h4><div class="item-comment">次に、プロパティ名を入力します。ここも導入したいWEBサイトの名前で良いと思います。<br /><br />名前は任意ですが、わかりやすいものを設定することをお勧めします。</div></div></div></div>
+        
+        <div class="article-item item_html " id="item1410" data-item-id="1410" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">プロパティとは企業のウェブやアプリのデータを表しています。
+
+プロパティ単位でデータが溜まっていきます。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item1411" data-item-id="1411" data-item-type="ItemMarkdown"><p>レポートのタイムゾーンは日本、通貨は円に変更しましょう！
+日本で使用する場合はこの設定が適切です。</p>
+
+</div>
+        
+        <div class="article-item item_image " id="item1412" data-item-id="1412" data-item-type="ItemImage"><div class="media"><div class="pull-sm-left"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/412/medium/dbd028b3-658d-4b91-84f0-d3091b581edf.png?1719230334" title=""><span class="inline-image"><img class="img-responsive item-image" alt=" (1412)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/412/medium/dbd028b3-658d-4b91-84f0-d3091b581edf.png?1719230334" width="640" height="617" /></span></a></div><div class="media-body"><h4 class="media-heading item-body"></h4><div class="item-comment">次に「業種」「ビジネスの規模」「利用目的」を選択します！</div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item1413" data-item-id="1413" data-item-type="ItemMarkdown"><p>利用目的は以下の項目から適切なものを選びましょう！</p>
+
+<p>とはいえ、基本的な項目にチェックを入れておけば問題ありません。</p>
+
+<ul>
+  <li>サイトまたはアプリでの顧客エンゲージメントを測定する<br />
+エンゲージメントとは元々「契約」や「約束」といった意味を持つ言葉です。WEBマーケティングにおいては、サービスと顧客との親密度を表す言葉です。
+WEBサイトにおいて顧客エンゲージメントが高い状態というのは、サイトへの滞在時間も長く、たくさんページを見ている状態を指します。</li>
+  <li>サイトまたはアプリの利便性を最適化する<br />
+サイトユーザーが使いづらい場所を特定し改善していきたい場合はこちらを選択すると良いでしょう。</li>
+  <li>複数のデバイスまたはプラットフォームをまたいでデータを測定する<br />
+これは「クロスデバイス計測」とも呼ばれますが、複数のデバイス間をまたいで効果測定をすることを指します。現代ではユーザーは特定のサービスを購入するにあたり、最初はスマホで見つけて、最終的にPCでより詳しくサイトを確認してから購入するといった行動をとることもあります。
+この項目を選択するとクロスデバイスでの計測ができるように設定されます。
+(この機能は完全に動作しないケースもあります。)</li>
+  <li>広告費用を最適化する<br />
+これは後々学習しますが、WEB広告を出稿した際には、1ユーザーがサイトを訪れるのに何円かかって実際にそこからゴールとするアクションを取るのに何円かかったかが重要となります。
+CPCやCPAと言われる指標です。こちらを計測したい場合はオンにすると良いでしょう。</li>
+  <li>コンバージョン数を増やす<br />
+上記に付随しますが、コンバージョンとは「変換」や「転換」を意味し、マーケティングではユーザーの行動が成果に変わることを指します。
+WEBマーケティングにおいては、問い合わせ送信、商品購入などをコンバージョンと呼ぶ事が多いです。</li>
+  <li>コンテンツの収益化を測定する<br />
+コンテンツの収益を測定したい場合はこの項目を選択しましょう。</li>
+  <li>オンライン販売を分析する<br />
+オンライン販売を分析したい場合はこちらを使いましょう。</li>
+  <li>アプリのインストールを測定する<br />
+アプリのインストール測定にGoogle Analyticsを使うこともできます。
+ただし、今回はWEBサイトの場合なのでこの項目は関係ありません。</li>
+  <li>見込み顧客の発掘を測定する<br />
+ユーザーの行動パターンから見込み客を特定したい場合は、この項目を選択すると良いでしょう。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item1414" data-item-id="1414" data-item-type="ItemHeading"><h3 class="item-body">3. データストリームの作成</h3></div>
+        
+        <div class="article-item item_image " id="item1415" data-item-id="1415" data-item-type="ItemImage"><div class="media"><div class="pull-sm-left"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/415/medium/9154cb4a-ae70-43e0-b1f5-b7edb616b88c.png?1719230383" title=""><span class="inline-image"><img class="img-responsive item-image" alt=" (1415)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/415/medium/9154cb4a-ae70-43e0-b1f5-b7edb616b88c.png?1719230383" width="640" height="471" /></span></a></div><div class="media-body"><h4 class="media-heading item-body"></h4><div class="item-comment">次にデータストリームの作成を行います。<br /><br />左下の歯車ボタン(管理)をクリックすると新しい画面が表示されます。<br /><br />プロパティの中の「データストリーム」をクリックし、「ウェブ」を選択します。</div></div></div></div>
+        
+        <div class="article-item item_image " id="item1416" data-item-id="1416" data-item-type="ItemImage"><div class="media"><div class="pull-sm-left"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/416/medium/038190d5-bd59-47a1-a160-3af12c119f1c.png?1719230404" title=""><span class="inline-image"><img class="img-responsive item-image" alt=" (1416)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/416/medium/038190d5-bd59-47a1-a160-3af12c119f1c.png?1719230404" width="630" height="640" /></span></a></div><div class="media-body"><h4 class="media-heading item-body"></h4><div class="item-comment">ウェブストリームの設定に移ります。<br /><br />ウェブサイトのURLとストリーム名を入れてください。<br /><br />ウェブサイトのURLは今回計測したいサイトのURLを入力しましょう。<br /><br />ストリーム名は今回はウェブストリームなので、「ウェブ」と入力すれば問題ありません。</div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item1417" data-item-id="1417" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">データストリームなどの専門用語がでてきたので、GA4の全体構造について少し説明します。</span></div></div>
+        
+        <div class="article-item item_image " id="item1418" data-item-id="1418" data-item-type="ItemImage"><div class="media"><div class="pull-sm-left"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/418/medium/5aa0cc09-9cfd-4351-9edb-b2cfb7ec3ced.png?1719230435" title=""><span class="inline-image"><img class="img-responsive item-image" alt=" (1418)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/418/medium/5aa0cc09-9cfd-4351-9edb-b2cfb7ec3ced.png?1719230435" width="640" height="249" /></span></a></div><div class="media-body"><h4 class="media-heading item-body"></h4><div class="item-comment">まず一番上にアカウントがあります。これは一番最初に作成したアカウントのことを指します。<br /><br />その中にプロパティを作る事ができますが、基本的にプロパティは1サービス1つと考えて良いです。<br /><br />そしてその中にデータストリームが存在します。1つのサービスについて、ウェブサイトでのアクセス、アプリでのアクセス双方取得できます。</div></div></div></div>
+        
+        <div class="article-item item_heading " id="item1419" data-item-id="1419" data-item-type="ItemHeading"><h3 class="item-body">4. 測定IDの設置</h3></div>
+        
+        <div class="article-item item_image " id="item1420" data-item-id="1420" data-item-type="ItemImage"><div class="media"><div class="pull-sm-left"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/420/medium/20b30c24-4df0-4bea-883f-5b7ffae14b31.png?1719230471" title=""><span class="inline-image"><img class="img-responsive item-image" alt=" (1420)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/420/medium/20b30c24-4df0-4bea-883f-5b7ffae14b31.png?1719230471" width="502" height="640" /></span></a></div><div class="media-body"><h4 class="media-heading item-body"></h4><div class="item-comment">GA4のプロパティ作成とデータストリームの設定が完了したら、GA4の測定IDをWEBサイトに設置しましょう！<br /><br />測定IDをコピーしてください！</div></div></div></div>
+        
+        <div class="article-item item_image " id="item1421" data-item-id="1421" data-item-type="ItemImage"><div class="media"><div class="pull-sm-left"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/421/medium/fdccc93b-994e-4a3f-928f-3e40f2f7ffdd.png?1719230488" title=""><span class="inline-image"><img class="img-responsive item-image" alt=" (1421)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/421/medium/fdccc93b-994e-4a3f-928f-3e40f2f7ffdd.png?1719230488" width="640" height="300" /></span></a></div><div class="media-body"><h4 class="media-heading item-body"></h4><div class="item-comment">Wixの「マーケティング・SEO」メニューから「マーケティングツール」の「Google Analytics」を選択し、「Google アナリティクスIDを追加」にIDを設置するだけでOKです。<br /><br />基本的にはGoogleが全て公式にて説明を発表していますので、不明なところがあったら積極的にググってみてください！</div></div></div></div>
+        
+        <div class="article-item item_html " id="item1422" data-item-id="1422" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">プロのマーケターも全ての機能を把握して覚えているわけではないです。Google Analyticsは必要に応じて検索しながら使うツールです。</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="xhnldQ0aZ5j1tw2hQtN4WA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

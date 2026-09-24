@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="4UXLhDZwOzEbIMeL0PVvZQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1640" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/pucyk" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1章 AI時代のWeb制作者サバイバル術 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/pucyk">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="1章 AI時代のWeb制作者サバイバル術 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/865/medium/c26ee259-7a66-4636-8fe9-d4a5bb65ad93.png?1754095904">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="1章 AI時代のWeb制作者サバイバル術">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/pucyk">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/865/large/c26ee259-7a66-4636-8fe9-d4a5bb65ad93.png?1754095904">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/pucyk"
+    },
+    "headline": "1章 AI時代のWeb制作者サバイバル術",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/037/865/medium/c26ee259-7a66-4636-8fe9-d4a5bb65ad93.png?1754095904",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-18T08:51:51+09:00",
+    "dateModified": "2025-08-02T09:53:21+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="WUZcvqORbzitWVWdmDqSZNbUtCqiNKdhsF5-yW5wO81y8o3-BMt0aWzveqM37fasTqnJq1YIHHNgC8G18zwfMw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材1 AI×Web制作 基礎概論</div>
+
+          <div class="fw-bold h2">1章 AI時代のWeb制作者サバイバル術</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item36053" data-item-id="36053" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="Q335M" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Qj5ac" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item34263" data-item-id="34263" data-item-type="ItemHeading"><h2 class="item-body">1章 AI時代のWeb制作者サバイバル術</h2></div>
+        
+        <div class="article-item item_markdown " id="item34264" data-item-id="34264" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：50分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item34265" data-item-id="34265" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item34266" data-item-id="34266" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>AIの登場によってWeb制作者の仕事がどのように変化したかを理解できる。</li>
+  <li>AI時代に市場価値の高いWeb制作者になるために、どのようなスキルが必要かを説明できる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item34267" data-item-id="34267" data-item-type="ItemHeading"><h2 class="item-body">【1-1】AIの登場でWeb制作はこう変わった！</h2></div>
+        
+        <div class="article-item item_markdown " id="item34268" data-item-id="34268" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item34269" data-item-id="34269" data-item-type="ItemHeading"><h3 class="item-body">もう戻れない？AI登場「前」のWeb制作</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34270" data-item-id="34270" data-item-type="ItemRichText"><div class="item-body-hbr">数年前まで、Webサイト制作は多くの時間と労力を要する作業の連続でした。<br>
+従来のWeb制作フローを振り返ってみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item34271" data-item-id="34271" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">ヒアリング・要件定義</span>：クライアントの要望を整理し、サイトの目的を明確にする。</li>
+  <li><span class="decoration-01">設計</span>：サイトマップやワイヤーフレームを作成し、ページの構造を決める。</li>
+  <li><span class="decoration-01">デザイン</span>：配色やレイアウトを考え、デザインカンプを作成する。</li>
+  <li><span class="decoration-01">コーディング</span>：HTML、CSS、JavaScriptを記述し、デザインをブラウザで表示できるようにする。</li>
+  <li><span class="decoration-01">テスト</span>：様々なブラウザやデバイスで表示崩れやエラーがないか確認する。</li>
+  <li><span class="decoration-01">公開・運用</span>：サーバーにファイルをアップロードし、公開後のメンテナンスを行う。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item34272" data-item-id="34272" data-item-type="ItemRichText"><div class="item-body-hbr">これらの各工程には、多くの「単純作業」や「調べ物」が潜んでいました。<br>
+例えば、コーディング中の閉じタグの確認、ブラウザごとのCSSの挙動の違いの調査、お客様に提案する文章の作成など、一つ一つは小さくても積み重なると膨大な時間になります。<br>
+これらが、私たちの創造的な時間を奪っていたのです。</div></div>
+        
+        <div class="article-item item_html " id="item34273" data-item-id="34273" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>かつてのボトルネック</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>単純なコードの繰り返し入力</li>
+            <li>エラーの原因究明のための長時間にわたる調査</li>
+            <li>競合サイトの構成やデザインの広範なリサーチ</li>
+            <li>キャッチコピーや説明文など、テキストコンテンツの作成</li>
+        </ul>
+        <p>これらの作業が、制作スピードとコストに大きく影響していました。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item34274" data-item-id="34274" data-item-type="ItemHeading"><h3 class="item-body">AI登場「後」のWeb制作と制作者の役割</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34275" data-item-id="34275" data-item-type="ItemRichText"><div class="item-body-hbr">AIの登場は、Web制作の風景を一変させました。特に生成AIは、私たちの作業を劇的に効率化してくれます。<br>
+<br>
+まず、AIの得意なことと苦手なことを理解しておくことが重要です。</div></div>
+        
+        <div class="article-item item_html " id="item34276" data-item-id="34276" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col"><div><div></div></div></th>
+                <th scope="col"><div><div>AIが得意なこと</div></div></th>
+                <th scope="col"><div><div>AIが苦手なこと</div></div></th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row"><div><div>具体例</div></div></th>
+            <td>
+                <ul>
+                    <li>コード生成・補完</li>
+                    <li>文章や画像の生成</li>
+                    <li>データ分析・整理</li>
+                    <li>単純なパターンの繰り返し</li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li>クライアントの抽象的な想いの汲み取り</li>
+                    <li>0から1を生み出す独創的な発想</li>
+                    <li>倫理的・道徳的な判断</li>
+                    <li>最終的な品質への責任</li>
+                </ul>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item34277" data-item-id="34277" data-item-type="ItemRichText"><div class="item-body-hbr">この特性を理解すると、これからのWeb制作者の役割が見えてきます。AIが単純作業や時間のかかる調査を肩代わりしてくれることで、私たちはより本質的で付加価値の高い仕事に集中できるようになります。<br>
+<br>
+つまり、Web制作者の役割は、手を動かす<span class="decoration-02">「作業者」から、AIというアシスタントを的確に使いこなし、プロジェクト全体を成功に導く「監督・司令塔」へと変化</span>していくのです。</div></div>
+        
+        <div class="article-item item_image " id="item37865" data-item-id="37865" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/865/medium/c26ee259-7a66-4636-8fe9-d4a5bb65ad93.png?1754095904" title=""><img class="img-responsive item-image" alt=" (37865)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/865/medium/c26ee259-7a66-4636-8fe9-d4a5bb65ad93.png?1754095904" width="640" height="427" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item34278" data-item-id="34278" data-item-type="ItemHeading"><h3 class="item-body">考えてみよう！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34279" data-item-id="34279" data-item-type="ItemRichText"><div class="item-body-hbr">あなたがこれまでWeb制作の学習や実務で「時間がかかるな」「難しいな」と感じた作業は何ですか？それはAIの力でどのように効率化できるか、想像してみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item34280" data-item-id="34280" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答例</span></div></div>
+        
+        <div class="article-item item_html " id="item34281" data-item-id="34281" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">例1：コーディング中のタイプミスや閉じタグの忘れ。</span><br>
+    → GitHub CopilotのようなAIがリアルタイムでコードを補完・修正してくれるため、ケアレスミスが減り、開発スピードが格段に向上する。
+  </li>
+  <li>
+    <span class="decoration-01">例2：ブログ記事やサービス説明文の文章作成。</span><br>
+    → ChatGPTにキーワードや伝えたい概要、ターゲット読者を伝えることで、質の高い文章の骨子や複数のパターンを短時間で作成できる。ゼロから考えるストレスが大幅に軽減される。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item34282" data-item-id="34282" data-item-type="ItemHeading"><h2 class="item-body">【1-2】これからの制作者に求められるスキルセット</h2></div>
+        
+        <div class="article-item item_markdown " id="item34283" data-item-id="34283" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item34284" data-item-id="34284" data-item-type="ItemHeading"><h3 class="item-body">AIに仕事を奪われないために</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34285" data-item-id="34285" data-item-type="ItemRichText"><div class="item-body-hbr">「AIに仕事が奪われる」という話を耳にすることがあるかもしれません。確かに、AIの登場によって、一部の作業の価値は相対的に低下します。<br>
+<br>
+AIに代替されやすいのは、<span class="decoration-02">明確なルールやパターンに基づいて行われる「再現性の高い作業」</span>です。例えば、指示書通りにHTMLとCSSを書くだけの単純なコーディング作業や、決まったテンプレートに沿った画像作成などは、AIの得意分野です。<br>
+<br>
+しかし、悲観する必要は全くありません。むしろ、これからは人間にしかできない、より付加価値の高い仕事に集中できるチャンスです。</div></div>
+        
+        <div class="article-item item_html " id="item34286" data-item-id="34286" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>人間にしかできない付加価値とは？</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">課題発見と提案力</span>：クライアントとの対話の中から、本人も気づいていない真の課題を引き出し、Webサイトを通じた解決策を提案する。</li>
+            <li><span class="decoration-02">創造性とディレクション能力</span>：AIというツールを駆使して、どのようなWebサイトを作るかというコンセプトを考え、全体のアートディレクションを行う。</li>
+            <li><span class="decoration-02">品質管理と最終責任</span>：AIの生成物を評価し、プロジェクト全体の品質に責任を持つ。倫理的、法的な観点から最終的なGO/NO-GOを判断する。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item34287" data-item-id="34287" data-item-type="ItemRichText"><div class="item-body-hbr">これからのWeb制作者は、単なる「作り手」ではなく、クライアントのビジネスを成功に導く「パートナー」としての役割がより一層求められるのです。</div></div>
+        
+        <div class="article-item item_heading " id="item34288" data-item-id="34288" data-item-type="ItemHeading"><h3 class="item-body">市場価値が上がる「AI活用スキル」</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34289" data-item-id="34289" data-item-type="ItemRichText"><div class="item-body-hbr">AI時代に市場価値の高いWeb制作者になるためには、従来のWeb制作スキルに加えて、AIを賢く使いこなすための新しいスキルセットが必須となります。特に重要な3つのスキルを紹介します。<br>
+<br>
+<span class="decoration-01">1. 的確な指示でAIの力を引き出す「プロンプトエンジニアリング」</span><br>
+AIは、与えられた指示（プロンプト）に基づいて生成物を作ります。曖昧な指示からは、ありきたりな結果しか得られません。AIの能力を最大限に引き出すためには、具体的で、意図が明確なプロンプトを作成するスキルが不可欠です。</div></div>
+        
+        <div class="article-item item_html " id="item34290" data-item-id="34290" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>プロンプトエンジニアリング</strong><br></span>
+    <div class="content-area">
+        <p>AIに対して、望む出力を得るために最適な指示（プロンプト）を設計し、改良していく技術やスキルのこと。AIとの対話術とも言える。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item34291" data-item-id="34291" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2. AIの生成物を鵜呑みにしない「クリティカルシンキング」</span><br>
+AIは時に、事実と異なる情報（ハルシネーション）を生成したり、文脈に合わない不自然な表現を使ったりすることがあります。生成されたコードや文章、画像を鵜呑みにせず、「これは本当に正しいか？」「もっと良い表現はないか？」と批判的な視点で検証し、改善する思考法が重要です。</div></div>
+        
+        <div class="article-item item_html " id="item34292" data-item-id="34292" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>クリティカルシンキング（批判的思考）</strong><br></span>
+    <div class="content-area">
+        <p>物事を無条件に受け入れるのではなく、多角的な視点からその情報が本当に正しいのか、その結論は妥当かを客観的、論理的に分析・検討する思考法のこと。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item34293" data-item-id="34293" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3. 著作権やセキュリティを守る「リスク管理能力」</span><br>
+AIの活用は、効率化という大きなメリットをもたらす一方で、著作権侵害や情報漏洩といったリスクも伴います。AIの生成物を商用利用する際のライセンスの問題や、クライアントの機密情報をAIに入力しないといったセキュリティ意識など、潜在的なリスクを理解し、適切に対処する能力は、プロとして活動する上で絶対に欠かせません。この点については、3章で詳しく解説します。</div></div>
+        
+        <div class="article-item item_image " id="item37866" data-item-id="37866" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/866/medium/014e015e-86de-44a9-8a65-df413476664b.png?1754095985" title=""><img class="img-responsive item-image" alt=" (37866)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/866/medium/014e015e-86de-44a9-8a65-df413476664b.png?1754095985" width="427" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item34294" data-item-id="34294" data-item-type="ItemHeading"><h2 class="item-body">【1-3】1章 -章末課題- [未来の自分をデザインしよう]</h2></div>
+        
+        <div class="article-item item_markdown " id="item34295" data-item-id="34295" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item34296" data-item-id="34296" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34297" data-item-id="34297" data-item-type="ItemRichText"><div class="item-body-hbr">本章の学びを踏まえ、「AI時代のWeb制作者として、あなたはどのようなスキルを武器に、どのような価値を提供していきたいか」を300字程度で記述し、あなたの「制作者宣言」を作成してください。</div></div>
+        
+        <div class="article-item item_heading " id="item34298" data-item-id="34298" data-item-type="ItemHeading"><h3 class="item-body">解答</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34299" data-item-id="34299" data-item-type="ItemRichText"><div class="item-body-hbr">これはあなた自身の未来を描く課題なので、正解はありません。以下に解答例を示しますので、ぜひ自分の言葉で、これからの目標を宣言してみてください。<br>
+<br>
+<span class="decoration-01">解答例</span><br>
+私は、AIによる高速な実装スキルを武器に、これまでWebサイト制作を諦めていた小規模な事業者様にも、低コストで高品質なサイトを提供したいです。<br>
+単にAIに作業させるだけでなく、お客様との対話を通じて真の課題を発見し、それを解決するための最適なサイト構成を提案できる「ビジネスパートナー」のような存在を目指します。<br>
+AIが生成したものをそのまま使うのではなく、著作権や倫理観を常に意識し、責任を持って最終的な品質を担保できる制作者になります。</div></div>
+        
+        <div class="article-item item_heading " id="item34300" data-item-id="34300" data-item-type="ItemHeading"><h3 class="item-body">この章のまとめ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34301" data-item-id="34301" data-item-type="ItemRichText"><div class="item-body-hbr">これで「1章：AI時代のWeb制作者サバイバル術」の解説を終わります。<br>
+<br>
+AIの登場による変化と、それに伴い求められる新しいスキルセットについて理解いただけたでしょうか。漠然とした不安が、具体的な目標に変わっていれば幸いです。<br>
+<br>
+次の章では、いよいよWeb制作の各工程で具体的にどのようなAIツールが使えるのか、その全体像（マップ）を見ていきます。お楽しみに！</div></div>
+        
+        <div class="article-item item_html " id="item36052" data-item-id="36052" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="Q335M" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Qj5ac" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="4UXLhDZwOzEbIMeL0PVvZQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

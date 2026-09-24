@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/movie-editing/ILHde -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>CapCut｜6章 動画のエクスポート - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/movie-editing/ILHde">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="CapCut｜6章 動画のエクスポート - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/811/medium/c5c37005-741d-4ae7-903e-2d74cd3253c5.png?1743255923">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="CapCut｜6章 動画のエクスポート">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/movie-editing/ILHde">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/811/large/c5c37005-741d-4ae7-903e-2d74cd3253c5.png?1743255923">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="lhwummnpRmMfbhQe3uFIMi11zEaqSdXqP_BiUcQoMF6Av3IL5mXkPcYkWCoIezkE7010dZE4uv_zDQyvbZaE7w"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>動画編集</div>
+
+          <div class="fw-bold h2">CapCut｜6章 動画のエクスポート</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">CapCut｜6章 動画のエクスポート</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:40分</a></li><li><a href="#heading2" class="tocLink"></a></li></ul></li><li><a href="#heading3" class="tocLink">【6-1】エクスポートについて</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">解像度とフレームレートの選択</a><ul><li><a href="#heading6" class="tocLink">操作手順</a></li></ul></li><li><a href="#heading7" class="tocLink">ファイルサイズの最適化</a></li></ul></li><li><a href="#heading8" class="tocLink">【6-2】フォーマットの選択</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading10" class="tocLink">各プラットフォームに適したフォーマット</a><ul><li><a href="#heading11" class="tocLink">操作手順</a></li></ul></li><li><a href="#heading12" class="tocLink">エクスポート後のチェック</a><ul><li><a href="#heading13" class="tocLink">操作手順</a></li></ul></li></ul></li><li><a href="#heading14" class="tocLink">【6-3】SNSへのシェア方法</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading16" class="tocLink">直接SNSにアップロード</a><ul><li><a href="#heading17" class="tocLink">操作手順</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25908" data-item-id="25908" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/QJ6ap" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/oSk6u" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item39889" data-item-id="39889" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">CapCut｜6章 動画のエクスポート</h2></div>
+        
+        <div class="article-item item_markdown " id="item39890" data-item-id="39890" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:40分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item9674" data-item-id="9674" data-item-type="ItemText"><div class="item-body-hbr">この章では動画の書き出し方を学ぶことで、より最適な動画の仕上げ、エクスポートができるようになることを目標とします。</div></div>
+        
+        <div class="article-item item_image " id="item9675" data-item-id="9675" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/675/medium/a916a882-2e03-46f6-926f-030c522b7d33.png?1743256026" title=""><img class="img-responsive item-image" alt=" (9675)" data-reference="" src="../../_assets/e9b4a87b6b.webp" width="640" height="360"></a><h4 id="heading2"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item9676" data-item-id="9676" data-item-type="ItemMarkdown"><h2 id="heading3">【6-1】エクスポートについて</h2>
+</div>
+        
+        <div class="article-item item_markdown " id="item39891" data-item-id="39891" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item9713" data-item-id="9713" data-item-type="ItemText"><div class="item-body-hbr">動画の編集が完了したら、次は書き出し（エクスポート）の段階です。<br><br>エクスポート設定を正しく理解しながらそれぞれの媒体に合わせた最適化をすることで動画のクオリティを維持しつつファイルサイズを管理できます。</div></div>
+        
+        <div class="article-item item_markdown " id="item9679" data-item-id="9679" data-item-type="ItemMarkdown"><h3 id="heading5">解像度とフレームレートの選択</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9714" data-item-id="9714" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>解像度やフレームレートは、完成動画のクオリティを左右する重要な設定です。</li>
+            <li>高解像度であればあるほど映像はクリアになり、高フレームレートであればあるほど画面の動きは滑らかになりますが、ファイルサイズが大きくなるため、媒体・用途に合わせたバランスを取ることが大切です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item9715" data-item-id="9715" data-item-type="ItemMarkdown"><h4 id="heading6">操作手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item9710" data-item-id="9710" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">解像度の設定</span><br>
+ &nbsp; ・ 解像度とは、画像や動画の細かさや鮮明さを示す指標で、画面上に表示されるピクセル（画素）の数で表されます。<br>
+ &nbsp; &nbsp; &nbsp; ┗ ピクセル数が多いほど、映像はより詳細で高品質になります。<br>
+ &nbsp; ・ 数値は横×縦のピクセル数を示しており、例えばフルHDの場合、横に1920ピクセル、縦に1080ピクセルの解像度を意味します。<br>
+ &nbsp; ・ 「ファイル」&gt;「エクスポート」&gt;「解像度」を選び、希望の設定に変更します。<br>
+ &nbsp; &nbsp; &nbsp; ┗<span class="decoration-02"> TikTokやYouTube ShortsなどのSNS向け縦型動画では、フルHD（1080p）で十分な場合が多いです。</span></div></div>
+        
+        <div class="article-item item_html " id="item38515" data-item-id="38515" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter6/export.png" class="lightbox">
+  <img src="../../_assets/6dbaa236a3.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item9709" data-item-id="9709" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">フレームレートの設定</span><br>
+ &nbsp;・ フレームレートとは、動画が1秒間に表示する静止画（フレーム）の数を示すものです。単位はfps（frames per second）で表されます。<br>
+ &nbsp;・ エクスポート画面で「<span class="decoration-01"><span class="decoration-02">フレームレート</span></span>」の数値を選択します。<br>
+ &nbsp; &nbsp; &nbsp;┗<span class="decoration-02">SNS向け縦型動画では、30fpsが一般的です。</span></div></div>
+        
+        <div class="article-item item_html " id="item38516" data-item-id="38516" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter6/flamerate.png" class="lightbox">
+  <img src="../../_assets/f0ba579958.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_markdown " id="item9680" data-item-id="9680" data-item-type="ItemMarkdown"><h3 id="heading7">ファイルサイズの最適化</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9706" data-item-id="9706" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+      <ul>
+        <li>ファイルサイズを小さく保つことは、ストレージ容量やSNSへのアップロード速度に影響しますが、画質を大きく落とす恐れがあります。</li>
+          <ul>
+            <li>例えばビットレートを下げるとファイルサイズが減少しますが、極端に下げると画質が低下します。</li>
+          </ul>
+        <li>動画の用途に応じて、バランスを考えましょう。</li>
+       </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item9707" data-item-id="9707" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">ビットレートとは</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">ビットレートとは、動画や音声の1秒間あたりに使われるデータの量</span>を指します。</li>
+            <li>単位は<span class="decoration-02">bps</span>（bits per second）で表されます。</li>
+              	<ul>
+                  <li>ビットレートが高いと、より多くのデータが含まれるため、映像や音声の品質が向上しますが、ファイルサイズも大きくなります。</li>
+                  <li>逆に、ビットレートが低いと、ファイルサイズは小さくなりますが、画質や音質が劣化する可能性があります。</li>
+                </ul>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item9708" data-item-id="9708" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">コーデックとは</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">コーデック（Codec）とは、動画や音声データを圧縮して保存・送信し、再生時に元の状態に戻すための技術やソフトウェア</span>のことです。</li>
+          		<ul>
+                  <li>例えば、撮影した動画はそのままだとファイルサイズが大きく扱いにくいため、コーデックを使って圧縮（エンコード）し、保存や共有を容易にします。</li>
+           		</ul>
+            <li><span class="decoration-02">SNS等では「H.264」が一般的です。</span></li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item9703" data-item-id="9703" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">ビットレートの調整</span><br>
+ &nbsp; &nbsp;・ エクスポート画面で「<span class="decoration-01"><span class="decoration-02">ビットレート</span></span>」から最適なビットレートを選択し、目的に合った数値に調整します。<br>
+ &nbsp; &nbsp;・ デフォルトは「<span class="decoration-01"><span class="decoration-02">おすすめ</span></span>」を選びます。</div></div>
+        
+        <div class="article-item item_html " id="item38517" data-item-id="38517" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter6/bitrate.png" class="lightbox">
+  <img src="../../_assets/96257724a6.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item9702" data-item-id="9702" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">コーデックを選択</span><br>
+ &nbsp; &nbsp;・ 「<span class="decoration-01"><span class="decoration-02">コーデック</span></span>」をクリックし、リストから使用したいコーデックを選びます（H.264がデフォルトの場合が多い）。<br>
+ &nbsp; &nbsp;・ まずはH.264を使用し、ファイルサイズや画質の確認後、必要に応じてコーデックを変更してください。</div></div>
+        
+        <div class="article-item item_html " id="item38518" data-item-id="38518" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter6/codec.png" class="lightbox">
+  <img src="../../_assets/91a3fa5cae.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_heading " id="item9677" data-item-id="9677" data-item-type="ItemHeading"><h2 class="item-body" id="heading8">【6-2】フォーマットの選択</h2></div>
+        
+        <div class="article-item item_markdown " id="item39892" data-item-id="39892" data-item-type="ItemMarkdown"><h4 id="heading9">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item9699" data-item-id="9699" data-item-type="ItemText"><div class="item-body-hbr">動画フォーマットによって、再生互換性や画質、ファイルサイズが変わります。<br><br>各プラットフォームに適したフォーマットを選ぶことで、視聴体験をより良いものにできます。</div></div>
+        
+        <div class="article-item item_markdown " id="item9681" data-item-id="9681" data-item-type="ItemMarkdown"><h3 id="heading10">各プラットフォームに適したフォーマット</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9700" data-item-id="9700" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>MP4は一般的なフォーマットで、ほとんどのデバイスやプラットフォームに対応しています。</li>
+            <li>YouTubeではフルHD(1080p)/30fps、TikTokでは720p以上/30fpsが一般的に推奨されます。」</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item9701" data-item-id="9701" data-item-type="ItemMarkdown"><h4 id="heading11">操作手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item9695" data-item-id="9695" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">フォーマットを選ぶ</span><br>
+ &nbsp; &nbsp;・ エクスポート画面の「<span class="decoration-01"><span class="decoration-02">フォーマット</span></span>」オプションから、目的に応じた形式を選びます。<br>
+ &nbsp; &nbsp; &nbsp; &nbsp;┗ 自身が使用するプラットフォームの推奨エクスポート設定を再確認し、それに合わせて選ぶことが重要です。</div></div>
+        
+        <div class="article-item item_html " id="item38519" data-item-id="38519" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter6/fomat.png" class="lightbox">
+  <img src="../../_assets/7632b24732.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item9694" data-item-id="9694" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">エクスポートを実行</span><br>
+ &nbsp; &nbsp;・ 「<span class="decoration-01"><span class="decoration-02">フォルダ</span></span>」アイコンをクリックし、保存先を決めてエクスポートします。</div></div>
+        
+        <div class="article-item item_html " id="item38520" data-item-id="38520" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter6/hozonsaki.png" class="lightbox">
+  <img src="../../_assets/3e97fa9355.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_html " id="item38521" data-item-id="38521" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter6/export_.png" class="lightbox">
+  <img src="../../_assets/8625726cbf.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_markdown " id="item9682" data-item-id="9682" data-item-type="ItemMarkdown"><h3 id="heading12">エクスポート後のチェック</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9690" data-item-id="9690" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>エクスポート後は、必ず動画を再生して、音声や画質に問題がないか確認します。</li>
+            <li>特に音ズレや画面の乱れがないか、細部までチェックしましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item9691" data-item-id="9691" data-item-type="ItemMarkdown"><h4 id="heading13">操作手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item9692" data-item-id="9692" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">再生して確認</span><br>
+ &nbsp; &nbsp;・ エクスポートされた動画をデバイス上で再生し、画質や音声に異常がないか確認します。<br>
+ &nbsp; &nbsp;・ スマホやPCの複数のデバイスで再生してみて、互換性や画質に問題がないかをチェックします。</div></div>
+        
+        <div class="article-item item_html " id="item38522" data-item-id="38522" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter6/export_process.png" class="lightbox">
+  <img src="../../_assets/cc329480b5.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_heading " id="item9678" data-item-id="9678" data-item-type="ItemHeading"><h2 class="item-body" id="heading14">【6-3】SNSへのシェア方法</h2></div>
+        
+        <div class="article-item item_markdown " id="item39893" data-item-id="39893" data-item-type="ItemMarkdown"><h4 id="heading15">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item9684" data-item-id="9684" data-item-type="ItemText"><div class="item-body-hbr">動画を完成させたら、次はSNSでの共有です。<br><br>CapCutは複数のプラットフォームに直接シェアする機能を備えているため、迅速に動画を投稿できます。</div></div>
+        
+        <div class="article-item item_markdown " id="item9683" data-item-id="9683" data-item-type="ItemMarkdown"><h3 id="heading16">直接SNSにアップロード</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9685" data-item-id="9685" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>CapCutから直接YouTubeやTikTokに動画をアップロードできます。</li>
+            <li>これにより、編集した動画をすぐにシェアでき、時間を節約できます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item9686" data-item-id="9686" data-item-type="ItemMarkdown"><h4 id="heading17">操作手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item9687" data-item-id="9687" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">SNS媒体を選ぶ</span><br>
+ &nbsp; &nbsp;・エクスポート設定画面で、投稿したいSNS（YouTubeやTikTok）を選択し、アカウントを連携させます。<br>
+　 ・その後、同じ画面でタイトルやキャプション、公開範囲などを設定できます。<br>
+2. <span class="decoration-01">タイトルやタグの設定</span><br>
+ &nbsp; ・ 動画をSNSにアップロードする際、エクスポート画面で<span class="decoration-02"><span class="decoration-01">タイトルやキャプション、</span></span><span class="decoration-01"><span class="decoration-02">公開範囲、コメントの許可</span></span>などを選択します。</div></div>
+        
+        <div class="article-item item_html " id="item38523" data-item-id="38523" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter6/share.png" class="lightbox">
+  <img src="../../_assets/262d439c7d.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_html " id="item9689" data-item-id="9689" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">設定の方法とその内容</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">SNS媒体での設定</span></li>
+         	  <ul>
+            	<li>動画のエクスポートとシェアオプションの選択が完了すると、選択したSNSの投稿画面が開きます。</li>
+              </ul>
+            <li><span class="decoration-02">タイトルやキャプションの入力</span></li>
+         	  <ul>
+            	<li>各SNSの投稿画面で、動画のタイトルやキャプションを入力します。</li>
+                <li>視聴者に動画の内容を伝える重要な要素です。</li>
+              </ul>
+            <li><span class="decoration-02">タグの設定</span></li>
+         	  <ul>
+            	<li>関連するハッシュタグを追加することで、動画の発見性を高められます。</li>
+              </ul>  
+            <li><span class="decoration-02">公開範囲やコメントの許可設定</span></li>
+         	  <ul>
+            	<li>各SNSの設定で、動画の公開範囲（公開、限定公開、非公開）やコメントの許可・禁止を選択できます。</li>
+                <li>これらの設定は、視聴者との関わり方を決定する重要な要素です。</li>
+              </ul>          
+        </ul>   
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item25907" data-item-id="25907" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/QJ6ap" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/oSk6u" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">CapCut｜6章 動画のエクスポート</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:40分</a></li><li><a href="#heading2" class="tocLink"></a></li></ul></li><li><a href="#heading3" class="tocLink">【6-1】エクスポートについて</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間:20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">解像度とフレームレートの選択</a><ul><li><a href="#heading6" class="tocLink">操作手順</a></li></ul></li><li><a href="#heading7" class="tocLink">ファイルサイズの最適化</a></li></ul></li><li><a href="#heading8" class="tocLink">【6-2】フォーマットの選択</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading10" class="tocLink">各プラットフォームに適したフォーマット</a><ul><li><a href="#heading11" class="tocLink">操作手順</a></li></ul></li><li><a href="#heading12" class="tocLink">エクスポート後のチェック</a><ul><li><a href="#heading13" class="tocLink">操作手順</a></li></ul></li></ul></li><li><a href="#heading14" class="tocLink">【6-3】SNSへのシェア方法</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading16" class="tocLink">直接SNSにアップロード</a><ul><li><a href="#heading17" class="tocLink">操作手順</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/movie-editing/QJ6ap" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/oSk6u" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/movie-editing/Z78ze -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>サムネイル制作入門 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/movie-editing/Z78ze">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="サムネイル制作入門 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/823/medium/524a7f39-330b-4239-86bc-45e9544c636f.png?1749026838">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="サムネイル制作入門">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/movie-editing/Z78ze">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/823/large/524a7f39-330b-4239-86bc-45e9544c636f.png?1749026838">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="cowm4nr2Ng9GxWBBs4metlpCnVZHYFX9bxtjg0mA_x6dWwtB3sawKpuslhSQKPJ81usI1_a9Gb-_u10te-7ewg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>動画編集</div>
+
+          <div class="fw-bold h2">サムネイル制作入門</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">はじめに</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:3時間</a></li><li><a href="#heading2" class="tocLink"></a></li><li><a href="#heading3" class="tocLink"></a></li><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li></ul></li><li><a href="#heading9" class="tocLink">【1-1】サムネイルの基本要素と重要性</a><ul><li><a href="#heading10" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading11" class="tocLink">サムネイルの役割</a><ul><li><a href="#heading12" class="tocLink"></a></li></ul></li><li><a href="#heading13" class="tocLink">クリック率に影響を与える要素</a><ul><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">サムネイルのサイズと形式</a><ul><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li></ul></li><li><a href="#heading24" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading25" class="tocLink">【1-2】効果的な画像加工テクニック</a><ul><li><a href="#heading26" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading27" class="tocLink">注目を集める配色とコントラスト</a><ul><li><a href="#heading28" class="tocLink">色の対比効果</a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink">YouTubeで効果的な色の組み合わせ</a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink"></a></li><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li></ul></li><li><a href="#heading37" class="tocLink">画像の強調と切り抜き</a><ul><li><a href="#heading38" class="tocLink">効果的な切り抜きテクニック</a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink"></a></li><li><a href="#heading42" class="tocLink">画像強調のテクニック</a></li><li><a href="#heading43" class="tocLink"></a></li><li><a href="#heading44" class="tocLink"></a></li></ul></li><li><a href="#heading45" class="tocLink">Canvaでの画像加工基本テクニック</a><ul><li><a href="#heading46" class="tocLink"></a></li><li><a href="#heading47" class="tocLink"></a></li><li><a href="#heading48" class="tocLink"></a></li><li><a href="#heading49" class="tocLink"></a></li><li><a href="#heading50" class="tocLink"></a></li><li><a href="#heading51" class="tocLink"></a></li><li><a href="#heading52" class="tocLink"></a></li><li><a href="#heading53" class="tocLink"></a></li><li><a href="#heading54" class="tocLink"></a></li><li><a href="#heading55" class="tocLink"></a></li></ul></li><li><a href="#heading56" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading57" class="tocLink">【1-3】サムネイルに効く文字とレイアウト</a><ul><li><a href="#heading58" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading59" class="tocLink">読みやすいフォントの選び方</a><ul><li><a href="#heading60" class="tocLink">サムネイルに適したフォントの特徴</a></li><li><a href="#heading61" class="tocLink"></a></li><li><a href="#heading62" class="tocLink"></a></li><li><a href="#heading63" class="tocLink">日本語サムネイルでのフォント選択ポイント</a></li><li><a href="#heading64" class="tocLink"></a></li><li><a href="#heading65" class="tocLink"></a></li><li><a href="#heading66" class="tocLink">Canvaでのおすすめフォント</a></li><li><a href="#heading67" class="tocLink"></a></li><li><a href="#heading68" class="tocLink"></a></li><li><a href="#heading69" class="tocLink"></a></li><li><a href="#heading70" class="tocLink"></a></li></ul></li><li><a href="#heading71" class="tocLink">文字の配置の基本</a><ul><li><a href="#heading72" class="tocLink">文字配置の黄金ルール</a></li><li><a href="#heading73" class="tocLink"></a></li><li><a href="#heading74" class="tocLink">テキストの視認性向上テクニック</a></li><li><a href="#heading75" class="tocLink"></a></li><li><a href="#heading76" class="tocLink"></a></li><li><a href="#heading77" class="tocLink"></a></li><li><a href="#heading78" class="tocLink"></a></li><li><a href="#heading79" class="tocLink"></a></li><li><a href="#heading80" class="tocLink"></a></li><li><a href="#heading81" class="tocLink">Canvaでのテキスト配置手順</a></li><li><a href="#heading82" class="tocLink"></a></li><li><a href="#heading83" class="tocLink"></a></li><li><a href="#heading84" class="tocLink"></a></li></ul></li><li><a href="#heading85" class="tocLink">レイアウトの基本パターン</a><ul><li><a href="#heading86" class="tocLink">定番レイアウトパターン</a></li><li><a href="#heading87" class="tocLink"></a></li><li><a href="#heading88" class="tocLink"></a></li><li><a href="#heading89" class="tocLink"></a></li><li><a href="#heading90" class="tocLink"></a></li><li><a href="#heading91" class="tocLink">ジャンル別おすすめレイアウト</a></li><li><a href="#heading92" class="tocLink"></a></li><li><a href="#heading93" class="tocLink"></a></li><li><a href="#heading94" class="tocLink"></a></li></ul></li><li><a href="#heading95" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading96" class="tocLink">【1-4】-演習課題- サムネイル制作実践</a><ul><li><a href="#heading97" class="tocLink">目安の学習時間：2時間</a></li></ul><ul><li><a href="#heading98" class="tocLink">ハウツー系動画サムネイル制作課題</a><ul><li><a href="#heading99" class="tocLink"></a></li><li><a href="#heading100" class="tocLink">作業手順</a></li><li><a href="#heading101" class="tocLink"></a></li><li><a href="#heading102" class="tocLink"></a></li><li><a href="#heading103" class="tocLink"></a></li><li><a href="#heading104" class="tocLink"></a></li><li><a href="#heading105" class="tocLink"></a></li><li><a href="#heading106" class="tocLink"></a></li><li><a href="#heading107" class="tocLink"></a></li></ul></li><li><a href="#heading108" class="tocLink"> IT・ビジネス系動画サムネイル制作課題</a><ul><li><a href="#heading109" class="tocLink"></a></li><li><a href="#heading110" class="tocLink">作業手順</a></li><li><a href="#heading111" class="tocLink"></a></li><li><a href="#heading112" class="tocLink"></a></li><li><a href="#heading113" class="tocLink"></a></li><li><a href="#heading114" class="tocLink"></a></li><li><a href="#heading115" class="tocLink"></a></li></ul></li><li><a href="#heading116" class="tocLink">商品紹介系動画サムネイル制作課題</a><ul><li><a href="#heading117" class="tocLink"></a></li><li><a href="#heading118" class="tocLink">作業手順</a></li><li><a href="#heading119" class="tocLink"></a></li><li><a href="#heading120" class="tocLink"></a></li><li><a href="#heading121" class="tocLink"></a></li><li><a href="#heading122" class="tocLink"></a></li><li><a href="#heading123" class="tocLink"></a></li></ul></li><li><a href="#heading124" class="tocLink">作成したサムネイルの評価と改善点の検討</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item19821" data-item-id="19821" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item39910" data-item-id="39910" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:3時間</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item19822" data-item-id="19822" data-item-type="ItemRichText"><div class="item-body-hbr">この教材ではサムネイル制作の基礎から実践まで学び、YouTube動画用の魅力的なサムネイルを作れるようになることを目指します。<br>
+<br>
+<span class="decoration-02">サムネイル制作は単なる「表紙作り」ではなく、視聴者を惹きつける「広告」としての役割を担っています。<br>
+</span><br>
+良質なサムネイルは動画のクリック率を大幅に向上させ、チャンネルの成長に直結するため、YouTube編集だけではなくサムネイル制作も学ぶことで単価が上がり、市場価値も上げることができます。</div></div>
+        
+        <div class="article-item item_image " id="item19823" data-item-id="19823" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/823/medium/524a7f39-330b-4239-86bc-45e9544c636f.png?1749026838" title=""><img class="img-responsive item-image" alt=" (19823)" data-reference="" src="../../_assets/7c21aecc7f.webp" width="640" height="360"></a><h4 id="heading2"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19865" data-item-id="19865" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://www.youtube.com/watch?v=qUHuerVjQJ0" class="default-link" rel="nofollow">https://www.youtube.com/watch?v=qUHuerVjQJ0</a></div></div>
+        
+        <div class="article-item item_text " id="item19824" data-item-id="19824" data-item-type="ItemText"><div class="item-body-hbr">一般的なサムネイル制作の基本的なワークフローは以下の通りです。</div></div>
+        
+        <div class="article-item item_text " id="item19825" data-item-id="19825" data-item-type="ItemText"><div class="item-body-hbr">1.動画の内容とターゲット視聴者の分析</div></div>
+        
+        <div class="article-item item_image " id="item19826" data-item-id="19826" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/826/medium/620ceec6-d383-4bdb-a60b-5253a469405c.png?1749026921" title=""><img class="img-responsive item-image" alt=" (19826)" data-reference="" src="../../_assets/8b497a4f65.webp" width="640" height="360"></a><h4 id="heading3"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19827" data-item-id="19827" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item19828" data-item-id="19828" data-item-type="ItemText"><div class="item-body-hbr">2.魅力的な画像素材の選定・用意</div></div>
+        
+        <div class="article-item item_image " id="item19829" data-item-id="19829" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/829/medium/311c519d-497f-416f-8012-1df38c24bee9.png?1749026976" title=""><img class="img-responsive item-image" alt=" (19829)" data-reference="" src="../../_assets/c3ff962deb.webp" width="640" height="360"></a><h4 id="heading4"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19830" data-item-id="19830" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item19831" data-item-id="19831" data-item-type="ItemText"><div class="item-body-hbr">3.基本的な画像加工（明るさ調整、トリミングなど）</div></div>
+        
+        <div class="article-item item_image " id="item19832" data-item-id="19832" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/832/medium/a1f5db6a-4188-4a61-9906-cfadc8c23956.png?1749027008" title=""><img class="img-responsive item-image" alt=" (19832)" data-reference="" src="../../_assets/454e7cab55.webp" width="640" height="360"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19833" data-item-id="19833" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item19834" data-item-id="19834" data-item-type="ItemText"><div class="item-body-hbr">4.テキスト・グラフィック要素の追加</div></div>
+        
+        <div class="article-item item_image " id="item19835" data-item-id="19835" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/835/medium/51a94c72-e1ae-4b0b-8db8-b543fed62934.png?1749027057" title=""><img class="img-responsive item-image" alt=" (19835)" data-reference="" src="../../_assets/288ca0bcaa.webp" width="640" height="359"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19836" data-item-id="19836" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item19837" data-item-id="19837" data-item-type="ItemText"><div class="item-body-hbr">5.全体のバランス調整と最終確認</div></div>
+        
+        <div class="article-item item_image " id="item19838" data-item-id="19838" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/838/medium/9de0c012-5014-4e68-949a-5a6205dd16e3.png?1749027111" title=""><img class="img-responsive item-image" alt=" (19838)" data-reference="" src="../../_assets/88c8daf4a5.webp" width="640" height="360"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_text " id="item19839" data-item-id="19839" data-item-type="ItemText"><div class="item-body-hbr">6.適切なサイズ・形式での書き出し</div></div>
+        
+        <div class="article-item item_image " id="item19840" data-item-id="19840" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/840/medium/6c82a104-d5d1-430f-aa69-5414454f1a5b.png?1749027153" title=""><img class="img-responsive item-image" alt=" (19840)" data-reference="" src="../../_assets/69dd52c15d.webp" width="640" height="360"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item19841" data-item-id="19841" data-item-type="ItemHeading"><h2 class="item-body" id="heading9">【1-1】サムネイルの基本要素と重要性</h2></div>
+        
+        <div class="article-item item_markdown " id="item19842" data-item-id="19842" data-item-type="ItemMarkdown"><h4 id="heading10">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item23231" data-item-id="23231" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">サムネイルの役割</h3></div>
+        
+        <div class="article-item item_rich_text " id="item19844" data-item-id="19844" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">サムネイルは動画の「顔」</span>です。<br>
+YouTube上で視聴者が最初に目にするのはサムネイルと動画タイトルであり、<span class="decoration-02">クリックの判断を左右する重要な要素</span>となります。<br>
+実際に、同じ動画でもサムネイルを変更するだけでクリック率が2倍以上向上した事例も数多く存在します。<br>
+サムネイルはクリックするかどうかを決める重要な要素なので、<span class="decoration-02">サムネイルの質がチャンネルの成長スピードに直結する</span>と言っても過言ではありません。</div></div>
+        
+        <div class="article-item item_image " id="item19845" data-item-id="19845" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/845/medium/c6ea2363-c045-4815-ad91-56eca62f5e7e.png?1749027348" title=""><img class="img-responsive item-image" alt=" (19845)" data-reference="" src="../../_assets/ce88cd6307.webp" width="640" height="360"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19866" data-item-id="19866" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://www.youtube.com/watch?v=FsCW3YXVdgo" class="default-link" rel="nofollow">https://www.youtube.com/watch?v=FsCW3YXVdgo</a></div></div>
+        
+        <div class="article-item item_html " id="item19846" data-item-id="19846" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+      <div class="title"><span class="decoration-01">サムネイルの主な役割</span></div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li>1. <b>視聴者の注目を集める</b><br>
+    
+    膨大な動画の中から、あなたの動画に目を留めてもらうための「アイキャッチ」として機能します。<br>
+    
+2.<b> 動画の内容を端的に伝える</b><br>
+    
+    視聴者が求めている内容であることを一目で伝え、「この動画は自分が探していたものだ」と認識してもらいます。<br>
+    
+3.<b>ブランディングを確立する</b><br>
+    
+    一貫したデザインやカラースキームを使用することで、チャンネルの認知度とブランド価値を高めます。<br></li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item23230" data-item-id="23230" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">クリック率に影響を与える要素</h3></div>
+        
+        <div class="article-item item_text " id="item19848" data-item-id="19848" data-item-type="ItemText"><div class="item-body-hbr">クリック率を高めるサムネイルには、以下の要素が効果的に組み込まれています。<br><br>これらの要素をバランスよく取り入れることで、クリック率の高いサムネイルを作成できます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item19849" data-item-id="19849" data-item-type="ItemRichText"><div class="item-body-hbr">1.<span class="decoration-01">強いコントラスト</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item19850" data-item-id="19850" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">背景と前景（テキストや主要オブジェクト）の色のコントラストが強い</span>と、視認性が高まります。<br>
+例えば、暗い背景に明るい色のテキスト、または逆の組み合わせが効果的です。</div></div>
+        
+        <div class="article-item item_image " id="item19851" data-item-id="19851" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/851/medium/13cbc69a-b959-4eab-9976-ec9f062e86f1.png?1749027843" title=""><img class="img-responsive item-image" alt=" (19851)" data-reference="" src="../../_assets/a2f08ae47c.webp" width="640" height="360"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19867" data-item-id="19867" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/eXSL6_oTmEk" class="default-link" rel="nofollow">https://youtu.be/eXSL6_oTmEk</a></div></div>
+        
+        <div class="article-item item_html " id="item19852" data-item-id="19852" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19853" data-item-id="19853" data-item-type="ItemRichText"><div class="item-body-hbr">2.<span class="decoration-01">シンプルさ</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item19854" data-item-id="19854" data-item-type="ItemRichText"><div class="item-body-hbr">情報過多のサムネイルは視聴者の理解を妨げます。<br>
+<span class="decoration-02">1つの画像に1つの主要メッセージ</span>を心がけましょう。</div></div>
+        
+        <div class="article-item item_image " id="item19855" data-item-id="19855" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/855/medium/41c0440a-0ec0-4dd7-ba02-7dbb63a232ad.png?1749027918" title=""><img class="img-responsive item-image" alt=" (19855)" data-reference="" src="../../_assets/247acc8056.webp" width="640" height="360"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19868" data-item-id="19868" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://www.youtube.com/watch?v=IIeHblbJ_Lo" class="default-link" rel="nofollow">https://www.youtube.com/watch?v=IIeHblbJ_Lo</a></div></div>
+        
+        <div class="article-item item_html " id="item19856" data-item-id="19856" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19857" data-item-id="19857" data-item-type="ItemRichText"><div class="item-body-hbr">3.<span class="decoration-01">感情を引き出す表情や画像</span>​</div></div>
+        
+        <div class="article-item item_text " id="item19858" data-item-id="19858" data-item-type="ItemText"><div class="item-body-hbr">驚き、喜び、興味などの感情を表す表情や状況の画像は、視聴者の好奇心を刺激します。</div></div>
+        
+        <div class="article-item item_image " id="item19859" data-item-id="19859" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/859/medium/a8c0e4a4-f839-4408-80bc-8490d3031aa4.png?1749027987" title=""><img class="img-responsive item-image" alt=" (19859)" data-reference="" src="../../_assets/999f427c01.webp" width="640" height="360"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19869" data-item-id="19869" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://www.youtube.com/watch?v=WCu8U3Ylvw4" class="default-link" rel="nofollow">https://www.youtube.com/watch?v=WCu8U3Ylvw4</a></div></div>
+        
+        <div class="article-item item_html " id="item19860" data-item-id="19860" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19861" data-item-id="19861" data-item-type="ItemRichText"><div class="item-body-hbr">4.<span class="decoration-01">明確なテキスト</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item19862" data-item-id="19862" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">短く、読みやすいテキストが効果的</span>です。<br>
+3〜5単語程度に抑え、フォントサイズを大きくすることで視認性が向上します。</div></div>
+        
+        <div class="article-item item_image " id="item19863" data-item-id="19863" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/863/medium/dcc19d2a-14fe-4856-8a6d-872bdcc5bb13.png?1749028077" title=""><img class="img-responsive item-image" alt=" (19863)" data-reference="" src="../../_assets/27e24e4642.webp" width="640" height="360"></a><h4 id="heading17"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19870" data-item-id="19870" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/v3vO2YJQrU8" class="default-link" rel="nofollow">https://youtu.be/v3vO2YJQrU8</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item19871" data-item-id="19871" data-item-type="ItemRichText"><div class="item-body-hbr">5.<span class="decoration-01">色の心理的効果</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item19872" data-item-id="19872" data-item-type="ItemRichText"><div class="item-body-hbr">赤色は緊急性や興奮を、青色は信頼や落ち着きを表すなど、<span class="decoration-02">色には心理的効果があります。</span><br>
+目的に合わせた色選びが重要です。</div></div>
+        
+        <div class="article-item item_image " id="item19873" data-item-id="19873" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/873/medium/7b709000-4503-4d2f-b599-23a95270dfc9.png?1749028603"><img class="img-responsive item-image" alt=" (19873)" src="../../_assets/a47c452fc2.webp" width="640" height="360"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19875" data-item-id="19875" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/mbryoBmWRGc" class="default-link" rel="nofollow">https://youtu.be/mbryoBmWRGc</a></div></div>
+        
+        <div class="article-item item_html " id="item19880" data-item-id="19880" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">モバイル表示の考慮</div>
+    </div>
+    <div class="content-area">
+        <ul>
+          YouTubeの視聴の約70%はモバイルデバイスからです。<br>
+小さな画面でも認識できるよう以下のようなデザインを心がけましょう。<br>
+            <li>文字は大きめに</li>
+ <li>複雑な背景は避ける</li>
+ <li>シンプルで明確なビジュアル要素を使用する</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item23232" data-item-id="23232" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">サムネイルのサイズと形式</h3></div>
+        
+        <div class="article-item item_text " id="item19878" data-item-id="19878" data-item-type="ItemText"><div class="item-body-hbr">YouTubeサムネイルの適切なサイズと形式を理解することは、プロフェッショナルなサムネイル制作の基本です。</div></div>
+        
+        <div class="article-item item_html " id="item19879" data-item-id="19879" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">タイトル</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>幅：1280ピクセル</li>
+<li>高さ：720ピクセル</li>
+<li>アスペクト比：16:9</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19881" data-item-id="19881" data-item-type="ItemRichText"><div class="item-body-hbr">1.左側にある「デザインを作成」をクリック​</div></div>
+        
+        <div class="article-item item_image " id="item19882" data-item-id="19882" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/882/medium/7ce52b0d-24ab-4189-b3fb-fce4ae1d1111.png?1749029326" title=""><img class="img-responsive item-image" alt=" (19882)" data-reference="" src="../../_assets/6c9ff6c184.webp" width="640" height="360"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19883" data-item-id="19883" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19884" data-item-id="19884" data-item-type="ItemRichText"><div class="item-body-hbr">2.「カスタマイズ」をクリックし「幅：1280」「高さ：720」「単位：px」と入力し「新しいデザイン作成」をクリック<br>
+この解像度（1280×720）はYouTubeが公式に推奨するサイズで、様々なデバイスでの表示に最適化されています。</div></div>
+        
+        <div class="article-item item_image " id="item19885" data-item-id="19885" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/885/medium/87d4f7ee-d954-43d1-b276-82799a41ae81.png?1749029386" title=""><img class="img-responsive item-image" alt=" (19885)" data-reference="" src="../../_assets/f459c99e71.webp" width="640" height="359"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19886" data-item-id="19886" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item19887" data-item-id="19887" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">ファイル形式と容量</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>推奨形式：JPG、PNG、GIF（静止画）</li>
+<li>最大ファイルサイズ：2MB以下（無料版）</li>
+<li>色空間：RGB</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19888" data-item-id="19888" data-item-type="ItemRichText"><div class="item-body-hbr">3.<span class="decoration-01">画面右上</span><span class="decoration-01">にある「共有」をクリックし「ダウンロード」をクリック</span>​​</div></div>
+        
+        <div class="article-item item_image " id="item19889" data-item-id="19889" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/889/medium/81c7b529-08bb-4b16-9a37-6c14134fca78.png?1749029554" title=""><img class="img-responsive item-image" alt=" (19889)" data-reference="" src="../../_assets/dcf9943686.webp" width="640" height="360"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19892" data-item-id="19892" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19890" data-item-id="19890" data-item-type="ItemRichText"><div class="item-body-hbr">4.<span class="decoration-01">「ファイルの種類」から「PNG」「JPEG」「GIF」などを選択し、「ファイルサイズ制限」の項目で最大ファイルサイズを設定できる</span></div></div>
+        
+        <div class="article-item item_image " id="item19891" data-item-id="19891" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/891/medium/a01f5522-132c-44eb-a454-1a83b0fed9c9.png?1749029584" title=""><img class="img-responsive item-image" alt=" (19891)" data-reference="" src="../../_assets/f0ae8a3460.webp" width="640" height="360"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19893" data-item-id="19893" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item23233" data-item-id="23233" data-item-type="ItemHeading"><h3 class="item-body" id="heading24">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item19895" data-item-id="19895" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">確認問題</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <ol><li>サムネイルの主な役割を3つ挙げてください。</li>
+<li>YouTubeサムネイルの推奨サイズは何ピクセルですか？</li>
+<li>クリック率を高めるサムネイルの要素を3つ挙げてください。</li></ol>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item19896" data-item-id="19896" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">解答</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <ol><li>「視聴者の注目を集める」「動画の内容を端的に伝える」「チャンネルのブランディングを確立する」</li>
+<li>1280×720ピクセル</li>
+<li>「強いコントラスト」「シンプルさ」「感情を引き出す表情や画像」「明確なテキスト」「色の心理的効果」など</li>
+        </ol></ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item19897" data-item-id="19897" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">まとめ</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>このセクションではサムネイルの基本的な役割と重要性について学びました。<br>
+			</li><li>次のセクションではこれらの知識を踏まえ、実際にCanvaを使った画像加工テクニックについて学んでいきます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item19898" data-item-id="19898" data-item-type="ItemHeading"><h2 class="item-body" id="heading25">【1-2】効果的な画像加工テクニック</h2></div>
+        
+        <div class="article-item item_markdown " id="item19899" data-item-id="19899" data-item-type="ItemMarkdown"><h4 id="heading26">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item23234" data-item-id="23234" data-item-type="ItemHeading"><h3 class="item-body" id="heading27">注目を集める配色とコントラスト</h3></div>
+        
+        <div class="article-item item_text " id="item19901" data-item-id="19901" data-item-type="ItemText"><div class="item-body-hbr">効果的なサムネイルを作るには、色とコントラストの知識が不可欠です。<br>以下の原則を押さえておきましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item19902" data-item-id="19902" data-item-type="ItemMarkdown"><h4 id="heading28">色の対比効果</h4>
+</div>
+        
+        <div class="article-item item_text " id="item19903" data-item-id="19903" data-item-type="ItemText"><div class="item-body-hbr">色の対比を効果的に使うことで、サムネイルの視認性を大幅に向上させることができます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item19904" data-item-id="19904" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">明暗対比</span>：明るい色と暗い色の組み合わせ</div></div>
+        
+        <div class="article-item item_image " id="item19905" data-item-id="19905" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/905/medium/75a1bd58-409c-4cf5-9864-96e9ca873aa9.png?1749030325" title=""><img class="img-responsive item-image" alt=" (19905)" data-reference="" src="../../_assets/8bb09a90fa.webp" width="640" height="360"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19906" data-item-id="19906" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://www.youtube.com/watch?v=kGufa72JHs4" class="default-link" rel="nofollow">https://www.youtube.com/watch?v=kGufa72JHs4</a></div></div>
+        
+        <div class="article-item item_html " id="item19907" data-item-id="19907" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19908" data-item-id="19908" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">補色対比</span>：色相環で反対側にある青と橙、赤と緑、ピンクと黄緑等の組み合わせで視聴者の目を引きます</div></div>
+        
+        <div class="article-item item_image " id="item19910" data-item-id="19910" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/910/medium/1ff51282-e8ee-42eb-b8f6-4791aea34694.png?1749030446" title=""><img class="img-responsive item-image" alt=" (19910)" data-reference="" src="../../_assets/4f27e541ea.webp" width="640" height="360"></a><h4 id="heading30"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19913" data-item-id="19913" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/9rSxbuknixg" class="default-link" rel="nofollow">https://youtu.be/9rSxbuknixg</a></div></div>
+        
+        <div class="article-item item_html " id="item19911" data-item-id="19911" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19914" data-item-id="19914" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">暖色と寒色</span>：暖色（赤、橙、黄）と寒色（青、紫、緑）の組み合わせで視聴者の目を引きます</div></div>
+        
+        <div class="article-item item_image " id="item19915" data-item-id="19915" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/915/medium/f3b89c6b-e891-465b-a28e-2cc6980b8ee7.png?1749030561" title=""><img class="img-responsive item-image" alt=" (19915)" data-reference="" src="../../_assets/a22f7e5442.webp" width="640" height="360"></a><h4 id="heading31"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19917" data-item-id="19917" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/96cKKLXP5kk" class="default-link" rel="nofollow">https://youtu.be/96cKKLXP5kk</a></div></div>
+        
+        <div class="article-item item_html " id="item19939" data-item-id="19939" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item19918" data-item-id="19918" data-item-type="ItemMarkdown"><h4 id="heading32">YouTubeで効果的な色の組み合わせ</h4>
+</div>
+        
+        <div class="article-item item_text " id="item19919" data-item-id="19919" data-item-type="ItemText"><div class="item-body-hbr">以下はYouTube上でクリック率の高いサムネイルに多く見られる色の組み合わせになります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item19921" data-item-id="19921" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">赤×白</span>：強い注目効果（YouTubeのブランドカラーとも一致）</div></div>
+        
+        <div class="article-item item_image " id="item19922" data-item-id="19922" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/922/medium/c9af509a-8880-4a90-93d7-ea84598b8d40.png?1749030642" title=""><img class="img-responsive item-image" alt=" (19922)" data-reference="" src="../../_assets/83de9479f4.webp" width="640" height="360"></a><h4 id="heading33"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19923" data-item-id="19923" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/6SmLYI8bO90" class="default-link" rel="nofollow">https://youtu.be/6SmLYI8bO90</a></div></div>
+        
+        <div class="article-item item_html " id="item19940" data-item-id="19940" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19925" data-item-id="19925" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">青×橙</span>：落ち着きと活力のバランス</div></div>
+        
+        <div class="article-item item_image " id="item19926" data-item-id="19926" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/926/medium/9588abc5-b80d-443d-bd2e-c41d64ed1e64.png?1749030691" title=""><img class="img-responsive item-image" alt=" (19926)" data-reference="" src="../../_assets/87c8630f0f.webp" width="640" height="360"></a><h4 id="heading34"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19927" data-item-id="19927" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/WGShy0030yo" class="default-link" rel="nofollow">https://youtu.be/WGShy0030yo</a></div></div>
+        
+        <div class="article-item item_html " id="item19941" data-item-id="19941" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19928" data-item-id="19928" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"></span><span class="decoration-01">黒×黄</span>：強烈な対比効果<span class="decoration-02"></span></div></div>
+        
+        <div class="article-item item_image " id="item19929" data-item-id="19929" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/929/medium/daef4908-252a-4695-8bd5-dd43c17e8691.png?1749030771" title=""><img class="img-responsive item-image" alt=" (19929)" data-reference="" src="../../_assets/17ea414dea.webp" width="640" height="360"></a><h4 id="heading35"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19945" data-item-id="19945" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/_011Xye0wYI" class="default-link" rel="nofollow">https://youtu.be/_011Xye0wYI</a></div></div>
+        
+        <div class="article-item item_html " id="item19943" data-item-id="19943" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19930" data-item-id="19930" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">青×白</span>：信頼感と清潔感</div></div>
+        
+        <div class="article-item item_image " id="item19931" data-item-id="19931" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/931/medium/f7d06247-1fd1-4059-89fa-9b645d3bdb17.png?1749030847" title=""><img class="img-responsive item-image" alt=" (19931)" data-reference="" src="../../_assets/4b5481427c.webp" width="640" height="360"></a><h4 id="heading36"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item19933" data-item-id="19933" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/R26hCkfRQIs" class="default-link" rel="nofollow">https://youtu.be/R26hCkfRQIs</a></div></div>
+        
+        <div class="article-item item_html " id="item19944" data-item-id="19944" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item19935" data-item-id="19935" data-item-type="ItemText"><div class="item-body-hbr">画像加工をする際は、常に「この色の組み合わせで視聴者の目を引けるか」を考えながら調整していきましょう。</div></div>
+        
+        <div class="article-item item_html " id="item19936" data-item-id="19936" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">配色テクニック</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>60-30-10ルール：主要色60%、補助色30%、アクセントカラー10%の割合で使用<br>
+  			</li><li>背景色の選択：暗い背景は明るい被写体を引き立て、その逆も同様<br>
+  			</li><li>色数の制限：3〜4色程度に抑えると統一感が出る</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item23235" data-item-id="23235" data-item-type="ItemHeading"><h3 class="item-body" id="heading37">画像の強調と切り抜き</h3></div>
+        
+        <div class="article-item item_text " id="item19947" data-item-id="19947" data-item-type="ItemText"><div class="item-body-hbr">サムネイルに使う画像は、単に挿入するだけでなく、以下のテクニックで効果的に強調することが重要です。</div></div>
+        
+        <div class="article-item item_markdown " id="item19948" data-item-id="19948" data-item-type="ItemMarkdown"><h4 id="heading38">効果的な切り抜きテクニック</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item19949" data-item-id="19949" data-item-type="ItemRichText"><div class="item-body-hbr">1.<span class="decoration-01">主要被写体の分離</span></div></div>
+        
+        <div class="article-item item_text " id="item19950" data-item-id="19950" data-item-type="ItemText"><div class="item-body-hbr">人物や商品などの主要被写体を背景から切り抜くことで、視線を誘導できます。</div></div>
+        
+        <div class="article-item item_image " id="item19952" data-item-id="19952" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/952/medium/427235bc-8ac4-4e64-bad6-103ef9858371.png?1749031161" title=""><img class="img-responsive item-image" alt=" (19952)" data-reference="" src="../../_assets/f2313d427a.webp" width="640" height="423"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19953" data-item-id="19953" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19955" data-item-id="19955" data-item-type="ItemRichText"><div class="item-body-hbr">Canva有料版の「背景削除」機能を使えば、ワンクリックで簡単に切り抜きができます。<br>
+有料版ではない方は「[<a href="https://www.iloveimg.com/ja/remove-background" class="default-link" rel="nofollow">I ♡IMG</a>]」というサイトで背景を切り抜くことが可能です。</div></div>
+        
+        <div class="article-item item_image " id="item19956" data-item-id="19956" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/956/medium/b185aced-9f98-40e2-a3dd-6327802f8ae0.png?1749031252" title=""><img class="img-responsive item-image" alt=" (19956)" data-reference="" src="../../_assets/0d83ec4e73.webp" width="640" height="429"></a><h4 id="heading40"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19957" data-item-id="19957" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19959" data-item-id="19959" data-item-type="ItemRichText"><div class="item-body-hbr">2.<span class="decoration-01">顔や表情の強調</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item19960" data-item-id="19960" data-item-type="ItemRichText"><div class="item-body-hbr">人物の表情（特に驚き・喜び・疑問などの感情が表れたもの）は視聴者の関心を引きます。<br>
+顔のアップや、表情が分かりやすい角度の画像を選びましょう。</div></div>
+        
+        <div class="article-item item_image " id="item19961" data-item-id="19961" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/961/medium/f6f69587-e2cb-49b7-9b50-445b76702cf4.jpg?1749031308" title=""><img class="img-responsive item-image" alt=" (19961)" data-reference="" src="../../_assets/a4ed9a3fb3.webp" width="640" height="427"></a><h4 id="heading41"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item19963" data-item-id="19963" data-item-type="ItemMarkdown"><h4 id="heading42">画像強調のテクニック</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item19964" data-item-id="19964" data-item-type="ItemRichText"><div class="item-body-hbr">1.<span class="decoration-01">シャドウの追加</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item19965" data-item-id="19965" data-item-type="ItemRichText"><div class="item-body-hbr">切り抜いた被写体の下にソフトシャドウを追加すると、浮き出て見えます。<br>
+Canvaでは「編集」＞「エフェクト」＞「ドロップシャドウ」にて簡単にシャドウを追加できます。</div></div>
+        
+        <div class="article-item item_image " id="item19967" data-item-id="19967" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/967/medium/332b7a3d-79cd-440a-aac8-cc830459137d.png?1749031404" title=""><img class="img-responsive item-image" alt=" (19967)" data-reference="" src="../../_assets/40b78146b1.webp" width="530" height="640"></a><h4 id="heading43"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20017" data-item-id="20017" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20016" data-item-id="20016" data-item-type="ItemRichText"><div class="item-body-hbr">2.<span class="decoration-01">エッジ（縁取り）の追加</span><br>
+被写体の周りに細い縁取りを追加すると、背景との境界がくっきりします。<br>
+特に明るい被写体には暗い縁取り、暗い被写体には明るい縁取りが効果的です。</div></div>
+        
+        <div class="article-item item_image " id="item20018" data-item-id="20018" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/018/medium/d76011ba-478a-4226-93db-d6d892e6a974.png?1749032662" title=""><img class="img-responsive item-image" alt=" (20018)" data-reference="" src="../../_assets/adb6eebe30.webp" width="640" height="616"></a><h4 id="heading44"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19969" data-item-id="19969" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item23236" data-item-id="23236" data-item-type="ItemHeading"><h3 class="item-body" id="heading45">Canvaでの画像加工基本テクニック</h3></div>
+        
+        <div class="article-item item_text " id="item19971" data-item-id="19971" data-item-type="ItemText"><div class="item-body-hbr">Canvaを使ったサムネイル向け画像加工の基本ステップを見ていきましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item19979" data-item-id="19979" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">使用素材</span><br>
+<a href="https://www.photo-ac.com/main/detail/32048534&amp;title=%E6%89%8B%E3%81%A7%E3%83%90%E3%83%84%E3%81%AE%E3%83%9D%E3%83%BC%E3%82%BA%E3%82%92%E3%81%97%E3%81%A6%E6%80%92%E3%82%8B%E5%A5%B3%E6%80%A7" class="default-link" rel="nofollow">手でバツのポーズをして怒る女性</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item19981" data-item-id="19981" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">新規サムネイルの作成</span></div></div>
+        
+        <div class="article-item item_text " id="item19982" data-item-id="19982" data-item-type="ItemText"><div class="item-body-hbr">Canvaアプリまたはwebサイトを開く<br>「カスタムサイズを作成」で1280×720ピクセルを指定<br>または「YouTubeサムネイル」テンプレートを選択</div></div>
+        
+        <div class="article-item item_image " id="item19984" data-item-id="19984" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/984/medium/ffe58f3c-8350-4a96-a70b-464ecb8d1f51.png?1749031945" title=""><img class="img-responsive item-image" alt=" (19984)" data-reference="" src="../../_assets/dd25d26799.webp" width="640" height="360"></a><h4 id="heading46"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19985" data-item-id="19985" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19986" data-item-id="19986" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">背景の設定</span><br>
+単色背景：左側のメニューから「素材」→「背景」と検索し背景を選択</div></div>
+        
+        <div class="article-item item_image " id="item19988" data-item-id="19988" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/988/medium/c7391381-af25-470a-ba41-7843fb6bc563.png?1749031999" title=""><img class="img-responsive item-image" alt=" (19988)" data-reference="" src="../../_assets/67eb3ccbe0.webp" width="640" height="359"></a><h4 id="heading47"></h4></div></div>
+        
+        <div class="article-item item_html " id="item19989" data-item-id="19989" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item19990" data-item-id="19990" data-item-type="ItemText"><div class="item-body-hbr">グラデーション背景：左側のメニューから「素材」→「グラデーション」を選択</div></div>
+        
+        <div class="article-item item_image " id="item19993" data-item-id="19993" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/993/medium/9de7b573-295d-4ee3-8aab-785f6dafbbfc.png?1749032065" title=""><img class="img-responsive item-image" alt=" (19993)" data-reference="" src="../../_assets/c371285298.webp" width="640" height="360"></a><h4 id="heading48"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20019" data-item-id="20019" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item19994" data-item-id="19994" data-item-type="ItemText"><div class="item-body-hbr">画像背景：「アップロード」または「写真」から画像を選択</div></div>
+        
+        <div class="article-item item_image " id="item19996" data-item-id="19996" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/019/996/medium/47388cdb-d48b-4a85-8557-f919a05bdeb6.png?1749032089" title=""><img class="img-responsive item-image" alt=" (19996)" data-reference="" src="../../_assets/625936a42b.webp" width="640" height="359"></a><h4 id="heading49"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20020" data-item-id="20020" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item19997" data-item-id="19997" data-item-type="ItemRichText"><div class="item-body-hbr">3. <span class="decoration-01">画像の調整とエフェクト</span></div></div>
+        
+        <div class="article-item item_text " id="item19998" data-item-id="19998" data-item-type="ItemText"><div class="item-body-hbr">明るさ・コントラスト調整<br>画像を選択→「編集」→「調整」→「明るさ」と「コントラスト」を調整<br>コントラストは少し強めに、明るさは内容に合わせて調整</div></div>
+        
+        <div class="article-item item_image " id="item20003" data-item-id="20003" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/003/medium/af11920c-3308-456a-9a31-ce8fc75ab169.png?1749032186" title=""><img class="img-responsive item-image" alt=" (20003)" data-reference="" src="../../_assets/bbc03b52ef.webp" width="640" height="360"></a><h4 id="heading50"></h4></div></div>
+        
+        <div class="article-item item_image " id="item20004" data-item-id="20004" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/004/medium/e9e09b8a-a00e-4225-ac55-ee49613db6a0.png?1749032229" title=""><img class="img-responsive item-image" alt=" (20004)" data-reference="" src="../../_assets/dcdd6e28db.webp" width="640" height="360"></a><h4 id="heading51"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20021" data-item-id="20021" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20001" data-item-id="20001" data-item-type="ItemRichText"><div class="item-body-hbr">背景削除(有料版)<br>
+画像を選択→「効果」→「背景を削除」 人物や商品を背景から切り抜く際に便利</div></div>
+        
+        <div class="article-item item_image " id="item20006" data-item-id="20006" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/006/medium/8981e96f-f62f-4693-8f9c-6caabae20e43.png?1749032296" title=""><img class="img-responsive item-image" alt=" (20006)" data-reference="" src="../../_assets/153148ec8d.webp" width="640" height="360"></a><h4 id="heading52"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20022" data-item-id="20022" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20007" data-item-id="20007" data-item-type="ItemRichText"><div class="item-body-hbr">フィルターの適用<br>
+画像を選択→「編集」→「フィルター」<br>
+「Vivid」の「熱情」で彩度を上げ、「Clarify」はシャープネスを強調</div></div>
+        
+        <div class="article-item item_image " id="item20009" data-item-id="20009" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/009/medium/a6d052a3-37d3-43b1-a45e-982a4adb7a95.png?1749032331" title=""><img class="img-responsive item-image" alt=" (20009)" data-reference="" src="../../_assets/0f60d14896.webp" width="640" height="359"></a><h4 id="heading53"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20023" data-item-id="20023" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20010" data-item-id="20010" data-item-type="ItemText"><div class="item-body-hbr">クロップ（トリミング）<br>画像を選択→「反転」の左横にある項目を選択<br>次に「カスタム」を選択し、不要な部分を削除し、人物を左横に配置</div></div>
+        
+        <div class="article-item item_image " id="item20011" data-item-id="20011" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/011/medium/58fcf33c-cbb8-407e-8e64-f2442f326871.png?1749032367" title=""><img class="img-responsive item-image" alt=" (20011)" data-reference="" src="../../_assets/7464384024.webp" width="640" height="360"></a><h4 id="heading54"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20024" data-item-id="20024" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20013" data-item-id="20013" data-item-type="ItemRichText"><div class="item-body-hbr">4. <span class="decoration-01">重要な調整テクニック</span><br>
+<br>
+画像の前後関係<br>
+重なった画像の順序は、画像を選択し「位置」→「前面へ移動/背面へ移動」で調整<br>
+ &nbsp; &nbsp;<br>
+画像サイズの変更<br>
+画像の隅をドラッグしてサイズ変更<br>
+Shiftキーを押しながらドラッグすると比率を維持できます</div></div>
+        
+        <div class="article-item item_image " id="item20014" data-item-id="20014" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/014/medium/512646ea-6bc2-4934-90a2-547d186ff6d7.png?1749032430" title=""><img class="img-responsive item-image" alt=" (20014)" data-reference="" src="../../_assets/c0ddfa6ed0.webp" width="640" height="359"></a><h4 id="heading55"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20025" data-item-id="20025" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20026" data-item-id="20026" data-item-type="ItemText"><div class="item-body-hbr">これらの基本テクニックをマスターすることで、様々なスタイルのサムネイル画像加工ができるようになります。<br><br>実際に手を動かしながら練習してみましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item23245" data-item-id="23245" data-item-type="ItemHeading"><h3 class="item-body" id="heading56">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item20028" data-item-id="20028" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">確認問題</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <ol><li>サムネイルの配色で最も効果的とされる色の組み合わせの原則を説明してください。</li>
+<li>Canvaで背景から人物を切り抜く機能の名前と使い方を教えてください。</li>
+<li>サムネイルの画像加工で「やりすぎ注意」なのはどのような調整ですか？</li>
+        </ol></ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item20029" data-item-id="20029" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">解答</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <ol><li>強いコントラストを持つ補色の組み合わせが効果的</li>
+<li>「背景削除」機能</li>
+              <li>彩度の大幅な引き上げ</li></ol>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item20030" data-item-id="20030" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">まとめ</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>このセクションでは、効果的なサムネイル制作のための画像加工テクニックについて学びました。<br>
+			</li><li>次のセクションでは、サムネイルに効果的な文字とレイアウトについて学んでいきます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item20031" data-item-id="20031" data-item-type="ItemHeading"><h2 class="item-body" id="heading57">【1-3】サムネイルに効く文字とレイアウト</h2></div>
+        
+        <div class="article-item item_markdown " id="item20032" data-item-id="20032" data-item-type="ItemMarkdown"><h4 id="heading58">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item23237" data-item-id="23237" data-item-type="ItemHeading"><h3 class="item-body" id="heading59">読みやすいフォントの選び方</h3></div>
+        
+        <div class="article-item item_text " id="item20034" data-item-id="20034" data-item-type="ItemText"><div class="item-body-hbr">サムネイルのテキストは一瞬で読めることが重要です。<br>適切なフォント選びがその鍵となります。</div></div>
+        
+        <div class="article-item item_markdown " id="item20035" data-item-id="20035" data-item-type="ItemMarkdown"><h4 id="heading60">サムネイルに適したフォントの特徴</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20036" data-item-id="20036" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">視認性の高さ</span><br>
+太字（ボールド）タイプが基本<br>
+シンプルな字形で複雑な装飾がないもの<br>
+小さくしても読める明確な輪郭を持つもの</div></div>
+        
+        <div class="article-item item_image " id="item20038" data-item-id="20038" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/038/medium/d87cbf8a-ecf9-4dbf-84cf-7cb055d517d7.png?1749033186" title=""><img class="img-responsive item-image" alt=" (20038)" data-reference="" src="../../_assets/27169291fe.webp" width="640" height="360"></a><h4 id="heading61"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item20039" data-item-id="20039" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://www.youtube.com/watch?v=mevWVMH1wxg" class="default-link" rel="nofollow">https://www.youtube.com/watch?v=mevWVMH1wxg</a></div></div>
+        
+        <div class="article-item item_html " id="item20116" data-item-id="20116" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20040" data-item-id="20040" data-item-type="ItemRichText"><div class="item-body-hbr"><span></span>2.<span class="decoration-01">個性とコンセプト一致</span>​<br>
+動画のジャンルやトーンに合ったフォント選び<br>
+ビジネスコンテンツには洗練されたフォント<br>
+エンターテインメントには個性的なフォント</div></div>
+        
+        <div class="article-item item_image " id="item20041" data-item-id="20041" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/041/medium/46d7e807-792c-4f79-bcda-628ba156f727.png?1749033261" title=""><img class="img-responsive item-image" alt=" (20041)" data-reference="" src="../../_assets/ce579c7079.webp" width="640" height="360"></a><h4 id="heading62"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item20042" data-item-id="20042" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/UgU-hyXHclA" class="default-link" rel="nofollow">https://youtu.be/UgU-hyXHclA</a></div></div>
+        
+        <div class="article-item item_markdown " id="item20043" data-item-id="20043" data-item-type="ItemMarkdown"><h4 id="heading63">日本語サムネイルでのフォント選択ポイント</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20046" data-item-id="20046" data-item-type="ItemRichText"><div class="item-body-hbr"><span>1.</span><span class="decoration-01">ゴシック体系が基本</span><br>
+明朝体より太く、視認性が高い<br>
+「M PLUS 1p」「Noto Sans JP」などが適している</div></div>
+        
+        <div class="article-item item_image " id="item20047" data-item-id="20047" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/047/medium/189ba479-cdfc-442d-ab39-a2a93dc01e25.png?1749033334" title=""><img class="img-responsive item-image" alt=" (20047)" data-reference="" src="../../_assets/0c5b49fef5.webp" width="640" height="360"></a><h4 id="heading64"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item20048" data-item-id="20048" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/D98-LDzxoTA" class="default-link" rel="nofollow">https://youtu.be/D98-LDzxoTA</a></div></div>
+        
+        <div class="article-item item_html " id="item20117" data-item-id="20117" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20049" data-item-id="20049" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">文字数の制限</span><br>
+日本語は英語より情報密度が高い<br>
+3〜5文字程度が理想<br>
+長い場合は2行に分けて大きく表示</div></div>
+        
+        <div class="article-item item_image " id="item24038" data-item-id="24038" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/038/medium/d2d94d26-a57e-44a3-84c7-7950b26ade5d.png?1749802727"><img class="img-responsive item-image" alt=" (24038)" src="../../_assets/df02b14eae.webp" width="640" height="360"></a><h4 id="heading65"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item20053" data-item-id="20053" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://youtu.be/sjUZAvr97QY" class="default-link" rel="nofollow">https://youtu.be/sjUZAvr97QY</a></div></div>
+        
+        <div class="article-item item_html " id="item20118" data-item-id="20118" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item20054" data-item-id="20054" data-item-type="ItemMarkdown"><h4 id="heading66">Canvaでのおすすめフォント</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20055" data-item-id="20055" data-item-type="ItemRichText"><div class="item-body-hbr">1.<span class="decoration-01">日本語サムネイル向け</span></div></div>
+        
+        <div class="article-item item_text " id="item20056" data-item-id="20056" data-item-type="ItemText"><div class="item-body-hbr">ヒラギノ角ゴシック(最も使われている)</div></div>
+        
+        <div class="article-item item_image " id="item20057" data-item-id="20057" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/057/medium/8dfd8247-d074-4476-90fe-8d10745275f5.png?1749033477" title=""><img class="img-responsive item-image" alt=" (20057)" data-reference="" src="../../_assets/83df77036e.webp" width="640" height="352"></a><h4 id="heading67"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20119" data-item-id="20119" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20058" data-item-id="20058" data-item-type="ItemText"><div class="item-body-hbr">ラノベPOP(エンタメ系に人気)</div></div>
+        
+        <div class="article-item item_image " id="item20059" data-item-id="20059" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/059/medium/7eaaf9d9-c40b-4b59-bd7f-f191c3f54596.png?1749033502" title=""><img class="img-responsive item-image" alt=" (20059)" data-reference="" src="../../_assets/6b3d7a0901.webp" width="640" height="359"></a><h4 id="heading68"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item20062" data-item-id="20062" data-item-type="ItemRichText"><div class="item-body-hbr">2.<span class="decoration-01">英数字向け</span>​</div></div>
+        
+        <div class="article-item item_text " id="item20063" data-item-id="20063" data-item-type="ItemText"><div class="item-body-hbr">Helvetica(人気の高いフォント)</div></div>
+        
+        <div class="article-item item_image " id="item24039" data-item-id="24039" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/039/medium/427c5f5e-8294-47b3-a9bb-f42f7175a5f6.png?1749803279"><img class="img-responsive item-image" alt=" (24039)" src="../../_assets/428ffc52b2.webp" width="640" height="360"></a><h4 id="heading69"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20120" data-item-id="20120" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20065" data-item-id="20065" data-item-type="ItemText"><div class="item-body-hbr">Arial(人気のフォント)</div></div>
+        
+        <div class="article-item item_image " id="item24040" data-item-id="24040" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/040/medium/9a5c1234-63d1-405d-9211-ffa6ce26d273.png?1749803291" title=""><img class="img-responsive item-image" alt=" (24040)" data-reference="" src="../../_assets/8233a10826.webp" width="640" height="360"></a><h4 id="heading70"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20121" data-item-id="20121" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20067" data-item-id="20067" data-item-type="ItemText"><div class="item-body-hbr">実際のサムネイル制作では、2種類までのフォントに制限し、統一感を持たせることをお勧めします。</div></div>
+        
+        <div class="article-item item_heading " id="item23238" data-item-id="23238" data-item-type="ItemHeading"><h3 class="item-body" id="heading71">文字の配置の基本</h3></div>
+        
+        <div class="article-item item_text " id="item20069" data-item-id="20069" data-item-type="ItemText"><div class="item-body-hbr">サムネイル内のテキスト配置には、視認性と視線誘導を意識した基本原則があります。</div></div>
+        
+        <div class="article-item item_markdown " id="item20070" data-item-id="20070" data-item-type="ItemMarkdown"><h4 id="heading72">文字配置の黄金ルール</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20071" data-item-id="20071" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Z字パターンの活用</span><br>
+私たちの視線は自然にZ字を描いて動く<br>
+左上→右上→左下→右下の順に重要な情報を配置</div></div>
+        
+        <div class="article-item item_image " id="item20072" data-item-id="20072" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/072/medium/f9409479-1607-4ac1-913a-7a106d64c011.png?1749033738" title=""><img class="img-responsive item-image" alt=" (20072)" data-reference="" src="../../_assets/fca5566076.webp" width="640" height="355"></a><h4 id="heading73"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item20073" data-item-id="20073" data-item-type="ItemMarkdown"><h4 id="heading74">テキストの視認性向上テクニック</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20074" data-item-id="20074" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">縁取り（アウトライン）</span><br>
+テキストに反対色の縁取りを追加<br>
+Canvaでは「エフェクト」→「スタイル」→「袋文字」で設定</div></div>
+        
+        <div class="article-item item_image " id="item20075" data-item-id="20075" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/075/medium/1f6d237d-a9d2-4cb3-b2c0-82e05182d30c.png?1749033819" title=""><img class="img-responsive item-image" alt=" (20075)" data-reference="" src="../../_assets/74e49c140d.webp" width="640" height="200"></a><h4 id="heading75"></h4></div></div>
+        
+        <div class="article-item item_text " id="item20076" data-item-id="20076" data-item-type="ItemText"><div class="item-body-hbr">縁取り追加前</div></div>
+        
+        <div class="article-item item_image " id="item20077" data-item-id="20077" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/077/medium/9e1b8499-d99e-47cd-901d-c6629d3dd2f6.png?1749033856" title=""><img class="img-responsive item-image" alt=" (20077)" data-reference="" src="../../_assets/3c7fa47f2a.webp" width="640" height="208"></a><h4 id="heading76"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item20078" data-item-id="20078" data-item-type="ItemRichText"><div class="item-body-hbr">縁取り追加後</div></div>
+        
+        <div class="article-item item_html " id="item20122" data-item-id="20122" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20079" data-item-id="20079" data-item-type="ItemRichText"><div class="item-body-hbr">2.<span class="decoration-01">ドロップシャドウ</span><br>
+テキストに影をつけて背景から浮き上がらせる<br>
+薄い影で十分、濃すぎると読みにくくなる</div></div>
+        
+        <div class="article-item item_image " id="item20123" data-item-id="20123" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/123/medium/bdc97703-ca37-490d-8bcb-44ce245d410d.png?1749035632" title=""><img class="img-responsive item-image" alt=" (20123)" data-reference="" src="../../_assets/91ff2c6405.webp" width="640" height="196"></a><h4 id="heading77"></h4></div></div>
+        
+        <div class="article-item item_text " id="item20124" data-item-id="20124" data-item-type="ItemText"><div class="item-body-hbr">ドロップシャドウ追加前</div></div>
+        
+        <div class="article-item item_image " id="item20125" data-item-id="20125" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/125/medium/6fedd9d4-8a91-4775-872f-e23a8d9fc2a6.png?1749035667" title=""><img class="img-responsive item-image" alt=" (20125)" data-reference="" src="../../_assets/6212a0129e.webp" width="640" height="219"></a><h4 id="heading78"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item20126" data-item-id="20126" data-item-type="ItemRichText"><div class="item-body-hbr">ドロップシャドウ追加後</div></div>
+        
+        <div class="article-item item_rich_text " id="item20080" data-item-id="20080" data-item-type="ItemRichText"><div class="item-body-hbr"><span>3.</span><span class="decoration-01">背景エフェクト</span><br>
+テキスト背後に半透明の色付きシェイプを配置<br>
+明るい画像には暗い背景、暗い画像には明るい背景</div></div>
+        
+        <div class="article-item item_image " id="item20081" data-item-id="20081" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/081/medium/1830dbc9-4180-4cc5-9be8-842deb6bddbc.png?1749033960" title=""><img class="img-responsive item-image" alt=" (20081)" data-reference="" src="../../_assets/dd91c55223.webp" width="640" height="183"></a><h4 id="heading79"></h4></div></div>
+        
+        <div class="article-item item_text " id="item20082" data-item-id="20082" data-item-type="ItemText"><div class="item-body-hbr">背景エフェクト追加前</div></div>
+        
+        <div class="article-item item_image " id="item20083" data-item-id="20083" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/083/medium/65590bbb-c3fc-4989-b81d-fd5b9d2d0d83.png?1749033997" title=""><img class="img-responsive item-image" alt=" (20083)" data-reference="" src="../../_assets/e7d3386575.webp" width="640" height="207"></a><h4 id="heading80"></h4></div></div>
+        
+        <div class="article-item item_text " id="item20084" data-item-id="20084" data-item-type="ItemText"><div class="item-body-hbr">背景エフェクト追加後</div></div>
+        
+        <div class="article-item item_markdown " id="item20085" data-item-id="20085" data-item-type="ItemMarkdown"><h4 id="heading81">Canvaでのテキスト配置手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20086" data-item-id="20086" data-item-type="ItemRichText"><div class="item-body-hbr">1.<span class="decoration-01">テキストボックスの追加</span>：「テキスト」→「見出し」または「本文」を選択</div></div>
+        
+        <div class="article-item item_image " id="item20087" data-item-id="20087" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/087/medium/48b13f0a-6364-4998-bf63-54086f95ac1d.png?1749034052" title=""><img class="img-responsive item-image" alt=" (20087)" data-reference="" src="../../_assets/299c5d3d61.webp" width="640" height="360"></a><h4 id="heading82"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20202" data-item-id="20202" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20088" data-item-id="20088" data-item-type="ItemRichText"><div class="item-body-hbr">2.<span class="decoration-01">テキストの入力と編集</span>：ダブルクリックで編集</div></div>
+        
+        <div class="article-item item_image " id="item20089" data-item-id="20089" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/089/medium/dadce7d6-0eef-48fe-8fe8-85e8c354f8cc.png?1749034088" title=""><img class="img-responsive item-image" alt=" (20089)" data-reference="" src="../../_assets/2a23286e1c.webp" width="640" height="357"></a><h4 id="heading83"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item20090" data-item-id="20090" data-item-type="ItemRichText"><div class="item-body-hbr">3<span class="decoration-01">.フォントとサイズの調整</span>：上部ツールバーで設定<br>
+4<span class="decoration-01">.配置の調整</span>：ドラッグで移動、「位置」ツールで整列</div></div>
+        
+        <div class="article-item item_image " id="item20091" data-item-id="20091" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/091/medium/ef176b34-5926-4f92-ae75-2434e40e7cd3.png?1749034141" title=""><img class="img-responsive item-image" alt=" (20091)" data-reference="" src="../../_assets/48143d42f7.webp" width="640" height="65"></a><h4 id="heading84"></h4></div></div>
+        
+        <div class="article-item item_text " id="item20092" data-item-id="20092" data-item-type="ItemText"><div class="item-body-hbr">文字の配置は見た目だけでなく、視聴者がサムネイルを「読む順序」も意識して設計しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item23239" data-item-id="23239" data-item-type="ItemHeading"><h3 class="item-body" id="heading85">レイアウトの基本パターン</h3></div>
+        
+        <div class="article-item item_text " id="item20094" data-item-id="20094" data-item-type="ItemText"><div class="item-body-hbr">効果的なサムネイルには、よく使われる基本パターンがあります。<br><br>これらのテンプレートを理解すれば、様々なジャンルの動画に対応できます。</div></div>
+        
+        <div class="article-item item_markdown " id="item20095" data-item-id="20095" data-item-type="ItemMarkdown"><h4 id="heading86">定番レイアウトパターン</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20096" data-item-id="20096" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">シンプル分割型</span><br>
+画面を2〜3分割して使用<br>
+左側に画像、右側にテキスト<br>
+または上部にテキスト、下部に画像</div></div>
+        
+        <div class="article-item item_image " id="item20097" data-item-id="20097" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/097/medium/886c6f3f-950c-4acb-9f94-1bda14c84643.png?1749034285" title=""><img class="img-responsive item-image" alt=" (20097)" data-reference="" src="../../_assets/4721319615.webp" width="640" height="358"></a><h4 id="heading87"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20127" data-item-id="20127" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20098" data-item-id="20098" data-item-type="ItemRichText"><div class="item-body-hbr"><span>2.</span><span class="decoration-01">中央フォーカス型</span><br>
+中央に主要被写体（人物・商品など）<br>
+周囲にテキストを配置<br>
+背景はシンプルに抑える</div></div>
+        
+        <div class="article-item item_image " id="item20099" data-item-id="20099" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/099/medium/2c14b2d4-3e3b-4eed-bb89-4c18db4bef20.png?1749034355" title=""><img class="img-responsive item-image" alt=" (20099)" data-reference="" src="../../_assets/8091393fbc.webp" width="640" height="357"></a><h4 id="heading88"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20128" data-item-id="20128" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20100" data-item-id="20100" data-item-type="ItemRichText"><div class="item-body-hbr">3<span class="decoration-01">.ビフォーアフター型</span><br>
+画面を左右に分割<br>
+左に「Before」、右に「After」<br>
+変化や比較を表現するのに最適</div></div>
+        
+        <div class="article-item item_image " id="item20101" data-item-id="20101" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/101/medium/1d1451e7-aff5-4420-86d8-5cf44928eead.png?1749035009" title=""><img class="img-responsive item-image" alt=" (20101)" data-reference="" src="../../_assets/1cc19a218d.webp" width="640" height="354"></a><h4 id="heading89"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20129" data-item-id="20129" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20102" data-item-id="20102" data-item-type="ItemRichText"><div class="item-body-hbr">4.<span class="decoration-01">インパクトテキスト型</span><br>
+画面全体に大きなテキスト<br>
+背景は単色またはぼかした画像<br>
+テキスト自体がビジュアル要素に</div></div>
+        
+        <div class="article-item item_image " id="item20103" data-item-id="20103" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/103/medium/d5b9989d-f100-4609-8f59-297310eeebc4.png?1749035059" title=""><img class="img-responsive item-image" alt=" (20103)" data-reference="" src="../../_assets/891cf2527d.webp" width="640" height="361"></a><h4 id="heading90"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20130" data-item-id="20130" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item20104" data-item-id="20104" data-item-type="ItemMarkdown"><h4 id="heading91">ジャンル別おすすめレイアウト</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20105" data-item-id="20105" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">ハウツー系</span><br>
+数字（ステップ数や個数）を大きく<br>
+「誰でも」「簡単」などの言葉を入れる</div></div>
+        
+        <div class="article-item item_image " id="item20106" data-item-id="20106" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/106/medium/23d13d94-b7ee-4deb-a5b8-3a9c4e7a6d8c.png?1749035129" title=""><img class="img-responsive item-image" alt=" (20106)" data-reference="" src="../../_assets/78404705d1.webp" width="640" height="356"></a><h4 id="heading92"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20131" data-item-id="20131" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20107" data-item-id="20107" data-item-type="ItemRichText"><div class="item-body-hbr"><span>2.</span><span class="decoration-01">製品レビュー</span><br>
+製品の切り抜き画像を中心に<br>
+評価点数や「おすすめ」などのテキスト<br>
+表情豊かな顔を入れる（驚き・満足など）</div></div>
+        
+        <div class="article-item item_image " id="item20108" data-item-id="20108" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/108/medium/2c744612-b57e-43f1-b43f-00d2f0145ea9.png?1749035204" title=""><img class="img-responsive item-image" alt=" (20108)" data-reference="" src="../../_assets/6d7af1172f.webp" width="640" height="357"></a><h4 id="heading93"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item20109" data-item-id="20109" data-item-type="ItemRichText"><div class="item-body-hbr"><span>3.</span><span class="decoration-01">ビジネス・IT系</span><br>
+プロフェッショナルな雰囲気<br>
+ブルーやグレーのカラーパレット<br>
+シンプルでクリーンなデザイン</div></div>
+        
+        <div class="article-item item_html " id="item20132" data-item-id="20132" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item20110" data-item-id="20110" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/110/medium/69dc608f-cc0b-4423-b4ff-b1db5feff334.jpg?1749035251" title=""><img class="img-responsive item-image" alt=" (20110)" data-reference="" src="../../_assets/b62d265ccf.webp" width="640" height="360"></a><h4 id="heading94"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20133" data-item-id="20133" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item20111" data-item-id="20111" data-item-type="ItemText"><div class="item-body-hbr">複雑なサムネイルよりも、これらの基本パターンをマスターして適切に使い分ける方が効果的です。<br><br>自分のチャンネルにいくつかのパターンを決めておくと、一貫性も出ます。</div></div>
+        
+        <div class="article-item item_heading " id="item23240" data-item-id="23240" data-item-type="ItemHeading"><h3 class="item-body" id="heading95">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item20113" data-item-id="20113" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">確認問題</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <ol><li>YouTubeサムネイルの日本語テキストに最適なフォントタイプとその理由を説明してください。</li>
+<li>サムネイル内のテキスト視認性を高めるテクニックを2つ挙げてください。</li>
+<li>ハウツー系動画のサムネイルに効果的な要素は何ですか？</li></ol>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item20114" data-item-id="20114" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">解答</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <ol><li>ゴシック体が最適。ゴシック体は線の太さが均一で視認性が高く、サムネイルのような小さいサイズでも読みやすいから。</li>
+<li>テキストの縁取り（アウトライン）、ドロップシャドウ、半透明の背景シェイプなど</li>
+              <li>数字（ステップ数や個数）の強調。</li></ol>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item20115" data-item-id="20115" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">まとめ</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li>このセクションでは、サムネイルに効果的な文字とレイアウトについて学びました。<br>
+</li><li>次のセクションでは、学んだ知識を実践に移していきましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item20134" data-item-id="20134" data-item-type="ItemHeading"><h2 class="item-body" id="heading96">【1-4】-演習課題- サムネイル制作実践</h2></div>
+        
+        <div class="article-item item_markdown " id="item20135" data-item-id="20135" data-item-type="ItemMarkdown"><h4 id="heading97">目安の学習時間：2時間</h4>
+</div>
+        
+        <div class="article-item item_text " id="item20136" data-item-id="20136" data-item-type="ItemText"><div class="item-body-hbr">ここまで学んだサムネイル制作の基本を実際に活かして、3種類のジャンルでサムネイルを制作していきましょう。<br>実践を通して、効果的なサムネイル制作のコツを体得していきます。</div></div>
+        
+        <div class="article-item item_heading " id="item23241" data-item-id="23241" data-item-type="ItemHeading"><h3 class="item-body" id="heading98">ハウツー系動画サムネイル制作課題</h3></div>
+        
+        <div class="article-item item_text " id="item20138" data-item-id="20138" data-item-type="ItemText"><div class="item-body-hbr">ハウツー系動画は、視聴者に「学びがある」「役立つ情報が得られる」と思ってもらうことが重要です。<br><br>今回は「初心者でも簡単！　Excel関数　3ステップでマスター入門編」というタイトルの動画用サムネイルを制作しましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item20139" data-item-id="20139" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">使用素材</span><span class="decoration-01">（あらかじめダウンロードしよう）</span><br>
+<a href="https://x.gd/VDdss" class="default-link" rel="nofollow">https://x.gd/VDdss</a></div></div>
+        
+        <div class="article-item item_html " id="item20140" data-item-id="20140" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">使用ツール<br></span>
+  Canva
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20141" data-item-id="20141" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">課題見本</span></div></div>
+        
+        <div class="article-item item_image " id="item20142" data-item-id="20142" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/142/medium/803a85b3-6074-41c1-846d-5bb8155fcf78.png?1749036366" title=""><img class="img-responsive item-image" alt=" (20142)" data-reference="" src="../../_assets/39f13a78d2.webp" width="640" height="360"></a><h4 id="heading99"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item20143" data-item-id="20143" data-item-type="ItemMarkdown"><h4 id="heading100">作業手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20144" data-item-id="20144" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">Canvaでの新規作成</span><br>
+Canvaを開き、「YouTubeサムネイル」または「カスタムサイズ（1280×720ピクセル）」を選択する</div></div>
+        
+        <div class="article-item item_image " id="item20145" data-item-id="20145" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/145/medium/c8b36818-a596-42bc-b0fc-0c67a59e0122.png?1749036421" title=""><img class="img-responsive item-image" alt=" (20145)" data-reference="" src="../../_assets/5d0d4a4cb4.webp" width="640" height="349"></a><h4 id="heading101"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20203" data-item-id="20203" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20146" data-item-id="20146" data-item-type="ItemRichText"><div class="item-body-hbr">2<span class="decoration-01">.文字調整</span><br>
+「初心者」「簡単」「！」「Excel関数」「3」「ステップ」「で」「マスター」「入門編」と分けて入力<br>
+「初心者でも簡単！」「ステップ」「で」「マスター」「入門編」はスピーディライトのフォントを使用<br>
+「3」はImpactを使用、「Excel関数」はNoto Sans JPを太字で使用</div></div>
+        
+        <div class="article-item item_image " id="item20147" data-item-id="20147" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/147/medium/fa530724-ee66-4489-a46d-e3f5e1708396.png?1749036472" title=""><img class="img-responsive item-image" alt=" (20147)" data-reference="" src="../../_assets/770e274af6.webp" width="640" height="359"></a><h4 id="heading102"></h4></div></div>
+        
+        <div class="article-item item_html " id="item24042" data-item-id="24042" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20148" data-item-id="20148" data-item-type="ItemRichText"><div class="item-body-hbr">3.<span class="decoration-01">デザイン調整</span><br>
+「初心者」「簡単」「！」「入門編」は赤色を使用<br>
+「3」「ステップ」「で」「マスター」「でも」は青色を使用<br>
+「Excel関数」は白色にし、ドロップシャドウを適用させる</div></div>
+        
+        <div class="article-item item_image " id="item20149" data-item-id="20149" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/149/medium/b99304a8-4fdc-4d68-acc6-2dc664f44c76.png?1749036527"><img class="img-responsive item-image" alt=" (20149)" src="../../_assets/d344f8c47c.webp" width="640" height="365"></a><h4 id="heading103"></h4></div></div>
+        
+        <div class="article-item item_html " id="item24043" data-item-id="24043" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20150" data-item-id="20150" data-item-type="ItemRichText"><div class="item-body-hbr">4.<span class="decoration-01">文字の配置</span><br>
+長方形の青のグラデーションを3つ作成し15~30°傾ける<br>
+「ステップ」「マスター」の文字間が空いているので、画面上部の「スペース」の項目をクリックし「文字間隔」の数値を下げる<br>
+初心者の文字の下に黄色の長方形を配置</div></div>
+        
+        <div class="article-item item_image " id="item24041" data-item-id="24041" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/041/medium/c3eba697-e0cd-42be-8d8c-ce78ea7a62bd.png?1749803685" title=""><img class="img-responsive item-image" alt=" (24041)" data-reference="" src="../../_assets/7b49f59aac.webp" width="640" height="360"></a><h4 id="heading104"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20204" data-item-id="20204" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20151" data-item-id="20151" data-item-type="ItemRichText"><div class="item-body-hbr"><span>5.<span class="decoration-01">人物の配置</span></span><br>
+使用素材でダウンロードした男性をアップロードし背景を切り抜き右側に配置し、人物の色合いを調整する<br>
+目立つ余白をなくすために、各フォントのサイズを大きくし調整する</div></div>
+        
+        <div class="article-item item_image " id="item20152" data-item-id="20152" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/152/medium/867b00fb-0437-4711-82ed-4ec20eb4d1d1.png?1749036637" title=""><img class="img-responsive item-image" alt=" (20152)" data-reference="" src="../../_assets/5ff8b61850.webp" width="640" height="359"></a><h4 id="heading105"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20205" data-item-id="20205" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20153" data-item-id="20153" data-item-type="ItemRichText"><div class="item-body-hbr">6.<span class="decoration-01">最終確認</span><br>
+サムネイルを小さく表示して、遠目でも読めるか確認する<br>
+色のコントラストは十分か、テキストは読みやすいかも合わせて確認</div></div>
+        
+        <div class="article-item item_image " id="item20154" data-item-id="20154" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/154/medium/f6f8c5f7-1f88-478d-8e1f-05f76e787023.png?1749036677" title=""><img class="img-responsive item-image" alt=" (20154)" data-reference="" src="../../_assets/35157cd7f6.webp" width="640" height="360"></a><h4 id="heading106"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20206" data-item-id="20206" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20155" data-item-id="20155" data-item-type="ItemRichText"><div class="item-body-hbr"><span>7.</span><span class="decoration-01">書き出し</span><br>
+画質の劣化を防ぐためにPNG形式で書き出します</div></div>
+        
+        <div class="article-item item_image " id="item20156" data-item-id="20156" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/156/medium/3d7e618a-8fb4-4127-bb14-a836859796f7.png?1749036722" title=""><img class="img-responsive item-image" alt=" (20156)" data-reference="" src="../../_assets/36aaeba8f5.webp" width="640" height="360"></a><h4 id="heading107"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20157" data-item-id="20157" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">制作のポイント</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li>数字「3」は非常に大きく、一目で分かるようにしましょう。<br>
+複雑な背景は避け、メインメッセージを優先しましょう。<br></li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item23242" data-item-id="23242" data-item-type="ItemHeading"><h3 class="item-body" id="heading108"> IT・ビジネス系動画サムネイル制作課題</h3></div>
+        
+        <div class="article-item item_text " id="item20159" data-item-id="20159" data-item-type="ItemText"><div class="item-body-hbr">IT・ビジネス系動画は、専門性と信頼感を伝えることが重要です。<br>「2025年最新！生成AI　今すぐ使えるAI技術で業務効率化 3選」というタイトルの動画用サムネイルを制作しましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item20160" data-item-id="20160" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"></span><span class="decoration-01">使用素材（あらかじめダウンロードしよう）</span><br>
+<a href="https://x.gd/vTL22" class="default-link" rel="nofollow">https://x.gd/vTL22</a>​<br>
+<a href="https://x.gd/oyMo2" class="default-link" rel="nofollow">https://x.gd/oyMo2</a><br>
+<a href="https://x.gd/en1mp" class="default-link" rel="nofollow">https://x.gd/en1mp</a></div></div>
+        
+        <div class="article-item item_html " id="item20161" data-item-id="20161" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">使用ツール<br></span>
+  Canva
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20162" data-item-id="20162" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">課題見本</span></div></div>
+        
+        <div class="article-item item_image " id="item20163" data-item-id="20163" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/163/medium/fe367662-64b2-47cb-b68f-4048eaf8b068.png?1749037018" title=""><img class="img-responsive item-image" alt=" (20163)" data-reference="" src="../../_assets/deb741cad6.webp" width="640" height="360"></a><h4 id="heading109"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item20164" data-item-id="20164" data-item-type="ItemMarkdown"><h4 id="heading110">作業手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20165" data-item-id="20165" data-item-type="ItemRichText"><div class="item-body-hbr">1.<span class="decoration-01">Canvaでの新規作成</span><br>
+新規サムネイル（1280×720ピクセル）を作成します。<br>
+背景は使用素材でダウンロードしたものを使用します。</div></div>
+        
+        <div class="article-item item_image " id="item20166" data-item-id="20166" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/166/medium/587b473d-432a-4856-80da-b234625d2970.png?1749037125"><img class="img-responsive item-image" alt=" (20166)" src="../../_assets/5d0d4a4cb4.webp" width="640" height="349"></a><h4 id="heading111"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20207" data-item-id="20207" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20167" data-item-id="20167" data-item-type="ItemRichText"><div class="item-body-hbr">2.<span class="decoration-01">文字調整</span><br>
+「生成AI」「今すぐ使えるAI技術で」「2025年最新」「業務効率化」「3」「選」と分けて入力<br>
+「3」はImpactを使用、それ以外は全てNoto Sans JPを太字で使用</div></div>
+        
+        <div class="article-item item_image " id="item20168" data-item-id="20168" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/168/medium/9b41f0ef-e17d-484e-bee2-2d44132ea3bb.png?1749037206" title=""><img class="img-responsive item-image" alt=" (20168)" data-reference="" src="../../_assets/5223fe0ec2.webp" width="640" height="361"></a><h4 id="heading112"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20208" data-item-id="20208" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20169" data-item-id="20169" data-item-type="ItemRichText"><div class="item-body-hbr"><span>3.</span><span class="decoration-01">デザイン調整</span><br>
+「生成AI」に対して「エフェクト」にある「ネオン」を適用させ値を24前後にする<br>
+「今すぐ使えるAI技術で」に対して「エフェクト」にある「背景」を適用させ、「スプレッド」の値を13前後、「透明度」の値を100にし、「カラー」は紺にする<br>
+「2025年最新」に対してドロップシャドウを適用させ「オフセット」の値は65、「向き」の値は-60、透明度の値は100にする。<br>
+「業務効率化」に対してはフォントのカラーは水色にする。<br>
+次に「グリッチ加工」を適用させ「オフセット」の値を30。「向き」の値を90にする。<br>
+「3」と「選」も同様にグリッチ加工を適用させる<br>
+使用素材にある人物とロボットのアイコンをダウンロードし配置する</div></div>
+        
+        <div class="article-item item_image " id="item20170" data-item-id="20170" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/170/medium/ff152be0-3abb-4f27-add5-ecc9c68d6ca8.png?1749037317" title=""><img class="img-responsive item-image" alt=" (20170)" data-reference="" src="../../_assets/cd08b79f18.webp" width="640" height="357"></a><h4 id="heading113"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20209" data-item-id="20209" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20172" data-item-id="20172" data-item-type="ItemRichText"><div class="item-body-hbr">4.<span class="decoration-01">最終確認</span><br>
+レイアウトのバランス、文字の可読性、色のコントラストを確認します。<br>
+プロフェッショナルで信頼できる印象か確認しましょう。</div></div>
+        
+        <div class="article-item item_image " id="item20173" data-item-id="20173" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/173/medium/fe2f14e2-1184-49dc-abbc-9776368b42a3.png?1749037439" title=""><img class="img-responsive item-image" alt=" (20173)" data-reference="" src="../../_assets/c142a7b009.webp" width="640" height="360"></a><h4 id="heading114"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20210" data-item-id="20210" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20174" data-item-id="20174" data-item-type="ItemRichText"><div class="item-body-hbr">5．<span class="decoration-01">書き出し</span><br>
+画質の劣化を防ぐためにPNG形式で書き出します。</div></div>
+        
+        <div class="article-item item_image " id="item20175" data-item-id="20175" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/175/medium/80d5f278-1e44-460e-b0d7-cad0b9c76df6.png?1749037490" title=""><img class="img-responsive item-image" alt=" (20175)" data-reference="" src="../../_assets/36aaeba8f5.webp" width="640" height="360"></a><h4 id="heading115"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20176" data-item-id="20176" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">制作のポイント</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li>未来的・ハイテクな印象を与えるデザイン要素を入れましょう。<br>
+テキストにエフェクトやドロップシャドウを使用することで、近未来感を表現することができます。<br></li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item23243" data-item-id="23243" data-item-type="ItemHeading"><h3 class="item-body" id="heading116">商品紹介系動画サムネイル制作課題</h3></div>
+        
+        <div class="article-item item_text " id="item20178" data-item-id="20178" data-item-type="ItemText"><div class="item-body-hbr">商品紹介・レビュー系のサムネイルは、商品の魅力と視聴者の興味を引く感情表現が重要です。<br><br>「超おすすめプロが好む！ 最新ビデオカメラ徹底レビュー」というタイトルの動画用サムネイルを制作しましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item20179" data-item-id="20179" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">使用素材</span><br>
+<br>
+<a href="https://x.gd/Q4JBN" class="default-link" rel="nofollow">https://x.gd/Q4JBN</a><br>
+<a href="https://x.gd/H54MP" class="default-link" rel="nofollow">https://x.gd/H54MP</a></div></div>
+        
+        <div class="article-item item_html " id="item20180" data-item-id="20180" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">使用ツール<br></span>
+  Canva
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20181" data-item-id="20181" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">課題見本</span></div></div>
+        
+        <div class="article-item item_image " id="item20182" data-item-id="20182" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/182/medium/9872f76a-fdb7-46c1-b3c1-ae44bd6a3925.png?1749037745" title=""><img class="img-responsive item-image" alt=" (20182)" data-reference="" src="../../_assets/08701d8306.webp" width="640" height="360"></a><h4 id="heading117"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item20183" data-item-id="20183" data-item-type="ItemMarkdown"><h4 id="heading118">作業手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item20184" data-item-id="20184" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">Canvaでの新規作成</span><br>
+新規サムネイル（1280×720ピクセル）を作成します。</div></div>
+        
+        <div class="article-item item_image " id="item20185" data-item-id="20185" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/185/medium/058fe6ac-2cb8-4bb3-a305-7d8a5d0ba097.png?1749037910" title=""><img class="img-responsive item-image" alt=" (20185)" data-reference="" src="../../_assets/5d0d4a4cb4.webp" width="640" height="349"></a><h4 id="heading119"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20212" data-item-id="20212" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20186" data-item-id="20186" data-item-type="ItemRichText"><div class="item-body-hbr">2.<span class="decoration-01">文字調整</span><br>
+「超おすすめプロが好む！」「最新ビデオカメラ」「徹底レビュー」と分けて入力<br>
+「徹底レビュー」のみ太字にする<br>
+ 全てNoto Sans JPを太字で使用</div></div>
+        
+        <div class="article-item item_image " id="item20187" data-item-id="20187" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/187/medium/2494514b-fc35-4d9d-8a67-585f74a13ec8.png?1749037958" title=""><img class="img-responsive item-image" alt=" (20187)" data-reference="" src="../../_assets/613a96b8b8.webp" width="640" height="360"></a><h4 id="heading120"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20213" data-item-id="20213" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20188" data-item-id="20188" data-item-type="ItemRichText"><div class="item-body-hbr"><span>3.</span><span class="decoration-01">デザイン調整</span><br>
+文字について「超おすすめ」の色はエメラルドグリーンにし、「プロが好む！」の色は白色にする。<br>
+「最新ビデオカメラ」は黒色にし、「徹底レビュー」は白色にするのに加え、エフェクトで袋文字にする<br>
+背景は画面の左側の「素材」の項目から「図形」と検索し平行四辺形の図形を選択する。<br>
+色は「黒9割・白1割」のグラデーションにし、見本の画像の大きさに調整する。<br>
+もう1つ平行四辺形の図形を選択し、色はエメラルドグリーンにし、見本画像の大きさに調整する。<br>
+上下の細い線について、画面の左側の「素材」の項目から「直線」と検索し、下の項目の「図形」を選択し、細い線を選択し、以下の画像のように配置する。<br>
+ダウンロードしたストライプの使用素材は、左側に角度を変えて配置。<br>
+男性素材は背景を切り抜いて右側に配置する。</div></div>
+        
+        <div class="article-item item_image " id="item20189" data-item-id="20189" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/189/medium/9425bbb2-49ed-4c38-aeb0-c39464af02bd.png?1749038042" title=""><img class="img-responsive item-image" alt=" (20189)" data-reference="" src="../../_assets/982f1fe9db.webp" width="640" height="358"></a><h4 id="heading121"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20214" data-item-id="20214" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20190" data-item-id="20190" data-item-type="ItemRichText"><div class="item-body-hbr">4.<span class="decoration-01">最終確認<br>
+</span>男性が持っているカメラが文字に隠れていないか確認します。<br>
+全体のバランスと視認性を確認します。</div></div>
+        
+        <div class="article-item item_image " id="item20191" data-item-id="20191" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/191/medium/5261021e-9d42-4853-870a-06569a901725.png?1749038107" title=""><img class="img-responsive item-image" alt=" (20191)" data-reference="" src="../../_assets/18fcfed613.webp" width="640" height="360"></a><h4 id="heading122"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20215" data-item-id="20215" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item20192" data-item-id="20192" data-item-type="ItemRichText"><div class="item-body-hbr"><span>5.</span><span class="decoration-01">書き出し</span><br>
+画質の劣化を防ぐためにPNG形式で書き出します。</div></div>
+        
+        <div class="article-item item_image " id="item20193" data-item-id="20193" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/020/193/medium/407e0a83-94a1-4509-aabd-49c1a2ac4647.png?1749038146" title=""><img class="img-responsive item-image" alt=" (20193)" data-reference="" src="../../_assets/36aaeba8f5.webp" width="640" height="360"></a><h4 id="heading123"></h4></div></div>
+        
+        <div class="article-item item_html " id="item20194" data-item-id="20194" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">ポイント</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li>複数の図形を組み合わせることで、オシャレなサムネイルに出来上がります。<br>
+ストライプやボーダーなど、模様のある素材を使うことも１つの手段として覚えておきましょう。<br></li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item23244" data-item-id="23244" data-item-type="ItemHeading"><h3 class="item-body" id="heading124">作成したサムネイルの評価と改善点の検討</h3></div>
+        
+        <div class="article-item item_text " id="item20196" data-item-id="20196" data-item-type="ItemText"><div class="item-body-hbr">実際に皆さんも同じように3つのサムネイルを制作してみましょう！<br>制作が終わったら、以下のチェックリストを使って客観的に評価し、改善点を検討しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item20198" data-item-id="20198" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">評価チェックリスト</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li>
+1.一目での分かりやすさ<br>
+    　□小さく表示しても何のサムネイルか分かるか<br>
+    　□メインメッセージが3秒以内に伝わるか<br>
+2.テキストの視認性<br>
+    　□文字サイズは十分か<br>
+    　□コントラストは十分か<br>
+    　□縁取りやシャドウは効果的か<br>
+3.画像の品質<br>
+    　□解像度は十分か<br>
+    　□明るさ・コントラストは適切か<br>
+    　□切り抜きは丁寧にできているか<br>
+4.色の使い方<br>
+    　□色数は適切か（3〜4色以内が望ましい）<br>
+    　□色のコントラストは効果的か<br>
+    　□動画のジャンルに合った色使いか<br>
+5.ジャンル適合性<br>
+    　□そのジャンルの動画によく見られる要素が含まれているか<br>
+    　□視聴者の期待に応えるデザインか<br></li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item20199" data-item-id="20199" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">改善方法</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+           <ol> <li>各サムネイルについて上記のチェックリストで評価し、不十分な点をメモします。</li>
+<li>特に重要なのは誰がみてもわかるような、「一目での分かりやすさ」です。</li>
+<li>問題点があれば修正し、再度評価します。</li>
+<li>成功したデザイン要素をメモし、今後のサムネイル制作に活かしましょう。</li></ol>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item20200" data-item-id="20200" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">改善のヒント</div>
+    </div>
+    <div class="content-area">
+        <ul style="list-style-type: none; padding-left: 0;">
+            <li>ある程度距離を置いて（モニターから離れて）サムネイルを見ると、小さい画面での見え方がシミュレーションできます。<br>
+スマートフォンでの表示を確認するのも効果的です。<br>
+3つのサムネイルを並べて比較し、一貫性と違いを確認しましょう。<br></li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item20201" data-item-id="20201" data-item-type="ItemText"><div class="item-body-hbr">この演習を通じて、様々なジャンルのサムネイル制作スキルを身につけると同時に、自分の強みと弱みを把握し、今後の制作に活かしていきましょう。<br><br>これで「サムネイル制作入門」の解説を終わります。<br>お疲れ様でした！</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">はじめに</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:3時間</a></li><li><a href="#heading2" class="tocLink"></a></li><li><a href="#heading3" class="tocLink"></a></li><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li></ul></li><li><a href="#heading9" class="tocLink">【1-1】サムネイルの基本要素と重要性</a><ul><li><a href="#heading10" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading11" class="tocLink">サムネイルの役割</a><ul><li><a href="#heading12" class="tocLink"></a></li></ul></li><li><a href="#heading13" class="tocLink">クリック率に影響を与える要素</a><ul><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">サムネイルのサイズと形式</a><ul><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li></ul></li><li><a href="#heading24" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading25" class="tocLink">【1-2】効果的な画像加工テクニック</a><ul><li><a href="#heading26" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading27" class="tocLink">注目を集める配色とコントラスト</a><ul><li><a href="#heading28" class="tocLink">色の対比効果</a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li><li><a href="#heading32" class="tocLink">YouTubeで効果的な色の組み合わせ</a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink"></a></li><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li></ul></li><li><a href="#heading37" class="tocLink">画像の強調と切り抜き</a><ul><li><a href="#heading38" class="tocLink">効果的な切り抜きテクニック</a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink"></a></li><li><a href="#heading42" class="tocLink">画像強調のテクニック</a></li><li><a href="#heading43" class="tocLink"></a></li><li><a href="#heading44" class="tocLink"></a></li></ul></li><li><a href="#heading45" class="tocLink">Canvaでの画像加工基本テクニック</a><ul><li><a href="#heading46" class="tocLink"></a></li><li><a href="#heading47" class="tocLink"></a></li><li><a href="#heading48" class="tocLink"></a></li><li><a href="#heading49" class="tocLink"></a></li><li><a href="#heading50" class="tocLink"></a></li><li><a href="#heading51" class="tocLink"></a></li><li><a href="#heading52" class="tocLink"></a></li><li><a href="#heading53" class="tocLink"></a></li><li><a href="#heading54" class="tocLink"></a></li><li><a href="#heading55" class="tocLink"></a></li></ul></li><li><a href="#heading56" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading57" class="tocLink">【1-3】サムネイルに効く文字とレイアウト</a><ul><li><a href="#heading58" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading59" class="tocLink">読みやすいフォントの選び方</a><ul><li><a href="#heading60" class="tocLink">サムネイルに適したフォントの特徴</a></li><li><a href="#heading61" class="tocLink"></a></li><li><a href="#heading62" class="tocLink"></a></li><li><a href="#heading63" class="tocLink">日本語サムネイルでのフォント選択ポイント</a></li><li><a href="#heading64" class="tocLink"></a></li><li><a href="#heading65" class="tocLink"></a></li><li><a href="#heading66" class="tocLink">Canvaでのおすすめフォント</a></li><li><a href="#heading67" class="tocLink"></a></li><li><a href="#heading68" class="tocLink"></a></li><li><a href="#heading69" class="tocLink"></a></li><li><a href="#heading70" class="tocLink"></a></li></ul></li><li><a href="#heading71" class="tocLink">文字の配置の基本</a><ul><li><a href="#heading72" class="tocLink">文字配置の黄金ルール</a></li><li><a href="#heading73" class="tocLink"></a></li><li><a href="#heading74" class="tocLink">テキストの視認性向上テクニック</a></li><li><a href="#heading75" class="tocLink"></a></li><li><a href="#heading76" class="tocLink"></a></li><li><a href="#heading77" class="tocLink"></a></li><li><a href="#heading78" class="tocLink"></a></li><li><a href="#heading79" class="tocLink"></a></li><li><a href="#heading80" class="tocLink"></a></li><li><a href="#heading81" class="tocLink">Canvaでのテキスト配置手順</a></li><li><a href="#heading82" class="tocLink"></a></li><li><a href="#heading83" class="tocLink"></a></li><li><a href="#heading84" class="tocLink"></a></li></ul></li><li><a href="#heading85" class="tocLink">レイアウトの基本パターン</a><ul><li><a href="#heading86" class="tocLink">定番レイアウトパターン</a></li><li><a href="#heading87" class="tocLink"></a></li><li><a href="#heading88" class="tocLink"></a></li><li><a href="#heading89" class="tocLink"></a></li><li><a href="#heading90" class="tocLink"></a></li><li><a href="#heading91" class="tocLink">ジャンル別おすすめレイアウト</a></li><li><a href="#heading92" class="tocLink"></a></li><li><a href="#heading93" class="tocLink"></a></li><li><a href="#heading94" class="tocLink"></a></li></ul></li><li><a href="#heading95" class="tocLink">確認問題とまとめ</a></li></ul></li><li><a href="#heading96" class="tocLink">【1-4】-演習課題- サムネイル制作実践</a><ul><li><a href="#heading97" class="tocLink">目安の学習時間：2時間</a></li></ul><ul><li><a href="#heading98" class="tocLink">ハウツー系動画サムネイル制作課題</a><ul><li><a href="#heading99" class="tocLink"></a></li><li><a href="#heading100" class="tocLink">作業手順</a></li><li><a href="#heading101" class="tocLink"></a></li><li><a href="#heading102" class="tocLink"></a></li><li><a href="#heading103" class="tocLink"></a></li><li><a href="#heading104" class="tocLink"></a></li><li><a href="#heading105" class="tocLink"></a></li><li><a href="#heading106" class="tocLink"></a></li><li><a href="#heading107" class="tocLink"></a></li></ul></li><li><a href="#heading108" class="tocLink"> IT・ビジネス系動画サムネイル制作課題</a><ul><li><a href="#heading109" class="tocLink"></a></li><li><a href="#heading110" class="tocLink">作業手順</a></li><li><a href="#heading111" class="tocLink"></a></li><li><a href="#heading112" class="tocLink"></a></li><li><a href="#heading113" class="tocLink"></a></li><li><a href="#heading114" class="tocLink"></a></li><li><a href="#heading115" class="tocLink"></a></li></ul></li><li><a href="#heading116" class="tocLink">商品紹介系動画サムネイル制作課題</a><ul><li><a href="#heading117" class="tocLink"></a></li><li><a href="#heading118" class="tocLink">作業手順</a></li><li><a href="#heading119" class="tocLink"></a></li><li><a href="#heading120" class="tocLink"></a></li><li><a href="#heading121" class="tocLink"></a></li><li><a href="#heading122" class="tocLink"></a></li><li><a href="#heading123" class="tocLink"></a></li></ul></li><li><a href="#heading124" class="tocLink">作成したサムネイルの評価と改善点の検討</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

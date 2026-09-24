@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/nDc2X -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章：【画像編】AI画像生成と「魅せる」活用術 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/nDc2X">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章：【画像編】AI画像生成と「魅せる」活用術 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/034/891/medium/135f0aa6-41f3-4a02-aeb5-a3f3b2605de9.png?1752818441">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章：【画像編】AI画像生成と「魅せる」活用術">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/nDc2X">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/034/891/large/135f0aa6-41f3-4a02-aeb5-a3f3b2605de9.png?1752818441">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="hIoAhG8EUFAwfric8MQnpM_q071js5rp4lmhdWxYKcbPUg0_bnqm8J71HXZL7dS6K_ByHXa07hsCtiEc8DjIOw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材3 生成AI素材の動画編集における活用術</div>
+
+          <div class="fw-bold h2">2章：【画像編】AI画像生成と「魅せる」活用術</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章：【画像編】AI画像生成と「魅せる」活用術</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：80分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】画像生成AI「ImageFX」の基本</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading5" class="tocLink"> ImageFXとは？</a></li><li><a href="#heading6" class="tocLink">料金プランと無料での利用範囲</a></li><li><a href="#heading7" class="tocLink">ImageFXへのアクセスと登録方法</a><ul><li><a href="#heading8" class="tocLink"></a></li></ul></li><li><a href="#heading9" class="tocLink">基本的な操作画面と使い方</a><ul><li><a href="#heading10" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading11" class="tocLink">【2-2】動画の世界観を作る画像生成プロンプト</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading13" class="tocLink">トーン＆マナーを統一する「魔法の呪文」</a></li><li><a href="#heading14" class="tocLink">【実践】ImageFXで動画のキービジュアルを生成する</a></li></ul></li><li><a href="#heading15" class="tocLink">【2-3】AI画像を「映像」に変える編集テクニック</a><ul><li><a href="#heading16" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading17" class="tocLink"> Premiere Pro / CapCutへの読み込み</a><ul><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink">生成例</a></li><li><a href="#heading20" class="tocLink"></a></li></ul></li><li><a href="#heading21" class="tocLink">キーフレームで命を吹き込む</a></li><li><a href="#heading22" class="tocLink">マスクとブレンドモードで表現の幅を広げる</a></li></ul></li><li><a href="#heading23" class="tocLink">【2-4】2章 -章末課題-コンセプト画像の生成</a><ul><li><a href="#heading24" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading25" class="tocLink">問題</a></li><li><a href="#heading26" class="tocLink">解答</a><ul><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item37132" data-item-id="37132" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/u1pVg" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/TMnIA" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item34877" data-item-id="34877" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">2章：【画像編】AI画像生成と「魅せる」活用術</h2></div>
+        
+        <div class="article-item item_markdown " id="item34878" data-item-id="34878" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：80分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item34879" data-item-id="34879" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item34880" data-item-id="34880" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ImageFXを使いこなし、動画のコンセプトに合った画像を自在に生成できるようになる。</li>
+  <li>生成した一枚絵のAI画像に、編集ソフトで動き（アニメーション）をつけ、映像として成立させられるようになる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item34881" data-item-id="34881" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【2-1】画像生成AI「ImageFX」の基本</h2></div>
+        
+        <div class="article-item item_markdown " id="item34882" data-item-id="34882" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item34883" data-item-id="34883" data-item-type="ItemRichText"><div class="item-body-hbr">このセクションでは、本教材で画像生成の主役となる、Googleが提供するAIツール「ImageFX」の基本について学びます。</div></div>
+        
+        <div class="article-item item_heading " id="item34884" data-item-id="34884" data-item-type="ItemHeading"><h3 class="item-body" id="heading5"> ImageFXとは？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34885" data-item-id="34885" data-item-type="ItemRichText"><div class="item-body-hbr">ImageFXは、テキスト（プロンプト）から高品質な画像を生成できる、GoogleのAIツールです。<br>
+非常にシンプルな操作性と、生成される画像のクオリティの高さが特徴です。</div></div>
+        
+        <div class="article-item item_heading " id="item34886" data-item-id="34886" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">料金プランと無料での利用範囲</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34887" data-item-id="34887" data-item-type="ItemRichText"><div class="item-body-hbr">ImageFXは、<span class="decoration-02">Googleアカウントがあれば、基本的に無料で利用することができます。</span></div></div>
+        
+        <div class="article-item item_html " id="item34888" data-item-id="34888" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>利用制限に関する注意</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>無料で利用できますが、短時間に大量の画像を生成するなど、サーバーに大きな負荷をかける使い方をした場合、一時的に利用が制限される可能性があります。</li>
+            <li>また、これらのポリシーは将来変更される可能性もあります。利用する際は、公式サイトで最新の利用規約を確認する習慣をつけましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item34889" data-item-id="34889" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">ImageFXへのアクセスと登録方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34890" data-item-id="34890" data-item-type="ItemRichText"><div class="item-body-hbr">ImageFXは、特別なソフトウェアのインストールや、個別のユーザー登録は不要です。Googleアカウントでログインするだけで、誰でもすぐに利用を開始できます。<br>
+<a href="https://labs.google/fx/ja" class="default-link" target="_blank" rel="nofollow">https://labs.google/fx/ja</a></div></div>
+        
+        <div class="article-item item_image " id="item34891" data-item-id="34891" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/034/891/medium/135f0aa6-41f3-4a02-aeb5-a3f3b2605de9.png?1752818441" title=""><img class="img-responsive item-image" alt=" (34891)" data-reference="" src="../../_assets/4ed56d9be5.webp" width="640" height="242"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item34893" data-item-id="34893" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">基本的な操作画面と使い方</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34894" data-item-id="34894" data-item-type="ItemRichText"><div class="item-body-hbr">ImageFXの画面は非常にシンプルで、直感的に操作できます。主要な機能の場所を覚えておきましょう。<br>
+プロンプトを入力すると「I’m Feeling Lucky」の部分が「生成」ボタンになります。</div></div>
+        
+        <div class="article-item item_image " id="item34895" data-item-id="34895" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/034/895/medium/64e1cc02-8f5d-4c26-b926-eed4ed394328.png?1752818546" title=""><img class="img-responsive item-image" alt=" (34895)" data-reference="" src="../../_assets/fb20f33706.webp" width="640" height="360"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item34896" data-item-id="34896" data-item-type="ItemHeading"><h2 class="item-body" id="heading11">【2-2】動画の世界観を作る画像生成プロンプト</h2></div>
+        
+        <div class="article-item item_markdown " id="item34897" data-item-id="34897" data-item-type="ItemMarkdown"><h4 id="heading12">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item34898" data-item-id="34898" data-item-type="ItemRichText"><div class="item-body-hbr">ImageFXの使い方がわかったところで、次は動画制作で重要となる「一貫性のある画像」を生成するための、プロンプトのコツを学びます。</div></div>
+        
+        <div class="article-item item_heading " id="item34899" data-item-id="34899" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">トーン＆マナーを統一する「魔法の呪文」</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34900" data-item-id="34900" data-item-type="ItemRichText"><div class="item-body-hbr">動画で使用する画像は、一枚一枚がバラバラの雰囲気では統一感がなく、チープな印象を与えてしまいます。そこで、プロンプトにトーン＆マナー（トンマナ）を統一するための共通のキーワード、いわば「魔法の呪文」を入れることが有効です。</div></div>
+        
+        <div class="article-item item_html " id="item34901" data-item-id="34901" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>トーン＆マナーを揃えるキーワード例</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li><strong>スタイルを指定する</strong>：
+                <ul class="nested-ul">
+                    <li>例：「photo-realistic（写真のようにリアル）」「flat design illustration（フラットデザインのイラスト）」「watercolor style（水彩画風）」</li>
+                </ul>
+            </li>
+            <li><strong>雰囲気を指定する</strong>：
+                <ul class="nested-ul">
+                    <li>例：「Cinematic, soft light（映画のような、柔らかい光）」「Pop and cute（ポップで可愛い）」「Minimalist, clean（ミニマルで洗練された）」</li>
+                </ul>
+            </li>
+             <li><strong>色を指定する</strong>：
+                <ul class="nested-ul">
+                    <li>例：「with corporate color blue and white（コーポレートカラーの青と白で）」「pastel color（パステルカラー）」</li>
+                </ul>
+            </li>
+        </ul>
+        <p>これらのキーワードを、<span class="decoration-02">同じ動画で使う画像のプロンプトに共通して含める</span>ことで、生成される画像のテイストに一貫性を持たせることができます。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item34902" data-item-id="34902" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">【実践】ImageFXで動画のキービジュアルを生成する</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34903" data-item-id="34903" data-item-type="ItemRichText"><div class="item-body-hbr">それでは、実際にImageFXを使い、動画のキービジュアルを生成してみましょう。<br>
+ここでは、教材2で作成した企画書の中から、「日帰りグランピング体験」の広告動画を想定して進めます。</div></div>
+        
+        <div class="article-item item_link " id="item34904" data-item-id="34904" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=nDc2X&amp;item_id=34904" rel="nofollow noopener noreferrer" target="_blank">教材3 生成AI素材の動画編集における活用術 2-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材3 生成AI素材の動画編集における活用術 2-1" data-reference="https://www.dropbox.com/scl/fi/qqia1jecrjoir40ylp6fb/VideoEditor-AIpronpt_2.1.1.0_.mp4?rlkey=c7xwvf9r6qd1bxjiokny7pmbp&amp;st=kex3w7pw&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item34905" data-item-id="34905" data-item-type="ItemHtml"><div class="item-body">
+<div class="card-with-icon point">
+    <span class="bold"><strong>応用チャレンジ：Canva AIでも試してみよう</strong><br></span>
+    <div class="content-area">
+        <p>「AI×デザイン」の教材で学ぶCanvaのAI画像生成機能（Magic Media）は、Canvaのエディタ内でシームレスに作業できるという利点があります。</p>
+        <p>Canva Proに加入しているなど、クレジットに余裕がある場合は、同じようなプロンプトをCanva AIでも試してみましょう。ツールによって得意な表現が異なるため、アウトプットの違いを比較することで、より表現の引き出しが増えます。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item34907" data-item-id="34907" data-item-type="ItemHeading"><h2 class="item-body" id="heading15">【2-3】AI画像を「映像」に変える編集テクニック</h2></div>
+        
+        <div class="article-item item_markdown " id="item34908" data-item-id="34908" data-item-type="ItemMarkdown"><h4 id="heading16">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item34909" data-item-id="34909" data-item-type="ItemRichText"><div class="item-body-hbr">AIで生成した画像は、それだけではただの「静止画」です。<br>
+このセクションでは、その静止画を動画編集ソフトに取り込み、簡単な動きを加えることで、魅力的な「映像」へと昇華させる「活用術」を学びます。</div></div>
+        
+        <div class="article-item item_heading " id="item34910" data-item-id="34910" data-item-type="ItemHeading"><h3 class="item-body" id="heading17"> Premiere Pro / CapCutへの読み込み</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34911" data-item-id="34911" data-item-type="ItemRichText"><div class="item-body-hbr">まずは、ImageFXで生成した画像をPCにダウンロードし、普段使っている編集ソフトにインポートします。</div></div>
+        
+        <div class="article-item item_image " id="item34912" data-item-id="34912" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/034/912/medium/2627a714-2499-45a7-9bbd-f90537b5bfbf.png?1752818986" title=""><img class="img-responsive item-image" alt=" (34912)" data-reference="" src="../../_assets/bd70556b79.webp" width="640" height="358"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item34913" data-item-id="34913" data-item-type="ItemRichText"><div class="item-body-hbr">ImageFXで生成した画像をPCに保存したら、次はお使いの編集ソフトにその画像を読み込み（インポート）ます。</div></div>
+        
+        <div class="article-item item_html " id="item34914" data-item-id="34914" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">Premiere Proの場合</span>：<br>「プロジェクトパネル」の空いているスペースをダブルクリックするか、メニューバーの「ファイル」→「読み込み」から、先ほどダウンロードした画像ファイルを選択します。</li>
+  <li><span class="decoration-01">CapCutの場合</span>：<br>メディアプールの「インポート」ボタンをクリックし、ダウンロードした画像ファイルを選択します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item34915" data-item-id="34915" data-item-type="ItemMarkdown"><h4 id="heading19">生成例</h4>
+</div>
+        
+        <div class="article-item item_image " id="item34916" data-item-id="34916" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/034/916/medium/cd25dd42-d877-4180-9c6a-39e0f48c8632.png?1752819062" title=""><img class="img-responsive item-image" alt=" (34916)" data-reference="" src="../../_assets/20523f6bcd.webp" width="640" height="349"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item34917" data-item-id="34917" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">キーフレームで命を吹き込む</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34918" data-item-id="34918" data-item-type="ItemRichText"><div class="item-body-hbr">一枚絵に命を吹き込む最も簡単で効果的な方法が、キーフレームを使ったアニメーションです。</div></div>
+        
+        <div class="article-item item_html " id="item34919" data-item-id="34919" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>キーフレーム</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>時間軸上の特定のポイントに、スケール（大きさ）、位置、回転、不透明度といったプロパティの値を記録する機能です。2つの異なるキーフレーム間を、ソフトウェアが自動的に補間して動かします。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item34920" data-item-id="34920" data-item-type="ItemRichText"><div class="item-body-hbr">ほんの少しズームインさせたり、ゆっくり横に動かしたりするだけでも、静止画は「映像」としての生命感を持ち始めます。</div></div>
+        
+        <div class="article-item item_link " id="item34921" data-item-id="34921" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=nDc2X&amp;item_id=34921" rel="nofollow noopener noreferrer" target="_blank">教材3 生成AI素材の動画編集における活用術 2-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材3 生成AI素材の動画編集における活用術 2-2" data-reference="https://www.dropbox.com/scl/fi/8wn1gim6dgi3p20yviipe/VideoEditor-AIpronpt_2.2.1.0_.mp4?rlkey=rqix3pg6v4mjbagcs9oesp6vy&amp;st=nzloz4k3&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item34922" data-item-id="34922" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=nDc2X&amp;item_id=34922" rel="nofollow noopener noreferrer" target="_blank">教材3 生成AI素材の動画編集における活用術 2-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="教材3 生成AI素材の動画編集における活用術 2-3" data-reference="https://www.dropbox.com/scl/fi/w9iyc9yqcc83xj6oimnnw/VideoEditor-AIpronpt_2.3.1.0_.mp4?rlkey=2ftpuul8ana060cq6d8vr3zp6&amp;st=jymiaiz7&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item34923" data-item-id="34923" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">マスクとブレンドモードで表現の幅を広げる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34924" data-item-id="34924" data-item-type="ItemRichText"><div class="item-body-hbr">さらに応用的なテクニックとして、「マスク」と「ブレンドモード」を紹介します。これらを使うと、より高度でクリエイティブな表現が可能になります。</div></div>
+        
+        <div class="article-item item_html " id="item34925" data-item-id="34925" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">マスク機能</span>：<br>画像の一部だけを切り抜いて表示する機能です。例えば、円形のマスクを使って、望遠鏡で覗いているような演出などが可能です。</li>
+  <li><span class="decoration-01">ブレンドモード（描画モード）</span>：<br>上下のトラックに配置されたクリップ同士を、様々な方法で合成する機能です。「オーバーレイ」や「スクリーン」などを使うと、他の映像や背景と画像を幻想的に馴染ませることができます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item34926" data-item-id="34926" data-item-type="ItemRichText"><div class="item-body-hbr">これらの機能の具体的な使い方は、今後のより専門的な教材で詳しく学びますが、「AIで作った画像を、このように加工して活用できるんだ」という可能性を知っておくことが、現段階では重要です。</div></div>
+        
+        <div class="article-item item_heading " id="item34927" data-item-id="34927" data-item-type="ItemHeading"><h2 class="item-body" id="heading23">【2-4】2章 -章末課題-コンセプト画像の生成</h2></div>
+        
+        <div class="article-item item_markdown " id="item40146" data-item-id="40146" data-item-type="ItemMarkdown"><h4 id="heading24">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item34928" data-item-id="34928" data-item-type="ItemHeading"><h3 class="item-body" id="heading25">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item34929" data-item-id="34929" data-item-type="ItemRichText"><div class="item-body-hbr">この後の章で制作する、架空のマインドフルネス・瞑想アプリ<span class="decoration-02">「SereneMind」のプロモーション動画で使用する、コンセプトに合った画像を3枚</span>、ImageFXで生成してください。<br>
+動画のテーマは<span class="decoration-02">「忙しい日々に、5分間の心の静けさを」</span>です。以下の例を参考に、テーマに沿ったクオリティの高い画像を生成してみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item34930" data-item-id="34930" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">画像例1</span>：<br>穏やかな水面に波紋が広がる、ミニマルで美しい抽象的なイメージ</li>
+  <li><span class="decoration-01">画像例2</span>：<br>窓から柔らかな光が差し込む部屋で、静かに瞑想している人物のイラスト（フラットデザイン）</li>
+  <li><span class="decoration-01">画像例3</span>：<br>頭の中のモヤモヤ（Chaotic scribbles）が、すっと消えていくような変化を表現したグラフィック</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item34931" data-item-id="34931" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">※ 生成した素材は５章で使用するため保存しておいてください。</span></div></div>
+        
+        <div class="article-item item_heading " id="item34932" data-item-id="34932" data-item-type="ItemHeading"><h3 class="item-body" id="heading26">解答</h3></div>
+        
+        <div class="article-item item_html " id="item34933" data-item-id="34933" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>ImageFXを開き、動画のテーマに合ったプロンプトを考えます。</li>
+            <li>例えば、画像例1なら「<span class="decoration-02">Minimalist, gentle ripples on a calm water surface, soft light, pale blue and lavender color, top view</span>」といったプロンプトを入力し、画像を生成・ダウンロードします。</li>
+            <li>同様に、瞑想する人物や思考のグラフィックも、トーン＆マナーを揃えるキーワード（例：「Minimalist」「soft light」など）を意識しながら、複数生成・ダウンロードします。</li>
+            <li>生成した画像の中から、動画で使えそうなベストショットを3枚以上選定できれば完成です。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item34934" data-item-id="34934" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">制作例</span></div></div>
+        
+        <div class="article-item item_image " id="item34935" data-item-id="34935" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/034/935/medium/58282265-a87c-4fb4-b032-a03cfdf417ac.png?1752819821" title=""><img class="img-responsive item-image" alt=" (34935)" data-reference="" src="../../_assets/89169f6be3.webp" width="640" height="349"></a><h4 id="heading27"></h4></div></div>
+        
+        <div class="article-item item_image " id="item34936" data-item-id="34936" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/034/936/medium/5cb90999-b1b4-472c-8f92-084725957f08.png?1752819839" title=""><img class="img-responsive item-image" alt=" (34936)" data-reference="" src="../../_assets/f2c814b714.webp" width="640" height="349"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_image " id="item34937" data-item-id="34937" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/034/937/medium/db28ef82-dc64-458f-9ca9-761f998cefae.png?1752819863" title=""><img class="img-responsive item-image" alt=" (34937)" data-reference="" src="../../_assets/eed074b353.webp" width="640" height="349"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item34938" data-item-id="34938" data-item-type="ItemRichText"><div class="item-body-hbr">これで「2章：【画像編】AI画像生成と「魅せる」活用術」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37131" data-item-id="37131" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/u1pVg" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/TMnIA" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章：【画像編】AI画像生成と「魅せる」活用術</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：80分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】画像生成AI「ImageFX」の基本</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading5" class="tocLink"> ImageFXとは？</a></li><li><a href="#heading6" class="tocLink">料金プランと無料での利用範囲</a></li><li><a href="#heading7" class="tocLink">ImageFXへのアクセスと登録方法</a><ul><li><a href="#heading8" class="tocLink"></a></li></ul></li><li><a href="#heading9" class="tocLink">基本的な操作画面と使い方</a><ul><li><a href="#heading10" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading11" class="tocLink">【2-2】動画の世界観を作る画像生成プロンプト</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading13" class="tocLink">トーン＆マナーを統一する「魔法の呪文」</a></li><li><a href="#heading14" class="tocLink">【実践】ImageFXで動画のキービジュアルを生成する</a></li></ul></li><li><a href="#heading15" class="tocLink">【2-3】AI画像を「映像」に変える編集テクニック</a><ul><li><a href="#heading16" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading17" class="tocLink"> Premiere Pro / CapCutへの読み込み</a><ul><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink">生成例</a></li><li><a href="#heading20" class="tocLink"></a></li></ul></li><li><a href="#heading21" class="tocLink">キーフレームで命を吹き込む</a></li><li><a href="#heading22" class="tocLink">マスクとブレンドモードで表現の幅を広げる</a></li></ul></li><li><a href="#heading23" class="tocLink">【2-4】2章 -章末課題-コンセプト画像の生成</a><ul><li><a href="#heading24" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading25" class="tocLink">問題</a></li><li><a href="#heading26" class="tocLink">解答</a><ul><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink"></a></li><li><a href="#heading29" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/u1pVg" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%903%20%E7%94%9F%E6%88%90AI%E7%B4%A0%E6%9D%90%E3%81%AE%E5%8B%95%E7%94%BB%E7%B7%A8%E9%9B%86%E3%81%AB%E3%81%8A%E3%81%91%E3%82%8B%E6%B4%BB%E7%94%A8%E8%A1%93/TMnIA" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

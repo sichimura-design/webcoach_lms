@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/movie-editing/practice/service/VoSFz -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章 Premiere Proモーショングラフィックスの基礎 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/movie-editing/practice/service/VoSFz">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章 Premiere Proモーショングラフィックスの基礎 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/043/963/medium/628169c3-7397-47e5-b1e2-d4a006fddca7.png?1763961800">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章 Premiere Proモーショングラフィックスの基礎">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/movie-editing/practice/service/VoSFz">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/043/963/large/628169c3-7397-47e5-b1e2-d4a006fddca7.png?1763961800">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="u8cyK3NBRr8K7oK9nmqiJMUXxWTFJ80nBpHQDmgWpSb2WzSzEVDgjWk72NiqS5VMy2Siolt_FEAogNcdzBHQYw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>サービス紹介動画制作</div>
+
+          <div class="fw-bold h2">2章 Premiere Proモーショングラフィックスの基礎</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 Premiere Proモーショングラフィックスの基礎</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：2.5時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】図形を動かすシェイプアニメーション</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading5" class="tocLink">モーショングラフィックスの基本</a><ul><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li></ul></li><li><a href="#heading8" class="tocLink">キーフレームでアニメーションを作る</a></li><li><a href="#heading9" class="tocLink">アニメーションに緩急をつける</a></li><li><a href="#heading10" class="tocLink">練習問題：3つの図形を順番に表示させよう</a><ul><li><a href="#heading11" class="tocLink">問題</a></li><li><a href="#heading12" class="tocLink">解答手順</a></li><li><a href="#heading13" class="tocLink">解答例</a></li></ul></li></ul></li><li><a href="#heading14" class="tocLink">【2-2】文字を魅せるテキストアニメーション</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading16" class="tocLink">テキストレイヤーの作成とスタイリング</a></li><li><a href="#heading17" class="tocLink">マスクを使ったテキスト表示アニメーション</a></li></ul></li><li><a href="#heading18" class="tocLink">【2-3】2章 -章末課題- タイトルアニメーション制作</a><ul><li><a href="#heading19" class="tocLink">目安の学習時間: 30分</a></li></ul><ul><li><a href="#heading20" class="tocLink">問題</a><ul><li><a href="#heading21" class="tocLink">解答手順</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item43879" data-item-id="43879" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/service/2S5Gu" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/practice/service/0YyMA" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item43952" data-item-id="43952" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">2章 Premiere Proモーショングラフィックスの基礎</h2></div>
+        
+        <div class="article-item item_markdown " id="item43953" data-item-id="43953" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：2.5時間</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item43954" data-item-id="43954" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item43955" data-item-id="43955" data-item-type="ItemMarkdown"><ul>
+  <li>Premiere Proのエッセンシャルグラフィックスを使い、図形やテキストに基本的なアニメーションをつけられる</li>
+  <li>キーフレームの操作を理解し、アニメーションの速度を調整できる</li>
+  <li>マスク機能を使い、オブジェクトを隠したり表示させたりする演出ができる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item43956" data-item-id="43956" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【2-1】図形を動かすシェイプアニメーション</h2></div>
+        
+        <div class="article-item item_markdown " id="item43957" data-item-id="43957" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43958" data-item-id="43958" data-item-type="ItemRichText"><div class="item-body-hbr">サービス紹介動画、特にSaaSのような無形商材の価値を視覚化する上で最も重要なスキルが<span class="decoration-02"><span class="decoration-01">「モーショングラフィックス」</span></span>です。<br>
+このセクションでは、その基本となる図形（シェイプ）のアニメーション作成方法をマスターします。</div></div>
+        
+        <div class="article-item item_heading " id="item43959" data-item-id="43959" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">モーショングラフィックスの基本</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43960" data-item-id="43960" data-item-type="ItemRichText"><div class="item-body-hbr">Premiere Proでモーショングラフィックスを作成する際の中心的な作業場所が、<span class="decoration-01"><span class="decoration-02">「</span></span><span class="decoration-01"><span class="decoration-02">プロパティパネル</span></span><span class="decoration-01"><span class="decoration-02">」</span></span>と<span class="decoration-01"><span class="decoration-02">「</span></span><span class="decoration-01"><span class="decoration-02">ツールバー</span></span><span class="decoration-01"><span class="decoration-02">」</span></span>です。<br>
+このパネルを使えば、After Effectsのような専門ソフトを使わなくても、Premiere Pro内で直接テキストや図形を作成し、アニメーションの基礎を設定することができます。</div></div>
+        
+        <div class="article-item item_html " id="item43961" data-item-id="43961" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">パネルの役割とレイアウト</span></span><br>
+  画面左側にある<span class="decoration-01"><span class="decoration-02">ツールバー</span></span>（テキストツール、長方形ツールなど）でオブジェクトを作成し、パネル内でそれらのオブジェクトをレイヤーとして重ねて管理します。</li>
+  <li><span class="decoration-01"><span class="decoration-02">シェイプレイヤーの作成とプロパティ</span></span><br>
+  長方形や楕円などの図形を作成すると、パネル右側の「アピアランス」セクションで「塗り（色）」や「線」、「シャドウ」などを細かく設定できます。</li>
+  <li><span class="decoration-01"><span class="decoration-02">レイヤーの整列と分布</span></span><br>
+  複数のシェイプレイヤーを選択し、「整列と変形」セクションのボタンをクリックすることで、オブジェクトを中央揃えにしたり、等間隔に配置したりすることができ、デザイン作業を効率化します。</li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item43962" data-item-id="43962" data-item-type="ItemRichText"><div class="item-body-hbr">まずはこのパネルの構造に慣れ、基本的な図形を自由に作成・配置できるようになりましょう。</div></div>
+        
+        <div class="article-item item_image " id="item43963" data-item-id="43963" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/043/963/medium/628169c3-7397-47e5-b1e2-d4a006fddca7.png?1763961800" title=""><img class="img-responsive item-image" alt=" (43963)" data-reference="" src="../../_assets/9799a36455.webp" width="640" height="396"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_image " id="item43964" data-item-id="43964" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/043/964/medium/522a5db1-a161-467a-92d6-96107627875a.png?1763961814" title=""><img class="img-responsive item-image" alt=" (43964)" data-reference="" src="../../_assets/61df3bf674.webp" width="640" height="548"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item43965" data-item-id="43965" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">キーフレームでアニメーションを作る</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43966" data-item-id="43966" data-item-type="ItemRichText"><div class="item-body-hbr">作成した図形に動き（アニメーション）を与えるための核心的な機能が<span class="decoration-01"><span class="decoration-02">「</span></span><span class="decoration-01"><span class="decoration-02">キーフレーム</span></span><span class="decoration-01"><span class="decoration-02">」</span></span>です。<br>
+<br>
+キーフレームとは、アニメーションにおける<span class="decoration-01"><span class="decoration-02">「</span></span><span class="decoration-02"><span class="decoration-01">変化点</span></span><span class="decoration-01"><span class="decoration-02">」</span></span>を記録するマーカーのようなものです。<br>
+例えば、「1秒後にはこの位置に」「3秒後にはこの大きさに」といったように、時間の経過に伴うオブジェクトの状態（位置、大きさ、回転角度など）を指定することで、Premiere Proがその間の動きを自動的に補間し、滑らかなアニメーションを生成してくれます。<br>
+<br>
+キーフレームは主に<span class="decoration-01"><span class="decoration-02">「</span></span><span class="decoration-01"><span class="decoration-02">エフェクトコントロール</span></span><span class="decoration-01"><span class="decoration-02">」</span></span>パネルで設定します。</div></div>
+        
+        <div class="article-item item_html " id="item43967" data-item-id="43967" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+  <span class="bold"><strong>基本的なアニメーションの作成手順</strong><br></span>
+  <div class="content-area">
+    <ol>
+      <li>タイムラインでアニメーションさせたいグラフィッククリップを選択します。</li>
+      <li>「エフェクトコントロール」パネルを開き、動かしたいプロパティ（例：「ベクトルモーション」の「位置」）を見つけます。</li>
+      <li>アニメーションを開始したい時間に再生ヘッドを合わせ、プロパティ名の横にある「ストップウォッチ」アイコンをクリックします。これが1つ目のキーフレームです。</li>
+      <li>アニメーションを終了させたい時間に再生ヘッドを移動させ、プロパティの数値を変更します（例：オブジェクトをドラッグして位置を動かす）。すると、2つ目のキーフレームが自動的に打たれます。</li>
+    </ol>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item43968" data-item-id="43968" data-item-type="ItemText"><div class="item-body-hbr">この操作で、2つのキーフレーム間をオブジェクトが移動するアニメーションが完成します。</div></div>
+        
+        <div class="article-item item_link " id="item44529" data-item-id="44529" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=VoSFz&amp;item_id=44529" rel="nofollow noopener noreferrer" target="_blank">サービス紹介動画制作2.1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="サービス紹介動画制作2.1" data-reference="https://www.dropbox.com/scl/fi/zt2zyz8nz9xqg2pggtrvx/service_ch2_1_v1_published.mp4?rlkey=but71tlbg0x57lqardgg9i7h7&amp;st=g1bwks6b&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">これはデモ動画です。
+音声はありません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item43969" data-item-id="43969" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">アニメーションに緩急をつける</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43970" data-item-id="43970" data-item-type="ItemRichText"><div class="item-body-hbr">キーフレームを打っただけのアニメーションは、一定の速度で動く「等速運動（リニア）」となり、少し機械的な印象を与えます。<br>
+動きに<span class="decoration-01"><span class="decoration-02">緩急</span></span>、つまり<span class="decoration-01"><span class="decoration-02">「</span></span><span class="decoration-01"><span class="decoration-02">イーズ</span></span><span class="decoration-01"><span class="decoration-02">」</span></span>を加えることで、より自然でプロフェッショナルなアニメーションになります。</div></div>
+        
+        <div class="article-item item_html " id="item43971" data-item-id="43971" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">イーズイン</span></span>：動きの終わりがゆっくりになる。</li>
+  <li><span class="decoration-01"><span class="decoration-02">イーズアウト</span></span>：動きの始まりがゆっくりになる。</li>
+</ul></div></div>
+        
+        <div class="article-item item_text " id="item43972" data-item-id="43972" data-item-type="ItemText"><div class="item-body-hbr">設定は簡単です。<br>「エフェクトコントロール」パネルでキーフレームを選択し、右クリックメニューから「時間補間法」を選び、「イーズイン」または「イーズアウト」を適用するだけです。</div></div>
+        
+        <div class="article-item item_rich_text " id="item43973" data-item-id="43973" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">動きの質を高めるためには、この緩急のひと手間が非常に重要です。</span></span><br>
+特別な理由がない限り、ほとんどのアニメーションにイーズを適用することを習慣づけましょう。</div></div>
+        
+        <div class="article-item item_link " id="item44530" data-item-id="44530" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=VoSFz&amp;item_id=44530" rel="nofollow noopener noreferrer" target="_blank">サービス紹介動画制作2.2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="サービス紹介動画制作2.2" data-reference="https://www.dropbox.com/scl/fi/r4d1homkfsiglj7el1i1t/service_ch2_2_v1_published.mp4?rlkey=oiuq9hscplx1msc94kzh2rirb&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモ動画です。
+音声はありません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item43974" data-item-id="43974" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">練習問題：3つの図形を順番に表示させよう</h3></div>
+        
+        <div class="article-item item_markdown " id="item43975" data-item-id="43975" data-item-type="ItemMarkdown"><h4 id="heading11">問題</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43976" data-item-id="43976" data-item-type="ItemRichText"><div class="item-body-hbr">エッセンシャルグラフィックスで円、四角、三角形の3つのシェイプを作成し、それぞれが<span class="decoration-01"><span class="decoration-02">0.5秒ずつタイミングをずらして</span></span>、画面左から右へスライドインする3秒のアニメーションを制作してください。</div></div>
+        
+        <div class="article-item item_markdown " id="item43977" data-item-id="43977" data-item-type="ItemMarkdown"><h4 id="heading12">解答手順</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item43978" data-item-id="43978" data-item-type="ItemMarkdown"><ol>
+  <li>エッセンシャルグラフィックスで、3つの異なるシェイプレイヤー（円、四角、三角形）を含むグラフィッククリップを1つ作成します。</li>
+  <li>「エフェクトコントロール」パネルで、まず円のシェイプレイヤーに、0秒から0.5秒にかけて左からスライドインする「位置」のキーフレームアニメーションを設定します。</li>
+  <li>次に、四角のレイヤーに、0.5秒から1.0秒にかけて同様のアニメーションを設定します。</li>
+  <li>最後に、三角形のレイヤーに、1.0秒から1.5秒にかけて同様のアニメーションを設定します。</li>
+  <li>（別解）<br>
+または、3つのシェイプをそれぞれ別のグラフィッククリップとして作成します。<br>
+1つ目のクリップにアニメーションを設定した後、そのクリップをタイムライン上で複製（Alt/Optionキーを押しながらドラッグ）して2つ作成します。<br>
+タイムライン上で2つ目のクリップの開始点を0.5秒、3つ目の開始点を1.0秒の位置にずらし、中のシェイプを差し替えます。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_markdown " id="item43979" data-item-id="43979" data-item-type="ItemMarkdown"><h4 id="heading13">解答例</h4>
+</div>
+        
+        <div class="article-item item_link " id="item44531" data-item-id="44531" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=VoSFz&amp;item_id=44531" rel="nofollow noopener noreferrer" target="_blank">サービス紹介動画2.3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="サービス紹介動画2.3" data-reference="https://www.dropbox.com/scl/fi/5ll14fghituovq86cl0mg/service_ch2_3_v1_published.mp4?rlkey=9e1z7kfdcpn3lmzx77qecpral&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモ動画です。
+音声はありません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item43980" data-item-id="43980" data-item-type="ItemHeading"><h2 class="item-body" id="heading14">【2-2】文字を魅せるテキストアニメーション</h2></div>
+        
+        <div class="article-item item_markdown " id="item43981" data-item-id="43981" data-item-type="ItemMarkdown"><h4 id="heading15">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43982" data-item-id="43982" data-item-type="ItemRichText"><div class="item-body-hbr">モーショングラフィックスのもう一つの主役が「テキスト」です。<br>
+情報を正確に伝えるだけでなく、アニメーションによって視聴者の視線を引きつけ、メッセージの重要度をコントロールすることができます。</div></div>
+        
+        <div class="article-item item_heading " id="item43983" data-item-id="43983" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">テキストレイヤーの作成とスタイリング</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43984" data-item-id="43984" data-item-type="ItemRichText"><div class="item-body-hbr">エッセンシャルグラフィックスパネルの「横書きテキストツール」を選択し、プログラムモニター上をクリックすると、テキストを入力できます。<br>
+テキストのスタイリング（デザイン調整）も同パネルの右側で行います。</div></div>
+        
+        <div class="article-item item_html " id="item43985" data-item-id="43985" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">フォント・サイズ・色</span></span><br>
+    基本的なデザイン要素です。<br>
+    サービス紹介動画では、奇抜なフォントよりも、誰にでも読みやすい<span class="decoration-01"><span class="decoration-02">視認性の高いフォント</span></span>（ゴシック体など）を基本としましょう。</li>
+  <li><span class="decoration-01"><span class="decoration-02">トラッキングとカーニング</span></span><br>
+    トラッキングは選択した文字全体の文字間を、カーニングは特定の2文字の間隔を調整する機能です。<br>
+    見出しなどのデザイン性を高めたい箇所で微調整すると、プロらしい仕上がりになります。</li>
+  <li><span class="decoration-01"><span class="decoration-02">レスポンシブデザイン</span></span><br>
+    テキストボックスのサイズを変更した際に、中のテキストや他のレイヤーがどのように追従するかを設定する機能です。<br>
+    「ピン」を使って特定の位置に固定すると、デザインの修正が容易になります。</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item43986" data-item-id="43986" data-item-type="ItemHeading"><h3 class="item-body" id="heading17">マスクを使ったテキスト表示アニメーション</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43987" data-item-id="43987" data-item-type="ItemRichText"><div class="item-body-hbr">テキストを「何もないところから出現させる」アニメーションは、視聴者の注意を引く定番の演出です。<br>
+これを実現する強力な機能が<span class="decoration-01"><span class="decoration-02">「</span></span><span class="decoration-01"><span class="decoration-02">マスク</span></span><span class="decoration-01"><span class="decoration-02">」</span></span>です。<br>
+<br>
+マスクとは、映像やグラフィックの<span class="decoration-02"><span class="decoration-01">特定の部分だけを表示させたり（あるいは隠したり）</span></span>するためのツールです。<br>
+例えば、テキストレイヤーに長方形のマスクを適用し、そのマスクをキーフレームでアニメーションさせることで、まるでシャッターが開くようにテキストが徐々に表示される、といった演出が可能です。</div></div>
+        
+        <div class="article-item item_html " id="item43988" data-item-id="43988" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+  <span class="bold"><strong>マスクによるテキスト表示アニメーションの手順</strong><br></span>
+  <div class="content-area">
+    <ol>
+      <li>アニメーションさせたいテキストを含むグラフィッククリップを選択します。</li>
+      <li>「エフェクトコントロール」パネルの「不透明度」の下にある、長方形や円、ペンツールなどのマスク作成ツールをクリックします。</li>
+      <li>プログラムモニター上にマスクの範囲（青い枠線）が表示されるので、テキスト全体を囲むように調整します。</li>
+      <li>「マスクパス」のストップウォッチをオンにし、再生ヘッドを開始点に戻して、マスクの位置をテキストが完全に見えなくなるまでずらします。</li>
+      <li>再生ヘッドを終了点に進め、マスクの位置を元に戻すと、マスクが移動するのに合わせてテキストが表示されるアニメーションが完成します。</li>
+    </ol>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item44532" data-item-id="44532" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=VoSFz&amp;item_id=44532" rel="nofollow noopener noreferrer" target="_blank">サービス紹介動画2.4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="サービス紹介動画2.4" data-reference="https://www.dropbox.com/scl/fi/ylsz0eg1b6k7val4fe69w/service_ch2_4_v1_published.mp4?rlkey=9m52og67vnmk58zv972ot7niq&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモ動画です。
+音声はありません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item43989" data-item-id="43989" data-item-type="ItemHeading"><h2 class="item-body" id="heading18">【2-3】2章 -章末課題- タイトルアニメーション制作</h2></div>
+        
+        <div class="article-item item_markdown " id="item43990" data-item-id="43990" data-item-type="ItemMarkdown"><h4 id="heading19">目安の学習時間: 30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item43991" data-item-id="43991" data-item-type="ItemHeading"><h3 class="item-body" id="heading20">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43992" data-item-id="43992" data-item-type="ItemRichText"><div class="item-body-hbr">この章で学んだモーショングラフィックスのテクニックを総動員して、指定された見本動画と<span class="decoration-01"><span class="decoration-02">同様のオープニングアニメーション（約5秒）</span></span>を制作してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item43993" data-item-id="43993" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">要件：</span></div></div>
+        
+        <div class="article-item item_html " id="item43994" data-item-id="43994" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>背景画像に<span class="decoration-01"><span class="decoration-02">カラーマット</span></span>を重ね、見本動画の雰囲気を再現すること。</li>
+  <li>「Premiere Pro」というテキストを画面中央に表示させること。</li>
+  <li>テキストの下に、白い長方形シェイプが<span class="decoration-01"><span class="decoration-02">横に伸びる</span></span>アニメーションを追加すること。</li>
+  <li>長方形の中に「1章 動画編集の基本」「カット編集の方法 ①」というテキストと枠を適切なタイミングで表示させること。</li>
+  <li>いずれかのアニメーションに、<span class="decoration-01"><span class="decoration-02">イーズイン/イーズアウト</span></span>を適用し、動きに緩急をつけること。</li>
+  <li>左上の「WEBCOACH」ロゴは反映させる必要はありません。</li>
+</ul></div></div>
+        
+        <div class="article-item item_link " id="item44533" data-item-id="44533" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=VoSFz&amp;item_id=44533" rel="nofollow noopener noreferrer" target="_blank">見本動画</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="見本動画" data-reference="https://www.dropbox.com/scl/fi/8agwsqnpny21b0yhi2z11/service_ch2_mihon_v1_published.mp4?rlkey=pjdbc22vwzlkrz8stccnbugu0&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">見本動画です。
+音声はありません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item44534" data-item-id="44534" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">背景画像</span></div></div>
+        
+        <div class="article-item item_link " id="item45028" data-item-id="45028" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=VoSFz&amp;item_id=45028" rel="nofollow noopener noreferrer" target="_blank">背景画像</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="背景画像" data-reference="https://www.dropbox.com/scl/fo/dl9iv3ryzw2kyvbj48lqg/AIkggWw4BQWhTlf59zyQ2uQ?rlkey=zkfs2kxb3y4rdva85gyf7riiu&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item43995" data-item-id="43995" data-item-type="ItemMarkdown"><h4 id="heading21">解答手順</h4>
+</div>
+        
+        <div class="article-item item_html " id="item43996" data-item-id="43996" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>Premiere Proで5秒程度の新規シーケンスを作成します。</li>
+  <li>支給された背景画像をタイムラインに配置します。</li>
+  <li>[ファイル] &gt; [新規] &gt; [カラーマット] からオレンジ系のカラーマットを作成し、背景画像の上に重ねます。</li>
+  <li>カラーマットのクリップを選択し、「エフェクトコントロール」パネルで<span class="decoration-01"><span class="decoration-02">[描画モード]</span></span>を「スクリーン」などに、<span class="decoration-01"><span class="decoration-02">[不透明度]</span></span>を50%程度に調整して、見本動画の雰囲気に近づけます。</li>
+  <li>エッセンシャルグラフィックスで「Premiere Pro」というテキストレイヤーを作成し、画面中央に配置します。</li>
+  <li>同じグラフィッククリップ内、または新規のグラフィッククリップで、テキストの下に白い長方形シェイプを作成します。</li>
+  <li>長方形シェイプの<span class="decoration-01"><span class="decoration-02">「スケール」</span></span>プロパティの「縦横比を固定」のチェックを外し、<span class="decoration-01"><span class="decoration-02">[スケール（横）]</span></span> にキーフレームを打ちます。<br>
+    幅が0から100に変化するように設定し、横に伸びるアニメーションを作成します。</li>
+  <li>エッセンシャルグラフィックスパネル内で、長方形シェイプの上に「1章 動画編集の基本」「カット編集の方法 ①」というテキストレイヤーと、それを囲む白い角丸の枠シェイプを作成し、グループ化します。</li>
+  <li>長方形が伸びきったタイミングで、8で作成したグループの<span class="decoration-01"><span class="decoration-02">[不透明度]</span></span>にキーフレームを打ち、0から100に変化させてフェードインで表示させます。</li>
+  <li>長方形のスケールアニメーションのキーフレーム（特に終了点）に<span class="decoration-01"><span class="decoration-02">「イーズアウト」</span></span>を適用し、滑らかな動きにします。</li>
+  <li>全体を再生してタイミングなどを調整し、問題がなければH.264形式で書き出して完成です。</li>
+</ol></div></div>
+        
+        <div class="article-item item_html " id="item43998" data-item-id="43998" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title"><strong>制作物をチェックしよう</strong></div>
+  </div>
+  <div class="content-area">
+    <ul>
+      <li>背景は、画像とカラーマットを組み合わせて見本の雰囲気を再現できていますか？</li>
+      <li>白い長方形は、指定通りに横へ伸びるアニメーションになっていますか？</li>
+      <li>各テキストや図形は、適切なタイミングで表示されていますか？（タイトル表示→長方形表示→中のテキスト表示）</li>
+      <li>キーフレームにイーズは正しく適用され、機械的ではない滑らかな動きになっていますか？</li>
+      <li>指定された秒数（約5秒）で、アニメーションが完結していますか？</li>
+    </ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item43999" data-item-id="43999" data-item-type="ItemText"><div class="item-body-hbr">これで「2章 Premiere Proモーショングラフィックスの基礎」の解説を終わります。<br>次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item44546" data-item-id="44546" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/service/2S5Gu" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/practice/service/0YyMA" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 Premiere Proモーショングラフィックスの基礎</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：2.5時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【2-1】図形を動かすシェイプアニメーション</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading5" class="tocLink">モーショングラフィックスの基本</a><ul><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li></ul></li><li><a href="#heading8" class="tocLink">キーフレームでアニメーションを作る</a></li><li><a href="#heading9" class="tocLink">アニメーションに緩急をつける</a></li><li><a href="#heading10" class="tocLink">練習問題：3つの図形を順番に表示させよう</a><ul><li><a href="#heading11" class="tocLink">問題</a></li><li><a href="#heading12" class="tocLink">解答手順</a></li><li><a href="#heading13" class="tocLink">解答例</a></li></ul></li></ul></li><li><a href="#heading14" class="tocLink">【2-2】文字を魅せるテキストアニメーション</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間：60分</a></li></ul><ul><li><a href="#heading16" class="tocLink">テキストレイヤーの作成とスタイリング</a></li><li><a href="#heading17" class="tocLink">マスクを使ったテキスト表示アニメーション</a></li></ul></li><li><a href="#heading18" class="tocLink">【2-3】2章 -章末課題- タイトルアニメーション制作</a><ul><li><a href="#heading19" class="tocLink">目安の学習時間: 30分</a></li></ul><ul><li><a href="#heading20" class="tocLink">問題</a><ul><li><a href="#heading21" class="tocLink">解答手順</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/service/2S5Gu" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/practice/service/0YyMA" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>
