@@ -129,8 +129,7 @@ export function GoalDeclarationCard({
         <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)' }}>読み込み中…</p>
       ) : items.length === 0 ? (
         <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text-muted)', lineHeight: 'var(--dc-lh-prose)' }}>
-          まだ宣言がありません。「この2週間で何をやり切るか」を1文で書いておくと、
-          期間が終わったときに振り返りとして積み上がります。
+          目標が設定されていません
         </p>
       ) : (
         <>

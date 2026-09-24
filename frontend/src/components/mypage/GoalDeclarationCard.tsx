@@ -46,7 +46,7 @@ import { toLocalDateKey } from '../../utils/studyStats';
 interface MypageGoalDeclarationCardProps {
   declaration: GoalDeclaration | null;
   loading: boolean;
-  /** モックOFF。カードごと出さない */
+  /** 一覧が取れなかった。カードは畳まず「目標が設定されていません」として出す */
   unavailable: boolean;
 }
 
@@ -80,9 +80,6 @@ export function MypageGoalDeclarationCard({
 }: MypageGoalDeclarationCardProps) {
   const navigate = useNavigate();
 
-  // 実BFFにこのAPIが無い環境では、赤いエラーを出さずカードごと畳む
-  if (unavailable) return null;
-
   if (loading) {
     return (
       <section style={CARD_STYLE} aria-busy="true">
@@ -96,7 +93,8 @@ export function MypageGoalDeclarationCard({
   // 🔴 出すのは進行中の目標だけ。「期間終了・振り返り待ち」と「振り返りを書く ›」を
   //    ここに出していたが、この画面だけを見ている人には何のことか分からないので外した。
   //    振り返りの導線は /study-log の「あなたの目標」カードが1箇所で持つ。
-  const target = declaration;
+  // 一覧が取れなかったときも赤いエラーは出さず、未設定と同じ表示にする
+  const target = unavailable ? null : declaration;
 
   const header = (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, flexWrap: 'wrap' }}>
