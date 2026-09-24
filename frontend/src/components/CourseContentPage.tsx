@@ -239,6 +239,22 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
     });
   }, [user?.userid, courseId, selectedModule?.id, selectedModule?.modname]);
 
+  // コースを開いたら受講登録する（受講生のみ）。
+  // 🔴 目次は BFF が管理トークンで引くので受講登録なしでも開けてしまう。登録しないと
+  //    /moodle/courses（受講中一覧）にも resumecourse にも載らず、マイページの
+  //    「続きから学習」が空のままになる。登録済みなら BFF が 409 を返すので無視してよい。
+  //    唯一の登録導線だった CategoryDetailPage はルート未接続のまま decce37 で削除済み。
+  const enrollRequestedRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (!user?.userid || user.isAdmin || user.isCoach) return;
+    const key = `${user.userid}:${courseId}`;
+    if (enrollRequestedRef.current === key) return;
+    enrollRequestedRef.current = key;
+    bffClient.enrollCourse(courseId).catch(() => {
+      // 409（登録済み）や一時的な失敗で教材の閲覧は止めない
+    });
+  }, [user?.userid, user?.isAdmin, user?.isCoach, courseId]);
+
   // 教材画面はLMSのシェル（サイドバー・SP下部ナビ）を描かない没入モード。
   // dev/miyabe の LearningWorkspacePage と同じ body クラスで、その余白の
   // 打ち消しとページスクロールの停止を index.css 側に任せる。
