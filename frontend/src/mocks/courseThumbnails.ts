@@ -42,6 +42,7 @@ export const COURSE_THUMBNAILS: Record<string, string> = {
   'hpb-review': 'hpb-review.webp',
   'html-css': 'html-css.webp',
   'illustrator': 'illustrator.webp',
+  'instagram': 'instagram.webp',
   'javascript': 'javascript.webp',
   'job-change': 'job-change.webp',
   'jquery': 'jquery.webp',
