@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="8vS3gYAGDNVClX2PMAiddA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="303" data-domain="learn.webcoach.jp" data-url="/web-design/ChIor" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Wix実践 -中級編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/ChIor">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Wix実践 -中級編- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/051/390/medium/a1e226b6-9319-4546-9aff-4562d8dab18e.jpg?1787055729">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Wix実践 -中級編-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/ChIor">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/051/390/large/a1e226b6-9319-4546-9aff-4562d8dab18e.jpg?1787055729">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/ChIor"
+    },
+    "headline": "Wix実践 -中級編-",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/051/390/medium/a1e226b6-9319-4546-9aff-4562d8dab18e.jpg?1787055729",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2024-07-29T17:52:20+09:00",
+    "dateModified": "2026-08-18T21:26:13+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_ono"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="4Uxb73GwqsyeS8e6An2xQU94prgrTYnltdSubh3fLQ0X_su4FT32N89huksJ1_vlTYzfoXLIoqA7KCMXE9wNHw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Wix実践 -中級編-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25485" data-item-id="25485" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="7XsAL" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Fuxhv" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item5326" data-item-id="5326" data-item-type="ItemHeading"><h2 class="item-body">0. はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item39239" data-item-id="39239" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間:10時間</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item5327" data-item-id="5327" data-item-type="ItemRichText"><div class="item-body-hbr">初級編では動画を視聴しながら簡単なWEBサイトを制作していただきました。<br>
+<br>
+いかがでしたでしょうか？Wixは基本的には、ドラッグ&amp; ドロップのみの操作なので意外と簡単だなと思った方も多いと思います。<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">少し躓いてしまった方も心配する必要はありません。中級編、上級編とこなしていけばWixのスキルはほぼ完璧に身に付き、使いこなせるようになっています！</span></span></div></div>
+        
+        <div class="article-item item_markdown " id="item5328" data-item-id="5328" data-item-type="ItemMarkdown"><p>受講生の皆様は、もうすでにWixの基本的な操作方法はマスターしたと言っても過言ではありません。</p>
+
+<p>中級編では、初級編で身につけたスキルを生かして<strong>ご自身の力のみでアウトプット課題を制作していただきます！</strong></p>
+
+<p><strong>以下のフローに沿ってこの中級編を進めてください！</strong></p>
+
+<p>==</p>
+
+<p>1 . 制作課題を確認する。</p>
+
+<p>2 . ヒント・初級編を参考にしながら、<strong>ご自身の力のみ</strong>で、1から白紙のテンプレートを用いて構築する。</p>
+
+<p>3 . 解説動画を視聴し、間違っていたところ・分からなかったところなどを<strong>自己添削する</strong>。</p>
+
+<p>4 . コーチにスラックにて共有する。</p>
+
+<p>==</p>
+</div>
+        
+        <div class="article-item item_html " id="item5329" data-item-id="5329" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">注意事項</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>
+<span class="decoration-02">分からないところがあれば5分だけ考え、解決しなければ迷わず動画教材を視聴しましょう！</span>
+                <ul>
+                    <li>
+                        受講生の皆様がご卒業後にWEB業界で働く際には、新たなWEBスキルをご自身で身に付け、発生した問題を解決する<span class="decoration-02">自己解決能力</span>が必要です。
+                    </li>
+                    <li>
+                        しかし初めての学習で、分からないことがたくさんあるのは当然なので、その際は動画を活用して<span class="decoration-02">学習を前に進めていく意識</span>も重要です！
+                    </li>
+                    <li>
+                        <span class="decoration-02">自己解決能力</span>を養うことと、<span class="decoration-02">学習を前に進めていく意識</span>を常に持って進めていきましょう！
+                    </li>
+                </ul>
+            </li>
+            <li>
+                画像は見本と全く同じものを使用する必要はありません。画像サイトからご自身でお選びください。
+                <ul>
+                    <li>サイトに合った良い素材を選定するのもスキルの一つです。</li>
+                </ul>
+            </li>
+            <li><span class="decoration-02">提出の際、コーチにメールアドレスを聞いてWixの権限を共有をしましょう！</span><br>
+                添削をするにあたって、Wixの権限共有は必須です。権限共有の仕方がわからない方は、「Wix -実践編- ＞ d. Wixの権限共有機能を理解しよう」を確認しましょう🙌
+            </li>
+            <li><span class="decoration-02">Webデザインで扱うツールは日々UI（画面の見た目）が変更されます。</span><br>
+                運営では日々教材の改善に努めておりますが、Wixも日々アップデートされ、機能やボタンが常に追加・変更されていくため教材の画面と異なる場合があります。また、ユーザーごとに表示されるUIが若干異なる場合があります。
+教材の通り進めていてご不明な点ございましたら以下のフローに従って解決していただけますと幸いです🙌</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item51387" data-item-id="51387" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・分からないことが出てきたときの対処方法</span></div></div>
+        
+        <div class="article-item item_text " id="item51388" data-item-id="51388" data-item-type="ItemText"><div class="item-body-hbr">1.画面のスクリーンショットを取る。<br />Windowsは「Windows + Shift + S」や「PrtSc」、Macは「Command + Shift + 3」や「Command + Shift + 4」を使います。</div></div>
+        
+        <div class="article-item item_text " id="item51389" data-item-id="51389" data-item-type="ItemText"><div class="item-body-hbr">2.AI（Chat gpt や google gemini など）にそのスクリーンショットを添付し疑問点を書く。</div></div>
+        
+        <div class="article-item item_image " id="item51390" data-item-id="51390" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/051/390/medium/a1e226b6-9319-4546-9aff-4562d8dab18e.jpg?1787055729" title=""><img class="img-responsive item-image" alt=" (51390)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/051/390/medium/a1e226b6-9319-4546-9aff-4562d8dab18e.jpg?1787055729" width="550" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item51391" data-item-id="51391" data-item-type="ItemText"><div class="item-body-hbr">3.AIにきいても解決しなかった場合はコーチに聞く。</div></div>
+        
+        <div class="article-item item_rich_text " id="item51393" data-item-id="51393" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">分からないことがあれば遠慮なく質問しましょう！</span>また、以下のフォーマットに従って質問をするとよいです！</div></div>
+        
+        <div class="article-item item_text " id="item51392" data-item-id="51392" data-item-type="ItemText"><div class="item-body-hbr">・ 実現したいこと<br />・ エラーの内容、わからないこと、できないこと<br />・ 原因の予想<br />・ 実際に試したこと<br />・ 回答者が参考になりそうなソースコードやファイルなど</div></div>
+        
+        <div class="article-item item_markdown " id="item5330" data-item-id="5330" data-item-type="ItemMarkdown"><p>それでは頑張っていきましょう！！</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5331" data-item-id="5331" data-item-type="ItemHeading"><h2 class="item-body">1. 作成課題の確認</h2></div>
+        
+        <div class="article-item item_markdown " id="item39240" data-item-id="39240" data-item-type="ItemMarkdown"><h4 id="section">目安学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5332" data-item-id="5332" data-item-type="ItemMarkdown"><p>こちらが作成課題となります！！</p>
+</div>
+        
+        <div class="article-item item_link " id="item5333" data-item-id="5333" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5333" rel="nofollow noopener noreferrer" target="_blank">Home | Wix 中級編　見本サイト</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Home | Wix 中級編　見本サイト" data-reference="https://info2516354.wixsite.com/website-185" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/333/thumb/5f121eb8-3c3e-4001-ae1d-67937ab24552.png?1779952319" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item48559" data-item-id="48559" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">白紙のテンプレートが開けない際の対処法に関して<br></span>
+	  <ul>
+      <li>Wixのアップデートによって、動画の手順で白紙のテンプレートが開けない場合があります</li>
+      <li>その際は以下のURLから白紙のテンプレートを開いてください！</li>
+      <li>Wixのアカウントを持っている状態であれば、この手順で開くことができます！</li>        
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item51197" data-item-id="51197" data-item-type="ItemHtml"><div class="item-body"><!-- スタイル定義（CSS） -->
+<style>
+  .card-link {
+    display: block;
+    text-decoration: none;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px 20px;
+    background-color: #ffffff;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card-link:hover {
+    border-color: #d1d5db;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #000000;
+    margin: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    line-height: 1.4;
+  }
+
+  .external-icon {
+    width: 14px;
+    height: 14px;
+    fill: #9ca3af;
+    flex-shrink: 0;
+  }
+
+  .card-description {
+    font-size: 14px;
+    color: #374151;
+    margin: 0;
+    padding-left: 48px; /* 画像にあったインデント位置を再現 */
+    line-height: 1.5;
+  }
+</style>
+
+<!-- リンクカード本体（HTML） -->
+<a href="https://ja.wix.com/intro/view/bfbd969c-12ff-4d7a-ac33-e3085d70925c?flowContext=JTdCJTIyaGlzdG9yeUVudHJpZXMlMjIlM0ElNUIlN0IlMjJmbG93SWQlMjIlM0ElMjI3NGJlMmRlNS1jNGFhLTQzZTUtYTZjYS02ODdhODY1MDE2NTclMjIlMkMlMjJzbmFwc2hvdElkJTIyJTNBJTIyNmEzMGQwZGYtNWU3ZS00NGMzLWI5NWEtMmJkNDQwNTA0NTllJTIyJTdEJTJDJTdCJTIyZmxvd0lkJTIyJTNBJTIyNzRiZTJkZTUtYzRhYS00M2U1LWE2Y2EtNjg3YTg2NTAxNjU3JTIyJTJDJTIycGFnZUlkJTIyJTNBJTIyYmZiZDk2OWMtMTJmZi00ZDdhLWFjMzMtZTMwODVkNzA5MjVjJTIyJTJDJTIyc25hcHNob3RJZCUyMiUzQSUyMjZhMzBkMGRmLTVlN2UtNDRjMy1iOTVhLTJiZDQ0MDUwNDU5ZSUyMiU3RCU1RCUyQyUyMmFuc3dlcnMlMjIlM0ElN0IlN0QlMkMlMjJleHBlcmltZW50cyUyMiUzQSU3QiU3RCUyQyUyMm1ldGFkYXRhJTIyJTNBJTdCJTIybWV0YVNpdGVOYW1lc3BhY2UlMjIlM0ElMjJEQVNIQk9BUkRfRklSU1QlMjIlMkMlMjJoYXNIdG1sQXBwJTIyJTNBJTIydHJ1ZSUyMiUyQyUyMm9yaWdpblRlbXBsYXRlSWQlMjIlM0ElMjI2YzQ2MzhkZi05N2RiLTRjMGItODYyYy0zMzg2OWJiMmE3YzklMjIlMkMlMjJpc0hhcm1vbnlBbGxvd2VkJTIyJTNBJTIydHJ1ZSUyMiUyQyUyMmlzSGFybW9ueSUyMiUzQSUyMnRydWUlMjIlMkMlMjJpc1N0dWRpbyUyMiUzQSUyMmZhbHNlJTIyJTJDJTIyc3R1ZGlvVGVtcGxhdGVzVXJsJTIyJTNBJTIyaHR0cHMlM0ElMkYlMkZ3d3cud2l4LmNvbSUyRnN0dWRpbyUyRnRlbXBsYXRlcyUyMiUyQyUyMmJ1c2luZXNzU2VnbWVudElkJTIyJTNBJTIybm90LWNsYXNzaWZpZWQlMjIlMkMlMjJtZXRhU2l0ZUlkJTIyJTNBJTIyNDhjMTEwNGUtZDA5OC00ZmZjLWE4YzctMDA0OGJmNGYzYzk3JTIyJTJDJTIyYmlTbHVnJTIyJTNBJTIyY3VzdG9taXplX3NpdGVfZnJvbV9kYXNoYm9hcmQlMjIlMkMlMjJsYW5ndWFnZSUyMiUzQSUyMmphJTIyJTJDJTIyZ2VvJTIyJTNBJTIySlAlMjIlN0QlMkMlMjJiaVByb2ZpbGUlMjIlM0ElN0IlN0QlMkMlMjJkZWFsZXJPZmZlcnMlMjIlM0ElN0IlN0QlMkMlMjJpbnRlcm1lZGlhdGVEYXRhJTIyJTNBJTdCJTdEJTJDJTIycHJlbWl1bUZlYXR1cmVzJTIyJTNBJTdCJTdEJTdE&metaSiteId=48c1104e-d098-4ffc-a8c7-0048bf4f3c97&originTemplateId=6c4638df-97db-4c0b-862c-33869bb2a7c9" class="card-link" target="_blank" rel="noopener noreferrer">
+  <div class="card-title">
+    Wix 白紙のテンプレート
+    <svg class="external-icon" viewBox="0 0 24 24">
+      <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"></path>
+    </svg>
+  </div>
+  <p class="card-description">白紙のテンプレートが開きます</p>
+</a></div></div>
+        
+        <div class="article-item item_heading " id="item5334" data-item-id="5334" data-item-type="ItemHeading"><h2 class="item-body">２. ヒント</h2></div>
+        
+        <div class="article-item item_markdown " id="item39241" data-item-id="39241" data-item-type="ItemMarkdown"><h4 id="section">目安学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5335" data-item-id="5335" data-item-type="ItemMarkdown"><p>初級編では扱わなかったスキルについて、実装のヒントを解説します。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item40226" data-item-id="40226" data-item-type="ItemMarkdown"><h4 id="google">Googleマップの追加方法</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item40227" data-item-id="40227" data-item-type="ItemRichText"><div class="item-body-hbr">事業所の所在地などを示すために、サイトにGoogleマップを埋め込む方法です。</div></div>
+        
+        <div class="article-item item_html " id="item40228" data-item-id="40228" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="card-with-icon check">
+    <span class="bold"><strong>操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>エディタ左側のメニューから「パーツを追加」（+のアイコン）をクリックします。</li>
+            <li>「フォーム」を選択します。</li>
+            <li>カテゴリの中から「地図」を見つけ、好みのデザインのマップをクリックするか、ページ上の配置したい場所までドラッグします。</li>
+            <li>配置したマップを選択し、「地図を管理」をクリックして、表示させたい住所（例：東京駅）を入力・設定します。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item40229" data-item-id="40229" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/229/medium/9cda05bf-4d9e-404a-a2a3-dd07d9bfffc1.png?1759905605" title=""><img class="img-responsive item-image" alt=" (40229)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/229/medium/9cda05bf-4d9e-404a-a2a3-dd07d9bfffc1.png?1759905605" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item40230" data-item-id="40230" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/230/medium/762d2c1e-0e2d-42fe-aa60-a79a38f3f94d.png?1759905626" title=""><img class="img-responsive item-image" alt=" (40230)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/230/medium/762d2c1e-0e2d-42fe-aa60-a79a38f3f94d.png?1759905626" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item40231" data-item-id="40231" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/231/medium/40a33aa2-1c74-42ea-8c65-8a348a7e1cb6.png?1759905642" title=""><img class="img-responsive item-image" alt=" (40231)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/231/medium/40a33aa2-1c74-42ea-8c65-8a348a7e1cb6.png?1759905642" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item40232" data-item-id="40232" data-item-type="ItemRichText"><div class="item-body-hbr">マップを追加した後、マップを選択して表示される「設定」や「デザイン」アイコンから、ズームレベルの調整やマップの配色、ピンのデザインなどを自由にカスタマイズできます。</div></div>
+        
+        <div class="article-item item_markdown " id="item40233" data-item-id="40233" data-item-type="ItemMarkdown"><h4 id="section">会員登録・ログイン機能の追加方法</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item40234" data-item-id="40234" data-item-type="ItemRichText"><div class="item-body-hbr">サイトに会員登録機能とログインバーを設置するには、「Wix 会員エリア」というアプリを追加するのが最も簡単で高機能です。</div></div>
+        
+        <div class="article-item item_html " id="item40235" data-item-id="40235" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="card-with-icon check">
+    <span class="bold"><strong>操作手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>エディタ左側のメニューから「アプリ」（四角が4つ並んだアイコン）をクリックします。</li>
+            <li>検索窓に「Wix 会員エリア」と入力して検索します。</li>
+            <li>表示された「Wix 会員エリア」アプリを選択し、「サイトに追加」をクリックします。</li>
+        </ol>
+        <p>これだけで、会員登録フォームやログインバーがサイトに自動で追加されます。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item40236" data-item-id="40236" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/236/medium/9a7b789e-c820-4fd1-8e68-a474dae8e536.png?1759905720" title=""><img class="img-responsive item-image" alt=" (40236)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/236/medium/9a7b789e-c820-4fd1-8e68-a474dae8e536.png?1759905720" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item40237" data-item-id="40237" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/237/medium/1ab891d8-c7b3-419c-b024-d2bfb287ce10.png?1759905742" title=""><img class="img-responsive item-image" alt=" (40237)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/237/medium/1ab891d8-c7b3-419c-b024-d2bfb287ce10.png?1759905742" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item40238" data-item-id="40238" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/238/medium/93b4f734-0ca2-4e0b-a75f-51d6d17dd538.png?1759905765" title=""><img class="img-responsive item-image" alt=" (40238)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/238/medium/93b4f734-0ca2-4e0b-a75f-51d6d17dd538.png?1759905765" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item40239" data-item-id="40239" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/239/medium/dee46267-12f8-43a5-8551-1b7e0815eaed.png?1759905786" title=""><img class="img-responsive item-image" alt=" (40239)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/239/medium/dee46267-12f8-43a5-8551-1b7e0815eaed.png?1759905786" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item40240" data-item-id="40240" data-item-type="ItemText"><div class="item-body-hbr">アプリを追加した後、ログインバーのデザインを変更したり、GoogleやFacebookアカウントを使ったSNSログインを許可したりするなど、細かい設定をカスタマイズすることも可能です。</div></div>
+        
+        <div class="article-item item_heading " id="item5338" data-item-id="5338" data-item-type="ItemHeading"><h2 class="item-body">3. 解説教材</h2></div>
+        
+        <div class="article-item item_markdown " id="item39242" data-item-id="39242" data-item-type="ItemMarkdown"><h4 id="section">目安学習時間:10時間</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5339" data-item-id="5339" data-item-type="ItemMarkdown"><p>お疲れ様でした！</p>
+
+<p>作成課題、いかがでしたでしょうか？</p>
+
+<p>行き詰まるところも少なくなかったと思います。以下の動画教材を用いて自己添削をしましょう！</p>
+
+<p>もしご自身で合っていると思っていても、より効率的な方法が紹介されているかもしれません。一つ一つ丁寧に動画を視聴しましょう！</p>
+
+<p>また、動画で分からない点が出てきても、その後の動画で解説される場合がありますので一度はスキップしていただいて構いません👌</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5340" data-item-id="5340" data-item-type="ItemHeading"><h3 class="item-body">3-1.  Wix - 中級編 - part.1</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5341" data-item-id="5341" data-item-type="ItemRichText"><div class="item-body-hbr">part.1は<span class="decoration-02"><span class="decoration-01">イントロダクション</span></span>です。<br>
+<br>
+この課題に取り組むにあたっての準備・注意事項について解説しています！</div></div>
+        
+        <div class="article-item item_markdown " id="item5342" data-item-id="5342" data-item-type="ItemMarkdown"><h4 id="a">a.使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5343" data-item-id="5343" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5343" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.1" data-reference="https://www.dropbox.com/scl/fi/h57gg5lfuswqxtsu5st2g/wix-part.1.mp4?rlkey=4vs0kr6lna8bj354118ykewsk&amp;e=1&amp;st=k12kkcds&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/343/thumb/2922f3f0-0d0d-409f-8b8b-9e061f83c622.png?1779952361" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5344" data-item-id="5344" data-item-type="ItemMarkdown"><h4 id="b--">b.  ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5345" data-item-id="5345" data-item-type="ItemMarkdown"><p>以下の項目のポイントを確認してください！</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item5347" data-item-id="5347" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>工数を見積もろう！</strong></p>
+
+    <ul>
+      <li>案件をこなしていく際、<strong>絶対にあってはならないことは期日に遅れること</strong>です。
+  このWEBサイトを制作するのにどのくらいの時間がかかるのか見積もってから作業に取り掛かりましょう！
+  期日までに終わらせることが難しいと判断した場合は事前に依頼者と相談しましょう。</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item5348" data-item-id="5348" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">本当に妥当な金額なのかも確認しましょう！</div>
+    </div>
+    <div class="content-area">
+        案件を獲得する際、依頼主はWEBに関する知識がないまま依頼してくる場合があります。
+その際、想定工数に対して妥当な値段ではない場合があります。
+例えば、24時間以上かかるものに対して5000円しか出さないというのは割に合わないですよね。。。
+妥当な見積もりをこちらから提示することもとても大切です🤝
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item5349" data-item-id="5349" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>WEBサイトの構成を把握しましょう！</strong></p>
+
+    <ul>
+      <li>構成、フォント、カラーはどのようになっているかを確認しましょう。
+  カラーピッカー・ドロッパー、WhatFontなどのchromeのプラグインを利用して<strong>トンマナを合わせましょう！
+  <a href="/knowledge/eFJhj">「カラーピッカー・ドロッパー、WhatFontの使い方はこちら」</a></strong></li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item5350" data-item-id="5350" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">「トンマナ」とは？？</div>
+    </div>
+    <div class="content-area">
+        トーン（tone）＆マナー（manner）の略称で、広告やWeb制作のデザインにおいてコンセプトや雰囲気に一貫性を持たせることです。
+ライティングやWebデザインなど、クリエイティブに関わる業務においてトンマナを合わせることは、企業のマーケティングやブランディングの観点から非常に重要です！！
+デザイン制作に取りかかる前に、ターゲットやコンセプトなどのトンマナをしっかりと理解し作業に入るようにしましょう！
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item5351" data-item-id="5351" data-item-type="ItemHeading"><h3 class="item-body">3-2. Wix - 中級編 - part.2</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5352" data-item-id="5352" data-item-type="ItemRichText"><div class="item-body-hbr">part.2では、<span class="decoration-01"><span class="decoration-02">ヘッダー部分</span></span>について解説しています！<br>
+<br>
+主に初級編で学んだスキルが多いので復習がてら見てみてください🙌<br>
+<br>
+また動画にある「Home」以外のメニューの設定についてはPart16で詳しく説明します。そのあめ現時点では出来ていなくても大丈夫です！</div></div>
+        
+        <div class="article-item item_markdown " id="item5353" data-item-id="5353" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5354" data-item-id="5354" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5354" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.2" data-reference="https://www.dropbox.com/scl/fi/gy0ikbc7ly8iln6xr1roq/wix-part.2.mp4.mp4?rlkey=rd4twtvdhy4kk1x9inpytbtsr&amp;st=zk7wi2qc&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/354/thumb/59d4ba03-6012-48ab-af95-d036cf1b14bc.png?1779952382" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5355" data-item-id="5355" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item46841" data-item-id="46841" data-item-type="ItemMarkdown"><ul>
+  <li>白紙テンプレートを使用してページの作成を開始しよう！
+    <ul>
+      <li>白紙テンプレートの中のこちらを使用して作成を開始しましょう！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item46840" data-item-id="46840" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/840/medium/1536ada9-5105-46e7-80d1-549c7b7e99fe.png?1773029663" title=""><img class="img-responsive item-image" alt=" (46840)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/840/medium/1536ada9-5105-46e7-80d1-549c7b7e99fe.png?1773029663" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item5357" data-item-id="5357" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>デベロッパーツール、カラーピッカー・ドロッパーを使いこなそう！</strong></p>
+
+    <ul>
+      <li>WEBサイトを正確に模写する上で、上記2つのツールは不可欠です。
+  デベロッパーツールは、今後学習するHTML/CSSを学習するとより深く理解できるようになります。なので、今はこんな便利なものがあるのか程度で結構です。</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_rich_text " id="item42991" data-item-id="42991" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1. デベロッパーツールの起動方法</span></div></div>
+        
+        <div class="article-item item_text " id="item42992" data-item-id="42992" data-item-type="ItemText"><div class="item-body-hbr">最も簡単な起動方法は、調べたいWebページ上で右クリックし、「検証」（または「要素の検証」）を選択することです。</div></div>
+        
+        <div class="article-item item_image " id="item42993" data-item-id="42993" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/993/medium/e8ed8df6-dd96-4c4a-aab0-648679201cd6.png?1762162462" title=""><img class="img-responsive item-image" alt=" (42993)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/993/medium/e8ed8df6-dd96-4c4a-aab0-648679201cd6.png?1762162462" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42994" data-item-id="42994" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2. 要素の調べ方（セレクトモード）</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item42995" data-item-id="42995" data-item-type="ItemRichText"><div class="item-body-hbr">デベロッパーツールが起動すると、画面の右側（または下側）に画面が表示されます。<br>
+<br>
+1. まず、ツール画面の左上にある矢印（または四角に矢印が刺さった）アイコンをクリックします。これが「セレクトモード」です。<br>
+2. その状態で、Webページ上の調べたい部分（例：見出しテキストやボタン）にマウスカーソルを合わせます。<br>
+3. カーソルを合わせると、その要素が青くハイライトされます。<br>
+4. クリックすると、デベロッパーツール側で該当するHTMLコードがハイライトされます。</div></div>
+        
+        <div class="article-item item_image " id="item42996" data-item-id="42996" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/996/medium/aaa573e8-47f9-4d2b-b419-868cfc6ceb6c.png?1762162549" title=""><img class="img-responsive item-image" alt=" (42996)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/996/medium/aaa573e8-47f9-4d2b-b419-868cfc6ceb6c.png?1762162549" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42997" data-item-id="42997" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3. CSS（デザイン）の確認方法</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item42998" data-item-id="42998" data-item-type="ItemRichText"><div class="item-body-hbr">要素をクリックして選択すると、デベロッパーツール（Elementsパネル）の下半分、または右側に「Styles」というタブが表示されます。<br>
+ここには、選択した要素に適用されているCSS（デザインの指示）が一覧表示されます。<br>
+<br>
+Wixでの模写では、主に以下のプロパティ（指示の種類）を確認します。<br>
+<br>
+- `color`: 文字色<br>
+- `background-color`: 背景色<br>
+- `font-size`: 文字の大きさ<br>
+- `font-family`: フォントの種類<br>
+- `font-weight`: 文字の太さ<br>
+- `margin`: 要素の外側の余白<br>
+- `padding`: 要素の内側の余白<br>
+<br>
+`color`や`background-color`の横にある色のついた四角をクリックすると、「カラーピッカー」が起動し、色の詳細（カラーコード、例: `#FFFFFF`）をコピーできます。これが教材で触れている「カラーピッカー・ドロッパー」機能の一部です。</div></div>
+        
+        <div class="article-item item_image " id="item42999" data-item-id="42999" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/999/medium/e8504436-0351-41a6-b1bf-b10f050401e1.png?1762162601" title=""><img class="img-responsive item-image" alt=" (42999)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/999/medium/e8504436-0351-41a6-b1bf-b10f050401e1.png?1762162601" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item43000" data-item-id="43000" data-item-type="ItemRichText"><div class="item-body-hbr">今後HTML/CSSを学習すると、このツールでさらに多くのことができるようになりますが、今は見本サイトが「どのくらいの大きさ（px）か」「どんな色（#XXXXXX）か」を<span class="decoration-01"><span class="decoration-02">調べるための道具</span></span>として活用しましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item46858" data-item-id="46858" data-item-type="ItemMarkdown"><ul>
+  <li>デザインやテキスト設定のUI（ユーザーインターフェース）が動画と現在のUIでは異なっています。
+    <ul>
+      <li>Wixを初めとしたツールではUIの変更が良く行われるので、使用していく中で慣れていきましょう！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item46856" data-item-id="46856" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/856/medium/4716f93d-bae2-48f8-a539-73c0fb8451ee.png?1773052330"><img class="img-responsive item-image" alt=" (46856)" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/856/medium/4716f93d-bae2-48f8-a539-73c0fb8451ee.png?1773052330" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item46857" data-item-id="46857" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/857/medium/8d04b98d-475a-40b6-88cd-9dba72a8f02e.png?1773052359" title=""><img class="img-responsive item-image" alt=" (46857)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/857/medium/8d04b98d-475a-40b6-88cd-9dba72a8f02e.png?1773052359" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item38313" data-item-id="38313" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">よくある質問：メニューの「home」が日本語で「ホーム」と表示されてしまいます...</div>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38315" data-item-id="38315" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">メニューの名称の変更方法</span><br>
+1. 画面左端より「サイト・メニュー」を選択し、「ホーム」の「•••」から「名前を変更」をクリック</div></div>
+        
+        <div class="article-item item_image " id="item38318" data-item-id="38318" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/318/medium/98339562-31eb-48ed-8b22-c6adbd332c2e.png?1756024802" title=""><img class="img-responsive item-image" alt=" (38318)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/318/medium/98339562-31eb-48ed-8b22-c6adbd332c2e.png?1756024802" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38319" data-item-id="38319" data-item-type="ItemRichText"><div class="item-body-hbr">2. 名前を「ホーム」から「home」に変更すると、ヘッダー部分にも反映される</div></div>
+        
+        <div class="article-item item_image " id="item38322" data-item-id="38322" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/322/medium/c947b6fe-4d0e-449d-865c-c32fa6184814.png?1756024957" title=""><img class="img-responsive item-image" alt=" (38322)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/322/medium/c947b6fe-4d0e-449d-865c-c32fa6184814.png?1756024957" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item5361" data-item-id="5361" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>ヘッダーにアニメーション機能をつけよう！</strong></p>
+
+    <ul>
+      <li>ここを忘れてしまう方が少なくありません🥲
+  瑣末な点ですが、今回は上からアニメーション機能の「浮上」を用いて変化をつけましょう！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item38323" data-item-id="38323" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">よくある質問：アニメーションを上から下に動かしたいのにできない...</div>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38325" data-item-id="38325" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">アニメーションの動く向きの変更方法</span><br>
+1. 「浮上」のアニメーションを選択して、「カスタマイズ」をクリック</div></div>
+        
+        <div class="article-item item_image " id="item38327" data-item-id="38327" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/327/medium/dd7e24e6-73d8-4ded-ae49-222983590a46.png?1756025210" title=""><img class="img-responsive item-image" alt=" (38327)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/327/medium/dd7e24e6-73d8-4ded-ae49-222983590a46.png?1756025210" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38329" data-item-id="38329" data-item-type="ItemRichText"><div class="item-body-hbr">2. 「方向」を「上から」に変更すると、見本通り上から出現するアニメーションに設定できます</div></div>
+        
+        <div class="article-item item_image " id="item38332" data-item-id="38332" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/332/medium/26ff22a3-9303-4b30-a2ab-14207d5bb373.png?1756025408" title=""><img class="img-responsive item-image" alt=" (38332)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/332/medium/26ff22a3-9303-4b30-a2ab-14207d5bb373.png?1756025408" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item38333" data-item-id="38333" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">よくある質問：メニューの部分のテキストの色が白に変更できないです！</div>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38276" data-item-id="38276" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">メニューテキストの色の変更方法</span><br>
+1. 筆のアイコンを選択し、「デザインをカスタマイズ」をクリック</div></div>
+        
+        <div class="article-item item_image " id="item38277" data-item-id="38277" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/277/medium/2035b94e-c0d2-4859-aa90-10700220fef4.png?1755966717" title=""><img class="img-responsive item-image" alt=" (38277)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/277/medium/2035b94e-c0d2-4859-aa90-10700220fef4.png?1755966717" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38278" data-item-id="38278" data-item-type="ItemRichText"><div class="item-body-hbr">2. デザインする種類で「メニューアイテム」を選択し、「テキスト」をクリック</div></div>
+        
+        <div class="article-item item_image " id="item38279" data-item-id="38279" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/279/medium/c3e751aa-c466-431c-b3be-0e8acb3553a5.png?1755966885" title=""><img class="img-responsive item-image" alt=" (38279)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/279/medium/c3e751aa-c466-431c-b3be-0e8acb3553a5.png?1755966885" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38284" data-item-id="38284" data-item-type="ItemRichText"><div class="item-body-hbr">3. 「文字色」を白に設定する。<br>
+「通常時」「ホバー時」「現在のページ」の３つで設定する</div></div>
+        
+        <div class="article-item item_image " id="item38285" data-item-id="38285" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/285/medium/a66e2870-de07-419e-96e7-f412b773784a.png?1755967039" title=""><img class="img-responsive item-image" alt=" (38285)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/285/medium/a66e2870-de07-419e-96e7-f412b773784a.png?1755967039" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38270" data-item-id="38270" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Part2での完成経過（ここまで制作できていれば問題ありません！）</span></div></div>
+        
+        <div class="article-item item_image " id="item38271" data-item-id="38271" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/271/medium/2422b098-4a1b-4d0a-82e8-b119a21117ec.png?1755966342" title=""><img class="img-responsive item-image" alt=" (38271)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/271/medium/2422b098-4a1b-4d0a-82e8-b119a21117ec.png?1755966342" width="640" height="306" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38286" data-item-id="38286" data-item-type="ItemRichText"><div class="item-body-hbr">ログインバーについては、教材冒頭で紹介した以下のリンクを参照して追加しましょう。<br>
+</div></div>
+        
+        <div class="article-item item_link " id="item38288" data-item-id="38288" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=38288" rel="nofollow noopener noreferrer" target="_blank">Wix ブログ：ブログにログインバーを追加する | サポートセンター | Wix.com</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix ブログ：ブログにログインバーを追加する | サポートセンター | Wix.com" data-reference="https://support.wix.com/ja/article/wix-%E3%83%96%E3%83%AD%E3%82%B0%EF%BC%9A%E3%83%96%E3%83%AD%E3%82%B0%E3%81%AB%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3%E3%83%90%E3%83%BC%E3%82%92%E8%BF%BD%E5%8A%A0%E3%81%99%E3%82%8B" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/038/288/thumb/14d23813-cb9c-41a7-afcc-e597c06b6e33.jpg?1756010150" width="75" height="75" /></div><div class="media-body"><div class="item-body">$CATEGORY_TITLEについての詳細は、よくある質問をご参照ください。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item5362" data-item-id="5362" data-item-type="ItemHeading"><h3 class="item-body">3-3. Wix - 中級編 - part.3 &amp; part.4</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5363" data-item-id="5363" data-item-type="ItemRichText"><div class="item-body-hbr">part.3とpart.4 では、<span class="decoration-01"><span class="decoration-02">”Co-working”部分・”ABOUT US”部分</span></span>について解説していきます！</div></div>
+        
+        <div class="article-item item_markdown " id="item5364" data-item-id="5364" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5365" data-item-id="5365" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5365" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.3" data-reference="https://www.dropbox.com/scl/fi/i6g30kfhnhlh2wbt1rvtv/wix-part.3.mp4?rlkey=hnc9gmh2yq02kml9oln0hr8at&amp;st=k7qcmy49&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/365/thumb/d23dcef6-41d9-4d28-a996-9f43a3222065.png?1779952504" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item5366" data-item-id="5366" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5366" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.4" data-reference="https://www.dropbox.com/scl/fi/hewbvi3uw7d1k3njbmupd/wix-part.4.mp4?rlkey=1xgq2ntu5sq14o624p8v6j8ue&amp;st=64g9nqav&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/366/thumb/646befcf-7019-4fce-b252-01c26d77b421.png?1779952623" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5367" data-item-id="5367" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item46843" data-item-id="46843" data-item-type="ItemMarkdown"><ul>
+  <li><strong>ストリップ背景の変更をしよう！</strong></li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item46842" data-item-id="46842" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/842/medium/e213e94b-9d8d-43b4-a34c-21fb2680baa2.png?1773031927" title=""><img class="img-responsive item-image" alt=" (46842)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/842/medium/e213e94b-9d8d-43b4-a34c-21fb2680baa2.png?1773031927" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item5369" data-item-id="5369" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>背景の不透明度、背景色を設定しよう！</strong></p>
+
+    <ul>
+      <li>コーディングで実装しようとするとかなり煩雑になる作業ですが、Wixでは簡単に行うことができます。
+  瑣末な点ですが、適切に背景色・不透明度を設定するとかなり見やすくなるのでしっかりと設定しましょう！</li>
+    </ul>
+  </li>
+</ul>
+
+</div>
+        
+        <div class="article-item item_rich_text " id="item38293" data-item-id="38293" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">設定方法<br>
+</span>1. 背景画像の不透明度を「50」にする<br>
+2. 背景色を「黒」に設定する</div></div>
+        
+        <div class="article-item item_markdown " id="item38290" data-item-id="38290" data-item-type="ItemMarkdown">
+<ul>
+  <li>
+    <p><strong>文字間隔・行間隔・アニメーションを適切にしましょう！</strong></p>
+
+    <ul>
+      <li>忘れがちですが、見る人の印象がかなり変わるのでしっかりと設定しましょう。
+  アニメーションは方向やエフェクト時間まで細かく設定することができます！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item38295" data-item-id="38295" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/295/medium/ac3519c0-942b-47be-acf7-4a69e543c046.png?1756011099" title=""><img class="img-responsive item-image" alt=" (38295)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/295/medium/ac3519c0-942b-47be-acf7-4a69e543c046.png?1756011099" width="640" height="394" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item5370" data-item-id="5370" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">注意事項</div>
+    </div>
+    <div class="content-area">
+        Wixの仕様変更により、現在【初回読み込みのみ】が表示されなくなっています！<br>
+        現在の表記は以下のようになっていますので、実際の操作画面と動画の画面が異なっていても気にせずに制作を続けてください！
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item5371" data-item-id="5371" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>オンライン予約ページを設定しよう！</strong></p>
+
+    <ul>
+      <li>アプリケーションの「Wix Booking」を用いて可能です！part.10で詳しく解説するのでここではスキップしていただいて構いません。
+  以下のサイトを参考にしてみてください。（料金設定は適当で構いません。）</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_link " id="item5372" data-item-id="5372" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5372" rel="nofollow noopener noreferrer" target="_blank">予約システム｜予約サイト作成｜Wix.com</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="予約システム｜予約サイト作成｜Wix.com" data-reference="https://ja.wix.com/reserve" src="https://cdn.clipkit.co/clipkit/images/thumb/missing.png" /></div><div class="media-body"><div class="item-body">Webサイトやアプリでの予約受付、オンライン決済、予約状況と顧客管理がワンストップで行える予約管理システム。マーケティング機能と分析ツールも完備し、業務効率化でビジネスの成長を支援します。Zoomレッスン、フィットネス、サロン、スクール、医療サービスなどの予約管理に最適。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5373" data-item-id="5373" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>スクロールエフェクトを設定しよう！</strong></p>
+
+    <ul>
+      <li>エフェクトはプレビュー、もしくはURLから確認可能です。
+  名称などを暗記する必要はないので、実際に手を動かして試しながらサイトに最適なものに設定しましょう！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item38297" data-item-id="38297" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/297/medium/b5557446-0448-43ba-9e2e-6cd3c6deea60.png?1756012420" title=""><img class="img-responsive item-image" alt=" (38297)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/297/medium/b5557446-0448-43ba-9e2e-6cd3c6deea60.png?1756012420" width="640" height="377" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item5374" data-item-id="5374" data-item-type="ItemHeading"><h3 class="item-body">3-4. Wix - 中級編 - part.5</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5375" data-item-id="5375" data-item-type="ItemRichText"><div class="item-body-hbr">part.5では、<span class="decoration-01"><span class="decoration-02">”OUR COMMUNITY”部分</span></span>について解説しています！</div></div>
+        
+        <div class="article-item item_markdown " id="item5376" data-item-id="5376" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5377" data-item-id="5377" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5377" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.5" data-reference="https://www.dropbox.com/scl/fi/incwaw64p8570kp51c06f/wix-part.5.mp4?rlkey=obpfoy0t1qiar0mfcyju2rfjg&amp;st=9u9gpjni&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/377/thumb/1b1b2ac6-58e0-45a2-91ad-cea72f342ec9.png?1779952737" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item42990" data-item-id="42990" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5380" data-item-id="5380" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>ギャラリーを追加しよう！</strong></p>
+
+    <ul>
+      <li>Wixにはさまざまなギャラリーがありますが、「プロギャラリー」が機能的にも充実していておすすめです👌
+  以下の項目を動画でしっかり確認してギャラリーを設定してください！</li>
+    </ul>
+
+    <p>==</p>
+
+    <ul>
+      <li><strong>レイアウト</strong></li>
+      <li><strong>拡大表示のカスタマイズ</strong></li>
+      <li><strong>オーバーレイ</strong></li>
+      <li><strong>矢印ボタン</strong></li>
+      <li><strong>アイテムスタイル</strong></li>
+      <li><strong>マウスオーバー効果</strong></li>
+    </ul>
+
+    <p>＝＝</p>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item38299" data-item-id="38299" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/299/medium/ea842544-5331-4bf1-9286-62ea9356dec4.png?1756012807" title=""><img class="img-responsive item-image" alt=" (38299)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/299/medium/ea842544-5331-4bf1-9286-62ea9356dec4.png?1756012807" width="640" height="390" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item5381" data-item-id="5381" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">オーバーレイとは？？？</div>
+    </div>
+    <div class="content-area">
+       オーバーレイとは、背景動画の上に表示されるパターンやテクスチャで、クールで面白い効果を追加することができます！
+しかし、モバイル版サイトでは表示されません。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item5382" data-item-id="5382" data-item-type="ItemHeading"><h3 class="item-body">3-5.  Wix - 中級編 - part.6 &amp; part.7</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5383" data-item-id="5383" data-item-type="ItemRichText"><div class="item-body-hbr">part.6,7では、<span class="decoration-02"><span class="decoration-01">”SPACES”部分の作成</span></span>について解説しています！</div></div>
+        
+        <div class="article-item item_markdown " id="item5384" data-item-id="5384" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5385" data-item-id="5385" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5385" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.6" data-reference="https://www.dropbox.com/scl/fi/9moh4c901br5y0xuiuuw7/wix-part.6.mp4?rlkey=e9aeealhpnanloi3n729xomdm&amp;e=1&amp;st=nqjnt5rr&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/385/thumb/96fa61b9-fde0-400e-b052-0596b602f874.png?1779952753" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12535" data-item-id="12535" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=12535" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.7" data-reference="https://www.dropbox.com/scl/fi/wyywjvcjmnzpvw92qyzv6/wix-part.7-2.mp4?rlkey=94weubxwke0zltdwefvmx9tay&amp;st=uin2m01s&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/535/thumb/13229853-ec33-4397-866e-59a730d3de64.png?1779952914" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5386" data-item-id="5386" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item46848" data-item-id="46848" data-item-type="ItemMarkdown"><ul>
+  <li>「クロップ」の選択するためには「レイアウト」→「レイアウトを編集」を選択してくださいね！</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item46847" data-item-id="46847" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/847/medium/4bc11f0d-6c6e-45ce-9184-b8051e4b4ab9.png?1773035138" title=""><img class="img-responsive item-image" alt=" (46847)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/847/medium/4bc11f0d-6c6e-45ce-9184-b8051e4b4ab9.png?1773035138" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item5388" data-item-id="5388" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>ギャラリーを正しく設定しよう！</strong></p>
+
+    <ul>
+      <li>以下の項目がしっかりと設定できていたか、確認してみてください！</li>
+    </ul>
+
+    <p>==</p>
+
+    <ul>
+      <li>レイアウトは「<strong>グリッド</strong>」</li>
+      <li>サムネイルのサイズは「<strong>クロップ</strong>」、画像の比率は「<strong>16 : 9</strong>」、<strong>間隔はなし</strong></li>
+      <li>オーバーレイは<strong>「フルオーバーレイ」</strong>、オーバーレイ効果は<strong>「フェードイン」</strong></li>
+      <li>マウスオーバー効果は「<strong>ぼかし</strong>」</li>
+      <li><strong>SNSシェアボタンをオン</strong></li>
+      <li>テキストは<strong>タイトルのみ表示</strong></li>
+    </ul>
+
+    <p>＝＝</p>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item38301" data-item-id="38301" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/301/medium/d7b89274-8466-4fa4-9a01-af68787f688c.png?1756012894" title=""><img class="img-responsive item-image" alt=" (38301)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/301/medium/d7b89274-8466-4fa4-9a01-af68787f688c.png?1756012894" width="640" height="281" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item38337" data-item-id="38337" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+   <div class="title-area">
+       <div class="icon bulb"></div>
+       <div class="title">よくある質問：それぞれの画像のタイトルはどこから設定するの？</div>
+   </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38339" data-item-id="38339" data-item-type="ItemRichText"><div class="item-body-hbr">→プロギャラリーの「メディアを管理」をクリックし、各画像を選択すると「タイトル」の記入欄が表示されます。</div></div>
+        
+        <div class="article-item item_image " id="item38341" data-item-id="38341" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/341/medium/a660b83f-062b-4dd2-9b4e-020635e47b66.png?1756026712" title=""><img class="img-responsive item-image" alt=" (38341)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/341/medium/a660b83f-062b-4dd2-9b4e-020635e47b66.png?1756026712" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38303" data-item-id="38303" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">※SNSシェアボタンが正しく表示されているか確認するときは、「プレビュー」機能ではなく、画面右上の「公開」ボタンを使用する必要があります。</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item38304" data-item-id="38304" data-item-type="ItemRichText"><div class="item-body-hbr">1. 「公開」ボタンを押すと以下のような画面が表示されるので、「サイトを見る」を選択します。</div></div>
+        
+        <div class="article-item item_image " id="item38305" data-item-id="38305" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/305/medium/71a379f1-b978-4b18-8a97-258575892b30.png?1756013390"><img class="img-responsive item-image" alt=" (38305)" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/305/medium/71a379f1-b978-4b18-8a97-258575892b30.png?1756013390" width="640" height="361" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38310" data-item-id="38310" data-item-type="ItemRichText"><div class="item-body-hbr">2. すると動画のようにSNSシェアボタンが機能するかを確認できます。</div></div>
+        
+        <div class="article-item item_image " id="item38312" data-item-id="38312" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/312/medium/a20f8b5e-5a86-4369-bb2f-b13ca498c43f.png?1756013534" title=""><img class="img-responsive item-image" alt=" (38312)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/312/medium/a20f8b5e-5a86-4369-bb2f-b13ca498c43f.png?1756013534" width="640" height="374" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item5389" data-item-id="5389" data-item-type="ItemHeading"><h3 class="item-body">3-6.  Wix - 中級編 - part.8</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5390" data-item-id="5390" data-item-type="ItemRichText"><div class="item-body-hbr">part.8では、<span class="decoration-02"><span class="decoration-01">Spaces内部のページ作成</span></span>について解説しています！<br>
+この動画は少し長いですが、集中して頑張りましょう🙌</div></div>
+        
+        <div class="article-item item_markdown " id="item5391" data-item-id="5391" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5392" data-item-id="5392" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5392" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.8" data-reference="https://www.dropbox.com/scl/fi/p6qm4q3wfv23hgm51a7yc/wix-part.8-2.mp4?rlkey=7b104tkjedy8tluj6suhwuc2g&amp;st=choi66rd&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/392/thumb/28d39e04-8a52-4c6d-b434-85db08d22285.png?1779952932" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12540" data-item-id="12540" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=12540" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix中級編_SNSシェアボタンの表示設定など</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix中級編_SNSシェアボタンの表示設定など" data-reference="https://www.dropbox.com/scl/fi/gsjlkh2ck4djhlfoodc8n/_WIX-3-7_SNS.mp4?rlkey=rmmdkbjpw5akja3kohwh3ah2k&amp;e=1&amp;st=kgu00wl8&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/540/thumb/3bdb212b-8aff-4e77-bd82-0f0fe4a1dceb.png?1779952944" width="75" height="75" /></div><div class="media-body"><div class="item-body">SNSシェアボタンの表示設定やリンク設定、Go Backボタンの設定方法、ページの複製方法について詳しく解説しています。特にSNSシェアボタンの表示に関しては、プレビュー画面でボタンが機能しない問題についても触れています。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5393" data-item-id="5393" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item38343" data-item-id="38343" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">動画冒頭のページ制作手順</span><br>
+1. part7の最後に作った新しいページで、新規セクションにストリップを被せる</div></div>
+        
+        <div class="article-item item_image " id="item38346" data-item-id="38346" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/346/medium/23071de7-1aba-4896-9c54-122b306ae33f.png?1756027505" title=""><img class="img-responsive item-image" alt=" (38346)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/346/medium/23071de7-1aba-4896-9c54-122b306ae33f.png?1756027505" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38347" data-item-id="38347" data-item-type="ItemRichText"><div class="item-body-hbr">2. 「SPACES」で使用したものと同じ画像を背景に使用し、不透明度や背景色を調整する</div></div>
+        
+        <div class="article-item item_image " id="item38349" data-item-id="38349" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/349/medium/405b43b9-f485-4269-aecc-01eb116683f6.png?1756027603" title=""><img class="img-responsive item-image" alt=" (38349)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/349/medium/405b43b9-f485-4269-aecc-01eb116683f6.png?1756027603" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item38351" data-item-id="38351" data-item-type="ItemRichText"><div class="item-body-hbr">3. セクションの幅を、見本通り「923px」まで引き延ばす</div></div>
+        
+        <div class="article-item item_image " id="item38353" data-item-id="38353" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/353/medium/9c45c530-a284-4e6d-bc87-0be206f7f6d7.png?1756027685" title=""><img class="img-responsive item-image" alt=" (38353)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/353/medium/9c45c530-a284-4e6d-bc87-0be206f7f6d7.png?1756027685" width="640" height="345" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item40242" data-item-id="40242" data-item-type="ItemMarkdown"><h4 id="section">アンカーを設定してページ内リンクを実装しよう</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item40243" data-item-id="40243" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">アンカー</span>とは、ウェブページ上の特定の位置を示す「目印」や「ブックマーク」のようなものです。<br>
+<br>
+縦に長いページで、ヘッダーのメニュー項目（例：「ABOUT US」）をクリックすると、ページ中盤の該当セクションまですぐにスクロールする、といったナビゲーションを実装する際に使用します。これを<span class="decoration-01">ページ内リンク</span>と呼び、ユーザーが求める情報へ素早くアクセスできるようにすることで、サイトの利便性を大きく向上させます。<br>
+<br>
+ここでは、「アンカーの設置」と「アンカーへのリンク設定」の2つのステップに分けて解説します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item40244" data-item-id="40244" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ステップ1：ページ内にアンカー（目印）を設置する</span><br>
+まずは、リンク先となる目標地点にアンカーを設置します。<br>
+</div></div>
+        
+        <div class="article-item item_html " id="item40245" data-item-id="40245" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="card-with-icon check">
+    <span class="bold"><strong>操作手順：アンカーの設置</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>エディタ左側のメニューから「パーツを追加」（+のアイコン）をクリックします。</li>
+            <li>「メニュー・アンカー」を選択します。</li>
+            <li>カテゴリの中から「アンカー」をクリックし、ページ上の目印としたい位置（例：各セクションの先頭）までドラッグして配置します。</li>
+            <li>配置したアンカーを選択し、名前を変更します。名前は半角英数字で、どのセクションを指すか分かりやすいもの（例：「about-us」や「contact」）に設定しましょう。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item40255" data-item-id="40255" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/255/medium/17f3d116-d816-4a66-9d15-721e8b6a97a4.png?1759906880" title=""><img class="img-responsive item-image" alt=" (40255)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/255/medium/17f3d116-d816-4a66-9d15-721e8b6a97a4.png?1759906880" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item40257" data-item-id="40257" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/257/medium/2c8a3432-f640-4124-8790-c56d2077f21d.png?1759906910" title=""><img class="img-responsive item-image" alt=" (40257)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/257/medium/2c8a3432-f640-4124-8790-c56d2077f21d.png?1759906910" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item40247" data-item-id="40247" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ステップ2：作成したアンカーへリンクを設定する</span><br>
+<br>
+次に、ボタンやメニューなどのパーツから、先ほど設置したアンカーへリンクを設定します。</div></div>
+        
+        <div class="article-item item_html " id="item40248" data-item-id="40248" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="card-with-icon check">
+    <span class="bold"><strong>操作手順：アンカーへのリンク設定</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li>リンクを設定したいパーツ（例：ヘッダーのメニューやボタン）を選択します。</li>
+            <li>表示されたメニューから「リンク」（鎖のアイコン）をクリックします。</li>
+            <li>リンクパネルが表示されたら、リンク先として「アンカー」を選択します。</li>
+            <li>どのページのどのアンカーにリンクするかを選択する画面になるので、先ほど設定したアンカーの名前を選択し、「完了」をクリックします。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item40249" data-item-id="40249" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/249/medium/a75cc56f-c1dc-47a9-a2e2-a3536da86d6d.png?1759906314" title=""><img class="img-responsive item-image" alt=" (40249)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/249/medium/a75cc56f-c1dc-47a9-a2e2-a3536da86d6d.png?1759906314" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item40250" data-item-id="40250" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/250/medium/688f0f78-24b4-4088-9de2-4c3c14c0e5f6.png?1759906334" title=""><img class="img-responsive item-image" alt=" (40250)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/250/medium/688f0f78-24b4-4088-9de2-4c3c14c0e5f6.png?1759906334" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item40251" data-item-id="40251" data-item-type="ItemRichText"><div class="item-body-hbr">これで、設定したパーツをクリックすると、アンカーを設置した場所まで自動でスクロールするようになります。プレビューモードで実際に動作を確認してみましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item5397" data-item-id="5397" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>ベクターアートを追加しよう！</strong></p>
+
+    <ul>
+      <li>「サイトに追加」→「装飾」からベクターアートを追加することができます。
+ Wixにはそこまで良い素材がないので、他のサイトから素材を取得することをおすすめします<strong>🙌</strong></li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item5398" data-item-id="5398" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">「複製」を有効活用しよう！</div>
+    </div>
+    <div class="content-area">
+        同じような構造のページを複数制作する場合、1個1個作っていたら時間が勿体無いですよね。
+その場合は、ページを複製し、タイトルやテキストだけ変更して時間短縮を図りましょう！
+常に「どうやったらこの作業を効率良くできるのか」という意識で作業することが大切です。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38355" data-item-id="38355" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ページ複製の方法</span><br>
+「サイトページとメニュー」の欄から、複製したいページの「•••」をクリックし、「複製」を選択</div></div>
+        
+        <div class="article-item item_image " id="item38358" data-item-id="38358" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/358/medium/8432b41a-f4be-4e48-91b6-b2836958d1a9.png?1756030772" title=""><img class="img-responsive item-image" alt=" (38358)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/358/medium/8432b41a-f4be-4e48-91b6-b2836958d1a9.png?1756030772" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item46850" data-item-id="46850" data-item-type="ItemMarkdown"><ul>
+  <li>ページを複製した際にヘッダーにページ名が追加されていってしまう場合があります
+    <ul>
+      <li>この場合は横型メニューをクリックして「メニューを管理」をクリックして、複製したページをサブメニューとして登録しましょう！</li>
+      <li>Spacesの下に複製したページをドラッグアンドドロップする事でサブメニューとして作成する事が出来ます！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item46849" data-item-id="46849" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/849/medium/ba726fba-6bb2-4a1c-8eff-472bbf0bd33a.png?1773040399" title=""><img class="img-responsive item-image" alt=" (46849)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/849/medium/ba726fba-6bb2-4a1c-8eff-472bbf0bd33a.png?1773040399" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item5399" data-item-id="5399" data-item-type="ItemHeading"><h3 class="item-body">3-7.  Wix - 中級編 - part.9 &amp; part.10</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5400" data-item-id="5400" data-item-type="ItemRichText"><div class="item-body-hbr">part.9では、<span class="decoration-02"><span class="decoration-01">予約機能</span></span>について、part.10では、<span class="decoration-02"><span class="decoration-01">予約ボタンの実装</span></span>について解説しています！</div></div>
+        
+        <div class="article-item item_markdown " id="item5401" data-item-id="5401" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5402" data-item-id="5402" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5402" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.9</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.9" data-reference="https://www.dropbox.com/scl/fi/zrwvzh4ck5jio0f8bfntg/wix-part.9-2.mp4?rlkey=aiwgw95y2fxmv58zrjucb476r&amp;st=l77q7sq7&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/402/thumb/f01a98fd-5047-4a59-aaed-759a35983129.png?1779952963" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12542" data-item-id="12542" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=12542" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.10</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.10" data-reference="https://www.dropbox.com/scl/fi/8n2b073gs9em5aggxt4m0/wix-part.10.mp4?rlkey=70tg81msogomewfzxs4bb52ab&amp;st=7key8ovj&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/542/thumb/162e2085-cebc-4a04-998c-912831de370e.png?1779952975" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12546" data-item-id="12546" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=12546" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix中級編_テキストとスタイル設定</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix中級編_テキストとスタイル設定" data-reference="https://www.dropbox.com/scl/fi/fac6foza24indsc0oo4mx/_WIX-3-8_.mp4?rlkey=u1a1vwxf1r47hxgt7uxgw8d6e&amp;e=1&amp;st=8hzavl9h&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/546/thumb/6f7adf41-9357-48a5-807e-4c2bbaec22c2.png?1779952987" width="75" height="75" /></div><div class="media-body"><div class="item-body">Wixのボタンデザイン変更について、特にテキストのサイズ調整やフォームボタンのフォーカス・ホバー時の設定方法を動画にて簡単に解説しています。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5403" data-item-id="5403" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_link " id="item12547" data-item-id="12547" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=12547" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix中級編_ブッキングページアプリの追加方法</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix中級編_ブッキングページアプリの追加方法" data-reference="https://www.dropbox.com/scl/fi/27f0ujzsdgq1jrkswfrta/_WIX-3-8_.mp4?rlkey=qqz9c1dn003ibqip2sg0sedlx&amp;e=1&amp;st=nmcb127r&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/547/thumb/19e7e4c3-a508-4ba7-8067-485cadb4bbf9.png?1779952999" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5405" data-item-id="5405" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>予約ページの詳細設定をしましょう！</strong></p>
+
+    <ul>
+      <li>教材に沿って予約ページの詳細設定を進めましょう。料金は任意で構いません。
+  わからないことがありましたら、<a href="https://ja.wix.com/reserve">こちらの記事</a>を参照してみてください！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item46852" data-item-id="46852" data-item-type="ItemMarkdown"><ul>
+  <li><strong>ボタンの名称の変更ができない場合はあります！</strong>
+    <ul>
+      <li>その際は「今すぐ予約」のまま進めて大丈夫です！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item46851" data-item-id="46851" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/851/medium/4396e121-e157-4392-b070-7266de7ca618.png?1773047506" title=""><img class="img-responsive item-image" alt=" (46851)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/851/medium/4396e121-e157-4392-b070-7266de7ca618.png?1773047506" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item5406" data-item-id="5406" data-item-type="ItemHeading"><h3 class="item-body">3-8. Wix - 中級編 - part.11 &amp; part.12</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5407" data-item-id="5407" data-item-type="ItemRichText"><div class="item-body-hbr">part.11では<span class="decoration-02"><span class="decoration-01">”MEMBERSHIP”部分</span></span>について、part.12では<span class="decoration-02"><span class="decoration-01">”CONTACT US”部分</span></span>について解説しています！<br>
+<br>
+part.11はこれまでやったスキルのみで構成されているので、若干割愛させていただいております。<br>
+また、part.12は、Wixのアップデートに伴って新たに作成し直した都合上、音声やテロップが他の動画と少し変わってしまっています。<br>
+<br>
+ご了承ください🙇‍♂️</div></div>
+        
+        <div class="article-item item_markdown " id="item5408" data-item-id="5408" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5409" data-item-id="5409" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5409" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.11</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.11" data-reference="https://www.dropbox.com/scl/fi/sl7g7pofgnh4wk1t1oog1/wix-part.11-2.mp4?rlkey=otb3giyk8xjqy7olwdzeszb5z&amp;st=yf49nlb3&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/409/thumb/02a75c5f-0a4f-4123-bbfe-feff00b1d2cf.png?1779953011" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item5410" data-item-id="5410" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5410" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.12</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.12" data-reference="https://www.dropbox.com/scl/fi/8hphsb51amt24mq5r6j5d/wix-part.12.mp4?rlkey=3fsd1mosedev5aryh1fl27cha&amp;st=2qytjxwa&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/410/thumb/bdf7315b-06fb-4484-bcd1-af55912abacc.png?1779953024" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5411" data-item-id="5411" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item46854" data-item-id="46854" data-item-type="ItemMarkdown"><ul>
+  <li>ベクターアートはこちらから追加する事が出来ます！</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item46853" data-item-id="46853" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/853/medium/236616c7-393e-4bab-aa9c-db56416a175d.png?1773050326" title=""><img class="img-responsive item-image" alt=" (46853)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/046/853/medium/236616c7-393e-4bab-aa9c-db56416a175d.png?1773050326" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item5413" data-item-id="5413" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>フォームを設定しよう！</strong></p>
+
+    <ul>
+      <li>「サイトに追加」→「フォーム」→「登録」から追加できます。
+  ホバーの時、フォーカスの時、エラーの時など細かく設定しましょう！以下の項目は確認しておいてください。</li>
+    </ul>
+
+    <p>==</p>
+
+    <ul>
+      <li><strong>ホバーの時、フォーカスの時、エラーの時など細かい設定</strong></li>
+      <li><strong>送信完了メッセージの設定</strong></li>
+    </ul>
+
+    <p>==</p>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item5414" data-item-id="5414" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">ホバーとは？？？</div>
+    </div>
+    <div class="content-area">
+        ホバーとは、画像やリンクにマウスカーソルを合わせた際、クリックしなくてもアニメーションが始まったりするような変化が起こる表現のことです。ホバーのデザインによってフォームの送信率なども変わってくるので、瑣末な点ですが丁寧に設定しましょう！
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item40266" data-item-id="40266" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="card-with-icon attention">
+    <span class="bold"><strong>「利用できるフォームの上限数に到達しました」と表示された場合の対処法</strong><br></span>
+    <div class="content-area">
+        <p>Wixの無料プランでは、サイトに作成できるフォームの数に上限があります。練習でフォームを何度も作り直していると、この上限に達してエラーが表示されることがあります。</p>
+        <p>このエラーは、サイトの<strong>ダッシュボード</strong>から不要なフォームを削除することで解決できます。</p>
+                <ol>
+                    <li>サイト編集画面を一旦閉じ、サイトの管理ページである<strong>ダッシュボード</strong>を開きます。</li>
+                    <li>左側のメニューから「顧客・リード管理」>「フォーム・回答内容」に進みます。</li>
+                    <li>作成したフォームの一覧が表示されるので、不要になったフォーム（練習で作成した古いものなど）を見つけます。</li>
+                    <li>該当フォームの右側にある「その他のアクション」（•••）アイコンをクリックします。</li>
+                    <li>表示されたメニューから「削除」を選択してフォームを削除します。</li>
+                </ol>
+        <br>
+        <p>この手順で空きができた後、エディタに戻って新しいフォームを追加できるようになります。</p>
+        <p>以下の画像も参照してください。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item40263" data-item-id="40263" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/263/medium/9bf6b96e-49ee-43d5-9aba-082137016018.png?1759908211" title=""><img class="img-responsive item-image" alt=" (40263)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/263/medium/9bf6b96e-49ee-43d5-9aba-082137016018.png?1759908211" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item40264" data-item-id="40264" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/264/medium/501c960d-1276-4731-b429-a2f2bffe86ef.png?1759908229" title=""><img class="img-responsive item-image" alt=" (40264)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/264/medium/501c960d-1276-4731-b429-a2f2bffe86ef.png?1759908229" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_image " id="item40265" data-item-id="40265" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/265/medium/021bbacd-87c3-4047-a4ab-0bbf83d8a5b6.png?1759908258"><img class="img-responsive item-image" alt=" (40265)" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/265/medium/021bbacd-87c3-4047-a4ab-0bbf83d8a5b6.png?1759908258" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item5415" data-item-id="5415" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>スクロールエフェクトも忘れずに！</strong></p>
+
+    <ul>
+      <li>CONTACT USの部分には、実は、パララックスのエフェクトが設定されています。</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item38359" data-item-id="38359" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/359/medium/afc379e0-fe22-4377-a342-9313388cbc8f.png?1756043491" title=""><img class="img-responsive item-image" alt=" (38359)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/359/medium/afc379e0-fe22-4377-a342-9313388cbc8f.png?1756043491" width="640" height="296" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item5416" data-item-id="5416" data-item-type="ItemHeading"><h3 class="item-body">3-9. Wix - 中級編 - part.13 &amp; part.14</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5417" data-item-id="5417" data-item-type="ItemRichText"><div class="item-body-hbr">part.13では<span class="decoration-02"><span class="decoration-01">”MAP”部分</span></span>について、part.14では<span class="decoration-02"><span class="decoration-01">”フッター”部分</span></span>について解説しています！</div></div>
+        
+        <div class="article-item item_markdown " id="item5418" data-item-id="5418" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5419" data-item-id="5419" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5419" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.13</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.13" data-reference="https://www.dropbox.com/scl/fi/2pdj5s3pkfhh054y3og6i/wix-part.13.mp4?rlkey=8tk1ouc5zg44k2yaddui4ln34&amp;st=ojgp3fjn&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/419/thumb/3cc49075-4dea-4af9-84f6-70a7dae0e198.png?1779953060" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item5420" data-item-id="5420" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5420" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.14</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.14" data-reference="https://www.dropbox.com/scl/fi/g10bwud3rqcolno12ihsw/wix-part.14.mp4?rlkey=1xzoct324xxqwg51w1vnyj7zr&amp;e=1&amp;st=6yxud4pe&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/420/thumb/be1a33f9-561e-43e4-8708-5dab35fbdfe3.png?1779953073" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5421" data-item-id="5421" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5423" data-item-id="5423" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>Mapを追加しよう！</strong></p>
+
+    <ul>
+      <li>「サイトに追加」→「フォーム」→「地図」から追加させることができます！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item38362" data-item-id="38362" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/362/medium/8ba67528-e236-4f9d-837c-b4f3ce0c2da6.png?1756044215"><img class="img-responsive item-image" alt=" (38362)" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/362/medium/8ba67528-e236-4f9d-837c-b4f3ce0c2da6.png?1756044215" width="640" height="358" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item5424" data-item-id="5424" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">ERRORが出た時は、「command + R」を押してみましょう！</div>
+    </div>
+    <div class="content-area">
+        Wixはたまにバグが発生することがあります。そのような場合は、一度保存ボタンを押していただき、リフレッシュしてみてください。
+それだけで解決する場合が少なくないんです🤫
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item5425" data-item-id="5425" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">PCが重くなった時は、他のタブを全て閉じるか再起動してみましょう！</div>
+    </div>
+    <div class="content-area">
+       WixでHP制作をしていく過程で多くの画像をアップロードしたり、ページ数を増加させるとPCが重くなり、作業に支障をきたすことがあります。そのような場合は、まずは他のタブを閉じてみましょう！メモリ使用量に空きができます。
+それでもダメな場合は一度、電源を消してPCを冷ましてみましょう！
+普段からPCを切らないで放置する方も少なくありません。その間もPCは消耗してしまうので電源を切る癖をつけましょう🙌
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item5426" data-item-id="5426" data-item-type="ItemHeading"><h3 class="item-body">3-10. Wix - 中級編 - part.15 </h3></div>
+        
+        <div class="article-item item_rich_text " id="item5427" data-item-id="5427" data-item-type="ItemRichText"><div class="item-body-hbr">part.15では<span class="decoration-02"><span class="decoration-01">チャット機能</span></span>について解説しています！<br>
+この動画は復習がメインです！覚えていたか確認してみてください🙌</div></div>
+        
+        <div class="article-item item_markdown " id="item5428" data-item-id="5428" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5430" data-item-id="5430" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5430" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.15</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.15" data-reference="https://www.dropbox.com/scl/fi/4noelkns2kx3utu393wrx/wix-part.15.mp4?rlkey=vn9bbo0vx1f8yujtow0rwc5z9&amp;e=1&amp;st=q4bduxd8&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/430/thumb/18241623-0441-4d31-b218-6dcaeb1d0ac1.png?1779953090" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5432" data-item-id="5432" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5434" data-item-id="5434" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>チャット機能を追加しよう</strong></p>
+
+    <ul>
+      <li>「Wix App Market」→「Wixビジネスソリューション」から追加することができます。
+  チャット機能は初級編でも学習しましたね！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item38364" data-item-id="38364" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/364/medium/972d9628-4e5c-41cb-bdc7-192ba09f6a22.png?1756044300" title=""><img class="img-responsive item-image" alt=" (38364)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/364/medium/972d9628-4e5c-41cb-bdc7-192ba09f6a22.png?1756044300" width="640" height="358" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item5435" data-item-id="5435" data-item-type="ItemHeading"><h3 class="item-body">3-11. Wix - 中級編 - part.16 &amp; part.17</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5436" data-item-id="5436" data-item-type="ItemRichText"><div class="item-body-hbr">part.16 では<span class="decoration-02"><span class="decoration-01">アンカーリンク</span></span>、part.17では<span class="decoration-02"><span class="decoration-01">ヘッダー部分</span></span>について解説しています！</div></div>
+        
+        <div class="article-item item_markdown " id="item5437" data-item-id="5437" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5438" data-item-id="5438" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5438" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.16</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.16" data-reference="https://www.dropbox.com/scl/fi/47e8yehwkli06abeehkvf/wix-part.16.mp4?rlkey=hdzqlmv7it1uef9hd0qddfqli&amp;e=1&amp;st=ing699ee&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/438/thumb/f0611699-889c-4d5e-bd31-391a6118dd72.png?1779953128" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item5439" data-item-id="5439" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5439" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.17</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.17" data-reference="https://www.dropbox.com/scl/fi/e35z4ogofz6tthtf2fkl9/wix-part.17.mp4?rlkey=3gr0ivhyh3jmtmoe1lqu2zece&amp;e=1&amp;st=2ocj153d&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/439/thumb/d110ceff-11c2-40e1-8235-0f6e8dadfc80.png?1779953139" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12563" data-item-id="12563" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=12563" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix中級編_アンカーリンクの設定</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix中級編_アンカーリンクの設定" data-reference="https://www.dropbox.com/scl/fi/yjfhjb8uxsbdwwtis7hhz/_WIX-3-12_.mp4?rlkey=wwgkc2diz5ddkniagyo4s1bp3&amp;e=1&amp;st=4cq7ue7h&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/563/thumb/8e980972-4562-4eb2-a2b4-b7c746d24b0e.png?1779953162" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item12565" data-item-id="12565" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=12565" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix中級編ナビゲーションとメニュー管理</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix中級編ナビゲーションとメニュー管理" data-reference="https://www.dropbox.com/scl/fi/uzgr0f1ndph11ulbmqrf2/_WIX-3-12_.mp4?rlkey=sik6qjx0civ886lewgmvop186&amp;e=1&amp;st=uqn81k4o&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/565/thumb/95d4fce3-1f8c-4875-baa1-5614b3f7d486.png?1779953175" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item45051" data-item-id="45051" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_html " id="item5443" data-item-id="5443" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">現代におけるWEBサイトはモバイル版が必須です❗️</div>
+    </div>
+    <div class="content-area">
+       現在の世の中ではPCよりもスマホを用いてWEBサイトを見られることが多くなっています。
+どの案件を受ける際も、モバイル版対応は必須だと思っていただいて構いません。そのことを意識しながらPC版を作ってみましょう！
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item45040" data-item-id="45040" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">よくある質問：スマホ版だとファーストビューの画像が縦長になってしまいます...</div>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item45041" data-item-id="45041" data-item-type="ItemRichText"><div class="item-body-hbr">スマホ版のサイトはPC版と画面の横幅が異なるため、見た目が崩れてしまう箇所があります。<br>
+その場合は以下の手順で修正しましょう！</div></div>
+        
+        <div class="article-item item_rich_text " id="item45042" data-item-id="45042" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">サイトの見た目（UI）の修正方法</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item45052" data-item-id="45052" data-item-type="ItemRichText"><div class="item-body-hbr">1. 見本にしたいWEBサイトを開き、右クリックをしてください。<br>
+ 表示されるパネル内の「検証」ツールを使用します。</div></div>
+        
+        <div class="article-item item_image " id="item45053" data-item-id="45053" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/053/medium/0b4c49b2-d14a-4723-aff9-6f7b32178714.png?1765088450" title=""><img class="img-responsive item-image" alt=" (45053)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/053/medium/0b4c49b2-d14a-4723-aff9-6f7b32178714.png?1765088450" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item45045" data-item-id="45045" data-item-type="ItemRichText"><div class="item-body-hbr">2. 画面右側にコードが表示されます。<br>
+  左上の「分割項目」を選択すると、選択した機種に合わせたページの大きさを出力できます。</div></div>
+        
+        <div class="article-item item_image " id="item45046" data-item-id="45046" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/046/medium/77ccff2b-6059-47de-8119-53d0ea921273.png?1765088065" title=""><img class="img-responsive item-image" alt=" (45046)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/046/medium/77ccff2b-6059-47de-8119-53d0ea921273.png?1765088065" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item45047" data-item-id="45047" data-item-type="ItemRichText"><div class="item-body-hbr">3. 見本ページの大きさを確認します。</div></div>
+        
+        <div class="article-item item_image " id="item45048" data-item-id="45048" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/048/medium/2d8601ba-13ed-4922-80ad-f915bbcb5f38.png?1765088099" title=""><img class="img-responsive item-image" alt=" (45048)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/048/medium/2d8601ba-13ed-4922-80ad-f915bbcb5f38.png?1765088099" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item45049" data-item-id="45049" data-item-type="ItemRichText"><div class="item-body-hbr">4. 見本ページの縦幅に合うようにセクション＋ストリップの幅を調整します。<br>
+  青い枠のハンドルを使って調整してください。</div></div>
+        
+        <div class="article-item item_image " id="item45050" data-item-id="45050" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/050/medium/e3e4e767-56d5-4d50-8c7c-4bcd50db30a1.png?1765088122" title=""><img class="img-responsive item-image" alt=" (45050)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/045/050/medium/e3e4e767-56d5-4d50-8c7c-4bcd50db30a1.png?1765088122" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item5441" data-item-id="5441" data-item-type="ItemMarkdown"><ul>
+  <li>
+    <p><strong>ヘッダーを完成させよう</strong></p>
+
+    <ul>
+      <li>先ほど説明したアンカーを活用して、操作のしやすいHPを制作しましょう！
+  <a href="#heading9">アンカーの復習はこちら🙌</a></li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>メンバーページの編集をしよう</strong></p>
+
+    <ul>
+      <li>今回はマイアカウントとマイブッキングしか使わないので、それ以外は削除していただいて結構です！<br />
+  ページ背景・サイト会員プロフィールカードは、ご自身の好きなようにデザインしてみてください！</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item5442" data-item-id="5442" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">Wixだけが最適なツールとは限りません！</div>
+    </div>
+    <div class="content-area">
+        <p>例えば、Wixではサイトの会員ページの細かい設定はできません。もし、クライアントが細かい会員ページを望むのであれば、Wordpressなどの他のツールを用いなければなりません。</p>
+        <p>Wixは確かに有能なツールですが、<span class="decoration-01">クライアントにとって何がベストなツールであるか</span>を考えて案件をこなしましょう！</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item5450" data-item-id="5450" data-item-type="ItemMarkdown"><ul>
+  <li><strong>モバイル版は必要な要素のみ掲載しよう</strong>
+スマートフォンは画面が小さいので、情報量が多いと見にくくなってしまいます。必要な要素のみ表示し、他は非表示にしましょう！また、Wixではモバイル版で追加した要素はPC版では反映されません。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item5444" data-item-id="5444" data-item-type="ItemHeading"><h3 class="item-body">3-12 Wix - 中級編 - part.18</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5445" data-item-id="5445" data-item-type="ItemRichText"><div class="item-body-hbr">part.18では<span class="decoration-02"><span class="decoration-01">モバイル版サイト</span></span>について解説しています！<br>
+いよいよラストの教材です！やり切りましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item5446" data-item-id="5446" data-item-type="ItemMarkdown"><h4 id="a-">a. 使用教材</h4>
+</div>
+        
+        <div class="article-item item_link " id="item5447" data-item-id="5447" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=5447" rel="nofollow noopener noreferrer" target="_blank">Wix実践 -中級編- part.18</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix実践 -中級編- part.18" data-reference="https://www.dropbox.com/scl/fi/9zk1o59h55q0x2amfwbke/wix-part.18.mp4?rlkey=4a2vtqq92mxc7sseme36ea58e&amp;e=1&amp;st=bzh94zei&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/447/thumb/3bbad2de-f445-4621-bd17-63dc5389a9ee.png?1779953190" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5448" data-item-id="5448" data-item-type="ItemMarkdown"><h4 id="b-">b. ポイントチェック</h4>
+</div>
+        
+        <div class="article-item item_html " id="item5451" data-item-id="5451" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">Wixを用いて複雑な構成のWEBサイトを作るには？</div>
+    </div>
+    <div class="content-area">
+        Wixの機能のみを用いて、複雑な構成のWEBサイトを制作するのは難しいですよね。。。
+そのような場合ではこの後、学習予定の「Figma」「Adobeツール」を用いて画像を編集し、それをアップロードするのが最適です！
+大手企業のHPもこの方法を採用している場合が多いです。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item5452" data-item-id="5452" data-item-type="ItemMarkdown"><ul>
+  <li><strong>モバイル版限定であるモバイルツールを活用しよう</strong>
+モバイルアクションバー、トップに戻るボタンなどはとても便利なのでぜひ搭載してみてください！</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item12570" data-item-id="12570" data-item-type="ItemHeading"><h3 class="item-body">3.13  Wix -中級編- 用語解説</h3></div>
+        
+        <div class="article-item item_link " id="item12571" data-item-id="12571" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=12571" rel="nofollow noopener noreferrer" target="_blank">補足動画_Wix中級編_用語解説</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="補足動画_Wix中級編_用語解説" data-reference="https://www.dropbox.com/scl/fi/dnj1w35l3mqpkd00r3x4b/_WIX-_.mp4?rlkey=osnbpz5dn8bvmuoybgvu5jco8&amp;e=1&amp;st=k2394tax&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/012/571/thumb/2f2cea48-6dc6-4a45-9db9-3df06652b660.png?1779953222" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item5453" data-item-id="5453" data-item-type="ItemHeading"><h2 class="item-body">4. まとめ</h2></div>
+        
+        <div class="article-item item_markdown " id="item39243" data-item-id="39243" data-item-type="ItemMarkdown"><h4 id="section">目安学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item5454" data-item-id="5454" data-item-type="ItemRichText"><div class="item-body-hbr">動画視聴お疲れ様でした！<br>
+<br>
+中級編、いかがだったでしょうか？<br>
+Wix初級編で学んだスキルをおさらいしつつ、新たなスキルもたくさん習得できたかと思います。</div></div>
+        
+        <div class="article-item item_html " id="item49921" data-item-id="49921" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+  <span class="bold">制作課題ができたら<br></span>
+  <ol>
+    <li><span class="decoration-01">自己添削をしましょう</span>
+      <ul>
+        <li>お手本としたサイトと上から順番に見比べ、ミスがないか確認しましょう</li>
+      </ul>
+    </li>
+    <li><span class="decoration-01">コーチにSlackで共有しましょう</span>
+      <ul>
+        <li>「c-【受講ID】-【お名前】」チャンネルでコーチをメンションして共有します</li>
+        <li>提出時はWixの権限共有も必須です（サイト名は「中級編-名前」で統一）</li>
+      </ul>
+    </li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item5455" data-item-id="5455" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">注意事項</div>
+    </div>
+    <div class="content-area">
+      	<ul>
+          <li>その際、権限共有も忘れないでください！権限共有の仕方がわからない方は、「Wix -実践編- ＞ d. Wixの権限共有機能を理解しよう」を確認しましょう🙌</li>
+          <li>また、サイト名は作成者が分かるように<span class="decoration-02">中級編-名前</span>で統一しましょう！</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item5456" data-item-id="5456" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">コーチにSlackで共有する際のテンプレート</span></div></div>
+        
+        <div class="article-item item_html " id="item5457" data-item-id="5457" data-item-type="ItemHtml"><div class="item-body"><div class="quote">
+    <p>〇〇コーチ(@メンション)</p>
+    <p>お世話になっております。</p>
+    <p>Wix〇〇編の制作課題が終了いたしました。</p>
+    <p>以下のURLのサイトに権限共有もいたしましたのでご確認いただき、添削をよろしくお願いいたします。</p>
+    <p>==</p>
+    <p>サイトURL</p>
+    <p>==</p>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item5458" data-item-id="5458" data-item-type="ItemMarkdown"><p>まだWEBスキルについての学習を始めたばかりで、このような難易度の高い動画を視聴するのはかなり大変だと思います。</p>
+
+<p>しかし、2,3ヶ月経てばこのくらいのWEBサイトであれば簡単に作れるようになっているはずです。</p>
+
+<p>次は「Wix実践 -上級編-」です！引き続き頑張っていきましょう🙌</p>
+</div>
+        
+        <div class="article-item item_link " id="item48720" data-item-id="48720" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ChIor&amp;item_id=48720" rel="nofollow noopener noreferrer" target="_blank">Wix教材報告フォーム</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix教材報告フォーム" data-reference="https://docs.google.com/forms/d/e/1FAIpQLSc6MiUBpk_UCOd1lq-MxhDPMzCBLTT7fphZduSJrvV50NfRMA/viewform?usp=publish-editor" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/048/720/thumb/41470cf4-ea28-40e2-9244-30e3b4b897ac.png?1776324038" width="75" height="75" /></div><div class="media-body"><div class="item-body">アップデート箇所の報告/教材へのご意見を募集しております！</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item48721" data-item-id="48721" data-item-type="ItemRichText"><div class="item-body-hbr">※質問フォームではありません。(質問はコーチにお願いいたします)</div></div>
+        
+        <div class="article-item item_html " id="item25484" data-item-id="25484" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="7XsAL" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="Fuxhv" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="8vS3gYAGDNVClX2PMAiddA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

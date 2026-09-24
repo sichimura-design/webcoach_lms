@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="1zyYxNhxRI+55ERUuw8FUQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1983" data-domain="learn.webcoach.jp" data-url="/web-design/AI_banner/rgY8r" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章 AIツール nano bananaによる高速生成ワークフローとプロンプト活用 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/AI_banner/rgY8r">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章 AIツール nano bananaによる高速生成ワークフローとプロンプト活用 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/672/medium/71eecd86-c971-45ed-a01c-6520f4240127.png?1764322598">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章 AIツール nano bananaによる高速生成ワークフローとプロンプト活用">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/AI_banner/rgY8r">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/672/large/71eecd86-c971-45ed-a01c-6520f4240127.png?1764322598">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/AI_banner/rgY8r"
+    },
+    "headline": "2章 AIツール nano bananaによる高速生成ワークフローとプロンプト活用",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/044/672/medium/71eecd86-c971-45ed-a01c-6520f4240127.png?1764322598",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-11-28T18:49:49+09:00",
+    "dateModified": "2025-11-28T18:54:40+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_yoshitake"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="VjnNmAM_Y2yQWFdQe_bJKupehcpLm1atdQ22PiUdAqbbDzE1wTco30WyUSN2Ptq7MV1RMZwDMGBX84OeADAUTw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>AI活用バナー制作講座</div>
+
+          <div class="fw-bold h2">2章 AIツール nano bananaによる高速生成ワークフローとプロンプト活用</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item44624" data-item-id="44624" data-item-type="ItemHtml"><div class="item-body">
+<div class="pagenation-buttons">
+  <a href="rNri2" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="litCc" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+
+</div></div>
+        
+        <div class="article-item item_heading " id="item44625" data-item-id="44625" data-item-type="ItemHeading"><h2 class="item-body">2章 Nano Banana Proによる高速生成ワークフローとプロンプト活用</h2></div>
+        
+        <div class="article-item item_markdown " id="item44626" data-item-id="44626" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：120分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item44627" data-item-id="44627" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item44628" data-item-id="44628" data-item-type="ItemRichText"><div class="item-body-hbr">・提供されるメタプロンプト雛形を活用し、日本語の要件から高品質な日本語プロンプトを生成できる<br>
+・メインテキスト、サブテキスト、CTA、サイズ（アスペクト比）を指定したデザインベースを生成できる<br>
+・Nano Banana Proを用い、テキスト込みのデザインを高速かつ大量に出力するワークフローを確立する</div></div>
+        
+        <div class="article-item item_heading " id="item44629" data-item-id="44629" data-item-type="ItemHeading"><h2 class="item-body">【2-1】高効率プロンプト設計図（メタプロンプト雛形）の活用</h2></div>
+        
+        <div class="article-item item_markdown " id="item44630" data-item-id="44630" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：45分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item44631" data-item-id="44631" data-item-type="ItemHeading"><h3 class="item-body">なぜ「詳細な日本語」プロンプトを使うのか？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44632" data-item-id="44632" data-item-type="ItemRichText"><div class="item-body-hbr">Nano Banana Proのような最新の画像生成AIは、「何を、どこに、どんなスタイルで」描いてほしいかだけでなく、<span class="decoration-02">「どんな文字を配置し、どのアスペクト比で作るか」</span>まで具体的に指示することで、その性能を最大限に発揮します。<br>
+<br>
+そこで本講座では、日本語の「要件」を、AIが最も理解しやすい「テキスト・サイズ指定対応の詳細な日本語プロンプト」に自動変換する「<span class="decoration-02">高効率メタプロンプト雛形</span>」を配布物として提供します。</div></div>
+        
+        <div class="article-item item_html " id="item44633" data-item-id="44633" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>メタプロンプト雛形とは？</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>「メタプロンプト」とは、「プロンプトを作るためのプロンプト」です。</li>
+             <li>この雛形は、「<span class="decoration-02">Nano Banana Pro</span>が正確に文字を描画するための<span class="decoration-02">日本語の指示構造</span>」をテンプレート化したものです。</li>
+            <li><span class="decoration-02">テキスト要素（メイン・サブ・CTA）</span>に加え、<span class="decoration-02">サイズ（アスペクト比）</span>も一括で指定できるように設計されています。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item44634" data-item-id="44634" data-item-type="ItemHeading"><h3 class="item-body">配布されるメタプロンプト雛形</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44636" data-item-id="44636" data-item-type="ItemRichText"><div class="item-body-hbr">本講座で配布する「高効率メタプロンプト雛形」は以下の通りです。<br>
+<br>
+この雛形（ここから## 4.まで）をコピーし、Geminiなどのテキスト生成AIに貼り付けて使用することを推奨します。</div></div>
+        
+        <div class="article-item item_code " id="item44637" data-item-id="44637" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>## 1. AIへの指示（Role &amp; Task）
+
+- あなたは、世界トップクラスの**シニア・アートディレクター**兼**プロンプトエンジニア**です。
+- 以下の【4. 入力欄（User Input）】にある要件を分析し、**Nano Banana Pro**で「プロの商業広告レベルのバナー」を生成するための、「詳細かつ構造化された**日本語**プロンプト」と「強力な**日本語**ネガティブプロンプト」を作成してください。
+- ユーザーの入力が簡素であっても、あなたはプロの感性で**「光の演出」「背景の質感」「構図の工夫」**を補完し、記述を膨らませてください。
+
+## 2. 指示ルール（Rules）
+
+### 2-1. PROMPT (日本語)
+
+- 【3-1. OUTPUT FORMAT】に従い、カテゴリ別に出力してください。
+- **# デザイン・品質**: 「8K」「アンリアルエンジン5」「商業写真」「広告の傑作」など、クオリティを強制的に上げる単語を含めてください。
+- **# 構成・演出 (重要)**: 単調な背景を避けるため、「被写界深度」「シネマティックライティング」「パーティクル（光の粒）」「湯気」「水滴」など、商品の魅力を引き立てる演出キーワードを必ず追加してください。
+- **# テキスト**:
+    - `Main Text: &quot;テキスト&quot;` (「太字」「立体的な」「装飾的な」などのフォント指示を追加)
+    - `Sub Text: &quot;テキスト&quot;`
+    - `CTA: &quot;テキスト&quot;` (「光沢のあるボタン」「視認性の高い」などの指示を追加)
+- **# サイズ**: `Aspect Ratio: [比率]`
+
+### 2-2. NEGATIVE PROMPT (日本語)
+
+- シンプルな背景や素人っぽさを排除するため、以下の要素を必ず含めてください。
+- `低品質, ぼやけた, 素人撮影, フラットなライティング, 単調な背景, 悪い構図, 歪んだ文字, スペルミス, 崩れた人体, 余分な指`
+
+## 3. OUTPUT FORMAT (Strictly follow this Markdown format)
+
+PROMPT:
+
+# デザイン・品質
+最高品質の傑作, 8K解像度, プロの商業広告バナー, 受賞歴のある写真, 非常に詳細, 鮮やかでリッチな色調, 雑誌広告基準.
+
+# 主題・スタイル
+(ユーザーの入力を拡張して記述。例: 焼きたてのパン, サクサクした質感, クロワッサンの層, 黄金色の焼き目, スタジオフードフォトグラフィー.)
+
+# 構成・演出
+(重要: ここでリッチさを出す。例: 舞い散る小麦粉, 柔らかい朝の光, 湯気, 木製の温かみのあるテーブル, 背景ボケ, 奥行きのあるレイヤー構成, シズル感.)
+
+# テキスト要素
+Main Text: &quot;**(入力されたテキスト)**&quot;, プロフェッショナルなタイポグラフィ, 視認性が高い, モダンなデザイン.
+Sub Text: &quot;**(入力されたテキスト)**&quot;, バランスの良い配置.
+CTA: &quot;**(入力されたテキスト)**&quot;, クリックしたくなるデザイン, 鮮やかなボタン.
+
+# サイズ
+Aspect Ratio: (入力された比率)
+
+NEGATIVE PROMPT:
+
+# 低品質・不具合
+低品質, 最悪の品質, 通常の品質, jpegノイズ, ぼやけた, ピントが合っていない, 粗い画像, 素人作品.
+
+# 構成・テキストの問題
+単調な白背景, フラットな画像, 退屈な構図, 歪んだパース, 崩れた文字, 読めないテキスト, スペルミス, 重複した文字, 奇妙な物体, 透かし, 署名.
+
+## 4. 入力欄（User Input）
+
+【日本語の要件】
+
+・デザインの種類:
+【ここに要件を入力してください】
+
+・ターゲット:
+【ここに要件を入力してください】
+
+・主題・画像要素:
+【ここに要件を入力してください】
+
+・メインテキスト（キャッチコピー）:
+【ここに要件を入力してください】
+
+・サブテキスト:
+【ここに要件を入力してください】
+
+・CTA（ボタンの文字）:
+【ここに要件を入力してください】
+
+・サイズ（アスペクト比）:
+【ここに要件を入力してください】
+
+・スタイル・雰囲気:
+【ここに要件を入力してください】</pre></div>
+</div>
+<div class="cite"><cite class="item-source">高効率メタプロンプト雛形</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item44638" data-item-id="44638" data-item-type="ItemHeading"><h3 class="item-body">雛形を使ったプロンプトの作成（ハンズオン）</h3></div>
+        
+        <div class="article-item item_text " id="item44639" data-item-id="44639" data-item-type="ItemText"><div class="item-body-hbr">実際にこの雛形を使ってみましょう。<br />「e-Sports大会」のバナーベースを作る場合、## 4. 入力欄 を以下のように編集します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44640" data-item-id="44640" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">▼ 雛形への入力例（日本語）</span></span></div></div>
+        
+        <div class="article-item item_code " id="item44641" data-item-id="44641" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>▼ 雛形への入力例（日本語）
+
+## 4. 入力欄（User Input）
+
+【日本語の要件】
+
+・デザインの種類: SNS広告用バナー
+・ターゲット: 20代男性
+・主題・画像要素: プレイヤーのシルエット, ゲーミングデバイス
+・メインテキスト: 「最強決定戦」
+・サブテキスト: 「エントリー受付中」
+・CTA: 「詳細を見る」
+・サイズ（アスペクト比）: 16:9
+・スタイル・雰囲気: サイバーパンク, 未来的, 高コントラスト</pre></div>
+</div>
+<div class="cite"><cite class="item-source">雛形への入力例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item44642" data-item-id="44642" data-item-type="ItemRichText"><div class="item-body-hbr">この入力を含む雛形全体をテキスト生成AI（Geminiなど）に送信すると、AIが「アートディレクター」として演出を加えた以下の<span class="decoration-02"><span class="decoration-01">プロンプト</span></span>が出力されます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44643" data-item-id="44643" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">▼ 自動生成される日本語プロンプト（例）</span></span></div></div>
+        
+        <div class="article-item item_code " id="item44644" data-item-id="44644" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>▼ 自動生成される日本語プロンプト（例）
+
+PROMPT:
+
+# デザイン・品質
+最高品質の傑作, 8K解像度, プロの商業広告バナー, アンリアルエンジン5レンダリング, 非常に詳細, 鮮やかでリッチな色調.
+
+# 主題・スタイル
+e-Sportsプレイヤーのシルエット, 輝くゲーミングキーボードとマウス, 未来的なサイバーパンクスタイル, ネオンカラーの配色, デジタルアートの傑作.
+
+# 構成・演出
+ダイナミックなカメラアングル, 飛び散る火花と光の粒子(パーティクル), 背景のサイバーシティのボケ味, シネマティックライティング, 奥行きのある構図, 没入感のある雰囲気.
+
+# テキスト要素
+Main Text: &quot;**最強決定戦**&quot;, 立体的なメタリックフォント, ネオンの縁取り, インパクト大.
+Sub Text: &quot;**エントリー受付中**&quot;, スタイリッシュなサンセリフ体, 視認性良好.
+CTA: &quot;**詳細を見る**&quot;, 光沢のあるシアン色のボタン, クリックを誘うデザイン.
+
+# サイズ
+Aspect Ratio: 16:9
+
+NEGATIVE PROMPT:
+
+# 低品質・不具合
+低品質, 最悪の品質, jpegノイズ, ぼやけた, 素人作品.
+
+# 構成・テキストの問題
+単調な黒背景, フラットなライティング, 歪んだ文字, スペルミス, 崩れたデバイス.</pre></div>
+</div>
+<div class="cite"><cite class="item-source">自動生成される日本語プロンプト</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item44645" data-item-id="44645" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">▼ 生成される画像（例）</span></span></div></div>
+        
+        <div class="article-item item_image " id="item44672" data-item-id="44672" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/672/medium/71eecd86-c971-45ed-a01c-6520f4240127.png?1764322598" title=""><img class="img-responsive item-image" alt=" (44672)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/672/medium/71eecd86-c971-45ed-a01c-6520f4240127.png?1764322598" width="640" height="358" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item44675" data-item-id="44675" data-item-type="ItemRichText"><div class="item-body-hbr">このように、単に「サイバーパンク」と入力しただけでも、「飛び散る火花」「光の粒子」「シネマティックライティング」といった演出キーワードが自動で追加され、リッチな画像が生成されるようになります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44676" data-item-id="44676" data-item-type="ItemRichText"><div class="item-body-hbr">この<span class="decoration-01"><span class="decoration-02">PROMPT</span></span>と<span class="decoration-01"></span><span class="decoration-02"><span class="decoration-01">NEGATIVE PROMPT</span></span><span class="decoration-01"></span>を、次のステップでNano Banana Proに入力します。</div></div>
+        
+        <div class="article-item item_heading " id="item44678" data-item-id="44678" data-item-type="ItemHeading"><h3 class="item-body">練習問題：雛形を使ったプロンプトの作成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44679" data-item-id="44679" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span></div></div>
+        
+        <div class="article-item item_text " id="item44680" data-item-id="44680" data-item-type="ItemText"><div class="item-body-hbr">架空の「週末限定のパン祭り」告知バナーのデザインベースを生成するための「日本語プロンプト」を、配布されたメタプロンプト雛形を用いて生成してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44681" data-item-id="44681" data-item-type="ItemRichText"><div class="item-body-hbr">以下の要素を含めること。<br>
+<br>
+・メイン：「週末限定！」<br>
+・サブ：「焼きたてをご用意」<br>
+・CTA：「MENU」<br>
+・サイズ：正方形（1:1）</div></div>
+        
+        <div class="article-item item_rich_text " id="item44682" data-item-id="44682" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答手順</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item44683" data-item-id="44683" data-item-type="ItemRichText"><div class="item-body-hbr">1. 配布されたメタプロンプト雛形を開きます。<br>
+2. ## 4. 入力欄（User Input） を、以下の要件で埋めます。<br>
+　・デザインの種類: Webサイト用バナー<br>
+　・ターゲット: 家族連れ, 30代女性<br>
+　・主題・画像要素: 高級感のあるクロワッサン, 白いお皿<br>
+　・メインテキスト: 「週末限定！」<br>
+　・サブテキスト: 「焼きたてをご用意」<br>
+　・CTA: 「MENU」<br>
+　・サイズ（アスペクト比）: 1:1<br>
+　・スタイル・雰囲気: モダン, 白背景, シズル感<br>
+<br>
+3. これをAIに入力し、出力されたプロンプトを確認します。</div></div>
+        
+        <div class="article-item item_markdown " id="item44684" data-item-id="44684" data-item-type="ItemMarkdown"><p><strong>解答例</strong>
+（※以下は、雛形によって自動生成が期待される日本語プロンプトの一例です）</p>
+</div>
+        
+        <div class="article-item item_code " id="item44685" data-item-id="44685" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>PROMPT:
+
+# デザイン・品質
+最高品質の傑作, 8K解像度, プロの商業広告バナー, 雑誌広告基準, 非常に詳細, フードフォトグラフィーの傑作.
+
+# 主題・スタイル
+黄金色に輝くサクサクのクロワッサン, 高級な白い陶器の皿, モダンで洗練されたカフェスタイル, 食欲をそそる質感.
+
+# 構成・演出
+窓から差し込む柔らかな朝の光, 舞い上がる湯気, 背景にぼやけたカフェの店内, 被写界深度による立体感, シズル感あふれるクローズアップ.
+
+# テキスト要素
+Main Text: &quot;**週末限定！**&quot;, 太字のエレガントな明朝体, 高級感のあるゴールドまたはダークブラウン.
+Sub Text: &quot;**焼きたてをご用意**&quot;, 繊細なゴシック体, バランスの良い配置.
+CTA: &quot;**MENU**&quot;, シンプルで上品な円形ボタン, 視認性が高い.
+
+# サイズ
+Aspect Ratio: 1:1
+
+NEGATIVE PROMPT:
+
+# 低品質・不具合
+低品質, ぼやけた, 素人撮影, 美味しくなさそう, フラットなライティング.
+
+# 構成・テキストの問題
+単調な白背景, 影がない, 歪んだ文字, スペルミス, 崩れたパン.</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item44686" data-item-id="44686" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">生成例</span>（この問題では画像を生成する必要はありません）</div></div>
+        
+        <div class="article-item item_image " id="item44700" data-item-id="44700" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/700/medium/c50ecb62-2e7e-46b8-a98c-c396a5bc7d66.png?1764322610" title=""><img class="img-responsive item-image" alt=" (44700)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/700/medium/c50ecb62-2e7e-46b8-a98c-c396a5bc7d66.png?1764322610" width="640" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item44703" data-item-id="44703" data-item-type="ItemHeading"><h2 class="item-body">【2-2】プロンプト構造の理解とNano Banana Proの活用</h2></div>
+        
+        <div class="article-item item_markdown " id="item44704" data-item-id="44704" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item44705" data-item-id="44705" data-item-type="ItemHeading"><h3 class="item-body">プロンプト（雛形）の5要素</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44706" data-item-id="44706" data-item-type="ItemRichText"><div class="item-body-hbr">メタプロンプト雛形が生成する日本語プロンプトは、Nano Banana Proが最も理解しやすいように、主に5つのカテゴリに分類されています。</div></div>
+        
+        <div class="article-item item_html " id="item44707" data-item-id="44707" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div>カテゴリ</div>
+                </th>
+                <th scope="col">
+                    <div>役割と効果</div>
+                </th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row">
+                <div><span class="decoration-01">デザイン・品質</span></div>
+            </th>
+            <td>
+                <div>画像の「格」を決めます。「8K」「商業広告」などの言葉で、AIに本気を出させます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div><span class="decoration-01">主題・スタイル</span></div>
+            </th>
+            <td>
+                <div>メインの被写体を描写します。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div><span class="decoration-01">構成・演出</span></div>
+            </th>
+            <td>
+                <div><span class="decoration-02">空気感を作ります。</span>「湯気」「光の粒」「ボケ味」などを加えることで、単調な画像からプロっぽい奥行きのある画像に変化します。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div><span class="decoration-01">テキスト要素</span></div>
+            </th>
+            <td>
+                <div>Main Text, Sub Text, CTAの3要素を定義します。フォントの質感（光沢、立体など）もここで指定されます。</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div><span class="decoration-01">サイズ</span></div>
+            </th>
+            <td>
+                <div>画像の比率を指定します。（例：Aspect Ratio: 16:9）</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item44708" data-item-id="44708" data-item-type="ItemHeading"><h3 class="item-body">バナーのクオリティを上げるためのネガティブプロンプト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44709" data-item-id="44709" data-item-type="ItemRichText"><div class="item-body-hbr">AI任せにすると、照明が当たっていない「フラット」で「単調」な画像になりがちです。 <br>
+これを防ぐため、NEGATIVE PROMPTには以下の指示が含まれています。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44710" data-item-id="44710" data-item-type="ItemRichText"><div class="item-body-hbr">・単調な背景: 背景を一色で塗りつぶすのを防ぎます。<br>
+・フラットなライティング: 立体感のないのっぺりした照明を防ぎます。<br>
+・素人撮影: 構図やピントが甘い画像を防ぎます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44711" data-item-id="44711" data-item-type="ItemRichText"><div class="item-body-hbr">これにより、AIに対して「プロのカメラマンが撮影したようなライティングと構図」を強制します。</div></div>
+        
+        <div class="article-item item_heading " id="item44712" data-item-id="44712" data-item-type="ItemHeading"><h2 class="item-body">【2-3】AIツールを用いたバナーベースの高速大量出力実践</h2></div>
+        
+        <div class="article-item item_markdown " id="item44713" data-item-id="44713" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：45分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item44714" data-item-id="44714" data-item-type="ItemHeading"><h3 class="item-body">AIツールを用いたバナーベースの高速大量出力実践</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44715" data-item-id="44715" data-item-type="ItemRichText"><div class="item-body-hbr">このワークフローの最大の強みは「スピード」と「量」です。<br>
+Nano Banana Proの設定を活用し、短時間で多くのデザインベースを生成する手順を解説します。</div></div>
+        
+        <div class="article-item item_html " id="item44716" data-item-id="44716" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>高速大量出力の手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li><strong>プロンプトの準備</strong>：「メタプロンプト雛形」に要件を入力し、演出入りのプロンプトを生成させます。</li>
+            <li><strong>Nano Banana Proの起動</strong>：Gemini上で「Nano Banana Pro」を呼び出します。</li>
+            <li><strong>プロンプトの実行</strong>：
+                <ul>
+                    <li>準備したPROMPTの内容（「デザイン・品質」から「サイズ」まで）を貼り付けます。</li>
+                    <li>続けて、NEGATIVE PROMPTの内容も貼り付け、「画像を生成して」と指示します。</li>
+                </ul>
+            </li>
+            <li><strong>（繰り返し）</strong>：結果を見ながら、気に入った演出（例：「湯気をもっと強く」）をチャットで追加指示して、理想に近づけます。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item44717" data-item-id="44717" data-item-type="ItemHeading"><h2 class="item-body">【2-4】2章 -章末課題- [AI生成プロンプトの作成とデザインベースの生成]</h2></div>
+        
+        <div class="article-item item_markdown " id="item44718" data-item-id="44718" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item44719" data-item-id="44719" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44720" data-item-id="44720" data-item-type="ItemRichText"><div class="item-body-hbr">「地域のハンドメイドマーケット」の告知バナー（横長）の企画を立て、以下の要件を満たす<span class="decoration-02"><span class="decoration-01">デザインベース</span></span>を<span class="decoration-01"><span class="decoration-02">3</span></span><span class="decoration-01"><span class="decoration-02">パターン</span></span>生成してください。<br>
+<br>
+・要件1: 温かみがあり、親しみやすく楽しげなトーンのデザイン。<br>
+・要件2: 画像内に以下の3つのテキスト要素を含めること。<br>
+　・メインテキスト：「春のハンドメイド市」<br>
+　・サブテキスト：「4/10 開催」<br>
+　・CTA：「詳細はこちら」<br>
+・要件3: 横長（16:9）のサイズで生成すること。<br>
+・要件4: <span class="decoration-01"><span class="decoration-02">配布されたメタプロンプトの雛形</span></span>を用い、要件を「<span class="decoration-02"><span class="decoration-01">日本語プロンプト</span></span>」に変換してからNano Banana Proで生成すること。</div></div>
+        
+        <div class="article-item item_markdown " id="item44721" data-item-id="44721" data-item-type="ItemMarkdown"><h4 id="section">解答手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item44722" data-item-id="44722" data-item-type="ItemRichText"><div class="item-body-hbr">1. 以下の日本語要件を整理します。<br>
+　・デザインの種類: Webサイト用告知バナー<br>
+　・主題・画像要素: 手作り雑貨（布小物、陶器）、木のテーブル<br>
+　・メインテキスト: 「春のハンドメイド市」<br>
+　・サブテキスト: 「4/10 開催」<br>
+　・CTA: 「詳細はこちら」<br>
+　・サイズ: 16:9<br>
+　・スタイル・雰囲気: ナチュラル, 温かみがある, 木漏れ日<br>
+<br>
+2. この日本語要件を<span class="decoration-01"><span class="decoration-02">配布されたメタプロンプトの雛形</span></span>（の## 4. 入力欄）に適用し、「日本語プロンプト（PROMPT:とNEGATIVE PROMPT:）」を生成します。<br>
+<br>
+3. GeminiのNano Banana Proにプロンプトを入力し、画像を生成します。<br>
+4. 生成したデザインベースの中から、最も要件に近いものを3パターン選定します。</div></div>
+        
+        <div class="article-item item_heading " id="item44723" data-item-id="44723" data-item-type="ItemHeading"><h3 class="item-body">解答例</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44724" data-item-id="44724" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">▼ 雛形から生成した日本語プロンプト（例）</span></span></div></div>
+        
+        <div class="article-item item_code " id="item44725" data-item-id="44725" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>PROMPT:
+
+# デザイン・品質
+最高品質の傑作, 8K解像度, プロの商業広告バナー, 非常に詳細, ライフスタイル誌のクオリティ.
+
+# 主題・スタイル
+温かみのある手作り雑貨（布小物, 陶器）, 年月を経た味わいのある木のテーブル, ナチュラルで優しいスタイル.
+
+# 構成・演出
+木々の間から差し込む木漏れ日, 舞う埃の粒子（パーティクル）による空気感, 背景の緑のボケ味, 柔らかく包み込むようなライティング, 物語を感じさせる構図.
+
+# テキスト要素
+Main Text: &quot;**春のハンドメイド市**&quot;, 手書き風の優しいフォント, 視認性の高いダークブラウン.
+Sub Text: &quot;**4/10 開催**&quot;, シンプルなゴシック体, メインの下に配置.
+CTA: &quot;**詳細はこちら**&quot;, クラフト紙のような質感のボタン.
+
+# サイズ
+Aspect Ratio: 16:9
+
+NEGATIVE PROMPT:
+
+# 低品質・不具合
+低品質, ぼやけた, 暗い画像, フラットなライティング, 素人撮影.
+
+# 構成・テキストの問題
+単調な背景, 影がない, 歪んだ文字, スペルミス, 読めないテキスト.</pre></div>
+</div>
+<div class="cite"><cite class="item-source">雛形から生成した日本語プロンプト</cite></div></div></div>
+        
+        <div class="article-item item_image " id="item44736" data-item-id="44736" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/736/medium/3860c924-53ae-4781-a9be-95da04178773.jpg?1764322620" title=""><img class="img-responsive item-image" alt=" (44736)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/736/medium/3860c924-53ae-4781-a9be-95da04178773.jpg?1764322620" width="640" height="436" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item44737" data-item-id="44737" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">制作例</span></div></div>
+        
+        <div class="article-item item_image " id="item44777" data-item-id="44777" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/777/medium/5f9b8775-c24e-4046-a1af-39b682d7ee92.png?1764322625" title=""><img class="img-responsive item-image" alt=" (44777)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/777/medium/5f9b8775-c24e-4046-a1af-39b682d7ee92.png?1764322625" width="640" height="358" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item44778" data-item-id="44778" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong> 生成したバナーをチェックしよう</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>単調なベタ塗り背景ではなく、<span class="decoration-02">光やボケ味などの「演出」</span>が入っているか？</li>
+            <li>指定した3つのテキスト（メイン、サブ、CTA）が読みやすく配置されているか？</li>
+            <li>全体のトーンが「プロの商業広告」レベルのリッチさを感じさせるか？</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item44779" data-item-id="44779" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Canva編集に適したデザインの選択基準</span><br>
+<br>
+AIが生成した画像から、Canvaでの編集（フェーズ3）に最適なデザインを選ぶ基準は明確です。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44780" data-item-id="44780" data-item-type="ItemRichText"><div class="item-body-hbr">・テキストの可読性：文字が崩れすぎておらず、読めるものを選びます。<br>
+・演出の質：光の当たり方や背景の処理が美しく、安っぽくないものを選びます。<br>
+・要素のバランス：メインテキスト、サブテキスト、CTAの配置バランスが良いものを選びます。</div></div>
+        
+        <div class="article-item item_text " id="item44781" data-item-id="44781" data-item-type="ItemText"><div class="item-body-hbr">これで「AIツール nano bananaによる高速生成ワークフローとプロンプト活用」の解説を終わります。<br />次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item44782" data-item-id="44782" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="rNri2" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="litCc" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="1zyYxNhxRI+55ERUuw8FUQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

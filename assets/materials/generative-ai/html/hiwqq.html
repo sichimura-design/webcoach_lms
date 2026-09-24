@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%91SNS%E9%81%8B%E7%94%A8%E6%8B%85%E5%BD%93%E8%80%85%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88AI%E3%83%84%E3%83%BC%E3%83%AB%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%20-%20%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%81%A8%E5%BF%9C%E7%94%A8/hiWqq -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>4章 AI生成物の品質をプロレベルに高める校正術 -品質とリスク管理- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%91SNS%E9%81%8B%E7%94%A8%E6%8B%85%E5%BD%93%E8%80%85%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88AI%E3%83%84%E3%83%BC%E3%83%AB%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%20-%20%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%81%A8%E5%BF%9C%E7%94%A8/hiWqq">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="4章 AI生成物の品質をプロレベルに高める校正術 -品質とリスク管理- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/012/medium/132eb757-fbe3-477b-b9d6-5b3aba6c2bbc.png?1751336199">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="4章 AI生成物の品質をプロレベルに高める校正術 -品質とリスク管理-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%91SNS%E9%81%8B%E7%94%A8%E6%8B%85%E5%BD%93%E8%80%85%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88AI%E3%83%84%E3%83%BC%E3%83%AB%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%20-%20%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%81%A8%E5%BF%9C%E7%94%A8/hiWqq">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/012/large/132eb757-fbe3-477b-b9d6-5b3aba6c2bbc.png?1751336199">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="_L0-dtTTwTzgcn_EzHoHh68ryFnMHCfHXC1ZyuHyCWgMPS7L5tcMYT6xnupdlF4Fzzzwf7fCoPejGIOEofioTA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材１SNS運用担当者のためのテキストAIツールボックス - 基本操作と応用</div>
+
+          <div class="fw-bold h2">4章 AI生成物の品質をプロレベルに高める校正術 -品質とリスク管理-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章 AI生成物の品質をプロレベルに高める校正術 -品質とリスク管理-</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間: 50分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【4-1】AIの嘘を見破る！ファクトチェックとリライト術</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：15分</a></li></ul><ul><li><a href="#heading5" class="tocLink">(復習)なぜファクトチェックが必須なのか</a></li><li><a href="#heading6" class="tocLink">AIにリライトさせて品質を向上させる</a><ul><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading11" class="tocLink">【4-2】プロの目で行う！炎上・著作権リスク回避術</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：15分</a></li></ul><ul><li><a href="#heading13" class="tocLink">炎上リスクを回避するチェックポイント</a></li><li><a href="#heading14" class="tocLink"> 著作権と引用のルール</a></li><li><a href="#heading15" class="tocLink">練習問題</a></li></ul></li><li><a href="#heading16" class="tocLink">【4-3】4章 -章末課題- [AI生成記事の校正・リライト]</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading18" class="tocLink">問題</a></li><li><a href="#heading19" class="tocLink">解答手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item28096" data-item-id="28096" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%91SNS%E9%81%8B%E7%94%A8%E6%8B%85%E5%BD%93%E8%80%85%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88AI%E3%83%84%E3%83%BC%E3%83%AB%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%20-%20%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%81%A8%E5%BF%9C%E7%94%A8/OiMVS" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%91SNS%E9%81%8B%E7%94%A8%E6%8B%85%E5%BD%93%E8%80%85%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88AI%E3%83%84%E3%83%BC%E3%83%AB%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%20-%20%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%81%A8%E5%BF%9C%E7%94%A8/csA38" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item27994" data-item-id="27994" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">4章 AI生成物の品質をプロレベルに高める校正術 -品質とリスク管理-</h2></div>
+        
+        <div class="article-item item_markdown " id="item27992" data-item-id="27992" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間: 50分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item27993" data-item-id="27993" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_html " id="item27995" data-item-id="27995" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>AIが生成したテキストに含まれる情報の真偽を確かめ（ファクトチェック）、修正できるようになる</li>
+  <li>ブランドイメージに合わせて、AIが生成したテキストのトーン＆マナーを調整（リライト）できるようになる</li>
+  <li>炎上や著作権侵害などのリスクを回避するための、プロのチェックポイントを理解し、実践できる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item27996" data-item-id="27996" data-item-type="ItemRichText"><div class="item-body-hbr">AIは非常に強力なテキスト生成ツールですが、その生成物をそのまま公開するには注意が必要です。AIが生成したテキストには、誤った情報が含まれていたり、ブランドイメージに合わない表現が使われていたり、場合によっては炎上や著作権侵害のリスクを孕んでいたりすることもあります。<br>
+<br>
+この章では、AIが生成したテキストの品質をプロレベルに高めるための校正術、特に<span class="decoration-02">ファクトチェック</span>、<span class="decoration-02">リライト</span>、そして<span class="decoration-02">リスク管理</span>の重要性と具体的な方法について学びます。これらのスキルは、AIを安全かつ効果的に活用し、信頼性の高い情報を発信するために不可欠です。</div></div>
+        
+        <div class="article-item item_heading " id="item27997" data-item-id="27997" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【4-1】AIの嘘を見破る！ファクトチェックとリライト術</h2></div>
+        
+        <div class="article-item item_markdown " id="item27998" data-item-id="27998" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：15分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item27999" data-item-id="27999" data-item-type="ItemRichText"><div class="item-body-hbr">AIは学習データに基づいてもっともらしい文章を生成しますが、その内容が常に正しいとは限りません。特に、事実に基づいた情報発信が求められるSNS運用においては、AI生成物のファクトチェック（事実確認）と、必要に応じたリライト（書き直し）が極めて重要です。</div></div>
+        
+        <div class="article-item item_heading " id="item28000" data-item-id="28000" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">(復習)なぜファクトチェックが必須なのか</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28001" data-item-id="28001" data-item-type="ItemRichText"><div class="item-body-hbr">テキスト生成AIは、時として<span class="decoration-02">ハルシネーション（Hallucination：幻覚）</span>と呼ばれる現象を起こし、事実に基づかない情報や、もっともらしい嘘を生成することがあることを教材０の３章で学習しました。これはAIの仕組みに起因するものであり、現時点では完全に避けることは難しいとされています。</div></div>
+        
+        <div class="article-item item_rich_text " id="item28002" data-item-id="28002" data-item-type="ItemRichText"><div class="item-body-hbr">誤った情報を発信してしまった場合、以下のような深刻なリスクが伴います。</div></div>
+        
+        <div class="article-item item_html " id="item28003" data-item-id="28003" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">信用の失墜：</span><br>フォロワーや顧客からの信頼を大きく損ない、ブランドイメージが悪化する可能性があります。一度失った信頼を回復するのは容易ではありません。</li>
+  <li><span class="decoration-01">誤解や混乱の拡散：</span><br>誤った情報が拡散されることで、社会に混乱を招いたり、誰かに不利益を与えたりする可能性があります。</li>
+  <li><span class="decoration-01">法的問題：</span><br>内容によっては、景品表示法違反（不当な表示）、名誉毀損、著作権侵害など、法的な問題に発展するリスクもあります。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28004" data-item-id="28004" data-item-type="ItemRichText"><div class="item-body-hbr">したがって、AIが生成したテキスト、特に事実情報（日付、数値、固有名詞、効果効能など）を含む場合は、公開前に必ずファクトチェックを行う必要があります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item28005" data-item-id="28005" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">具体的なファクトチェックの方法：</span></div></div>
+        
+        <div class="article-item item_html " id="item28006" data-item-id="28006" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">一次情報にあたる</span>: 可能であれば、公式サイト、公的機関の発表、信頼できる研究機関の論文など、情報の発生源となる一次情報を確認します。</li>
+  <li><span class="decoration-02">複数の情報源で確認する</span>: 一つの情報源だけでなく、複数の異なる信頼できる情報源で同じ情報が述べられているかを確認します。</li>
+  <li><span class="decoration-02">情報の鮮度を確認する</span>: 情報がいつ発信されたものかを確認し、古い情報でないか注意します。特に変化の速い分野では重要です。</li>
+  <li><span class="decoration-02">専門家の意見を参照する</span>: 必要に応じて、その分野の専門家の意見や解説を参照します。</li>
+  <li><span class="decoration-02">AIに情報源を尋ねる（ただし鵜呑みにしない）</span>: 一部のAIは情報源を提示する機能がありますが、その情報源自体が信頼できるかどうかも確認が必要です。</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item28007" data-item-id="28007" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">AIにリライトさせて品質を向上させる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28008" data-item-id="28008" data-item-type="ItemRichText"><div class="item-body-hbr">ファクトチェックの結果、誤りが見つかった場合や、表現が不適切だった場合には、AIにリライト（書き直し）を指示して品質を向上させることができます。また、元々AIが生成した文章が正しくても、さらに表現を磨き上げたい場合にもリライトは有効です。</div></div>
+        
+        <div class="article-item item_rich_text " id="item28009" data-item-id="28009" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">リライト指示のプロンプト例：</span></div></div>
+        
+        <div class="article-item item_html " id="item28010" data-item-id="28010" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">誤情報の修正を伴うリライト</span>
+    <ul>
+      <li>「この文章の〇〇という部分は誤りです。正しくは△△です。この点を修正し、より正確な情報に基づいて書き直してください。」</li>
+      <li>「以下の文章には古い情報が含まれています。最新の情報（情報源：[URLなど]）を反映させてリライトしてください。」</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">表現の調整</span>
+    <ul>
+      <li>「この文章を、もっと専門家らしい、権威のある口調に書き直してください。」</li>
+      <li>「小学生にも分かるように、もっと簡単な言葉で、具体例を交えながら説明してください。」</li>
+      <li>「この部分を、もっと読者の感情に訴えかけるような、感動的な表現に変えてください。」</li>
+      <li>「もっと簡潔に、要点をまとめて100字以内でリライトしてください。」</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">特定の視点の強調</span>
+    <ul>
+      <li>「この商品のメリットをもっと強調してリライトしてください。」</li>
+      <li>「このサービスのデメリットや注意点も公平に含めて書き直してください。」</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">トーン＆マナーの変更</span>
+    <ul>
+      <li>「もっと親しみやすい、フレンドリーなトーンで書き直してください。絵文字も適度に加えてください。」</li>
+      <li>「フォーマルなビジネス文書として通用するように、丁寧な言葉遣いに修正してください。」</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28011" data-item-id="28011" data-item-type="ItemRichText"><div class="item-body-hbr">AIにリライトを指示する際は、どこを、なぜ、どのように変えたいのかを具体的に伝えることが重要です。AIは強力な文章作成アシスタントとして、リライト作業も効率的にサポートしてくれます。</div></div>
+        
+        <div class="article-item item_image " id="item28012" data-item-id="28012" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/012/medium/132eb757-fbe3-477b-b9d6-5b3aba6c2bbc.png?1751336199" title=""><img class="img-responsive item-image" alt=" (28012)" data-reference="" src="../../_assets/b5caca112f.webp" width="640" height="360"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_image " id="item28013" data-item-id="28013" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/013/medium/491bc922-48ff-4163-b8e0-8f3d2ea68e28.png?1751336223" title=""><img class="img-responsive item-image" alt=" (28013)" data-reference="" src="../../_assets/0169ee7d04.webp" width="640" height="360"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_image " id="item28014" data-item-id="28014" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/014/medium/55ddf9cc-f320-45cc-89d5-f7bdaa879ed0.png?1751336247" title=""><img class="img-responsive item-image" alt=" (28014)" data-reference="" src="../../_assets/022c438be6.webp" width="640" height="360"></a><h4 id="heading9"></h4></div></div>
+        
+        <div class="article-item item_image " id="item28015" data-item-id="28015" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/015/medium/f2059b47-bf54-4570-98d8-ecdee51cff65.png?1751336298" title=""><img class="img-responsive item-image" alt=" (28015)" data-reference="" src="../../_assets/1a30c1c73e.webp" width="640" height="360"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item28016" data-item-id="28016" data-item-type="ItemHeading"><h2 class="item-body" id="heading11">【4-2】プロの目で行う！炎上・著作権リスク回避術</h2></div>
+        
+        <div class="article-item item_markdown " id="item28017" data-item-id="28017" data-item-type="ItemMarkdown"><h4 id="heading12">目安の学習時間：15分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item28018" data-item-id="28018" data-item-type="ItemRichText"><div class="item-body-hbr">SNSは情報拡散が速いため、不適切な投稿は瞬く間に広がり、炎上に繋がるリスクがあります。また、AIが生成したテキストであっても、<span class="decoration-02">著作権</span>や<span class="decoration-02">引用のルール</span>を遵守する必要があります。プロのSNS運用担当者として、これらのリスクを未然に防ぐためのチェックポイントを理解し、実践することが不可欠です。</div></div>
+        
+        <div class="article-item item_heading " id="item28019" data-item-id="28019" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">炎上リスクを回避するチェックポイント</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28020" data-item-id="28020" data-item-type="ItemRichText"><div class="item-body-hbr">AIは時として、差別的、攻撃的、あるいは誤解を招くような表現を生成してしまう可能性があります。これらの表現は、意図せずとも炎上を引き起こし、アカウントやブランドの評判を著しく損ねる可能性があります。<br>
+<br>
+以下は、AI生成テキストを公開する前に必ず確認すべき、炎上リスク回避のための主要なチェックポイントです。</div></div>
+        
+        <div class="article-item item_html " id="item28021" data-item-id="28021" data-item-type="ItemHtml"><div class="item-body">    <ul>
+        <li><span class="decoration-02">差別的・攻撃的な表現はないか？</span>
+            <ul>
+                <li>特定の人種、性別、国籍、宗教、性的指向、障害を持つ人々などに対する差別的な言葉や、偏見を助長するような表現が含まれていないか。</li>
+                <li>個人や特定のグループを侮辱したり、攻撃したりするような言葉遣いになっていないか。</li>
+            </ul>
+        </li>
+        <li><span class="decoration-02">特定の個人や団体を不当に貶めていないか？</span>
+            <ul>
+                <li>他社製品や競合他社、特定の人物や団体に対して、根拠なく誹謗中傷したり、不当に評価を下げたりするような内容になっていないか。</li>
+            </ul>
+        </li>
+        <li><span class="decoration-02">誤解を招くような、断定的な表現はないか？</span>
+            <ul>
+                <li>科学的根拠が曖昧な事柄について、断定的な口調で語っていないか。（例：「絶対に効果がある」「100%安全」など）</li>
+                <li>一部の意見や可能性を、あたかも全体の総意や確定事項であるかのように表現していないか。</li>
+                <li>特に健康、美容、金融などの分野では、誇大広告や誤認を招く表現に注意が必要です。</li>
+            </ul>
+        </li>
+        <li><span class="decoration-02">ステルスマーケティング（ステマ）を疑われるような表現はないか？</span>
+            <ul>
+                <li>広告であることを隠して、あたかも中立的な個人の感想や推奨であるかのように商品やサービスを紹介していないか。</li>
+                <li>PR表記や広告である旨の表示（#PR, #広告 など）を適切に行っているか。</li>
+            </ul>
+        </li>
+        <li><span class="decoration-02">倫理的に問題のある内容や、公序良俗に反する表現はないか？</span>
+            <ul>
+                <li>暴力的な内容、性的な内容、残酷な内容など、多くの人が不快に感じる可能性のあるコンテンツでないか。</li>
+                <li>未成年者の飲酒や喫煙を助長するような内容でないか。</li>
+            </ul>
+        </li>
+        <li><span class="decoration-02">政治的・宗教的に偏った、あるいは扇動的な内容ではないか？</span>
+            <ul>
+                <li>企業やブランドのアカウントとして発信する場合、特定の政治的・宗教的立場に過度に肩入れしたり、対立を煽ったりするような内容は避けるのが賢明です。</li>
+            </ul>
+        </li>
+    </ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item28022" data-item-id="28022" data-item-type="ItemRichText"><div class="item-body-hbr">AIが生成したテキストにこれらの要素が含まれていないか、細心の注意を払って確認し、必要であれば修正・削除することが重要です。判断に迷う場合は、複数の目でチェックしたり、専門家に相談したりすることも検討しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item28023" data-item-id="28023" data-item-type="ItemHeading"><h3 class="item-body" id="heading14"> 著作権と引用のルール</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28024" data-item-id="28024" data-item-type="ItemRichText"><div class="item-body-hbr">AIが生成したテキストであっても、その内容が既存の著作物と酷似している場合、著作権侵害にあたる可能性があります。AIは学習データに基づいて文章を生成するため、意図せずとも他者の著作物をコピーしてしまうリスクがゼロではありません。</div></div>
+        
+        <div class="article-item item_html " id="item28025" data-item-id="28025" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>注意：AI生成物と著作権</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>AIが生成したテキストが、特定の書籍、記事、ウェブサイトの文章と酷似していないか、公開前に確認することが推奨されます。</li>
+            <li>特に、独自性の高い表現や、具体的なデータ、ストーリーラインなどが類似している場合は注意が必要です。</li>
+            <li>不安な場合は、<span class="decoration-02">コピペチェックツール</span>（例：CopyContentDetector、剽窃チェッカーなど）を利用して、類似度を確認することも有効な手段の一つです。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28026" data-item-id="28026" data-item-type="ItemRichText"><div class="item-body-hbr">また、他者の著作物（文章、画像、動画など）を参考にしたり、一部を利用したりする際には、正しい<span class="decoration-02">「</span><span class="decoration-02">引用」のルール</span>を守る必要があります。引用とは、報道、批評、研究その他の目的で、公正な慣行に合致し、かつ、目的上正当な範囲内で行われるものでなければなりません。</div></div>
+        
+        <div class="article-item item_rich_text " id="item28027" data-item-id="28027" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">SNSにおける引用の基本的な注意点：</span></div></div>
+        
+        <div class="article-item item_html " id="item28028" data-item-id="28028" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">引用部分の明示：</span><br>どこからどこまでが引用であるかを明確に区別します（例：カギ括弧「」で囲む、引用ブロック機能を使うなど）。</li>
+  <li><span class="decoration-01">出所の明示：</span><br>誰の（どの作品の）著作物からの引用であるかを明記します（例：著者名、作品名、URLなど）。</li>
+  <li><span class="decoration-01">改変しない：</span><br>原則として、引用する文章を勝手に改変してはいけません。</li>
+  <li><span class="decoration-01">主従関係の明確化：</span><br>自分の著作物が「主」であり、引用部分が「従」である必要があります。引用部分がコンテンツの大部分を占めるような場合は、引用とは認められない可能性があります。</li>
+  <li><span class="decoration-01">引用の必要性：</span><br>その著作物を引用する必要性が本当にあるのかを検討します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28029" data-item-id="28029" data-item-type="ItemRichText"><div class="item-body-hbr">AIに他者の文章を要約させたり、参考にさせたりする場合でも、最終的に生成されたテキストが著作権を侵害していないか、引用のルールを遵守しているかを確認するのは運用者の責任です。<br>
+<br>
+プラットフォームの利用規約も重要です。各SNSプラットフォームは、著作権に関する独自のポリシーやガイドラインを定めています。これらの規約も事前に確認し、遵守するようにしましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item28030" data-item-id="28030" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28031" data-item-id="28031" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+AIに「最新の美容成分『AIドリームペプチド』の効果について、専門家として解説する投稿文」を作成させたとします。しかし、この『AIドリームペプチド』は、AIがもっともらしく作り上げた<span class="decoration-02">架空の成分</span>でした。このAI生成物にはどのようなリスクがあり、公開前に何をすべきですか？</div></div>
+        
+        <div class="article-item item_rich_text " id="item28032" data-item-id="28032" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答</span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_html " id="item28033" data-item-id="28033" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">リスク</span>
+    <ol>
+      <li><span class="decoration-02">景品表示法違反（優良誤認表示）：</span>存在しない成分や、科学的根拠のない効果を謳うことは、消費者に誤解を与え、不当に顧客を誘引する行為として景品表示法に抵触する可能性があります。これは法的な罰則の対象となり得ます。</li>
+      <li><span class="decoration-02">信用の失墜：</span>事実ではない情報を発信することで、アカウントやブランドの信用は完全に失墜します。一度「嘘つき」というレッテルが貼られると、その後の情報発信も信頼されなくなります。</li>
+      <li><span class="decoration-02">炎上リスク：</span>虚偽の情報を流したとして、SNS上で批判が殺到し、炎上する可能性があります。</li>
+      <li><span class="decoration-02">健康被害の誤解（間接的リスク）：</span>ユーザーがその架空の成分を信じ、類似品を探す、他の治療法を止めるなどの行動を取った場合、間接的に健康被害に繋がる可能性も否定できません。</li>
+    </ol>
+  </li>
+
+  <li><span class="decoration-01">公開前にすべきこと</span>
+    <ol>
+      <li><span class="decoration-02">徹底的なファクトチェック：</span>
+        <ul>
+          <li>成分名『AIドリームペプチド』が実在するのか、信頼できる情報源（学術論文データベース、化粧品成分データベース、公的機関の情報など）で確認します。</li>
+          <li>謳われている効果（例：シワ改善、美白効果など）について、科学的な根拠があるのかを同様に確認します。</li>
+        </ul>
+      </li>
+      <li><span class="decoration-02">情報源の確認：</span>AIが情報源を示した場合でも、その情報源自体の信頼性を検証します。</li>
+      <li><span class="decoration-02">専門家への確認（必要に応じて）：</span>美容や化学の専門家に、当該成分や効果について意見を求めることも有効です。</li>
+      <li><span class="decoration-02">架空であると判明した場合の対応：</span>
+        <ul>
+          <li><strong>絶対にその投稿は使用しない。</strong></li>
+          <li>AIがなぜそのような架空の成分を生成したのかを分析し（プロンプトが悪かったのか、AIの特性なのか）、今後のAI活用に活かす。</li>
+          <li>改めて、AIの回答は必ず裏付けを取るという意識を徹底する。</li>
+        </ul>
+      </li>
+      <li><span class="decoration-02">代替案の検討：</span>実在し、かつ科学的根拠のある情報を基に、改めてAIに指示を出してコンテンツを作成し直します。</li>
+    </ol>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28034" data-item-id="28034" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">結論として、AIの生成物は「疑ってかかる」姿勢が基本です。</span> 特に専門的な内容や効果効能を謳う場合は、二重三重のチェックを行い、安全で信頼性の高い情報発信を心がけましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item28035" data-item-id="28035" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">【4-3】4章 -章末課題- [AI生成記事の校正・リライト]</h2></div>
+        
+        <div class="article-item item_markdown " id="item39150" data-item-id="39150" data-item-type="ItemMarkdown"><h4 id="heading17">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item28036" data-item-id="28036" data-item-type="ItemRichText"><div class="item-body-hbr">この章で学んだファクトチェック、リライト術、リスク管理の知識を総動員して、AIが生成した問題のあるSNS投稿文を、プロの目で校正・リライトしてみましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item28037" data-item-id="28037" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28038" data-item-id="28038" data-item-type="ItemRichText"><div class="item-body-hbr">以下は、AIが生成した「睡眠の質を高める方法」についてのSNS投稿文の初稿です。この文章には、情報の正確性や表現において、いくつかの問題点が含まれている可能性があります。<br>
+<br>
+この章で学んだことを活かして、この投稿文を「信頼性が高く、ユーザーに寄り添った、魅力的な投稿文」に校正・リライトしてください。具体的に、どの部分を、なぜ、どのように修正したのかも説明できるようにしましょう。</div></div>
+        
+        <div class="article-item item_html " id="item28039" data-item-id="28039" data-item-type="ItemHtml"><div class="item-body"><div class="quote">
+【AIが生成した初稿】<br>
+  睡眠不足は万病の元！でもご安心を。絶対に眠れる魔法の方法を伝授します。まず、夜寝る前にスマホを見るのは完全にNGです。ブルーライトは脳を覚醒させ、100%眠れなくなります。代わりに、ホットミルクを飲めば、誰でもすぐに眠りに落ちることができます。この方法で、あなたも今日から快眠を手に入れましょう！#快眠 #睡眠改善 #絶対眠れる
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item28040" data-item-id="28040" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item28041" data-item-id="28041" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">初稿の問題点の洗い出し</span>
+    <p>まず、AIが生成した初稿を注意深く読み、問題となりそうな箇所をリストアップします。以下の観点からチェックしてみましょう。</p>
+    <ol>
+      <li><span class="decoration-02">ファクトチェック：</span>
+        <ul>
+          <li>「絶対に眠れる」「100%眠れなくなります」「誰でもすぐに眠りに落ちる」といった<strong>断定的な表現</strong>は、科学的根拠があるか？効果には個人差があるのではないか？</li>
+          <li>「スマホのブルーライトで100%眠れなくなる」は事実か？影響の程度は？</li>
+          <li>「ホットミルクで誰でもすぐに眠りに落ちる」は医学的に証明されているか？</li>
+          <li>「万病の元」という表現は適切か？少し大げさすぎないか？</li>
+        </ul>
+      </li>
+      <li><span class="decoration-02">トーン＆マナー：</span>
+        <ul>
+          <li>「伝授します」「NGです」といった表現は、少し上から目線で冷たい印象を与えないか？</li>
+          <li>ユーザーに寄り添う姿勢が感じられるか？</li>
+          <li>全体的に、命令口調や断定口調が多くないか？</li>
+        </ul>
+      </li>
+      <li><span class="decoration-02">リスク：</span>
+        <ul>
+          <li>「絶対に」「100%」など効果を保証するような表現は、景品表示法などの観点から誇大広告と捉えられるリスクがあるか？</li>
+          <li>誤った情報を信じたユーザーが不利益を被る可能性はないか？</li>
+        </ul>
+      </li>
+      <li><span class="decoration-02">ハッシュタグ：</span>
+        <ul>
+          <li>「#絶対眠れる」というハッシュタグは、内容の信頼性と合っているか？誇張しすぎていないか？</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+
+  <li><span class="decoration-01">リライト方針の決定</span>
+    <p>洗い出した問題点を基に、どのような投稿文にしたいか、リライトの方針を定めます。</p>
+    <ol>
+      <li><span class="decoration-02">目指すイメージ：</span>信頼性が高く、科学的根拠に基づいた情報を提供しつつ、読者に優しく寄り添い、試してみようと思えるような前向きな投稿。</li>
+      <li><span class="decoration-02">修正ポイント：</span>
+        <ul>
+          <li>断定的な表現を避け、可能性や個人差を示唆する表現に修正する。</li>
+          <li>科学的根拠が曖昧な情報は、一般的なリラックス方法の一つとして紹介する形にするか、より確かな情報に置き換える。</li>
+          <li>上から目線な表現を改め、丁寧で共感的な言葉遣いにする。</li>
+          <li>リスクのある表現を削除または修正する。</li>
+          <li>ハッシュタグも内容に合わせて修正する。</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_html " id="item28042" data-item-id="28042" data-item-type="ItemHtml"><div class="item-body"><ol start="3">
+  <li><span class="decoration-01">AIへのリライト指示（または自身でリライト）:</span><br>
+    リライト方針に基づき、AIに具体的な修正指示を出してリライトさせるか、自身で直接リライトします。AIに指示する場合は、以下のようなプロンプトが考えられます。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28043" data-item-id="28043" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">プロンプト例（AIにリライトを指示する場合）：</span></div></div>
+        
+        <div class="article-item item_html " id="item28044" data-item-id="28044" data-item-type="ItemHtml"><div class="item-body"><pre><code class="hljs shell">
+睡眠不足が続くと、体の不調につながることもあります。<br>
+そんなときは、日々の習慣を少し見直してみるのがおすすめです。<br>
+たとえば、寝る直前のスマホ使用は控えるのがよいとされています。<br>
+スマホのブルーライトは、脳を覚醒させてしまい、入眠を妨げる可能性があるためです。<br>
+<br>
+また、ホットミルクを飲むことでリラックスできたという声も多く、<br>
+気持ちを落ち着ける夜の習慣として取り入れている方もいます。<br>
+すぐに効果を感じられなくても、自分に合った方法を少しずつ見つけていくことが大切です。<br>
+<br>
+今日も一日頑張ったあなたに、心地よい眠りが訪れますように。<br>
+<span class="hljs-meta">#</span><span class="bash">睡眠の質を高める <span class="hljs-comment">#リラックスタイム #丁寧な暮らし</span></span>
+</code></pre>
+</div></div>
+        
+        <div class="article-item item_html " id="item28045" data-item-id="28045" data-item-type="ItemHtml"><div class="item-body"><ol start="4">
+  <li><span class="decoration-01">最終確認と調整</span>:<br>
+    AIがリライトした文章（または自身でリライトした文章）を再度確認し、意図した通りに修正されているか、新たな問題点が生じていないかをチェックします。<br>
+    文脈やトーンに違和感がないか、誤解を招く表現が残っていないか、誇張や断定的な表現が紛れていないかを丁寧に見直します。<br>
+    また、ハッシュタグの選定や句読点の使い方、読点の位置など、細部まで配慮しましょう。<br>
+    必要であれば、さらに微調整を加えて完成させます。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28046" data-item-id="28046" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">修正後の投稿文（見本）：</span><br>
+<br>
+「なかなか寝付けない、ぐっすり眠れない…そんなお悩みはありませんか？睡眠の質の低下は、日中のパフォーマンスや体の不調に繋がることもありますよね😢 でも大丈夫、今日からできることで少しずつ改善を目指しましょう✨<br>
+<br>
+夜寝る前は、スマートフォンなどの明るい画面を見る時間を少し控えてみるのがおすすめです。ブルーライトが脳をリラックスモードにしにくくすると言われています。代わりに、温かい飲み物（カフェインレスのハーブティーやホットミルクなど）でほっと一息つくのはいかがでしょうか？心と体を落ち着かせる、リラックスタイムのお供になるかもしれません☕️<br>
+<br>
+他にも、寝室の環境を整えたり、軽いストレッチを取り入れたりするのも良いですね。自分に合った方法を見つけて、心地よい眠りのための習慣を少しずつ作っていきましょう。皆さんの快眠を応援しています🌙<br>
+<br>
+#睡眠の質を高める #丁寧な暮らし #リラックスタイム」</div></div>
+        
+        <div class="article-item item_rich_text " id="item28047" data-item-id="28047" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">修正点のポイント解説（例）：</span></div></div>
+        
+        <div class="article-item item_html " id="item28048" data-item-id="28048" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">断定表現の回避</span>:<br>「絶対に眠れる」→「今日からできることで少しずつ改善を目指しましょう」、「100%眠れなくなる」→「リラックスモードにしにくくすると言われています」、誰でもすぐに眠りに落ちる」→「リラックスタイムのお供になるかもしれません」など、断定を避け、可能性や一般的な情報として提示。</li>
+  <li><span class="decoration-01">トーン＆マナーの変更</span>:<br>「伝授します」「NGです」といった表現を削除し、「お悩みはありませんか？」「〜するのはいかがでしょうか？」「応援しています」など、読者に寄り添う優しい口調に変更。</li>
+  <li><span class="decoration-01">情報の正確性と具体性</span>:<br>ホットミルクを他の選択肢（ハーブティー）と共に提示し、あくまでリラックス方法の一つとして紹介。他の改善策（環境整備、ストレッチ）も追加し、選択肢を提示。</li>
+  <li><span class="decoration-01">リスク回避</span>:<br>誇大広告と取られかねない表現を排除。</li>
+  <li><span class="decoration-01">ハッシュタグの変更</span>:<br>「#絶対眠れる」のような過度な表現を避け、より現実的でポジティブな印象のタグに変更。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28049" data-item-id="28049" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">提出について:</span></div></div>
+        
+        <div class="article-item item_html " id="item28050" data-item-id="28050" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>WEBCOACH先生にフィードバックを貰おう！</strong></span>
+    <div class="content-area">
+    <ul><li>完成した課題は、WEBCOACH先生に入力してフィードバックをもらいましょう！</li><li>思いもよらない新しいアイデアや、別の切り口のヒントがもらえることもあります。</li></ul>
+    <a><strong>【ポイント】</strong></a>
+        <ul>
+            <li>校正・リライトした投稿文を記述し、元の文章のどの部分を、なぜ、どのように修正したのかを具体的に説明しましょう。</li>
+            <li>「信頼性が高く、ユーザーに寄り添った、魅力的な投稿文」という指示に対して、あなたの修正がどのように貢献しているかを明確に伝えましょう。</li>
+            <li>WEBCOACH先生には、修正後の投稿文に対する客観的な意見や、さらに表現を豊かにするためのアドバイス、あるいは他の潜在的な問題点について質問してみましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28051" data-item-id="28051" data-item-type="ItemRichText"><div class="item-body-hbr">これで「AI生成物の品質をプロレベルに高める校正術 -品質とリスク管理-」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item28095" data-item-id="28095" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%91SNS%E9%81%8B%E7%94%A8%E6%8B%85%E5%BD%93%E8%80%85%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88AI%E3%83%84%E3%83%BC%E3%83%AB%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%20-%20%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%81%A8%E5%BF%9C%E7%94%A8/OiMVS" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%91SNS%E9%81%8B%E7%94%A8%E6%8B%85%E5%BD%93%E8%80%85%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88AI%E3%83%84%E3%83%BC%E3%83%AB%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%20-%20%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%81%A8%E5%BF%9C%E7%94%A8/csA38" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">4章 AI生成物の品質をプロレベルに高める校正術 -品質とリスク管理-</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間: 50分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【4-1】AIの嘘を見破る！ファクトチェックとリライト術</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：15分</a></li></ul><ul><li><a href="#heading5" class="tocLink">(復習)なぜファクトチェックが必須なのか</a></li><li><a href="#heading6" class="tocLink">AIにリライトさせて品質を向上させる</a><ul><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading11" class="tocLink">【4-2】プロの目で行う！炎上・著作権リスク回避術</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：15分</a></li></ul><ul><li><a href="#heading13" class="tocLink">炎上リスクを回避するチェックポイント</a></li><li><a href="#heading14" class="tocLink"> 著作権と引用のルール</a></li><li><a href="#heading15" class="tocLink">練習問題</a></li></ul></li><li><a href="#heading16" class="tocLink">【4-3】4章 -章末課題- [AI生成記事の校正・リライト]</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading18" class="tocLink">問題</a></li><li><a href="#heading19" class="tocLink">解答手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%91SNS%E9%81%8B%E7%94%A8%E6%8B%85%E5%BD%93%E8%80%85%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88AI%E3%83%84%E3%83%BC%E3%83%AB%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%20-%20%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%81%A8%E5%BF%9C%E7%94%A8/OiMVS" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_SNS/%E6%95%99%E6%9D%90%EF%BC%91SNS%E9%81%8B%E7%94%A8%E6%8B%85%E5%BD%93%E8%80%85%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88AI%E3%83%84%E3%83%BC%E3%83%AB%E3%83%9C%E3%83%83%E3%82%AF%E3%82%B9%20-%20%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E3%81%A8%E5%BF%9C%E7%94%A8/csA38" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

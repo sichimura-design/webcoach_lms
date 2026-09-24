@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/0FcCm -->
+<!-- clipkit-fetched-at: 2026-09-17T11:10:31.246Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop｜2章 環境設定をしよう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/0FcCm">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop｜2章 環境設定をしよう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/629/medium/12fdbb66-7f36-4928-aaa6-d6cd627b4cde.png?1739683779">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop｜2章 環境設定をしよう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/0FcCm">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/629/large/12fdbb66-7f36-4928-aaa6-d6cd627b4cde.png?1739683779">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="zTHGZ_SJCiQb_wJgky76mhA_pZooi004w_ATJbi-NMw6HsTU7HIg-Nj0_cCRWKgw3RCLuRRE_d0cJ_KkKgl6mQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop｜2章 環境設定をしよう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 環境設定をしよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間: 90分</a></li></ul></li><li><a href="#heading2" class="tocLink">【2-1】 環境設定の開き方</a><ul><li><a href="#heading3" class="tocLink">OSによる違い</a></li><li><a href="#heading4" class="tocLink"></a></li></ul></li><li><a href="#heading5" class="tocLink">【2-2】環境設定画面</a><ul><li><a href="#heading6" class="tocLink">メニュー一覧</a></li><li><a href="#heading7" class="tocLink"></a></li></ul><ul><li><a href="#heading8" class="tocLink">一般</a><ul><li><a href="#heading9" class="tocLink">従来の自由変形を使用</a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li></ul></li><li><a href="#heading12" class="tocLink">インターフェイス</a><ul><li><a href="#heading13" class="tocLink"></a></li></ul></li><li><a href="#heading14" class="tocLink">テーマカラー</a><ul><li><a href="#heading15" class="tocLink"></a></li></ul></li><li><a href="#heading16" class="tocLink">ワークスペース</a><ul><li><a href="#heading17" class="tocLink"></a></li></ul></li><li><a href="#heading18" class="tocLink">タブでドキュメントを開く</a><ul><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink">複数画像を並べて表示した状態</a></li><li><a href="#heading21" class="tocLink"></a></li></ul></li><li><a href="#heading22" class="tocLink">単位・定規</a><ul><li><a href="#heading23" class="tocLink">単位の推奨設定</a></li><li><a href="#heading24" class="tocLink"></a></li></ul></li><li><a href="#heading25" class="tocLink">ガイド・グリッド・スライス</a><ul><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink">各機能の説明</a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li></ul></li><li><a href="#heading32" class="tocLink">キャンバスに定規を表示する</a><ul><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink">定規の表示方法</a></li><li><a href="#heading35" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading36" class="tocLink">【2-3】ワークスペースの表示設定</a><ul><li><a href="#heading37" class="tocLink">スクリーンモード</a><ul><li><a href="#heading38" class="tocLink"></a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink"></a></li><li><a href="#heading42" class="tocLink">スクリーンモードの切り替え方法</a></li></ul></li><li><a href="#heading43" class="tocLink">レイヤーパネルオプション</a><ul><li><a href="#heading44" class="tocLink"></a></li><li><a href="#heading45" class="tocLink"></a></li><li><a href="#heading46" class="tocLink"></a></li></ul></li><li><a href="#heading47" class="tocLink">サムネイルサイズ</a></li><li><a href="#heading48" class="tocLink">レイヤーの境界線</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25568" data-item-id="25568" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/ss5X7" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/0WUlb" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36408" data-item-id="36408" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">2章 環境設定をしよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39419" data-item-id="39419" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間: 90分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item7189" data-item-id="7189" data-item-type="ItemRichText"><div class="item-body-hbr">Photoshopの環境設定を適切に行うことで、<span class="decoration-02">Webデザイン制作の効率と品質を向上させることができます。</span><br>
+以下は、Webデザインの制作における推奨される環境設定です。</div></div>
+        
+        <div class="article-item item_heading " id="item12676" data-item-id="12676" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【2-1】 環境設定の開き方</h2></div>
+        
+        <div class="article-item item_markdown " id="item36409" data-item-id="36409" data-item-type="ItemMarkdown"><h4 id="heading3">OSによる違い</h4>
+</div>
+        
+        <div class="article-item item_html " id="item7198" data-item-id="7198" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">Windowsの場合</span></li>
+  <ul>
+    <li>メニューから「編集」 &gt; 「環境設定」 &gt; 「一般」を選択</li></ul>
+  <p></p><li><span class="decoration-01">Macの場合</span></li>
+  <ul>
+    <li>メニューから「Photoshop」 &gt; 「環境設定」 &gt; 「一般」を選択
+    </li></ul>
+  </ul></div></div>
+        
+        <div class="article-item item_image " id="item7200" data-item-id="7200" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/200/medium/29869c3f-d3b7-4268-b32f-0472ecf16667.png?1739518771" title=""><img class="img-responsive item-image" alt=" (7200)" data-reference="" src="../../_assets/edc559554f.webp" width="640" height="426"></a><h4 id="heading4"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36466" data-item-id="36466" data-item-type="ItemHeading"><h2 class="item-body" id="heading5">【2-2】環境設定画面</h2></div>
+        
+        <div class="article-item item_markdown " id="item36410" data-item-id="36410" data-item-type="ItemMarkdown"><h4 id="heading6">メニュー一覧</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36437" data-item-id="36437" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>一般</li>
+  <li>インターフェイス</li>
+  <li>テーマカラー</li>
+  <li>ワークスペース</li>
+  <li>タブでドキュメントを開く</li>
+  <li>単位・定規</li>
+  <li>ガイド・グリッド・スライス</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item7207" data-item-id="7207" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/207/medium/aa52490d-aa08-4fe7-be90-25882a0c18b1.png?1739518957" title=""><img class="img-responsive item-image" alt=" (7207)" data-reference="" src="../../_assets/79cc8f25a3.webp" width="640" height="411"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36467" data-item-id="36467" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">一般</h3></div>
+        
+        <div class="article-item item_text " id="item7209" data-item-id="7209" data-item-type="ItemText"><div class="item-body-hbr">作業の基本的な挙動をカスタマイズするための設定を行うことができます。<br>これらの設定を行うことで、自身の扱いやすいようにカスタマイズし、操作性の向上に繋げられます。</div></div>
+        
+        <div class="article-item item_markdown " id="item36411" data-item-id="36411" data-item-type="ItemMarkdown"><h4 id="heading9">従来の自由変形を使用</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item7212" data-item-id="7212" data-item-type="ItemRichText"><div class="item-body-hbr">オブジェクトの変形を行うときは、「オブジェクトを選択ツール」をクリックするとバウンディングボックスが表示されます。<br>
+また、バウンディングボックスをクリックしドラッグを行うと、<span class="decoration-01"></span><span class="decoration-02">縦横比を固定された状態で自由に変形することができます。</span><br>
+（※比率を固定したくない場合は、Shiftキーを押しながらバウンディングボックスをクリックしてドラッグしてください）<br>
+「従来の自由変形を使用」に変更すると、上記の設定を逆にすることができます。</div></div>
+        
+        <div class="article-item item_image " id="item7216" data-item-id="7216" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/216/medium/7a3e3c2d-d3e8-4eb4-b346-5755a7199a14.png?1739519292" title=""><img class="img-responsive item-image" alt=" (7216)" data-reference="" src="../../_assets/f6f067ee24.webp" width="640" height="412"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_text " id="item7219" data-item-id="7219" data-item-type="ItemText"><div class="item-body-hbr">具体的には以下の内容になります。</div></div>
+        
+        <div class="article-item item_markdown " id="item12678" data-item-id="12678" data-item-type="ItemMarkdown"><ul>
+  <li>縦横比を維持したい場合
+    <ul>
+      <li>Shiftキーを押しながらバウンディングボックスをクリックしてドラッグ</li>
+    </ul>
+  </li>
+  <li>縦横比を維持したくない場合
+    <ul>
+      <li>Shiftキーを押さずバウンディングボックスをクリックしてドラッグ</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item12679" data-item-id="12679" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/679/medium/a3ba4de8-e537-4358-a0fc-2b9bc059a112.png?1745425088" title=""><img class="img-responsive item-image" alt=" (12679)" data-reference="" src="../../_assets/093471d688.webp" width="640" height="219"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item36412" data-item-id="36412" data-item-type="ItemRichText"><div class="item-body-hbr">この設定を使用するメリットとしては、</div></div>
+        
+        <div class="article-item item_html " id="item36413" data-item-id="36413" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>Illustratorのオブジェクトの縦横比固定にはshiftが必須なので、一貫した方法で作業できるため、操作の混乱が少なくなります。</li>
+  <li>以前のバージョンのPhotoshopを使用していた方にとっては、この設定をオンにすることで従来の操作感（Shiftキーを押しながらで縦横比を固定）を保つことができます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36468" data-item-id="36468" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">インターフェイス</h3></div>
+        
+        <div class="article-item item_text " id="item7222" data-item-id="7222" data-item-type="ItemText"><div class="item-body-hbr">このツールでは、ワークスペースやパネルの表示、ツールバーの設定など、Photoshopの操作画面に関する設定を行うことができます。</div></div>
+        
+        <div class="article-item item_image " id="item7225" data-item-id="7225" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/225/medium/2011c9fb-9399-45d7-86a7-2a51dc986982.png?1739519464" title=""><img class="img-responsive item-image" alt=" (7225)" data-reference="" src="../../_assets/ea3a69e35c.webp" width="640" height="411"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36469" data-item-id="36469" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">テーマカラー</h3></div>
+        
+        <div class="article-item item_rich_text " id="item7228" data-item-id="7228" data-item-type="ItemRichText"><div class="item-body-hbr">テーマカラーはダークテーマが初期設定になっています。<br>
+これはライトカラーよりも<span class="decoration-02">目の疲れが軽減される</span>と言われています。<br>
+<br>
+<span class="decoration-02">ライトカラーに変更すると、ワークスペース全体の色が変更されます。</span><span class="decoration-02"></span>​​</div></div>
+        
+        <div class="article-item item_image " id="item7229" data-item-id="7229" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/229/medium/76e6d7d6-bcc8-4168-82ea-c40860eda67e.png?1739519526" title=""><img class="img-responsive item-image" alt=" (7229)" data-reference="" src="../../_assets/f293804c46.webp" width="640" height="405"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36470" data-item-id="36470" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">ワークスペース</h3></div>
+        
+        <div class="article-item item_text " id="item7231" data-item-id="7231" data-item-type="ItemText"><div class="item-body-hbr">ワークスペースの表示や配置をカスタマイズすることができます。<br>自分の作業スタイルや好みに合わせた最適なワークスペースを構築し、効率的に作業することができます。</div></div>
+        
+        <div class="article-item item_image " id="item7234" data-item-id="7234" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/234/medium/7a24fd35-4c6c-42be-a72f-71918621b5d3.png?1739519637" title=""><img class="img-responsive item-image" alt=" (7234)" data-reference="" src="../../_assets/b15b54c60f.webp" width="640" height="423"></a><h4 id="heading17"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36471" data-item-id="36471" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">タブでドキュメントを開く</h3></div>
+        
+        <div class="article-item item_rich_text " id="item7239" data-item-id="7239" data-item-type="ItemRichText"><div class="item-body-hbr"><br>
+設定にチェックを入れておくと、タブをクリックすることで作業ファイルを切り替えることができます。</div></div>
+        
+        <div class="article-item item_image " id="item7241" data-item-id="7241" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/241/medium/c1504ff2-9ec7-4af3-9a5d-d97e7f2791d6.png?1739519737" title=""><img class="img-responsive item-image" alt=" (7241)" data-reference="" src="../../_assets/f54d486ed0.webp" width="640" height="388"></a><h4 id="heading19"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item36415" data-item-id="36415" data-item-type="ItemMarkdown"><h4 id="heading20">複数画像を並べて表示した状態</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item7245" data-item-id="7245" data-item-type="ItemRichText"><div class="item-body-hbr">タブで「ドキュメントを開く」のチェックを外した状態でファイルを開くと、パネルに独立した状態で表示されます。<br>
+柔軟に配置ができ、同一の画面で複数の画像を表示させることができます。</div></div>
+        
+        <div class="article-item item_image " id="item7246" data-item-id="7246" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/246/medium/7b4e09d4-5e3d-4410-8dd0-5c6af59d5b4a.png?1739519861" title=""><img class="img-responsive item-image" alt=" (7246)" data-reference="" src="../../_assets/6c8b2d6683.webp" width="640" height="386"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36472" data-item-id="36472" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">単位・定規</h3></div>
+        
+        <div class="article-item item_text " id="item7248" data-item-id="7248" data-item-type="ItemText"><div class="item-body-hbr">単位設定を行うことで、Webデザインにおけるサイズや間隔の指定が正確になり、ブラウザ上での表示と一致させることができます。</div></div>
+        
+        <div class="article-item item_markdown " id="item7261" data-item-id="7261" data-item-type="ItemMarkdown"><h4 id="heading23">単位の推奨設定</h4>
+</div>
+        
+        <div class="article-item item_html " id="item7250" data-item-id="7250" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">定規単位</span></li>
+  <ul>
+    <li>ピクセル（px）
+      <p>Webデザインではピクセル単位が最も一般的です。<span class="decoration-02">各種要素のサイズや間隔をピクセル単位で設定することで、ブラウザ上での表示と一致させやすくなります。</span>
+    </p></li>
+  </ul>
+  <li><span class="decoration-01">文字単位</span></li>
+  <ul>
+    <li>ピクセル（px）
+      <p>フォントサイズもピクセル単位に設定することで、デザインの一貫性を保ち、<span class="decoration-02">実際のブラウザ上での表示と一致させやすくなります。</span>
+        </p></li>
+  </ul>
+</ol></div></div>
+        
+        <div class="article-item item_image " id="item7251" data-item-id="7251" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/251/medium/1457150b-bd44-4d5b-b595-03ec59f7b144.png?1739520195" title=""><img class="img-responsive item-image" alt=" (7251)" data-reference="" src="../../_assets/154639ff7d.webp" width="640" height="408"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36473" data-item-id="36473" data-item-type="ItemHeading"><h3 class="item-body" id="heading25">ガイド・グリッド・スライス</h3></div>
+        
+        <div class="article-item item_text " id="item7253" data-item-id="7253" data-item-type="ItemText"><div class="item-body-hbr">ガイド・グリッド・スライスは制作において、レイアウトの配置や素材のエクスポート（書き出し）を効率化し、正確性を向上させるのに役立ちます。</div></div>
+        
+        <div class="article-item item_html " id="item36416" data-item-id="36416" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">ガイドのキャンバスカラー</span>
+    <ul>
+      <li>ガイドの色を変更し、視認性を高めます。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">グリッドの設定</span>
+    <ul>
+      <li>グリッドの間隔と設定したグリッド間隔の数値を何分割するかを設定します。</li>
+      <li>配置するときに分割のマスに沿って移動させることができます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36417" data-item-id="36417" data-item-type="ItemRichText"><div class="item-body-hbr">※ グリッド線を100px 分割数を10にすると、10ピクセルずつ移動させることができます。（イメージは以下）</div></div>
+        
+        <div class="article-item item_image " id="item36418" data-item-id="36418" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/418/medium/98c69509-3e78-460e-82df-36d2fbd05cbb.png?1753412787" title=""><img class="img-responsive item-image" alt=" (36418)" data-reference="" src="../../_assets/2f408374d6.webp" width="640" height="408"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_image " id="item36458" data-item-id="36458" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/458/medium/081d67bd-22dd-4fab-9273-beb8d6e8a790.png?1753487080" title=""><img class="img-responsive item-image" alt=" (36458)" data-reference="" src="../../_assets/f35f6a0c89.webp" width="428" height="640"></a><h4 id="heading27"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item7256" data-item-id="7256" data-item-type="ItemMarkdown"><h4 id="heading28">各機能の説明</h4>
+</div>
+        
+        <div class="article-item item_html " id="item7254" data-item-id="7254" data-item-type="ItemHtml"><div class="item-body"><strong><span class="decoration-01">ガイド (Guides)</span></strong>
+<ul>
+  <li>ガイドは、キャンバス上に引くことができる垂直または水平の線です。</li>
+  <li><span class="decoration-02">主にレイアウトの整列やデザインの配置を補助するために使用されます。</span></li>
+  <li>ガイドはドラッグ＆ドロップでキャンバス上に配置し、必要に応じて削除することができます。</li>
+  <li>表示/非表示の切り替えが可能です。</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item7255" data-item-id="7255" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/255/medium/88a12bae-d08e-417d-8cc6-569c3abe861e.png?1739521588" title=""><img class="img-responsive item-image" alt=" (7255)" data-reference="" src="../../_assets/4b05fe0138.webp" width="640" height="398"></a><h4 id="heading29"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36420" data-item-id="36420" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item7257" data-item-id="7257" data-item-type="ItemHtml"><div class="item-body"><strong><span class="decoration-01">グリッド (Grid)</span></strong>
+<ul>
+  <li>グリッドは、キャンバス上に規則正しい格子状のパターンを表示するものです。</li>
+  <li><span class="decoration-02">主にデザインの整列やオブジェクトの配置を補助するために使用されます。</span></li>
+  <li>グリッドの表示/非表示や間隔の調整が可能です。</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item7258" data-item-id="7258" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/258/medium/4d2ef688-9d32-48c9-b254-6dd51c8f5db7.png?1739521715" title=""><img class="img-responsive item-image" alt=" (7258)" data-reference="" src="../../_assets/563417444d.webp" width="640" height="384"></a><h4 id="heading30"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36421" data-item-id="36421" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item7259" data-item-id="7259" data-item-type="ItemHtml"><div class="item-body"><strong><span class="decoration-01">スライス (Slices)</span></strong>
+<ul>
+  <li><span class="decoration-02">スライスは、画像などのパーツをエクスポートするために使用されます。</span></li>
+  <li>また、スライスはキャンバス上の特定の領域を指定し、指定した領域を個別に選択してエクスポートすることができます。</li>
+  <li>使用例として、Webページのボタンやバナーといった要素を、個別の画像として書き出す際などが挙げられます。</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item7260" data-item-id="7260" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/260/medium/ecc3adb4-1fcf-4740-83a2-01c6926501bc.png?1739521844" title=""><img class="img-responsive item-image" alt=" (7260)" data-reference="" src="../../_assets/07bb208a81.webp" width="640" height="409"></a><h4 id="heading31"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36474" data-item-id="36474" data-item-type="ItemHeading"><h3 class="item-body" id="heading32">キャンバスに定規を表示する</h3></div>
+        
+        <div class="article-item item_html " id="item7263" data-item-id="7263" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>定規は視覚的なガイドとなり、要素の正確な配置や寸法の測定を助けます。</li>
+  <li>特にピクセル単位での作業が重要なWebデザインでは、定規を活用することでデザインの一貫性と品質を保つことができます。</li>
+  <li><span class="decoration-02">Webデザインにおいては、正確な寸法や配置が求められるため、定規の表示は非常に有用です。</span></li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item7264" data-item-id="7264" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/264/medium/27b184d1-e1a3-4f90-a92d-8483b1d20943.png?1739522334" title=""><img class="img-responsive item-image" alt=" (7264)" data-reference="" src="../../_assets/d8d09c8d2b.webp" width="640" height="437"></a><h4 id="heading33"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item7265" data-item-id="7265" data-item-type="ItemMarkdown"><h4 id="heading34">定規の表示方法</h4>
+</div>
+        
+        <div class="article-item item_html " id="item7266" data-item-id="7266" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><strong>定規の表示をオンにする</strong></li>
+  	<ul>
+      <li>メニューから「表示」 &gt; 「定規」を選択するか、キーボードショートカットの<span class="decoration-02">Ctrl+R（Windows）</span>または<span class="decoration-02">Cmd+R（Mac）</span>を使用します。</li>
+  </ul>
+  <li><strong>ガイドの作成</strong>
+  　<ul>
+     <li>定規からガイドをドラッグするには、定規上でクリックし、ドラッグしてキャンバスにガイドを引っ張ります。</li>
+     <li>水平ガイドは上部定規から、垂直ガイドは左側定規からドラッグします。</li>
+  </ul>
+    </li>
+</ol></div></div>
+        
+        <div class="article-item item_image " id="item7267" data-item-id="7267" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/007/267/medium/3051b5dc-7f4b-4bf4-a0e7-368173f32c76.png?1739522733" title=""><img class="img-responsive item-image" alt=" (7267)" data-reference="" src="../../_assets/d7dfb08772.webp" width="640" height="464"></a><h4 id="heading35"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36475" data-item-id="36475" data-item-type="ItemHeading"><h2 class="item-body" id="heading36">【2-3】ワークスペースの表示設定</h2></div>
+        
+        <div class="article-item item_heading " id="item36476" data-item-id="36476" data-item-type="ItemHeading"><h3 class="item-body" id="heading37">スクリーンモード</h3></div>
+        
+        <div class="article-item item_rich_text " id="item12681" data-item-id="12681" data-item-type="ItemRichText"><div class="item-body-hbr">各スクリーンモードを適切に使い分けることで、作業に合わせた最適な環境を整えることができます。</div></div>
+        
+        <div class="article-item item_image " id="item12682" data-item-id="12682" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/682/medium/4d73cb9c-15a1-4a28-9825-73be29ad6ed8.png?1745425505" title=""><img class="img-responsive item-image" alt=" (12682)" data-reference="" src="../../_assets/8f23d5e82b.webp" width="640" height="427"></a><h4 id="heading38"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36423" data-item-id="36423" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item36424" data-item-id="36424" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">標準スクリーンモードの特徴</span>
+    <ul>
+      <li>ツールバー、パネル、メニューがすべて表示される通常の表示モード。</li>
+      <li>ウィンドウの枠やタブも表示され、<span class="decoration-02">複数のドキュメントを開いている場合はタブ間の切り替えが可能。</span></li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item12684" data-item-id="12684" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/684/medium/8e6240ee-80ab-4a4a-b80e-857df9f57fa5.png?1745425608" title=""><img class="img-responsive item-image" alt=" (12684)" data-reference="" src="../../_assets/cd39b2b51e.webp" width="640" height="389"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36427" data-item-id="36427" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item36425" data-item-id="36425" data-item-type="ItemHtml"><div class="item-body"><ol start="2">
+  <li>
+    <span class="decoration-01">全画面モード（メニューバーを表示）の特徴</span>
+    <ul>
+      <li>ツールバーとメニューバーは表示されるが、ウィンドウの枠がなく、キャンバスが画面全体に広がる。</li>
+      <li>パネルは表示されるが、必要に応じて非表示にすることも可能。</li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item12686" data-item-id="12686" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/686/medium/922f4df0-1e7c-419c-a11e-55563cc522c4.png?1745425802" title=""><img class="img-responsive item-image" alt=" (12686)" data-reference="" src="../../_assets/bc1c16132e.webp" width="640" height="388"></a><h4 id="heading40"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36428" data-item-id="36428" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item36426" data-item-id="36426" data-item-type="ItemHtml"><div class="item-body"><ol start="3">
+  <li>
+    <span class="decoration-01">全画面モードの特徴</span>
+    <ul>
+      <li>ツールバー、メニューバー、パネルがすべて非表示になるモード。</li>
+      <li>キャンバスが画面全体に広がり、作業スペースを最大限に利用できる。</li>
+      <li>パネルなどを再表示するには、カーソルを画面の端に移動させるか、キーボードショートカットを使用する必要があります。</li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item12689" data-item-id="12689" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/012/689/medium/b1410b8d-3595-429e-a80b-1fc54dde1a7c.png?1745425864" title=""><img class="img-responsive item-image" alt=" (12689)" data-reference="" src="../../_assets/140f55793c.webp" width="640" height="400"></a><h4 id="heading41"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36429" data-item-id="36429" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item36430" data-item-id="36430" data-item-type="ItemMarkdown"><h4 id="heading42">スクリーンモードの切り替え方法</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item36431" data-item-id="36431" data-item-type="ItemRichText"><div class="item-body-hbr">スクリーンモードは、Photoshopのインターフェースの左下にあるスクリーンモードボタンをクリックして切り替えることができます。<br>
+また、キーボードショートカットを使用することも可能です。</div></div>
+        
+        <div class="article-item item_html " id="item36432" data-item-id="36432" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">標準スクリーンモード</span>: キーボードショートカットは「F」キー。</li>
+  <li><span class="decoration-01">全画面モード（メニューバーを表示）</span>: キーボードショートカットは「F」キーを2回押す。</li>
+  <li><span class="decoration-01">全画面モード</span>: キーボードショートカットは「F」キーを3回押す。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36478" data-item-id="36478" data-item-type="ItemHeading"><h3 class="item-body" id="heading43">レイヤーパネルオプション</h3></div>
+        
+        <div class="article-item item_text " id="item7272" data-item-id="7272" data-item-type="ItemText"><div class="item-body-hbr">レイヤーパネルの表示や操作方法をカスタマイズできます。<br>Photoshopの作業で使用頻度が高いレイヤーパネルを効率的に使用できるように設定を行えます。</div></div>
+        
+        <div class="article-item item_image " id="item36433" data-item-id="36433" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/433/medium/6234901c-27d1-4401-bd78-ab7e03da521a.png?1753414003" title=""><img class="img-responsive item-image" alt=" (36433)" data-reference="" src="../../_assets/6c894eac7c.webp" width="640" height="427"></a><h4 id="heading44"></h4></div></div>
+        
+        <div class="article-item item_image " id="item36434" data-item-id="36434" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/434/medium/e8418c53-5a9c-4e18-8c63-20a47fe0b54c.png?1753414021" title=""><img class="img-responsive item-image" alt=" (36434)" data-reference="" src="../../_assets/2a12a99964.webp" width="640" height="427"></a><h4 id="heading45"></h4></div></div>
+        
+        <div class="article-item item_image " id="item36435" data-item-id="36435" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/435/medium/769c032e-6088-49e6-a912-1e5f79556e8b.png?1753414038" title=""><img class="img-responsive item-image" alt=" (36435)" data-reference="" src="../../_assets/0e0588c6f4.webp" width="640" height="426"></a><h4 id="heading46"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36479" data-item-id="36479" data-item-type="ItemHeading"><h3 class="item-body" id="heading47">サムネイルサイズ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item7274" data-item-id="7274" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">「大」または「中」</span><br>
+サムネイルサイズを大きくすると、レイヤーの内容を視覚的に把握しやすくなります。<br>
+特に多くのレイヤーを扱う場合や、レイヤーの内容を頻繁に確認する場合に便利です。</div></div>
+        
+        <div class="article-item item_heading " id="item36480" data-item-id="36480" data-item-type="ItemHeading"><h3 class="item-body" id="heading48">レイヤーの境界線</h3></div>
+        
+        <div class="article-item item_rich_text " id="item7276" data-item-id="7276" data-item-type="ItemRichText"><div class="item-body-hbr">サムネイル内にレイヤーの実質的な範囲を表示することで、レイヤーの内容がどこまで広がっているかを一目で確認できます。<br>
+これにより、レイヤーの編集や配置が容易になります。<br>
+これを利用するためにはレイヤーサムネイルの内容を「<span class="decoration-02">レイヤー範囲のみ表示</span>」に変更する必要があります。</div></div>
+        
+        <div class="article-item item_html " id="item7277" data-item-id="7277" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">注意事項<br></span>
+  <ul>
+    <li>サムネイルサイズを「大」に設定することで視認性が向上しますが、<span class="decoration-02">多数のレイヤーを扱う場合は、Photoshopのパフォーマンスに影響を与える可能性があります。</span></li>
+    <li>パフォーマンスが低下した場合は、サムネイルサイズを「中」または「小」に調整しましょう。作業効率とパフォーマンスのバランスを保つことができます。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36436" data-item-id="36436" data-item-type="ItemRichText"><div class="item-body-hbr">これで「2章 環境設定をしよう」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25569" data-item-id="25569" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/ss5X7" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/0WUlb" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">2章 環境設定をしよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間: 90分</a></li></ul></li><li><a href="#heading2" class="tocLink">【2-1】 環境設定の開き方</a><ul><li><a href="#heading3" class="tocLink">OSによる違い</a></li><li><a href="#heading4" class="tocLink"></a></li></ul></li><li><a href="#heading5" class="tocLink">【2-2】環境設定画面</a><ul><li><a href="#heading6" class="tocLink">メニュー一覧</a></li><li><a href="#heading7" class="tocLink"></a></li></ul><ul><li><a href="#heading8" class="tocLink">一般</a><ul><li><a href="#heading9" class="tocLink">従来の自由変形を使用</a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li></ul></li><li><a href="#heading12" class="tocLink">インターフェイス</a><ul><li><a href="#heading13" class="tocLink"></a></li></ul></li><li><a href="#heading14" class="tocLink">テーマカラー</a><ul><li><a href="#heading15" class="tocLink"></a></li></ul></li><li><a href="#heading16" class="tocLink">ワークスペース</a><ul><li><a href="#heading17" class="tocLink"></a></li></ul></li><li><a href="#heading18" class="tocLink">タブでドキュメントを開く</a><ul><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink">複数画像を並べて表示した状態</a></li><li><a href="#heading21" class="tocLink"></a></li></ul></li><li><a href="#heading22" class="tocLink">単位・定規</a><ul><li><a href="#heading23" class="tocLink">単位の推奨設定</a></li><li><a href="#heading24" class="tocLink"></a></li></ul></li><li><a href="#heading25" class="tocLink">ガイド・グリッド・スライス</a><ul><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink">各機能の説明</a></li><li><a href="#heading29" class="tocLink"></a></li><li><a href="#heading30" class="tocLink"></a></li><li><a href="#heading31" class="tocLink"></a></li></ul></li><li><a href="#heading32" class="tocLink">キャンバスに定規を表示する</a><ul><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink">定規の表示方法</a></li><li><a href="#heading35" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading36" class="tocLink">【2-3】ワークスペースの表示設定</a><ul><li><a href="#heading37" class="tocLink">スクリーンモード</a><ul><li><a href="#heading38" class="tocLink"></a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink"></a></li><li><a href="#heading41" class="tocLink"></a></li><li><a href="#heading42" class="tocLink">スクリーンモードの切り替え方法</a></li></ul></li><li><a href="#heading43" class="tocLink">レイヤーパネルオプション</a><ul><li><a href="#heading44" class="tocLink"></a></li><li><a href="#heading45" class="tocLink"></a></li><li><a href="#heading46" class="tocLink"></a></li></ul></li><li><a href="#heading47" class="tocLink">サムネイルサイズ</a></li><li><a href="#heading48" class="tocLink">レイヤーの境界線</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/ss5X7" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/0WUlb" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

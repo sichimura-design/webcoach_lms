@@ -1,0 +1,348 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48596" data-item-id="48596" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="IiLPNgpCLdn1lMHR1hP2gQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2286" data-domain="learn.webcoach.jp" data-url="/generative-ai/ai_web_marketing/A-2/BMKwq" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ペルソナを制作に活かす——Before/After比較</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* ペルソナ名刺 */
+  .persona-card {
+    background: linear-gradient(135deg, #FFF0ED, #FEF8F5);
+    border: 1.5px solid #F0A090;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .persona-card__avatar { font-size: 32px; flex-shrink: 0; }
+  .persona-card__name { font-size: 16px; font-weight: 800; color: #E85D4A; margin-bottom: 3px; }
+  .persona-card__attrs { font-size: 12px; color: #666; margin-bottom: 4px; }
+  .persona-card__insight { font-size: 13px; color: #3D3D3D; font-style: italic; }
+
+  /* Before/After */
+  .ba-section { margin: 24px 0; }
+  .ba-section__label { font-size: 13px; font-weight: 700; color: #888; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .ba-section__label::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+  .ba-section__label.sns::before { background: #5B7BE8; }
+  .ba-section__label.banner::before { background: #E0882A; }
+  .ba-section__label.video::before { background: #E85D4A; }
+
+  .ba-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  .ba-card { border-radius: 10px; padding: 18px; }
+  .ba-card--before { background: #F7F7F7; border: 1.5px solid #DDD; }
+  .ba-card--after { background: #FFF0ED; border: 1.5px solid #E85D4A; }
+  .ba-card__badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .ba-card--before .ba-card__badge { background: #DDD; color: #666; }
+  .ba-card--after .ba-card__badge { background: #E85D4A; color: white; }
+  .ba-card__text { font-size: 14px; font-weight: 600; margin-bottom: 8px; line-height: 1.55; }
+  .ba-card__reason { font-size: 12px; line-height: 1.65; }
+  .ba-card--before .ba-card__reason { color: #888; }
+  .ba-card--after .ba-card__reason { color: #E85D4A; }
+
+  /* 決断フレームワーク */
+  .decision-frame {
+    background: linear-gradient(135deg, #3D3D3D 0%, #555 100%);
+    border-radius: 12px;
+    padding: 24px;
+    color: white;
+    margin: 20px 0;
+  }
+  .decision-frame__title { font-size: 14px; font-weight: 700; opacity: 0.7; margin-bottom: 14px; letter-spacing: 0.06em; }
+  .decision-q { font-size: 16px; font-weight: 800; color: #F5A64A; margin-bottom: 6px; }
+  .decision-desc { font-size: 13px; opacity: 0.85; line-height: 1.7; margin-bottom: 16px; }
+
+  /* 演習カード */
+  .exercise-card {
+    background: linear-gradient(135deg, #4CAF7C 0%, #2E9B6E 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    margin: 24px 0;
+  }
+  .exercise-card__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; opacity: 0.8; margin-bottom: 10px; }
+  .exercise-card__title { font-size: 18px; font-weight: 800; margin-bottom: 16px; }
+  .exercise-steps { list-style: none; }
+  .exercise-steps li { font-size: 14px; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.2); display: flex; gap: 10px; align-items: flex-start; }
+  .exercise-steps li:last-child { border-bottom: none; }
+  .exercise-steps li::before { content: '→'; font-weight: 700; flex-shrink: 0; }
+
+  /* チェックリスト */
+  .check-list { list-style: none; margin: 16px 0; }
+  .check-list li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #F0F0F0; font-size: 14px; }
+  .check-list li:last-child { border-bottom: none; }
+  .check-list li::before { content: '✓'; color: #4CAF7C; font-weight: 700; margin-top: 1px; flex-shrink: 0; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .ba-pair { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="QYCN0IGq52MBpV9R_-Usx_tNvBgn06PsjAW2IH0NEMNoTeVrJ9_KJVmb3Wn8zgAwhwP7VsQCrcfPocElszmLXQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+
+<div class="hero">
+  <div class="hero__label">Course A — Chapter 2 / Lesson 3</div>
+  <div class="hero__title">ペルソナを制作に活かす<br>——Before/After比較</div>
+  <div class="hero__meta">
+    <span>⏱ 35分</span>
+    <span>✍️ 実践課題</span>
+    <span>🎯 SNS・デザイン・動画</span>
+  </div>
+</div>
+
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="Hf1EA" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<div class="container">
+
+  <div class="intro-box reveal">
+    <div class="intro-box__text">
+      ペルソナを作るだけでは意味がありません。「<strong>制作の判断にどう使うか</strong>」がわかって初めてペルソナが機能します。このレッスンでは、SNS投稿・バナー・動画サムネイルの3ケースでペルソナありとなしの違いをBefore/Afterで比較します。
+    </div>
+  </div>
+
+  <!-- 使用するペルソナ -->
+  <div class="card reveal">
+    <div class="card__title">このレッスンで使うペルソナ</div>
+    <p>以下のペルソナを使って3つのケースを見ていきます。</p>
+
+    <div class="persona-card">
+      <div class="persona-card__avatar">🧘</div>
+      <div>
+        <div class="persona-card__name">田中さつき（27歳・IT企業勤務・都内在住）</div>
+        <div class="persona-card__attrs">残業多め・体を動かしたい・自分への投資に積極的</div>
+        <div class="persona-card__insight">インサイト：「忙しくてもちゃんと自分の時間を作れている私でいたい」</div>
+      </div>
+    </div>
+    <p style="font-size: 13px; color: #888;">対象: ヨガスタジオの体験レッスン集客キャンペーン</p>
+  </div>
+
+  <!-- CASE 1: SNS投稿 -->
+  <div class="card reveal">
+    <div class="card__title">CASE 1: Instagram投稿キャプション</div>
+
+    <div class="ba-section">
+      <div class="ba-pair">
+        <div class="ba-card ba-card--before">
+          <span class="ba-card__badge">ペルソナなし</span>
+          <div class="ba-card__text">「体験レッスン受付中！初心者歓迎、全身ストレッチで柔軟性UP✨ お気軽にお問い合わせください。」</div>
+          <div class="ba-card__reason">「誰でもOK」感が強い。「自分のことを言っている」感がない。保存・フォローにつながりにくい。</div>
+        </div>
+        <div class="ba-card ba-card--after">
+          <span class="ba-card__badge">ペルソナあり（さつきさん向け）</span>
+          <div class="ba-card__text">「仕事終わりでも来られる21時クラス。頑張ってる自分に、週1時間のご褒美を。体験¥1,500、まず一度だけ。」</div>
+          <div class="ba-card__reason">「21時クラス＝残業OK」「ご褒美＝自己投資感」「まず一度だけ＝決断ハードルを下げる」がすべてさつきさんのインサイトから来ている。</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: #F7F8FA; border-radius: 8px; padding: 16px;">
+      <p style="font-size: 13px; font-weight: 700; color: #666; margin-bottom: 8px;">判断のポイント</p>
+      <ul class="check-list">
+        <li>「さつきさんが共感するフレーズは何か」→ 残業・夜・忙しい→ 21時クラスを前面に</li>
+        <li>「さつきさんの行動ハードルを下げるには」→ 月額でなく体験1回1,500円を強調</li>
+        <li>「さつきさんが保存したくなる言葉は」→ 「ご褒美」「自分の時間」など自己投資ワード</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- CASE 2: バナーデザイン -->
+  <div class="card reveal">
+    <div class="card__title">CASE 2: バナー/ビジュアルの制作判断</div>
+
+    <div class="ba-pair">
+      <div class="ba-card ba-card--before">
+        <span class="ba-card__badge">ペルソナなし</span>
+        <div class="ba-card__text">写真: 笑顔で動きのあるポーズ・明るいスタジオ<br>コピー: 「あなたもヨガを始めよう！」</div>
+        <div class="ba-card__reason">汎用的すぎて記憶に残らない。「誰のためのバナーか」が伝わらない。</div>
+      </div>
+      <div class="ba-card ba-card--after">
+        <span class="ba-card__badge">ペルソナあり（さつきさん向け）</span>
+        <div class="ba-card__text">写真: 夜景背景・落ち着いた照明・一人でゆっくり取り組む様子<br>コピー: 「仕事の後、心をほぐしに来てください。」</div>
+        <div class="ba-card__reason">「夜の雰囲気＝残業後のイメージ」「一人＝自分の時間」「心をほぐす＝情緒的価値」がすべてさつきさんの生活シーンに合っている。</div>
+      </div>
+    </div>
+
+    <p>ペルソナがあると、<strong>「どのシチュエーションの写真を選ぶか」「背景の色温度はどうするか」「モデルの表情はどうするか」</strong>——すべての視覚的判断に根拠が生まれます。</p>
+  </div>
+
+  <!-- CASE 3: 動画サムネイル -->
+  <div class="card reveal">
+    <div class="card__title">CASE 3: YouTube/リール動画のタイトル・サムネイル</div>
+
+    <div class="ba-pair">
+      <div class="ba-card ba-card--before">
+        <span class="ba-card__badge">ペルソナなし</span>
+        <div class="ba-card__text">タイトル: 「ヨガ初心者でも簡単！全身ストレッチ10分」<br>サムネ: 笑顔・全身が映った写真</div>
+        <div class="ba-card__reason">競合と差別化できない。「初心者ヨガ」系は数千本あり埋もれる。誰向けかが不明。</div>
+      </div>
+      <div class="ba-card ba-card--after">
+        <span class="ba-card__badge">ペルソナあり（さつきさん向け）</span>
+        <div class="ba-card__text">タイトル: 「残業後でもできる！寝る前10分ヨガ【肩こり・疲労回復】」<br>サムネ: テキスト「残業帰りにおすすめ」+ 夜の部屋でリラックスしている写真</div>
+        <div class="ba-card__reason">「残業後」「寝る前」「肩こり」がすべてさつきさんの検索ワードと動機に直結。「これ私のためにある」と感じさせる。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ペルソナを使った判断フレームワーク -->
+  <div class="decision-frame reveal">
+    <div class="decision-frame__title">ペルソナを使った制作判断フレーム</div>
+    <div class="decision-q">「○○さん（ペルソナ名）なら、これを見てどう感じるか？」</div>
+    <div class="decision-desc">制作中に迷ったとき、この一言で立ち戻れます。コピーの言葉選び・ビジュアルのトーン・投稿時間・CTAのあり方——すべてペルソナに問いかけながら決める。</div>
+    <div class="decision-q">「○○さんに、何をしてもらいたいか？」</div>
+    <div class="decision-desc">フォロー・保存・クリック・問い合わせ——1つのコンテンツに1つのアクションを決める。ペルソナがいると「誰に・何をしてもらうか」が明確になる。</div>
+  </div>
+
+  <!-- 演習: 自分のペルソナを作る -->
+  <div class="exercise-card reveal">
+    <div class="exercise-card__label">EXERCISE — 演習</div>
+    <div class="exercise-card__title">自分の案件/SNSのペルソナシートを作ろう</div>
+    <ul class="exercise-steps">
+      <li>手持ちのクライアント案件・自分のSNS・想定案件のどれかを1つ選ぶ</li>
+      <li>Lesson 2のAIプロンプトを使ってClaudeでペルソナ仮説を3パターン生成する</li>
+      <li>3パターンのうち「最も可能性が高い」1人を選び、ペルソナシートを完成させる（名前・属性・インサイト・一言）</li>
+      <li>そのペルソナを使って、今後作る投稿/バナー/動画のタイトル案を1本書いてみる</li>
+      <li>「ペルソナなし」と「ペルソナあり」の案を比べて、どちらが刺さるか検討する</li>
+    </ul>
+  </div>
+
+  <!-- Chapter 2まとめ -->
+  <div class="card reveal">
+    <div class="card__title">Chapter 2 まとめ——ターゲット・ペルソナ設計で学んだこと</div>
+    <ul class="check-list">
+      <li><strong>Lesson 1:</strong> ターゲット（集団）は戦略に、ペルソナ（1人）は制作に使う。「全員向け」は誰にも刺さらない。</li>
+      <li><strong>Lesson 2:</strong> ペルソナはデモグラ→サイコグラ→インサイトの3層で設計。「なぜ？」を3回掘り下げてインサイトを発掘する。</li>
+      <li><strong>Lesson 3（今回）:</strong> ペルソナは「〇〇さんならどう感じるか」という問いで制作判断の軸になる。SNS・バナー・動画すべてに活用できる。</li>
+    </ul>
+    <div style="background: #FAE8E0; border-radius: 8px; padding: 14px; margin-top: 12px; border-left: 3px solid #E85D4A;">
+      <p style="font-size: 13px; font-weight: 700; color: #E85D4A; margin-bottom: 4px;">Chapter 2の成果物</p>
+      <p style="font-size: 13px; margin: 0;">ペルソナシート（デモグラ+インサイト+一言）が完成したら、それはChapter 5（マーケティングブリーフ）でも活用します。</p>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">ペルソナは「使う」ことで初めて意味を持つ。<br>制作の迷いは「○○さんならどう感じるか」で解消。</div>
+    <div class="summary-card__sub">
+      SNS・バナー・動画サムネイルすべての判断軸がペルソナから生まれる。<br>
+      演習で自分の案件のペルソナシートを完成させよう。<br><br>
+      次のChapter 3では「何を伝えるか」——メッセージとベネフィットの設計を学びます。
+    </div>
+  </div>
+
+</div>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="Hf1EA" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="IiLPNgpCLdn1lMHR1hP2gQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

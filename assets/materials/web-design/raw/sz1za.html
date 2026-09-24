@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="5qHwz+IL+bg+qamqsIBpZg==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1985" data-domain="learn.webcoach.jp" data-url="/web-design/AI_banner/Sz1Za" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>4章 WEBCOACH独自のAIツールを用いたデザイン改善と実践演習 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/AI_banner/Sz1Za">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="4章 WEBCOACH独自のAIツールを用いたデザイン改善と実践演習 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/739/medium/7c3022d9-a31d-45c3-93c0-d91f85517054.png?1764322621">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="4章 WEBCOACH独自のAIツールを用いたデザイン改善と実践演習">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/AI_banner/Sz1Za">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/739/large/7c3022d9-a31d-45c3-93c0-d91f85517054.png?1764322621">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/AI_banner/Sz1Za"
+    },
+    "headline": "4章 WEBCOACH独自のAIツールを用いたデザイン改善と実践演習",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/044/739/medium/7c3022d9-a31d-45c3-93c0-d91f85517054.png?1764322621",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-11-28T18:50:21+09:00",
+    "dateModified": "2025-11-28T19:49:08+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_yoshitake"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="JaY7i0R3ReH1-nfhkXZ1oW0F1Y8GCobt6rtDM3Q7iNCP0F2FtoSBVdI56vlv0e8oH9WH9wHDTedEQZJbbhlcvQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>AI活用バナー制作講座</div>
+
+          <div class="fw-bold h2">4章 WEBCOACH独自のAIツールを用いたデザイン改善と実践演習</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item44726" data-item-id="44726" data-item-type="ItemHeading"><h2 class="item-body">【4-4】4章 -章末課題- [AI → メンタープロ→ Canva  ワークフローの総合演習]</h2></div>
+        
+        <div class="article-item item_html " id="item44727" data-item-id="44727" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="litCc" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="tsaZF" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item44728" data-item-id="44728" data-item-type="ItemHeading"><h2 class="item-body">4章 WEBCOACH独自のAIツールを用いたデザイン改善と実践演習</h2></div>
+        
+        <div class="article-item item_markdown " id="item44729" data-item-id="44729" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：150分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item44730" data-item-id="44730" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item44731" data-item-id="44731" data-item-type="ItemMarkdown"><ul>
+  <li>WEBCOACH独自のAIツール「デザインフィードバックメンタープロ」を効果的に活用できる</li>
+  <li>AIフィードバックを具体的なデザイン修正に落とし込むスキルを習得する</li>
+  <li>2つの実践課題を通じて、高速制作ワークフローを完全に定着させる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item44732" data-item-id="44732" data-item-type="ItemHeading"><h2 class="item-body">【4-1】「デザインフィードバックメンタープロ」の効果的な活用法</h2></div>
+        
+        <div class="article-item item_markdown " id="item44733" data-item-id="44733" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item44734" data-item-id="44734" data-item-type="ItemHeading"><h3 class="item-body">メンタープロによるフィードバックの評価項目と読み解き方</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44735" data-item-id="44735" data-item-type="ItemRichText"><div class="item-body-hbr">3章までで、AI (Nano Banana Pro) と Canva を使って、高速でバナーを「形にする」スキルを習得しました。<br>
+しかし、実務では「形にする」だけでは不十分です。そのデザインが<span class="decoration-01"><span class="decoration-02">「目的（例：売上向上、認知拡大）を達成できる品質か」</span></span>が問われます。<br>
+<br>
+そこで登場するのが、本講座の品質保証を担う<span class="decoration-01"><span class="decoration-02">WEBCOACH独自のAIツール「デザインフィードバックメンタープロ」</span></span>です。</div></div>
+        
+        <div class="article-item item_image " id="item44739" data-item-id="44739" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/739/medium/7c3022d9-a31d-45c3-93c0-d91f85517054.png?1764322621" title=""><img class="img-responsive item-image" alt=" (44739)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/739/medium/7c3022d9-a31d-45c3-93c0-d91f85517054.png?1764322621" width="640" height="372" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item44743" data-item-id="44743" data-item-type="ItemHtml"><div class="item-body">
+<div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>メンタープロの「2つの視点」</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>このツールは、単なるデザインの良し悪しではなく、実務で必要な「2つの視点」からフィードバックを提供します。</li>
+            <li><strong>1. クライアント視点</strong>：デザインの「目的」が達成できそうか、ターゲットに響くか、ビジネスの観点から評価します。</li>
+            <li><strong>2. 専門家（メンター）視点</strong>：レイアウト、配色、タイポグラフィ（文字組み）など、デザインの専門的な品質（プロの基準）から評価します。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item44744" data-item-id="44744" data-item-type="ItemText"><div class="item-body-hbr">メンタープロに完成したバナーを提出すると、これらの視点に基づいたスコアと具体的な指摘事項（例：「CTAボタンのコントラストが低く、クリック率が下がる懸念があります」）が出力されます。<br />このフィードバックを正確に解釈することが、デザインを「自己満足」から「プロの品質」へ引き上げる鍵となります。</div></div>
+        
+        <div class="article-item item_heading " id="item44745" data-item-id="44745" data-item-type="ItemHeading"><h3 class="item-body">AIフィードバックを具体的な修正アクションへ落とし込む手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44746" data-item-id="44746" data-item-type="ItemRichText"><div class="item-body-hbr">AIからのフィードバックは、受け取るだけでは意味がありません。<br>
+それを<span class="decoration-01"><span class="decoration-02">「具体的な修正アクション」</span></span>に変換する手順を学びましょう。</div></div>
+        
+        <div class="article-item item_html " id="item44747" data-item-id="44747" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="card-with-icon check">
+    <span class="bold"><strong>フィードバック反映の手順</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li><strong>フィードバックの仕分け</strong>：メンタープロの指摘事項を「クライアント視点（目的・訴求）」と「専門家視点（デザイン品質）」に分けます。</li>
+            <li><strong>優先順位付け</strong>：まず「クライアント視点」の指摘（例：ターゲット層と雰囲気が合っていない）を最優先で対応します。次に「専門家視点」の重大な指摘（例：文字が読みにくい）に対応します。</li>
+            <li><strong>Canvaでの具体的な修正</strong>：
+                <ul>
+                    <li>指摘：「コントラスト不足」→ Canvaで文字の色を濃くする、または背景に帯を敷く。</li>
+                    <li>指摘：「視線誘導がスムーズでない」→ Canvaで要素を整列させ、最も見てほしい情報（キャッチコピー）を大きくする。</li>
+                </ul>
+            </li>
+            <li><strong>再提出と改善</strong>：修正したバナーを再度メンタープロに提出し、スコアや指摘が改善されたかを確認します。</li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item44749" data-item-id="44749" data-item-type="ItemMarkdown"><h4 id="section">考えてみよう！：フィードバックを無視すべき場合もあるのか？</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item44750" data-item-id="44750" data-item-type="ItemRichText"><div class="item-body-hbr">デザインフィードバックメンタープロは非常に優秀ですが、常にその指摘を100%受け入れるべきでしょうか？<br>
+クライアントの要望やバナーの目的を優先するために、AIのフィードバックをあえて無視したり、限定的に適用したりするケースがあるか考えてみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44751" data-item-id="44751" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答例</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item44752" data-item-id="44752" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">ケース</span>:</span><br>
+クライアントから「ブランドカラーであるこの薄いグレーを、ボタンの色として必ず使ってほしい」と強い指定があったとします。<br>
+メンタープロは「CTAボタンのコントラストが低すぎるため、クリック率が低下する」と指摘する可能性が高いです。<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">対応</span>:</span><br>
+この場合、AIの指摘（コントラストを上げろ）をそのまま受け入れると、クライアントの要望（ブランドカラーの遵守）に反してしまいます。<br>
+対応策として、以下のような「折衷案」をデザイナーが考えます。</div></div>
+        
+        <div class="article-item item_markdown " id="item44753" data-item-id="44753" data-item-type="ItemMarkdown"><ol>
+  <li>ボタンの色はクライアント指定の「薄いグレー」のままにし、代わりにボタンの「文字」を非常に濃い黒にする。</li>
+  <li>ボタンに「影」や「太い枠線」を追加して、背景から少しでも目立たせる。</li>
+  <li>AIの指摘をクライアントに（証拠として）提示し、「クリック率が下がる懸念があるため、ボタンの色だけはブランドのアクセントカラー（例：赤）に変更しませんか？」と再提案する。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_text " id="item44754" data-item-id="44754" data-item-type="ItemText"><div class="item-body-hbr">このように、AIのフィードバックは「絶対的な正解」ではなく、「デザイナーが判断を下すための強力な材料」として活用します。</div></div>
+        
+        <div class="article-item item_heading " id="item44755" data-item-id="44755" data-item-type="ItemHeading"><h2 class="item-body">【4-2】実践制作課題1: SNS広告用バナー（高速制作フローの追体験）</h2></div>
+        
+        <div class="article-item item_markdown " id="item44756" data-item-id="44756" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item44757" data-item-id="44757" data-item-type="ItemHeading"><h3 class="item-body">課題の要件定義とAI生成の準備</h3></div>
+        
+        <div class="article-item item_text " id="item44758" data-item-id="44758" data-item-type="ItemText"><div class="item-body-hbr">ここでは、本講座で学んだ「Nano Banana Pro → メンタープロ → Canva」の全工程を、制限時間（目安）を設定して実践し、ワークフローの定着を目指します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44759" data-item-id="44759" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">▼ 実践課題1：要件定義書</span></div></div>
+        
+        <div class="article-item item_markdown " id="item44760" data-item-id="44760" data-item-type="ItemMarkdown"><ul>
+  <li>クライアント: IT系スタートアップ企業</li>
+  <li>目的: 新しいタスク管理アプリ（SaaS）の認知拡大と無料トライアル登録</li>
+  <li>ターゲット: 20代〜30代のビジネスパーソン、スタートアップ従業員</li>
+  <li>媒体: SNS広告（Instagram / Facebookフィード 正方形 1:1）</li>
+  <li>訴求: 「タスク漏れ ゼロへ。」「AIがあなたの仕事を自動整理」</li>
+  <li>必須要素: 上記の訴求テキスト、CTA「無料で試す」</li>
+  <li>デザイン: クリーン、未来的、信頼感、ブルーまたはグリーン基調</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item44761" data-item-id="44761" data-item-type="ItemHeading"><h3 class="item-body">Canvaでの仕上げとメンタープロへの提出</h3></div>
+        
+        <div class="article-item item_html " id="item44762" data-item-id="44762" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>制作フロー</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li><strong>Nano Banana Pro（20分）</strong>：
+                <ul>
+                    <li>「メタプロンプト雛形」を使い、要件（未来的、AI、アプリ、テキスト情報、正方形）を満たす日本語プロンプトを作成。</li>
+                    <li>テキスト込みのデザインベースを3パターン以上生成。</li>
+                </ul>
+            </li>
+            <li><strong>メンタープロ（10分）</strong>：
+                <ul>
+                    <li>最も良いデザインをメンタープロに提出し、フィードバック（クライアント視点・専門家視点）を取得する。</li>
+                </ul>
+            </li>
+            <li><strong>Canva（15分）</strong>：
+                <ul>
+                    <li>フィードバックに基づき、色調補正や視認性向上のための修正を行う。</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item44764" data-item-id="44764" data-item-type="ItemHeading"><h3 class="item-body">AIフィードバックに基づく修正と最終仕上げ</h3></div>
+        
+        <div class="article-item item_markdown " id="item44766" data-item-id="44766" data-item-type="ItemMarkdown"><p>メンタープロから得られたフィードバック（例：「『無料で試す』のボタンが背景の青に紛れており、視認性が低い」「全体的に寒色すぎて冷たい印象」など）を確認します。</p>
+
+<ul>
+  <li>フィードバックに基づき、Canvaで具体的な修正作業を行います。
+    <ul>
+      <li>例：Canvaの「色温度」調整で少し温かみを足す。</li>
+      <li>例：CTAボタンの上に半透明の明るい図形を重ねて、ボタンを目立たせる。</li>
+    </ul>
+  </li>
+  <li>修正後のデザインが、元の要件定義書（ターゲット、目的）を満たしているか最終確認します。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_rich_text " id="item44768" data-item-id="44768" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">制作例</span></div></div>
+        
+        <div class="article-item item_image " id="item44857" data-item-id="44857" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/857/medium/c09a1b7b-c05c-41c1-a044-9336c87a01ba.png?1764322636"><img class="img-responsive item-image" alt=" (44857)" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/857/medium/c09a1b7b-c05c-41c1-a044-9336c87a01ba.png?1764322636" width="640" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item44858" data-item-id="44858" data-item-type="ItemHeading"><h2 class="item-body">【4-3】実践制作課題2: Webサイト用ファーストビューバナー（実務応用）</h2></div>
+        
+        <div class="article-item item_markdown " id="item44859" data-item-id="44859" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item44860" data-item-id="44860" data-item-type="ItemHeading"><h3 class="item-body">課題の要件定義とAI生成の準備（Wixサイトとの関連付け）</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44861" data-item-id="44861" data-item-type="ItemRichText"><div class="item-body-hbr">この課題では、Webサイトのトップページに掲載する重要なバナー（ファーストビュー）を制作します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44862" data-item-id="44862" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">▼ 実践課題2：要件定義書</span></div></div>
+        
+        <div class="article-item item_markdown " id="item44863" data-item-id="44863" data-item-type="ItemMarkdown"><ul>
+  <li>クライアント: （架空の）カフェチェーン店</li>
+  <li>目的: 季節限定（初夏）の新作スイーツの告知と、カフェへの来店促進</li>
+  <li>ターゲット: 10代〜20代の女性、カフェ巡りが好きな人</li>
+  <li>媒体: Wixで制作したWebサイトのファーストビュー（横長 16:9）</li>
+  <li>Wixサイトのトーン＆マナー: ナチュラル、白と木目を基調、落ち着いた雰囲気</li>
+  <li>訴求: 「初夏の訪れ、贅沢メロンスイーツ」「店内限定」</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item44864" data-item-id="44864" data-item-type="ItemHeading"><h3 class="item-body">Canvaでの制作とメンタープロによる品質チェック</h3></div>
+        
+        <div class="article-item item_html " id="item44865" data-item-id="44865" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>制作フロー</strong><br></span>
+    <div class="content-area">
+        <ol>
+            <li><strong>Nano Banana Pro（20分）</strong>：
+                <ul>
+                    <li>「メタプロンプト雛形」を使い、要件（メロンスイーツの写真、ナチュラル、テキスト情報、横長）を満たす日本語プロンプトを作成。</li>
+                    <li>テキスト込みのデザインベースを3パターン以上生成。</li>
+                </ul>
+            </li>
+            <li><strong>メンタープロ（10分）</strong>：
+                <ul>
+                    <li>完成したバナーをメンタープロに提出し、フィードバックを取得する。</li>
+                </ul>
+            </li>
+            <li><strong>Canva（15分）</strong>：
+                <ul>
+                    <li>フィードバックに基づき、修正を行う。（例：文字が読みづらい場合は座布団を敷くなど）</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item44866" data-item-id="44866" data-item-type="ItemRichText"><div class="item-body-hbr">Webサイト用のバナーは、SNS広告と異なり、サイト全体のデザイン（フォント、色使い、雰囲気）と調和していることが非常に重要です。メンタープロのフィードバックに加え、「Webサイトに配置した際に違和感がないか」という視点も持って修正を行います。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44867" data-item-id="44867" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">制作例</span></div></div>
+        
+        <div class="article-item item_image " id="item44896" data-item-id="44896" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/896/medium/612005a2-905c-4fea-9b71-fd9b8edc9116.png?1764322649" title=""><img class="img-responsive item-image" alt=" (44896)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/896/medium/612005a2-905c-4fea-9b71-fd9b8edc9116.png?1764322649" width="640" height="366" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item44897" data-item-id="44897" data-item-type="ItemHeading"><h2 class="item-body">【4-4】4章 -章末課題- [AI → メンタープロ → Canva ワークフローの総合演習]</h2></div>
+        
+        <div class="article-item item_markdown " id="item44898" data-item-id="44898" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item44899" data-item-id="44899" data-item-type="ItemHeading"><h3 class="item-body">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item44900" data-item-id="44900" data-item-type="ItemRichText"><div class="item-body-hbr">「フィットネスジムの<span class="decoration-01"><span class="decoration-02">夏の入会キャンペーン</span></span>」告知バナー（Instagramストーリーズ用：縦長 9:16）を、以下のワークフローで制作してください。<br>
+<br>
+1.<span class="decoration-02"> Nano Banana Pro</span>でテキスト込みのデザインベースを生成する。<br>
+2. <span class="decoration-02">デザインフィードバックメンタープロ</span>に提出し、フィードバックを受ける。<br>
+3. フィードバックを基に<span class="decoration-02">Canva</span>で修正し、最終成果物とする。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44901" data-item-id="44901" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">▼ 要件</span></div></div>
+        
+        <div class="article-item item_markdown " id="item44902" data-item-id="44902" data-item-type="ItemMarkdown"><ul>
+  <li>ターゲット: 20代〜30代の男女（夏に向けて体を引き締めたい層）</li>
+  <li>訴求: 「夏はすぐそこ！」「今なら入会金 0円」</li>
+  <li>デザイン: エネルギッシュ、爽やか、スポーティー</li>
+  <li>媒体: Instagramストーリーズ（縦長 9:16）</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item44903" data-item-id="44903" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/903/medium/3624efd2-cfce-4021-86d0-8b1b735a7abb.jpg?1764322656" title=""><img class="img-responsive item-image" alt=" (44903)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/903/medium/3624efd2-cfce-4021-86d0-8b1b735a7abb.jpg?1764322656" width="357" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item44904" data-item-id="44904" data-item-type="ItemMarkdown"><h4 id="section">解答手順</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item44905" data-item-id="44905" data-item-type="ItemMarkdown"><ol>
+  <li><strong>Nano Banana Proでの生成</strong>：要件に合わせた日本語プロンプト（例：# デザイン: スポーティー, 爽やか, # 主題: 汗を流す男女, ジムの機材, # テキスト: 指定の3要素, # サイズ: Aspect Ratio: 9:16）を準備・生成します。</li>
+  <li><strong>メンタープロでの分析</strong>：生成されたバナーをメンタープロに提出し、フィードバック（クライアント視点・専門家視点）を取得します。</li>
+  <li><strong>指摘事項のメモ</strong>：得られた指摘事項を全て箇条書きでメモします。（例：指摘1：『入会金 0円』の文字が小さく、訴求が弱い）（例：指摘2：全体的に暗く、爽やかさが足りない）</li>
+  <li><strong>Canvaでの修正</strong>：メモした指摘事項に基づき、Canvaで修正作業を行います。（例：修正1：色調補正で全体を明るくする）（例：修正2：文字の下に半透明の図形を敷いて視認性を上げる）</li>
+  <li><strong>最終バナーを提出</strong>します。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_heading " id="item44906" data-item-id="44906" data-item-type="ItemHeading"><h3 class="item-body">解答例</h3></div>
+        
+        <div class="article-item item_html " id="item44907" data-item-id="44907" data-item-type="ItemHtml"><div class="item-body">
+<div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>制作物をコーチに添削してもらおう</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>この章末課題は、本講座のワークフロー（AI生成・Canva仕上げ・AIメンター）の集大成です。</li>
+            <li>メンタープロのAIフィードバック（Before）と、それを受けて修正した最終成果物（After）を、ぜひ専属のコーチにも提出してレビューを受けましょう。</li>
+            <li>「AIのフィードバックを、デザイナーとしてどう解釈し、どう修正したか」を説明することで、スキルが飛躍的に向上します。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_text " id="item44908" data-item-id="44908" data-item-type="ItemText"><div class="item-body-hbr">これで「WEBCOACH独自のAIツールを用いたデザイン改善と実践演習」の解説を終わります。<br />次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item44909" data-item-id="44909" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="litCc" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="tsaZF" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="5qHwz+IL+bg+qamqsIBpZg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

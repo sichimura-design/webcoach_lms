@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/coding/kzyqs -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Shopify-基礎編-【5章 集客して売上アップを目指そう】 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/coding/kzyqs">
+
+<meta name="description" content="">
+<meta name="keywords" content="Shoptify,５章">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Shopify-基礎編-【5章 集客して売上アップを目指そう】 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/832/medium/68bc2477-fc76-4baa-90d5-65b7923efd0c.png?1743653790">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Shopify-基礎編-【5章 集客して売上アップを目指そう】">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/coding/kzyqs">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/832/large/68bc2477-fc76-4baa-90d5-65b7923efd0c.png?1743653790">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="wusNx60aZOLCGnpx9eVL85fDIrprgrthf5udPRTZN2QhnsvDZKAxC3iycOwDUcv4KPGgt2bj_aks36Or5FqmJQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEB制作</div>
+
+          <div class="fw-bold h2">Shopify-基礎編-【5章 集客して売上アップを目指そう】</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">第5章：集客して売上アップを目指そう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:80分</a></li></ul></li><li><a href="#heading2" class="tocLink">【5-1】 SEO 対策</a><ul><li><a href="#heading3" class="tocLink">この章の目安学習時間：20分</a></li><li><a href="#heading4" class="tocLink"></a></li></ul><ul><li><a href="#heading5" class="tocLink">タイトルタグの設定</a></li><li><a href="#heading6" class="tocLink">メタディスクリプションの設定</a></li><li><a href="#heading7" class="tocLink">URLの設定</a><ul><li><a href="#heading8" class="tocLink">▲設定後のGoogle検索での表示イメージ</a></li></ul></li><li><a href="#heading9" class="tocLink">まとめ</a><ul><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading12" class="tocLink">【5-2】 SNS マーケティング</a><ul><li><a href="#heading13" class="tocLink">目安学習時間：20分</a></li></ul><ul><li><a href="#heading14" class="tocLink">Instagram, Facebook(Meta), X(Twitter) など、各 SNS の特性に合わせた情報発信</a></li><li><a href="#heading15" class="tocLink">ShopifyでのSNSを活用したオンラインストアの宣伝方法</a></li><li><a href="#heading16" class="tocLink">ターゲティング広告を配信し、効率的に顧客を獲得</a></li></ul></li><li><a href="#heading17" class="tocLink">【5-3】 メールマーケティング</a><ul><li><a href="#heading18" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading19" class="tocLink">クーポン発行、新商品情報など、お得な情報のメール配信</a><ul><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading22" class="tocLink">【5-4】 アクセス解析</a><ul><li><a href="#heading23" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading24" class="tocLink">Google アナリティクスでアクセス状況を分析し、改善点を見つけ出す</a></li><li><a href="#heading25" class="tocLink">データに基づいた戦略で、売上アップにつなげる</a><ul><li><a href="#heading26" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25879" data-item-id="25879" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/coding/Db1KT" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item10254" data-item-id="10254" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">第5章：集客して売上アップを目指そう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39847" data-item-id="39847" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:80分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item38224" data-item-id="38224" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>この章では、Shopifyで集客・売上アップを行うための４つの手法について、概要を解説いたします。</li>
+  <li>学習ロードマップ （WEBマーケティング）で学んだ内容を活かして、集客から販売までの導線設計をしましょう。</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item10257" data-item-id="10257" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【5-1】 SEO 対策</h2></div>
+        
+        <div class="article-item item_markdown " id="item38225" data-item-id="38225" data-item-type="ItemMarkdown"><h4 id="heading3">この章の目安学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item10258" data-item-id="10258" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>タイトルタグ、メタディスクリプション、URLを設定し、検索エンジンからの流入を増やしましょう！</li>
+  <li>SEOの基本として、各ページのタイトルタグとメタディスクリプション、URLの設定が重要です。</li>
+  <ul>
+    <li>これらを最適化することで、検索エンジンの検索結果に表示されやすくなり、集客数の向上が期待できます。</li>
+  </ul>
+</ul></div></div>
+        
+        <div class="article-item item_html " id="item10259" data-item-id="10259" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10266" data-item-id="10266" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・Shopifyでは、商品管理から商品を選択し、下部にある「<span class="decoration-02">検索結果</span>」から設定できます。</span></div></div>
+        
+        <div class="article-item item_image " id="item10267" data-item-id="10267" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/267/medium/e36240c5-c3c6-4602-b7a4-f7f02fc53fc0.png?1743656049"><img class="img-responsive item-image" alt=" (10267)" src="../../_assets/e67a3c6f6f.webp" width="640" height="420"></a><h4 id="heading4"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10260" data-item-id="10260" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10268" data-item-id="10268" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">タイトルタグの設定</h3></div>
+        
+        <div class="article-item item_rich_text " id="item10269" data-item-id="10269" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・商品に関連する主要キーワードを含めて<span class="decoration-02">25字程度</span>で作成。</span><br>
+ &nbsp; &nbsp; （例）商品名＋カテゴリ名＋特徴</div></div>
+        
+        <div class="article-item item_html " id="item10261" data-item-id="10261" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10270" data-item-id="10270" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">メタディスクリプションの設定</h3></div>
+        
+        <div class="article-item item_rich_text " id="item10271" data-item-id="10271" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・商品の特徴を含めて<span class="decoration-02">70字程度</span>で説明文を作成。</span></div></div>
+        
+        <div class="article-item item_html " id="item10262" data-item-id="10262" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10272" data-item-id="10272" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">URLの設定</h3></div>
+        
+        <div class="article-item item_rich_text " id="item10273" data-item-id="10273" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・<span class="decoration-02">英単語</span>で商品のキーワード・特徴を表現。3単語程度。単語同士は『-』ハイフンで繋ぐ。</span><br>
+ &nbsp;※ Shopifyの商品ページURLでは、<span class="decoration-02">/products/ 以降のURL</span>について変更が可能です。<br>
+<span class="decoration-01">・初期設定のURLは、商品名に入力した英語のみが設定されるので、英語に変更しましょう。</span><br>
+ &nbsp; 初期設定：[https://web-coach.myshopify.com/products/](https://web-coach.myshopify.com/products/red-shirt-organic)<span class="decoration-03">aka-t</span><br>
+ &nbsp; 変更後： [https://web-coach.myshopify.com/products/red-shirt-organic](https://web-coach.myshopify.com/products/<span class="decoration-03">red-shirt-organic</span>)</div></div>
+        
+        <div class="article-item item_image " id="item10274" data-item-id="10274" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/274/medium/2fd05140-528a-43c3-8982-30da5c6cb45a.png?1743656330" title="▲設定後のGoogle検索での表示イメージ"><img class="img-responsive item-image" alt="▲設定後のGoogle検索での表示イメージ" data-reference="" src="../../_assets/99c9a5c9c8.png" width="609" height="127"></a><h4 id="heading8">▲設定後のGoogle検索での表示イメージ</h4></div></div>
+        
+        <div class="article-item item_html " id="item10263" data-item-id="10263" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10275" data-item-id="10275" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">まとめ</h3></div>
+        
+        <div class="article-item item_image " id="item10419" data-item-id="10419" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/419/medium/97e9b795-a33d-44b1-bda5-41398190b015.png?1743666825" title="https://web-coach.myshopify.com/products/red-shirt-organic"><img class="img-responsive item-image" alt="https://web-coach.myshopify.com/products/red-shirt-organic (10419)" data-reference="https://web-coach.myshopify.com/password" src="../../_assets/ceae49270e.webp" width="640" height="115"></a><h4 id="heading10"></h4></div><div class="cite">via <cite class="item-source"><a title="https://web-coach.myshopify.com/products/red-shirt-organic" target="_blank" rel="nofollow" href="https://web-coach.myshopify.com/password">web-coach.myshopify.com</a></cite></div></div>
+        
+        <div class="article-item item_html " id="item10264" data-item-id="10264" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10406" data-item-id="10406" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-03">★補足：効果的なキーワード選定のためのツール活用手順</span><br>
+・ラッコキーワードの<span class="decoration-02">サジェスト機能</span>を使用して、候補になるキーワードをいくつかピックアップします</span></div></div>
+        
+        <div class="article-item item_image " id="item10408" data-item-id="10408" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/408/medium/c0b0fcd5-df70-4229-9fb1-d48cd38547c9.png?1743666403" title=""><img class="img-responsive item-image" alt=" (10408)" data-reference="" src="../../_assets/06367deaa3.webp" width="640" height="236"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_link " id="item10407" data-item-id="10407" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=kzyqs&amp;item_id=10407" rel="nofollow noopener noreferrer" target="_blank">ラッコキーワード｜無料のキーワード分析ツール（サジェスト・共起語・月間検索数など）</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="ラッコキーワード｜無料のキーワード分析ツール（サジェスト・共起語・月間検索数など）" data-reference="https://rakkokeyword.com/" src="../../_assets/6764686f8b.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">無料でサクサク使えるキーワードリサーチツール。世の中のニーズをサクッと把握！コンテンツ制作/製品開発の市場ニーズのリサーチにお役立ていただけます。SEOを意識した記事コンテンツの制作補助機能も充実！</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item10420" data-item-id="10420" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10409" data-item-id="10409" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・Googleキーワードプランナーを使用し、<span class="decoration-02">検索ボリュームが多く、競合が少ないキーワード</span>を見つけます</span><br>
+※Google広告にユーザー情報を登録する必要があります</div></div>
+        
+        <div class="article-item item_link " id="item10410" data-item-id="10410" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=kzyqs&amp;item_id=10410" rel="nofollow noopener noreferrer" target="_blank">5分で理解！Googleキーワードプランナーの使い方【2022年版】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="5分で理解！Googleキーワードプランナーの使い方【2022年版】" data-reference="https://mieru-ca.com/blog/keyword-planner/" src="../../_assets/9130a95a41.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">手順をやさしく図解｜Googleキーワードプランナーとは、Google広告に付随するキーワード調査・キーワード選定を支援する無料運用ツール。登録方法や使い方、検索ボリュームの調査法について解説します。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item10265" data-item-id="10265" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10416" data-item-id="10416" data-item-type="ItemHeading"><h2 class="item-body" id="heading12">【5-2】 SNS マーケティング</h2></div>
+        
+        <div class="article-item item_markdown " id="item38226" data-item-id="38226" data-item-type="ItemMarkdown"><h4 id="heading13">目安学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item10422" data-item-id="10422" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">Instagram, Facebook(Meta), X(Twitter) など、各 SNS の特性に合わせた情報発信</h3></div>
+        
+        <div class="article-item item_rich_text " id="item10423" data-item-id="10423" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・各SNSの特性を活かした情報発信を行いましょう。</span><br>
+　・Instagram: 視覚的に魅力的な商品写真や動画を投稿し、ハッシュタグを活用してリーチを広げます。<br>
+　・Facebook: Instagramと連動して投稿を行い、コメントやメッセージで積極的に交流します。<br>
+　・X: リアルタイムな情報発信を行い、トレンドに合わせハッシュタグキャンペーンを実施します。</div></div>
+        
+        <div class="article-item item_html " id="item38229" data-item-id="38229" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <tbody>
+    </tbody><thead>
+      <tr>
+        <th scope="col">
+          <div><div>名SNS</div></div>
+        </th>
+        <th scope="col">
+          <div><div>特性</div></div>
+        </th>
+        <th scope="col">
+          <div><div>活用方法</div></div>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody><tr>
+      <th scope="row">
+        <div><div>Instagram</div></div>
+      </th>
+      <td>
+        <div><div>視覚的な訴求力が高い</div></div>
+      </td>
+      <td>
+        <div><div>魅力的な商品写真や動画の投稿</div></div>
+      </td>
+    </tr>
+
+    <tr>
+      <th scope="row">
+        <div><div>Facebook</div></div>
+      </th>
+      <td>
+        <div><div>コミュニティ間での交流</div></div>
+      </td>
+      <td>
+        <div><div>コメントやメッセージでの交流</div></div>
+      </td>
+    </tr>
+
+    <tr>
+      <th scope="row">
+        <div><div>Twitter</div></div>
+      </th>
+      <td>
+        <div><div>リアルタイムな情報発信</div></div>
+      </td>
+      <td>
+        <div><div>トレンドに合わせたツイート</div></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_heading " id="item10425" data-item-id="10425" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">ShopifyでのSNSを活用したオンラインストアの宣伝方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item10426" data-item-id="10426" data-item-type="ItemRichText"><div class="item-body-hbr">SNSを活用したオンラインストアの宣伝方法について、Shopifyの主な機能をご紹介します。<br>
+<br>
+<span class="decoration-01">１．</span><span class="decoration-01">商品ページの共有機能</span><br>
+・Facebook、Twitter、Reddit、LinkedIn、Pinterestで直接共有可能<br>
+・管理画面の[商品管理]から共有したい商品を選択し、[共有]ボタンで簡単に投稿<br>
+・リンクのコピーも可能で、他のプラットフォームでも共有可能<br>
+<br>
+<span class="decoration-01">２．SNSプロフィールとの連携</span><br>
+・テーマによってはSNSボタンが標準搭載<br>
+・エンゲージメント向上に貢献<br>
+・テーマストアでSNS機能付きのテーマを検索可能</div></div>
+        
+        <div class="article-item item_link " id="item10428" data-item-id="10428" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=kzyqs&amp;item_id=10428" rel="nofollow noopener noreferrer" target="_blank">Shopifyでマーケティングを設定する</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Shopifyでマーケティングを設定する" data-reference="https://help.shopify.com/ja/manual/promoting-marketing/create-marketing" src="../../_assets/bdb58854c6.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item10412" data-item-id="10412" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10429" data-item-id="10429" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">ターゲティング広告を配信し、効率的に顧客を獲得</h3></div>
+        
+        <div class="article-item item_rich_text " id="item10430" data-item-id="10430" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・クライアントがSNSアカウントを持っていない場合、新規アカウントの作成や定期的な投稿の作成、フォロワーの獲得に時間がかかることがあります。そのため、こうしたケースでは広告運用を提案することがあります。</span><br>
+<br>
+<span class="decoration-01">・ SNS広告を活用することで、詳細なターゲティング設定が可能になり、より効率的に顧客を獲得できます。特に取り扱う商材の注文単価が1万円を超える場合には、ターゲティング広告の活用がおすすめです。</span><br>
+<br>
+<span class="decoration-01">・ターゲティング設定とは、広告が表示される対象を絞り込むことであり、これにより広告の費用対効果を高めることができます。たとえば、Facebook（Meta）広告では、次のようなターゲティングが可能です：</span><br>
+ &nbsp; →<span class="decoration-01">年齢</span>：特定の年齢層に絞り込み、例えば「25～34歳のユーザー」に広告を表示。<br>
+ &nbsp; →<span class="decoration-01">性別</span>：性別によるターゲティングを行い、例えば「女性のみ」に広告を配信。<br>
+ &nbsp; →<span class="decoration-01">興味・関心</span>：ユーザーが興味を持つカテゴリを指定可能です。例えば、「ファッション」や「手作りアクセサリー」に関心があるユーザーに広告を表示することで、関連する商材への関心を引きやすくなります。<br>
+ &nbsp; →<span class="decoration-01">地理的な位置</span>：特定の地域に住んでいるユーザーに広告を配信することで、地域性の高い商品・サービスの販売を促進します。<br>
+<br>
+<span class="decoration-01">・まずは1万円程度の少額の予算でテストを行い、その結果をもとに見込み通りの注文数があれば、予算を増額することでさらに効果を拡大していきましょう。</span></div></div>
+        
+        <div class="article-item item_link " id="item10431" data-item-id="10431" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=kzyqs&amp;item_id=10431" rel="nofollow noopener noreferrer" target="_blank">Facebook広告完全ガイド｜出稿方法から成功させる5つのポイントまで徹底解説 | 株式会社THE MOLTS</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Facebook広告完全ガイド｜出稿方法から成功させる5つのポイントまで徹底解説 | 株式会社THE MOLTS" data-reference="https://moltsinc.co.jp/media/knowledge/6583/" src="../../_assets/dab3673d51.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">Facebook広告とは、Facebookのフィードやストーリーズに出稿できるSNS広告のことです。プロダクトやサービスの獲得したい顧客に合わせたターゲティングを実現します。本記事では、Facebook広告の特徴やターゲティングの方法、実際の活用事例、出稿の手順まで解説します。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item10413" data-item-id="10413" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10432" data-item-id="10432" data-item-type="ItemHeading"><h2 class="item-body" id="heading17">【5-3】 メールマーケティング</h2></div>
+        
+        <div class="article-item item_markdown " id="item38227" data-item-id="38227" data-item-type="ItemMarkdown"><h4 id="heading18">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item10434" data-item-id="10434" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">クーポン発行、新商品情報など、お得な情報のメール配信</h3></div>
+        
+        <div class="article-item item_rich_text " id="item10435" data-item-id="10435" data-item-type="ItemRichText"><div class="item-body-hbr">・クーポン発行、新商品情報など、お得な情報のメール配信<br>
+<br>
+・Shopifyでは、メールを通じて、クーポンや新商品情報を提供し、集客後の顧客にアプローチができます。</div></div>
+        
+        <div class="article-item item_html " id="item10414" data-item-id="10414" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10436" data-item-id="10436" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・管理メニューの<span class="decoration-02">ディスカウント</span> から、細かい条件でのクーポン発行が可能です</span></div></div>
+        
+        <div class="article-item item_image " id="item10437" data-item-id="10437" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/437/medium/4df2bf62-acb8-405b-8b3c-d0e6e90eaf8a.png?1743668240" title=""><img class="img-responsive item-image" alt=" (10437)" data-reference="" src="../../_assets/397cb5d11c.webp" width="640" height="301"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10415" data-item-id="10415" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10582" data-item-id="10582" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">管理メニューの<span class="decoration-02">マーケティング</span> から、行動履歴に応じたメールの自動配信が可能です</span></div></div>
+        
+        <div class="article-item item_image " id="item10583" data-item-id="10583" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/583/medium/1c37bd01-311d-44a2-ac7d-e982f1986a35.png?1743734919" title=""><img class="img-responsive item-image" alt=" (10583)" data-reference="" src="../../_assets/251121ee7c.webp" width="640" height="236"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10584" data-item-id="10584" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10585" data-item-id="10585" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・特に、ECサイトでは、カゴ落ち（カートに商品を追加したままサイトから離脱）が7割以上と言われており、カゴ落ちメールを出すことで、売上を10%以上改善した事例もあります。<br>
+・まずは、カゴ落ちメールの設定方法から優先して学習しましょう。</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item10587" data-item-id="10587" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-03">★カゴ落ちメールとは</span></span><br>
+・カゴ落ちメールは、商品をカートに入れた状態で購入まで至らなかった人に向けて送信するメールです。<br>
+・商品購入の手続きが完了していないことをユーザーに知らせて、サイトへの再訪と商品の購入を促します。</div></div>
+        
+        <div class="article-item item_html " id="item10640" data-item-id="10640" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10645" data-item-id="10645" data-item-type="ItemHeading"><h2 class="item-body" id="heading22">【5-4】 アクセス解析</h2></div>
+        
+        <div class="article-item item_markdown " id="item38228" data-item-id="38228" data-item-type="ItemMarkdown"><h4 id="heading23">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item10647" data-item-id="10647" data-item-type="ItemHeading"><h3 class="item-body" id="heading24">Google アナリティクスでアクセス状況を分析し、改善点を見つけ出す</h3></div>
+        
+        <div class="article-item item_rich_text " id="item10648" data-item-id="10648" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・Google アナリティクスを活用することで、サイトのアクセス状況を分析し、改善点が見つかります。</span><br>
+　→<span class="decoration-01">ユーザーの行動分析</span>: どのページがよく閲覧されているか、どのページで離脱が多いかを確認します。<br>
+　→<span class="decoration-01">コンバージョン分析</span>: どの経路からの訪問が最もゴール（目的の行動）に繋がっているかを分析します。</div></div>
+        
+        <div class="article-item item_html " id="item10641" data-item-id="10641" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10649" data-item-id="10649" data-item-type="ItemHeading"><h3 class="item-body" id="heading25">データに基づいた戦略で、売上アップにつなげる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item10650" data-item-id="10650" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・アクセス解析のデータを基に、具体的な改善策を立て、売上アップを目指します。</span></div></div>
+        
+        <div class="article-item item_image " id="item10652" data-item-id="10652" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/652/medium/e2265e42-c563-42a3-90c6-59061bfe768f.png?1743739838" title=""><img class="img-responsive item-image" alt=" (10652)" data-reference="" src="../../_assets/6622fa28b1.png" width="418" height="110"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10642" data-item-id="10642" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10654" data-item-id="10654" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・以上の4項目は、それぞれの知識を身に着けることが大切です。<br>
+・SEO・SNSにより、集客を改善することができ、メール・アクセス解析により、集客後の行動を改善することで本章のテーマである、集客して売上アップを目指そう！が達成できます。<br>
+・各項目の深い内容については、各学習教材がありますので、ECサイトの集客の案件獲得を目指す方は是非他の教材も学習してみましょう！</span></div></div>
+        
+        <div class="article-item item_html " id="item10643" data-item-id="10643" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10655" data-item-id="10655" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">これで「5章 集客して売上アップを目指そう」の解説を終わります。<br>
+<br>
+お疲れ様でした！</span></div></div>
+        
+        <div class="article-item item_html " id="item25880" data-item-id="25880" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/coding/Db1KT" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">第5章：集客して売上アップを目指そう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:80分</a></li></ul></li><li><a href="#heading2" class="tocLink">【5-1】 SEO 対策</a><ul><li><a href="#heading3" class="tocLink">この章の目安学習時間：20分</a></li><li><a href="#heading4" class="tocLink"></a></li></ul><ul><li><a href="#heading5" class="tocLink">タイトルタグの設定</a></li><li><a href="#heading6" class="tocLink">メタディスクリプションの設定</a></li><li><a href="#heading7" class="tocLink">URLの設定</a><ul><li><a href="#heading8" class="tocLink">▲設定後のGoogle検索での表示イメージ</a></li></ul></li><li><a href="#heading9" class="tocLink">まとめ</a><ul><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading12" class="tocLink">【5-2】 SNS マーケティング</a><ul><li><a href="#heading13" class="tocLink">目安学習時間：20分</a></li></ul><ul><li><a href="#heading14" class="tocLink">Instagram, Facebook(Meta), X(Twitter) など、各 SNS の特性に合わせた情報発信</a></li><li><a href="#heading15" class="tocLink">ShopifyでのSNSを活用したオンラインストアの宣伝方法</a></li><li><a href="#heading16" class="tocLink">ターゲティング広告を配信し、効率的に顧客を獲得</a></li></ul></li><li><a href="#heading17" class="tocLink">【5-3】 メールマーケティング</a><ul><li><a href="#heading18" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading19" class="tocLink">クーポン発行、新商品情報など、お得な情報のメール配信</a><ul><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading22" class="tocLink">【5-4】 アクセス解析</a><ul><li><a href="#heading23" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading24" class="tocLink">Google アナリティクスでアクセス状況を分析し、改善点を見つけ出す</a></li><li><a href="#heading25" class="tocLink">データに基づいた戦略で、売上アップにつなげる</a><ul><li><a href="#heading26" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/coding/Db1KT" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

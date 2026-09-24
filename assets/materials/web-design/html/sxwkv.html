@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/SXwKv -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Wix -基礎編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/SXwKv">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Wix -基礎編- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/099/medium/8eaef9ed-ce75-424a-a2f5-3b73ea95197b.png?1727435084">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Wix -基礎編-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/SXwKv">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/099/large/8eaef9ed-ce75-424a-a2f5-3b73ea95197b.png?1727435084">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="iIGLYXSywEgSPDrAA6AAjSNFh_pzUT4r_zfCsy-rM2dEOsRlP1GldnUmMFGUHE2DvErVvcfIBlivCFSM4auWvw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Wix -基礎編-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">Wix -基礎編-</a><ul><li><a href="#heading1" class="tocLink">教材全体の目安学習時間:600分</a></li><li><a href="#heading2" class="tocLink">この教材の学習時間:60分</a></li><li><a href="#heading3" class="tocLink">目安の学習時間:5分</a></li></ul></li><li><a href="#heading4" class="tocLink">0. できるようになること</a><ul><li><a href="#heading5" class="tocLink">実際にWixで作成されたHPをご紹介!!</a></li></ul></li><li><a href="#heading6" class="tocLink">1. Wixでの学習のポイント</a><ul><li><a href="#heading7" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading8" class="tocLink">■ Wixは頻繁にアップデートされる</a><ul><li><a href="#heading9" class="tocLink">アップデートされても学習を続けるためには</a></li></ul></li></ul></li><li><a href="#heading10" class="tocLink">2. Wix導入編</a><ul><li><a href="#heading11" class="tocLink">目安の学習時間:15分</a></li></ul><ul><li><a href="#heading12" class="tocLink">■ Wixにログインする</a><ul><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">■ はじめに - 網羅的に全ての機能を知るなら Wix  ヘルプセンターがおすすめ</a><ul><li><a href="#heading16" class="tocLink"></a></li></ul></li><li><a href="#heading17" class="tocLink">■ Wix マイサイトページとは</a><ul><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">■ Wixのダッシュボードの説明</a><ul><li><a href="#heading20" class="tocLink"></a></li></ul></li><li><a href="#heading21" class="tocLink">■ Wixの基本課金体系</a></li></ul></li><li><a href="#heading22" class="tocLink">3. Wix機能紹介</a><ul><li><a href="#heading23" class="tocLink">目安の学習時間:25分</a></li></ul><ul><li><a href="#heading24" class="tocLink">■ 目的の機能が見つからない時の3つの手順</a></li><li><a href="#heading25" class="tocLink">■ Wix エディタ</a></li><li><a href="#heading26" class="tocLink">■  AI サイト生成機能</a></li><li><a href="#heading27" class="tocLink">■ Velo by Wix</a></li><li><a href="#heading28" class="tocLink">■  Wix ストア</a></li><li><a href="#heading29" class="tocLink">■  Wix ブッキング</a></li><li><a href="#heading30" class="tocLink">■ Wix ブログ</a></li><li><a href="#heading31" class="tocLink">■ Wix ミュージック</a></li><li><a href="#heading32" class="tocLink">■ Wix フォトグラフィ</a></li><li><a href="#heading33" class="tocLink">■ Wix ビデオ</a></li><li><a href="#heading34" class="tocLink">■ Wix イベント</a></li><li><a href="#heading35" class="tocLink">■ Wix  レストラン</a></li><li><a href="#heading36" class="tocLink">■ マーケティングツール</a></li></ul></li><li><a href="#heading37" class="tocLink">TIPS：5分ルールと質問のしかた</a><ul><li><a href="#heading38" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading39" class="tocLink">■ 5分ルール</a></li><li><a href="#heading40" class="tocLink">■ コーチへの自分で試した内容の報告</a></li></ul></li><li><a href="#heading41" class="tocLink">TIPS：WixとWordPressの使い分け</a><ul><li><a href="#heading42" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading43" class="tocLink">予算という観点から</a></li><li><a href="#heading44" class="tocLink">用途別で見ると?</a></li></ul></li><li><a href="#heading45" class="tocLink">TIPS：ヘルプページから問い合わせする方法</a><ul><li><a href="#heading46" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading47" class="tocLink">必要になるシーン</a></li><li><a href="#heading48" class="tocLink">お問い合わせを行う方法</a><ul><li><a href="#heading49" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading50" class="tocLink">おわりに：アップデートを見つけたら</a></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item42986" data-item-id="42986" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-end;">
+  <a href="https://learn.webcoach.jp/web-design/AhzBP" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item40258" data-item-id="40258" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">Wix -基礎編-</h2></div>
+        
+        <div class="article-item item_markdown " id="item39250" data-item-id="39250" data-item-type="ItemMarkdown"><h4 id="heading1">教材全体の目安学習時間:600分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item39228" data-item-id="39228" data-item-type="ItemMarkdown"><h4 id="heading2">この教材の学習時間:60分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item40259" data-item-id="40259" data-item-type="ItemMarkdown"><h4 id="heading3">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5593" data-item-id="5593" data-item-type="ItemMarkdown"><ul>
+  <li>Wixとはいわゆる「ノーコードツール」と呼ばれるもので、<strong>HTML・CSSなど専門的な知識がなくても直感的にWEBサイト構築</strong>ができます！</li>
+  <li>ノーコードツールもどんどん進化しており、<strong>ほとんどのWEBサイト仕様はノーコードツールで十分に実現できます</strong>。</li>
+  <li>ノーコードツールを使うと工数を減らしながら高いクオリティを出せます。さらに、クライアント目線でも納品された後<strong>クライアント自身で修正しやすい</strong>ので喜ばれます！</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item5095" data-item-id="5095" data-item-type="ItemHeading"><h2 class="item-body" id="heading4">0. できるようになること</h2></div>
+        
+        <div class="article-item item_heading " id="item5097" data-item-id="5097" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">実際にWixで作成されたHPをご紹介!!</h3></div>
+        
+        <div class="article-item item_markdown " id="item5098" data-item-id="5098" data-item-type="ItemMarkdown"><p>Wixでは繊細なデザインのWEBサイトからダイナミックなデザインのWEBサイトまで、どんなWEBサイトでも自由に作成可能です！</p>
+
+<ul>
+  <li>実際に自分で学ぶ前に、実際に作れるようになるWEBサイトのイメージを膨らませるため、以下のサイトを閲覧してみましょう！</li>
+</ul>
+</div>
+        
+        <div class="article-item item_link " id="item5099" data-item-id="5099" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SXwKv&amp;item_id=5099" rel="nofollow noopener noreferrer" target="_blank">ハンドメイド | So Jake | 東京</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="ハンドメイド | So Jake | 東京" data-reference="https://www.sojake.com/" src="../../_assets/9dd3feb406.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">レザークラフト | So Jake | 日本</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item5100" data-item-id="5100" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SXwKv&amp;item_id=5100" rel="nofollow noopener noreferrer" target="_blank">SUNPEDAL さんぺだる</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="SUNPEDAL さんぺだる" data-reference="https://www.sun-pedal.com/" src="../../_assets/8af4abcf8c.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">Japanese vegan food creator / caterer ''SUNPEDAL'' based in Tokyo, Japan. ヴィーガンフードクリエイター、ヴィーガンケータリング専門店、オリジナル調味料さんぺだる塩新発売。</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item5101" data-item-id="5101" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SXwKv&amp;item_id=5101" rel="nofollow noopener noreferrer" target="_blank">uresujiとは | uresuji | 着物 レンタル 新潟</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="uresujiとは | uresuji | 着物 レンタル 新潟" data-reference="https://www.uresuji.co/about" src="../../_assets/3a1d7abd2e.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item5103" data-item-id="5103" data-item-type="ItemHeading"><h2 class="item-body" id="heading6">1. Wixでの学習のポイント</h2></div>
+        
+        <div class="article-item item_markdown " id="item39229" data-item-id="39229" data-item-type="ItemMarkdown"><h4 id="heading7">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5104" data-item-id="5104" data-item-type="ItemMarkdown"><ul>
+  <li>Wixは非常に直感的で操作しやすいので、「とりあえず触ってみる」精神でやっていくのがおすすめです。</li>
+  <li>学習を進めるにあたって、プロのWEBデザイナーとして一生使える「自走力の型」を最初に身につけましょう！</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item48693" data-item-id="48693" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">■ Wixは頻繁にアップデートされる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item48694" data-item-id="48694" data-item-type="ItemRichText"><div class="item-body-hbr">WixなどのWeb業界で使用されるツールはユーザーがより使いやすくなるよう、日頃使っているスマホアプリと同じように頻繁にアップデートされています。<br>
+そのため、「教材の画像と、実際の画面のボタンの場所が違う」ということが起こり得ます。<br>
+しかし、実務の場ではそういったアップデートに対応していくスキルは必須です！<br>
+以下のことを意識しながら、学習段階からスキルを身に着けていきましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item48695" data-item-id="48695" data-item-type="ItemMarkdown"><h4 id="heading9">アップデートされても学習を続けるためには</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item48696" data-item-id="48696" data-item-type="ItemMarkdown"><ul>
+  <li><strong>「場所の暗記」ではなく「探し方」を学ぶ:</strong><br>
+ボタンの位置のみの丸暗記だと、アップデートされる度に覚えねばならず、困ってしまいます。<br>
+探すコツを覚えていれば、ボタンぼ場所が変わっても迷うことなく作業を進められます！</li>
+  <li><strong>検索力を鍛える:</strong><br>
+学習中に「これどうやるんだろう？」と迷った時は、まずAIに質問したり、「Wix 〇〇（知りたいこと） 2026（最新年号）」と検索してみましょう。<br>
+※AIには「Wixのエディタで〇〇をする手順を教えて」のように、<strong>具体的な目的を伝えて質問する</strong>のがコツです。<br>
+エラーが起きた際は、表示されているメッセージをそのまま貼り付けて相談するとスムーズに解決できることが多いです。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48697" data-item-id="48697" data-item-type="ItemRichText"><div class="item-body-hbr">「検索力」と「変化に対応する力」を身につけることができれば、どんどんスキルアップすることができます！</div></div>
+        
+        <div class="article-item item_heading " id="item5105" data-item-id="5105" data-item-type="ItemHeading"><h2 class="item-body" id="heading10">2. Wix導入編</h2></div>
+        
+        <div class="article-item item_markdown " id="item39230" data-item-id="39230" data-item-type="ItemMarkdown"><h4 id="heading11">目安の学習時間:15分</h4>
+
+</div>
+        
+        <div class="article-item item_heading " id="item5106" data-item-id="5106" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">■ Wixにログインする</h3></div>
+        
+        <div class="article-item item_markdown " id="item5107" data-item-id="5107" data-item-type="ItemMarkdown"><p>早速ですが、「習うより慣れろ」が大事ですのでWixにログインしましょう！</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item42979" data-item-id="42979" data-item-type="ItemMarkdown"><p>まずは下のWixの公式サイトに遷移し、<strong>「今すぐ始める」</strong>からアカウントを作成しましょう！</p>
+</div>
+        
+        <div class="article-item item_link " id="item42985" data-item-id="42985" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SXwKv&amp;item_id=42985" rel="nofollow noopener noreferrer" target="_blank">無料ホームページ作成 | ホームページの作り方 | Wix.com</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="無料ホームページ作成 | ホームページの作り方 | Wix.com" data-reference="https://ja.wix.com/" src="../../_assets/4e260a5be9.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">国内で400万アカウントの利用実績を誇るホームページ作成ツール。最新の AI テクノロジーとノーコード設計で、プロ顔負けのウェブサイトを最短数分で作成可能。 専門知識がなくても、あなたのビジョンを即座にカタチにできます。</div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item42980" data-item-id="42980" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/980/medium/2be2f65d-ccc7-4898-a536-626f5e2449f5.png?1762156815" title=""><img class="img-responsive item-image" alt=" (42980)" data-reference="" src="../../_assets/eadff69e3e.webp" width="640" height="346"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item42982" data-item-id="42982" data-item-type="ItemMarkdown"><p>メールもしくはGoogleアカウントで登録できます。</p>
+
+<p>”<a href="https://learn.webcoach.jp/knowledge/eFJhj#heading2"><strong>Google Chromeをデフォルトブラウザとして使う</strong></a>”で説明したように、今後Googleアカウントで作業を行っていくことを考えると、Googleアカウントでログインするのがおすすめです！</p>
+
+<p>パスワードを設定すれば新規登録は完了です！</p>
+</div>
+        
+        <div class="article-item item_image " id="item42983" data-item-id="42983" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/042/983/medium/e6270842-b259-41fd-bf4e-d18ee0558b09.png?1762156878" title=""><img class="img-responsive item-image" alt=" (42983)" data-reference="" src="../../_assets/dd44fcb670.webp" width="640" height="379"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item42984" data-item-id="42984" data-item-type="ItemRichText"><div class="item-body-hbr">引き続き基礎編の学習を進めていきましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item5109" data-item-id="5109" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">■ はじめに - 網羅的に全ての機能を知るなら Wix  ヘルプセンターがおすすめ</h3></div>
+        
+        <div class="article-item item_markdown " id="item6034" data-item-id="6034" data-item-type="ItemMarkdown"><p>URL: <a href="https://support.wix.com/ja/%E3%81%AF%E3%81%98%E3%82%81%E3%81%BE%E3%81%97%E3%82%87%E3%81%86%EF%BC%81">Wixヘルプセンター</a></p>
+</div>
+        
+        <div class="article-item item_image " id="item5110" data-item-id="5110" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/005/110/medium/ea496ea5-561f-440b-a6ae-8a9f62363f55.png?1755485247" title=""><img class="img-responsive item-image" alt=" (5110)" data-reference="https://support.wix.com/ja/%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF%E3%81%AE%E5%9F%BA%E6%9C%AC%E6%83%85%E5%A0%B1-6935601" src="../../_assets/2dce4de6d2.webp" width="640" height="346"></a><h4 id="heading16"></h4></div><div class="cite">via <cite class="item-source"><a title="" target="_blank" rel="nofollow" href="https://support.wix.com/ja/%E3%82%A8%E3%83%87%E3%82%A3%E3%82%BF%E3%81%AE%E5%9F%BA%E6%9C%AC%E6%83%85%E5%A0%B1-6935601">support.wix.com</a></cite></div></div>
+        
+        <div class="article-item item_markdown " id="item5111" data-item-id="5111" data-item-type="ItemMarkdown"><p>WixなどのIT系のツールは大抵の場合<strong>公式のマニュアルが充実</strong>しています。</p>
+
+<p>色んなユーザーに使ってもらいたいから当たり前ですね。</p>
+
+<p>網羅的に機能を知りたいなら公式ページを見るのが最も確実で正確です。</p>
+
+<p><strong>どんどん機能はアップデートされていっているので、公式情報に当たるのがWEBスキルの学習においては大切です。</strong></p>
+</div>
+        
+        <div class="article-item item_html " id="item5112" data-item-id="5112" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">プロからの一言</div>
+    </div>
+    <div class="content-area">
+        今後WEBスキルの学習をするに当たっては、公式情報にあたる癖をつけておくと良いでしょう。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item5113" data-item-id="5113" data-item-type="ItemMarkdown"><p>これ以降、主要な機能に絞って解説していきます。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5114" data-item-id="5114" data-item-type="ItemHeading"><h3 class="item-body" id="heading17">■ Wix マイサイトページとは</h3></div>
+        
+        <div class="article-item item_image " id="item5115" data-item-id="5115" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/005/115/medium/8575e698-3d3d-4c45-888f-8b23ee41451c.png?1721381193" title=""><img class="img-responsive item-image" alt=" (5115)" data-reference="https://support.wix.com/ja/article/%E3%83%9E%E3%82%A4%E3%82%B5%E3%82%A4%E3%83%88%E3%83%9A%E3%83%BC%E3%82%B8%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-4834890" src="../../_assets/a5ad1be3fd.webp" width="640" height="324"></a><h4 id="heading18"></h4></div><div class="cite">via <cite class="item-source"><a title="" target="_blank" rel="nofollow" href="https://support.wix.com/ja/article/%E3%83%9E%E3%82%A4%E3%82%B5%E3%82%A4%E3%83%88%E3%83%9A%E3%83%BC%E3%82%B8%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-4834890">support.wix.com</a></cite></div></div>
+        
+        <div class="article-item item_rich_text " id="item12509" data-item-id="12509" data-item-type="ItemRichText"><div class="item-body-hbr">Wixのマイサイトページでは複数のWEBサイトを作成・管理することができます。<br>
+<br>
+サイトごとにアカウントを分ける必要がないのでとても使いやすいです。<br>
+<br>
+新しいサイトを作成すると、マイサイトページに作成したサイトが一覧で表示されます。ここでサイトを一元管理することができます。<br>
+<br>
+サイトごとに有料プランを購入することができ、アップグレードすると独自ドメインの接続などが可能になります。またプランはサイト間で適用先を移動することもできたりします。</div></div>
+        
+        <div class="article-item item_markdown " id="item6035" data-item-id="6035" data-item-type="ItemMarkdown"><p>参考：<a href="https://support.wix.com/ja/article/%E3%83%9E%E3%82%A4%E3%82%B5%E3%82%A4%E3%83%88%E3%83%9A%E3%83%BC%E3%82%B8%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-4834890">マイサイトページについて</a></p>
+</div>
+        
+        <div class="article-item item_heading " id="item5116" data-item-id="5116" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">■ Wixのダッシュボードの説明</h3></div>
+        
+        <div class="article-item item_image " id="item5117" data-item-id="5117" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/005/117/medium/4dbc162a-4221-416f-beb3-dc870086fbcf.png?1721381234" title=""><img class="img-responsive item-image" alt=" (5117)" data-reference="https://support.wix.com/ja/article/%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AE%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89%E3%81%AB%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%99%E3%82%8B" src="../../_assets/bd1ec5ae6d.webp" width="640" height="332"></a><h4 id="heading20"></h4></div><div class="cite">via <cite class="item-source"><a title="" target="_blank" rel="nofollow" href="https://support.wix.com/ja/article/%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AE%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89%E3%81%AB%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%99%E3%82%8B">support.wix.com</a></cite></div></div>
+        
+        <div class="article-item item_rich_text " id="item12508" data-item-id="12508" data-item-type="ItemRichText"><div class="item-body-hbr">サイトを選択して管理メニューに入ると、写真のようなダッシュボードが表示されます。<br>
+<br>
+この画面が、特定のサイトを管理する際に操作を行う主なページとなるので覚えておいてください。<br>
+<br>
+サイトの編集、プランの設定、マーケティングツールの設定などあらゆることがこのページからできます。</div></div>
+        
+        <div class="article-item item_markdown " id="item6036" data-item-id="6036" data-item-type="ItemMarkdown"><p>参考：<a href="https://support.wix.com/ja/article/%E3%82%B5%E3%82%A4%E3%83%88%E3%81%AE%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89%E3%81%AB%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%81%99%E3%82%8B">サイトのダッシュボードにアクセスする</a></p>
+</div>
+        
+        <div class="article-item item_heading " id="item5118" data-item-id="5118" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">■ Wixの基本課金体系</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38158" data-item-id="38158" data-item-type="ItemRichText"><div class="item-body-hbr">Wixの料金体系については、以下の公式ページから確認しましょう！</div></div>
+        
+        <div class="article-item item_link " id="item38149" data-item-id="38149" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SXwKv&amp;item_id=38149" rel="nofollow noopener noreferrer" target="_blank">Wix ご利用料金 | Wix プレミアムプラン | Wix.com</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix ご利用料金 | Wix プレミアムプラン | Wix.com" data-reference="https://ja.wix.com/premium-purchase-plan/dynamo" src="../../_assets/ef208c5466.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5119" data-item-id="5119" data-item-type="ItemMarkdown">
+<p>教材内で学習する内容は、<strong>全て無料の範囲内で使えるのでご安心ください。</strong></p>
+
+<p>Wixではサイト単位でドメイン接続、データ容量などに応じて課金額が変わります。それに加えてアプリ単位で月額で費用がかかってくるという形式になっています。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item5121" data-item-id="5121" data-item-type="ItemMarkdown"><p>クライアントの要望に応じて、実際の案件では有料プランを検討しましょう。
+個人で練習する分には無料プランで問題ありません。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5122" data-item-id="5122" data-item-type="ItemHeading"><h2 class="item-body" id="heading22">3. Wix機能紹介</h2></div>
+        
+        <div class="article-item item_markdown " id="item39231" data-item-id="39231" data-item-type="ItemMarkdown"><h4 id="heading23">目安の学習時間:25分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5123" data-item-id="5123" data-item-type="ItemMarkdown"><p>WEBスキルは使いながら実践を通じて覚えていくことを推奨しているので無理にここで暗記する必要はありません。</p>
+
+<p>気になる方は、Wixの機能一覧は以下の公式ページから確認するのがおすすめです。</p>
+</div>
+        
+        <div class="article-item item_link " id="item5124" data-item-id="5124" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SXwKv&amp;item_id=5124" rel="nofollow noopener noreferrer" target="_blank">Wix 機能紹介 | Wix.com</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix 機能紹介 | Wix.com" data-reference="https://ja.wix.com/features/main" src="../../_assets/17c19b39e5.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">ホームページの作成に加え、各種ビジネス向け機能や訪問者を呼び込むマーケティングツールなど、必要な機能を完全網羅。Wix で使える機能を詳しくご紹介します。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item5125" data-item-id="5125" data-item-type="ItemRichText"><div class="item-body-hbr">まずは実践しながら掴んでいき、最後体系的に把握したりするのがおすすめです。<br>
+<br>
+<span class="decoration-02"><span class="decoration-01">最初から体系的に全て暗記してから触ろうとするのは悪手なのでやめましょう。常に実践が勝ります！</span></span></div></div>
+        
+        <div class="article-item item_heading " id="item48698" data-item-id="48698" data-item-type="ItemHeading"><h3 class="item-body" id="heading24">■ 目的の機能が見つからない時の3つの手順</h3></div>
+        
+        <div class="article-item item_rich_text " id="item48699" data-item-id="48699" data-item-type="ItemRichText"><div class="item-body-hbr">各機能を見る前に、場所がわからなくなった時の「探し方」をマスターしましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item48700" data-item-id="48700" data-item-type="ItemMarkdown"><ol>
+  <li><strong>エディタ内検索:</strong> <br>
+エディタ右上の「虫眼鏡アイコン」を活用しましょう。<br>
+場所を探すより、機能名（ボタン、ストリップ等）を入力して呼び出すのが最短ルートです。</li>
+  <li><strong>「エリア」でアタリをつける:</strong><br>
+アイコンの形が変わっても「役割」は変わりません。<br>
+「左側は要素の追加や管理」「上側は保存や公開」といったエリアごとの役割を意識しましょう</li>
+  <li><strong>公式ヘルプセンター:</strong><br>
+困った時は<a href="https://support.wix.com/ja/">Wixヘルプセンター</a>に聞いてみましょう。<br>
+Wixの質問に特化したAIが対応してくれるので、気軽に質問できます！</li>
+</ol>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48701" data-item-id="48701" data-item-type="ItemRichText"><div class="item-body-hbr"><br>
+これらを駆使して、以下の主要な機能に触れてみましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item5126" data-item-id="5126" data-item-type="ItemHeading"><h3 class="item-body" id="heading25">■ Wix エディタ</h3></div>
+        
+        <div class="article-item item_markdown " id="item5127" data-item-id="5127" data-item-type="ItemMarkdown"><p>Wixでページ編集に使う機能です。500種類以上のテンプレートから好きなスタイルを選び、それをもとにドラッグ&amp;ドロップの直感的な操作でページを作成できます。
+もちろん白紙のページを使って0から構築することもできます。</p>
+
+<p>機能がたくさんあり非常に充実しています。</p>
+
+<ul>
+  <li>プロのWEBデザイナーが構築した大量のテンプレート</li>
+  <li>ドラッグ&amp;ドロップによる直感的な操作</li>
+  <li>高度なSEOツール</li>
+  <li>モバイル完全対応</li>
+  <li>App Market：豊富なアプリをインストールすることで機能をさらに拡張できます</li>
+  <li>ビジュアルエフェクト：アニメーション、スクロールエフェクトなどのアニメーションがワンタップで実装可能</li>
+  <li>フォントアップロード：フォントファイルをアップロードすればいくらでも追加できます</li>
+  <li>画像や動画の追加</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item5128" data-item-id="5128" data-item-type="ItemHeading"><h3 class="item-body" id="heading26">■  AI サイト生成機能</h3></div>
+        
+        <div class="article-item item_markdown " id="item5129" data-item-id="5129" data-item-type="ItemMarkdown"><p>いくつかの質問に答えるとAIが自動で最適なホームページを作成してくれる機能です。
+相当簡易的にページを作成したい場合以外ではあまり使用頻度は多くないです。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5130" data-item-id="5130" data-item-type="ItemHeading"><h3 class="item-body" id="heading27">■ Velo by Wix</h3></div>
+        
+        <div class="article-item item_markdown " id="item5131" data-item-id="5131" data-item-type="ItemMarkdown"><p>Veloは高度なWEBアプリケーションをWixで構築するためのオープン開発プラットフォームです。</p>
+
+<p>自由なWEBプロジェクトの制作、管理、公開を可能にします。</p>
+</div>
+        
+        <div class="article-item item_link " id="item5133" data-item-id="5133" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SXwKv&amp;item_id=5133" rel="nofollow noopener noreferrer" target="_blank">Tour of Wix Code</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Tour of Wix Code" data-reference="https://support.wix.com/ja/article/velo-by-wix-%E3%81%AE%E5%85%A5%E9%96%80%E6%9B%B8" src="../../_assets/8670eb5ad2.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item5134" data-item-id="5134" data-item-type="ItemMarkdown"><p>Wixエディタの標準機能で実装が難しい場合は、Velo 開発モードを使うことによってコードでカスタマイズすることができます。</p>
+
+<p>こちらに関してはおいおい、HTML、CSS、JavaScriptを学習した上でトライしてみると良いでしょう。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5135" data-item-id="5135" data-item-type="ItemHeading"><h3 class="item-body" id="heading28">■  Wix ストア</h3></div>
+        
+        <div class="article-item item_markdown " id="item5136" data-item-id="5136" data-item-type="ItemMarkdown"><p>Wixを用いてECサイトを構築することができます。</p>
+
+<p>商品の追加、受注状況の確認、商品ページのカスタマイズ、複数の決済方法など柔軟にカスタマイズすることが可能です。</p>
+
+<p>ただし、ECサイト構築ツールとしては、ShopifyやBASEの方がスタンダードであるため、ECが目的である場合はそちらのツールの活用をおすすめします。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5137" data-item-id="5137" data-item-type="ItemHeading"><h3 class="item-body" id="heading29">■  Wix ブッキング</h3></div>
+        
+        <div class="article-item item_markdown " id="item5138" data-item-id="5138" data-item-type="ItemMarkdown"><p>Wixを用いて予約機能を構築することができます。</p>
+
+<p>24時間の予約受付、オンライン決済、プライベート/グループサービス、Googleカレンダーと同期、自動リマインダーなど予約機能に必須の機能が全て備わっています。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5139" data-item-id="5139" data-item-type="ItemHeading"><h3 class="item-body" id="heading30">■ Wix ブログ</h3></div>
+        
+        <div class="article-item item_markdown " id="item5140" data-item-id="5140" data-item-type="ItemMarkdown"><p>ブログを開設することで記事の投稿やコメントの確認などを行うことができます。</p>
+
+<p>コーポレートサイトにおいてはプレスリリース打つことがよくあると思います。</p>
+
+<p>そういった場合にこちらの機能は非常に便利です。</p>
+
+<p>本格的なブログやメディアを構築する場合は今後学習するWordpressをおすすめします。理由としては、大容量に対応でき、サイトスピードが速く、ブログ記事作成ツールが充実しているからです。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5141" data-item-id="5141" data-item-type="ItemHeading"><h3 class="item-body" id="heading31">■ Wix ミュージック</h3></div>
+        
+        <div class="article-item item_markdown " id="item5142" data-item-id="5142" data-item-type="ItemMarkdown"><p>サイト上から音楽を配信できます。</p>
+
+<p>音楽プレイヤーの色やデザインのカスタマイズ、ダウンロード販売機能、配信レポートなどが搭載されています。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5143" data-item-id="5143" data-item-type="ItemHeading"><h3 class="item-body" id="heading32">■ Wix フォトグラフィ</h3></div>
+        
+        <div class="article-item item_markdown " id="item5144" data-item-id="5144" data-item-type="ItemMarkdown"><p>30種類以上のレイアウトからメディアギャラリーを選択することができます。</p>
+
+<p>画質補正ツールが搭載されており、高画質な画像を美しいレイアウトで表示することができます。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5145" data-item-id="5145" data-item-type="ItemHeading"><h3 class="item-body" id="heading33">■ Wix ビデオ</h3></div>
+        
+        <div class="article-item item_markdown " id="item5146" data-item-id="5146" data-item-type="ItemMarkdown"><p>動画配信、動画のアップロード、有料配信を行うことができます。</p>
+
+<p>動画のアップロード容量には限界があるので、そういった場合にはYouTubeチャンネルなどと併用することをおすすめします。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5147" data-item-id="5147" data-item-type="ItemHeading"><h3 class="item-body" id="heading34">■ Wix イベント</h3></div>
+        
+        <div class="article-item item_markdown " id="item5148" data-item-id="5148" data-item-type="ItemMarkdown"><p>イベント招待メールの送信、ゲストリストの管理、チケット販売機能が搭載されています。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5149" data-item-id="5149" data-item-type="ItemHeading"><h3 class="item-body" id="heading35">■ Wix  レストラン</h3></div>
+        
+        <div class="article-item item_markdown " id="item5150" data-item-id="5150" data-item-type="ItemMarkdown"><p>オンラインメニューの作成、ネット注文対応、ネット予約機能が充実しています。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5151" data-item-id="5151" data-item-type="ItemHeading"><h3 class="item-body" id="heading36">■ マーケティングツール</h3></div>
+        
+        <div class="article-item item_markdown " id="item5152" data-item-id="5152" data-item-type="ItemMarkdown"><p>Wixには強力なマーケティングツールが搭載されており、集客に強いサイトを構築できます。</p>
+
+<ul>
+  <li>SEOチェックリスト
+GoogleへのインデックスとSEO最適化のガイドとなるチェックリストを作成可能</li>
+  <li>高度SEOツール
+メタタグ、構造化データ、robots.txtファイルなどをカスタマイズ可能
+    <ul>
+      <li>メルマガ配信
+  デザインは自由に編集可能でメルマガ送信ができます。
+  普通はメルマガ機能は別途システムを導入しなければならないことも多いので、Wixでは普通に使えるのでとても便利です。</li>
+    </ul>
+  </li>
+  <li>アクセス解析
+アクセス地域や滞在時間などサイト訪問者の動向を詳しくチェックできます。
+こちらに関してはGoogle Analyticsを活用することをおすすめしています。
+Google Analyticsの方がより詳細な分析が可能だからです。</li>
+  <li>SNSツール
+Facebook、X（旧Twitter）、Instagramの投稿を行うことができます。アカウント連携することでWixから投稿を確認できます。</li>
+  <li>お問合せフォームの設置
+通常これだけでも別途システムを導入し高額な費用がかかるケースもありますが、Wixでは標準機能として使用することができます。</li>
+</ul>
+
+<p><strong>WEBスキル学習においては読んで覚えたり見て覚えたりするのではなく、あくまで「実際にやってみて習得する」のが最も効果的です。</strong></p>
+
+<p>早速Wix実践編でどんどんアウトプットしていきましょう！</p>
+</div>
+        
+        <div class="article-item item_heading " id="item48702" data-item-id="48702" data-item-type="ItemHeading"><h2 class="item-body" id="heading37">TIPS：5分ルールと質問のしかた</h2></div>
+        
+        <div class="article-item item_markdown " id="item48703" data-item-id="48703" data-item-type="ItemMarkdown"><h4 id="heading38">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item48704" data-item-id="48704" data-item-type="ItemRichText"><div class="item-body-hbr">自分で解決できなかったときは、もちろんコーチに質問してください！<br>
+ただし、「自走力」を育てるために、質問前に必ず「5分間」だけ以下のステップを試してみてください。</div></div>
+        
+        <div class="article-item item_heading " id="item48705" data-item-id="48705" data-item-type="ItemHeading"><h3 class="item-body" id="heading39">■ 5分ルール</h3></div>
+        
+        <div class="article-item item_markdown " id="item48706" data-item-id="48706" data-item-type="ItemMarkdown"><ol>
+  <li>エディタ内の「検索窓」に機能名を入れてみる。</li>
+  <li>関連しそうな「エリア（左・上・右）」をすべて開いてみる。</li>
+  <li>公式ヘルプやAIなどに聞いてみて最新の仕様を確認する。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_heading " id="item48707" data-item-id="48707" data-item-type="ItemHeading"><h3 class="item-body" id="heading40">■ コーチへの自分で試した内容の報告</h3></div>
+        
+        <div class="article-item item_rich_text " id="item48708" data-item-id="48708" data-item-type="ItemRichText"><div class="item-body-hbr">5分試しても解決しない場合は、遠慮なくコーチを頼ってください！<br>
+その際、以下の「OK例」のように自分がどこをどう探したかを添えて質問するのが望ましいです。</div></div>
+        
+        <div class="article-item item_html " id="item48709" data-item-id="48709" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+            <tr>
+                <th>
+                    <div>
+                        <div>❌ NG</div>
+                    </div>
+                </th>
+                <th>
+                    <div>
+                        <div>「教材と画面が違うので分かりません。教えてください。」</div>
+                    </div>
+                </th>
+            </tr>
+        <tr>
+            <th>
+                <div>
+                    <div>✅ OK</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>「教材と画面が違いました。エディタ内検索を試し、公式ヘルプも見ましたが〇〇が見当たりません。探し方のコツを教えてください！」</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item48710" data-item-id="48710" data-item-type="ItemRichText"><div class="item-body-hbr">コーチは「答え」だけでなく、あなたの「探し方」についてもアドバイスをくれます。</div></div>
+        
+        <div class="article-item item_heading " id="item5153" data-item-id="5153" data-item-type="ItemHeading"><h2 class="item-body" id="heading41">TIPS：WixとWordPressの使い分け</h2></div>
+        
+        <div class="article-item item_markdown " id="item40260" data-item-id="40260" data-item-type="ItemMarkdown"><h4 id="heading42">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item5154" data-item-id="5154" data-item-type="ItemMarkdown"><p>今後学習するWordPressとの使い分けに関して簡単に説明します。</p>
+
+<p>ツールはサイト制作の目的、使用用途、ツールの特徴、予算など様々な要素を加味して検討することが大切です。</p>
+
+<p>ケースバイケースなのであくまで例としてどのような観点で使い分ければよいかご説明します。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5155" data-item-id="5155" data-item-type="ItemHeading"><h3 class="item-body" id="heading43">予算という観点から</h3></div>
+        
+        <div class="article-item item_markdown " id="item5156" data-item-id="5156" data-item-type="ItemMarkdown"><p>Wixの場合とWordPressの場合でもさほど変わらないので多くのケースで予算で選ぶべきではないと思います。</p>
+
+<p>差があってもせいぜい数百円~数千円なのでそれよりは使える機能や用途の観点から考えていくことが大切です。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item5157" data-item-id="5157" data-item-type="ItemHeading"><h3 class="item-body" id="heading44">用途別で見ると?</h3></div>
+        
+        <div class="article-item item_markdown " id="item5158" data-item-id="5158" data-item-type="ItemMarkdown"><p>通常のコーポレートサイトや宣伝ページなどを作る場合はWixとWordPressどちらでも良いと思います。</p>
+
+<p>ただWixの方がより簡単にデザイン性の高いサイトを作れると思いますし、クライアントがその後自分で運用保守をしたいニーズなどがある場合は、Wixをおすすめするのはありだと思います。</p>
+
+<p>ブログ・メディアを作る場合はWixではなくWordPressを選択した方が良いです。理由としてはWordPressの方がより大量に記事を書く必要があるブログやメディアに最適化されてシステムが組まれています。サイトスピードも早く記事のエディタ機能も充実しています。</p>
+</div>
+        
+        <div class="article-item item_html " id="item5159" data-item-id="5159" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">
+    <p>WixとWordPress双方深く学んでいく中でよりどう使い分ければ良いのか見えてきます。</p>
+    <p>正解はないので、その状況に応じて判断してツール選定を行なっていくことが重要です。</p>
+    <p>大抵以下のような観点から要素を洗い出し検討していくことが多いです。</p>
+    <ul>
+        <li>クライアントの目的</li>
+        <li>どの程度カスタマイズしたいか</li>
+        <li>用件</li>
+        <li>予算</li>
+        <li>スケジュール</li>
+        <li>運用保守は外注か内製か</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item5160" data-item-id="5160" data-item-type="ItemHeading"><h2 class="item-body" id="heading45">TIPS：ヘルプページから問い合わせする方法</h2></div>
+        
+        <div class="article-item item_markdown " id="item40261" data-item-id="40261" data-item-type="ItemMarkdown"><h4 id="heading46">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item5161" data-item-id="5161" data-item-type="ItemHeading"><h3 class="item-body" id="heading47">必要になるシーン</h3></div>
+        
+        <div class="article-item item_rich_text " id="item5162" data-item-id="5162" data-item-type="ItemRichText"><div class="item-body-hbr">WixなどのIT系のツールでは、基本的にツール提供会社がヘルプページを用意しており、また問い合わせへの対応を行っています。<br>
+<br>
+自分で試行錯誤しGoogleで検索しWixのヘルプページを熟読しても分からないときは、サポートチャットでお問い合わせするのがおすすめです。<br>
+<br>
+実際にWixカスタマーサポート担当者が対応してくれます。<br>
+<br>
+Wixも常に機能のアップデートがありますし、機能数は膨大です。<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">クライアントからWixでこの機能が実現可能か？と問われた場合などに自分でしっかりリサーチし試行錯誤した上で、カスタマーサポートに聞いてみるのが良いでしょう。</span></span></div></div>
+        
+        <div class="article-item item_heading " id="item5163" data-item-id="5163" data-item-type="ItemHeading"><h3 class="item-body" id="heading48">お問い合わせを行う方法</h3></div>
+        
+        <div class="article-item item_markdown " id="item5165" data-item-id="5165" data-item-type="ItemMarkdown"><p>上記URLに直接アクセスする以外の方法としては例えば下記のようなヘルプページの下に、お役に立ちましたか？のような表示があります。</p>
+
+<p>はい / いいえでいいえ &gt; 「こちらをクリック」を選択することでサポートチャットページに飛び、お問合せすることができます。</p>
+</div>
+        
+        <div class="article-item item_link " id="item5164" data-item-id="5164" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SXwKv&amp;item_id=5164" rel="nofollow noopener noreferrer" target="_blank">Contact Wix</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Contact Wix" data-reference="https://www.wix.com/support-chatbot" src="../../_assets/7d7fde7a64.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">以下のWixのチャットボットで問い合わせを行うことができます。</div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item5166" data-item-id="5166" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/005/166/medium/d5948fac-bef6-43e3-8893-5ddb6530f094.png?1721381723" title=""><img class="img-responsive item-image" alt=" (5166)" data-reference="https://support.wix.com/ja/article/%E3%82%B5%E3%82%A4%E3%83%88%E4%BC%9A%E5%93%A1%EF%BC%9A%E4%BC%9A%E5%93%A1%E3%82%A8%E3%83%AA%E3%82%A2%E3%82%92%E8%BF%BD%E5%8A%A0%E3%83%BB%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B" src="../../_assets/3e1c3ca6c9.webp" width="640" height="226"></a><h4 id="heading49"></h4></div><div class="cite">via <cite class="item-source"><a title="" target="_blank" rel="nofollow" href="https://support.wix.com/ja/article/%E3%82%B5%E3%82%A4%E3%83%88%E4%BC%9A%E5%93%A1%EF%BC%9A%E4%BC%9A%E5%93%A1%E3%82%A8%E3%83%AA%E3%82%A2%E3%82%92%E8%BF%BD%E5%8A%A0%E3%83%BB%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B">support.wix.com</a></cite></div></div>
+        
+        <div class="article-item item_heading " id="item48711" data-item-id="48711" data-item-type="ItemHeading"><h2 class="item-body" id="heading50">おわりに：アップデートを見つけたら</h2></div>
+        
+        <div class="article-item item_rich_text " id="item48712" data-item-id="48712" data-item-type="ItemRichText"><div class="item-body-hbr">運営としても、皆さんが常に最新の環境で学べるよう、Wixのアップデートに合わせた教材のメンテナンスを日々行っています。<br>
+ただ、学習中にアップデートされている箇所があった際は、些細なことでもぜひ以下のフォームでご報告お願いいたします🙇<br>
+あわせて、教材の分かりづらい箇所や改善してほしい点など、皆さんの率直なご意見もぜひお聞かせください！</div></div>
+        
+        <div class="article-item item_link " id="item48713" data-item-id="48713" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=SXwKv&amp;item_id=48713" rel="nofollow noopener noreferrer" target="_blank">Wix教材報告フォーム</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Wix教材報告フォーム" data-reference="https://docs.google.com/forms/d/e/1FAIpQLSc6MiUBpk_UCOd1lq-MxhDPMzCBLTT7fphZduSJrvV50NfRMA/viewform?usp=publish-editor" src="../../_assets/1135d1b95c.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">アップデート箇所の報告/教材へのご意見を募集しております！</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item48714" data-item-id="48714" data-item-type="ItemRichText"><div class="item-body-hbr">※質問フォームではありません。(質問はコーチにお願いいたします)<br>
+　送信専用となっているので、UI変更などのアップデートを見つけた時のみの使用をお願いいたします。<br>
+　各章(初級、中級、上級)のページからでも送信できます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item48715" data-item-id="48715" data-item-type="ItemRichText"><div class="item-body-hbr"><br>
+皆さんの学習を少しでもスムーズにする、他の学習中の受講生を助けるためにも、ぜひよろしくお願いいたします！<br>
+フォームの内容を確認し、適宜教材を修正させていただきます！</div></div>
+        
+        <div class="article-item item_html " id="item5167" data-item-id="5167" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">プロからの一言</div>
+    </div>
+    <div class="content-area">
+        <p>WEBスキルの学習に終わりはありません。業界は移り変わり流行のツールもどんどん変化していきます。</p>
+        <p class="decoration-01 decoration-02">そういった業界で大切なのは学習能力です。</p>
+        <p>Wix学習でツール学習の要領を掴みましょう。</p>
+        <p>Wix以外のツールでも同じように公式のヘルプページを参照したり問い合わせを駆使しながら使えるようになっていきましょう。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item42987" data-item-id="42987" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-end;">
+  <a href="https://learn.webcoach.jp/web-design/AhzBP" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">Wix -基礎編-</a><ul><li><a href="#heading1" class="tocLink">教材全体の目安学習時間:600分</a></li><li><a href="#heading2" class="tocLink">この教材の学習時間:60分</a></li><li><a href="#heading3" class="tocLink">目安の学習時間:5分</a></li></ul></li><li><a href="#heading4" class="tocLink">0. できるようになること</a><ul><li><a href="#heading5" class="tocLink">実際にWixで作成されたHPをご紹介!!</a></li></ul></li><li><a href="#heading6" class="tocLink">1. Wixでの学習のポイント</a><ul><li><a href="#heading7" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading8" class="tocLink">■ Wixは頻繁にアップデートされる</a><ul><li><a href="#heading9" class="tocLink">アップデートされても学習を続けるためには</a></li></ul></li></ul></li><li><a href="#heading10" class="tocLink">2. Wix導入編</a><ul><li><a href="#heading11" class="tocLink">目安の学習時間:15分</a></li></ul><ul><li><a href="#heading12" class="tocLink">■ Wixにログインする</a><ul><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">■ はじめに - 網羅的に全ての機能を知るなら Wix  ヘルプセンターがおすすめ</a><ul><li><a href="#heading16" class="tocLink"></a></li></ul></li><li><a href="#heading17" class="tocLink">■ Wix マイサイトページとは</a><ul><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">■ Wixのダッシュボードの説明</a><ul><li><a href="#heading20" class="tocLink"></a></li></ul></li><li><a href="#heading21" class="tocLink">■ Wixの基本課金体系</a></li></ul></li><li><a href="#heading22" class="tocLink">3. Wix機能紹介</a><ul><li><a href="#heading23" class="tocLink">目安の学習時間:25分</a></li></ul><ul><li><a href="#heading24" class="tocLink">■ 目的の機能が見つからない時の3つの手順</a></li><li><a href="#heading25" class="tocLink">■ Wix エディタ</a></li><li><a href="#heading26" class="tocLink">■  AI サイト生成機能</a></li><li><a href="#heading27" class="tocLink">■ Velo by Wix</a></li><li><a href="#heading28" class="tocLink">■  Wix ストア</a></li><li><a href="#heading29" class="tocLink">■  Wix ブッキング</a></li><li><a href="#heading30" class="tocLink">■ Wix ブログ</a></li><li><a href="#heading31" class="tocLink">■ Wix ミュージック</a></li><li><a href="#heading32" class="tocLink">■ Wix フォトグラフィ</a></li><li><a href="#heading33" class="tocLink">■ Wix ビデオ</a></li><li><a href="#heading34" class="tocLink">■ Wix イベント</a></li><li><a href="#heading35" class="tocLink">■ Wix  レストラン</a></li><li><a href="#heading36" class="tocLink">■ マーケティングツール</a></li></ul></li><li><a href="#heading37" class="tocLink">TIPS：5分ルールと質問のしかた</a><ul><li><a href="#heading38" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading39" class="tocLink">■ 5分ルール</a></li><li><a href="#heading40" class="tocLink">■ コーチへの自分で試した内容の報告</a></li></ul></li><li><a href="#heading41" class="tocLink">TIPS：WixとWordPressの使い分け</a><ul><li><a href="#heading42" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading43" class="tocLink">予算という観点から</a></li><li><a href="#heading44" class="tocLink">用途別で見ると?</a></li></ul></li><li><a href="#heading45" class="tocLink">TIPS：ヘルプページから問い合わせする方法</a><ul><li><a href="#heading46" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading47" class="tocLink">必要になるシーン</a></li><li><a href="#heading48" class="tocLink">お問い合わせを行う方法</a><ul><li><a href="#heading49" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading50" class="tocLink">おわりに：アップデートを見つけたら</a></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/AhzBP" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

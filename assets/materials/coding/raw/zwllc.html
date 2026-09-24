@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="QYJ16Gf/j8aqWiT06Rvr3w==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="801" data-domain="learn.webcoach.jp" data-url="/coding/ZwLLC" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Shopify-基礎編-【1章 Shopifyとは？】 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/coding/ZwLLC">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Shopify-基礎編-【1章 Shopifyとは？】 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/801/medium/34833d82-f841-4a83-a2d9-0cb624d7359b.png?1743579170">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Shopify-基礎編-【1章 Shopifyとは？】">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/coding/ZwLLC">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/801/large/34833d82-f841-4a83-a2d9-0cb624d7359b.png?1743579170">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/coding/ZwLLC"
+    },
+    "headline": "Shopify-基礎編-【1章 Shopifyとは？】",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/articles/images/000/000/801/medium/34833d82-f841-4a83-a2d9-0cb624d7359b.png?1743579170",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-04-02T16:38:07+09:00",
+    "dateModified": "2025-09-25T09:31:40+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "n_ono"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="Cj3nNC5II90LtbGQdEAV2x5wGZGw5DXxuYi5Cb194Vtnl1NtDF_hKpP7gXy7jtPjEAiuzzVYwVOO-wi0VQ5D8A" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEB制作</div>
+
+          <div class="fw-bold h2">Shopify-基礎編-【1章 Shopifyとは？】</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25871" data-item-id="25871" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="https://learn.webcoach.jp/coding/EC%E3%82%B5%E3%82%A4%E3%83%88%E6%A7%8B%E7%AF%89/buT9e" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="metsK" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item19085" data-item-id="19085" data-item-type="ItemHeading"><h2 class="item-body">第1章：Shopify とは？</h2></div>
+        
+        <div class="article-item item_markdown " id="item39830" data-item-id="39830" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item9283" data-item-id="9283" data-item-type="ItemText"><div class="item-body-hbr">この章では、Shopify（ショッピファイ）とは何か、どのようなメリットがあるのか、毎月いくらかかるのかを学習します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item9284" data-item-id="9284" data-item-type="ItemRichText"><div class="item-body-hbr">これらを理解することで、ECサイトを構築したいクライアントにShopifyの特徴を説明できるようになります。</div></div>
+        
+        <div class="article-item item_image " id="item9285" data-item-id="9285" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/285/medium/db43ea8f-3d62-4803-96ae-187c8f3ff904.png?1743147058" title=""><img class="img-responsive item-image" alt=" (9285)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/285/medium/db43ea8f-3d62-4803-96ae-187c8f3ff904.png?1743147058" width="640" height="224" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item17096" data-item-id="17096" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item19086" data-item-id="19086" data-item-type="ItemHeading"><h3 class="item-body">【1-1】 ECサイトとは</h3></div>
+        
+        <div class="article-item item_markdown " id="item39831" data-item-id="39831" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item17095" data-item-id="17095" data-item-type="ItemHtml"><div class="item-body"><!-- ECサイトとは〜の説明リスト -->
+<div class="notion-selectable notion-bulleted_list-block">
+  <div style="display: flex; align-items: flex-start;">
+    <div style="width: 24px; display: flex; justify-content: center;">•</div>
+    <div style="flex: 1;">
+      <div>ECサイトとは、電子商取引（Electronic Commerce）の略で、<strong style="color: #b06d39;">インターネット上で商品やサービスを販売・購入するためのウェブサイト</strong>のことを指します。</div>
+    </div>
+  </div>
+</div>
+
+<div class="notion-selectable notion-bulleted_list-block">
+  <div style="display: flex; align-items: flex-start;">
+    <div style="width: 24px; display: flex; justify-content: center;">•</div>
+    <div style="flex: 1;">
+      <div>ECサイトを通じて、消費者は自宅から商品を検索・購入し、クレジットカードなどの支払い方法を使って<strong style="color: #b06d39;">オンライン決済を行うことができます</strong>。</div>
+    </div>
+  </div>
+</div>
+
+<div class="notion-selectable notion-bulleted_list-block">
+  <div style="display: flex; align-items: flex-start;">
+    <div style="width: 24px; display: flex; justify-content: center;">•</div>
+    <div style="flex: 1;">
+      <div>ECサイトを運営することで、物理的な店舗を持たなくても世界中の顧客にアプローチできるため、ビジネスの成長を図ることができます。</div>
+    </div>
+  </div>
+</div>
+
+<div class="notion-selectable notion-bulleted_list-block">
+  <div style="display: flex; align-items: flex-start;">
+    <div style="width: 24px; display: flex; justify-content: center;">•</div>
+    <div style="flex: 1;">
+      <div>また、顧客データの分析を通じて、マーケティング施策の改善やパーソナライズされたサービスの提供も可能です。</div>
+    </div>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item38200" data-item-id="38200" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">代表的なECサイトの種類<br></span>
+  <ul>
+    <li>
+      <span class="decoration-01">BtoC （Business to Consumer）</span>：企業が消費者に直接商品を販売するサイト。<br>
+      例えば、Amazonや楽天市場がこれに該当します。<br>
+      ShopifyのECサイト構築・運用案件では、このBtoC案件が多い印象です。
+    </li>
+    <li>
+      <span class="decoration-01">BtoB （Business to Business）</span>：企業間で商品やサービスを売買するサイト。<br>
+      例えば、業務用資材の取引を行うサイトなどがあります。
+    </li>
+    <li>
+      <span class="decoration-01">CtoC （Consumer to Consumer）</span>：消費者同士が商品を売買するサイト。<br>
+      例えば、メルカリやヤフオクなどです。
+    </li>
+  </ul>
+</div>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item19088" data-item-id="19088" data-item-type="ItemMarkdown"><h4 id="section">モール型と単店舗型の違い</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item38201" data-item-id="38201" data-item-type="ItemRichText"><div class="item-body-hbr">ECサイトには複数のEC店舗が一つのサイトに集合する<span class="decoration-02">モール型</span>と、企業が独自のドメインを使い立ち上げる<span class="decoration-02">単店舗型</span>があります。</div></div>
+        
+        <div class="article-item item_html " id="item38202" data-item-id="38202" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <tbody>
+    <thead>
+      <tr>
+        <th scope="col">
+          <div>
+            <div>項目</div>
+          </div>
+        </th>
+        <th scope="col">
+          <div>
+            <div>モール型ECサイト</div>
+          </div>
+        </th>
+        <th scope="col">
+          <div>
+            <div>単店舗型ECサイト</div>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>メリット</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>
+            ・既存の集客力を活用できる<br>
+            ・初期投資を抑えられる<br>
+            ・信頼性が高い
+          </div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>
+            ・デザインを自由に変更可能<br>
+            ・手数料がかからず高利益率<br>
+            ・顧客データを直接管理可能
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>デメリット</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>
+            ・売上手数料が発生<br>
+            ・価格競争に巻き込まれやすい<br>
+            ・デザインの自由度が限定的
+          </div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>
+            ・集客を自力で実施<br>
+            ・初期費用が必要<br>
+            ・セキュリティ対策が必要
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>向いているケース</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>
+            ・新規参入で早期の売上を目指す<br>
+            ・技術的なリソースが限られている<br>
+            ・ブランド構築より売上を重視する
+          </div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>
+            ・オリジナリティを重視する<br>
+            ・長期的なブランド構築を目指す<br>
+            ・技術力・資金力が十分にある
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item38203" data-item-id="38203" data-item-type="ItemRichText"><div class="item-body-hbr">本教材では、単店舗型ECサイトの構築を学んでいきます。<br>
+これにより、ECサイトの基本的な仕組みを理解し、自由度の高いオリジナルのオンラインストアを作成するスキルを身につけることができます。</div></div>
+        
+        <div class="article-item item_heading " id="item19087" data-item-id="19087" data-item-type="ItemHeading"><h3 class="item-body">【1-2】Shopifyの概要</h3></div>
+        
+        <div class="article-item item_markdown " id="item39832" data-item-id="39832" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item19090" data-item-id="19090" data-item-type="ItemMarkdown"><h4 id="shopify-">Shopify を選ぶメリット</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item38204" data-item-id="38204" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1. 低コストでスピーディーなストア開設が可能</span><br>
+Shopifyは、月額3,650円から利用可能で、初期費用も不要です。<br>
+また、豊富なテンプレートやアプリを活用することで、短期間で高機能なECサイトを構築することができます。<br>
+決済手数料も約3.5%と、他のECプラットフォームと比較して低コストのため、月売上が10万円以上ある場合には、クライアントにおすすめできます。<br>
+</div></div>
+        
+        <div class="article-item item_html " id="item9897" data-item-id="9897" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38205" data-item-id="38205" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2. 直感的な操作性で、クライアント自身で運用しやすいシステム</span><br>
+Shopifyの管理画面は、直感的で分かりやすいデザインになっています。<br>
+<span class="decoration-02">専門知識不要</span>で、簡単に操作することができます。また、日本語のサポートも充実しているので、安心して利用することができます。</div></div>
+        
+        <div class="article-item item_html " id="item38209" data-item-id="38209" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38206" data-item-id="38206" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3. プロがデザインした美しいテーマが豊富に用意されている</span><br>
+Shopifyには、プロがデザインした美しいテーマが豊富に用意されています。<br>
+業種やイメージに合ったテーマを選ぶことで、<span class="decoration-02">簡単に高品質</span>なECサイトを構築することができます。<br>
+さらに、コーディングによるカスタマイズも可能なため、他のプラットフォームよりも<span class="decoration-02">デザインの自由度が高い</span>点で、ブランドイメージを守ることができます。</div></div>
+        
+        <div class="article-item item_html " id="item9902" data-item-id="9902" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38207" data-item-id="38207" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">4. セキュリティ対策も万全で、安心して利用可能</span><br>
+Shopifyは、<span class="decoration-02">PCI DSS（クレジットカード業界の情報セキュリティ基準）</span>を満たしており、安心して利用することができます。<br>
+近年増加傾向にあるサイバー攻撃による顧客情報の流出を懸念されるクライアントには、クレジットカード業界が満たす最高基準のセキュリティである、とおすすめできるポイントです。</div></div>
+        
+        <div class="article-item item_html " id="item9904" data-item-id="9904" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38208" data-item-id="38208" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">5. アプリを導入することで機能拡張を容易にできる</span><br>
+Shopifyには、8,000種類以上のアプリが用意されています。<br>
+顧客管理、在庫管理、マーケティングなど、ECサイト運営に必要な機能を網羅したアプリが揃っているため、様々な機能を追加することができます。</div></div>
+        
+        <div class="article-item item_html " id="item9906" data-item-id="9906" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item19091" data-item-id="19091" data-item-type="ItemMarkdown"><h4 id="shopify-vs-ec">Shopify vs 他のECプラットフォーム比較表</h4>
+</div>
+        
+        <div class="article-item item_html " id="item9908" data-item-id="9908" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item38210" data-item-id="38210" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <tbody>
+    <thead>
+      <tr>
+        <th scope="col">
+          <div><div>項目</div></div>
+        </th>
+        <th scope="col">
+          <div><div>Shopify</div></div>
+        </th>
+        <th scope="col">
+          <div><div>BASE</div></div>
+        </th>
+        <th scope="col">
+          <div><div>STORES</div></div>
+        </th>
+        <th scope="col">
+          <div><div>Wix</div></div>
+        </th>
+        <th scope="col">
+          <div><div>WordPress</div></div>
+        </th>
+      </tr>
+    </thead>
+
+    <tr>
+      <th scope="row"><div><div>月額料金</div></div></th>
+      <td><div><div>3,650円〜</div></div></td>
+      <td><div><div>0円〜</div></div></td>
+      <td><div><div>0円〜</div></div></td>
+      <td><div><div>1,350円〜</div></div></td>
+      <td><div><div>0円〜</div></div></td>
+    </tr>
+
+    <tr>
+      <th scope="row"><div><div>初期費用</div></div></th>
+      <td><div><div>なし</div></div></td>
+      <td><div><div>なし</div></div></td>
+      <td><div><div>なし</div></div></td>
+      <td><div><div>なし</div></div></td>
+      <td><div><div>なし</div></div></td>
+    </tr>
+
+    <tr>
+      <th scope="row"><div><div>テンプレート</div></div></th>
+      <td><div><div>70種類以上</div></div></td>
+      <td><div><div>60種類以上</div></div></td>
+      <td><div><div>100種類以上</div></div></td>
+      <td><div><div>800種類以上</div></div></td>
+      <td><div><div>数千種類以上</div></div></td>
+    </tr>
+
+    <tr>
+      <th scope="row"><div><div>アプリ</div></div></th>
+      <td><div><div>8,000種類以上</div></div></td>
+      <td><div><div>なし</div></div></td>
+      <td><div><div>なし</div></div></td>
+      <td><div><div>300種類以上</div></div></td>
+      <td><div><div>59,000種類以上</div></div></td>
+    </tr>
+
+    <tr>
+      <th scope="row"><div><div>決済手段</div></div></th>
+      <td><div><div>100種類以上</div></div></td>
+      <td><div><div>16種類</div></div></td>
+      <td><div><div>16種類</div></div></td>
+      <td><div><div>50種類以上</div></div></td>
+      <td><div><div>プラグインによる</div></div></td>
+    </tr>
+
+    <tr>
+      <th scope="row"><div><div>決済手数料<br>※プランにより変動</div></div></th>
+      <td><div><div>-3.55%</div></div></td>
+      <td><div><div>-6.6%+40円</div></div></td>
+      <td><div><div>-5.5%</div></div></td>
+      <td><div><div>-3.5%</div></div></td>
+      <td><div><div>プラグインによる</div></div></td>
+    </tr>
+
+    <tr>
+      <th scope="row"><div><div>送料設定</div></div></th>
+      <td><div><div>詳細な設定が可能</div></div></td>
+      <td><div><div>シンプルな設定</div></div></td>
+      <td><div><div>シンプルな設定</div></div></td>
+      <td><div><div>詳細な設定が可能</div></div></td>
+      <td><div><div>詳細な設定が可能</div></div></td>
+    </tr>
+
+    <tr>
+      <th scope="row"><div><div>商品管理</div></div></th>
+      <td><div><div>無制限</div></div></td>
+      <td><div><div>5,000商品まで</div></div></td>
+      <td><div><div>3,000商品まで</div></div></td>
+      <td><div><div>50,000商品まで</div></div></td>
+      <td><div><div>無制限</div></div></td>
+    </tr>
+
+    <tr>
+      <th scope="row"><div><div>売上分析</div></div></th>
+      <td><div><div>詳細な分析機能</div></div></td>
+      <td><div><div>シンプルな分析機能</div></div></td>
+      <td><div><div>シンプルな分析機能</div></div></td>
+      <td><div><div>詳細な分析機能</div></div></td>
+      <td><div><div>プラグインによる</div></div></td>
+    </tr>
+
+    <tr>
+      <th scope="row"><div><div>カスタマーサポート</div></div></th>
+      <td><div><div>24時間365日</div></div></td>
+      <td><div><div>平日 10時〜18時</div></div></td>
+      <td><div><div>平日 10時〜17時</div></div></td>
+      <td><div><div>24時間365日</div></div></td>
+      <td><div><div>コミュニティサポート</div></div></td>
+    </tr>
+
+    <tr>
+      <th scope="row"><div><div>セキュリティ</div></div></th>
+      <td><div><div>PCI DSS準拠</div></div></td>
+      <td><div><div>SSL対応</div></div></td>
+      <td><div><div>SSL対応</div></div></td>
+      <td><div><div>SSL対応</div></div></td>
+      <td><div><div>プラグインによる</div></div></td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item38211" data-item-id="38211" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">出典</span></div></div>
+        
+        <div class="article-item item_link " id="item38212" data-item-id="38212" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ZwLLC&amp;item_id=38212" rel="nofollow noopener noreferrer" target="_blank">Shopifyの料金プラン – 各プランの詳細情報と比較 - 無料体験 - Shopify 日本</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Shopifyの料金プラン – 各プランの詳細情報と比較 - 無料体験 - Shopify 日本" data-reference="https://www.shopify.com/jp/pricing" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/038/212/thumb/b7831f31-3d38-4fbc-8361-cd8c11d5993c.png?1755655126" width="75" height="75" /></div><div class="media-body"><div class="item-body">まずはストアを開設しましょう。プランはあとから選べます。Shopifyを無料で3日間お試しください。クレジットカードは必要ありません。</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item38213" data-item-id="38213" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ZwLLC&amp;item_id=38213" rel="nofollow noopener noreferrer" target="_blank">BASEの料金プラン・手数料 - 無料で簡単なネットショップ作成サービス BASE</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="BASEの料金プラン・手数料 - 無料で簡単なネットショップ作成サービス BASE" data-reference="https://thebase.com/price/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/038/213/thumb/bee39726-a3f4-44e3-bf0a-802f6c97eb65.png?1755655153" width="75" height="75" /></div><div class="media-body"><div class="item-body">BASEの運営にかかる費用を解説。料金プランは売上規模で選べる「スタンダード」と「グロース」の2種類。2つの違いは手数料だけ、すべての機能をどちらのプランでも利用できます。グロースプランは業界最安水準。他社との料金比較で、お得さを実感してください。</div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item38214" data-item-id="38214" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ZwLLC&amp;item_id=38214" rel="nofollow noopener noreferrer" target="_blank">利用料金・手数料 | STORES ネットショップ</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="利用料金・手数料 | STORES ネットショップ" data-reference="https://stores.fun/ec/pricing" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/038/214/thumb/9854195e-113d-4d48-9564-004286b88172.jpg?1755655173" width="75" height="75" /></div><div class="media-body"><div class="item-body">STORES ネットショップ には、ECサイトが無料で始められる“フリープラン”と、決済手数料が安くなる“ベーシックプラン”をご用意しています。新規開業やショップの移転など、自店舗の状況に合わせてお選びいただけます。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item9912" data-item-id="9912" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38215" data-item-id="38215" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Shopifyがおすすめな方</span><br>
+スピーディーに高機能なECサイトを構築したい方<br>
+専門知識がなくても簡単に操作できるシステムを求めている方<br>
+デザイン性の高いECサイトを作りたい方<br>
+安全にECサイト運営をしたい方<br>
+将来的に機能拡張を考えている方</div></div>
+        
+        <div class="article-item item_html " id="item9914" data-item-id="9914" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38216" data-item-id="38216" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">その他のECプラットフォーム</span><br>
+BASE: 初期費用や月額料金が無料で始められるので、お試しでECサイトを運営したい方におすすめです。<br>
+ただし、会員登録機能などの機能面に制限があります。<br>
+STORES: デザイン性の高いテンプレートが豊富なので、こだわりのECサイトを作りたい方におすすめです。<br>
+ただし、商品数や売上分析機能などの制限があります。</div></div>
+        
+        <div class="article-item item_html " id="item9916" data-item-id="9916" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38217" data-item-id="38217" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">自分に合ったECプラットフォームを選ぶ</span><br>
+ECプラットフォームを選ぶ際には、予算、機能、デザイン、サポート体制などを比較検討することが重要です。<br>
+それぞれのプラットフォームの無料トライアルなどを活用して、実際に操作してみるのもおすすめです。</div></div>
+        
+        <div class="article-item item_html " id="item9918" data-item-id="9918" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38218" data-item-id="38218" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">参考情報</span></div></div>
+        
+        <div class="article-item item_link " id="item38219" data-item-id="38219" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ZwLLC&amp;item_id=38219" rel="nofollow noopener noreferrer" target="_blank">【2024年版】Shopify・BASE・STORESの比較｜特徴や費用、機能の違いを解説｜</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="【2024年版】Shopify・BASE・STORESの比較｜特徴や費用、機能の違いを解説｜" data-reference="https://ja.komoju.com/blog/shopify/shopify-comparison/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/038/219/thumb/f07e5f69-6757-46df-bcb4-5574024f3f9c.jpg?1755655582" width="75" height="75" /></div><div class="media-body"><div class="item-body">ECサイトが構築できるShopify・BASE・STORESの特徴と違いを、比較表でわかりやすく解説します。費用や決済方法、ECサイト構築機能、海外向け販売機能などを軸に、それぞれのメリット・デメリットを洗い出し、おすすめのケースを紹介します。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item19092" data-item-id="19092" data-item-type="ItemMarkdown"><h4 id="shopify">Shopifyの料金プラン</h4>
+</div>
+        
+        <div class="article-item item_html " id="item9919" data-item-id="9919" data-item-type="ItemHtml"><div class="item-body">Shopifyには、下記の4つの料金プランがあります。（2024年7月時点）</div></div>
+        
+        <div class="article-item item_text " id="item9924" data-item-id="9924" data-item-type="ItemText"><div class="item-body-hbr">★料金プラン<br />・ベーシックプラン: 月額3,650円<br />・スタンダードプラン:月額10,100円<br />・プレミアムプラン:月額44,000円<br />・Plusプラン: 月額2,300ドル<br />    <br />    ※年払い（25%OFF）</div></div>
+        
+        <div class="article-item item_text " id="item9925" data-item-id="9925" data-item-type="ItemText"><div class="item-body-hbr">★特徴<br />・クライアント規模や予算に合わせたプラン選定が可能です。<br />・参考値として、月売上100万円以下であれば、ベーシックから始めることがおすすめです。<br />・まずは、無料トライアルで、実際の操作感を体験してみましょう。</div></div>
+        
+        <div class="article-item item_image " id="item9922" data-item-id="9922" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/922/medium/5ca49792-007a-4122-9515-d64bf3a4b0d3.png?1743575099" title="Shopifyの料金プラン"><img class="img-responsive item-image" alt="Shopifyの料金プラン" data-reference="https://www.shopify.com/jp/pricing" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/922/medium/5ca49792-007a-4122-9515-d64bf3a4b0d3.png?1743575099" width="640" height="375" /></a><h4>Shopifyの料金プラン</h4></div><div class="cite">via <cite class="item-source"><a title="Shopifyの料金プラン" target="_blank" rel="nofollow" href="https://www.shopify.com/jp/pricing">www.shopify.com</a></cite></div></div>
+        
+        <div class="article-item item_html " id="item9921" data-item-id="9921" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item25872" data-item-id="25872" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="https://learn.webcoach.jp/coding/EC%E3%82%B5%E3%82%A4%E3%83%88%E6%A7%8B%E7%AF%89/buT9e" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="metsK" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="QYJ16Gf/j8aqWiT06Rvr3w==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

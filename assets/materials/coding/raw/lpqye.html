@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="i47mdKKOiGig25T5JOWJxA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="288" data-domain="learn.webcoach.jp" data-url="/coding/%E7%92%B0%E5%A2%83%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97/LpqYE" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>VSCodeの使い方 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/coding/%E7%92%B0%E5%A2%83%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97/LpqYE">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="VSCodeの使い方 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/347/medium/1350aecd-5f0a-490d-989a-822b97fc8e0e.png?1760098946">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="VSCodeの使い方">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/coding/%E7%92%B0%E5%A2%83%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97/LpqYE">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/347/large/1350aecd-5f0a-490d-989a-822b97fc8e0e.png?1760098946">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/coding/%E7%92%B0%E5%A2%83%E3%82%BB%E3%83%83%E3%83%88%E3%82%A2%E3%83%83%E3%83%97/LpqYE"
+    },
+    "headline": "VSCodeの使い方",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/040/347/medium/1350aecd-5f0a-490d-989a-822b97fc8e0e.png?1760098946",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2024-06-30T20:51:21+09:00",
+    "dateModified": "2025-10-10T21:26:03+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "s_demizu"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="N3csaTHuvEEjxVSr_yMdf8wTw93GayV__l6uqAokM1hourui4Sp7d_Aib-3s_7Jj1R5_iaBCJfNW3tb7lmTxqA" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>環境セットアップ</div>
+
+          <div class="fw-bold h2">VSCodeの使い方</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_markdown " id="item39175" data-item-id="39175" data-item-type="ItemMarkdown"><h4 id="section">この教材の目安学習時間：110分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item4763" data-item-id="4763" data-item-type="ItemHeading"><h2 class="item-body">0. はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item39174" data-item-id="39174" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：45分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item40327" data-item-id="40327" data-item-type="ItemHeading"><h3 class="item-body">VSCodeとは</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40328" data-item-id="40328" data-item-type="ItemRichText"><div class="item-body-hbr">本格的なWebサイト制作に入る前に、まずは開発の拠点となるVisual Studio Code（ビジュアル・スタジオ・コード、以下VSCode）の準備をしましょう。</div></div>
+        
+        <div class="article-item item_html " id="item40329" data-item-id="40329" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+ <span class="bold"><strong>重要語句：VSCodeとは</strong><br></span>
+ <div class="content-area">
+  <ul><li>Microsoft社が開発・提供している、無料で非常に人気の高いテキストエディタです。</li> <li>プロのWeb開発現場で広く利用されており、軽量な動作と豊富な拡張機能による高いカスタマイズ性が特徴です。</li></ul>
+ </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item40330" data-item-id="40330" data-item-type="ItemRichText"><div class="item-body-hbr">この教材では、VSCodeをメインのエディタとして使用します。<br>
+コーディングの速度と正確性を高める機能が多数搭載されているため、今のうちに基本的な使い方に慣れておきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item40331" data-item-id="40331" data-item-type="ItemHeading"><h3 class="item-body">VSCodeのインストール</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40332" data-item-id="40332" data-item-type="ItemRichText"><div class="item-body-hbr">はじめに、自身のPCにVSCodeをインストールします。<br>
+お使いのOS（WindowsまたはMac）に応じて、以下の手順で進めてください。<br>
+<br>
+公式サイトにアクセスし、インストーラーをダウンロードします。<br>
+トップページに表示されているボタンから、自身のOSに合ったものをダウンロードしてください。</div></div>
+        
+        <div class="article-item item_html " id="item40333" data-item-id="40333" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<div class="card-with-icon check">
+ <span class="bold"><strong>操作手順：Windowsへのインストール</strong><br></span>
+ <div class="content-area">
+  <ol><li>ダウンロードしたインストーラー（.exeファイル）をダブルクリックして起動します。</li> <li>「使用許諾契約書の同意」画面で「同意する」にチェックを入れ、「次へ」をクリックします。</li> <li>「追加タスクの選択」画面では、特に「PATHへの追加（再起動後に使用可能）」にチェックが入っていることを確認してください。デスクトップにショートカットを作りたい場合は、ここでチェックを入れます。</li> <li>設定内容を確認し、「インストール」ボタンをクリックします。インストールが完了するまでしばらく待ちます。</li></ol>
+ </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item40334" data-item-id="40334" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+ <span class="bold"><strong>操作手順：Macへのインストール</strong><br></span>
+ <div class="content-area">
+  <ol><li>ダウンロードしたZipファイルをダブルクリックして解凍します。</li> <li>解凍後に現れる「Visual Studio Code.app」というアプリケーションを、Finderの「アプリケーション」フォルダにドラッグ＆ドロップします。</li> <li>LaunchpadにVSCodeのアイコンが表示されれば、インストールは完了です。</li></ol>
+ </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item40335" data-item-id="40335" data-item-type="ItemHeading"><h3 class="item-body">VSCodeの日本語化</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40336" data-item-id="40336" data-item-type="ItemRichText"><div class="item-body-hbr">インストール直後のVSCodeは、メニューなどがすべて英語で表示されています。<br>
+日本語化することで、より直感的に操作できるようになりますので、最初に設定しておきましょう。</div></div>
+        
+        <div class="article-item item_html " id="item40338" data-item-id="40338" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+ <span class="bold"><strong>操作手順</strong><br></span>
+ <div class="content-area">
+  <ol><li>VSCodeを起動し、左側のアクティビティバーにある「拡張機能（Extensions）」アイコンをクリックします。</li> <li>検索バーに「Japanese」と入力します。</li> <li>検索結果から「Japanese Language Pack for Visual Studio Code」を探し、「Install」ボタンをクリックします。</li> <li>インストール完了後に右下に表示される「Change Language and Restart」ボタンをクリックします。</li> <li>VSCodeが再起動し、メニューが日本語化されていることを確認できれば完了です。</li></ol>
+ </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item40337" data-item-id="40337" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+ <span class="bold"><strong>豆知識：拡張機能とは</strong><br></span>
+ <div class="content-area">
+  <ul><li>VSCodeの機能を拡張するための追加プログラムです。今回の日本語化のように、世界中の開発者が作った便利な機能を後から追加して、エディタを自分好みに強化できます。</li></ul>
+ </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item40344" data-item-id="40344" data-item-type="ItemHeading"><h3 class="item-body">VSCodeの日本語化</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40345" data-item-id="40345" data-item-type="ItemRichText"><div class="item-body-hbr">インストール直後のVSCodeは英語表示のため、拡張機能を使って日本語化します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item40346" data-item-id="40346" data-item-type="ItemRichText"><div class="item-body-hbr">1. VSCodeの左側のアクティビティバーから「拡張機能（Extensions）」アイコンをクリックする。<br>
+2. 検索バーに「Japanese Language Pack」と入力する。<br>
+3. 表示された同名の拡張機能の「Install」ボタンをクリックする。<br>
+4. インストール完了後、右下に表示される再起動を促すボタンをクリックする。<br>
+5. VSCodeが再起動し、メニュー表示が日本語に変わったことを確認する。</div></div>
+        
+        <div class="article-item item_image " id="item40347" data-item-id="40347" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/347/medium/1350aecd-5f0a-490d-989a-822b97fc8e0e.png?1760098946" title=""><img class="img-responsive item-image" alt=" (40347)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/347/medium/1350aecd-5f0a-490d-989a-822b97fc8e0e.png?1760098946" width="640" height="361" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item40339" data-item-id="40339" data-item-type="ItemHeading"><h3 class="item-body">画面構成の理解</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40340" data-item-id="40340" data-item-type="ItemRichText"><div class="item-body-hbr">SCodeの基本的な画面構成を把握しておきましょう。<br>
+主に5つのエリアに分かれています。<br>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item40343" data-item-id="40343" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">① アクティビティバー</span>：メイン機能の切り替え<br>
+<span class="decoration-01">② サイドバー</span>：ファイル一覧などを表示<br>
+<span class="decoration-01">③ エディタ</span>：コードを記述する場所<br>
+<span class="decoration-01">④ パネル</span>：エラー情報などを表示<br>
+<span class="decoration-01">⑤ ステータスバー</span>：ファイル情報などを表示</div></div>
+        
+        <div class="article-item item_image " id="item40342" data-item-id="40342" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/342/medium/5d68b4d3-7781-4cb0-a2e8-53b55737c53f.png?1760098353" title=""><img class="img-responsive item-image" alt=" (40342)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/040/342/medium/5d68b4d3-7781-4cb0-a2e8-53b55737c53f.png?1760098353" width="640" height="361" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item40350" data-item-id="40350" data-item-type="ItemHeading"><h3 class="item-body">フォルダの開き方とファイルの作り方</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40351" data-item-id="40351" data-item-type="ItemRichText"><div class="item-body-hbr">Web制作では、単体のファイルだけでなく、複数のファイル（HTML, CSS, 画像など）をフォルダ単位で管理するのが基本です。</div></div>
+        
+        <div class="article-item item_html " id="item40352" data-item-id="40352" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+ <span class="bold"><strong>操作手順：フォルダを開いてファイルを作成する</strong><br></span>
+ <div class="content-area">
+  <ol><li>アクティビティバーの一番上にある「エクスプローラー」アイコンをクリックします。</li> <li>サイドバーに表示される「フォルダーを開く」ボタンをクリックし、作業用のフォルダを選択します。</li> <li>サイドバーに開いたフォルダ名が表示されます。フォルダ名にカーソルを合わせると表示される、ファイルのアイコン（新規ファイル）をクリックします。</li> <li>ファイル名（例：<code>index.html</code>）を入力してEnterキーを押すと、ファイルが作成され、エディタに表示されます。</li></ol>
+ </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item40348" data-item-id="40348" data-item-type="ItemHeading"><h3 class="item-body">知っておきたい便利機能</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40349" data-item-id="40349" data-item-type="ItemRichText"><div class="item-body-hbr">VSCodeにはコーディングを助ける便利な機能が標準で備わっています。<br>
+ここで紹介する機能は、今後の学習で自然と使う場面が出てきますので、「こんな機能がある」ということを覚えておきましょう。</div></div>
+        
+        <div class="article-item item_html " id="item40353" data-item-id="40353" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+ <tbody>
+  <thead>
+   <tr>
+    <th scope="col">
+     <div>
+      <div>機能名</div>
+     </div>
+    </th>
+    <th scope="col">
+     <div>
+      <div>概要</div>
+     </div>
+    </th>
+   </tr>
+  </thead>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>インテリセンス</div>
+    </div>
+   </th>
+   <td>
+    <div>
+     <div>コードを途中まで入力すると、候補となるコードを予測して表示してくれる賢い入力補完機能。</div>
+    </div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>Emmet</div>
+    </div>
+   </th>
+   <td>
+    <div>
+     <div>短い省略記法でHTMLやCSSを素早く記述できる機能。後の章で詳しく学びます。</div>
+    </div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>マルチカーソル</div>
+    </div>
+   </th>
+   <td>
+    <div>
+     <div>複数の場所に同時にカーソルを置き、一括で編集できる機能。同じ単語の修正などに便利です。</div>
+    </div>
+   </td>
+  </tr>
+ </tbody>
+</table></div></div>
+        
+        <div class="article-item item_rich_text " id="item40354" data-item-id="40354" data-item-type="ItemRichText"><div class="item-body-hbr">これらの機能を使いこなすことで、作業の速度と正確性が格段に向上します。<br>
+まずは「こんな機能があるんだ」ということを覚えておきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item4766" data-item-id="4766" data-item-type="ItemHeading"><h2 class="item-body">1. ファイル・フォルダ管理について</h2></div>
+        
+        <div class="article-item item_markdown " id="item39170" data-item-id="39170" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：5分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item4767" data-item-id="4767" data-item-type="ItemRichText"><div class="item-body-hbr">自身のPCのデスクトップ（Desktop）に「programming」という名前のフォルダ（別名ディレクトリ）を作成し、その中で全てのフォルダ・ファイルを作成するようにしましょう。<br>
+<br>
+そうするとファイルを見失わずに整理できて良いと思います。</div></div>
+        
+        <div class="article-item item_heading " id="item4768" data-item-id="4768" data-item-type="ItemHeading"><h2 class="item-body">2. codeコマンドで簡単にVSCodeでフォルダを開く方法</h2></div>
+        
+        <div class="article-item item_markdown " id="item39171" data-item-id="39171" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item4769" data-item-id="4769" data-item-type="ItemRichText"><div class="item-body-hbr">下の記事の通りに実行すると、ターミナルで「code」コマンドを用いて、好きなディレクトリ・ファイルを開くことができます。<br>
+慣れてきたら毎回VSCodeを立ち上げて「File」→「Open」でフォルダを開くより早くなると思うので、おすすめです。<br>
+<br>
+参考記事は以下です。</div></div>
+        
+        <div class="article-item item_link " id="item5821" data-item-id="5821" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=LpqYE&amp;item_id=5821" rel="nofollow noopener noreferrer" target="_blank">ターミナルからVisual Studio Codeを起動する方法【公式の方法】 #VSCode - Qiita</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="ターミナルからVisual Studio Codeを起動する方法【公式の方法】 #VSCode - Qiita" data-reference="https://qiita.com/naru0504/items/c2ed8869ffbf7682cf5c" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/005/821/thumb/b8935246-2c20-4a35-bacd-b6c4b2ed6cf8.png?1754620711" width="75" height="75" /></div><div class="media-body"><div class="item-body">2018.07.03 新規で来てくださった方にわかりやすいように更新しました。ターミナルからエディタを起動したい。atom hoge.jsとかやって特定のファイル開いたりatom .とかやってカレ…</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item4771" data-item-id="4771" data-item-type="ItemHeading"><h2 class="item-body">3. Emmetをフル活用してHTML・CSSをコーディングしましょう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39172" data-item-id="39172" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item40309" data-item-id="40309" data-item-type="ItemHeading"><h3 class="item-body">Emmetの基本</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40310" data-item-id="40310" data-item-type="ItemRichText"><div class="item-body-hbr">コーディングを進める上で、<span class="decoration-02">Emmet</span>（エメット）は作業効率を劇的に向上させるための必須ツールです。</div></div>
+        
+        <div class="article-item item_html " id="item40311" data-item-id="40311" data-item-type="ItemHtml"><div class="item-body">
+<div class="card-with-icon note">
+ <span class="bold"><strong>重要語句：Emmetとは</strong><br></span>
+ <div class="content-area">
+  <ul><li>HTMLやCSSを、短い省略記法（Shorthand）で記述できるようにする機能です。</li> <li>例えば、<code>div.container</code>と入力してTabキーを押すだけで<code>&lt;div class="container"&gt;&lt;/div&gt;</code>のように展開されます。</li></ul>
+ </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item40312" data-item-id="40312" data-item-type="ItemRichText"><div class="item-body-hbr">VSCodeにはEmmetが標準で搭載されているため、特別な準備は不要ですぐに利用を開始できます。<br>
+Emmetを活用する最大のメリットは2つあります。</div></div>
+        
+        <div class="article-item item_html " id="item40313" data-item-id="40313" data-item-type="ItemHtml"><div class="item-body">
+<body>
+ <ul>
+  <li><span class="decoration-02">コーディングの高速化</span>：キーを打つ回数が大幅に減り、驚くほど速くコードを記述できます。</li>
+  <li><span class="decoration-02">タイプミスの削減</span>：タグの閉じ忘れやスペルミスといった、手入力で起こりがちなミスを防ぎます。</li>
+ </ul>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="i47mdKKOiGig25T5JOWJxA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body></div></div>
+        
+        <div class="article-item item_rich_text " id="item40314" data-item-id="40314" data-item-type="ItemRichText"><div class="item-body-hbr">これから学ぶいくつかの基本的なルールを覚えるだけで、コーディングの負担が大幅に軽減されます。<br>
+積極的に活用していきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item40315" data-item-id="40315" data-item-type="ItemHeading"><h3 class="item-body">HTMLコーディングでよく使うEmmet記法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40316" data-item-id="40316" data-item-type="ItemRichText"><div class="item-body-hbr">まずは、HTMLの構造を素早く組み立てるための、基本的かつ強力なEmmet記法を紹介します。<br>
+以下の記法を組み合わせることで、複雑なHTML構造も一行で記述することが可能です。<br>
+</div></div>
+        
+        <div class="article-item item_html " id="item40317" data-item-id="40317" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<table class="simple">
+ <tbody>
+  <thead>
+   <tr>
+    <th scope="col">
+     <div>
+      <div>目的</div>
+     </div>
+    </th>
+    <th scope="col">
+     <div>
+      <div>記号</div>
+     </div>
+    </th>
+    <th scope="col">
+     <div>
+      <div>入力例</div>
+     </div>
+    </th>
+    <th scope="col">
+     <div>
+      <div>出力結果</div>
+     </div>
+    </th>
+   </tr>
+  </thead>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>HTML5の雛形</div>
+    </div>
+   </th>
+   <td>
+    <div>!</div>
+   </td>
+   <td>
+    <div><code>!</code></div>
+   </td>
+   <td>
+    <div><code>&lt;!DOCTYPE html&gt;...</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>classを付与</div>
+    </div>
+   </th>
+   <td>
+    <div>.</div>
+   </td>
+   <td>
+    <div><code>.container</code></div>
+   </td>
+   <td>
+    <div><code>&lt;div class="container"&gt;&lt;/div&gt;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>idを付与</div>
+    </div>
+   </th>
+   <td>
+    <div>#</div>
+   </td>
+   <td>
+    <div><code>#header</code></div>
+   </td>
+   <td>
+    <div><code>&lt;div id="header"&gt;&lt;/div&gt;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>子要素を作成</div>
+    </div>
+   </th>
+   <td>
+    <div>&gt;</div>
+   </td>
+   <td>
+    <div><code>ul&gt;li</code></div>
+   </td>
+   <td>
+    <div><code>&lt;ul&gt;&lt;li&gt;&lt;/li&gt;&lt;/ul&gt;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>兄弟要素を作成</div>
+    </div>
+   </th>
+   <td>
+    <div>+</div>
+   </td>
+   <td>
+    <div><code>h1+p</code></div>
+   </td>
+   <td>
+    <div><code>&lt;h1&gt;&lt;/h1&gt;&lt;p&gt;&lt;/p&gt;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>要素を繰り返す</div>
+    </div>
+   </th>
+   <td>
+    <div>*</div>
+   </td>
+   <td>
+    <div><code>li*3</code></div>
+   </td>
+   <td>
+    <div><code>&lt;li&gt;&lt;/li&gt;&lt;li&gt;&lt;/li&gt;&lt;li&gt;&lt;/li&gt;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>1つ上の階層へ</div>
+    </div>
+   </th>
+   <td>
+    <div>^</div>
+   </td>
+   <td>
+    <div><code>div&gt;p^h2</code></div>
+   </td>
+   <td>
+    <div><code>&lt;div&gt;&lt;p&gt;&lt;/p&gt;&lt;/div&gt;&lt;h2&gt;&lt;/h2&gt;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>グルーピング</div>
+    </div>
+   </th>
+   <td>
+    <div>()</div>
+   </td>
+   <td>
+    <div><code>div&gt;(h2+p)</code></div>
+   </td>
+   <td>
+    <div><code>&lt;div&gt;&lt;h2&gt;&lt;/h2&gt;&lt;p&gt;&lt;/p&gt;&lt;/div&gt;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>連番を付与</div>
+    </div>
+   </th>
+   <td>
+    <div>$</div>
+   </td>
+   <td>
+    <div><code>.item-$*3</code></div>
+   </td>
+   <td>
+    <div><code>&lt;div class="item-1"&gt;&lt;/div&gt;...</code></div>
+   </td>
+  </tr>
+ </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item40318" data-item-id="40318" data-item-type="ItemHeading"><h3 class="item-body">CSSコーディングでよく使うEmmet記法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40319" data-item-id="40319" data-item-type="ItemRichText"><div class="item-body-hbr">EmmetはCSSの記述も大幅に効率化します。<br>
+プロパティや値を数文字入力するだけで、完全なCSSの行を生成できます。</div></div>
+        
+        <div class="article-item item_html " id="item40320" data-item-id="40320" data-item-type="ItemHtml"><div class="item-body">
+<div class="callout white">
+ <div class="title-area">
+  <div class="icon bulb"></div>
+  <div class="title"><strong>重要：CSS Emmetの基本ルール</strong></div>
+ </div>
+ <div class="content-area">
+  <ul><li>プロパティの頭文字や省略形を入力します。（例：<code>margin</code> → <code>m</code>）</li> <li>続けて数値を入力すると、自動的に<code>px</code>単位が付きます。（例：<code>m10</code> → <code>margin: 10px;</code>）</li> <li>数値の後に特定の文字を付けることで単位を指定できます。（例：<code>w50p</code> → <code>width: 50%;</code>, <code>fz1.6r</code> → <code>font-size: 1.6rem;</code>）</li></ul>
+ </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item40321" data-item-id="40321" data-item-type="ItemHtml"><div class="item-body">
+<table class="simple">
+ <tbody>
+  <thead>
+   <tr>
+    <th scope="col">
+     <div>
+      <div>目的</div>
+     </div>
+    </th>
+    <th scope="col">
+     <div>
+      <div>入力例</div>
+     </div>
+    </th>
+    <th scope="col">
+     <div>
+      <div>出力結果</div>
+     </div>
+    </th>
+   </tr>
+  </thead>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>幅と高さ</div>
+    </div>
+   </th>
+   <td>
+    <div><code>w100</code>, <code>h50p</code></div>
+   </td>
+   <td>
+    <div><code>width: 100px;</code>, <code>height: 50%;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>余白 (外側/内側)</div>
+    </div>
+   </th>
+   <td>
+    <div><code>m10-20</code>, <code>p0</code></div>
+   </td>
+   <td>
+    <div><code>margin: 10px 20px;</code>, <code>padding: 0;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>位置指定の余白</div>
+    </div>
+   </th>
+   <td>
+    <div><code>mt10</code>, <code>pr20</code></div>
+   </td>
+   <td>
+    <div><code>margin-top: 10px;</code>, <code>padding-right: 20px;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>背景と文字色</div>
+    </div>
+   </th>
+   <td>
+    <div><code>bg#fff</code>, <code>c#333</code></div>
+   </td>
+   <td>
+    <div><code>background: #fff;</code>, <code>color: #333;</code></div>
+   </td>
+  </tr>
+  <tr>
+   <th scope="row">
+    <div>
+     <div>回り込み解除など</div>
+    </div>
+   </th>
+   <td>
+    <div><code>d:b</code>, <code>d:f</code>, <code>pos:a</code></div>
+   </td>
+   <td>
+    <div><code>display: block;</code>, <code>display: flex;</code>, <code>position: absolute;</code></div>
+   </td>
+  </tr>
+ </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item4781" data-item-id="4781" data-item-type="ItemHeading"><h2 class="item-body">4. VSCodeの必須プラグイン</h2></div>
+        
+        <div class="article-item item_markdown " id="item39173" data-item-id="39173" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item4782" data-item-id="4782" data-item-type="ItemRichText"><div class="item-body-hbr">それでは本題のVSCodeの便利なプラグインについてご紹介します。<br>
+<br>
+プラグインとはVSCodeをより便利にしてくれる拡張機能のことです。インストールすることでテキストエディタがもっと便利になります。プラグインは無数にあるので、気になるものは導入してどんどん試してみてください。</div></div>
+        
+        <div class="article-item item_markdown " id="item4784" data-item-id="4784" data-item-type="ItemMarkdown"><p>以下の2つのプラグインを試しに導入してみましょう。</p>
+
+<ul>
+  <li><strong>Open in Browser</strong>：これを使用すると、以下の写真のようにHTMLファイルを右クリック→「Open in Default Browser」を選択すると、簡単にHTMLファイルをブラウザで開きサイトの見た目を確認できます。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item4785" data-item-id="4785" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/004/785/medium/befea496-61ce-4b7e-8b7c-d61484c8b184.png?1719748201" title=""><img class="img-responsive item-image" alt=" (4785)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/004/785/medium/befea496-61ce-4b7e-8b7c-d61484c8b184.png?1719748201" width="617" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item4786" data-item-id="4786" data-item-type="ItemMarkdown"><ul>
+  <li><strong>COMMENT ANCHOR</strong>：
+  コメントが見やすくなります。コードレビューの際にあると見やすいので、導入しておいてください。</li>
+</ul>
+</div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="i47mdKKOiGig25T5JOWJxA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/PkPCf -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3章 知らないと危険！AI実装の罠 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/PkPCf">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="3章 知らないと危険！AI実装の罠 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/782/medium/2a6c8030-9958-4708-ad43-f62dd49c6d36.png?1754087278">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="3章 知らないと危険！AI実装の罠">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/PkPCf">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/782/large/2a6c8030-9958-4708-ad43-f62dd49c6d36.png?1754087278">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="fw-Vrp3WaEyWcGzb3HSX_QUOYdY8-ufHgicCbUhl0wxU_MMlINaq_-E6Mz6-KkRfW_vDWnBdPlCXc9Y7zuDcxQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材1 AI×Web制作 基礎概論</div>
+
+          <div class="fw-bold h2">3章 知らないと危険！AI実装の罠</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 知らないと危険！AI実装の罠</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：50分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】そのコード、その画像、使って大丈夫？</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">そのコード大丈夫？ライセンスの罠</a><ul><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li></ul></li><li><a href="#heading8" class="tocLink">商用利用で失敗しないためのルール</a></li><li><a href="#heading9" class="tocLink">考えてみよう！</a></li></ul></li><li><a href="#heading10" class="tocLink">【3-2】セキュリティと情報漏洩のリスク</a><ul><li><a href="#heading11" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading12" class="tocLink">それ、AIに渡して平気？機密情報の取扱い</a><ul><li><a href="#heading13" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading14" class="tocLink">【3-3】3章 -章末課題- [トラブル回避シミュレーション]</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading16" class="tocLink">問題</a></li><li><a href="#heading17" class="tocLink">解答</a></li><li><a href="#heading18" class="tocLink">この章のまとめ</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item36056" data-item-id="36056" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/Qj5ac" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/hB9rj" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35998" data-item-id="35998" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">3章 知らないと危険！AI実装の罠</h2></div>
+        
+        <div class="article-item item_markdown " id="item35999" data-item-id="35999" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：50分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item36000" data-item-id="36000" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36001" data-item-id="36001" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>AI生成物を実務で利用する際の著作権に関する注意点を理解できる。</li>
+  <li>AIが生成したコードに潜むライセンスやセキュリティのリスクを説明できる。</li>
+  <li>安心してAIを活用するための、具体的なリスク対策を実践できる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36002" data-item-id="36002" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【3-1】そのコード、その画像、使って大丈夫？</h2></div>
+        
+        <div class="article-item item_markdown " id="item36003" data-item-id="36003" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36004" data-item-id="36004" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">そのコード大丈夫？ライセンスの罠</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36005" data-item-id="36005" data-item-type="ItemRichText"><div class="item-body-hbr">GitHub CopilotなどのAIが生成するコードは非常に便利ですが、そのコードはAIが学習したインターネット上の膨大なオープンソースコードに基づいています。ここには注意すべき「ライセンスの罠」が潜んでいます。<br>
+<br>
+オープンソースのソフトウェアには、その利用条件を定めた<span class="decoration-02">ライセンス</span>が必ず付与されています。ライセンスによっては、「そのソフトウェアを使って作った制作物も、同じライセンスでソースコードを公開しなければならない」という強い制約（例：GPLライセンス）を持つものがあります。<br>
+<br>
+もし、AIがこのような制約の強いライセンスのコードを参考にして生成したコードを、知らずにクライアントの商用サイトに使ってしまうと、意図せずライセンス違反を犯し、最悪の場合、クライアントのサイト全体のソースコードを公開する義務が生じてしまう可能性があります。これを<span class="decoration-02">「ライセンス汚染」</span>と呼び、プロとして絶対に避けなければならないリスクです。</div></div>
+        
+        <div class="article-item item_html " id="item36006" data-item-id="36006" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>注意：ライセンス汚染のリスク</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>AIが生成したコードの元になったコードのライセンスによっては、あなたの制作物全体に影響が及ぶ可能性があります。</li>
+            <li>特に、クライアントワーク（商用利用）では、ライセンス違反が大きなトラブルに発展する可能性があります。</li>
+            <li>GitHub Copilotには、公開されているコードと一致する提案をブロックする設定があります。必ず有効にしておきましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item37781" data-item-id="37781" data-item-type="ItemHtml"><div class="item-body"><ol class="decoration-01">
+  <li>「Start using Copilot Free」をクリック</li>
+</ol></div></div>
+        
+        <div class="article-item item_image " id="item37782" data-item-id="37782" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/782/medium/2a6c8030-9958-4708-ad43-f62dd49c6d36.png?1754087278" title=""><img class="img-responsive item-image" alt=" (37782)" data-reference="" src="../../_assets/dd713de14a.webp" width="640" height="360"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37785" data-item-id="37785" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item37783" data-item-id="37783" data-item-type="ItemHtml"><div class="item-body"><ol class="decoration-01" start="2">
+  <li>クリック後<a href="https://github.com/settings/copilot/features" target="_blank">https://github.com/settings/copilot/features</a>にアクセス</li>
+</ol></div></div>
+        
+        <div class="article-item item_image " id="item37784" data-item-id="37784" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/784/medium/deb5ccf9-8ee7-4c28-9d38-759cf43d2cdd.png?1754087404" title=""><img class="img-responsive item-image" alt=" (37784)" data-reference="" src="../../_assets/2b5ad7288a.webp" width="640" height="360"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37967" data-item-id="37967" data-item-type="ItemHtml"><div class="item-body"><ol class="decoration-01" start="3">
+  <li>下にスクロールし「Suggestions matching public code」をBlockedに変更。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36007" data-item-id="36007" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">商用利用で失敗しないためのルール</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36008" data-item-id="36008" data-item-type="ItemRichText"><div class="item-body-hbr">AIツールをクライアントワーク、つまり商用で利用する前には、必ずそのツールの<span class="decoration-02">利用規約（Terms of Service）</span>を確認する習慣をつけましょう。<br>
+<br>
+多くのAIサービスでは、生成物の所有権や商用利用の可否について、規約で細かく定められています。</div></div>
+        
+        <div class="article-item item_rich_text " id="item36024" data-item-id="36024" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答例</span></div></div>
+        
+        <div class="article-item item_html " id="item36009" data-item-id="36009" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">ChatGPT</span>:<br>
+    生成したテキストの所有権はユーザーにあるとされていますが、入力した情報がAIの学習に利用される可能性があるため、機密情報の入力は避けるべきです（詳しくは後述）。
+  </li>
+  <li>
+    <span class="decoration-01">GitHub Copilot</span>:<br>
+    生成したコードの利用はユーザーの責任となります。前述のライセンス汚染のリスクを理解した上で利用する必要があります。
+  </li>
+  <li>
+    <span class="decoration-01">Midjourney</span>:<br>
+    有料プランであれば、生成した画像の所有権はユーザーにあり、商用利用も可能です（2025年7月時点）。ただし、他者の著作物を模倣するようなプロンプトは避けるべきです。
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36010" data-item-id="36010" data-item-type="ItemRichText"><div class="item-body-hbr">これらの規約は変更される可能性があるため、<span class="decoration-02">定期的に公式サイトで最新の情報を確認すること</span>が重要です。クライアントに納品する制作物にAI生成物を含める場合は、これらのルールを遵守していることを自分で説明できる状態にしておきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item36011" data-item-id="36011" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">考えてみよう！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36012" data-item-id="36012" data-item-type="ItemRichText"><div class="item-body-hbr">GitHub Copilotが生成した便利なJavaScriptのコード。<br>
+これをクライアントのECサイトに組み込む前に、あなたが必ず確認すべきことは何でしょうか？</div></div>
+        
+        <div class="article-item item_html " id="item36013" data-item-id="36013" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <strong>ライセンスチェック</strong>:<br>
+    まず、Copilotの設定で、公開されているコードと一致する提案をブロックする機能が有効になっているか確認する。念のため、生成されたコードの断片をWeb検索にかけ、特定のGPLなどの強いライセンスを持つオープンソースコードと酷似していないかチェックする。
+  </li>
+  <li>
+    <strong>セキュリティレビュー</strong>:<br>
+    コードに、個人情報や決済情報を扱うような処理が含まれていないか、含まれている場合は、情報漏洩に繋がるような脆弱性（クロスサイトスクリプティングなど）がないか、自分の目で一行ずつ処理内容をレビューする。
+  </li>
+  <li>
+    <strong>動作テスト</strong>:<br>
+    すべての機能が意図通りに動くか、他のコードと干渉してバグを発生させないか、様々な状況で徹底的にテストする。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36014" data-item-id="36014" data-item-type="ItemHeading"><h2 class="item-body" id="heading10">【3-2】セキュリティと情報漏洩のリスク</h2></div>
+        
+        <div class="article-item item_markdown " id="item40158" data-item-id="40158" data-item-type="ItemMarkdown"><h4 id="heading11">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item36015" data-item-id="36015" data-item-type="ItemRichText"><div class="item-body-hbr">AIは、インターネット上にある膨大なコードを学習データとしています。<br>
+その中には、<span class="decoration-02">古い情報や、セキュリティ上の弱点（脆弱性）を含んだコード</span>も当然含まれています。<br>
+<br>
+そのため、AIが生成したコードにも、意図せず脆弱性が紛れ込んでしまう可能性があります。<br>
+例えば、ユーザーからの入力を適切にチェックしないままデータベースに保存するようなコードが生成され、それが原因でサイバー攻撃（SQLインジェクションなど）の標的になってしまう、といったケースが考えられます。<br>
+<br>
+これを防ぐためには、<span class="decoration-02">「AIが生成したコードは、あくまで下書きや参考程度と捉え、鵜呑みにしない」</span>という心構えが極めて重要です。<br>
+特に、ログイン機能やお問い合わせフォーム、決済機能など、セキュリティが重要となる部分では、必ず自分の目で処理内容を理解し、安全性を検証する癖をつけましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item36016" data-item-id="36016" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">それ、AIに渡して平気？機密情報の取扱い</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36017" data-item-id="36017" data-item-type="ItemRichText"><div class="item-body-hbr">AIを活用する上で、最も注意しなければならないのが<span class="decoration-02">「情報漏洩」のリスク</span>です。<br>
+<br>
+あなたがChatGPTなどに入力した情報は、デフォルトでは、そのAIサービスを改善するための学習データとして利用される可能性があります。</div></div>
+        
+        <div class="article-item item_html " id="item36018" data-item-id="36018" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>警告：絶対に機密情報を入力しないこと</strong><br></span>
+    <div class="content-area">
+        <p>以下の情報は、<span class="decoration-02">決してAIチャットに入力してはいけません。</span>
+        </p><ul>
+            <li>クライアントから預かった情報（事業計画、新製品情報など）</li>
+            <li>個人情報（氏名、住所、電話番号、メールアドレス、顧客リストなど）</li>
+            <li>パスワードやAPIキーなどの認証情報</li>
+        </ul>
+        <p>これらの情報が学習データとして使われると、他のユーザーへの回答として、あなたの入力した情報の一部が出力されてしまう可能性がゼロではありません。これは取り返しのつかない重大なセキュリティインシデントに繋がります。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36019" data-item-id="36019" data-item-type="ItemRichText"><div class="item-body-hbr">多くのAIサービスには、入力した情報を学習データとして利用させないための<span class="decoration-02">「オプトアウト設定」</span>が用意されています。プロとして活動するなら、必ずこの設定を行い、情報漏洩のリスクを最小限に抑えましょう。</div></div>
+        
+        <div class="article-item item_image " id="item36020" data-item-id="36020" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/020/medium/cd5d7999-ba48-4542-a183-900562145ac1.png?1753326650" title=""><img class="img-responsive item-image" alt=" (36020)" data-reference="" src="../../_assets/cd4a179dac.webp" width="640" height="360"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36021" data-item-id="36021" data-item-type="ItemHeading"><h2 class="item-body" id="heading14">【3-3】3章 -章末課題- [トラブル回避シミュレーション]</h2></div>
+        
+        <div class="article-item item_markdown " id="item36022" data-item-id="36022" data-item-type="ItemMarkdown"><h4 id="heading15">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36023" data-item-id="36023" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36025" data-item-id="36025" data-item-type="ItemRichText"><div class="item-body-hbr">以下の3つのシナリオには、それぞれAI活用におけるリスクが潜んでいます。<br>
+どのようなリスクがあり、あなたがWeb制作者ならどう対処するか、それぞれ簡潔に記述してください。</div></div>
+        
+        <div class="article-item item_html " id="item36026" data-item-id="36026" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>クライアントから預かった顧客リスト（氏名、メールアドレスを含む）をChatGPTに渡し、「このリストを年代別に整理して」と指示した。</li>
+  <li>GitHub Copilotが提案してくれたJavaScriptのコードを、内容をよく確認せずにそのままWebサイトに実装した。</li>
+  <li>画像生成AIに「有名アニメのキャラクター風のイラスト」と指示して画像を生成し、クライアントのサイトの挿絵として使用した。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36027" data-item-id="36027" data-item-type="ItemHeading"><h3 class="item-body" id="heading17">解答</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36028" data-item-id="36028" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答例</span></div></div>
+        
+        <div class="article-item item_html " id="item36029" data-item-id="36029" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">個人情報漏洩のリスク:</span><br>入力した顧客リストがAIの学習データとして利用され、外部に流出する可能性がある。
+    <ul>
+      <li>
+        <span class="decoration-01">対処法:</span><br>顧客リストのような機密情報は決してAIに入力しない。Excelなどのローカル環境で手動で整理するか、どうしてもAIを使いたい場合は、氏名やアドレスを完全に削除・ダミーデータに置き換えるなど、個人を特定できない形に匿名化してから相談する。
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">セキュリティ脆弱性やバグのリスク:</span><br>コードに脆弱性が含まれていてサイバー攻撃の原因になったり、意図しないバグでサイトの表示が崩れたりする可能性がある。また、ライセンス汚染のリスクも考えられる。
+    <ul>
+      <li>
+        <span class="decoration-01">対処法:</span><br>生成されたコードは必ず自分で一行ずつ読み、処理内容を完全に理解し、安全性を確認してから実装する。また、様々な状況でテストを行い、意図通りに動作することを検証する。
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">著作権侵害のリスク:</span><br>生成されたイラストが、元になった有名アニメキャラクターの著作権や商標権を侵害する可能性がある。
+    <ul>
+      <li>
+        <span class="decoration-01">対処法:</span><br>「〜〜風」のように、特定の作品やキャラクターを直接的に模倣させる指示は避ける。「アニメスタイル」「水彩画タッチ」のような、より一般的で抽象的なスタイルで指示する。生成されたものが既存の作品に酷似していないか、必ず自分の目で確認する。
+      </li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36030" data-item-id="36030" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">この章のまとめ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36031" data-item-id="36031" data-item-type="ItemRichText"><div class="item-body-hbr">これで「3章：知らないと危険！AI実装の罠」の解説を終わります。<br>
+<br>
+AIの強力なパワーを享受するためには、その裏側にあるリスクを正しく理解し、管理する能力が不可欠です。<br>
+この章で学んだ知識は、あなたをトラブルから守り、クライアントからの信頼を得るための「盾」となります。<br>
+<br>
+次の最終章では、これまでの学びを総括し、AIを真の味方につけてプロフェッショナルへの第一歩を踏み出します。</div></div>
+        
+        <div class="article-item item_html " id="item36057" data-item-id="36057" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/Qj5ac" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/hB9rj" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 知らないと危険！AI実装の罠</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：50分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】そのコード、その画像、使って大丈夫？</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">そのコード大丈夫？ライセンスの罠</a><ul><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li></ul></li><li><a href="#heading8" class="tocLink">商用利用で失敗しないためのルール</a></li><li><a href="#heading9" class="tocLink">考えてみよう！</a></li></ul></li><li><a href="#heading10" class="tocLink">【3-2】セキュリティと情報漏洩のリスク</a><ul><li><a href="#heading11" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading12" class="tocLink">それ、AIに渡して平気？機密情報の取扱い</a><ul><li><a href="#heading13" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading14" class="tocLink">【3-3】3章 -章末課題- [トラブル回避シミュレーション]</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading16" class="tocLink">問題</a></li><li><a href="#heading17" class="tocLink">解答</a></li><li><a href="#heading18" class="tocLink">この章のまとめ</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/Qj5ac" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%901%20AI%C3%97Web%E5%88%B6%E4%BD%9C%20%E5%9F%BA%E7%A4%8E%E6%A6%82%E8%AB%96/hB9rj" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/uiux/chap2/Gfyqt -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2-5 ペルソナとジャーニーマップ — 願望ではなくデータからユーザー像を描く - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/uiux/chap2/Gfyqt">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="2-5 ペルソナとジャーニーマップ — 願望ではなくデータからユーザー像を描く - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="2-5 ペルソナとジャーニーマップ — 願望ではなくデータからユーザー像を描く">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/uiux/chap2/Gfyqt">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="i2zMRDZytKsvVnwU_jDg7SabvWJaA2w5vXdskweRI-F7BUW75w6YG9le_-rU7pQar6EwiZjuMCjMRp1nhtWUQA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item51079" data-item-id="51079" data-item-type="ItemHtml"><div class="item-body"><meta charset="UTF-8">
+<!--
+  AI×UX/UIデザイナー育成講座（Reスキル認定申請予定・レベル3）
+  UX/UIデザイン教材 第2章「UXリサーチと要件定義」 lesson-05（2-5）※申請書類上は第Ⅲ部 Ⅲ-2
+  題材: ペルソナとジャーニーマップ（手順書型・学習時間150分・7ステップ③）
+  範囲: リサーチ結果をKJ法で束ねてインサイトを抽出する / データからペルソナを起こす（願望と実像のズレに気づく） / カスタマージャーニーマップで体験を描き、ペイン（谷）と改善機会を示す
+  通し課題: 前回まで（32-2ヒアリング・32-3インタビュー・32-4競合分析）でデータが揃った → 今回それを統合してユーザー像を描く → 提出物（ペルソナ・ジャーニーマップ）を確定 → 次回32-6要件定義へ
+  体裁の正: chapter-31_uxui-foundation/lesson-02.html（F5テンプレ・ClipKit目次対策込み）＋ chapter-06 の work-box/notice-box を継承
+  図版: プレースホルダー（ig-3205-01〜06。画像生成は後日タスク）
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ClipKit対策: アンカージャンプ先が固定ヘッダーに隠れないようオフセット */
+section[id] { scroll-margin-top: 96px; }
+.slide-img { width: 100%; height: auto; display: block; border-radius: 14px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box__time { margin-left: auto; font-size: 13px; font-weight: 700; color: #C2402F; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — ClipKit対策版（高詳細度＋!important） */
+.lesson-wrapper nav.toc { background: #fff !important; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.lesson-wrapper nav.toc .toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lesson-wrapper nav.toc .toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.lesson-wrapper nav.toc .toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.lesson-wrapper nav.toc ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 3px; }
+.lesson-wrapper nav.toc ul li { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.lesson-wrapper nav.toc ul li::before { content: none !important; }
+.lesson-wrapper nav.toc ul li::marker { content: '' !important; }
+.lesson-wrapper nav.toc ul li a { display: flex !important; align-items: center; gap: 12px; padding: 8px 14px !important; background: #FAF9F8; border-radius: 8px; text-decoration: none !important; border-bottom: none !important; box-shadow: none; color: #2D2D2D !important; transition: background 0.2s; }
+.lesson-wrapper nav.toc ul li a:hover { background: #F5EFEC; text-decoration: none !important; color: #2D2D2D !important; }
+.lesson-wrapper nav.toc ul li a:visited { color: #2D2D2D !important; }
+.lesson-wrapper nav.toc .toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.lesson-wrapper nav.toc .toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.lesson-wrapper nav.toc .toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* 事前準備リスト（prep-list） */
+.prep-list { background: #fff; border-radius: 14px; padding: 24px 28px; margin: 28px 0; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.prep-list .prep-label { font-size: 12px; font-weight: 700; color: #4CAF50; letter-spacing: 0.15em; margin-bottom: 12px; }
+.prep-list ul { list-style: none; padding: 0; margin: 0; }
+.prep-list li { padding: 10px 0; border-bottom: 1px solid #E8F5E9; font-size: 15px; color: #3D3D3D; }
+.prep-list li:last-child { border-bottom: none; }
+.prep-list li .prep-bullet { color: #4CAF50; margin-right: 8px; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* 注意ボックス */
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+
+/* v2テーブル（比較・マッピング） */
+.v2-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 24px 0 28px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 15px; }
+.v2-table th { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-weight: 700; padding: 12px 16px; text-align: left; font-size: 14px; }
+.v2-table td { padding: 12px 16px; border-bottom: 1px solid #F0E6E1; color: #4A4A4A; background: #fff; vertical-align: top; line-height: 1.75; }
+.v2-table tr:last-child td { border-bottom: none; }
+.v2-table td:first-child { font-weight: 700; color: #2D2D2D; white-space: nowrap; }
+
+/* 図版プレースホルダー */
+.fig-ph { font-size: 14px; line-height: 1.8; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* 演習ボックス */
+.work-box { background: #fff; border: 2px solid #F5A64A; border-radius: 14px; padding: 22px 24px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.work-box__badge { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 14px; }
+.work-box h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 16px 0 8px; }
+.work-box ol, .work-box ul { margin: 0 0 8px; padding-left: 1.4em; }
+.work-box li { font-size: 14.5px; color: #4A4A4A; line-height: 1.85; }
+.submit-note { background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; padding: 14px 16px; font-size: 14.5px; font-weight: 700; color: #C2402F; margin-top: 16px; text-align: center; }
+
+/* よくある質問（Q&Aトグル） */
+.faq-box { background: #fff; border-radius: 14px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); padding: 20px 24px; margin: 28px 0; }
+.faq-box__label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 12px; }
+.faq-box details { border-bottom: 1px solid #F0E6E1; }
+.faq-box details:last-child { border-bottom: none; }
+.faq-box summary { cursor: pointer; font-size: 14.5px; font-weight: 700; color: #2D2D2D; padding: 12px 0; list-style: none; display: flex; gap: 10px; align-items: flex-start; }
+.faq-box summary::-webkit-details-marker { display: none; }
+.faq-box summary::before { content: 'Q'; flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-size: 12px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+.faq-box__a { padding: 0 0 14px 32px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+/* 理解度チェック — 白カード + グラデピル + 薄グラデ質問（Goalと統一） */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+/* ===== 図解キット（fig-*）v2 分かりやすさ最適化 ===== */
+.fig { margin: 28px 0; }
+.fig__frame { background:#FBFAF8; border:1px solid #E4E1DB; border-radius:14px; padding:22px 20px; }
+.fig__cap { font-size:13px; color:#6E6A66; text-align:center; margin-top:10px; line-height:1.7; }
+.fig__sample { color:#B8B0A8 !important; font-style:italic; }
+.fig-row { display:flex; gap:16px; flex-wrap:wrap; }
+.fig-row > * { flex:1 1 0; min-width:150px; }
+.fig-card { background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:18px; }
+.fig-card__n { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:#E85D4A; color:#fff; font-size:13px; font-weight:800; margin-bottom:10px; }
+.fig-card__t { font-size:15px; font-weight:700; color:#2D2D2D; margin-bottom:6px; line-height:1.5; }
+.fig-card__d { font-size:13px; color:#555; line-height:1.75; }
+.fig-card__note { margin-top:10px; padding-top:10px; border-top:1px dashed #E4E1DB; font-size:12.5px; color:#C2402F; font-weight:700; }
+.fig-card--accent { border-color:#E85D4A; background:#FDEEE9; }
+.fig-card--fill { background:#E85D4A; border-color:#E85D4A; }
+.fig-card--fill .fig-card__t, .fig-card--fill .fig-card__d { color:#fff; }
+.fig-card--fill .fig-card__n { background:#fff; color:#E85D4A; }
+.fig-card--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-card--mute .fig-card__n { background:#A8A29B; }
+.fig-card--mute .fig-card__t { color:#6E6A66; }
+.fig-flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; }
+.fig-node { flex:1 1 0; min-width:104px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:13px 11px; text-align:center; }
+.fig-node__n { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; margin-bottom:8px; }
+.fig-node__t { font-size:13px; font-weight:700; color:#2D2D2D; line-height:1.45; }
+.fig-node__d { font-size:11.5px; color:#6E6A66; line-height:1.6; margin-top:4px; }
+.fig-node--current { border-color:#E85D4A; background:#FDEEE9; }
+.fig-node--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-node--mute .fig-node__n { background:#A8A29B; }
+.fig-node--mute .fig-node__t { color:#6E6A66; }
+.fig-sep { display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:18px; font-weight:800; flex:0 0 auto; }
+.fig-loop { margin-top:12px; display:flex; align-items:center; gap:10px; color:#C2402F; font-size:12.5px; font-weight:700; }
+.fig-loop__line { flex:1; height:0; border-top:2px dashed #C9C4BD; }
+.fig-two { display:flex; align-items:stretch; gap:12px; flex-wrap:wrap; }
+.fig-two__col { flex:1 1 0; min-width:180px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:16px 18px; }
+.fig-two__h { font-size:14px; font-weight:800; color:#2D2D2D; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.fig-two__col ul { margin:0; padding-left:1.1em; }
+.fig-two__col li { font-size:13px; color:#555; line-height:1.8; }
+.fig-two__mid { flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:22px; font-weight:800; }
+.fig-two__col--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-two__col--mute .fig-two__h, .fig-two__col--mute li { color:#8A8279; }
+.fig-two__col--accent { background:#FDEEE9; border-color:#E85D4A; }
+.fig-mark { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; font-size:12px; font-weight:800; flex:0 0 auto; }
+.fig-mark--ok { background:#E85D4A; color:#fff; }
+.fig-mark--ng { background:#C9C4BD; color:#fff; }
+.fig-tag { display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.04em; padding:2px 8px; border-radius:6px; }
+.fig-tag--mute { background:#E4E1DB; color:#8A8279; }
+.fig-tag--accent { background:#E85D4A; color:#fff; }
+.fig-nest { display:flex; justify-content:center; }
+.fig-nest__outer { position:relative; background:#FDEEE9; border:2px solid #F0A891; border-radius:20px; padding:38px 28px 22px; min-width:280px; max-width:440px; text-align:center; }
+.fig-nest__label { position:absolute; top:12px; left:20px; font-size:12.5px; font-weight:800; color:#C2402F; }
+.fig-nest__inner { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:18px 20px; }
+.fig-nest__inner .t { font-size:14px; font-weight:800; color:#2D2D2D; }
+.fig-nest__inner .d { font-size:12px; color:#6E6A66; margin-top:4px; line-height:1.6; }
+.fig-nest__outerd { font-size:12px; color:#8A6A5A; margin-top:14px; line-height:1.6; }
+.fig-ladder { display:flex; flex-direction:column; gap:8px; }
+.fig-step { border:1px solid #E4E1DB; border-radius:12px; padding:12px 16px; display:flex; gap:12px; align-items:flex-start; }
+.fig-step__n { flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.fig-step__t { font-size:13px; color:#3D3D3D; line-height:1.6; }
+.fig-step.s1{background:#FCF1ED}.fig-step.s2{background:#FADED4}.fig-step.s3{background:#F7C9B8}.fig-step.s4{background:#F3B39B}.fig-step.s5{background:#EE9B7E}
+.fig-step.d2{margin-left:22px}.fig-step.d3{margin-left:44px}.fig-step.d4{margin-left:66px}.fig-step.d5{margin-left:88px}
+.fig-step--root { border-color:#E85D4A; border-width:2px; }
+.fig-why { text-align:center; color:#A8A29B; font-size:12px; font-weight:800; margin:2px 0; }
+.fig-band { display:flex; flex-direction:column; gap:8px; }
+.fig-band__row { display:flex; gap:10px; align-items:center; }
+.fig-band__k { flex:0 0 104px; font-size:12.5px; font-weight:800; color:#C2402F; text-align:right; line-height:1.4; }
+.fig-band__v { flex:1; background:#FDEEE9; border:1px solid #E4E1DB; border-radius:10px; padding:9px 12px; font-size:12.5px; color:#3D3D3D; line-height:1.6; }
+.fig-exchange { display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap; }
+.fig-exchange__end { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:16px 18px; font-size:13.5px; font-weight:800; color:#2D2D2D; text-align:center; min-width:110px; }
+.fig-exchange__mid { flex:1; min-width:150px; display:flex; flex-direction:column; gap:8px; }
+.fig-exchange__req, .fig-exchange__res { border-radius:8px; padding:7px 12px; font-size:12px; font-weight:700; text-align:center; }
+.fig-exchange__req { background:#FDEEE9; color:#C2402F; }
+.fig-exchange__res { background:#F4F2F0; color:#6E6A66; }
+@media (max-width:600px){
+  .fig-two__mid{transform:rotate(90deg)}
+  .fig-step.d2,.fig-step.d3,.fig-step.d4,.fig-step.d5{margin-left:0}
+}
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">第2章</span>
+  <div class="lesson-hero__title">ペルソナとジャーニーマップ — 願望ではなくデータからユーザー像を描く</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">レッスン 2-5</span>
+    <span class="lesson-hero__topic">UXリサーチと要件定義</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約150分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+        <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap2/Zkuir" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap2/pV3pl" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+    <div class="goal-box__time">⏱ 約150分</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">オーナーの願望とデータが映す実像を見分け、リサーチの事実からペルソナを作成できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">リサーチ結果をKJ法で束ね、次の設計につながる実装可能なインサイトを抽出できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">ペルソナの体験を段階で描き、ペイン（感情の谷）と改善機会を示したカスタマージャーニーマップを作成できる</div></li>
+  </ul>
+</div>
+
+<!-- 目次: ClipKit対策のためインラインstyleを併記 -->
+<nav class="toc" style="background:#fff; border-radius:14px; padding:22px 26px; box-shadow:0 2px 12px rgba(0,0,0,0.05); margin:0 0 48px;">
+  <div class="toc-head" style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <div class="toc-icon" style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#E85D4A,#F5A64A); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700;">≡</div>
+    <div class="toc-title" style="font-size:15px; font-weight:700; color:#2D2D2D;">目次</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;">
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s1" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">01</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">願望とデータの実像を見分ける</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s2" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">02</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">手順1：KJ法で束ねてインサイトを抽出する</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s3" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">03</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">手順2：インサイトからペルソナを作る</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s4" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">04</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">手順3：カスタマージャーニーマップで体験を描く</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s5" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">05</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">演習：ペルソナとジャーニーマップを作る</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+  </ul>
+</nav>
+
+<p>リフトのオーナー織田さんは、打ち合わせのたびに「若い人に来てほしい」と話していました。ところが、インタビュー記録を読み返すと、実際に通っているのは仕事帰りの20〜40代で、6割が女性、多くが運動初心者です。願望と、データが映す実像はずれていました。この章でやるのは、その実像を土台に中心となる1人へしぼってペルソナを描き、その人が予約に至るまでの体験をカスタマージャーニーマップに起こすことです。前回までに集めたヒアリング・インタビュー・競合分析のデータを、願望に引きずられず、1人の人物像と1本の流れにまとめます。</p>
+
+<div class="prep-list">
+  <div class="prep-label">📋 事前準備</div>
+  <ul>
+    <li><span class="prep-bullet">●</span><strong>ゴール定義シート（2-2）</strong>：ビジネス目標・成功指標・スコープを確認する</li>
+    <li><span class="prep-bullet">●</span><strong>インタビュー記録（2-3）</strong>：ユーザーの声とペイン（つまずき）を確認する</li>
+    <li><span class="prep-bullet">●</span><strong>競合UX分析シート（2-4）</strong>：競合の予約体験の良し悪しを確認する</li>
+  </ul>
+</div>
+
+<p>まず、これから作る2つの成果物の完成形を見ておきましょう。データから起こした代表的ユーザー像（ペルソナ）と、その人が予約に至るまでの体験を段階で並べたカスタマージャーニーマップです。ペルソナの人物が、そのままジャーニーの主役になります。</p>
+
+<figure class="fig" data-asset-id="ig-3205-01"><img src="../../_assets/639633c23c.webp" alt="このレッスンの完成イメージ。左に代表的ユーザー像（ペルソナ）のカード、右に予約までの段階と感情曲線を並べたカスタマージャーニーマップの縮図を置き、ペルソナからジャーニーへ矢印でつなぐ" style="width:100%;height:auto;border-radius:14px;border:1px solid #E4E1DB;"><figcaption class="fig__cap">図：2つの成果物はセット。ペルソナの人物が、そのままジャーニーの主役になる。</figcaption></figure>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>願望とデータの実像を見分ける</h2>
+
+<p>ペルソナは、思いつきの人物設定ではありません。リサーチで分かった事実を、1人の代表的なユーザー像にまとめたものです。</p>
+
+<figure class="fig" data-asset-id="ig-3205-02">
+  <div class="fig-two">
+    <div class="fig-two__col fig-two__col--mute"><div class="fig-two__h"><span class="fig-tag fig-tag--mute">願望</span>織田さんの声</div><ul><li>「若い人に来てほしい」</li><li>思い描くのは20代前半の学生</li><li>データの裏づけはない</li></ul></div>
+    <div class="fig-two__mid">≠</div>
+    <div class="fig-two__col fig-two__col--accent"><div class="fig-two__h"><span class="fig-tag fig-tag--accent">データの実像</span>いま通う中心客</div><ul><li>仕事帰りの20〜40代</li><li>6割が女性</li><li>多くが運動初心者</li></ul></div>
+  </div>
+  <figcaption class="fig__cap">図：ペルソナの土台にするのは右のデータ。左の願望は、将来増やしたい層の仮説として別に扱う。</figcaption>
+</figure>
+
+<p>織田さんの「若い人に来てほしい」は、データの裏づけがない願望です。実際に通う中心は仕事帰りの20〜40代で、6割が女性、多くが運動初心者でした。この事実がペルソナの土台になります。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">願望と実像を分けて扱う</div>
+  </div>
+  <p>オーナーの願望は、これから増やしたい客層の仮説として大切に記録します。ただしペルソナの土台にするのは、いま実際に通っている人の<strong>データ</strong>です。両者を分けて扱えば、次の要件定義でどこまで狙うかを落ち着いて判断できます。</p>
+</div>
+
+<p>誰のために作るのかを、手元のデータで確かめてから人物像に落とし込みましょう。願望と実像を分けて示せれば、実務でクライアントの思い込みと調査結果が食い違う場面でも、相手の気持ちを否定せずに、いまのお客さまが迷わない設計から始める提案として順番を整理できます。</p>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 1／4</div></div>
+  <div class="quiz-q">織田さんから、あらためて「若い人に来てほしい」と言われました。一方リサーチでは、中心客が仕事帰りの20〜40代・女性6割・運動初心者だと分かっています。ペルソナの作り方として最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">願望どおり、20代前半の学生を主役のペルソナにする</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">いま通う中心客をペルソナの土台にし、増やしたい層は別の仮説として記録する</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">オーナーの意見が最優先なので、リサーチ結果は使わない</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">若い人と中心客を1体に混ぜ、全員に当てはまるペルソナにする</div></button>
+  </div>
+  <div class="quiz-feedback" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">ペルソナの土台は、いま実際に通う人のデータです。願望は増やしたい層の仮説として別に記録し、次の要件定義で扱います（B）。願望をそのまま主役にする（A）、リサーチを捨てる（C）、全員に当てはめる（D）は、いずれもデータから外れます。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">ペルソナはデータから起こします。中心客を土台にし、願望は別の仮説として残すBが適切でした。願望を主役にする（A）やリサーチ無視（C）はデータから外れ、全員向け（D）は誰にも響きません。</div></div>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>手順1：KJ法で束ねてインサイトを抽出する</h2>
+
+<p>ばらばらのデータは、そのままではユーザー像になりません。まず似た事実を束ね、その奥にある理由を読み取ります。</p>
+
+<h3>KJ法で事実を束ねる</h3>
+
+<figure class="fig" data-asset-id="ig-3205-03"><img src="../../_assets/401aa54178.webp" alt="リサーチ結果をKJ法で束ねたクラスター図。1枚1事実のふせん（電話予約が苦手／営業時間外に申し込めない／情報が古く料金が分からない／返信待ちで予定を決められない など）を、予約手段のハードル・情報の古さと分かりにくさ・続けやすさの不安の3つのかたまりに寄せ、各かたまりに見出しを付ける" style="width:100%;height:auto;border-radius:14px;border:1px solid #E4E1DB;"><figcaption class="fig__cap">図：ばらばらの事実が、名前の付いたテーマにまとまる。</figcaption></figure>
+
+<p>KJ法（親和図法）は、断片的な事実を関連で寄せてテーマを浮かび上がらせる手法です。気づきを1枚1事実でふせんに書き出し、関連するものを寄せてかたまりを作り、中身を言い表す名前を付けます。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">ふせんは1枚1事実</div>
+  </div>
+  <p>1枚のふせんには、事実を1つだけ書きます。複数の内容を詰め込むと、いくつものテーマにまたがってうまく寄せられません。<strong>粒をそろえる</strong>ことが、きれいに束ねる前提になります。</p>
+</div>
+
+<h3>事実からインサイトへ昇華させる</h3>
+
+<figure class="fig" data-asset-id="ig-3205-04">
+  <div class="fig-ladder">
+    <div class="fig-step s4 d4 fig-step--root"><div class="fig-step__n">4</div><div class="fig-step__t"><strong>デザイン要件</strong>：24時間いつでも予約できる導線をつくる</div></div>
+    <div class="fig-why">↑ 昇華</div>
+    <div class="fig-step s3 d3"><div class="fig-step__n">3</div><div class="fig-step__t"><strong>インサイト（なぜ）</strong>：日中は指導中で電話に出られず、見込み客の申込機会を逃している</div></div>
+    <div class="fig-why">↑</div>
+    <div class="fig-step s2 d2"><div class="fig-step__n">2</div><div class="fig-step__t"><strong>繰り返すパターン</strong>：営業時間外に申し込めず離脱する</div></div>
+    <div class="fig-why">↑</div>
+    <div class="fig-step s1"><div class="fig-step__n">1</div><div class="fig-step__t"><strong>観察された事実</strong>：予約は電話とLINEだけ</div></div>
+  </div>
+  <figcaption class="fig__cap">図：下の事実から上へ。要約で止めず、なぜの解釈と打ち手の糸口まで引き上げると、実装可能なインサイトになる。</figcaption>
+</figure>
+
+<p>インサイトは、事実の要約ではありません。なぜそうなるのかを解釈し、次の設計の糸口まで含めた洞察です。事実から出発し、パターンを見つけ、理由を解釈して、設計の要件へと一段ずつ引き上げます。この順でたどれると、提案の場でなぜその機能が必要かと問われても、事実となぜの解釈、打ち手の順で筋道立てて説明できます。</p>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">AIは下書き、解釈と判断は自分が行う</div>
+  </div>
+  <p>手元の生成AI（Gemini・ChatGPTなど）は、ふせんの仮のグルーピングや文章の下書きを素早く出せます。ただし、なぜそうなるのかの解釈と、どのインサイトを採るかの<strong>取捨選択は必ず自分で行い、最終確認はコーチに委ねます</strong>。AIの出力には事実の取り違えや古い情報が混ざるため、鵜呑みにしないでください。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 2／4</div></div>
+  <div class="quiz-q">リフトのリサーチ結果から、設計に使える「実装可能なインサイト」に最も近いのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">見込み客のCさんは、ネットで探したとき情報が古いと感じた</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">予約手段が電話とLINEだけで営業時間外に申し込めず離脱している。24時間予約できる導線が要る</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">お客さまは、予約が使いにくいと感じている</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">予約方法についての満足度を、毎月アンケートで集計する</div></button>
+  </div>
+  <div class="quiz-feedback" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">インサイトは、なぜそうなるのかの解釈と次の設計の糸口を含みます。Bは離脱の理由を解釈し、打ち手（24時間予約の導線）まで示しているため実装可能でした。Aは事実の要約、Cは漠然とした感想、Dは測定の行為です。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">A・C・Dは、事実の要約・漠然とした感想・測定の行為で、まだ設計につながりません。離脱の理由を解釈し、打ち手の糸口まで示したBが実装可能なインサイトでした。</div></div>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>手順2：インサイトからペルソナを作る</h2>
+
+<p>インサイトが出たら、それを1人の具体的な人物像に落とし込みます。これがペルソナです。</p>
+
+<figure class="fig" data-asset-id="ig-3205-05">
+  <div class="fig-row">
+    <div class="fig-card fig-card--accent">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+        <div class="fig-card__n" style="width:44px; height:44px; font-size:18px; margin-bottom:0;">M</div>
+        <div><div class="fig-card__t" style="margin-bottom:2px;">Mさん・34歳・会社員（女性）</div><div class="fig-card__d">運動初心者／リフトの中心客を代表する1人</div></div>
+      </div>
+      <div class="fig-band">
+        <div class="fig-band__row"><div class="fig-band__k">生活</div><div class="fig-band__v">平日は仕事が終わる19時以降に、ようやく自分の時間ができる</div></div>
+        <div class="fig-band__row"><div class="fig-band__k">利用場面</div><div class="fig-band__v">仕事帰りに立ち寄って通いたい</div></div>
+        <div class="fig-band__row"><div class="fig-band__k">ゴール</div><div class="fig-band__v">無理なく続けて、体を変えたい</div></div>
+        <div class="fig-band__row"><div class="fig-band__k">ペイン</div><div class="fig-band__v">電話予約が苦手。LINEの返信待ちで予定を決められない</div></div>
+        <div class="fig-band__row"><div class="fig-band__k">ひとこと</div><div class="fig-band__v">「続けられるか、不安で……」</div></div>
+      </div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">図：すべての項目がリサーチの事実に裏づけられ、設計判断に効く情報にしぼられている。</figcaption>
+</figure>
+
+<p>ペルソナは、決まった項目で1人の人物像を具体的に描いたものです。属性を盛り込みすぎず、設計判断に効く項目にしぼります。中心客がはっきり2タイプに分かれるときだけ、ペルソナは1〜2体まで作ります。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">1項目ずつ事実にひもづける</div>
+  </div>
+  <p>ペルソナの各項目は、インタビューや競合分析のどの事実から来たのかを言える状態にします。根拠を言えない設定は、想像で足したしるしです。<strong>事実に裏づけられた項目</strong>だけを残しましょう。</p>
+</div>
+
+<p>迷ったら、その項目が設計の判断に効くかを基準に取捨しましょう。できあがったペルソナは、チームやクライアントと議論するときの共通の判断基準になり、ボタンの文言や予約フローで迷ったら、この人なら迷わないかと問い返して、好みの言い合いではなくユーザー起点で決められます。</p>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 3／4</div></div>
+  <div class="quiz-q">リフトのペルソナを1体作ります。リサーチ結果に照らして最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">20歳・学生・平日昼に通える・運動好き。若い層を狙いたいので設定した</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">34歳・会社員・女性・運動初心者。19時以降に通いたいが電話予約が苦手で、返信待ちで予定を決められない</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">すべての年代と性別に当てはまる、平均的な会員像</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">名前・趣味・年収・家族構成まで細かく設定した、まだ通っていない架空の人物</div></button>
+  </div>
+  <div class="quiz-feedback" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">Bは、中心客のデータ（仕事帰りの20〜40代・女性・初心者）とインタビューのペイン（電話が苦手・返信待ち）に裏づけられ、項目も設計に効くものにしぼられています。Aは願望ベースで実像と矛盾、Cは全員向けで焦点がなく、Dは根拠のない盛り込みすぎでした。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">ペルソナは事実に裏づけられ、判断に効く項目にしぼります。データと合致するBが適切でした。願望ベースのA、全員向けのC、根拠なく盛り込んだDは、いずれも設計の役に立ちません。</div></div>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>手順3：カスタマージャーニーマップで体験を描く</h2>
+
+<p>ペルソナができたら、その人が予約という目的を果たすまでの体験を、時間の流れにそって1枚の図にまとめます。これがカスタマージャーニーマップ（CJM）です。作成にはFigmaまたはFigJamを使い（どちらでもかまいません）、横に長いボードを1枚用意して、そこに段階を並べていきます。</p>
+
+<p>カスタマージャーニーマップは、ユーザーがゴールにたどり着くまでの体験を段階ごとに区切り、その流れと気分の浮き沈みを1枚で見えるようにした図です。横軸には、ユーザーが目的を果たすまでの段階（フェーズ）を時系列で並べます。リフトなら、認知（知る）→検討（調べる）→予約→初回来店→継続（通う）という並びです。縦軸には、各段階について次の項目を書き込みます。書き込む中身は、インタビュー記録とペルソナを根拠にし、想像では埋めません。</p>
+
+<ul>
+  <li><strong>行動</strong>：その段階でユーザーが実際にすること（例：スマホでジムを検索する）</li>
+  <li><strong>接点（タッチポイント）</strong>：ユーザーが触れる手段や画面（例：ホームページ、LINE、電話）</li>
+  <li><strong>思考・感情</strong>：そのとき考えたこと、感じたこと。気分の浮き沈みも書く</li>
+  <li><strong>課題（ペインポイント）</strong>：つまずきや不満（例：営業時間外は電話がつながらない）</li>
+</ul>
+
+<p>図のいちばん下には、段階ごとの気分の上下を感情曲線として線でつなぎます。こうすると、体験のどこで気分が上がり、どこで落ち込むのかがひと目で分かります。</p>
+
+<figure class="fig" data-asset-id="ig-3205-06"><img src="../../_assets/9c81b016e7.webp" alt="リフトの予約体験のカスタマージャーニーマップ。横軸に段階（認知→検討→予約→初回来店→継続）、縦に行動・タッチポイント・思考と感情・ペイン・改善機会を並べ、最下部に感情曲線を描く。予約の段階で曲線が最も落ち込む谷になり、その列の改善機会に24時間予約できる導線を記す" style="width:100%;height:auto;border-radius:14px;border:1px solid #E4E1DB;"><figcaption class="fig__cap">図：体験の流れと感情の起伏を1枚で可視化。感情の谷＝ペインが、最初に直すべき改善の起点になる。</figcaption></figure>
+
+<p>感情の曲線が最も落ち込む谷が、最初に直すべき場面です。リフトでは、予約が電話とLINEだけの段階に谷ができます。改善の優先順位を決める会議でも、ジャーニーマップがあれば、どこから手を付けるかを感覚で決めず、感情の谷が深い段階から着手すると示せます。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">感情の谷が改善の起点</div>
+  </div>
+  <p>行動だけを並べても、どこを直せばよいかは見えません。各段階の思考と感情を書き、曲線が落ち込む<strong>谷（ペイン）</strong>を見つけると、改善の優先順位が決まります。谷の隣の欄に改善機会を書き添えましょう。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 4／4</div></div>
+  <div class="quiz-q">ジャーニーマップを描くと、感情の谷が予約の段階にありました。ここまでの流れを踏まえ、次の一手として最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q4" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">谷は気にせず、若者向けに見た目を華やかに作り替える</div></button>
+    <button class="quiz-opt" data-q="q4" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">予約段階のペインを解く改善から着手し、中心客が迷わず予約できる導線を設計する</div></button>
+    <button class="quiz-opt" data-q="q4" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">ペルソナを増やして、全年代に対応する予約画面にする</div></button>
+    <button class="quiz-opt" data-q="q4" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">感情は主観なので、思考と感情の行を消してしまう</div></button>
+  </div>
+  <div class="quiz-feedback" id="q4-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">感情の谷は、直すべきペインの場所を教えてくれます。Bは、その谷（予約段階）から中心客のデータに基づいて改善する筋道です。願望に流れるA、焦点をぼかすC、判断材料の谷を消すDは、ここまでの学びと逆行します。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q4-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">谷は改善の起点です。中心客のデータに沿って予約段階から直すBが適切でした。願望に流れるA、焦点をぼかすC、谷を消すDは、データ起点の設計から外れます。</div></div>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== セクション5：演習 ===== -->
+<section id="s5">
+<h2>演習：ペルソナとジャーニーマップを作る</h2>
+
+<p>ここまでの3つの手順を使い、リフトのリサーチ結果から、ペルソナとカスタマージャーニーマップを作ります。願望と実像を分け、データを土台にすることを忘れずに進めましょう。</p>
+
+<div class="work-box reveal">
+  <div class="work-box__badge">演習 2-5</div>
+
+  <h4>ステップ1：KJ法で束ねてインサイトを3つ導く</h4>
+  <ul>
+    <li>インタビュー記録と競合分析シートの気づきを、1枚1事実でふせんに書き出す（FigJam等）</li>
+    <li>関連するふせんを寄せてかたまりを作り、各かたまりに中身を言い表す名前を付ける</li>
+    <li>かたまりから、実装可能なインサイトを3つ導く（事実の要約で終わらせない）</li>
+  </ul>
+
+  <h4>ステップ2：ペルソナを1〜2体作る</h4>
+  <ul>
+    <li>中心客のデータを土台に、名前・年代・生活・利用の場面・ゴール・ペインを書く</li>
+    <li>各項目の根拠になった事実をひとことメモで添える（想像で足さない）</li>
+    <li>オーナーの願望（若い層）は、増やしたい層の仮説として別に1行記録する</li>
+  </ul>
+
+  <h4>ステップ3：カスタマージャーニーマップを作る</h4>
+  <ul>
+    <li>FigmaまたはFigJam（どちらでもよい）に、横に長いボードを1枚用意する</li>
+    <li>主役にするペルソナと、そのゴール（例：無理なく予約して通い続ける）を1行で決める</li>
+    <li>予約までの段階（フェーズ）を時系列で横に並べる（認知（知る）→検討（調べる）→予約→初回来店→継続（通う））</li>
+    <li>各段階について、行動（実際にすること）・接点（触れる手段や画面）・思考と感情を書く。中身はインタビュー記録とペルソナを根拠にし、想像で埋めない</li>
+    <li>各段階の感情の上下を線でつなぎ、感情曲線にする</li>
+    <li>感情が最も落ち込む段階（感情の谷＝ペイン）と、そこでの接点を特定する</li>
+    <li>そのペインの隣に、改善の機会（チャンス＝打ち手の糸口）を書き添える</li>
+  </ul>
+
+  <h4>完了条件（提出物）</h4>
+  <p style="font-size:13.5px; color:#E85D4A; font-weight:700; margin:2px 0 8px;">この成果物は、章の最後でまとめてコーチに提出しましょう。</p>
+  <ol>
+    <li>実装可能なインサイト3つ（根拠の事実と、なぜの解釈を1〜2文で添える）</li>
+    <li>ペルソナ1〜2体（データの裏づけ、および願望と実像を分けたメモつき）</li>
+    <li>カスタマージャーニーマップ（感情の谷＝ペインと、改善機会の指摘つき）</li>
+    <li><strong>AI活用メモ</strong>：グルーピングや下書きのどこを生成AIに任せ、どの解釈・判断を自分が行ったかを2〜3行で書く</li>
+  </ol>
+
+  <h4>進め方のヒント</h4>
+  <ul>
+    <li>インサイトは「事実→なぜの解釈→打ち手の糸口」の順で1文にまとめると書きやすい</li>
+    <li>ペルソナの項目は「この設定は、どの事実から来たか」を声に出して確かめる</li>
+    <li>ジャーニーは行動だけでなく、思考と感情を必ず書く。谷が見つからないときは感情の欄を見直す</li>
+  </ul>
+
+</div>
+
+<p>ここで作ったペルソナとカスタマージャーニーマップが、このレッスンの提出物です。次回の要件定義では、ジャーニーで見えたペインと改善機会をもとに、必要な機能を洗い出して優先順位を付けます。感情の谷を埋める設計へと進みます。</p>
+</section>
+
+<!-- よくある質問（Q&A） -->
+<div class="faq-box reveal">
+  <div class="faq-box__label">よくあるつまずき Q&amp;A</div>
+  <details>
+    <summary>ペルソナは何体作ればいいですか？</summary>
+    <div class="faq-box__a">まずは1体で十分です。中心客がはっきり2タイプに割れるとき（例：会員のBさんと見込み客のCさんで悩みが大きく違う）だけ、2体まで作ります。むやみに増やすと設計の焦点がぼやけるため、リフトのような1店舗の案件では1〜2体にとどめます。</div>
+  </details>
+  <details>
+    <summary>オーナーの「若い人」という願望は無視していいですか？</summary>
+    <div class="faq-box__a">無視はしません。いまの中心客をペルソナの土台にしたうえで、増やしたい層として別に記録します。願望を消すのではなく、実像と分けて残すことで、次の要件定義でどこまで狙うかを判断する材料になります。オーナーの気持ちを尊重しつつ、設計はデータで進める形です。</div>
+  </details>
+  <details>
+    <summary>KJ法やペルソナの文章を、AIに作らせてもいいですか？</summary>
+    <div class="faq-box__a">下書きとしてなら使えます。ふせんの仮のグルーピングや、ペルソナ文の言い換えはAIが得意です。ただし、事実の取り違えがないかを自分で確認し、どのインサイトを採るかの判断は自分で行います。最終的な評価はコーチが行うので、AIに任せた範囲は提出時のAI活用メモに書いておきましょう。</div>
+  </details>
+</div>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>願望とデータの実像を分け、データからペルソナを起こせる</summary>
+    <div class="check-box__detail">オーナーの願望は仮説として別に記録し、ペルソナの土台にはいま通う中心客のデータを使います。リフトなら、仕事帰りの20〜40代・女性6割・運動初心者という事実が起点でした。誰のために作るのかをデータで確かめてから、人物像に落とし込みます。</div>
+  </details>
+  <details>
+    <summary>KJ法で事実を束ね、実装可能なインサイトを導ける</summary>
+    <div class="check-box__detail">気づきを1枚1事実でふせんに書き、関連で寄せて名前を付けます。そこから、なぜそうなるのかを解釈し、次の設計の糸口まで含めたインサイトへ昇華させます。事実の要約や漠然とした不満で止めないのが、実装可能の条件でした。</div>
+  </details>
+  <details>
+    <summary>ジャーニーマップを段階×感情で描き、ペインと改善機会を示せる</summary>
+    <div class="check-box__detail">段階を横に、行動・タッチポイント・思考と感情・ペインを縦に並べ、感情曲線を描きます。曲線が最も落ち込む谷が、最初に直すべきペインです。リフトでは予約段階が谷になり、その隣に24時間予約できる導線という改善機会を書き添えました。</div>
+  </details>
+</div>
+  
+       <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap2/Zkuir" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap2/pV3pl" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div><!-- /.lesson-wrapper -->
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

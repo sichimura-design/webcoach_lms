@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/movie-editing/practice/web/dTs5M -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3章 【実践①】Meta広告向けスクエア動画制作 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/movie-editing/practice/web/dTs5M">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="3章 【実践①】Meta広告向けスクエア動画制作 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/946/medium/0ae11f5c-da62-47e1-8d34-31bebf892763.png?1764393128">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="3章 【実践①】Meta広告向けスクエア動画制作">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/movie-editing/practice/web/dTs5M">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/946/large/0ae11f5c-da62-47e1-8d34-31bebf892763.png?1764393128">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="rbj5cEUTi_YZ5E6i7Zadi34vHtl0wN7lpEGMYZ_Azh9zWk8yod4X8Qvvo1A3J978guiEgOKZbKWkhl5zevE5AA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>Web広告動画制作</div>
+
+          <div class="fw-bold h2">3章 【実践①】Meta広告向けスクエア動画制作</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 【実践①】Meta広告向けスクエア動画制作</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：2時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】Meta広告の編集セオリー</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">スクロールする指を止めるには</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li><li><a href="#heading7" class="tocLink">テキストと映像で伝える情報設計</a></li></ul></li><li><a href="#heading8" class="tocLink">【3-2】Premiere Pro制作フロー</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間：1時間10分</a></li></ul><ul><li><a href="#heading10" class="tocLink">1:1シーケンスとセーフマージン</a></li><li><a href="#heading11" class="tocLink">テキスト中心のモーショングラフィックス</a></li><li><a href="#heading12" class="tocLink">視認性の高いテロップデザイン</a><ul><li><a href="#heading13" class="tocLink"></a></li></ul></li><li><a href="#heading14" class="tocLink">効果的なCTA（行動喚起）の配置</a></li><li><a href="#heading15" class="tocLink">練習問題：CTAボタンを作成しよう</a><ul><li><a href="#heading16" class="tocLink">問題</a></li><li><a href="#heading17" class="tocLink">解答手順</a></li><li><a href="#heading18" class="tocLink">解答例</a></li><li><a href="#heading19" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading20" class="tocLink">【3-3】3章 -章末課題- 美容液のスクエア広告制作</a><ul><li><a href="#heading21" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading22" class="tocLink">課題概要</a><ul><li><a href="#heading23" class="tocLink">提供素材一覧</a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink">テキスト情報</a></li></ul></li><li><a href="#heading28" class="tocLink">構成案と編集指示</a></li><li><a href="#heading29" class="tocLink">制作要件</a></li><li><a href="#heading30" class="tocLink">制作手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item44501" data-item-id="44501" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/ddzau" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/jtcl5" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item43726" data-item-id="43726" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">3章 【実践①】Meta広告向けスクエア動画制作</h2></div>
+        
+        <div class="article-item item_markdown " id="item43727" data-item-id="43727" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：2時間</h4>
+
+<h4 id="heading2">この章で到達できるゴール</h4>
+
+<ul>
+  <li>サイレント再生でも伝わるMeta広告の編集セオリーを理解できる</li>
+  <li>テキスト情報を効果的に見せるモーショングラフィックスの基本を習得できる</li>
+  <li>視認性の高いテロップデザインと、効果的なCTAの配置ができる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item43728" data-item-id="43728" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【3-1】Meta広告の編集セオリー</h2></div>
+        
+        <div class="article-item item_markdown " id="item43729" data-item-id="43729" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item43730" data-item-id="43730" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">スクロールする指を止めるには</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43731" data-item-id="43731" data-item-type="ItemRichText"><div class="item-body-hbr">最初の実践として、Meta（FacebookやInstagram）プラットフォーム向けの広告動画制作に挑戦します。<br>
+<br>
+Meta広告が配信されるのは、主にユーザーが友人や有名人の投稿を次々と見ている「フィード」や「ストーリーズ」の中です。<br>
+この環境で広告動画に求められる最も重要なことは、<span class="decoration-02"><span class="decoration-01">高速でスクロールする視聴者の指を、最初の1〜2秒で止めること</span></span>です。<br>
+<br>
+そのためには、Meta広告の視聴環境における2つの大きな特徴を理解する必要があります。</div></div>
+        
+        <div class="article-item item_html " id="item43732" data-item-id="43732" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01"><span class="decoration-02">サイレント再生が基本</span></span>：多くのユーザーは音を出さずにSNSを閲覧しています。そのため、ナレーションやBGMに頼らず、<span class="decoration-02">音なしでも内容が100%伝わる構成</span>にしなくてはなりません。</li>
+  <li><span class="decoration-01"><span class="decoration-02">冒頭のインパクトが全て</span></span>：静止画のような動きのない画面から始まると、広告だと認識された瞬間にスクロールされてしまいます。動画冒頭からテキストや映像に「動き」をつけることで、「お？」と思わせ、視線を惹きつける必要があります。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item44946" data-item-id="44946" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/946/medium/0ae11f5c-da62-47e1-8d34-31bebf892763.png?1764393128" title=""><img class="img-responsive item-image" alt=" (44946)" data-reference="" src="../../_assets/02382b8b28.webp" width="516" height="640"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item43734" data-item-id="43734" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">テキストと映像で伝える情報設計</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43735" data-item-id="43735" data-item-type="ItemRichText"><div class="item-body-hbr">音なしで、かつ瞬時にメッセージを伝えるために、Meta広告ではテキスト（テロップ）と映像の役割分担が非常に重要になります。</div></div>
+        
+        <div class="article-item item_html " id="item43736" data-item-id="43736" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">テキストの役割</span></span>：視聴者が得られるメリットや、商品の具体的な価値（例：「たった5分でプロの味」「-5kgを目指す」など）を<span class="decoration-02">論理的に、簡潔に</span>伝えます。</li>
+  <li><span class="decoration-01"><span class="decoration-02">映像の役割</span></span>：テキストが示す価値を、<span class="decoration-02">感情的、直感的に</span>補完します。美味しそうな料理の映像や、楽しそうな体験の映像で、「いいな」「欲しいな」という気持ちを喚起します。</li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item43737" data-item-id="43737" data-item-type="ItemRichText"><div class="item-body-hbr">Meta広告でよくある失敗は、画面に情報を詰め込みすぎることです。<br>
+伝えたいメッセージを一つか二つに絞り込み、<span class="decoration-02"><span class="decoration-01">テキストと映像の間に十分な「余白」を意識すること</span></span>で、洗練された印象を与え、メッセージの伝達効果を高めることができます。</div></div>
+        
+        <div class="article-item item_heading " id="item43738" data-item-id="43738" data-item-type="ItemHeading"><h2 class="item-body" id="heading8">【3-2】Premiere Pro制作フロー</h2></div>
+        
+        <div class="article-item item_markdown " id="item43739" data-item-id="43739" data-item-type="ItemMarkdown"><h4 id="heading9">目安の学習時間：1時間10分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43740" data-item-id="43740" data-item-type="ItemRichText"><div class="item-body-hbr">ここからは、実際にAdobe Premiere Proを操作しながら、Meta広告向けのスクエア動画を制作していきます。<br>
+架空の美容液の商品広告を題材に、制作のフローを学んでいきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item43741" data-item-id="43741" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">1:1シーケンスとセーフマージン</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43742" data-item-id="43742" data-item-type="ItemRichText"><div class="item-body-hbr">最初のステップは、広告の「器」となるシーケンスの準備です。<br>
+Metaのフィード広告では、画面占有率が高くバランスの取れた<span class="decoration-02"><span class="decoration-01">1:1（スクエア）</span></span>のアスペクト比が推奨されています。<br>
+<br>
+Premiere Proで新規シーケンスを作成する際に、フレームサイズを「1080」×「1080」のように、幅と高さを同じ数値に設定します。<br>
+<br>
+次に、制作を始める前に必ず表示しておきたいのが<span class="decoration-02"><span class="decoration-01">「セーフマージン」</span></span>です。<br>
+これは、テキストやロゴなどの重要な要素が、スマートフォンの機種やアプリのUI（ユーザーインターフェース）によって見切れてしまわないようにするためのガイドラインです。<br>
+<br>
+プログラムモニター（プレビュー画面）の右下にある「+」ボタンから「セーフマージン」のアイコンをボタンエリアにドラッグ＆ドロップし、クリックすることで表示/非表示を切り替えられます。<br>
+<span class="decoration-02"><span class="decoration-01">重要なテキストやロゴは、内側の枠線（タイトルセーフエリア）の中に収める</span></span>ように心がけましょう。</div></div>
+        
+        <div class="article-item item_link " id="item44947" data-item-id="44947" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=dTs5M&amp;item_id=44947" rel="nofollow noopener noreferrer" target="_blank">セーフマージンデモ動画</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="セーフマージンデモ動画" data-reference="https://www.dropbox.com/scl/fi/ddkleasudy9np8ety8aw5/SafeMargin_ch3_1_v1.mp4?rlkey=ez2gj4xsgyg1f69ac0vtwop55&amp;st=v9fszxdb&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">※音声はありません</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item43743" data-item-id="43743" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">テキスト中心のモーショングラフィックス</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43744" data-item-id="43744" data-item-type="ItemRichText"><div class="item-body-hbr">Meta広告のキモとなるのが、テキストに動きを加える<span class="decoration-02"><span class="decoration-01">「モーショングラフィックス」</span></span>です。<br>
+Premiere Proでは、<span class="decoration-02"><span class="decoration-01">「ツールバー」</span></span>と<span class="decoration-02"><span class="decoration-01">「プロパティ」</span></span>パネル、<span class="decoration-01"><span class="decoration-02">「エフェクトコントロール」</span></span>パネルを主に使って作成します。<br>
+<br>
+基本的な流れは以下の通りです。</div></div>
+        
+        <div class="article-item item_markdown " id="item43745" data-item-id="43745" data-item-type="ItemMarkdown"><ol>
+  <li>「ツールバー」で、テキストやシェイプ（図形）のレイヤーを作成し、「プロパティ」パネルでデザインを整えます。</li>
+  <li>タイムライン上に作成されたグラフィッククリップを選択します。</li>
+  <li>「エフェクトコントロール」パネルを開き、動かしたいプロパティ（位置、スケールなど）のストップウォッチアイコンをクリックして、キーフレームアニメーションを作成します。</li>
+</ol>
+
+<p>例えば、テキストを画面の外からスライドインさせるアニメーションは、以下のように作成します。</p>
+
+<ul>
+  <li>アニメーションの終了地点（テキストが最終的に表示される位置）に再生ヘッドを合わせ、最初のキーフレームを打ちます。</li>
+  <li>アニメーションの開始地点に再生ヘッドを戻し、テキストの位置を画面の外に移動させます。すると自動的に2つ目のキーフレームが打たれ、アニメーションが完成します。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_link " id="item44948" data-item-id="44948" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=dTs5M&amp;item_id=44948" rel="nofollow noopener noreferrer" target="_blank">アニメーションデモ動画</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="アニメーションデモ動画" data-reference="https://www.dropbox.com/scl/fi/113o5p5w5fly0mfa8n1mp/SlideIn_ch3_2_v1.mp4?rlkey=6cyup4tcb474p2ct8vamzbe2w&amp;st=gz06gqk8&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">※音声はありません</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item43746" data-item-id="43746" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">視認性の高いテロップデザイン</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43747" data-item-id="43747" data-item-type="ItemRichText"><div class="item-body-hbr">高速でスクロールされるフィード上では、テロップが一瞬で認識できなければなりません。<br>
+<span class="decoration-01"><span class="decoration-02">視認性</span></span>（見やすさ）を高めるためには、デザインの基本ルールを押さえることが重要です。</div></div>
+        
+        <div class="article-item item_html " id="item44923" data-item-id="44923" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">フォント選び</span></span>：可読性の高いゴシック体を基本としましょう。明朝体はおしゃれですが、小さな画面では線が細く読みにくい場合があります。</li>
+  <li><span class="decoration-01"><span class="decoration-02">文字を際立たせる</span></span>：背景の映像に文字が埋もれないように、「エッセンシャルグラフィックス」パネルの「アピアランス」設定を活用します。<ul>
+  <li><span class="decoration-01"><span class="decoration-02">ストローク</span></span>：文字の輪郭を縁取ることで、背景から文字を分離させます。</li>
+  <li><span class="decoration-01"><span class="decoration-02">背景</span></span>：文字の下に半透明の座布団を敷くことで、どんな映像の上でも確実に文字を読ませることができます。</li>
+  <li><span class="decoration-01"><span class="decoration-02">シャドウ</span></span>：文字に影をつけることで、立体感と可読性を向上させます。</li>
+</ul></li>
+  <li><span class="decoration-01"><span class="decoration-02">文字数と改行</span></span>：1行の文字数は10〜15文字程度を目安にし、意味の区切りで適切に改行を入れると、格段に読みやすくなります。</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item44949" data-item-id="44949" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/949/medium/399f06bb-9c79-4ad7-b6bb-e8a60e1e87c8.png?1764393880" title=""><img class="img-responsive item-image" alt=" (44949)" data-reference="" src="../../_assets/f786ab6e51.webp" width="640" height="360"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item43750" data-item-id="43750" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">効果的なCTA（行動喚起）の配置</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43751" data-item-id="43751" data-item-type="ItemRichText"><div class="item-body-hbr">広告動画の最終目的は、視聴者に次のアクションを起こしてもらうことです。<br>
+そのため、動画の最後には必ず<span class="decoration-02"><span class="decoration-01">「CTA（Call To Action）」</span></span>を配置します。<br>
+<br>
+CTAは、単にテキストを置くだけでなく、「ボタン」のように見せることでクリック率を高めることができます。<br>
+エッセンシャルグラフィックスで、角丸の長方形シェイプとテキストを組み合わせることで簡単に作成できます。</div></div>
+        
+        <div class="article-item item_html " id="item44924" data-item-id="44924" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">具体的な文言を使う</span></span><br>
+  「購入」や「登録」といった直接的な言葉よりも、「詳しくはこちら」「30日間無料体験を試す」のように、ユーザーが次のステップで何を得られるかを示すことで、クリックへのハードルを下げることができます。</li>
+  <li><span class="decoration-01"><span class="decoration-02">動画の最後に十分な表示時間を確保する</span></span><br>
+  最低でも3秒以上は表示し、視聴者が内容を認識し、クリックするまでの時間を確保しましょう。</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item43753" data-item-id="43753" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">練習問題：CTAボタンを作成しよう</h3></div>
+        
+        <div class="article-item item_markdown " id="item43754" data-item-id="43754" data-item-type="ItemMarkdown"><h4 id="heading16">問題</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43755" data-item-id="43755" data-item-type="ItemRichText"><div class="item-body-hbr">Premiere Proのエッセンシャルグラフィックスのシェイプツールとテキストツールを使い、「<span class="decoration-01"><span class="decoration-02">無料サンプルを申し込む</span></span>」と書かれた、クリックしたくなるようなボタン風のデザインを作成してください。</div></div>
+        
+        <div class="article-item item_markdown " id="item43756" data-item-id="43756" data-item-type="ItemMarkdown"><h4 id="heading17">解答手順</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item43757" data-item-id="43757" data-item-type="ItemMarkdown"><ol>
+  <li>ツールバーから「長方形ツール」を選択して、プログラムモニター上に長方形を描画します。</li>
+  <li>パネル右側の「アピアランス」で、シェイプの「塗り」を任意の色（例：緑やオレンジなど、目立つ色）に設定します。</li>
+  <li>同じくパネル右側の設定で、角の丸みの数値を調整し、シェイプの角を丸くします。</li>
+  <li>ツールバーから「横書きテキストツール」を選択し、作成したシェイプの上に「無料サンプルを申し込む」と入力します。</li>
+  <li>テキストレイヤーを選択し、「アピアランス」で文字色を白に設定し、フォントやサイズを調整します。</li>
+  <li>テキストレイヤーとシェイプレイヤーの両方を選択し、「整列と変形」の「水平方向中央」「垂直方向中央」をクリックして、テキストをボタンの中央に配置します。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_markdown " id="item43758" data-item-id="43758" data-item-type="ItemMarkdown"><h4 id="heading18">解答例</h4>
+</div>
+        
+        <div class="article-item item_image " id="item44950" data-item-id="44950" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/950/medium/f4883d53-728f-4fbb-be84-17a3f1833910.png?1764393960" title=""><img class="img-responsive item-image" alt=" (44950)" data-reference="" src="../../_assets/fe5cef4793.webp" width="640" height="360"></a><h4 id="heading19"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item43759" data-item-id="43759" data-item-type="ItemHeading"><h2 class="item-body" id="heading20">【3-3】3章 -章末課題- 美容液のスクエア広告制作</h2></div>
+        
+        <div class="article-item item_markdown " id="item43760" data-item-id="43760" data-item-type="ItemMarkdown"><h4 id="heading21">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item43761" data-item-id="43761" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">課題概要</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43762" data-item-id="43762" data-item-type="ItemRichText"><div class="item-body-hbr">この章の総仕上げとして、新発売の美容液「Urulu Drop」のInstagramフィード広告（15秒）を制作します。<br>
+提供された素材と、以下の具体的な構成案を元に、サイレント再生でも魅力が伝わる動画を完成させましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item44925" data-item-id="44925" data-item-type="ItemMarkdown"><h4 id="heading23">提供素材一覧</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43764" data-item-id="43764" data-item-type="ItemRichText"><div class="item-body-hbr">この課題では、以下の画像素材とテキスト情報が提供されます。<br>
+動画の雰囲気に合うBGMは、あなた自身で選んでみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item44926" data-item-id="44926" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">画像素材</span></div></div>
+        
+        <div class="article-item item_markdown " id="item43766" data-item-id="43766" data-item-type="ItemMarkdown"><ul>
+  <li>白い背景で撮影された商品写真（美容液ボトル.jpg）</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item43767" data-item-id="43767" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/043/767/medium/6381caf0-36a5-4723-85a6-a6fdd1528d99.png?1763705677" title=""><img class="img-responsive item-image" alt=" (43767)" data-reference="" src="../../_assets/5d320d556e.webp" width="640" height="640"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_html " id="item43770" data-item-id="43770" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item43768" data-item-id="43768" data-item-type="ItemMarkdown"><ul>
+  <li>美容液のとろっとした質感がわかる接写写真（テクスチャ.jpg）</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item43769" data-item-id="43769" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/043/769/medium/cbb44178-ae12-42d8-9f8f-cb640f5596e2.png?1763705783" title=""><img class="img-responsive item-image" alt=" (43769)" data-reference="" src="../../_assets/0a8a10c33b.webp" width="640" height="640"></a><h4 id="heading25"></h4></div></div>
+        
+        <div class="article-item item_html " id="item43771" data-item-id="43771" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item43772" data-item-id="43772" data-item-type="ItemMarkdown"><ul>
+  <li>テロップの背景に使える、おしゃれなベージュ色の画像（背景.jpg）</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item43773" data-item-id="43773" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/043/773/medium/8e457456-f3a7-456b-8f37-b671bac4459e.png?1763705867" title=""><img class="img-responsive item-image" alt=" (43773)" data-reference="" src="../../_assets/66aac41e44.webp" width="640" height="640"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_link " id="item44498" data-item-id="44498" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=dTs5M&amp;item_id=44498" rel="nofollow noopener noreferrer" target="_blank">3章　画像素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="3章　画像素材" data-reference="https://www.dropbox.com/scl/fo/5po173e6btdnlz3yuey5p/AIqNIbVjOzyXIk-KEwptWSU?rlkey=clrqftj92a0affqr62atyxj72&amp;st=cu0sjdc1&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">こちらから画像をダウンロードください</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item43774" data-item-id="43774" data-item-type="ItemMarkdown"><h4 id="heading27">テキスト情報</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item43775" data-item-id="43775" data-item-type="ItemMarkdown"><ul>
+  <li>キャッチコピー： 乾燥注意報、出てませんか？</li>
+  <li>商品名： Urulu Drop</li>
+  <li>特徴①： 潤い成分98%</li>
+  <li>特徴②： 驚きの浸透力</li>
+  <li>CTA（行動喚起）： 詳細はHPをチェック</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item43776" data-item-id="43776" data-item-type="ItemHeading"><h3 class="item-body" id="heading28">構成案と編集指示</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43777" data-item-id="43777" data-item-type="ItemRichText"><div class="item-body-hbr">以下の構成案に沿って、15秒の動画を編集してください。<br>
+各パートでどのようなアニメーションを加えるかの指示も含まれています。</div></div>
+        
+        <div class="article-item item_html " id="item43778" data-item-id="43778" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        </tbody><thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div>時間(秒)</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>映像・グラフィックス指示</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>テロップ指示</div>
+                    </div>
+                </th>
+              <th scope="col">
+                    <div>
+                        <div>編集のポイント</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody><tr>
+            <th scope="row">
+                <div>
+                    <div>0-3</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>背景.jpg を画面全体に表示。</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>乾燥注意報、出ていませんか？</div>
+                </div>
+            </td>
+          <td>
+                <div>
+                    <div>・視聴者の悩みに「問いかける」フックを作る。<br>
+                      ・テキストがふわっと表示される（不透明度を0→100%に）アニメーションを設定。</div>
+                </div>
+            </td>
+        </tr>
+      <tr>
+            <th scope="row">
+                <div>
+                    <div>3-7</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>美容液ボトル.jpg を右からスライドインで表示させる。</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>Urulu Drop</div>
+                </div>
+            </td>
+          <td>
+                <div>
+                    <div>・主役である商品を見せる。<br>
+      ・ボトル写真のアニメーションと連動して、商品名テロップを<strong>下からスライドイン</strong>させる。</div>
+                </div>
+            </td>
+        </tr>
+      <tr>
+            <th scope="row">
+                <div>
+                    <div>7-12</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>テクスチャ.jpgを背景に表示。</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>潤い成分98%<br>驚きの浸透力</div>
+                </div>
+            </td>
+          <td>
+                <div>
+                    <div>・商品の具体的な「価値」を伝える。<br>
+      ・2つの特長テロップが、<strong>下から順番にシュッと表示</strong>されるアニメーションを設定する。</div>
+                </div>
+            </td>
+        </tr>
+      <tr>
+            <th scope="row">
+                <div>
+                    <div>12-15</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>美容液ボトル.jpgを中央に再度表示。</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>詳細はHPを<br>チェック</div>
+                </div>
+            </td>
+          <td>
+                <div>
+                    <div>・CTAを作成する。スライドなど特徴を付けた登場の仕方をさせる。<br>
+      ・最後に商品をしっかり印象付ける。</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_heading " id="item43779" data-item-id="43779" data-item-type="ItemHeading"><h3 class="item-body" id="heading29">制作要件</h3></div>
+        
+        <div class="article-item item_html " id="item43781" data-item-id="43781" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>動画のサイズは<span class="decoration-02">1080px × 1080px (1:1)</span>、長さは<span class="decoration-02">15秒</span>とすること。</li>
+  <li>構成案の指示に従い、<span class="decoration-02">合計3箇所以上のアニメーション</span>を設定すること。</li>
+  <li> 動画の最後に<span class="decoration-02">「詳細はHPをチェック」というボタン風デザインのCTA</span>を必ず配置すること。</li>
+  <li>動画の雰囲気に合う<span class="decoration-02">BGMを自分で選定</span>し、配置すること。</li>
+  <ul><li>BGMの探し方: 著作権フリーの音源サイト（例: DOVA-SYNDROME）などで、「おしゃれ」「リラックス」「ピアノ」といったキーワードで検索してみましょう。</li></ul>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item43782" data-item-id="43782" data-item-type="ItemHeading"><h3 class="item-body" id="heading30">制作手順</h3></div>
+        
+        <div class="article-item item_markdown " id="item43783" data-item-id="43783" data-item-type="ItemMarkdown"><ol>
+  <li>Premiere Proで1080px × 1080pxの新規シーケンスを作成し、「セーフマージン」を表示します。</li>
+  <li>著作権フリーサイトでBGMを探し、ダウンロードします。</li>
+  <li>構成案の表を見ながら、タイムラインに画像素材とBGMを配置します。</li>
+  <li>エッセンシャルグラフィックスを使い、各パートのテロップを作成します。</li>
+  <li>各テロップクリップや画像クリップに対し、「エフェクトコントロール」パネルでキーフレームを打ち、構成案で指示されたアニメーション（フェードイン、スライドインなど）を設定します。</li>
+  <li>動画の最後に、練習問題で学んだテクニックを応用して、「詳細はHPをチェック」というCTAボタンを作成し、アニメーションを設定します。</li>
+  <li>全体のデザイン（フォント、配色）に統一感を持たせ、視認性を高めるために境界線やシャドウを適切に設定します。</li>
+  <li>全体を再生して確認し、問題がなければH.264形式で書き出して完成です。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_link " id="item44951" data-item-id="44951" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=dTs5M&amp;item_id=44951" rel="nofollow noopener noreferrer" target="_blank">Meta広告見本動画</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Meta広告見本動画" data-reference="https://www.dropbox.com/scl/fi/f5txwue2zjqh2rguguf1y/MetaModelMovie_ch3_3_v1.mp4?rlkey=vkt7y76r8jebvh44prm8dv2dz&amp;st=c3bxklfp&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item43784" data-item-id="43784" data-item-type="ItemHtml"><div class="item-body"><div class="callout white"><div class="title-area">
+  <div class="icon bulb"></div><div class="title"><strong>制作物をチェックしよう！</strong></div>
+  </div>
+  <div class="content-area"><ul><li>シーケンスのアスペクト比は正しく1:1に設定されていますか？</li>
+    <li>サイレント再生を前提として、音なしでもすべての情報が伝わる構成になっていますか？</li>
+    <li>構成案で指示されたアニメーションは、すべて正しく適用されていますか？</li>
+    <li>テロップのデザインは視認性が高く、背景の映像に埋もれていませんか？</li>
+    <li>CTAは明確で、視聴者が次に行うべき行動が分かりやすくなっていますか？</li></ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item43785" data-item-id="43785" data-item-type="ItemRichText"><div class="item-body-hbr">これで「【実践①】Meta広告向けスクエア動画制作」の解説を終わります。<br>
+<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item44500" data-item-id="44500" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/ddzau" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/jtcl5" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 【実践①】Meta広告向けスクエア動画制作</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：2時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】Meta広告の編集セオリー</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">スクロールする指を止めるには</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li><li><a href="#heading7" class="tocLink">テキストと映像で伝える情報設計</a></li></ul></li><li><a href="#heading8" class="tocLink">【3-2】Premiere Pro制作フロー</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間：1時間10分</a></li></ul><ul><li><a href="#heading10" class="tocLink">1:1シーケンスとセーフマージン</a></li><li><a href="#heading11" class="tocLink">テキスト中心のモーショングラフィックス</a></li><li><a href="#heading12" class="tocLink">視認性の高いテロップデザイン</a><ul><li><a href="#heading13" class="tocLink"></a></li></ul></li><li><a href="#heading14" class="tocLink">効果的なCTA（行動喚起）の配置</a></li><li><a href="#heading15" class="tocLink">練習問題：CTAボタンを作成しよう</a><ul><li><a href="#heading16" class="tocLink">問題</a></li><li><a href="#heading17" class="tocLink">解答手順</a></li><li><a href="#heading18" class="tocLink">解答例</a></li><li><a href="#heading19" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading20" class="tocLink">【3-3】3章 -章末課題- 美容液のスクエア広告制作</a><ul><li><a href="#heading21" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading22" class="tocLink">課題概要</a><ul><li><a href="#heading23" class="tocLink">提供素材一覧</a></li><li><a href="#heading24" class="tocLink"></a></li><li><a href="#heading25" class="tocLink"></a></li><li><a href="#heading26" class="tocLink"></a></li><li><a href="#heading27" class="tocLink">テキスト情報</a></li></ul></li><li><a href="#heading28" class="tocLink">構成案と編集指示</a></li><li><a href="#heading29" class="tocLink">制作要件</a></li><li><a href="#heading30" class="tocLink">制作手順</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/ddzau" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/jtcl5" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

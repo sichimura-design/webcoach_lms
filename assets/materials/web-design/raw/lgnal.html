@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="F48nY1bfWs70GKeAgqVSyg==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1491" data-domain="learn.webcoach.jp" data-url="/web-design/lgnAL" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>LP制作の手順を学ぼう！ - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/lgnAL">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="LP制作の手順を学ぼう！ - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/551/medium/4188bafc-c482-4d5f-a4f0-dc7e3aba5577.png?1754609704">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="LP制作の手順を学ぼう！">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/lgnAL">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/551/large/4188bafc-c482-4d5f-a4f0-dc7e3aba5577.png?1754609704">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/lgnAL"
+    },
+    "headline": "LP制作の手順を学ぼう！",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_links/images/000/028/551/medium/4188bafc-c482-4d5f-a4f0-dc7e3aba5577.png?1754609704",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-02T12:22:51+09:00",
+    "dateModified": "2026-08-31T10:58:18+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="-HmEQWw1LTbF8hLBPt4KGhgFif4WyJoMAJr9ruJeQylmMnYwXKdiq-F-FxawsWrTqN_tqMZlZnOEcOThkld4pg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">LP制作の手順を学ぼう！</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item34997" data-item-id="34997" data-item-type="ItemHeading"><h2 class="item-body">LP制作の手順を学ぼう！</h2></div>
+        
+        <div class="article-item item_markdown " id="item39402" data-item-id="39402" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間: 2740分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item28547" data-item-id="28547" data-item-type="ItemHeading"><h2 class="item-body">【1-1】ランディングページとは</h2></div>
+        
+        <div class="article-item item_markdown " id="item39403" data-item-id="39403" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:180分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item28548" data-item-id="28548" data-item-type="ItemHeading"><h3 class="item-body">ランディングページって何？</h3></div>
+        
+        <div class="article-item item_html " id="item28549" data-item-id="28549" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ランディングページ（LP）は、日本語では <span class="decoration-02">着地ページ</span> とも呼ばれ、検索結果や広告・メルマガ・SNSなどからクリックされたユーザーが最初にみるページのことを指します。</li>
+  <li><span class="decoration-02">広告キャンペーンや特定のプロモーションの一部として使用</span> され、<span class="decoration-02">訪問者を特定の行動に誘導するために最適化</span> されたページです。</li>
+  <li>キャンペーン中の商品やサービスを単体で訴求するため、<span class="decoration-02">ユーザーの視線を集中させることができ、通常のWEBサイトに比べて離脱を防ぐ効果</span> があります。</li>
+  <li>下の画像はLP制作・Web広告に参考になるLPデザインまとめリンク集の画像です。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item38706" data-item-id="38706" data-item-type="ItemHtml"><div class="item-body"><a href="/theme/webcoach/img/practical_assignment/lp_production/EXlp.png" class="lightbox">
+  <img src="/theme/webcoach/img/practical_assignment/lp_production/EXlp.png" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item28550" data-item-id="28550" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">まとめ集のリンク</span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_link " id="item28551" data-item-id="28551" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=lgnAL&amp;item_id=28551" rel="nofollow noopener noreferrer" target="_blank">LPデザインに参考になるランディングページ集｜LP advance</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="LPデザインに参考になるランディングページ集｜LP advance" data-reference="https://site-advance.info/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/551/thumb/4188bafc-c482-4d5f-a4f0-dc7e3aba5577.png?1754609704" width="75" height="75" /></div><div class="media-body"><div class="item-body">【LP掲載数：2284】心にグッとくるLP制作を！LP advanceは、LP制作・Web広告に参考になるLPデザインリンク集です。デザインだけでなく、構成・キャッチコピー・エフェクト効果まで、是非あなただけのLP制作のヒントにしてみてください。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item28553" data-item-id="28553" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>一般的には、<span class="decoration-02">ユーザーに縦長の1枚ページをスクロールしながら読んでもらい、クロージングを行うページ</span> をランディングページと言います。</li>
+
+  <li>
+    下の画像はツール活用のランディングページ（LP）です。
+    <ul>
+      <li>実際のLPは <a href="https://www.valuesccg.com/dockpit/#about" target="_blank">Dockpitランディングページ</a> から見ることが出来ます。</li>
+    </ul>
+  </li>
+
+  <li>このようにランディングページ（LP）とはサービスを単体で訴求する縦長の1ページで、クロージングを行うものと考えてください。</li>
+
+  <li>
+    WEBデザイナーの仕事として、ランディングページの制作依頼案件も多数あります。
+    <ul>
+      <li>ランディングページ制作の練習を実施し、ポートフォリオにも掲載しておくと、制作依頼をうける事も出来るようになりますので、ぜひランディングページ制作を実施しましょう。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item38707" data-item-id="38707" data-item-type="ItemHtml"><div class="item-body"><a href="/theme/webcoach/img/practical_assignment/lp_production/image.png" class="lightbox">
+  <img src="/theme/webcoach/img/practical_assignment/lp_production/image.png" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_html " id="item28555" data-item-id="28555" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">縦型LPとサイト型LPのそれぞれの強み</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>LPには縦型と、サイト型の２種類があります。</li>
+            <li><span class="decoration-02">縦型LP：</span>
+                <ul>
+                    <li>1ページでストーリーを一貫して伝えられるため、ユーザーの注意を逸らしにくく、高いコンバージョン率を狙いやすいです。</li>
+                    <li>広告やSNSの誘導先として利用しやすく、短期的なキャンペーンやセールスに適しています。</li>
+                </ul>
+            </li>
+            <li><span class="decoration-02">サイト型LP：</span>
+                <ul>
+                    <li>複数ページで情報を整理できるので、SEOの面で有利になりやすく、より多角的な情報提供が可能です。</li>
+                    <li>ユーザーは自分のペースで関心のあるページを読み進めることができます。段階的に情報を提供することで、ユーザーの理解を深め、信頼感を育み、意欲を徐々に高めていくことが可能です。このプロセスを「ナーチャリング（顧客育成）」と呼びます。</li>
+                </ul>
+            </li>
+        </ul>
+      <span>目的や商品特性、運用の仕方に応じて、「縦型」か「サイト型」かを選びましょう。<br>どちらを使うにしても、ユーザー視点の使いやすさを最優先に考えて誘導することが大事です。</span>
+    </div>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item28556" data-item-id="28556" data-item-type="ItemHeading"><h3 class="item-body">ランディングページはどうつくれば良い？</h3></div>
+        
+        <div class="article-item item_html " id="item28557" data-item-id="28557" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    『ランディングページ(LP)を作りたいけれど、何から始めればいいの？』『どんなツールを使えばいいの？』と悩んでいませんか？
+    <ul>
+      <li>
+        今回はランディングページ制作工程を確認しながら、ランディングページの作り方を学んで頂き、その後、ご自身でもランディングページ制作実施課題を実施してもらうことで、<span class="decoration-02">ランディングページの作り方が分からない！というお悩みを解決</span>していきたいと思います。
+      </li>
+    </ul>
+  </li>
+  <li>
+    早速、制作工程確認といきたいところですが、その前に、ランディングページ制作における評価方法を確認しておきましょう。
+    <ul>
+      <li>
+        この評価方法は、<span class="decoration-02">ランディングページを作る前にも作った後にも常に頭に入れておきたいランディングページ評価法となっています。</span>
+      </li>
+      <li>
+        制作工程に入る前に、下記のランディングページ評価方法を考えながら、制作工程に移って頂くと更に素晴らしいランディングページが仕上がるはずです！
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28558" data-item-id="28558" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ランディングページの評価方法</span></div>
+    </div>
+    <div class="content-area">
+      <ul>
+        <li>
+          <span class="decoration-02">一番伝えたいこと（企画）は伝わっているか</span>
+          <ul>
+            <li>ターゲットやペルソナに合わせたキャッチコピーをいれていますか？</li>
+            <li>重要なことは、表現を変えながら3回伝えると効果的です。</li>
+          </ul>
+        </li>
+        <li>
+          <span class="decoration-02">行動を促す要素が入っているかどうか</span>
+          <ul>
+            <li>ベネフィットがリアルに想像できるようなものになっていますか？</li>
+            <li>クロージングオファーは欲しいと思えるようなものになっていますか？</li>
+          </ul>
+        </li>
+        <li>
+          <span class="decoration-02">他社より優れていると思わせる</span>
+          <ul>
+            <li>USPを打ち出す、実績・事例・ビフォーアフターなど他社製品より優れていると思わせることができていますか？</li>
+            <li>※ USPとは、Unique Selling Propositionの略で、 他社との差別化要素。例: 業界初の美容成分配合 など。</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item28559" data-item-id="28559" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ランディングページの構成</span></div>
+    </div>
+    <div class="content-area">
+      <ul>
+        <li>
+          LPでは、大きく「ファーストビュー」「商品・サービスの訴求」「証拠・実績」「CTA」の4要素を意識します。
+        </li>
+        <li>
+         特に、スマホでの閲覧を想定した縦長デザインが増えており、見出しや余白の使い方が鍵になります。
+        </li>
+        <ol>
+          <li>ファーストビューでは、キャッチコピーやビジュアルでユーザーの興味を即座に引きつけましょう。</li>
+          <li>本文部分では、商品の特徴やベネフィット、利用シーンなどを丁寧に解説します。</li>
+          <li>説得力を高めるために、顧客の声・事例・数字といった証拠を入れましょう。</li>
+          <li>最後に、問い合わせや購入へ導くCTAを配置し、アクションを促します。</li>
+        </ol>
+      </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item28560" data-item-id="28560" data-item-type="ItemHeading"><h3 class="item-body"> 評価方法を満たす具体例：外国語教育のランディングページ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28561" data-item-id="28561" data-item-type="ItemRichText"><div class="item-body-hbr">以下は、評価方法の各項目を満たすランディングページの具体例です。</div></div>
+        
+        <div class="article-item item_markdown " id="item28562" data-item-id="28562" data-item-type="ItemMarkdown"><h4 id="section">1. 一番伝えたいこと（企画）は伝わっているか</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28566" data-item-id="28566" data-item-type="ItemHtml"><div class="item-body"><span>キャッチコピーとファーストビューのデザイン</span>
+<ul>
+  <li><span class="decoration-02">ターゲティング・ペルソナ：</span><br>「毎日の仕事、急な誘い、月謝の高さ→英語学習を続けるのが難しいと感じているあなたへ」</li>
+  <li><span class="decoration-02">キャッチコピー：</span><br>「話せる・聞こえる”活きた英語”が最短最速で学べる1Dayシークレッツオンラインセミナー」</li>
+  <li><span class="decoration-02">サブヘッドライン：</span><br>「たった１つのシンプルな学習法で、キャリアアップや海外旅行で役にたつ」</li>
+  <li><span class="decoration-02">デザイン要素：</span><br>ファーストビュー：「ガッツポーズ」のアイコンを入れて、達成感が強調される画像。過去実績による信頼性を強調。</li>
+  <li><span class="decoration-02">CTAボタン：</span><br>「今すぐ無料のオンラインセミナーに参加する」という動詞で終わることによる次のアクションの明確化、「残席わずか」による緊急度を高めるマイクロコピー。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28564" data-item-id="28564" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/564/medium/5dcb72e0-3a31-418f-943a-b857122030de.png?1751427731" title=""><img class="img-responsive item-image" alt=" (28564)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/564/medium/5dcb72e0-3a31-418f-943a-b857122030de.png?1751427731" width="473" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item28565" data-item-id="28565" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28567" data-item-id="28567" data-item-type="ItemMarkdown"><h4 id="section">2.行動を促す要素が入っているかどうか</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28568" data-item-id="28568" data-item-type="ItemHtml"><div class="item-body"><span>明確なベネフィットとクロージングオファー</span>
+<ul>
+  <li><span class="decoration-02">ベネフィット：</span>
+    <ul>
+      <li>仕事の幅が広がりキャリアアップを目指せる</li>
+      <li>海外の映画やドラマを字幕・吹替なしで楽しめる</li>
+      <li>海外の友人や恋人と楽しくコミニケーションが取れる</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">クロージングオファー：</span>
+    <ul>
+      <li>残席わずか</li>
+      <li>今すぐ無料のオンラインセミナーに参加する（CTAボタンは目立つ色で、クリック感のあるアニメーション）</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28569" data-item-id="28569" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/569/medium/7f812cce-6e49-47b5-918e-b629a3113466.png?1751428406" title=""><img class="img-responsive item-image" alt=" (28569)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/569/medium/7f812cce-6e49-47b5-918e-b629a3113466.png?1751428406" width="227" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item28570" data-item-id="28570" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28571" data-item-id="28571" data-item-type="ItemMarkdown"><h4 id="section">3. 他社より優れていると思わせる</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28572" data-item-id="28572" data-item-type="ItemHtml"><div class="item-body"><span>USP・実績・ビフォーアフターの提示</span>
+<ul>
+  <li><span class="decoration-02">USP</span>
+    <ul>
+      <li>有料の英会話スクール、実践的を謳う英会話教材</li>
+      <li>中途半端に英語学習を続けた人の末路</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">ターゲットに対応する実績</span>
+    <ul>
+      <li>ターゲット：「毎日の仕事、急な誘い、月謝の高さ→英語学習を続けるのが難しいと感じているあなたへ」</li>
+      <li>実績：「たった3ヶ月で」「医療職をこなしながら」</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">ビフォーアフター</span>
+    <ul>
+      <li>Before: 英検準3級・TOEIC505点</li>
+      <li>After: 英検1級・TOEIC785点</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28573" data-item-id="28573" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/573/medium/a08268c4-ab1e-4c61-9c98-2012cb087024.png?1751428506" title=""><img class="img-responsive item-image" alt=" (28573)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/573/medium/a08268c4-ab1e-4c61-9c98-2012cb087024.png?1751428506" width="236" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item28574" data-item-id="28574" data-item-type="ItemHeading"><h3 class="item-body">ランディングページの運用</h3></div>
+        
+        <div class="article-item item_markdown " id="item28575" data-item-id="28575" data-item-type="ItemMarkdown"><h4 id="lp">広告を使ったLPへの集客</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28576" data-item-id="28576" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>リスティング広告（Google Ads等）では、キーワード選定と広告文の整合性が重要です。そのため、広告の見出しや説明文とLPのキャッチコピーを一致させると、ユーザーの意図とマッチしやすいです。</li>
+  <li>SNS広告（Facebook、Instagramなど）では、ターゲティングの絞り込みと視覚的なクリエイティブがカギになります。</li>
+  <li>広告経由での流入に対しては、コンバージョン測定を行い、どの媒体が効果的か常に検証します。適正な広告予算と施策を見極め、LPの改善を繰り返すことで安定した成果につなげましょう。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28577" data-item-id="28577" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/577/medium/04dd9279-e230-4d53-b2df-0caa5a74c216.png?1751429069" title=""><img class="img-responsive item-image" alt=" (28577)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/577/medium/04dd9279-e230-4d53-b2df-0caa5a74c216.png?1751429069" width="640" height="222" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item28578" data-item-id="28578" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28579" data-item-id="28579" data-item-type="ItemMarkdown"><h4 id="section">コンテンツマーケティングとの連携</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28580" data-item-id="28580" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>ブログやオウンドメディア、SNS、YouTubeなどで価値ある情報を発信し、見込み客を継続的に育成しましょう。LPは最終的な「コンバージョン導線」として設定し、記事や動画などから自然に誘導するようにしましょう。</li>
+  <li>信頼関係を深めるために、ユーザーが抱える課題を解決する内容を優先的に提供し、メルマガやSNS連携により、購買に至らない層も継続的にフォローし、長期的に獲得を目指しましょう。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28581" data-item-id="28581" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/581/medium/d29c917e-b392-421a-be82-970fb4f23ddc.png?1751429168" title=""><img class="img-responsive item-image" alt=" (28581)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/581/medium/d29c917e-b392-421a-be82-970fb4f23ddc.png?1751429168" width="640" height="182" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item28582" data-item-id="28582" data-item-type="ItemHeading"><h2 class="item-body">【1-2】商品販売のランディングページの制作 -基礎編-</h2></div>
+        
+        <div class="article-item item_markdown " id="item39404" data-item-id="39404" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:480分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item28583" data-item-id="28583" data-item-type="ItemRichText"><div class="item-body-hbr">ここからは、商品販売のランディングページの制作工程を確認していきます。</div></div>
+        
+        <div class="article-item item_heading " id="item28584" data-item-id="28584" data-item-type="ItemHeading"><h3 class="item-body"> 1. 要件定義書読み込み（ヒアリング）</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28585" data-item-id="28585" data-item-type="ItemRichText"><div class="item-body-hbr">要件定義書は依頼者によって内容が違うためまずはしっかり読み込み、<span class="decoration-02">分か</span><span class="decoration-02">らない点や知りたい点が要件定義書に組み込まれていない場合はヒアリングを実施しましょう。</span><br>
+<br>
+では、早速ですが以下の要件定義書を読み込んでいきましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item28586" data-item-id="28586" data-item-type="ItemMarkdown"><h4 id="section">要件定義書 ・商品（飲料水）販売ランディングページ</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28587" data-item-id="28587" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <thead>
+    <tr>
+      <th scope="col">タイトル</th>
+      <th scope="col">補足情報</th>
+      <th scope="col">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">商材と訴求ポイント</th>
+      <td>商材：水<br>社名：W.B.C</td>
+      <td>
+        朝・昼・夜に必要とされている成分が入っているお水をカテゴリ分けし、ASA・HIRU・YORU 水として販売する。<br>
+        3日間のお試しセットとして、1,800円（税込）で販売しトライアル→コンバージョン（CTA）は3日間おためしセットにしましょう。<br>
+        商材には3日間おためしセット購入項目、その他定期リピートを増やしていくことが目的。
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">ターゲット</th>
+      <td>デモグラ情報（性別・年齢...etc）</td>
+      <td>30代〜40代の働く女性。美と健康を意識し、日頃から飲食物に気を配ることで内面から綺麗になることを目指しています。メインターゲットは独身女性。</td>
+    </tr>
+    <tr>
+      <th scope="row">ブランドターゲット</th>
+      <td>デモグラ情報を<br>大まかにまとめた内容を記載</td>
+      <td>自然派・健康志向の方</td>
+    </tr>
+    <tr>
+      <th scope="row">キャッチコピー・文言その他優先順位</th>
+      <td>キャッチコピーの変更可</td>
+      <td>
+        時間に合わせて カラダが欲しい 水がある。<br>
+        補足：今回のLPでは上記キャッチコピーを使用して頂いて構いませんが、オリジナルキャッチコピーも制作出来るようになるとお仕事がスムーズになります。
+      </td>
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td>コピー表示上の注意点や補足</td>
+      <td>自然派・健康志向の方向けの商品イメージを壊さないようにしてください</td>
+    </tr>
+    <tr>
+      <th scope="row">マイクロコピーとその配置</th>
+      <td>マイクロコピーの変更可</td>
+      <td>
+        ・時間によって必要な成分が違うことをご存知ですか？<br>
+        ・朝・昼・夜とお水を飲む時、みなさんの身体が欲している成分は全て違います。
+      </td>
+    </tr>
+    <tr>
+      <th scope="row"></th>
+      <td>配置や優先順位含めた内容の補足</td>
+      <td>キャッチコピー同様。そのまま使用・制作して頂いて構いませんが、オリジナルマイクロコピーを制作出来るようにしておくとお仕事がスムーズになります。</td>
+    </tr>
+    <tr>
+      <th scope="row">色味</th>
+      <td>特にない場合、やめてほしい色味など記載</td>
+      <td>赤は使用しないでください。</td>
+    </tr>
+    <tr>
+      <th scope="row">与えたい印象</th>
+      <td>特になければ、与えたくない印象を記載</td>
+      <td>安売りをしているという印象は出さず、SALEや%OFFなども記載はしないでください。</td>
+    </tr>
+    <tr>
+      <th scope="row">使用する素材の要件（任意）</th>
+      <td>素材を指定しない場合には必須項目</td>
+      <td>ペットボトルのフリー素材とラベル素材を提供致しますが、ご自身でラベルを制作して頂くと更にスキルアップになり、お仕事の幅広がります。</td>
+    </tr>
+    <tr>
+      <th scope="row">その他意識して欲しいこと</th>
+      <td>注意点や気をつけて欲しいことがあれば記載</td>
+      <td>自然派・健康志向の方向けの商品なので薬品的なイメージにならないような素材・色合いを意識してください</td>
+    </tr>
+    <tr>
+      <th scope="row">制作メモの記載</th>
+      <td>Portfolio用に制作時ログやコンセプトを記載し保存しておく</td>
+      <td>制作時間は記載しておきましょう</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28588" data-item-id="28588" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">・上記要件定義書を読み込んで、実際であれば分からない部分・質問事項のヒアリング実施となりますが、今回は要件定義書のみで進めていきましょう。</span></div></div>
+        
+        <div class="article-item item_heading " id="item28623" data-item-id="28623" data-item-type="ItemHeading"><h3 class="item-body">2. 構成・テキスト原稿の制作</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28590" data-item-id="28590" data-item-type="ItemRichText"><div class="item-body-hbr">実際の作業で、重要となるのが、<span class="decoration-02">構成・テキスト原稿の制作</span>となります。<br>
+今回は要件定義書内のキャッチコピーとマイクロコピーを使用しても良いと記載されていますが、実作業では、ベースとなるこの部分もデザイナーが考える事も多く、最も力をかけるべきところといっても過言ではありません。</div></div>
+        
+        <div class="article-item item_markdown " id="item28624" data-item-id="28624" data-item-type="ItemMarkdown"><h4 id="section">構成・テキスト原稿の制作で確認すべき内容と要素工程</h4>
+</div>
+        
+        <div class="article-item item_html " id="item52420" data-item-id="52420" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-02">分析をし、根拠を掘り下げて構成・テキスト原稿を制作</span>
+    <ul>
+      <li>ユーザーが最初に目にする、ファーストビューやCTA（コールトゥーアクション）周辺は特に企業分析を実施し、顧客の行動や気持ちを洞察し根拠を掘り下げ、そこから得られる隠れた本音や動機を考えながら構成・テキスト原稿を制作していきましょう。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">参考サイトの確認（競合調べ）</span>
+    <ul>
+      <li>同じジャンルの商品やサービスのランディングページを、<span class="decoration-02">最低でも5個以上</span>見てみましょう。</li>
+      <li>デザインを真似るためではなく、<span class="decoration-02">今回の商材が他とどこで違うと言えるか</span>を見つけるために見ます。次の3つを書き出しながら進めてください。
+        <ol>
+          <li>その5本は、それぞれ誰に何を約束しているか（1本につき1行）</li>
+          <li>5本に共通して入っている要素は何か（このジャンルでは省略できない要素です）</li>
+          <li>今回の商材が、その5本と違うと言える点はどこか</li>
+        </ol>
+      </li>
+      <li>3つ目で見つけたことが、今回のランディングページで一番伝えるべき内容になります。要件定義書の「商材と訴求ポイント」欄に書き足しておきましょう。</li>
+      <li>参考サイトの例：
+        <ul>
+          <li>
+            <a href="https://lp-web.com/" target="_blank">ランディングページ（LP）集めました。</a><br>
+            WEBデザイナーのためのランディングページのデザイン集。
+          </li>
+          <li>
+            <a href="https://rdlp.jp/lp-archive/" target="_blank">LPの最新デザインまとめ参考サイト｜LPアーカイブ</a><br>
+            リスティング広告や楽天市場、Yahooショッピングで今運用している様々なLPのデザインまとめ。
+          </li>
+          <li>
+            <a href="https://site-advance.info/" target="_blank">LPデザインに参考になるランディングページ集｜LP advance</a><br>
+            デザインだけでなく、構成・キャッチコピー・エフェクト効果まで学べるLP制作のヒント。
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">ユーザーのために必要なコンテンツの確認</span>
+    <ul>
+      <li>上記2つを終えた後に、よくある質問やQ&amp;A・お客様の声など、必要と思われるコンテンツの素材やテキストが無い場合にはクライアントに依頼をしなくてはいけません。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">お客様がつまずく点と、解消するセクションを対応づける</span>
+    <ul>
+      <li>要件定義書のターゲット欄に書かれている内容から、お客様が申し込む前に引っかかる点を書き出します。</li>
+      <li>書き出した1つひとつを、ランディングページのどのセクションで解消するかを決めます。
+        <ul>
+          <li>例）「本当に効果があるのか分からない」→ お客様の声と実績のセクションで解消する</li>
+          <li>例）「他社の商品と何が違うのか分からない」→ 比較表のセクションで解消する</li>
+        </ul>
+      </li>
+      <li>この対応づけが、そのまま構成の順番になります。上から読んでいったときに、引っかかる点が順番に解消されていく流れを目指しましょう。</li>
+    </ul>
+  </li>
+</ol></div></div>
+        
+        <div class="article-item item_html " id="item28592" data-item-id="28592" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">企業分析・顧客分析の手法には、以下のようなものがあります</span><br>
+  <span class="decoration-02">3C分析</span>
+	  <ul>
+      <li>3C分析とは<span class="decoration-02">「Company（自社）」「Customer（顧客）」「Competitor（競合）」</span>の視点から戦略を立てるフレームワーク</li>
+      <ol>
+        <li>まず自社がどんな強みや独自性（USP）を持ち、どんな価値を提供できるかを整理します。</li>
+        <li>次に顧客が抱える問題や要望を掘り下げ、具体的なニーズや購買動機を把握します。</li>
+        <li>競合との比較では、価格帯やサービス内容、集客チャネルなどを確認し、差別化ポイントを見極めます。</li>
+      </ol>
+      <li>3C分析を踏まえると、LPで強調すべき魅力や訴求角度が明確になり、コンバージョン向上に直結しますので、定期的に市場動向をチェックし、分析結果を更新しましょう。</li>
+    </ul>
+    <span class="decoration-02">ターゲティング</span>
+    <ul>
+      <li>ターゲットを明確化する第一歩として、年齢・性別・職業などのデモグラ情報を整理します。</li>
+      <li>続いて行動パターンや利用シーンを想定し、商品・サービスがどのような場面で役立つかを分析します。</li>
+      <li>SNSや口コミサイト、検索キーワードなどを調べ、リアルな声やトレンドを掴むのも有効です。</li>
+      <li>ターゲットが抱える潜在的な課題や欲求を洗い出し、「自分にも当てはまる」と思わせる訴求を用意することで、LPの構成やコピーライティングの考える際に活用できます。</li>
+    </ul>
+    <span class="decoration-02">ペルソナ設定</span>
+    <ul>
+      <li>ペルソナ設定とは、具体的な「理想顧客像」を設定することで、発信内容を最適化する手法です。</li>
+      <li>年齢や職業だけでなく、価値観、ライフスタイル、趣味など内面的な要素を深堀りする点が、ターゲティングとの違いです。</li>
+      <li>こうした内面のリアルな動機に合わせたコピーやデザインは、共感を呼びやすく説得力が増します。</li>
+      <li>ペルソナ設定を丁寧に行うと、LP全体のメッセージが「自分ごと」として捉えられやすくなります。</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item28595" data-item-id="28595" data-item-type="ItemHeading"><h3 class="item-body">3. ワイヤーフレームの制作</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28596" data-item-id="28596" data-item-type="ItemRichText"><div class="item-body-hbr">ワイヤーフレームとは、今回制作するランディングページ（LP）の構成やレイアウトを視覚的に分かるようにする設計図ということです。<br>
+<br>
+パソコンとスマートフォンで同じものを使用する場合もありますが、各デバイスに合わせたレスポンシブ仕様にすることもありますので、実際のお仕事ではこちらも確認しておきましょう。（今回は同じものを使用と考えてワイヤーフレームは1つで制作します。）<br>
+<br>
+ワイヤーフレーム制作のポイントは、ランディングページをしっかりと表現するというより<span class="decoration-02">最低限のテキスト/構成/レイアウトが分かるように配置する程度にする</span>ことです。<br>
+<br>
+ワイヤーフレームの制作は<span class="decoration-02">Figma・Illustrator・Photoshop</span>などを使用すると良いでしょう。</div></div>
+        
+        <div class="article-item item_html " id="item28597" data-item-id="28597" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">補足<br></span>
+	<ul>
+      <li>要件定義書・ワイヤーフレーム制作までをクライアントが実施し、次のデザインカンプからデザイナーが実施するという事も多くあります。</li>
+      <li>ワイヤーフレームを自身で作らず、クライアントの作成したものであれば、要件定義書同様、ヒアリングで分からない事はしっかり確認しましょう。</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28600" data-item-id="28600" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"><span class="decoration-01"><span class="decoration-02">ワイヤーフレーム制作で確認すべき内容と思考工程</span></span></span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_html " id="item28599" data-item-id="28599" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-02">図形やイラスト・写真を使用</span>
+    <ul>
+      <li>
+        <span class="decoration-02">必要なポイントを図形やイラストで制作し、使用したい写真があるという場合はイメージ写真も添付しておく</span>事が大切です。
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <span class="decoration-02">必要コンテンツの再確認</span>
+    <ul>
+      <li>
+        構成の段階で提案した必要なコンテンツや素材が集められているのか、変更が必要なコンテンツであるのかもこの段階で確認しておきましょう。
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <span class="decoration-02">購入ボタンの設置場所の再確認</span>
+    <ul>
+      <li>
+        <span class="decoration-02">購入ボタンは、上中下の3箇所に設置するか、フローティングボタンで常に追尾</span>するようにしておくと良いでしょう。
+      </li>
+      <li>
+        <span class="decoration-02">CTAボタンは目立つ色</span>や大きさを用い、ユーザーの視線を自然に誘導しましょう。
+      </li>
+      <li>
+        購入や問い合わせを促す文言は、短く行動をイメージしやすいフレーズが理想です。（例：「今すぐ試す」など）
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <span class="decoration-02">メールフォームの最適化</span>
+    <ul>
+      <li>
+        フォームは入力項目を絞り、なるべく短時間で完了できるようにしましょう。さらに、<span class="decoration-02">エラー表示や入力補助（郵便番号自動入力、スマホ最適化など）</span>を整え、離脱を防ぎましょう。
+      </li>
+      <li>
+        フォーム送信後のサンクスページやフォローメールで、追加情報や特典を提示すると効果的です。<span class="decoration-02">定期的なABテストで、ボタンデザインやフォーム項目を検証</span>し、コンバージョン率を高めましょう。
+      </li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_html " id="item28601" data-item-id="28601" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">フローティングボタンとは</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">スクロールしてもついてくるコンテンツ</span>のことです。</li>
+            <li>フローティングメニューという言葉も聞いたことがあるという方は、フローティングメニューとボタンの違いを、下記のように使い分けると良いでしょう。
+              <ul>
+                <li>フローティングメニューは、<span class="decoration-02">ユーザーがスクロールしなくても追従されるメニューで、すぐメニューのページに戻る事が出来ます。</span></li>
+                <li>フローティングボタンは、<span class="decoration-02">ユーザーに常にクリックをさせることが出来るボタン</span>ですが、デメリットは直接的な購入ボタンを配置すると離脱される傾向も見られるということです。</li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_link " id="item28602" data-item-id="28602" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=lgnAL&amp;item_id=28602" rel="nofollow noopener noreferrer" target="_blank">LP制作の手順を学ぼう！1-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="LP制作の手順を学ぼう！1-1" data-reference="https://www.dropbox.com/scl/fi/yz0ncb36f0l11pvc83ppd/lp-steps_1.1.1.0_.mp4?rlkey=9vn1dhkkn1etfmakzxevvjjw8&amp;st=0navy48c&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/602/thumb/669c684f-fcf7-4001-8d89-0add4a14a37a.png?1754609741" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28604" data-item-id="28604" data-item-type="ItemMarkdown"><h4 id="cta">1. CTAボタンの設置場所の例</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item28605" data-item-id="28605" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-01"><span class="decoration-02">(1)ファーストビュー（上部）</span></span></span></div></div>
+        
+        <div class="article-item item_html " id="item28606" data-item-id="28606" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">設置理由:</span> 最初に「LINE登録」を促す</li>
+  <li><span class="decoration-02">ボタン文言:</span>「まずはLINEで無料体験」</li>
+  <li><span class="decoration-02">デザイン:</span>
+    <ul>
+      <li>アニメーション: キラッと光</li>
+      <li>特徴: 目を引くアニメーションにて、目立ちやすい</li>
+    </ul>
+    </li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item28607" data-item-id="28607" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/607/medium/0d24eb9d-bc4e-4504-aaf1-9a6702e70a3b.png?1751434608" title=""><img class="img-responsive item-image" alt=" (28607)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/607/medium/0d24eb9d-bc4e-4504-aaf1-9a6702e70a3b.png?1751434608" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item28608" data-item-id="28608" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28610" data-item-id="28610" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-01"><span class="decoration-02">(2) 商品説明セクション直後（中部）</span></span></span></div></div>
+        
+        <div class="article-item item_html " id="item28609" data-item-id="28609" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">設置理由:</span> 商品ベネフィットを読んだ後の自然なタイミング</li>
+  <li><span class="decoration-02">ボタン文言:</span> 「まずはLINEで無料体験」</li>
+  <li><span class="decoration-02">デザイン:</span>
+    <ul>
+      <li>補足テキスト: 「さらに今ならLINE登録で7大講義プレゼント！」</li>
+    </ul>
+    </li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item28611" data-item-id="28611" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/611/medium/2e3f19f2-d96e-440c-856e-9395cd667be2.png?1751434590" title=""><img class="img-responsive item-image" alt=" (28611)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/611/medium/2e3f19f2-d96e-440c-856e-9395cd667be2.png?1751434590" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item28612" data-item-id="28612" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28613" data-item-id="28613" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-01"><span class="decoration-02">(3) クロージングセクション（下部）</span></span></span></div></div>
+        
+        <div class="article-item item_html " id="item28614" data-item-id="28614" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">設置理由:</span> 全体を読み終えたユーザーに最後の後押し</li>
+  <li><span class="decoration-02">ボタン文言:</span> 「まずはLINEで無料体験」
+    <ul>
+      <li>補足テキスト: 「さらに提携企業への就職も！」</li>
+    </ul>
+    </li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item28615" data-item-id="28615" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/615/medium/4285646e-01d5-4af1-baab-13437c436efe.png?1751434747" title=""><img class="img-responsive item-image" alt=" (28615)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/615/medium/4285646e-01d5-4af1-baab-13437c436efe.png?1751434747" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item28616" data-item-id="28616" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28617" data-item-id="28617" data-item-type="ItemMarkdown"><h4 id="section">2. フローティングボタンの具体例</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28618" data-item-id="28618" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">概要:</span>
+    <ul>
+      <li>ページ左下（PCの場合のみ）とスクロールした際の下部に常に表示し、購入意欲を逃さない仕組み</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">動作例:</span>
+    <ul>
+      <li>スクロール固定表示</li>
+      <li>クリック時にLINEを起動（SPの場合のみ）</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">注意点:</span>
+    <ol>
+      <li>サイズや色が目立ちすぎると逆効果になる恐れがある</li>
+      <li>クリック率をモニタリングし、効果が低ければ配置やデザインを再検討</li>
+    </ol>
+    </li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item28619" data-item-id="28619" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/619/medium/146bd9fd-e305-416e-92aa-7328d3ed57b3.png?1751434998" title=""><img class="img-responsive item-image" alt=" (28619)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/619/medium/146bd9fd-e305-416e-92aa-7328d3ed57b3.png?1751434998" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item28620" data-item-id="28620" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28621" data-item-id="28621" data-item-type="ItemRichText"><div class="item-body-hbr">これらを実践することで、ページ上の各ポイントで購入ボタンを自然に提示し、フローティングボタンで購入機会を取りこぼさないランディングページを構築できます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item28622" data-item-id="28622" data-item-type="ItemRichText"><div class="item-body-hbr">以上で、商品販売のランディングページの制作工程を学びました。<br>
+次の『商品販売のランディングページの制作 -実践編-』では、上記の学習した内容を基に実際に制作します。</div></div>
+        
+        <div class="article-item item_heading " id="item28625" data-item-id="28625" data-item-type="ItemHeading"><h2 class="item-body">【1-3】商品販売のランディングページの制作 -実践編-</h2></div>
+        
+        <div class="article-item item_markdown " id="item39405" data-item-id="39405" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:660分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item28626" data-item-id="28626" data-item-type="ItemRichText"><div class="item-body-hbr">ここからは、商品販売のランディングページの制作を実践します。<br>
+実践編では、教材のワイヤーフレームをもとに、デザインカンプの制作までを習得しましょう。<br>
+<br>
+オリジナルLP制作のウォーミングアップにもなると思いますので、ぜひチャレンジしてみてください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item28627" data-item-id="28627" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-01"><span class="decoration-02">商品販売ランディングページワイヤーフレーム例</span></span></span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_html " id="item38708" data-item-id="38708" data-item-type="ItemHtml"><div class="item-body"><a href="/theme/webcoach/img/practical_assignment/lp_production/lp1.png" class="lightbox">
+  <img src="/theme/webcoach/img/practical_assignment/lp_production/lp1.png" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item28629" data-item-id="28629" data-item-type="ItemRichText"><div class="item-body-hbr">ワイヤーフレーム制作・デザインカンプに分けて制作時間を計っておくと、今後の工数計算にも便利です。</div></div>
+        
+        <div class="article-item item_link " id="item28630" data-item-id="28630" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=lgnAL&amp;item_id=28630" rel="nofollow noopener noreferrer" target="_blank">商品販売ランディングページ（ウォーミングアップ用）素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="商品販売ランディングページ（ウォーミングアップ用）素材" data-reference="https://www.dropbox.com/scl/fi/tjco01sfop3sv94p4e93t/lp-steps_1-3_v1-1_published.zip?rlkey=y0altgz7fox397zx2fchbl0f3&amp;st=uygvmvt5&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/630/thumb/5393131c-ad42-4110-8a4f-914abe94467d.png?1754609768" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item28631" data-item-id="28631" data-item-type="ItemHeading"><h3 class="item-body">1.デザインカンプの制作</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28632" data-item-id="28632" data-item-type="ItemRichText"><div class="item-body-hbr">先程のワイヤーフレームを基に、実際のWebページの完成イメージ(デザインカンプ)を制作していきましょう。これは関係者と最終的な見た目を共有するための重要なものなので、細部までしっかり制作しましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item28633" data-item-id="28633" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-01"><span class="decoration-02">デザインカンプ制作で確認すべき内容と思考工程</span></span></span></div></div>
+        
+        <div class="article-item item_html " id="item28634" data-item-id="28634" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-02">ファーストビューで適切な表現が出来ているか</span>
+    <ul>
+      <li>要件定義書に記載があれば、そのキャッチコピーを使用出来ているか、構成・テキスト制作の内容と相違なく商品の魅力を十分にユーザーに伝えられる内容となっているかを確認しましょう。</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">コンテンツ・CTAの数・動線が自然の流れになっているか</span>
+    <ul>
+      <li>デザインカンプは完成図ですので、この段階で不自然な区切り方であったり、CTAの数が多すぎたり少なすぎたりという事がないようにユーザーの動線も考えながらデザインカンプを制作していきましょう。</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">視認性・可読性とトンマナ（トーン＆マナー）の確認</span>
+    <ul>
+      <li>文字と写真・文字とコンテンツ・文字と図形などの視認性と可読性が悪くなっていないか、不必要な部分が目立っていないか、要件定義書の使用して欲しくない内容などは特に最終確認を実施し制作しましょう。</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">良いデザイン案が思いついた場合は、出し惜しみせず提案する</span>
+    <ul>
+      <li>デザインカンプのみ依頼が来た場合は特に、制作している際に他のデザイン案が出てくる事もあるでしょう</li>
+      <li>デザインカンプ案を2-3提案出来る事もデザイナーの仕事のうちです。ぜひ提案しましょう。</li>
+    </ul>
+  </li>
+</ol></div></div>
+        
+        <div class="article-item item_html " id="item38709" data-item-id="38709" data-item-type="ItemHtml"><div class="item-body"><a href="/theme/webcoach/img/practical_assignment/lp_production/LPcomp.png" class="lightbox">
+  <img src="/theme/webcoach/img/practical_assignment/lp_production/LPcomp.png" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_heading " id="item52421" data-item-id="52421" data-item-type="ItemHeading"><h3 class="item-body">2. デザインカンプに動きをつける</h3></div>
+        
+        <div class="article-item item_html " id="item52422" data-item-id="52422" data-item-type="ItemHtml"><div class="item-body"><p>デザインカンプは止まった絵ですが、実際のランディングページはスクロールしたりボタンを押したりして使われます。カンプが完成したら、Figmaのプロトタイプ機能などを使って動きをつけ、実際に触れる状態にして確認しましょう。</p>
+<p>止まった絵で見ているときには気づかない問題が、動かすと見つかります。ボタンが指の届かない場所にある、スクロールが長すぎて途中で離脱しそうといった点です。</p>
+
+<p><strong>完成イメージの参考</strong><br>
+この教材の商品販売ランディングページを、実際に公開された状態にしたものです。<br>
+<a href="https://info2516354.wixsite.com/waterlandingpage" target="_blank">ホーム | Waterlandingpage</a></p></div></div>
+        
+        <div class="article-item item_heading " id="item28641" data-item-id="28641" data-item-type="ItemHeading"><h2 class="item-body">【1-4】ランディングページを制作しよう！ </h2></div>
+        
+        <div class="article-item item_markdown " id="item39406" data-item-id="39406" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:1120分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item28642" data-item-id="28642" data-item-type="ItemRichText"><div class="item-body-hbr">ウォーミングアップ編の制作、お疲れさまでした！<br>
+<br>
+制作時間はどれくらいでしたでしょうか？今後の制作時間の目安にしていくと共に、何に時間をかけてしまったのか、など今後の改善点も考えておくと良いでしょう。<br>
+<br>
+では、次は実践編のランディングページ制作です。<br>
+<br>
+今回は要件定義書の空欄の部分もご自身で考え、ワイヤーフレームはランディングページの構成要素を参考にしながら、一から制作して頂きます。</div></div>
+        
+        <div class="article-item item_heading " id="item28644" data-item-id="28644" data-item-type="ItemHeading"><h3 class="item-body">ランディングページ専門の制作会社のランディングページを制作する </h3></div>
+        
+        <div class="article-item item_rich_text " id="item28645" data-item-id="28645" data-item-type="ItemRichText"><div class="item-body-hbr">実践編では、ランディングページの制作を専門としている制作会社用のランディングページを制作して頂きます。<br>
+要件定義書内の商材はランディングページ制作で決定しているので、まずは<span class="decoration-02">訴求ポイントを含めた補足情報の茶字の部分の内容を考え、記載していきましょう。</span></div></div>
+        
+        <div class="article-item item_markdown " id="item28646" data-item-id="28646" data-item-type="ItemMarkdown"><h4 id="section">要件定義・実践編</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28647" data-item-id="28647" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <thead>
+    <tr>
+      <th scope="col">タイトル</th>
+      <th scope="col">補足情報</th>
+      <th scope="col">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+    <tr>
+      <th scope="row">商材と訴求ポイント</th>
+      <td>商材：ランディングページ制作<br><span class="decoration-02">訴求ポイントを考え記載</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row">制作物を通じて達成したい目的</th>
+      <td></td>
+      <td>ランディングページ（LP）の制作方法、手順を理解し、ランディングページの構成要素・訴求ポイント・キャッチコピー・CTAを制作出来るようになる。</td>
+    </tr>
+
+    <tr>
+      <th scope="row">ターゲット</th>
+      <td><span class="decoration-02">性別・年齢・etcのターゲット情報を細かく記載</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row">ブランドターゲット</th>
+      <td><span class="decoration-02">デモグラ情報を大まかにまとめた内容を記載</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row">キャッチコピー・文言とその優先順位</th>
+      <td><span class="decoration-02">キャッチコピーを記載</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row"></th>
+      <td><br><span class="decoration-02">コピー表示上の注意点や補足を記載</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row">マイクロコピーとその配置</th>
+      <td><span class="decoration-02">マイクロコピーを記載</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row"></th>
+      <td><span class="decoration-02">マイクロコピーの配置や優先順位の注意点や補足</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row">色味</th>
+      <td><span class="decoration-02">キーカラー・キートーンを記載</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row">与えたい印象</th>
+      <td><span class="decoration-02">与えたい印象や与えたくない印象などを記載</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row">使用する素材の要件</th>
+      <td><span class="decoration-02">素材はどのような物を使用するか、イラスト・写真を含め記載</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row">その他意識して欲しいこと</th>
+      <td><span class="decoration-02">注意点や避けたいことや意識すべき点を記載</span></td>
+      <td></td>
+    </tr>
+
+    <tr>
+      <th scope="row">制作メモの記載</th>
+      <td><span class="decoration-02">Portfolio用に制作時間やコンセプトを記載し保存しておく</span></td>
+      <td>制作時間は記載しておきましょう<br>完成後に確認して直した点も記載しておきましょう</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_markdown " id="item52417" data-item-id="52417" data-item-type="ItemMarkdown"><h4 id="section">記入のしかた</h4>
+</div>
+        
+        <div class="article-item item_html " id="item52423" data-item-id="52423" data-item-type="ItemHtml"><div class="item-body"><p>空欄の項目には、次の内容を書いてください。書き終わったら、<span class="decoration-02">その内容だけを見て制作に入れる状態か</span> を確認しましょう。</p>
+
+<p><strong>ターゲット / ブランドターゲット</strong></p>
+
+<ul>
+  <li>どういう人が、どんなきっかけでこのランディングページにたどり着くか</li>
+  <li>そのとき何に困っていて、何と何を比べているか</li>
+  <li>申し込む前に引っかかる点は何か</li>
+  <li>申し込んだ後、どうなっていたいか</li>
+</ul>
+
+<p>3つ目に書いた内容が、【1-2】でお伝えした「つまずく点と解消するセクションの対応づけ」につながります。</p>
+
+<p><strong>色味（キーカラー・キートーン）</strong></p>
+
+<p>1色だけを決めるのではなく、<span class="decoration-02">役割ごと</span> に決めましょう。</p>
+
+<table class="simple">
+  <thead>
+    <tr>
+      <th scope="col">役割</th>
+      <th scope="col">決めること</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">背景</th>
+      <td>ページ全体の下地になる色</td>
+    </tr>
+    <tr>
+      <th scope="row">主役</th>
+      <td>商品やブランドを表す、一番よく使う色</td>
+    </tr>
+    <tr>
+      <th scope="row">差し色</th>
+      <td>目を引きたいところに少量だけ使う色</td>
+    </tr>
+    <tr>
+      <th scope="row">ボタン</th>
+      <td>押してほしいボタンの色。背景や主役と見分けがつくこと</td>
+    </tr>
+    <tr>
+      <th scope="row">文字</th>
+      <td>本文の色。背景に対して読める濃さであること</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>あわせて、文字の大きさも3段階で決めておきます。</p>
+
+<table class="simple">
+  <thead>
+    <tr>
+      <th scope="col">段階</th>
+      <th scope="col">使う場所</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">見出し</th>
+      <td>セクションの先頭</td>
+    </tr>
+    <tr>
+      <th scope="row">小見出し</th>
+      <td>見出しの下の補足</td>
+    </tr>
+    <tr>
+      <th scope="row">本文</th>
+      <td>説明の文章</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>先にこの2つを決めておくと、デザインカンプを作っている途中で色や文字サイズに迷わなくなります。迷ったときは、ここで決めた内容に戻って判断しましょう。</p></div></div>
+        
+        <div class="article-item item_markdown " id="item28648" data-item-id="28648" data-item-type="ItemMarkdown"><h4 id="section">ワイヤーフレーム・デザインカンプ　実践編</h4>
+
+</div>
+        
+        <div class="article-item item_rich_text " id="item28649" data-item-id="28649" data-item-type="ItemRichText"><div class="item-body-hbr">今回はご自身で記載した要件定義書をもとに、ワイヤーフレームもデザインカンプも自分で考え制作して頂きます。<br>
+デザインツールを使用し、ご自身でワイヤーフレーム・デザインカンプ制作を実施していきましょう！<br>
+<br>
+要件定義書にも記載していますが、ウォーミングアップ編と同じく、<span class="decoration-02">ワイヤーフレーム制作・デザインカンプに分けて制作時間を計っておくと、ポートフォリオ掲載や、今後の制作における工数計算にも便利ですので、ぜひ制作時間を計っておきましょう。</span></div></div>
+        
+        <div class="article-item item_markdown " id="item28650" data-item-id="28650" data-item-type="ItemMarkdown"><h4 id="section">デザインカンプに動きをつける</h4>
+</div>
+        
+        <div class="article-item item_html " id="item52424" data-item-id="52424" data-item-type="ItemHtml"><div class="item-body"><p>【1-3】と同じように、完成したデザインカンプに動きをつけて、実際に触れる状態にします。</p>
+<p>アニメーション効果やポップアップを使ってクリック率を高める工夫も、この段階で試せます。LP制作におけるトレンドや最新情報なども収集しながら制作していく事も重要です。</p></div></div>
+        
+        <div class="article-item item_html " id="item28652" data-item-id="28652" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">AIを活用したLP制作ツールの紹介<br></span>
+	  <ul>
+      <li>
+        現在ではAIを活用したLP制作が出来るツールがあります。<br>
+        アイデアが全く浮かばない、制作の工程が進まないという方は、参考になさって頂けると良いかと思います。
+      </li>
+      <a href="https://jitera.com/ja/insights/49762" target="_blank">Mixo.ioとは？AIウェブサイト制作サービス「Mixo.id」使い方や料金を紹介</a>
+      <li>
+        基本を知った上でのAI活用が必須ではあると思いますので、今回はアイデアを参考にし、制作が出来た後でAIをどんどん活用していきましょう！
+      </li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item52418" data-item-id="52418" data-item-type="ItemMarkdown"><h4 id="section">完成したら、お客様の目で確認しましょう</h4>
+</div>
+        
+        <div class="article-item item_html " id="item52426" data-item-id="52426" data-item-type="ItemHtml"><div class="item-body"><p>【1-1】でお伝えしたランディングページの評価方法は、<span class="decoration-02">作る前にも作った後にも常に頭に入れておきたい</span> ものだとお伝えしました。ここで、その3つに戻って確認します。</p>
+
+<ul>
+  <li>一番伝えたいこと（企画）は伝わっているか</li>
+  <li>行動を促す要素が入っているかどうか</li>
+  <li>他社より優れていると思わせることができているか</li>
+</ul>
+
+<p>これに加えて、次の手順で確認しましょう。</p>
+
+<h4>手順1. お客様の立場で、操作を最初からたどってみる</h4>
+
+<p>やることを3つ決めます。たとえば次のような内容です。</p>
+
+<ol>
+  <li>サービスの料金を調べる</li>
+  <li>申し込みボタンまで進む</li>
+  <li>他社と何が違うかを説明する</li>
+</ol>
+
+<p>決めたら、ランディングページの一番上から順に操作をたどります。このとき、自分が作ったことは一度忘れて、<span class="decoration-02">初めて見た人のつもり</span> で進めてください。各段階で次の3つを確かめます。</p>
+
+<ul>
+  <li>次に何をすればよいか、画面を見ただけで分かるか</li>
+  <li>そのための場所やボタンが、見える位置にあるか</li>
+  <li>押した後、正しく進んだと分かる反応があるか</li>
+</ul>
+
+<p>1つでも「分からない」「見つからない」があれば、その場所を書き出します。</p>
+
+<h4>手順2. チェックリストで見直す</h4>
+
+<ul>
+  <li>いま全体のどのあたりを読んでいるか分かる</li>
+  <li>難しい言葉や、その業界でしか通じない言い方をしていない</li>
+  <li>入力フォームの項目が多すぎない</li>
+  <li>入力を間違えたとき、どう直せばよいか分かる</li>
+  <li>同じ意味のものが、同じ見た目になっている</li>
+  <li>大事な情報にたどり着くまでにスクロールしすぎない</li>
+</ul>
+
+<h4>手順3. 直す</h4>
+
+<p>書き出した箇所を3つに分けます。</p>
+
+<table class="simple">
+  <thead>
+    <tr>
+      <th scope="col">分類</th>
+      <th scope="col">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">致命的</th>
+      <td>申し込みまでたどり着けない、押せない、読めない</td>
+    </tr>
+    <tr>
+      <th scope="row">気になる</th>
+      <td>進めるが、迷ったり探したりする</td>
+    </tr>
+    <tr>
+      <th scope="row">軽微</th>
+      <td>気づく人は気づく程度</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>致命的なものから直しましょう。直した内容は、要件定義書の「制作メモの記載」欄に書いておきましょう！</p>
+
+<blockquote>
+  <p><strong>記入例</strong><br>
+  申し込みボタンを押す前に、料金がどこにも書かれていなかった。ボタンのすぐ上に料金を追加した（致命的）。<br>
+  「詳しくはこちら」というボタンが3箇所にあり、どれも飛び先が違っていた。それぞれ「料金を見る」「よくある質問を見る」に変更した（気になる）。</p>
+</blockquote>
+
+<p>直した後のものが、この課題の完成品になります。制作の過程としてポートフォリオに残しておきましょう。</p></div></div>
+        
+        <div class="article-item item_heading " id="item28721" data-item-id="28721" data-item-type="ItemHeading"><h2 class="item-body">【1-5】ランディングページに集客しよう！</h2></div>
+        
+        <div class="article-item item_markdown " id="item39407" data-item-id="39407" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間:300分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item28722" data-item-id="28722" data-item-type="ItemRichText"><div class="item-body-hbr">本章では、実践的なランディングページへの集客方法を、以下の３つの項目に分けて学習します。</div></div>
+        
+        <div class="article-item item_html " id="item28723" data-item-id="28723" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>広告を使ったランディングページへの集客法</li>
+  <li>広告費を大幅に下げるランディングページ集客術</li>
+  <li>もっと効果を高めるためのランディングページの運用</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item28724" data-item-id="28724" data-item-type="ItemRichText"><div class="item-body-hbr">ここでは、例として「英会話スクール」のランディングページを取り上げ、具体例や数値を交えて説明します。</div></div>
+        
+        <div class="article-item item_heading " id="item28725" data-item-id="28725" data-item-type="ItemHeading"><h3 class="item-body"> 広告を使ったランディングページへの集客法</h3></div>
+        
+        <div class="article-item item_markdown " id="item28726" data-item-id="28726" data-item-type="ItemMarkdown"><h4 id="section">1. 目的と背景</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28727" data-item-id="28727" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">目的：</span>
+    <ul>
+      <li>広告を活用して、短期間でターゲットユーザーをランディングページに誘導し、早期のコンバージョン（問い合わせ、購入、登録など）を実現すること。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">背景：</span>
+    <ul>
+      <li>ネット市場では、迅速な集客が競争優位につながるため、即効性のある広告運用とランディングページの連動は必須です。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28803" data-item-id="28803" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28728" data-item-id="28728" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"></span><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span><br>
+</span><br>
+<span class="decoration-02">無料体験レッスンの登録</span>や<span class="decoration-02">問い合わせ</span>を早期に獲得することが狙いです。広告を活用して、短期間でターゲットユーザー（例：20〜35歳の社会人・学生）をランディングページに誘導し、成果を上げます。<br>
+<br>
+例えば、広告開始後48時間以内に100件のクリックを獲得し、コンバージョン率を3～5%に維持できれば、3人から5人の新規見込み顧客を2日後には獲得することができます。広告は、費用はかかるものの即効性があります。</div></div>
+        
+        <div class="article-item item_image " id="item28729" data-item-id="28729" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/729/medium/242cf214-5170-4243-bc82-5647cbde9b4b.png?1751498656" title=""><img class="img-responsive item-image" alt=" (28729)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/729/medium/242cf214-5170-4243-bc82-5647cbde9b4b.png?1751498656" width="640" height="361" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item28731" data-item-id="28731" data-item-type="ItemMarkdown"><h4 id="section">2. 戦略の立案とターゲット設定</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28732" data-item-id="28732" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">明確なゴール設定：</span>
+    <ul>
+      <li>広告キャンペーンの目的（セールス促進、リード獲得、イベント参加など）を明確にし、そのゴールに沿ったメッセージを作成します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">ペルソナとターゲットの確認：</span>
+    <ul>
+      <li>既存のリサーチや３C分析、ペルソナ設計を基に、最も反応しやすいユーザー層に向けた広告設定を行います。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28804" data-item-id="28804" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28733" data-item-id="28733" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span></span><br>
+<br>
+キャンペーン期間中に<span class="decoration-02">無料体験レッスンの申し込み数を100件</span>にする、といった具体的な数値目標を設定します。<br>
+次に、過去のデータやネット検索による市場調査から、ペルソナ・ターゲットを設定します。<span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_html " id="item28734" data-item-id="28734" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>主なターゲット：20〜35歳の社会人や学生</li>
+  <li>目的：ビジネス英会話や海外旅行、留学準備などの情報をもとに、過去の受講者データやアンケート結果（例：受講生の70%が社会人）を参考に、最も反応しやすいユーザー層に焦点を当てた広告設定を行います。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28735" data-item-id="28735" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/735/medium/69c74464-ad81-40b1-bd6d-617b586e2fd4.png?1751498905" title=""><img class="img-responsive item-image" alt=" (28735)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/735/medium/69c74464-ad81-40b1-bd6d-617b586e2fd4.png?1751498905" width="640" height="362" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item28736" data-item-id="28736" data-item-type="ItemMarkdown"><h4 id="section">3. 広告キャンペーンの設定</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28738" data-item-id="28738" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">プラットフォームの選定：</span>
+    <ul>
+      <li>
+        <span class="decoration-02">Google広告：</span>ユーザーの検索意図に合わせたタイミングで表示し、即時性のある集客が可能。
+      </li>
+      <li>
+        <span class="decoration-02">SNS広告（Meta・Instagramなど）：</span>興味・関心や行動履歴に基づく精緻なターゲティングで、潜在的な顧客にリーチできます。
+      </li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">キャンペーン構成：</span>
+    <ul>
+      <li>キャンペーンの目的、予算、期間を設定し、短期間で効果を測定できる構成にします。</li>
+      <li>広告グループごとに異なるターゲットやメッセージをテストし、最も成果の出るパターンを特定します。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28805" data-item-id="28805" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28739" data-item-id="28739" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span></span></div></div>
+        
+        <div class="article-item item_html " id="item28740" data-item-id="28740" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">プラットフォームの選定：</span>
+    <ul>
+      <li>
+        <span class="decoration-02">Google広告：</span>ユーザーが「英会話 スクール 無料体験」などの検索ワードを入力した際に表示。たとえば、1クリックあたりの単価（CPC）を平均100円～150円に抑えることを目標にします。
+      </li>
+      <li>
+        <span class="decoration-02">SNS広告：</span>趣味・興味や過去の行動データを利用し、20〜35歳のユーザーに絞り込む。たとえば、月額10万円の予算で、1,000クリック以上を狙います。※特に初回はテストマーケティングとして、少額から始めましょう。
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28741" data-item-id="28741" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/741/medium/c814b9f1-3e48-4db8-ac5f-bcbbade04154.png?1751499065" title=""><img class="img-responsive item-image" alt=" (28741)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/741/medium/c814b9f1-3e48-4db8-ac5f-bcbbade04154.png?1751499065" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item28743" data-item-id="28743" data-item-type="ItemMarkdown"><h4 id="section">4. 広告クリエイティブとランディングページの連携</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28744" data-item-id="28744" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">一貫性のあるメッセージ：</span>
+    <ul>
+      <li>広告で伝える訴求内容とランディングページの見出し、デザイン、CTA（Call To Action）の内容が一致することが重要です。これにより、ユーザーは広告とランディングページの間で違和感を感じず、スムーズにコンバージョンに進めます。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">即効性のあるオファー：</span>
+    <ul>
+      <li>限定性や期間限定のオファー、割引など、ユーザーに「今すぐ行動すべき理由」を提示することで、速やかな集客効果が期待できます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28806" data-item-id="28806" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28745" data-item-id="28745" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span></span></div></div>
+        
+        <div class="article-item item_html " id="item28746" data-item-id="28746" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">一貫性のあるメッセージ：</span>
+    <ul>
+      <li>広告で <span class="decoration-02">今だけ無料体験レッスン実施中！初月50%オフキャンペーン</span> と訴求した場合、ランディングページの見出しも同じ内容にすることで、ユーザーが違和感なく登録に進めます。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">即効性のあるオファー：</span>
+    <ul>
+      <li>限定性や期間限定の割引（例：<span class="decoration-02">残りあとわずか・本日まで50%OFF</span>）を強調し、ユーザーに「今すぐ行動すべき理由」を提示します。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28747" data-item-id="28747" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/747/medium/25b9b879-b9f2-49c3-9380-3fda328c84bb.png?1751499223" title=""><img class="img-responsive item-image" alt=" (28747)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/747/medium/25b9b879-b9f2-49c3-9380-3fda328c84bb.png?1751499223" width="640" height="264" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item28748" data-item-id="28748" data-item-type="ItemMarkdown"><h4 id="section">5. 即時性とデータ活用による最適化</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28749" data-item-id="28749" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">リアルタイムの効果測定：</span>
+    <ul>
+      <li>広告キャンペーン開始後、すぐにアクセス解析ツール（Google Analytics、広告プラットフォームの管理画面など）でユーザーの動向を確認し、訪問者の行動や滞在時間、離脱ポイントなどをチェックします。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">迅速なA/Bテスト：</span>
+    <ul>
+      <li>複数の広告パターンとランディングページのバリエーションを同時にテストし、どの組み合わせが最速で成果を上げるかを分析。効果が高いパターンに予算を集中的にシフトします。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28807" data-item-id="28807" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28750" data-item-id="28750" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span></span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_html " id="item28751" data-item-id="28751" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">リアルタイムの効果測定：</span>
+    <ul>
+      <li>広告開始後、Google Analyticsで、訪問者数、滞在時間、離脱ポイントをリアルタイムでチェックしましょう。</li>
+      <li>例えば、掲載48時間後にクリック数が100件であれば、目標通りで順調と判断。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">迅速なA/Bテスト：</span>
+    <ul>
+      <li>バージョンA：CTAボタンの色を青に設定 → コンバージョン率3.5%</li>
+      <li>バージョンB：CTAボタンの色を赤に設定 → コンバージョン率5.0%</li>
+      <li>テスト結果から、赤色のボタンを採用し、さらに改善を進めます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28752" data-item-id="28752" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/752/medium/92a739ad-b6ec-4c01-9afc-1cb9e81f5489.png?1751499348" title=""><img class="img-responsive item-image" alt=" (28752)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/752/medium/92a739ad-b6ec-4c01-9afc-1cb9e81f5489.png?1751499348" width="640" height="361" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item28754" data-item-id="28754" data-item-type="ItemMarkdown"><h4 id="pdca">6. PDCAサイクルの活用</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28755" data-item-id="28755" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">Plan（計画）：</span>
+    <ul>
+      <li>広告キャンペーンの目的、ターゲット、メッセージを明確に計画する。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">Do（実行）：</span>
+    <ul>
+      <li>計画に基づいて広告を出稿し、ランディングページと連動させる。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">Check（評価）：</span>
+    <ul>
+      <li>リアルタイムのデータとユーザー行動の分析で、広告からの流入状況とコンバージョン率を評価する。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">Act（改善）：</span>
+    <ul>
+      <li>得られたデータに基づき、広告内容やランディングページの修正、ターゲティングの再設定などの改善策を実施。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28808" data-item-id="28808" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28756" data-item-id="28756" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span></span><span class="decoration-02"></span></div></div>
+        
+        <div class="article-item item_html " id="item28757" data-item-id="28757" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">Plan（計画）：</span>
+    <ul>
+      <li>1週間で、目標クリック数100件</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">Do（実行）：</span>
+    <ul>
+      <li>Googleに広告出稿とランディングページの運用を開始</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">Check（評価）：</span>
+    <ul>
+      <li>毎日、クリック数、登録数、滞在時間などのデータを確認</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">Act（改善）：</span>
+    <ul>
+      <li>コンバージョン率が目標の4%に達していない場合、広告文やランディングページの内容を見直し、翌週には改善案を実施</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28758" data-item-id="28758" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/758/medium/5fd77f45-c435-4eec-88b0-1625e3ee42d8.png?1751499469" title=""><img class="img-responsive item-image" alt=" (28758)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/758/medium/5fd77f45-c435-4eec-88b0-1625e3ee42d8.png?1751499469" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item28759" data-item-id="28759" data-item-type="ItemHeading"><h3 class="item-body"> 広告費を大幅に下げるランディングページ集客術</h3></div>
+        
+        <div class="article-item item_markdown " id="item28760" data-item-id="28760" data-item-type="ItemMarkdown"><h4 id="section">1. コンテンツマーケティングを行う</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28761" data-item-id="28761" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">背景：</span>
+    <ul>
+      <li>コンテンツマーケティングは、長期的な集客効果が期待できる手法です。広告費をかけずに、ブログ、ホワイトペーパー、動画などを通じて、ユーザーに有益な情報を提供し、自然な流入を促進します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">目的：</span>
+    <ul>
+      <li>高品質なコンテンツを作成することで、ユーザーに信頼感と専門性を伝え、ランディングページへのアクセスや無料体験レッスンの登録につなげます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28809" data-item-id="28809" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28762" data-item-id="28762" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span></span></div></div>
+        
+        <div class="article-item item_html " id="item28763" data-item-id="28763" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">毎月5本の記事を公開する</span>
+    <ul>
+      <li>英会話スクールが、英語学習のコツや実際のレッスンの様子を解説する記事を毎月5本書くとします。</li>
+      <li>これにより、Googleなどの検索エンジンから自然にサイトに訪れる人（オーガニック流入）が増えます。</li>
+      <li>サイトの記事から「無料体験コース」に誘導することができれば、結果的に広告費の削減に繋がります。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28764" data-item-id="28764" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/764/medium/18905393-7be2-45a8-9dc4-92bda3f35a14.png?1751500485" title=""><img class="img-responsive item-image" alt=" (28764)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/764/medium/18905393-7be2-45a8-9dc4-92bda3f35a14.png?1751500485" width="523" height="177" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item28766" data-item-id="28766" data-item-type="ItemMarkdown"><h4 id="seo">2. SEO対策を行う</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28767" data-item-id="28767" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">背景：</span>
+    <ul>
+      <li>SEO（検索エンジン最適化）は、自然検索からの安定した流入を実現するための基本戦略です。広告市場での競争に対し、持続可能な集客手法として非常に有効です。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">目的：</span>
+    <ul>
+      <li>英会話スクールのランディングページや関連コンテンツを、Googleなどの検索エンジンで上位表示させることで、月間のオーガニックトラフィックを増加させ、無料体験登録や問い合わせの獲得につなげます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28810" data-item-id="28810" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28768" data-item-id="28768" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span></span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_html " id="item28770" data-item-id="28770" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>「英会話 無料体験」や「ビジネス英会話 レッスン」などのキーワードで上位表示を目指す。</li>
+  <li>検索順位が1ページ目に上がることで、月間1000クリック以上のオーガニック流入が期待できます。</li>
+  <li>キーワード別の検索数や難易度については、ラッコキーワードなどのツールで調べることができます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_link " id="item28771" data-item-id="28771" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=lgnAL&amp;item_id=28771" rel="nofollow noopener noreferrer" target="_blank">ラッコキーワード｜無料のキーワード分析ツール（サジェスト・共起語・月間検索数など）</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="ラッコキーワード｜無料のキーワード分析ツール（サジェスト・共起語・月間検索数など）" data-reference="https://rakkokeyword.com/" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/028/771/thumb/464d901e-bebf-4de1-8cf6-2377d1eddeea.png?1751500600" width="75" height="75" /></div><div class="media-body"><div class="item-body">無料でサクサク使えるキーワードリサーチツール。世の中のニーズをサクッと把握！コンテンツ制作/製品開発の市場ニーズのリサーチにお役立ていただけます。SEOを意識した記事コンテンツの制作補助機能も充実！</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item28772" data-item-id="28772" data-item-type="ItemMarkdown"><h4 id="section">3. 記事の書き方のノウハウ</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28773" data-item-id="28773" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">背景：</span>
+    <ul>
+      <li>読み手にとって分かりやすく、魅力的な記事は、ユーザーエンゲージメントを高め、サイト滞在時間を伸ばすために不可欠です。質の高い記事は、ブランドの信頼性と専門性を強調します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">目的：</span>
+    <ul>
+      <li>ユーザーの疑問や悩みに応える具体的で説得力のある記事を書くことで、自然な導線を作り、ランディングページへの誘導を強化します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">ポイント：</span>
+    <ul>
+      <li>読み手の課題や興味に直結するタイトルと見出しを設定する。</li>
+      <li>分かりやすい言葉、実例、数字を盛り込み、説得力を持たせる。</li>
+      <li>結論から述べるクリアな構成にすることで、忙しいユーザーにもすぐに内容が伝わるようにする。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">最後にLPに誘導しましょう</span>
+    <ul>
+      <li>各記事の最下部には、LPへの誘導ボタン・リンクを設置します。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28811" data-item-id="28811" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28774" data-item-id="28774" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"></span><span class="decoration-02">例：英会話スクールの場合​</span></div></div>
+        
+        <div class="article-item item_html " id="item28775" data-item-id="28775" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">興味に直結するタイトルをつける</span>
+    <ul>
+      <li>英会話スクールが「英会話初心者が3ヶ月でスピーキング力を向上させる方法」といった具体的なタイトルの記事を書くとします。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">実績データ、お客様の声を盛り込む</span>
+    <ul>
+      <li>その記事内で、実際の受講生の体験談やデータを掲載することで、読む人が「このスクールは信頼できる！」と思いやすくなります。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28776" data-item-id="28776" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/776/medium/a8e96744-25aa-4286-a69c-3e8d5ea840f2.png?1751500731" title=""><img class="img-responsive item-image" alt=" (28776)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/776/medium/a8e96744-25aa-4286-a69c-3e8d5ea840f2.png?1751500731" width="640" height="322" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item28778" data-item-id="28778" data-item-type="ItemMarkdown"><h4 id="sns">4. SNSで発信を行う</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28779" data-item-id="28779" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">背景：</span>
+    <ul>
+      <li>SNSは、ターゲットユーザーと直接コミュニケーションを取りながら情報を拡散できる強力なツールです。広告費をかけずに多くのユーザーにリーチできるため、コストパフォーマンスに優れた集客手法です。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">目的：</span>
+    <ul>
+      <li>コンテンツや記事、キャンペーン情報をSNS上で積極的に発信し、ブランド認知度を向上させるとともに、ランディングページへの自然流入を促進します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">ポイント：</span>
+    <ul>
+      <li>定期的な投稿とユーザーとの積極的なコミュニケーションを実施する。</li>
+      <li>効果的なハッシュタグやキーワードを活用して、投稿のリーチを最大化する。</li>
+      <li>フォロワーからのフィードバックを収集し、コンテンツの改善に反映させる。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28812" data-item-id="28812" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28780" data-item-id="28780" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span></span></div></div>
+        
+        <div class="article-item item_html " id="item28781" data-item-id="28781" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">定期的な投稿でブランド認知を向上させる</span>
+    <ul>
+      <li>英会話スクールは、Instagramで授業風景や講師紹介、たとえば「今日のフレーズ『What's up?』」の短い動画を投稿して具体的な学習例を示します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">効果的なハッシュタグやキーワードを活用</span>
+    <ul>
+      <li>#英会話や#初心者英語などのハッシュタグを用い、コメント返信やアンケート機能でフォロワーと双方向のコミュニケーションを強化します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">インフルエンサーとコラボ企画</span>
+    <ul>
+      <li>さらに、地元の人気インフルエンサーとコラボし、体験レッスンの様子をシェアすることで、新規生徒の獲得と認知度向上を実現します。</li>
+      <li>インフルエンサーの知名度や契約内容次第ですが、SNS広告に出稿するよりも、よりターゲットにピンポイントでアプローチでき、広告以上の費用対効果が見込めるケースもあります。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item38710" data-item-id="38710" data-item-type="ItemHtml"><div class="item-body"><a href="/theme/webcoach/img/practical_assignment/lp_production/image_(1).png" class="lightbox">
+  <img src="/theme/webcoach/img/practical_assignment/lp_production/image_(1).png" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_heading " id="item28784" data-item-id="28784" data-item-type="ItemHeading"><h3 class="item-body">もっと効果を高めるためのランディングページの運用</h3></div>
+        
+        <div class="article-item item_markdown " id="item28785" data-item-id="28785" data-item-type="ItemMarkdown"><h4 id="section">1. メールマーケティングは古くない</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28786" data-item-id="28786" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">高いROIと直接アプローチ：</span>
+    <ul>
+      <li>メールマーケティングは、1件あたりのコストが低いため、高い収益率が期待でき、登録ユーザーにパーソナライズされたオファーを直接送ることで、クリック率や、コンバージョン率を高めることができます。</li>
+      <li>属性（職種・興味関心）に基づいたセグメント配信を実施しましょう。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">継続的な改善とテスト：</span>
+    <ul>
+      <li>件名や本文、CTA（コール・トゥ・アクション）のA/Bテストを繰り返すことで、開封率やクリック率の最適化を図り、メールマーケティングの効果をさらに高めることができます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28813" data-item-id="28813" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28787" data-item-id="28787" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span></span></div></div>
+        
+        <div class="article-item item_html " id="item28788" data-item-id="28788" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">受講生の属性に基づいたセグメント配信</span>
+    <ul>
+      <li>例えば、社会人には「ビジネス英語講座の体験会」を、学生には「留学したい人！英語講座のお知らせ」を送信することで、講座申込率を改善します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">期間限定クーポンの配信</span>
+    <ul>
+      <li>英会話スクールの無料体験レッスンに登録したユーザーへ「本日限定50%オフクーポン」を送信することで、再訪率とコンバージョン率が向上します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">A/Bテストで改善</span>
+    <ul>
+      <li>件名「【本日限定】英会話体験レッスン割引」のテストで、通常の件名に比べてメール開封率が向上するなどの成果が見込まれます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28789" data-item-id="28789" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/789/medium/7d251920-bf4f-4c04-aee7-7c512dee09f8.png?1751500973" title=""><img class="img-responsive item-image" alt=" (28789)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/789/medium/7d251920-bf4f-4c04-aee7-7c512dee09f8.png?1751500973" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item28791" data-item-id="28791" data-item-type="ItemMarkdown"><h4 id="lp">2. LPからマーケティングオートメーションへの連携で自動化を実現する</h4>
+</div>
+        
+        <div class="article-item item_html " id="item28792" data-item-id="28792" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">登録から自動フォローアップ：</span>
+    <ul>
+      <li>ランディングページ（LP）で取得したユーザー情報をマーケティングオートメーションツールと連携させることで、登録直後にウェルカムメールやステップメールが自動配信され、ユーザーの興味を維持しながら効果的なフォローアップが可能になります。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">LINEとの連携による即時対応：</span>
+    <ul>
+      <li>LPからLINE公式アカウントに登録を誘導することで、チャットボットを活用した自動返信やキャンペーン情報の配信が可能となり、ユーザーとの距離感が縮まり、コンバージョン率の向上につながります。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">自動化で運用負荷を軽減：</span>
+    <ul>
+      <li>これらのマーケティングオートメーションの連携により、手動でのメール送信やフォローアップ作業を大幅に削減でき、少人数の運営チームでも効率的に集客施策を回すことができます。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item28814" data-item-id="28814" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28793" data-item-id="28793" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-02">例：英会話スクールの場合</span></span></div></div>
+        
+        <div class="article-item item_html " id="item28794" data-item-id="28794" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-02">登録情報に基づいたステップメール配信</span>
+    <ul>
+      <li>LPからの登録情報をもとに「ビジネス英語講座の体験会」の招待メールを自動送信し、毎週の継続的な教育と販売を自動で実現。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">LINE連携による自動配信</span>
+    <ul>
+      <li>LINE連携を活用して「LINE登録者に限定特典プレゼント」を自動送信し、申し込みから、講座受講までのスムーズな流れを構築。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-02">事務作業の軽減：教育・販売の自動化</span>
+    <ul>
+      <li>LPと自動化ツールの連携により、従来の人的対応（申込→詳細案内→決済→講座予約→講座受講→質問対応）から解放され、講師やスタッフが教育コンテンツの充実に専念できる環境を整えています。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item28795" data-item-id="28795" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/795/medium/06124b05-986d-45a9-aeef-76aff0cc362a.png?1751501108" title=""><img class="img-responsive item-image" alt=" (28795)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/028/795/medium/06124b05-986d-45a9-aeef-76aff0cc362a.png?1751501108" width="640" height="238" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item28796" data-item-id="28796" data-item-type="ItemHeading"><h3 class="item-body">まとめ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item28797" data-item-id="28797" data-item-type="ItemRichText"><div class="item-body-hbr">以下の３つのテーマについて学んだことをまとめます。</div></div>
+        
+        <div class="article-item item_html " id="item28802" data-item-id="28802" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+	  <ul>
+      <li>
+        <span class="decoration-02">広告を使ったランディングページへの集客法</span><br>
+        広告とランディングページを連動させ、明確なターゲット設定と一貫性のあるメッセージで、即時性のある集客を実現する方法を紹介。リアルタイムデータとA/Bテストを活用し、迅速な改善を行うことで、短期間で成果を上げる戦略を学びました。
+      </li>
+      <li>
+        <span class="decoration-02">広告費を大幅に下げる集客術</span><br>
+        質の高いコンテンツマーケティングやSEO、SNS運用を連携させることで、有料広告に頼らず自然流入を促進し、広告費を大幅に削減する戦略を学びました。
+      </li>
+      <li>
+        <span class="decoration-02">もっと効果を高めるためのランディングページの運用</span><br>
+        LPからマーケティングオートメーションツール（メール、LINE連携など）への連携により、登録後のフォローアップを自動化し、運用負荷を大幅に軽減する仕組みも導入しましょう。これにより、ユーザーへの個別化されたアプローチが可能となり、継続的な教育と、売上の安定化が期待できます。
+      </li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item28801" data-item-id="28801" data-item-type="ItemRichText"><div class="item-body-hbr">上記のランディングページの集客改善も提案できるようになると、制作後も継続して案件獲得に繋がります。各SNS別の広告運用については、別途教材もご用意していますので、より実践的なスキルを習得したい方は次のステップとして学んでみてください。</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="F48nY1bfWs70GKeAgqVSyg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

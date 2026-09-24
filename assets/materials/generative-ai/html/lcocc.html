@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E4%BD%93%E9%A8%93-%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E7%94%9F%E6%88%90AI%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89/LcoCC -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48528" data-item-id="48528" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【準備】ChatGPTのアカウント作成と基本操作 | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; border-radius: 8px; margin: 16px 0; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading {
+    font-size: 20px; font-weight: 700; color: #3D3D3D;
+    margin: 32px 0 14px; line-height: 1.4;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .toc-link { color: #555; text-decoration: none; }
+  .toc-link:hover { color: #E85D4A; }
+  .prompt-example {
+    background: #F5F5F5; border-left: 4px solid #F5A64A;
+    border-radius: 0 12px 12px 0; padding: 18px 22px; margin: 20px 0;
+    font-size: 15px; line-height: 1.8; color: #444;
+  }
+  .prompt-example .prompt-label {
+    font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 6px;
+  }
+  .ai-response {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 16px 0;
+    font-size: 14px; line-height: 1.8; color: #444;
+  }
+  .screenshot-placeholder {
+    background: #E8E8E8; border-radius: 12px; padding: 40px; text-align: center;
+    margin: 20px 0; color: #999; font-size: 13px;
+  }
+  .webcoach-box {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .webcoach-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    h2.section-heading { font-size: 20px; }
+    h3.sub-heading { font-size: 18px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="O_VGGEVuZNI-SIbcy-KuPneybPS-JDS9BfvJPHpvjRF6f48x7rLEQ81o43yVgPP9KYPXy2n8RplB8o3usyu8kQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 3-2</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">【準備】ChatGPTのアカウント作成と基本操作</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 3: テキストAIハンズオン ／ 所要時間：約25分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約25分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">ChatGPTのアカウントを作成し、基本操作を理解して、最初のメッセージを送信できる</p>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E4%BD%93%E9%A8%93-%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E7%94%9F%E6%88%90AI%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89/ohcg8" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E4%BD%93%E9%A8%93-%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E7%94%9F%E6%88%90AI%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89/Q4apc" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">今回メインで体験するAI「ChatGPT」とは？</a></li>
+    <li><a href="#sec2" class="toc-link">ChatGPTアカウント作成とログイン</a></li>
+    <li><a href="#sec3" class="toc-link">コラム：WEBCOACH先生について</a></li>
+    <li><a href="#sec4" class="toc-link">ChatGPTとの最初のコンタクト</a></li>
+    <li><a href="#sec5" class="toc-link">章末課題：AI活用初めの一歩宣言</a></li>
+  </ol>
+</div>
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    新しいサービスに登録するとき、「手順が多くて面倒くさそう…」と感じたことはありませんか？<br><br>
+    ChatGPTの登録は<strong class="accent">メールアドレスさえあれば数分で完了</strong>します。<br>
+    この章を終える頃には、あなたはもうAIと会話を始めているはずです。
+  </p>
+</div>
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>海外サービスへの登録に不安を感じるが、<strong class="accent">世界中で利用されている安全なサービス</strong></li>
+    <li>画面デザイン（UI）はアップデートで変わることがあるが、<strong class="accent">基本的な操作方法は同じ</strong></li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  セクション 1: ChatGPTとは？
+============================================================ -->
+<h2 class="section-heading" id="sec1">1. 今回メインで体験するAI「ChatGPT」とは？</h2>
+
+<p class="text-body">
+  この教材で主に体験するのは、「<strong class="accent">ChatGPT（チャットジーピーティー）</strong>」というテキスト生成AIです。
+</p>
+
+<p class="text-body">
+  ChatGPTは、アメリカのOpenAI社によって開発された、<strong class="accent">人間と自然な会話ができるAI</strong>です。質問応答はもちろん、文章の作成、要約、翻訳、アイデア出しなど、非常に幅広いタスクを得意としています。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img1.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/8f2ec82ffb.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">ChatGPTのイメージ</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0;">
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px;">
+    <h3 style="font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px;">利用者数が豊富</h3>
+    <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">世界中で多くの人が利用しており、使い方の情報や活用事例がたくさん見つかります</p>
+  </div>
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px;">
+    <h3 style="font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px;">無料プランで高機能</h3>
+    <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">一部制限はありますが、無料プランでもChatGPTの基本的な機能を十分に体験できます</p>
+  </div>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>ChatGPTはテキスト生成AIの入門として最適なツールの一つです。利用者が多く情報が豊富で、無料でも十分に使えます。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 2: アカウント作成
+============================================================ -->
+<h2 class="section-heading" id="sec2">2. ChatGPTアカウント作成とログイン</h2>
+
+<h3 class="sub-heading">アカウント作成に必要なもの</h3>
+
+<p class="text-body">
+  ChatGPTを利用するためには、まずアカウントを作成する必要があります。以下のものを事前に準備しておきましょう。
+</p>
+
+<ul style="margin: 16px 0; padding-left: 20px; font-size: 15px; line-height: 2.2; color: #444;">
+  <li><strong class="accent">メールアドレス</strong>：アカウント登録に使用します</li>
+  <li><strong class="accent">電話番号</strong>：本人確認のためのSMS認証で使用します</li>
+</ul>
+
+<h3 class="sub-heading">ステップ解説：ChatGPTアカウント作成手順</h3>
+
+<!-- ステップ表示 -->
+<div style="margin: 24px 0;">
+  <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">1</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">ChatGPT公式サイトへアクセス</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">Webブラウザで <a href="https://openai.com/chatgpt/" style="color: #E85D4A;">https://openai.com/chatgpt/</a> にアクセスし、「Sign up」や「登録する」ボタンをクリックします。</p>
+      <div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img2.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/493951fa63.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">ChatGPT公式サイト トップページ</p>
+</div>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">2</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">メールアドレスの登録</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">メールアドレスを入力し、「Continue」ボタンをクリックします。GoogleアカウントやMicrosoftアカウント、Apple IDで登録することも可能です。</p>
+     <div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img3.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/ffe5e5acfe.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">メールアドレス入力画面</p>
+</div>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">3</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">パスワードの設定</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">任意のパスワードを入力し、「Continue」ボタンをクリックします。パスワードは忘れないようにメモしておきましょう。</p>
+  
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">4</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">メール認証</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">OpenAIから届いた確認メール内の「Verify email address」ボタンをクリックします。</p>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img4.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/741817f6c8.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">メール認証画面</p>
+</div>
+    </div>
+  </div>
+
+  <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">5</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">名前と誕生日の入力</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">名前（First name:名, Last name:姓）と誕生日を入力して「Continue」をクリックします。</p>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img5.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/6a8c735e88.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">名前と誕生日入力画面</p>
+</div>    </div>
+  </div>
+
+  <div style="display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">6</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">登録完了</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">認証が完了すれば、アカウント作成は完了です。</p>
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img6.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/01beac26f2.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">登録完了画面</p>
+</div>
+    </div>
+  </div>
+</div>
+
+<h3 class="sub-heading">初回ログインと基本画面</h3>
+
+<p class="text-body">
+  アカウント作成が完了したら、<a href="https://chatgpt.com/" style="color: #E85D4A;">https://chatgpt.com/</a> にアクセスしてログインしましょう。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img7.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/ebc95b9db1.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">ChatGPTメイン画面</p>
+</div>
+
+<!-- テーブル: 画面構成 -->
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">番号</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">画面要素</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">説明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">1</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">チャット入力欄</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">画面下部のテキストエリア。ここにAIへのお願い（プロンプト）を入力します</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">2</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">送信ボタン</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">入力欄右側の矢印アイコン。クリックまたはEnterキーで送信</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">3</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">会話履歴</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">左側サイドバー。過去のチャットを再開したり、新しい会話を開始できます</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; font-weight: 700;">4</td>
+        <td style="padding: 12px 16px; font-weight: 700;">モデル選択</td>
+        <td style="padding: 12px 16px;">利用するAIモデルを選択。無料版でも高性能なモデルが利用可能（※2026年3月時点）</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>ChatGPTの画面デザイン（UI）は、サービス改善のために<strong class="accent">予告なく変更されることがあります</strong>。基本的な操作方法は変わりませんが、ボタンの位置などが若干異なる場合があります。</p>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">ChatGPTでAIにメッセージを送信するには、どこに文字を入力する？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. 左側のサイドバー</button>
+    <button class="quiz-opt" data-correct="true">B. 画面下部のチャット入力欄</button>
+    <button class="quiz-opt" data-correct="false">C. 画面上部のメニューバー</button>
+    <button class="quiz-opt" data-correct="false">D. 別のアプリを起動して入力する</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> ChatGPTでは画面下部にあるチャット入力欄にお願い（プロンプト）を入力し、送信ボタンを押すかEnterキーを押すとAIに送信されます。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  セクション 3: WEBCOACH先生
+============================================================ -->
+<h2 class="section-heading" id="sec3">3. コラム：WEBCOACH先生について</h2>
+
+<div class="webcoach-box">
+  <div class="label">WEBCOACH受講生向け特別コンテンツ</div>
+  <p style="font-size: 14px; color: #555; margin: 0;">WEBCOACHをご利用でない方は、読み飛ばして次のセクションに進んでいただいて問題ありません。</p>
+</div>
+
+<p class="text-body">
+  WEBCOACH受講生の皆さんへ。この教材でChatGPTの使い方を学ぶことは、もう一つの強力なサポートツール「<strong class="accent">WEBCOACH先生</strong>」の活用にも繋がります。
+</p>
+
+<p class="text-body">
+  「WEBCOACH先生」は、<strong class="accent">ChatGPTと同じ最新のGPTモデルを搭載</strong>しています。この教材で学ぶAIとの対話方法は、そのまま応用できます。
+</p>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="https://learn.webcoach.jp/theme/webcoach/img/introduction-to-generative-ai/text-ai-hands-on/img8.png" class="lightbox" style="display: inline-block;">
+    <img src="../../_assets/44be20a1ce.webp" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">WEBCOACH先生のイメージ</p>
+</div>
+<!-- WEBCOACH先生の3つの特徴 -->
+<div style="margin: 24px 0;">
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 16px 0; display: flex; align-items: flex-start; gap: 16px;">
+    <div style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 18px; display: flex; align-items: center; justify-content: center;">1</div>
+    <div>
+      <h3 style="font-size: 17px; font-weight: 700; color: #3D3D3D; margin: 0 0 4px;">たった1分で回答が返ってくる</h3>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">学習中の疑問に平均1分で回答。待ち時間なく学習がスムーズに進みます。</p>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 16px 0; display: flex; align-items: flex-start; gap: 16px;">
+    <div style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 18px; display: flex; align-items: center; justify-content: center;">2</div>
+    <div>
+      <h3 style="font-size: 17px; font-weight: 700; color: #3D3D3D; margin: 0 0 4px;">ChatGPTの最新モデルを常に利用可能</h3>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">個人でChatGPTの有料プランに登録しなくても、常に最先端のAI技術に触れられます。アカウント作成も不要です。</p>
+    </div>
+  </div>
+
+  <div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 16px 0; display: flex; align-items: flex-start; gap: 16px;">
+    <div style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; font-size: 18px; display: flex; align-items: center; justify-content: center;">3</div>
+    <div>
+      <h3 style="font-size: 17px; font-weight: 700; color: #3D3D3D; margin: 0 0 4px;">WEBの質問に特化した高精度な回答</h3>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">Webデザイン、プログラミング、マーケティングなどのWEB関連分野に特化。専門的な質問にも的確なサポートが期待できます。</p>
+    </div>
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>プログラミング学習でエラーが出たとき、Webデザインの専門用語をすぐに知りたいとき、マーケティング施策のアイデアを相談したいとき――「まずはWEBCOACH先生に聞いてみよう」を合言葉に活用してみましょう。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 4: 最初のコンタクト
+============================================================ -->
+<h2 class="section-heading" id="sec4">4. ChatGPTとの最初のコンタクト</h2>
+
+<p class="text-body">
+  アカウント作成と基本画面の確認が終わったら、いよいよChatGPTに最初のメッセージを送ってみましょう。ここでは、簡単な挨拶と、ChatGPTができることについて尋ねてみます。
+</p>
+
+<h3 class="sub-heading">【演習】最初の挨拶をしてみよう</h3>
+
+<div style="margin: 24px 0;">
+  <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">1</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">ChatGPTにログイン</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">先ほど作成したアカウントでログインします。</p>
+    </div>
+  </div>
+  <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">2</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">チャット入力欄にお願いを入力</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">以下の例を参考に入力してみましょう。内容は自由にアレンジしてOKです。</p>
+    </div>
+  </div>
+  <div style="display: flex; align-items: flex-start; gap: 14px;">
+    <div style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #F5A64A, #E85D4A); color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center;">3</div>
+    <div>
+      <div style="font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px;">送信ボタンをクリック（またはEnterキー）</div>
+      <p style="font-size: 14px; line-height: 1.7; color: #555; margin: 0;">AIからの返答を確認しましょう。</p>
+    </div>
+  </div>
+</div>
+
+<div class="prompt-example">
+  <div class="prompt-label">お願いの例</div>
+  「こんにちは。今日からあなた（ChatGPT）の使い方を学びます。○○です。あなたはどんなことができますか？私でも簡単に試せそうなことを3つ教えてください。」
+</div>
+
+<div class="ai-response">
+  <div style="font-size: 11px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 8px;">ChatGPTの返信例（イメージ）</div>
+  <p style="margin: 0;">「こんにちは、○○さん。ChatGPTの学びの旅へようこそ。私にできることはたくさんありますが、簡単に試せることとしては：</p>
+  <ol style="margin: 8px 0 0; padding-left: 20px; font-size: 14px; line-height: 1.8;">
+    <li><strong>簡単な質問に答えること</strong>：「日本の首都はどこ？」など一般的な知識に関する質問</li>
+    <li><strong>短い文章を作ること</strong>：「お礼のメールの書き出しを考えて」などのリクエスト</li>
+    <li><strong>アイデア出しのお手伝い</strong>：「週末の過ごし方のアイデアを3つ教えて」など</li>
+  </ol>
+  <p style="margin: 8px 0 0;">何か試してみたいことがあれば、お気軽にお声がけくださいね。」</p>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>AIと自然な会話が成立することを確認できましたか？ChatGPTは<strong class="accent">まるで人間とチャットするように、気軽に対話を始めることができます</strong>。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 5: 章末課題
+============================================================ -->
+<h2 class="section-heading" id="sec5">5. 章末課題：AI活用初めの一歩宣言</h2>
+
+<p class="text-body">
+  ChatGPTの基本的な使い方を知った今、これからの学習や日常生活で<strong class="accent">「こんなことをしてみたい」「こんな風に役立てたい」</strong>というあなたの「AI活用初めの一歩宣言」を3つ考えてみましょう。
+</p>
+
+<p class="text-body"><strong>解答の方向性の例：</strong></p>
+
+<div class="prompt-example">
+  <div class="prompt-label">宣言 1</div>
+  毎朝、ChatGPTに「今日の私におすすめのポジティブな一言」を教えてもらう。
+</div>
+<div class="prompt-example">
+  <div class="prompt-label">宣言 2</div>
+  趣味のブログを書くときに、記事の構成案やタイトル案をChatGPTに相談してみる。
+</div>
+<div class="prompt-example">
+  <div class="prompt-label">宣言 3</div>
+  英語のニュース記事を読むのが大変な時、ChatGPTに「この記事の要点を3つ教えて」とお願いしてみる。
+</div>
+
+<div class="webcoach-box">
+  <div class="label">WEBCOACH先生にフィードバックを貰おう</div>
+  <p style="font-size: 14px; line-height: 1.8; color: #555; margin: 0;">完成した宣言を、WEBCOACH先生に見せてフィードバックをもらいましょう。思いもよらない新しいアイデアや、別の切り口のヒントがもらえることもあります。</p>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">ChatGPTのアカウント作成に最低限必要なものは？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. クレジットカードと運転免許証</button>
+    <button class="quiz-opt" data-correct="true">B. メールアドレスと電話番号</button>
+    <button class="quiz-opt" data-correct="false">C. 有料会員登録と推薦状</button>
+    <button class="quiz-opt" data-correct="false">D. 専用アプリのインストールのみ</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> ChatGPTのアカウント作成に必要なのは、メールアドレス（登録用）と電話番号（SMS認証用）の2つです。無料で登録でき、クレジットカードなどは不要です。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  まとめ
+============================================================ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">ChatGPTとは</strong> — OpenAI社が開発した、人間と自然な会話ができるテキスト生成AI</li>
+    <li><strong style="color: #3D3D3D;">アカウント作成</strong> — メールアドレスと電話番号があれば数分で完了</li>
+    <li><strong style="color: #3D3D3D;">基本操作</strong> — 画面下部の入力欄にお願いを書いて送信するだけ</li>
+    <li><strong style="color: #3D3D3D;">WEBCOACH先生</strong> — 1分回答・最新GPT・Web特化の3つの強み（受講生向け）</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  理解度チェック
+============================================================ -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">ChatGPTのアカウントを作成できた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">公式サイトにアクセスし、メールアドレス登録 → パスワード設定 → メール認証 → 名前入力の手順で完了します。GoogleアカウントやApple IDでも登録可能です。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">基本画面の構成（入力欄・送信ボタン・履歴・モデル選択）を理解した</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">画面下部のチャット入力欄にお願いを入力し、送信ボタンまたはEnterキーで送信します。左サイドバーには過去の会話履歴が表示されます。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">ChatGPTに最初のメッセージを送信できた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">挨拶や簡単な質問を入力して送信し、AIからの返答を確認できていればOKです。会話は自由な内容でかまいません。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">（受講生）WEBCOACH先生の3つの特徴を把握した</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">1) 平均1分での迅速な回答、2) ChatGPTの最新モデルを常に利用可能、3) Web関連分野に特化した高精度な回答、の3つです。</div>
+    </details>
+
+  </div>
+</details>
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E4%BD%93%E9%A8%93-%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E7%94%9F%E6%88%90AI%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89/ohcg8" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/%E4%BD%93%E9%A8%93-%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E7%94%9F%E6%88%90AI%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89/Q4apc" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- ============================================================
+  JavaScript
+============================================================ -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

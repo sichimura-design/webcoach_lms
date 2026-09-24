@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="NmdLsi5ewO+7YD9DjZ49Fg==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="962" data-domain="learn.webcoach.jp" data-url="/web-design/WordPress/hWIgw" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>WordPress｜3章：管理画面の使い方 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/WordPress/hWIgw">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="WordPress｜3章：管理画面の使い方 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/253/medium/e565a650-4007-4821-bc62-981a1b19cbcd.png?1746847023">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="WordPress｜3章：管理画面の使い方">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/WordPress/hWIgw">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/253/large/e565a650-4007-4821-bc62-981a1b19cbcd.png?1746847023">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/WordPress/hWIgw"
+    },
+    "headline": "WordPress｜3章：管理画面の使い方",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/014/253/medium/e565a650-4007-4821-bc62-981a1b19cbcd.png?1746847023",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-05-10T12:37:40+09:00",
+    "dateModified": "2025-12-11T19:16:57+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "g_miyashita"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="_ZcbQ2dbkcV-ZxyBzlB-p6Cj6H5DtD4IiyEhjpWqcDbgpvdY0T3OgR95vznqqaer3t2yjV1jmHeZzL1tkTd1Xw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WordPress</div>
+
+          <div class="fw-bold h2">WordPress｜3章：管理画面の使い方</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25492" data-item-id="25492" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="xH5XC" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="U1359" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item14216" data-item-id="14216" data-item-type="ItemHeading"><h2 class="item-body">3章：管理画面の使い方</h2></div>
+        
+        <div class="article-item item_markdown " id="item45168" data-item-id="45168" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_text " id="item45169" data-item-id="45169" data-item-type="ItemText"><div class="item-body-hbr">本章は、WordPressでのWeb制作の管理画面へのアクセス方法と、画面の基本的な見方を学ぶパートです。<br />以下の状態になれば、この章はクリアとなります。</div></div>
+        
+        <div class="article-item item_markdown " id="item45170" data-item-id="45170" data-item-type="ItemMarkdown"><ul>
+  <li>管理画面（ダッシュボード）へのログイン手順を習得し、次回以降もスムーズにアクセスできる</li>
+  <li>ダッシュボードを構成する3つの要素（ツールバー、メインナビゲーション、ワークエリア）の役割を理解し、どこで何ができるかの全体像を把握している</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item14228" data-item-id="14228" data-item-type="ItemHeading"><h3 class="item-body">【3-1】管理画面へログイン</h3></div>
+        
+        <div class="article-item item_markdown " id="item14243" data-item-id="14243" data-item-type="ItemMarkdown"><h4 id="section">管理画面（ダッシュボード）のページをブックマークする。</h4>
+</div>
+        
+        <div class="article-item item_html " id="item15522" data-item-id="15522" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item14253" data-item-id="14253" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/253/medium/e565a650-4007-4821-bc62-981a1b19cbcd.png?1746847023"><img class="img-responsive item-image" alt=" (14253)" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/253/medium/e565a650-4007-4821-bc62-981a1b19cbcd.png?1746847023" width="640" height="309" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item14281" data-item-id="14281" data-item-type="ItemRichText"><div class="item-body-hbr">WordPressのインストールが完了したら、「管理者ページURL」をクリックして管理画面にアクセスしましょう。<br>
+初期設定では、<span class="decoration-01">管理者ページのURLは「ドメイン名＋</span><span class="decoration-01">/wp-login.php」の形式</span>になっています。<br>
+このURLがわからなくなるとログインできなくなるため、<span class="decoration-01">管理者ページURLとサイトURLは必ずブックマークやメモ帳に保存しておきましょう。</span></div></div>
+        
+        <div class="article-item item_html " id="item14297" data-item-id="14297" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">URLを忘れたら<br></span>
+        <ul>
+            <span class="content">URLを忘れた時は「WordPress簡単インストール」を選択し、スクロールダウンを行うと「WordPressインストール履歴」が出てくるので、そちらで確認してください。</span><br>
+            <img src="/theme/webcoach/img/wordpress/47bf6351-6c4c-448a-828d-ab6ca7bbe94b.png" alt="Wordpressインストール履歴の例" style="max-width: 100%; height: auto; margin-top: 10px;">
+        </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item14303" data-item-id="14303" data-item-type="ItemMarkdown"><h4 id="wordpress">WordPressの管理画面にログインする。</h4>
+</div>
+        
+        <div class="article-item item_html " id="item15523" data-item-id="15523" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14306" data-item-id="14306" data-item-type="ItemText"><div class="item-body-hbr">【2-5】で設定したユーザー名またはメールアドレスとパスワードを入力し【ログイン】ボタンを押してください。</div></div>
+        
+        <div class="article-item item_image " id="item14309" data-item-id="14309" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/309/medium/52190151-6290-47fb-aac4-471ff27ed588.png?1746849584" title=""><img class="img-responsive item-image" alt=" (14309)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/309/medium/52190151-6290-47fb-aac4-471ff27ed588.png?1746849584" width="640" height="309" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item15521" data-item-id="15521" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14313" data-item-id="14313" data-item-type="ItemText"><div class="item-body-hbr">こちらのページが出てきましたらログイン成功です！<br />この画面がWordPressを作成していく画面【管理画面・ダッシュボード】です。</div></div>
+        
+        <div class="article-item item_image " id="item14315" data-item-id="14315" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/315/medium/62017898-fc95-4500-a621-ee5233c824ef.png?1746849744" title=""><img class="img-responsive item-image" alt=" (14315)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/315/medium/62017898-fc95-4500-a621-ee5233c824ef.png?1746849744" width="640" height="290" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_heading " id="item14316" data-item-id="14316" data-item-type="ItemHeading"><h3 class="item-body">【3-2】ダッシュボード</h3></div>
+        
+        <div class="article-item item_markdown " id="item14318" data-item-id="14318" data-item-type="ItemMarkdown"><h4 id="section">ダッシュボードを構成する3つの要素</h4>
+</div>
+        
+        <div class="article-item item_html " id="item15524" data-item-id="15524" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14344" data-item-id="14344" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">WordPressの管理画面のことを「ダッシュボード」と言います。</span>ダッシュボードは<span class="decoration-02">3つの要素で構成</span>されています。</div></div>
+        
+        <div class="article-item item_html " id="item14330" data-item-id="14330" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">ダッシュボードを構成する3つの要素<br></span>
+  <li><span class="content">①ツールバー</span><br></li>
+            <li><span class="content">②メインナビゲーション</span><br></li>
+            <li><span class="content">③ワークエリア</span><br></li>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14345" data-item-id="14345" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">ダッシュボードの見た目はテーマ（デザインテンプレート）やプラグイン（拡張機能）によって、表示される項目は異なります。</span><br>
+1つずつ解説していきます。</div></div>
+        
+        <div class="article-item item_markdown " id="item14346" data-item-id="14346" data-item-type="ItemMarkdown"><h4 id="section">①ツールバー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item14348" data-item-id="14348" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/348/medium/78ba3c4a-281e-4d12-b887-5d38750eae57.jpg?1746850616" title=""><img class="img-responsive item-image" alt=" (14348)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/348/medium/78ba3c4a-281e-4d12-b887-5d38750eae57.jpg?1746850616" width="640" height="75" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item14363" data-item-id="14363" data-item-type="ItemHtml"><div class="item-body">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            margin-left: 0; /* 左揃え */
+            margin-top: 20px; /* 上部に余白を追加 */
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            white-space: nowrap;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .footer-note {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="_ZcbQ2dbkcV-ZxyBzlB-p6Cj6H5DtD4IiyEhjpWqcDbgpvdY0T3OgR95vznqqaer3t2yjV1jmHeZzL1tkTd1Xw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+    <table>
+        <tr>
+            <td>①Wマーク</td>
+            <td>WordPressに関する情報を表示確認するボタン</td>
+        </tr>
+        <tr>
+            <td>②家マーク</td>
+            <td>ダッシュボード画面と実際の公開Webページを切り替えるボタン</td>
+        </tr>
+        <tr>
+            <td>③コメントマーク</td>
+            <td>コメントを確認する時に使用するボタン</td>
+        </tr>
+        <tr>
+            <td>④新規</td>
+            <td>投稿（ブログ・記事）やメディア（画像・動画）固定ページ（ページ）ユーザーなどを作成できるボタン</td>
+        </tr>
+        <tr>
+            <td>⑤こんにちは、〇〇さん</td>
+            <td>ログイン中のユーザー情報、プロフィールなどの編集が可能</td>
+        </tr>
+    </table>
+    </div></div></div>
+        
+        <div class="article-item item_rich_text " id="item14376" data-item-id="14376" data-item-type="ItemRichText"><div class="item-body-hbr">この後実際に<span class="decoration-02">ブログやページを作成していくことで意味が理解できてきます</span>ので今はなんとなくの理解で大丈夫です！</div></div>
+        
+        <div class="article-item item_markdown " id="item14377" data-item-id="14377" data-item-type="ItemMarkdown"><h4 id="section">②メインナビゲーション</h4>
+</div>
+        
+        <div class="article-item item_image " id="item14381" data-item-id="14381" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/381/medium/036b5aba-d90a-402c-a954-7128454f5eac.jpg?1746854698" title=""><img class="img-responsive item-image" alt=" (14381)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/381/medium/036b5aba-d90a-402c-a954-7128454f5eac.jpg?1746854698" width="640" height="613" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item14383" data-item-id="14383" data-item-type="ItemHtml"><div class="item-body"><head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 800px;
+            margin-left: 0; /* 左揃え */
+            margin-top: 20px; /* 上部に余白を追加 */
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .footer-note {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="_ZcbQ2dbkcV-ZxyBzlB-p6Cj6H5DtD4IiyEhjpWqcDbgpvdY0T3OgR95vznqqaer3t2yjV1jmHeZzL1tkTd1Xw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+    <table>
+        <tr>
+            <th>項目</th>
+            <th>説明</th>
+        </tr>
+        <tr>
+            <td>①ダッシュボード</td>
+            <td>アクティビティやWordPressの新着情報などを確認するページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>②ホーム</td>
+            <td>ダッシュボードと同じ役割のページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>③更新</td>
+            <td>WordPressやテーマ、プラグインの更新情報の確認や更新が可能なページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>④投稿</td>
+            <td>ブログ・記事の作成や編集を行うページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>⑤メディア</td>
+            <td>動画・画像をアップロードや管理をするためのページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>⑥固定ページ</td>
+            <td>ページの作成や編集を行うページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>⑦コメント</td>
+            <td>コメントを管理するためのページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>⑧外観</td>
+            <td>テーマ（テンプレート）をインストールや編集を行うページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>⑨プラグイン</td>
+            <td>プラグイン（拡張機能）をインストールや管理・編集するためのページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>⑩ユーザー</td>
+            <td>ダッシュボードへログインできるユーザーを管理するためのページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>⑪ツール</td>
+            <td>データのインポートやエクスポートが可能なページへリンクするメニュー</td>
+        </tr>
+        <tr>
+            <td>⑫設定</td>
+            <td>サイトのタイトルなどホームページの基本情報を設定するページへリンクするメニュー</td>
+        </tr>
+    </table>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="NmdLsi5ewO+7YD9DjZ49Fg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body></div></div>
+        
+        <div class="article-item item_image " id="item14386" data-item-id="14386" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/386/medium/fa6de9c4-4132-4a80-ae36-bacf895dd77a.png?1746854825" title=""><img class="img-responsive item-image" alt=" (14386)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/386/medium/fa6de9c4-4132-4a80-ae36-bacf895dd77a.png?1746854825" width="615" height="584" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item14387" data-item-id="14387" data-item-type="ItemText"><div class="item-body-hbr">メニューにカーソルを合わせるとサブメニューがでてきます。<br />サブメニューを選択することで編集画面にアクセスすることが可能です！</div></div>
+        
+        <div class="article-item item_markdown " id="item14388" data-item-id="14388" data-item-type="ItemMarkdown"><h4 id="section">③ワークエリア</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item14390" data-item-id="14390" data-item-type="ItemRichText"><div class="item-body-hbr">ワークエリアは選択したページの編集画面です。<br>
+こちらは固定ページのワーク画面を表示していますがWordPressではこの<span class="decoration-02">ワークエリアを使用して編集していきます。</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item14394" data-item-id="14394" data-item-type="ItemRichText"><div class="item-body-hbr">一通り説明しましたが<span class="decoration-02">全てのメニューを使用して制作を行うわけではないので実際触りながら覚えて頂いて大丈夫</span>です！では次は初期設定を行っていきましょう！</div></div>
+        
+        <div class="article-item item_image " id="item14389" data-item-id="14389" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/389/medium/98854f5d-ccfb-419e-b61e-123f40de0461.jpg?1746854894" title=""><img class="img-responsive item-image" alt=" (14389)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/014/389/medium/98854f5d-ccfb-419e-b61e-123f40de0461.jpg?1746854894" width="640" height="300" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item14395" data-item-id="14395" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item14396" data-item-id="14396" data-item-type="ItemText"><div class="item-body-hbr">これで【3章：管理画面の使い方】の解説を終わります。<br />次の章に進みましょう！</div></div>
+        
+        <div class="article-item item_html " id="item25493" data-item-id="25493" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="xH5XC" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="U1359" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="NmdLsi5ewO+7YD9DjZ49Fg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

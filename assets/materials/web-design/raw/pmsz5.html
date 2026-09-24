@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="ZNQ91jcZZLmZijBQU5RmtA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1299" data-domain="learn.webcoach.jp" data-url="/web-design/WordPress/pMsZ5" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>WordPress｜8章：WordPress制作課題① - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/WordPress/pMsZ5">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="WordPress｜8章：WordPress制作課題① - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/694/medium/d7b95b85-fb89-4f48-8495-40f5a1a619fa.png?1749899053">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="WordPress｜8章：WordPress制作課題①">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/WordPress/pMsZ5">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/694/large/d7b95b85-fb89-4f48-8495-40f5a1a619fa.png?1749899053">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/WordPress/pMsZ5"
+    },
+    "headline": "WordPress｜8章：WordPress制作課題①",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/024/694/medium/d7b95b85-fb89-4f48-8495-40f5a1a619fa.png?1749899053",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-06-14T20:31:57+09:00",
+    "dateModified": "2025-12-11T19:45:53+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "a_toshiki1299"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="5GxXQUPsMuP7jxNprXrTxLEtzHdombNitLNyPDiWi6vOqKzk63lmovP0eQkmpXjVSos34rO458j5FfHRTWU5lg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WordPress</div>
+
+          <div class="fw-bold h2">WordPress｜8章：WordPress制作課題①</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25502" data-item-id="25502" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="iKzAv" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="jLao5" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item24633" data-item-id="24633" data-item-type="ItemHeading"><h2 class="item-body">8章 WordPress制作課題①</h2></div>
+        
+        <div class="article-item item_markdown " id="item45253" data-item-id="45253" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item45254" data-item-id="45254" data-item-type="ItemRichText"><div class="item-body-hbr">本章は、ポートフォリオサイトの制作を通じて、サイト設計から公開までの全工程を一人で完遂する実践演習です。<br>
+以下の状態になれば、この章はクリアとなります。</div></div>
+        
+        <div class="article-item item_markdown " id="item45255" data-item-id="45255" data-item-type="ItemMarkdown"><ul>
+  <li>サブドメインの取得から始め、テーマ「Lightning」を使用した本格的なポートフォリオサイトを、見本通りにゼロから完成させることができる</li>
+  <li>「投稿」と「固定ページ」の役割を使い分け、それらをメニューやリンクで繋いだ「回遊できるサイト構造」を構築できる</li>
+  <li>お問い合わせフォームの実装やドメインメールの取得など、Webサイト運営に必須となる「ユーザーと繋がる機能」を自力で設定できる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item24635" data-item-id="24635" data-item-type="ItemHeading"><h3 class="item-body">【8-1】課題について</h3></div>
+        
+        <div class="article-item item_markdown " id="item24687" data-item-id="24687" data-item-type="ItemMarkdown"><h4 id="section">この課題ではポートフォリオサイトを作成していきます</h4>
+</div>
+        
+        <div class="article-item item_image " id="item24694" data-item-id="24694" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/694/medium/d7b95b85-fb89-4f48-8495-40f5a1a619fa.png?1749899053" title=""><img class="img-responsive item-image" alt=" (24694)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/694/medium/d7b95b85-fb89-4f48-8495-40f5a1a619fa.png?1749899053" width="640" height="432" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item24688" data-item-id="24688" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="http://test2.webcoach-wordpress.com/" class="default-link" rel="nofollow">課題①ポートフォリオサイト</a></div></div>
+        
+        <div class="article-item item_text " id="item24689" data-item-id="24689" data-item-type="ItemText"><div class="item-body-hbr">上記のサイトを見本にサイトを制作していきます！<br /><br />Figmaでワイヤーフレームを作成していますので、ご自身のデザインに変更したい場合はワイヤーフレームを変更することを推奨します！</div></div>
+        
+        <div class="article-item item_text " id="item24690" data-item-id="24690" data-item-type="ItemText"><div class="item-body-hbr">【使用素材】<br />※（8-1と8-2でダウンロードする素材は同じです。どちらか１つをダウンロードしましょう。）</div></div>
+        
+        <div class="article-item item_link " id="item24691" data-item-id="24691" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24691" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-1（Figma学習済みの方向け）</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-1（Figma学習済みの方向け）" data-reference="https://www.dropbox.com/scl/fi/9fz8cqg73hco7sz7rghn6/.fig?rlkey=lfjgpyai578d29h9n61vu1vfa&amp;st=2cdg8z32&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/691/thumb/39548ef8-4d4f-4400-820a-668ebb0aa595.png?1756161432" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38025" data-item-id="38025" data-item-type="ItemRichText"><div class="item-body-hbr">注意：素材ダウンロードの際は、画像のように画面右上のダウンロードボタンからダウンロードしてください。<br>
+「このファイル形式を読み込むことができません」という表示は気にしなくてOKです！</div></div>
+        
+        <div class="article-item item_image " id="item38026" data-item-id="38026" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/026/medium/413a3ee4-b6c5-4d92-9c3f-3de9e8b23c1c.png?1755077364" title=""><img class="img-responsive item-image" alt=" (38026)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/026/medium/413a3ee4-b6c5-4d92-9c3f-3de9e8b23c1c.png?1755077364" width="640" height="347" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item24873" data-item-id="24873" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24873" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-2（Figma未学習の方向け）</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-2（Figma未学習の方向け）" data-reference="https://www.dropbox.com/scl/fi/d0rczx5btq6lr0w1mhf5v/wordpress_ch8_v1-0_published.zip?rlkey=y8k9l3l7qu7979f79wnyfew3i&amp;st=3l4xbico&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/873/thumb/f45b44ff-c29f-432e-b5f5-928e93c928d3.png?1756161445" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item24693" data-item-id="24693" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ポイント</span></div>
+    </div>
+    <div class="content-area">
+        
+            Figmaが使用できる方はFigmaのデータを取り込んで画像をダウンロードしてください。<br>
+ダウンロード方法がわからない方は、Figmaの【8-4】書き出ししてみよう（エクスポート）を復習しましょう！<br>
+Figmaを学習前の方は課題①素材の画像を使用しましょう！<br>
+    
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item24695" data-item-id="24695" data-item-type="ItemHeading"><h3 class="item-body">【8-2】サブドメインの取得とWordPressのインストール </h3></div>
+        
+        <div class="article-item item_markdown " id="item24696" data-item-id="24696" data-item-type="ItemMarkdown"><h4 id="section">サブドメインの作成方法</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24697" data-item-id="24697" data-item-type="ItemText"><div class="item-body-hbr">これからロリポップを使って作業していきます。<br /><br />【サーバーの管理・設定】→【サブドメイン設定】</div></div>
+        
+        <div class="article-item item_image " id="item24698" data-item-id="24698" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/698/medium/76d838d1-4142-41d9-9727-6b4b003c7c26.png?1749899142" title=""><img class="img-responsive item-image" alt=" (24698)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/698/medium/76d838d1-4142-41d9-9727-6b4b003c7c26.png?1749899142" width="640" height="307" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item24699" data-item-id="24699" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item24701" data-item-id="24701" data-item-type="ItemText"><div class="item-body-hbr">【新規作成】をクリック</div></div>
+        
+        <div class="article-item item_image " id="item24700" data-item-id="24700" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/700/medium/fd111557-e111-4a53-84b4-d18461bbbdc4.png?1749899170" title=""><img class="img-responsive item-image" alt=" (24700)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/700/medium/fd111557-e111-4a53-84b4-d18461bbbdc4.png?1749899170" width="640" height="307" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item24702" data-item-id="24702" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item24704" data-item-id="24704" data-item-type="ItemText"><div class="item-body-hbr">①http://のあとのボックスにportfolioと入力<br />②後ろのボックスからドメインを選択<br />③公開アップロードフォルダにportfolioと入力<br /><br />これでサブドメインの取得が完了です！<br />※ サブドメインがDNSに反映されるまで、およそ1時間ほど時間がかかります。<br /><br />次はサブドメインで新しくWordPressを作成していきましょう！</div></div>
+        
+        <div class="article-item item_image " id="item24703" data-item-id="24703" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/703/medium/96962bc6-77e0-4171-851a-85e8cad2a048.png?1749899207" title=""><img class="img-responsive item-image" alt=" (24703)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/703/medium/96962bc6-77e0-4171-851a-85e8cad2a048.png?1749899207" width="640" height="479" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item24705" data-item-id="24705" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38029" data-item-id="38029" data-item-type="ItemRichText"><div class="item-body-hbr">こちらの作業が終わったら、作成したサブドメインにも独自SSLを導入していきましょう。<br>
+操作方法を忘れてしまった方は、「4章：初期設定」を復習しましょう！</div></div>
+        
+        <div class="article-item item_image " id="item38030" data-item-id="38030" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/030/medium/4cda5244-801e-4c3c-af99-d86b74fa5217.png?1755078425" title=""><img class="img-responsive item-image" alt=" (38030)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/030/medium/4cda5244-801e-4c3c-af99-d86b74fa5217.png?1755078425" width="640" height="347" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item24706" data-item-id="24706" data-item-type="ItemMarkdown"><h4 id="wordpress">WordPressのインストール</h4>
+</div>
+        
+        <div class="article-item item_image " id="item24707" data-item-id="24707" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/707/medium/ed642e30-7597-4812-ad70-382cdc7e569a.png?1749899261" title=""><img class="img-responsive item-image" alt=" (24707)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/707/medium/ed642e30-7597-4812-ad70-382cdc7e569a.png?1749899261" width="640" height="303" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item24708" data-item-id="24708" data-item-type="ItemRichText"><div class="item-body-hbr">WordPressのインストール方法が分からない場合は、教材をもう一度見返してみましょう。<br>
+<br>
+WordPressをインストールする際は先ほど作成したportfolioがついているドメインを選択して作成していきましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item24709" data-item-id="24709" data-item-type="ItemHeading"><h3 class="item-body">【8-3】テーマのダウンロードとテーマの編集</h3></div>
+        
+        <div class="article-item item_markdown " id="item24710" data-item-id="24710" data-item-type="ItemMarkdown"><h4 id="section">テーマのダウンロード</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24711" data-item-id="24711" data-item-type="ItemText"><div class="item-body-hbr">【外観】→【テーマ】→【新しいテーマを追加】→【テーマを検索】Lightningと入力<br /><br />Lightningが出てきたら【インストール】→有効化を押してください</div></div>
+        
+        <div class="article-item item_link " id="item24712" data-item-id="24712" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24712" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-1" data-reference="https://www.dropbox.com/scl/fi/6ponlb3crv8yvv8tuzrok/wp_8.1.1.0_.mp4?rlkey=d62zxe6ofwxh8xtuxqx6x6h90&amp;st=2dsqw920&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/712/thumb/270a7aeb-0454-44c6-9e04-a3e4bad4c03c.png?1756161509" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item24713" data-item-id="24713" data-item-type="ItemMarkdown"><h4 id="section">基本設定とカラー、背景を設定していきましょう</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24714" data-item-id="24714" data-item-type="ItemText"><div class="item-body-hbr">テーマから【カスタマイズ】→【サイトの基本情報】をクリックし、タイトル・キャッチフレーズ・アイコンを設定しましょう。<br />ここの設定は、【4-3】で学んだ設定です。<br /><br />次は【色】を選択していきましょう！<br />【背景色】と【キーカラー】を好きな色に設定し、どこに反映されるか確認していきましょう。<br /><br />次に【背景画像】から好きな画像を設定していきましょう。<br />今回の設定はデフォルトですが、設定の方法を変えることでパララックスの設定が可能です。</div></div>
+        
+        <div class="article-item item_link " id="item24716" data-item-id="24716" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24716" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-2" data-reference="https://www.dropbox.com/scl/fi/k7bwpnjwotuzz7aebdrad/wp_8.2.1.0_.mp4?rlkey=038utc1dwsn8w4atq6aqipkj5&amp;st=th9o8ekw&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/716/thumb/04b1c645-8521-477c-bb97-9c0ce3cd4261.png?1756161624" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item24715" data-item-id="24715" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+  <span class="bold">パララックスとは<br></span>
+  	
+<ul><li>パララックスとは、Webサイトに立体感や遠近感を持たせることでデザイン性が高まるデザインの表現方法の一つです。</li></ul>
+    
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item24717" data-item-id="24717" data-item-type="ItemHeading"><h3 class="item-body">【8-4】トップページの編集</h3></div>
+        
+        <div class="article-item item_markdown " id="item24718" data-item-id="24718" data-item-type="ItemMarkdown"><h4 id="section">ファーストビューの変更</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item24719" data-item-id="24719" data-item-type="ItemRichText"><div class="item-body-hbr">WordPressの管理画面「外観」＞「カスタマイズ」を選択し、動画の手順を確認しましょう<br>
+<br>
+【Lightningトップページスライドショー】<br>
+<br>
+①スライド2・3の情報を削除します。<br>
+②【[1] スライド画像】【[1] モバイル用スライド画像(任意) 】にFigmaで作成した画像を設定してください。<br>
+③スライド1の【スライドタイトル (任意)】【スライドテキスト (任意)】【 ボタンのテキスト (任意)】【スライド画像リンク先 URL】のサンプルテキストを削除します。<span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_link " id="item24721" data-item-id="24721" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24721" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-3" data-reference="https://www.dropbox.com/scl/fi/w3s4ldwuv7axro0qid0f5/wp_8.3.1.0_.mp4?rlkey=9lg9oyagb3ot1d6x2e3r0wnq4&amp;st=clswb12i&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/721/thumb/253a99ed-d2e6-4933-856b-404d7fc1cf48.png?1756161701" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item24720" data-item-id="24720" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ポイント</span></div>
+    </div>
+    <div class="content-area">
+ 今回はスライダーの設定ではないので上記の設定にしましたが、スライダーの設定を行う場合はスライド2・3を設定してください。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item24722" data-item-id="24722" data-item-type="ItemMarkdown"><h4 id="section">フッターのウィジェットエリアの修正</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item24723" data-item-id="24723" data-item-type="ItemRichText"><div class="item-body-hbr">【✎マーク】→不要なブロックを削除してください。</div></div>
+        
+        <div class="article-item item_link " id="item24724" data-item-id="24724" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24724" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-4" data-reference="https://www.dropbox.com/scl/fi/hcc386m9a5fzlebsh39re/wp_8.4.1.0_.mp4?rlkey=9tp2fb3tbimiygj2mg6wsbusc&amp;st=2frokokm&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/724/thumb/8078a3aa-240a-4b5c-99e0-508523f55ed9.png?1756161726" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item24725" data-item-id="24725" data-item-type="ItemMarkdown"><h4 id="section">ヘッダーのロゴ設定</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item24726" data-item-id="24726" data-item-type="ItemRichText"><div class="item-body-hbr">【Lightningデザイン設定】→<span class="decoration-01">【ヘッダーロゴ画像】</span>→<span class="decoration-01">Figmaで作成した画像を設定してください。</span></div></div>
+        
+        <div class="article-item item_link " id="item24727" data-item-id="24727" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24727" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-5" data-reference="https://www.dropbox.com/scl/fi/xghpsyrefvk5yoqopcbyn/wp_8.5.1.0_.mp4?rlkey=kofkit35f0nt0xqj3fsr7bsho&amp;st=18i97svp&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/727/thumb/b7c61cec-08dc-4732-8dbf-69bfd696a22f.png?1756161817" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item24728" data-item-id="24728" data-item-type="ItemHeading"><h3 class="item-body">【8-5】トップページの編集②</h3></div>
+        
+        <div class="article-item item_markdown " id="item24729" data-item-id="24729" data-item-type="ItemMarkdown"><h4 id="section">作品紹介コンテンツを作成</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24730" data-item-id="24730" data-item-type="ItemText"><div class="item-body-hbr">【固定ページ】→【編集】→【HOME】<br /><br />①タイトルの下に見出し2を追加→「Works」と入力<br />②画像アイコンをクリック→【置換】→Figma で作成した画像を設定<br />③タイトルテキスト→作品のタイトルを入力→文字を中央揃えにする<br />④タイトルの下に説明文を入力→文字を中央揃えにする<br />⑤ボタンのテキストを変更→デザインを塗りつぶしに変更→配置を中央揃えにする<br /><br />4つ全てを変更して以下のようなレイアウトにしていきましょう！</div></div>
+        
+        <div class="article-item item_image " id="item24731" data-item-id="24731" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/731/medium/0a03ef72-bf51-4968-b427-25fc8e5b3c88.jpg?1749900049" title=""><img class="img-responsive item-image" alt=" (24731)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/731/medium/0a03ef72-bf51-4968-b427-25fc8e5b3c88.jpg?1749900049" width="640" height="266" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_link " id="item24732" data-item-id="24732" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24732" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-6" data-reference="https://www.dropbox.com/scl/fi/b6yb517x39xnx0uz5yybf/wp_8.6.1.0_.mp4?rlkey=153rgrj9jfvvrw7x3jall9cbv&amp;st=fumihnu9&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/732/thumb/bb9adf02-15ca-489e-8240-a93aaee33fb8.png?1756161851" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item24733" data-item-id="24733" data-item-type="ItemMarkdown"><h4 id="section">自己紹介コンテンツを作成</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24734" data-item-id="24734" data-item-type="ItemText"><div class="item-body-hbr">①画像をクリック→【置換】→Figma で作成した画像を設定<br />②背景をクリック→右側のマークをクリック→オーバーレイの色を変更<br />③タイトルの文字を変更→右側のマークをクリック→【背景】【テキスト】の色を変更<br />④タイトルの下に自己紹介の文章を入力していきましょう<br />⑤ボタンを追加し、リストビューからボタンの位置を調整しましょう。<br />⑥ボタンの配置を整え、色やデザインも変更していきましょう。</div></div>
+        
+        <div class="article-item item_link " id="item24736" data-item-id="24736" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24736" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-7" data-reference="https://www.dropbox.com/scl/fi/3wprmj66g3gtjk43fg8he/wp_8.7.1.0_.mp4?rlkey=wfm0zoauq3ajxfe69riwm9fd7&amp;st=eslkhn3t&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/736/thumb/2f18efed-0766-4bac-a5fb-4e3d05b35080.png?1756161886" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item24735" data-item-id="24735" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ポイント</span></div>
+    </div>
+    <div class="content-area">
+上手く上揃えができない場合、レイヤーを確認してカバーの下のカラムに対して上揃えができているか確認しましょう！<br>
+
+WordPressではレイヤーがとても重要なのでこまめに確認しながら進めていきましょう！
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item24737" data-item-id="24737" data-item-type="ItemHeading"><h3 class="item-body">【8-6】ドメインメールの作成</h3></div>
+        
+        <div class="article-item item_text " id="item24738" data-item-id="24738" data-item-type="ItemText"><div class="item-body-hbr">お問い合わせフォームを設置するためにはドメインメールの設定が必要です。ドメインメールアドレスの取得をしていきましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item24739" data-item-id="24739" data-item-type="ItemMarkdown"><h4 id="section">ドメインメールとは</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24740" data-item-id="24740" data-item-type="ItemText"><div class="item-body-hbr">ドメインメールとは取得したドメインで作成するメールアドレスのことを指します。<br /><br />メールアドレスの種類は以下を参考にしてください。</div></div>
+        
+        <div class="article-item item_html " id="item24741" data-item-id="24741" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div>項目</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>内容</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>フリーメールアドレス</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>＠gmail.com や@outlook.comなど登録することで誰でも使えるフリーメールアドレス</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>キャリアメールアドレス</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>＠docomo.ne.jpなど携帯のキャリアなどとの契約により提供されるメールアドレス</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>独自ドメインメールアドレス</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>@webcoach.comなど取得したドメインで作成するメールアドレス</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_image " id="item24742" data-item-id="24742" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/742/medium/5e4e28cf-9139-44de-ae73-52484c25539d.jpg?1749900433" title=""><img class="img-responsive item-image" alt=" (24742)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/742/medium/5e4e28cf-9139-44de-ae73-52484c25539d.jpg?1749900433" width="640" height="360" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item24743" data-item-id="24743" data-item-type="ItemMarkdown"><h4 id="section">ドメインメールの取得</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item24745" data-item-id="24745" data-item-type="ItemRichText"><div class="item-body-hbr"><a href="https://user.lolipop.jp/?_gl=1*xadhxx*_gcl_aw*R0NMLjE3NDA4MTc3NTIuQ2owS0NRaUFfWXEtQmhDOUFSSXNBQTZmYkFqeW1NWG5YOUFaS2JtOS0yZVFLZnFkOFZTdVNkYlBJaWVPX1R5aXVZUWhwSjAtYUZoTTAwTWFBcTY5RUFMd193Y0I.*_gcl_au*MTcxMzA5NTU4LjE3Mzk0NDgxMDE.*_ga*ODE3ODkwMDAwLjE3Mzk0NDgxMDE.*_ga_FDZ1BHLN82*MTc0MzE0NTI1OS4xNy4wLjE3NDMxNDUyNTkuNjAuMC4zNDgyNTAzMDQ" class="default-link" rel="nofollow">ロリポップ</a>にログインしましょう<br>
+<br>
+ログインできたら【メール】→【メール設定】→【新規作成】をクリック</div></div>
+        
+        <div class="article-item item_image " id="item24744" data-item-id="24744" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/744/medium/356f8570-5545-4c5a-a067-1322ad64991b.png?1749900480" title=""><img class="img-responsive item-image" alt=" (24744)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/744/medium/356f8570-5545-4c5a-a067-1322ad64991b.png?1749900480" width="640" height="392" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item24746" data-item-id="24746" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item24750" data-item-id="24750" data-item-type="ItemText"><div class="item-body-hbr">①アドレスの前の部分（info や自分の名前がおすすめです）<br />②ドメインを選択<br />③パスワードを設定<br /><br />入力できたら【作成】を押します。</div></div>
+        
+        <div class="article-item item_image " id="item24751" data-item-id="24751" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/751/medium/63966f47-0518-446c-9aff-94c6581092ed.png?1749900886" title=""><img class="img-responsive item-image" alt=" (24751)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/751/medium/63966f47-0518-446c-9aff-94c6581092ed.png?1749900886" width="640" height="392" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item24749" data-item-id="24749" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ポイント</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>サブドメインはドメインと親子関係にあります。</li>
+<li>例えば、WordPressのサイトURLがhttps://portfolio.webcoach.blogの場合親ドメインwebcoach.blogのアドレスを取得しましょう！</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item24752" data-item-id="24752" data-item-type="ItemMarkdown"><h4 id="section">メールの送受信</h4>
+</div>
+        
+        <div class="article-item item_image " id="item24755" data-item-id="24755" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/755/medium/86233cbe-2b55-4a1b-8d3d-55d2a7563238.png?1749900990" title=""><img class="img-responsive item-image" alt=" (24755)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/755/medium/86233cbe-2b55-4a1b-8d3d-55d2a7563238.png?1749900990" width="640" height="392" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item24753" data-item-id="24753" data-item-type="ItemText"><div class="item-body-hbr">ログインできたら【メール】→【メール設定】→【ロリポップ！新メーラーログイン】をクリックし、設定したアドレスとパスワードを入力することで、メーラーへのログインが可能です！<br />ここからメールの送受信をしていきます。</div></div>
+        
+        <div class="article-item item_html " id="item24754" data-item-id="24754" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ポイント</span></div>
+    </div>
+    <div class="content-area">
+GmailやiPhoneに接続して送受信設定を行うことも可能ですが、今回は説明を省きます。<br>
+
+設定したい場合【ロリポップ　Gmail　メール設定】等で検索してみてください。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item24756" data-item-id="24756" data-item-type="ItemHeading"><h2 class="item-body">【8-7】お問い合わせフォームの作成</h2></div>
+        
+        <div class="article-item item_markdown " id="item24769" data-item-id="24769" data-item-type="ItemMarkdown"><h4 id="contact-form-7">Contact Form 7をインストールしよう</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item24771" data-item-id="24771" data-item-type="ItemRichText"><div class="item-body-hbr">①【プラグイン】→【新規プラグインを追加】→【プラグインの検索】<span class="decoration-01">Contact Form 7</span><br>
+②<span class="decoration-01">Contact Form 7が出てきたら→【インストール】→【有効化】</span></div></div>
+        
+        <div class="article-item item_link " id="item24770" data-item-id="24770" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24770" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-8" data-reference="https://www.dropbox.com/scl/fi/4se2u0flszgzpchkn2pp9/wp_8.8.1.0_.mp4?rlkey=sm9ioo3vmy36r1iptqrvkje0j&amp;st=g7r3skae&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/770/thumb/47a5fafc-a4ff-4052-b5ab-297db0888372.png?1756161938" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item24861" data-item-id="24861" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item24772" data-item-id="24772" data-item-type="ItemMarkdown"><h4 id="contact-form-7">Contact Form 7の設定</h4>
+</div>
+        
+        <div class="article-item item_image " id="item24773" data-item-id="24773" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/773/medium/1402dd1b-e4cb-432a-9a88-0db38e440947.png?1750124339" title=""><img class="img-responsive item-image" alt=" (24773)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/773/medium/1402dd1b-e4cb-432a-9a88-0db38e440947.png?1750124339" width="640" height="338" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item24774" data-item-id="24774" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">Contact Form 7が有効化されると、ダッシュボードのメニューに【お問い合わせ】が追加されます。</span><br>
+すでに【コンタクトフォーム1】が作成されているのでカーソルを合わせ、【編集】を選択します。</div></div>
+        
+        <div class="article-item item_html " id="item24862" data-item-id="24862" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item24775" data-item-id="24775" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/775/medium/1f740b6b-f458-4602-9f56-a609e33c25bd.png?1750124522" title=""><img class="img-responsive item-image" alt=" (24775)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/775/medium/1f740b6b-f458-4602-9f56-a609e33c25bd.png?1750124522" width="640" height="338" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item24776" data-item-id="24776" data-item-type="ItemText"><div class="item-body-hbr">フォームの編集はタブを切り替えて行います。<br /><br />①フォーム<br />お問い合わせフォームの内容を設定<br />②メール<br />お問い合わせがあった際の通知や自動返信メールの設定<br />③メッセージ<br />お問い合わせフォームで表示するメッセージの設定</div></div>
+        
+        <div class="article-item item_markdown " id="item24777" data-item-id="24777" data-item-type="ItemMarkdown"><h4 id="section">フォームの設定</h4>
+</div>
+        
+        <div class="article-item item_image " id="item24778" data-item-id="24778" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/778/medium/9f7a5754-a0a8-4ea0-b51e-a42de254aed7.png?1750124563" title=""><img class="img-responsive item-image" alt=" (24778)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/778/medium/9f7a5754-a0a8-4ea0-b51e-a42de254aed7.png?1750124563" width="640" height="338" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item24779" data-item-id="24779" data-item-type="ItemText"><div class="item-body-hbr">初期設定で一般的な使用は設定されていますが、追加したい項目がある場合は追加を行ってください。</div></div>
+        
+        <div class="article-item item_markdown " id="item24780" data-item-id="24780" data-item-type="ItemMarkdown"><h4 id="section">メールの設定</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24781" data-item-id="24781" data-item-type="ItemText"><div class="item-body-hbr">メールの設定では2種類のメールの設定が可能です<br /><br />●メール→お問い合わせがあったことを自分に通知するメール設定</div></div>
+        
+        <div class="article-item item_html " id="item24782" data-item-id="24782" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div>項目</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>内容</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>送信先</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>お問い合わせ通知を受け取るアドレス</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>送信元</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>通知メールの送信元アドレス</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>題名</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>通知メールの件名</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>追加ヘッダー</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>メールの返信先</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>メッセージ本文</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>メール本文</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>添付ファイル</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>添付するファイル（任意）</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_text " id="item24783" data-item-id="24783" data-item-type="ItemText"><div class="item-body-hbr">●メール2→お問い合わせした人に受付したことを知らせるメール設定（セキュリティの観点から今回は設定しません）</div></div>
+        
+        <div class="article-item item_html " id="item24784" data-item-id="24784" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div>項目</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>内容</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>送信先</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>お問い合わせユーザーのメールアドレス</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>送信元</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div><strong>お問い合わせメールの送信元メールアドレス</strong></div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>題名</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>メールの件名</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>追加ヘッダー</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>メールの返信先</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>メッセージ本文</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>メール本文</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>添付ファイル</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>添付するファイル（任意)</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_text " id="item24785" data-item-id="24785" data-item-type="ItemText"><div class="item-body-hbr">ではこちらを踏まえて修正していきます。</div></div>
+        
+        <div class="article-item item_image " id="item24786" data-item-id="24786" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/786/medium/4c68ca22-6911-4421-b98c-b0fb3fab88a9.png?1750125176" title=""><img class="img-responsive item-image" alt=" (24786)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/786/medium/4c68ca22-6911-4421-b98c-b0fb3fab88a9.png?1750125176" width="640" height="338" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item24787" data-item-id="24787" data-item-type="ItemText"><div class="item-body-hbr">送信先→先ほど取得したドメインメールアドレスを入力<br />送信元→先ほど取得したドメインメールアドレスを入力<br />題名→メールの件名（お問い合わせがありました）等設定しておくと分かりやすいです。<br /><br />ここまで設定できたら【保存】を押してください。</div></div>
+        
+        <div class="article-item item_heading " id="item24788" data-item-id="24788" data-item-type="ItemHeading"><h3 class="item-body">【8-8】トップページの編集③</h3></div>
+        
+        <div class="article-item item_markdown " id="item24789" data-item-id="24789" data-item-type="ItemMarkdown"><h4 id="section">トップページにお問い合わせフォームを実装</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24791" data-item-id="24791" data-item-type="ItemText"><div class="item-body-hbr">①トップページに【見出し2】を追加しContactと入力<br />②見出しと上のセクションの間にスペーサーを挿入し間隔を調整<br />③Contact Form 7を挿入し先ほど作成したフォームを選択<br /><br />【保存】を押してプレビューを確認してください</div></div>
+        
+        <div class="article-item item_link " id="item24790" data-item-id="24790" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24790" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-9</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-9" data-reference="https://www.dropbox.com/scl/fi/uzd4almhvupgo625ljkuv/wp_8.9.1.0_.mp4?rlkey=a0sc3rwu2l2qr38nrnrkdxvfy&amp;st=556it81j&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/790/thumb/88208799-f134-4794-80d6-c3aeef4db0b2.png?1756161981" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item24792" data-item-id="24792" data-item-type="ItemMarkdown"><h4 id="newsinformation">News＆informationの削除</h4>
+</div>
+        
+        <div class="article-item item_image " id="item24793" data-item-id="24793" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/793/medium/f15fec9a-d20d-4667-8750-93b87a38190d.png?1750125389" title=""><img class="img-responsive item-image" alt=" (24793)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/793/medium/f15fec9a-d20d-4667-8750-93b87a38190d.png?1750125389" width="640" height="338" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item24794" data-item-id="24794" data-item-type="ItemText"><div class="item-body-hbr">今回はブログ機能（投稿機能）を制作実績の紹介に使用するため、こちらの項目は削除してください。</div></div>
+        
+        <div class="article-item item_text " id="item24795" data-item-id="24795" data-item-type="ItemText"><div class="item-body-hbr">お疲れ様でした。これでトップページが完成しました。<br />次は固定ページを作成していきましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item24796" data-item-id="24796" data-item-type="ItemHeading"><h3 class="item-body">【8-9】プラグインVK Blocksをインストール</h3></div>
+        
+        <div class="article-item item_markdown " id="item24797" data-item-id="24797" data-item-type="ItemMarkdown"><h4 id="vk-blocks">新規プラグイン追加からVK Blocksを追加しましょう</h4>
+</div>
+        
+        <div class="article-item item_image " id="item24801" data-item-id="24801" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/801/medium/380aa2b6-ed73-4e64-9b0a-cc8b1fc88f65.png?1750125488" title=""><img class="img-responsive item-image" alt=" (24801)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/801/medium/380aa2b6-ed73-4e64-9b0a-cc8b1fc88f65.png?1750125488" width="640" height="297" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item24799" data-item-id="24799" data-item-type="ItemText"><div class="item-body-hbr">ここまで何度かプラグインの追加を行ってきたと思うので今回は自分の力でインストール＆有効化してみましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item24800" data-item-id="24800" data-item-type="ItemMarkdown"><h4 id="section">確認してみましょう</h4>
+</div>
+        
+        <div class="article-item item_image " id="item24798" data-item-id="24798" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/798/medium/70c39525-7b88-468e-9090-fd0a589c73e7.png?1750125456" title=""><img class="img-responsive item-image" alt=" (24798)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/798/medium/70c39525-7b88-468e-9090-fd0a589c73e7.png?1750125456" width="640" height="297" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item24802" data-item-id="24802" data-item-type="ItemRichText"><div class="item-body-hbr">VK Blocksがインストールされていると固定ページのブロックに項目が追加されます。<br>
+<br>
+使用するものはこの後説明していきますがどんなことができるかは[<a href="https://webst8.com/blog/wordpress-lightning-vkblocks/" class="default-link" rel="nofollow">こちら</a>]をご確認ください。</div></div>
+        
+        <div class="article-item item_heading " id="item24803" data-item-id="24803" data-item-type="ItemHeading"><h3 class="item-body">【8-10】プロフィールページの作成</h3></div>
+        
+        <div class="article-item item_text " id="item24804" data-item-id="24804" data-item-type="ItemText"><div class="item-body-hbr">ここからは説明を少し簡略化していきます！<br />今まで学んだことをしっかり確認しながら作業しましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item24805" data-item-id="24805" data-item-type="ItemMarkdown"><h4 id="section">プロフィールページの作成</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24807" data-item-id="24807" data-item-type="ItemText"><div class="item-body-hbr">①【新規固定ページを追加】からプロフィールページを作成してください<br />②【タイトルを追加】にプロフィールと入力<br />③【リンク】にprofileと入力</div></div>
+        
+        <div class="article-item item_link " id="item24806" data-item-id="24806" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24806" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-10</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-10" data-reference="https://www.dropbox.com/scl/fi/o5ki4wg6fdqfp9yvg6czc/wp_8.10.1.0_.mp4?rlkey=f49ey0vuxxym80g1b735gc2sb&amp;st=dwb5e1wc&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/806/thumb/a90fb185-dcc0-4b75-91c0-ac627d0be6bb.png?1756162046" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item24863" data-item-id="24863" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item24809" data-item-id="24809" data-item-type="ItemText"><div class="item-body-hbr">④カラムを追加していきます<br />⑤左のカラムに画像、右のカラムに見出し3と段落を追加して説明を入れていきます<br />⑥【固定ページ】→【レイアウト設定】を【1カラム】に変更</div></div>
+        
+        <div class="article-item item_link " id="item24808" data-item-id="24808" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24808" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-11</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-11" data-reference="https://www.dropbox.com/scl/fi/1yi3660n4zldok7d5mgse/wp_8.11.1.0_.mp4?rlkey=gr5jd33qh6jyr5h2nnbk6tk25&amp;st=a27csj4i&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/808/thumb/75182896-f13c-4ec8-967e-dc26e7709cfd.png?1756162071" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item24864" data-item-id="24864" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item24811" data-item-id="24811" data-item-type="ItemText"><div class="item-body-hbr">⑦50/50のカラムを追加していきます。<br />⑧それぞれのカラムにH3と段落を入れていきます<br />⑨H3の文字をMサイズに変更していきます<br />⑩今回追加したカラム全体に対して上部にXlの余白を付けていきます</div></div>
+        
+        <div class="article-item item_link " id="item24810" data-item-id="24810" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24810" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-12</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-12" data-reference="https://www.dropbox.com/scl/fi/foasodhov8jdxeoz31pdy/wp_8.12.1.0_.mp4?rlkey=xt6jkc8fbd0oiahyunz46mo8f&amp;st=out842g6&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/810/thumb/8987815d-eb57-4ef2-aa99-4de5c7cec199.png?1756162093" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item24812" data-item-id="24812" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ポイント</span></div>
+    </div>
+    <div class="content-area">
+今回上部の余白はスペーサーではなくVK Blocksで追加していきます！<br>そちらで設定しても大丈夫ですが是非VK Blocksを使用してみてください！
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_image " id="item24813" data-item-id="24813" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/813/medium/30130051-9927-414c-8199-2c432d824682.png?1750125921" title=""><img class="img-responsive item-image" alt=" (24813)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/813/medium/30130051-9927-414c-8199-2c432d824682.png?1750125921" width="640" height="297" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item24814" data-item-id="24814" data-item-type="ItemRichText"><div class="item-body-hbr">同じ要領でスキルを追加していきましょう<br>
+<br>
+ここまでできたらプロフィールページの完成です！見本ページと同じレイアウトにできているか確認してみましょう！<br>
+<br>
+<a href="http://test2.webcoach-wordpress.com/profile/" class="default-link" rel="nofollow">http://test2.webcoach-wordpress.com/profile/</a></div></div>
+        
+        <div class="article-item item_heading " id="item24815" data-item-id="24815" data-item-type="ItemHeading"><h3 class="item-body">【8-11】お問い合わせページの作成</h3></div>
+        
+        <div class="article-item item_markdown " id="item24816" data-item-id="24816" data-item-type="ItemMarkdown"><h4 id="section">不要な固定ページの削除</h4>
+</div>
+        
+        <div class="article-item item_image " id="item24817" data-item-id="24817" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/817/medium/1da1bf47-0ad5-4c01-851b-5c3a341440fd.png?1750125990" title=""><img class="img-responsive item-image" alt=" (24817)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/817/medium/1da1bf47-0ad5-4c01-851b-5c3a341440fd.png?1750125990" width="640" height="331" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item24818" data-item-id="24818" data-item-type="ItemText"><div class="item-body-hbr">作成を行った【HOME】と【プロフィール】以外の固定ページを削除しましょう！</div></div>
+        
+        <div class="article-item item_markdown " id="item24866" data-item-id="24866" data-item-type="ItemMarkdown"><h4 id="section">お問い合わせページの作成</h4>
+</div>
+        
+        <div class="article-item item_image " id="item24819" data-item-id="24819" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/819/medium/4bb2f3d5-771b-4dd2-9eb7-65b53c1a615d.png?1750126012" title=""><img class="img-responsive item-image" alt=" (24819)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/819/medium/4bb2f3d5-771b-4dd2-9eb7-65b53c1a615d.png?1750126012" width="640" height="331" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item24820" data-item-id="24820" data-item-type="ItemText"><div class="item-body-hbr">①ブロックに【Contact Form 7】を追加<br />②リンクを修正<br />③レイアウトを【1カラム】に変更<br /><br />何度か行った工程なので思い出しながらやってみましょう！</div></div>
+        
+        <div class="article-item item_heading " id="item24821" data-item-id="24821" data-item-type="ItemHeading"><h3 class="item-body">【8-12】投稿ページで制作実績ページの作成</h3></div>
+        
+        <div class="article-item item_markdown " id="item24822" data-item-id="24822" data-item-type="ItemMarkdown"><h4 id="section">カテゴリの作成</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item24825" data-item-id="24825" data-item-type="ItemRichText"><div class="item-body-hbr">まずはカテゴリーの作成をしていきましょう！<br>
+【投稿】→【カテゴリー】→【名前】：ウェブクリエイティブ→【スラッグ】<br>
+のように下記のカテゴリを作成していってください。<br>
+<br>
+・<a href="http://test2.webcoach-wordpress.com/2025/04/02/01-2/" class="default-link" rel="nofollow">ウェブクリエイティブ</a><br>
+・<a href="http://test2.webcoach-wordpress.com/2025/04/02/01-3/" class="default-link" rel="nofollow">ランディングページ制作</a><br>
+・<a href="http://test2.webcoach-wordpress.com/2025/04/02/01-4/" class="default-link" rel="nofollow">ホームページデザイン</a><br>
+・<a href="http://test2.webcoach-wordpress.com/2025/03/31/01/" class="default-link" rel="nofollow">グラフィックデザイン</a></div></div>
+        
+        <div class="article-item item_link " id="item24824" data-item-id="24824" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24824" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-13</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-13" data-reference="https://www.dropbox.com/scl/fi/xb395wzhiiiug07shd4ct/wp_8.13.1.0_.mp4?rlkey=reoo9cx09l54js5p7upwi1nvv&amp;st=e4xjb13y&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/824/thumb/ef871b16-1143-4571-a5d0-fa46cccdd944.png?1756162133" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item24826" data-item-id="24826" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ポイント</span></div>
+    </div>
+    <div class="content-area">
+        
+ 【名前】はタイトルの役割です<br>
+
+【スラッグ】はURLになります<br>
+        
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item24827" data-item-id="24827" data-item-type="ItemMarkdown"><h4 id="section">制作実績の作成</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item24867" data-item-id="24867" data-item-type="ItemRichText"><div class="item-body-hbr">【<a href="http://test2.webcoach-wordpress.com/2025/03/31/01/" class="default-link" rel="nofollow">制作見本</a>】<br>
+【投稿】→【投稿を追加】<br>
+①タイトルを入れる<br>
+②50/50のカラムを挿入<br>
+③左にサムネイル、右に紹介文を挿入<br>
+④制作実績の画像を挿入<br>
+⑤アイキャッチとスラッグを修正</div></div>
+        
+        <div class="article-item item_link " id="item24828" data-item-id="24828" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24828" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-14</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-14" data-reference="https://www.dropbox.com/scl/fi/jyt5ofnsig42bsdposnu9/wp_8.14.1.0_.mp4?rlkey=8a7emx2jqsj70i6kun8ymj8vd&amp;st=texaazow&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/828/thumb/46ac56cf-2513-4e06-8bfe-d1e0382908ed.png?1756162153" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item24829" data-item-id="24829" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ポイント</span></div>
+    </div>
+    <div class="content-area">
+  見本ではシンプルに作成していますがポートフォリオとしてアピールしたい事やお好みのレイアウトで作成してみてください！
+       
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item24831" data-item-id="24831" data-item-type="ItemMarkdown"><h4 id="section">カテゴリーの設定</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24833" data-item-id="24833" data-item-type="ItemText"><div class="item-body-hbr">①投稿タブから【カテゴリー】→【カテゴリーの追加】→グラフィックデザインを作成<br />②【未分類】のチェックを外し【グラフィックデザイン】にチェックをいれましょう！<br />③レイアウトが見本と異なる場合は【レイアウト設定】を【1カラム】に変更してください！</div></div>
+        
+        <div class="article-item item_link " id="item24832" data-item-id="24832" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24832" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-15</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-15" data-reference="https://www.dropbox.com/scl/fi/dpj2zwflydu2ko5m152fd/wp_8.15.1.0_.mp4?rlkey=8srohi0w356zchjg47siar7v7&amp;st=9g5feieo&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/832/thumb/51f88d34-0be7-45bf-a649-41d529587ce0.png?1756162178" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_image " id="item24834" data-item-id="24834" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/834/medium/d8a4c810-f07c-4f01-a137-a77eb5508880.png?1750126866" title=""><img class="img-responsive item-image" alt=" (24834)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/834/medium/d8a4c810-f07c-4f01-a137-a77eb5508880.png?1750126866" width="640" height="297" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item24835" data-item-id="24835" data-item-type="ItemRichText"><div class="item-body-hbr">上記の手順で各カテゴリー最低1投稿作成していきましょう！<br>
+<br>
+<a href="http://test2.webcoach-wordpress.com/2025/04/02/01-2/" class="default-link" rel="nofollow">ウェブクリエイティブ</a><br>
+<a href="http://test2.webcoach-wordpress.com/2025/04/02/01-3/" class="default-link" rel="nofollow">ランディングページ制作</a><br>
+<a href="http://test2.webcoach-wordpress.com/2025/04/02/01-4/" class="default-link" rel="nofollow">ホームページデザイン</a><br>
+<a href="http://test2.webcoach-wordpress.com/2025/03/31/01/" class="default-link" rel="nofollow">グラフィックデザイン</a><br>
+</div></div>
+        
+        <div class="article-item item_html " id="item24836" data-item-id="24836" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ポイント</span></div>
+    </div>
+    <div class="content-area">
+      初期設定で作成されていた投稿は削除しましょう！
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item24837" data-item-id="24837" data-item-type="ItemHeading"><h3 class="item-body">【8-13】トップページにリンクを挿入</h3></div>
+        
+        <div class="article-item item_markdown " id="item24838" data-item-id="24838" data-item-type="ItemMarkdown"><h4 id="url">カテゴリーURLの確認</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item24840" data-item-id="24840" data-item-type="ItemRichText"><div class="item-body-hbr">カテゴリーを作成することで一覧ページのURLを取得することができます！<br>
+<br>
+カテゴリーURLを確認＆コピーしていきましょう！<br>
+①作成した記事を表示<br>
+②左上のパンくずリストからカテゴリー名をクリック<br>
+③表示されたページのURLをコピーしておきましょう！<br>
+<br>
+【例】<br>
+<a href="http://test2.webcoach-wordpress.com/category/hp/" class="default-link" target="_blank" rel="nofollow">http://test2.webcoach-wordpress.com/category/hp/</a><br>
+<a href="http://test2.webcoach-wordpress.com/category/lp/" class="default-link" target="_blank" rel="nofollow">http://test2.webcoach-wordpress.com/category/lp/</a><br>
+<a href="http://test2.webcoach-wordpress.com/category/webcr/" class="default-link" target="_blank" rel="nofollow">http://test2.webcoach-wordpress.com/category/webcr/</a><br>
+<a href="http://test2.webcoach-wordpress.com/category/graphic/" class="default-link" target="_blank" rel="nofollow">http://test2.webcoach-wordpress.com/category/graphic/</a></div></div>
+        
+        <div class="article-item item_link " id="item24839" data-item-id="24839" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24839" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-16</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-16" data-reference="https://www.dropbox.com/scl/fi/xcg0lkjq50wtw3w8lo4wl/wp_8.16.1.0_.mp4?rlkey=6577jguoqw5skz4tr1jj7vzl2&amp;st=ebmmi47r&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/839/thumb/e5c5a3fc-3075-46b5-99b9-793776ac04fe.png?1756162237" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item24841" data-item-id="24841" data-item-type="ItemMarkdown"><h4 id="section">トップページにカテゴリーをリンク</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item24843" data-item-id="24843" data-item-type="ItemRichText"><div class="item-body-hbr">①固定ページ【編集】をクリック<br>
+②<span class="decoration-01">Worksの下のボタンに先ほどコピーしたカテゴリーページのURLを挿入していきます。</span><br>
+③リンクが挿入できたら一度リンクが正しく機能するか確認していきましょう</div></div>
+        
+        <div class="article-item item_link " id="item24842" data-item-id="24842" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24842" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-17</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-17" data-reference="https://www.dropbox.com/scl/fi/uwboocc8ar9rudj2dnl1r/wp_8.17.1.0_.mp4?rlkey=rk3kwj1qqra9cyi1lp4hxjnom&amp;st=uqjxsyfg&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/842/thumb/9741fe8c-8ad3-412e-93cd-62bc2adbe6ae.png?1756162258" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item24844" data-item-id="24844" data-item-type="ItemMarkdown"><h4 id="section">トップページにプロフィールをリンク</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24846" data-item-id="24846" data-item-type="ItemText"><div class="item-body-hbr">①プロフィールページを表示しリンクをコピーしておきましょう！<br />②固定ページのHOME【編集】をクリック<br />③プロフィールを詳しく見るのボタンにコピーしたリンクを挿入しましょう！<br />④リンクが挿入できたら一度リンク遷移するか確認していきましょう</div></div>
+        
+        <div class="article-item item_heading " id="item24847" data-item-id="24847" data-item-type="ItemHeading"><h3 class="item-body">【8-14】制作実績ページを作成</h3></div>
+        
+        <div class="article-item item_markdown " id="item24848" data-item-id="24848" data-item-type="ItemMarkdown"><h4 id="section">新規固定ページを追加</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24850" data-item-id="24850" data-item-type="ItemText"><div class="item-body-hbr">投稿一覧ページに紐づけるために新規固定ページを作成しましょう！<br /><br />①【新規ページを追加】<br />②【タイトル】を制作実績にする<br />③【カラム】を1カラムに<br />④【リンク】をportfolioに変更</div></div>
+        
+        <div class="article-item item_link " id="item24849" data-item-id="24849" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24849" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-18</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-18" data-reference="https://www.dropbox.com/scl/fi/5lgyrwp1xdphcibzm62x2/wp_8.18.1.0_.mp4?rlkey=nbxxnjqrouxanrkrgslu78vex&amp;st=sy0v163h&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/849/thumb/7a2208ef-e405-44ef-b6dc-617198ba2938.png?1756162286" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38538" data-item-id="38538" data-item-type="ItemRichText"><div class="item-body-hbr">※動画内は『製作実績』と表示されていますが、正しくは『制作実績』です。</div></div>
+        
+        <div class="article-item item_markdown " id="item24851" data-item-id="24851" data-item-type="ItemMarkdown"><h4 id="section">投稿一覧ページとリンク付け</h4>
+</div>
+        
+        <div class="article-item item_text " id="item24853" data-item-id="24853" data-item-type="ItemText"><div class="item-body-hbr">①【外観】→【テーマ】→【カスタマイズ】<br />②【ホームページ設定】→【投稿ページ】を先ほど作成した制作実績ページに設定</div></div>
+        
+        <div class="article-item item_link " id="item24852" data-item-id="24852" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24852" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-19</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-19" data-reference="https://www.dropbox.com/scl/fi/t3911wtoacjbtyfsgyot5/wp_8.19.1.0_.mp4?rlkey=3fvbq9n76tmxmh8lp34494mqd&amp;st=p33butpl&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/852/thumb/dcef39ec-ab35-4254-be9b-6098e613906c.png?1756162312" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38539" data-item-id="38539" data-item-type="ItemRichText"><div class="item-body-hbr">※動画内は『製作実績』と表示されていますが、正しくは『制作実績』です。</div></div>
+        
+        <div class="article-item item_heading " id="item24854" data-item-id="24854" data-item-type="ItemHeading"><h3 class="item-body">【8-15】ヘッダーメニューの作成</h3></div>
+        
+        <div class="article-item item_markdown " id="item24855" data-item-id="24855" data-item-type="ItemMarkdown"><h4 id="section">ヘッダーメニューの設定をしていきます</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item37870" data-item-id="37870" data-item-type="ItemRichText"><div class="item-body-hbr">①【外観】→【メニュー】<br>
+②メニュー名を「ヘッダーナビ」にして、メニューの位置の「Header Navigation」と 「Footer Navigation」にチェック<br>
+③ 「メニューを作成」をクリックし、４つの固定ページを全て追加<br>
+④カテゴリーを全て挿入し、「制作実績」のサブアイテムとしてドラッグ＆ドロップで配置</div></div>
+        
+        <div class="article-item item_link " id="item24857" data-item-id="24857" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=pMsZ5&amp;item_id=24857" rel="nofollow noopener noreferrer" target="_blank">WordPress 8-20</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="WordPress 8-20" data-reference="https://www.dropbox.com/scl/fi/suh58bum5thc0d10afxyn/wp_8.20.1.0_.mp4?rlkey=78p7cwpw2lv2bu4554b34j7vz&amp;st=j5qzd68n&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/024/857/thumb/2186d13b-815c-443b-86f4-89d2492442b3.png?1756162336" width="75" height="75" /></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38540" data-item-id="38540" data-item-type="ItemRichText"><div class="item-body-hbr">※動画内は『製作実績』と表示されていますが、正しくは『制作実績』です。</div></div>
+        
+        <div class="article-item item_image " id="item24858" data-item-id="24858" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/858/medium/1dcd32ba-c695-4a3a-bed7-78b4aa7ac8e6.png?1750127781" title=""><img class="img-responsive item-image" alt=" (24858)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/024/858/medium/1dcd32ba-c695-4a3a-bed7-78b4aa7ac8e6.png?1750127781" width="640" height="293" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_text " id="item24859" data-item-id="24859" data-item-type="ItemText"><div class="item-body-hbr">こちらのようなメニューが追加されていれば完成です！</div></div>
+        
+        <div class="article-item item_text " id="item24860" data-item-id="24860" data-item-type="ItemText"><div class="item-body-hbr">お疲れ様です！これで課題①は終了です。<br /><br />課題②にも取り組んでみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25503" data-item-id="25503" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="iKzAv" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="jLao5" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="ZNQ91jcZZLmZijBQU5RmtA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

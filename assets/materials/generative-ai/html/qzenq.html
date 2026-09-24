@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/Web%E6%A5%AD%E7%95%8C%E3%81%A7%E3%81%AEAI%E6%B4%BB%E7%94%A8%E3%83%8A%E3%83%93/qZEnq -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48548" data-item-id="48548" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>分野別ショーケース | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/">
+<link href="../../_assets/318e5d4d49.css" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading {
+    font-size: 19px; font-weight: 700; color: #3D3D3D;
+    margin: 32px 0 14px; line-height: 1.5;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p, .card ul { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .card ul { padding-left: 16px; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  /* Domain showcase collapsible sections */
+  .domain-section {
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    margin: 20px 0; overflow: hidden; background: #fff;
+  }
+  .domain-section > summary {
+    padding: 20px 24px; cursor: pointer; list-style: none;
+    display: flex; align-items: center; gap: 14px;
+    background: #fff; transition: background 0.2s;
+  }
+  .domain-section > summary::-webkit-details-marker { display: none; }
+  .domain-section > summary::before {
+    content: '▶'; font-size: 12px; color: #E85D4A;
+    transition: transform 0.2s; flex-shrink: 0;
+  }
+  .domain-section[open] > summary::before { transform: rotate(90deg); }
+  .domain-section[open] > summary { background: #FDF0ED; }
+  .domain-section > summary .domain-icon { font-size: 24px; flex-shrink: 0; }
+  .domain-section > summary .domain-title { font-size: 18px; font-weight: 700; color: #3D3D3D; }
+  .domain-section > summary .domain-time { font-size: 12px; color: #999; margin-left: auto; }
+  .domain-content { padding: 24px; }
+  .domain-content h3 { font-size: 18px; font-weight: 700; color: #E85D4A; margin: 28px 0 14px; line-height: 1.5; }
+  .domain-content h3:first-child { margin-top: 0; }
+  .domain-content p { font-size: 15px; line-height: 1.9; color: #444; margin: 0 0 14px; }
+  .domain-content ul, .domain-content ol { font-size: 15px; line-height: 1.9; color: #444; padding-left: 20px; margin: 0 0 14px; }
+  .prompt-example {
+    background: #F8F8F8; border: 1px solid #E8E8E8; border-radius: 10px;
+    padding: 16px 20px; margin: 16px 0; font-size: 14px; line-height: 1.8; color: #555;
+  }
+  .output-example {
+    background: #FFFBF0; border: 1px solid #FAE8E0; border-radius: 10px;
+    padding: 16px 20px; margin: 16px 0; font-size: 14px; line-height: 1.8; color: #555;
+  }
+  .output-example h4 { font-size: 14px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .column-box {
+    background: #F9F9FF; border: 1px solid #D8D8F0; border-radius: 12px;
+    padding: 18px 22px; margin: 20px 0; font-size: 14px; line-height: 1.8; color: #555;
+  }
+  .column-box .column-title { font-size: 13px; font-weight: 700; color: #6B6BA0; margin-bottom: 8px; }
+  .column-box ul { padding-left: 18px; margin: 8px 0 0; }
+  .think-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5; border-radius: 12px;
+    padding: 18px 22px; margin: 20px 0;
+  }
+  .think-box .think-label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .think-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .charm-list {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0;
+  }
+  .charm-item {
+    background: #fff; border: 1px solid #FAE8E0; border-radius: 10px;
+    padding: 14px 16px; font-size: 14px; line-height: 1.7; color: #555;
+  }
+  .charm-item strong { color: #E85D4A; display: block; margin-bottom: 4px; }
+  .toc-link { color: #555; text-decoration: none; }
+  .toc-link:hover { color: #E85D4A; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    .card-grid { grid-template-columns: 1fr; }
+    .charm-list { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+    .domain-section > summary .domain-title { font-size: 16px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="KUKvAsPvcE8pO4q3l3_0logn8f05U971SFVtMX_HudfiXjQNzPb7DoVhNjj3s1ycs2ltYiCB5S5W4koXLLl_LA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+<div class="lesson-wrapper">
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 6-2</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">分野別ショーケース</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 6: Web業界でのAI活用 ／ 所要時間：約15分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約15分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">興味のある専門分野のAI活用事例を知り、「この分野でAIを使ってこんなことをしたい」という具体的なイメージを持てる</p>
+</div>
+
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+ <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/Web%E6%A5%AD%E7%95%8C%E3%81%A7%E3%81%AEAI%E6%B4%BB%E7%94%A8%E3%83%8A%E3%83%93/CKryE" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/Web%E6%A5%AD%E7%95%8C%E3%81%A7%E3%81%AEAI%E6%B4%BB%E7%94%A8%E3%83%8A%E3%83%93/peAYj" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">ショーケースの使い方</a></li>
+    <li><a href="#sec2" class="toc-link">分野別ショーケース（5分野から選択）</a>
+      <ul style="list-style: none; padding-left: 8px; margin: 4px 0;">
+        <li>🎨 Webデザイン編</li>
+        <li>💻 Web制作・コーディング編</li>
+        <li>✍️ ライティング編</li>
+        <li>📱 SNS運用編</li>
+        <li>🎬 動画編集編</li>
+      </ul>
+    </li>
+    <li><a href="#sec3" class="toc-link">ショーケースを終えて</a></li>
+  </ol>
+</div>
+
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    目の前に5つのドアがあります。<br>
+    それぞれの向こうには、AIが活躍する専門分野の世界が広がっています。<br><br>
+    デザインの世界？コーディングの世界？ライティングの世界？<br>
+    <strong class="accent">どのドアを開けるかは、あなたの「気になる」次第。</strong><br><br>
+    全部開けても、1つだけでもOK。<br>
+    まずは覗いてみることから始めましょう。
+  </p>
+</div>
+
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>各分野の<strong class="accent">具体的なツール名やプロンプト例</strong>が出てきますが、今すぐ覚える必要はありません。「こんなことができるんだ」というイメージを持つことが大事です</li>
+    <li>「全部の分野をやらないと…」と焦らないでください。<strong class="accent">興味のある分野だけでOK</strong>です</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  セクション 1: ショーケースの使い方
+============================================================ -->
+<h2 class="section-heading" id="sec1">1. ショーケースの使い方</h2>
+
+<p class="text-body">
+  このレッスンでは、Web業界の<strong class="accent">5つの専門分野</strong>におけるAI活用事例を「ショーケース」形式で紹介します。
+</p>
+
+<p class="text-body">
+  各分野は<strong class="accent">折りたたみ式</strong>になっています。興味のある分野のタイトルをクリックして、内容を展開してください。すべてを読む必要はありません。
+</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>各分野には<strong class="accent">「AI活用事例」「プロンプト例と出力例」「この分野の魅力」「考えてみよう」</strong>が含まれています。プロンプト例は、実際にWEBCOACH先生やChatGPTで試してみることもできます。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 2: 分野別ショーケース
+============================================================ -->
+<h2 class="section-heading" id="sec2">2. 分野別ショーケース</h2>
+
+<p class="text-body">
+  気になる分野をクリックして展開してください。各分野 約15分で学べます。
+</p>
+
+
+<!-- ========================================
+  Webデザイン編
+======================================== -->
+<details class="domain-section">
+  <summary>
+    <span class="domain-icon">🎨</span>
+    <span class="domain-title">Webデザイン編：AIは、デザイナーの創造性を拡張する</span>
+    <span class="domain-time">約15分</span>
+  </summary>
+  <div class="domain-content">
+
+    <h3>AIとのブレストで、デザインコンセプトを無限に広げる</h3>
+    <p>Webサイトやアプリの「何を、誰に、どのように伝えるか」というコンセプト設計は、デザインの根幹です。AIは、この初期段階で強力なアイデア出しのツールとなり、デザイナーの思考を刺激し、多様な視点を提供します。</p>
+
+    <ul>
+      <li><strong>ペルソナ・共感マップ作成支援：</strong>ターゲット層のニーズや行動パターンをAIに描かせ、詳細なユーザー像を得る</li>
+      <li><strong>ムードボード・デザインインスピレーション収集：</strong>デザインコンセプトに合うカラーパレットやフォント、参考事例をAIに提案させる</li>
+      <li><strong>ユーザーシナリオ・体験マップの草案作成：</strong>サービス利用の流れをAIに俯瞰的に描かせ、改善点を発見する</li>
+    </ul>
+
+    <p><strong>プロンプト例：サステナブルブランドのデザインコンセプト共創</strong></p>
+    <div class="prompt-example">
+      あなたは経験豊富なブランドストラテジスト兼UI/UXデザイナーです。<br><br>
+      クライアントは、環境負荷の少ない素材とフェアトレードにこだわった、新しいサステナブルファッションブランド「EarthWear」です。ターゲットは、20代後半〜30代の社会貢献意識が高く、質の良いものを長く使いたいと考える男女です。<br><br>
+      この「EarthWear」のWebサイトのデザインコンセプトを3案、各案のブランドストーリーの伝え方、主要なビジュアル表現の方向性、ユーザーにどのような感情を抱かせたいかを明確にして提案してください。
+    </div>
+
+    <div class="output-example">
+      <h4>出力例（一部抜粋）</h4>
+      <p><strong>コンセプトA：Timeless Nature</strong> —「自然と共に、永く寄り添う」<br>
+      淡いアースカラーを基調に、自然光で撮影された屋外ロケーションを背景に。余白を活かしたミニマルな構成で「落ち着き」「安心感」を感じさせるデザイン。</p>
+      <p><strong>コンセプトB：Human Touch</strong> —「人のぬくもりから生まれるもの」<br>
+      手仕事の質感を感じさせるマクロ撮影。温かみのある色調で「共感」「つながり」を感じさせるデザイン。</p>
+      <p><strong>コンセプトC：Urban Ethos</strong> —「都市に息づくサステナブル」<br>
+      モノトーン＋1カラーのアクセント。シティスケープを背景に「洗練」「スマートな選択」を感じさせるデザイン。</p>
+    </div>
+
+    <h3>UIパーツ・デザインシステムのAI生成と最適化</h3>
+    <p>AIは、ボタンやフォーム、カードといったUIパーツのデザイン案を生成したり、デザインシステム全体の整合性を保つための支援も行います。</p>
+
+    <ul>
+      <li><strong>UIコンポーネントのバリエーション生成：</strong>商品カードUIの配置パターンをAIに複数提案させる</li>
+      <li><strong>アクセシビリティチェックと改善提案：</strong>コントラスト比やフォントサイズの基準適合をAIがチェック</li>
+      <li><strong>デザインシステムドキュメントの自動生成補助：</strong>UIコンポーネントの仕様書の草案をAIが作成</li>
+    </ul>
+
+    <div class="column-box">
+      <div class="column-title">コラム：AI生成素材とデザインの一貫性</div>
+      <ul>
+        <li><strong>スタイルガイドの重要性：</strong>AIに指示を出す際も、事前に定義したスタイルガイドを意識し、プロンプトに反映させることで統一感を保てます</li>
+        <li><strong>人間による最終調整：</strong>AIが生成したパーツは、必ず人間のデザイナーが全体のデザインシステムの中で調和するか判断し、微調整を行います</li>
+      </ul>
+    </div>
+
+    <h3>この分野でAIを活用する魅力</h3>
+    <div class="charm-list">
+      <div class="charm-item"><strong>アイデア発想の壁を超える</strong>自分一人では思いつかない斬新なコンセプトに出会える</div>
+      <div class="charm-item"><strong>反復作業からの解放</strong>アイコン作成やUIバリエーション展開をAIに任せられる</div>
+      <div class="charm-item"><strong>デザイン品質の向上</strong>アクセシビリティチェックやシステム整合性をAIが支援</div>
+      <div class="charm-item"><strong>意思決定支援</strong>データ分析に基づいた客観的なデザイン判断ができる</div>
+    </div>
+
+    <div class="think-box">
+      <div class="think-label">考えてみよう</div>
+      <p>もしあなたがWebデザイナーとして、あるクライアントから「今までにない革新的なECサイトを作りたい」という依頼を受けたとします。AIをどのように活用して、その期待に応えるデザインを生み出せるか、具体的なアイデアを膨らませてみてください。</p>
+    </div>
+
+  </div>
+</details>
+
+
+<!-- ========================================
+  Web制作・コーディング編
+======================================== -->
+<details class="domain-section">
+  <summary>
+    <span class="domain-icon">💻</span>
+    <span class="domain-title">Web制作・コーディング編：AIは、開発プロセスを加速する</span>
+    <span class="domain-time">約15分</span>
+  </summary>
+  <div class="domain-content">
+
+    <h3>AIによるフロントエンドコードの自動生成</h3>
+    <p>デザインカンプや仕様書から、Webページの骨格となるHTML、見た目を整えるCSS、動きを加えるJavaScriptといったコードを記述する作業は、Web制作の中核です。AIは、このプロセスを様々な側面からサポートします。</p>
+
+    <ul>
+      <li><strong>デザインデータからのコード生成：</strong>FigmaやAdobe XDのデザインデータからHTML/CSSコードをAIが自動生成（FigmaのDev Mode、Locofy.aiなど）</li>
+      <li><strong>自然言語によるコード生成：</strong>「レスポンシブ対応の3カラムレイアウトを作成して」と指示するだけでコードを生成（GitHub Copilot、ChatGPTなど）</li>
+      <li><strong>既存コードの最適化：</strong>非効率なコードをAIがリファクタリング提案</li>
+      <li><strong>フレームワーク活用支援：</strong>Bootstrap等に沿ったコード生成をAIに依頼</li>
+    </ul>
+
+    <h3>AIによるデバッグ・テスト・ドキュメント作成の効率化</h3>
+    <p>コードが正しく動作するかの確認や、ドキュメント作成もAIが強力にサポートします。</p>
+
+    <ul>
+      <li><strong>エラーチェックと修正案提示：</strong>バグの原因特定と修正案をAIが提示</li>
+      <li><strong>テストコードの自動生成補助：</strong>ユニットテストの雛形をAIが作成</li>
+      <li><strong>コードコメント・ドキュメントの自動生成：</strong>関数の説明文をAIが作成</li>
+      <li><strong>ブラウザ互換性問題の対策：</strong>クロスブラウザ対応のヒントをAIに聞く</li>
+    </ul>
+
+    <div class="column-box">
+      <div class="column-title">コラム：AI生成コードの品質とセキュリティ</div>
+      <ul>
+        <li><strong>コードレビューの徹底：</strong>AIが生成したコードは、必ず人間がレビューし、セキュリティ上の脆弱性を含んでいないか確認が必要</li>
+        <li><strong>最新の脆弱性情報への追従：</strong>既知の脆弱性パターンを含んでいないかチェックすることが重要</li>
+        <li><strong>ライセンスの確認：</strong>AIの学習データに由来するライセンス制限に注意</li>
+      </ul>
+    </div>
+
+    <h3>この分野でAIを活用する魅力</h3>
+    <div class="charm-list">
+      <div class="charm-item"><strong>開発スピードの大幅向上</strong>定型的なコード記述やデバッグをAIに任せて時間短縮</div>
+      <div class="charm-item"><strong>学習コストの低減</strong>新しい言語の学習をAIがコード例やエラー解説で支援</div>
+      <div class="charm-item"><strong>コード品質の向上</strong>人間が見落としがちな非効率な記述をAIが発見</div>
+      <div class="charm-item"><strong>プロトタイプの高速化</strong>アイデアを素早く形にして検証できる</div>
+    </div>
+
+    <div class="think-box">
+      <div class="think-label">考えてみよう</div>
+      <p>あなたがもしWebサイトやWebアプリケーションを開発する立場なら、AIにコーディングのどの部分を一番手伝ってほしいですか？また、AIの力を借りて、どんな革新的なWebサービスやツールを開発してみたいか、自由に想像を膨らませてみましょう。</p>
+    </div>
+
+  </div>
+</details>
+
+
+<!-- ========================================
+  ライティング編
+======================================== -->
+<details class="domain-section">
+  <summary>
+    <span class="domain-icon">✍️</span>
+    <span class="domain-title">ライティング編：AIは、文章作成の効率を高める</span>
+    <span class="domain-time">約15分</span>
+  </summary>
+  <div class="domain-content">
+
+    <h3>AIとの共創で、多様な文章コンテンツを効率的に生成</h3>
+    <p>AIは、文章作成のさまざまなプロセスをサポートし、ライターの生産性と創造性を高める強力なツールとなります。</p>
+
+    <ul>
+      <li><strong>記事・ブログの構成案作成と執筆補助：</strong>テーマを与えるだけで記事の骨子をAIが作成</li>
+      <li><strong>メルマガ・LPのコピー作成：</strong>コンバージョンに繋がる文章案を得る</li>
+      <li><strong>商品説明文・レビュー記事の作成：</strong>商品の特徴からECサイト用の説明文を生成</li>
+      <li><strong>SEOコンテンツの企画支援：</strong>上位表示を目指す記事タイトル案をAIに提案させる</li>
+    </ul>
+
+    <p><strong>プロンプト例：ブログ記事の導入文作成</strong></p>
+    <div class="prompt-example">
+      あなたは経験豊富なキャリアコンサルタント兼プロライターです。<br><br>
+      「AI時代のキャリア戦略：変化を乗りこなし、未来をデザインする方法」というタイトルのブログ記事を執筆します。ターゲットは20代〜30代のビジネスパーソンです。<br><br>
+      読者の共感を呼び、続きを読む意欲を掻き立てるような、魅力的な導入部分の文章（約300〜400字）を作成してください。
+    </div>
+
+    <div class="output-example">
+      <h4>出力例</h4>
+      <p>かつてはSFの中だけの存在だったAIが、今やビジネスの現場に当たり前のように入り込み、私たちの働き方やキャリアに大きな影響を与え始めています。自動化や生成AIの進化に触れるたび、「自分の仕事はこの先どうなるのだろう？」そんな不安を感じている方も多いのではないでしょうか。</p>
+      <p>でも、変化は「脅威」であると同時に、大きな「チャンス」でもあります。大切なのは、流されるのではなく、自らの意思で未来をデザインすること。本記事では、AI時代を前向きに捉え、しなやかに成長し続けるためのキャリア戦略をわかりやすくご紹介します。</p>
+    </div>
+
+    <h3>AIによる文章校正・リライト・翻訳の高度化</h3>
+    <p>AIは、誤字脱字のチェックから、より分かりやすい表現へのリライト、さらには多言語への翻訳まで、ライティングの仕上げ工程を強力にサポートします。</p>
+
+    <ul>
+      <li><strong>高度な文章校正・校閲：</strong>文法的な誤りや不自然な言い回しを指摘し、修正案を提示</li>
+      <li><strong>目的に合わせたリライト：</strong>「中学生にも理解できるように平易な言葉で」といった指示で表現を最適化</li>
+      <li><strong>高品質な機械翻訳：</strong>文化的背景を考慮したローカライズのヒントも得られる</li>
+      <li><strong>文章の要約・キーワード抽出：</strong>長い報告書の内容を短く要約させる</li>
+    </ul>
+
+    <div class="column-box">
+      <div class="column-title">コラム：AIによる校正・翻訳の限界と人間の役割</div>
+      <ul>
+        <li><strong>文脈依存の誤り：</strong>AIは文脈を完全に理解できない場合があり、ニュアンスを誤って解釈することがあります</li>
+        <li><strong>創造性や意図の損失：</strong>リライトの過程で、元の文章が持っていた独自の表現が薄れる可能性があります</li>
+        <li><strong>事実確認の必要性：</strong>AIは内容の事実関係まで検証してくれません。ファクトチェックは人間の重要な役割です</li>
+      </ul>
+    </div>
+
+    <h3>この分野でAIを活用する魅力</h3>
+    <div class="charm-list">
+      <div class="charm-item"><strong>執筆時間の大幅短縮</strong>構成案作成から校正までAIがサポート</div>
+      <div class="charm-item"><strong>表現の多様性と質の向上</strong>AIの提案でマンネリ化を防げる</div>
+      <div class="charm-item"><strong>SEO効果の最大化</strong>キーワード提案で上位表示の可能性を高める</div>
+      <div class="charm-item"><strong>「書く」ハードルの低下</strong>文章が苦手な人でも心理的なハードルが下がる</div>
+    </div>
+
+    <div class="think-box">
+      <div class="think-label">考えてみよう</div>
+      <p>あなたがもし、あるテーマについて多くの人に伝えたいことがあるとしたら、AIに文章作成のどの部分を一番手伝ってほしいですか？また、AIの力を借りて、どんな革新的な情報発信をしてみたいか、自由に想像を膨らませてみましょう。</p>
+    </div>
+
+  </div>
+</details>
+
+
+<!-- ========================================
+  SNS運用編
+======================================== -->
+<details class="domain-section">
+  <summary>
+    <span class="domain-icon">📱</span>
+    <span class="domain-title">SNS運用編：AIは、エンゲージメントを高める戦略家になる</span>
+    <span class="domain-time">約15分</span>
+  </summary>
+  <div class="domain-content">
+
+    <h3>AIによるトレンド分析とターゲットインサイトの深化</h3>
+    <p>AIは、膨大なSNS上のデータを分析し、エンゲージメントを高めるための貴重なインサイトを提供します。</p>
+
+    <ul>
+      <li><strong>リアルタイムトレンドの把握：</strong>最新のSNSトレンドをAIが収集し、自社アカウントが乗るべきトレンドを提案</li>
+      <li><strong>ターゲットオーディエンスの興味関心分析：</strong>フォロワーのアクティブ時間帯などをAIが分析</li>
+      <li><strong>競合アカウントの戦略分析：</strong>競合他社の成功要因をAIが分析</li>
+      <li><strong>インフルエンサーマーケティングの最適化：</strong>最適なインフルエンサーをAIがリストアップ</li>
+    </ul>
+
+    <p><strong>プロンプト例：SNSトレンドキーワード抽出</strong></p>
+    <div class="prompt-example">
+      あなたは最新のSNSトレンドに精通したデータアナリストです。<br><br>
+      現在、サステナブルなライフスタイルに関心のある20代〜30代をターゲットにしたInstagramアカウントを運用しています。<br><br>
+      過去1ヶ月間で話題になっている「サステナビリティ」に関連するトレンドキーワードを5つ挙げてください。
+    </div>
+
+    <div class="output-example">
+      <h4>出力例</h4>
+      <ol>
+        <li><strong>ロンジェビティ（長寿）志向：</strong>健康寿命を延ばすことへの関心が高まっています</li>
+        <li><strong>エモレトロ：</strong>Z世代を中心にレトロなアイテムが再評価されています</li>
+        <li><strong>シェアリングエコノミー：</strong>日用品のシェアリングが若年層の間で広がっています</li>
+        <li><strong>サーキュラーエコノミー：</strong>製品の再利用やリサイクルの概念が広がっています</li>
+        <li><strong>ネイチャーポジティブ：</strong>生物多様性の保全を目指す取り組みが注目されています</li>
+      </ol>
+    </div>
+
+    <h3>AIによるコンテンツ作成と最適な投稿スケジューリング</h3>
+    <p>AIは、投稿コンテンツの作成から配信タイミングの最適化まで、運用者の負担を軽減します。</p>
+
+    <ul>
+      <li><strong>投稿文案の自動生成：</strong>各SNSの文字数に合わせた投稿文とハッシュタグをAIが生成</li>
+      <li><strong>投稿用画像・ショート動画のAI生成：</strong>短い動画クリップからTikTok向け動画を自動編集</li>
+      <li><strong>最適な投稿日時のレコメンデーション：</strong>エンゲージメントが最も高まる曜日・時間帯を割り出し</li>
+      <li><strong>コンテンツカレンダーの自動作成：</strong>投稿スケジュールの草案をAIが自動生成</li>
+    </ul>
+
+    <div class="column-box">
+      <div class="column-title">コラム：AI生成コンテンツとブランドボイスの一貫性</div>
+      <ul>
+        <li><strong>AIへの明確な指示：</strong>プロンプトでブランドのターゲットや好ましい言葉遣いを具体的に指示しましょう</li>
+        <li><strong>人間による編集と監修：</strong>AIが生成したコンテンツは必ず人間が確認し、ブランドのメッセージと一致しているかチェックが必要です</li>
+      </ul>
+    </div>
+
+    <h3>この分野でAIを活用する魅力</h3>
+    <div class="charm-list">
+      <div class="charm-item"><strong>データドリブンな戦略</strong>客観的データに基づいたSNS戦略を策定</div>
+      <div class="charm-item"><strong>コンテンツ作成の効率化</strong>より多くの時間をエンゲージメント戦略に充てる</div>
+      <div class="charm-item"><strong>エンゲージメントの最大化</strong>「いいね」やコメントを増やし影響力を高める</div>
+      <div class="charm-item"><strong>属人化の軽減</strong>担当者が変わっても一定の運用レベルを維持</div>
+    </div>
+
+    <div class="think-box">
+      <div class="think-label">考えてみよう</div>
+      <p>あなたがもし、ある企業のSNS運用を一人で任されたとしたら、AIにどのようなサポートを最も期待しますか？AIをどのように活用するか、具体的な作戦を立ててみましょう。</p>
+    </div>
+
+  </div>
+</details>
+
+
+<!-- ========================================
+  動画編集編
+======================================== -->
+<details class="domain-section">
+  <summary>
+    <span class="domain-icon">🎬</span>
+    <span class="domain-title">動画編集編：AIは、退屈な作業からクリエイターを解放する</span>
+    <span class="domain-time">約15分</span>
+  </summary>
+  <div class="domain-content">
+
+    <h3>AIによる動画編集の自動化と高速化</h3>
+    <p>AIは、文字起こし、カット編集、テロップ挿入といった時間のかかる作業を自動化・高速化し、クリエイターの負担を大幅に軽減します。</p>
+
+    <ul>
+      <li><strong>AI文字起こしと字幕自動生成：</strong>字幕（テロップ）作成作業が大幅に効率化（Vrew、Kapwingなど）</li>
+      <li><strong>無音部分・フィラーワードの自動カット：</strong>「えーと」「あのー」といった不要な言葉を自動で検出しカット（Descriptなど）</li>
+      <li><strong>AIによるシーン検出とチャプター自動生成：</strong>YouTubeなどで使われるチャプター情報を自動で生成</li>
+      <li><strong>AIによるBGM・効果音の提案：</strong>シーンの内容に合わせてAIがBGMを提案</li>
+    </ul>
+
+    <h3>AIを活用した動画コンテンツのクオリティアップ</h3>
+    <p>AIは、動画コンテンツの品質向上や、これまでにない新しい映像表現の可能性も広げます。</p>
+
+    <ul>
+      <li><strong>AIによる手ブレ補正・ノイズ除去：</strong>映像や音声の品質を自然に向上</li>
+      <li><strong>AIアップスケーリングと高画質化：</strong>低解像度の映像をディテール補完しながら高解像度化</li>
+      <li><strong>AIによるモーショングラフィックス生成：</strong>テキスト指示でイントロ動画のテンプレートを生成</li>
+      <li><strong>AIアバター・AIボイスによる動画制作：</strong>顔出しせずに情報を伝えたい場合の新たな選択肢</li>
+    </ul>
+
+    <div class="column-box">
+      <div class="column-title">コラム：AI生成映像と倫理的課題</div>
+      <ul>
+        <li><strong>ディープフェイクの問題：</strong>実在の人物の顔や声を置き換えるディープフェイク技術は、誤情報や名誉毀損に悪用される危険性があります</li>
+        <li><strong>著作権・肖像権の侵害：</strong>AIの学習データに著作権で保護された映像が使用されていた場合、権利を侵害する可能性があります</li>
+        <li><strong>誤情報・プロパガンダへの利用：</strong>精巧に作られたフェイク映像は、世論操作に悪用される恐れがあります</li>
+      </ul>
+    </div>
+
+    <h3>この分野でAIを活用する魅力</h3>
+    <div class="charm-list">
+      <div class="charm-item"><strong>編集時間の大幅短縮</strong>字幕やカット編集の自動化で制作スピードUP</div>
+      <div class="charm-item"><strong>クオリティの底上げ</strong>手ブレ補正やノイズ除去で品質が自然に向上</div>
+      <div class="charm-item"><strong>表現の幅が広がる</strong>AIアバターやモーショングラフィックスで新しい映像表現</div>
+      <div class="charm-item"><strong>企画に集中できる</strong>退屈な作業からの解放で、クリエイティブに時間を使える</div>
+    </div>
+
+    <div class="think-box">
+      <div class="think-label">考えてみよう</div>
+      <p>あなたがもし、あるテーマで定期的に動画を配信するYouTuberになるとしたら、AIに動画編集のどの作業を一番手伝ってほしいですか？具体的に想像してみましょう。</p>
+    </div>
+
+  </div>
+</details>
+
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">Webデザイン分野でAIを活用する際、最終的にデザインの一貫性と品質を担保するのは誰？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIが自動的に担保してくれる</button>
+    <button class="quiz-opt" data-correct="true">B. 人間のデザイナー</button>
+    <button class="quiz-opt" data-correct="false">C. クライアント</button>
+    <button class="quiz-opt" data-correct="false">D. デザインツールのプラグイン</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> AIは強力なアシスタントですが、デザイン全体の統一感と品質を担保するのは<strong>人間のデザイナー</strong>の重要な役割です。AIが生成したパーツは、必ず人間が全体の中で調和するか判断し、微調整を行う必要があります。
+  </div>
+</div>
+
+
+<!-- ============================================================
+  セクション 3: ショーケースを終えて
+============================================================ -->
+<h2 class="section-heading" id="sec3">3. ショーケースを終えて</h2>
+
+<p class="text-body">
+  このショーケースを通じて、AIがWeb業界のさまざまな分野でどのように活用され、皆さんの未来の仕事をどのように変えていく可能性があるのか、少しでも具体的なイメージを掴んでいただけたでしょうか。
+</p>
+
+<p class="text-body">
+  AIは万能ではありません。しかし、正しく理解し、上手に使いこなせば、<strong class="accent">創造性や生産性を大きく高め、これまでにない価値を生み出すためのツール</strong>となるでしょう。
+</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>どの分野でも共通しているのは、<strong class="accent">AIは「アシスタント」であり、最終的な判断と品質の責任は人間にある</strong>ということ。AIを使いこなす専門家が、これからの時代に求められる人材です。</p>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">AI活用において、どの専門分野にも共通する重要なポイントは？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIの出力をそのまま使うのが最も効率的</button>
+    <button class="quiz-opt" data-correct="false">B. AIがあれば専門知識は不要になる</button>
+    <button class="quiz-opt" data-correct="true">C. AIの出力を専門知識で評価・改善し、最終的な品質は人間が担保する</button>
+    <button class="quiz-opt" data-correct="false">D. AIは創造的な作業には向いていない</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> AIが生み出したものを評価し、最終的な価値に繋げるのは、それぞれの分野の専門知識や経験、そして<strong>人間ならではの感性や創造性</strong>です。AIの出力を鵜呑みにせず、専門家として判断・改善することが重要です。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>興味を持った分野のAI活用事例は、実際にWEBCOACH先生やChatGPTでプロンプト例を試してみることで、より実感が湧きます。「百聞は一見にしかず」、まずは手を動かしてみましょう。</p>
+</div>
+
+
+<!-- ============================================================
+  まとめ
+============================================================ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">Webデザイン</strong> — AIはデザインコンセプトの発想を広げ、UIパーツ生成やアクセシビリティチェックを支援する</li>
+    <li><strong style="color: #3D3D3D;">Web制作・コーディング</strong> — AIはコード生成・デバッグ・テスト・ドキュメント作成を効率化する</li>
+    <li><strong style="color: #3D3D3D;">ライティング</strong> — AIは構成案作成から校正・翻訳まで文章作成を幅広くサポートする</li>
+    <li><strong style="color: #3D3D3D;">SNS運用</strong> — AIはトレンド分析・コンテンツ作成・投稿スケジュール最適化を支援する</li>
+    <li><strong style="color: #3D3D3D;">動画編集</strong> — AIは文字起こし・カット編集・テロップ挿入を自動化し、クリエイターを退屈な作業から解放する</li>
+    <li><strong style="color: #3D3D3D;">共通ポイント</strong> — AIは強力なアシスタントだが、最終的な判断と品質の責任は人間にある</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  理解度チェック
+============================================================ -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">選択した分野のAI活用事例を1つ以上説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">例：Webデザインなら「AIにペルソナを作成させてターゲット像を具体化する」、ライティングなら「AIに記事の構成案を作らせて執筆の骨子にする」など、具体的な事例を説明できれば合格です。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">AI活用における「人間の役割」を説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">AIの出力を専門知識で評価・改善し、最終的な品質と一貫性を担保するのが人間の役割です。AIは強力なアシスタントですが、判断の責任は人間にあります。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">「この分野でAIを使ってこんなことをしたい」という具体的なイメージが持てた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">漠然とでも構いません。「デザインのアイデア出しにAIを使いたい」「記事の構成案をAIに作ってもらいたい」など、自分なりのイメージが1つでも浮かんでいれば十分です。</div>
+    </details>
+
+  </div>
+</details>
+ <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/Web%E6%A5%AD%E7%95%8C%E3%81%A7%E3%81%AEAI%E6%B4%BB%E7%94%A8%E3%83%8A%E3%83%93/CKryE" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/introduction-to-generative-ai/Web%E6%A5%AD%E7%95%8C%E3%81%A7%E3%81%AEAI%E6%B4%BB%E7%94%A8%E3%83%8A%E3%83%93/peAYj" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- ============================================================
+  JavaScript
+============================================================ -->
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/JzXfs -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>バナー制作100本道場【導入編】  - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/JzXfs">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="バナー制作100本道場【導入編】  - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/440/medium/3ab1c79a-34c1-487d-992b-1ad3b907bc14.jpg?1745471724">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="バナー制作100本道場【導入編】 ">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/JzXfs">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/440/large/3ab1c79a-34c1-487d-992b-1ad3b907bc14.jpg?1745471724">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="j1lY4fjB7dX0fqQ73KEhSud-SEplR7JSwlUKZiA9Otb7Ke45qANcDkzuHt1yr_5CiEecSHui6KraAoriH_lEQg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">バナー制作100本道場【導入編】 </div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0. はじめに</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間: 180分</a></li></ul></li><li><a href="#heading2" class="tocLink">1. バナー制作の心得</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間: 30分</a></li></ul><ul><li><a href="#heading4" class="tocLink">【1-1】1つのテーマを10通りの角度から考えよう</a></li><li><a href="#heading5" class="tocLink">【1-2】オリジナル制作物の重要性</a></li><li><a href="#heading6" class="tocLink">【1-3】作る過程で意識するポイント</a></li></ul></li><li><a href="#heading7" class="tocLink">2. バナー制作の課題内容</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間: 60分</a></li></ul><ul><li><a href="#heading9" class="tocLink">【2-1】1つのカテゴリーに対してバナーを10個作り切ろう！</a><ul><li><a href="#heading10" class="tocLink">進め方</a></li><li><a href="#heading11" class="tocLink">教材内で作成できる10個のカテゴリー</a></li></ul></li><li><a href="#heading12" class="tocLink">【2-2】バナーサイズ</a></li><li><a href="#heading13" class="tocLink">【2-3】要件定義を踏まえてバナーを作成しよう</a><ul><li><a href="#heading14" class="tocLink">要件定義</a></li></ul></li></ul></li><li><a href="#heading15" class="tocLink">3. 見本を確認しよう！</a><ul><li><a href="#heading16" class="tocLink">目安の学習時間: 90分</a></li><li><a href="#heading17" class="tocLink">進め方</a></li><li><a href="#heading18" class="tocLink">商材の特徴を書き出す</a></li></ul><ul><li><a href="#heading19" class="tocLink">【3-1】ファッション・アパレル系バナー「指定素材のイメージを優先型」</a><ul><li><a href="#heading20" class="tocLink">指定素材</a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink">要件定義書①</a></li><li><a href="#heading23" class="tocLink">参考バナー</a></li><li><a href="#heading24" class="tocLink"></a></li></ul></li><li><a href="#heading25" class="tocLink">【3-2】ファッション・アパレル系バナー 「金額を安く打ち出す　価格お得型」</a><ul><li><a href="#heading26" class="tocLink">使用素材</a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink">要件定義書②</a></li><li><a href="#heading29" class="tocLink">参考バナー</a></li><li><a href="#heading30" class="tocLink"></a></li></ul></li><li><a href="#heading31" class="tocLink">【3-3】ファッション・アパレル系バナー 「ジャンルで絞り込む カテゴリー特化型」</a><ul><li><a href="#heading32" class="tocLink">使用素材</a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink">要件定義書③</a></li><li><a href="#heading35" class="tocLink">参考バナー</a></li><li><a href="#heading36" class="tocLink"></a></li></ul></li><li><a href="#heading37" class="tocLink">【3-4】ファッション・アパレル系バナー 「キャッチコピーでクリック誘導型」</a><ul><li><a href="#heading38" class="tocLink">使用素材</a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink">要件定義④</a></li><li><a href="#heading41" class="tocLink">参考バナー</a></li><li><a href="#heading42" class="tocLink"></a></li></ul></li><li><a href="#heading43" class="tocLink">【3-5】ファッション・アパレル系バナー 「企業内のサービス・商品の中の豊富な種類から選ぶことが出来るお得型」</a><ul><li><a href="#heading44" class="tocLink">使用素材</a></li><li><a href="#heading45" class="tocLink"></a></li><li><a href="#heading46" class="tocLink">要件定義⑤</a></li><li><a href="#heading47" class="tocLink">参考バナー</a></li><li><a href="#heading48" class="tocLink"></a></li></ul></li><li><a href="#heading49" class="tocLink">【3-6】ファッション・アパレル系バナー 「その商品のみのカラー展開やバリエーションの情報型」</a><ul><li><a href="#heading50" class="tocLink">使用素材</a></li><li><a href="#heading51" class="tocLink"></a></li><li><a href="#heading52" class="tocLink">要件定義⑥</a></li><li><a href="#heading53" class="tocLink">参考バナー</a></li><li><a href="#heading54" class="tocLink"></a></li></ul></li><li><a href="#heading55" class="tocLink">【3-7】ファッション・アパレル系バナー 「企業ロゴ・企業名からクリック誘導型」</a><ul><li><a href="#heading56" class="tocLink">使用素材</a></li><li><a href="#heading57" class="tocLink">要件定義⑦</a></li><li><a href="#heading58" class="tocLink">参考ロゴ</a></li><li><a href="#heading59" class="tocLink"></a></li><li><a href="#heading60" class="tocLink">参考バナー</a></li><li><a href="#heading61" class="tocLink"></a></li></ul></li><li><a href="#heading62" class="tocLink">【3-8】ファッション・アパレル系バナー 「機能面・使用感・体感・商品サービス掲載型」</a><ul><li><a href="#heading63" class="tocLink">使用素材</a></li><li><a href="#heading64" class="tocLink"></a></li><li><a href="#heading65" class="tocLink">要件定義⑧</a></li><li><a href="#heading66" class="tocLink">参考バナー</a></li><li><a href="#heading67" class="tocLink"></a></li></ul></li><li><a href="#heading68" class="tocLink">【3-9】ファッション・アパレル系バナー 「物語（将来像）でクリック誘導型」</a><ul><li><a href="#heading69" class="tocLink">使用素材</a></li><li><a href="#heading70" class="tocLink"></a></li><li><a href="#heading71" class="tocLink">要件定義⑨</a></li><li><a href="#heading72" class="tocLink">参考バナー</a></li><li><a href="#heading73" class="tocLink"></a></li></ul></li><li><a href="#heading74" class="tocLink">【3-10】ファッション・アパレル系バナー 「画像のインパクトでクリック誘導型」</a><ul><li><a href="#heading75" class="tocLink">指定素材</a></li><li><a href="#heading76" class="tocLink"></a></li><li><a href="#heading77" class="tocLink">要件定義⑩</a></li><li><a href="#heading78" class="tocLink">参考バナー</a></li><li><a href="#heading79" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading80" class="tocLink">【3-1】教育・学習・セミナー系 「指定素材のイメージを優先型」</a><ul><li><a href="#heading81" class="tocLink">指定素材</a></li><li><a href="#heading82" class="tocLink"></a></li><li><a href="#heading83" class="tocLink">参考バナー</a></li><li><a href="#heading84" class="tocLink"></a></li></ul></li><li><a href="#heading85" class="tocLink">【3-2】教育・学習・セミナー系バナー 「金額を安く打ち出す　価格お得型」</a><ul><li><a href="#heading86" class="tocLink">指定素材</a></li><li><a href="#heading87" class="tocLink"></a></li><li><a href="#heading88" class="tocLink">参考バナー</a></li><li><a href="#heading89" class="tocLink"></a></li></ul></li><li><a href="#heading90" class="tocLink">【3-3】教育・学習・セミナー系バナー 「金額を高く打ち出す　高品質高価格型」</a><ul><li><a href="#heading91" class="tocLink">指定素材</a></li><li><a href="#heading92" class="tocLink"></a></li><li><a href="#heading93" class="tocLink">参考バナー</a></li><li><a href="#heading94" class="tocLink"></a></li></ul></li><li><a href="#heading95" class="tocLink">【3-4】教育・学習・セミナー系バナー 「キャッチコピーでクリック誘導型」</a><ul><li><a href="#heading96" class="tocLink">指定素材</a></li><li><a href="#heading97" class="tocLink"></a></li><li><a href="#heading98" class="tocLink">参考バナー</a></li><li><a href="#heading99" class="tocLink"></a></li></ul></li><li><a href="#heading100" class="tocLink">【3-5】教育・学習・セミナー系バナー「企業内のサービス・商品の中の豊富な種類から選ぶことが出来るお得型」</a><ul><li><a href="#heading101" class="tocLink">指定素材</a></li><li><a href="#heading102" class="tocLink"></a></li><li><a href="#heading103" class="tocLink">参考バナー</a></li><li><a href="#heading104" class="tocLink"></a></li></ul></li><li><a href="#heading105" class="tocLink">【3-6】教育・学習・セミナー系バナー 「その商品のみのカラー展開やバリエーションの情報型」</a><ul><li><a href="#heading106" class="tocLink">指定素材</a></li><li><a href="#heading107" class="tocLink"></a></li><li><a href="#heading108" class="tocLink">参考バナー</a></li><li><a href="#heading109" class="tocLink"></a></li></ul></li><li><a href="#heading110" class="tocLink">【3-7】教育・学習・セミナー系バナー 「企業ロゴ・企業名からクリック誘導型」</a><ul><li><a href="#heading111" class="tocLink">指定ロゴ</a></li><li><a href="#heading112" class="tocLink"></a></li><li><a href="#heading113" class="tocLink">参考バナー</a></li><li><a href="#heading114" class="tocLink"></a></li></ul></li><li><a href="#heading115" class="tocLink">【3-8】教育・学習・セミナー系バナー 「機能面・使用感・体感・商品サービス掲載型」</a><ul><li><a href="#heading116" class="tocLink">指定素材</a></li><li><a href="#heading117" class="tocLink"></a></li><li><a href="#heading118" class="tocLink">参考バナー</a></li><li><a href="#heading119" class="tocLink"></a></li></ul></li><li><a href="#heading120" class="tocLink">【3-9】教育・学習・セミナー系バナー 「物語（将来像）でクリック誘導型」</a><ul><li><a href="#heading121" class="tocLink">指定素材</a></li><li><a href="#heading122" class="tocLink"></a></li><li><a href="#heading123" class="tocLink">参考バナー</a></li><li><a href="#heading124" class="tocLink"></a></li></ul></li><li><a href="#heading125" class="tocLink">【3-10】教育・学習・セミナー系バナー 「画像のインパクトでクリック誘導型」</a><ul><li><a href="#heading126" class="tocLink">指定素材</a></li><li><a href="#heading127" class="tocLink"></a></li><li><a href="#heading128" class="tocLink">参考バナー</a></li><li><a href="#heading129" class="tocLink"></a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25637" data-item-id="25637" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-end;">
+  <a href="https://learn.webcoach.jp/web-design/Y4873" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item13353" data-item-id="13353" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">0. はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item39392" data-item-id="39392" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間: 180分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item13355" data-item-id="13355" data-item-type="ItemRichText"><div class="item-body-hbr">学習を始める前に、受講対象と学習目標について確認しておきましょう。</div></div>
+        
+        <div class="article-item item_html " id="item13359" data-item-id="13359" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">受講対象 </div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>Photoshop・Illustrator・Canva・Figma等のWebデザインに利用可能なツールを学び終えた方</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13368" data-item-id="13368" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+<div class="title-area">
+<div class="icon bulb"></div>
+<div class="title">学習目標</div>
+</div>
+<div class="content-area">
+『バナー制作100本道場【実践編】』での学習の進め方を理解する
+<br>
+※ 実際にバナーを制作するのは、『バナー制作100本道場【実践編】』になりますが、アウトプットの質や学習効果を最大化するために必ず本教材を学習してから次に進みましょう！
+</div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item13369" data-item-id="13369" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">1. バナー制作の心得</h2></div>
+        
+        <div class="article-item item_markdown " id="item39393" data-item-id="39393" data-item-type="ItemMarkdown"><h4 id="heading3">目安の学習時間: 30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item13370" data-item-id="13370" data-item-type="ItemHeading"><h3 class="item-body" id="heading4">【1-1】1つのテーマを10通りの角度から考えよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item13372" data-item-id="13372" data-item-type="ItemRichText"><div class="item-body-hbr">ポートフォリオを制作する際、バナーの制作実績も掲載することでポートフォリオ内の制作実績のボリュームも増えるというメリットがあります。<br>
+<br>
+また、1つのテーマに対して10種類の訴求型でバナーを制作することで、<span class="decoration-02">デザインの引き出しが増えるという更なるメリット</span>がありますのでぜひデザインの引き出しを増やしましょう！<br>
+<br>
+バナーは限られたサイズの中で、リンク先のページへとクリック誘導する事が目的になります。<br>
+<br>
+構成を考えたうえで、制作していくことも必要となります。<br>
+<br>
+デザインの引き出しを増やしポートフォリオにも沢山のバナーを掲載できるよう、課題を実践していきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item13374" data-item-id="13374" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">【1-2】オリジナル制作物の重要性</h3></div>
+        
+        <div class="article-item item_rich_text " id="item13376" data-item-id="13376" data-item-type="ItemRichText"><div class="item-body-hbr">バナーはWebサイト上で特定のページに移動してもらうために、<span class="decoration-02"><span class="decoration-01">クリックを誘導させる役割</span></span>を持ちます。<br>
+<br>
+そのため、誘導先のページについての説明はもちろん目立たせるという事も必要となります。<br>
+<br>
+バナーは掲載場所によって用途も様々ですが<span class="decoration-01"><span class="decoration-02">誘導先のページに合わせたバナー制作をしなければ</span></span>いけません。<br>
+<br>
+せっかく誘導先のページに遷移してもらっても『バナーと違う内容のページに行かされた』と思われ、<span class="decoration-02"><span class="decoration-01">ページ離脱を起こしてしまう可能性もあります。</span></span><br>
+<br>
+<span class="decoration-02"><span class="decoration-01">バナーを目立たせる</span></span>といっても目立つ色を使用するだけではなく、ターゲット層や訴求ポイントを考えクリックを誘導させるバナー制作をしていく必要があります。<br>
+<br>
+そこで、この教材に取り組むことでバナーデザインの引き出しを増やすことができますし、仕事に繋げるために必要なポートフォリオの制作実績にも掲載が出来ます！<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">どんどんオリジナル制作物を増やしていきましょう。</span></span></div></div>
+        
+        <div class="article-item item_heading " id="item13378" data-item-id="13378" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">【1-3】作る過程で意識するポイント</h3></div>
+        
+        <div class="article-item item_rich_text " id="item13379" data-item-id="13379" data-item-type="ItemRichText"><div class="item-body-hbr">バナー制作において意識して頂きたいポイントは、3つあります。</div></div>
+        
+        <div class="article-item item_html " id="item13380" data-item-id="13380" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+        <div class="icon bulb"></div>
+    <div class="content-area">
+        <ul>
+            <li>訴求ポイントが分かりやすいバナーができているか</li>
+            <li>クリックされやすいバナーが出来ているか</li>
+      		<li>誘導先のページと内容が合っているバナーが出来ているか</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13458" data-item-id="13458" data-item-type="ItemHtml"><div class="item-body"><div>結論からお伝えすると、上記の意識すべき内容はすべて、<span class="decoration-02">『ユーザー目線でバナーをつくる』ことで、改善する内容</span>です。</div><br>
+<div>バナー制作を作る過程では出来ない事も多いのですが、作る過程で『ユーザー目線でバナーをつくる』ことが出来ていれば手直しも少なくなります。</div>
+  <div>ただ、最初からここを考え過ぎて制作が出来なくなってしまわないよう、まずはバナー制作をしてみて、最終の仕上げで『ユーザー目線でバナーを見て』修正しましょう！</div>
+<div>この「ユーザー目線で見て修正する」手順は、『実践編』の4章でお伝えします。制作が終わったら必ず実施しましょう。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13459" data-item-id="13459" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_heading " id="item13382" data-item-id="13382" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">2. バナー制作の課題内容</h2></div>
+        
+        <div class="article-item item_markdown " id="item39394" data-item-id="39394" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間: 60分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item13383" data-item-id="13383" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">【2-1】1つのカテゴリーに対してバナーを10個作り切ろう！</h3></div>
+        
+        <div class="article-item item_markdown " id="item13384" data-item-id="13384" data-item-type="ItemMarkdown"><h4 id="heading10">進め方</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item13385" data-item-id="13385" data-item-type="ItemMarkdown"><ol>
+  <li><strong>テーマを1つ選ぶ</strong>
+    <ul>
+      <li>選んだテーマの指定素材を確認し、商材の特徴を書き出します。</li>
+    </ul>
+  </li>
+  <li><strong>10種類の訴求型それぞれでバナーを制作する</strong>
+    <ul>
+      <li><strong>要件定義書をもとに【1～10】まで順番に制作していきましょう！</strong></li>
+    </ul>
+  </li>
+  <li><strong>10本を並べて確認する</strong>
+    <ul>
+      <li>同じ商材を10通りの見せ方で表現できているかを確認します。</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>まずはこの10本を作り切ることが課題です。</strong></p>
+
+<p>同じ商材でも、訴求型が変われば伝える内容も見せ方も変わります。
+1つのテーマを10通りの角度から考えることで、<strong>デザインの引き出しが増えていくことが実感できます。</strong></p>
+
+<p>10本を作り終えて、さらに引き出しを増やしたい方は、別のテーマを選んで同じように10本ずつ制作していきましょう。
+10のテーマすべてに取り組むと、100本になります。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item13386" data-item-id="13386" data-item-type="ItemMarkdown"><h4 id="heading11">教材内で作成できる10個のカテゴリー</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item13387" data-item-id="13387" data-item-type="ItemMarkdown"><ol>
+  <li><strong>ファッション・アパレル系バナー</strong></li>
+  <li><strong>飲料・食品系バナー</strong>　</li>
+  <li><strong>旅行・観光系バナー</strong>　</li>
+  <li><strong>美容・コスメ系バナー</strong>　</li>
+  <li><strong>インテリア・雑貨系バナー</strong></li>
+  <li><strong>映画・音楽系バナー</strong></li>
+  <li><strong>電化製品系バナー</strong></li>
+  <li><strong>車・乗り物系バナー</strong></li>
+  <li><strong>アウトドア・スポーツ系バナー</strong></li>
+  <li><strong>教育・学習・セミナー系バナー</strong></li>
+</ol>
+</div>
+        
+        <div class="article-item item_rich_text " id="item52386" data-item-id="52386" data-item-type="ItemRichText"><div class="item-body-hbr">このうち、<span class="decoration-02">ファッション・アパレル系</span>と<span class="decoration-02">教育・学習・セミナー系</span>は、<br>
+この教材の3章で見本を掲載しています。<br>
+完成したバナーを先に見た状態で制作すると、ご自身で考える機会が減ってしまうため、<br>
+実践編では<span class="decoration-02">見本を掲載していない残り8つのカテゴリー</span>から選んで制作しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item13389" data-item-id="13389" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">【2-2】バナーサイズ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item13390" data-item-id="13390" data-item-type="ItemRichText"><div class="item-body-hbr">今回のバナーは以下のサイズで作成を進めていきましょう。</div></div>
+        
+        <div class="article-item item_html " id="item13392" data-item-id="13392" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">サイズ</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>1080×1080ピクセル(ベースサイズ)　</li>
+            <li>1200×628  ピクセル</li>
+      		<li>1080×1920 ピクセル　</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item13393" data-item-id="13393" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">【2-3】要件定義を踏まえてバナーを作成しよう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item13394" data-item-id="13394" data-item-type="ItemRichText"><div class="item-body-hbr">要件定義は全部で10項目あります。<br>
+<br>
+しっかりと要件定義の内容を確認し、バナー作成を進めてください。</div></div>
+        
+        <div class="article-item item_markdown " id="item13404" data-item-id="13404" data-item-type="ItemMarkdown"><h4 id="heading14">要件定義</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13411" data-item-id="13411" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>【3-1】</div>
+            </th>
+            <td>
+                <div>指定素材のイメージを優先型</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【3-2】</div>
+            </th>
+            <td>
+                <div>金額を安く打ち出す　価格お得型</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【3-3】</div>
+            </th>
+            <td>
+                <div>ジャンルで絞り込む カテゴリー特化型</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【3-4】</div>
+            </th>
+            <td>
+                <div>キャッチコピーでクリック誘導型</div>
+            </td>
+        </tr>
+      	<tr>
+            <th scope="row">
+                <div>【3-5】</div>
+            </th>
+            <td>
+                <div>企業内のサービス・商品の中の豊富な種類から選ぶことが出来るお得型</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【3-6】</div>
+            </th>
+            <td>
+                <div>その商品のみのカラー展開やバリエーションの情報型</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【3-7】</div>
+            </th>
+            <td>
+                <div>企業ロゴ・企業名からクリック誘導型</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【3-8】</div>
+            </th>
+            <td>
+                <div>機能面・使用感・体感・商品サービス掲載型</div>
+            </td>
+        </tr>
+      	 <tr>
+            <th scope="row">
+                <div>【3-9】</div>
+            </th>
+            <td>
+                <div>物語（将来像）でクリック誘導型</div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>【3-10】</div>
+            </th>
+            <td>
+                <div>画像のインパクトでクリック誘導型</div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item13412" data-item-id="13412" data-item-type="ItemHeading"><h2 class="item-body" id="heading15">3. 見本を確認しよう！</h2></div>
+        
+        <div class="article-item item_markdown " id="item39395" data-item-id="39395" data-item-type="ItemMarkdown"><h4 id="heading16">目安の学習時間: 90分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item13413" data-item-id="13413" data-item-type="ItemMarkdown"><h4 id="heading17">進め方</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item13414" data-item-id="13414" data-item-type="ItemMarkdown"><ol>
+  <li>バナー制作課題の例として、【<strong>1.ファッション・アパレル系バナー】【10.教育・学習・セミナー系バナー】</strong>上記2つのカテゴリーで制作した見本がありますので、まずは見本を確認しましょう。</li>
+  <li>その後<strong>『バナー制作100本道場【実践編】</strong>』より制作を実践してください。
+    <ul>
+      <li><strong>この例と同じバナー制作をする必要はありません</strong>ので、ご自身の構成力と制作力を存分に引き出し、オリジナルのバナーを制作していってください。</li>
+    </ul>
+  </li>
+</ol>
+</div>
+        
+        <div class="article-item item_html " id="item13415" data-item-id="13415" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">「10.教育・学習・セミナー系バナー」には要件定義書は添付しておりませんが、1～10の要件定義書で制作している内容です。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13416" data-item-id="13416" data-item-type="ItemMarkdown"><h4 id="heading18">商材の特徴を書き出す</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item13419" data-item-id="13419" data-item-type="ItemRichText"><div class="item-body-hbr">同じような内容が重複していても構わないので、バナー制作時に有効活用できるように、なるべくたくさん書き出していきましょう。<br>
+<br>
+<span class="decoration-02"><span class="decoration-01">すぐにバナー制作に取り掛からず、まずは商材の特徴を画像でじっくりと確認しましょう。</span></span><br>
+<br>
+商材の画像を確認をしながら、<span class="decoration-02"><span class="decoration-01">特徴をテキストにして書き出していく</span></span>ことも大切です。<br>
+<br>
+バナー制作ではテキストを使用することも頻繁に出てきますので、写真素材で商材確認が完了したらすぐに特徴を書き出しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item13424" data-item-id="13424" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">参考例</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>春の新作コレクション</li>
+            <li>豊富なカラーバリエーション</li>
+      		<li>グリッターで華やかに春を彩る</li>
+            <li>華やかなスタイリングで気分も上がる</li>
+            <li>豊富なカラーリング</li>
+      		<li>体型に合わせたサイズ展開</li>
+            <li>今年の春は緑が気分</li>
+            <li>ふわっとスカートで春を纏う</li>
+      		<li>1枚で決まる華やかワンピ</li>
+          	<li>サテンシャツで高見えコーデ</li>
+      		<li>大ぶりピアスで小顔見え</li>
+            <li>オールシーズンOK</li>
+            <li>春に着たい色物コーデ</li>
+      		<li>…etc</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item13425" data-item-id="13425" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">【3-1】ファッション・アパレル系バナー「指定素材のイメージを優先型」</h3></div>
+        
+        <div class="article-item item_markdown " id="item13426" data-item-id="13426" data-item-type="ItemMarkdown"><h4 id="heading20">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13440" data-item-id="13440" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/440/medium/3ab1c79a-34c1-487d-992b-1ad3b907bc14.jpg?1745471724" title=""><img class="img-responsive item-image" alt=" (13440)" data-reference="" src="../../_assets/c854ad37b8.webp" width="640" height="556"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13442" data-item-id="13442" data-item-type="ItemMarkdown"><h4 id="heading22">要件定義書①</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13444" data-item-id="13444" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; font-family: sans-serif; font-size: 14px; border: 1px solid #ccc;">
+  <thead>
+    <tr style="background-color: #e9e9e7;">
+      <th style="border: 1px solid #ccc; padding: 8px;">タイトル</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物を通じて達成したい目的</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">素材を活かしながら、伝えたいコピーをしっかり伝えるデザイン力をつける。<br>バナーの飛び先を意識しながら作成する力をつける。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">素材のイメージから、まずはご自身で考え、迷った場合はコーチに確認しましょう。<br>例:20代のトレンドに敏感でキレイめコーディネートが好みのOL女子</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット (詳細)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">新アイテムはいち早くチェックしたいクリエイティブでおしゃれ度の高いマーケットの中心的な層向け</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピー・文言とその優先順位</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①NEW ARRIVAL②新商品③新サービス<br>など新しいサービス内容の紹介をするキャッチコピー<br><br>写真を目立たせるように表示</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">マイクロコピーとその配置</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①Click<br>②詳細を見る<br>③詳細はこちら<br>などクリックを誘導させるコピー<br><br>クリック誘導用の情報を追記してもよい。バナー全体のイメージによっては無くても良い</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物の縦横比</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①1080px × 1080px (ベースサイズ)<br>②1200px × 628px<br>③1080px × 1920px (ストーリーズサイズ)</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">掲載・配信箇所</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">広告用バナーや自社サイトのイベントページへリンクする為、自社サイトのトップページに使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">色味</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">素材の色味に合う配色で作成。<br>目立たせるために補色を使用したり、調和させるために同系色でまとめるなど工夫する。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">与えたい印象</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">素材と少しのテキストを見てクリックをしたくなる印象にしたい</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用する素材の要件</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材を必ず使用し、素材内に複数のアイテムがある場合は選定をして制作を実施</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">その他意図して欲しいこと</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">コピーの優先順位と目立たせ方(目立たせるためにどうするのか。帯を敷くのか色を変えるのか、太くするのかを考える)</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作メモの記載</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①制作にかかった時間<br>②制作のコンセプト・こだわり</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item13445" data-item-id="13445" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">要件定義書をみて考えること</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>指定素材のイメージを優先し、リンク先を考えて制作するタイプのバナーとなっています。まずはリンク先をイメージし、制作に取り掛かりましょう。</li>
+            <li>詳細はクリックした後のサイトをみてくださいという内容であるため、写真素材とテキストの配分を確認しましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13446" data-item-id="13446" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">参考バナーの制作ポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>指定素材のイメージを優先し、制作を実施します。</li>
+            <li>素材とのバランスを見て文字の配置、目立たせ方を考えて作成しましょう！</li>
+      		<li>フォント選びでバナーの印象はガラッと変わるので、フォントからこだわって選ぶと◎</li>
+            <li>色は2色から3色でまとめるのがいいです(素材内で使用しているカラーを持ってくるとまとまりやすいです）</li>
+            <li>文字の間隔、行の間隔はバナー作成で最もクオリティを左右するものです。最後にカーニングを確認してあげるといいですね！</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13447" data-item-id="13447" data-item-type="ItemMarkdown"><h4 id="heading23">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13448" data-item-id="13448" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/448/medium/f51a1206-50d7-4e4a-9563-3dbc6dad0a4e.png?1745472601" title=""><img class="img-responsive item-image" alt=" (13448)" data-reference="" src="../../_assets/d8fbb94af5.webp" width="640" height="524"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13449" data-item-id="13449" data-item-type="ItemHeading"><h3 class="item-body" id="heading25">【3-2】ファッション・アパレル系バナー 「金額を安く打ち出す　価格お得型」</h3></div>
+        
+        <div class="article-item item_markdown " id="item13450" data-item-id="13450" data-item-type="ItemMarkdown"><h4 id="heading26">使用素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13451" data-item-id="13451" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/451/medium/675bd92e-9b56-4d4d-b090-c38c806e4702.jpg?1745472651" title=""><img class="img-responsive item-image" alt=" (13451)" data-reference="" src="../../_assets/b431fa93f3.webp" width="512" height="640"></a><h4 id="heading27"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13452" data-item-id="13452" data-item-type="ItemMarkdown"><h4 id="heading28">要件定義書②</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13453" data-item-id="13453" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; font-family: sans-serif; font-size: 14px; border: 1px solid #ccc;">
+  <thead>
+    <tr style="background-color: #e9e9e7;">
+      <th style="border: 1px solid #ccc; padding: 8px;">タイトル</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物を通じて達成したい目的</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">オンラインショップでの使用頻度が高いSALE用のバナーを作ることが出来る</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから、まずはご自身で考え設定してみましょう。<br><br>例）<br>20代～40代の仕事をしている女性<br>小学生くらいののお子様がいる</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット (詳細)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">素材の商品やサービスでなくても良いのだが、価格が安い商品を早く購入したいと考えており、衝動買いや流行りや新しいサービスにも敏感な人</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピー・文言とその優先順位</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①SALE②CLEARANCE③FINAL SALE<br>価格を下げる際に使用するキャッチコピー<br><br>安さを際立たせるように目立つ位置に配置</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">マイクロコピーとその配置</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①MAX70%OFF<br>②50%OFF など<br><br>安さを際立たせるように目立つ位置に配置</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物の縦横比</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①1080px × 1080px (ベースサイズ)<br>②1200px × 628px<br>③1080px × 1920px (ストーリーズサイズ)</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">掲載・配信箇所</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">広告用バナーや自社サイトのSALE販売ページへリンクさせるため、自社サイトのトップページに使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">色味</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">安さを際立たせるような赤色・黄色など目立たせる色味を使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">与えたい印象</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">一目見てSALE・安くなるということが解る印象にしたい</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用する素材の要件</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材を必ず使用し、SALEや通常より安価であることが解りやすければどのようなものでも使用して良い</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">その他意図して欲しいこと</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">テキストも写真もSALEや安くなるということに注目してもらえれば良い</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作メモの記載</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①制作にかかった時間<br>②制作のコンセプト・こだわり</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item13454" data-item-id="13454" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">要件定義書をみて考えること</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>季節のSALEバナーやお値打ち価格・期間限定の低価格でお得感を表現しましょう。<br>
+    			「安さが売り！」ということが解るようなバナー制作を意識してください。</li>
+            <li>写真とテキストを使用し、【とにかく価格が安い！】ということでクリックを誘導するバナーですので、SALEの価格や割引率なども自分で考えて制作しましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13455" data-item-id="13455" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">参考バナーの制作ポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>今回は価格の設定をせず、70%OFFのSALEバナーで制作しています。</li>
+            <li>アパレルのバナーなのでSALE用バナーでもチープさではなく洗練された印象を意識して作成しましょう。</li>
+      		<li>SALEや70%を目立たせたいので全体的な色味は絞りつつ、背景に暗めのマスクを使用するなどしてよりコピーが目立つようにしています。</li>
+            <li>フォント選びでバナーの印象はガラッと変わるので、フォントからこだわって選ぶと◎</li>
+            <li>文字の間隔、行の間隔はバナー作成で最もクオリティを左右するものです。最後にカーニングを確認してあげるといいですね！</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13456" data-item-id="13456" data-item-type="ItemMarkdown"><h4 id="heading29">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13457" data-item-id="13457" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/457/medium/50d21d64-93f8-4643-b529-5db4fe68dc0a.png?1745473241" title=""><img class="img-responsive item-image" alt=" (13457)" data-reference="" src="../../_assets/016e7f8b56.webp" width="640" height="524"></a><h4 id="heading30"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13462" data-item-id="13462" data-item-type="ItemHeading"><h3 class="item-body" id="heading31">【3-3】ファッション・アパレル系バナー 「ジャンルで絞り込む カテゴリー特化型」</h3></div>
+        
+        <div class="article-item item_markdown " id="item13469" data-item-id="13469" data-item-type="ItemMarkdown"><h4 id="heading32">使用素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13471" data-item-id="13471" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/471/medium/197ba3e0-393d-4f4c-bff7-ebeea084a800.png?1745473637" title=""><img class="img-responsive item-image" alt=" (13471)" data-reference="" src="../../_assets/b9886940d0.webp" width="640" height="305"></a><h4 id="heading33"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13470" data-item-id="13470" data-item-type="ItemMarkdown"><h4 id="heading34">要件定義書③</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13473" data-item-id="13473" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; font-family: sans-serif; font-size: 14px; border: 1px solid #ccc;">
+  <thead>
+    <tr style="background-color: #e9e9e7;">
+      <th style="border: 1px solid #ccc; padding: 8px;">タイトル</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物を通じて達成したい目的</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">カテゴリに合わせて打ち出したバナーを制作することが出来る</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから、まずはご自身で考え設定してみましょう。<br>迷ったり、迷えない場合はコーデに確認しましょう<br><br>例）<br>20代後半から30代前半のトレンドに敏感な女性</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット (詳細)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">ジャンルに縛られず、良いと思ったものを購入する人。<br>この冬着るアウターに困っているので気に入ったものを見つけたいと思っている。<br>購買意欲は高め。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピー・文言とその優先順位</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">OUTER COLLECTION<br><br>OUTER COLLECTIONをそのまま載せると場所を広く取ってしまうので、あえてモデルの背景に切れさせられているような見せ方で雑誌のようなビジュアルを意識。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">マイクロコピーとその配置</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①35,000円<br>②1万円以上の価格を設定<br>③詳細を確認 など<br><br>コピーの見せ方を工夫すると◎<br>#〇〇など、SNSと絡めた見せ方でターゲット層の心を掴む工夫</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物の縦横比</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①1080px × 1080px (ベースサイズ)<br>②1200px × 628px<br>③1080px × 1920px (ストーリーズサイズ)</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">掲載・配信箇所</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">カテゴリに特化したLPページに飛ばすためのバナーとしてサイト内で使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">色味</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">コピーを目立たしているので、映えるようなパキッとした色味。<br>大人に刺さるようなカラーを選択</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">与えたい印象</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">カテゴリに合わせてコーディネートをおしゃれに見せて、購買意欲を高めたい。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用する素材の要件</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材を必ず使用し、コーディネートの素材のトーンを揃える写真加工を実施</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">その他意図して欲しいこと</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">安っぽくならないように、おしゃれ雑誌のような見るだけでワクワクするデザインを心がけましょう。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作メモの記載</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①制作にかかった時間<br>②制作のコンセプト・こだわり</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item13472" data-item-id="13472" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">要件定義書をみて考えること</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>カテゴリに合わせて打ち出すバナーなので、そのアイテムを欲しいと思わせるようなデザインにする必要があります。<br>
+                            3つのコーディネート素材を組み合わせる必要があるので、配置の仕方やバランス、文字の置き方などベストな見せ方を考えましょう。</li>
+            <li>指定素材の明るさやコントラストなどにばらつきがあるので、どの写真に合わせて調整するかも重要ですし、背景に入れる色によって合うものに加工する必要があります。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13474" data-item-id="13474" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">参考バナーの制作ポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+          <li>OUTER COLLECTIONは2行で幅も高さも割と使うので、あえてコーディネート素材の背景として使用し、雑誌のようなデザインに仕上げています。</li>
+          <li>文字の選び方もおしゃれなバナーや大人向けのアパレルバナーはセリフ調のフォントを使っていただくと雰囲気が出やすいです。</li>
+          <li>指定素材の色味にばらつきがあるので、加工して揃えています。</li>
+          <li>アウターの名前の記載の仕方もおしゃれな吹き出し素材を使用しています。</li>
+          <li>#を使うなどしてキャッチーに見せています。</li>
+          <li>文字の間隔、行の間隔はバナー作成で最もクオリティを左右するものです。最後にカーニングを確認してあげるといいですね！</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13475" data-item-id="13475" data-item-type="ItemMarkdown"><h4 id="heading35">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13476" data-item-id="13476" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/476/medium/c85f30c7-cf26-4218-a758-997ada8a588b.png?1745473957" title=""><img class="img-responsive item-image" alt=" (13476)" data-reference="" src="../../_assets/a8a5faca0d.webp" width="640" height="524"></a><h4 id="heading36"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13463" data-item-id="13463" data-item-type="ItemHeading"><h3 class="item-body" id="heading37">【3-4】ファッション・アパレル系バナー 「キャッチコピーでクリック誘導型」</h3></div>
+        
+        <div class="article-item item_markdown " id="item13477" data-item-id="13477" data-item-type="ItemMarkdown"><h4 id="heading38">使用素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13498" data-item-id="13498" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/498/medium/23a31b46-467b-4e1b-9550-9ba579df2133.jpg?1745474590"><img class="img-responsive item-image" alt=" (13498)" src="../../_assets/61d67b37b3.webp" width="495" height="640"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13478" data-item-id="13478" data-item-type="ItemMarkdown"><h4 id="heading40">要件定義④</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13491" data-item-id="13491" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; font-family: sans-serif; font-size: 14px; border: 1px solid #ccc;">
+  <thead>
+    <tr style="background-color: #e9e9e7;">
+      <th style="border: 1px solid #ccc; padding: 8px;">タイトル</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物を通じて達成したい目的</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">バナー制作時に必要なキャッチコピーを制作することが出来る</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから、まずはご自身で考え設定してみましょう。<br>迷ったり、判断できない場合はコーチに確認しましょう<br><br>例）<br>20代後半から30代前半のトレンドに敏感な女性</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット (詳細)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材の商品やサービスに興味がある、程度でまだ、検討段階には入っていない状態の人</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピー・文言とその優先順位</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから<br>キャッチコピーを考えてください<br><br>キャッチコピーが目立つように配置</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">マイクロコピーとその配置</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから<br>マイクロコピーも考えてください<br><br>キャッチコピーの配置のみでも構いません</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物の縦横比</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①1080px × 1080px (ベースサイズ)<br>②1200px × 628px<br>③1080px × 1920px</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">掲載・配信箇所</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">広告用バナーにメインで掲載されるが、秀逸なキャッチコピーであれば自社サイトにも使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">色味</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピーに合うような色味を使用する</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">与えたい印象</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">興味を持ってくれる人が増えるような、目を惹くキャッチコピーだという印象</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用する素材の要件</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材を使用しなくても良い・キャッチコピーだけの記載でも構いません</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">その他意図して欲しいこと</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピーのアイデアが浮かばない時は、アイデアが浮かんだ時に随時テキストに書き留めると良い</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作メモの記載</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①制作にかかった時間<br>②制作のコンセプト・こだわり</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item13524" data-item-id="13524" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">要件定義書をみて考えること</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>写真素材の商品をもとに<span class="decoration-02">キャッチコピー</span>を自分で考えて制作するバナーです。</li>
+            <li><span class="decoration-02">キャッチコピー</span>をまず最初に考えていきましょう！
+                <ul>
+                    <li>素材を見て思いつく<span class="decoration-02">キャッチコピー</span>を出した後、最も効果的に訴求できるコピーを採用しましょう</li>
+                </ul>
+            </li>
+            <li><span class="decoration-02">キャッチコピー</span>が思い浮かばない場合、次の要件定義のバナーを制作しておいて、<span class="decoration-02">キャッチコピー</span>が浮かんできてから着手しても構いません。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13525" data-item-id="13525" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">参考バナーの制作ポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>写真加工とアイテムの切り抜きの練習となる要素が高いバナーです。</li>
+           <li>モデル着用素材だけでなく、靴などの他アイテムの置き撮りを使用することで、アイテム数に幅を持たせた見せ方をしています。</li>
+           <li>文字の間隔、行の間隔はバナー作成で最もクオリティを左右するものです。最後にカーニングを確認してあげるといいですね！</li>
+           <li>テキストに合わせたあしらいをプラスすることでバナーのクオリティを上げましょう。</li>
+            <li>少し暗めのマスクをかけることで白文字が載せやすくなるように工夫しています。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13479" data-item-id="13479" data-item-type="ItemMarkdown"><h4 id="heading41">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13499" data-item-id="13499" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/499/medium/07fda76d-fe4c-44ac-bd6f-a607cad6d8a9.png?1745474631" title=""><img class="img-responsive item-image" alt=" (13499)" data-reference="" src="../../_assets/18afa01382.webp" width="640" height="524"></a><h4 id="heading42"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13464" data-item-id="13464" data-item-type="ItemHeading"><h3 class="item-body" id="heading43">【3-5】ファッション・アパレル系バナー 「企業内のサービス・商品の中の豊富な種類から選ぶことが出来るお得型」</h3></div>
+        
+        <div class="article-item item_markdown " id="item13480" data-item-id="13480" data-item-type="ItemMarkdown"><h4 id="heading44">使用素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13500" data-item-id="13500" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/500/medium/0a6a5f7a-a271-44fe-a5f2-1a5c0905d665.jpg?1745474656" title=""><img class="img-responsive item-image" alt=" (13500)" data-reference="" src="../../_assets/61d67b37b3.webp" width="495" height="640"></a><h4 id="heading45"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13485" data-item-id="13485" data-item-type="ItemMarkdown"><h4 id="heading46">要件定義⑤</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13492" data-item-id="13492" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; font-family: sans-serif; font-size: 14px; border: 1px solid #ccc;">
+  <thead>
+    <tr style="background-color: #e9e9e7;">
+      <th style="border: 1px solid #ccc; padding: 8px;">タイトル</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物を通じて達成したい目的</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">商品やサービスをイメージした写真の加工を通じて、バナー制作の幅を広げることが出来る</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから、まずはご自身で考え設定してみましょう。<br><br>例）<br>20代後半から30代前半のトレンドに敏感な女性</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット (詳細)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">商品検討段階だが、必要には迫られていない購買意欲が比較的低い人</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピー・文言とその優先順位</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①欲しいものが見つかる<br>②豊富な商品数！<br>③美味しそうな色！<br>④希望のコースが見つかる<br>⑤商品やサービスの数が多い事が分かる内容<br><br>豊富な商品をアピール出来るように写真とテキストのバランスに注意する</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">マイクロコピーとその配置</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">欲しい商品きっと見つかる。<br><br>などメインコピーをさらに補うコピーを配置。<br><br>メインコピーを補う位置に配置</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物の縦横比</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①1080px × 1080px (ベースサイズ)<br>②1200px × 628px<br>③1080px × 1920px (ストーリーズサイズ)</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">掲載・配信箇所</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">広告用バナーや自社サイト内の全商品掲載ページへリンクさせるために自社サイトのトップページに使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">色味</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">複数アイテムを配置しているので、合わせる色はアイテムと合う色を採用しましょう。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">与えたい印象</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">沢山のコースや商品の中から選ぶことが出来るというワクワクとする印象</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用する素材の要件</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材以外でもショップのイメージを考え、画像を用意しバナーに使用していただいてもOKです</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">その他意図して欲しいこと</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">１つのジャンルだけではなく、色々なカテゴリのアイテムがあることを1枚で表現したいので、モデル着用アイテムだけではなく、置き撮りのアイテムなども絡めて展開できると◎</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作メモの記載</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①制作にかかった時間<br>②制作のコンセプト・こだわり６</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item13526" data-item-id="13526" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">要件定義書をみて考えること</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>写真素材の役割をもと、そのカテゴリーの企業が写真素材の利用以外にどのような広報販売やサービスを展開させているかを考えましょう。</li>
+            <li>写真加工力をアップするために、なるべく様々な素材の写真を加工して経験すると良いでしょう。</li>
+            <li>これまで提供された素材の中で、複数のアイテムが入っているものを使用してもOKです。</li>
+            <li>バナーを作る上でアイテムを切り抜く作業は多く発生するので、練習で切り抜けるように調整してみましょう！</li>
+            <li>出来るだけ写真加工の演習としたバナー制作をすると良いでしょう。</li> 
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13527" data-item-id="13527" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">参考バナーの分析ポイント</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>写真加工とアイテムの切り抜きの練習となる要素が高いバナーです。</li>
+            <li>モデル着用素材だけでなく、物撮りアイテムの切り抜きを使用することで、アイテムごとの見せ方を調整できます。</li>
+            <li>文字の種類、行の間隔はバナー作成で最もクオリティを左右するものです。最後にカーニングを確認してあげるといいですね！</li>
+            <li>テキストに合わせたあしらいをプラスすることでバナーのクオリティを上げましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13501" data-item-id="13501" data-item-type="ItemMarkdown"><h4 id="heading47">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13505" data-item-id="13505" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/505/medium/9888cca3-76e0-4407-a89e-19d0f627f843.png?1745474751"><img class="img-responsive item-image" alt=" (13505)" src="../../_assets/6754e7178d.webp" width="640" height="524"></a><h4 id="heading48"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13465" data-item-id="13465" data-item-type="ItemHeading"><h3 class="item-body" id="heading49">【3-6】ファッション・アパレル系バナー 「その商品のみのカラー展開やバリエーションの情報型」</h3></div>
+        
+        <div class="article-item item_markdown " id="item13481" data-item-id="13481" data-item-type="ItemMarkdown"><h4 id="heading50">使用素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13503" data-item-id="13503" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/503/medium/ce3cf93c-3965-4f85-b34a-51bffccda360.jpg?1745474723"><img class="img-responsive item-image" alt=" (13503)" src="../../_assets/61d67b37b3.webp" width="495" height="640"></a><h4 id="heading51"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13486" data-item-id="13486" data-item-type="ItemMarkdown"><h4 id="heading52">要件定義⑥</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13493" data-item-id="13493" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; font-family: sans-serif; font-size: 14px; border: 1px solid #ccc;">
+  <thead>
+    <tr style="background-color: #e9e9e7;">
+      <th style="border: 1px solid #ccc; padding: 8px;">タイトル</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物を通じて達成したい目的</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">カラーバリエーションやサイズバリエーション・サービスのバリエーションの見せ方を習得する</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから、まずはご自身で考え設定してみましょう。<br><br>例）<br>20代後半から30代前半のトレンドに敏感な女性</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット (詳細)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">商品・サービスを検討中で、複数企業を比較し自分に合うものを探している人</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピー・文言とその優先順位</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①選べる○○（商品展開を○○へ入れる）<br>②豊富な○○（商品展開を○○へ入れる）<br>③あなたは何を選ぶ？！<br>写真素材の商品バリエーションが解る内容<br><br>テキストとイラストやオブジェクトを使用し写真と共に解りやすく表示</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">マイクロコピーとその配置</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①〇色展開<br>②〇サイズ展開<br>③驚きのサービス〇点公開<br>バリエーションの詳細が解る内容があると更に良い<br><br>写真とテキストによってごちゃごちゃし過ぎないような配置を心がける</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物の縦横比</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①1080px × 1080px (ベースサイズ)<br>②1200px × 628px<br>③1080px × 1920px</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">掲載・配信箇所</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">広告バナーやSNSバナーに使用・自社サイトやオンラインショップ内の商品説明ページにも使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">色味</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">写真の素材やどのシーズンに展開するバナーなのかを考えて色味は決める。<br>例:秋のアイテムだと深みのあるグリーンやマスタード、茶、赤などを組み合わせるなど。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">与えたい印象</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">豊富なカラーバリエーションがあることを発信しつつ、細部のディテールも複数写真で見せる工夫。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用する素材の要件</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材以外でも企業のイメージを考え、画像を用意しバナーに使用頂いて構いません</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">その他意図して欲しいこと</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">商品やサービスのバリエーションが複数あるという事が分かると良い</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作メモの記載</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①制作にかかった時間<br>②制作のコンセプト・こだわり</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item13528" data-item-id="13528" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">制作実績を増やすこと</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+          <li>カテゴリーによって説明形式を変化させましょう。</li>
+          <ul>
+            <li>↳ 商品、項目のカラーバリエーションや60%のバリエーションを制作</li>
+            <li>↳サービス、サービスの関わりやすい説明を考え、バナーに落とし込む</li>
+          </ul>
+          <li>【3-1】では様々な素材を写真加工し制作を行いましたが、今回は商品やサービスのカラー展開やサイズ展開、バリエーションを紹介しクリックを誘導するバナーを制作しましょう。</li> 
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13529" data-item-id="13529" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">参考バナーの制作ポイント</span></div>
+    </div>
+    <div class="content-area">
+        <ul>
+          <li>カラーバリエーションを見たいので、選べるカラーを四角いカラーピッカーなどで見せましょう。</li>
+          <li>見やすいバナーになっているか、情報設計が解りやすくなっているかを最終確認しましょう。</li>
+          <li>現在の写真ではブラウンのみの展開ですが、5色展開のバナーを制作しました。</li>
+          <li>実際の作業では、様々なカラーがある場合はそのカラーを使用したうえ、それぞれのカラーバリエーションの画像を加工すると3つのバナーで複数カラーを紹介できるのでオススメです。</li>
+          <li>文字の種類、行の間隔はバナー作成で最もクオリティを左右するものです。最後にカーニングを確認してあげるといいですね！</li>
+          <li>提供素材で複数のアイテムが用意されて、商品の魅力が伝わるように工夫していきます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13504" data-item-id="13504" data-item-type="ItemMarkdown"><h4 id="heading53">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13507" data-item-id="13507" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/507/medium/5da42f61-3145-4842-b37f-d595136bd7cf.png?1745474898" title=""><img class="img-responsive item-image" alt=" (13507)" data-reference="" src="../../_assets/cf30c15099.webp" width="640" height="524"></a><h4 id="heading54"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13466" data-item-id="13466" data-item-type="ItemHeading"><h3 class="item-body" id="heading55">【3-7】ファッション・アパレル系バナー 「企業ロゴ・企業名からクリック誘導型」</h3></div>
+        
+        <div class="article-item item_markdown " id="item13482" data-item-id="13482" data-item-type="ItemMarkdown"><h4 id="heading56">使用素材</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item38438" data-item-id="38438" data-item-type="ItemRichText"><div class="item-body-hbr">なし（今回はロゴと企業名がメインなので、使用する素材はご自身で調達してみましょう！）</div></div>
+        
+        <div class="article-item item_markdown " id="item13487" data-item-id="13487" data-item-type="ItemMarkdown"><h4 id="heading57">要件定義⑦</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13494" data-item-id="13494" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; font-family: sans-serif; font-size: 14px; border: 1px solid #ccc;">
+  <thead>
+    <tr style="background-color: #e9e9e7;">
+      <th style="border: 1px solid #ccc; padding: 8px;">タイトル</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物を通じて達成したい目的</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">ロゴや企業名といったブランドイメージを活かし、それらをメインにしたバナーを制作できる</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから、まずはご自身で考え設定してみましょう。<br><br>例）<br>例：30代の企業に勤めている女性</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット (詳細)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">ロゴや企業名を見ただけでクリックをしたくなる人</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピー・文言とその優先順位</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピーは入れなくても構いませんがロゴ制作時に企業キャッチコピーを制作出来たならばそちらを使用<br><br>例）<br>①「Drive Your Dreams.」<br>（トヨタ自動車株式会社）<br>②「NO MUSIC, NO LIFE.」<br>（タワーレコード株式会社）<br>ブランドイメージに沿った表示にする</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">マイクロコピーとその配置</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">なし</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物の縦横比</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①1080px × 1080px (ベースサイズ)<br>②1200px × 628px<br>③1080px × 1920px</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">掲載・配信箇所</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">広告用バナーやSNSバナー・自社サイトのトップページに使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">色味</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">ブランドイメージを考え、そのイメージに沿った色味を使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">与えたい印象</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">ブランドイメージをそのままの印象を与える</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用する素材の要件</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材以外でもブランドのイメージを考え、画像を用意しバナーに使用していただいてもOKです</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">その他意図して欲しいこと</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">ブランドイメージを意識した制作</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作メモの記載</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①制作にかかった時間<br>②制作のコンセプト・こだわり</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item13530" data-item-id="13530" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9; border-left: 5px solid #ccc;">
+    <div>
+        <div style="margin-bottom: 15px; line-height: 1.6;">
+            💡 <strong style="font-size: 1.1em;">要件定義書を含めて考えること</strong>
+           
+        </div>
+        <ul style="padding-left: 25px; margin-top: 0; margin-bottom: 0; line-height: 1.7;"> 
+            <li style="margin-bottom: 10px;">
+                企業のブランドファンを対象にしたバナーとなります。
+               
+                <ul style="padding-left: 25px; margin-top: 8px; margin-bottom: 8px; list-style-type: circle;">
+                    <li style="margin-bottom: 5px;">
+                        ブランドファンとは？
+                        <ul style="padding-left: 25px; margin-top: 5px; margin-bottom: 0; list-style-type: square;"> 
+                            <li style="margin-bottom: 0;">既存のサービスや、商品が好きでそのブランドのバナーであれば、クリックするユーザーのこと</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li style="margin-bottom: 5px;">ロゴ制作時にターゲット層を決めて、そのターゲット層に向けたトーン＆マナーをロゴ・バナーに付けることが必要です。</li>
+            <li style="margin-bottom: 5px;">その素材からイメージする企業をしっかり考えましょう。</li>
+            <li style="margin-bottom: 0;">実務として、まずロゴを制作し、バナーの目立つ位置へロゴを入れてバナーを仕上げましょう。</li>
+        </ul>
+        
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13531" data-item-id="13531" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9; border-left: 5px solid #ccc;">
+    <div>
+        <div style="margin-bottom: 15px; line-height: 1.6;">
+            👤 <strong style="font-size: 1.1em;">参考バナーの制作ポイント</strong>
+            
+        </div>
+        <ul style="padding-left: 25px; margin-top: 0; margin-bottom: 0; line-height: 1.7;"> 
+            <li style="margin-bottom: 5px;">知名度が高いブランドはロゴだけで訴求が出来るという強みもあります。</li>
+            <li style="margin-bottom: 5px;">企業名やブランドでクリックをされることも多いのでロゴを目立たせるよう、最低限の飾り程度で掲載し、写真素材をメインで制作しましょう。</li>
+            <li style="margin-bottom: 0;">ロゴだけだとシンプルになりやすいので、書き振りの線の長さを調整し華やかに仕上げています。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13532" data-item-id="13532" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9; border-left: 5px solid #ccc;">
+    <div>
+        <div style="margin-bottom: 15px; line-height: 1.6;">
+            🎨 <strong style="font-size: 1.1em;">ロゴ制作</strong>
+            
+        </div>
+        <ul style="padding-left: 25px; margin-top: 0; margin-bottom: 0; line-height: 1.7;"> 
+            <li style="margin-bottom: 5px;">最初にターゲット層を決めてロゴを制作しましょう。</li>
+            <li style="margin-bottom: 5px;">今回は20代の企業に勤めている女性をターゲット層とし高級感を出した仕上がりで制作しました。</li>
+            <li style="margin-bottom: 0;">文字の種類、行の間隔はバナー作成で最もクオリティを左右するものです。最後にカーニングを確認してあげるといいですね！</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13510" data-item-id="13510" data-item-type="ItemMarkdown"><h4 id="heading58">参考ロゴ</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13511" data-item-id="13511" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/511/medium/053aeaeb-b524-4c53-8a74-11266ce03ae7.png?1745474986" title=""><img class="img-responsive item-image" alt=" (13511)" data-reference="" src="../../_assets/d1bda85758.webp" width="391" height="266"></a><h4 id="heading59"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13508" data-item-id="13508" data-item-type="ItemMarkdown"><h4 id="heading60">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13509" data-item-id="13509" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/509/medium/ec5f4589-abaf-4a10-ad80-e784b8898f4d.png?1745474956" title=""><img class="img-responsive item-image" alt=" (13509)" data-reference="" src="../../_assets/d172a10fb6.webp" width="640" height="524"></a><h4 id="heading61"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13467" data-item-id="13467" data-item-type="ItemHeading"><h3 class="item-body" id="heading62">【3-8】ファッション・アパレル系バナー 「機能面・使用感・体感・商品サービス掲載型」</h3></div>
+        
+        <div class="article-item item_markdown " id="item13512" data-item-id="13512" data-item-type="ItemMarkdown"><h4 id="heading63">使用素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13513" data-item-id="13513" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/513/medium/2e958454-0df1-485f-8f3a-a2324c7044cb.png?1745475017" title=""><img class="img-responsive item-image" alt=" (13513)" data-reference="" src="../../_assets/9d3e2296b6.webp" width="640" height="305"></a><h4 id="heading64"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13488" data-item-id="13488" data-item-type="ItemMarkdown"><h4 id="heading65">要件定義⑧</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13495" data-item-id="13495" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; font-family: sans-serif; font-size: 14px; border: 1px solid #ccc;">
+  <thead>
+    <tr style="background-color: #e9e9e7;">
+      <th style="border: 1px solid #ccc; padding: 8px;">タイトル</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物を通じて達成したい目的</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">素材の機能・使用感・体感・サービスなどのポイントを解りやすく掲載するバナー制作が出来る</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから、まずはご自身で考え設定してみましょう。<br><br>例）<br>20代後半から30代前半のトレンドに敏感な女性</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット (詳細)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">商材の購入やサービスの利用がほぼ確定しており、最終決定出来る情報が欲しい人</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピー・文言とその優先順位</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">素材の最も目立たせたい特徴をテキスト化し、その内容を解りやすくバナーへ配置<br><br>目立たせる特徴は解りやすく、大きく記載</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">マイクロコピーとその配置</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">素材のその他の特徴をテキスト化し配置<br><br>最も特徴より小さく配置するが解りやすくオブジェクトなどを使用し配置</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物の縦横比</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①1080px × 1080px (ベースサイズ)<br>②1200px × 628px<br>③1080px × 1920px</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">掲載・配信箇所</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">広告用バナーとして、商品の購買ページや商品サービスのページへリンクする際に使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">色味</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">視認性をよくする為に暗すぎない色味を使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">与えたい印象</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">テキストと写真を使用し、機能や特徴、訴求ポイントが分かりやすい印象</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用する素材の要件</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材を使用してください。分かりやすくするために写真を加工してもOKです</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">その他意図して欲しいこと</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">購買の最終決定が出来るように分かりやすく素材を説明</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作メモの記載</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①制作にかかった時間<br>②制作のコンセプト・こだわり</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item13533" data-item-id="13533" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9; border-left: 5px solid #ccc;">
+    <div>
+        <div style="margin-bottom: 15px; line-height: 1.6;">
+            💡 <strong style="font-size: 1.1em;">要件定義書を含めて考えること</strong>
+            
+        </div>
+        <ul style="padding-left: 25px; margin-top: 0; margin-bottom: 0; line-height: 1.7;"> 
+            <li style="margin-bottom: 5px;">写真の題材内容を確認し、構成案・使用する種類や価格や割引サービスなどを考えて書き出しましょう。</li>
+            <li style="margin-bottom: 0;">クリックする際に有益な情報を簡単に見せるため、出来るだけ解りやすく読み込み飽きさせずに表現しましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13534" data-item-id="13534" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9; border-left: 5px solid #ccc;">
+    <div>
+        <div style="margin-bottom: 15px; line-height: 1.6;">
+            👤 <strong style="font-size: 1.1em;">参考バナーの制作ポイント</strong>
+           
+        </div>
+        <ul style="padding-left: 25px; margin-top: 0; margin-bottom: 0; line-height: 1.7;"> 
+            <li style="margin-bottom: 5px;">最初に書き出した内容をもとに、商品の特徴をテキストでバナーに掲載しました。</li>
+            <li style="margin-bottom: 5px;">モデル写真に文字を重ねるので、視認性を重視して作成しましょう。</li>
+            <li style="margin-bottom: 5px;">文字の種類、行の間隔はバナー作成で最もクオリティを左右するものです。最後にカーニングを確認してあげるといいですね！</li>
+            <li style="margin-bottom: 0;">モデル写真だけを組み合わせることでバナーに具体性を出しています。</li>
+        </ul>
+    </div>
+</div>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item13514" data-item-id="13514" data-item-type="ItemMarkdown"><h4 id="heading66">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13516" data-item-id="13516" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/516/medium/0342474a-269f-4d7b-8197-5fbacb3851f6.png?1745475085" title=""><img class="img-responsive item-image" alt=" (13516)" data-reference="" src="../../_assets/348c36c608.webp" width="640" height="524"></a><h4 id="heading67"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13468" data-item-id="13468" data-item-type="ItemHeading"><h3 class="item-body" id="heading68">【3-9】ファッション・アパレル系バナー 「物語（将来像）でクリック誘導型」</h3></div>
+        
+        <div class="article-item item_markdown " id="item13484" data-item-id="13484" data-item-type="ItemMarkdown"><h4 id="heading69">使用素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13517" data-item-id="13517" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/517/medium/18bd0ecf-3004-4fb7-96d8-bf826d3b3a34.jpg?1745475112" title=""><img class="img-responsive item-image" alt=" (13517)" data-reference="" src="../../_assets/b431fa93f3.webp" width="512" height="640"></a><h4 id="heading70"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13489" data-item-id="13489" data-item-type="ItemMarkdown"><h4 id="heading71">要件定義⑨</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13496" data-item-id="13496" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; font-family: sans-serif; font-size: 14px; border: 1px solid #ccc;">
+  <thead>
+    <tr style="background-color: #e9e9e7;">
+      <th style="border: 1px solid #ccc; padding: 8px;">タイトル</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物を通じて達成したい目的</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">商品購入やサービス体験で得られる将来像を提案できるバナー制作が出来る</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから、まずはご自身で考え設定してみましょう。<br><br>例）<br>20代後半から30代前半のトレンドに敏感な女性</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット (詳細)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">商材の購入やサービスの利用を検討中で情報収集中の中の人</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピー・文言とその優先順位</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①〇〇になれる！<br>②〇〇も夢じゃない！<br>③〇〇効果<br>〇〇に商品購入やサービス体験から得られる将来像を入れて制作<br>※プレゼントキャンペーンバナーでも良い<br><br>解りやすく目立つフォントや配置<br>視認性の良い配置</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物の縦横比</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①1080px × 1080px (ベースサイズ)<br>②1200px × 628px<br>③1080px × 1920px</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">掲載・配信箇所</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">SNSバナーとして、広告バナーにも使用<br>プレゼントキャンペーンバナーなど</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">色味</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用素材やシーズンに合わせた色を使用しましょう。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">与えたい印象</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">そのアイテムを身につけることでどのような効果があるのかを分かりやすく記載する。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用する素材の要件</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材を使用しなくても構いません<br>イラストのみで表現されても構いません</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">その他意図して欲しいこと</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">購入やサービス体験で得られるポジティブな将来像を視認性良くアピール</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作メモの記載</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①制作にかかった時間<br>②制作のコンセプト・こだわり</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item13535" data-item-id="13535" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9; border-left: 5px solid #ccc;">
+    <div>
+        <div style="margin-bottom: 15px; line-height: 1.6;">
+            💡 <strong style="font-size: 1.1em;">要件定義書を含めて考えること</strong>
+            
+        </div>
+        <ul style="padding-left: 25px; margin-top: 0; margin-bottom: 0; line-height: 1.7;"> 
+            <li style="margin-bottom: 5px;">写真素材の役割をもとに、この商品・サービスを購入するとこうなるという将来像を考えましょう。</li>
+            <li style="margin-bottom: 5px;">商品によっては、プレゼントキャンペーンバナーを制作しても良いです。</li>
+            <li style="margin-bottom: 10px;"> 
+                備考として、どのような側面（訴求軸）にするかを考えましょう。
+               
+                <ul style="padding-left: 0; margin-top: 8px; margin-bottom: 0; list-style-type: none;"> 
+                     <li style="margin-bottom: 3px; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">↳</span> 問題に合わせて、写真素材を制作して用意してください。</li>
+                     <li style="margin-bottom: 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">↳</span> バナーの構成が同じになるので、しっかりと考えて制作しましょう。</li>
+                </ul>
+            </li>
+        </ul>
+         
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13536" data-item-id="13536" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9; border-left: 5px solid #ccc;">
+    <div>
+        <div style="margin-bottom: 15px; line-height: 1.6;">
+            👤 <strong style="font-size: 1.1em;">参考バナーの制作ポイント</strong>
+            
+        </div>
+        <ul style="padding-left: 25px; margin-top: 0; margin-bottom: 0; line-height: 1.7;"> 
+            <li style="margin-bottom: 5px;">訴求点を強調させましょう。キャッチコピーと画像を組み合わせて考えることが非常に重要です。</li>
+            <li style="margin-bottom: 5px;">今回は、ショートアウターの時期でもある、着痩せ効果を「スッキリ着痩せ見えが叶う」と使っていただくように制作しました。</li>
+            <li style="margin-bottom: 5px;">プレゼントキャンペーンバナーを制作する際には、暖かい感じや華やかなメタリック感のバナーを制作すると良いでしょう。</li>
+            <li style="margin-bottom: 5px;">背景に写真を配置し、ブラウンのマスクをかけることで、動きをつけつつ、文字を読ませやすくしています。</li>
+            <li style="margin-bottom: 5px;">端のデッドスペースをテキストをうまく配置し、デザインの一部として使用しています。</li>
+            <li style="margin-bottom: 5px;">写真に文字を重ねる場合はシャドウをうまく使用しましょう。</li>
+            <li style="margin-bottom: 0;">文字の種類、行の間隔はバナー作成で最もクオリティを左右するものです。最後にカーニングを確認してあげるといいですね！</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13518" data-item-id="13518" data-item-type="ItemMarkdown"><h4 id="heading72">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13519" data-item-id="13519" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/519/medium/6e9614f7-88c8-4735-b0ea-49d41aa335dd.png?1745475158" title=""><img class="img-responsive item-image" alt=" (13519)" data-reference="" src="../../_assets/688b638d1a.webp" width="640" height="524"></a><h4 id="heading73"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13460" data-item-id="13460" data-item-type="ItemHeading"><h3 class="item-body" id="heading74">【3-10】ファッション・アパレル系バナー 「画像のインパクトでクリック誘導型」</h3></div>
+        
+        <div class="article-item item_markdown " id="item13461" data-item-id="13461" data-item-type="ItemMarkdown"><h4 id="heading75">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13520" data-item-id="13520" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/520/medium/669eb07e-1510-475b-96ee-fd127207d0dd.jpg?1745475194"><img class="img-responsive item-image" alt=" (13520)" src="../../_assets/bbbc47016e.webp" width="427" height="640"></a><h4 id="heading76"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13490" data-item-id="13490" data-item-type="ItemMarkdown"><h4 id="heading77">要件定義⑩</h4>
+</div>
+        
+        <div class="article-item item_html " id="item13497" data-item-id="13497" data-item-type="ItemHtml"><div class="item-body"><table style="border-collapse: collapse; font-family: sans-serif; font-size: 14px; border: 1px solid #ccc;">
+  <thead>
+    <tr style="background-color: #e9e9e7;">
+      <th style="border: 1px solid #ccc; padding: 8px;">タイトル</th>
+      <th style="border: 1px solid #ccc; padding: 8px;">内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物を通じて達成したい目的</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">インパクトや心に残るメッセージを与えることが出来るバナー制作</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材のイメージから、まずはご自身で考え設定してみましょう。<br><br>例）<br>20代後半から30代前半のトレンドに敏感な女性</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">ターゲット (詳細)</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">商品の購入を考えていない人向けですが、気に入ったアイテムがあれば購入をしたいと思っている人</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">キャッチコピー・文言とその優先順位</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①まだ知らない！？<br>②〇〇で決まり！<br>画像にメインインパクトを持たせ、付随したキャッチコピーを入れる<br><br>画像にメインインパクトを持たせるため、画像についての説明的なテキストでも可</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">マイクロコピーとその配置</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">画像にメインインパクトを持たせ、付随したキャッチコピーの説明が足りない場合に制作<br><br>キャッチコピーで説明が出来ている場合は、不要</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作物の縦横比</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①1080px × 1080px (ベースサイズ)<br>②1200px × 628px<br>③1080px × 1920px</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">掲載・配信箇所</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">SNSバナーとして、広告バナーにも使用<br>自社サイトのバナーとしては使用されないこともある</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">色味</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">画像メインでインパクトを出せるような色味を使用</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">与えたい印象</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">クリックを誘導するためのインパクトを与える</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">使用する素材の要件</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">指定素材を使用しなくても構いません。</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">その他意図して欲しいこと</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">インパクトを与える画像ではあるが、クリックを誘導するという目的は忘れずに制作</td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid #ccc; padding: 8px;">制作メモの記載</td>
+      <td style="border: 1px solid #ccc; padding: 8px;">①制作にかかった時間<br>②制作のコンセプト・こだわり</td>
+    </tr>
+  </tbody>
+</table></div></div>
+        
+        <div class="article-item item_html " id="item13537" data-item-id="13537" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9; border-left: 5px solid #ccc;">
+    <div>
+        <div style="margin-bottom: 15px; line-height: 1.6;">
+            💡 <strong style="font-size: 1.1em;">要件定義書を含めて考えること</strong>
+           
+        </div>
+        <ul style="padding-left: 25px; margin-top: 0; margin-bottom: 0; line-height: 1.7;"> 
+            <li style="margin-bottom: 5px;">写真素材の題材をもとにしながら、その商品の詳細ページにリンクさせる「おもしろい・使い易い・楽しい」などを考えましょう。</li>
+            <li style="margin-bottom: 10px;"> 
+                インパクトのあるバナーにするため②テキストの配置を工夫しましょう。
+                 
+                <ul style="padding-left: 25px; margin-top: 8px; margin-bottom: 0; list-style-type: circle;"> 
+                    <li style="margin-bottom: 0;">制作時間よりも考える過程やアイデアを出す方が時間が長くなる時もあるので、アイデアは制作日を指定し見ながら制作をするように心がけましょう！</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13538" data-item-id="13538" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9; border-left: 5px solid #ccc;">
+    <div>
+        <div style="margin-bottom: 15px; line-height: 1.6;">
+            👤 <strong style="font-size: 1.1em;">参考バナーの制作ポイント</strong>
+           
+        </div>
+        <ul style="padding-left: 25px; margin-top: 0; margin-bottom: 0; line-height: 1.7;">
+            <li style="margin-bottom: 10px;"> 
+                トレンチコートを打ち出す時期が秋初めだということもあり、爽やかな配色にしています。
+                
+                <ul style="padding-left: 0; margin-top: 8px; margin-bottom: 0; list-style-type: none;"> 
+                     <li style="margin-bottom: 0; padding-left: 20px; position: relative;"><span style="position: absolute; left: 0;">↳</span> テキストの色とのコントラストを高く保ちデザインになっています。</li>
+                </ul>
+            </li>
+            <li style="margin-bottom: 5px;">背景にテキストをうまく配置して、テキスト自体もデザインの一部にしています。</li>
+            <li style="margin-bottom: 0;">文字の種類、行の間隔はバナー作成で最もクオリティを左右するものです。最後にカーニングを確認してあげるといいですね！</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item13521" data-item-id="13521" data-item-type="ItemMarkdown"><h4 id="heading78">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13522" data-item-id="13522" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/522/medium/8c613c8d-514c-4b11-9269-4c1847dbc1c0.png?1745475224" title=""><img class="img-responsive item-image" alt=" (13522)" data-reference="" src="../../_assets/61ef6fda42.webp" width="640" height="524"></a><h4 id="heading79"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13523" data-item-id="13523" data-item-type="ItemMarkdown"><hr>
+</div>
+        
+        <div class="article-item item_markdown " id="item13539" data-item-id="13539" data-item-type="ItemMarkdown"><p><strong>■【見本例2】教育・学習・セミナー系バナー</strong></p>
+</div>
+        
+        <div class="article-item item_markdown " id="item13540" data-item-id="13540" data-item-type="ItemMarkdown"><ul>
+  <li>■ 見本の制作前にする事・・・商材の特徴を書き出す
+    <ul>
+      <li>ここでは、同じような内容が重複していても構いません。</li>
+      <li>バナー制作時に有効活用出来るように、なるべく沢山書き出していきましょう。</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item13541" data-item-id="13541" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; background-color: #f9f9f9; border-left: 5px solid #ccc;">
+    <div>
+        <div style="margin-bottom: 15px; line-height: 1.6;">
+            👤 <strong style="font-size: 1.1em;">受講対象</strong>
+            
+        </div>
+        <ul style="padding-left: 25px; margin-top: 0; margin-bottom: 0; line-height: 1.7;"> 
+            
+            <li style="margin-bottom: 3px;">小学生</li>
+            <li style="margin-bottom: 3px;">塾</li>
+            <li style="margin-bottom: 3px;">生徒募集</li>
+            <li style="margin-bottom: 3px;">体験教材</li>
+            <li style="margin-bottom: 3px;">夏期講習キャンペーン 冬期講習キャンペーン</li>
+            <li style="margin-bottom: 3px;">オンライン指導も出来る</li>
+            <li style="margin-bottom: 3px;">兄弟での指導も可能</li>
+            <li style="margin-bottom: 3px;">学年に合わせた対応</li>
+            <li style="margin-bottom: 3px;">丁寧で安心</li>
+            <li style="margin-bottom: 3px;">学習も運動もどちらも対応</li>
+            <li style="margin-bottom: 3px;">学習カリキュラムを選べる</li>
+            <li style="margin-bottom: 3px;">解らないところが解るようになる</li>
+            <li style="margin-bottom: 3px;">自宅でも指導できる</li>
+            <li style="margin-bottom: 3px;">徹底指導</li>
+            <li style="margin-bottom: 3px;">学習の進み度合いに応じた対応</li>
+            <li style="margin-bottom: 3px;">カリキュラムのカスタマイズ可能</li>
+            <li style="margin-bottom: 0;">・・・</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item13542" data-item-id="13542" data-item-type="ItemHtml"><div class="item-body"><div style="border: 1px solid #e6dbb0; padding: 15px; margin-bottom: 15px; background-color: #fffbe6; border-left: 5px solid #ffcc00;"> 
+   
+    <div>
+        <p style="margin-top: 0; margin-bottom: 10px; line-height: 1.6;">
+             ⚠️ このカテゴリーでは、これまでの10個の要件定義タイプを参考に、ご自身で要件を解釈して制作を進めてください。
+            
+        </p>
+        <p style="margin-top: 0; margin-bottom: 0; line-height: 1.6;">
+             ご自身で、制作実績を積むことで考えることやポイントは前段の見本バナーを是非見てから考えてみましょう！
+        </p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item13543" data-item-id="13543" data-item-type="ItemHeading"><h2 class="item-body" id="heading80">【3-1】教育・学習・セミナー系 「指定素材のイメージを優先型」</h2></div>
+        
+        <div class="article-item item_markdown " id="item13548" data-item-id="13548" data-item-type="ItemMarkdown"><h4 id="heading81">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13545" data-item-id="13545" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/545/medium/a8def9d6-ceb8-4712-baf4-6d61ab8d5912.jpg?1745478981" title=""><img class="img-responsive item-image" alt=" (13545)" data-reference="" src="../../_assets/01c9cda907.webp" width="640" height="427"></a><h4 id="heading82"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13549" data-item-id="13549" data-item-type="ItemMarkdown"><h4 id="heading83">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13547" data-item-id="13547" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/547/medium/d293b250-d38a-445e-8ad1-3026fded2f72.png?1745479015"><img class="img-responsive item-image" alt=" (13547)" src="../../_assets/fd2635e063.webp" width="640" height="524"></a><h4 id="heading84"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13550" data-item-id="13550" data-item-type="ItemHeading"><h2 class="item-body" id="heading85">【3-2】教育・学習・セミナー系バナー 「金額を安く打ち出す　価格お得型」</h2></div>
+        
+        <div class="article-item item_markdown " id="item13551" data-item-id="13551" data-item-type="ItemMarkdown"><h4 id="heading86">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13553" data-item-id="13553" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/553/medium/6401f204-82ca-4f2a-bf57-38ea7415add5.jpg?1745479369" title=""><img class="img-responsive item-image" alt=" (13553)" data-reference="" src="../../_assets/b3866c5f07.webp" width="640" height="427"></a><h4 id="heading87"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13552" data-item-id="13552" data-item-type="ItemMarkdown"><h4 id="heading88">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13554" data-item-id="13554" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/554/medium/774edb88-8c52-4759-9698-f14007947145.png?1745479388"><img class="img-responsive item-image" alt=" (13554)" src="../../_assets/8643697f64.webp" width="640" height="524"></a><h4 id="heading89"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13555" data-item-id="13555" data-item-type="ItemHeading"><h2 class="item-body" id="heading90">【3-3】教育・学習・セミナー系バナー 「金額を高く打ち出す　高品質高価格型」</h2></div>
+        
+        <div class="article-item item_markdown " id="item13556" data-item-id="13556" data-item-type="ItemMarkdown"><h4 id="heading91">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13557" data-item-id="13557" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/557/medium/efe5f6fe-8c34-4f47-b66b-be6857e2a14d.jpg?1745480486" title=""><img class="img-responsive item-image" alt=" (13557)" data-reference="" src="../../_assets/c88505db26.webp" width="640" height="318"></a><h4 id="heading92"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13558" data-item-id="13558" data-item-type="ItemMarkdown"><h4 id="heading93">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13559" data-item-id="13559" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/559/medium/037c1ba3-f6ec-41a5-8a71-38f3633320ee.png?1745480514" title=""><img class="img-responsive item-image" alt=" (13559)" data-reference="" src="../../_assets/96c4affcf6.webp" width="640" height="524"></a><h4 id="heading94"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13560" data-item-id="13560" data-item-type="ItemHeading"><h2 class="item-body" id="heading95">【3-4】教育・学習・セミナー系バナー 「キャッチコピーでクリック誘導型」</h2></div>
+        
+        <div class="article-item item_markdown " id="item13562" data-item-id="13562" data-item-type="ItemMarkdown"><h4 id="heading96">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13561" data-item-id="13561" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/561/medium/9d476b92-b659-4577-9546-e97042dedc14.jpg?1745480543"><img class="img-responsive item-image" alt=" (13561)" src="../../_assets/c88505db26.webp" width="640" height="318"></a><h4 id="heading97"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13563" data-item-id="13563" data-item-type="ItemMarkdown"><h4 id="heading98">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13564" data-item-id="13564" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/564/medium/467bc0ab-0dff-42d4-accf-3de01f609574.png?1745480587" title=""><img class="img-responsive item-image" alt=" (13564)" data-reference="" src="../../_assets/c57b39afc8.webp" width="640" height="524"></a><h4 id="heading99"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13565" data-item-id="13565" data-item-type="ItemHeading"><h2 class="item-body" id="heading100">【3-5】教育・学習・セミナー系バナー「企業内のサービス・商品の中の豊富な種類から選ぶことが出来るお得型」</h2></div>
+        
+        <div class="article-item item_markdown " id="item13567" data-item-id="13567" data-item-type="ItemMarkdown"><h4 id="heading101">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13566" data-item-id="13566" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/566/medium/842676fb-19e6-4f42-ba70-e96d74887694.jpg?1745480614"><img class="img-responsive item-image" alt=" (13566)" src="../../_assets/b3866c5f07.webp" width="640" height="427"></a><h4 id="heading102"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13568" data-item-id="13568" data-item-type="ItemMarkdown"><h4 id="heading103">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13569" data-item-id="13569" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/569/medium/38a8326a-1515-40d6-9cfb-ae624d350f60.png?1745480654" title=""><img class="img-responsive item-image" alt=" (13569)" data-reference="" src="../../_assets/1a6c1bcac1.webp" width="640" height="524"></a><h4 id="heading104"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13570" data-item-id="13570" data-item-type="ItemHeading"><h2 class="item-body" id="heading105">【3-6】教育・学習・セミナー系バナー 「その商品のみのカラー展開やバリエーションの情報型」</h2></div>
+        
+        <div class="article-item item_markdown " id="item13571" data-item-id="13571" data-item-type="ItemMarkdown"><h4 id="heading106">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13572" data-item-id="13572" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/572/medium/dfb0e5e3-f714-40fb-b839-88471df1cdf5.jpg?1745480688" title=""><img class="img-responsive item-image" alt=" (13572)" data-reference="" src="../../_assets/086e16bf3b.webp" width="640" height="288"></a><h4 id="heading107"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13573" data-item-id="13573" data-item-type="ItemMarkdown"><h4 id="heading108">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13574" data-item-id="13574" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/574/medium/dc5d5955-c3d9-4e79-bf69-c2904b08cab5.png?1745480714" title=""><img class="img-responsive item-image" alt=" (13574)" data-reference="" src="../../_assets/868a7a9202.webp" width="640" height="524"></a><h4 id="heading109"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13575" data-item-id="13575" data-item-type="ItemHeading"><h2 class="item-body" id="heading110">【3-7】教育・学習・セミナー系バナー 「企業ロゴ・企業名からクリック誘導型」</h2></div>
+        
+        <div class="article-item item_markdown " id="item13576" data-item-id="13576" data-item-type="ItemMarkdown"><h4 id="heading111">指定ロゴ</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13579" data-item-id="13579" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/579/medium/da2dd450-1c69-457b-b1bd-8c2d280b33f9.jpg?1745480780" title=""><img class="img-responsive item-image" alt=" (13579)" data-reference="" src="../../_assets/1013ddb146.webp" width="500" height="500"></a><h4 id="heading112"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13577" data-item-id="13577" data-item-type="ItemMarkdown"><h4 id="heading113">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13580" data-item-id="13580" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/580/medium/c4b724e8-3172-440a-a15a-f17f435b1557.png?1745480805" title=""><img class="img-responsive item-image" alt=" (13580)" data-reference="" src="../../_assets/2ddf957594.webp" width="640" height="524"></a><h4 id="heading114"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13581" data-item-id="13581" data-item-type="ItemHeading"><h2 class="item-body" id="heading115">【3-8】教育・学習・セミナー系バナー 「機能面・使用感・体感・商品サービス掲載型」</h2></div>
+        
+        <div class="article-item item_markdown " id="item13583" data-item-id="13583" data-item-type="ItemMarkdown"><h4 id="heading116">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13584" data-item-id="13584" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/584/medium/5ff999ad-28b6-43f8-8c9c-6dc2668d0c2e.jpg?1745480843" title=""><img class="img-responsive item-image" alt=" (13584)" data-reference="" src="../../_assets/b3866c5f07.webp" width="640" height="427"></a><h4 id="heading117"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13585" data-item-id="13585" data-item-type="ItemMarkdown"><h4 id="heading118">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13586" data-item-id="13586" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/586/medium/79d05879-99a9-4b5a-86d3-2f984f0c8be9.png?1745480868" title=""><img class="img-responsive item-image" alt=" (13586)" data-reference="" src="../../_assets/cd3ed5168f.webp" width="640" height="524"></a><h4 id="heading119"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13587" data-item-id="13587" data-item-type="ItemHeading"><h2 class="item-body" id="heading120">【3-9】教育・学習・セミナー系バナー 「物語（将来像）でクリック誘導型」</h2></div>
+        
+        <div class="article-item item_markdown " id="item13588" data-item-id="13588" data-item-type="ItemMarkdown"><h4 id="heading121">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13589" data-item-id="13589" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/589/medium/158a7cda-cf7c-4305-8081-15de6854cb7d.jpg?1745480909" title=""><img class="img-responsive item-image" alt=" (13589)" data-reference="" src="../../_assets/b4ff97c6a1.webp" width="640" height="360"></a><h4 id="heading122"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13590" data-item-id="13590" data-item-type="ItemMarkdown"><h4 id="heading123">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13591" data-item-id="13591" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/591/medium/cbc9df86-6fea-47e4-9e21-2b03bb4e9372.png?1745480944" title=""><img class="img-responsive item-image" alt=" (13591)" data-reference="" src="../../_assets/72a0c14b19.webp" width="640" height="524"></a><h4 id="heading124"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item13592" data-item-id="13592" data-item-type="ItemHeading"><h2 class="item-body" id="heading125">【3-10】教育・学習・セミナー系バナー 「画像のインパクトでクリック誘導型」</h2></div>
+        
+        <div class="article-item item_markdown " id="item13593" data-item-id="13593" data-item-type="ItemMarkdown"><h4 id="heading126">指定素材</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13595" data-item-id="13595" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/595/medium/074b7084-99b2-42fd-8f5f-c4215fa30487.jpg?1745481002" title=""><img class="img-responsive item-image" alt=" (13595)" data-reference="" src="../../_assets/086e16bf3b.webp" width="640" height="288"></a><h4 id="heading127"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13594" data-item-id="13594" data-item-type="ItemMarkdown"><h4 id="heading128">参考バナー</h4>
+</div>
+        
+        <div class="article-item item_image " id="item13596" data-item-id="13596" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/013/596/medium/07409341-84d2-4a06-a44a-05048960aa62.png?1745481023" title=""><img class="img-responsive item-image" alt=" (13596)" data-reference="" src="../../_assets/fdc297ee8a.webp" width="640" height="524"></a><h4 id="heading129"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item13597" data-item-id="13597" data-item-type="ItemMarkdown"><hr>
+<p>お疲れさまでした！</p>
+
+<p>見本が確認出来ましたら、<strong>『バナー制作100本道場【実践編】</strong>』で実際に制作していきましょう！</p>
+</div>
+        
+        <div class="article-item item_html " id="item25638" data-item-id="25638" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-end;">
+  <a href="https://learn.webcoach.jp/web-design/Y4873" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0. はじめに</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間: 180分</a></li></ul></li><li><a href="#heading2" class="tocLink">1. バナー制作の心得</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間: 30分</a></li></ul><ul><li><a href="#heading4" class="tocLink">【1-1】1つのテーマを10通りの角度から考えよう</a></li><li><a href="#heading5" class="tocLink">【1-2】オリジナル制作物の重要性</a></li><li><a href="#heading6" class="tocLink">【1-3】作る過程で意識するポイント</a></li></ul></li><li><a href="#heading7" class="tocLink">2. バナー制作の課題内容</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間: 60分</a></li></ul><ul><li><a href="#heading9" class="tocLink">【2-1】1つのカテゴリーに対してバナーを10個作り切ろう！</a><ul><li><a href="#heading10" class="tocLink">進め方</a></li><li><a href="#heading11" class="tocLink">教材内で作成できる10個のカテゴリー</a></li></ul></li><li><a href="#heading12" class="tocLink">【2-2】バナーサイズ</a></li><li><a href="#heading13" class="tocLink">【2-3】要件定義を踏まえてバナーを作成しよう</a><ul><li><a href="#heading14" class="tocLink">要件定義</a></li></ul></li></ul></li><li><a href="#heading15" class="tocLink">3. 見本を確認しよう！</a><ul><li><a href="#heading16" class="tocLink">目安の学習時間: 90分</a></li><li><a href="#heading17" class="tocLink">進め方</a></li><li><a href="#heading18" class="tocLink">商材の特徴を書き出す</a></li></ul><ul><li><a href="#heading19" class="tocLink">【3-1】ファッション・アパレル系バナー「指定素材のイメージを優先型」</a><ul><li><a href="#heading20" class="tocLink">指定素材</a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink">要件定義書①</a></li><li><a href="#heading23" class="tocLink">参考バナー</a></li><li><a href="#heading24" class="tocLink"></a></li></ul></li><li><a href="#heading25" class="tocLink">【3-2】ファッション・アパレル系バナー 「金額を安く打ち出す　価格お得型」</a><ul><li><a href="#heading26" class="tocLink">使用素材</a></li><li><a href="#heading27" class="tocLink"></a></li><li><a href="#heading28" class="tocLink">要件定義書②</a></li><li><a href="#heading29" class="tocLink">参考バナー</a></li><li><a href="#heading30" class="tocLink"></a></li></ul></li><li><a href="#heading31" class="tocLink">【3-3】ファッション・アパレル系バナー 「ジャンルで絞り込む カテゴリー特化型」</a><ul><li><a href="#heading32" class="tocLink">使用素材</a></li><li><a href="#heading33" class="tocLink"></a></li><li><a href="#heading34" class="tocLink">要件定義書③</a></li><li><a href="#heading35" class="tocLink">参考バナー</a></li><li><a href="#heading36" class="tocLink"></a></li></ul></li><li><a href="#heading37" class="tocLink">【3-4】ファッション・アパレル系バナー 「キャッチコピーでクリック誘導型」</a><ul><li><a href="#heading38" class="tocLink">使用素材</a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink">要件定義④</a></li><li><a href="#heading41" class="tocLink">参考バナー</a></li><li><a href="#heading42" class="tocLink"></a></li></ul></li><li><a href="#heading43" class="tocLink">【3-5】ファッション・アパレル系バナー 「企業内のサービス・商品の中の豊富な種類から選ぶことが出来るお得型」</a><ul><li><a href="#heading44" class="tocLink">使用素材</a></li><li><a href="#heading45" class="tocLink"></a></li><li><a href="#heading46" class="tocLink">要件定義⑤</a></li><li><a href="#heading47" class="tocLink">参考バナー</a></li><li><a href="#heading48" class="tocLink"></a></li></ul></li><li><a href="#heading49" class="tocLink">【3-6】ファッション・アパレル系バナー 「その商品のみのカラー展開やバリエーションの情報型」</a><ul><li><a href="#heading50" class="tocLink">使用素材</a></li><li><a href="#heading51" class="tocLink"></a></li><li><a href="#heading52" class="tocLink">要件定義⑥</a></li><li><a href="#heading53" class="tocLink">参考バナー</a></li><li><a href="#heading54" class="tocLink"></a></li></ul></li><li><a href="#heading55" class="tocLink">【3-7】ファッション・アパレル系バナー 「企業ロゴ・企業名からクリック誘導型」</a><ul><li><a href="#heading56" class="tocLink">使用素材</a></li><li><a href="#heading57" class="tocLink">要件定義⑦</a></li><li><a href="#heading58" class="tocLink">参考ロゴ</a></li><li><a href="#heading59" class="tocLink"></a></li><li><a href="#heading60" class="tocLink">参考バナー</a></li><li><a href="#heading61" class="tocLink"></a></li></ul></li><li><a href="#heading62" class="tocLink">【3-8】ファッション・アパレル系バナー 「機能面・使用感・体感・商品サービス掲載型」</a><ul><li><a href="#heading63" class="tocLink">使用素材</a></li><li><a href="#heading64" class="tocLink"></a></li><li><a href="#heading65" class="tocLink">要件定義⑧</a></li><li><a href="#heading66" class="tocLink">参考バナー</a></li><li><a href="#heading67" class="tocLink"></a></li></ul></li><li><a href="#heading68" class="tocLink">【3-9】ファッション・アパレル系バナー 「物語（将来像）でクリック誘導型」</a><ul><li><a href="#heading69" class="tocLink">使用素材</a></li><li><a href="#heading70" class="tocLink"></a></li><li><a href="#heading71" class="tocLink">要件定義⑨</a></li><li><a href="#heading72" class="tocLink">参考バナー</a></li><li><a href="#heading73" class="tocLink"></a></li></ul></li><li><a href="#heading74" class="tocLink">【3-10】ファッション・アパレル系バナー 「画像のインパクトでクリック誘導型」</a><ul><li><a href="#heading75" class="tocLink">指定素材</a></li><li><a href="#heading76" class="tocLink"></a></li><li><a href="#heading77" class="tocLink">要件定義⑩</a></li><li><a href="#heading78" class="tocLink">参考バナー</a></li><li><a href="#heading79" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading80" class="tocLink">【3-1】教育・学習・セミナー系 「指定素材のイメージを優先型」</a><ul><li><a href="#heading81" class="tocLink">指定素材</a></li><li><a href="#heading82" class="tocLink"></a></li><li><a href="#heading83" class="tocLink">参考バナー</a></li><li><a href="#heading84" class="tocLink"></a></li></ul></li><li><a href="#heading85" class="tocLink">【3-2】教育・学習・セミナー系バナー 「金額を安く打ち出す　価格お得型」</a><ul><li><a href="#heading86" class="tocLink">指定素材</a></li><li><a href="#heading87" class="tocLink"></a></li><li><a href="#heading88" class="tocLink">参考バナー</a></li><li><a href="#heading89" class="tocLink"></a></li></ul></li><li><a href="#heading90" class="tocLink">【3-3】教育・学習・セミナー系バナー 「金額を高く打ち出す　高品質高価格型」</a><ul><li><a href="#heading91" class="tocLink">指定素材</a></li><li><a href="#heading92" class="tocLink"></a></li><li><a href="#heading93" class="tocLink">参考バナー</a></li><li><a href="#heading94" class="tocLink"></a></li></ul></li><li><a href="#heading95" class="tocLink">【3-4】教育・学習・セミナー系バナー 「キャッチコピーでクリック誘導型」</a><ul><li><a href="#heading96" class="tocLink">指定素材</a></li><li><a href="#heading97" class="tocLink"></a></li><li><a href="#heading98" class="tocLink">参考バナー</a></li><li><a href="#heading99" class="tocLink"></a></li></ul></li><li><a href="#heading100" class="tocLink">【3-5】教育・学習・セミナー系バナー「企業内のサービス・商品の中の豊富な種類から選ぶことが出来るお得型」</a><ul><li><a href="#heading101" class="tocLink">指定素材</a></li><li><a href="#heading102" class="tocLink"></a></li><li><a href="#heading103" class="tocLink">参考バナー</a></li><li><a href="#heading104" class="tocLink"></a></li></ul></li><li><a href="#heading105" class="tocLink">【3-6】教育・学習・セミナー系バナー 「その商品のみのカラー展開やバリエーションの情報型」</a><ul><li><a href="#heading106" class="tocLink">指定素材</a></li><li><a href="#heading107" class="tocLink"></a></li><li><a href="#heading108" class="tocLink">参考バナー</a></li><li><a href="#heading109" class="tocLink"></a></li></ul></li><li><a href="#heading110" class="tocLink">【3-7】教育・学習・セミナー系バナー 「企業ロゴ・企業名からクリック誘導型」</a><ul><li><a href="#heading111" class="tocLink">指定ロゴ</a></li><li><a href="#heading112" class="tocLink"></a></li><li><a href="#heading113" class="tocLink">参考バナー</a></li><li><a href="#heading114" class="tocLink"></a></li></ul></li><li><a href="#heading115" class="tocLink">【3-8】教育・学習・セミナー系バナー 「機能面・使用感・体感・商品サービス掲載型」</a><ul><li><a href="#heading116" class="tocLink">指定素材</a></li><li><a href="#heading117" class="tocLink"></a></li><li><a href="#heading118" class="tocLink">参考バナー</a></li><li><a href="#heading119" class="tocLink"></a></li></ul></li><li><a href="#heading120" class="tocLink">【3-9】教育・学習・セミナー系バナー 「物語（将来像）でクリック誘導型」</a><ul><li><a href="#heading121" class="tocLink">指定素材</a></li><li><a href="#heading122" class="tocLink"></a></li><li><a href="#heading123" class="tocLink">参考バナー</a></li><li><a href="#heading124" class="tocLink"></a></li></ul></li><li><a href="#heading125" class="tocLink">【3-10】教育・学習・セミナー系バナー 「画像のインパクトでクリック誘導型」</a><ul><li><a href="#heading126" class="tocLink">指定素材</a></li><li><a href="#heading127" class="tocLink"></a></li><li><a href="#heading128" class="tocLink">参考バナー</a></li><li><a href="#heading129" class="tocLink"></a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/Y4873" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

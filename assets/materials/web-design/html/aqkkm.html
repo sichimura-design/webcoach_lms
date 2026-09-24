@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/uiux/chap1/aqKkM -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1-5 AIの位置づけと倫理 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/uiux/chap1/aqKkM">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="1-5 AIの位置づけと倫理 - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="1-5 AIの位置づけと倫理">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/uiux/chap1/aqKkM">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="JGSpVg_2BYSXzBXtzH0pLAjDu0ghPzY37j6hdUqy4E6dDnUju-MunGTxG_Ffuhh340GG1nsPbg0Vu4TC7RLrew"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item51074" data-item-id="51074" data-item-type="ItemHtml"><div class="item-body"><meta charset="UTF-8">
+<!--
+  AI×UX/UIデザイナー育成講座（Reスキル認定申請予定・レベル3）
+  UX/UIデザイン教材 第1章 UX/UIデザインの基礎 lesson-05（1-5）「AIの位置づけと倫理」※申請書類上は第Ⅲ部 Ⅲ-1
+  題材: 生成AIのデザイン業務への影響／本講座でのAIの使い方（Gem活用と最終判断は人）／
+        AI事業者ガイドラインの要点／生成AIと著作権・商用利用の注意／AIリテラシーと倫理
+  型: 知識型（学習時間 約60分）／DSS-P: テクノロジートレンド（生成AI）
+  事実ソース: 90_リサーチ・ファクトベース/14_ファクトベース_AI事業者GL_著作権_2026-07.md
+             （この範囲外の事実・数値・法解釈は書かない。統計値の断定を避ける）
+  体裁: chapter-05/lesson-01.html（F5テンプレ）＋chapter-01/lesson-05.html のCSS・ClipKit対策目次を踏襲
+  図版: すべてプレースホルダー（data-asset-id ig-3105-01〜05）。画像生成は後日タスク
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+a { color: #E85D4A; }
+
+/* ClipKit対策: アンカージャンプ先が固定ヘッダーに隠れないようオフセット */
+section[id] { scroll-margin-top: 96px; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — ClipKit対策版（高詳細度＋!important） */
+.lesson-wrapper nav.toc { background: #fff !important; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.lesson-wrapper nav.toc .toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lesson-wrapper nav.toc .toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.lesson-wrapper nav.toc .toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.lesson-wrapper nav.toc ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 3px; }
+.lesson-wrapper nav.toc ul li { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.lesson-wrapper nav.toc ul li::before { content: none !important; }
+.lesson-wrapper nav.toc ul li::marker { content: '' !important; }
+.lesson-wrapper nav.toc ul li a { display: flex !important; align-items: center; gap: 12px; padding: 8px 14px !important; background: #FAF9F8; border-radius: 8px; text-decoration: none !important; border-bottom: none !important; box-shadow: none; color: #2D2D2D !important; transition: background 0.2s; }
+.lesson-wrapper nav.toc ul li a:hover { background: #F5EFEC; text-decoration: none !important; color: #2D2D2D !important; }
+.lesson-wrapper nav.toc ul li a:visited { color: #2D2D2D !important; }
+.lesson-wrapper nav.toc .toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.lesson-wrapper nav.toc .toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.lesson-wrapper nav.toc .toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* 注意ボックス */
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+
+/* 図版プレースホルダー（画像生成は後日） */
+.fig-ph { border: 2px dashed #C99; padding: 16px; border-radius: 8px; margin: 24px 0; color: #946; font-size: 14px; line-height: 1.8; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* 理解度チェック */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== 図解キット（fig-*）v2 分かりやすさ最適化 ===== */
+.fig { margin: 28px 0; }
+.fig__frame { background:#FBFAF8; border:1px solid #E4E1DB; border-radius:14px; padding:22px 20px; }
+.fig__cap { font-size:13px; color:#6E6A66; text-align:center; margin-top:10px; line-height:1.7; }
+.fig__sample { color:#B8B0A8 !important; font-style:italic; }
+.fig-row { display:flex; gap:16px; flex-wrap:wrap; }
+.fig-row > * { flex:1 1 0; min-width:150px; }
+.fig-card { background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:18px; }
+.fig-card__n { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:#E85D4A; color:#fff; font-size:13px; font-weight:800; margin-bottom:10px; }
+.fig-card__t { font-size:15px; font-weight:700; color:#2D2D2D; margin-bottom:6px; line-height:1.5; }
+.fig-card__d { font-size:13px; color:#555; line-height:1.75; }
+.fig-card__note { margin-top:10px; padding-top:10px; border-top:1px dashed #E4E1DB; font-size:12.5px; color:#C2402F; font-weight:700; }
+.fig-card--accent { border-color:#E85D4A; background:#FDEEE9; }
+.fig-card--fill { background:#E85D4A; border-color:#E85D4A; }
+.fig-card--fill .fig-card__t, .fig-card--fill .fig-card__d { color:#fff; }
+.fig-card--fill .fig-card__n { background:#fff; color:#E85D4A; }
+.fig-card--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-card--mute .fig-card__n { background:#A8A29B; }
+.fig-card--mute .fig-card__t { color:#6E6A66; }
+.fig-flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; }
+.fig-node { flex:1 1 0; min-width:104px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:13px 11px; text-align:center; }
+.fig-node__n { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; margin-bottom:8px; }
+.fig-node__t { font-size:13px; font-weight:700; color:#2D2D2D; line-height:1.45; }
+.fig-node__d { font-size:11.5px; color:#6E6A66; line-height:1.6; margin-top:4px; }
+.fig-node--current { border-color:#E85D4A; background:#FDEEE9; }
+.fig-node--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-node--mute .fig-node__n { background:#A8A29B; }
+.fig-node--mute .fig-node__t { color:#6E6A66; }
+.fig-sep { display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:18px; font-weight:800; flex:0 0 auto; }
+.fig-loop { margin-top:12px; display:flex; align-items:center; gap:10px; color:#C2402F; font-size:12.5px; font-weight:700; }
+.fig-loop__line { flex:1; height:0; border-top:2px dashed #C9C4BD; }
+.fig-two { display:flex; align-items:stretch; gap:12px; flex-wrap:wrap; }
+.fig-two__col { flex:1 1 0; min-width:180px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:16px 18px; }
+.fig-two__h { font-size:14px; font-weight:800; color:#2D2D2D; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.fig-two__col ul { margin:0; padding-left:1.1em; }
+.fig-two__col li { font-size:13px; color:#555; line-height:1.8; }
+.fig-two__mid { flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:22px; font-weight:800; }
+.fig-two__col--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-two__col--mute .fig-two__h, .fig-two__col--mute li { color:#8A8279; }
+.fig-two__col--accent { background:#FDEEE9; border-color:#E85D4A; }
+.fig-mark { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; font-size:12px; font-weight:800; flex:0 0 auto; }
+.fig-mark--ok { background:#E85D4A; color:#fff; }
+.fig-mark--ng { background:#C9C4BD; color:#fff; }
+.fig-tag { display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.04em; padding:2px 8px; border-radius:6px; }
+.fig-tag--mute { background:#E4E1DB; color:#8A8279; }
+.fig-tag--accent { background:#E85D4A; color:#fff; }
+.fig-nest { display:flex; justify-content:center; }
+.fig-nest__outer { position:relative; background:#FDEEE9; border:2px solid #F0A891; border-radius:20px; padding:38px 28px 22px; min-width:280px; max-width:440px; text-align:center; }
+.fig-nest__label { position:absolute; top:12px; left:20px; font-size:12.5px; font-weight:800; color:#C2402F; }
+.fig-nest__inner { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:18px 20px; }
+.fig-nest__inner .t { font-size:14px; font-weight:800; color:#2D2D2D; }
+.fig-nest__inner .d { font-size:12px; color:#6E6A66; margin-top:4px; line-height:1.6; }
+.fig-nest__outerd { font-size:12px; color:#8A6A5A; margin-top:14px; line-height:1.6; }
+.fig-ladder { display:flex; flex-direction:column; gap:8px; }
+.fig-step { border:1px solid #E4E1DB; border-radius:12px; padding:12px 16px; display:flex; gap:12px; align-items:flex-start; }
+.fig-step__n { flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.fig-step__t { font-size:13px; color:#3D3D3D; line-height:1.6; }
+.fig-step.s1{background:#FCF1ED}.fig-step.s2{background:#FADED4}.fig-step.s3{background:#F7C9B8}.fig-step.s4{background:#F3B39B}.fig-step.s5{background:#EE9B7E}
+.fig-step.d2{margin-left:22px}.fig-step.d3{margin-left:44px}.fig-step.d4{margin-left:66px}.fig-step.d5{margin-left:88px}
+.fig-step--root { border-color:#E85D4A; border-width:2px; }
+.fig-why { text-align:center; color:#A8A29B; font-size:12px; font-weight:800; margin:2px 0; }
+.fig-band { display:flex; flex-direction:column; gap:8px; }
+.fig-band__row { display:flex; gap:10px; align-items:center; }
+.fig-band__k { flex:0 0 104px; font-size:12.5px; font-weight:800; color:#C2402F; text-align:right; line-height:1.4; }
+.fig-band__v { flex:1; background:#FDEEE9; border:1px solid #E4E1DB; border-radius:10px; padding:9px 12px; font-size:12.5px; color:#3D3D3D; line-height:1.6; }
+.fig-exchange { display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap; }
+.fig-exchange__end { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:16px 18px; font-size:13.5px; font-weight:800; color:#2D2D2D; text-align:center; min-width:110px; }
+.fig-exchange__mid { flex:1; min-width:150px; display:flex; flex-direction:column; gap:8px; }
+.fig-exchange__req, .fig-exchange__res { border-radius:8px; padding:7px 12px; font-size:12px; font-weight:700; text-align:center; }
+.fig-exchange__req { background:#FDEEE9; color:#C2402F; }
+.fig-exchange__res { background:#F4F2F0; color:#6E6A66; }
+@media (max-width:600px){
+  .fig-two__mid{transform:rotate(90deg)}
+  .fig-step.d2,.fig-step.d3,.fig-step.d4,.fig-step.d5{margin-left:0}
+}
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">第1章</span>
+  <div class="lesson-hero__title">AIの位置づけと倫理</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">レッスン 1-5</span>
+    <span class="lesson-hero__topic">UX/UIデザインの基礎</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約60分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+ <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap1/QG4Ae" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap2/JBONh" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">生成AIがデザイン業務に与える影響を、変わることと変わらないことに分けて説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">AI事業者ガイドラインでの自分の立場（AI利用者）と、期待される行動を説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">著作権とAIリテラシーの注意点を踏まえ、最終判断は人が行うという本講座の原則を説明できる</div></li>
+  </ul>
+</div>
+
+<!-- 目次: ClipKit対策のためインラインstyleを併記（<style>剥がし対策） -->
+<nav class="toc" style="background:#fff; border-radius:14px; padding:22px 26px; box-shadow:0 2px 12px rgba(0,0,0,0.05); margin:0 0 48px;">
+  <div class="toc-head" style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <div class="toc-icon" style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#E85D4A,#F5A64A); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700;">≡</div>
+    <div class="toc-title" style="font-size:15px; font-weight:700; color:#2D2D2D;">目次</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;">
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s1" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">01</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">生成AIでデザインの仕事はどう変わるか</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s2" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">02</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">この講座でのAIの使い方</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s3" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">03</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">AI事業者ガイドラインの要点</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s4" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">04</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">生成AIと著作権・商用利用の注意</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s5" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">05</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">AIリテラシーと倫理</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+  </ul>
+</nav>
+
+<p>バナーのラフやUIのたたき台を、AIが数十秒で出してくれる時代になりました。ただ、出てきたものをそのまま使ってよいのか、クライアントから預かった資料をAIに入れてよいのか、迷う場面も増えています。<strong>このレッスンでやるのは、生成AIでデザインの仕事がどう変わるかを整理し、この講座ではAIを相手役や下ごしらえに使い最終判断は人が行うという使い方を決め、AI事業者ガイドライン・著作権・AIリテラシーという判断のよりどころを押さえること</strong>です。作る速さは上がっても、良し悪しの判断と結果への責任は人に残ります。ここで扱う法律やガイドラインも丸暗記する必要はなく、迷ったときに立ち返る要点として押さえれば十分です。</p>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>生成AIでデザインの仕事はどう変わるか</h2>
+
+<p>AIを使えば、デザインのラフ案を出したり、構成を気軽に相談したりできるようになりました。まずは、何が変わって何が変わらないのかを整理します。</p>
+
+<figure class="fig" data-asset-id="ig-3105-01">
+  <div class="fig-two">
+    <div class="fig-two__col fig-two__col--mute"><div class="fig-two__h"><span class="fig-tag fig-tag--mute">速くなった</span>AIが担う作業</div><ul><li>アセットの生成</li><li>初稿づくり</li></ul></div>
+    <div class="fig-two__mid">→</div>
+    <div class="fig-two__col fig-two__col--accent"><div class="fig-two__h"><span class="fig-tag fig-tag--accent">人に残る</span>人が担い続ける判断</div><ul><li>良し悪しの判断</li><li>文脈への合わせ込み</li><li>最終品質の責任</li></ul></div>
+  </div>
+  <figcaption class="fig__cap">速くなったのは作る作業。良し悪しの判断と最終品質の責任は、これまでどおり人に残る。</figcaption>
+</figure>
+
+<p>速くなったのは、あくまで手を動かす作業の部分です。出てきたものが目的に合っているか、ユーザーにとって使いやすいか、その良し悪しを見極めて仕上げる仕事は、これまでどおり人に残ります。アイデアが浮かばないときの案出しや、提案用の初稿づくりの相棒としてAIを使えば、考える時間を中身の検討に回せます。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">変わるのは作り方、変わらないのは判断基準</div>
+  </div>
+  <p>AIで変わるのは作り方であって、良いデザインかどうかを見極める判断基準ではありません。本講座でも、AIの活用と基礎理論を並行して学びます。作り方の変化に振り回されない判断の軸を、ここから育てましょう。</p>
+</div>
+
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>この講座でのAIの使い方</h2>
+
+<p>本講座では、AIを制作や対話の道具として積極的に使います。ただし、何を採用し何を直すか、最終的な判断は必ずあなた自身が行います。これが、これから続くすべてのAI演習を貫く原則です。</p>
+
+<p>このあとの通し課題では、AI（Gemini上に用意したGem）にクライアント役やユーザー役を務めてもらい、ヒアリングやインタビューの相手にします。ただし、成果物の評価や合否を決めるのは、AIではなく講師（コーチ）です。ヒアリングやインタビューの練習相手が身近にいないときも、AIを相手役にすれば、本番前に何度でも予行練習ができます。</p>
+
+<figure class="fig" data-asset-id="ig-3105-02">
+  <div class="fig-two">
+    <div class="fig-two__col fig-two__col--mute"><div class="fig-two__h"><span class="fig-tag fig-tag--mute">AIが務める</span>相手役</div><ul><li>クライアント役</li><li>ユーザー役</li></ul></div>
+    <div class="fig-two__mid">→</div>
+    <div class="fig-two__col fig-two__col--accent"><div class="fig-two__h"><span class="fig-tag fig-tag--accent">人が握る</span>判断と評価</div><ul><li>質問の設計</li><li>内容の判断</li><li>最終決定</li><li>講師（コーチ）による評価</li></ul></div>
+  </div>
+  <figcaption class="fig__cap">AIは相手役（クライアント役・ユーザー役）を担い、質問の設計・判断・最終決定と評価は人が握る。</figcaption>
+</figure>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">AIは判断を代替しない</div>
+  </div>
+  <p>AIは、たたき台を出したり相手役を務めたりする道具です。どれを選び、どう直し、最終的にどうするかを決めるのは人の仕事です。判断をAIに丸ごと預けないことを、最初の約束として覚えておきましょう。</p>
+</div>
+
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>AI事業者ガイドラインの要点</h2>
+
+<p>業務でAIを使うなら、最初に知っておきたい指針が「AI事業者ガイドライン」です。総務省と経済産業省が公表していて、現行は第1.2版（2026年3月公表）です。法律ではなく、事業者が自主的に取り組むための指針（法的拘束力のないソフトロー）で、状況に合わせて改訂が続いています。</p>
+
+<h3>対象となる3つの立場とデザイナーの位置</h3>
+
+<figure class="fig" data-asset-id="ig-3105-03">
+  <div class="fig-row">
+    <div class="fig-card"><div class="fig-card__t">AI開発者</div><div class="fig-card__d">AIシステムやモデルそのものを開発する立場。</div></div>
+    <div class="fig-card"><div class="fig-card__t">AI提供者</div><div class="fig-card__d">開発されたAIを組み込み、サービスとして提供する立場。</div></div>
+    <div class="fig-card fig-card--accent"><div class="fig-card__t">AI利用者</div><div class="fig-card__d">事業活動でAIを利用する立場。<strong>業務で生成AIを使うデザイナーはここ。</strong><div class="fig-card__note">→ あなたが立つのはこの位置</div></div></div>
+  </div>
+  <figcaption class="fig__cap">ガイドラインの対象は3分類。業務で生成AIを使うデザイナーはAI利用者に当たる（プライベートで使う一般消費者は主な対象ではない）。</figcaption>
+</figure>
+
+<p>ガイドラインは、対象を大きくAI開発者・AI提供者・AI利用者の3つに分けています。業務で生成AIを使うデザイナーは、事業活動でAIを利用する立場、つまりAI利用者に当たります。プライベートで使う一般の消費者は、主な対象ではありません。新しいAIツールを使い始めるときも、この3分類を思い出すと、自分がどんな責任を負う立場なのかをすぐに確認できます。</p>
+
+<h3>人間中心の考え方とAI利用者に期待されること</h3>
+
+<p>ガイドラインは人間中心の考え方を前提に置き、共通の指針として次の10項目を挙げています。</p>
+<ul>
+  <li>人間中心／安全性／公平性／プライバシー保護／セキュリティ確保</li>
+  <li>透明性／アカウンタビリティ／教育・リテラシー／公正競争確保／イノベーション</li>
+</ul>
+<p>このうちAI利用者には、利用規約やライセンスの確認、入力データの管理、出力の人間による最終確認、提供者が想定する範囲での利用が期待されます。第1.2版では自律的に動くAIエージェントについての記述が加わり、人間が関与するHuman-in-the-Loopの考え方が重視されています。AIが生成し人間が判断するという本講座の進め方は、この方向と重なります。</p>
+
+<div class="notice-box reveal visible">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">正式な文言は原文で確認する</div>
+  </div>
+  <p>上の10項目は学習用の要約です。正式な文言や各項目の詳細は、必ず原文で確認してください。出典：<a href="https://www.meti.go.jp/shingikai/mono_info_service/ai_shakai_jisso/20260331_report.html" target="_blank" rel="noopener" style="color:#E85D4A; text-decoration:underline; font-weight:700;">経済産業省の掲載ページ（AI事業者ガイドライン）</a></p>
+</div>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ 1</div>
+  </div>
+  <div class="quiz-q">あなたは業務で生成AIを使い、UIのたたき台を作っています。AI事業者ガイドラインに照らして、最も適切な姿勢はどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">AIを開発しているわけではないので、ガイドラインの対象にはならない</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">業務でAIを使うAI利用者に当たるので、出力を自分で確認し、規約や入力データにも気を配る</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">提供されたツールを使うだけなので、責任はすべてツールの提供者にある</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">有料プランを使えば、確認や管理はしなくてよい</div></button>
+  </div>
+  <div class="quiz-feedback" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">業務でAIを使うデザイナーはAI利用者に当たります。開発や提供をしていなくても対象に含まれ、規約の確認・入力データの管理・出力の最終確認が期待されます。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はBです。業務でAIを使う以上、AI利用者としてガイドラインの対象に含まれます。対象外でもなく、責任がツール側だけにあるわけでもありません。</div>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>生成AIと著作権・商用利用の注意</h2>
+
+<p>ガイドラインと並んで押さえたいのが著作権です。ここでは、文化庁が2024年3月に公表した「AIと著作権に関する考え方について」をもとに、要点を絞って確認します。</p>
+
+<h3>生成物は既存の作品に似ることがある</h3>
+
+<p>AIの生成物は、そのまま使うと既存の作品に似てしまい、権利を侵害するおそれがあります。侵害にあたるかは、類似性（表現が似ていること）と依拠性（既存の作品を参考にした関係があること）の両方がそろうかで判断され、侵害が成立した場合は、生成して使った本人が責任を問われる立場になりえます。特に、特定の作家やキャラクター、ブランドに似せるようプロンプトで指示するのは避けましょう。似た生成物が出やすく、リスクが高い使い方です。そして生成物は、そのまま鵜呑みにせず、必ず自分で最終確認してから使います。</p>
+
+<h3>商用利用での注意点</h3>
+
+<p>商用利用では、入力する素材が学習に使われないか、生成物を商用利用できるプランかを、利用規約で確認します。単純なプロンプト入力だけのAI生成物は、人間の創作的寄与が乏しく著作物と認められない可能性があり、クライアントへの独占的な権利保証には注意が必要です。クライアントに納品する前に、使ったAIツールの規約と生成物の類似チェックを済ませておくと、あとからの権利トラブルを防ぎやすくなります。</p>
+
+</section>
+
+<!-- ===== セクション5 ===== -->
+<section id="s5">
+<h2>AIリテラシーと倫理</h2>
+
+<p>AIは便利ですが、裏側に落とし穴もあります。デザイナーが特に気をつけたい3つの注意点を押さえておきましょう。</p>
+
+<figure class="fig" data-asset-id="ig-3105-05">
+  <div class="fig-row">
+    <div class="fig-card"><div class="fig-card__n">1</div><div class="fig-card__t">誤情報（ハルシネーション）</div><div class="fig-card__d">もっともらしく見えて事実と異なる出力が、仕組み上どうしても生じる。<div class="fig-card__note">対策：数値・固有名詞・制度は一次情報で確認</div></div></div>
+    <div class="fig-card"><div class="fig-card__n">2</div><div class="fig-card__t">バイアス（出力の偏り）</div><div class="fig-card__d">学習データの傾向がそのまま出力に反映される。<div class="fig-card__note">対策：偏った表現になっていないか点検</div></div></div>
+    <div class="fig-card"><div class="fig-card__n">3</div><div class="fig-card__t">機密情報の扱い</div><div class="fig-card__d">入力内容が学習に使われると、情報が外部に出るおそれ。<div class="fig-card__note">対策：未公開資料を安易に入力しない</div></div></div>
+  </div>
+  <figcaption class="fig__cap">3つの落とし穴。どれも最後は人の確認で防ぐ。</figcaption>
+</figure>
+
+<h3>誤情報（ハルシネーション）に注意する</h3>
+
+<p>文章を作るAIは、次に来る言葉を確率的に予測してつなげる仕組みで、事実そのものを保証してはいません。そのため、もっともらしく見えて事実と異なる出力（ハルシネーション）が、仕組み上どうしても生じます。数値や固有名詞、法律や制度の情報は、AIの答えをうのみにせず、必ず一次情報で確かめましょう。</p>
+
+<h3>バイアスと機密情報の扱い</h3>
+
+<p>AIは学習したデータの傾向をそのまま反映するため、出力に偏り（バイアス）が出ることがあります。特定の属性を不利に描くような表現になっていないか、人の目で点検することが大切です。リサーチ結果をAIに整理させるときも、元の情報と照らし合わせて確認すれば、誤りや偏りを見つけて直せます。</p>
+<p>また、機密情報や個人情報、クライアントから預かった未公開の資料を、安易にAIに入力しないよう気をつけます。入力した内容が学習に使われる設定だと、情報が外部に出るおそれがあるためです。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">だから最終判断は人が行う</div>
+  </div>
+  <p>誤情報もバイアスも、最後に人が確認して初めて防げます。速く作れるようになったぶん、確認する工程をていねいに残すことが、AIを安全に使う条件です。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ 2</div>
+  </div>
+  <div class="quiz-q">クライアントから預かった未公開の資料をAIに入力して要約させ、出てきた文章をそのまま提案書に貼り付けようとしています。最も大きな問題はどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">AIを使うこと自体が規約違反なので、AIは業務に使えない</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">未公開資料を安易に入力している点と、出力を人が確認せずそのまま使おうとしている点の両方</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">要約は短くなるので、情報が減って役に立たない点</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">特に問題はなく、そのまま提案書に使ってよい</div></button>
+  </div>
+  <div class="quiz-feedback" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">機密情報を安易に入力しないことと、出力は人が最終確認することの2つが守れていません。預かった資料の扱いには特に注意し、AIの出力は必ず自分で検証してから使いましょう。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はBです。未公開資料の入力と、出力を確認せず使う姿勢の両方が問題です。AIを使うこと自体は禁止ではなく、入力データの管理と人による最終確認がカギでした。</div>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>生成AIで変わることと変わらないことを、分けて説明できる</summary>
+    <div class="check-box__detail">生成AIで速くなったのは、アセット生成や初稿づくりといった作り方の部分です。良し悪しの判断、文脈への合わせ込み、最終品質の責任は人に残ります。作り方は変わっても、判断基準は変わりません。</div>
+  </details>
+  <details>
+    <summary>この講座でのAIの使い方と、最終判断は人が行う原則を説明できる</summary>
+    <div class="check-box__detail">通し課題ではAI（Gem）をクライアント役・ユーザー役に使います。何を採用し何を直すかの最終判断は人が行い、成果物の評価や合否は講師が決めます。判断をAIに丸ごと預けないのが原則です。</div>
+  </details>
+  <details>
+    <summary>AI事業者ガイドラインでの自分の立場と、期待される行動を言える</summary>
+    <div class="check-box__detail">業務でAIを使うデザイナーはAI利用者に当たります。期待されるのは、利用規約・ライセンスの確認、入力データの管理、出力の人間による最終確認、提供者の想定範囲内での利用です。正式な文言は経済産業省の掲載ページで確認します。</div>
+  </details>
+  <details>
+    <summary>生成AIと著作権の実務上の注意点、AIリテラシーの3注意点を説明できる</summary>
+    <div class="check-box__detail">AIの生成物は既存の作品に似て権利を侵害するおそれがあり、侵害は類似性と依拠性の両方で判断されます。特定の作家・キャラクター・ブランドに似せる指示は避け、生成物は必ず自分で最終確認してから使います。AIリテラシーでは、誤情報・バイアス・機密情報の3点に注意し、最後は人が確認します。</div>
+  </details>
+</div>
+  
+    <!-- 前の章に戻るボタンの場合 --> 
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap1/QG4Ae" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%) rotate(180deg); filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+    前の章に戻る
+  </a>
+</div>  
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div><!-- /.lesson-wrapper -->
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

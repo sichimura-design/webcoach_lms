@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/vKrqO -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1章 コーディング前の「神準備」がすべて！ - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/vKrqO">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="1章 コーディング前の「神準備」がすべて！ - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/273/medium/1f989d0d-d75d-4b26-a6ad-850622aef2bb.png?1754087969">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="1章 コーディング前の「神準備」がすべて！">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/vKrqO">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/273/large/1f989d0d-d75d-4b26-a6ad-850622aef2bb.png?1754087969">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="36lKpDhBzXVLsjDH_r3WpvpHdvLOq_vEP3parZvBBvdXiGW5NzmKmqj2fsopb6SRBBkwxTe8QhacqehFBbUX7g"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材3 AIアシスト実装の準備</div>
+
+          <div class="fw-bold h2">1章 コーディング前の「神準備」がすべて！</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章 コーディング前の「神準備」がすべて！</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：40分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】実装スピードは「準備」で9割決まる！</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AI登場以前のWeb制作における「準備」</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li><li><a href="#heading7" class="tocLink">AIが変える「実装準備」の未来</a></li></ul></li><li><a href="#heading8" class="tocLink">【1-2】AIの「頭脳」と「眼」を使いこなす基本</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading10" class="tocLink">使うツール紹介：ChatGPTとGemini</a><ul><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink"></a></li></ul></li><li><a href="#heading13" class="tocLink">AIへの指示は「聞き方」が9割！プロンプトの基本</a></li></ul></li><li><a href="#heading14" class="tocLink">【1-3】1章 -章末課題- [ケーススタディ：準備不足で起きた失敗談]</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading16" class="tocLink">問題</a></li><li><a href="#heading17" class="tocLink">解答解説</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item37555" data-item-id="37555" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/zHD3w" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/b2kEt" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36261" data-item-id="36261" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">1章 コーディング前の「神準備」がすべて！</h2></div>
+        
+        <div class="article-item item_markdown " id="item36262" data-item-id="36262" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：40分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item36263" data-item-id="36263" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36264" data-item-id="36264" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>実装品質とスピードを左右する「準備」工程の重要性を、具体的な事例を通じて理解する。</li>
+  <li>デザインデータの形式（ベクター/ラスター）や<span class="decoration-02">状態（テキストがアウトライン化されているか等）</span>の違いが、情報抽出にどう影響するかを理解する。</li>
+  <li>本教材で活用するAIツールの概要と、効果的な使い方の基本を理解する。</li>
+</ul>
+
+</div></div>
+        
+        <div class="article-item item_heading " id="item36265" data-item-id="36265" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【1-1】実装スピードは「準備」で9割決まる！</h2></div>
+        
+        <div class="article-item item_markdown " id="item36266" data-item-id="36266" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36267" data-item-id="36267" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">AI登場以前のWeb制作における「準備」</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36268" data-item-id="36268" data-item-type="ItemRichText"><div class="item-body-hbr">かつて、Webサイト制作の「実装準備」は、地道な手作業の連続でした。<br>
+デザイナーから受け取ったデザインカンプを画面に表示し、スポイトツールでカラーコードを一つひとつ吸い取り、目視で要素間の余白を測る。この作業には、多くの時間と集中力が必要でした。</div></div>
+        
+        <div class="article-item item_html " id="item36269" data-item-id="36269" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+    <span class="bold"><strong>注意</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>提供されるファイル形式（例：Photoshop, Illustrator, Figma）によって操作方法が異なり、<span class="decoration-02">全てのデザインツールに習熟する必要がありました。</span></li>
+            <li>特に、クライアントからJPGやPNGといった画像ファイルのみが提供された場合、<span class="decoration-02">情報の正確な抽出は困難を極めました。</span></li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item36270" data-item-id="36270" data-item-type="ItemRichText"><div class="item-body-hbr">このような準備不足は、コーディング段階で様々な「悲劇」を生み出します。</div></div>
+        
+        <div class="article-item item_html " id="item36271" data-item-id="36271" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">コーディング中の迷い</span>：<br>「ここの余白は何ピクセルだっけ？」「このボタンの色は、さっきの色と同じでいいんだっけ？」と、作業が頻繁に中断する。</li>
+  <li><span class="decoration-01">手戻りの発生</span>：<br>実装後に「なんかデザインと違う…」と気づき、大幅な修正が必要になる。</li>
+  <li><span class="decoration-01">品質の低下</span>：<br>場当たり的な実装が積み重なり、サイト全体の一貫性が失われる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36272" data-item-id="36272" data-item-type="ItemRichText"><div class="item-body-hbr">これらの問題は、スキル不足だけでなく、準備工程の非効率さに根本的な原因がありました。</div></div>
+        
+        <div class="article-item item_image " id="item36273" data-item-id="36273" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/273/medium/1f989d0d-d75d-4b26-a6ad-850622aef2bb.png?1754087969" title=""><img class="img-responsive item-image" alt=" (36273)" data-reference="" src="../../_assets/0fabfd4d19.webp" width="640" height="424"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36274" data-item-id="36274" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">AIが変える「実装準備」の未来</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36275" data-item-id="36275" data-item-type="ItemRichText"><div class="item-body-hbr">生成AIの登場は、この「準備」の風景を一変させました。これまで人間が地道に行ってきた作業の多くを、AIが代行してくれるようになったのです。<br>
+<br>
+この教材で学ぶ<span class="decoration-02">「AIアシスト準備術」</span>は、単にスピードを上げるだけのテクニックではありません。</div></div>
+        
+        <div class="article-item item_html " id="item36276" data-item-id="36276" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">属人性の排除</span>：<br>誰がやっても、AIが安定した品質で情報を抽出してくれます。</li>
+  <li><span class="decoration-01">品質の安定化</span>：<br>情報の抜き出し漏れや測定ミスがなくなり、デザインの再現性が高まります。</li>
+  <li><span class="decoration-01">創造的作業への集中</span>：<br>面倒な単純作業から解放され、より本質的な設計や実装に時間を使えるようになります。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36277" data-item-id="36277" data-item-type="ItemRichText"><div class="item-body-hbr">AIを賢く活用することで、実装準備は「面倒な作業」から「創造的な設計」へとその役割を変えつつあります。<br>
+この章から、そのための具体的な知識とスキルを学んでいきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item36278" data-item-id="36278" data-item-type="ItemHeading"><h2 class="item-body" id="heading8">【1-2】AIの「頭脳」と「眼」を使いこなす基本</h2></div>
+        
+        <div class="article-item item_markdown " id="item36279" data-item-id="36279" data-item-type="ItemMarkdown"><h4 id="heading9">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36280" data-item-id="36280" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">使うツール紹介：ChatGPTとGemini</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36281" data-item-id="36281" data-item-type="ItemRichText"><div class="item-body-hbr">本教材では、主にChatGPTとGeminiという2つの生成AIを活用します。<br>
+これらは、単に文章を作るだけでなく、Web制作の準備を強力にサポートする2つの重要な能力を持っています。</div></div>
+        
+        <div class="article-item item_html " id="item36282" data-item-id="36282" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">コード解析（頭脳）</span>：<br>SVGファイルのようなコードで書かれたデザインデータの中身を読み解き、構造を理解して正確な情報を引き出す能力。</li>
+  <li><span class="decoration-01">画像認識（眼）</span>：<br>JPGやPNGのような画像ファイルを見て、そこに写っている色や形、テキストなどを認識し、特徴を推測する能力。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item36283" data-item-id="36283" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/283/medium/c66a8cc9-1e3f-4b0d-9574-15a66551be94.png?1753403955" title=""><img class="img-responsive item-image" alt=" (36283)" data-reference="" src="../../_assets/7c88d23327.webp" width="640" height="345"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_image " id="item36284" data-item-id="36284" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/284/medium/6b43a151-e542-41c5-be45-b440087be73e.png?1753403974" title=""><img class="img-responsive item-image" alt=" (36284)" data-reference="" src="../../_assets/a1e0855475.webp" width="640" height="345"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_html " id="item36285" data-item-id="36285" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>豆知識</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>本教材の執筆時点（2025年7月）では、高機能な画像認識やファイル解析は有料版（ChatGPT PlusやGemini Advancedなど）で提供されていることが多いです。</li>
+            <li>しかし、無料版でも基本的な機能は試せますし、機能は日々進化しています。まずは現在利用できる範囲で、AIとの対話に慣れることが重要です。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36286" data-item-id="36286" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">AIへの指示は「聞き方」が9割！プロンプトの基本</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36287" data-item-id="36287" data-item-type="ItemRichText"><div class="item-body-hbr">AIを上手く活用するには、<span class="decoration-02">「プロンプト」</span>、つまりAIへの指示の出し方が非常に重要です。<br>
+AIは非常に賢いですが、こちらが何を知りたいのかを正確に伝えないと、期待通りの答えは返ってきません。<br>
+<br>
+良いプロンプトには、いくつかの基本パターンがあります。</div></div>
+        
+        <div class="article-item item_html " id="item36288" data-item-id="36288" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">役割を与える</span>：<span class="decoration-02">あなたはプロのWebデザイナーです。</span> のように、AIに特定の専門家として振る舞うようお願いする。</li>
+  <li><span class="decoration-01">目的を明確に伝える</span>：<span class="decoration-02">このWebサイトで使われている色を全て抽出してください。</span> のように、何をしてほしいのかを具体的に指示する。</li>
+  <li><span class="decoration-01">出力形式を指定する</span>：<span class="decoration-02">CSSのコメント形式でリストアップしてください。</span> のように、どのような形式で答えてほしいかを指定する。</li>
+</ol>
+
+<span>そして最も重要なのが、<span class="decoration-01">ファイル形式や状態に応じた聞き分け</span>です。</span>
+
+<ul>
+  <li><span class="decoration-01">SVGコードには</span>：<span class="decoration-02">このコードを解析して…</span> と、<span class="decoration-01">頭脳（コード解析能力）</span> に働きかける。</li>
+  <li><span class="decoration-01">JPG/PNG画像には</span>：<span class="decoration-02">この画像を見て…</span> と、<span class="decoration-01">眼（画像認識能力）</span> に働きかける。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36289" data-item-id="36289" data-item-type="ItemRichText"><div class="item-body-hbr">この使い分けを意識するだけで、AIから得られる情報の質は劇的に向上します。<br>
+<br>
+<span class="decoration-01">考えてみよう！</span><br>
+もし、AIにデザインカンプの情報を抽出させたい時、「この画像について教えて」というプロンプトだけを送った場合、どのような返答が来ると想像しますか？そして、なぜその返答では不十分なのでしょうか？<br>
+<br>
+<span class="decoration-01">解答例</span><br>
+AIは、画像に何が写っているかの説明（例：「企業のウェブサイトのようです」「モダンなデザインですね」など）をするだけで、具体的な色やフォントの情報は教えてくれない可能性が高いです。<br>
+なぜなら、こちらが欲しい「実装に必要な情報」を具体的に指示していないからです。<br>
+このことから、AIに期待通りの仕事をしてもらうためには、<span class="decoration-02">目的と欲しい情報の形式を明確に伝えるプロンプトがいかに重要か</span>がわかります。</div></div>
+        
+        <div class="article-item item_heading " id="item36290" data-item-id="36290" data-item-type="ItemHeading"><h2 class="item-body" id="heading14">【1-3】1章 -章末課題- [ケーススタディ：準備不足で起きた失敗談]</h2></div>
+        
+        <div class="article-item item_markdown " id="item36291" data-item-id="36291" data-item-type="ItemMarkdown"><h4 id="heading15">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36292" data-item-id="36292" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36293" data-item-id="36293" data-item-type="ItemRichText"><div class="item-body-hbr">ある新人Web制作者が、クライアントから受け取ったデザインカンプをすぐにコーディングし始めました。しかし、途中で何度も作業が止まり、結果的に納期が遅れてしまいました。<br>
+<br>
+この章で学んだ「準備」の重要性を踏まえて、この新人Web制作者が陥ったであろう<span class="decoration-02">「準備不足が原因のトラブル」を3つ</span>想像して記述してください。</div></div>
+        
+        <div class="article-item item_heading " id="item36294" data-item-id="36294" data-item-type="ItemHeading"><h3 class="item-body" id="heading17">解答解説</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36295" data-item-id="36295" data-item-type="ItemRichText"><div class="item-body-hbr">この課題に正解はありません。<br>
+この章で学んだ内容を踏まえて、どのようなリスクが考えられるかを想像することが目的です。<br>
+もし行き詰まったら、専属のコーチに相談してみるのも良いでしょう。<br>
+<br>
+以下に解答例を示します。</div></div>
+        
+        <div class="article-item item_html " id="item36296" data-item-id="36296" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">色の不統一</span>
+    <ul>
+      <li>デザインカンプ上で微妙に異なる複数の色が使用されていたにも関わらず、事前にカラーパレットを定義しなかった。そのため、コーディング中にどの色を使用すべきか繰り返し迷いが生じ、後の修正にも多大な工数を要した。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">余白ルールの不在</span>
+    <ul>
+      <li>要素間の余白（マージンやパディング）をその都度、感覚的に設定したため、サイト全体のレイアウトに統一感が欠如。結果としてクライアントから「全体的に整理されていない印象を受ける」という修正指示を受けることになった。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">フォントスタイルの非標準化</span>
+    <ul>
+      <li>見出しや本文で使用するフォントサイズや太さのルールを事前に洗い出さなかった。その結果、セクションごとに微妙にスタイルが異なり、デザインの一貫性が損なわれてしまった。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36297" data-item-id="36297" data-item-type="ItemRichText"><div class="item-body-hbr">これで「1章 コーディング前の「神準備」がすべて！」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item37554" data-item-id="37554" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/zHD3w" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/b2kEt" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章 コーディング前の「神準備」がすべて！</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：40分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】実装スピードは「準備」で9割決まる！</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AI登場以前のWeb制作における「準備」</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li><li><a href="#heading7" class="tocLink">AIが変える「実装準備」の未来</a></li></ul></li><li><a href="#heading8" class="tocLink">【1-2】AIの「頭脳」と「眼」を使いこなす基本</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading10" class="tocLink">使うツール紹介：ChatGPTとGemini</a><ul><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink"></a></li></ul></li><li><a href="#heading13" class="tocLink">AIへの指示は「聞き方」が9割！プロンプトの基本</a></li></ul></li><li><a href="#heading14" class="tocLink">【1-3】1章 -章末課題- [ケーススタディ：準備不足で起きた失敗談]</a><ul><li><a href="#heading15" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading16" class="tocLink">問題</a></li><li><a href="#heading17" class="tocLink">解答解説</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/zHD3w" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/b2kEt" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

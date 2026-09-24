@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="OKGhyAGdxh4mqM5SpPN8fA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1586" data-domain="learn.webcoach.jp" data-url="/web-design/Illustrator/018Eg" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>5章：データの出力と管理 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/Illustrator/018Eg">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="5章：データの出力と管理 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/409/medium/b51049a2-6a77-4711-8421-82c2712a8db4.png?1752458661">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="5章：データの出力と管理">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/Illustrator/018Eg">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/409/large/b51049a2-6a77-4711-8421-82c2712a8db4.png?1752458661">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/Illustrator/018Eg"
+    },
+    "headline": "5章：データの出力と管理",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/031/409/medium/b51049a2-6a77-4711-8421-82c2712a8db4.png?1752458661",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-14T11:35:39+09:00",
+    "dateModified": "2026-08-23T21:04:51+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="90Tu-ypoGaSt-j_pSgHENI_z2oupsIsQlnF0NkHPcr7jdWj9EsjrcKft5TIwBpjsE_R5fh_0quQsG-K2x1VstQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>Illustrator</div>
+
+          <div class="fw-bold h2">5章：データの出力と管理</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item33421" data-item-id="33421" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="Wcbk3" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="LRCmV" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item31389" data-item-id="31389" data-item-type="ItemHeading"><h2 class="item-body">5章：データの出力と管理</h2></div>
+        
+        <div class="article-item item_markdown " id="item39534" data-item-id="39534" data-item-type="ItemMarkdown"><h4 id="section">この教材の学習時間:5時間</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item31390" data-item-id="31390" data-item-type="ItemRichText"><div class="item-body-hbr">この章では、様々な用途に応じたデータの保存・書き出し方法を学び、クライアントに納品できる形式でデータを準備する方法を習得します。<br>
+<br>
+Illustratorで作成したデザインを活用するためには、適切な形式でデータを出力することが重要です。</div></div>
+        
+        <div class="article-item item_markdown " id="item31391" data-item-id="31391" data-item-type="ItemMarkdown"><h4 id="section">この章のゴール</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31392" data-item-id="31392" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>適切な形式でのデータ保存と書き出しができるようになる。</li>
+  <li>印刷用とWeb用データの違いを理解し、目的に応じた最適な設定ができるようになる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item31393" data-item-id="31393" data-item-type="ItemHeading"><h2 class="item-body">【5-1】データの保存形式</h2></div>
+        
+        <div class="article-item item_text " id="item51368" data-item-id="51368" data-item-type="ItemText"><div class="item-body-hbr">5-1の解説動画です。<br />以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51369" data-item-id="51369" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video
+    src="https://media.webcoach.jp/videos/webdesign-illustrator/5-1_final.mp4"
+    controls
+    preload="metadata"
+    class="chapter-intro-video__player"
+  ></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item31395" data-item-id="31395" data-item-type="ItemHeading"><h3 class="item-body">Illustratorファイル（.ai）の保存</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31396" data-item-id="31396" data-item-type="ItemRichText"><div class="item-body-hbr">Illustratorでの作業の基本となるのが、.aiファイル形式での保存です。<br>
+.aiファイルはIllustratorのネイティブ形式で、編集可能な状態を保ちながらデータを保存できます。</div></div>
+        
+        <div class="article-item item_html " id="item31397" data-item-id="31397" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">.aiファイルの特徴</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>Illustratorの全機能を保持した状態で保存できます。</li>
+      <li>レイヤー構造やエフェクトなどの編集情報がそのまま保存されます。</li>
+      <li>ファイルサイズが比較的大きくなります。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item31398" data-item-id="31398" data-item-type="ItemMarkdown"><h4 id="ai">.aiファイルの保存手順</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31399" data-item-id="31399" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>メニューバーから「ファイル」&gt;「保存」または「別名で保存」を選択してください。</li>
+  <li>保存先を指定し、ファイル名を入力してください。</li>
+  <li>ファイル形式で「Adobe Illustrator (ai)」を選択してください。</li>
+  <li>「保存」ボタンをクリックすると、オプション画面が表示されます。</li>
+  <li>オプションの内容に問題がなければ、「OK」をクリックします。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_html " id="item31400" data-item-id="31400" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">.aiファイル保存時の主なオプション<br></span>
+  <ul>
+    <li><span class="decoration-02">バージョン</span>: 互換性を持たせたいIllustratorのバージョンを選択します。</li>
+    <li><span class="decoration-02">PDF互換ファイルを作成</span>: FinderやExplorerでサムネイル表示するかどうかを選択します。（デフォルトでは有効になっています）</li>
+    <li><span class="decoration-02">リンクファイルの埋め込み</span>: 配置したリンクを埋め込むかどうかを選択します。
+      <ul>
+        <li>クライアントへの納品時など、相手がリンク元の画像ファイルを持っていない場合は、この項目にチェックを入れて埋め込むことが推奨されます。</li>
+      </ul>
+    </li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item31401" data-item-id="31401" data-item-type="ItemRichText"><div class="item-body-hbr">作業の途中経過を保存する際は、「保存」コマンド（ショートカットキー: <span class="decoration-02">Ctrl+S</span> (Windows) または <span class="decoration-02">Command+S</span> (Mac)）を定期的に使用することをお勧めします。<br>
+また、重要な変更の前には「別名で保存」を使用して、作業履歴を残すことも効果的です。</div></div>
+        
+        <div class="article-item item_heading " id="item31402" data-item-id="31402" data-item-type="ItemHeading"><h3 class="item-body">PDFの作成と設定</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31403" data-item-id="31403" data-item-type="ItemRichText"><div class="item-body-hbr">PDF（Portable Document Format）は、様々なデバイスや環境で同じ見え方を維持できる汎用性の高いフォーマットです。<br>
+クライアントへの提案資料や印刷用データとしてよく利用されます。</div></div>
+        
+        <div class="article-item item_html " id="item31404" data-item-id="31404" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">PDFの特徴</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>プラットフォームに依存せず、どのデバイスでも同じ表示が可能です。</li>
+      <li>ファイルサイズを比較的小さく抑えられます。</li>
+      <li>パスワードや印刷制限などのセキュリティ設定が可能です。</li>
+      <li>印刷用にも画面表示用にも最適化できます。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item31405" data-item-id="31405" data-item-type="ItemMarkdown"><h4 id="pdf">PDFの作成手順</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31406" data-item-id="31406" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>メニューバーから「ファイル」&gt;「別名で保存」を選択してください。</li>
+  <li>ファイル形式で「Adobe PDF (pdf)」を選択し、「保存」をクリックしてください。</li>
+  <li>PDF保存オプション画面が表示されます。</li>
+  <li>オプションの内容に問題がなければ、「PDF を保存」をクリックします。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31407" data-item-id="31407" data-item-type="ItemMarkdown"><h4 id="pdf">PDFプリセットの主な種類</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31408" data-item-id="31408" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">Illustrator初期設定</span>：<br>Illustratorでの再編集性を完全に保持したPDFを作成します。ファイルの用途が未定の場合や、編集可能なPDFとして共有したい場合に適しています。</li>
+  <li><span class="decoration-01">PDF/X-1a:2001</span>：<br>印刷業界の標準規格に準拠したPDFです。印刷所によく使われる形式です。</li>
+  <li><span class="decoration-01">プレス品質</span>：<br>商業印刷向けの高品質設定です。CMYK変換、高解像度、フォント埋め込みなどが自動設定されます。</li>
+  <li><span class="decoration-01">最小ファイルサイズ</span>：<br>Web用の軽量PDFです。画像が圧縮され、閲覧専用に最適化されています。</li>
+  <li><span class="decoration-01">雑誌広告送稿用</span>：<br>雑誌広告の入稿に特化した設定です。特定の印刷基準に準拠しています。</li>
+  <li><span class="decoration-01">高品質印刷</span>：<br>印刷用の高解像度PDFです。商業印刷ではないオフィスプリンターなどでの出力に適しています。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item31409" data-item-id="31409" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/409/medium/b51049a2-6a77-4711-8421-82c2712a8db4.png?1752458661" title=""><img class="img-responsive item-image" alt=" (31409)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/409/medium/b51049a2-6a77-4711-8421-82c2712a8db4.png?1752458661" width="640" height="437" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item31410" data-item-id="31410" data-item-type="ItemMarkdown"><h4 id="pdf">PDFの詳細設定（一部）</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31411" data-item-id="31411" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">一般</span>：PDFのバージョンや互換性
+    <ul>
+      <li>Illustrator編集機能を保持: Illustratorでの再編集が可能なPDFです。
+        <ul>
+          <li>レイヤーやグラフィック効果が保持されます。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><span class="decoration-01">圧縮</span>：画像の圧縮率や解像度
+    <ul>
+      <li><span class="decoration-02">高品質印刷</span>では、<span class="decoration-02">JPEG最高画質</span> + <span class="decoration-02">300ppi</span> を選ぶと無難。</li>
+      <li><span class="decoration-02">Web用</span>なら、<span class="decoration-02">JPEG中画質</span> + <span class="decoration-02">72ppi</span> で軽量化を図る。</li>
+    </ul>
+  </li>
+  <li><span class="decoration-01">トンボと裁ち落とし</span>：印刷用の設定
+    <ul>
+      <li>トリムマークと裁ち落としは、印刷会社指定がある場合が多いので確認が必要。</li>
+      <li>Web用途や画面表示用PDFでは不要。</li>
+    </ul>
+  </li>
+  <li><span class="decoration-01">セキュリティ</span>：パスワードや権限の設定</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item31412" data-item-id="31412" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/412/medium/09c13642-9d2c-49b4-b4dc-d96b454be724.png?1752459146" title=""><img class="img-responsive item-image" alt=" (31412)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/412/medium/09c13642-9d2c-49b4-b4dc-d96b454be724.png?1752459146" width="640" height="436" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item31413" data-item-id="31413" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">注意事項<br></span>
+	  <ul>
+      <li>パスワードを忘れると復旧が困難なので、設定する際は注意しましょう。</li>
+    </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item31414" data-item-id="31414" data-item-type="ItemRichText"><div class="item-body-hbr">実際の用途に応じてプリセットを選択し、必要に応じて詳細設定を調整しましょう。<br>
+例えば、クライアントに提案用のPDFを送る場合は「最小ファイルサイズ」、印刷所に入稿する場合は「プレス品質」や「PDF/X-1a:2001」が適しています。</div></div>
+        
+        <div class="article-item item_heading " id="item31415" data-item-id="31415" data-item-type="ItemHeading"><h3 class="item-body">下位バージョン対応</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31416" data-item-id="31416" data-item-type="ItemRichText"><div class="item-body-hbr">クライアントや印刷所が古いバージョンのIllustratorを使用している場合、下位バージョンのIllustratorで開ける形式で保存する必要がある場合があります。</div></div>
+        
+        <div class="article-item item_markdown " id="item31417" data-item-id="31417" data-item-type="ItemMarkdown"><h4 id="section">下位バージョンでの保存方法</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31418" data-item-id="31418" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>メニューバーから「ファイル」&gt;「保存」（新規ファイルの場合）もしくは「別名で保存」（既存ファイルの場合）を選択してください。</li>
+  <li>ファイル形式で「Adobe Illustrator (ai)」を選択してください。</li>
+  <li>「保存」ボタンをクリックすると表示されるオプション画面で、「バージョン」から対応したいバージョンを選択してください。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_html " id="item31422" data-item-id="31422" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">下位バージョン保存時の注意点<br></span>
+  <ul>
+    <li>Illustratorの新機能は、古いバージョンでは正常に表示されないことがあります。</li>
+    <li>エフェクトや特殊効果が分解されることがあります。</li>
+    <li>レイヤー構造が崩れる場合があります。</li>
+    <li>フォントやカラープロファイルが正しく表示されないことがあります。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item31423" data-item-id="31423" data-item-type="ItemRichText"><div class="item-body-hbr">下位バージョンで保存する前に、元のデータを別名で保存しておくことをお勧めします。<br>
+また、重要なプロジェクトでは、下位バージョンで保存したデータを実際に開いてみて、問題がないか確認することが大切です。</div></div>
+        
+        <div class="article-item item_heading " id="item31424" data-item-id="31424" data-item-type="ItemHeading"><h3 class="item-body">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item31425" data-item-id="31425" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">確認問題<br></span>
+  <ol>
+    <li>AIファイルとPDFファイルの主な違いは何ですか？</li>
+    <li>クライアントに提案用のPDFを送る場合、最適なプリセットはどれですか？</li>
+    <li>下位バージョンでの保存時に起こり得る問題を３つ挙げなさい</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31426" data-item-id="31426" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">答え<br></span>
+  <ol>
+    <li>編集可能かどうか。</li>
+    <li>最小ファイルサイズ。</li>
+    <li>Illustratorの新機能が古いバージョンでは正常に表示されないことがある<br>
+      エフェクトや特殊効果が分解されることがある<br>
+      レイヤー構造が崩れる場合がある<br>
+      フォントやカラープロファイルが正しく表示されないことがある など
+    </li>
+  </ol>
+</div>
+</div></div>
+        
+        <div class="article-item item_html " id="item31427" data-item-id="31427" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+  <ul>
+    <li>AIファイルは編集用、PDFは共有・印刷用です。用途に合わせた保存設定が重要になります。</li>
+    <li>下位バージョンで保存する際には注意が必要です。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item31428" data-item-id="31428" data-item-type="ItemRichText"><div class="item-body-hbr">次に、Web用データの書き出しについて学びましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item31429" data-item-id="31429" data-item-type="ItemHeading"><h2 class="item-body">【5-2】Web用データの書き出し</h2></div>
+        
+        <div class="article-item item_text " id="item51370" data-item-id="51370" data-item-type="ItemText"><div class="item-body-hbr">5-2の解説動画です。<br />以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51371" data-item-id="51371" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video
+    src="https://media.webcoach.jp/videos/webdesign-illustrator/5-2_final.mp4"
+    controls
+    preload="metadata"
+    class="chapter-intro-video__player"
+  ></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item31431" data-item-id="31431" data-item-type="ItemHeading"><h3 class="item-body">JPEGとPNGの違い</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31432" data-item-id="31432" data-item-type="ItemRichText"><div class="item-body-hbr">Web用のデータを書き出す際、主に使用されるのがJPEG形式とPNG形式です。<br>
+それぞれに特徴があり、用途に応じて適切な形式を選択することが重要です。</div></div>
+        
+        <div class="article-item item_markdown " id="item31433" data-item-id="31433" data-item-type="ItemMarkdown"><h4 id="jpegjoint-photographic-experts-group">JPEG（Joint Photographic Experts Group）の特徴</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31434" data-item-id="31434" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>写真などの自然画像に適している。</li>
+  <li>色数が多い画像を効率的に圧縮できる。</li>
+  <li>非可逆圧縮のため、圧縮率を高くすると画質が低下する。</li>
+  <li>透明部分を持つことができない。</li>
+  <li>グラデーションの表現に適している。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31435" data-item-id="31435" data-item-type="ItemMarkdown"><h4 id="pngportable-network-graphics">PNG（Portable Network Graphics）の特徴</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31436" data-item-id="31436" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>イラストやロゴなどのシンプルな画像に適している。</li>
+  <li>可逆圧縮のため、画質を落とさずに圧縮できる。</li>
+  <li>透明部分（アルファチャンネル）を持つことができる。</li>
+  <li>圧縮効率はJPEGに劣り、特に写真のような複雑な画像ではファイルサイズが大きくなりがち。</li>
+  <li>細かい線やテキストの表現に適している。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item31437" data-item-id="31437" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/437/medium/236a287b-ff8c-47c6-a4c9-b1095316e249.png?1752460178" title=""><img class="img-responsive item-image" alt=" (31437)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/437/medium/236a287b-ff8c-47c6-a4c9-b1095316e249.png?1752460178" width="640" height="200" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item31439" data-item-id="31439" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <thead>
+    <tr>
+      <th scope="col">
+        <div>
+          <div>特徴</div>
+        </div>
+      </th>
+      <th scope="col">
+        <div>
+          <div>JPEG</div>
+        </div>
+      </th>
+      <th scope="col">
+        <div>
+          <div>PNG</div>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>圧縮形式</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>非可逆圧縮</div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>可逆圧縮</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>透明部分の有無</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>×（対応不可）</div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>〇（アルファチャンネル対応）</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>適した画像タイプ</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>写真、グラデーション</div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>イラスト、ロゴ、アイコン、透過が必要な画像</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>ファイルサイズ</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>圧縮率が高いが、画質低下の可能性あり</div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>画質維持ができるが、ファイルサイズが大きめ</div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_html " id="item31440" data-item-id="31440" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+  <span class="bold">圧縮形式とは：<br></span>
+  <ul>
+    <li><span class="decoration-01">非可逆圧縮（ひかぎゃくあっしゅく）</span>
+      <ul>
+        <li>非可逆圧縮は、<span class="decoration-02">元のデータから不要な情報を削除して圧縮する方法</span>です。一度圧縮すると元のデータには戻せないため、<span class="decoration-02">「不可逆圧縮」</span>とも呼ばれます。</li>
+        <li>圧縮率が高く、ファイルサイズが小さくなる。</li>
+        <li>写真など、<span class="decoration-02">色の変化が多い画像</span>に向いている。</li>
+        <li>画質が劣化することがある。</li>
+      </ul>
+    </li>
+  </ul>
+	<ul>
+    <li><span class="decoration-01">可逆圧縮（かぎゃくあっしゅく）</span>
+      <ul>
+        <li>可逆圧縮は、<span class="decoration-02">データを圧縮しても、後から元のデータに完全に復元できる方法</span>です。元に戻せるので <span class="decoration-02">「可逆（元に戻る）」</span>という名前がついています。</li>
+        <li>圧縮しても<span class="decoration-02">画質が劣化しない</span>。</li>
+        <li>ロゴやイラストなど、<span class="decoration-02">色の変化が少ない画像</span>に向いている。</li>
+        <li>圧縮率が低く、ファイルサイズが大きくなりがち。</li>
+      </ul>
+    </li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31441" data-item-id="31441" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">形式選択のポイント：<br></span>
+  <ul>
+    <li>写真やグラデーションが多い画像 → JPEG</li>
+    <li>ロゴや線画、透明部分が必要な画像 → PNG</li>
+    <li>ウェブサイトの背景画像 → JPEG</li>
+    <li>アイコンやボタン → PNG</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item31442" data-item-id="31442" data-item-type="ItemRichText"><div class="item-body-hbr">実際のデザイン現場では、クライアントから指定がある場合もありますので、要件をしっかり確認することも大切です。</div></div>
+        
+        <div class="article-item item_heading " id="item31443" data-item-id="31443" data-item-type="ItemHeading"><h3 class="item-body">書き出し形式の選択</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31444" data-item-id="31444" data-item-type="ItemRichText"><div class="item-body-hbr">Illustratorから画像を書き出す方法はいくつかありますが、ここでは「書き出し」機能を使った方法を紹介します。<br>
+「Web用に保存 (従来)」は、ファイルにアートボードが1枚の場合におすすめの方法です。<br>
+ファイルに複数のアートボードが配置されている場合は、「Web用に保存 (従来)」でも書き出しを行うことは可能ですが、「スクリーン用に書き出し」が操作はしやすいです。</div></div>
+        
+        <div class="article-item item_markdown " id="item31445" data-item-id="31445" data-item-type="ItemMarkdown"><h4 id="web-">書き出し機能「Web用に保存 (従来)」の使い方</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item31446" data-item-id="31446" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">（ファイル内にアートボードが1枚の場合推奨）</span></div></div>
+        
+        <div class="article-item item_html " id="item31447" data-item-id="31447" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>メニューバーから「ファイル」&gt;「書き出し」&gt;<span class="decoration-02">「Web用に保存 (従来)」</span>を選択してください。</li>
+  <li><span class="decoration-02">「Web用に保存」</span>ダイアログが表示されます。</li>
+  <li>保存先を指定し、ファイル名を入力してください。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_link " id="item31448" data-item-id="31448" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=018Eg&amp;item_id=31448" rel="nofollow noopener noreferrer" target="_blank">Illustrator 5-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Illustrator 5-5" data-reference="https://www.dropbox.com/scl/fi/ufund7apjndaaoas0ztvk/Illustrator_5.5.1.0_.mp4?rlkey=q160te19hl6c2x53mzeyphffd&amp;st=acswpa8r&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/031/448/thumb/c833bb34-0d19-4b4e-9338-dabacdcc05f0.png?1754438896" width="75" height="75" /></div><div class="media-body"><div class="item-body">※この動画はデモンストレーションです。音声はございません。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item31449" data-item-id="31449" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">主な設定項目</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>形式: JPEG、PNG、GIF、SVGなど</li>
+      <li>解像度: 72ppi（Web標準）など</li>
+      <li>圧縮率/品質（JPEG）
+        <ul>
+          <li>数値が高いほど画質が良くなりますが、ファイルサイズも大きくなります。</li>
+          <li>Web用では「中」または「高」が一般的です。</li>
+        </ul>
+      </li>
+      <li>透明部分の処理方法（PNG）
+        <ul>
+          <li>PNG-8: は色数が最大256色に制限されるため軽量ですが、透明部分の表現はやや粗くなります。</li>
+          <li>PNG-24: はフルカラーに対応し、滑らかな半透明も表現できますが、ファイルサイズは大きくなります。</li>
+        </ul>
+      </li>
+      <li>サイズ: 実寸またはパーセント指定。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31450" data-item-id="31450" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+  <span class="bold">SVG（Scalable Vector Graphics）について<br></span>
+  <ul>
+    <li>ベクター形式のため、任意のサイズに拡大縮小しても画質が劣化しません。</li>
+    <li>コードベースで記述されているため、ファイルサイズが小さいです。</li>
+    <ul>
+      <li>ただし、複雑なデザインではファイルサイズが大きくなることがあります。</li>
+    </ul>
+    <li>アニメーションやインタラクションを追加できます。</li>
+    <li>最新のWebブラウザでサポートされています。</li>
+    <li>ロゴやアイコン、シンプルなイラストなどに特に適しています。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item31452" data-item-id="31452" data-item-type="ItemMarkdown"><h4 id="section">書き出し機能「スクリーン用に書き出し」の使い方</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item31453" data-item-id="31453" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02">（ファイル内にアートボードが複数の場合推奨）</span></div></div>
+        
+        <div class="article-item item_html " id="item31454" data-item-id="31454" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>メニューバーから「ファイル」&gt;「書き出し」&gt;<span class="decoration-02">「スクリーン用に書き出し」</span>を選択してください。</li>
+  <li>スクリーン用に書き出しダイアログが表示されます。</li>
+  <li>「アートボード」の項目ではファイル内のアートボードが表示されます。書き出したいアートボードにチェックを入れます。</li>
+  <li>「選択」の項目では、すべて・範囲・ドキュメント全体を選択できます。</li>
+  <li>「書き出し先」で、保存先を選択します。</li>
+  <li>「フォーマット」で、拡大縮小・サフィックス・形式（拡張子）を選択します。</li>
+  <li>設定が完了したら、「アートボードを書き出し」をクリックします。</li>
+  <li>保存先として設定した場所に、「1x」というフォルダが作成され、その中に画像が書き出しされていることが確認できます。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item31456" data-item-id="31456" data-item-type="ItemHeading"><h3 class="item-body">アセットの書き出し</h3></div>
+        
+        <div class="article-item item_html " id="item31457" data-item-id="31457" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>Webデザインやアプリデザインで、複数の画像や素材（アセット）を一度に書き出したいときに便利なのが、Illustratorの「<span class="decoration-02">アセットの書き出し</span>」機能です。</li>
+  <li>アセットとは、デザインに使う画像、アイコン、ロゴなどを指し、複数形式やサイズでまとめて書き出す際に活用します。</li>
+  <li>アセット書き出し機能で書き出されたデータは、JPGやPNGのような画像データとして保存されるため、再編集は出来ません。
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31458" data-item-id="31458" data-item-type="ItemMarkdown"><h4 id="section">アセットの書き出し手順</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31459" data-item-id="31459" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>書き出したいオブジェクトを選択してください。
+    <ul>
+      <li>オブジェクトは、あらかじめグループ化しておきましょう。</li>
+    </ul>
+  </li>
+  <li>オブジェクトを右クリックして、「書き出し用に選択」 &gt; 「単一のアセットとして」を選択。<br>
+      もしくは、「アセットの書き出し」パネルを表示したのち、ドラッグ&amp;ドロップを行い追加することもできます。
+  </li>
+  <li>「アセットの書き出し」パネルが表示されます。</li>
+  <li>パネルで書き出すオブジェクトを複数選択します。</li>
+  <li>パネル下部の書き出しをクリックします。</li>
+  <li>拡大・縮小のサイズと同じ名前のフォルダが生成され、画像が書き出されています。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_html " id="item31461" data-item-id="31461" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>「スケールを追加」をクリックし、書き出し設定で拡大縮小・サフィックス・形式（拡張子）を設定します。
+    <ul>
+      <li>拡大縮小：1xは等倍、2xは2倍のように書き出す大きさを指定できます。</li>
+      <li>サフィックス：スケールの追加ボタンを押すと、同じ画像に対して異なる大きさの設定で書き出すことができます。ファイル名に区別をつける時にサフィックスを設定します。区別をつける必要がない場合は削除しても大丈夫です。</li>
+      <li>形式：jpgやpng、svg、pdfなどを設定</li>
+    </ul>
+  </li>
+  <li>パネル下部の書き出しをクリックします。</li>
+  <li>保存先を決めて保存します。（拡大・縮小のサイズに沿ったフォルダが生成されます。）</li>
+</ol></div></div>
+        
+        <div class="article-item item_html " id="item31463" data-item-id="31463" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">アセット書き出しの主な機能</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>複数のフォーマットを同時に設定可能（PNG、JPG、SVGなど）です。</li>
+      <li>各フォーマットごとに異なるサイズを指定可能です。
+        <ul>
+          <li>1x（等倍）、2x（2倍）、3x（3倍）などデバイスごとの解像度対応も簡単です。</li>
+        </ul>
+      </li>
+      <li>複数のアセットを一括で書き出し可能です。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31464" data-item-id="31464" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">実践的な使用シーン<br></span>
+  <ul>
+    <li>Webサイト用に同じアイコンを複数サイズで作成する場合
+      <ul>
+        <li>48px、96px、192pxのアイコンを <span class="decoration-02">一括書き出し</span>。</li>
+      </ul>
+    </li>
+    <li>SNS用に複数サイズのバナーを作成する場合
+      <ul>
+        <li><span class="decoration-02">Twitter、Instagram、Facebook</span> 用に、それぞれの <span class="decoration-02">推奨サイズ</span> で一括書き出し。</li>
+      </ul>
+    </li>
+    <li>モバイルアプリ用に異なる解像度の画像が必要な場合
+      <ul>
+        <li><span class="decoration-02">iOSとAndroid向けに異なる解像度</span> で一括書き出し。</li>
+      </ul>
+    </li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item31465" data-item-id="31465" data-item-type="ItemRichText"><div class="item-body-hbr">アセットの書き出し機能を活用することで、手作業でサイズ変更して保存する手間を大幅に削減できます。<br>
+特にWebデザインやアプリデザインの現場では非常に重宝する機能です。</div></div>
+        
+        <div class="article-item item_heading " id="item31466" data-item-id="31466" data-item-type="ItemHeading"><h3 class="item-body">確認問題とまとめ</h3></div>
+        
+        <div class="article-item item_html " id="item31467" data-item-id="31467" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">確認問題<br></span>
+  <ol>
+    <li>JPEG形式の画像を主に使う用途は何ですか？</li>
+    <li>Webサイトのロゴに適した形式は何ですか？</li>
+    <li>アセット書き出し機能でできないことは何ですか？</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31468" data-item-id="31468" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">答え<br></span>
+  <ol>
+    <li>写真</li>
+    <li>SVG</li>
+    <li>編集可能な状態の保持</li>
+  </ol>
+</div>
+</div></div>
+        
+        <div class="article-item item_html " id="item31469" data-item-id="31469" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+  <ol>
+    <li>Web用はJPEG、PNG、SVGを使い分けます。</li>
+      <li>写真にはJPEG、イラストや透明にはPNG、拡大縮小にはSVGです。アセット書き出しで効率化できます。</li>
+  </ol>
+</div>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item31470" data-item-id="31470" data-item-type="ItemRichText"><div class="item-body-hbr">次に、印刷用データの作成方法を学びましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item31471" data-item-id="31471" data-item-type="ItemHeading"><h2 class="item-body"> 【5-3】印刷用データの作成</h2></div>
+        
+        <div class="article-item item_text " id="item51372" data-item-id="51372" data-item-type="ItemText"><div class="item-body-hbr">5-3の解説動画です。<br />以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51373" data-item-id="51373" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video
+    src="https://media.webcoach.jp/videos/webdesign-illustrator/5-3_final.mp4"
+    controls
+    preload="metadata"
+    class="chapter-intro-video__player"
+  ></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item31473" data-item-id="31473" data-item-type="ItemHeading"><h3 class="item-body">印刷用カラー設定</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31474" data-item-id="31474" data-item-type="ItemRichText"><div class="item-body-hbr">印刷物のデザインでは、画面上の色と印刷結果の色が一致するよう、適切なカラー設定が重要です。<br>
+印刷物を前提としたデザインでは、最初からCMYKモードで作業するのが理想的です。</div></div>
+        
+        <div class="article-item item_markdown " id="item31475" data-item-id="31475" data-item-type="ItemMarkdown"><h4 id="cmyk">新規ドキュメントでのCMYK設定</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31562" data-item-id="31562" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>「ファイル」&gt;「新規」を選択、もしくは「新規ファイル」を選択してください。</li>
+  <li>カラーモードで「CMYKカラー」を選択してください。（印刷の中からサイズを選択すると最初からCMYKカラーに設定されます。）</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31477" data-item-id="31477" data-item-type="ItemMarkdown"><h4 id="section">既存ドキュメントのカラーモード変換</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31478" data-item-id="31478" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>「ファイル」&gt;「ドキュメントのカラーモード」&gt;「CMYKカラー」を選択してください。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31480" data-item-id="31480" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">注意<br></span>
+  <ul>
+    <li>RGBカラーからCMYKカラーに変更すると、<span class="decoration-02">色がくすんで見える</span>ことがあります。</li>
+    <li>特に <span class="decoration-02">ビビッドな色</span>（蛍光色やネオンカラー）は <span class="decoration-02">CMYKでは表現できない</span>ため、事前に <span class="decoration-02">カラーチェック</span>を行いましょう。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item31481" data-item-id="31481" data-item-type="ItemMarkdown"><h4 id="section">カラープロファイル設定</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item31482" data-item-id="31482" data-item-type="ItemRichText"><div class="item-body-hbr">印刷方法や用紙によって適切なカラープロファイルが異なります。<br>
+一般的な印刷用プロファイルとしては以下があります。</div></div>
+        
+        <div class="article-item item_html " id="item31483" data-item-id="31483" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>Japan Color 2001 Coated: コート紙向け</li>
+  <li>Japan Color 2001 Uncoated: 上質紙向け</li>
+  <li>Japan Standard v2: 一般的な商業印刷向け</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item31485" data-item-id="31485" data-item-type="ItemRichText"><div class="item-body-hbr">プロファイルの設定は「編集」&gt;「カラー設定」から行えます。<br>
+印刷所からプロファイルの指定があればそれに従ってください。</div></div>
+        
+        <div class="article-item item_markdown " id="item31486" data-item-id="31486" data-item-type="ItemMarkdown"><h4 id="section">特色と配合色</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31487" data-item-id="31487" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>特色：特定のインク色を使うため、色の再現性が高く、金・銀・蛍光色など特殊色に適しています。
+    <ul>
+      <li>代表例：DICカラー</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_html " id="item31492" data-item-id="31492" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>プロセスカラー（配合色）：CMYKの4色のインクを掛け合わせて色を表現する、一般的なフルカラー印刷です。
+    <ul>
+      <li>コストを抑えやすく、写真印刷などに適しています。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item31489" data-item-id="31489" data-item-type="ItemRichText"><div class="item-body-hbr">特色を使用する場合は、スウォッチパネルから「特色」を選択して追加してください。<br>
+ただし、特色印刷は通常のCMYK印刷より費用がかかることを覚えておきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item31490" data-item-id="31490" data-item-type="ItemHeading"><h3 class="item-body">トンボと裁ち落とし</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31491" data-item-id="31491" data-item-type="ItemRichText"><div class="item-body-hbr">印刷物では、裁断の基準となるトンボや、裁断誤差を考慮した裁ち落としの設定が必要です。</div></div>
+        
+        <div class="article-item item_html " id="item31493" data-item-id="31493" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">トンボ・裁ち落とし（ブリード）とは<br></span>
+  <ul>
+    <li><span class="decoration-02">トンボ</span>は印刷後に紙を正確に裁断するための目印となる線です。</li>
+    <li><span class="decoration-02">裁ち落とし（ブリード）</span>はデザインの端まで色や画像がある場合、裁断誤差を考慮して実際の仕上がりサイズよりも少し大きめに色や画像を延長させる余白のことです。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item31494" data-item-id="31494" data-item-type="ItemMarkdown"><h4 id="section">裁ち落としの設定</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31495" data-item-id="31495" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>新規ドキュメントを作成します。</li>
+  <li>「裁ち落とし」の値を入力してください。（一般的に3mm程度）</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item31496" data-item-id="31496" data-item-type="ItemRichText"><div class="item-body-hbr">既存のドキュメントでは「ファイル」&gt;「ドキュメント設定」から調整できます。</div></div>
+        
+        <div class="article-item item_markdown " id="item31498" data-item-id="31498" data-item-type="ItemMarkdown"><h4 id="section">トンボの設定</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31499" data-item-id="31499" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-02">四角形ツール</span>で<span class="decoration-02">仕上がりサイズの四角形</span>を作成
+    <ul>
+      <li>サイズを正確に指定（例：A4なら210mm×297mm）</li>
+      <li>四角形の「線」「塗り」はなしにする</li>
+      <li>配置するレイヤーを決める</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">選択ツール</span>で四角形を選択
+    <ul>
+      <li>塗りがないので、四角の縁をクリックする</li>
+      <li>アートボードと重ねる（整列パネルを使うと簡単です）</li>
+    </ul>
+  </li>
+  <li>「効果」＞「トリムマーク」をクリック</li>
+  <li>四角形に<span class="decoration-02">トンボ（トリムマーク）が生成</span>される</li>
+    <ul>
+      <li>トンボは<span class="decoration-02">オブジェクト扱い</span>なので、後から<span class="decoration-02">移動や削除が可能</span></li>
+    </ul>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31501" data-item-id="31501" data-item-type="ItemMarkdown"><h4 id="pdf">印刷用PDF作成時の設定</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item31502" data-item-id="31502" data-item-type="ItemRichText"><div class="item-body-hbr">「ファイル」&gt;「別名で保存」でPDF保存時、以下の設定を確認してください。</div></div>
+        
+        <div class="article-item item_html " id="item31503" data-item-id="31503" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>トンボ: 「トンボ」にチェック</li>
+  <li>裁ち落とし: 上下左右の値を確認（通常3mm）</li>
+  <li>出力 &gt; カラー &gt; カラー変換: CMYKに変換するよう設定（「編集」&gt;「カラー設定」からCMYKへの変換を推奨します）</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31505" data-item-id="31505" data-item-type="ItemMarkdown"><h4 id="section">実際のデザイン作業でのポイント</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31506" data-item-id="31506" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>デザイン要素は「アートボード」（仕上がりサイズ）いっぱいまで配置してください。</li>
+  <li>背景や端まで伸びる要素は「塗り足し線」領域まで伸ばしてください。</li>
+  <li>重要なテキストや要素は、裁断時にずれて一緒に裁断されることを防ぐため、「アートボード」の端（仕上がり線）から5mm以上内側に配置してください（セーフティマージン）。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item31507" data-item-id="31507" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/507/medium/0e799091-e8b9-4c29-bd82-b3f09408d0c2.png?1752464284" title=""><img class="img-responsive item-image" alt=" (31507)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/507/medium/0e799091-e8b9-4c29-bd82-b3f09408d0c2.png?1752464284" width="640" height="496" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item31508" data-item-id="31508" data-item-type="ItemRichText"><div class="item-body-hbr">これらの設定を正しく行うことで、印刷後の裁断でデザインが途切れたり、白いエッジが出たりするのを防ぐことができます。</div></div>
+        
+        <div class="article-item item_heading " id="item31509" data-item-id="31509" data-item-type="ItemHeading"><h3 class="item-body">特色の設定</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31510" data-item-id="31510" data-item-type="ItemRichText"><div class="item-body-hbr">特定の色を正確に再現したい場合や、金・銀などの特殊な色を使用したい場合には、特色を使用します。</div></div>
+        
+        <div class="article-item item_html " id="item31511" data-item-id="31511" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+  <span class="bold">特色とは<br></span>
+  <ul>
+    <li>正確な色再現が可能
+      <ul>
+        <li>特に企業ロゴなど、色のブレが許されない印刷物で活用されます。</li>
+      </ul>
+    </li>
+    <li>CMYKでは表現しづらい色が使える
+      <ul>
+        <li>例：蛍光色、メタリック（金・銀）、パステルカラー</li>
+      </ul>
+    </li>
+    <li>カラーシステム
+      <ul>
+        <li>DIC、TOYOなどが代表的</li>
+      </ul>
+    </li>
+    <li>デメリット
+      <ul>
+        <li>印刷コストが高くなる（特色1色ごとに印刷版が増えるため）</li>
+        <li>印刷所によっては、希望する特色インクの取り扱いや対応ができない場合がある。</li>
+      </ul>
+    </li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item31512" data-item-id="31512" data-item-type="ItemMarkdown"><h4 id="section">特色の追加方法</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31513" data-item-id="31513" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-02">「ウィンドウ」→「スウォッチ」</span> を選択し、スウォッチパネルを表示します。</li>
+  <li><span class="decoration-02">スウォッチパネル右上のメニュー</span>をクリックします。</li>
+  <li><span class="decoration-02">「スウォッチライブラリを開く」→「カラーブック」</span>を選択します。</li>
+  <li>「DICカラーガイド」を選択します。</li>
+  <li>使いたい色を選択します。</li>
+  <li>色をクリックすると、<span class="decoration-02">自動的にスウォッチパネルに追加</span>されます。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_html " id="item31515" data-item-id="31515" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention">
+  <span class="bold">多色使用時の注意点<br></span>
+  <ul>
+    <li>特色を使用する際は、希望する特色インクの取り扱いがあるかどうかを、あらかじめ印刷所に確認することが重要です。</li>
+    <li>特色の数が増えるほど印刷コストが上がります。</li>
+    <li>特色の見え方は画面とは異なる場合があるため、カラーガイドでの確認が推奨されます。</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31516" data-item-id="31516" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">オーバープリントの設定</span></div>
+    </div>
+    <div class="content-area">
+      <span>特色を使用する際に重要なのが「オーバープリント」の設定です。</span>
+      <ul>
+        <li><span class="decoration-02">オーバープリント</span>: 下の色の上に重ねて印刷する設定です。
+          <ul>
+            <li>黒文字や線で使うと、下地の色が透けて重なるためにじみが少ない。</li>
+          </ul>
+        </li>
+        <li><span class="decoration-02">ノックアウト（デフォルト）</span>: 下の色を抜いて印刷する設定です。
+          <ul>
+            <li>重なった部分は穴が開くイメージで、色が混ざらない。</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31517" data-item-id="31517" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>「ウィンドウ」 &gt; 「属性」を選択して、属性パネルを表示します。</li>
+  <li>オブジェクトを選択します。</li>
+  <li>属性パネルで「塗りをオーバープリント」または「線をオーバープリント」をチェックします。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item31519" data-item-id="31519" data-item-type="ItemHeading"><h2 class="item-body">確認問題とまとめ</h2></div>
+        
+        <div class="article-item item_html " id="item31520" data-item-id="31520" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">確認問題<br></span>
+  <ol>
+    <li>印刷用データの基本的なカラーモードは何ですか？</li>
+    <li>印刷物の裁ち落としの一般的な設定値はどれくらいですか？</li>
+    <li>特色に関する説明として、誤っているものは何ですか？</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31521" data-item-id="31521" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">答え<br></span>
+  <ol>
+    <li>CMYK</li>
+    <li>3mm</li>
+    <li>データ上で指定さえすれば、印刷所への事前確認なしで特色をいくつでも使用できる。</li>
+  </ol>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31522" data-item-id="31522" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">まとめ<br></span>
+  <ol>
+    <li>印刷用はCMYKモードで作成し、トンボと裁ち落としを設定することが必須です。</li>
+    <li>特色は特別なインクを使用するので、印刷所との事前相談が必要になります。</li>
+  </ol>
+</div>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item31523" data-item-id="31523" data-item-type="ItemRichText"><div class="item-body-hbr">最後に、これまでの知識を実践的に使って演習を行います。</div></div>
+        
+        <div class="article-item item_heading " id="item31524" data-item-id="31524" data-item-type="ItemHeading"><h2 class="item-body">【5-4】5章 -演習課題- データの出力と管理</h2></div>
+        
+        <div class="article-item item_text " id="item51374" data-item-id="51374" data-item-type="ItemText"><div class="item-body-hbr">5-4の解説動画です。<br />以下にテキスト教材が続いていますが、こちらの動画だけを見るだけで全ての内容を学習することができます。</div></div>
+        
+        <div class="article-item item_html " id="item51375" data-item-id="51375" data-item-type="ItemHtml"><div class="item-body"><!-- ===== レッスン解説動画（スタイル内包フォーマット） ===== -->
+<div class="chapter-intro-video">
+  <style>
+    /* レッスン解説動画 コンテナ */
+    .chapter-intro-video { 
+      background: #fff; 
+      border-radius: 16px; 
+      padding: 24px 28px; 
+      margin-bottom: 32px; 
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06); 
+      position: relative; 
+      overflow: hidden; 
+      box-sizing: border-box;
+    }
+
+    /* 上部のアクセントライン（オレンジグラデーション） */
+    .chapter-intro-video::before { 
+      content: ''; 
+      position: absolute; 
+      top: 0; 
+      left: 0; 
+      right: 0; 
+      height: 4px; 
+      background: linear-gradient(90deg, #E85D4A, #F5A64A); 
+    }
+
+    /* ラベルテキスト */
+    .chapter-intro-video__label { 
+      font-size: 11px; 
+      font-weight: 700; 
+      color: #E85D4A; 
+      letter-spacing: 0.15em; 
+      margin-bottom: 14px; 
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    /* 動画プレイヤー本体 */
+    .chapter-intro-video__player { 
+      width: 100%; 
+      border-radius: 8px; 
+      display: block; 
+      background: #F7F8FA; 
+    }
+  </style>
+
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video
+    src="https://media.webcoach.jp/videos/webdesign-illustrator/5-4_final.mp4"
+    controls
+    preload="metadata"
+    class="chapter-intro-video__player"
+  ></video>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item31526" data-item-id="31526" data-item-type="ItemHeading"><h3 class="item-body">Web用バナーの書き出し</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31527" data-item-id="31527" data-item-type="ItemRichText"><div class="item-body-hbr">実際のバナー制作を想定して、Web用のデータ書き出しを実践してみましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item31528" data-item-id="31528" data-item-type="ItemMarkdown"><h4 id="section">課題内容</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item31529" data-item-id="31529" data-item-type="ItemRichText"><div class="item-body-hbr">ECサイト用のプロモーションバナーを3種類のサイズで書き出します。</div></div>
+        
+        <div class="article-item item_html " id="item31530" data-item-id="31530" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>メインビジュアル: 1200×400px</li>
+  <li>サイドバナー: 300×250px</li>
+  <li>スマホ用バナー: 640×100px</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31531" data-item-id="31531" data-item-type="ItemMarkdown"><h4 id="section">手順：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31532" data-item-id="31532" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>既存のバナーデザインを開くか、シンプルなバナーを作成してください。</li>
+  <li>アートボードを3つ用意し、それぞれのサイズに設定してください。</li>
+  <li>各アートボードにデザインを配置（サイズに合わせて調整）してください。</li>
+  <li>スクリーン用に書き出しから一括書き出しを行ってください。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item31533" data-item-id="31533" data-item-type="ItemMarkdown"><h4 id="section">アートボード作成方法</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item31535" data-item-id="31535" data-item-type="ItemMarkdown"><h4 id="section">既存のバナーデザインからの書き出し方法</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31537" data-item-id="31537" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">書き出し設定（書き出すバナーの要素によって設定が異なります）<br></span>
+  <ul>
+    <li><span class="decoration-02">フォーマット</span>: PNG（透明部分がある場合）または JPEG（写真が中心の場合）</li>
+    <li><span class="decoration-02">解像度</span>: 72ppi（Web標準）</li>
+    <li><span class="decoration-02">JPEG品質（JPEGの場合）</span>: 高画質（80%程度）</li>
+    <li><span class="decoration-02">PNG設定（PNGの場合）</span>: 24ビット（透明部分なし）または 32ビット（透明部分あり）</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item31538" data-item-id="31538" data-item-type="ItemRichText"><div class="item-body-hbr">実際の書き出しを行い、ファイルサイズと画質のバランスを確認してみましょう。<br>
+ファイルサイズが大きすぎる場合は、圧縮率を調整します。</div></div>
+        
+        <div class="article-item item_heading " id="item31540" data-item-id="31540" data-item-type="ItemHeading"><h3 class="item-body">印刷用チラシデータの作成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31541" data-item-id="31541" data-item-type="ItemRichText"><div class="item-body-hbr">印刷用のチラシデータを作成し、印刷所に入稿できる形式で保存します。</div></div>
+        
+        <div class="article-item item_markdown " id="item31542" data-item-id="31542" data-item-type="ItemMarkdown"><h4 id="section">課題内容</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item31543" data-item-id="31543" data-item-type="ItemRichText"><div class="item-body-hbr">A4サイズのプロモーションチラシを作成し、印刷入稿用のPDFに書き出します。</div></div>
+        
+        <div class="article-item item_markdown " id="item31544" data-item-id="31544" data-item-type="ItemMarkdown"><h4 id="section">手順</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31545" data-item-id="31545" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>新規ドキュメントを作成してください。（A4サイズ、CMYKモード）</li>
+  <li>裁ち落としを3mmに設定し、ドキュメント作成後、トリムマーク（トンボ）を設定してください</li>
+  <li>シンプルなチラシデザインを作成してください。
+    <ul>
+      <li>背景色や画像は裁ち落とし領域まで伸ばしてください。</li>
+      <li>重要なテキストや要素はセーフティマージン（端から5mm以上）内に配置してください。</li>
+    </ul>
+  </li>
+  <li>印刷用PDFとして保存してください。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_html " id="item31547" data-item-id="31547" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold">PDF保存設定<br></span>
+  <ul>
+    <li><span class="decoration-02">プリセット</span>: 「プレス品質」を選択する</li>
+    <li><span class="decoration-02">トンボと裁ち落とし</span>: トンボを表示、裁ち落とし値を3mmに設定する</li>
+    <li><span class="decoration-02">カラー</span>: CMYK変換を確認する</li>
+    <li><span class="decoration-02">フォント</span>: フォントが埋め込まれているか確認する</li>
+  </ul>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item31548" data-item-id="31548" data-item-type="ItemRichText"><div class="item-body-hbr">保存したPDFを開き、トンボ、裁ち落とし、カラー設定（CMYKであること）を確認してください。</div></div>
+        
+        <div class="article-item item_heading " id="item31549" data-item-id="31549" data-item-type="ItemHeading"><h3 class="item-body">データ管理の実践</h3></div>
+        
+        <div class="article-item item_rich_text " id="item31550" data-item-id="31550" data-item-type="ItemRichText"><div class="item-body-hbr">制作したデータを効率的に管理する方法を実践します。</div></div>
+        
+        <div class="article-item item_markdown " id="item31551" data-item-id="31551" data-item-type="ItemMarkdown"><h4 id="section">課題内容</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item31552" data-item-id="31552" data-item-type="ItemRichText"><div class="item-body-hbr">制作したバナーとチラシのデータを、適切なフォルダ構造で整理します。</div></div>
+        
+        <div class="article-item item_markdown " id="item31553" data-item-id="31553" data-item-type="ItemMarkdown"><h4 id="section">フォルダ構造の例</h4>
+</div>
+        
+        <div class="article-item item_code " id="item31554" data-item-id="31554" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>Project_Name/
+├── Source_Files/
+│   ├── Banner.ai
+│   └── Flyer.ai
+├── Output/
+│   ├── Web/
+│   │   ├── main_banner.png
+│   │   ├── side_banner.png
+│   │   └── sp_banner.png
+│   └── Print/
+│       └── flyer_print.pdf
+└── Assets/
+    ├── Images/
+    └── Color_Palettes/</pre></div>
+</div>
+<div class="cite"><cite class="item-source">フォルダ構造</cite></div></div></div>
+        
+        <div class="article-item item_image " id="item31555" data-item-id="31555" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/555/medium/c519029e-bbb2-4ee5-81e9-28dc5ae95527.png?1752466525" title=""><img class="img-responsive item-image" alt=" (31555)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/031/555/medium/c519029e-bbb2-4ee5-81e9-28dc5ae95527.png?1752466525" width="640" height="243" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item31557" data-item-id="31557" data-item-type="ItemMarkdown"><h4 id="section">実践手順</h4>
+</div>
+        
+        <div class="article-item item_html " id="item31558" data-item-id="31558" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>プロジェクト名のフォルダを作成してください。</li>
+  <li>上記のフォルダ構造を作成してください。</li>
+  <li>作成したバナーとチラシの元データを「Source_Files」フォルダに保存してください。</li>
+  <li>書き出したバナー画像を「Output/Web」フォルダに保存してください。</li>
+  <li>印刷用PDFを「Output/Print」フォルダに保存してください。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_html " id="item31559" data-item-id="31559" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ファイル命名のベストプラクティス</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>わかりやすい名前を付けましょう（例：product_campaign_banner_1200x400.png）</li>
+      <li>スペースの代わりにアンダースコア(<code>_</code>)を使用してください。</li>
+      <li>日付を入れる場合は、並び替えしやすいよう「YYYYMMDD」形式を使用してください。</li>
+      <li>バージョン管理が必要な場合は、「v1」「v2」などの接尾辞を追加してください。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item31560" data-item-id="31560" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">ファイル管理のポイント</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>プロジェクトごとにフォルダを分ける</li>
+      <li>ソースファイルと出力ファイルを明確に分ける</li>
+      <li>重要なバージョンはバックアップを残す</li>
+      <li>作業中はこまめに保存する（「別名で保存」を活用する）</li>
+      <li>クライアントとのやり取りや指示書も一緒に保存する</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item31561" data-item-id="31561" data-item-type="ItemRichText"><div class="item-body-hbr">効率的なファイル管理は、制作フローの改善だけでなく、クライアントからの急な修正依頼にも素早く対応できるようになります。<br>
+<br>
+また、過去のプロジェクトを参考にすることで、新しいプロジェクトの効率も上がります。<br>
+<br>
+これで「データの出力と管理」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item33420" data-item-id="33420" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="Wcbk3" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="LRCmV" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="OKGhyAGdxh4mqM5SpPN8fA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

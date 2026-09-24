@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="LrP3kDCxXjYLSkcU+/x/DQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2756" data-domain="learn.webcoach.jp" data-url="/web-design/uiux/chap3/NzDgR" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3-4 ワイヤーフレーム — 見た目より先に何をどこに置くかを決める - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/002/350/original/script.js?1779642402"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/uiux/chap3/NzDgR">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="3-4 ワイヤーフレーム — 見た目より先に何をどこに置くかを決める - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="3-4 ワイヤーフレーム — 見た目より先に何をどこに置くかを決める">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/uiux/chap3/NzDgR">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/uiux/chap3/NzDgR"
+    },
+    "headline": "3-4 ワイヤーフレーム — 見た目より先に何をどこに置くかを決める",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/clipkit/images/medium/missing.png",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2026-07-28T15:47:00+09:00",
+    "dateModified": "2026-07-28T19:45:45+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "l_kamezaki"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="3E1jV-zK_S4mIqOTAK3FFyyj11PDooZ15OA2oB5no2wHFz0A8R1qodjp-LJy32SMK5vGq59C408KoqORFNHtNg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item51085" data-item-id="51085" data-item-type="ItemHtml"><div class="item-body"><meta charset="UTF-8">
+<!--
+  AI×UX/UIデザイナー育成講座（Reスキル認定申請予定・レベル3）
+  UX/UIデザイン教材 第3章「情報設計とUI設計」 レッスン4（※申請書類上は第Ⅲ部）
+  題材: ワイヤーフレーム（手順書型・学習時間150分・UXプロセスの設計フェーズ）
+  範囲: 通し課題リフトのワイヤーフレーム作成 / 見た目より先に「何をどこに置くか」を決める工程 / 前回（3-3）の画面フローと第2章のリサーチ・要件・価値定義をもとに、予約フロー中心で各画面の骨組み（要素の配置・優先順位）を色や装飾なしで組む / Figma教材で身につけた操作技術を応用（Figmaは見本の模写で操作を学んだ→ここはリフト向けに0から骨組みを作る）
+  手順: STEP1 画面ごとに必要要素を列挙 / STEP2 優先順位で上から配置 / STEP3 予約フローの画面をつなぐ / STEP4 迷わず予約に到達できるか自己点検
+  通し課題: 前回（3-3）サイトマップ・画面フロー → 今回 ワイヤーフレーム作成 → 仕上げる成果物＝ワイヤーフレーム（次章のUIの土台・作成物）
+  体裁の正: chapter-02_research-requirements/lesson-02.html（F5テンプレ・ClipKit目次対策込み）
+  図版: プレースホルダー（ig-3304-01〜03。画像生成は後日タスク）
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ClipKit対策: アンカージャンプ先が固定ヘッダーに隠れないようオフセット */
+section[id] { scroll-margin-top: 96px; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box__time { margin-left: auto; font-size: 13px; font-weight: 700; color: #C2402F; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — ClipKit対策版（高詳細度＋!important） */
+.lesson-wrapper nav.toc { background: #fff !important; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.lesson-wrapper nav.toc .toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lesson-wrapper nav.toc .toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.lesson-wrapper nav.toc .toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.lesson-wrapper nav.toc ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 3px; }
+.lesson-wrapper nav.toc ul li { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.lesson-wrapper nav.toc ul li::before { content: none !important; }
+.lesson-wrapper nav.toc ul li::marker { content: '' !important; }
+.lesson-wrapper nav.toc ul li a { display: flex !important; align-items: center; gap: 12px; padding: 8px 14px !important; background: #FAF9F8; border-radius: 8px; text-decoration: none !important; border-bottom: none !important; box-shadow: none; color: #2D2D2D !important; transition: background 0.2s; }
+.lesson-wrapper nav.toc ul li a:hover { background: #F5EFEC; text-decoration: none !important; color: #2D2D2D !important; }
+.lesson-wrapper nav.toc ul li a:visited { color: #2D2D2D !important; }
+.lesson-wrapper nav.toc .toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.lesson-wrapper nav.toc .toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.lesson-wrapper nav.toc .toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* 注意ボックス */
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+
+/* v2テーブル（比較・マッピング） */
+.v2-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 24px 0 28px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 15px; }
+.v2-table th { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-weight: 700; padding: 12px 16px; text-align: left; font-size: 14px; }
+.v2-table td { padding: 12px 16px; border-bottom: 1px solid #F0E6E1; color: #4A4A4A; background: #fff; vertical-align: top; line-height: 1.75; }
+.v2-table tr:last-child td { border-bottom: none; }
+.v2-table td:first-child { font-weight: 700; color: #2D2D2D; white-space: nowrap; }
+
+/* 図版プレースホルダー */
+.fig-ph { font-size: 14px; line-height: 1.8; }
+
+/* HTML実物見本（uidemo）— ワイヤーフレームはグレースケールで実物レンダリング */
+.uidemo { background: #fff; border: 1px solid #ECE7DE; border-radius: 14px; padding: 18px 20px; margin: 24px 0; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+.uidemo__cap { font-size: 12px; font-weight: 700; color: #7A7A7A; letter-spacing: 0.08em; margin-bottom: 14px; }
+.uidemo__note { font-size: 12px; line-height: 1.7; color: #8A8A8A; margin: 14px 0 0; text-align: center; }
+
+/* 良い例・悪い例（dodont）— 実物のミニUIをHTMLで左右比較（意味色：悪=赤系／良=緑系） */
+.dodont { display: flex; flex-direction: column; gap: 16px; margin: 28px 0; }
+.dodont__row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 600px) { .dodont__row { grid-template-columns: 1fr; } }
+.dodont__col { border-radius: 14px; padding: 18px 20px; }
+.dodont__col.bad { background: #FFF5F4; border: 1.5px solid #F5A8A0; }
+.dodont__col.good { background: #F1F9F4; border: 1.5px solid #A6D8BB; }
+.dodont__tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; margin-bottom: 10px; }
+.dodont__col.bad .dodont__tag { color: #C2402F; }
+.dodont__col.good .dodont__tag { color: #2E7D4F; }
+.dodont__demo { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+.dodont__note { font-size: 13.5px; line-height: 1.8; color: #555; margin: 0; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* 演習ボックス */
+.work-box { background: #fff; border: 2px solid #F5A64A; border-radius: 14px; padding: 22px 24px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.work-box__badge { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 14px; }
+.work-box h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 16px 0 8px; }
+.work-box ol, .work-box ul { margin: 0 0 8px; padding-left: 1.4em; }
+.work-box li { font-size: 14.5px; color: #4A4A4A; line-height: 1.85; }
+.work-box .v2-table { margin: 10px 0 14px; }
+.prep-list { background: #fff; border-radius: 14px; padding: 24px 28px; margin: 28px 0; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.prep-list .prep-label { font-size: 12px; font-weight: 700; color: #4CAF50; letter-spacing: 0.15em; margin-bottom: 12px; }
+.prep-list ul { list-style: none; padding: 0; margin: 0; }
+.prep-list li { padding: 10px 0; border-bottom: 1px solid #E8F5E9; font-size: 15px; color: #3D3D3D; }
+.prep-list li:last-child { border-bottom: none; }
+.prep-list li .prep-bullet { color: #4CAF50; margin-right: 8px; }
+.submit-note { background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; color: #C2402F; margin-top: 14px; text-align: center; }
+
+/* 理解度チェック — 白カード + グラデピル + 薄グラデ質問（Goalと統一） */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== 図解キット（fig-*）v2 分かりやすさ最適化 ===== */
+.fig { margin: 28px 0; }
+.fig__frame { background:#FBFAF8; border:1px solid #E4E1DB; border-radius:14px; padding:22px 20px; }
+.fig__cap { font-size:13px; color:#6E6A66; text-align:center; margin-top:10px; line-height:1.7; }
+.fig__sample { color:#B8B0A8 !important; font-style:italic; }
+.fig-row { display:flex; gap:16px; flex-wrap:wrap; }
+.fig-row > * { flex:1 1 0; min-width:150px; }
+.fig-card { background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:18px; }
+.fig-card__n { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:#E85D4A; color:#fff; font-size:13px; font-weight:800; margin-bottom:10px; }
+.fig-card__t { font-size:15px; font-weight:700; color:#2D2D2D; margin-bottom:6px; line-height:1.5; }
+.fig-card__d { font-size:13px; color:#555; line-height:1.75; }
+.fig-card__note { margin-top:10px; padding-top:10px; border-top:1px dashed #E4E1DB; font-size:12.5px; color:#C2402F; font-weight:700; }
+.fig-card--accent { border-color:#E85D4A; background:#FDEEE9; }
+.fig-card--fill { background:#E85D4A; border-color:#E85D4A; }
+.fig-card--fill .fig-card__t, .fig-card--fill .fig-card__d { color:#fff; }
+.fig-card--fill .fig-card__n { background:#fff; color:#E85D4A; }
+.fig-card--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-card--mute .fig-card__n { background:#A8A29B; }
+.fig-card--mute .fig-card__t { color:#6E6A66; }
+.fig-flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; }
+.fig-node { flex:1 1 0; min-width:104px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:13px 11px; text-align:center; }
+.fig-node__n { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; margin-bottom:8px; }
+.fig-node__t { font-size:13px; font-weight:700; color:#2D2D2D; line-height:1.45; }
+.fig-node__d { font-size:11.5px; color:#6E6A66; line-height:1.6; margin-top:4px; }
+.fig-node--current { border-color:#E85D4A; background:#FDEEE9; }
+.fig-node--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-node--mute .fig-node__n { background:#A8A29B; }
+.fig-node--mute .fig-node__t { color:#6E6A66; }
+.fig-sep { display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:18px; font-weight:800; flex:0 0 auto; }
+.fig-loop { margin-top:12px; display:flex; align-items:center; gap:10px; color:#C2402F; font-size:12.5px; font-weight:700; }
+.fig-loop__line { flex:1; height:0; border-top:2px dashed #C9C4BD; }
+.fig-two { display:flex; align-items:stretch; gap:12px; flex-wrap:wrap; }
+.fig-two__col { flex:1 1 0; min-width:180px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:16px 18px; }
+.fig-two__h { font-size:14px; font-weight:800; color:#2D2D2D; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.fig-two__col ul { margin:0; padding-left:1.1em; }
+.fig-two__col li { font-size:13px; color:#555; line-height:1.8; }
+.fig-two__mid { flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:22px; font-weight:800; }
+.fig-two__col--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-two__col--mute .fig-two__h, .fig-two__col--mute li { color:#8A8279; }
+.fig-two__col--accent { background:#FDEEE9; border-color:#E85D4A; }
+.fig-mark { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; font-size:12px; font-weight:800; flex:0 0 auto; }
+.fig-mark--ok { background:#E85D4A; color:#fff; }
+.fig-mark--ng { background:#C9C4BD; color:#fff; }
+.fig-tag { display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.04em; padding:2px 8px; border-radius:6px; }
+.fig-tag--mute { background:#E4E1DB; color:#8A8279; }
+.fig-tag--accent { background:#E85D4A; color:#fff; }
+.fig-nest { display:flex; justify-content:center; }
+.fig-nest__outer { position:relative; background:#FDEEE9; border:2px solid #F0A891; border-radius:20px; padding:38px 28px 22px; min-width:280px; max-width:440px; text-align:center; }
+.fig-nest__label { position:absolute; top:12px; left:20px; font-size:12.5px; font-weight:800; color:#C2402F; }
+.fig-nest__inner { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:18px 20px; }
+.fig-nest__inner .t { font-size:14px; font-weight:800; color:#2D2D2D; }
+.fig-nest__inner .d { font-size:12px; color:#6E6A66; margin-top:4px; line-height:1.6; }
+.fig-nest__outerd { font-size:12px; color:#8A6A5A; margin-top:14px; line-height:1.6; }
+.fig-ladder { display:flex; flex-direction:column; gap:8px; }
+.fig-step { border:1px solid #E4E1DB; border-radius:12px; padding:12px 16px; display:flex; gap:12px; align-items:flex-start; }
+.fig-step__n { flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.fig-step__t { font-size:13px; color:#3D3D3D; line-height:1.6; }
+.fig-step.s1{background:#FCF1ED}.fig-step.s2{background:#FADED4}.fig-step.s3{background:#F7C9B8}.fig-step.s4{background:#F3B39B}.fig-step.s5{background:#EE9B7E}
+.fig-step.d2{margin-left:22px}.fig-step.d3{margin-left:44px}.fig-step.d4{margin-left:66px}.fig-step.d5{margin-left:88px}
+.fig-step--root { border-color:#E85D4A; border-width:2px; }
+.fig-why { text-align:center; color:#A8A29B; font-size:12px; font-weight:800; margin:2px 0; }
+.fig-band { display:flex; flex-direction:column; gap:8px; }
+.fig-band__row { display:flex; gap:10px; align-items:center; }
+.fig-band__k { flex:0 0 104px; font-size:12.5px; font-weight:800; color:#C2402F; text-align:right; line-height:1.4; }
+.fig-band__v { flex:1; background:#FDEEE9; border:1px solid #E4E1DB; border-radius:10px; padding:9px 12px; font-size:12.5px; color:#3D3D3D; line-height:1.6; }
+.fig-exchange { display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap; }
+.fig-exchange__end { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:16px 18px; font-size:13.5px; font-weight:800; color:#2D2D2D; text-align:center; min-width:110px; }
+.fig-exchange__mid { flex:1; min-width:150px; display:flex; flex-direction:column; gap:8px; }
+.fig-exchange__req, .fig-exchange__res { border-radius:8px; padding:7px 12px; font-size:12px; font-weight:700; text-align:center; }
+.fig-exchange__req { background:#FDEEE9; color:#C2402F; }
+.fig-exchange__res { background:#F4F2F0; color:#6E6A66; }
+@media (max-width:600px){
+  .fig-two__mid{transform:rotate(90deg)}
+  .fig-step.d2,.fig-step.d3,.fig-step.d4,.fig-step.d5{margin-left:0}
+}
+/* ===== UIモックアップ・キット（ui-*）リフト予約サービス ===== */
+.ui-flow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center;margin:4px 0}
+.ui-sep{color:#B0A79C;font-size:20px;font-weight:800;flex:0 0 auto;display:flex;flex-direction:column;align-items:center;font-size:11px}
+.ui-sep b{font-size:22px;line-height:1}
+.ui-phone{width:188px;background:#fff;border:7px solid #2A2A2E;border-radius:26px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.12);flex:0 0 auto}
+.ui-scr{background:#F6F1E7;min-height:330px;display:flex;flex-direction:column}
+.ui-bar{background:#2F5D50;color:#fff;padding:11px 13px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px}
+.ui-bar .ui-back{opacity:.85;font-weight:400}
+.ui-body{padding:11px;display:flex;flex-direction:column;gap:8px;flex:1}
+.ui-h{font-size:12px;font-weight:800;color:#2D2D2D}
+.ui-sub{font-size:10px;color:#7a726a}
+.ui-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.ui-cal span{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:9px;border-radius:5px;background:#fff;color:#555}
+.ui-cal span.on{background:#2F5D50;color:#fff;font-weight:700}
+.ui-cal span.off{opacity:.35}
+.ui-chips{display:flex;flex-wrap:wrap;gap:5px}
+.ui-chip{font-size:9.5px;padding:5px 8px;border-radius:14px;background:#fff;border:1px solid #DCCFC0;color:#2F5D50}
+.ui-chip.on{background:#2F5D50;color:#fff;border-color:#2F5D50}
+.ui-card{background:#fff;border:1px solid #E8DECF;border-radius:8px;padding:8px 10px;font-size:10px;color:#555}
+.ui-line{height:7px;border-radius:4px;background:#E3D9CB}
+.ui-line.sh{width:58%}
+.ui-field{background:#fff;border:1px solid #DCCFC0;border-radius:6px;padding:7px 9px;font-size:9.5px;color:#9a9088}
+.ui-btn{background:#2F5D50;color:#fff;text-align:center;padding:9px;border-radius:8px;font-size:11px;font-weight:800;margin-top:auto}
+.ui-btn.ghost{background:#fff;color:#9a9088;border:1px solid #DCCFC0}
+/* 参考/大手（ニュートラル・情報多め） */
+.ui-phone--ref .ui-scr{background:#fff}
+.ui-phone--ref .ui-bar{background:#4a4a4a}
+.ui-phone--ref .ui-chip{color:#555;border-color:#ddd}
+.ui-phone--ref .ui-chip.on,.ui-phone--ref .ui-cal span.on,.ui-phone--ref .ui-btn{background:#4a4a4a;border-color:#4a4a4a}
+.ui-phone--ref .ui-card,.ui-phone--ref .ui-field{border-color:#e5e5e5}
+.ui-phone--ref .ui-line{background:#e6e6e6}
+/* ワイヤーフレーム（グレースケール） */
+.ui-phone--wire .ui-scr{background:#fff}
+.ui-phone--wire .ui-bar{background:#cfcfcf;color:#666}
+.ui-phone--wire .ui-btn{background:#bdbdbd}
+.ui-phone--wire .ui-cal span.on,.ui-phone--wire .ui-chip.on{background:#bdbdbd;color:#fff;border-color:#bdbdbd}
+.ui-phone--wire .ui-chip,.ui-phone--wire .ui-card,.ui-phone--wire .ui-field{border-color:#dcdcdc;color:#999}
+.ui-phone--wire .ui-cal span{color:#999}
+.ui-phone--wire .ui-line{background:#e2e2e2}
+.ui-plabel{font-size:10px;color:#7a726a;text-align:center;margin-top:5px;font-weight:700}
+/* 変更メモ（4観点） */
+.ui-memo{display:flex;flex-direction:column;gap:7px;max-width:220px;flex:1 1 180px}
+.ui-memo__item{background:#FDEEE9;border:1px solid #F0C9BC;border-radius:8px;padding:7px 10px;font-size:11px;color:#3D3D3D;line-height:1.6}
+.ui-memo__k{font-weight:800;color:#C2402F;font-size:10.5px;margin-right:4px}
+/* 注記（引き出しメモ） */
+.ui-annos{display:flex;flex-direction:column;gap:7px;max-width:240px;flex:1 1 200px}
+.ui-anno{background:#fff;border:1px solid #E4E1DB;border-left:3px solid #2F5D50;border-radius:6px;padding:7px 10px;font-size:11px;color:#3D3D3D;line-height:1.6}
+.ui-anno.warn{border-left-color:#E85D4A}
+.ui-anno__k{font-weight:800;color:#2F5D50;font-size:10.5px}
+.ui-anno.warn .ui-anno__k{color:#C2402F}
+.ui-split{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;justify-content:center}
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">第3章</span>
+  <div class="lesson-hero__title">ワイヤーフレーム — 見た目より先に何をどこに置くかを決める</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">レッスン 3-4</span>
+    <span class="lesson-hero__topic">情報設計とUI設計</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約150分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+      <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="kCEXo" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="YIlCC" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+    <div class="goal-box__time">⏱ 約150分</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">ワイヤーフレームで決めること（要素の配置と優先順位）と、この段階では色や装飾を決めないことを説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">Figmaで身につけた操作を使い、何を置くかの判断は画面フローとリサーチをもとに自分で下せる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">予約フローを中心に各画面のワイヤーフレームを作り、迷わず予約に到達できるかを自己点検して仕上げられる</div></li>
+  </ul>
+</div>
+
+<!-- 目次: ClipKit対策のためインラインstyleを併記 -->
+<nav class="toc" style="background:#fff; border-radius:14px; padding:22px 26px; box-shadow:0 2px 12px rgba(0,0,0,0.05); margin:0 0 48px;">
+  <div class="toc-head" style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <div class="toc-icon" style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#E85D4A,#F5A64A); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700;">≡</div>
+    <div class="toc-title" style="font-size:15px; font-weight:700; color:#2D2D2D;">目次</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;">
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s1" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">01</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">ワイヤーフレームは何をどこに置くかを決める工程</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s2" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">02</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">Figmaで学んだ操作を0からの骨組み作りに応用する</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s3" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">03</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">4ステップで予約フローの骨組みを組む</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s4" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">04</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">演習：リフトのワイヤーフレームを作る</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- 通し課題の連続性: 前回の成果物 → 今回 → 仕上げる成果物（2-2形式） -->
+<div style="border:1px solid #E8DCC8; background:#FBF8F3; border-radius:14px; padding:18px 22px; margin:0 0 40px;">
+  <div style="display:inline-block; background:#8B6F3F; color:#fff; padding:4px 12px; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.1em; margin-bottom:10px;">通し課題</div>
+  <p style="font-size:14.5px; line-height:1.9; color:#3D3D3D; margin:0;">前回（3-3）では、リフトの情報を整理して<strong>サイトマップ（IA図）と画面フロー</strong>を作りました。今回はその画面フローをもとに、予約フローを中心に各画面の<strong>ワイヤーフレーム</strong>を組みます。仕上げる成果物は、各画面の骨組みをまとめた<strong>ワイヤーフレーム</strong>です。</p>
+</div>
+
+<p>このレッスンでやるのは、リフトの予約サービスのワイヤーフレームを作ることです。ワイヤーフレームは、色や写真や装飾を入れる前に、それぞれの画面へ何をどこに置くかを決めた骨組みの設計図です。第1章で見たUXデザインの流れでは、リサーチと要件定義のあとに画面をかたちにします。ワイヤーフレームはその最初の工程で、前回（3-3）の画面フローをもとに、予約フローを中心に画面ごとの要素と並び順を決めます。Figmaの操作は、Figma教材で見本を模写しながらすでに身につけました。今回はその操作技術を使って、リフト向けに0から骨組みを組み立てます。見た目を整えるのは次のレッスンなので、まずは何をどこに置くかをここで固めます。</p>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>ワイヤーフレームは何をどこに置くかを決める工程</h2>
+
+<p>ワイヤーフレームは、画面に何をどこに置くかを決めた骨組みの図です。色・写真・フォント・装飾は入れず、要素の位置と大きさ、並ぶ順番だけを、グレーの四角と線で表します。</p>
+
+<div class="uidemo">
+  <div class="uidemo__cap">見本：ワイヤーフレーム（リフト「予約｜日時選択」画面／グレースケール）</div>
+  <div style="max-width:320px; margin:0 auto; border:1.5px solid #C9C9C9; border-radius:12px; padding:16px 16px 18px; background:#fff;">
+
+    <!-- ヘッダー：ロゴは四角＋バツ印で表す -->
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+      <span style="display:inline-flex; align-items:center; gap:6px; font-size:10px; color:#9A9A9A;">
+        <span style="width:24px; height:24px; border:1.5px solid #C4C4C4; border-radius:5px; background:linear-gradient(45deg,transparent 46%,#CFCFCF 46%,#CFCFCF 54%,transparent 54%),linear-gradient(-45deg,transparent 46%,#CFCFCF 46%,#CFCFCF 54%,transparent 54%);"></span>
+        ロゴ
+      </span>
+      <span style="width:26px; height:16px; border:1.5px solid #CFCFCF; border-radius:3px;"></span>
+    </div>
+
+    <!-- 見出し（テキストは横線で表す） -->
+    <div style="font-size:9px; color:#B0B0B0; letter-spacing:0.08em; margin-bottom:6px;">見出し</div>
+    <div style="width:58%; height:14px; background:#D2D2D2; border-radius:3px; margin-bottom:16px;"></div>
+
+    <!-- カレンダー：最優先の操作領域＝大きく上に -->
+    <div style="font-size:9px; color:#B0B0B0; letter-spacing:0.08em; margin-bottom:6px;">カレンダー（日を選ぶ）</div>
+    <div style="border:1.5px solid #D6D6D6; border-radius:8px; padding:10px; margin-bottom:16px;">
+      <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:5px;">
+        <span style="aspect-ratio:1; border-radius:3px; background:#ECECEC;"></span><span style="aspect-ratio:1; border-radius:3px; background:#ECECEC;"></span><span style="aspect-ratio:1; border-radius:3px; background:#ECECEC;"></span><span style="aspect-ratio:1; border-radius:3px; background:#ECECEC;"></span><span style="aspect-ratio:1; border-radius:3px; background:#ECECEC;"></span><span style="aspect-ratio:1; border-radius:3px; background:#ECECEC;"></span><span style="aspect-ratio:1; border-radius:3px; background:#ECECEC;"></span>
+        <span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span>
+        <span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF; border:1.5px solid #9E9E9E;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span>
+        <span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span><span style="aspect-ratio:1; border-radius:3px; background:#DFDFDF;"></span>
+      </div>
+    </div>
+
+    <!-- 時間帯 -->
+    <div style="font-size:9px; color:#B0B0B0; letter-spacing:0.08em; margin-bottom:6px;">時間帯を選ぶ</div>
+    <div style="display:flex; gap:6px; margin-bottom:16px;">
+      <span style="flex:1; height:26px; border:1.5px solid #D6D6D6; border-radius:5px;"></span>
+      <span style="flex:1; height:26px; border:1.5px solid #D6D6D6; border-radius:5px;"></span>
+      <span style="flex:1; height:26px; border:1.5px solid #D6D6D6; border-radius:5px;"></span>
+      <span style="flex:1; height:26px; border:1.5px solid #D6D6D6; border-radius:5px;"></span>
+    </div>
+
+    <!-- メニュー -->
+    <div style="font-size:9px; color:#B0B0B0; letter-spacing:0.08em; margin-bottom:6px;">メニュー選択</div>
+    <div style="height:30px; border:1.5px solid #D6D6D6; border-radius:5px; margin-bottom:18px;"></div>
+
+    <!-- 主要ボタン：最もしてほしい操作＝大きく目立つ位置に -->
+    <div style="background:#BFBFBF; border-radius:7px; padding:13px; text-align:center; font-size:12px; font-weight:700; color:#585858; margin-bottom:16px;">ボタン｜予約に進む</div>
+
+    <!-- 補足：優先度が低い情報＝下に小さく -->
+    <div style="font-size:9px; color:#B0B0B0; letter-spacing:0.08em; margin-bottom:6px;">補足（料金・キャンセル規定）</div>
+    <div style="width:90%; height:6px; background:#E8E8E8; border-radius:3px; margin-bottom:5px;"></div>
+    <div style="width:68%; height:6px; background:#E8E8E8; border-radius:3px;"></div>
+  </div>
+  <p class="uidemo__note">四角＝要素の枠／横線＝テキスト／斜線・バツ＝画像・ロゴ。色や装飾は入れず、上にある・大きい要素ほど優先度が高いことを、位置と大きさだけで表しています。</p>
+</div>
+
+<p>色や装飾を先に作り込むと、見た目の印象に気を取られて、肝心の要素の配置や優先順位の検討が後回しになります。骨組みだけにしておくと、何をどこに置くかという判断そのものに集中できます。修正も、線と四角を動かすだけで済むので速くなります。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">見た目は次の工程に回す</div>
+  </div>
+  <p>この段階のゴールは、きれいな画面ではありません。予約したい人が迷わず操作できる並びになっているかを、骨組みの形で確かめることです。色やフォントを決めるのは次のレッスン（3-5）なので、ここでは配置と優先順位だけに集中します。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 1／3</div></div>
+  <div class="quiz-q">ワイヤーフレームを作るこの段階で決めることとして、最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">ブランドカラーや写真を配置して、完成に近い見た目を作る</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">各画面に何をどこに置くか、要素の配置と並び順を決める</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">ボタンの影や角丸など、装飾のスタイルを細かく決める</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">フォントの種類とサイズを画面ごとに確定させる</div></button>
+  </div>
+  <div class="quiz-feedback" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">骨組みの段階では、要素の配置と並び順に集中します。色・写真・フォントなどの見た目は次のレッスンで決めます。先に見た目を作り込むと、配置の検討がおろそかになりがちです。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">この段階で決めるのは、要素の配置と並び順（B）です。色・写真・フォント（A・C・D）は見た目の工程で、ワイヤーフレームより後に決めます。骨組みに集中するために、あえて装飾を入れません。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>Figmaで学んだ操作を0からの骨組み作りに応用する</h2>
+
+<p>ワイヤーフレームはFigmaで作ります。Figmaの操作は、Figma教材ですでに身につけています。あの教材では、配布された見本をワイヤーフレームから模写して、フレームの作り方や要素の配置、整列といった操作を練習しました。</p>
+
+<p>今回は見本がありません。何をどこに置くかは、第2章で固めた要件や価値と、前回（3-3）で作った画面フローをもとに、自分で決めます。操作の手順は模写のときと同じでも、置くものの判断を自分で下すところが違いです。だからまず、前回の画面フローを手元に開いておきましょう。どの画面がどの順でつながるかが決まっていれば、あとはその一枚ずつに要素を置くだけです。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">操作は同じ、判断は自分で</div>
+  </div>
+  <p>Figma教材で覚えた操作は、そのまま使えます。違うのは、置くものを見本任せにせず、これまでのリサーチと画面フローを根拠に、リフトの利用者に合わせて自分で決める点です。この判断こそ、模写では扱わなかった部分です。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 2／3</div></div>
+  <div class="quiz-q">リフトのワイヤーフレームで、各画面に何を置くかを決める根拠として最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">Figma教材で模写した歯医者サイトの見本と、同じ配置にする</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">これまでのリサーチと画面フローをもとに、リフトの利用者が迷わない配置を自分で決める</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">見た目が今っぽくなるように、人気アプリの装飾をそのまままねる</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">思いついた順に、要素を上から並べていく</div></button>
+  </div>
+  <div class="quiz-feedback" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">今回は見本の模写ではありません。誰のために何を届けるかは、これまでのリサーチと画面フローに根拠があります。それをもとに、リフトの予約で迷わない配置を自分で決めます。Figmaの操作は使い、判断は自分で下します。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">見本や人気アプリのまね（A・C）では、リフトの利用者に合う配置になりません。根拠になるのは、これまでのリサーチと画面フロー（B）です。操作はFigma教材のものを使い、置くものの判断は自分で下します。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>4ステップで予約フローの骨組みを組む</h2>
+
+<p>ここからは、骨組みを組む手順です。予約フローを中心に、次の4ステップで進めます。1画面ずつ要素を書き出して並べ、画面をつなぎ、最後に自己点検します。</p>
+
+<div class="dodont">
+  <div class="dodont__row">
+
+    <!-- 悪い例：要素が整理されず優先順位が不明 -->
+    <div class="dodont__col bad">
+      <div class="dodont__tag">✗ 悪い例</div>
+      <div class="dodont__demo">
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="height:24px; border:1.5px solid #D6D6D6; border-radius:5px; display:flex; align-items:center; padding:0 8px; font-size:9.5px; color:#9A9A9A;">料金メモ</div>
+          <div style="height:24px; border:1.5px solid #D6D6D6; border-radius:5px; display:flex; align-items:center; padding:0 8px; font-size:9.5px; color:#9A9A9A;">メニュー</div>
+          <div style="height:24px; border:1.5px solid #D6D6D6; border-radius:5px; display:flex; align-items:center; padding:0 8px; font-size:9.5px; color:#9A9A9A;">予約に進む</div>
+          <div style="height:24px; border:1.5px solid #D6D6D6; border-radius:5px; display:flex; align-items:center; padding:0 8px; font-size:9.5px; color:#9A9A9A;">日付</div>
+          <div style="height:24px; border:1.5px solid #D6D6D6; border-radius:5px; display:flex; align-items:center; padding:0 8px; font-size:9.5px; color:#9A9A9A;">注意書き</div>
+          <div style="height:24px; border:1.5px solid #D6D6D6; border-radius:5px; display:flex; align-items:center; padding:0 8px; font-size:9.5px; color:#9A9A9A;">時間帯</div>
+        </div>
+      </div>
+      <p class="dodont__note">要素がすべて同じ大きさで順不同に並び、最も押してほしい「予約に進む」が埋もれている。どこから操作するか分からない。</p>
+    </div>
+
+    <!-- 良い例：上から重要順・グルーピング -->
+    <div class="dodont__col good">
+      <div class="dodont__tag">◯ 良い例</div>
+      <div class="dodont__demo">
+        <!-- 見出し -->
+        <div style="width:55%; height:12px; background:#D2D2D2; border-radius:3px; margin-bottom:12px;"></div>
+        <!-- 日時のグループ（大きく上に） -->
+        <div style="border:1.5px solid #D6D6D6; border-radius:6px; padding:8px; margin-bottom:6px;">
+          <div style="display:grid; grid-template-columns:repeat(7,1fr); gap:3px;">
+            <span style="aspect-ratio:1; border-radius:2px; background:#E4E4E4;"></span><span style="aspect-ratio:1; border-radius:2px; background:#E4E4E4;"></span><span style="aspect-ratio:1; border-radius:2px; background:#E4E4E4;"></span><span style="aspect-ratio:1; border-radius:2px; background:#E4E4E4;"></span><span style="aspect-ratio:1; border-radius:2px; background:#E4E4E4;"></span><span style="aspect-ratio:1; border-radius:2px; background:#E4E4E4;"></span><span style="aspect-ratio:1; border-radius:2px; background:#E4E4E4;"></span>
+            <span style="aspect-ratio:1; border-radius:2px; background:#DBDBDB;"></span><span style="aspect-ratio:1; border-radius:2px; background:#DBDBDB;"></span><span style="aspect-ratio:1; border-radius:2px; background:#DBDBDB;"></span><span style="aspect-ratio:1; border-radius:2px; background:#DBDBDB;"></span><span style="aspect-ratio:1; border-radius:2px; background:#DBDBDB;"></span><span style="aspect-ratio:1; border-radius:2px; background:#DBDBDB;"></span><span style="aspect-ratio:1; border-radius:2px; background:#DBDBDB;"></span>
+          </div>
+        </div>
+        <div style="display:flex; gap:5px; margin-bottom:14px;">
+          <span style="flex:1; height:18px; border:1.5px solid #D6D6D6; border-radius:4px;"></span>
+          <span style="flex:1; height:18px; border:1.5px solid #D6D6D6; border-radius:4px;"></span>
+          <span style="flex:1; height:18px; border:1.5px solid #D6D6D6; border-radius:4px;"></span>
+        </div>
+        <!-- 主要ボタン（大きく目立つ） -->
+        <div style="background:#BFBFBF; border-radius:6px; padding:11px; text-align:center; font-size:10.5px; font-weight:700; color:#585858; margin-bottom:12px;">予約に進む</div>
+        <!-- 補足（小さく下に） -->
+        <div style="width:85%; height:5px; background:#E8E8E8; border-radius:3px; margin-bottom:4px;"></div>
+        <div style="width:65%; height:5px; background:#E8E8E8; border-radius:3px;"></div>
+      </div>
+      <p class="dodont__note">上から重要順に並べ、日時の要素をグループ化。最も重要な「予約に進む」を大きく目立たせ、補足は下に小さく。迷わず操作できる。</p>
+    </div>
+
+  </div>
+</div>
+
+<h3>STEP1：画面ごとに必要な要素を書き出す</h3>
+<p>画面フローに並んだ画面を1枚ずつ見て、その画面に必要な要素をすべて書き出します。予約の日時を選ぶ画面なら、日付、時間、メニュー、予約するボタンといった具合です。この時点では並び順は気にせず、漏れなく挙げることを優先します。</p>
+
+<table class="v2-table">
+  <thead><tr><th>画面</th><th>その画面に置く主な要素の例（リフトの予約フロー）</th></tr></thead>
+  <tbody>
+    <tr><td>トップ</td><td>ジムの簡単な紹介、予約するへの導線、料金・アクセスへのリンク</td></tr>
+    <tr><td>予約（日時選択）</td><td>カレンダー、空き時間、メニューの選択、次へ進むボタン</td></tr>
+    <tr><td>予約内容の入力</td><td>名前、連絡先、選んだ日時の確認、送信ボタン</td></tr>
+    <tr><td>予約完了</td><td>完了したことの表示、予約内容、トップへ戻る導線</td></tr>
+  </tbody>
+</table>
+
+<h3>STEP2：優先順位を決めて上から置く</h3>
+<p>書き出した要素に優先順位をつけ、その画面で最もしてほしい操作を上のほう・目立つ位置に置きます。優先度の低い情報は下や別の画面に回します。この段階では色で目立たせず、位置と大きさで優先順位を表します。</p>
+
+<h3>STEP3：予約フローの画面をつなぐ</h3>
+<p>画面フローで決めた順に、各画面のボタンから次の画面へ線や矢印でつなぎます。どのボタンを押すと、次のどの画面に進むかが、ひと目で分かる状態にします。</p>
+
+<h3>STEP4：迷わず予約に到達できるか自己点検する</h3>
+<p>最後に、利用者になったつもりで、トップから予約完了までを実際にたどります。押す場所に迷う画面や、戻れなくなる箇所、抜けている画面がないかを確認し、あれば骨組みのうちに直します。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">優先順位は位置と大きさで表す</div>
+  </div>
+  <p>その画面で最もしてほしい操作を、上・目立つ位置に、大きめに置きます。予約の日時選択画面なら、日時を選んで予約に進む導線がそれにあたります。色をまだ使えない分、位置と大きさが優先順位を伝える手がかりになります。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 3／3</div></div>
+  <div class="quiz-q">予約フローの各画面に要素を並べるとき、優先順位のつけ方として適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">目立たせたい要素を、装飾やアイコンで飾って強調する</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">その画面で最もしてほしい操作を、上のほう・目立つ位置に大きめに置く</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">要素は種類ごとに、五十音順で上から並べる</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">情報はできるだけ1画面に詰め込み、画面数を減らす</div></button>
+  </div>
+  <div class="quiz-feedback" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">各画面には、そこで最もしてほしい操作があります。それを上・目立つ位置に大きめに置くと、利用者は迷いません。骨組みの段階では装飾で飾るのではなく、位置と大きさで優先順位を表します。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">優先順位は、最もしてほしい操作を上・目立つ位置に大きめに置くこと（B）で表します。装飾で飾る（A）のは見た目の工程です。ワイヤーフレームでは、位置と大きさだけで優先順位を示します。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>演習：リフトのワイヤーフレームを作る</h2>
+
+<p>ここからは実際に手を動かします。前回の画面フローとこれまでのリサーチを手元に開き、Figmaでリフトの予約サービスのワイヤーフレームを作ります。予約フローを中心に、各画面の骨組みを組みます。</p>
+
+<figure class="fig" data-asset-id="ig-3304-03">
+  <div class="ui-flow">
+    <div>
+      <div class="ui-phone ui-phone--wire"><div class="ui-scr">
+        <div class="ui-bar">リフト</div>
+        <div class="ui-body">
+          <div class="ui-line"></div>
+          <div class="ui-line sh"></div>
+          <div class="ui-card">店舗・メニュー紹介</div>
+          <div class="ui-card">トレーナー紹介</div>
+          <div class="ui-btn">予約する</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">トップ</div>
+    </div>
+    <div class="ui-sep"><b>→</b></div>
+    <div>
+      <div class="ui-phone ui-phone--wire"><div class="ui-scr">
+        <div class="ui-bar">日時を選ぶ</div>
+        <div class="ui-body">
+          <div class="ui-h">日付</div>
+          <div class="ui-cal">
+            <span class="off">日</span><span class="off">月</span><span class="off">火</span><span class="off">水</span><span class="off">木</span><span class="off">金</span><span class="off">土</span>
+            <span>15</span><span>16</span><span>17</span><span class="on">18</span><span>19</span><span>20</span><span>21</span>
+          </div>
+          <div class="ui-h">時間帯</div>
+          <div class="ui-chips"><span class="ui-chip">18:00</span><span class="ui-chip on">19:00</span><span class="ui-chip">20:00</span></div>
+          <div class="ui-btn">次へ</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">予約（日時選択）</div>
+    </div>
+    <div class="ui-sep"><b>→</b></div>
+    <div>
+      <div class="ui-phone ui-phone--wire"><div class="ui-scr">
+        <div class="ui-bar">予約内容の入力</div>
+        <div class="ui-body">
+          <div class="ui-h">お名前</div>
+          <div class="ui-field">氏名を入力</div>
+          <div class="ui-h">連絡先</div>
+          <div class="ui-field">メールアドレス</div>
+          <div class="ui-btn">確認へ</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">予約内容の入力</div>
+    </div>
+    <div class="ui-sep"><b>→</b></div>
+    <div>
+      <div class="ui-phone ui-phone--wire"><div class="ui-scr">
+        <div class="ui-bar">予約完了</div>
+        <div class="ui-body">
+          <div class="ui-card">✓ 予約が完了しました</div>
+          <div class="ui-line"></div>
+          <div class="ui-line sh"></div>
+          <div class="ui-btn ghost">ホームへ戻る</div>
+        </div>
+      </div></div>
+      <div class="ui-plabel">予約完了</div>
+    </div>
+  </div>
+  <figcaption class="fig__cap">図：色・装飾を入れないワイヤーフレーム一式が、今回作る成果物（次章のUIデザインの土台）。</figcaption>
+</figure>
+
+<div class="notice-box">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">色・装飾はまだ入れない</div>
+  </div>
+  <p>この段階で色・写真・フォント・装飾に手を出すと、要素の配置や優先順位の検討が止まります。ワイヤーフレームはグレーの四角と線だけで組み、見た目は次のレッスン（3-5）で決めます。骨組みが固まるまでは、あえて装飾を入れないでください。</p>
+</div>
+
+<div class="work-box reveal">
+  <div class="work-box__badge">演習 3-4</div>
+
+  <div class="prep-list">
+    <div class="prep-label">📋 事前準備</div>
+    <ul>
+      <li><span class="prep-bullet">●</span>前回（3-3）のサイトマップと画面フローを、手元に開いておく</li>
+      <li><span class="prep-bullet">●</span>これまでのリサーチ成果物（ゴール定義シート・ペルソナなど）を開いておく</li>
+      <li><span class="prep-bullet">●</span>Figmaを開き、新しいファイルを1つ用意する</li>
+    </ul>
+  </div>
+
+  <h4>STEP 1：予約フローの各画面に必要な要素を書き出す</h4>
+  <ul>
+    <li>画面フローを見て、予約に関わる画面（トップ／予約の日時選択／予約内容の入力／予約完了 など）を1枚ずつ確認する</li>
+    <li>各画面に必要な要素を、並び順は気にせず<strong>すべて書き出す</strong>（上の表を参考に、リフトに足りない要素を補う）</li>
+  </ul>
+
+  <h4>STEP 2：優先順位を決めて上から置く</h4>
+  <ul>
+    <li>書き出した要素に優先順位をつけ、その画面で<strong>最もしてほしい操作を上・目立つ位置</strong>に置く</li>
+    <li>目立たせ方は色ではなく、<strong>位置と大きさ</strong>で表す</li>
+    <li>優先度の低い情報は、下や別の画面に回す</li>
+  </ul>
+
+  <h4>STEP 3：予約フローの画面をつなぐ</h4>
+  <ul>
+    <li>画面フローで決めた順に、各画面のボタンから次の画面へ<strong>線や矢印でつなぐ</strong></li>
+    <li>どのボタンを押すとどこへ進むかが、ひと目で分かる状態にする</li>
+  </ul>
+
+  <h4>STEP 4：迷わず予約に到達できるか自己点検する</h4>
+  <ul>
+    <li>利用者になったつもりで、トップから予約完了まで<strong>実際にたどってみる</strong></li>
+    <li>押す場所に迷う画面、戻れない箇所、抜けている画面がないかを確認し、骨組みのうちに直す</li>
+  </ul>
+
+  <h4>完了条件（作成物：ワイヤーフレーム）</h4>
+  <ul>
+    <li><strong>ワイヤーフレーム</strong>（予約フローを中心に、各画面の要素の配置と優先順位、画面のつながりを示したもの。色・装飾は入れず、グレーの四角と線で構成する）</li>
+  </ul>
+
+</div>
+
+<p>UIの見た目を作り込む前に、骨組みの段階で迷いや漏れを直しておくと、あとの手戻りが少なくなります。次のレッスンでは、このワイヤーフレームに色やフォントを載せて、UIデザインに仕上げます。</p>
+</section>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>ワイヤーフレームで決めることと、この段階で決めないことを説明できる</summary>
+    <div class="check-box__detail">ワイヤーフレームで決めるのは、各画面の要素の配置と優先順位、そして画面のつながりです。色・写真・フォント・装飾は入れず、グレーの四角と線で骨組みだけを組みます。見た目を決めるのは次のレッスン（3-5）でした。先に装飾を作り込むと、配置の検討が後回しになります。</div>
+  </details>
+  <details>
+    <summary>Figmaの操作を応用しつつ、何を置くかの判断を自分で下せる</summary>
+    <div class="check-box__detail">Figmaの操作はFigma教材で見本を模写して身につけました。今回はその操作を使いながら、何をどこに置くかは見本任せにせず、これまでのリサーチと前回の画面フローをもとに、リフトの利用者に合わせて自分で決めます。操作は同じでも、判断を自分で下すところが模写との違いです。</div>
+  </details>
+  <details>
+    <summary>4ステップで予約フローの骨組みを組み、自己点検できる</summary>
+    <div class="check-box__detail">STEP1で画面ごとに必要な要素を書き出し、STEP2で優先順位をつけて上から置き、STEP3で画面をつなぎ、STEP4でトップから予約完了までをたどって点検します。優先順位は色ではなく、位置と大きさで表すのがポイントでした。迷う箇所や抜けは、骨組みのうちに直します。</div>
+  </details>
+</div>
+  
+     <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="kCEXo" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="YIlCC" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div><!-- /.lesson-wrapper -->
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.quiz-opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const q = this.dataset.q;
+    const correct = this.dataset.correct === 'true';
+    const opts = document.querySelectorAll(`[data-q="${q}"]`);
+    opts.forEach(o => o.disabled = true);
+    this.classList.add(correct ? 'correct' : 'wrong');
+    opts.forEach(o => {
+      if (o === this) return;
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+      else o.classList.add('dim');
+    });
+    document.getElementById(`${q}-${correct ? 'ok' : 'ng'}`).classList.add('show');
+  });
+});
+</script></div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="LrP3kDCxXjYLSkcU+/x/DQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>

@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="p84l8PS6u2UUgjF3K/ESbQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2761" data-domain="learn.webcoach.jp" data-url="/web-design/uiux/chap4/Ffpd4" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>4-4 行動データの読解基礎 — 公開後の数字から課題を見つける - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/002/350/original/script.js?1779642402"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/uiux/chap4/Ffpd4">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="4-4 行動データの読解基礎 — 公開後の数字から課題を見つける - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="4-4 行動データの読解基礎 — 公開後の数字から課題を見つける">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/uiux/chap4/Ffpd4">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/web-design/uiux/chap4/Ffpd4"
+    },
+    "headline": "4-4 行動データの読解基礎 — 公開後の数字から課題を見つける",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/clipkit/images/medium/missing.png",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2026-07-28T15:50:00+09:00",
+    "dateModified": "2026-08-05T16:15:18+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "l_kamezaki"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="NMvadrFlHINmeYXrOktz3p5JQM_tDej8DWHknSFUiU5kYYJ6k4ki1xm4yrFia8Nw6EYH1Su7GcZH_ALoxJ3Zvg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item51090" data-item-id="51090" data-item-type="ItemHtml"><div class="item-body"><meta charset="UTF-8">
+<!--
+  AI×UX/UIデザイナー育成講座（Reスキル認定申請予定・レベル3）
+  UX/UIデザイン教材 第4章「プロトタイピングと検証」 lesson-04（4-4）※申請書類上は第Ⅲ部 Ⅲ-4
+  題材: 行動データの読解基礎（知識型・学習時間約60分・7step ⑦継続改善／DSS-P データ理解・活用）
+  範囲: 疑似アクセス解析（予約フローの離脱率・完了率・流入元）から課題を見つける＝リリース後改善の疑似実践 / 統計情報の正しい読み方（平均の落とし穴・母数nを見る・相関≠因果・割合と実数） / 課題→仮説→改善候補の4STEP
+  通し課題: 前回（4-3）の改善版UI・意図シートを受け、公開を想定した疑似データを読み解く。工程内演習＝データ読解演習（自己添削・提出必須ではない）
+  図版: 一部は後日画像生成（fig-ph）
+  体裁の正: chapter-02_research-requirements/lesson-02.html（F5テンプレ・ClipKit目次対策込み）
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ClipKit対策: アンカージャンプ先が固定ヘッダーに隠れないようオフセット */
+section[id] { scroll-margin-top: 96px; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box__time { margin-left: auto; font-size: 13px; font-weight: 700; color: #C2402F; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — ClipKit対策版（高詳細度＋!important） */
+.lesson-wrapper nav.toc { background: #fff !important; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.lesson-wrapper nav.toc .toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lesson-wrapper nav.toc .toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.lesson-wrapper nav.toc .toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.lesson-wrapper nav.toc ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 3px; }
+.lesson-wrapper nav.toc ul li { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.lesson-wrapper nav.toc ul li::before { content: none !important; }
+.lesson-wrapper nav.toc ul li::marker { content: '' !important; }
+.lesson-wrapper nav.toc ul li a { display: flex !important; align-items: center; gap: 12px; padding: 8px 14px !important; background: #FAF9F8; border-radius: 8px; text-decoration: none !important; border-bottom: none !important; box-shadow: none; color: #2D2D2D !important; transition: background 0.2s; }
+.lesson-wrapper nav.toc ul li a:hover { background: #F5EFEC; text-decoration: none !important; color: #2D2D2D !important; }
+.lesson-wrapper nav.toc ul li a:visited { color: #2D2D2D !important; }
+.lesson-wrapper nav.toc .toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.lesson-wrapper nav.toc .toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.lesson-wrapper nav.toc .toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* 注意ボックス */
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+
+/* v2テーブル（数値データの正確な提示） */
+.v2-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 24px 0 28px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 15px; }
+.v2-table th { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-weight: 700; padding: 12px 16px; text-align: left; font-size: 14px; }
+.v2-table td { padding: 12px 16px; border-bottom: 1px solid #F0E6E1; color: #4A4A4A; background: #fff; vertical-align: top; line-height: 1.75; }
+.v2-table tr:last-child td { border-bottom: none; }
+.v2-table td:first-child { font-weight: 700; color: #2D2D2D; white-space: nowrap; }
+.v2-table tr.hi td { background: #FFF6EE; }
+
+/* HTML実物見本（.uidemo） */
+.uidemo { background: #fff; border: 1px solid #ECE7DE; border-radius: 14px; padding: 18px 20px; margin: 20px 0; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+.uidemo__cap { font-size: 12px; font-weight: 700; color: #7A7A7A; letter-spacing: 0.08em; margin-bottom: 14px; }
+.bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.bar-row:last-child { margin-bottom: 0; }
+.bar-label { flex-shrink: 0; width: 150px; font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.bar-track { flex: 1; background: #F2ECE6; border-radius: 6px; height: 22px; overflow: hidden; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, #F5A64A, #FB9A3F); border-radius: 6px; }
+.bar-value { flex-shrink: 0; width: 150px; font-size: 13px; color: #555; text-align: right; }
+
+/* 図版プレースホルダー */
+.fig-ph { font-size: 14px; line-height: 1.8; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* 演習ボックス */
+.work-box { background: #fff; border: 2px solid #F5A64A; border-radius: 14px; padding: 22px 24px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.work-box__badge { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 14px; }
+.work-box h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 16px 0 8px; }
+.work-box ol, .work-box ul { margin: 0 0 8px; padding-left: 1.4em; }
+.work-box li { font-size: 14.5px; color: #4A4A4A; line-height: 1.85; }
+.work-box .v2-table { margin: 10px 0 14px; }
+.prep-list { background: #fff; border-radius: 14px; padding: 24px 28px; margin: 28px 0; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.prep-list .prep-label { font-size: 12px; font-weight: 700; color: #4CAF50; letter-spacing: 0.15em; margin-bottom: 12px; }
+.prep-list ul { list-style: none; padding: 0; margin: 0; }
+.prep-list li { padding: 10px 0; border-bottom: 1px solid #E8F5E9; font-size: 15px; color: #3D3D3D; }
+.prep-list li:last-child { border-bottom: none; }
+.prep-list li .prep-bullet { color: #4CAF50; margin-right: 8px; }
+.submit-note { background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; color: #C2402F; margin-top: 14px; text-align: center; }
+
+/* 理解度チェック — 白カード + グラデピル + 薄グラデ質問（Goalと統一） */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ===== 図解キット（fig-*）v2 分かりやすさ最適化 ===== */
+.fig { margin: 28px 0; }
+.fig__frame { background:#FBFAF8; border:1px solid #E4E1DB; border-radius:14px; padding:22px 20px; }
+.fig__cap { font-size:13px; color:#6E6A66; text-align:center; margin-top:10px; line-height:1.7; }
+.fig__sample { color:#B8B0A8 !important; font-style:italic; }
+.fig-row { display:flex; gap:16px; flex-wrap:wrap; }
+.fig-row > * { flex:1 1 0; min-width:150px; }
+.fig-card { background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:18px; }
+.fig-card__n { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:#E85D4A; color:#fff; font-size:13px; font-weight:800; margin-bottom:10px; }
+.fig-card__t { font-size:15px; font-weight:700; color:#2D2D2D; margin-bottom:6px; line-height:1.5; }
+.fig-card__d { font-size:13px; color:#555; line-height:1.75; }
+.fig-card__note { margin-top:10px; padding-top:10px; border-top:1px dashed #E4E1DB; font-size:12.5px; color:#C2402F; font-weight:700; }
+.fig-card--accent { border-color:#E85D4A; background:#FDEEE9; }
+.fig-card--fill { background:#E85D4A; border-color:#E85D4A; }
+.fig-card--fill .fig-card__t, .fig-card--fill .fig-card__d { color:#fff; }
+.fig-card--fill .fig-card__n { background:#fff; color:#E85D4A; }
+.fig-card--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-card--mute .fig-card__n { background:#A8A29B; }
+.fig-card--mute .fig-card__t { color:#6E6A66; }
+.fig-flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; }
+.fig-node { flex:1 1 0; min-width:104px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:13px 11px; text-align:center; }
+.fig-node__n { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; margin-bottom:8px; }
+.fig-node__t { font-size:13px; font-weight:700; color:#2D2D2D; line-height:1.45; }
+.fig-node__d { font-size:11.5px; color:#6E6A66; line-height:1.6; margin-top:4px; }
+.fig-node--current { border-color:#E85D4A; background:#FDEEE9; }
+.fig-node--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-node--mute .fig-node__n { background:#A8A29B; }
+.fig-node--mute .fig-node__t { color:#6E6A66; }
+.fig-sep { display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:18px; font-weight:800; flex:0 0 auto; }
+.fig-loop { margin-top:12px; display:flex; align-items:center; gap:10px; color:#C2402F; font-size:12.5px; font-weight:700; }
+.fig-loop__line { flex:1; height:0; border-top:2px dashed #C9C4BD; }
+.fig-two { display:flex; align-items:stretch; gap:12px; flex-wrap:wrap; }
+.fig-two__col { flex:1 1 0; min-width:180px; background:#fff; border:1px solid #E4E1DB; border-radius:12px; padding:16px 18px; }
+.fig-two__h { font-size:14px; font-weight:800; color:#2D2D2D; margin-bottom:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.fig-two__col ul { margin:0; padding-left:1.1em; }
+.fig-two__col li { font-size:13px; color:#555; line-height:1.8; }
+.fig-two__mid { flex:0 0 auto; display:flex; align-items:center; justify-content:center; color:#A8A29B; font-size:22px; font-weight:800; }
+.fig-two__col--mute { background:#F4F2F0; border-color:#E4E1DB; }
+.fig-two__col--mute .fig-two__h, .fig-two__col--mute li { color:#8A8279; }
+.fig-two__col--accent { background:#FDEEE9; border-color:#E85D4A; }
+.fig-mark { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; font-size:12px; font-weight:800; flex:0 0 auto; }
+.fig-mark--ok { background:#E85D4A; color:#fff; }
+.fig-mark--ng { background:#C9C4BD; color:#fff; }
+.fig-tag { display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.04em; padding:2px 8px; border-radius:6px; }
+.fig-tag--mute { background:#E4E1DB; color:#8A8279; }
+.fig-tag--accent { background:#E85D4A; color:#fff; }
+.fig-nest { display:flex; justify-content:center; }
+.fig-nest__outer { position:relative; background:#FDEEE9; border:2px solid #F0A891; border-radius:20px; padding:38px 28px 22px; min-width:280px; max-width:440px; text-align:center; }
+.fig-nest__label { position:absolute; top:12px; left:20px; font-size:12.5px; font-weight:800; color:#C2402F; }
+.fig-nest__inner { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:18px 20px; }
+.fig-nest__inner .t { font-size:14px; font-weight:800; color:#2D2D2D; }
+.fig-nest__inner .d { font-size:12px; color:#6E6A66; margin-top:4px; line-height:1.6; }
+.fig-nest__outerd { font-size:12px; color:#8A6A5A; margin-top:14px; line-height:1.6; }
+.fig-ladder { display:flex; flex-direction:column; gap:8px; }
+.fig-step { border:1px solid #E4E1DB; border-radius:12px; padding:12px 16px; display:flex; gap:12px; align-items:flex-start; }
+.fig-step__n { flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:#E85D4A; color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.fig-step__t { font-size:13px; color:#3D3D3D; line-height:1.6; }
+.fig-step.s1{background:#FCF1ED}.fig-step.s2{background:#FADED4}.fig-step.s3{background:#F7C9B8}.fig-step.s4{background:#F3B39B}.fig-step.s5{background:#EE9B7E}
+.fig-step.d2{margin-left:22px}.fig-step.d3{margin-left:44px}.fig-step.d4{margin-left:66px}.fig-step.d5{margin-left:88px}
+.fig-step--root { border-color:#E85D4A; border-width:2px; }
+.fig-why { text-align:center; color:#A8A29B; font-size:12px; font-weight:800; margin:2px 0; }
+.fig-band { display:flex; flex-direction:column; gap:8px; }
+.fig-band__row { display:flex; gap:10px; align-items:center; }
+.fig-band__k { flex:0 0 104px; font-size:12.5px; font-weight:800; color:#C2402F; text-align:right; line-height:1.4; }
+.fig-band__v { flex:1; background:#FDEEE9; border:1px solid #E4E1DB; border-radius:10px; padding:9px 12px; font-size:12.5px; color:#3D3D3D; line-height:1.6; }
+.fig-exchange { display:flex; align-items:center; gap:12px; justify-content:center; flex-wrap:wrap; }
+.fig-exchange__end { background:#fff; border:2px solid #E85D4A; border-radius:14px; padding:16px 18px; font-size:13.5px; font-weight:800; color:#2D2D2D; text-align:center; min-width:110px; }
+.fig-exchange__mid { flex:1; min-width:150px; display:flex; flex-direction:column; gap:8px; }
+.fig-exchange__req, .fig-exchange__res { border-radius:8px; padding:7px 12px; font-size:12px; font-weight:700; text-align:center; }
+.fig-exchange__req { background:#FDEEE9; color:#C2402F; }
+.fig-exchange__res { background:#F4F2F0; color:#6E6A66; }
+@media (max-width:600px){
+  .fig-two__mid{transform:rotate(90deg)}
+  .fig-step.d2,.fig-step.d3,.fig-step.d4,.fig-step.d5{margin-left:0}
+}
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">第4章</span>
+  <div class="lesson-hero__title">行動データの読解基礎 — 公開後の数字から課題を見つける</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">レッスン 4-4</span>
+    <span class="lesson-hero__topic">プロトタイピングと検証</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約60分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="YomXf" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap5/Ud7be" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+    <div class="goal-box__time">⏱ 約60分</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">行動データ（アクセス解析）を使い、予約フローのどの画面で離脱が多いかを読み取れる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">平均・母数（n）・相関と因果・割合と実数の4つの注意点をふまえて、数字を正しく読める</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">提供データから課題を見つけ、仮説を立てて次の改善候補を1つ挙げられる</div></li>
+  </ul>
+</div>
+
+<!-- 目次: ClipKit対策のためインラインstyleを併記 -->
+<nav class="toc" style="background:#fff; border-radius:14px; padding:22px 26px; box-shadow:0 2px 12px rgba(0,0,0,0.05); margin:0 0 48px;">
+  <div class="toc-head" style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <div class="toc-icon" style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#E85D4A,#F5A64A); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700;">≡</div>
+    <div class="toc-title" style="font-size:15px; font-weight:700; color:#2D2D2D;">目次</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;">
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s1" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">01</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">公開後の数字を読むとは（行動データの位置づけ）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s2" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">02</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">どの画面で離脱しているかを読む</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s3" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">03</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">数字にだまされない読み方（4つの落とし穴）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s4" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">04</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">演習：データから課題と改善候補を書き出す</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- 通し課題の連続性: 前回（4-3）→今回→成果物 -->
+<div style="border:1px solid #E8DCC8; background:#FBF8F3; border-radius:14px; padding:18px 22px; margin:0 0 40px;">
+  <div style="display:inline-block; background:#8B6F3F; color:#fff; padding:4px 12px; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.1em; margin-bottom:10px;">通し課題</div>
+  <p style="font-size:14.5px; line-height:1.9; color:#3D3D3D; margin:0;">前回（4-3）では、ユーザビリティテストで見つかった課題をもとに、<strong>改善版のUI</strong>と、なぜそう直したかをまとめた<strong>意図シート</strong>を作りました。今回は、この予約サービスが公開されたと想定した疑似的なアクセスデータを読み、どこに課題が残っているかを数字から見つけます。仕上げる成果物は、提供データから課題と改善候補を書き出した<strong>データ読解演習</strong>です。この読み方は、第5章のリリース後の改善提案で継続的な改善の仕組みを提案するときの土台になります。</p>
+</div>
+
+<p>第3章で予約サービスのUIとスタイルガイドを作り、第4章ではそれをプロトタイプにして（4-1）、コーチに触ってもらうユーザビリティテスト（4-2）で見つかった課題から改善版のUI（4-3）まで仕上げてきました。ここまでは公開する前のデザインの話です。実際のサービスは、公開してからが本当のスタートになります。使う人が増えると、どの画面でつまずいているか、どこで予約をやめてしまうかが、行動データとして数字に表れます。このレッスンでは、リフトの予約サービスを公開したと想定した疑似的なアクセスデータを読み、どこに課題があるかを自分で見つける練習をします。あわせて、数字にだまされないための読み方も身につけます。これは、第1章で学んだ7ステップの最後にあたる継続的な改善（⑦）を、公開前に一度体験しておくものです。</p>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>公開後の数字を読むとは（行動データの位置づけ）</h2>
+
+<p>デザインは、公開したら完成ではありません。使う人の動きを数字で見て、うまくいっていない場所を直し続けます。この直し続ける工程が、7ステップの⑦継続的な改善にあたります。</p>
+
+<figure class="fig" data-asset-id="ig-3404-01"><img src="https://media.webcoach.jp/courses/13_reskill-uxui/assets/fig/ig-3404-01.png" alt="作る→公開する→行動データを見る→課題を見つけて直す、の4つを時計回りの矢印でつなぎ、最後から最初へ戻して繰り返し回り続ける継続的な改善（⑦）の循環図" style="width:100%;height:auto;border-radius:14px;border:1px solid #E4E1DB;"><figcaption class="fig__cap">図：公開は終わりではなく、データを見て直す入口。⑦継続的な改善のループが回り続ける。</figcaption></figure>
+
+<p>行動データとは、サービスを使った人が実際にどう動いたかの記録です。無料で使えるアクセス解析ツールを入れておくと、どのページが何回見られたか、どの画面から次に進んだか、どこで離れたかが数字でわかります。今回のリフトの予約サービスはまだ公開していないので、公開されたと想定した疑似的なデータを使って、読み方を先に練習します。</p>
+
+<p>まず、これから何度も出てくる言葉を整理します。予約の入口から完了までの一連の画面の流れを<strong>予約フロー</strong>と呼びます。ある画面まで来た人のうち、次に進まず離れてしまった人の割合が<strong>離脱率</strong>です。逆に、最後まで進んで予約を終えた人の割合が<strong>完了率</strong>です。予約フローを、上から下へ人数が減る漏斗（じょうご）に見立てて、どこで人が抜けるかを見ます。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">数字は課題の在りかを教えてくれる</div>
+  </div>
+  <p>行動データは、どこがうまくいっていないかを教えてくれます。ただし、なぜそうなったかまでは教えてくれません。数字は課題のある場所を指し示す入口で、その理由を考えて直すのは自分の仕事です。この順番を覚えておきましょう。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 1／3</div></div>
+  <div class="quiz-q">リフトの予約サービスを公開したと想定します。日時を選ぶ画面の離脱率が高い、というデータが出ました。この離脱率が表しているのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">日時を選ぶ画面を、サービス全体の中で何人が見たかの割合</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">日時を選ぶ画面まで来た人のうち、次に進まず離れた人の割合</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">日時を選ぶ画面が、なぜ使いにくいのかという理由</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">日時を選ぶ画面のデザインが、良いか悪いかの評価点</div></button>
+  </div>
+  <div class="quiz-feedback" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">離脱率は、その画面まで来た人を母数として、次に進まず離れた人の割合を表します。数字は離脱が起きた場所を示しますが、理由（C）や良し悪しの評価（D）までは教えてくれません。理由は自分で考えます。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">離脱率は、その画面まで来た人のうち次へ進まなかった人の割合（B）です。理由（C）や評価（D）は数字そのものには含まれません。数字はどこで離脱したかを示す入口で、理由を考えるのは自分の仕事でした。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>どの画面で離脱しているかを読む</h2>
+
+<p>ここからは、公開を想定した疑似データを実際に読みます。下の表は、過去30日にリフトの予約フローを使った人が、各画面でどれだけ次に進み、どれだけ離れたかを記録したものです。</p>
+
+<table class="v2-table">
+  <thead><tr><th>予約フローの画面</th><th>到達した人数（n）</th><th>次の画面へ進んだ人数</th><th>離脱率</th></tr></thead>
+  <tbody>
+    <tr><td>①予約トップ</td><td>1,000</td><td>720</td><td>28%</td></tr>
+    <tr><td>②日時を選ぶ</td><td>720</td><td>648</td><td>10%</td></tr>
+    <tr class="hi"><td>③情報を入力する</td><td>648</td><td>400</td><td>38%</td></tr>
+    <tr><td>④内容を確認</td><td>400</td><td>380</td><td>5%</td></tr>
+    <tr><td>⑤予約完了</td><td>380</td><td>-</td><td>-</td></tr>
+  </tbody>
+</table>
+
+<p>最初にやることは、どの画面で離脱が多いかを見つけることです。離脱率だけを並べると、③情報を入力する画面が38%で飛び抜けて高いことがわかります。同じ数字を棒の長さにすると、違いが一目で見えます。</p>
+
+<div class="uidemo reveal">
+  <div class="uidemo__cap">画面ごとの離脱率（過去30日の疑似データ）</div>
+  <div class="bar-row">
+    <div class="bar-label">①予約トップ</div>
+    <div class="bar-track"><div class="bar-fill" style="width:28%;"></div></div>
+    <div class="bar-value">28%（280人が離脱）</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">②日時を選ぶ</div>
+    <div class="bar-track"><div class="bar-fill" style="width:10%;"></div></div>
+    <div class="bar-value">10%（72人が離脱）</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">③情報を入力する</div>
+    <div class="bar-track"><div class="bar-fill" style="width:38%; background:linear-gradient(90deg,#F87060,#E85D4A);"></div></div>
+    <div class="bar-value">38%（248人が離脱）</div>
+  </div>
+  <div class="bar-row">
+    <div class="bar-label">④内容を確認</div>
+    <div class="bar-track"><div class="bar-fill" style="width:5%;"></div></div>
+    <div class="bar-value">5%（20人が離脱）</div>
+  </div>
+</div>
+
+<p>③情報を入力する画面は、日時まで選んで予約する気になった人が、あと少しで完了というところで4割近く抜けています。ここが最初に疑うべき画面です。第3章で作った入力画面を思い出すと、名前・電話番号・メール・要望など、入力する項目が多かったかもしれません。項目の多さや、会員登録を必須にしていることが、離脱の原因の候補になります。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">離脱率の母数はその画面に来た人</div>
+  </div>
+  <p>離脱率は、サービス全体の人数ではなく、<strong>その画面まで来た人</strong>を母数にして計算します。③の38%は、③に来た648人のうち248人が離れたという意味です。母数がどこの人数かを取り違えると、課題の大きさを見誤ります。表では<strong>到達した人数（n）</strong>の列が母数にあたります。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 2／3</div></div>
+  <div class="quiz-q">上の予約フローのデータを見て、改善のために最初に詳しく調べる画面を1つ選ぶとしたら、どれが最も妥当でしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">④内容を確認（離脱率5%）。最後の画面なので重要だから</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">③情報を入力する（離脱率38%）。進む気で来た人が最も多く抜けているから</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">②日時を選ぶ（離脱率10%）。カレンダーは難しそうだから</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">⑤予約完了。完了した人が多いので、さらに増やしたいから</div></button>
+  </div>
+  <div class="quiz-feedback" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">離脱率が飛び抜けて高い③（38%）が、最初に調べる画面です。日時まで選んで進む気になった人が248人も抜けているので、もったいなさが大きい場所です。難しそうという印象（C）ではなく、数字で判断するのがコツでした。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">最初に調べるのは、離脱率が飛び抜けて高い③（38%）です。④は離脱率5%で問題は小さく、②は印象で選んでいます。進む気で来た人が最も多く抜けている画面から手をつけるのが、効果の大きい直し方です。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>数字にだまされない読み方（4つの落とし穴）</h2>
+
+<p>数字は便利ですが、読み方を間違えると見当違いの結論に飛びついてしまいます。ここでは、初心者がはまりやすい4つの落とし穴を確認します。</p>
+
+<h3>1. 平均だけを見ない（平均の落とし穴）</h3>
+
+<p>たとえば、予約を終えるまでの平均時間が4分だったとします。一見すると、みんな4分ほどで快適に予約できているように見えます。ところが内訳を見ると、10人のうち8人は2分前後で終えていて、残りの2人が15分以上かけて途中でやめていました。平均の4分は、この一部の長い時間に引っ張られた数字です。平均だけを見ると、強く詰まっている人がいることに気づけません。平均を見たら、ばらつきや内訳もあわせて見ます。</p>
+
+<h3>2. 母数（n）が小さい割合を信じすぎない</h3>
+
+<p>割合は、母数が小さいと大きく揺れます。下の表は、予約トップに来た1,000人を、どこから来たか（流入元）で分けたものです。</p>
+
+<table class="v2-table">
+  <thead><tr><th>流入元</th><th>訪問した人数（n）</th><th>予約完了した人数</th><th>完了率</th></tr></thead>
+  <tbody>
+    <tr><td>LINE公式</td><td>520</td><td>250</td><td>48%</td></tr>
+    <tr><td>Google検索</td><td>360</td><td>100</td><td>28%</td></tr>
+    <tr><td>Instagram広告</td><td>112</td><td>26</td><td>23%</td></tr>
+    <tr><td>チラシのQRコード</td><td>8</td><td>4</td><td>50%</td></tr>
+  </tbody>
+</table>
+
+<p>チラシのQRコードは完了率50%で、一番良い流入元に見えます。しかし訪問はたった8人で、うち4人が完了しただけです。あと1人増えるか減るかで、完了率は簡単に大きく動きます。この数字から、チラシが最も効く集客だと結論づけることはできません。一方、LINE公式は520人という十分な母数で48%なので、こちらの数字は信頼して読めます。割合を見たら、その母数（n）が判断に足りる大きさかを必ず確認します。</p>
+
+<h3>3. 同時に動いても原因とは限らない（相関≠因果）</h3>
+
+<p>Instagram広告を出した週に、予約完了が増えたとします。広告のおかげだと言いたくなります。しかし同じ週に、地元のテレビでジムが特集され、Google検索からの訪問も増えていました。2つの数字が同じ時期に動いても、一方がもう一方の原因とは限りません。これを相関と因果の違いと言います。</p>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">原因を決めつけて直さない</div>
+  </div>
+  <p>原因を決めつけて改善に手をつけると、見当違いの修正に時間を使ってしまいます。数字が動いたときは、<strong>本当にそれが原因か</strong>を一度疑い、他に効いた要因がないかを確かめてから直しましょう。</p>
+</div>
+
+<h3>4. 割合と実数の両方を見る</h3>
+
+<p>割合（%）だけ、あるいは実数（人数）だけを見ると、大事なことを見落とします。先ほどの予約フローで比べてみます。離脱率が最も高いのは③情報を入力する画面（38%）ですが、人数で見ると①予約トップの離脱280人が最大です。ただし①は、まだ予約する気が固まっていない人も通る入口なので、離脱は高めに出やすい場所です。③は、日時まで選んで進む気になった人が抜けているので、同じ人数でももったいなさが大きくなります。割合と実数、そしてその画面がどんな人の通る場所かをあわせて読むと、どこを直すのが効果的かが見えてきます。</p>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 3／3</div></div>
+  <div class="quiz-q">織田さんが「チラシのQRコードは完了率50%だから、これからはチラシに力を入れたい」と言いました。データを読んだあなたの返答として、最も適切なものはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">完了率が一番高いので、その判断で問題ありませんと伝える</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">Instagram広告のほうが完了率が低いので、まず広告をやめましょうと伝える</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">C</div><div class="quiz-opt-text">QRからの訪問は8人と少なく、この完了率だけでは判断できないので、もう少し様子を見ましょうと伝える</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">完了率より離脱率のほうが大事なので、流入元は見なくてよいと伝える</div></button>
+  </div>
+  <div class="quiz-feedback" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">QRの母数は8人しかなく、割合が大きく揺れます。この数字だけで力を入れる先を決めるのは危険です（C）。母数の大きいLINE公式やGoogle検索の数字のほうが信頼して読めます。母数（n）を確認する落とし穴の応用でした。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">QRの完了率50%は、訪問8人・完了4人という小さい母数の数字で、簡単に揺れます。これだけで判断はできません（C）。流入元は見なくてよい（D）わけでもありません。母数が判断に足りる大きさかを確認するのがポイントでした。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>演習：データから課題と改善候補を書き出す</h2>
+
+<p>ここまでの読み方を使って、リフトの疑似データから課題を見つけ、次の改善候補までを書き出します。手順は4つのステップに分かれています。この流れは、公開後に実際のデータを見るときにもそのまま使えます。</p>
+
+<figure class="fig" data-asset-id="ig-3404-02">
+  <div class="fig-flow">
+    <div class="fig-node"><div class="fig-node__n">1</div><div class="fig-node__t">離脱の多い画面を見つける</div><div class="fig-node__d">離脱率＋人数を書き出す</div></div>
+    <div class="fig-sep">›</div>
+    <div class="fig-node"><div class="fig-node__n">2</div><div class="fig-node__t">母数を確認する</div><div class="fig-node__d">その数字は信頼できるか</div></div>
+    <div class="fig-sep">›</div>
+    <div class="fig-node"><div class="fig-node__n">3</div><div class="fig-node__t">仮説を立てる</div><div class="fig-node__d">なぜ離脱したか（3章UI・4章テストと結ぶ）</div></div>
+    <div class="fig-sep">›</div>
+    <div class="fig-node"><div class="fig-node__n">4</div><div class="fig-node__t">次の改善候補を1つ選ぶ</div><div class="fig-node__d">理由を添える</div></div>
+  </div>
+  <figcaption class="fig__cap">図：数字を見る（①②）と、理由を考えて直す（③④）は別の作業。この4ステップでデータから改善候補まで導く。</figcaption>
+</figure>
+
+<div class="work-box reveal">
+  <div class="work-box__badge">演習 4-4</div>
+
+  <div class="prep-list">
+    <div class="prep-label">📋 事前準備</div>
+    <ul>
+      <li><span class="prep-bullet">●</span>このレッスンの2つの表（予約フロー・流入元）を、手元に開いておく</li>
+      <li><span class="prep-bullet">●</span>第3章で作った予約フローの画面構成と、第4章のテスト記録（4-2）を見返せるようにする</li>
+      <li><span class="prep-bullet">●</span>書き込む場所（メモ帳や表計算、ドキュメント）を用意する</li>
+    </ul>
+  </div>
+
+  <h4>STEP 1：離脱の多い画面を見つける</h4>
+  <ul>
+    <li>予約フローの表から、離脱率が高い画面を上位から書き出す</li>
+    <li>各画面について、<strong>離脱率（%）と離脱した人数の両方</strong>を並べて書く</li>
+  </ul>
+
+  <h4>STEP 2：その数字の母数を確認する</h4>
+  <ul>
+    <li>書き出した数字が、<strong>どれだけの人数（n）を母数にしているか</strong>を確認する</li>
+    <li>母数が小さすぎて当てにならない箇所があれば、判断を保留する印を付ける</li>
+  </ul>
+
+  <h4>STEP 3：なぜ離脱したのか仮説を立てる</h4>
+  <ul>
+    <li>離脱が最も多い画面について、<strong>離れた理由の仮説</strong>を1〜2個書く</li>
+    <li>第3章で作ったその画面のUIと、第4章のユーザビリティテストで出た課題を結びつけて考える</li>
+  </ul>
+
+  <h4>STEP 4：次の改善候補を1つ選ぶ</h4>
+  <ul>
+    <li>仮説をもとに、<strong>次に試したい改善を1つ</strong>選び、なぜそれを選んだかの理由を添える</li>
+    <li>相関と因果の落とし穴を思い出し、原因を決めつけていないかを見直す</li>
+  </ul>
+
+  <h4>完了条件（作成物）</h4>
+  <ul>
+    <li><strong>データ読解メモ</strong>：離脱の多い画面（離脱率＋人数）／母数の確認結果／離脱の仮説／次の改善候補1つと、その理由</li>
+    <li><strong>注意点メモ</strong>：4つの落とし穴（平均・母数・相関と因果・割合と実数）のうち、今回どれに気をつけて読んだかを2〜3行で書く</li>
+  </ul>
+
+  <div class="submit-note">不安なところがあれば、コーチに相談してみましょう</div>
+</div>
+
+<p>このデータ読解演習は、公開後に自分でサービスを直し続ける練習です。第5章では、ここで見つけた課題をもとに、リリース後も継続的に改善し続ける仕組みを提案書にまとめます。今回書き出した課題と改善候補のメモは、そのまま次の章の材料になります。</p>
+</section>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>予約フローのどの画面で離脱が多いかを、データから読み取れる</summary>
+    <div class="check-box__detail">各画面の離脱率は、その画面に来た人（到達した人数＝母数）のうち次へ進まなかった人の割合です。リフトの疑似データでは③情報を入力する画面が38%で飛び抜けて高く、日時まで選んで進む気になった人が最も多く抜けているので、最初に調べる画面でした。</div>
+  </details>
+  <details>
+    <summary>平均・母数（n）・相関と因果・割合と実数の4つの注意点をふまえて数字を読める</summary>
+    <div class="check-box__detail">平均は一部の極端な値に引っ張られるのでばらつきも見ます。母数が小さい割合（例：QR訪問8人で完了率50%）は当てになりません。2つの数字が同時に動いても原因とは限りません。割合と実数は両方を見て、その画面がどんな人の通る場所かもあわせて読みます。</div>
+  </details>
+  <details>
+    <summary>提供データから課題を見つけ、仮説を立てて改善候補を1つ挙げられる</summary>
+    <div class="check-box__detail">離脱の多い画面を見つけ（STEP1）、母数を確認し（STEP2）、なぜ離脱したかの仮説を立て（STEP3）、次の改善候補を1つ選ぶ（STEP4）という手順でした。数字はどこに課題があるかを示す入口で、理由を考えて直すのは自分の仕事、という順番を覚えておきましょう。</div>
+  </details>
+</div>
+
+<div style="background:linear-gradient(135deg,#FFF5F0 0%,#FFFAEC 100%); border:2px solid #F5A64A; border-radius:14px; padding:22px 24px; margin:44px 0 8px;">
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+    <span style="display:inline-block; background:linear-gradient(135deg,#F84744,#FB9A3F); color:#fff; padding:6px 16px; border-radius:50px; font-size:12px; font-weight:800; letter-spacing:0.1em;">提出</span>
+    <span style="font-size:15px; font-weight:800; color:#2D2D2D;">第4章の提出物 — コーチに提出しよう</span>
+  </div>
+  <p style="font-size:14px; color:#555; line-height:1.9; margin:0 0 14px;">この章で作った次の成果物を、まとめてコーチへ提出します。コーチが確認したら次の章へ進みます。（※途中の作業シート・自己採点の演習は提出不要）</p>
+  <label style="display:flex; align-items:flex-start; gap:10px; padding:11px 14px; background:#fff; border:1px solid #F1DFCB; border-radius:10px; margin-bottom:8px; font-size:14px; color:#3D3D3D; cursor:pointer;"><input type="checkbox" style="margin-top:3px; width:16px; height:16px; accent-color:#E85D4A; flex-shrink:0;"><span>動くプロトタイプ<span style="color:#9a9088; font-size:12px;">（4-1）</span></span></label>
+  <label style="display:flex; align-items:flex-start; gap:10px; padding:11px 14px; background:#fff; border:1px solid #F1DFCB; border-radius:10px; font-size:14px; color:#3D3D3D; cursor:pointer;"><input type="checkbox" style="margin-top:3px; width:16px; height:16px; accent-color:#E85D4A; flex-shrink:0;"><span>改善版UI・意図シート（テスト結果を反映）<span style="color:#9a9088; font-size:12px;">（4-3）</span></span></label>
+</div>
+  
+    <!-- 前の章に戻るボタンの場合 --> 
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="YomXf" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%) rotate(180deg); filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+    前の章に戻る
+  </a>
+</div>  
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div><!-- /.lesson-wrapper -->
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.quiz-opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const q = this.dataset.q;
+    const correct = this.dataset.correct === 'true';
+    const opts = document.querySelectorAll(`[data-q="${q}"]`);
+    opts.forEach(o => o.disabled = true);
+    this.classList.add(correct ? 'correct' : 'wrong');
+    opts.forEach(o => {
+      if (o === this) return;
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+      else o.classList.add('dim');
+    });
+    document.getElementById(`${q}-${correct ? 'ok' : 'ng'}`).classList.add('show');
+  });
+});
+</script></div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="p84l8PS6u2UUgjF3K/ESbQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>

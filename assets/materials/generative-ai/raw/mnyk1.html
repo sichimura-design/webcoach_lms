@@ -1,0 +1,188 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48867" data-item-id="48867" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="J2vEnzSOiXoILIK5GeQ86w==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2457" data-domain="learn.webcoach.jp" data-url="/generative-ai/introduction-to-generative-ai/claude-chap4/mNyk1" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>実用的な使い方3選 | Claude活用講座</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #F7F8FA; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+h2 { font-size: 22px; font-weight: 900; color: #2D2D2D; margin: 56px 0 20px; padding: 0 0 12px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 900; color: #2D2D2D; margin: 32px 0 14px; }
+p { font-size: 15px; line-height: 2.0; color: #555; margin: 0 0 14px; }
+.accent { color: #E85D4A; font-weight: 700; }
+.goal-box { background: #fff; padding: 24px 28px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.goal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.goal-box__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.goal-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.goal-box__time { font-size: 11px; font-weight: 500; color: #E85D4A; }
+.goal-box__text { font-size: 15px; font-weight: 700; color: #3D3D3D; line-height: 1.7; margin: 0; }
+.toc-box { background: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.toc-box .label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 10px; }
+.toc-box ol { margin: 0; padding-left: 20px; font-size: 14px; color: #555; line-height: 2.2; }
+.toc-link { color: #555; text-decoration: none; }
+.toc-link:hover { color: #E85D4A; }
+.usecase { background: #fff; border-radius: 16px; padding: 24px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-left: 5px solid #E85D4A; }
+.usecase__num { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.12em; margin-bottom: 6px; }
+.usecase__title { font-size: 18px; font-weight: 900; color: #2D2D2D; margin-bottom: 14px; }
+.usecase__flow { background: #F7F8FA; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+.usecase__flow__label { font-size: 11px; font-weight: 700; color: #888; margin-bottom: 8px; }
+.usecase__flow__steps { font-size: 13px; color: #555; line-height: 2.0; }
+.usecase__prompt { background: #1A1A2E; border-radius: 10px; padding: 14px 16px; }
+.usecase__prompt__label { font-size: 10px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 8px; }
+.usecase__prompt__text { font-size: 13px; color: #E8E8F0; line-height: 1.8; }
+.summary-box { background: #fff; border-radius: 16px; padding: 28px; margin: 48px 0 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.summary-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 16px; }
+.summary-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.summary-box li { font-size: 14px; color: #3D3D3D; display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
+.summary-box li::before { content: '✅'; flex-shrink: 0; }
+.hero { background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%); border-radius: 16px; padding: 48px 40px; margin-bottom: 40px; color: #fff; }
+.hero__label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+.hero__title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.hero__meta { display: flex; gap: 20px; font-size: 14px; opacity: 0.9; flex-wrap: wrap; }
+.hero__meta span { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="-NmAtGllpNkRZcbmbvkDc1By3kqvaGZOxb0c-0vIaVZj56UqRjoYZDxR58L4BqHxm8G8FeFvxOxJNjTNTKjvYw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+<div class="lesson-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="hero">
+    <div class="hero__label">Chapter 4 — Lesson 3</div>
+    <div class="hero__title">実用的な使い方3選</div>
+    <div class="hero__meta">
+      <span>🕐 約8分</span>
+      <span>💼 応用型</span>
+      <span>🔖 業務活用</span>
+    </div>
+  </div>
+  
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="5MAyg" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="DbqgK" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+  <div class="goal-box">
+    <div class="goal-box__header">
+      <span class="goal-box__label">このレッスンのゴール</span>
+      <span class="goal-box__time">目安 8分</span>
+    </div>
+    <p class="goal-box__text">デザイナーの業務で特に役立つ<span class="accent">長文コンテキストの使い方3つ</span>を理解し、すぐに試せるようになる。</p>
+  </div>
+
+  <div class="toc-box">
+    <div class="label">このレッスンの内容</div>
+    <ol>
+      <li><a href="#sec1" class="toc-link">競合サイトのコピー分析</a></li>
+      <li><a href="#sec2" class="toc-link">複数資料の横断整理</a></li>
+      <li><a href="#sec3" class="toc-link">長文PDFの要約</a></li>
+    </ol>
+  </div>
+
+  <h2 id="sec1">使い方① 競合サイトのコピー分析</h2>
+
+  <div class="usecase">
+    <div class="usecase__num">USE CASE 01</div>
+    <div class="usecase__title">競合サイトのテキストを丸ごと渡してコピー傾向を分析</div>
+    <div class="usecase__flow">
+      <div class="usecase__flow__label">やること</div>
+      <div class="usecase__flow__steps">
+        1. 競合サイトを開いてすべてのテキストをコピー（Ctrl+A → Ctrl+C）<br>
+        2. Claudeにそのテキストを貼り付けて分析を依頼<br>
+        3. 自社・自クライアントとの差別化ポイントを抽出する
+      </div>
+    </div>
+    <div class="usecase__prompt">
+      <div class="usecase__prompt__label">プロンプト例</div>
+      <div class="usecase__prompt__text">「以下は競合3社のLPテキストです。<br>各社が強調しているポイント・使っているキーワード・ターゲット感の違いを比較してください。最後に差別化できそうなポイントを提案してください。<br><br>[ここに競合サイトのテキストを貼り付け]」</div>
+    </div>
+  </div>
+
+  <h2 id="sec2">使い方② 複数資料の横断整理</h2>
+
+  <div class="usecase">
+    <div class="usecase__num">USE CASE 02</div>
+    <div class="usecase__title">複数の参考資料を渡して共通点・相違点を整理</div>
+    <div class="usecase__flow">
+      <div class="usecase__flow__label">やること</div>
+      <div class="usecase__flow__steps">
+        1. 複数のブランドガイドライン・提案書・参考文献をファイル添付<br>
+        2. 「共通するデザイン哲学を抽出して」「違いを比較表にして」と依頼<br>
+        3. 手動で読み比べると数時間かかる作業が数分で完了
+      </div>
+    </div>
+    <div class="usecase__prompt">
+      <div class="usecase__prompt__label">プロンプト例</div>
+      <div class="usecase__prompt__text">「3つの資料を添付しました。<br>・資料1：クライアントの既存ブランドガイドライン<br>・資料2：競合Aのブランドガイドライン<br>・資料3：業界トレンドレポート<br><br>これら3つを踏まえて、今回のリブランディングで参考にすべきポイントと避けるべきポイントをまとめてください。」</div>
+    </div>
+  </div>
+
+  <h2 id="sec3">使い方③ 長文PDFの要約</h2>
+
+  <div class="usecase">
+    <div class="usecase__num">USE CASE 03</div>
+    <div class="usecase__title">長いPDFを添付して必要な情報だけを抽出</div>
+    <div class="usecase__flow">
+      <div class="usecase__flow__label">やること</div>
+      <div class="usecase__flow__steps">
+        1. クライアントから受け取った長い仕様書・企画書をPDFで添付<br>
+        2. 「デザインに関係する要件だけ抽出して」と依頼<br>
+        3. 全部読まなくてもキーポイントが把握できる
+      </div>
+    </div>
+    <div class="usecase__prompt">
+      <div class="usecase__prompt__label">プロンプト例</div>
+      <div class="usecase__prompt__text">「添付のPDFはクライアントから受け取った60ページの事業計画書です。<br>私はWebデザイナーとして担当ページのデザインを作成します。<br>以下の観点で必要な情報を抽出してください：<br>① ターゲットユーザーの特徴<br>② 伝えたいブランドイメージ<br>③ 競合との差別化ポイント」</div>
+    </div>
+  </div>
+
+  <div class="summary-box">
+    <div class="summary-box__label">このレッスンのまとめ</div>
+    <ul>
+      <li>競合サイトのテキストを丸ごと渡して<strong>コピー傾向・差別化ポイント</strong>を分析できる</li>
+      <li>複数ファイルを同時添付して<strong>横断的な整理・比較</strong>ができる</li>
+      <li>長いPDFから<strong>デザインに必要な情報だけを抽出</strong>させると効率化できる</li>
+      <li>「デザイナーとして〜」と自分の立場を明示すると回答の精度が上がる</li>
+    </ul>
+  </div>
+  
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="5MAyg" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="DbqgK" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+
+</div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="J2vEnzSOiXoILIK5GeQ86w==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html>
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

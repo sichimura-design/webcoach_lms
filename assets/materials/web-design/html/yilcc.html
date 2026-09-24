@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/uiux/chap3/YIlCC -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3-5 UI設計とスタイルガイド — ワイヤーフレームに見た目を与え、ルールとして残す - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/uiux/chap3/YIlCC">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="3-5 UI設計とスタイルガイド — ワイヤーフレームに見た目を与え、ルールとして残す - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="3-5 UI設計とスタイルガイド — ワイヤーフレームに見た目を与え、ルールとして残す">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/uiux/chap3/YIlCC">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="KzimSa7NJEqqZOzE34xbp8hPR0AeL8m9gc8kyXJLrw0iX4i21ujoEQg3NvBnYNEl4CK5p1tlOTN5HsD_qwNrUA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item51086" data-item-id="51086" data-item-type="ItemHtml"><div class="item-body"><meta charset="UTF-8">
+<!--
+  AI×UX/UIデザイナー育成講座（Reスキル認定申請予定・レベル3）
+  UX/UIデザイン教材 第3章「情報設計とUI設計」 レッスン5（※申請書類上は第Ⅲ部）
+  題材: UI設計とスタイルガイド（手順書型・学習時間180分・UXデザインプロセスの④UIデザインにあたる）
+  範囲: ワイヤーフレーム（3-4）に色・文字・部品を与えてリフトのUIを仕上げる / スタイルガイド（カラー・フォント・余白・コンポーネント）を作る / 支給ロゴとブランドカラー（深緑#2F5D50・オフホワイト #F6F1E7）の制約を守る / ニールセンの10原則とコントラストで自己点検
+  通し課題: 前回（3-4）のワイヤーフレームを入力に、色・文字・部品を与えてUIを仕上げ、ルールをスタイルガイドに残す。提出物＝UIデザイン（Figma）＋スタイルガイド（011の成果物#10）
+  体裁の正: chapter-02_research-requirements/lesson-02.html（F5テンプレ・ClipKit目次対策込み）
+  図版: 後日画像生成（fig-ph）は本レッスンでは不使用
+-->
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ClipKit対策: アンカージャンプ先が固定ヘッダーに隠れないようオフセット */
+section[id] { scroll-margin-top: 96px; }
+.slide-img { width: 100%; height: auto; display: block; border-radius: 14px; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box__time { margin-left: auto; font-size: 13px; font-weight: 700; color: #C2402F; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — ClipKit対策版（高詳細度＋!important） */
+.lesson-wrapper nav.toc { background: #fff !important; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.lesson-wrapper nav.toc .toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.lesson-wrapper nav.toc .toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.lesson-wrapper nav.toc .toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.lesson-wrapper nav.toc ul { list-style: none !important; padding: 0 !important; margin: 0 !important; display: flex; flex-direction: column; gap: 3px; }
+.lesson-wrapper nav.toc ul li { list-style: none !important; margin: 0 !important; padding: 0 !important; }
+.lesson-wrapper nav.toc ul li::before { content: none !important; }
+.lesson-wrapper nav.toc ul li::marker { content: '' !important; }
+.lesson-wrapper nav.toc ul li a { display: flex !important; align-items: center; gap: 12px; padding: 8px 14px !important; background: #FAF9F8; border-radius: 8px; text-decoration: none !important; border-bottom: none !important; box-shadow: none; color: #2D2D2D !important; transition: background 0.2s; }
+.lesson-wrapper nav.toc ul li a:hover { background: #F5EFEC; text-decoration: none !important; color: #2D2D2D !important; }
+.lesson-wrapper nav.toc ul li a:visited { color: #2D2D2D !important; }
+.lesson-wrapper nav.toc .toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.lesson-wrapper nav.toc .toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.lesson-wrapper nav.toc .toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* 注意ボックス */
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+
+/* v2テーブル（比較・マッピング） */
+.v2-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 24px 0 28px; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); font-size: 15px; }
+.v2-table th { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; font-weight: 700; padding: 12px 16px; text-align: left; font-size: 14px; }
+.v2-table td { padding: 12px 16px; border-bottom: 1px solid #F0E6E1; color: #4A4A4A; background: #fff; vertical-align: top; line-height: 1.75; }
+.v2-table tr:last-child td { border-bottom: none; }
+.v2-table td:first-child { font-weight: 700; color: #2D2D2D; white-space: nowrap; }
+
+/* 図版プレースホルダー */
+.fig-ph { font-size: 14px; line-height: 1.8; }
+
+/* HTML実物見本（.uidemo） */
+.uidemo { background: #fff; border: 1px solid #ECE7DE; border-radius: 14px; padding: 18px 20px; margin: 20px 0; box-shadow: 0 1px 8px rgba(0,0,0,0.05); }
+.uidemo__cap { font-size: 12px; font-weight: 700; color: #7A7A7A; letter-spacing: 0.08em; margin-bottom: 14px; }
+/* カラースウォッチ（色は必ず 見本＋HEX＋名前）*/
+.sw { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: #3D3D3D; white-space: nowrap; vertical-align: middle; }
+.sw i { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(0,0,0,0.18); flex-shrink: 0; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* 演習ボックス */
+.work-box { background: #fff; border: 2px solid #F5A64A; border-radius: 14px; padding: 22px 24px; margin: 28px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.work-box__badge { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; margin-bottom: 14px; }
+.work-box h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 16px 0 8px; }
+.work-box ol, .work-box ul { margin: 0 0 8px; padding-left: 1.4em; }
+.work-box li { font-size: 14.5px; color: #4A4A4A; line-height: 1.85; }
+.work-box .v2-table { margin: 10px 0 14px; }
+.prep-list { background: #fff; border-radius: 14px; padding: 24px 28px; margin: 28px 0; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.prep-list .prep-label { font-size: 12px; font-weight: 700; color: #4CAF50; letter-spacing: 0.15em; margin-bottom: 12px; }
+.prep-list ul { list-style: none; padding: 0; margin: 0; }
+.prep-list li { padding: 10px 0; border-bottom: 1px solid #E8F5E9; font-size: 15px; color: #3D3D3D; }
+.prep-list li:last-child { border-bottom: none; }
+.prep-list li .prep-bullet { color: #4CAF50; margin-right: 8px; }
+.submit-note { background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-weight: 700; color: #C2402F; margin-top: 14px; text-align: center; }
+
+/* 理解度チェック — 白カード + グラデピル + 薄グラデ質問（Goalと統一） */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">第3章</span>
+  <div class="lesson-hero__title">UI設計とスタイルガイド — ワイヤーフレームに見た目を与え、ルールとして残す</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">レッスン 3-5</span>
+    <span class="lesson-hero__topic">情報設計とUI設計</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約180分</span>
+  </div>
+</div>
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+  
+  <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap3/NzDgR" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap4/WSda7" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+    <div class="goal-box__time">⏱ 約180分</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">カラー・フォント・余白のルールと、ボタンなどコンポーネントの状態を定義できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">支給ロゴとブランドカラーの制約を守り、ワイヤーフレームに見た目を与えてリフトのUIを仕上げられる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">決めたルールをスタイルガイドに一覧化し、ニールセンの10原則やコントラストで自己点検できる</div></li>
+  </ul>
+</div>
+
+<!-- 目次: ClipKit対策のためインラインstyleを併記 -->
+<nav class="toc" style="background:#fff; border-radius:14px; padding:22px 26px; box-shadow:0 2px 12px rgba(0,0,0,0.05); margin:0 0 48px;">
+  <div class="toc-head" style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+    <div class="toc-icon" style="width:26px; height:26px; border-radius:7px; background:linear-gradient(135deg,#E85D4A,#F5A64A); display:flex; align-items:center; justify-content:center; color:#fff; font-size:11px; font-weight:700;">≡</div>
+    <div class="toc-title" style="font-size:15px; font-weight:700; color:#2D2D2D;">目次</div>
+  </div>
+  <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:3px;">
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s1" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">01</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">この工程で作るもの（UIデザインとスタイルガイド）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s2" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">02</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">土台のルールを決める（カラー・フォント・余白）</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s3" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">03</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">コンポーネントの状態を設計する</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s4" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">04</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">UIを仕上げて自己点検する</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+    <li style="list-style:none; margin:0; padding:0;"><a href="#s5" style="display:flex; align-items:center; gap:12px; padding:8px 14px; background:#FAF9F8; border-radius:8px; text-decoration:none; color:#2D2D2D;"><span class="toc-num" style="font-size:12px; font-weight:700; color:#2D2D2D; letter-spacing:0.05em; min-width:22px;">05</span><span class="toc-text" style="flex:1; font-size:14px; color:#2D2D2D; font-weight:500;">演習：リフトのUIとスタイルガイドを仕上げる</span><span class="toc-chev" style="color:#B8B8B8; font-size:12px;">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- 通し課題の連続性: 前回の成果物 → 今回 → 仕上げる成果物 -->
+<div style="border:1px solid #E8DCC8; background:#FBF8F3; border-radius:14px; padding:18px 22px; margin:0 0 40px;">
+  <div style="display:inline-block; background:#8B6F3F; color:#fff; padding:4px 12px; border-radius:6px; font-size:11px; font-weight:800; letter-spacing:0.1em; margin-bottom:10px;">通し課題</div>
+  <p style="font-size:14.5px; line-height:1.9; color:#3D3D3D; margin:0;">前回（3-4）では、予約フローを中心にリフトの<strong>ワイヤーフレーム</strong>を作りました。今回はそこに色・文字・部品を与えてUIを仕上げ、決めたルールを<strong>スタイルガイド</strong>に残します。仕上げる成果物は、<strong>UIデザイン</strong>（Figma）と<strong>スタイルガイド</strong>の2点です。</p>
+</div>
+
+<p>このレッスンでやるのは、前回のワイヤーフレームに色・文字・部品を与えて、リフトの予約サービスのUIを最後まで仕上げることです。ワイヤーフレームは、どこに何を置くかを決めた灰色の下書きでした。ここに、<span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>と<span class="sw"><i style="background:#F6F1E7;"></i>オフホワイト #F6F1E7</span>のブランドカラー、読みやすい文字、押せると分かるボタンを載せて、実際の画面に近づけます。この見た目は、好みで決めるのではありません。第2章で定義したリフトの価値と要件を、画面の形で実現するために決めます。第1章で学んだUXデザインの7ステップでいえば、ここは④のUIデザインにあたります。ただし、見た目を整えるだけでは終わりません。決めた色・文字・ボタンのルールを、あとから何度でも使い回せる形で1つにまとめます。これがスタイルガイドです。3-2で学んだUIの基礎知識と、人がどう見て理解するかという認知の性質を、ここで実際のデザインに当てはめます。仕上がりの使いやすさと、画面をまたいだ一貫性。その両方を、支給されたロゴとブランドカラーの制約を守りながら形にするのが、この180分のゴールです。</p>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>この工程で作るもの（UIデザインとスタイルガイド）</h2>
+
+<p>この工程で作るものは2つあります。1つは、ワイヤーフレームに色・文字・部品を与えて仕上げたUIデザイン。もう1つは、そのとき決めたルールを1つにまとめたスタイルガイドです。画面を作るだけなら1つ目で足りそうに見えますが、あとから画面が増えても迷わないために、2つ目を必ずセットで作ります。</p>
+
+<div class="uidemo reveal visible">
+  <div class="uidemo__cap">見本：ワイヤーフレーム → UI（同じ配置に、色・文字・部品という「見た目」を与える）</div>
+  <div style="display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center;">
+    <div>
+      <div style="font-size:11.5px; font-weight:700; color:#999; margin-bottom:8px;">ワイヤーフレーム（灰色の下書き）</div>
+      <div style="background:#fff; border:1px solid #DADADA; border-radius:12px; padding:14px;">
+        <div style="height:12px; width:60%; background:#D5D5D5; border-radius:3px; margin-bottom:14px;"></div>
+        <div style="height:34px; background:#EDEDED; border:1px solid #DDD; border-radius:8px; margin-bottom:9px;"></div>
+        <div style="height:34px; background:#EDEDED; border:1px solid #DDD; border-radius:8px; margin-bottom:14px;"></div>
+        <div style="height:38px; background:#CFCFCF; border-radius:8px;"></div>
+      </div>
+    </div>
+    <div style="color:#2F5D50; font-size:22px; font-weight:700; text-align:center;">→</div>
+    <div>
+      <div style="font-size:11.5px; font-weight:700; color:#2F5D50; margin-bottom:8px;">UI（見た目を与えたあと）</div>
+      <div style="background:#F6F1E7; border:1px solid #E6DEC9; border-radius:12px; padding:14px;">
+        <div style="font-size:15px; font-weight:700; color:#2F5D50; margin-bottom:14px;">スタジオを予約する</div>
+        <div style="background:#fff; border:1px solid #D8D3C8; border-radius:8px; padding:8px 11px; font-size:12.5px; color:#333; margin-bottom:9px;">日時：3月10日(月) 10:00</div>
+        <div style="background:#fff; border:1px solid #D8D3C8; border-radius:8px; padding:8px 11px; font-size:12.5px; color:#333; margin-bottom:14px;">人数：1名</div>
+        <div style="background:#2F5D50; color:#fff; text-align:center; font-weight:700; font-size:14px; padding:10px; border-radius:8px;">予約する</div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:12.5px; color:#777; margin:12px 0 0; line-height:1.7;">配置（レイアウト）は左右で同じ。変わるのは色・文字・部品という見た目だけです。この見た目のルールをまとめたものが、次に出てくるスタイルガイドです。</p>
+</div>
+
+<p>スタイルガイドは、この画面で使う色・文字の大きさ・余白の取り方・ボタンなどの部品の見た目を、一覧にした決めごと集です。デザインを進めるたびに色をなんとなく選び直したり、ボタンの形が画面ごとに変わったりすると、全体がちぐはぐになります。先にルールを決めて記録しておけば、どの画面でも同じ判断を繰り返せます。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">ルールにするから一貫する</div>
+  </div>
+  <p>一貫性は、気をつけようという心がけからではなく、決めて記録したルールから生まれます。予約ボタンの色を1度決めてスタイルガイドに書けば、次の画面でも同じ色を使えます。画面が10枚に増えても、そのつど悩まずに済み、直しが出ても1か所を直せば全体に効きます。</p>
+</div>
+
+<p>使いやすさと一貫性は、別々のものではありません。同じ操作がいつも同じ見た目なら、利用者は一度覚えた操作を使い回せて、迷いが減ります。作り手にとっても、判断の基準が1つにそろうので、仕上げが速くなります。スタイルガイドは、その基準を自分と、あとで見る人（エンジニアや将来の自分）に渡すためのものです。</p>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>土台のルールを決める（カラー・フォント・余白）</h2>
+
+<p>UIを仕上げる前に、土台となる3つのルールを先に決めます。カラー・フォント・余白です。この3つを最初にそろえておくと、あとの画面づくりが速くなり、仕上がりもばらつきません。</p>
+
+<h3>カラー：ブランドカラーを役割で割り当てる</h3>
+
+<p>色は、数を絞って役割ごとに割り当てます。リフトのブランドカラーは、<span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>と<span class="sw"><i style="background:#F6F1E7;"></i>オフホワイト #F6F1E7</span>の2色が指定されています。深緑を予約ボタンや見出しなど目立たせたい要素に、オフホワイトを画面の背景に使う、というように役割を決めます。色を役割で固定すると、利用者は「深緑は押せるところ」と自然に学び、操作の手がかりになります。下のパレットが、この工程で使う色を1か所にまとめたものです。</p>
+
+<div class="uidemo reveal visible">
+  <div class="uidemo__cap">見本：リフトのカラーパレット（各色を 見本＋HEX＋名前＋使いどころ で）</div>
+  <div style="font-size:12.5px; font-weight:700; color:#2F5D50; margin:0 0 9px;">ブランドカラー（固定・変えない）</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(165px,1fr)); gap:12px; margin-bottom:18px;">
+    <div style="border:1px solid #ECE7DE; border-radius:10px; overflow:hidden; background:#fff;">
+      <div style="height:58px; background:#2F5D50;"></div>
+      <div style="padding:9px 12px;">
+        <div style="font-size:13px; font-weight:700; color:#2D2D2D;">プライマリ／深緑</div>
+        <div style="font-size:12px; color:#8A8A8A; font-family:'Inter',sans-serif; letter-spacing:0.03em;">#2F5D50</div>
+        <div style="font-size:12px; color:#666; margin-top:5px; line-height:1.6;">予約ボタン・見出し・強調したい要素</div>
+      </div>
+    </div>
+    <div style="border:1px solid #ECE7DE; border-radius:10px; overflow:hidden; background:#fff;">
+      <div style="height:58px; background:#F6F1E7; border-bottom:1px solid #ECE7DE;"></div>
+      <div style="padding:9px 12px;">
+        <div style="font-size:13px; font-weight:700; color:#2D2D2D;">背景／オフホワイト</div>
+        <div style="font-size:12px; color:#8A8A8A; font-family:'Inter',sans-serif; letter-spacing:0.03em;">#F6F1E7</div>
+        <div style="font-size:12px; color:#666; margin-top:5px; line-height:1.6;">画面全体の背景・広い面</div>
+      </div>
+    </div>
+  </div>
+  <div style="font-size:12.5px; font-weight:700; color:#8B6F3F; margin:0 0 9px;">機能の色（どのUIにも要る色を最小限だけ）</div>
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(165px,1fr)); gap:12px;">
+    <div style="border:1px solid #ECE7DE; border-radius:10px; overflow:hidden; background:#fff;">
+      <div style="height:58px; background:#FFFFFF; border-bottom:1px solid #ECE7DE;"></div>
+      <div style="padding:9px 12px;">
+        <div style="font-size:13px; font-weight:700; color:#2D2D2D;">サーフェス／白</div>
+        <div style="font-size:12px; color:#8A8A8A; font-family:'Inter',sans-serif; letter-spacing:0.03em;">#FFFFFF</div>
+        <div style="font-size:12px; color:#666; margin-top:5px; line-height:1.6;">カード・入力欄など前面の面</div>
+      </div>
+    </div>
+    <div style="border:1px solid #ECE7DE; border-radius:10px; overflow:hidden; background:#fff;">
+      <div style="height:58px; background:#333333;"></div>
+      <div style="padding:9px 12px;">
+        <div style="font-size:13px; font-weight:700; color:#2D2D2D;">テキスト／墨（濃いグレー）</div>
+        <div style="font-size:12px; color:#8A8A8A; font-family:'Inter',sans-serif; letter-spacing:0.03em;">#333333</div>
+        <div style="font-size:12px; color:#666; margin-top:5px; line-height:1.6;">本文の文字</div>
+      </div>
+    </div>
+    <div style="border:1px solid #ECE7DE; border-radius:10px; overflow:hidden; background:#fff;">
+      <div style="height:58px; background:#C2402F;"></div>
+      <div style="padding:9px 12px;">
+        <div style="font-size:13px; font-weight:700; color:#2D2D2D;">アクセント／朱</div>
+        <div style="font-size:12px; color:#8A8A8A; font-family:'Inter',sans-serif; letter-spacing:0.03em;">#C2402F</div>
+        <div style="font-size:12px; color:#666; margin-top:5px; line-height:1.6;">入力エラー・注意など気づかせる表示だけ</div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size:12.5px; color:#777; margin:13px 0 0; line-height:1.7;">ブランドカラーの2色は約束事として固定します。足すのは、どの画面にも要る「文字・面・注意」の色だけ。飾りで色を増やさないのがコツです。</p>
+</div>
+
+<div class="notice-box reveal visible">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">支給ロゴとブランドカラーは変えない</div>
+  </div>
+  <p>支給されたロゴは、色を変えたり、縦横比を崩したり、影や飾りを足したりしてはいけません。渡された形のまま置きます。ブランドカラーも指定どおり、<strong><span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>と<span class="sw"><i style="background:#F6F1E7;"></i>オフホワイト #F6F1E7</span></strong>を使います。これは見た目の好みではなく、リフトというお店の約束事です。勝手に明るい緑にしたり別の色を足したりすると、お店の印象がぶれて信頼を損ないます。</p>
+</div>
+
+<h3>フォントと余白：読みやすさは「そろえる」ことで作る</h3>
+
+<p>フォントは、読みやすいゴシック体を1つ選び、見出しと本文で大きさを2〜3段階に分けます。本文は16px以上を目安にすると、スマホでも無理なく読めます。余白は、要素と要素の間隔を8pxの倍数などの基準でそろえます。間隔がばらばらだと画面が雑然として見えるので、決めた基準を繰り返し使って整えます。</p>
+
+<div class="uidemo reveal visible">
+  <div class="uidemo__cap">見本：タイポグラフィ（実際の大きさ・太さで表示）</div>
+  <div style="display:flex; flex-direction:column;">
+    <div style="display:flex; align-items:baseline; gap:14px; padding:9px 0; border-bottom:1px dashed #ECE7DE;">
+      <span style="flex-shrink:0; width:132px; font-size:11.5px; color:#999;">見出し（大）／24px／太字</span>
+      <span style="font-size:24px; font-weight:700; color:#2F5D50; line-height:1.3;">スタジオを予約する</span>
+    </div>
+    <div style="display:flex; align-items:baseline; gap:14px; padding:9px 0; border-bottom:1px dashed #ECE7DE;">
+      <span style="flex-shrink:0; width:132px; font-size:11.5px; color:#999;">見出し（中）／18px／太字</span>
+      <span style="font-size:18px; font-weight:700; color:#2D2D2D; line-height:1.4;">予約内容の確認</span>
+    </div>
+    <div style="display:flex; align-items:baseline; gap:14px; padding:9px 0; border-bottom:1px dashed #ECE7DE;">
+      <span style="flex-shrink:0; width:132px; font-size:11.5px; color:#999;">本文／16px／標準</span>
+      <span style="font-size:16px; font-weight:400; color:#333; line-height:1.7;">日時と人数を選んで、予約に進みます。</span>
+    </div>
+    <div style="display:flex; align-items:baseline; gap:14px; padding:9px 0;">
+      <span style="flex-shrink:0; width:132px; font-size:11.5px; color:#999;">補足／13px／標準</span>
+      <span style="font-size:13px; font-weight:400; color:#777; line-height:1.7;">キャンセルは利用日の前日まで無料です。</span>
+    </div>
+  </div>
+</div>
+
+<div class="uidemo reveal visible">
+  <div class="uidemo__cap">見本：余白スケール（8ptベース／バーの長さが実際の間隔）</div>
+  <div style="display:flex; flex-direction:column; gap:11px;">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span style="flex-shrink:0; width:46px; text-align:right; font-size:12px; color:#999; font-family:'Inter',sans-serif;">8px</span>
+      <span style="display:block; height:16px; width:8px; background:#2F5D50; border-radius:2px;"></span>
+      <span style="font-size:12.5px; color:#777;">最小の間隔（アイコンと文字の間など）</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span style="flex-shrink:0; width:46px; text-align:right; font-size:12px; color:#999; font-family:'Inter',sans-serif;">16px</span>
+      <span style="display:block; height:16px; width:16px; background:#2F5D50; border-radius:2px;"></span>
+      <span style="font-size:12.5px; color:#777;">文字のかたまりどうしの間</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span style="flex-shrink:0; width:46px; text-align:right; font-size:12px; color:#999; font-family:'Inter',sans-serif;">24px</span>
+      <span style="display:block; height:16px; width:24px; background:#2F5D50; border-radius:2px;"></span>
+      <span style="font-size:12.5px; color:#777;">見出しと本文の間</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span style="flex-shrink:0; width:46px; text-align:right; font-size:12px; color:#999; font-family:'Inter',sans-serif;">32px</span>
+      <span style="display:block; height:16px; width:32px; background:#2F5D50; border-radius:2px;"></span>
+      <span style="font-size:12.5px; color:#777;">セクションどうしの間</span>
+    </div>
+  </div>
+</div>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">迷ったら「そろえる」</div>
+  </div>
+  <p>フォントの大きさも余白も、種類を増やすほど散らかります。段階を少なく決めて、同じ役割には同じ値を使い回すと、それだけで整って見えます。人は、そろっているものを「きちんとしている」と感じます。凝った装飾より、そろえることのほうが読みやすさに効きます。</p>
+</div>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 1／3</div></div>
+  <div class="quiz-q"><span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>の予約ボタンに、ボタンの中の文字を載せます。文字色として最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">A</div><div class="quiz-opt-text">白に近い明るい色にして、暗い背景でもはっきり読めるようにする</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">背景と同じ深緑にして、統一感を出す</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">ロゴの緑を少し明るくした色を作り、それを文字に使う</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">濃いグレーにして、全体を落ち着かせる</div></button>
+  </div>
+  <div class="quiz-feedback" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">暗い背景の上の文字は、明るい色にして十分なコントラストを確保します。文字と背景の明るさの差が小さいと読めず、使いにくくなります。白やオフホワイト系の明るい色が向きます。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">背景が暗い深緑なので、同じ深緑や濃いグレー（B・D）では文字が読めません。ロゴやブランドカラーを勝手に作り変える（C）のも禁止です。明るい色でコントラストを確保するAが正解です。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>コンポーネントの状態を設計する</h2>
+
+<p>ボタンや入力欄は、1つの見た目だけでは足りません。3-2で学んだとおり、同じ部品でも「今どうなっているか」で見た目を変える必要があります。この状態のルールを決めておくのが、UI設計のもう1つの土台です。3-1で参考アプリを模写して作った引き出しは、ボタンの形や状態の付け方を決めるときの手本になります。</p>
+
+<div class="uidemo reveal">
+  <div class="uidemo__cap">見本：予約ボタンの4状態（実物）</div>
+  <div style="display:flex; flex-wrap:wrap; gap:22px; align-items:flex-start;">
+    <div style="text-align:center;">
+      <div style="display:inline-block; background:#2F5D50; color:#fff; font-weight:700; font-size:14px; padding:11px 22px; border-radius:8px;">予約する</div>
+      <div style="font-size:11.5px; color:#777; margin-top:8px;">通常</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="display:inline-block; background:#26493F; color:#fff; font-weight:700; font-size:14px; padding:11px 22px; border-radius:8px; box-shadow:0 0 0 3px rgba(47,93,80,0.22);">予約する</div>
+      <div style="font-size:11.5px; color:#777; margin-top:8px;">ホバー／フォーカス</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="display:inline-block; background:#1F3C33; color:#fff; font-weight:700; font-size:14px; padding:11px 22px; border-radius:8px; transform:translateY(1px); box-shadow:inset 0 2px 4px rgba(0,0,0,0.25);">予約する</div>
+      <div style="font-size:11.5px; color:#777; margin-top:8px;">押した後（沈む）</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="display:inline-block; background:#D8D5CE; color:#9A968D; font-weight:700; font-size:14px; padding:11px 22px; border-radius:8px;">予約する</div>
+      <div style="font-size:11.5px; color:#777; margin-top:8px;">無効（押せない）</div>
+    </div>
+  </div>
+</div>
+
+<div class="uidemo reveal">
+  <div class="uidemo__cap">見本：入力欄の3状態（実物）</div>
+  <div style="display:flex; flex-direction:column; gap:15px; max-width:380px;">
+    <div>
+      <div style="font-size:12px; color:#777; margin-bottom:5px;">お名前（未入力）</div>
+      <div style="border:1.5px solid #D8D3C8; border-radius:8px; padding:10px 12px; font-size:14px; color:#B0AB9E; background:#fff;">山田 太郎</div>
+    </div>
+    <div>
+      <div style="font-size:12px; color:#777; margin-bottom:5px;">お名前（入力中）</div>
+      <div style="border:1.5px solid #2F5D50; box-shadow:0 0 0 3px rgba(47,93,80,0.15); border-radius:8px; padding:10px 12px; font-size:14px; color:#333; background:#fff;">山田 太郎</div>
+    </div>
+    <div>
+      <div style="font-size:12px; color:#777; margin-bottom:5px;">メールアドレス（エラー）</div>
+      <div style="border:1.5px solid #C2402F; border-radius:8px; padding:10px 12px; font-size:14px; color:#333; background:#fff;">yamada@</div>
+      <div style="font-size:12px; color:#C2402F; margin-top:5px;">メールアドレスの形式が正しくありません</div>
+    </div>
+  </div>
+</div>
+
+<p>ボタンなら、通常・押せる合図が出た状態（ホバーやフォーカス）・押した後・押せない状態（無効）を用意します。たとえば予約の必須項目が埋まっていない間は、送信ボタンを薄いグレーの無効状態にして、まだ押せないことを見た目で伝えます。入力欄なら、入力中はふちが色づき、間違いがあれば赤いふちと短い注意文を出す、というように状態を決めます。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">状態は「見て分かる」ことがすべて</div>
+  </div>
+  <p>状態を分ける目的は、飾りではなく、利用者に今の状況を伝えることです。押せるのか押せないのか、入力は合っているのか間違っているのか。これが色や形の違いで一目で分かれば、利用者は迷わず操作できます。状態ごとの見た目も、いったん決めたらスタイルガイドに書いて、全画面で同じにそろえます。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 2／3</div></div>
+  <div class="quiz-q">予約フォームで、必須項目がまだ入力されていません。送信ボタンの見せ方として適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">通常のボタンと同じ見た目にしておき、押されたらエラーを出す</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">薄いグレーの無効状態にして、まだ押せないと見た目で伝える</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">ボタンを画面から消して、入力が終わったら出す</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">ボタンを点滅させて、目立たせる</div></button>
+  </div>
+  <div class="quiz-feedback" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">無効状態を用意すると、まだ押せないことが見た目で伝わり、押してから怒られる無駄が減ります。ボタンを消す（C）と、次に何をすればよいか分からなくなります。状態の違いで今の状況を伝えるのがコツです。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">通常と同じ見た目（A）だと、押せると思って押してからエラーで戻され、手間になります。消したり点滅させたり（C・D）も混乱のもと。薄いグレーの無効状態（B）で、押せないことを静かに伝えます。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>UIを仕上げて自己点検する</h2>
+
+<p>土台のルールと部品の状態が決まったら、ワイヤーフレームに当てはめてUIを仕上げます。仕上げたら、決めたことをスタイルガイドに一覧化し、最後に自己点検します。この3つ（適用・一覧化・点検）を1セットで進めます。</p>
+
+<p>まず、3-4のワイヤーフレームに、決めた色・文字・部品を載せて予約フローの画面を仕上げます。このワイヤーフレームは3-3で作った画面フローに沿っているので、順番どおりに仕上げれば、予約の流れがそのまま画面になります。次に、使った決めごとをスタイルガイドに並べます。下の表が、スタイルガイドに載せる項目の目安です。各項目に「どこで使うか」を1行添えておくと、あとで見た人がそのまま使えます。</p>
+
+<table class="v2-table">
+  <thead><tr><th>項目</th><th>決めること</th><th>リフトでの例</th></tr></thead>
+  <tbody>
+    <tr><td>カラー</td><td>メイン・ベース・文字色の役割</td><td>メイン＝<span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>、背景＝<span class="sw"><i style="background:#F6F1E7;"></i>オフホワイト #F6F1E7</span>、文字＝<span class="sw"><i style="background:#333333;"></i>墨 #333333</span></td></tr>
+    <tr><td>フォント</td><td>書体と、見出し・本文の大きさ</td><td>ゴシック体1つ、本文16px以上で2〜3段階</td></tr>
+    <tr><td>余白</td><td>要素の間隔をそろえる基準</td><td>8pxの倍数で間隔をそろえる</td></tr>
+    <tr><td>コンポーネント</td><td>ボタン・入力欄などの見た目と状態</td><td>予約ボタン（通常・押せる・押した後・無効）、入力欄</td></tr>
+  </tbody>
+</table>
+
+<p>最後に自己点検です。3-2で学んだニールセンの10原則のうち、予約サービスで特に効く観点で見直します。予約の途中で今どこにいるか分かるか（システム状態の可視化）、間違えても戻れるか（利用者の操作の自由）、画面ごとに用語やボタンがそろっているか（一貫性）の3点です。あわせて、文字と背景のコントラストが十分か、ボタンが押せると見て分かるかも確認します。</p>
+
+<div class="uidemo reveal">
+  <div class="uidemo__cap">見本：リフトのスタイルガイド（この1枚に配色・文字・部品・余白を集約）</div>
+
+  <div style="padding-bottom:14px; border-bottom:1px solid #F0EBE1; margin-bottom:14px;">
+    <div style="font-size:12px; font-weight:700; color:#2D2D2D; margin-bottom:9px;">カラー</div>
+    <div style="display:flex; flex-wrap:wrap; gap:11px 16px;">
+      <span class="sw"><i style="background:#2F5D50;"></i>プライマリ 深緑 #2F5D50</span>
+      <span class="sw"><i style="background:#F6F1E7;"></i>背景 オフホワイト #F6F1E7</span>
+      <span class="sw"><i style="background:#FFFFFF;"></i>サーフェス 白 #FFFFFF</span>
+      <span class="sw"><i style="background:#333333;"></i>テキスト 墨 #333333</span>
+      <span class="sw"><i style="background:#C2402F;"></i>アクセント 朱 #C2402F</span>
+    </div>
+  </div>
+
+  <div style="padding-bottom:14px; border-bottom:1px solid #F0EBE1; margin-bottom:14px;">
+    <div style="font-size:12px; font-weight:700; color:#2D2D2D; margin-bottom:9px;">タイポグラフィ</div>
+    <div style="display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 18px;">
+      <span style="font-size:24px; font-weight:700; color:#2F5D50; line-height:1.2;">見出し 24px</span>
+      <span style="font-size:18px; font-weight:700; color:#2D2D2D; line-height:1.2;">小見出し 18px</span>
+      <span style="font-size:16px; color:#333;">本文 16px</span>
+      <span style="font-size:13px; color:#777;">補足 13px</span>
+    </div>
+  </div>
+
+  <div style="padding-bottom:14px; border-bottom:1px solid #F0EBE1; margin-bottom:14px;">
+    <div style="font-size:12px; font-weight:700; color:#2D2D2D; margin-bottom:9px;">コンポーネント（予約ボタンの状態）</div>
+    <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+      <span style="display:inline-block; background:#2F5D50; color:#fff; font-weight:700; font-size:13px; padding:9px 18px; border-radius:8px;">通常</span>
+      <span style="display:inline-block; background:#26493F; color:#fff; font-weight:700; font-size:13px; padding:9px 18px; border-radius:8px; box-shadow:0 0 0 3px rgba(47,93,80,0.22);">ホバー</span>
+      <span style="display:inline-block; background:#1F3C33; color:#fff; font-weight:700; font-size:13px; padding:9px 18px; border-radius:8px; box-shadow:inset 0 2px 4px rgba(0,0,0,0.25);">押下</span>
+      <span style="display:inline-block; background:#D8D5CE; color:#9A968D; font-weight:700; font-size:13px; padding:9px 18px; border-radius:8px;">無効</span>
+    </div>
+  </div>
+
+  <div>
+    <div style="font-size:12px; font-weight:700; color:#2D2D2D; margin-bottom:9px;">余白（8ptベース）</div>
+    <div style="display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end;">
+      <span style="font-size:11px; color:#999; text-align:center;"><span style="display:block; height:8px; width:8px; background:#2F5D50; border-radius:2px; margin:0 auto 5px;"></span>8px</span>
+      <span style="font-size:11px; color:#999; text-align:center;"><span style="display:block; height:16px; width:16px; background:#2F5D50; border-radius:2px; margin:0 auto 5px;"></span>16px</span>
+      <span style="font-size:11px; color:#999; text-align:center;"><span style="display:block; height:24px; width:24px; background:#2F5D50; border-radius:2px; margin:0 auto 5px;"></span>24px</span>
+      <span style="font-size:11px; color:#999; text-align:center;"><span style="display:block; height:32px; width:32px; background:#2F5D50; border-radius:2px; margin:0 auto 5px;"></span>32px</span>
+    </div>
+  </div>
+
+  <p style="font-size:12.5px; color:#777; margin:14px 0 0; line-height:1.7;">この1枚があれば、どの画面でも同じ色・文字・部品・余白で作れます。これがスタイルガイド＝再利用できるルールの集まりです。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top"><div class="quiz-icon">Q</div><div class="quiz-title">確認クイズ 3／3</div></div>
+  <div class="quiz-q">画面が増えてきて、予約ボタンの色を変えたくなりました。スタイルガイドを作っておく利点として、最も適切なのはどれでしょう？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">画面ごとに色を自由に変えられ、変化をつけて飽きさせない</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">1か所を直せば全画面にそろい、一貫性を保ったまま変更できる</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">デザインが速く終わる代わりに、見た目はばらばらでよくなる</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">ルールは作り手のメモなので、提出も共有もしなくてよくなる</div></button>
+  </div>
+  <div class="quiz-feedback" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">正解です！</div><div class="quiz-feedback-text">ルールを1つにまとめておくと、変更もその1か所で済み、全画面に同じ判断が行き渡ります。これが一貫性です。スタイルガイドは提出物であり、あとで見る人と共有するためのものでもあります。</div></div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body"><div class="quiz-feedback-title">惜しい！</div><div class="quiz-feedback-text">画面ごとに自由に変える（A・C）と、見た目がばらついて使いにくくなります。スタイルガイドの利点は、ルールを1か所にまとめて一貫性を保てること（B）。作り手だけのメモではなく、共有する提出物です。</div></div>
+  </div>
+</div>
+</section>
+
+<!-- ===== セクション5 ===== -->
+<section id="s5">
+<h2>演習：リフトのUIとスタイルガイドを仕上げる</h2>
+
+<p>ここからは実践です。前回のワイヤーフレームを土台に、これまで決めたルールを当てはめて、リフトのUIデザインとスタイルガイドを仕上げます。5つのステップで進めます。</p>
+
+<div class="work-box reveal">
+  <div class="work-box__badge">演習 3-5</div>
+
+  <div class="prep-list">
+    <div class="prep-label">📋 事前準備</div>
+    <ul>
+      <li><span class="prep-bullet">●</span>前回（3-4）で作ったワイヤーフレームを、Figmaで開いておく</li>
+      <li><span class="prep-bullet">●</span>支給物（ロゴ・ブランドカラー指定・店舗写真・料金表）を手元にそろえる</li>
+      <li><span class="prep-bullet">●</span>スタイルガイドを並べる場所（Figmaの1ページ、または別ファイル）を用意する</li>
+    </ul>
+  </div>
+
+  <h4>STEP 1：カラー・フォント・余白のルールを決める</h4>
+  <ul>
+    <li>ブランドカラー（<span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>・<span class="sw"><i style="background:#F6F1E7;"></i>オフホワイト #F6F1E7</span>）を、メインとベースに役割で割り当てる</li>
+    <li>見出しと本文の文字の大きさを2〜3段階で決める（<strong>本文は16px以上</strong>）</li>
+    <li>要素の間隔を、8pxの倍数などの基準で<strong>そろえる</strong></li>
+  </ul>
+
+  <h4>STEP 2：ボタンなどコンポーネントの状態を定義する</h4>
+  <ul>
+    <li>予約ボタンの<strong>通常・押せる合図（ホバー/フォーカス）・押した後・無効</strong>の見た目を決める</li>
+    <li>入力欄・日時の選択カードなど、繰り返し使う部品の見た目と状態をそろえる</li>
+  </ul>
+
+  <h4>STEP 3：ワイヤーフレームに適用してUIを仕上げる</h4>
+  <ul>
+    <li>3-4のワイヤーフレームに、決めた色・文字・部品を載せて予約フローの画面を仕上げる</li>
+    <li><strong>支給ロゴは渡された形のまま置く</strong>（色変更・変形はしない）</li>
+  </ul>
+
+  <h4>STEP 4：スタイルガイドに一覧化する</h4>
+  <ul>
+    <li>決めたカラー・フォント・余白・コンポーネントを、1つの場所に並べる</li>
+    <li>各項目に「どこで使うか」を1行添える</li>
+  </ul>
+
+  <h4>STEP 5：ニールセンの10原則とコントラストで自己点検する</h4>
+  <ul>
+    <li>予約の途中で今どこにいるか分かるか、間違えても戻れるか、画面がそろっているかを確認する</li>
+    <li>文字と背景のコントラストが十分か（<span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>の上の文字が読めるか）を確認する</li>
+    <li>ボタンが押せると見て分かるか、押せない状態と区別できるかを確認する</li>
+  </ul>
+
+  <h4>完了条件（提出物）</h4>
+  <p style="font-size:13.5px; color:#E85D4A; font-weight:700; margin:2px 0 8px;">この成果物は、章の最後でまとめてコーチに提出しましょう。</p>
+  <ul>
+    <li><strong>UIデザイン</strong>（予約フローの主要画面。ブランドカラー・支給ロゴ・文字・部品の状態を反映したもの）</li>
+    <li><strong>スタイルガイド</strong>（カラー・フォント・余白・コンポーネントを一覧化したもの）</li>
+    <li><strong>自己点検メモ</strong>：ニールセンの10原則とコントラストで見直して気づいた点と、直した点を2〜3行で書く</li>
+  </ul>
+
+</div>
+
+<p>UIデザインとスタイルガイドは、修了評価のUIデザイン観点（20点）に直結する成果物です。凝った装飾より、ルールをそろえて一貫させることと、支給ロゴ・ブランドカラーの制約を守ることを優先してください。ここで作ったスタイルガイドは、次の章のプロトタイプづくりでもそのまま使えます。</p>
+</section>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>カラー・フォント・余白のルールを決められる</summary>
+    <div class="check-box__detail">色は数を絞り、<span class="sw"><i style="background:#2F5D50;"></i>深緑 #2F5D50</span>をメイン（ボタン・見出し）、<span class="sw"><i style="background:#F6F1E7;"></i>オフホワイト #F6F1E7</span>をベース（背景）のように役割で割り当てます。フォントは読みやすいゴシック体を1つ選び、見出しと本文で大きさを2〜3段階に。本文は16px以上。余白は8pxの倍数などの基準でそろえます。迷ったら「そろえる」が要点でした。</div>
+  </details>
+  <details>
+    <summary>コンポーネントの状態（通常・押せる・押せない）を定義できる</summary>
+    <div class="check-box__detail">ボタンは通常・押せる合図（ホバー/フォーカス）・押した後・無効の4状態を用意します。必須項目が未入力なら送信ボタンを薄いグレーの無効状態にして、押せないことを見た目で伝えます。状態を分ける目的は飾りでなく、今の状況を利用者に伝えることでした。</div>
+  </details>
+  <details>
+    <summary>スタイルガイドに一覧化し、ニールセン10とコントラストで自己点検できる</summary>
+    <div class="check-box__detail">決めたカラー・フォント・余白・コンポーネントを1か所に並べ、各項目に使いどころを1行添えます。仕上げたUIは、今どこにいるか分かるか・間違えても戻れるか・画面がそろっているか（ニールセンの10原則）と、文字と背景のコントラストが十分かで点検します。支給ロゴとブランドカラーの制約を守ることも忘れずに。</div>
+  </details>
+</div>
+
+<div style="background:linear-gradient(135deg,#FFF5F0 0%,#FFFAEC 100%); border:2px solid #F5A64A; border-radius:14px; padding:22px 24px; margin:44px 0 8px;">
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+    <span style="display:inline-block; background:linear-gradient(135deg,#F84744,#FB9A3F); color:#fff; padding:6px 16px; border-radius:50px; font-size:12px; font-weight:800; letter-spacing:0.1em;">提出</span>
+    <span style="font-size:15px; font-weight:800; color:#2D2D2D;">第3章の提出物 — コーチに提出しよう</span>
+  </div>
+  <p style="font-size:14px; color:#555; line-height:1.9; margin:0 0 14px;">この章で作った次の成果物を、まとめてコーチへ提出します。コーチが確認したら次の章へ進みます。（※途中の作業シート・自己採点の演習は提出不要）</p>
+  <label style="display:flex; align-items:flex-start; gap:10px; padding:11px 14px; background:#fff; border:1px solid #F1DFCB; border-radius:10px; margin-bottom:8px; font-size:14px; color:#3D3D3D; cursor:pointer;"><input type="checkbox" style="margin-top:3px; width:16px; height:16px; accent-color:#E85D4A; flex-shrink:0;"><span>IA図（サイトマップ）・画面フロー<span style="color:#9a9088; font-size:12px;">（3-3）</span></span></label>
+  <label style="display:flex; align-items:flex-start; gap:10px; padding:11px 14px; background:#fff; border:1px solid #F1DFCB; border-radius:10px; font-size:14px; color:#3D3D3D; cursor:pointer;"><input type="checkbox" style="margin-top:3px; width:16px; height:16px; accent-color:#E85D4A; flex-shrink:0;"><span>UIデザイン・スタイルガイド<span style="color:#9a9088; font-size:12px;">（3-5）</span></span></label>
+</div>
+  
+    <!-- 前の章に戻るボタンの場合 --> 
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="https://learn.webcoach.jp/web-design/uiux/chap3/NzDgR" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; left: 12px; transform: translateY(-50%) rotate(180deg); filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+    前の章に戻る
+  </a>
+</div>  
+  
+  <div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+
+</div><!-- /.lesson-wrapper -->
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

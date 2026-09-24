@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="yvJDV3afybqmsAVy6Eih+g==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1703" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8SNS%E5%BA%83%E5%91%8A%E5%8B%95%E7%94%BB%E5%88%B6%E4%BD%9C%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC/v7V3z" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3章：【実践編】SNS広告動画をゼロから制作する - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8SNS%E5%BA%83%E5%91%8A%E5%8B%95%E7%94%BB%E5%88%B6%E4%BD%9C%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC/v7V3z">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="3章：【実践編】SNS広告動画をゼロから制作する - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/726/medium/afb69531-e892-43ea-8002-1c5b2c758835.png?1754964191">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="3章：【実践編】SNS広告動画をゼロから制作する">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8SNS%E5%BA%83%E5%91%8A%E5%8B%95%E7%94%BB%E5%88%B6%E4%BD%9C%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC/v7V3z">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/726/large/afb69531-e892-43ea-8002-1c5b2c758835.png?1754964191">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_movie_editing/%E6%95%99%E6%9D%905%20%E5%AE%9F%E8%B7%B5%EF%BC%81AI%E6%B4%BB%E7%94%A8SNS%E5%BA%83%E5%91%8A%E5%8B%95%E7%94%BB%E5%88%B6%E4%BD%9C%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC/v7V3z"
+    },
+    "headline": "3章：【実践編】SNS広告動画をゼロから制作する",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_links/images/000/035/726/medium/afb69531-e892-43ea-8002-1c5b2c758835.png?1754964191",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-07-23T08:19:02+09:00",
+    "dateModified": "2025-09-26T10:56:25+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="g1ktt6ahddRfoxgd5qFn0VMqOc1lIIBQlMgqiRfeHvBCdg6QySL3es-GL6c5zoBNZf5fIOHu6AZ5rn8BdFPfEg" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材5 実践！AI活用SNS広告動画制作ワークフロー</div>
+
+          <div class="fw-bold h2">3章：【実践編】SNS広告動画をゼロから制作する</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item35783" data-item-id="35783" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="4ouVu" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="fC0zv" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35714" data-item-id="35714" data-item-type="ItemHeading"><h2 class="item-body">3章：【実践編】SNS広告動画をゼロから制作する</h2></div>
+        
+        <div class="article-item item_markdown " id="item35715" data-item-id="35715" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：2時間30分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item35716" data-item-id="35716" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item35717" data-item-id="35717" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>これまで学んだ全てのAIスキルを総動員し、要件定義に基づいたSNS広告動画をゼロから独力で制作できる。</li>
+  <li>異なる要件の案件に複数取り組むことで、実践的な課題解決能力と応用力を身につける。</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item35718" data-item-id="35718" data-item-type="ItemHeading"><h2 class="item-body">【3-1】課題説明と案件選択</h2></div>
+        
+        <div class="article-item item_markdown " id="item35719" data-item-id="35719" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item35720" data-item-id="35720" data-item-type="ItemHeading"><h3 class="item-body">フリーの動画クリエイターとしての挑戦</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35721" data-item-id="35721" data-item-type="ItemRichText"><div class="item-body-hbr">これまでの学習を経て、AI動画クリエイターとして活動する準備が整いました。<br>
+この章では、フリーの動画クリエイターとして、3社のクライアントから制作依頼が同時に舞い込んだ、という設定で、実践的な制作課題に取り組みます。<br>
+これまでの知識とスキルを総動員して、クライアントが抱える課題を解決する、価値ある動画を制作しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item35722" data-item-id="35722" data-item-type="ItemHeading"><h3 class="item-body">3つの案件から、挑戦したい2つを選ぼう</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35723" data-item-id="35723" data-item-type="ItemRichText"><div class="item-body-hbr">以下に、3つの異なる案件の要件定義書を用意しました。<br>
+それぞれの目的、ターゲット、プラットフォームが異なります。<br>
+内容をよく読み、この中から挑戦したい案件を2つ選択してください。<br>
+どの案件を選ぶか、という判断も、フリーランスとしての重要なスキルの一つです。<br>
+自身の得意なジャンルや、挑戦してみたい分野で選んでみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item35724" data-item-id="35724" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>案件A：カスタムペット用品ブランド（Instagramリール用）</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><strong>クライアント</strong>：カスタムペット用品「Paw&Tail」</li>
+            <li><strong>商材</strong>：愛犬・愛猫の名前を入れられる、オーダーメイドの首輪</li>
+            <li><strong>目的</strong>：商品のデザイン性の高さと特別感を伝え、ECサイトへのトラフィックを増やす（認知・検討）</li>
+            <li><strong>ターゲット</strong>：20代～30代の、ペットを家族同然に愛している男女</li>
+            <li><strong>提供素材</strong>：サービスロゴ、商品写真（複数パターン）</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35725" data-item-id="35725" data-item-type="ItemHeading"><h3 class="item-body">素材</h3></div>
+        
+        <div class="article-item item_link " id="item35726" data-item-id="35726" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=v7V3z&amp;item_id=35726" rel="nofollow noopener noreferrer" target="_blank">実践！AI活用SNS広告動画制作ワークフロー 3-1【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="実践！AI活用SNS広告動画制作ワークフロー 3-1【使用素材】" data-reference="https://www.dropbox.com/scl/fi/60bps8babk090yr8c07pu/VideoEditor-AiSns_ch3_V1-0_published.jpg?rlkey=jq83n1fb26ql5j6t5pry8tmqu&amp;st=wyr8lt6l&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/726/thumb/afb69531-e892-43ea-8002-1c5b2c758835.png?1754964191" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item35727" data-item-id="35727" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=v7V3z&amp;item_id=35727" rel="nofollow noopener noreferrer" target="_blank">実践！AI活用SNS広告動画制作ワークフロー 3-2 【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="実践！AI活用SNS広告動画制作ワークフロー 3-2 【使用素材】" data-reference="https://www.dropbox.com/scl/fi/xlvz0ytplxbfaxccv2g1e/VideoEditor-AiSns_ch3-2_V1-0_published.jpg?rlkey=nkqjiop1gx4yo6xvuaxywz6bn&amp;st=g99u1pp4&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/727/thumb/99a9b2a0-cc25-41c1-ba33-df083cc485e0.png?1754964204" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item35728" data-item-id="35728" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=v7V3z&amp;item_id=35728" rel="nofollow noopener noreferrer" target="_blank">実践！AI活用SNS広告動画制作ワークフロー 3−3【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="実践！AI活用SNS広告動画制作ワークフロー 3−3【使用素材】" data-reference="https://www.dropbox.com/scl/fi/b5qcnas7rdjksd3rfmh0g/VideoEditor-AiSns_ch3-3_V1-0_published.jpg?rlkey=clbl9dpmyfwptcev7acp1c5r0&amp;st=i5mk27go&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/728/thumb/e9066576-548f-49ad-8e19-51ba4a857189.png?1754964214" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item35729" data-item-id="35729" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>案件B：初心者向け資産運用サービス（YouTubeインストリーム広告用・横長）</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><strong>クライアント</strong>：フィンテック企業「Asset Step」</li>
+            <li><strong>商材</strong>：AIがサポートする、初心者向けの資産運用サービス</li>
+            <li><strong>目的</strong>：投資へのハードルを下げ、無料オンラインセミナーへの参加を促す（行動喚起）</li>
+            <li><strong>動画形式</strong>：<span class="decoration-02">16:9 横長動画</span></li>
+            <li><strong>ターゲット</strong>：30代～40代の、将来のために資産形成を始めたいが、何から手をつければ良いか分からない男女</li>
+            <li><strong>提供素材</strong>：サービスロゴ、アプリアイコン</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35730" data-item-id="35730" data-item-type="ItemHeading"><h3 class="item-body">素材</h3></div>
+        
+        <div class="article-item item_link " id="item35731" data-item-id="35731" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=v7V3z&amp;item_id=35731" rel="nofollow noopener noreferrer" target="_blank">実践！AI活用SNS広告動画制作ワークフロー 3−4【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="実践！AI活用SNS広告動画制作ワークフロー 3−4【使用素材】" data-reference="https://www.dropbox.com/scl/fi/u58xs04huq8cf6y2zpf20/VideoEditor-AiSns_ch3-4_V1-0_published.jpg?rlkey=8dqel7lyk5dy172j5i4tf7yz5&amp;st=uu3v1fxw&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/731/thumb/ff5bb9af-a25b-49bc-b5d2-3655b8d55aeb.png?1754964226" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_link " id="item35732" data-item-id="35732" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=v7V3z&amp;item_id=35732" rel="nofollow noopener noreferrer" target="_blank">実践！AI活用SNS広告動画制作ワークフロー3-5【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="実践！AI活用SNS広告動画制作ワークフロー3-5【使用素材】" data-reference="https://www.dropbox.com/scl/fi/euc9anenyo0xga8tl3zga/VideoEditor-AiSns_ch3-5_V1-0_published.jpg?rlkey=hsv8dr34r5rby9xg4f5r8q7mv&amp;st=sczc1in3&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/732/thumb/6a6d299e-6884-4282-a0dc-5bfed8b03c88.png?1754964236" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item35733" data-item-id="35733" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>案件C：グルメポップコーン（TikTok用）</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><strong>クライアント</strong>：スナックメーカー「Poppin' Flavors」</li>
+            <li><strong>商材</strong>：期間限定のフレーバー「驚きのワサビ＆ハニー味」ポップコーン</li>
+            <li><strong>目的</strong>：味の意外性とインパクトを伝え、オンラインでの指名検索や購入を促す（認知・行動喚起）</li>
+            <li><strong>ターゲット</strong>：10代～20代の、新しいものや面白い食べ物が好きな若者層</li>
+            <li><strong>提供素材</strong>：商品パッケージ写真</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item35734" data-item-id="35734" data-item-type="ItemHeading"><h3 class="item-body">素材</h3></div>
+        
+        <div class="article-item item_link " id="item35735" data-item-id="35735" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=v7V3z&amp;item_id=35735" rel="nofollow noopener noreferrer" target="_blank">実践！AI活用SNS広告動画制作ワークフロー 3-6【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="実践！AI活用SNS広告動画制作ワークフロー 3-6【使用素材】" data-reference="https://www.dropbox.com/scl/fi/h7kn0qrzr4kyukkl5e1cp/VideoEditor-AiSns_ch3-6_V1-0_published.png?rlkey=d9zef6kyb9w6wqrqyh4s6qi07&amp;st=i5ymhm5k&amp;dl=0" src="https://cdn.clipkit.co/tenants/589/item_links/images/000/035/735/thumb/eff08794-64f7-42dd-9892-75223dd326a7.png?1754964247" width="75" height="75" /></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item35736" data-item-id="35736" data-item-type="ItemHeading"><h2 class="item-body">【3-2】実践課題1：一つ目の案件に挑戦</h2></div>
+        
+        <div class="article-item item_markdown " id="item35737" data-item-id="35737" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：70分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item35738" data-item-id="35738" data-item-type="ItemRichText"><div class="item-body-hbr">それでは、選択した一つ目の案件の制作に取り掛かりましょう。<br>
+2章の追体験編で学んだワークフローを参考に、自身の力で進めてみてください。</div></div>
+        
+        <div class="article-item item_heading " id="item35739" data-item-id="35739" data-item-type="ItemHeading"><h3 class="item-body">STEP1：企画・構成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35740" data-item-id="35740" data-item-type="ItemRichText"><div class="item-body-hbr">まずは、選択した案件の要件定義書を深く読み込み、目的とターゲットを正確に理解します。<br>
+その上で、ChatGPTを使い、ターゲットペルソナ、動画のコンセプト、構成案、そして台本を作成しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item35741" data-item-id="35741" data-item-type="ItemHeading"><h3 class="item-body">STEP2：AI素材による補強と生成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35742" data-item-id="35742" data-item-type="ItemRichText"><div class="item-body-hbr">クライアントから提供された画像素材を主軸に、それだけでは表現しきれない部分を補うための補強素材とナレーションをAIで生成します。</div></div>
+        
+        <div class="article-item item_html " id="item35743" data-item-id="35743" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>実案件との違いと、今回の課題の狙い(再掲)</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>実際の案件では、クライアントから長尺の実写動画素材が提供されるケースも多く、AIで生成する素材はあくまで補助的な役割になることもあります。その方が編集作業は楽な場合が多いです。</li>
+            <li>しかし、今回は<span class="decoration-02">「何もない状態から、AIだけでどれだけの表現ができるか」</span>を試す絶好の機会です。</li>
+            <li>AI素材を数多く生成し、それらを組み合わせて1本の動画を創り上げるプロセスは、スキルを飛躍的に向上させます。ぜひ、今回は練習と捉え、様々な素材生成に挑戦してみましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item35744" data-item-id="35744" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><strong>補強素材</strong>：<br>タイトル画像、説明用のアイコン、商品の効果をイメージさせる抽象的なCG風の画像・動画、場面転換に使える短い動画クリップなど。</li>
+  <li><strong>ナレーション</strong>：<br>台本を元に、ターゲットに響く声質で生成します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item35745" data-item-id="35745" data-item-type="ItemHeading"><h3 class="item-body">STEP3：編集・仕上げ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35746" data-item-id="35746" data-item-type="ItemRichText"><div class="item-body-hbr">全ての素材（提供素材＋AI生成素材）が揃ったら、編集ソフトに取り込み、一本の動画に仕上げていきます。<br>
+教材4で学んだPremiere ProtのAI機能を積極的に活用し、効率的かつクオリティの高い編集を目指してください。<br>
+BGMや効果音も、動画の雰囲気を高める重要な要素です。<br>
+<br>
+編集ソフトはCap Cutなどを用いても構いません。</div></div>
+        
+        <div class="article-item item_markdown " id="item35747" data-item-id="35747" data-item-type="ItemMarkdown"><h4 id="a">実践課題1　案件Aの解答例</h4>
+</div>
+        
+        <div class="article-item item_code " id="item35748" data-item-id="35748" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>### ■ STEP1：企画・構成
+
+- ターゲットペルソナ
+    - 名前：佐藤 あい
+    - 年齢：28歳
+    - 職業：都内のデザイン事務所で働く会社員
+    - 家族構成：トイプードルの「モカ」（3歳）と一人暮らし
+    - SNS利用：Instagramを毎日チェック。特にペット関連のアカウントや、お洒落なライフスタイル系のアカウントをフォロー。
+「#犬のいる暮らし」「#うちの子が一番可愛い」などのハッシュタグで、モカとの日常を投稿することも。
+    インサイト（悩み/欲求）：「モカはただのペットじゃなくて、大切な家族。ありきたりなペットグッズじゃなくて、
+もっと特別で、デザイン性の高いものを探している。モカだけの”一点もの”があったら、絶対に嬉しい。」
+
+- 動画のコンセプト
+    - コンセプト：「うちの子だけの、宝物。」
+    - 狙い：単なる商品紹介ではなく、オーダーメイドの首輪が「飼い主からペットへの愛情の証」であり、
+「世界に一つだけの宝物」であることをエモーショナルに伝えます。デザイン性の高さと、
+名前を刻むという”特別感”を両立させ、視聴者の所有欲と共感を刺激します。
+    
+- 構成案（映像とテロップの設計図）
+    - **シーン1：導入 (0〜3秒)**
+        - **映像：飼い主の膝の上でくつろぐペット（犬/猫）の愛らしいアップ。
+スローモーションで撮影したような、少し感傷的な雰囲気を演出します。**
+        - **テロップ：（なし）**
+    - **シーン2：商品提示 (3〜6秒)**
+        - **映像：提供された商品写真（首輪）にズームイン。特に名前が刻印されている部分にゆっくりとフォーカスを当てます。
+キラリと光るアニメーションエフェクトを追加して、特別感を強調します。**
+        - **テロップ：「名前を刻む、特別な贈り物。」というテキストを、上品なフォントで表示します。**
+    - **シーン3：展開 (6〜10秒)**
+        - **映像：提供された様々なデザインの首輪をつけたペットたちの写真を、リズミカルに表示します。**
+        - **テロップ：「どんな子にも似合う」「こだわりのデザイン」といった短いキャッチコピーを、
+映像の切り替わりに合わせて表示します。**
+    - **シーン4：ベネフィット (10〜13秒)**
+        - **映像：新しい首輪をつけて、嬉しそうに飼い主と散歩しているイメージ映像。
+（このシーンは、AIで生成した動画素材などで補います）**
+        - **テロップ：「お散歩が、もっと特別な時間に。」という、商品によって得られる体験価値を示します。**
+    - **シーン5：CTA（行動喚起） (13〜15秒)**
+        - **映像：画面中央に「Paw&amp;Tail」のロゴが大きく表示されます。
+その下に、Instagramの検索窓を模したデザインが現れ、「Paw&amp;Tail」と入力されるアニメーションを見せます。**
+        - **テロップ：ロゴの下に「オンラインストアで検索」と表示し、次のアクションを促します。**
+        
+- **台本（ナレーションと音響の指示書）**
+    - 全体設定
+        - ナレーター：20代後半～30代の、優しく落ち着いた女性の声。
+        - BGM：お洒落で、少し感動的なピアノまたはアコースティックギターのインストゥルメンタル曲。
+    - 時間ごとの指示
+        - (0秒〜) シーン1: 導入
+            - BGM：優しく感動的なピアノ曲、イントロが静かに流れ始める。
+            - ナレーション：「世界で一番、愛しい君へ。」
+    - (3秒〜) シーン2: 商品提示
+        - SE：映像で刻印が光るタイミングに合わせ、（キラリーン）という控えめな効果音を入れる。
+        - ナレーション：「君だけの名前を刻んだ、特別な贈り物を。」
+    - (6秒〜) シーン3: 展開
+        - BGM：少しテンポアップし、明るく希望に満ちた雰囲気に変化させる。
+        （このシーンはナレーションなし。BGMと映像の切り替わりで魅せる）
+    - (10秒〜) シーン4: ベネフィット
+        - ナレーション：「毎日のお散歩が、もっと特別な時間に変わる。」
+    - (13秒〜) シーン5: CTA
+        - BGM：最後のナレーションに合わせて、ゆっくりとフェードアウトしていく。
+        - ナレーション：「Paw&amp;Tailで、最高の宝物を見つけて。」
+
+### ■ STEP2：AI素材による補強と生成
+
+- 補強動画
+    - ① 導入の感動シーン用
+        - 生成イメージ：飼い主の膝の上で気持ちよさそうに眠るペットの、心温まるクローズアップ動画。（縦型）
+    - ② ベネフィットの散歩シーン用
+        - 生成イメージ：飼い主の目線で、新しい首輪をつけたペットが嬉しそうに散歩している動画。（縦型）
+- 補強画像
+    - ① 商品バリエーション用
+        - 生成イメージ：提供写真とは違う種類のペット（例：ゴールデンレトリバー）が、
+違う色の首輪をつけているお洒落なポートレート写真。（縦型）
+- ナレーション音声
+    - ① 全編のナレーション用
+        - 生成方法：音声生成AIを使い、STEP1の台本を「20代〜30代の、優しく落ち着いた女性の声」で音声化する。
+
+### ■ STEP3：編集・仕上げ
+
+- **冒頭3秒の掴み**：Instagramリールは最初のエンゲージメントが重要。「可愛い！」「素敵！」と思わせる
+エモーショナルなペットの映像を冒頭に配置し、視聴者の指を止めさせます。
+- **世界観の統一**：お洒落で感動的なBGM（ピアノ曲など）を選び、テロップには上品な明朝体や手書き風フォントを使用。
+全体の色調を暖色系に補正し、ブランドの温かい世界観を演出します。
+- **リズミカルなテンポ感**：BGMのリズムに合わせて写真や動画をテンポよく切り替える「音ハメ編集」を行います。
+商品の刻印がキラリと光るなど、シンプルなエフェクトで視覚的なアクセントを加えます。
+- **直感的な行動喚起**：動画の最後にロゴと合わせて「Paw&amp;Tailで検索」という具体的なテキストを表示。
+Instagramの検索窓を模したデザインを使い、視聴者に次の検索行動を直感的に促します。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item35749" data-item-id="35749" data-item-type="ItemHeading"><h2 class="item-body">【3-3】実践課題2：二つ目の案件に挑戦</h2></div>
+        
+        <div class="article-item item_markdown " id="item35750" data-item-id="35750" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：70分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item35751" data-item-id="35751" data-item-type="ItemRichText"><div class="item-body-hbr">一つ目の案件が完成したら、次は二つ目の案件に挑戦です。</div></div>
+        
+        <div class="article-item item_heading " id="item35752" data-item-id="35752" data-item-type="ItemHeading"><h3 class="item-body">STEP1：企画・構成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35753" data-item-id="35753" data-item-type="ItemRichText"><div class="item-body-hbr">もう一方の案件の要件定義書を読み込み、一つ目の案件との目的やターゲット、プラットフォーム（縦長 or 横長）の違いを意識することが重要です。<br>
+その違いを踏まえた上で、最適な企画・台本をChatGPTと共に練り上げましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item35754" data-item-id="35754" data-item-type="ItemHeading"><h3 class="item-body">STEP2：AI素材による補強と生成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35755" data-item-id="35755" data-item-type="ItemRichText"><div class="item-body-hbr">こちらの案件のコンセプトに合わせて、最適なビジュアルと音声の素材をAIで生成します。<br>
+一つ目の案件とは異なるトーン＆マナーが求められるはずです。</div></div>
+        
+        <div class="article-item item_heading " id="item35756" data-item-id="35756" data-item-type="ItemHeading"><h3 class="item-body"> STEP3：編集・仕上げ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item35757" data-item-id="35757" data-item-type="ItemRichText"><div class="item-body-hbr">異なる要件の動画を続けて制作することで、AI活用ワークフローのスキルは、より強固に定着し、どんな案件にも対応できる応用力へと進化します。<br>
+2本目の動画を完成させ、この章の課題はクリアです。<br>
+行き詰まった際は、いつでもコーチに相談してください。</div></div>
+        
+        <div class="article-item item_markdown " id="item35758" data-item-id="35758" data-item-type="ItemMarkdown"><h4 id="b">実践課題2　案件Bの解答例</h4>
+</div>
+        
+        <div class="article-item item_code " id="item35759" data-item-id="35759" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>### ■ STEP1：企画・構成
+
+- **ターゲットペルソナ**
+    - 名前：高橋 健太
+    - 年齢：35歳
+    - 職業：中堅メーカーの営業職
+    - 家族構成：妻（共働き）、子供1人（5歳）
+    - SNS利用：情報収集のためにYouTubeやニュースアプリを視聴。ビジネス系、教育系のチャンネルをたまに見る。
+    - インサイト（悩み/欲求）：「子供の教育費や自分たちの老後を考えると、貯金だけでは不安。
+投資を始めたいけど、何から手をつけていいか分からないし、損をするのが怖い。専門用語は苦手だ。」
+- **動画のコンセプト**
+    - コンセプト：**「未来の不安を、AIと『安心』に変える第一歩」**
+    - 狙い：ターゲットが抱える「将来のお金の漠然とした不安」に寄り添い、共感を示す。
+その上で、解決策として「AIがサポートしてくれるから、専門知識がなくても大丈夫」という安心感を提示。
+「難しい」「怖い」という投資への心理的ハードルを下げ、無料セミナーへの参加を促す。
+- **構成案（映像とテロップの設計図）**
+    - **シーン1：問題提起 (0〜5秒) ※スキップ不可部分**
+        - **映像**：将来を案じ、ため息をつく男性の後ろ姿。抽象的で少し暗めのトーン。（AI生成）
+        - **テロップ**：「将来のお金、何から始めれば…？」と大きく表示。
+    - **シーン2：解決策の提示 (5〜10秒)**
+        - **映像**：画面が明るく転換し、「Asset Step」のロゴとアプリアイコンが中央に表示される。
+スマホを片手に安心した表情の人物のイメージ。
+        - **テロップ**：「その悩み、AIにお任せください。」
+    - **シーン3：具体的なベネフィット (10〜20秒)**
+        - **映像**：スマホアプリのデモ画面風のアニメーション。AIが最適なプランを提案する様子や、
+資産が少しずつ増えていくグラフを視覚的に見せる。（AI生成のUIパーツやアイコンを活用）
+        - **テロップ**：「①AIがあなたに合ったプランを診断」「②月々1万円からでもOK」「③スマホで簡単チェック」
+と箇条書きで表示。
+    - **シーン4：信頼性の補強 (20〜25秒)**
+        - **映像**：オンラインセミナーで、講師の話に頷く参加者たちのイメージ映像。（AI生成）
+        - **テロップ**：「知識ゼロでも大丈夫。まずは無料で学んでみませんか？」
+    - **シーン5：CTA（行動喚起） (25〜30秒)**
+        - **映像**：画面の右側に「無料セミナー参加はこちら」というクリック可能なボタン風のデザインを大きく表示。
+矢印がボタンを指し示すアニメーション。
+        - **テロップ**：「今なら参加者特典も！」
+- **台本（ナレーションと音響の指示書）**
+    - **全体設定**
+        - **ナレーター**：30代後半〜40代の、信頼感と落ち着きのある男性の声。
+        - **BGM**：知的で落ち着いた雰囲気の、主張しすぎないエレクトロニカやアンビエント系の楽曲。
+    - **時間ごとの指示**
+        - **(0秒〜) シーン1**
+            - **ナレーション**：「将来のお金のこと、そろそろ真剣に考えないといけない…
+　　　　でも、何から始めればいいんだろう？」
+        - **(5秒〜) シーン2**
+            - **BGM**：少し明るく、前向きな曲調に変化。
+            - **ナレーション**：「そんなあなたのための、AI資産運用サービス『Asset Step』。」
+        - **(10秒〜) シーン3**
+            - **ナレーション**：「難しい知識は不要です。AIがあなたにぴったりの資産プランを診断し、
+　　　　　スマホ一つで将来の資産づくりをサポートします。」
+            - **SE**：UI操作に合わせた、軽快なクリック音。
+        - **(20秒〜) シーン4**
+            - **ナレーション**：「まずは、投資の基礎が分かる無料オンラインセミナーで、あなたの不安を解消しませんか？」
+        - **(25秒〜) シーン5**
+            - **BGM**：少し盛り上がり、行動を後押しする雰囲気に。
+            - **ナレーション**：「下のボタンから、今すぐお申し込みください。」
+
+### ■ STEP2：AI素材による補強と生成
+
+- **補強動画**
+    - **① 導入の不安シーン用**
+        - **生成イメージ**：将来を案じて窓の外を眺める、30代男性の後ろ姿の動画。（横長）
+    - **② アプリのデモアニメーション用**
+        - **生成イメージ**：未来的なデザインのグラフやチャートが動く、抽象的なデータビジュアライゼーション動画。
+    - **③ セミナーのイメージ用**
+        - **生成イメージ**：オンラインセミナーで講師の話に真剣に頷く、複数の男女のグループショット動画。（横長）
+- **補強画像**
+    - **① UIデザインパーツ用**
+        - **生成イメージ**：クリーンでシンプルなデザインの「診断ボタン」「グラフアイコン」「スマホアイコン」などのUIパーツ。
+    - **② 安心感を与える人物像用**
+        - **生成イメージ**：スマホを片手に、リラックスした表情で微笑む30代〜40代の男女の写真。（横長）
+- **ナレーション音声**
+    - **① 全編のナレーション用**
+        - **生成方法**：音声生成AIを使い、STEP1の台本を「30代後半の、信頼感と落ち着きのある男性の声」で音声化する。
+
+### ■ STEP3：編集・仕上げ
+
+- **編集のポイント**
+    - **冒頭5秒のインパクト**：スキップされる前に「私のことだ」と思わせるため、最初の問いかけテロップを大きく、
+　　ゆっくり表示して視線を引きつける。
+    - **情報の整理**：横長の画面を活かし、モーショングラフィックスで情報を整理する。例えば、画面左に人物、
+　　右にテロップを配置するなど、視線移動を意識したレイアウトにする。
+    - **信頼感の演出**：白と青を基調としたクリーンな配色でまとめ、フォントは可読性が高く誠実な印象のゴシック体を選ぶ。
+    - **明確なCTA**：動画の最後は、視聴者が迷わずに行動できるよう「無料セミナー参加はこちら」のボタンデザインを
+　　画面上で最も目立たせ、クリックを促すアニメーション（点滅や矢印など）を加える。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_markdown " id="item35760" data-item-id="35760" data-item-type="ItemMarkdown"><h4 id="c">実践課題2　案件Cの解答例</h4>
+</div>
+        
+        <div class="article-item item_code " id="item35761" data-item-id="35761" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>### ■ STEP1：企画・構成
+
+- **ターゲットペルソナ**
+    - 名前：ゆうと
+    - 年齢：19歳
+    - 職業：大学生（イベントサークルに所属）
+    - SNS利用：TikTokを毎日、通学中や暇な時に視聴。面白いチャレンジ系、
+コンビニ新商品レビュー系の動画をよく見る。「#新商品レビュー」「#飯テロ」などをチェック。
+    - インサイト（悩み/欲求）：「普通の味にはもう飽きた。友達との話のネタになるような、
+インパクトのあるお菓子が食べたい」「TikTokでバズってるものは、とりあえず試したくなる」
+- **動画のコンセプト**
+    - コンセプト：**「味のジェットコースター体験」**
+    - 狙い：「ワサビ＆ハニー」という味のギャップを、視聴者が擬似体験できるような構成にする。
+「甘そう→え、辛っ！？→でもウマい！」という感情の起伏を、スピーディーなカットと効果音で表現。
+視聴者に「何これ！？」と思わせて指名検索や購買に繋げる。
+- **構成案（映像とテロップの設計図）**
+    - **シーン1：期待感 (0〜2秒)**
+        - **映像**：提供されたパッケージ写真が画面いっぱいに表示。上からハチミツがとろーりとかかる
+アニメーションを追加する。
+        - **テロップ**：「え、ただのハニー味？🍯」
+    - **シーン2：裏切り (2〜5秒)**
+        - **映像**：画面が緑色にフラッシュし、ワサビのイラストが飛び出す。ポップコーンを口に入れた人が
+「！？」と目を見開くリアクション映像（AI生成）。
+        - **テロップ**：「...と思ったらワサビ！？🌿」（テキストがブルブル震えるエフェクト）
+    - **シーン3：衝撃と快感 (5〜8秒)**
+        - **映像**：食べる人の表情が「ツーン！」とした顔から、「え、ウマっ！」と驚きの笑顔に変わる。
+脳内で火花が散るようなアニメーションを追加。
+        - **テロップ**：「ツーン！からの、激ウマ！🤯」
+    - **シーン4：CTA（行動喚起） (8〜10秒)**
+        - **映像**：商品パッケージを再度表示。「期間限定」というスタンプを大きく押すアニメーション。
+        - **テロップ**：「見つけたら即買い！ #ワサビハニーポップコーン」
+- **台本（音響の指示書）**
+    - **全体設定**
+        - **BGM**：TikTokで流行しているアップテンポでコミカルな楽曲（著作権フリー音源またはTikTokの
+音源ライブラリから選定）
+        - **ナレーター**：なし（テロップと効果音で展開）
+    - **時間ごとの指示**
+        - **(0秒〜) シーン1**
+            - **BGM**：楽曲のイントロ開始
+            - **SE**：（ポワ〜ン）という甘そうな効果音
+        - **(2秒〜) シーン2**
+            - **SE**：（ビカッ！シャキーン！）という派手な切り替わり音。続けて（ツーーーン）という上昇音。
+        - **(5秒〜) シーン3**
+            - **SE**：（ピコーン！キラキラ〜ン✨）という気づきや発見の効果音。
+        - **(8秒〜) シーン4**
+            - **SE**：（ドンッ！）というスタンプが押される音。BGMはループして終了。
+
+### ■ STEP2：AI素材による補強と生成
+
+- **補強動画**
+    - **① リアクション動画用**
+        - **生成イメージ**：ポップコーンを食べて「驚く顔」から「美味しいと気づく笑顔」に変わる、
+Z世代の若者のリアクション動画。（縦型）
+    - **② エフェクト動画用**
+        - **生成イメージ**：画面上部からとろりとしたハチミツが垂れてくるアニメーション動画。
+- **補強画像**
+    - **① ワサビのイラスト用**
+        - **生成イメージ**：インパクトがあり、少しコミカルなデフォルメされたワサビのイラスト。
+    - **② スタンプ画像用**
+        - **生成イメージ**：「期間限定」という文字が入った、赤くて目立つハンコ風の画像。
+- **効果音（SE）**
+    - **① 各シーンの効果音用**
+        - **生成方法**：効果音生成AIやフリー素材サイトを使い、台本に記載した「ポワ〜ン」「シャキーン！」など
+　　のコミカルな音を準備する。
+
+### ■ STEP3：編集・仕上げ
+
+- **編集のポイント**
+    - **スピード感**：視聴者を飽きさせないよう、1〜2秒単位でカットを細かく割り、スピーディーに展開する。
+    - **音ハメ**：BGMのビートやリズムに合わせて、映像やテロップを切り替える「音ハメ編集」を徹底し、
+心地よいリズム感を作る。
+    - **エフェクト**：TikTokの文化に合わせ、テキストの振動やフラッシュ、ズームイン/アウトなどのエフェクトを
+多用して視覚的な刺激を最大化する。
+    - **セーフゾーン**：TikTokのUI（アイコンや説明文）に重要なテロップが被らないよう、画面の上下左右の余白を
+意識してレイアウトする。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item35762" data-item-id="35762" data-item-type="ItemRichText"><div class="item-body-hbr">これで「3章：【実践編】SNS広告動画をゼロから制作する」の解説を終わります。<br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item35782" data-item-id="35782" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="4ouVu" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="fC0zv" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="yvJDV3afybqmsAVy6Eih+g==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

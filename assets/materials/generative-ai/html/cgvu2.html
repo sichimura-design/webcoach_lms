@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/Cgvu2 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3章 コーディング爆速化！CSS変数計画 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/Cgvu2">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="3章 コーディング爆速化！CSS変数計画 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/037/207/medium/f7db0d45-31a3-4ae1-9641-7757c40a0c1d.png?1754965115">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="3章 コーディング爆速化！CSS変数計画">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/Cgvu2">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/037/207/large/f7db0d45-31a3-4ae1-9641-7757c40a0c1d.png?1754965115">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="_mdOC3HScilXrvxmGd7XYd0XI5xR6Epz7qiyPIozUTXGpAnbXIi-igzO9fCLfYAKR6EeD8__6Xne4SW-8yDfsg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材3 AIアシスト実装の準備</div>
+
+          <div class="fw-bold h2">3章 コーディング爆速化！CSS変数計画</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 コーディング爆速化！CSS変数計画</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1時間20分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】再利用性UP！CSS変数のすごい力</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading5" class="tocLink">CSS変数（カスタムプロパティ）とは？</a></li><li><a href="#heading6" class="tocLink">CSS変数の基本的な書き方と使い方</a></li></ul></li><li><a href="#heading7" class="tocLink">【3-2】AIと作る！カラー＆フォントの変数リスト</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading9" class="tocLink">AIにCSS変数の「命名規則」を提案させる</a></li><li><a href="#heading10" class="tocLink">変数リストをAIに一括生成させる</a></li></ul></li><li><a href="#heading11" class="tocLink">【3-3】AIと計画する！スペーシング変数</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading13" class="tocLink">なぜ余白（スペース）も変数化するのか</a></li><li><a href="#heading14" class="tocLink">AIと一緒に余白のルールから変数リストを作る</a></li><li><a href="#heading15" class="tocLink">最終チェック！実装で使う変数リストの完成</a></li></ul></li><li><a href="#heading16" class="tocLink">【3-4】3章 -章末課題- [デザインカンプから"余白のルール"を読み解き変数化しよう！]</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間： 20分</a></li></ul><ul><li><a href="#heading18" class="tocLink">問題</a><ul><li><a href="#heading19" class="tocLink"></a></li></ul></li><li><a href="#heading20" class="tocLink">解答手順</a></li><li><a href="#heading21" class="tocLink">解答例</a></li><li><a href="#heading22" class="tocLink">発見したルール</a></li><li><a href="#heading23" class="tocLink">CSS変数リストの生成（命名規則）</a></li><li><a href="#heading24" class="tocLink">最終確認と解説</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item37559" data-item-id="37559" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/b2kEt" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/TEq6Y" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37183" data-item-id="37183" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">3章 コーディング爆速化！CSS変数計画</h2></div>
+        
+        <div class="article-item item_markdown " id="item37184" data-item-id="37184" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：1時間20分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item37185" data-item-id="37185" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37186" data-item-id="37186" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>CSS変数（カスタムプロパティ）のメリットと基本的な使い方を理解する。</li>
+  <li><span class="decoration-02">情報の精度（正確な値 vs 推測値）を考慮</span>しながら、AIと協力してカラー、フォント、余白のCSS変数リストを作成できる。</li>
+  <li>作成したCSS変数リストを、実際のコーディングでどのように活用するかのイメージが掴める。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37187" data-item-id="37187" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【3-1】再利用性UP！CSS変数のすごい力</h2></div>
+        
+        <div class="article-item item_markdown " id="item37188" data-item-id="37188" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37189" data-item-id="37189" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">CSS変数（カスタムプロパティ）とは？</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37190" data-item-id="37190" data-item-type="ItemRichText"><div class="item-body-hbr">Webサイト制作では、同じカラーコードやフォントサイズ、余白の値をCSSファイルの様々な場所で繰り返し使用します。<br>
+しかし、この方法には問題が潜んでいます。<br>
+例えば、サイトのメインカラーを変更したくなった場合、そのカラーコードが使われている箇所を全て探し出し、一つひとつ手作業で修正しなければなりません。<br>
+これは非常に手間がかかり、修正漏れの原因にもなります。<br>
+<br>
+このような問題を解決するのが<span class="decoration-02">CSS変数（カスタムプロパティ）</span>です。<br>
+<br>
+CSS変数とは、色やサイズなどの値を「変数」という名前を付けた箱に保存し、必要な時にその箱の名前を呼び出して値を使い回す仕組みです。<br>
+これにより、値の管理を一元化でき、修正が必要になった際も、変数を定義している1箇所を修正するだけで、サイト全体のスタイルを一括で変更できます。<br>
+この保守性の高さから、CSS変数はモダンなWeb制作において必須の知識となっています。<br>
+<br>
+それでは、具体的にコードを見ながら、CSS変数を使う場合と使わない場合でどれだけ保守性が変わるのかを比較してみましょう。<br>
+<br>
+まず、CSS変数を使わずに、直接カラーコードを記述した例です。<br>
+<span class="decoration-01">変更に弱いコード（変数を使わない場合）</span></div></div>
+        
+        <div class="article-item item_code " id="item37191" data-item-id="37191" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>h1 {
+  color: #007bff;
+}
+.button {
+  background-color: #007bff;
+}
+a {
+  color: #007bff;
+}h1 {
+  color: #007bff;
+}
+
+.button {
+  background-color: #007bff;
+}
+
+a {
+  color: #007bff;
+}</pre></div>
+</div>
+<div class="cite"><cite class="item-source">CSS</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37244" data-item-id="37244" data-item-type="ItemRichText"><div class="item-body-hbr">このコードでは、<span class="decoration-02">h1 </span>タグ、<span class="decoration-02">.button </span>クラス、<span class="decoration-02">a </span>タグの3箇所で同じカラーコード ( <span class="decoration-02">#007bff </span>) を使用しています。<br>
+<br>
+もし、このテーマカラーを別の色に変更したくなった場合、<span class="decoration-02">コード内の3箇所すべてを正確に探し出し、修正する必要があります。</span><br>
+サイトの規模が大きくなればなるほど、この作業は手間がかかり、修正漏れやタイプミスといったヒューマンエラーの原因にもなります。<br>
+<br>
+次に、CSS変数を使った例を見てみましょう。<br>
+<span class="decoration-01">変更に強いコード（変数を使う場合）</span></div></div>
+        
+        <div class="article-item item_code " id="item37245" data-item-id="37245" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>:root {
+  --primary-color: #007bff;
+}
+h1 {
+  color: var(--primary-color);
+}
+.button {
+  background-color: var(--primary-color);
+}
+a {
+  color:  var(--primary-color);
+}</pre></div>
+</div>
+<div class="cite"><cite class="item-source">CSS</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37192" data-item-id="37192" data-item-type="ItemRichText"><div class="item-body-hbr">こちらのコードでは、まず <span class="decoration-02">:root</span> という場所に <span class="decoration-02">--primary-color</span> という名前の変数を定義し、そこにカラーコード (<span class="decoration-02">#007bff</span>) を保存しています。<br>
+そして、色を適用したい各要素では、<span class="decoration-02">var(--primary-color)</span> という形でその変数を呼び出しています。<br>
+<br>
+この方法なら、テーマカラーを変更したくなった場合でも、<span class="decoration-02">:root 内の変数の値を1箇所変更するだけ</span>で、その変数が使われているすべての要素に新しい色が適用されます。<br>
+<br>
+このように、CSS変数を活用することで、<span class="decoration-02">修正の手間とミスを劇的に減らし</span>、<span class="decoration-02">保守性の高い</span>（メンテナンスしやすい）コードを書くことができるのです。</div></div>
+        
+        <div class="article-item item_heading " id="item37193" data-item-id="37193" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">CSS変数の基本的な書き方と使い方</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37194" data-item-id="37194" data-item-type="ItemRichText"><div class="item-body-hbr">CSS変数の使い方は、「定義」と「呼び出し」の2ステップで構成されます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item37195" data-item-id="37195" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1. 変数の定義</span><br>
+変数は、<span class="decoration-02">--</span>（ハイフン2つ）から始まる名前を付けて定義します。<br>
+サイト全体で使う変数は、HTMLのルート要素（最上位の要素）である <span class="decoration-02">:root </span>セレクタの中で定義するのが一般的です。<br>
+<br>
+【コード例：変数の定義】</div></div>
+        
+        <div class="article-item item_code " id="item37196" data-item-id="37196" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>:root {
+  --main-color: #333333;
+  --accent-color: #007bff;
+  --base-font-size: 16px;
+}</pre></div>
+</div>
+<div class="cite"><cite class="item-source">CSS</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37197" data-item-id="37197" data-item-type="ItemRichText"><div class="item-body-hbr">この例では、 <span class="decoration-02">--main-color</span> という名前の変数に<span class="decoration-02"> #333333</span> という値を格納しています。</div></div>
+        
+        <div class="article-item item_rich_text " id="item37198" data-item-id="37198" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2. 変数の呼び出し</span><br>
+定義した変数は、<span class="decoration-02">var() </span>関数を使って呼び出します。<br>
+<br>
+【コード例：変数の呼び出し】</div></div>
+        
+        <div class="article-item item_code " id="item37199" data-item-id="37199" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>body {
+  color: var(--main-color);
+  font-size: var(--base-font-size);
+}
+
+.button {
+  background-color: var(--accent-color);
+}</pre></div>
+</div>
+<div class="cite"><cite class="item-source">CSS</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37200" data-item-id="37200" data-item-type="ItemRichText"><div class="item-body-hbr">このように、 <span class="decoration-02">var() </span>の括弧の中に呼び出したい変数名を入れることで、定義した値が適用されます。</div></div>
+        
+        <div class="article-item item_heading " id="item37201" data-item-id="37201" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【3-2】AIと作る！カラー＆フォントの変数リスト</h2></div>
+        
+        <div class="article-item item_markdown " id="item37202" data-item-id="37202" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37203" data-item-id="37203" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">AIにCSS変数の「命名規則」を提案させる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37204" data-item-id="37204" data-item-type="ItemRichText"><div class="item-body-hbr">CSS変数を効果的に使うには、誰が見ても分かりやすい名前を付けることが重要です。<br>
+しかし、どのような命名規則が良いか迷うこともあるでしょう。<br>
+そんな時もAIが役立ちます。<br>
+<br>
+前の章で抽出したカラーパレットの情報をAIに渡し、命名規則のアイデアを提案してもらいましょう。</div></div>
+        
+        <div class="article-item item_code " id="item37205" data-item-id="37205" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>あなたはプロのCSS設計者です。
+これから以下のカラー情報を使ってCSS変数を定義します。
+分かりやすく再利用しやすい命名規則のアイデアを3つ提案してください。 
+
+カラー情報：メインカラー #2E8B57, サブカラー #F5F5DC, テキストカラー #333333</pre></div>
+</div>
+<div class="cite"><cite class="item-source">入力例</cite></div></div></div>
+        
+        <div class="article-item item_code " id="item37206" data-item-id="37206" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>CSS変数名の命名規則のアイデア
+プロのCSS設計者として、再利用しやすく分かりやすいCSS変数名の命名規則を3つ提案します。
+どの命名規則も、将来的なメンテナンス性やチーム開発での可読性を考慮しています。
+
+1. 役割に基づいた命名規則
+これは最も一般的で推奨されるアプローチです。
+色そのものを示すのではなく、その色がUI上でどのような役割を果たすかに焦点を当てます。
+
+メインカラー: --color-primary
+
+サブカラー: --color-secondary
+
+テキストカラー: --color-text-body または --color-text-default
+
+メリット:
+色が変わっても変数名は変更する必要がないため、大規模なリファクタリングが不要です。
+コードを読んだだけで、その色がUIのどこに使われるか直感的に理解できます。
+セマンティックな意味合いが強く、アクセシビリティの観点からも推奨されます。
+
+2. コンポーネントまたは要素に基づいた命名規則
+特定のコンポーネントや要素に紐づく色がある場合に有効です。
+これにより、そのコンポーネントのスタイリングがより明確になります。
+
+メインカラー: --button-color-primary または --header-bg-color
+
+サブカラー: --card-bg-color または --input-border-color
+
+テキストカラー: --link-text-color または --footer-text-color
+
+メリット:
+特定のコンポーネントのスタイルを管理する際に非常に便利です。
+大規模なデザインシステムで、コンポーネントごとのデザインの独立性を高めたい場合に適しています。
+
+デメリット:
+色の汎用性が低い場合があり、多くの変数が必要になる可能性があります。
+
+3. スケールに基づいた命名規則 (デザイントークン風)
+色の濃淡や明度に応じてスケールを定義し、それを変数名に含める方法です。
+デザイントークンの概念に近いアプローチです。
+
+メインカラー: --green-500 (または --brand-green-500)
+
+サブカラー: --beige-100 (または --accent-beige-100)
+
+テキストカラー: --gray-800 (または --text-dark-gray)
+
+メリット:
+デザイントークンシステムを導入している場合や、将来的に導入を検討している場合にスムーズに移行できます。
+色のバリエーションが増えたときに、一貫した命名規則で管理できます。
+デザイナーと開発者間のコミュニケーションを円滑にします。
+
+デメリット:
+色の値と変数名のマッピングを覚える必要があり、最初のうちは学習コストがかかる可能性があります。
+
+まとめと推奨
+上記3つの提案の中で、最も汎用性が高く、将来的な変更にも強いのは役割に基づいた命名規則です。
+まずはこの方法を基本として採用し、必要に応じてコンポーネント固有の色には2番目の方法を
+組み合わせるのが良いでしょう。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">出力例</cite></div></div></div>
+        
+        <div class="article-item item_link " id="item37207" data-item-id="37207" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=Cgvu2&amp;item_id=37207" rel="nofollow noopener noreferrer" target="_blank">AIアシスト実装の準備 3-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="AIアシスト実装の準備 3-1" data-reference="https://www.dropbox.com/scl/fi/i6ys3y324z5squfjhfq2b/Ai-Coding-Assist_2.3.1.0_.mp4?rlkey=287fly20ffbvc07yij54qlgg2&amp;st=1015o9jq&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37208" data-item-id="37208" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">変数リストをAIに一括生成させる</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37209" data-item-id="37209" data-item-type="ItemRichText"><div class="item-body-hbr">命名規則が決まったら、いよいよ変数リストの生成です。<br>
+抽出した全てのデザイン情報（色、フォントサイズなど）と、採用する命名規則をAIに伝え、CSSコードを一括で生成させます。</div></div>
+        
+        <div class="article-item item_html " id="item37210" data-item-id="37210" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>重要：情報の精度と最終判断</strong></div>
+    </div>
+    <div class="content-area">
+        <p>ここで、2章で学んだ<span class="decoration-02">情報の精度</span>が重要になります。</p>
+        <ul>
+            <li><span class="decoration-02">理想的なSVG（`<text>`要素を持つ）から得た正確な値</text></span>は、そのまま変数に採用します。</li>
+            <li><span class="decoration-02">JPGやアウトライン化SVGから推測した値</span>（例：色が`#333334`、余白が`23px`）は、そのまま使わず、<span class="decoration-02">デザインの意図を汲み取ってキリの良い値（例：`#333333`、`24px`）に人間が修正</span>してからAIに渡します。</li>
+        </ul>
+        <p>この「AIの推測を鵜呑みにせず、人間が最終判断を下す」という一手間が、実装の品質を大きく左右します。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_code " id="item37211" data-item-id="37211" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>以下のデザイン情報と命名規則に基づいて、:root内で定義するCSS変数リストを作成してください。
+
+▼デザイン情報
+- カラー
+- primary: #2E8B57
+- secondary: #F5F5DC
+- text: #333333
+- フォントサイズ
+- h1: 40px
+- h2: 32px
+- body: 16px
+
+▼命名規則
+役割ベース（例：--color-primary, --font-size-large）でお願いします。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト例</cite></div></div></div>
+        
+        <div class="article-item item_code " id="item37213" data-item-id="37213" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>:root {
+  /* カラー */
+  --color-primary: #2E8B57; /* メインカラー */
+  --color-secondary: #F5F5DC; /* サブカラー、背景などに利用 */
+  --color-text-default: #333333; /* デフォルトのテキストカラー */
+
+  /* フォントサイズ */
+  --font-size-h1: 40px; /* h1の見出しに適用 */
+  --font-size-h2: 32px; /* h2の見出しに適用 */
+  --font-size-body: 16px; /* 本文のテキストに適用 */
+}</pre></div>
+</div>
+<div class="cite"><cite class="item-source">出力例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item37214" data-item-id="37214" data-item-type="ItemHeading"><h2 class="item-body" id="heading11">【3-3】AIと計画する！スペーシング変数</h2></div>
+        
+        <div class="article-item item_markdown " id="item37215" data-item-id="37215" data-item-type="ItemMarkdown"><h4 id="heading12">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37216" data-item-id="37216" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">なぜ余白（スペース）も変数化するのか</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37217" data-item-id="37217" data-item-type="ItemRichText"><div class="item-body-hbr">色やフォントと同様に、Webサイト全体で使われる余白（マージンやパディング）も、ある一定のルールに基づいて設計されていることがほとんどです。<br>
+例えば、「基本の余白を8pxとし、その倍の（16px, 24px, 32px...）で全ての余白を管理する」といった<span class="decoration-02">スペーシング・システム</span>がよく用いられます。<br>
+<br>
+余白をCSS変数として管理することで、サイト全体の余白感を一括で調整したり、デザインの一貫性を保ったりすることが容易になります。<br>
+<span class="decoration-02">margin: 15px;</span> のような、その場しのぎの「マジックナンバー」をコードから排除することが、美しいレイアウトへの第一歩です。</div></div>
+        
+        <div class="article-item item_heading " id="item37218" data-item-id="37218" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">AIと一緒に余白のルールから変数リストを作る</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37219" data-item-id="37219" data-item-type="ItemRichText"><div class="item-body-hbr">2章でAIに推測させた余白の値は、<span class="decoration-02">15px</span> , <span class="decoration-02">23px </span>, <span class="decoration-02">31px</span> のように半端な数値であることが多いです。<br>
+ここでも人間の判断が重要になります。<br>
+<br>
+推測値をルール化する思考<br>
+15px→16px、23px→24px、31px→32px のように、<span class="decoration-02">「おそらく8pxの倍数ルールだろう」</span>と推測し、キリの良い数値に正規化（整形）します。<br>
+この正規化したルールを基に、AIに変数リストの作成を依頼します。</div></div>
+        
+        <div class="article-item item_code " id="item37220" data-item-id="37220" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>:root {
+  /* 余白 */
+  --space-sm: 16px;   /* 小さな余白 */
+  --space-md: 24px;   /* 中間の余白 */
+  --space-lg: 32px;   /* 大きな余白 */
+  --space-xl: 40px;   /* 特大の余白 */
+}</pre></div>
+</div>
+<div class="cite"><cite class="item-source">出力例</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item37221" data-item-id="37221" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">最終チェック！実装で使う変数リストの完成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37222" data-item-id="37222" data-item-type="ItemRichText"><div class="item-body-hbr">ここまでの作業で、カラー、フォント、スペーシングに関するCSS変数が揃いました。<br>
+これらを <span class="decoration-02">variables.css</span> や <span class="decoration-02">custom-properties.css </span>といった名前のCSSファイルにまとめておきましょう。<br>
+<br>
+このファイルが、次のコーディング工程で非常に強力な武器となります。<br>
+値に迷うたびにデザインカンプに戻る必要はなくなり、このファイルを参照するだけで、一貫性のあるコーディングを高速に進めることができるようになります。</div></div>
+        
+        <div class="article-item item_heading " id="item37223" data-item-id="37223" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">【3-4】3章 -章末課題- [デザインカンプから"余白のルール"を読み解き変数化しよう！]</h2></div>
+        
+        <div class="article-item item_markdown " id="item37224" data-item-id="37224" data-item-type="ItemMarkdown"><h4 id="heading17">目安の学習時間： 20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item37225" data-item-id="37225" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37226" data-item-id="37226" data-item-type="ItemRichText"><div class="item-body-hbr">あなたは、クライアントから受け取ったWEBCOACHサイトのデザインカンプ（下の画像）を元に、コーディングの準備を進めています。<br>
+このサイトで使われている余白（<span class="decoration-02">padding</span>や<span class="decoration-02">margin</span>）には、一貫したデザインルールが隠されていそうです。<br>
+<br>
+この章で学んだ知識を活かし、AIと協力して<span class="decoration-02">余白の値を推測</span>し、それを<span class="decoration-02">ルール化（正規化）した上で、使いやすいスペーシング（余白）のCSS変数リスト</span>を作成してください。<br>
+<br>
+本問題では、デザインカンプ画像の「チュートリアル」「環境セットアップ」カードコンポーネントの余白を調べましょう。</div></div>
+        
+        <div class="article-item item_image " id="item37227" data-item-id="37227" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/037/227/medium/06aad12c-03c5-4ea8-8674-55a176e44140.png?1753916189" title=""><img class="img-responsive item-image" alt=" (37227)" data-reference="" src="../../_assets/43a32a5562.webp" width="640" height="614"></a><h4 id="heading19"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37228" data-item-id="37228" data-item-type="ItemHeading"><h3 class="item-body" id="heading20">解答手順</h3></div>
+        
+        <div class="article-item item_html " id="item37229" data-item-id="37229" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">分析箇所の選定と推測の依頼</span>
+    <ul>
+      <li>デザインカンプ画像の中から、余白が分かりやすそうなコンポーネント（例：「チュートリアル」セクション）のスクリーンショットを撮ります。</li>
+      <li>その画像をAIにアップロードし、「このカードコンポーネントの内部の余白（<span class="decoration-02">padding</span>）と、各要素間の余白（<span class="decoration-02">margin</span>）の値をpx単位で推測してください」と質問します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">推測値のルール化（正規化）</span>
+    <ul>
+      <li>AIは「<span class="decoration-02">padding: 23px</span>」「<span class="decoration-02">margin-bottom: 15px</span>」のように、半端な数値を回答する可能性が高いです。</li>
+      <li>それらの推測値を眺め、<span class="decoration-02">隠れた設計ルール</span>を読み解きます。（例：「おそらく8pxを基準にした倍数ルールで作られているな」）</li>
+      <li>推測値を、あなたが発見したルールに基づいてキリの良い数値（例：<span class="decoratoin-02">16px</span>, <span class="decoration-02">24px</span>, <span class="decoratoin-02">32px</span>）に<span class="decoration-02">整形（正規化）</span>します。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">変数リストの生成</span>
+    <ul>
+      <li>整形した余白の数値リストと、命名規則（例：<span class="decoration-02">-space-xs</span>, <span class="decoratoin-02">-space-sm</span>, <span class="decoration-02">-space-md</span>）をAIに提示します。</li>
+      <li>「この余白の数値リストと命名規則に基づいて、<span class="decoration-02">:root</span>内で定義するCSS変数リストを作成してください」と指示し、最終的なコードブロックを生成させます。</li>
+    </ul>
+  </li>
+  <li>
+    <span class="decoration-01">最終確認</span>
+    <ul>
+      <li>AIが生成したコードを確認し、完成したコードブロックを提出します。</li>
+    </ul>
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37230" data-item-id="37230" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">解答例</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37231" data-item-id="37231" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1. 分析箇所の選定と推測の依頼</span><br>
+対象：<br>
+デザインカンプ画像の「チュートリアル」「環境セットアップ」カードコンポーネント</div></div>
+        
+        <div class="article-item item_code " id="item37232" data-item-id="37232" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>このカードコンポーネントの内部の余白（padding）と、
+各要素間の余白（margin）の値をpx単位で推測してください。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">AIの質問例：</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item37233" data-item-id="37233" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2. 推測値とルール化（正規化）</span></div></div>
+        
+        <div class="article-item item_html " id="item37234" data-item-id="37234" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <thead>
+    <tr>
+      <th scope="col">
+        <div>
+          <div>推測値（AI回答）</div>
+        </div>
+      </th>
+      <th scope="col">
+        <div>
+          <div>ルール化（正規化）</div>
+        </div>
+      </th>
+      <th scope="col">
+        <div>
+          <div>理由</div>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>padding: 20px</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>padding: 24px</div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>8px単位ルールと仮定し、20px→24pxに整形</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>margin-bottom: 24px</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>margin-bottom: 24px</div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>そのまま採用</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>margin-between-items: 12px</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>margin-between-items: 16px</div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>8px単位と判断し16pxに昇格</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>section-gap: 32px</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>section-gap: 32px</div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>そのまま採用</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <div>
+          <div>horizontal-padding: 20px</div>
+        </div>
+      </th>
+      <td>
+        <div>
+          <div>horizontal-padding: 24px</div>
+        </div>
+      </td>
+      <td>
+        <div>
+          <div>上記と同じ基準で整形</div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37235" data-item-id="37235" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">発見したルール</h3></div>
+        
+        <div class="article-item item_html " id="item37236" data-item-id="37236" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>
+    <span class="decoration-01">8pxグリッドシステム</span><br>（8px、16px、24px、32px、40px などを基準）
+  </li>
+  <li>
+    <span class="decoration-01">paddingとmarginはこの倍数で統一されている</span>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item37237" data-item-id="37237" data-item-type="ItemHeading"><h3 class="item-body" id="heading23">CSS変数リストの生成（命名規則）</h3></div>
+        
+        <div class="article-item item_rich_text " id="item37238" data-item-id="37238" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">命名規則</span><br>
+役割＋サイズ記法（例：<span class="decoration-02">--space-sm</span>、<span class="decoration-02">--space-md</span>）</div></div>
+        
+        <div class="article-item item_rich_text " id="item37239" data-item-id="37239" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">CSSコード（完成版）</span></div></div>
+        
+        <div class="article-item item_code " id="item37240" data-item-id="37240" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>:root {
+  /* 余白（スペーシング） */
+  --space-xs: 8px;     /* 最小の余白（アイコン間などに使用） */
+  --space-sm: 16px;    /* 小さな余白（リスト項目間など） */
+  --space-md: 24px;    /* 中間の余白（カード内部paddingなど） */
+  --space-lg: 32px;    /* 大きな余白（セクション間など） */
+  --space-xl: 40px;    /* 特大の余白（ヒーローヘッダーなど） */
+}</pre></div>
+</div>
+<div class="cite"><cite class="item-source">CSS</cite></div></div></div>
+        
+        <div class="article-item item_heading " id="item37241" data-item-id="37241" data-item-type="ItemHeading"><h3 class="item-body" id="heading24">最終確認と解説</h3></div>
+        
+        <div class="article-item item_html " id="item37242" data-item-id="37242" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">ルール化された余白</span>を変数化し、デザイン一貫性を保つ設計</li>
+  <li>コード上で <span class="decoration-02">padding: var(--space-md);</span> や <span class="decoration-02">margin-bottom: var(--space-sm);</span> などとして利用可能</li>
+  <li>デザインカンプに直接戻ることなく、実装効率と品質が向上</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item37243" data-item-id="37243" data-item-type="ItemRichText"><div class="item-body-hbr">お疲れ様でした！<br>
+これで、「3章 コーディング爆速化！CSS変数計画」の解説を終わります。</div></div>
+        
+        <div class="article-item item_html " id="item37558" data-item-id="37558" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/b2kEt" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/TEq6Y" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 コーディング爆速化！CSS変数計画</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1時間20分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】再利用性UP！CSS変数のすごい力</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading5" class="tocLink">CSS変数（カスタムプロパティ）とは？</a></li><li><a href="#heading6" class="tocLink">CSS変数の基本的な書き方と使い方</a></li></ul></li><li><a href="#heading7" class="tocLink">【3-2】AIと作る！カラー＆フォントの変数リスト</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading9" class="tocLink">AIにCSS変数の「命名規則」を提案させる</a></li><li><a href="#heading10" class="tocLink">変数リストをAIに一括生成させる</a></li></ul></li><li><a href="#heading11" class="tocLink">【3-3】AIと計画する！スペーシング変数</a><ul><li><a href="#heading12" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading13" class="tocLink">なぜ余白（スペース）も変数化するのか</a></li><li><a href="#heading14" class="tocLink">AIと一緒に余白のルールから変数リストを作る</a></li><li><a href="#heading15" class="tocLink">最終チェック！実装で使う変数リストの完成</a></li></ul></li><li><a href="#heading16" class="tocLink">【3-4】3章 -章末課題- [デザインカンプから"余白のルール"を読み解き変数化しよう！]</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間： 20分</a></li></ul><ul><li><a href="#heading18" class="tocLink">問題</a><ul><li><a href="#heading19" class="tocLink"></a></li></ul></li><li><a href="#heading20" class="tocLink">解答手順</a></li><li><a href="#heading21" class="tocLink">解答例</a></li><li><a href="#heading22" class="tocLink">発見したルール</a></li><li><a href="#heading23" class="tocLink">CSS変数リストの生成（命名規則）</a></li><li><a href="#heading24" class="tocLink">最終確認と解説</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/b2kEt" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%903%20AI%E3%82%A2%E3%82%B7%E3%82%B9%E3%83%88%E5%AE%9F%E8%A3%85%E3%81%AE%E6%BA%96%E5%82%99/TEq6Y" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

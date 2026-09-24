@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/ai-designer/chapter-02/0yTgV -->
+<!-- clipkit-fetched-at: 2026-09-18T09:17:28.099Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Lesson5 AI生成物をCanvaで仕上げる — Magic Layers 5ステップ - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/ai-designer/chapter-02/0yTgV">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="Lesson5 AI生成物をCanvaで仕上げる — Magic Layers 5ステップ - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="Lesson5 AI生成物をCanvaで仕上げる — Magic Layers 5ステップ">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/ai-designer/chapter-02/0yTgV">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="ov8z-AR8ir-LAiWHAcX3WMcAvmDm1iczCDRm37MZaORSLKXTPRwWMiKMu2RjYuDkMq5p5DPzjT0dj1AeMxb75w"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48930" data-item-id="48930" data-item-type="ItemHtml"><div class="item-body"><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 */
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* コンポーネント */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+.point-box p + p { margin-top: 8px; }
+.point-box ol, .point-box ul { font-size: 15px; line-height: 1.9; color: #444; margin: 0; padding-left: 1.4em; }
+.point-box ol li, .point-box ul li { font-size: 15px; line-height: 1.9; color: #444; margin-bottom: 4px; }
+
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+
+/* 仕様比較テーブル */
+.spec-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table .tbl-num { font-family: 'Inter', sans-serif; font-weight: 800; color: #E85D4A; font-size: 13px; margin-right: 4px; }
+.spec-table .tbl-name { font-weight: 700; color: #2D2D2D; }
+
+/* 外部教材カードリンク */
+.course-links { display: flex; flex-direction: column; gap: 12px; margin: 0 0 20px; }
+.course-link { display: flex; align-items: center; gap: 16px; padding: 16px 20px 16px 18px; background: #fff; border: 1.5px solid #F0E5DC; border-radius: 14px; text-decoration: none; color: inherit; box-shadow: 0 2px 8px rgba(0,0,0,0.04); transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; position: relative; }
+.course-link:hover { border-color: #E85D4A; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(232,93,74,0.14); }
+.course-link:hover .course-link__cta { background: #E85D4A; color: #fff; }
+.course-link:hover .course-link__cta-arrow { transform: translateX(3px); }
+.course-link__num { flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; font-family: 'Inter', sans-serif; box-shadow: 0 2px 8px rgba(248,71,68,0.25); }
+.course-link__body { flex: 1; min-width: 0; }
+.course-link__title { font-size: 15.5px; font-weight: 700; color: #2D2D2D; line-height: 1.5; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.course-link__ext { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700; color: #E85D4A; background: #FFF1EC; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em; font-family: 'Inter', sans-serif; }
+.course-link__desc { font-size: 13px; line-height: 1.75; color: #666; margin: 0; }
+.course-link__cta { flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; background: #FFF1EC; color: #E85D4A; border-radius: 999px; font-size: 12.5px; font-weight: 700; letter-spacing: 0.02em; transition: background 0.18s ease, color 0.18s ease; }
+.course-link__cta-arrow { display: inline-block; transition: transform 0.18s ease; font-weight: 800; }
+@media (max-width: 600px) {
+  .course-link { flex-wrap: wrap; }
+  .course-link__body { flex-basis: calc(100% - 52px); }
+  .course-link__cta { margin-left: 52px; }
+}
+
+/* まとめ */
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+/* 理解度チェック */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+/* アニメーション */
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">CHAPTER 2</span>
+  <div class="lesson-hero__title">AI生成物をCanvaで仕上げる — Magic Layers 6ステップ</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 2-5</span>
+    <span class="lesson-hero__topic">GPT生成画像をレイヤー化し、デザイナーとして修正して完成させる</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約150分（Canvaでの制作・関連教材の流し読み含む）</span>
+  </div>
+</div>
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-02/jpuiM" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-02/PeFVG" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">ChatGPT Images 2.0の生成素材をCanvaで完成させる6ステップの全体像を理解できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">Step 5（デザイナーとしての修正）で実施すべき修正カテゴリを言える</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">Magic Layersでよく起きる問題と対処法を理解し、迷わず対応できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">最終チェック5項目をクリアした上で、用途に合った形式で書き出せる</div></li>
+  </ul>
+</div>
+
+<nav class="toc">
+  <div class="toc-head">
+    <div class="toc-icon">≡</div>
+    <div class="toc-title">目次</div>
+  </div>
+  <ul>
+    <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">Canvaで仕上げる前に確認しておくこと</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">AI出力をCanvaで完成させる6ステップ</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>Canvaで仕上げる前に確認しておくこと</h2>
+
+<p>Canvaは高機能なツールですが、どこをどう直すかの判断基準がないと作業が止まります。「なんかダサい」「なんか変」を感覚で終わらせず、言葉で説明できるようになってからこのレッスンに入ると、効率が大きく上がります。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">まずWebデザインの基礎4教材を学んでおく</div>
+  </div>
+  <p>以下の教材では、良いデザインと悪いデザインの見分け方をゼロから学べます。<strong>デザインの基本原則・色彩・タイポグラフィ・カラー</strong>の基礎を押さえておくと、Canvaでの仕上げ判断がスムーズになります。最初から全て学習しようする必要はありません！まずは30分程度流し読みをしてみて、学習が進むにつけて徐々に身に着けていくことをお勧めします。</p>
+</div>
+
+<div class="course-links reveal visible">
+  <a href="https://learn.webcoach.jp/web-design/4Z0N5" target="_blank" rel="noopener" class="course-link">
+    <span class="course-link__num">①</span>
+    <div class="course-link__body">
+      <div class="course-link__title">デザインのきほん4原則<span class="course-link__ext">外部教材</span></div>
+      <p class="course-link__desc">コントラスト・整列・反復・近接の4原則。良いデザインと悪いデザインを判断するための共通言語を身につける。</p>
+    </div>
+    <span class="course-link__cta">教材を開く<span class="course-link__cta-arrow">→</span></span>
+  </a>
+  <a href="https://learn.webcoach.jp/web-design/TeRs5" target="_blank" rel="noopener" class="course-link">
+    <span class="course-link__num">②</span>
+    <div class="course-link__body">
+      <div class="course-link__title">デザインきほん色彩4原則<span class="course-link__ext">外部教材</span></div>
+      <p class="course-link__desc">色相・明度・彩度のしくみと、配色を組み立てる基本ルール。感覚ではなく原則で色を選べるようになる。</p>
+    </div>
+    <span class="course-link__cta">教材を開く<span class="course-link__cta-arrow">→</span></span>
+  </a>
+  <a href="https://learn.webcoach.jp/web-design/Fz4gT" target="_blank" rel="noopener" class="course-link">
+    <span class="course-link__num">③</span>
+    <div class="course-link__body">
+      <div class="course-link__title">WEBデザイン -タイポグラフィ編-<span class="course-link__ext">外部教材</span></div>
+      <p class="course-link__desc">フォントの選定・サイズ・行間・ジャンプ率。読みやすさと印象を作る文字組みの基礎。</p>
+    </div>
+    <span class="course-link__cta">教材を開く<span class="course-link__cta-arrow">→</span></span>
+  </a>
+  <a href="https://learn.webcoach.jp/web-design/kGhbi" target="_blank" rel="noopener" class="course-link">
+    <span class="course-link__num">④</span>
+    <div class="course-link__body">
+      <div class="course-link__title">WEBデザイン -カラー編-<span class="course-link__ext">外部教材</span></div>
+      <p class="course-link__desc">配色パターン・色の心理効果・ブランドに合う色の選び方。</p>
+    </div>
+    <span class="course-link__cta">教材を開く<span class="course-link__cta-arrow">→</span></span>
+  </a>
+</div>
+
+<p>「なんとなくいい感じ」ではなく「なぜこのデザインにしたか」を言語化できる状態で、このレッスンに入ってください。</p>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>AI出力をCanvaで完成させる6ステップ</h2>
+
+<p>品質チェック済みのChatGPT Images 2.0生成画像をCanvaに取り込んで仕上げます。6ステップのうち<strong>Step 5が最重要</strong>で、ここでデザイナーとしての創造的修正を加えます。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">Canva操作に不安がある人へ</div>
+  </div>
+  <p>Canvaを触るのが初めてなら、下のCanva操作講座を参考にしてください。レベル別に3つありますが、<strong>まずは初級編だけでOK</strong>です。最初からすべてに目を通す必要はありません。初級編を30分ほど確認してから、このレッスンの手順に進むのがおすすめです。実践編・応用編は、必要になったときに見れば十分です。</p>
+</div>
+
+<div class="course-links reveal visible">
+  <a href="https://learn.webcoach.jp/web-design/7woH9" target="_blank" rel="noopener" class="course-link">
+    <span class="course-link__num">①</span>
+    <div class="course-link__body">
+      <div class="course-link__title">Canva -初級編-<span class="course-link__ext">外部教材</span></div>
+      <p class="course-link__desc">Canvaを初めて触る方向けの入門編です。</p>
+    </div>
+    <span class="course-link__cta">教材を開く<span class="course-link__cta-arrow">→</span></span>
+  </a>
+  <a href="https://learn.webcoach.jp/web-design/qPnfO" target="_blank" rel="noopener" class="course-link">
+    <span class="course-link__num">②</span>
+    <div class="course-link__body">
+      <div class="course-link__title">Canva -実践編-<span class="course-link__ext">外部教材</span></div>
+      <p class="course-link__desc">基本操作を覚えた次のステップの実践編です。</p>
+    </div>
+    <span class="course-link__cta">教材を開く<span class="course-link__cta-arrow">→</span></span>
+  </a>
+  <a href="https://learn.webcoach.jp/web-design/DHtba" target="_blank" rel="noopener" class="course-link">
+    <span class="course-link__num">③</span>
+    <div class="course-link__body">
+      <div class="course-link__title">Canva -応用編-<span class="course-link__ext">外部教材</span></div>
+      <p class="course-link__desc">さらに使いこなしたい方向けの応用編です。</p>
+    </div>
+    <span class="course-link__cta">教材を開く<span class="course-link__cta-arrow">→</span></span>
+  </a>
+</div>
+
+<!-- キャプチャ動画：capture-02-05 -->
+<div class="video-block reveal visible" style="margin: 0 0 32px;">
+  <video src="../media/med-1004f6b76f.mp4" controls="" preload="metadata" style="width:100%; display:block; border-radius:14px; box-shadow:0 4px 20px rgba(0,0,0,0.1); background:#000;"></video>
+</div>
+
+<p>※ 動画内の「Step 4」は本文のStep 5、「Step 5」は本文のStep 6としてみていただくようお願いいたします。</p>
+
+<h3>Step 1：画像をCanvaにアップロード</h3>
+
+<p>ChatGPT Images 2.0でダウンロードした画像を、適切なサイズのCanvaテンプレートに配置します。</p>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th style="width: 22%;">操作</th>
+      <th>手順</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">サイズ指定</span></td>
+      <td>Canvaで新規デザインを作成し、Instagram 1:1 ／ A4縦 ／ A3縦 など案件に合ったサイズを指定する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">画像配置</span></td>
+      <td>Uploads から画像をドラッグ＆ドロップで配置する</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Step 2：Magic Layersを適用する</h3>
+
+<p>画像をレイヤーに分解します。背景・テキスト・オブジェクトが個別レイヤーに自動で分解されます。</p>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th style="width: 22%;">項目</th>
+      <th>内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">操作</span></td>
+      <td>画像を選択 → 編集（画像上部メニュー）→ Magic Layers → 3〜5秒待機 → レイヤー分解を確認</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">確認ポイント</span></td>
+      <td>テキストがテキストレイヤーとして分離されているか</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Step 3：背景を独立レイヤーにして差し替える</h3>
+
+<p>Magic Layersで分解すると、背景画像が細かく分解されすぎてしまったり、もともとテキストの裏側にあった部分が一部ぼやけたり崩れたりすることがあります。そこで<strong>背景写真だけをChatGPTで作り直し、Canva側で差し替えておく</strong>と、背景とテキストが独立したレイヤーになり、修正が自由自在にできるようになります。</p>
+
+<p><strong>① GPTで背景写真だけを出力する</strong></p>
+
+<p>画像を出力したチャット欄で、そのまま「<strong>この画像の背景写真のみを出力して</strong>」と指示します。うまくいかない場合は、別のタブでGPTの新規チャットを立ち上げ、作成した画像を貼り付けてから「この画像の背景写真のみを出力して」と指示してください。</p>
+
+<p><strong>② Canvaで背景を差し替える</strong></p>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th style="width: 22%;">手順</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-num">①</span><span class="tbl-name">レイヤーを開く</span></td>
+      <td>Magic Layersでレイヤー分解したあと、編集画面の「配置」→「レイヤー」をクリックする</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">②</span><span class="tbl-name">背景を全選択</span></td>
+      <td>現在の背景になっている要素をすべて選択する（Shiftキーを押しながら対象のレイヤーを順にクリックし、まとめてグループ化してから消すと楽です）</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">③</span><span class="tbl-name">背景を削除</span></td>
+      <td>選択した背景要素を削除する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">④</span><span class="tbl-name">背景を差し替え</span></td>
+      <td>①でGPTから出力した背景写真を挿入する。挿入した写真を右クリック →「レイヤー」→「最背面へ移動」を選び、いちばん下のレイヤーに配置する</td>
+    </tr>
+  </tbody>
+</table>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://www.dropbox.com/scl/fi/lxwmyw60u9c014wbsvva8/01.png?rlkey=kdary7hlpzfmlhda65dpc8h73&amp;raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/56e4ebdf98.webp" alt="背景の差し替え 手順1" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://www.dropbox.com/scl/fi/l4zlz47jdjthrfcuve1ma/02.png?rlkey=nhbwvt4vpkt06jn3oeq78oi9z&amp;raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/551b522375.webp" alt="背景の差し替え 手順2" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://www.dropbox.com/scl/fi/ym8orhuz18s1u50bzkksg/03.png?rlkey=fkc74439byaj35ye5ox65y816&amp;raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/4d57e57b43.webp" alt="背景の差し替え 手順3" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/fer77el4j5i0ul6w9hdw7/04.png?rlkey=onnwny4azejnt2y51f9tty1wt&amp;raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/0ef3f0c190.webp" alt="背景の差し替え 手順4" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">背景とテキストを独立させる意図</div>
+  </div>
+  <p>背景を作り直して差し替えると、<strong>背景画像とテキスト・オブジェクトが完全に独立したレイヤー</strong>になります。背景を気にせず文字やあしらいを自由に動かせるので、次のStep 5（デザイナーとしての修正）が一気にやりやすくなります。</p>
+</div>
+
+<h3>Step 4：画像生成・Magic Layers後の意図しない変化を修正する</h3>
+
+<p>画像生成やMagic Layers適用後には、いくつかの意図しない変化が起きます。文字化け・英語圏フォント・揃えズレ・図形欠けなど、起きやすいものはほぼ決まっているので、以下の表で一気にチェックして修正してください。</p>
+
+<table class="spec-table reveal">
+  <thead>
+    <tr>
+      <th style="width: 16%;">カテゴリ</th>
+      <th style="width: 36%;">起きやすい変化</th>
+      <th>対処法</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">文字化け</span></td>
+      <td>テキストレイヤーとして抽出された日本語が崩れている</td>
+      <td>テキストレイヤーをダブルクリックして、正しい日本語に直接書き換える</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">文字化け</span></td>
+      <td>テキストが画像に焼き込まれていて、レイヤー化されていない</td>
+      <td>Magic Eraser（Pro機能）で塗りつぶす → Canvaのテキストレイヤーを新規追加して正しい文字を配置する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">フォント</span></td>
+      <td>ChatGPT Images 2.0の生成フォントが英語圏向けで、日本語表示に不適</td>
+      <td>テキストレイヤーを選択 → 上部のフォント名をクリック → 日本語フォントに置き換える。<br>推奨フォント例：<br>・セリフ系（上品・高級感）：Noto Serif JP ／ Shippori Mincho ／ はんなり明朝<br>・サンセリフ系（現代的・汎用）：Noto Sans JP ／ Zen Kaku Gothic New ／ BIZ UDPGothic<br>・手書き系（温かみ・親しみ）：Zen Kurenaido ／ Hachi Maru Pop</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">配置</span></td>
+      <td>左揃え・中央揃えがズレた</td>
+      <td>テキストレイヤーを選択 → 整列パネルで揃え直す</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">配置</span></td>
+      <td>文字が一部消えた</td>
+      <td>Canva側で改めてテキストとして配置する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">配置</span></td>
+      <td>図形が途中で切れた・消えた</td>
+      <td>スポイトツールで隣接色を取得 → 同色の図形を補って追加する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">サイズ</span></td>
+      <td>文字サイズが意図せず統一されてしまう</td>
+      <td>テキストレイヤーを選択 → 手動でフォントサイズを変更する</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Step 5：AI出力をデザイナーとして修正して完成させる(最重要)</h3>
+
+<p>AIが生成した素材をそのまま納品するのはデザイナーの仕事ではありません。次の修正カテゴリから複数を選んで実施してください。どれを選ぶかもデザイナーとしての判断です。</p>
+
+<table class="spec-table reveal">
+  <thead>
+    <tr>
+      <th style="width: 28%;">修正カテゴリ</th>
+      <th>具体的な修正内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-num">①</span><span class="tbl-name">テキストの配置変更</span></td>
+      <td>キャッチや詳細情報の位置・余白・揃え方をデザイナーとして意図的に選択する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">②</span><span class="tbl-name">フォント・あしらいのこだわり</span></td>
+      <td>フォントの組み合わせや色を選び、ドロップシャドウ・背景バー・リボンなど、テキストの視認性を上げるあしらいを加えて、ブランドに合った雰囲気に仕上げる</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">③</span><span class="tbl-name">デザイン要素の追加</span></td>
+      <td>図形・ライン・アイコンをゼロから配置する</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">④</span><span class="tbl-name">テキスト内容の調整</span></td>
+      <td>AIが生成したキャッチコピーの語順や言葉を、自分の言葉で書き直す</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">⑤</span><span class="tbl-name">配色の変更</span></td>
+      <td>テキスト・背景・装飾の色をカラーピッカーで選び直し、ブランドカラーや意図に合わせる</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">ChatGPT Images 2.0出力でよく起きる設計上の問題</div>
+  </div>
+  <p>ChatGPT Images 2.0が生成する画像には、デザインとして以下のような問題が含まれることがよくあります。Step 5で意識的に修正してください。<br>(1) <strong>スマホで見たときに文字が小さすぎる</strong>(SNS投稿は特にスマホ閲覧前提なので、キャッチや訴求情報のサイズを上げる)<br>(2) <strong>視線誘導が正しく設計されていない</strong>(目を引かせたい順に配置・サイズ・コントラストの差をつけ直す)</p>
+</div>
+
+<h3>書き出し前の最終チェック</h3>
+
+<p>Step 5を終えたら、書き出す前に以下の5項目を必ず確認します。1つでも引っかかれば修正してから書き出してください。</p>
+
+<table class="spec-table reveal">
+  <thead>
+    <tr>
+      <th style="width: 22%;">チェック項目</th>
+      <th>確認内容</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-num">①</span><span class="tbl-name">フォント</span></td>
+      <td>2種類以内に収まっているか</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">②</span><span class="tbl-name">文字サイズ階層</span></td>
+      <td>キャッチ → 店名 → 詳細の順に小さくなっているか</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">③</span><span class="tbl-name">あしらい</span></td>
+      <td>1種類以内に収まっているか（ドロップシャドウ＋アウトラインの重ね掛けをしていない）</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">④</span><span class="tbl-name">テキストの揃え</span></td>
+      <td>左揃えか中央揃え、どちらかに統一されているか</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">⑤</span><span class="tbl-name">最終3軸</span></td>
+      <td>コントラスト・余白・フォント統一の3軸がすべてOKか</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Step 6：書き出す</h3>
+
+<p>書き出し形式はクライアントの要求に従います。Canva上部の<strong>共有 → ダウンロード</strong>から、用途に合った形式（PNG／JPG／PDF印刷など）を選んでください。</p>
+</section>
+
+<!-- まとめ -->
+<div class="summary-box reveal">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li>Step 1〜2：Canvaにアップロード → Magic Layersを適用してレイヤー分解</li>
+    <li><strong>Step 3</strong>：背景写真だけをGPTで作り直してCanvaで差し替え、背景とテキストを独立レイヤーにする（GPTで「背景写真のみを出力」→Canvaで配置→レイヤー→背景要素を全選択して削除→背景画像を挿入）</li>
+    <li>Step 4：文字化け・英語圏フォント・揃えズレなど、意図しない変化を一括修正</li>
+    <li><strong>Step 5（最重要）</strong>：デザイナーとしての修正。テキスト配置・フォントあしらい・オブジェクト配置・デザイン追加・テキスト内容・配色から複数実施する</li>
+    <li>書き出し前の最終チェック5項目（フォント2種類以内・文字サイズ階層・あしらい1種類・揃え統一・最終3軸OK）をクリアして Step 6 で書き出す</li>
+  </ol>
+</div>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>Magic Layersの適用手順を説明できる</summary>
+    <div class="check-box__detail">画像を選択 → 編集 → Magic Layers → 3〜5秒待機 → レイヤー分解を確認。テキストがテキストレイヤーとして分離されているかを確認するのがポイントです。</div>
+  </details>
+  <details>
+    <summary>文字化け修正の2つの方法（方法A・方法B）を使い分けられる</summary>
+    <div class="check-box__detail">方法A：テキストレイヤーとして抽出された場合 → ダブルクリックして直接書き換え。方法B：画像に焼き込まれた文字の場合 → Magic Eraserで塗りつぶし → Canvaのテキストレイヤーで上書き。Magic Eraserは画像に焼き込まれた文字専用です。</div>
+  </details>
+  <details>
+    <summary>Step 5で実施する5つの修正カテゴリを言える</summary>
+    <div class="check-box__detail">①テキストの配置変更 ②フォント・あしらいのこだわり ③デザイン要素の追加 ④テキスト内容の調整 ⑤配色の変更。これらから複数を組み合わせて、AIが生成した素材をデザイナーとして仕上げます。</div>
+  </details>
+  <details>
+    <summary>書き出し前の最終チェック5項目を順番に確認できる</summary>
+    <div class="check-box__detail">①フォント2種類以内 ②文字サイズ階層（キャッチ→店名→詳細）③あしらい1種類以内 ④テキストの揃え統一 ⑤最終3軸（コントラスト・余白・フォント統一）OK。すべてクリアしてから書き出しに進みます。</div>
+  </details>
+  <details>
+    <summary>背景を独立レイヤーにして差し替える手順を説明できる</summary>
+    <div class="check-box__detail">GPTに「この画像の背景写真のみを出力して」と指示（うまくいかなければ別タブの新規チャットに画像を貼って同じ指示）→ Canvaで「配置」→「レイヤー」を開き、現在の背景要素を全選択して削除（Shift＋クリックでまとめてグループ化→削除が楽）→ 出力した背景写真を挿入。これで背景とテキストが独立し、自由に動かせるようになります。</div>
+  </details>
+</div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-02/jpuiM" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-02/PeFVG" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+</div><!-- /.lesson-wrapper -->
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

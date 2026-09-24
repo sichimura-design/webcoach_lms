@@ -1,0 +1,352 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48606" data-item-id="48606" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="pTB91f09X+PjI3gHcVpkkg==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2296" data-domain="learn.webcoach.jp" data-url="/generative-ai/ai_web_marketing/B-2/GvvB8" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNSアカウント設計——フォローされる理由を設計する</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* アカウントコンセプト */
+  .concept-formula {
+    background: #FAE8E0;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    border-left: 4px solid #E85D4A;
+    text-align: center;
+  }
+  .concept-formula__label { font-size: 12px; font-weight: 700; color: #E85D4A; margin-bottom: 10px; }
+  .concept-formula__text { font-size: 17px; font-weight: 700; color: #3D3D3D; line-height: 1.6; }
+  .concept-formula__text span { color: #E85D4A; }
+
+  /* コンセプト3要素 */
+  .concept-three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+  .concept-box { border-radius: 10px; padding: 18px; text-align: center; }
+  .concept-box:nth-child(1) { background: #EBF0FF; }
+  .concept-box:nth-child(2) { background: #FFF3E6; }
+  .concept-box:nth-child(3) { background: #FFE8E4; }
+  .concept-box__q { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+  .concept-box:nth-child(1) .concept-box__q { color: #5B7BE8; }
+  .concept-box:nth-child(2) .concept-box__q { color: #E0882A; }
+  .concept-box:nth-child(3) .concept-box__q { color: #E85D4A; }
+  .concept-box__example { font-size: 13px; color: #3D3D3D; font-weight: 600; }
+
+  /* プロフィール最適化 */
+  .profile-mock {
+    background: white;
+    border: 1.5px solid #EEE;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+  .profile-mock__top { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+  .profile-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; }
+  .profile-stats { display: flex; gap: 20px; font-size: 13px; text-align: center; }
+  .profile-stat__num { font-size: 16px; font-weight: 800; display: block; }
+  .profile-stat__label { color: #888; font-size: 11px; }
+  .profile-name { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .profile-bio { font-size: 13px; line-height: 1.75; color: #3D3D3D; margin-bottom: 10px; }
+  .profile-link { font-size: 13px; color: #5B7BE8; }
+  .profile-annotation { font-size: 11px; font-weight: 700; }
+  .annot-red { color: #E85D4A; }
+  .annot-blue { color: #5B7BE8; }
+  .annot-green { color: #2E9B6E; }
+
+  /* 投稿ジャンル配分 */
+  .genre-mix { margin: 20px 0; }
+  .genre-bar { display: flex; height: 24px; border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
+  .genre-segment { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: white; }
+  .genre-segment--edu { background: #5B7BE8; flex: 40; }
+  .genre-segment--emp { background: #E0882A; flex: 30; }
+  .genre-segment--ent { background: #E85D4A; flex: 20; }
+  .genre-segment--cta { background: #4CAF7C; flex: 10; }
+  .genre-legend { display: flex; gap: 14px; flex-wrap: wrap; }
+  .genre-legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+  .genre-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .genre-desc { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .genre-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 8px; }
+  .genre-item--edu { background: #EBF0FF; }
+  .genre-item--emp { background: #FFF3E6; }
+  .genre-item--ent { background: #FFE8E4; }
+  .genre-item--cta { background: #F0FBF4; }
+  .genre-item__label { font-size: 12px; font-weight: 700; width: 72px; flex-shrink: 0; }
+  .genre-item--edu .genre-item__label { color: #5B7BE8; }
+  .genre-item--emp .genre-item__label { color: #E0882A; }
+  .genre-item--ent .genre-item__label { color: #E85D4A; }
+  .genre-item--cta .genre-item__label { color: #2E9B6E; }
+  .genre-item__text { font-size: 13px; color: #4A4A4A; line-height: 1.6; }
+
+  /* 演習 */
+  .exercise-card {
+    background: linear-gradient(135deg, #4CAF7C 0%, #2E9B6E 100%);
+    border-radius: 12px;
+    padding: 24px;
+    color: white;
+    margin: 24px 0;
+  }
+  .exercise-card__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; opacity: 0.8; margin-bottom: 8px; }
+  .exercise-card__title { font-size: 17px; font-weight: 800; margin-bottom: 14px; }
+  .exercise-steps { list-style: none; }
+  .exercise-steps li { font-size: 14px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.2); display: flex; gap: 10px; }
+  .exercise-steps li:last-child { border-bottom: none; }
+  .exercise-steps li::before { content: '→'; font-weight: 700; flex-shrink: 0; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .concept-three { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+    .profile-mock__top { flex-direction: column; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="SdEeO9NUxFMgf7I9xu3I6HAT28xF5CaKEJ_ToxEnQ7cGP_dkxkeA32HzHQBGwMG89c06_ZXUPTQ24c97PupREA" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+
+<div class="hero">
+  <div class="hero__label">Course B — Chapter 2 / Lesson 1 【SNS運用者向け】</div>
+  <div class="hero__title">SNSアカウント設計<br>——フォローされる理由を設計する</div>
+  <div class="hero__meta">
+    <span>⏱ 40分</span>
+    <span>🛠 手順書</span>
+    <span>📱 SNS運用者向け</span>
+  </div>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="dxdmj" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<div class="container">
+
+  <div class="intro-box reveal">
+    <div class="intro-box__text">
+      毎日投稿してもフォロワーが増えない理由の多くは「アカウントの設計」の問題です。<br>
+      「誰のための・何の情報・どんな価値を提供するアカウントか」が明確でないと、見た人が「フォローする理由」を感じられません。<strong>このレッスンではフォローされる理由をゼロから設計します。</strong>
+    </div>
+  </div>
+
+  <!-- アカウントコンセプトの公式 -->
+  <div class="card reveal">
+    <div class="card__title">アカウントコンセプトの設計公式</div>
+
+    <div class="concept-formula">
+      <div class="concept-formula__label">アカウントコンセプトの公式</div>
+      <div class="concept-formula__text">
+        「<span>【ターゲット（誰のための）</span>が、<span>【テーマ（何の情報）</span>を学び、<span>【価値（何を得られる）</span>アカウント」
+      </div>
+    </div>
+
+    <div class="concept-three">
+      <div class="concept-box">
+        <div class="concept-box__q">誰のための？</div>
+        <div class="concept-box__example">「副業を始めたい<br>20〜30代会社員」</div>
+      </div>
+      <div class="concept-box">
+        <div class="concept-box__q">何の情報？</div>
+        <div class="concept-box__example">「副業のはじめ方・<br>失敗しない選び方」</div>
+      </div>
+      <div class="concept-box">
+        <div class="concept-box__q">何を得られる？</div>
+        <div class="concept-box__example">「副業の不安が解消され<br>最初の一歩が踏み出せる」</div>
+      </div>
+    </div>
+
+    <p>3つが揃うと「副業を始めたい会社員に、副業の始め方を教え、最初の一歩を踏み出させるアカウント」と明確になります。これがあれば、毎回の投稿テーマで迷わなくなります。</p>
+  </div>
+
+  <!-- プロフィール最適化 -->
+  <div class="card reveal">
+    <div class="card__title">プロフィール最適化——USP×ペルソナ視点</div>
+    <p>アカウントコンセプトが決まったら、プロフィールを「見た人がフォローを決める5秒」に最適化します。</p>
+
+    <div class="profile-mock">
+      <div class="profile-mock__top">
+        <div class="profile-avatar">🧘</div>
+        <div>
+          <div class="profile-stats">
+            <div><span class="profile-stat__num">127</span><span class="profile-stat__label">投稿</span></div>
+            <div><span class="profile-stat__num">4,820</span><span class="profile-stat__label">フォロワー</span></div>
+            <div><span class="profile-stat__num">392</span><span class="profile-stat__label">フォロー</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="profile-name">
+        <span class="annot-red">🔴 名前でUSPを伝える</span> → ヨガインスト|忙しい社会人向けの朝5分ヨガ
+      </div>
+      <div class="profile-bio">
+        <span class="annot-blue">🔵 ペルソナの「悩み」から入る</span><br>
+        「残業続きで体がバキバキな人へ。起きてすぐの5分で、1日の質が変わります。」<br>
+        <span class="annot-green">🟢 具体的な価値提供を書く</span><br>
+        毎朝7時、職場でもできるヨガ動画を投稿中<br>
+        体験レッスン→リンクから予約
+      </div>
+      <div class="profile-link">🔗 bit.ly/yoga-taiken</div>
+    </div>
+
+    <p style="font-size: 13px; color: #888;">🔴 名前欄: 職業+ターゲット+コンテンツを短縮して入れる（検索にもヒットする）<br>🔵 冒頭: ペルソナの悩みから始める（「あなたのことだ」と感じさせる）<br>🟢 中段: 何を・いつ・どうやって提供するかを具体的に書く</p>
+  </div>
+
+  <!-- 投稿ジャンル配分 -->
+  <div class="card reveal">
+    <div class="card__title">投稿ジャンル配分——教育・共感・エンタメ・CTAのバランス</div>
+    <p>すべての投稿を「売り込み」にすると離脱します。「有益」と「関係構築」を中心に、CTA（行動促進）は少数精鋭で。</p>
+
+    <div class="genre-mix">
+      <div class="genre-bar">
+        <div class="genre-segment genre-segment--edu">40%</div>
+        <div class="genre-segment genre-segment--emp">30%</div>
+        <div class="genre-segment genre-segment--ent">20%</div>
+        <div class="genre-segment genre-segment--cta">10%</div>
+      </div>
+      <div class="genre-legend">
+        <div class="genre-legend-item"><div class="genre-dot" style="background:#5B7BE8;"></div>教育 40%</div>
+        <div class="genre-legend-item"><div class="genre-dot" style="background:#E0882A;"></div>共感 30%</div>
+        <div class="genre-legend-item"><div class="genre-dot" style="background:#E85D4A;"></div>エンタメ 20%</div>
+        <div class="genre-legend-item"><div class="genre-dot" style="background:#4CAF7C;"></div>CTA 10%</div>
+      </div>
+      <div class="genre-desc">
+        <div class="genre-item genre-item--edu">
+          <div class="genre-item__label">教育（40%）</div>
+          <div class="genre-item__text">「知らなかった」「保存したい」と思わせる有益情報。ペルソナの課題を解決するノウハウ・Tips・解説。</div>
+        </div>
+        <div class="genre-item genre-item--emp">
+          <div class="genre-item__label">共感（30%）</div>
+          <div class="genre-item__text">「わかる！」と感じさせるリアルな体験・失敗談・あるある。感情的なつながりを作る。</div>
+        </div>
+        <div class="genre-item genre-item--ent">
+          <div class="genre-item__label">エンタメ（20%）</div>
+          <div class="genre-item__text">シェア・コメントが生まれる楽しい・おもしろい・きれいなコンテンツ。アルゴリズムへの貢献。</div>
+        </div>
+        <div class="genre-item genre-item--cta">
+          <div class="genre-item__label">CTA（10%）</div>
+          <div class="genre-item__text">「体験を予約する」「LINEに登録する」など行動を促す投稿。少数にすることで効果が上がる。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 演習 -->
+  <div class="exercise-card reveal">
+    <div class="exercise-card__label">EXERCISE</div>
+    <div class="exercise-card__title">アカウントコンセプトシートを作る</div>
+    <ul class="exercise-steps">
+      <li>担当アカウント（または自分のアカウント）の「誰のため・何の情報・何の価値」を公式に当てはめて書く</li>
+      <li>現在のプロフィール文を見直し、名前欄・冒頭・価値提供の3要素が揃っているか確認する</li>
+      <li>直近10投稿を「教育/共感/エンタメ/CTA」に分類して、配分を確認する</li>
+      <li>改善ポイントを1〜2つに絞ってリストアップする</li>
+    </ul>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">フォローされる理由は「設計」できる。<br>誰のため・何の情報・どんな価値を明確に。</div>
+    <div class="summary-card__sub">
+      アカウントコンセプト公式で「設計」してから投稿を始める。<br>
+      プロフィールはUSP×ペルソナの視点で最適化。<br>
+      投稿ジャンルは教育40%・共感30%・エンタメ20%・CTA10%が基本比率。<br><br>
+      次のレッスンでは「コンテンツカレンダー」の作り方を学びます。
+    </div>
+  </div>
+
+</div>
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="dxdmj" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+  
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="pTB91f09X+PjI3gHcVpkkg==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

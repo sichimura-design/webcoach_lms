@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-3/cxWlJ -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48598" data-item-id="48598" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USP（独自の強み）の言語化——「なぜあなたに頼むのか」を作る</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* USP定義 */
+  .usp-def {
+    background: linear-gradient(135deg, #3D3D3D, #555);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+    margin: 20px 0;
+  }
+  .usp-def__label { font-size: 12px; opacity: 0.65; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .usp-def__text { font-size: 18px; font-weight: 800; line-height: 1.55; }
+  .usp-def__text em { color: #F5A64A; font-style: normal; }
+
+  /* 4ステップ */
+  .steps { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+  .step { display: flex; gap: 16px; padding: 18px; background: #F7F8FA; border-radius: 0; border-bottom: 1px solid white; }
+  .step:first-child { border-radius: 10px 10px 0 0; }
+  .step:last-child { border-radius: 0 0 10px 10px; border-bottom: none; }
+  .step__num {
+    width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A);
+    color: white; font-size: 15px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .step__title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .step__desc { font-size: 13px; color: #666; line-height: 1.65; }
+
+  /* 強みリストアップ */
+  .strength-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .strength-card { background: #F7F8FA; border-radius: 8px; padding: 14px; }
+  .strength-card__q { font-size: 12px; color: #E85D4A; font-weight: 700; margin-bottom: 6px; }
+  .strength-card__example { font-size: 13px; color: #4A4A4A; line-height: 1.65; }
+
+  /* 競合マトリクス */
+  .matrix-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .matrix-table th { padding: 10px 12px; text-align: center; background: #F7F8FA; font-size: 12px; font-weight: 700; color: #888; border: 1px solid #EEE; }
+  .matrix-table td { padding: 10px 12px; border: 1px solid #EEE; text-align: center; }
+  .matrix-table td:first-child { text-align: left; font-weight: 600; background: #F7F8FA; }
+  .cell-high { color: #E85D4A; font-weight: 700; }
+  .cell-mid { color: #E0882A; }
+  .cell-low { color: #AAA; }
+
+  /* USP公式 */
+  .usp-formula {
+    background: #FAE8E0;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    border-left: 4px solid #E85D4A;
+  }
+  .usp-formula__title { font-size: 13px; font-weight: 700; color: #E85D4A; margin-bottom: 10px; }
+  .usp-formula__text { font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6; }
+  .usp-formula__text span { color: #E85D4A; }
+
+  /* サンプル集 */
+  .usp-samples { display: flex; flex-direction: column; gap: 12px; margin: 16px 0; }
+  .usp-sample { background: #F7F8FA; border-radius: 8px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+  .usp-sample__role { font-size: 11px; font-weight: 700; color: white; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; }
+  .usp-sample--sns .usp-sample__role { background: #5B7BE8; }
+  .usp-sample--design .usp-sample__role { background: #E0882A; }
+  .usp-sample--video .usp-sample__role { background: #E85D4A; }
+  .usp-sample__text { font-size: 14px; font-weight: 600; color: #3D3D3D; line-height: 1.6; }
+
+  /* AIプロンプトボックス */
+  .ai-box {
+    background: linear-gradient(135deg, #2D1B69 0%, #4A3080 100%);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    color: white;
+  }
+  .ai-box__header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .ai-box__icon { font-size: 20px; }
+  .ai-box__title { font-size: 15px; font-weight: 700; }
+  .ai-box__badge { font-size: 11px; background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 20px; }
+  .ai-prompt {
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 13px;
+    line-height: 1.8;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    color: #E8E8E8;
+    margin-bottom: 14px;
+  }
+  .prompt-var { color: #F5A64A; font-weight: 700; }
+  .ai-box__note { font-size: 12px; opacity: 0.75; line-height: 1.7; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .strength-grid { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="EfcKXYmldBivawcb5YErqQrGdehkShY6AqivR5rkUU7gXU0p36i2xCa5yUIjPceCj-z3sCltYikdncPgVEYr7A"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+
+<div class="hero">
+  <div class="hero__label">Course A — Chapter 3 / Lesson 2</div>
+  <div class="hero__title">USP（独自の強み）の言語化<br>——「なぜあなたに頼むのか」を作る</div>
+  <div class="hero__meta">
+    <span>⏱ 40分</span>
+    <span>🛠 手順書</span>
+    <span>✨ AI活用あり</span>
+  </div>
+</div>
+
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-3/9e2Yz" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-3/KwjNq" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<div class="container">
+
+  <div class="intro-box reveal visible">
+    <div class="intro-box__text">
+      クライアントや見込み客は、あなたに依頼するかどうかを決めるとき、無意識に問いかけています。「<strong>なぜこの人に頼むのか？他の人でもよくない？</strong>」<br>
+      この問いに明確に答えられる言葉が、USP（Unique Selling Proposition）です。自分でUSPを言語化できると、提案・価格交渉・SNSプロフィール・ポートフォリオすべてが変わります。
+    </div>
+  </div>
+
+  <!-- セクション1: USPとは -->
+  <div class="card reveal visible">
+    <div class="card__title">USPとは何か</div>
+
+    <div class="usp-def">
+      <div class="usp-def__label">USP — Unique Selling Proposition</div>
+      <div class="usp-def__text">
+        「<em>あなただけが提供できる</em>、<em>特定の相手にとって価値のある</em>、<em>一言で伝わる強み</em>」
+      </div>
+    </div>
+
+    <p>USPは「自慢」ではありません。「<strong>あなたの価値</strong>を、<strong>相手の言葉</strong>で表現したもの」です。「私はXXが得意」ではなく「あなたのXXを解決できる唯一の存在」という形になるのが理想です。</p>
+
+    <div style="background: #F7F8FA; border-radius: 8px; padding: 16px; margin: 16px 0;">
+      <p style="font-size: 13px; font-weight: 700; color: #888; margin-bottom: 10px;">USPが「ある」場合と「ない」場合の違い</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+        <div style="background: #FFF5F5; border-radius: 8px; padding: 14px; border-left: 3px solid #FFBDBD;">
+          <p style="font-size: 12px; font-weight: 700; color: #C0392B; margin-bottom: 6px;">USPがない状態</p>
+          <p style="font-size: 13px; margin: 0; color: #4A4A4A;">「Webデザインができます」「動画編集の依頼をお待ちしています」→ 他の誰でも言える。選ばれる理由がない。価格競争になりやすい。</p>
+        </div>
+        <div style="background: #F0FBF4; border-radius: 8px; padding: 14px; border-left: 3px solid #6DCFA0;">
+          <p style="font-size: 12px; font-weight: 700; color: #2E9B6E; margin-bottom: 6px;">USPがある状態</p>
+          <p style="font-size: 13px; margin: 0; color: #4A4A4A;">「美容サロン特化のWebデザイナー。"予約が入りやすいデザイン"をKPIに設計します」→ 特定の人に刺さる。選ぶ理由ができる。価格より価値で選ばれる。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション2: USP設計4ステップ -->
+  <div class="card reveal visible">
+    <div class="card__title">USP設計の4ステップ</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step__num">1</div>
+        <div>
+          <div class="step__title">強みを洗い出す</div>
+          <div class="step__desc">自分が「得意なこと・続けられること・他の人より速くできること・褒められること」をリストアップ。技術的な強みだけでなく、業界知識・経験・バックグラウンドも含める。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">2</div>
+        <div>
+          <div class="step__title">競合と比較する</div>
+          <div class="step__desc">同じ職種の他のクリエイターと比べて、自分が際立っているポイントを探す。「全部できる」より「◯◯に特化」のほうがUSPになりやすい。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">3</div>
+        <div>
+          <div class="step__title">ペルソナと照合する</div>
+          <div class="step__desc">Chapter 2で作ったペルソナに対して、ステップ2で出た強みは「何がうれしいか」を確認する。ペルソナに刺さる強みがUSPの候補。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">4</div>
+        <div>
+          <div class="step__title">一文で言語化する</div>
+          <div class="step__desc">「誰のための・どんな問題を・どんな方法で解決する」を1文に凝縮する。SNSプロフィール・自己紹介・提案書の冒頭に置ける長さが理想。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション3: 強み洗い出し -->
+  <div class="card reveal visible">
+    <div class="card__title">ステップ1: 強みを引き出す6つの問い</div>
+    <div class="strength-grid">
+      <div class="strength-card">
+        <div class="strength-card__q">Q1. 過去に褒められたことは？</div>
+        <div class="strength-card__example">例: 「納品が早い」「修正対応が丁寧」「デザインがきれい」</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-card__q">Q2. 自分が得意で、人から頼まれることは？</div>
+        <div class="strength-card__example">例: 「スクリプト構成」「カラーコーディネート」「データ分析」</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-card__q">Q3. 業界経験・前職・趣味で特徴的なことは？</div>
+        <div class="strength-card__example">例: 「美容師経験あり」「医療系出身」「飲食店経営経験」</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-card__q">Q4. 他のクリエイターと比べて「これは負けない」は？</div>
+        <div class="strength-card__example">例: 「業界特化の知識」「実績数」「顔出しコンサルまで対応」</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-card__q">Q5. あなたを選んだクライアントが「よかった」と言った理由は？</div>
+        <div class="strength-card__example">例: 「ちゃんと意図を理解してくれた」「マーケ視点があった」</div>
+      </div>
+      <div class="strength-card">
+        <div class="strength-card__q">Q6. 自分の「こだわり」や「仕事観」は？</div>
+        <div class="strength-card__example">例: 「成果にコミットしたい」「長期的な関係を大切にする」</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション4: USPの公式と例文 -->
+  <div class="card reveal visible">
+    <div class="card__title">USP言語化の公式とサンプル</div>
+    <div class="usp-formula">
+      <div class="usp-formula__title">USP言語化の公式</div>
+      <div class="usp-formula__text">
+        「<span>【ターゲット（誰の）</span>の<span>【課題・悩み】</span>を、<span>【独自のアプローチ・強み】</span>で解決する<span>【職種名】</span>」
+      </div>
+    </div>
+
+    <div class="usp-samples">
+      <div class="usp-sample usp-sample--sns">
+        <span class="usp-sample__role">SNS</span>
+        <div class="usp-sample__text">「飲食店オーナーのInstagram運用を代行。"ランチタイムに来店が増える"投稿設計に特化した、予約数UPを目指すSNS運用者」</div>
+      </div>
+      <div class="usp-sample usp-sample--design">
+        <span class="usp-sample__role">デザイン</span>
+        <div class="usp-sample__text">「美容サロン・ネイルサロン向けLP制作専門のWebデザイナー。デザインの美しさだけでなく、"ホットペッパーからの脱却"につながる予約動線設計まで担います」</div>
+      </div>
+      <div class="usp-sample usp-sample--video">
+        <span class="usp-sample__role">動画</span>
+        <div class="usp-sample__text">「コーチ・コンサルタント向けYouTube動画編集者。視聴維持率75%超えを目標に、導入3秒のフック設計から字幕・BGM選定まで一貫して担当します」</div>
+      </div>
+    </div>
+
+    <p style="font-size: 13px; color: #888;">これらは架空の例ですが、「誰のための・何のために・どう」が明確なため、該当するクライアントには強く刺さります。</p>
+  </div>
+
+  <!-- AIプロンプト -->
+  <div class="ai-box reveal visible">
+    <div class="ai-box__header">
+      <div class="ai-box__icon">🤖</div>
+      <div class="ai-box__title">ClaudeでUSPを言語化する——3パターン生成プロンプト</div>
+      <div class="ai-box__badge">AI活用</div>
+    </div>
+    <div class="ai-prompt">あなたはフリーランスクリエイターのブランディング専門家です。以下の情報をもとに、USP（独自の強み・差別化ポイント）を3パターン提案してください。
+
+【職種】
+<span class="prompt-var">（例: Webデザイナー、動画編集者、SNS運用者）</span>
+
+【得意なこと・強み（複数OK）】
+<span class="prompt-var">（例: 美容業界の経験がある、納品が早い、LPのCVR改善に実績がある）</span>
+
+【ターゲットにしたいクライアント】
+<span class="prompt-var">（例: 個人サロン経営者、コーチ・コンサルタント、中小企業のSNS担当者）</span>
+
+【現在使っているSNSプロフィール文（あれば）】
+<span class="prompt-var">（現在のプロフィール文を貼り付けてください）</span>
+
+各パターンは以下の形式で提案してください：
+- USP一文（SNSプロフィールに使えるもの）
+- なぜこのUSPが刺さるか（理由3行）
+- NG改善点（現在のプロフィール文に対するアドバイス）</div>
+    <div class="ai-box__note">生成したUSPは「候補」です。クライアントや信頼できる人に見せて「これ刺さる？」と確認することで、最終的なUSPを決めましょう。</div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal visible">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">USPは「誰のための・何を・どう解決する」を<br>1文に凝縮した選ばれる理由。</div>
+    <div class="summary-card__sub">
+      強み洗い出し→競合比較→ペルソナ照合→一文化の4ステップで作る。<br>
+      「全員向け」より「◯◯専門」のほうがUSPになりやすい。<br>
+      Claudeを使えば3パターンの候補を即生成できる。<br><br>
+      次のレッスンでは、USPを土台にした「刺さる言葉選び」=コピーライティング基礎を学びます。
+    </div>
+  </div>
+
+</div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-3/9e2Yz" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/A-3/KwjNq" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

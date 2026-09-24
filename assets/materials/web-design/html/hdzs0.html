@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/hdZs0 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Adobe Photoshop｜21章 カンバスとアートボードを知ろう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/hdZs0">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Adobe Photoshop｜21章 カンバスとアートボードを知ろう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/713/medium/a55261f7-60c8-4565-8000-14dbfb1f1d8b.png?1740029547">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Adobe Photoshop｜21章 カンバスとアートボードを知ろう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/hdZs0">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/713/large/a55261f7-60c8-4565-8000-14dbfb1f1d8b.png?1740029547">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="b6R-nGGEfbtlwAwdqR88UzUCMJznGjBepZzrdVXgC-PuRrbX49bLSV6ebH7U-_9jzSMS7_0-Q68WbKXWOb27dQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Adobe Photoshop｜21章 カンバスとアートボードを知ろう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">21章 カンバスとアートボードを知ろう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:約500分</a></li><li><a href="#heading2" class="tocLink"></a></li></ul></li><li><a href="#heading3" class="tocLink">【21-1】アートボードの具体的な使用シーン</a><ul><li><a href="#heading4" class="tocLink">1.SNS投稿で複数画像やサイズを作成する場合</a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink">2.複数のサイズのバナーデザインを行う場合</a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink">3.デスクトップ版・タブレット版・スマートフォン版の各画面サイズごとのWebデザインを行う場合</a></li><li><a href="#heading9" class="tocLink"></a></li></ul></li><li><a href="#heading10" class="tocLink">【21-2】カンバスとアートボードの違い</a><ul><li><a href="#heading11" class="tocLink">新規作成の画面</a><ul><li><a href="#heading12" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading13" class="tocLink">【21-3】カンバスとは</a><ul><li><a href="#heading14" class="tocLink">目安の学習時間: 10分</a></li><li><a href="#heading15" class="tocLink">カンバスで作成した画面</a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink">カンバスで作成したときのレイヤーパネル</a></li><li><a href="#heading18" class="tocLink"></a></li></ul><ul><li><a href="#heading19" class="tocLink">カンバスをアートボードへ変換する方法</a></li></ul></li><li><a href="#heading20" class="tocLink">【21-4】アートボード</a><ul><li><a href="#heading21" class="tocLink">アートボードで作成した画面</a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink">アートボードで作成したときのレイヤーパネル</a></li><li><a href="#heading24" class="tocLink"></a></li></ul><ul><li><a href="#heading25" class="tocLink">アートボードの作成方法</a><ul><li><a href="#heading26" class="tocLink">ツールから追加する</a></li><li><a href="#heading27" class="tocLink">レイヤーパネルから追加</a></li></ul></li><li><a href="#heading28" class="tocLink">アートボードのサイズの変更</a><ul><li><a href="#heading29" class="tocLink">バウンディングボックスから変更</a></li><li><a href="#heading30" class="tocLink">プロパティパネルから変更</a></li></ul></li><li><a href="#heading31" class="tocLink">アートボードの削除</a><ul><li><a href="#heading32" class="tocLink">クリックで削除</a></li><li><a href="#heading33" class="tocLink">ドラッグで削除</a></li></ul></li><li><a href="#heading34" class="tocLink">アートボードの書き出し</a><ul><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading37" class="tocLink">【21-5】まとめの演習 バナー広告の作り方</a><ul><li><a href="#heading38" class="tocLink">演習課題</a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink">作業手順</a></li></ul></li><li><a href="#heading41" class="tocLink">【21-6】バナーデザイン課題</a><ul><li><a href="#heading42" class="tocLink">演習課題</a></li><li><a href="#heading43" class="tocLink"></a></li></ul></li><li><a href="#heading44" class="tocLink">【21-7】まとめ</a></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25616" data-item-id="25616" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/qqy8s" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/PQk3F" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37036" data-item-id="37036" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">21章 カンバスとアートボードを知ろう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39517" data-item-id="39517" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:約500分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item8385" data-item-id="8385" data-item-type="ItemRichText"><div class="item-body-hbr">これまでの章では、1枚の写真を編集する作業でした。<br>
+ Photoshopで写真の編集を行うときは、特に設定を行わなければ<span class="decoration-02">カンバス（ドキュメントモード）</span>という作業領域で編集をします。<br>
+イメージとしては1つの作業台があるような状態です。</div></div>
+        
+        <div class="article-item item_image " id="item8386" data-item-id="8386" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/386/medium/63fe8139-e748-45fb-989a-9b023c54efa2.png?1740029647" title=""><img class="img-responsive item-image" alt=" (8386)" data-reference="" src="../../_assets/db9fa1f498.webp" width="640" height="444"></a><h4 id="heading2"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37037" data-item-id="37037" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">アートボード（アートボードドキュメントモード）</span></div>
+    </div>
+    <div class="content-area">
+      <span>この機能を使用すると、複数の作業台を使えるようになります。</span>
+        <ul>
+          <li class="decoration-01">主な機能</li>
+          <ul>
+            <li><span class="decoration-02">1つの画面で、複数の編集ができます。</span></li>
+            <li>各作業台にはそれぞれのレイヤーも作成されるのでアートボードごとに画像編集をすることができます。</li>
+            <li>複数の作業台が必要となるシーンとしては、同じ写真で違うサイズの画像を作成したい時に役立ちます。</li>
+          </ul>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item37060" data-item-id="37060" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【21-1】アートボードの具体的な使用シーン</h2></div>
+        
+        <div class="article-item item_markdown " id="item8410" data-item-id="8410" data-item-type="ItemMarkdown"><h4 id="heading4">1.SNS投稿で複数画像やサイズを作成する場合</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8413" data-item-id="8413" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/413/medium/c5a14d6f-11e4-4aac-888f-5879af7b01a0.png?1740030356" title=""><img class="img-responsive item-image" alt=" (8413)" data-reference="" src="../../_assets/7088fa1e0f.webp" width="640" height="446"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8411" data-item-id="8411" data-item-type="ItemMarkdown"><h4 id="heading6">2.複数のサイズのバナーデザインを行う場合</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8414" data-item-id="8414" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/414/medium/d6b5934b-2ce7-4497-a3fc-2849e021bbd3.png?1740030375" title=""><img class="img-responsive item-image" alt=" (8414)" data-reference="" src="../../_assets/7e2b2881a0.webp" width="640" height="448"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8412" data-item-id="8412" data-item-type="ItemMarkdown"><h4 id="heading8">3.デスクトップ版・タブレット版・スマートフォン版の各画面サイズごとのWebデザインを行う場合</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8415" data-item-id="8415" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/415/medium/00979454-80cf-46b7-839b-3d7871c13e42.png?1740030396" title=""><img class="img-responsive item-image" alt=" (8415)" data-reference="" src="../../_assets/09f5477e8f.webp" width="640" height="445"></a><h4 id="heading9"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37061" data-item-id="37061" data-item-type="ItemHeading"><h2 class="item-body" id="heading10">【21-2】カンバスとアートボードの違い</h2></div>
+        
+        <div class="article-item item_text " id="item8389" data-item-id="8389" data-item-type="ItemText"><div class="item-body-hbr">カンバスで作成した場合とアートボードを使用した場合には違いがあります。</div></div>
+        
+        <div class="article-item item_heading " id="item37062" data-item-id="37062" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">新規作成の画面</h3></div>
+        
+        <div class="article-item item_html " id="item37038" data-item-id="37038" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>新規ドキュメント画面で、ドキュメントサイズなどを設定します。</li>
+  <li>この時、「アートボード」の項目にチェックを入れるかどうかで、作成される作業領域が変わります。
+  <ul>
+    <li><span class="decoration-02">チェックなし</span>のまま作成して画像を開いた場合は、<span class="decoration-02">カンバス（ドキュメントモード）</span></li>
+    <li><span class="decoration-02">チェックあり</span>の場合は、<span class="decoration-02">アートボード（アートボードドキュメント）</span></li>
+  </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_image " id="item8417" data-item-id="8417" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/417/medium/6029f379-2e95-4ada-8562-f91bfd07953b.jpg?1740030437" title=""><img class="img-responsive item-image" alt=" (8417)" data-reference="" src="../../_assets/d7d88424e1.webp" width="640" height="446"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37063" data-item-id="37063" data-item-type="ItemHeading"><h2 class="item-body" id="heading13">【21-3】カンバスとは</h2></div>
+        
+        <div class="article-item item_markdown " id="item39520" data-item-id="39520" data-item-type="ItemMarkdown"><h4 id="heading14">目安の学習時間: 10分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item8404" data-item-id="8404" data-item-type="ItemMarkdown"><h4 id="heading15">カンバスで作成した画面</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8407" data-item-id="8407" data-item-type="ItemText"><div class="item-body-hbr">画面上には1つだけ枠が配置されて、その枠内で作業を行います。</div></div>
+        
+        <div class="article-item item_image " id="item8408" data-item-id="8408" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/408/medium/98bc20f9-5009-4088-a043-a14a773d25d0.jpg?1740030224" title=""><img class="img-responsive item-image" alt=" (8408)" data-reference="" src="../../_assets/0340099efe.webp" width="640" height="445"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8405" data-item-id="8405" data-item-type="ItemMarkdown"><h4 id="heading17">カンバスで作成したときのレイヤーパネル</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8406" data-item-id="8406" data-item-type="ItemText"><div class="item-body-hbr">レイヤーパネルは画像や文字、効果などを作業するとレイヤーが重なっていきます。</div></div>
+        
+        <div class="article-item item_image " id="item8409" data-item-id="8409" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/409/medium/535928c1-b530-4ecc-98ea-5881d2b4eed2.jpg?1740030238" title=""><img class="img-responsive item-image" alt=" (8409)" data-reference="" src="../../_assets/0da26b60b0.webp" width="640" height="445"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37064" data-item-id="37064" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">カンバスをアートボードへ変換する方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item8402" data-item-id="8402" data-item-type="ItemRichText"><div class="item-body-hbr">カンバスで作業を進めている時に途中でアートボードが必要になった場合は、レイヤーパネルで右クリックをして<span class="decoration-02">レイヤーからアートボード</span>を選択してください。<br>
+（レイヤーが複数ある場合はどれか1つ選択すればアートボードへ変換されます。）</div></div>
+        
+        <div class="article-item item_link " id="item12414" data-item-id="12414" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12414" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-1" data-reference="https://www.dropbox.com/scl/fi/cwxbrydms3rz62j8ma382/Adobe-Photoshop21-1_1.0_.mp4?rlkey=c1jkn8jky89xdt7xw9g2v3cud&amp;e=1&amp;st=uiw9h4l9&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37065" data-item-id="37065" data-item-type="ItemHeading"><h2 class="item-body" id="heading20">【21-4】アートボード</h2></div>
+        
+        <div class="article-item item_markdown " id="item8463" data-item-id="8463" data-item-type="ItemMarkdown"><h4 id="heading21">アートボードで作成した画面</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8465" data-item-id="8465" data-item-type="ItemText"><div class="item-body-hbr">アートボードを使用すると、同じ画面上に複数の枠を足していくことができます。<br>それぞれの枠は独立しています。</div></div>
+        
+        <div class="article-item item_image " id="item8461" data-item-id="8461" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/461/medium/ab626013-91a2-405d-9d9c-1ef3bcc98b50.jpg?1740035323" title=""><img class="img-responsive item-image" alt=" (8461)" data-reference="" src="../../_assets/804ac3ecfd.webp" width="640" height="446"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item8464" data-item-id="8464" data-item-type="ItemMarkdown"><h4 id="heading23">アートボードで作成したときのレイヤーパネル</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8466" data-item-id="8466" data-item-type="ItemText"><div class="item-body-hbr">アートボード毎に仕切りができます。<br>レイヤーもそれぞれのアートボードに対して増えていきます。</div></div>
+        
+        <div class="article-item item_image " id="item8462" data-item-id="8462" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/462/medium/a1aae0f9-cc93-4038-8c8d-70562cef4fe5.jpg?1740035341" title=""><img class="img-responsive item-image" alt=" (8462)" data-reference="" src="../../_assets/257d799fb9.webp" width="640" height="445"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37066" data-item-id="37066" data-item-type="ItemHeading"><h3 class="item-body" id="heading25">アートボードの作成方法</h3></div>
+        
+        <div class="article-item item_markdown " id="item8467" data-item-id="8467" data-item-type="ItemMarkdown"><h4 id="heading26">ツールから追加する</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37040" data-item-id="37040" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>ツールでアートボードを押す。</li>
+  <li>オプションパネルで追加したいアートボードのサイズのタブで選択<br>（もしくは任意の大きさを指定）</li>
+  <li>追加ボタンを押して、配置したい場所でクリック</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_link " id="item12415" data-item-id="12415" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12415" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-2</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-2" data-reference="https://www.dropbox.com/scl/fi/tmw44rnzy215sqdf3psp3/Adobe-Photoshop21-2_1.0_.mp4?rlkey=mmy6q9r5piulz518bw2an9wbr&amp;e=1&amp;st=un77ceia&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8468" data-item-id="8468" data-item-type="ItemMarkdown"><h4 id="heading27">レイヤーパネルから追加</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37041" data-item-id="37041" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>レイヤーパネルでいずれかのアートボードを選択すると、カンバス上にプラス（+）マークのボタンが表示されます。</li>
+  <li>それをクリックすると選択していたアートボードと同じ大きさで追加できます。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_link " id="item12416" data-item-id="12416" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12416" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-3</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-3" data-reference="https://www.dropbox.com/scl/fi/2cqpazif86xqygsd4j5en/Adobe-Photoshop21-3_1.0_.mp4?rlkey=8ofoimepacrjxg2wwcy3g9pai&amp;e=1&amp;st=97dxhvtz&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37067" data-item-id="37067" data-item-type="ItemHeading"><h3 class="item-body" id="heading28">アートボードのサイズの変更</h3></div>
+        
+        <div class="article-item item_markdown " id="item8473" data-item-id="8473" data-item-type="ItemMarkdown"><h4 id="heading29">バウンディングボックスから変更</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37042" data-item-id="37042" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>レイヤーパネルでサイズを変更したアートボードを選択</li>
+  <li>アートボードの枠に四角いボックスが表示される<br>（バウンディングボックス）</li>
+  <li>そのボックスをクリックして変更したい大きさにドラッグする。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_link " id="item12417" data-item-id="12417" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12417" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-4</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-4" data-reference="https://www.dropbox.com/scl/fi/pz5b7plc62zjhd7zel5ku/Adobe-Photoshop21-4_1.0_.mp4?rlkey=68xxtgjfcupv8yh81pwopcilj&amp;st=44kwwpra&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8474" data-item-id="8474" data-item-type="ItemMarkdown"><h4 id="heading30">プロパティパネルから変更</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37043" data-item-id="37043" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>レイヤーパネルでサイズを変更したアートボードを選択</li>
+  <li>プロパティパネル（ウィンドウから出す）で変更したサイズの数値を入力して変更する。<br>（※画像の位置は、移動ツールで調整します。）</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_link " id="item12418" data-item-id="12418" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12418" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-5</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-5" data-reference="https://www.dropbox.com/scl/fi/nw6s7x19s8typdu952o3d/Adobe-Photoshop21-5_1.0_.mp4?rlkey=z3q22v1sdsd1f295spl53xytp&amp;st=i3iylmcx&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37068" data-item-id="37068" data-item-type="ItemHeading"><h3 class="item-body" id="heading31">アートボードの削除</h3></div>
+        
+        <div class="article-item item_markdown " id="item8477" data-item-id="8477" data-item-type="ItemMarkdown"><h4 id="heading32">クリックで削除</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37044" data-item-id="37044" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>レイヤーパネルで削除したアートボードを選択</li>
+  <li>右クリックで削除。<br>（アートボードのみ削除か、アートボード内のレイヤーも含めて削除か選択肢が出てくる）</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_link " id="item12419" data-item-id="12419" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12419" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-6</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-6" data-reference="https://www.dropbox.com/scl/fi/8kn5qdmto4ef7pjyx8c1d/Adobe-Photoshop21-6_1.0_.mp4?rlkey=xxxtmtllkl6ezo7i2wrvrp449&amp;e=1&amp;st=dlilge3y&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8479" data-item-id="8479" data-item-type="ItemMarkdown"><h4 id="heading33">ドラッグで削除</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37045" data-item-id="37045" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>削除したいアートボードを選択</li>
+  <li>ゴミ箱のアイコンへドラッグ<br>（レイヤーも含めて全て削除されます）</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_link " id="item12420" data-item-id="12420" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12420" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-7</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-7" data-reference="https://www.dropbox.com/scl/fi/ohgea7gzuvw76c5z7z63f/Adobe-Photoshop21-7_1.0_.mp4?rlkey=x0ab7c91kxmiihm1gcx18g0jg&amp;st=6ut2ruu8&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37069" data-item-id="37069" data-item-type="ItemHeading"><h3 class="item-body" id="heading34">アートボードの書き出し</h3></div>
+        
+        <div class="article-item item_html " id="item37052" data-item-id="37052" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><span class="decoration-01">書き出しとは？</span></div>
+    </div>
+    <div class="content-area">
+    <ul>
+      <li>書き出しとは、編集が完了した制作物を、実際に使用するためにJPEGやPNGといった画像ファイル形式に変換する作業です。</li>
+      <li>書き出しを行うことで、web上でパーツとして使用することができます。</li>
+    </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item37047" data-item-id="37047" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>メニューバー　ファイル ＞ 書き出し ＞ 書き出し形式を選択すると、アートボードが一覧で表示されます。</li>
+  <ul>
+    <li>「チェックあり」が、書き出しされる対象です。</li>
+  </ul>
+</ol></div></div>
+        
+        <div class="article-item item_link " id="item12421" data-item-id="12421" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12421" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-8</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-8" data-reference="https://www.dropbox.com/scl/fi/fcgglci194d610vcupra4/Adobe-Photoshop21-8_1.0_.mp4?rlkey=c4tqbe47opcb1uyvsmen0joc1&amp;e=1&amp;st=z2a3nxi3&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item37048" data-item-id="37048" data-item-type="ItemHtml"><div class="item-body"><ol start="2">
+  <li>左側の一覧でチェックボタンを避けた場所をクリックするとそれぞれの情報に切り替えることができます。</li>
+</ol></div></div>
+        
+        <div class="article-item item_link " id="item12422" data-item-id="12422" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12422" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-9</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-9" data-reference="https://www.dropbox.com/scl/fi/pi8uju3p8dc93oy8aidak/Adobe-Photoshop21-9_1.0_.mp4?rlkey=qr1fqug3tx9g8o2lsuk3r3dvj&amp;e=1&amp;st=gj9suwsz&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item37049" data-item-id="37049" data-item-type="ItemHtml"><div class="item-body"><ol start="3">
+  <li>右側にファイル設定という項目があります。</li>
+  <ul>
+    <li>ここの項目で、選択したアートボードが書き出された時の拡張子を設定やサイズの変更などを行うことができます。</li>
+  </ul>
+</ol></div></div>
+        
+        <div class="article-item item_link " id="item12423" data-item-id="12423" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12423" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-10</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-10" data-reference="https://www.dropbox.com/scl/fi/7f6pxxetcc2o5jvyr1ce3/Adobe-Photoshop21-10_1.0_.mp4?rlkey=6nsdwzbpw3wtrinj5j420oekx&amp;e=1&amp;st=rukz51gw&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item37050" data-item-id="37050" data-item-type="ItemHtml"><div class="item-body"><ol start="4">
+  <li>設定が完了したら右下の書き出しのボタンを押すと書き出しを行うフォルダの指定をすることができます。</li>
+  <ul>
+    <li>開くをクリックすると書き出しが完了します。</li>
+  </ul>
+</ol></div></div>
+        
+        <div class="article-item item_image " id="item8487" data-item-id="8487" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/487/medium/90744e12-4f04-4f7f-8823-1e531adbee18.jpg?1740036617" title=""><img class="img-responsive item-image" alt=" (8487)" data-reference="" src="../../_assets/c3636e184f.webp" width="640" height="205"></a><h4 id="heading35"></h4></div></div>
+        
+        <div class="article-item item_html " id="item37051" data-item-id="37051" data-item-type="ItemHtml"><div class="item-body"><ol start="5">
+  <li>指定したフォルダにアートボード名と拡張子で構成されたファイル名で画像が書き出されます。</li>
+  <ul>
+    <li>今回はDownloadsフォルダに書き出しを行いました。</li>
+    <span>書き出されたjpgのファイル：<br>アートボード1.jpg・アートボード2.jpg・アートボード3.jpg</span>
+  </ul>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item8488" data-item-id="8488" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/488/medium/6ab97236-5a51-4df2-8b79-8976fcc04f9d.jpg?1740036631" title=""><img class="img-responsive item-image" alt=" (8488)" data-reference="" src="../../_assets/124265bfae.webp" width="640" height="335"></a><h4 id="heading36"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item37070" data-item-id="37070" data-item-type="ItemHeading"><h2 class="item-body" id="heading37">【21-5】まとめの演習 バナー広告の作り方</h2></div>
+        
+        <div class="article-item item_html " id="item37053" data-item-id="37053" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>これまで学んできた内容の振り返りをしながら、バナーの作成を行います。</li>
+  <li>設定方法がわからない場合は過去の章を参照しながら進めていきましょう！</li>
+  <li>最初のワークは課題を行うためのチュートリアルです。課題ではお題に沿って<span class="decoration-02">自分でバナーの構成を考えて作成していきましょう。</span></li>
+  <li>時間はかかっても大丈夫なので復習をしながら進めていきましょう！</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_markdown " id="item12942" data-item-id="12942" data-item-type="ItemMarkdown"><h4 id="heading38">演習課題</h4>
+</div>
+        
+        <div class="article-item item_image " id="item8419" data-item-id="8419" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/419/medium/dd5fa6ee-10dc-4092-a0c6-a15a1c14afe8.jpg?1740030526" title=""><img class="img-responsive item-image" alt=" (8419)" data-reference="" src="../../_assets/8c200ac9b3.webp" width="300" height="250"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_link " id="item37054" data-item-id="37054" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=37054" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 21-1【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 21-1【使用素材】" data-reference="https://www.dropbox.com/scl/fo/stt3dyfb9ot21ly8fya3p/AEBvMlfqacqqm2CkIfXfu84?rlkey=jodjna8mpknqnv2j0fa5sg428&amp;st=a06zpcam&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item8421" data-item-id="8421" data-item-type="ItemMarkdown"><h4 id="heading40">作業手順</h4>
+</div>
+        
+        <div class="article-item item_text " id="item8489" data-item-id="8489" data-item-type="ItemText"><div class="item-body-hbr">1. アートボードを作成して調整レイヤーのグラデーションで背景の設定</div></div>
+        
+        <div class="article-item item_link " id="item12426" data-item-id="12426" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12426" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-11</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-11" data-reference="https://www.dropbox.com/scl/fi/sx11grvnp6279nt0q8e1y/Adobe-Photoshop21-11_1.0_.mp4?rlkey=i9ln8rpd754nctnqoz02pf7pl&amp;e=1&amp;st=ntu1vrft&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8490" data-item-id="8490" data-item-type="ItemText"><div class="item-body-hbr">2. シェイクの画像を読み込みレイヤーマスクをかけて切り抜く<br></div></div>
+        
+        <div class="article-item item_html " id="item37055" data-item-id="37055" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>選択範囲の反転、範囲拡張、ブラシツールで工夫しながら切り取りの縁を調整しています。</li>
+  <li>ブラシの色が黒なら非表示（見えなく）になり、白なら表示されます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_link " id="item12427" data-item-id="12427" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12427" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-12</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-12" data-reference="https://www.dropbox.com/scl/fi/jhbzhlpkgz5i1kkzaoo37/Adobe-Photoshop21-12_1.0_.mp4?rlkey=mv5zu6x2dygppa39hrslqq9np&amp;e=1&amp;st=06cvdqbx&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8491" data-item-id="8491" data-item-type="ItemText"><div class="item-body-hbr">3. シェイクの画像に調整レイヤーで色を調整する</div></div>
+        
+        <div class="article-item item_link " id="item12428" data-item-id="12428" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12428" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-13</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-13" data-reference="https://www.dropbox.com/scl/fi/lkehvc7g00nvi2131ctdx/Adobe-Photoshop21-13_1.0_.mp4?rlkey=3iash9adc8be6ho5qrcnkx0jh&amp;e=1&amp;st=jozazyz3&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8492" data-item-id="8492" data-item-type="ItemText"><div class="item-body-hbr">4. シェイクの画像にレイヤースタイルをかけ配置する</div></div>
+        
+        <div class="article-item item_link " id="item12429" data-item-id="12429" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12429" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-14</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-14" data-reference="https://www.dropbox.com/scl/fi/17m1e872b2wv6iw4bhgr2/Adobe-Photoshop21-14_1.0_.mp4?rlkey=fuqaf5cmdl9cnfkz7wle1qw7u&amp;e=1&amp;st=l5ic1epg&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8493" data-item-id="8493" data-item-type="ItemText"><div class="item-body-hbr">5. いちごの画像を読み込み、複製を行い、レイヤーマスクをかけて切り抜きを実施する</div></div>
+        
+        <div class="article-item item_link " id="item12430" data-item-id="12430" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12430" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-15</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-15" data-reference="https://www.dropbox.com/scl/fi/konnrgorumututsld13ea/Adobe-Photoshop21-15_1.0_.mp4?rlkey=kege4t0a64hedgkkzw3qhzgoi&amp;e=1&amp;st=qexjldtn&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8494" data-item-id="8494" data-item-type="ItemText"><div class="item-body-hbr">6. いちごの画像を調整レイヤーで色の調整をかける</div></div>
+        
+        <div class="article-item item_link " id="item12431" data-item-id="12431" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12431" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-16</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-16" data-reference="https://www.dropbox.com/scl/fi/6rt5lh1kselb37yfhcll1/Adobe-Photoshop21-16_1.0_.mp4?rlkey=cymdma1yvt9um65ide4xjj6j0&amp;e=1&amp;st=0chzu4pw&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8495" data-item-id="8495" data-item-type="ItemText"><div class="item-body-hbr">7. いちごの画像を複製する</div></div>
+        
+        <div class="article-item item_link " id="item12432" data-item-id="12432" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12432" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-17</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-17" data-reference="https://www.dropbox.com/scl/fi/c30bh7uull0tpuk9sbaxu/Adobe-Photoshop21-17_1.0_.mp4?rlkey=92y9cfq82y6xjjhpgobrctqu5&amp;e=1&amp;st=h77a1d4b&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8496" data-item-id="8496" data-item-type="ItemText"><div class="item-body-hbr">8. いちごの画像を配置する</div></div>
+        
+        <div class="article-item item_link " id="item12433" data-item-id="12433" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12433" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-18</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-18" data-reference="https://www.dropbox.com/scl/fi/9ggq9kdpei1f5ylowwxg6/Adobe-Photoshop21-18_1.0_.mp4?rlkey=xtdtuy75pv8utx2lprrakj9jl&amp;e=1&amp;st=agnf4sef&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8497" data-item-id="8497" data-item-type="ItemText"><div class="item-body-hbr">9. タイトルを作成してレイヤースタイルをかける</div></div>
+        
+        <div class="article-item item_link " id="item12434" data-item-id="12434" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12434" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-19</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-19" data-reference="https://www.dropbox.com/scl/fi/7pysxstb44vn8ckjhmq7i/Adobe-Photoshop21-19_1.0_.mp4?rlkey=7gbmy3ruhvl2xobzqqfnd1alj&amp;st=hjsokd25&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8498" data-item-id="8498" data-item-type="ItemText"><div class="item-body-hbr">10. 日にちを入れる</div></div>
+        
+        <div class="article-item item_link " id="item12435" data-item-id="12435" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12435" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-20</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-20" data-reference="https://www.dropbox.com/scl/fi/rbiy99xvp9389aqm3sg0n/Adobe-Photoshop21-20_1.0_.mp4?rlkey=r233ax2lutcfj6jvsqbjzl3xn&amp;e=1&amp;st=mr849wa6&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item8499" data-item-id="8499" data-item-type="ItemText"><div class="item-body-hbr">11. 書き出しをjpgで行い完成</div></div>
+        
+        <div class="article-item item_link " id="item12436" data-item-id="12436" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=12436" rel="nofollow noopener noreferrer" target="_blank">作業動画 Adobe Photoshop 21-21</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="作業動画 Adobe Photoshop 21-21" data-reference="https://www.dropbox.com/scl/fi/rk71ijhl0r3dzt1kwr79d/Adobe-Photoshop21-21_1.0_.mp4?rlkey=912rtfb6dx5qlpyza5dgb5vyw&amp;e=1&amp;st=vfe4le98&amp;dl=0" src="../../_assets/fb06745a74.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37071" data-item-id="37071" data-item-type="ItemHeading"><h2 class="item-body" id="heading41">【21-6】バナーデザイン課題</h2></div>
+        
+        <div class="article-item item_rich_text " id="item8422" data-item-id="8422" data-item-type="ItemRichText"><div class="item-body-hbr">これまで学んできたPhotoshopの機能を活用してバナーを作成してみましょう！<br>
+バナーのお題を元に、<span class="decoration-02">オリジナルデザイン</span>で作成してください。</div></div>
+        
+        <div class="article-item item_markdown " id="item12943" data-item-id="12943" data-item-type="ItemMarkdown"><h4 id="heading42">演習課題</h4>
+</div>
+        
+        <div class="article-item item_html " id="item37058" data-item-id="37058" data-item-type="ItemHtml"><div class="item-body"><span class="decoration-01">バナーのお題内容</span>
+<ul>
+  <li>商品名｜WEBCHOCO Silky Bitter 70%Cacao</li>
+  <li>キャッチコピー｜こだわりのチョコレート、贅沢なひととき</li>
+  <li>キャンペーン内容｜新発売の販売促進で期間限定で20%offで購入可能</li>
+  <li>キャンペーン期間｜4月1日〜30日までの1ヶ月間</li>
+  <li>商品の特徴</li>
+  <ul>
+    <li>新商品として発売された。カカオが70%で質にこだわりご褒美に食べたくなるような高級ラインのチョコレート。</li>
+  </ul>
+  <li>補足事項</li>
+  <ul>
+    <li>全体的に落ち着いたトーンで、高級感がある雰囲気にしてほしい。</li>
+  </ul>
+  <li>サイズ｜3サイズのバナーデザインを行いましょう。</li>
+  <ul>
+    <li>300×250px</li>
+    <li>728×90px</li>
+    <li>160×600px</li>
+  </ul>
+  <li>書き出し形式｜jpg</li>
+  <li>素材｜自分で選んだ素材でもOKです。</li>
+</ul></div></div>
+        
+        <div class="article-item item_image " id="item8423" data-item-id="8423" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/008/423/medium/7bd602b3-0572-4e0c-a05c-4a19ea99ddb7.jpg?1740030665" title=""><img class="img-responsive item-image" alt=" (8423)" data-reference="" src="../../_assets/e31dc4f8e9.webp" width="640" height="345"></a><h4 id="heading43"></h4></div></div>
+        
+        <div class="article-item item_link " id="item37059" data-item-id="37059" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=hdZs0&amp;item_id=37059" rel="nofollow noopener noreferrer" target="_blank">Adobe Photoshop 21-2 【使用素材】</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Adobe Photoshop 21-2 【使用素材】" data-reference="https://www.dropbox.com/scl/fo/6rq3lihan8vy724qb91pl/AGW_f8hSnle52U4Tu8QUcWo?rlkey=8wdci2pfaell9slqdvu0acud9&amp;st=vr5lyjfc&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item37072" data-item-id="37072" data-item-type="ItemHeading"><h2 class="item-body" id="heading44">【21-7】まとめ</h2></div>
+        
+        <div class="article-item item_text " id="item8396" data-item-id="8396" data-item-type="ItemText"><div class="item-body-hbr">お疲れ様でした！<br>Photoshopの基本的な機能の学習が終わりました！<br><br>繰り返し使うことで操作には慣れていきます。ここで学んだスキルをベースに、ぜひ様々な制作に取り組んでください。<br>ここまで学習をやり切ったご自身を、しっかり褒めてあげましょう！</div></div>
+        
+        <div class="article-item item_rich_text " id="item12439" data-item-id="12439" data-item-type="ItemRichText"><div class="item-body-hbr">これで「21章 カンバスとアートボードを知ろう」の解説を終わります。<br>
+最後の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item25617" data-item-id="25617" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/qqy8s" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/PQk3F" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">21章 カンバスとアートボードを知ろう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:約500分</a></li><li><a href="#heading2" class="tocLink"></a></li></ul></li><li><a href="#heading3" class="tocLink">【21-1】アートボードの具体的な使用シーン</a><ul><li><a href="#heading4" class="tocLink">1.SNS投稿で複数画像やサイズを作成する場合</a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink">2.複数のサイズのバナーデザインを行う場合</a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink">3.デスクトップ版・タブレット版・スマートフォン版の各画面サイズごとのWebデザインを行う場合</a></li><li><a href="#heading9" class="tocLink"></a></li></ul></li><li><a href="#heading10" class="tocLink">【21-2】カンバスとアートボードの違い</a><ul><li><a href="#heading11" class="tocLink">新規作成の画面</a><ul><li><a href="#heading12" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading13" class="tocLink">【21-3】カンバスとは</a><ul><li><a href="#heading14" class="tocLink">目安の学習時間: 10分</a></li><li><a href="#heading15" class="tocLink">カンバスで作成した画面</a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink">カンバスで作成したときのレイヤーパネル</a></li><li><a href="#heading18" class="tocLink"></a></li></ul><ul><li><a href="#heading19" class="tocLink">カンバスをアートボードへ変換する方法</a></li></ul></li><li><a href="#heading20" class="tocLink">【21-4】アートボード</a><ul><li><a href="#heading21" class="tocLink">アートボードで作成した画面</a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink">アートボードで作成したときのレイヤーパネル</a></li><li><a href="#heading24" class="tocLink"></a></li></ul><ul><li><a href="#heading25" class="tocLink">アートボードの作成方法</a><ul><li><a href="#heading26" class="tocLink">ツールから追加する</a></li><li><a href="#heading27" class="tocLink">レイヤーパネルから追加</a></li></ul></li><li><a href="#heading28" class="tocLink">アートボードのサイズの変更</a><ul><li><a href="#heading29" class="tocLink">バウンディングボックスから変更</a></li><li><a href="#heading30" class="tocLink">プロパティパネルから変更</a></li></ul></li><li><a href="#heading31" class="tocLink">アートボードの削除</a><ul><li><a href="#heading32" class="tocLink">クリックで削除</a></li><li><a href="#heading33" class="tocLink">ドラッグで削除</a></li></ul></li><li><a href="#heading34" class="tocLink">アートボードの書き出し</a><ul><li><a href="#heading35" class="tocLink"></a></li><li><a href="#heading36" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading37" class="tocLink">【21-5】まとめの演習 バナー広告の作り方</a><ul><li><a href="#heading38" class="tocLink">演習課題</a></li><li><a href="#heading39" class="tocLink"></a></li><li><a href="#heading40" class="tocLink">作業手順</a></li></ul></li><li><a href="#heading41" class="tocLink">【21-6】バナーデザイン課題</a><ul><li><a href="#heading42" class="tocLink">演習課題</a></li><li><a href="#heading43" class="tocLink"></a></li></ul></li><li><a href="#heading44" class="tocLink">【21-7】まとめ</a></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/qqy8s" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/PQk3F" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

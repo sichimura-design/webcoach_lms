@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/ai-designer/chapter-05/rULKk -->
+<!-- clipkit-fetched-at: 2026-09-18T09:17:28.099Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Lesson2 ChatGPTで業務テキストを生成する - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/ai-designer/chapter-05/rULKk">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="Lesson2 ChatGPTで業務テキストを生成する - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="Lesson2 ChatGPTで業務テキストを生成する">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/ai-designer/chapter-05/rULKk">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="GvbqXtx8QKhQy9NtTXOqZ26ZnfZzRmRmQC3Tfe5_CYT7kDAFsgjshDinvVIRWgw6daCeWd5cOEDwBzOc75-okw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48941" data-item-id="48941" data-item-type="ItemHtml"><div class="item-body"><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 */
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* 画像 */
+.slide-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+.img-placeholder { background: #FAF5F3; border: 2px dashed #E8D5CC; border-radius: 12px; padding: 36px 20px; text-align: center; margin: 28px 0; }
+.img-placeholder-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #C4A59A; margin-bottom: 6px; }
+.img-placeholder-name { font-size: 12px; color: #B08880; font-family: monospace; }
+.img-placeholder-desc { font-size: 13px; color: #8A6A60; margin-top: 6px; }
+
+/* プロンプトボックス */
+.prompt-box { background: #2A2220; border-radius: 12px; padding: 16px 20px; margin: 0 0 28px; position: relative; }
+.prompt-box-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #F5A64A; margin-bottom: 10px; padding-right: 100px; }
+.prompt-text { color: #E8DDD8; font-size: 12px; line-height: 1.7; font-family: 'Courier New', monospace; white-space: pre-wrap; word-break: break-word; margin: 0; }
+.prompt-copy-btn { position: absolute; top: 12px; right: 14px; background: #F5A64A; color: #fff; border: none; padding: 6px 14px; border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer; letter-spacing: 0.12em; font-family: 'Inter', sans-serif; transition: all 0.2s; z-index: 1; }
+.prompt-copy-btn:hover { background: #E8902A; transform: translateY(-1px); }
+.prompt-copy-btn.copied { background: #4A8024; }
+.prompt-copy-btn.copied:hover { background: #4A8024; transform: none; }
+
+/* コンポーネント */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0 0 10px; }
+.point-box p:last-child { margin-bottom: 0; }
+.point-box ol, .point-box ul { font-size: 15px; line-height: 1.9; color: #444; margin: 0; padding-left: 1.4em; }
+.point-box ol li, .point-box ul li { font-size: 15px; line-height: 1.9; color: #444; margin-bottom: 4px; }
+
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0 0 8px; }
+.notice-box p:last-child { margin-bottom: 0; }
+.notice-box ul { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; padding-left: 1.3em; }
+
+/* 依頼書ボックス */
+.brief-box { background: #FBF8F5; border: 1.5px solid #E8D5CC; border-radius: 12px; padding: 22px 26px; margin: 0 0 28px; }
+.brief-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid #E8D5CC; flex-wrap: wrap; }
+.brief-box__pill { display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 5px 14px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.12em; font-family: 'Inter', sans-serif; flex-shrink: 0; }
+.brief-box__title { font-size: 14px; font-weight: 700; color: #2D2D2D; }
+.brief-box__plain { font-family: 'Noto Sans JP', sans-serif; font-size: 14.5px; line-height: 1.9; color: #2D2D2D; white-space: pre-wrap; margin: 0; background: #fff; border: 1px solid #EBDCD0; border-radius: 8px; padding: 16px 20px; }
+
+/* サンプル文ボックス */
+.sample-box { background: #FBF8F5; border-left: 4px solid #F5A64A; border-radius: 0 10px 10px 0; padding: 18px 22px; margin: 0 0 28px; }
+.sample-box__label { font-size: 11px; font-weight: 800; letter-spacing: 0.15em; color: #B07344; margin-bottom: 8px; font-family: 'Inter', sans-serif; }
+.sample-box__body { font-size: 14.5px; line-height: 1.95; color: #2D2D2D; white-space: pre-wrap; font-family: 'Noto Serif JP', serif; font-weight: 400; }
+
+/* 操作ステップリスト */
+.steps-box { background: #fff; border: 1.5px solid #F0E5DC; border-radius: 12px; padding: 22px 26px 14px; margin: 0 0 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+.steps-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #F0E5DC; }
+.steps-box__icon { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; font-family: 'Inter', sans-serif; }
+.steps-box__title { font-size: 14px; font-weight: 700; color: #2D2D2D; }
+.steps-box ol { list-style: none; padding: 0; margin: 0; counter-reset: stp; }
+.steps-box ol li { counter-increment: stp; position: relative; padding: 6px 0 10px 38px; font-size: 14.5px; line-height: 1.85; color: #444; border-bottom: 1px dashed #F5EDE5; }
+.steps-box ol li:last-child { border-bottom: none; }
+.steps-box ol li::before { content: counter(stp, decimal-leading-zero); position: absolute; left: 0; top: 8px; width: 28px; height: 22px; background: #FFF5F0; color: #E85D4A; font-weight: 800; font-size: 12px; font-family: 'Inter', sans-serif; border-radius: 6px; display: flex; align-items: center; justify-content: center; letter-spacing: 0.04em; }
+.steps-box ol li strong { color: #2D2D2D; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* サマリー */
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+/* チェックボックス */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+/* アニメーション */
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+
+<div class="lesson-wrapper">
+
+  <div class="lesson-hero">
+    <span class="lesson-hero__badge">CHAPTER 5</span>
+    <div class="lesson-hero__title">ChatGPTで業務テキストを生成する — 応募文・ヒアリングメール・提案文をAIに書かせる</div>
+    <div class="lesson-hero__meta">
+      <span class="lesson-hero__chip">LESSON 5-2</span>
+      <span class="lesson-hero__topic">ChatGPTで業務テキストを量産する</span>
+      <span class="lesson-hero__time">⏱ 所要時間：約60分</span>
+    </div>
+  </div>
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-05/MO6kf" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-05/3pwE7" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+  <div class="goal-box">
+    <div class="goal-box__head">
+      <div class="goal-box__pill">GOAL</div>
+      <div class="goal-box__sub">このレッスンのゴール</div>
+    </div>
+    <ul>
+      <li><div class="goal-box__check">✓</div><div class="goal-box__text">架空案件「Bistro Yuagari」をテーマに、ChatGPTで応募文をカスタマイズして保存できる</div></li>
+      <li><div class="goal-box__check">✓</div><div class="goal-box__text">受注前のヒアリングメールをChatGPTで生成して保存できる</div></li>
+      <li><div class="goal-box__check">✓</div><div class="goal-box__text">複数案を提案する提案文をChatGPTで生成して保存できる</div></li>
+      <li><div class="goal-box__check">✓</div><div class="goal-box__text">AI生成テキストを自分らしくカスタマイズする手順を理解している</div></li>
+    </ul>
+  </div>
+
+  <nav class="toc">
+    <div class="toc-head">
+      <div class="toc-icon">≡</div>
+      <div class="toc-title">目次</div>
+    </div>
+    <ul>
+      <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">なぜAIで業務テキストを書くのか</span><span class="toc-chev">›</span></a></li>
+      <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">架空案件「Bistro Yuagari」の依頼書を読み解く</span><span class="toc-chev">›</span></a></li>
+      <li><a href="#s3"><span class="toc-num">03</span><span class="toc-text">応募文をChatGPTで生成する</span><span class="toc-chev">›</span></a></li>
+      <li><a href="#s4"><span class="toc-num">04</span><span class="toc-text">ヒアリングメールをChatGPTで生成する</span><span class="toc-chev">›</span></a></li>
+      <li><a href="#s5"><span class="toc-num">05</span><span class="toc-text">提案文をChatGPTで生成する</span><span class="toc-chev">›</span></a></li>
+      <li><a href="#s6"><span class="toc-num">06</span><span class="toc-text">3種のテキストをカスタマイズして保存する</span><span class="toc-chev">›</span></a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== セクション 01 ===== -->
+  <h2 id="s1">01. なぜAIで業務テキストを書くのか</h2>
+
+  <p>応募文・ヒアリングメール・提案文は、案件1件ごとに毎回ゼロから書く文章ではありません。土台をChatGPTで生成し、案件ごとに必要な箇所だけ差し替えるほうが、速くて品質も安定します。空き時間が限られる副業ワーカーにとっては時間効率の差が受注数に直結します。</p>
+
+  <div class="point-box reveal visible">
+    <div class="point-box__head">
+      <div class="point-box__tab">✓ Point !</div>
+      <div class="point-box__sub">5-1で書いた自己PR文との関係</div>
+    </div>
+    <p>5-1ではプロフィールに常設する自己PR文をAIで生成しました。今回の5-2では<strong>案件ごとに送る業務テキスト</strong>をAIで生成します。プロフィールが<strong>常設の広告</strong>だとすれば、業務テキストは<strong>案件ごとに送るカスタムレター</strong>の関係です。</p>
+  </div>
+
+  <div class="notice-box reveal visible">
+    <div class="notice-box__head">
+      <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+      <div class="notice-box__sub">AIの出力をそのまま送らない</div>
+    </div>
+    <p>ChatGPTが生成する文章はあくまで土台です。AI調の言い回しや、案件と関係ない一般的な営業文が混ざることがあります。送信前に必ず自分で一読してカスタマイズします。カスタマイズの観点はセクション06で扱います。</p>
+  </div>
+
+  <!-- ===== セクション 02 ===== -->
+  <h2 id="s2">02. 架空案件「Bistro Yuagari」の依頼書</h2>
+
+  <p>このレッスンでは1つの架空案件を題材に、3種のテキストを順番に作っていきます。実際のクラウドワークスのプロジェクト型案件の依頼書は、コンペほど詳細に書かれていないことがほとんどです。最低限の情報だけで応募し、足りない情報は採用後のヒアリングで聞き出すのが基本フローです。</p>
+
+  <div class="brief-box reveal visible">
+    <div class="brief-box__head">
+      <div class="brief-box__pill">CASE BRIEF</div>
+      <div class="brief-box__title">クラウドワークス上に公開されている案件本文</div>
+    </div>
+<pre class="brief-box__plain">【急募】Instagram投稿用バナー制作（飲食店）
+
+店名：Bistro Yuagari
+内容：秋の新メニュー告知のInstagram投稿バナー（1080×1080px）を1〜2点お願いします。
+
+予算：3,000円
+納期：依頼確定から10日以内
+
+備考：
+- メニュー：栗のクリームパスタ、かぼちゃのポタージュ、洋梨のタルトなど
+- 雰囲気はおまかせします
+- 修正は2〜3回まで対応可能な方
+- 簡単な依頼書だけのご対応となりますがご了承ください
+
+ご応募お待ちしております。</pre>
+  </div>
+
+  <div class="point-box reveal visible">
+    <div class="point-box__head">
+      <div class="point-box__tab">✓ Point !</div>
+      <div class="point-box__sub">依頼書はそのままプロンプトに貼り付ける</div>
+    </div>
+    <p>キーワードを抽出して整理する必要はありません。上の依頼書本文を<strong>そのままコピー</strong>して、各プロンプトの<strong>[案件詳細]</strong>欄に貼り付けるだけでOKです。ChatGPTが文面から必要な情報を読み取って文章を組み立てます。</p>
+  </div>
+
+  <!-- ===== セクション 03 ===== -->
+  <h2 id="s3">03. 応募文をChatGPTで生成する</h2>
+
+  <p>応募文は発注者が応募者を一次選考するときに読む文章です。プロフィール内容と重複しすぎず、<strong>この案件のために書いている</strong>と感じてもらえる構成にします。</p>
+
+  <div class="steps-box reveal visible">
+    <div class="steps-box__head">
+      <div class="steps-box__icon">A</div>
+      <div class="steps-box__title">応募文を生成する手順</div>
+    </div>
+    <ol>
+      <li>下のプロンプトの<strong>コピー</strong>ボタンを押して全文をクリップボードに取り込みます。</li>
+      <li>ChatGPTを開き、新しいチャットに貼り付けます。</li>
+      <li>プロンプト末尾の<strong>[案件詳細]</strong>欄に、セクション02の依頼書本文を<strong>そのままコピーして貼り付け</strong>ます。<strong>[自分の強み]</strong>にはこのコースで身につけたCanva＋ChatGPT Images 2.0のスキルを書きます。</li>
+      <li>生成された応募文を読み、案件と関係ない一般的な営業文や、自分の言葉と乖離した表現があれば後でカスタマイズします（セクション06で実施）。</li>
+    </ol>
+  </div>
+
+  <div class="prompt-box reveal visible">
+    <div class="prompt-box-label">CHATGPT PROMPT — 応募文の作成</div>
+    <button class="prompt-copy-btn" type="button" data-target="prompt-apply">コピー</button>
+<pre class="prompt-text" id="prompt-apply"># 命令
+あなたはクラウドソーシングで安定的に受注しているデザイナーです。
+以下の【案件詳細】と【自分の強み】を元に、クラウドワークスのプロジェクト型案件に送る応募文を作成してください。
+
+# 応募文の構成（必ずこの順番）
+1. 冒頭の挨拶（クライアント名を入れる）
+2. この案件のどこに惹かれたか（依頼書の具体的な記述を1つ引用する）
+3. 自分のスキルと、この案件にどう活かせるか（Canva＋画像生成AIで複数案を素早く提案できる強みを明記）
+4. 制作実績へのリンク（ポートフォリオURL【受講生がforiioのURLに差し替え】）
+5. 修正回数と納期の方針（修正2〜3回まで／納期は応相談）
+6. 結びの挨拶
+
+# トーン・分量のルール
+- 文字数：400〜500字
+- トーン：誠実・落ち着いた・押し付けがましくない
+- 「ぜひ」「絶対」「必ず」などの強い営業表現は使わない
+- 一般論ではなく、この案件特有の要素を1つ以上盛り込む
+- AI使用は「画像生成AIとCanvaを組み合わせて短期に複数案をご提案できます」と1文添える
+
+# 出力前の確認
+- クライアント名が冒頭に入っているか
+- 依頼書の具体記述が引用されているか
+- ポートフォリオURLの差し替え位置が明示されているか
+
+# 案件詳細
+[クラウドワークスの案件本文をそのままコピーして貼り付け]
+
+# 自分の強み
+[Canva・ChatGPT Images 2.0のスキル／前職経験で活かせる部分／作業可能な時間帯／レスポンス速度]</pre>
+  </div>
+
+  <div class="point-box reveal visible">
+    <div class="point-box__head">
+      <div class="point-box__tab">✓ Point !</div>
+      <div class="point-box__sub">応募文で依頼書の具体記述を引用する意味</div>
+    </div>
+    <p>テンプレ感のある応募文は発注者の選考リストから外れます。「秋の新メニュー告知の温かみある雰囲気に共感した」など、依頼書の具体記述を1か所引用するだけで、テンプレ送信ではないと伝わります。</p>
+  </div>
+
+  <div class="notice-box reveal visible">
+    <div class="notice-box__head">
+      <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+      <div class="notice-box__sub">応募文には生成AIの使用を1文明記する</div>
+    </div>
+    <p>応募文の段階でも、生成AIを使って制作する旨を1文添えます。クラウドワークスのAIポリシーでは、AI利用を隠さず透明性の高いコミュニケーションを心がけることが推奨されています。プロフィール（5-1）で開示したうえで応募文でも重ねて伝えると、採用後に認識違いになるのを防げます。</p>
+    <p>「画像生成AI（ChatGPT Images 2.0）とCanvaを組み合わせて制作いたします。AIを使用することで短期間に複数案ご提案することが可能となりますのでご了承の程、よろしくお願いいたします。」のように、強みとセットで書くことがおすすめです。</p>
+  </div>
+
+  <!-- ===== セクション 04 ===== -->
+  <h2 id="s4">04. ヒアリングメールをChatGPTで生成する</h2>
+
+  <p>クラウドワークスのプロジェクト型案件の依頼書は、セクション02のように<strong>最低限の情報しか書かれていない</strong>ことが大半です。ターゲット・雰囲気・支給素材・必須要素などは依頼書に書かれていないので、応募採用後にヒアリングメールで詳しく聞き出します。ここを丁寧にやると、後の大幅修正がほぼなくなります。</p>
+
+  <div class="steps-box reveal visible">
+    <div class="steps-box__head">
+      <div class="steps-box__icon">B</div>
+      <div class="steps-box__title">ヒアリングメールを生成する手順</div>
+    </div>
+    <ol>
+      <li>下のプロンプトをコピーしてChatGPTに貼り付けます。</li>
+      <li><strong>[案件詳細]</strong>欄にセクション02の依頼書本文を<strong>そのままコピーして貼り付け</strong>ます。</li>
+      <li>生成されるヒアリング項目（質問リスト）を確認し、案件に不要な質問は削除します。</li>
+      <li>質問が多すぎると発注者の負担になるので、<strong>5〜8項目に絞る</strong>のが目安です。</li>
+    </ol>
+  </div>
+
+  <div class="prompt-box reveal visible">
+    <div class="prompt-box-label">CHATGPT PROMPT — ヒアリングメールの作成</div>
+    <button class="prompt-copy-btn" type="button" data-target="prompt-hearing">コピー</button>
+<pre class="prompt-text" id="prompt-hearing"># 命令
+あなたは受注経験豊富なバナーデザイナーです。
+以下の【案件詳細】を元に、応募採用後にクライアントへ送るヒアリングメールを作成してください。依頼書に書かれていない詳細（ターゲット・雰囲気・支給素材の有無など）を聞き出すのが目的です。
+
+# ヒアリングメールの構成
+1. 御礼の冒頭挨拶（応募採用への感謝）
+2. 制作着手前に確認したい質問リスト（5〜8項目）
+3. 回答期限の目安（無理のないペースを提示）
+4. 結びの挨拶
+
+# ヒアリング項目に必ず含める観点
+- 制作物のサイズ／提出フォーマット（PNG・JPG・PDFなど）
+- 文言の確定（キャッチコピー・メニュー名・店舗情報の最終確認）
+- 必須要素（ロゴ・営業時間・電話番号・SNSアカウント等の掲載有無）
+- 色味・トーンの好みの幅（参考にしたい既存バナーがあるか）
+- 提出時のバリエーション数（1案／2案／3案）
+- 修正のやりとり方法（チャット・メール・電話）
+- AI生成素材の使用可否（明示の取り決め）
+
+# トーンのルール
+- 質問を箇条書きで並べる（読みやすさ優先）
+- ビジネスメールとして丁寧だが、堅すぎない
+- クライアントが回答しやすいよう、選択肢を提示できる質問は選択肢付きにする
+- 「お忙しいところ恐縮ですが」など過度な恐縮表現は避ける
+
+# 出力前の確認
+- 5〜8項目に絞られているか
+- 不必要に難しい専門用語が混じっていないか
+- 回答期限が明示されているか
+
+# 案件詳細
+[クラウドワークスの案件本文をそのままコピーして貼り付け]</pre>
+  </div>
+
+
+  <!-- ===== セクション 05 ===== -->
+  <h2 id="s5">05. 提案文をChatGPTで生成する</h2>
+
+  <p>提案文は、複数案を提示しながらクライアントに方向性を選んでもらうための文章です。AIで素早く複数案を作れる強みを最も活かせるフェーズです。</p>
+
+  <div class="steps-box reveal">
+    <div class="steps-box__head">
+      <div class="steps-box__icon">C</div>
+      <div class="steps-box__title">提案文を生成する手順</div>
+    </div>
+    <ol>
+      <li>下のプロンプトをコピーしてChatGPTに貼り付けます。</li>
+      <li><strong>[案件詳細]</strong>にセクション02の依頼書本文を<strong>そのままコピーして貼り付け</strong>、<strong>[制作した案]</strong>に2案分のコンセプト（ChatGPT Images 2.0で生成した方向性のテキスト要約）を書き出します。</li>
+      <li>生成された提案文を読み、案ごとの差別ポイントが明確に伝わるか確認します。</li>
+    </ol>
+  </div>
+
+  <div class="prompt-box reveal">
+    <div class="prompt-box-label">CHATGPT PROMPT — 提案文の作成</div>
+    <button class="prompt-copy-btn" type="button" data-target="prompt-proposal">コピー</button>
+<pre class="prompt-text" id="prompt-proposal"># 命令
+あなたは複数案を提示してクライアントの意思決定を助けるベテランデザイナーです。
+以下の【案件詳細】と【制作した案】を元に、2案を比較しながら提示する提案文を作成してください。
+
+# 提案文の構成
+1. 冒頭の挨拶＋全体の方向性サマリー
+2. 案1の説明
+   - コンセプト（一言）
+   - 雰囲気・色味の方向性
+   - ターゲットへの訴求ポイント
+   - 想定するシーン（このバナーを見た人がどう感じるか）
+3. 案2の説明（同じ構造で）
+4. 2案の使い分け方（どちらが何に向くか）
+5. クライアントへの質問（どちらの方向で進めたいか／別案も検討するか）
+6. 結びの挨拶
+
+# トーン・分量のルール
+- 全体700〜900字程度
+- 各案の説明は150〜200字
+- クライアントが直感的に判断できるよう、各案の&lt;差別ポイント&gt;を冒頭で明示する
+- 「どちらも良いと思います」のような選びにくくする表現は使わない
+- 自分の推し案がある場合は最後に控えめに添える（押し付けない）
+
+# 出力前の確認
+- 2案の差別ポイントが冒頭で明示されているか
+- クライアントが選びやすい質問形式で締めているか
+
+# 案件詳細
+[クラウドワークスの案件本文をそのままコピーして貼り付け]
+
+# 制作した案
+案1：[コンセプト・色味・雰囲気・訴求ポイント]
+案2：[コンセプト・色味・雰囲気・訴求ポイント]</pre>
+  </div>
+
+  <div class="point-box reveal">
+    <div class="point-box__head">
+      <div class="point-box__tab">✓ Point !</div>
+      <div class="point-box__sub">提案文で差別ポイントを冒頭に置く理由</div>
+    </div>
+    <p>2案を並べたときに「どちらも良いと思います」というニュアンスを残すと、クライアントは選びにくくなります。各案の差別ポイントを冒頭で明示すると、判断のスピードが上がり、修正回数も減ります。</p>
+  </div>
+
+  <!-- ===== セクション 06 ===== -->
+  <h2 id="s6">06. 3種のテキストをカスタマイズして保存する</h2>
+
+  <p>AIで生成した3種のテキストは、そのまま送らずに自分の言葉でカスタマイズしてから保存します。カスタマイズの観点と保存先を決めて、5-4の応募で使える状態にしておきます。</p>
+
+  <div class="steps-box reveal">
+    <div class="steps-box__head">
+      <div class="steps-box__icon">D</div>
+      <div class="steps-box__title">カスタマイズの観点</div>
+    </div>
+    <ol>
+      <li><strong>AI調の言い回しを置き換える</strong>：「〜することができます」「〜と申し上げます」「〜の所存です」などの硬すぎる表現を、自分の話し方に近い言葉に直します。</li>
+      <li><strong>一般的すぎる営業文を削除する</strong>：「ぜひお力になりたいです」など、どの案件にも使える文は、この案件に関係のある具体的な記述に置き換えます。</li>
+      <li><strong>具体名詞を入れる</strong>：「貴店」「貴社」を「Bistro Yuagari様」のように案件固有の固有名詞に差し替えます。</li>
+      <li><strong>長すぎる文を分ける</strong>：1文が3行を超えていたら2文に分けます。</li>
+    </ol>
+  </div>
+
+  <div class="steps-box reveal">
+    <div class="steps-box__head">
+      <div class="steps-box__icon">E</div>
+      <div class="steps-box__title">3種のテキストを保存する</div>
+    </div>
+    <ol>
+      <li>作業フォルダ（Chapter 1-3で作った「AIデザイン_練習」）の中に、応募関連のテキストを保存するフォルダを新しく作ります（フォルダ名は任意。例：<code>05_apply/texts/</code>）。</li>
+      <li><strong>apply_template.txt</strong>（応募文）／<strong>hearing_template.txt</strong>（ヒアリングメール）／<strong>proposal_template.txt</strong>（提案文）の3ファイルに、カスタマイズ済みのテキストを保存します。</li>
+      <li>各ファイルの冒頭に<strong>「Bistro Yuagari案件 — 2026/MM/DD作成」</strong>のようにメモを残します。後から別案件で再利用するときに差し替え箇所が分かります。</li>
+    </ol>
+  </div>
+
+  <div class="point-box reveal">
+    <div class="point-box__head">
+      <div class="point-box__tab">✓ Point !</div>
+      <div class="point-box__sub">次レッスンへの接続</div>
+    </div>
+    <p>このレッスンで作った応募文・ヒアリングメール・提案文は、5-4の通常応募（cap-09）と5-5のコンペ応募（cap-10）でそのまま使えます。次の5-3では単価の考え方と見積書テンプレートを設計します。</p>
+  </div>
+
+  <!-- ▼ Quiz ▼ -->
+  <div class="quiz-box reveal">
+    <div class="quiz-top">
+      <div class="quiz-icon">Q</div>
+      <div class="quiz-title">確認クイズ</div>
+    </div>
+    <div class="quiz-q">ChatGPTで生成した応募文をそのまま送らず、自分の言葉に直す主な理由は何でしょうか。</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">文字数を増やして印象を強くするため</div></button>
+      <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">AI調の硬い表現や案件と無関係な一般的な営業文が混じり、テンプレ送信に見えてしまうのを防ぐため</div></button>
+      <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">クラウドワークスの規約でAI生成文章の送信が禁止されているため</div></button>
+      <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">ChatGPTの利用規約で生成テキストの再利用が禁止されているため</div></button>
+    </div>
+    <div class="quiz-feedback ok" id="q1-ok">
+      <div class="quiz-feedback-icon">✓</div>
+      <div class="quiz-feedback-body">
+        <div class="quiz-feedback-title">正解です</div>
+        <div class="quiz-feedback-text">AI生成のままだと<strong>どの案件にも送れる一般文</strong>になりやすく、テンプレ送信と判定されて選考から外れます。依頼書の具体記述を引用したり、自分の言葉でカスタマイズすることで、この案件のために書いたと伝わります。</div>
+      </div>
+    </div>
+    <div class="quiz-feedback ng" id="q1-ng">
+      <div class="quiz-feedback-icon">✕</div>
+      <div class="quiz-feedback-body">
+        <div class="quiz-feedback-title">惜しい</div>
+        <div class="quiz-feedback-text">クラウドワークスの規約やChatGPTの利用規約でAI生成テキストの送信が禁止されているわけではありません。問題は、AI調の硬い表現や案件と無関係な一般営業文が混じり、テンプレ送信に見えてしまうことです。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ▼ Summary ▼ -->
+  <div class="summary-box">
+    <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+    <ol>
+      <li>応募文・ヒアリングメール・提案文はChatGPTで土台を生成し、案件ごとにカスタマイズする運用にする</li>
+      <li>クラウドワークスの依頼書は最低限の情報しか書かれていないことが大半。本文をそのままプロンプトの[案件詳細]に貼り付けるだけでOK</li>
+      <li>応募文は依頼書の具体記述を1つ引用してテンプレ送信に見えないようにし、生成AIの使用も1文明記する（プロフィールに続く2層目の開示）</li>
+      <li>ヒアリングメールは依頼書に書かれていない詳細（ターゲット・雰囲気・必須要素・支給素材・AI使用可否）を聞き出す役割。質問は5〜8項目に絞る</li>
+      <li>提案文は2案の差別ポイントを冒頭で明示し、クライアントが選びやすい質問形式で締める</li>
+      <li>3種のテキストはカスタマイズ後にtextsフォルダに保存し、5-4の応募で再利用できる状態にする</li>
+    </ol>
+  </div>
+
+  <!-- ▼ Check ▼ -->
+  <div class="check-box">
+    <div class="check-box__head">
+      <div class="check-box__pill">CHECK</div>
+      <div class="check-box__sub">理解度チェック</div>
+    </div>
+    <details>
+      <summary>応募文で依頼書の具体記述を1つ引用すると効果が出るのはなぜですか？</summary>
+      <div class="check-box__detail">テンプレ送信に見えないからです。発注者は1日に何十件もの応募を見ており、どこにでも送れる一般的な営業文は流し読みされます。依頼書に書かれた具体的な単語（例：秋の新メニュー告知の温かみある雰囲気）を1か所引用するだけで、この案件のために書いたと伝わり、選考に残りやすくなります。</div>
+    </details>
+    <details>
+      <summary>ヒアリングメールで質問項目を5〜8個に絞る理由は？</summary>
+      <div class="check-box__detail">質問が多すぎると発注者の回答負担が増え、返信が遅れたり打ち切られたりするからです。本当に必要な観点（提出フォーマット・文言確定・必須要素・色味・バリエーション数・修正方法・AI使用可否）に絞ることで、回答率と契約スピードが上がります。</div>
+    </details>
+    <details>
+      <summary>提案文で2案の差別ポイントを冒頭で明示する意味は？</summary>
+      <div class="check-box__detail">クライアントが選びやすくなるからです。冒頭で各案の違い（例：案1は温かみ重視／案2は上品さ重視）を1行で示すと、本文を読む前に判断軸が形成され、結果として返信スピードと修正回数の少なさにつながります。</div>
+    </details>
+  </div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-05/MO6kf" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-05/3pwE7" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+</div><!-- /.lesson-wrapper -->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

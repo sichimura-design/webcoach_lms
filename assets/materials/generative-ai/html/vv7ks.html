@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-1/vV7ks -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48604" data-item-id="48604" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>クリエイターが知るべきKPI——「いいね数」より大切な指標</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* 虚栄の指標 vs 実益指標 */
+  .metric-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+  .metric-card { border-radius: 10px; padding: 20px; }
+  .metric-card--vanity { background: #F7F7F7; border: 2px dashed #DDD; }
+  .metric-card--actionable { background: #FFF0ED; border: 2px solid #E85D4A; }
+  .metric-card__badge { font-size: 11px; font-weight: 700; display: inline-block; padding: 2px 8px; border-radius: 4px; margin-bottom: 10px; }
+  .metric-card--vanity .metric-card__badge { background: #DDD; color: #666; }
+  .metric-card--actionable .metric-card__badge { background: #E85D4A; color: white; }
+  .metric-card__title { font-size: 15px; font-weight: 800; margin-bottom: 8px; }
+  .metric-card--vanity .metric-card__title { color: #888; }
+  .metric-card--actionable .metric-card__title { color: #E85D4A; }
+  .metric-card__desc { font-size: 13px; line-height: 1.65; margin-bottom: 10px; }
+  .metric-card--vanity .metric-card__desc { color: #888; }
+  .metric-list { list-style: none; }
+  .metric-list li { font-size: 13px; padding: 4px 0; display: flex; gap: 8px; align-items: flex-start; }
+  .metric-card--vanity .metric-list li::before { content: '×'; color: #CCC; font-weight: 700; flex-shrink: 0; }
+  .metric-card--actionable .metric-list li::before { content: '✓'; color: #E85D4A; font-weight: 700; flex-shrink: 0; }
+
+  /* 職種別KPI表 */
+  .kpi-tabs { display: flex; gap: 0; margin-bottom: 0; }
+  .kpi-tab {
+    padding: 10px 20px; font-size: 13px; font-weight: 700; cursor: pointer;
+    border: 1.5px solid #EEE; border-bottom: none; border-radius: 8px 8px 0 0;
+    background: #F7F8FA; color: #888; transition: all 0.2s; margin-right: 4px;
+  }
+  .kpi-tab.active { background: white; color: #E85D4A; border-color: #E85D4A; border-bottom-color: white; z-index: 1; }
+  .kpi-panel { display: none; background: white; border: 1.5px solid #E85D4A; border-radius: 0 8px 8px 8px; padding: 20px; margin-bottom: 20px; }
+  .kpi-panel.active { display: block; }
+  .kpi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .kpi-item { background: #F7F8FA; border-radius: 8px; padding: 14px; }
+  .kpi-item__name { font-size: 13px; font-weight: 700; color: #E85D4A; margin-bottom: 4px; }
+  .kpi-item__formula { font-size: 12px; color: #888; margin-bottom: 6px; font-family: monospace; }
+  .kpi-item__benchmark { font-size: 12px; color: #4A4A4A; }
+  .kpi-item__why { font-size: 12px; color: #666; margin-top: 4px; line-height: 1.6; }
+
+  /* KPIツリー */
+  .kpi-tree { margin: 20px 0; }
+  .kpi-tree__root {
+    background: linear-gradient(135deg, #E85D4A, #F5A64A);
+    color: white;
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .kpi-tree__connector { text-align: center; font-size: 16px; color: #CCC; margin: 4px 0; }
+  .kpi-tree__level { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 8px; }
+  .kpi-tree__node { background: #FFF0ED; border: 1.5px solid #E85D4A; border-radius: 8px; padding: 10px; text-align: center; font-size: 13px; font-weight: 600; color: #E85D4A; }
+  .kpi-tree__level-2 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .kpi-tree__leaf { background: #F7F8FA; border: 1.5px solid #EEE; border-radius: 8px; padding: 10px; text-align: center; font-size: 12px; color: #4A4A4A; }
+
+  /* ポイントボックス */
+  .point-box {
+    background: linear-gradient(135deg, #3D3D3D 0%, #555 100%);
+    border-radius: 10px;
+    padding: 22px 24px;
+    color: white;
+    margin: 20px 0;
+  }
+  .point-box__title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin-bottom: 10px; }
+  .point-box__text { font-size: 15px; line-height: 1.75; }
+  .point-box__text strong { color: #F5A64A; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .metric-compare { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: 1fr; }
+    .kpi-tree__level, .kpi-tree__level-2 { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="h1LjoQoG1npjkF9nukeFvVHZHOpziIycBff5eajBBkMleaW5upHQMM_vT8OgLlAyqG92AcqKaR9RJb5B80m2Mw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+
+<div class="hero">
+  <div class="hero__label">Course B — Chapter 1 / Lesson 1</div>
+  <div class="hero__title">クリエイターが知るべきKPI<br>——「いいね数」より大切な指標</div>
+  <div class="hero__meta">
+    <span>⏱ 30分</span>
+    <span>📖 知識</span>
+    <span>🎯 SNS・デザイン・動画</span>
+  </div>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-1/t49jC" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<div class="container">
+
+  <div class="intro-box reveal visible">
+    <div class="intro-box__text">
+      「いいねが100もついた！」——でも、問い合わせは0件だったとしたら？<br>
+      成果を出すクリエイターは「<strong>見た目の数字</strong>」ではなく「<strong>ビジネスにつながる数字</strong>」を追います。このレッスンでは、職種別のKPIと、クライアントへの報告・提案で使えるKPIツリーの考え方を学びます。
+    </div>
+  </div>
+
+  <!-- 虚栄の指標 vs 実益指標 -->
+  <div class="card reveal visible">
+    <div class="card__title">「虚栄の指標」と「実益指標」の違い</div>
+    <p>数字を追う前に、その数字が「ビジネスの成果に直結するか」を判断する必要があります。</p>
+
+    <div class="metric-compare">
+      <div class="metric-card metric-card--vanity">
+        <span class="metric-card__badge">虚栄の指標（Vanity Metrics）</span>
+        <div class="metric-card__title">自己満足で終わりやすい</div>
+        <div class="metric-card__desc">見た目はよいが、ビジネス成果との相関が弱い指標。増えても「なぜ増えたか」「次どう動くか」につながらない。</div>
+        <ul class="metric-list">
+          <li>いいね数・フォロワー数</li>
+          <li>総インプレッション数</li>
+          <li>再生回数（単体）</li>
+          <li>ページビュー数（単体）</li>
+        </ul>
+      </div>
+      <div class="metric-card metric-card--actionable">
+        <span class="metric-card__badge">実益指標（Actionable Metrics）</span>
+        <div class="metric-card__title">改善と成果につながる</div>
+        <div class="metric-card__desc">ビジネス目標と連動し、数字の変化から「何をすべきか」が見える指標。クライアントへの提案にも使える。</div>
+        <ul class="metric-list">
+          <li>保存率・プロフィール遷移率</li>
+          <li>エンゲージメント率（%)
+</li>
+          <li>視聴維持率（%）</li>
+          <li>CV率・直帰率・問い合わせ数</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="point-box">
+      <div class="point-box__title">なぜ虚栄の指標を追ってしまうか</div>
+      <div class="point-box__text">
+        フォロワー数・いいね数は「増えた！」という達成感があります。でもクライアントが本当に欲しいのは「<strong>予約が増えた・売上が上がった・認知が広がった</strong>」という結果。クリエイターがビジネス指標で語れると、一段上の存在として評価されます。
+      </div>
+    </div>
+  </div>
+
+  <!-- 職種別KPI -->
+  <div class="card reveal visible">
+    <div class="card__title">職種別——押さえておきたいKPI一覧</div>
+    <p>自分の職種で使われる指標を理解しましょう。タブで切り替えられます。</p>
+
+    <div class="kpi-tabs">
+      <div class="kpi-tab active" onclick="switchKpi(this, 'sns')">📱 SNS運用者</div>
+      <div class="kpi-tab" onclick="switchKpi(this, 'design')">🎨 デザイナー</div>
+      <div class="kpi-tab" onclick="switchKpi(this, 'video')">🎬 動画編集者</div>
+    </div>
+
+    <div class="kpi-panel active" id="kpi-sns">
+      <div class="kpi-grid">
+        <div class="kpi-item">
+          <div class="kpi-item__name">エンゲージメント率</div>
+          <div class="kpi-item__formula">（いいね+コメント+保存）÷ リーチ数 × 100</div>
+          <div class="kpi-item__benchmark">目安: 3〜5%以上が高エンゲージメント</div>
+          <div class="kpi-item__why">投稿の「刺さり度」を表す最重要指標。いいね数単体より信頼性が高い。</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-item__name">保存率</div>
+          <div class="kpi-item__formula">保存数 ÷ リーチ数 × 100</div>
+          <div class="kpi-item__benchmark">目安: 1〜3%以上で「有益コンテンツ」と判断されやすい</div>
+          <div class="kpi-item__why">「後で見返したい」=価値の証明。アルゴリズムへの好影響大。</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-item__name">プロフィール遷移率</div>
+          <div class="kpi-item__formula">プロフィールへのタップ数 ÷ リーチ数 × 100</div>
+          <div class="kpi-item__benchmark">目安: 2〜4%以上</div>
+          <div class="kpi-item__why">「もっと知りたい」=フォロー・購入への第一歩。認知→興味の橋渡し。</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-item__name">ストーリーズ完視聴率</div>
+          <div class="kpi-item__formula">最後のスライドまで見た人数 ÷ 最初のスライドの視聴数 × 100</div>
+          <div class="kpi-item__benchmark">目安: 70〜80%以上</div>
+          <div class="kpi-item__why">CTAを置くのは最後。完視聴率が低いとCTAが届かない。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-panel" id="kpi-design">
+      <div class="kpi-grid">
+        <div class="kpi-item">
+          <div class="kpi-item__name">CVR（コンバージョン率）</div>
+          <div class="kpi-item__formula">コンバージョン数 ÷ セッション数 × 100</div>
+          <div class="kpi-item__benchmark">目安: LP全体で1〜3%（業界差大）</div>
+          <div class="kpi-item__why">LPの最終成果指標。デザイン・コピー・動線の総合力が出る。</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-item__name">直帰率</div>
+          <div class="kpi-item__formula">1ページだけ見て離脱した人数 ÷ 総セッション数 × 100</div>
+          <div class="kpi-item__benchmark">LP: 60〜80%は普通。50%以下は優秀。</div>
+          <div class="kpi-item__why">ファーストビューの問題を検出。高すぎる場合はメッセージ or デザインを見直す。</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-item__name">スクロール深度</div>
+          <div class="kpi-item__formula">ページの何%まで読んだか（Clarityなどで計測）</div>
+          <div class="kpi-item__benchmark">CTA上部まで75%以上到達が理想</div>
+          <div class="kpi-item__why">「読まれていない箇所」を特定し、情報設計を改善できる。</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-item__name">CTAクリック率</div>
+          <div class="kpi-item__formula">CTAボタンクリック数 ÷ ページビュー数 × 100</div>
+          <div class="kpi-item__benchmark">目安: 2〜5%</div>
+          <div class="kpi-item__why">ボタンの文言・色・配置が適切かを測る。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-panel" id="kpi-video">
+      <div class="kpi-grid">
+        <div class="kpi-item">
+          <div class="kpi-item__name">視聴維持率</div>
+          <div class="kpi-item__formula">平均視聴時間 ÷ 動画の長さ × 100</div>
+          <div class="kpi-item__benchmark">YouTube: 40〜50%以上が優秀。TikTok/Reels: 60%以上</div>
+          <div class="kpi-item__why">アルゴリズムが最も重視する指標。維持率が高いほど拡散されやすい。</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-item__name">クリック率（CTR）</div>
+          <div class="kpi-item__formula">クリック数 ÷ インプレッション数 × 100</div>
+          <div class="kpi-item__benchmark">YouTube: 2〜10%。4%以上で良好</div>
+          <div class="kpi-item__why">サムネイル+タイトルの魅力度を測る。ここが低いと再生数が伸びない。</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-item__name">チャンネル登録転換率</div>
+          <div class="kpi-item__formula">登録数 ÷ 視聴回数 × 100</div>
+          <div class="kpi-item__benchmark">0.5〜1%以上</div>
+          <div class="kpi-item__why">「また見たい」という信頼度を表す。ファン化への最重要指標。</div>
+        </div>
+        <div class="kpi-item">
+          <div class="kpi-item__name">エンゲージメント率（YouTube）</div>
+          <div class="kpi-item__formula">（いいね+コメント+チャンネル登録）÷ 再生回数 × 100</div>
+          <div class="kpi-item__benchmark">1〜3%以上</div>
+          <div class="kpi-item__why">視聴者との関係性の深さ。再生数の割にエンゲージが高いと強いコミュニティ。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIツリー -->
+  <div class="card reveal visible">
+    <div class="card__title">KPIツリーの読み方——「なぜこの数字を追うか」を構造化する</div>
+    <p>KPIツリーとは、最終ゴール（最上位KPI）から中間指標・先行指標まで、因果関係で整理した構造図です。クライアントへの提案やレポートで使うと「この数字が上がると売上が上がる」という説得力が生まれます。</p>
+
+    <div class="kpi-tree">
+      <div class="kpi-tree__root">🎯 最終ゴール: 体験レッスン申し込み数 月10件</div>
+      <div class="kpi-tree__connector">↓ 分解する</div>
+      <div class="kpi-tree__level">
+        <div class="kpi-tree__node">Instagram<br>経由の遷移</div>
+        <div class="kpi-tree__node">Google検索<br>経由の遷移</div>
+        <div class="kpi-tree__node">LP上の<br>CV率</div>
+      </div>
+      <div class="kpi-tree__connector">↓ さらに分解する</div>
+      <div class="kpi-tree__level-2">
+        <div class="kpi-tree__leaf">リーチ数<br>プロフ遷移率<br>保存率</div>
+        <div class="kpi-tree__leaf">検索順位<br>CTR<br>直帰率</div>
+        <div class="kpi-tree__leaf">スクロール深度<br>CTAクリック率<br>フォームCV率</div>
+      </div>
+    </div>
+
+    <p>「申し込みが少ない」という問題は、Instagram・Google・LPのどこに原因があるかをKPIツリーで分解することで特定できます。</p>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal visible">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">「いいね数」は虚栄の指標。<br>ビジネス成果と連動する実益指標を追う。</div>
+    <div class="summary-card__sub">
+      職種別KPI: SNS(保存率・エンゲ率) / デザイン(CVR・直帰率) / 動画(視聴維持率・CTR)<br>
+      KPIツリーで「なぜこの数字が重要か」を構造化して語れるようになる。<br><br>
+      次のレッスンでは数字の「読み方」——データから次のアクションを導くスキルを学びます。
+    </div>
+  </div>
+
+</div>
+<!-- 次の章に進むボタンの場合 -->  
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-1/t49jC" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

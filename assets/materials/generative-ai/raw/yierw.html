@@ -1,0 +1,294 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48862" data-item-id="48862" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="37YyaaPdiocE89vfGXrFBw==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2452" data-domain="learn.webcoach.jp" data-url="/generative-ai/introduction-to-generative-ai/claude-chap3/yierw" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生成できる成果物の種類 | Claude活用講座</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #F7F8FA; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+h2 { font-size: 22px; font-weight: 900; color: #2D2D2D; margin: 56px 0 20px; padding: 0 0 12px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+p { font-size: 15px; line-height: 2.0; color: #555; margin: 0 0 14px; }
+.accent { color: #E85D4A; font-weight: 700; }
+.goal-box { background: #fff; padding: 24px 28px; border-radius: 16px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.goal-box::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.goal-box__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.goal-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.goal-box__time { font-size: 11px; font-weight: 500; color: #E85D4A; }
+.goal-box__text { font-size: 15px; font-weight: 700; color: #3D3D3D; line-height: 1.7; margin: 0; }
+.toc-box { background: #fff; border-radius: 14px; padding: 22px 26px; margin-bottom: 36px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.toc-box .label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 10px; }
+.toc-box ol { margin: 0; padding-left: 20px; font-size: 14px; color: #555; line-height: 2.2; }
+.toc-link { color: #555; text-decoration: none; }
+.toc-link:hover { color: #E85D4A; }
+.type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 24px 0; }
+@media (max-width: 600px) { .type-grid { grid-template-columns: 1fr; } }
+.type-card { background: #fff; border-radius: 14px; padding: 22px 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.type-card--featured { border: 2px solid #F5A64A; }
+.type-card__badge { display: inline-block; font-size: 10px; font-weight: 700; color: #E85D4A; background: #FFF0EC; padding: 2px 8px; border-radius: 20px; margin-bottom: 8px; letter-spacing: 0.05em; }
+.type-card__icon { font-size: 28px; margin-bottom: 8px; }
+.type-card__name { font-size: 16px; font-weight: 900; color: #2D2D2D; margin-bottom: 6px; }
+.type-card__desc { font-size: 13px; color: #666; line-height: 1.7; margin-bottom: 10px; }
+.type-card__use { font-size: 12px; color: #E85D4A; font-weight: 700; }
+.prompt-box { background: #1A1A2E; border-radius: 14px; padding: 20px 22px; margin: 24px 0; }
+.prompt-box__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.prompt-row { margin-bottom: 14px; }
+.prompt-row__type { font-size: 11px; color: rgba(245,166,74,0.8); margin-bottom: 4px; font-weight: 700; }
+.prompt-row__text { font-size: 13px; color: #E8E8F0; line-height: 1.8; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 14px; }
+.compare-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 14px; }
+.compare-table th { background: #E85D4A; color: white; padding: 12px 16px; text-align: left; font-weight: 700; font-size: 13px; }
+.compare-table th:first-child { border-radius: 10px 0 0 0; }
+.compare-table th:last-child { border-radius: 0 10px 0 0; }
+.compare-table td { padding: 12px 16px; border-bottom: 1px solid #F0F0F0; background: #fff; line-height: 1.6; vertical-align: top; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+.compare-table tr:last-child td:last-child { border-radius: 0 0 10px 0; }
+.compare-table td.highlight { background: #FFF3F0; font-weight: 700; color: #E85D4A; }
+.quiz-block { background: #fff; border-radius: 16px; padding: 24px; margin: 32px 0; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.quiz-block__label { font-size: 11px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 12px; }
+.quiz-block__q { font-size: 15px; font-weight: 700; color: #2D2D2D; margin-bottom: 16px; line-height: 1.6; }
+.quiz-choices { display: flex; flex-direction: column; gap: 8px; }
+.quiz-btn { background: #F7F8FA; border: 2px solid #E8E8E8; border-radius: 10px; padding: 12px 16px; font-size: 13px; font-family: inherit; color: #3D3D3D; cursor: pointer; text-align: left; transition: all 0.2s; line-height: 1.5; }
+.quiz-btn:hover:not(:disabled) { border-color: #E85D4A; background: #FFF0ED; }
+.quiz-btn.correct { background: #E8F5E9; border-color: #4CAF7C; color: #2E7D52; }
+.quiz-btn.wrong { background: #FFEBEE; border-color: #EF5350; color: #C62828; }
+.correct-fb, .wrong-fb { display: none; margin-top: 14px; padding: 14px 16px; border-radius: 10px; font-size: 13px; line-height: 1.7; }
+.correct-fb { background: #E8F5E9; color: #2E7D52; }
+.wrong-fb { background: #FFEBEE; color: #C62828; }
+.summary-box { background: #fff; border-radius: 16px; padding: 28px; margin: 48px 0 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); }
+.summary-box__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 16px; }
+.summary-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.summary-box li { font-size: 14px; color: #3D3D3D; display: flex; gap: 10px; align-items: flex-start; line-height: 1.7; }
+.summary-box li::before { content: '✅'; flex-shrink: 0; }
+.check-outer { background: #fff; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); overflow: hidden; margin: 24px 0; }
+.check-outer > summary { cursor: pointer; padding: 20px 24px; font-size: 15px; font-weight: 700; color: #2D2D2D; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+.check-outer > summary::-webkit-details-marker { display: none; }
+.check-outer > summary::after { content: '▼'; font-size: 12px; color: #AAA; transition: transform 0.2s; }
+.check-outer[open] > summary::after { transform: rotate(180deg); }
+.check-outer__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; }
+.check-inner { border-top: 1px solid #F0F0F0; padding: 20px 24px; }
+.check-item { margin-bottom: 12px; }
+.check-item details summary { cursor: pointer; font-size: 14px; color: #3D3D3D; list-style: none; padding: 8px 0; display: flex; gap: 10px; align-items: flex-start; line-height: 1.6; }
+.check-item details summary::-webkit-details-marker { display: none; }
+.check-item details summary::before { content: '☐'; color: #E85D4A; flex-shrink: 0; font-size: 16px; }
+.check-item details[open] summary::before { content: '☑'; color: #4CAF7C; }
+.check-item__answer { background: #F7F8FA; border-radius: 8px; padding: 12px 14px; margin-top: 6px; font-size: 13px; color: #555; line-height: 1.7; }
+.hero { background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%); border-radius: 16px; padding: 48px 40px; margin-bottom: 40px; color: #fff; }
+.hero__label { font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+.hero__title { font-size: 28px; font-weight: 800; line-height: 1.3; margin-bottom: 16px; }
+.hero__meta { display: flex; gap: 20px; font-size: 14px; opacity: 0.9; flex-wrap: wrap; }
+.hero__meta span { background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 20px; }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="G1Axt9u9JzgbXCFGgWJ9kG2xy4cVwpgk-fkfcwxdBEwnugUr2RXESj8X5zyb11Hjmvvkl2tP_rhUasgvGlA89A" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+<div class="lesson-wrapper">
+
+  <!-- ヘッダー -->
+  <div class="hero">
+    <div class="hero__label">Chapter 3 — Lesson 2</div>
+    <div class="hero__title">生成できる成果物の種類</div>
+    <div class="hero__meta">
+      <span>🕐 約8分</span>
+      <span>📚 知識型</span>
+      <span>🔖 成果物一覧</span>
+    </div>
+  </div>
+  
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="LBDY6" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="1SFXV" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+  <div class="goal-box">
+    <div class="goal-box__header">
+      <span class="goal-box__label">このレッスンのゴール</span>
+      <span class="goal-box__time">目安 8分</span>
+    </div>
+    <p class="goal-box__text">Artifacts で生成できる4種類の成果物を把握し、<span class="accent">どんなプロンプトを使えばよいか判断できる</span>ようになる。</p>
+  </div>
+
+  <div class="toc-box">
+    <div class="label">このレッスンの内容</div>
+    <ol>
+      <li><a href="#sec1" class="toc-link">4種類の成果物カタログ</a></li>
+      <li><a href="#sec2" class="toc-link">デザイナー向け活用マップ</a></li>
+      <li><a href="#sec3" class="toc-link">Artifactsを呼び出すプロンプトの書き方</a></li>
+    </ol>
+  </div>
+
+  <h2 id="sec1">4種類の成果物カタログ</h2>
+
+  <div class="type-grid">
+    <div class="type-card type-card--featured">
+      <div class="type-card__badge">デザイナーに特におすすめ</div>
+      <div class="type-card__icon">🌐</div>
+      <div class="type-card__name">HTML / CSS</div>
+      <div class="type-card__desc">Webページがそのままプレビューできる状態で生成される。LPの構成案、バナーレイアウト、ランディングページのたたき台など。</div>
+      <div class="type-card__use">→ LP構成案・クライアント提案用たたき台</div>
+    </div>
+    <div class="type-card type-card--featured">
+      <div class="type-card__badge">デザイナーに特におすすめ</div>
+      <div class="type-card__icon">📄</div>
+      <div class="type-card__name">Markdown</div>
+      <div class="type-card__desc">見出し・箇条書き・表などで整形されたドキュメントが生成される。提案書・要件定義書・ミーティングメモのドラフトに最適。</div>
+      <div class="type-card__use">→ 提案書ドラフト・仕様書・要件整理</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card__icon">🎨</div>
+      <div class="type-card__name">SVG</div>
+      <div class="type-card__desc">ベクター形式の図解・アイコン・シンプルなイラストを生成できる。デザインのラフイメージを言語で表現するのが難しいときに活躍。</div>
+      <div class="type-card__use">→ アイコン下書き・フロー図・シンプルな図解</div>
+    </div>
+    <div class="type-card">
+      <div class="type-card__icon">⚛️</div>
+      <div class="type-card__name">React コンポーネント</div>
+      <div class="type-card__desc">インタラクティブなUIコンポーネントを生成・プレビューできる。コーダーと連携して実装イメージを共有したいときに活躍。</div>
+      <div class="type-card__use">→ UIの動作確認・エンジニアとのイメージ共有</div>
+    </div>
+  </div>
+
+  <h2 id="sec2">デザイナー向け活用マップ</h2>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>業務シーン</th>
+        <th>使う成果物</th>
+        <th>依頼の例</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>クライアントへのLP初期提案</td>
+        <td class="highlight">HTML / CSS</td>
+        <td>「〇〇サービスのLP構成案をHTMLで作って」</td>
+      </tr>
+      <tr>
+        <td>提案書・見積書のドラフト</td>
+        <td class="highlight">Markdown</td>
+        <td>「Webデザイン提案書のドラフトをMarkdownで」</td>
+      </tr>
+      <tr>
+        <td>業務フローの整理・可視化</td>
+        <td class="highlight">SVG</td>
+        <td>「このフローをSVGの図解で表現して」</td>
+      </tr>
+      <tr>
+        <td>コーダーへのUI仕様説明</td>
+        <td class="highlight">React</td>
+        <td>「このモーダルのOpen/Closeの挙動をReactで実装して」</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="sec3">Artifactsを呼び出すプロンプトの書き方</h2>
+
+  <p>Artifacts を出力させるには、「何の形式で作るか」を明示するだけで十分です。</p>
+
+  <div class="prompt-box">
+    <div class="prompt-box__label">プロンプト例</div>
+    <div class="prompt-row">
+      <div class="prompt-row__type">HTML を生成させる</div>
+      <div class="prompt-row__text">「フリーランスのWebデザイナー向けポートフォリオサイトのLP構成案を<strong>HTMLで作って</strong>ください。ヒーロー・サービス紹介・実績・CTA の4セクション構成で。」</div>
+    </div>
+    <div class="prompt-row">
+      <div class="prompt-row__type">Markdown を生成させる</div>
+      <div class="prompt-row__text">「美容室のInstagramリール制作の提案書ドラフトを<strong>Markdown形式で</strong>作ってください。背景・課題・提案内容・費用感・スケジュール の構成で。」</div>
+    </div>
+    <div class="prompt-row">
+      <div class="prompt-row__type">SVG を生成させる</div>
+      <div class="prompt-row__text">「LP制作の3ステップフロー（ヒアリング→デザイン→納品）を<strong>SVGの図解で</strong>シンプルに表現して。横並びのフロー形式で。」</div>
+    </div>
+  </div>
+
+  <div class="quiz-block" id="q1">
+    <div class="quiz-block__label">確認クイズ</div>
+    <p class="quiz-block__q">クライアントへのLP初期提案のたたき台を Artifacts で作る場合、最も適切な成果物の種類はどれですか？</p>
+    <div class="quiz-choices">
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">① SVG</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',true)">② HTML / CSS</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">③ Reactコンポーネント</button>
+      <button class="quiz-btn" onclick="answer(this,'q1',false)">④ Markdown</button>
+    </div>
+    <div class="correct-fb">正解！ LP の構成案はHTML/CSS が最適です。Webページとしてそのままプレビューでき、クライアントにビジュアルで方向性を伝えやすい形式です。</div>
+    <div class="wrong-fb">LP の初期提案には HTML/CSS が最適です。Webページとしてプレビューできるので、クライアントが「どんな見た目になるか」をイメージしやすくなります。</div>
+  </div>
+
+  <div class="summary-box">
+    <div class="summary-box__label">このレッスンのまとめ</div>
+    <ul>
+      <li>Artifacts で生成できる主な成果物は「<strong>HTML/CSS</strong>」「<strong>Markdown</strong>」「<strong>SVG</strong>」「<strong>React</strong>」の4種類</li>
+      <li>デザイナーには <strong>HTML/CSS</strong>（LP提案）と <strong>Markdown</strong>（提案書）が特に役立つ</li>
+      <li>プロンプトには「〜をHTMLで」「〜をMarkdownで」と<strong>形式を明示する</strong>だけでOK</li>
+      <li>複雑な指示は不要。シンプルに「何を・どの形式で」を書けばArtifactsが起動する</li>
+    </ul>
+  </div>
+
+  <details class="check-outer">
+    <summary>
+      <span class="check-outer__label">理解度チェック</span>
+      <span>2項目で自分の理解を確認しよう</span>
+    </summary>
+    <div class="check-inner">
+      <div class="check-item">
+        <details>
+          <summary>4種類の成果物とそれぞれの活用シーンを言える</summary>
+          <div class="check-item__answer">①<strong>HTML/CSS</strong>：LPの構成案・クライアント提案用たたき台。②<strong>Markdown</strong>：提案書・要件定義書・ミーティングメモ。③<strong>SVG</strong>：フロー図・アイコン下書き・シンプルな図解。④<strong>React</strong>：インタラクティブなUIの動作確認・コーダーとのイメージ共有。</div>
+        </details>
+      </div>
+      <div class="check-item">
+        <details>
+          <summary>Artifacts を呼び出すプロンプトの書き方を説明できる</summary>
+          <div class="check-item__answer">プロンプトの中に「〇〇をHTMLで作って」「〜をMarkdown形式で」「〜をSVGで表現して」のように<strong>形式を明示する言葉を含める</strong>だけで Artifacts が起動する。複雑な命令は不要で、「何を・どの形式で」の2点を押さえればOK。</div>
+        </details>
+      </div>
+    </div>
+  </details>
+  
+  
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="LBDY6" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="1SFXV" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+
+</div>
+<script>
+function answer(btn, qId, isCorrect) {
+  const block = document.getElementById(qId);
+  block.querySelectorAll('.quiz-btn').forEach(b => { b.disabled = true; });
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  block.querySelector(isCorrect ? '.correct-fb' : '.wrong-fb').style.display = 'block';
+}
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="37YyaaPdiocE89vfGXrFBw==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

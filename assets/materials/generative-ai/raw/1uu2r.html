@@ -1,0 +1,626 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48610" data-item-id="48610" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="rpUXgxJTqqGAoivbph+uLA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2300" data-domain="learn.webcoach.jp" data-url="/generative-ai/ai_web_marketing/B-3/1UU2r" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マーケティング視点のUI設計——ペルソナと行動モデルをデザインに落とす</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* ペルソナ→LP変換フロー */
+  .conversion-flow { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+  .flow-row { display: flex; align-items: stretch; gap: 0; }
+  .flow-persona { background: linear-gradient(135deg, #F0EBF8, #EAE0F5); border-radius: 10px 0 0 10px; padding: 16px 18px; min-width: 160px; flex-shrink: 0; }
+  .flow-persona__label { font-size: 11px; font-weight: 700; color: #7B5EA7; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .flow-persona__text { font-size: 13px; color: #3D3D3D; line-height: 1.6; }
+  .flow-arrow { background: #F7F8FA; display: flex; align-items: center; justify-content: center; padding: 0 12px; font-size: 20px; color: #E85D4A; flex-shrink: 0; }
+  .flow-lp { background: linear-gradient(135deg, #FAE8E0, #FEF3EA); border-radius: 0 10px 10px 0; padding: 16px 18px; flex: 1; }
+  .flow-lp__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .flow-lp__text { font-size: 13px; color: #3D3D3D; line-height: 1.6; }
+  .flow-connector { display: flex; justify-content: center; align-items: center; padding: 6px 0; }
+  .flow-connector-line { width: 2px; height: 24px; background: linear-gradient(180deg, #E85D4A, #F5A64A); opacity: 0.4; }
+
+  /* ステップ手順 */
+  .steps { display: flex; flex-direction: column; gap: 16px; margin: 16px 0; }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step__num { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: white; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .step__body { flex: 1; }
+  .step__title { font-size: 15px; font-weight: 700; margin-bottom: 4px; color: #3D3D3D; }
+  .step__text { font-size: 14px; color: #555; line-height: 1.7; }
+  .step__note { font-size: 12px; color: #888; margin-top: 4px; font-style: italic; }
+
+  /* コンテンツ優先度マトリクス */
+  .priority-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+  .priority-item { border-radius: 10px; padding: 16px; border: 2px solid transparent; }
+  .priority-item--must { background: #FFF5F0; border-color: #E85D4A; }
+  .priority-item--should { background: #FFF9F0; border-color: #F5A64A; }
+  .priority-item--could { background: #F5FAF5; border-color: #4CAF7C; }
+  .priority-item--wont { background: #F7F8FA; border-color: #D0D0D0; }
+  .priority-item__tag { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .priority-item--must .priority-item__tag { color: #E85D4A; }
+  .priority-item--should .priority-item__tag { color: #D4821A; }
+  .priority-item--could .priority-item__tag { color: #4CAF7C; }
+  .priority-item--wont .priority-item__tag { color: #888; }
+  .priority-item__title { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #3D3D3D; }
+  .priority-item__text { font-size: 12px; color: #666; line-height: 1.6; }
+
+  /* A/Bテスト優先度表 */
+  .ab-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 16px 0; }
+  .ab-table th { background: linear-gradient(135deg, #3D3D3D, #555); color: white; padding: 10px 14px; text-align: left; font-weight: 700; }
+  .ab-table td { padding: 10px 14px; border-bottom: 1px solid #F0F0F0; vertical-align: top; }
+  .ab-table tr:last-child td { border-bottom: none; }
+  .ab-table tr:nth-child(even) td { background: #FAFAFA; }
+  .ab-rank { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-size: 11px; font-weight: 800; color: white; }
+  .ab-rank--1 { background: #E85D4A; }
+  .ab-rank--2 { background: #F5A64A; }
+  .ab-rank--3 { background: #4CAF7C; }
+  .ab-rank--4 { background: #AAA; }
+  .ab-effect { font-size: 11px; padding: 2px 7px; border-radius: 10px; font-weight: 600; }
+  .ab-effect--high { background: #FFF0EE; color: #E85D4A; }
+  .ab-effect--mid { background: #FFF5E8; color: #D4821A; }
+  .ab-effect--low { background: #F0FAF4; color: #4CAF7C; }
+
+  /* Figmaワイヤーフレーム */
+  .wireframe-demo { background: white; border: 2px solid #E0E0E0; border-radius: 12px; overflow: hidden; margin: 20px 0; }
+  .wireframe-header { background: #3D3D3D; padding: 8px 14px; display: flex; align-items: center; gap: 8px; }
+  .wireframe-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .wireframe-dot:nth-child(1) { background: #FF5F57; }
+  .wireframe-dot:nth-child(2) { background: #FFBD2E; }
+  .wireframe-dot:nth-child(3) { background: #28CA41; }
+  .wireframe-url { flex: 1; background: #555; border-radius: 4px; height: 18px; margin-left: 8px; }
+  .wireframe-body { padding: 16px; }
+  .wf-section { margin-bottom: 10px; border: 1px dashed #CDCDCD; border-radius: 6px; padding: 10px 14px; position: relative; }
+  .wf-section__label { font-size: 10px; font-weight: 700; color: #999; letter-spacing: 0.08em; margin-bottom: 5px; text-transform: uppercase; }
+  .wf-section__note { font-size: 11px; color: #E85D4A; font-weight: 600; margin-top: 4px; }
+  .wf-placeholder { background: #F0F0F0; border-radius: 4px; height: 14px; margin-bottom: 4px; }
+  .wf-placeholder--short { width: 40%; }
+  .wf-placeholder--mid { width: 65%; }
+  .wf-placeholder--long { width: 90%; }
+  .wf-placeholder--cta { background: linear-gradient(135deg, #E85D4A, #F5A64A); height: 32px; border-radius: 6px; width: 50%; margin: 6px auto; }
+  .wf-persona-tag { position: absolute; right: 10px; top: 10px; font-size: 10px; background: #FAE8E0; color: #E85D4A; padding: 2px 7px; border-radius: 10px; font-weight: 700; }
+
+  /* コンテンツ優先順位の考え方 */
+  .priority-pyramid { display: flex; flex-direction: column; gap: 4px; margin: 20px auto; max-width: 480px; }
+  .pyramid-row { border-radius: 8px; padding: 12px 20px; text-align: center; }
+  .pyramid-row:nth-child(1) { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: white; }
+  .pyramid-row:nth-child(2) { background: #FAE8E0; color: #C44030; margin: 0 20px; }
+  .pyramid-row:nth-child(3) { background: #FFF5E8; color: #C07020; margin: 0 40px; }
+  .pyramid-row:nth-child(4) { background: #F0FAF4; color: #388E3C; margin: 0 60px; }
+  .pyramid-row__title { font-size: 14px; font-weight: 700; }
+  .pyramid-row__sub { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+
+  /* チェックリスト */
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+  .check-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.6; }
+  .check-list li::before { content: '✓'; color: #4CAF7C; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+
+  /* 演習カード */
+  .exercise-card {
+    background: linear-gradient(135deg, #F0FAF4, #E8F5EE);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    border: 2px solid #4CAF7C;
+  }
+  .exercise-card__title { font-size: 16px; font-weight: 800; color: #2E7D52; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .exercise-card__title::before { content: '✏️'; }
+  .exercise-card__text { font-size: 14px; color: #3D3D3D; line-height: 1.8; }
+  .exercise-steps { margin: 12px 0 0 0; display: flex; flex-direction: column; gap: 8px; }
+  .exercise-step { display: flex; gap: 10px; font-size: 14px; color: #3D3D3D; }
+  .exercise-step__num { width: 22px; height: 22px; border-radius: 50%; background: #4CAF7C; color: white; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+
+  /* ポイントノート */
+  .point-note {
+    background: linear-gradient(135deg, #FFF9F0, #FFF3E0);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-left: 4px solid #F5A64A;
+    font-size: 14px;
+    color: #3D3D3D;
+    line-height: 1.7;
+  }
+  .point-note strong { color: #D4821A; }
+
+  /* ペルソナカード */
+  .persona-mini {
+    background: linear-gradient(135deg, #F8F0FF, #F0E8FF);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin: 16px 0;
+    border-left: 4px solid #9C6CD0;
+  }
+  .persona-mini__name { font-size: 14px; font-weight: 700; color: #7B5EA7; margin-bottom: 8px; }
+  .persona-mini__items { display: flex; flex-wrap: wrap; gap: 6px; }
+  .persona-mini__tag { font-size: 12px; background: white; border-radius: 12px; padding: 3px 10px; color: #7B5EA7; border: 1px solid #C8A8E8; }
+
+  /* スクロールアニメーション */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  p { font-size: 15px; line-height: 1.8; margin-bottom: 14px; }
+  p:last-child { margin-bottom: 0; }
+
+  @media (max-width: 600px) {
+    .hero__title { font-size: 21px; }
+    .flow-row { flex-direction: column; }
+    .flow-persona { border-radius: 10px 10px 0 0; min-width: unset; }
+    .flow-lp { border-radius: 0 0 10px 10px; }
+    .flow-arrow { transform: rotate(90deg); padding: 8px 0; }
+    .priority-grid { grid-template-columns: 1fr; }
+    .wireframe-url { display: none; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="qDOpr4dLlCP-qqwrygAGgCSvIP7AOZFEISERJs40rs2Rz9X5Uj4VlyEoJ2t9e4AqBbFm0HdO9X5eRo4L-7pc7Q" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+
+<div class="hero">
+  <div class="hero__label">Course B — Chapter 3 Webデザイナー向け / Lesson 2</div>
+  <div class="hero__title">マーケティング視点のUI設計<br>——ペルソナと行動モデルをデザインに落とす</div>
+  <div class="hero__meta">
+    <span>📐 手順書型</span>
+    <span>⏱ 45分</span>
+    <span>🎯 Course B Ch3-L2</span>
+  </div>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="2eija" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="Md2zo" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<div class="container">
+
+  <div class="intro-box">
+    <div class="intro-box__text">
+      このレッスンのゴール：<strong>ペルソナの「課題→解決」の流れをLP構成に変換し、コンテンツ優先順位とA/Bテスト設計ができる</strong>ようになること。前レッスンで学んだCROの概念を、実際のFigmaワイヤーフレーム制作に落とし込む手順を学びます。
+    </div>
+  </div>
+
+  <!-- セクション1: ペルソナを「構成の言語」に変換する -->
+  <div class="card reveal">
+    <div class="card__title">ペルソナを「LP構成の言語」に変換する</div>
+    <p>デザインを始める前に、ペルソナの心理状態をLP構成に「翻訳」する作業が必要です。ペルソナが「何に困っていて → 何を求めていて → 何で不安になって → 何で決断するか」という流れを、LP各セクションに対応させます。</p>
+
+    <div class="persona-mini">
+      <div class="persona-mini__name">今回使用するペルソナ例：田中さん（34歳・フリーランスWebデザイナー志望）</div>
+      <div class="persona-mini__items">
+        <span class="persona-mini__tag">課題：副業の実績をどう伝えるかわからない</span>
+        <span class="persona-mini__tag">欲求：安定した案件を受けたい</span>
+        <span class="persona-mini__tag">不安：他のデザイナーと差別化できるか</span>
+        <span class="persona-mini__tag">決断トリガー：具体的な成果事例</span>
+      </div>
+    </div>
+
+    <p>このペルソナをLP各セクションに変換すると、次のようになります：</p>
+
+    <div class="conversion-flow">
+      <div class="flow-row">
+        <div class="flow-persona">
+          <div class="flow-persona__label">ペルソナの状態</div>
+          <div class="flow-persona__text">「副業の実績をどう伝えるか悩んでいる」（課題・悩み）</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-lp">
+          <div class="flow-lp__label">LP セクション</div>
+          <div class="flow-lp__text">ファーストビュー：「その悩み、わかります」という共感ヘッドライン＋具体的な課題提示</div>
+        </div>
+      </div>
+      <div class="flow-connector"><div class="flow-connector-line"></div></div>
+      <div class="flow-row">
+        <div class="flow-persona">
+          <div class="flow-persona__label">ペルソナの状態</div>
+          <div class="flow-persona__text">「こういうサービスがあるのか」（情報探索・検討）</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-lp">
+          <div class="flow-lp__label">LP セクション</div>
+          <div class="flow-lp__text">ベネフィット：「具体的に何が手に入るか」を機能価値ではなくFABで提示</div>
+        </div>
+      </div>
+      <div class="flow-connector"><div class="flow-connector-line"></div></div>
+      <div class="flow-row">
+        <div class="flow-persona">
+          <div class="flow-persona__label">ペルソナの状態</div>
+          <div class="flow-persona__text">「本当に効果あるの？」（信頼確認・不安解消）</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-lp">
+          <div class="flow-lp__label">LP セクション</div>
+          <div class="flow-lp__text">実績・証拠：数値成果・受講生の声・メディア掲載などで信頼構築</div>
+        </div>
+      </div>
+      <div class="flow-connector"><div class="flow-connector-line"></div></div>
+      <div class="flow-row">
+        <div class="flow-persona">
+          <div class="flow-persona__label">ペルソナの状態</div>
+          <div class="flow-persona__text">「自分に合うか？費用は？」（条件確認）</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-lp">
+          <div class="flow-lp__label">LP セクション</div>
+          <div class="flow-lp__text">詳細情報：料金・プラン・よくある質問でハードルを先回りして解消</div>
+        </div>
+      </div>
+      <div class="flow-connector"><div class="flow-connector-line"></div></div>
+      <div class="flow-row">
+        <div class="flow-persona">
+          <div class="flow-persona__label">ペルソナの状態</div>
+          <div class="flow-persona__text">「申し込もう」（行動決定）</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-lp">
+          <div class="flow-lp__label">LP セクション</div>
+          <div class="flow-lp__text">CTA：摩擦ゼロの行動設計。ボタンテキストはベネフィットを含む（「無料で試す」より「7日間無料で始める」）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="point-note">
+      <strong>設計の鉄則：</strong>ペルソナが「なぜここで迷うか」を考え、その答えをLP上の対応セクションで先回りして解消する。デザインの前にこの「心理マップ」を作るかどうかで、LPの設計精度が大きく変わります。
+    </div>
+  </div>
+
+  <!-- セクション2: コンテンツ優先順位の設計 -->
+  <div class="card reveal">
+    <div class="card__title">コンテンツ優先順位の設計——「全部入れない」判断力</div>
+    <p>クライアントは「全部見てほしい」と言いがちです。でも人間の認知リソースは限られています。<strong>コンバージョンに影響する情報を上位に、補足情報を下位に</strong>配置することで、ユーザーの注意を正しく誘導できます。</p>
+
+    <p>ITプロジェクト管理の「MoSCoW法」をLP設計に応用すると、コンテンツの取捨選択が明確になります：</p>
+
+    <div class="priority-grid">
+      <div class="priority-item priority-item--must">
+        <div class="priority-item__tag">MUST（必須）</div>
+        <div class="priority-item__title">CVに直結する情報</div>
+        <div class="priority-item__text">課題の共感・ベネフィット・CTA。これがなければLPとして機能しない</div>
+      </div>
+      <div class="priority-item priority-item--should">
+        <div class="priority-item__tag">SHOULD（あるべき）</div>
+        <div class="priority-item__title">信頼構築に必要な情報</div>
+        <div class="priority-item__text">実績数値・受講生の声・料金体系。不安解消に必要なため基本的に入れる</div>
+      </div>
+      <div class="priority-item priority-item--could">
+        <div class="priority-item__tag">COULD（あれば良い）</div>
+        <div class="priority-item__title">補足的な情報</div>
+        <div class="priority-item__text">会社概要・詳細なカリキュラム・ブログリンク。スクロール下部に配置</div>
+      </div>
+      <div class="priority-item priority-item--wont">
+        <div class="priority-item__tag">WON'T（今回は不要）</div>
+        <div class="priority-item__title">CVを妨げる情報</div>
+        <div class="priority-item__text">外部リンク過多・関係ない情報・競合言及など。このLPには含めない</div>
+      </div>
+    </div>
+
+    <p>この優先度マトリクスを使えば、クライアントから「SNSのフォロワー数も入れて」「受賞歴も載せたい」と言われたときに、<strong>「これはCould（補足）なので、まずMust（必須要素）を最適化してから追加を検討しましょう」</strong>と根拠を持って提案できます。</p>
+
+    <p>優先度を可視化するピラミッドでイメージすると次のようになります：</p>
+
+    <div class="priority-pyramid">
+      <div class="pyramid-row">
+        <div class="pyramid-row__title">ファーストビュー + CTA</div>
+        <div class="pyramid-row__sub">最重要。全ユーザーが見る唯一のゾーン</div>
+      </div>
+      <div class="pyramid-row">
+        <div class="pyramid-row__title">ベネフィット + 信頼情報</div>
+        <div class="pyramid-row__sub">検討層が必ず確認する。離脱率が高い区間</div>
+      </div>
+      <div class="pyramid-row">
+        <div class="pyramid-row__title">詳細情報 + FAQ</div>
+        <div class="pyramid-row__sub">購入意欲がある層だけ読む。不安解消用</div>
+      </div>
+      <div class="pyramid-row">
+        <div class="pyramid-row__title">補足 / 関連情報</div>
+        <div class="pyramid-row__sub">念のため用。CVに影響しにくい</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション3: A/Bテスト設計 -->
+  <div class="card reveal">
+    <div class="card__title">A/Bテストで検証すべき要素の優先度</div>
+    <p>「デザインの判断が正しいかどうか」はテストするまでわかりません。ただし、A/Bテストには時間とトラフィックが必要なため、<strong>インパクトが大きい要素から検証する</strong>のが鉄則です。</p>
+
+    <p>Webデザイナーが提案すべきA/Bテスト優先順位：</p>
+
+    <table class="ab-table">
+      <thead>
+        <tr>
+          <th>優先度</th>
+          <th>テスト要素</th>
+          <th>インパクト</th>
+          <th>理由</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="ab-rank ab-rank--1">1</span></td>
+          <td><strong>ヘッドライン（FV）</strong></td>
+          <td><span class="ab-effect ab-effect--high">高</span></td>
+          <td>全ユーザーが見る。CVRに最も直結する</td>
+        </tr>
+        <tr>
+          <td><span class="ab-rank ab-rank--1">1</span></td>
+          <td><strong>CTAボタン（テキスト・色・位置）</strong></td>
+          <td><span class="ab-effect ab-effect--high">高</span></td>
+          <td>行動直前の最終関門。小さな変更が大きく効く</td>
+        </tr>
+        <tr>
+          <td><span class="ab-rank ab-rank--2">2</span></td>
+          <td><strong>FVのビジュアル（写真 vs イラスト等）</strong></td>
+          <td><span class="ab-effect ab-effect--high">高</span></td>
+          <td>第一印象を決定する。ブランド認知とCV両方に影響</td>
+        </tr>
+        <tr>
+          <td><span class="ab-rank ab-rank--2">2</span></td>
+          <td><strong>実績の見せ方（数値の強調方法）</strong></td>
+          <td><span class="ab-effect ab-effect--mid">中</span></td>
+          <td>信頼構築の核心。「97%が満足」vs「3人に1人が昇給」など</td>
+        </tr>
+        <tr>
+          <td><span class="ab-rank ab-rank--3">3</span></td>
+          <td><strong>フォームの項目数</strong></td>
+          <td><span class="ab-effect ab-effect--mid">中</span></td>
+          <td>摩擦を減らせる。1項目減でCV率が上がることも</td>
+        </tr>
+        <tr>
+          <td><span class="ab-rank ab-rank--3">3</span></td>
+          <td><strong>FAQ の有無・順番</strong></td>
+          <td><span class="ab-effect ab-effect--low">低〜中</span></td>
+          <td>購入意欲が高い層の不安解消。中段以降のCVRに影響</td>
+        </tr>
+        <tr>
+          <td><span class="ab-rank ab-rank--4">4</span></td>
+          <td><strong>フォントサイズ・余白・配色</strong></td>
+          <td><span class="ab-effect ab-effect--low">低</span></td>
+          <td>読みやすさは大事だが、単体のCVR影響は小さいことが多い</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="point-note">
+      <strong>デザイナーがよくやるミス：</strong>「配色を変えたらCVRが改善されるはず」と思って細かいUI改善から始める。実際にはヘッドラインとCTAが最もCVRに影響するため、まずそこから検証する。
+    </div>
+  </div>
+
+  <!-- セクション4: Figmaワイヤーフレーム作成手順 -->
+  <div class="card reveal">
+    <div class="card__title">Figmaワイヤーフレーム作成の手順——ペルソナ視点で組み立てる</div>
+    <p>ここまでの「ペルソナ→LP変換マップ」と「コンテンツ優先順位」を踏まえて、実際にFigmaでワイヤーフレームを組み立てる手順を解説します。</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step__num">1</div>
+        <div class="step__body">
+          <div class="step__title">ペルソナシートを横に置いてFigmaを開く</div>
+          <div class="step__text">Course Aで作成したペルソナシートをFigma画面の横に置きます（別ウィンドウ or 印刷）。デザイン判断のたびに「このペルソナはこの情報を見たとき何を感じるか？」を確認しながら進めます。</div>
+          <div class="step__note">ペルソナなしで作り始めると、無意識に「自分が好きなデザイン」になる。ペルソナが基準点になることで客観的な判断ができます。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">2</div>
+        <div class="step__body">
+          <div class="step__title">グレーボックスでコンテンツブロックを配置する</div>
+          <div class="step__text">色や文字を入れる前に、四角形ブロックだけでLP構成を作ります。各ブロックに「FV（共感ヘッド）」「ベネフィット3点」「実績数値」など、役割をテキストラベルで記載します。この段階でクライアントに「構成の確認」をすると手戻りを防げます。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">3</div>
+        <div class="step__body">
+          <div class="step__title">各ブロックに「ペルソナの心理状態」をコメントで記載</div>
+          <div class="step__text">Figmaのコメント機能を使って、各セクションに「ペルソナはここで○○を感じているため、このセクションで○○を解消する」という設計意図を書き込みます。後で提案資料にそのまま使えます。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">4</div>
+        <div class="step__body">
+          <div class="step__title">CTAを先に決める</div>
+          <div class="step__text">ファーストビューと最終セクション（フォーム直前）のCTAを先に確定します。CTAが決まると「そのボタンを押してもらうために、その直前で何を見せるべきか」が明確になり、セクションの役割が自然と決まります。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num">5</div>
+        <div class="step__body">
+          <div class="step__title">A/Bテスト候補をFigma上で複数案として作成</div>
+          <div class="step__text">ヘッドラインとCTAは最低2パターン用意します。Figmaの「コンポーネント」機能を使って差し替えやすい状態で管理します。「A案：共感型ヘッド」「B案：数値訴求ヘッド」のように命名しておくと、クライアントへの説明がスムーズです。</div>
+        </div>
+      </div>
+    </div>
+
+    <p>ここまでの手順を踏んで作ったワイヤーフレームのイメージ：</p>
+
+    <div class="wireframe-demo">
+      <div class="wireframe-header">
+        <div class="wireframe-dot"></div>
+        <div class="wireframe-dot"></div>
+        <div class="wireframe-dot"></div>
+        <div class="wireframe-url"></div>
+      </div>
+      <div class="wireframe-body">
+        <div class="wf-section" style="background: linear-gradient(135deg, #FAE8E0, #FEF3EA);">
+          <div class="wf-section__label">① ファーストビュー — MUST</div>
+          <div class="wf-placeholder wf-placeholder--short" style="background: #E85D4A; height: 18px; margin-bottom: 8px;"></div>
+          <div class="wf-placeholder wf-placeholder--long"></div>
+          <div class="wf-placeholder wf-placeholder--mid"></div>
+          <div class="wf-placeholder wf-placeholder--cta"></div>
+          <div class="wf-section__note">✎ ペルソナの「悩み」に共感するヘッドライン。A/Bテスト対象 ①</div>
+          <div class="wf-persona-tag">課題共感</div>
+        </div>
+        <div class="wf-section">
+          <div class="wf-section__label">② ベネフィット — MUST</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+            <div class="wf-placeholder" style="height: 50px; border-radius: 6px;"></div>
+            <div class="wf-placeholder" style="height: 50px; border-radius: 6px;"></div>
+            <div class="wf-placeholder" style="height: 50px; border-radius: 6px;"></div>
+          </div>
+          <div class="wf-section__note">✎ FAB（機能→メリット→ベネフィット）の3点。情緒価値を前面に</div>
+          <div class="wf-persona-tag">欲求充足</div>
+        </div>
+        <div class="wf-section">
+          <div class="wf-section__label">③ 実績・証拠 — SHOULD</div>
+          <div class="wf-placeholder wf-placeholder--short" style="height: 30px;"></div>
+          <div class="wf-placeholder wf-placeholder--long"></div>
+          <div class="wf-section__note">✎ 具体的な数値。「○○%改善」「○○人が受講」など</div>
+          <div class="wf-persona-tag">不安解消</div>
+        </div>
+        <div class="wf-section">
+          <div class="wf-section__label">④ 詳細・FAQ — SHOULD〜COULD</div>
+          <div class="wf-placeholder wf-placeholder--long"></div>
+          <div class="wf-placeholder wf-placeholder--mid"></div>
+          <div class="wf-section__note">✎ 価格・よくある質問。「高い」「難しそう」の先回り解消</div>
+          <div class="wf-persona-tag">条件確認</div>
+        </div>
+        <div class="wf-section" style="background: #F0FAF4;">
+          <div class="wf-section__label">⑤ 最終CTA — MUST</div>
+          <div class="wf-placeholder wf-placeholder--cta"></div>
+          <div class="wf-section__note">✎ ベネフィットを含むボタンテキスト。A/Bテスト対象 ②</div>
+          <div class="wf-persona-tag">行動決定</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- セクション5: マーケティング根拠付きワイヤーフレームの価値 -->
+  <div class="card reveal">
+    <div class="card__title">マーケティング根拠付きワイヤーフレームが生む差別化</div>
+    <p>「なぜこの構成にしたのか」を説明できるデザイナーは、まだ少数派です。ペルソナの心理状態・MoSCoW優先度・A/Bテスト設計をセットで提示できると、クライアントからの評価が大きく変わります。</p>
+
+    <ul class="check-list">
+      <li>ワイヤーフレームだけでなく「設計の根拠スライド」を1枚追加することで、単価交渉の根拠になる</li>
+      <li>「この配置はペルソナが○○に不安を感じるためです」と言えると、クライアントからの修正要求が減る</li>
+      <li>A/Bテスト候補を提示することで「まず作って確認しましょう」という継続関係を作れる</li>
+      <li>コンテンツ優先度の根拠があれば、クライアントの「全部入れて」要求に対して根拠ある代替案を出せる</li>
+      <li>ペルソナ視点のワイヤーフレームはポートフォリオに「思考プロセス」として掲載できる（次章で詳述）</li>
+    </ul>
+
+    <div class="point-note">
+      <strong>フリーランスとして差別化するなら：</strong>ポートフォリオに「完成物のデザインキャプチャ」だけでなく「ペルソナ→構成設計→ワイヤーフレーム→A/B案→成果数値」の一連のプロセスを記録しておくことが、単価3〜5倍のクリエイターとそうでない人の大きな分岐点になります。
+    </div>
+  </div>
+
+  <!-- 演習 -->
+  <div class="exercise-card reveal">
+    <div class="exercise-card__title">実践演習：ペルソナからワイヤーフレームを設計する</div>
+    <div class="exercise-card__text">Course A Chapter 2で作成したペルソナシートを使って、架空または実在するクライアントのLPワイヤーフレームをFigmaで制作してみましょう。</div>
+    <div class="exercise-steps">
+      <div class="exercise-step">
+        <div class="exercise-step__num">1</div>
+        <div>ペルソナシートを用意する（なければ「30代女性・副業デザイナー希望・実績に自信なし」を仮定）</div>
+      </div>
+      <div class="exercise-step">
+        <div class="exercise-step__num">2</div>
+        <div>ペルソナ→LP変換マップを作る（課題/欲求/不安/決断トリガーの4項目を書き出す）</div>
+      </div>
+      <div class="exercise-step">
+        <div class="exercise-step__num">3</div>
+        <div>MoSCoW法でコンテンツの優先度を分類し、セクション構成を決定する</div>
+      </div>
+      <div class="exercise-step">
+        <div class="exercise-step__num">4</div>
+        <div>Figmaでグレーボックスワイヤーフレームを作成し、各ブロックにペルソナの心理状態コメントを追加</div>
+      </div>
+      <div class="exercise-step">
+        <div class="exercise-step__num">5</div>
+        <div>ヘッドライン・CTAのA/B案を2パターン作成し、「A案の仮説」「B案の仮説」を文字で記載</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="card reveal">
+    <div class="card__title">このレッスンのまとめ</div>
+    <ul class="check-list">
+      <li>ペルソナの「課題→欲求→不安→決断トリガー」をLP各セクションに対応させることで、マーケティング根拠のある構成が作れる</li>
+      <li>MoSCoW法（Must/Should/Could/Won't）でコンテンツを優先度分類し、取捨選択の根拠を持つ</li>
+      <li>A/BテストはヘッドラインとCTAから始める。細かいデザイン調整は最後</li>
+      <li>Figmaワイヤーフレームにペルソナコメントと設計意図を書き込むことで、提案力と継続受注率が上がる</li>
+    </ul>
+    <div class="point-note">
+      <strong>次のレッスン（L3）では</strong>、このワイヤーフレームをベースにクライアントへ「デザインの根拠を説明する技術」を学びます。提案資料の構成から、NG提案・OK提案の比較まで、実際のプレゼン場面を想定した練習をします。
+    </div>
+  </div>
+
+</div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="2eija" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="Md2zo" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="rpUXgxJTqqGAoivbph+uLA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

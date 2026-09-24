@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/4Z0N5 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:10:31.246Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>デザインのきほん４原則 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/web-design/4Z0N5">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="デザインのきほん４原則 - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="デザインのきほん４原則">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/web-design/4Z0N5">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="Lnofepqk-EPhT9s_GcamG550n8ITnSb_CvkT4EW9UW0TJM7LBI0Q_i7lHns48gEH0uEgafcRVha1YGhxcQ-REg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item50107" data-item-id="50107" data-item-type="ItemHtml"><div class="item-body"><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; -webkit-font-smoothing: antialiased; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 17px; font-weight: 700; color: #2D2D2D; margin: 28px 0 12px; padding-left: 14px; border-left: 3px solid #2D2D2D; }
+h4 { font-size: 15px; font-weight: 700; color: #2D2D2D; margin: 32px 0 10px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+a { color: #E85D4A; }
+a:visited { color: #E85D4A; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス（GOALピル＋チェックアイテム）*/
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次（番号チップ＋シェブロン）*/
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li { list-style: none; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; font-family: 'Inter', sans-serif; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* 画像系 */
+.slide-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+.lightbox-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); }
+
+/* 良い例・悪い例ラベル */
+.img-label { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; margin: 20px 0 6px; }
+.img-label--ng { color: #E85D4A; }
+.img-label--ok { color: #27AE7E; }
+
+/* 画像プレースホルダー */
+.img-placeholder { background: #FAF5F3; border: 2px dashed #E8D5CC; border-radius: 12px 12px 0 0; padding: 24px 20px; text-align: center; margin: 28px 0 0; }
+.img-placeholder-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #C4A59A; margin-bottom: 6px; }
+.img-placeholder-name { font-size: 12px; color: #B08880; font-family: monospace; }
+.prompt-box { background: #2A2220; border-radius: 0 0 12px 12px; padding: 16px 20px; margin: 0 0 28px; }
+.prompt-box-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #F5A64A; margin-bottom: 8px; }
+.prompt-text { color: #E8DDD8; font-size: 12px; line-height: 1.7; font-family: 'Courier New', monospace; white-space: pre-wrap; word-break: break-word; margin: 0; }
+
+/* ポイントボックス */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; font-family: 'Inter', sans-serif; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+
+/* クイズボックス（ピンクパステル）*/
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* まとめ（グリーンバッジ）*/
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+/* 理解度チェック（CHECKピル）*/
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+/* レッスン解説動画 */
+.chapter-intro-video { background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.chapter-intro-video::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.chapter-intro-video__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.chapter-intro-video__player { width: 100%; border-radius: 8px; display: block; background: #F7F8FA; }
+
+/* スクロールリビール */
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* データテーブル */
+.spec-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table thead tr:first-child th:first-child { border-top-left-radius: 12px; }
+.spec-table thead tr:first-child th:last-child { border-top-right-radius: 12px; }
+.spec-table tbody tr:last-child td:first-child { border-bottom-left-radius: 12px; }
+.spec-table tbody tr:last-child td:last-child { border-bottom-right-radius: 12px; }
+.tbl-num { font-family: 'Inter', sans-serif; font-weight: 800; color: #E85D4A; font-size: 13px; margin-right: 4px; }
+.tbl-name { font-weight: 700; color: #2D2D2D; }
+
+/* 用語ツールチップ */
+.tt { position: relative; display: inline; border-bottom: 1.5px dashed #E85D4A; cursor: help; }
+.tt__pop {
+  display: none; position: absolute; bottom: calc(100% + 10px); left: 50%;
+  transform: translateX(-50%); width: 210px; background: #fff;
+  border: 1.5px solid #F0DEDA; border-radius: 10px; padding: 10px 13px;
+  font-size: 12.5px; line-height: 1.75; color: #3D3D3D; font-weight: 400;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.13); z-index: 200;
+  white-space: normal; text-align: left; pointer-events: none;
+}
+.tt__pop-label { display: block; font-size: 10px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 4px; }
+.tt__pop::after {
+  content: ''; position: absolute; bottom: -6px; left: 50%;
+  width: 11px; height: 11px; background: #fff;
+  border-bottom: 1.5px solid #F0DEDA; border-right: 1.5px solid #F0DEDA;
+  transform: translateX(-50%) rotate(45deg);
+}
+.tt:hover .tt__pop, .tt.open .tt__pop { display: block; }
+.tt__pop--below { top: calc(100% + 10px) !important; bottom: auto !important; }
+.tt__pop--below::after { top: -6px; bottom: auto; border-bottom: none; border-right: none; border-top: 1.5px solid #F0DEDA; border-left: 1.5px solid #F0DEDA; }
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="../../_assets/e9c67fa5e8.css" rel="stylesheet">
+
+<div class="lesson-wrapper">
+
+<!-- ===== ヘッダー ===== -->
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">イントロダクション</span>
+  <div class="lesson-hero__title">デザインのきほん４原則</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 1</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約105分</span>
+  </div>
+</div>
+  
+  <!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="https://learn.webcoach.jp/web-design/TeRs5" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+
+<!-- ===== レッスン解説動画 ===== -->
+<div class="chapter-intro-video">
+  <div class="chapter-intro-video__label">レッスン解説動画</div>
+  <video src="../media/med-a095626021.mp4" controls="" preload="metadata" class="chapter-intro-video__player"></video>
+</div>
+
+<!-- ===== ゴールボックス ===== -->
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">デザインのきほん４原則（近接・整列・対比・反復）の役割を説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">各原則を自分のデザインの判断根拠として適用できる</div></li>
+  </ul>
+</div>
+
+<!-- ===== 目次 ===== -->
+<nav class="toc">
+  <div class="toc-head">
+    <div class="toc-icon">≡</div>
+    <div class="toc-title">目次</div>
+  </div>
+  <ul>
+    <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">デザインのきほん４原則とは</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">４原則を学ぶ理由</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s3"><span class="toc-num">03</span><span class="toc-text">４つの基本原則を使いこなす</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s4"><span class="toc-num">04</span><span class="toc-text">習熟度確認課題</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+
+<p>バナーを作り終えました。配色もフォントも吟味しました。それでも「なんか安っぽい、ごちゃごちゃして見える」と感じたことはありませんか。デザインの見た目より先に整えるべき情報の秩序があります。それがデザインのきほん４原則です。</p>
+
+
+<!-- ======== セクション1 ======== -->
+<section id="s1">
+<h2>デザインのきほん４原則とは</h2>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th>原則</th>
+      <th>英語</th>
+      <th>ひとことで言うと</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">近接</span></td>
+      <td>Proximity</td>
+      <td>関連する要素を近づけてグループにする</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">整列</span></td>
+      <td>Alignment</td>
+      <td>要素を揃えて視線の流れを作る</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">対比</span></td>
+      <td>Contrast</td>
+      <td>要素に明確な差をつけて重要度を伝える</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">反復</span></td>
+      <td>Repetition</td>
+      <td>同じルールを繰り返して統一感を生む</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>1994年にRobin Williams（ロビン・ウィリアムズ）が著書『The Non-Designer's Design Book』で提唱した４つの原則です。タイトルの「Non-Designer's」が示すとおり、専門的な訓練を前提としない設計論です。</p>
+
+<p>４原則の頭文字を並べると <strong>CRAP</strong> になります。Contrast（対比）・Repetition（反復）・Alignment（整列）・Proximity（近接）の順に対応した４語です。</p>
+
+<div class="quiz-box reveal visible">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">CRAP原則の「R」が表す原則はどれか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">整列（Alignment）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">対比（Contrast）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">C</div><div class="quiz-opt-text">反復（Repetition）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">近接（Proximity）</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">CRAPはContrast・Repetition・Alignment・Proximityの頭文字です。「R」はRepetition（反復）を指します。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はCです。CRAPはContrast・<strong>Repetition</strong>・Alignment・Proximityの頭文字。「R」は反復（Repetition）です。</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ======== セクション2 ======== -->
+<section id="s2">
+<h2>４原則を学ぶ理由</h2>
+
+<p>デザイン初学者がハマりやすいのは、配色・フォント・装飾に意識を集中させ、<strong>情報の構造</strong>を見落とすことです。制作者は内容を知り尽くしているため、初見の人に伝わるかどうかの判断が難しくなります。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">客観視点の基準として使う</div>
+  </div>
+  <p>「初めて見た人が、瞬時に情報を読み解けるか」を確認するための指針が４原則です。デザインに迷ったとき、まずこの４語に立ち返ると方向性を見失わずに済みます。</p>
+</div>
+
+<p>４原則は独立して機能するのではなく、互いに補い合います。近接でグループを作り、整列でそのグループに秩序を与え、対比で重要なグループを目立たせ、反復でページ全体に一貫性を持たせる。この連鎖によって、情報の構造が視覚的に完成します。</p>
+
+<p>また、４原則はデザインの「なぜ」を言葉で説明する根拠にもなります。クライアントや上司に修正を依頼するとき、「なんかまとまりがない気がして」より「近接が取れていないので〇〇を近づけてほしい」と言えると、指示の意図が正確に伝わります。感覚ではなく原則を根拠にすることで、デザインの議論が具体的になります。</p>
+
+</section>
+
+<!-- ======== セクション3 ======== -->
+<section id="s3">
+<h2>４つの基本原則を使いこなす</h2>
+
+<!-- 近接 -->
+<h3>近接（Proximity）</h3>
+
+<div style="display: flex; gap: 16px; margin: 0 0 24px;" class="reveal visible">
+  <div style="flex: 1;">
+    <p class="img-label img-label--ng" style="margin-top: 0;">✗ 悪い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-01a_proximity-ng.jpg" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/136cbd9633.webp" alt="近接NG例：商品名がピザから離れて配置されたメニュー" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+  <div style="flex: 1;">
+    <p class="img-label img-label--ok" style="margin-top: 0;">✓ 良い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-01b_proximity-ok.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/5ef87ce029.webp" alt="近接OK例：商品名がピザの真下に密着配置されたメニュー" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+</div>
+
+<p>ピザメニューの商品名をイラストの直下に配置するだけで、情報のまとまりが一目で伝わります。関連する要素同士を近づけて、情報のグループを視覚的に伝える原則が近接です。</p>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">近接の定義</div>
+  </div>
+  <p><strong>近接</strong> — 関連する要素同士を近づけ、情報のまとまり（グループ）を明確にします。関連しない要素とは、適切な余白で距離を保ちます。</p>
+</div>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-02_proximity-grouping.png" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/d92f0caceb.webp" alt="余白・グルーピングの手法" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<p>余白が十分に取れない場合でも、区切り線・背景色・吹き出しを使ってグループを視覚的に伝えられます。</p>
+
+<p>Webページでは、フォームの入力欄とラベル、カード内の画像とテキスト、ナビゲーションのリンクグループなど、近接が機能する場面が随所にあります。「この要素はどのグループに属するか」を意識するだけで、レイアウトの判断が具体的になります。近接が崩れているとき、多くの場合は余白の設定ミスが原因です。要素間のマージンを見直すことが、最初の修正ポイントになります。</p>
+
+
+<!-- 整列 -->
+<h3>整列（Alignment）</h3>
+
+<div style="display: flex; gap: 16px; margin: 0 auto 24px; max-width: 60%;" class="reveal visible">
+  <div style="flex: 1;">
+    <p class="img-label img-label--ng" style="margin-top: 0;">✗ 悪い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-02a_alignment-ng.jpg" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/939d8bd8ca.webp" alt="整列NG例：商品名と価格がバラバラに配置されたメニュー" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+  <div style="flex: 1;">
+    <p class="img-label img-label--ok" style="margin-top: 0;">✓ 良い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-02b_alignment-ok.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/7df53df365.webp" alt="整列OK例：商品名が左揃え・価格が右揃えで整然と並んだメニュー" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+</div>
+
+<p>同じピザメニューでも、商品名を左揃え・価格を右揃えに統一するだけで、目線が迷わなくなります。ばらばらな配置は「センタリング」しているように見えて、実際には基準線がない状態です。要素を規則正しく揃えることで、目に見えない基準線（グリッド）を生み出す原則が整列です。このグリッドが情報の階層と属性グループを伝えます。</p>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-03_alignment-types.png" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/87f707bfd0.webp" alt="整列の種類" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<p>整列には大きく分けて、左・中央・右の3つの方向があります。それぞれに適した使いどころを理解することが、整列を使いこなす第一歩です。</p>
+
+<h4>左揃え</h4>
+<div style="margin: 0 0 12px; max-width: 50%;" class="reveal">
+  <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-04a_alignment-left.jpg" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+    <img src="../../_assets/e3499f76a5.webp" alt="左揃え例：本文テキストが左端に揃ったピザ紹介ページ" class="lightbox-img">
+  </a>
+</div>
+<p>文頭が常に左端に固定されるため、行をまたいでも視線の戻り位置が一定です。本文・リスト・説明文など、複数行にわたる「読ませるテキスト」全般に最も適しています。読者の目が左端に自動的に戻るので、行間が広くても読み疲れしにくいのが特徴です。</p>
+
+<h4>中央揃え</h4>
+<div style="margin: 0 0 12px; max-width: 50%;" class="reveal">
+  <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-04b_alignment-center.jpg" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+    <img src="../../_assets/1fb414dfc3.webp" alt="中央揃え例：センタリングされたキャッチコピーページ" class="lightbox-img">
+  </a>
+</div>
+<p>左右対称に配置されるため、フォーマルで格調のある印象を与えます。短いキャッチコピーや見出し、詩のような短文には映えます。ただし3行以上になると文頭がバラバラになり、どこから読み始めるか迷いやすくなります。長文の本文への使用は避けるのが基本です。</p>
+
+<h4>右揃え</h4>
+<div style="margin: 0 0 12px; max-width: 50%;" class="reveal">
+  <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-04c_alignment-right.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+    <img src="../../_assets/ac6dabe830.webp" alt="右揃え例：連絡先情報が右端に揃った名刺デザイン" class="lightbox-img">
+  </a>
+</div>
+<p>右端を基準に読む情報に向いています。名刺の連絡先・表の数値・日付など、右端に視線を固定させたい場面で使います。画面全体を右揃えにすると文頭が不規則になるため、特定の情報ブロックだけに絞って使うのが効果的です。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">文字揃えの選択</div>
+  </div>
+  <p>左揃えは行頭が常に左端に固定されるため、改行をまたいでも視線の復帰位置が一定です。中央揃えは装飾的な短いテキスト（見出しやキャッチコピー）には映えますが、3行以上の文章には向きません。右揃えは日付や数値など、右端を基準に読む情報に使います。用途に合わない揃え方は、情報を伝える前に読む気を削ぎます。</p>
+</div>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">長文テキストに最も向いている文字揃えはどれか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">A</div><div class="quiz-opt-text">左揃え</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">B</div><div class="quiz-opt-text">中央揃え</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">右揃え</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">左揃えは文頭が常に左端に揃うため、改行をまたいでも目線の移動が一定になり、長文でも読みやすいです。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はAです。中央揃えや右揃えは文頭がバラバラになるため、長い文章では読み手にストレスがかかります。長文には<strong>左揃え</strong>が適しています。</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 対比 -->
+<h3>対比（Contrast）</h3>
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-04_contrast-comparison.png" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/e49e0a9642.webp" alt="対比" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<p>要素に明確な差をつけて、情報の重要度を伝える原則です。見出し・サブタイトル・本文のサイズがほぼ同じだと単調なデザインになります。大きさや太さの差をはっきりつけることで、視線の入口と読む順序をコントロールできます。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">ジャンプ率を上げる</div>
+  </div>
+  <p>「なんか単調なデザインだな」と感じたら、<strong>ジャンプ率</strong>（フォントサイズや太さの差）を確認しましょう。差が2pxや太さ100程度では対比になりません。最初は大げさなくらいの差をつけるのが正解です。</p>
+</div>
+
+<h4>対比で視線を誘導する</h4>
+
+<div style="display: flex; gap: 16px; margin: 0 0 24px;" class="reveal">
+  <div style="flex: 1;">
+    <p class="img-label img-label--ng" style="margin-top: 0;">✗ 悪い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-06a_contrast-ng.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/a562cb9cce.webp" alt="対比NG例：要素の大きさや太さが均一で視線が定まらないデザイン" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+  <div style="flex: 1;">
+    <p class="img-label img-label--ok" style="margin-top: 0;">✓ 良い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-06b_contrast-ok.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/c550c83417.webp" alt="対比OK例：重要度に応じてサイズ・太さに差がつき視線が誘導されるデザイン" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+</div>
+
+<p>対比を使いこなせるようになると、デザインを見る人の視線を意図通りに誘導できるようになります。横書きでは人は左上から右へ、そして下へと視線を動かすのが自然な流れです。しかし、写真やイラストをメインに据えたデザインでは、重要度の順番にテキストを配置することが難しい場面も多くあります。</p>
+
+<p>そこで対比の出番です。伝えたい情報を<strong>優先度別に段階的に目立たせる</strong>ことで、初見のユーザーでも「何をどの順に見ればいいか」が直感的に伝わります。悪い例のように要素の大きさや太さが均一だと、どこに目を向ければよいかわからず視線が迷います。良い例のように明確な差がついていれば、視線は自然に重要な情報へ引き寄せられます。</p>
+
+<p>この視線誘導の技術は、WEBデザインにおける<strong>導線設計</strong>とも直結します。ユーザーにボタンをクリックしてほしい、フォームに入力してほしいといった目的がある場合、対比によってその要素を際立たせることで、自然な行動を促せます。「なんとなくかっこいいデザイン」ではなく、「見た人が動くデザイン」を作るために、対比は欠かせない原則です。</p>
+
+<h4>可読性を高めるためのコントラスト</h4>
+
+<p>デザインでは画像の上に文字を置く場面がよくあります。背景画像の本来の目的は文字のメッセージを補完することですが、背景と文字のコントラストが確保できていないと、肝心の文字が読みづらくなってしまいます。代表的な4つの手法を紹介します。</p>
+
+<h4>① ドロップシャドウ（光彩）</h4>
+<div style="margin: 0 0 12px; max-width: 50%;" class="reveal">
+  <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-07a_readability-shadow.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+    <img src="../../_assets/2ab94e065b.webp" alt="ドロップシャドウで可読性を高めた例" class="lightbox-img">
+  </a>
+</div>
+<p>文字の後ろにシャドウをつけて背景から浮き上がらせる手法です。ただし細い文字に濃いドロップシャドウをつけると逆に読みづらくなることがあります。<strong>光彩（外側）</strong>を使って文字全体に自然なシャドウがかかるように調整するのがポイントです。シャドウの色は黒ではなく、背景画像内の色を使うとコントラストを保ちながらデザインに馴染みます。</p>
+
+<h4>② ぼかし</h4>
+<div style="margin: 0 0 12px; max-width: 50%;" class="reveal">
+  <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-07b_readability-blur.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+    <img src="../../_assets/6e7ba99ca1.webp" alt="背景ぼかしで可読性を高めた例" class="lightbox-img">
+  </a>
+</div>
+<p>文字の後ろにごちゃごちゃしたオブジェクトがある場合、背景をぼかして色を均一化し可読性を上げる手法です。画像全体をぼかす方法もありますが、ぼかしすぎて何の画像かわからなくなっては意味がありません。この例のように<strong>文字の後ろ部分だけをぼかす</strong>方法も効果的です。</p>
+
+<h4>③ 半透明オーバーレイ</h4>
+<div style="margin: 0 0 12px; max-width: 50%;" class="reveal">
+  <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-07c_readability-overlay.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+    <img src="../../_assets/abfcf7514d.webp" alt="半透明オーバーレイで可読性を高めた例" class="lightbox-img">
+  </a>
+</div>
+<p>背景画像と文字の間に<strong>半透明の背景色やパターン（ボーダー・ドットなど）</strong>を入れる手法です。Webのファーストビューに動画を使う場合などによく用いられます。背景画像が何かわからなくなってしまわないよう、挟む色やパターンはシンプルなものを選び、不透明度を調整しましょう。全体が暗くなりすぎる場合は、文字の後ろだけに背景色を入れる形にしても効果的です。</p>
+
+<h4>④ グラデーション</h4>
+<div style="margin: 0 0 12px; max-width: 50%;" class="reveal">
+  <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-07d_readability-gradient.jpg" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+    <img src="../../_assets/457a4d4c6b.webp" alt="グラデーションで可読性を高めた例" class="lightbox-img">
+  </a>
+</div>
+<p>動画配信サイトやニュースサイトのサムネイルなどでよく見られる手法です。背景画像には顔やニュースの核となる画像が使われるため画像自体をあまり暗くしたくない場面で、<strong>下からグラデーションをかける</strong>ことで背景の明るさも保ちつつ文字の可読性を上げられます。場合によってはグラデーションではなく、帯（背景色や半透明の帯）を文字の後ろに入れる方法もあります。</p>
+
+<p>色のコントラストは見やすさだけでなく、アクセシビリティにも直結します。背景色と文字色の輝度比（コントラスト比）が低いと、視力の弱いユーザーや屋外での閲覧者が読めなくなります。Webの標準規格（WCAG）では、通常のテキストで最低コントラスト比4.5:1を確保することが推奨されています。デザインの美しさと読みやすさを両立させるためにも、対比は感覚だけに頼らず数値で確認する習慣を持ちましょう。</p>
+
+
+<!-- 反復 -->
+<h3>反復（Repetition）</h3>
+
+<p>デザインの特徴を繰り返すことで一貫性が生まれ、全体として統一感のあるまとまったデザインになります。以下の例で確認してみましょう。</p>
+
+<div style="display: flex; gap: 16px; margin: 0 0 24px;" class="reveal">
+  <div style="flex: 1;">
+    <p class="img-label img-label--ng" style="margin-top: 0;">✗ 悪い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-08a_repetition-ng.jpg" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/94a805bd0a.webp" alt="反復NG例：工程ごとに火加減のデザインが統一されていないカレーレシピ" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+  <div style="flex: 1;">
+    <p class="img-label img-label--ok" style="margin-top: 0;">✓ 良い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-08b_repetition-ok.jpg" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/aa06628264.webp" alt="反復OK例：工程ごとに火加減のデザインが統一されたカレーレシピ" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+</div>
+
+<p>悪い例は、挿絵と見出しのデザインテイストに一貫性がないため、統一感がなく見出しの階層構造もわかりづらくなっています。良い例のように一貫したデザインテイストで統一すると、どれが中見出しでどれが小見出しかが一目でわかり、全体に安定感が生まれます。</p>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">反復</div>
+  </div>
+  <p>同じ特徴のデザイン要素を「繰り返す」ことにより、情報の階層構造をわかりやすくします。デザインに一貫性と統一感を持たせる原則です。</p>
+</div>
+
+<p>デザイン初学者は面白みを出そうと、様々な色・フォント・イラストを使いがちになります。しかし雰囲気がバラバラになると、どれが中見出しでどれが小見出しなのかを判断することも難しくなります。明確なルールを繰り返すことが、わかりやすさに直結します。</p>
+
+<p>例えば、カレーの商品パッケージ裏の『カレーの作り方』イラストを想像してください。料理をしながら見るため、たびたび目線が外れます。再度「火加減」を確認しようとしたとき、すぐに見つけられるかどうかは反復にかかっています。</p>
+
+<div style="display: flex; gap: 16px; margin: 0 0 24px;" class="reveal">
+  <div style="flex: 1;">
+    <p class="img-label img-label--ng" style="margin-top: 0;">✗ 悪い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-09a_repetition-identification-ng.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/12fc66906f.webp" alt="反復応用NG例：識別性が低く商品の判別がつきづらいデザイン" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+  <div style="flex: 1;">
+    <p class="img-label img-label--ok" style="margin-top: 0;">✓ 良い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-09b_repetition-identification-ok.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/09f5728ea7.webp" alt="反復応用OK例：識別性が高く商品の判別がつきやすいデザイン" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+</div>
+
+<p>悪い例では、火加減がどこに記載されているかパッと見つからず、各工程の中をひとつひとつ探さなければなりません。良い例では、火加減の記載場所とデザインが統一されているため、一度確認した場所を手がかりに、次の工程でも迷わずすぐに目を送ることができます。反復によって<strong>不必要な情報をスキップし、ほしい情報へ即アクセス</strong>できるようになります。</p>
+
+<h4>反復の応用</h4>
+
+<p>反復を使う際に気をつけることがあります。商品の種類が違う場合に同じ色を使いすぎると、識別性（区別のしやすさの度合い）が下がってしまいます。人間は情報の80%以上を視覚から得ており、色は形よりも先に認識されます。そのため、同色だと別商品をユーザーが同じものと誤認してしまう可能性があります。</p>
+
+<div style="display: flex; gap: 16px; margin: 0 0 24px;" class="reveal">
+  <div style="flex: 1;">
+    <p class="img-label img-label--ng" style="margin-top: 0;">✗ 悪い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-10a_repetition-heading-ng.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/b74eed6606.webp" alt="反復NG例：挿絵と見出しのデザインテイストに一貫性がなく統一感のないレイアウト" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+  <div style="flex: 1;">
+    <p class="img-label img-label--ok" style="margin-top: 0;">✓ 良い例</p>
+    <a href="https://media.webcoach.jp/images/web-design-basics/intro/ig-wd-10b_repetition-heading-ok.webp" class="lightbox" style="display: block;" target="_blank" rel="noopener">
+      <img src="../../_assets/2539366c00.webp" alt="反復OK例：挿絵と見出しのデザインテイストが統一された一貫性のあるレイアウト" class="lightbox-img" style="width: 100%;">
+    </a>
+  </div>
+</div>
+
+<p>ただ同じデザイン要素を盲目的に繰り返すのではなく、<strong>デザインテイスト（形・トーン・位置）は統一しつつ、色や写真で変化をつけて識別性を上げる</strong>ことが反復の応用です。一貫性と識別性を両立させることで、ユーザーを惑わせないデザインが実現できます。</p>
+
+<div class="quiz-box reveal">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">反復の主な目的として最も適切なものはどれか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">デザインに多様性を持たせる</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">一貫したルールでユーザーの情報処理を楽にする</div></button>
+    <button class="quiz-opt" data-q="q3" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">要素間に明確な差をつけて重要度を伝える</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q3-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">反復は統一感を生み、閲覧者がデザインの構造を学習しやすくします。繰り返しのパターンによって「次の情報がどこにあるか」が予測できるようになります。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q3-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解はBです。選択肢Cは「対比」の目的です。反復の目的は<strong>デザインに一貫性を持たせ、ユーザーが情報にすぐアクセスできるようにすること</strong>です。</div>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<!-- ======== セクション4 ======== -->
+<section id="s4">
+<h2>習熟度確認課題</h2>
+
+<p>知識として理解した状態から、実際のデザインに活かせる状態に引き上げるための課題です。</p>
+
+<p><strong>課題１：世の中のバナーから４原則を見つける（必須）</strong></p>
+<p>バナーデザインのギャラリーサイトから、近接・整列・対比・反復それぞれが確認できるバナーを最低3点ずつ探してみましょう。どの部分がどの原則かを書き出してください。1つのバナーですべての原則を見つける必要はありません。<br><br>
+<strong>【学習管理シートがある方】</strong>Notionの「デザインきほん4原則」を開き、その中に記載してください。<br>
+<strong>【学習管理シートがない方】</strong>パソコンのメモ帳に保存してください。<br><br>
+参考サイト：<a href="https://jp.pinterest.com/search/boards/?q=banner%20ads" target="_blank" rel="noopener">Pinterest</a> / <a href="https://design-library.jp/" target="_blank" rel="noopener">デザインライブラリー</a> / <a href="https://bannnner.com/" target="_blank" rel="noopener">bannnner.com</a> / <a href="https://banner-hiroba.com/" target="_blank" rel="noopener">バナー広場</a></p>
+
+</section>
+
+<!-- ===== まとめ ===== -->
+<div class="summary-box reveal">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li><strong>近接（Proximity）</strong> — 関連要素を近づけてグループを作る。余白がグループの境界線になる</li>
+    <li><strong>整列（Alignment）</strong> — 要素を揃えて見えない基準線を生む。まず揃えてから崩す順序が重要</li>
+    <li><strong>対比（Contrast）</strong> — 要素に明確な差をつけて重要度の階層を伝える。ジャンプ率を大げさなくらい上げる</li>
+    <li><strong>反復（Repetition）</strong> — 同じルールを繰り返して一貫性を生む。識別が必要な場合は色や写真で差をつける</li>
+  </ol>
+</div>
+
+<!-- ===== 理解度チェック ===== -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>近接と余白の関係を説明できるか？</summary>
+    <div class="check-box__detail">余白はグループ間の境界線として機能します。余白が不十分だと関係のない要素が同じグループに見え、近接が成立しません。</div>
+  </details>
+  <details>
+    <summary>整列で「整列してから崩す」とはどういう意味か？</summary>
+    <div class="check-box__detail">まず全要素をグリッドに沿って揃えてからデザインを始め、アクセントを出したい一部の要素だけを意図的にずらします。整列された土台があるからこそ、崩した箇所が際立ちます。最初からランダムに配置しても目立つ要素は生まれません。</div>
+  </details>
+  <details>
+    <summary>対比でジャンプ率とは何を指すか？</summary>
+    <div class="check-box__detail">主にフォントの大きさや太さの差のことを指します。差が小さいと対比が生まれず単調に見えます。「大げさすぎるかも」と感じるくらい差をつけると、メリハリが出てデザインが引き締まります。</div>
+  </details>
+  <details>
+    <summary>反復で同じデザインを繰り返してはいけない場面はどんなときか？</summary>
+    <div class="check-box__detail">種類が異なる商品・情報を同じ色で反復すると識別性が下がります。その場合はデザインのテイスト（形・トーン・位置）は統一しつつ、色や写真を変えることで区別しやすくします。</div>
+  </details>
+</div>
+  
+    <!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="https://learn.webcoach.jp/web-design/TeRs5" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+
+</div><!-- /.lesson-wrapper -->
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

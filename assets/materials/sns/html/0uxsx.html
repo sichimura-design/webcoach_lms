@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/SNS/2B-3/0uxsX -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1章 発見タブ掲載のアルゴリズムをハックする - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/SNS/2B-3/0uxsX">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="1章 発見タブ掲載のアルゴリズムをハックする - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="1章 発見タブ掲載のアルゴリズムをハックする">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/SNS/2B-3/0uxsX">
+<meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="wA-L_Xq8Cawd1gC9VDNpVfsDxOciGbgyXzY6V0fpkgGSGCVLk6Wact_oNFQ3WWOXZkA3XR4o8Sz2Rl_5sz7Crw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>2B-3 リール運用スタートアップと発見タブ攻略の糸口</div>
+
+          <div class="fw-bold h2">1章 発見タブ掲載のアルゴリズムをハックする</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章 発見タブ掲載のアルゴリズムをハックする</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：60分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】Instagramがリールを評価する基準とは？</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AIは動画の「面白さ」をどう判断するか</a></li><li><a href="#heading6" class="tocLink">減点対象となるリールの特徴</a></li></ul></li><li><a href="#heading7" class="tocLink">【1-2】発見タブ掲載を左右する4つの重要要素</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading9" class="tocLink">要素1：視聴完了率と視聴維持率</a></li><li><a href="#heading10" class="tocLink">要素2：エンゲージメント（特に保存とシェア）</a></li><li><a href="#heading11" class="tocLink">要素3：トレンド性（音源・エフェクト）</a></li><li><a href="#heading12" class="tocLink">要素4：アカウントとの関連性</a></li></ul></li><li><a href="#heading13" class="tocLink">【1-3】1章 -章末課題- リール分析力を鍛える実践ワーク</a><ul><li><a href="#heading14" class="tocLink">【Level 1】競合のバズリール分析レポート</a><ul><li><a href="#heading15" class="tocLink">問題</a></li><li><a href="#heading16" class="tocLink">解答手順</a></li><li><a href="#heading17" class="tocLink">解答例</a></li></ul></li><li><a href="#heading18" class="tocLink">【Level 2】自己リールの成功・失敗要因分析（すでに自身のリール動画を投稿したことのある方向け）</a><ul><li><a href="#heading19" class="tocLink">問題</a></li><li><a href="#heading20" class="tocLink">解答手順</a></li><li><a href="#heading21" class="tocLink">解答例</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item41070" data-item-id="41070" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/SNS/2B-3/7GIuP" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/SNS/2B-3/PtzOk" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item40637" data-item-id="40637" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">1章 発見タブ掲載のアルゴリズムをハックする</h2></div>
+        
+        <div class="article-item item_markdown " id="item40638" data-item-id="40638" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：60分</h4>
+
+<h4 id="heading2">この章で到達できるゴール：</h4>
+
+<ul>
+  <li>Instagramが「良いリール」と判断する基準を、アルゴリズムの観点から理解できる</li>
+  <li>発見タブ掲載の可能性を高めるために、投稿で何を意識すべきかが明確になる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item40639" data-item-id="40639" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【1-1】Instagramがリールを評価する基準とは？</h2></div>
+        
+        <div class="article-item item_markdown " id="item40640" data-item-id="40640" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item40641" data-item-id="40641" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">AIは動画の「面白さ」をどう判断するか</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40642" data-item-id="40642" data-item-type="ItemRichText"><div class="item-body-hbr">Instagramの<span class="decoration-01"><span class="decoration-02">アルゴリズム</span></span>（AI）は、投稿されたリールが「面白いかどうか」「多くの人に見せる価値があるか」を様々なデータに基づいて判断しています。<br>
+その評価基準を理解することが、発見タブ攻略の第一歩です。</div></div>
+        
+        <div class="article-item item_html " id="item40643" data-item-id="40643" data-item-type="ItemHtml"><div class="item-body">
+<div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>AIが見ている主な指標</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li><span class="decoration-02">ユーザーの滞在時間と視聴維持率</span>：ユーザーがどれだけ長く動画を見たか、最後まで見てくれたか。最も重要な指標の一つです。</li>
+            <li><span class="decoration-02">エンゲージメント</span>：いいね、コメント、保存、シェアといった、ユーザーからの積極的な反応の数。</li>
+            <li><span class="decoration-02">次の行動</span>：リールを見たユーザーが、投稿者のプロフィール画面に移動したり、フォローしたりといった行動を取ったか。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item40644" data-item-id="40644" data-item-type="ItemRichText"><div class="item-body-hbr">これらの指標が高いリールは、「ユーザーにとって価値のある良いコンテンツ」と判断され、発見タブなどを通じて多くの人におすすめ表示されるようになります。</div></div>
+        
+        <div class="article-item item_heading " id="item40645" data-item-id="40645" data-item-type="ItemHeading"><h3 class="item-body" id="heading6">減点対象となるリールの特徴</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40647" data-item-id="40647" data-item-type="ItemRichText"><div class="item-body-hbr">一方で、Instagramが「質の低いリール」と判断し、表示を制限する可能性のある特徴も公表されています。<br>
+意図せず評価を下げないよう、以下の点に注意しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item40649" data-item-id="40649" data-item-type="ItemHtml"><div class="item-body">
+<div class="card-with-icon attention">
+    <span class="bold"><strong>注意すべきリールの特徴</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li><strong>他のSNSのロゴ（ウォーターマーク）が入っている</strong>：TikTokなど他のアプリで作成し、ロゴが入ったままの動画は評価が下がります。</li>
+            <li><strong>低解像度で画質が悪い</strong>：ぼやけている、暗すぎるなど、単純に見づらい動画。</li>
+            <li><strong>テキストが多すぎる</strong>：画面の大部分がテキストで覆われている動画。伝えたい情報はテロップで簡潔に、詳細はキャプションで補いましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item40650" data-item-id="40650" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【1-2】発見タブ掲載を左右する4つの重要要素</h2></div>
+        
+        <div class="article-item item_markdown " id="item40651" data-item-id="40651" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item40652" data-item-id="40652" data-item-type="ItemRichText"><div class="item-body-hbr">アルゴリズムの評価基準を踏まえ、発見タブ掲載の可能性を高めるために特に重要な4つの要素を掘り下げていきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item40653" data-item-id="40653" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">要素1：視聴完了率と視聴維持率</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40654" data-item-id="40654" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"><span class="decoration-01">視聴完了率</span></span>（動画を最後まで見た人の割合）と<span class="decoration-02"><span class="decoration-01">視聴維持率</span></span>（動画のどの時点まで見たかを示す割合）は、アルゴリズムが最も重視する指標です。</div></div>
+        
+        <div class="article-item item_markdown " id="item40655" data-item-id="40655" data-item-type="ItemMarkdown"><ul>
+  <li><strong>最後まで見てもらうための工夫</strong>：「2B-2」で学んだ、冒頭3秒のフックやテンポの良い構成がここで活きてきます。</li>
+  <li><strong>繰り返し再生されるリールの共通点</strong>：情報量が多くて一度では理解できないまとめ（リスト）型の動画や、見ていて心地よい音ハメ動画などは、ユーザーが何度も再生する傾向があり、評価が高くなります。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item40656" data-item-id="40656" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">要素2：エンゲージメント（特に保存とシェア）</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40657" data-item-id="40657" data-item-type="ItemRichText"><div class="item-body-hbr">いいねやコメントも重要ですが、発見タブ掲載においては特に<span class="decoration-01"><span class="decoration-02">「保存」と「シェア」</span></span>が大きな影響を持つと言われています。</div></div>
+        
+        <div class="article-item item_html " id="item40658" data-item-id="40658" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">「保存」したくなるリールとは？</span>：後から見返したいと思う<span class="decoration-02">有益性</span> （役立つ情報）や<span class="decoration-02">再現性</span>（自分でも真似できそう）のあるコンテンツです。（例：レシピ、旅行プラン、裏技など）
+  </li><li><span class="decoration-01">「シェア」したくなるリールとは？</span>：思わず誰かに教えたくなる<span class="decoration-02">共感</span> （あるあるネタ）や<span class="decoration-02">面白さ</span>（笑える動画）、<span class="decoration-02">感動</span> （ストーリー）のあるコンテンツです。
+<ul></ul></li></ul></div></div>
+        
+        <div class="article-item item_heading " id="item40660" data-item-id="40660" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">要素3：トレンド性（音源・エフェクト）</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40661" data-item-id="40661" data-item-type="ItemRichText"><div class="item-body-hbr">Instagramは、プラットフォーム全体を盛り上げるために、<span class="decoration-02"><span class="decoration-01">現在流行しているトレンド（流行りの音楽やエフェクトなど）を使っている投稿を優遇する</span></span>傾向があります。<br>
+トレンドに乗ることで、アルゴリズムの追い風を受け、投稿が伸びやすくなります。</div></div>
+        
+        <div class="article-item item_heading " id="item40663" data-item-id="40663" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">要素4：アカウントとの関連性</h3></div>
+        
+        <div class="article-item item_rich_text " id="item40664" data-item-id="40664" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"><span class="decoration-01">普段の発信内容とリールのテーマに一貫性</span></span>があることも重要です。<br>
+例えば、普段グルメについて発信しているアカウントが、いきなり全く関係のないダンス動画を投稿しても、既存フォロワーの反応は得にくいでしょう。<br>
+<br>
+<span class="decoration-01"><span class="decoration-02">まずは既存フォロワーにしっかりと評価される</span></span>ことが、その後の外部への拡散（リールのレコメンドや発見タブ掲載）に繋がる第一歩となります。</div></div>
+        
+        <div class="article-item item_heading " id="item40666" data-item-id="40666" data-item-type="ItemHeading"><h2 class="item-body" id="heading13">【1-3】1章 -章末課題- リール分析力を鍛える実践ワーク</h2></div>
+        
+        <div class="article-item item_rich_text " id="item40668" data-item-id="40668" data-item-type="ItemRichText"><div class="item-body-hbr">この章の締めくくりとして、分析力を実践的に鍛えるための課題に挑戦しましょう。<br>
+課題は2つのレベルに分かれています。<br>
+まずは【Level 1】で他者の成功事例から「伸びるリールの型」を学び、次に【Level 2】で自分自身の投稿を客観的に分析し、改善点を見つける応用力を養います。</div></div>
+        
+        <div class="article-item item_heading " id="item40670" data-item-id="40670" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">【Level 1】競合のバズリール分析レポート</h3></div>
+        
+        <div class="article-item item_markdown " id="item40674" data-item-id="40674" data-item-type="ItemMarkdown"><h4 id="heading15">問題</h4>
+
+<p>競合、または参考にしているアカウントの投稿の中から、「バズっている（いいねや再生数が特に多い）」リール動画を1つ選び、なぜそのリールが伸びたのかを、この章で学んだ「4つの重要要素」の観点から分析してください。</p>
+
+<h4 id="heading16">解答手順</h4>
+
+<ol>
+  <li>自身が制作したいアカウントと同じジャンルで、特に再生数が伸びているリール動画を1つ見つけます。</li>
+  <li>その動画のURLや概要を記録します。</li>
+  <li>「視聴維持率」「エンゲージメント」「トレンド性」「関連性」の4つの観点から、なぜその動画が多くの人に見られ、評価されたのかを分析し、理由を具体的に記述します。</li>
+  <li>作成した分析レポートを提出します。</li>
+</ol>
+
+<h4 id="heading17">解答例</h4>
+
+<ul>
+  <li><strong>分析対象リール</strong>：〇〇（アカウント名）が投稿した「一人暮らし向け、１週間の節約献立」のリール動画</li>
+  <li><strong>分析結果</strong>：
+    <ul>
+      <li><strong>視聴維持率</strong>：冒頭で「1週間5000円」という具体的な数字を提示して興味を引きつけ、次々とレシピが展開されるため最後まで飽きさせない構成になっている。情報量が多く、繰り返し再生するユーザーも多いと推測される。</li>
+      <li><strong>エンゲージメント</strong>：後から見返したい「節約レシピ」というテーマであり、「保存」数が非常に多いと考えられる。「参考になりました！」というコメントも多数ついている。</li>
+      <li><strong>トレンド性</strong>：当時流行していた〇〇という楽曲をBGMに使用しており、音源からの流入も期待できる。</li>
+      <li><strong>関連性</strong>：普段から「一人暮らし」「節約」をテーマに発信しているアカウントであり、既存フォロワーからの高いエンゲージメントが初速を押し上げ、リールのレコメンドや発見タブ掲載に繋がったと考えられる。</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item40676" data-item-id="40676" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">【Level 2】自己リールの成功・失敗要因分析（すでに自身のリール動画を投稿したことのある方向け）</h3></div>
+        
+        <div class="article-item item_markdown " id="item40678" data-item-id="40678" data-item-type="ItemMarkdown"><h4 id="heading19">問題</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item40680" data-item-id="40680" data-item-type="ItemRichText"><div class="item-body-hbr">これまでに作成したご自身のリール動画（ポートフォリオ課題で作成したものなど）の中で、<span class="decoration-01"><span class="decoration-02">最も反応が良かったもの</span></span>と、<span class="decoration-01"><span class="decoration-02">最も反応が悪かったもの</span></span>を1つずつ選んでください。<br>
+その2つの動画の「差」がなぜ生まれたのかを、「4つの重要要素」の観点から分析してください。</div></div>
+        
+        <div class="article-item item_markdown " id="item40692" data-item-id="40692" data-item-type="ItemMarkdown"><h4 id="heading20">解答手順</h4>
+</div>
+        
+        <div class="article-item item_html " id="item40709" data-item-id="40709" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>ご自身で作成・投稿したリール動画の一覧を振り返ります。</li>
+  <li>再生数やいいね数などを参考に、最も反応が良かった動画と、悪かった動画を1つずつ選びます。</li>
+  <li>それぞれの動画について、「視聴維持率」「エンゲージメント」「トレンド性」「関連性」の4つの観点から、<span class="decoration-02">なぜその結果になったのか（成功要因・失敗要因）</span>を具体的に記述します。</li>
+  <li>作成した分析レポートを提出します。</li>
+</ol></div></div>
+        
+        <div class="article-item item_markdown " id="item40711" data-item-id="40711" data-item-type="ItemMarkdown"><h4 id="heading21">解答例</h4>
+
+<ul>
+  <li><strong>分析対象リール（成功例）</strong>：課題で作成した「自己紹介リール」
+    <ul>
+      <li><strong>成功要因の分析</strong>：
+        <ul>
+          <li><strong>関連性</strong>：自分のアカウントのテーマそのものであり、既存フォロワーの興味と合致していた。</li>
+          <li><strong>エンゲージメント</strong>：「頑張ってください！」といった応援コメントがつきやすかった。</li>
+          <li><strong>視聴維持率</strong>：テンポの良い自己紹介で最後まで見てもらえ、プロフィールへの遷移率も高かった。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><strong>分析対象リール（失敗例）</strong>：練習で作成した「お気に入りのマグカップ紹介リール」
+    <ul>
+      <li><strong>失敗要因の分析</strong>：
+        <ul>
+          <li><strong>視聴維持率</strong>：冒頭のフックが弱く、ただ商品が映っているだけで、すぐに離脱された可能性が高い。</li>
+          <li><strong>トレンド性</strong>：流行の音源ではなく、ただのおしゃれなBGMを選んでしまったため、音源からの流入がなかった。</li>
+          <li><strong>エンゲージメント</strong>：視聴者にとって「保存」するほどの有益性がなく、「いいね」で終わってしまった。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item42956" data-item-id="42956" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item40714" data-item-id="40714" data-item-type="ItemMarkdown"><p>これで「1章 発見タブ掲載のアルゴリズムをハックする」の解説を終わります。</p>
+
+<p>次の章に進みましょう。</p>
+</div>
+        
+        <div class="article-item item_html " id="item41069" data-item-id="41069" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/SNS/2B-3/7GIuP" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/SNS/2B-3/PtzOk" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章 発見タブ掲載のアルゴリズムをハックする</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：60分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】Instagramがリールを評価する基準とは？</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading5" class="tocLink">AIは動画の「面白さ」をどう判断するか</a></li><li><a href="#heading6" class="tocLink">減点対象となるリールの特徴</a></li></ul></li><li><a href="#heading7" class="tocLink">【1-2】発見タブ掲載を左右する4つの重要要素</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading9" class="tocLink">要素1：視聴完了率と視聴維持率</a></li><li><a href="#heading10" class="tocLink">要素2：エンゲージメント（特に保存とシェア）</a></li><li><a href="#heading11" class="tocLink">要素3：トレンド性（音源・エフェクト）</a></li><li><a href="#heading12" class="tocLink">要素4：アカウントとの関連性</a></li></ul></li><li><a href="#heading13" class="tocLink">【1-3】1章 -章末課題- リール分析力を鍛える実践ワーク</a><ul><li><a href="#heading14" class="tocLink">【Level 1】競合のバズリール分析レポート</a><ul><li><a href="#heading15" class="tocLink">問題</a></li><li><a href="#heading16" class="tocLink">解答手順</a></li><li><a href="#heading17" class="tocLink">解答例</a></li></ul></li><li><a href="#heading18" class="tocLink">【Level 2】自己リールの成功・失敗要因分析（すでに自身のリール動画を投稿したことのある方向け）</a><ul><li><a href="#heading19" class="tocLink">問題</a></li><li><a href="#heading20" class="tocLink">解答手順</a></li><li><a href="#heading21" class="tocLink">解答例</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/SNS/2B-3/7GIuP" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/SNS/2B-3/PtzOk" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

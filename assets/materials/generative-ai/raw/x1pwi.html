@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="BbU3vfT5oUxWrwjv9/2viQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1433" data-domain="learn.webcoach.jp" data-url="/generative-ai/AI_design/%E6%95%99%E6%9D%902-%E2%91%A0%20AI%E3%81%AB%E3%82%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%83%87%E3%82%A2%E7%99%BA%E6%83%B3%E3%81%A8%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E3%83%95%E3%83%AD%E3%83%BC%EF%BC%9A%E7%99%BA%E6%83%B3%E6%94%AF%E6%8F%B4%E7%B7%A8/X1PwI" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>2章 実践：リサーチとコンセプト定義 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/202/original/script.js?1788946194"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%902-%E2%91%A0%20AI%E3%81%AB%E3%82%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%83%87%E3%82%A2%E7%99%BA%E6%83%B3%E3%81%A8%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E3%83%95%E3%83%AD%E3%83%BC%EF%BC%9A%E7%99%BA%E6%83%B3%E6%94%AF%E6%8F%B4%E7%B7%A8/X1PwI">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="2章 実践：リサーチとコンセプト定義 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/627/medium/d1ac32a9-1644-41c4-b5af-354d5569583d.png?1750903176">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="2章 実践：リサーチとコンセプト定義">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%902-%E2%91%A0%20AI%E3%81%AB%E3%82%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%83%87%E3%82%A2%E7%99%BA%E6%83%B3%E3%81%A8%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E3%83%95%E3%83%AD%E3%83%BC%EF%BC%9A%E7%99%BA%E6%83%B3%E6%94%AF%E6%8F%B4%E7%B7%A8/X1PwI">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/627/large/d1ac32a9-1644-41c4-b5af-354d5569583d.png?1750903176">
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%902-%E2%91%A0%20AI%E3%81%AB%E3%82%88%E3%82%8B%E3%82%A2%E3%82%A4%E3%83%87%E3%82%A2%E7%99%BA%E6%83%B3%E3%81%A8%E7%B4%A0%E6%9D%90%E4%BD%9C%E6%88%90%E3%83%95%E3%83%AD%E3%83%BC%EF%BC%9A%E7%99%BA%E6%83%B3%E6%94%AF%E6%8F%B4%E7%B7%A8/X1PwI"
+    },
+    "headline": "2章 実践：リサーチとコンセプト定義",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/tenants/589/item_images/images/000/026/627/medium/d1ac32a9-1644-41c4-b5af-354d5569583d.png?1750903176",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2025-06-26T10:52:12+09:00",
+    "dateModified": "2025-09-21T18:05:52+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "m_takenaga"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="ywCLYCSBIGWgePs8YpdjsWlBk3ooyPqIYaCOjeVi6n2QaDUsmQaRoy8i-xSjlNEBZnXLqCZXErGnQK6mWvizJw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(https://cdn.clipkit.co/tenants/589/resources/assets/000/000/270/original/article-header.png?1717761933);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材2-① AIによるアイデア発想と素材作成フロー：発想支援編</div>
+
+          <div class="fw-bold h2">2章 実践：リサーチとコンセプト定義</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item26742" data-item-id="26742" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="W99tf" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="6Bcq5" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item26605" data-item-id="26605" data-item-type="ItemHeading"><h2 class="item-body">2章 実践：リサーチとコンセプト定義</h2></div>
+        
+        <div class="article-item item_markdown " id="item26606" data-item-id="26606" data-item-type="ItemMarkdown"><h4 id="section">この章の目安学習時間：2時間</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item26607" data-item-id="26607" data-item-type="ItemMarkdown"><h4 id="section">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item26608" data-item-id="26608" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>AIを活用して、市場や競合に関する情報を効率的に収集・分析できる。</li>
+  <li>AIの支援を受けながら、具体的なターゲットユーザー像（ペルソナ）を作成できる。</li>
+  <li>リサーチ結果を基に、AIと協業してデザインの軸となるコンセプトを言語化できる。</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item26609" data-item-id="26609" data-item-type="ItemHeading"><h2 class="item-body">【2-1】AIによる市場・競合リサーチ</h2></div>
+        
+        <div class="article-item item_markdown " id="item26610" data-item-id="26610" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26611" data-item-id="26611" data-item-type="ItemHeading"><h3 class="item-body">AIをリサーチアシスタントにする</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26612" data-item-id="26612" data-item-type="ItemRichText"><div class="item-body-hbr">この章から、いよいよ本格的な実践に入ります。<br>
+<br>
+1章で設定したプロジェクトテーマに基づき、デザインの根幹となる「リサーチ」と「コンセプト定義」のプロセスを、AIを活用しながら進めていきます。<br>
+<br>
+デザインプロジェクトの成功は、質の高いリサーチから始まります。<br>
+このパートでは、テキスト生成AIを優秀なリサーチアシスタントとして活用し、市場のトレンドや競合の動向を効率的に調査する方法を学びます。<br>
+<br>
+AIに的確な指示を与えることで、<span class="decoration-02">膨大な情報の中から必要なインサイトを短時間で引き出す</span>ことが可能になります。</div></div>
+        
+        <div class="article-item item_html " id="item26613" data-item-id="26613" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>プロンプトの型</strong><br></span>
+    <div class="content-area">
+        <li>AIに特定のタスクを依頼する際、毎回ゼロから指示を考えるのは大変です。そこで役立つのが「プロンプトの型」です。</li>
+        <li>例えばリサーチでは、「あなたは優秀な〇〇です。△△について、□□の形式で教えてください」といった型を覚えておくと、安定して質の高い回答を得やすくなります。</li>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item26614" data-item-id="26614" data-item-type="ItemHeading"><h3 class="item-body">練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26615" data-item-id="26615" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+1章で設定した自身のプロジェクトテーマについて、AIに「主な競合となりそうなサービスやブランドを3つ挙げ、それぞれの特徴を要約してください」と指示するプロンプトを作成し、実行してみましょう。<br>
+<br>
+AIの回答も一緒に記録しておいてください。</div></div>
+        
+        <div class="article-item item_html " id="item26616" data-item-id="26616" data-item-type="ItemHtml"><div class="item-body"><span class="decoration-01">解答例</span>
+<ul>
+  <li>AIを活用して、市場や競合に関する情報を効率的に収集・分析できる。
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_code " id="item38014" data-item-id="38014" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>あなたは優秀なマーケティングリサーチャーです。
+これから立ち上げる「サステナブルな素材を使ったファッションブランド」について、
+競合となりそうなブランドを3つ挙げてください。
+それぞれのブランドのコンセプト、ターゲット層、Webサイトの特徴を簡潔にまとめてください。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">解答例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item26617" data-item-id="26617" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">出力結果例</span></div></div>
+        
+        <div class="article-item item_html " id="item26618" data-item-id="26618" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">1.Stella McCartney（ステラ・マッカートニー）</span>
+    <ul>
+      <li><span class="decoration-01">コンセプト：</span>動物由来素材を一切使用せず、ラグジュアリーとサステナビリティを融合したファッションを展開。高品質なオーガニックコットン、再生素材、革新的な植物由来レザーなどを採用。</li>
+      <li><span class="decoration-01">ターゲット層：</span>30〜50代の富裕層／意識の高いエシカル志向の女性。ハイエンドなライフスタイルを大切にし、ファッションと環境への配慮を両立させたい層。</li>
+      <li><span class="decoration-01">Webサイトの特徴：</span>
+        <ul>
+          <li>洗練されたミニマルデザイン</li>
+          <li>サステナビリティへの取り組み専用ページあり</li>
+          <li>商品詳細に「素材の出所」「リサイクル情報」など透明性のある記載</li>
+          <span>https://www.stellamccartney.com/</span>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+  <li><span class="decoration-01">2.PACT（パクト）</span>
+    <ul>
+      <li><span class="decoration-01">コンセプト：</span>フェアトレード認証のオーガニックコットンを使い、「手が届く価格帯のサステナブルファッション」を追求。肌にも環境にも優しいカジュアルウェアを展開。</li>
+      <li><span class="decoration-01">ターゲット層：</span>20〜40代のナチュラル志向の男女。育児世代やZ世代にも人気で、価格とサステナビリティの両立を求める消費者。</li>
+      <li><span class="decoration-01">Webサイトの特徴：</span>
+        <ul>
+          <li>商品ページで「CO₂削減量」や「水の使用削減量」を明示</li>
+          <li>フィルターで「素材別」「フェアトレード有無」などが選べる</li>
+          <li>教育的なブログコンテンツも充実</li>
+          <span>https://wearpact.com/</span>
+        </ul>
+      </li>
+    </ul>
+  </li>
+
+  <li><span class="decoration-01">3.Reformation（リフォーメーション）</span>
+    <ul>
+      <li><span class="decoration-01">コンセプト：</span>スタイリッシュでトレンド感のあるデザインを、エコ素材と持続可能な生産体制で実現。リサイクル素材やデッドストックを使い、CO₂削減にも積極的。</li>
+      <li><span class="decoration-01">ターゲット層：</span>20〜30代のファッション感度が高く、サステナビリティにも興味のある女性。Z世代・ミレニアル世代の都市生活者。</li>
+      <li><span class="decoration-01">Webサイトの特徴：</span>
+        <ul>
+          <li>商品ごとに「RefScale（製品ごとの環境影響指標）」を表示</li>
+          <li>スマートでモダンなUI／UX</li>
+          <li>トレンド性の高い商品写真と着用スタイル例が豊富</li>
+          <span>https://www.thereformation.com/</span>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item26619" data-item-id="26619" data-item-type="ItemHeading"><h2 class="item-body">【2-2】AIによるターゲットペルソナ作成</h2></div>
+        
+        <div class="article-item item_markdown " id="item26620" data-item-id="26620" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26621" data-item-id="26621" data-item-type="ItemHeading"><h3 class="item-body">ユーザー像を具体的に描く</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26622" data-item-id="26622" data-item-type="ItemRichText"><div class="item-body-hbr">優れたデザインは、常に「誰のためか」を明確に意識することから生まれます。<br>
+このパートでは、リサーチ結果を基に、AIに<span class="decoration-02">ペルソナ</span>（サービスや商品の典型的なユーザー像）を作成させる方法を学びます。</div></div>
+        
+        <div class="article-item item_html " id="item26623" data-item-id="26623" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>ペルソナ</strong><br></span>
+    <div class="content-area">
+        <li>架空のユーザー像を、あたかも実在する人物かのように詳細に設定したものです。</li>
+        <li>年齢、職業、ライフスタイル、価値観、悩みなどを具体的に定義することで、チーム内でのユーザーイメージの共有を助け、デザインの方向性を決める上での重要な判断基準となります。</li>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item26624" data-item-id="26624" data-item-type="ItemRichText"><div class="item-body-hbr">AIを活用することで、データに基づいた、より解像度の高いペルソナを効率的に作成できます。<br>
+<span class="decoration-02">AIが生成したペルソナに対し、追加で質問を重ねて深掘りしていく</span>のが効果的です。</div></div>
+        
+        <div class="article-item item_heading " id="item26625" data-item-id="26625" data-item-type="ItemHeading"><h3 class="item-body">練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26626" data-item-id="26626" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01"><span class="decoration-01">問題</span></span><br>
+前のパート【2-1】で得られた競合リサーチの結果を踏まえ、自身のプロジェクトのターゲットユーザー像をより具体的にするため、AIに「このプロジェクトの典型的なユーザーペルソナを1人、詳細なプロフィール（名前、年齢、職業、価値観、悩み、ファッションへの関心など）を含めて作成してください」と指示するプロンプトを作成し、実行してみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26667" data-item-id="26667" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答</span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_image " id="item26627" data-item-id="26627" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/627/medium/d1ac32a9-1644-41c4-b5af-354d5569583d.png?1750903176" title=""><img class="img-responsive item-image" alt=" (26627)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/627/medium/d1ac32a9-1644-41c4-b5af-354d5569583d.png?1750903176" width="640" height="301" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item26934" data-item-id="26934" data-item-type="ItemRichText"><div class="item-body-hbr">・プロンプト例（テーマAの場合）</div></div>
+        
+        <div class="article-item item_code " id="item29690" data-item-id="29690" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>先ほどの競合リサーチの結果と、サステナブルファッションの市場トレンドを踏まえ、
+私たちの新しいブランドのターゲットとなるペルソナを1人作成してください。
+名前、年齢、職業、ライフスタイル、価値観、
+ファッションに関する悩み、このブランドに期待することなどを、
+物語を読むように具体的に記述してください。
+</pre></div>
+</div>
+<div class="cite"><cite class="item-source">入力例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item26629" data-item-id="26629" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">出力結果例</span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_html " id="item26630" data-item-id="26630" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">ペルソナ設定：</span>安藤 美咲（あんどう みさき）
+    <ul>
+      <li><span class="decoration-01">年齢：</span>32歳</li>
+      <li><span class="decoration-01">職業：</span>PR会社勤務の広報マネージャー（都内在住）</li>
+      <li><span class="decoration-01">家族構成：</span>一人暮らし、たまに猫と実家の母のもとを行き来</li>
+      <li><span class="decoration-01">年収：</span>550万円程度</li>
+      <li><span class="decoration-01">趣味：</span>ヨガ、ヴィーガンレシピ集め、旅先でのローカルブランド探し</li>
+      <li><span class="decoration-01">SNS：</span>Instagram（主にライフスタイルやファッション投稿）、Threadsもチェックする派</li>
+    </ul>
+  </li>
+
+  <li><span class="decoration-01">ライフスタイル・価値観</span>
+    <ul>
+      <li>「私らしく、でも地球にやさしく生きたい」と考えるZ世代後半〜ミレニアル前半の代表格。</li>
+      <li>平日はオフィスと取材先を行き来しながら忙しく働き、週末には青山や代官山で展示会を見たり、ビーガンカフェでブランチを楽しむ。</li>
+      <li>「量より質」を重視し、大量生産品は避け、長く使えるアイテムを厳選。</li>
+      <li>大学時代に観たドキュメンタリー『The True Cost』がきっかけでファストファッションを避けるようになった。</li>
+      <li>洋服は「トレーサビリティ」や「素材背景」などを確認して購入するのが習慣。</li>
+    </ul>
+  </li>
+
+  <li><span class="decoration-01">ファッションに関する悩み</span>
+    <ul>
+      <li>サステナブルなブランドは「ナチュラル過ぎる」か「高価すぎる」ことが多い。</li>
+      <li>オフィスでも浮かず、センスを感じさせるアイテムが見つかりにくい。</li>
+      <li>身体に合った美しいシルエットを諦めたくない。</li>
+      <li>「環境に配慮しているけれど、ちゃんとおしゃれ」な服を着たい。</li>
+      <li>ブランドのストーリーに共感できないと買う気が起きない。</li>
+    </ul>
+  </li>
+
+  <li><span class="decoration-01">このブランドに期待すること</span>
+    <ul>
+      <li><span class="decoration-01">環境配慮とファッション性の両立：</span>再生素材や植物由来の素材でありながら、着心地・デザイン性が高く、「それどこの？」と聞かれるような洗練されたスタイル</li>
+      <li><span class="decoration-01">透明性のあるストーリー：</span>生産背景や素材情報を、Webやタグでわかりやすく伝えてほしい（例：「この服は水の使用量を50％削減して生まれた」など）</li>
+      <li><span class="decoration-01">適正価格：</span>高級ブランドまではいかずとも、“価値を感じられる価格”で提供されること</li>
+      <li><span class="decoration-01">スタイリング提案：</span>着回しや季節ごとのコーデ例が豊富だと、自分のワードローブにも取り入れやすい</li>
+    </ul>
+  </li>
+
+  <li><span class="decoration-01">ブランドとの関わり方</span>
+    <ul>
+      <li>ブランドが発信するサステナビリティの取り組みや社会的メッセージに共感すれば、SNSで自然とシェアする。</li>
+      <li>単なる「洋服」としてではなく、ライフスタイルの一部としてファッションを楽しむ。</li>
+      <li>このブランドは、美咲にとって「価値観を可視化してくれるパートナー」のような存在になる。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item26631" data-item-id="26631" data-item-type="ItemHeading"><h2 class="item-body">【2-3】AIによるコンセプトの言語化</h2></div>
+        
+        <div class="article-item item_markdown " id="item26632" data-item-id="26632" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26633" data-item-id="26633" data-item-type="ItemHeading"><h3 class="item-body">デザインの「軸」を言葉にする</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26634" data-item-id="26634" data-item-type="ItemRichText"><div class="item-body-hbr">リサーチとペルソナ作成で得た情報をもとに、いよいよデザインの軸となる<span class="decoration-02">コンセプト</span>を言語化していきます。<br>
+コンセプトは、プロジェクト全体の方向性を決定づける羅針盤の役割を果たします。<br>
+このパートでは、AIとのブレインストーミングを通じて、デザインの核となるキーワードを抽出し、最終的にプロジェクトを象徴する<span class="decoration-02">「コンセプトステートメント」</span>としてまとめるプロセスを体験します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26635" data-item-id="26635" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">考えてみよう！</span><br>
+AIにコンセプトキーワードのブレインストーミングを依頼する際、どのような情報を提供すれば、より質の高いアイデアが出てくるでしょうか？</div></div>
+        
+        <div class="article-item item_html " id="item26636" data-item-id="26636" data-item-type="ItemHtml"><div class="item-body"><span class="decoration-01">解答例</span>
+<ul>
+  <li>これまでの工程で作成した「リサーチ結果」と「ペルソナ情報」をAIに提供する。</li>
+  <li>デザインで伝えたい「雰囲気」や「価値観」（例：「温かみ」「誠実さ」「未来感」など）をキーワードとして含める。</li>
+  <li>「他のブランドとは違う、ユニークな切り口で」といった制約条件を加える。</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item26637" data-item-id="26637" data-item-type="ItemHeading"><h3 class="item-body"> 練習問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26638" data-item-id="26638" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+これまでのリサーチ結果と作成したペルソナをAIに提示し、「これらの情報に基づき、このブランドの魅力を伝えるコンセプトキーワードを10個、ブレインストーミングしてください」というプロンプトを作成し、実行してみましょう。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26639" data-item-id="26639" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解答</span></div></div>
+        
+        <div class="article-item item_html " id="item26640" data-item-id="26640" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>プロンプト例（テーマAの場合）：
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_code " id="item38015" data-item-id="38015" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>あなたは優れたブランドストラテジストです。
+以下のペルソナとリサーチ結果を基に、新しいサステナブルファッションブランドの
+コンセプトキーワードを10個提案してください。
+
+【ペルソナ情報】
+（【2-2】で作成したペルソナのテキストを貼り付け）
+
+【リサーチ結果】
+（【2-1】で得た競合の情報を要約して貼り付け）</pre></div>
+</div>
+<div class="cite"><cite class="item-source">プロンプト例</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item26641" data-item-id="26641" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">出力結果例</span></div></div>
+        
+        <div class="article-item item_html " id="item26642" data-item-id="26642" data-item-type="ItemHtml"><div class="item-body">   <table class="simple">
+    <thead>
+        <tr>
+            <th scope="col">
+                <div>
+                    <div>No.</div>
+                </div>
+            </th>
+            <th scope="col">
+                <div>
+                    <div>キーワード</div>
+                </div>
+            </th>
+            <th scope="col">
+                <div>
+                    <div>解説</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>1</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Conscious Elegance（意識ある上質さ）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>サステナビリティと洗練された美しさの両立。ミニマルで上品なトーンにマッチ</div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>2</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Traceable Beauty（たどれる美しさ）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>素材の出自や生産背景を明らかにし、透明性を美しさと結びつける</div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>3</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Wear with Intention（意図ある装い）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>「なぜこの服を選ぶのか」を明確にする、選択の美学を反映</div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>4</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Sculpted by Nature（自然にかたちづくられる）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>天然素材のしなやかさや質感を活かしたデザイン性を象徴</div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>5</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Everyday Ethical（日常に根ざした倫理性）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>過度にラグジュアリーに寄りすぎず、普段着としてのリアリティを訴求</div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>6</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Modern Ritual（現代の儀式）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>“服を選ぶ＝自分を整える”という、現代人の生活の儀式化を表現</div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>7</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Soft Power（やわらかな意志）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>女性らしさと力強さを併せ持つ、しなやかな自己表現を支援</div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>8</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Eco-Intelligent Design（エコ×知性の融合）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>機能性・素材選び・デザイン美の三位一体が感じられるワード</div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>9</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Quiet Confidence（静かな自信）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>主張しすぎないけれど芯がある、ミニマル派ペルソナに響くトーン</div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>10</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Re:Form Your Wardrobe（ワードローブを再構築）</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>自身の装いを、環境意識とともに“再定義”する提案型メッセージ</div>
+                </div>
+            </td>
+        </tr>
+
+
+      </tbody>
+    </table></div></div>
+        
+        <div class="article-item item_heading " id="item26643" data-item-id="26643" data-item-type="ItemHeading"><h2 class="item-body">【2-4】2章 -章末課題- [コンセプトシートの作成]</h2></div>
+        
+        <div class="article-item item_markdown " id="item26644" data-item-id="26644" data-item-type="ItemMarkdown"><h4 id="section">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26645" data-item-id="26645" data-item-type="ItemHeading"><h3 class="item-body"> 問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26646" data-item-id="26646" data-item-type="ItemRichText"><div class="item-body-hbr">この章で学んだことを総動員し、自身が選んだプロジェクトテーマの「コンセプトシート」を作成してください。<br>
+以下の項目を全てAIを活用して埋め、1枚のドキュメントとしてまとめましょう。</div></div>
+        
+        <div class="article-item item_html " id="item26647" data-item-id="26647" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">ターゲットペルソナ</span>（詳細なプロフィール、悩み、ニーズ）
+  </li>
+  <li>
+    <span class="decoration-01">競合分析の要約</span>（主要な競合2社の特徴）
+  </li>
+  <li>
+    <span class="decoration-01">コンセプトキーワード</span>（5つ以上）
+  </li>
+  <li>
+    <span class="decoration-01">デザインコンセプトステートメント</span>（150字程度）
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item26649" data-item-id="26649" data-item-type="ItemHeading"><h3 class="item-body">解答手順・解答例</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26650" data-item-id="26650" data-item-type="ItemRichText"><div class="item-body-hbr">1.テキスト生成AI（ChatGPTなど）を起動します。</div></div>
+        
+        <div class="article-item item_image " id="item26651" data-item-id="26651" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/651/medium/1236bec9-5ff0-4ba0-95a6-18313d6f58a6.png?1750904704" title=""><img class="img-responsive item-image" alt=" (26651)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/651/medium/1236bec9-5ff0-4ba0-95a6-18313d6f58a6.png?1750904704" width="640" height="289" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item26652" data-item-id="26652" data-item-type="ItemRichText"><div class="item-body-hbr">2.【2-2】の練習問題で作成した、自身のプロジェクトのペルソナをAIに提示します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26653" data-item-id="26653" data-item-type="ItemRichText"><div class="item-body-hbr">3.【2-1】の練習問題で作成した、競合分析の結果をAIに提示します。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26654" data-item-id="26654" data-item-type="ItemRichText"><div class="item-body-hbr">4.上記2と3の情報を基に、「このプロジェクトのコンセプトキーワードを10個、ブレインストーミングしてください」と指示します。</div></div>
+        
+        <div class="article-item item_image " id="item26655" data-item-id="26655" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/655/medium/df7f8100-1f22-4f74-8d94-ee93fa630f54.png?1750904812" title=""><img class="img-responsive item-image" alt=" (26655)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/655/medium/df7f8100-1f22-4f74-8d94-ee93fa630f54.png?1750904812" width="640" height="288" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item26656" data-item-id="26656" data-item-type="ItemRichText"><div class="item-body-hbr">5.生成されたキーワードの中から、特に重要だと感じるものを5つ以上選びます。</div></div>
+        
+        <div class="article-item item_image " id="item26657" data-item-id="26657" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/657/medium/ee839614-f26c-49cc-a70c-41a3335dbe0c.png?1750904874" title=""><img class="img-responsive item-image" alt=" (26657)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/657/medium/ee839614-f26c-49cc-a70c-41a3335dbe0c.png?1750904874" width="640" height="290" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item26658" data-item-id="26658" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">出力結果例</span></div></div>
+        
+        <div class="article-item item_html " id="item26659" data-item-id="26659" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>
+    <span class="decoration-01">エフォートレス・エシカル（Effortless Ethical）</span><br>
+    「頑張りすぎず、でも妥協しない」現代女性の生き方を体現。サステナブルを自然体で取り入れるスタイル。
+  </li>
+  <li>
+    <span class="decoration-01">未来をまとう（Wear the Future）</span><br>
+    単なる服ではなく、次世代の価値観を身にまとう体験。先進素材や生産背景に意識の向く層へ響く表現。
+  </li>
+  <li>
+    <span class="decoration-01">トランスペアレント・ビューティ（Transparent Beauty）</span><br>
+    素材の背景、生産地、環境影響などが可視化されているからこそ、より美しく感じるという価値観。
+  </li>
+  <li>
+    <span class="decoration-01">ミニマル・シック（Minimal Chic）</span><br>
+    オフィスでも浮かず、洗練された雰囲気。ナチュラル過ぎず、「都会的なサステナブル」を叶えるスタイル。
+  </li>
+  <li>
+    <span class="decoration-01">感性で選ぶサステナビリティ（Sustainability by Instinct）</span><br>
+    理屈ではなく「これ、いいな」と思って手に取ったら、実は環境にも優しかった。共感と直感が交差する選択。
+  </li>
+  <li>
+    <span class="decoration-01">共鳴する物語（Resonant Story）</span><br>
+    ストーリーに心が動いて購入に至る女性たちにとって、ブランドは「共感できる物語の発信者」である必要がある。
+  </li>
+  <li>
+    <span class="decoration-01">クローゼットの定番進化（Next Essentials）</span><br>
+    「着回せる」「長く着られる」だけでなく、“今の私”の価値観に寄り添う新時代の定番服。
+  </li>
+  <li>
+    <span class="decoration-01">やさしさ設計（Kindness Engineered）</span><br>
+    素材・工程・着心地すべてにやさしさが設計されている、という内側からの美意識に響く言葉。
+  </li>
+  <li>
+    <span class="decoration-01">美しい責任（Beautiful Responsibility）</span><br>
+    環境配慮を「義務」ではなく、「美しさの一部」と捉える先進的マインドにマッチ。
+  </li>
+  <li>
+    <span class="decoration-01">選択が未来になる（Your Choice, Your Future）</span><br>
+    ファッションの選択が社会的意志表明となる時代に、現代女性の価値観が共鳴するメッセージ。
+  </li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item26660" data-item-id="26660" data-item-type="ItemRichText"><div class="item-body-hbr">6.選んだキーワードをAIに提示し、「これらのキーワードを軸にして、このプロジェクトのデザインコンセプトステートメントを150字程度で作成してください」と指示します。</div></div>
+        
+        <div class="article-item item_image " id="item26661" data-item-id="26661" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/661/medium/d0d5a429-5385-4204-88e2-16dd50438289.png?1750905027" title=""><img class="img-responsive item-image" alt=" (26661)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/661/medium/d0d5a429-5385-4204-88e2-16dd50438289.png?1750905027" width="640" height="158" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item26662" data-item-id="26662" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">出力結果</span></div></div>
+        
+        <div class="article-item item_code " id="item26954" data-item-id="26954" data-item-type="ItemCode"><div class="item-body"><div class="CodeRay">
+  <div class="code"><pre>感性と倫理性を自然体で纏う、エフォートレス・エシカルな日常服。
+ミニマルで洗練された佇まいに、肌にも地球にもやさしい高機能素材と設計思想が融合する。
+一着の選択が価値観と未来への意志を語り、社会と共鳴するライフスタイルを育む。
+今の私らしさを大切にしながら、持続可能な明日を共につくる。</pre></div>
+</div>
+<div class="cite"><cite class="item-source">出力結果</cite></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item26664" data-item-id="26664" data-item-type="ItemRichText"><div class="item-body-hbr">7.これまでにAIと作成した「ペルソナ」「競合分析の要約」「コンセプトキーワード」「コンセプトステートメント」を、デザインツール（FigmaやCanvaなど）を使い、1枚のドキュメントに美しくレイアウトして完成です。</div></div>
+        
+        <div class="article-item item_image " id="item26665" data-item-id="26665" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/665/medium/bf487237-30ad-42e4-9805-f81cb6cd535d.png?1750905094" title=""><img class="img-responsive item-image" alt=" (26665)" data-reference="" src="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/665/medium/bf487237-30ad-42e4-9805-f81cb6cd535d.png?1750905094" width="449" height="640" /></a><h4></h4></div></div>
+        
+        <div class="article-item item_html " id="item26648" data-item-id="26648" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+  <span class="bold"><span class="decoration-01">コーチにフィードバックを貰おう！</span></span>
+  <div class="content-area">
+    <ul>
+      <li>完成した課題は、コーチに提出してフィードバックをもらいましょう！</li>
+      <li>思いもよらない新しいアイデアや、別の切り口のヒントがもらえることもあります。</li>
+    </ul>
+    <span class="decoration-01">【ポイント】</span>
+    <ul>
+      <li>「コンセプトシート」の各項目について、AIにどのような情報を与え、どのような形式で出力されたかを具体的に記述しましょう。</li>
+      <li>AIの回答をどのように評価し、自身の判断で調整したかを説明すると、より実践的な学びになります。</li>
+      <li>コーチに、作成したコンセプトシートに対する客観的なフィードバックや、さらに深掘りすべき点、今後のデザインプロセスにおけるAIの活用方法について質問してみましょう。</li>
+    </ul>
+  </div>
+</div>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item26666" data-item-id="26666" data-item-type="ItemRichText"><div class="item-body-hbr">これで「2章 実践：リサーチとコンセプト定義」の解説を終わります。 <br>
+次の章に進みましょう。</div></div>
+        
+        <div class="article-item item_html " id="item26741" data-item-id="26741" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons">
+  <a href="W99tf" class="pagenation-buttons_prev"><img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="6Bcq5" class="pagenation-buttons_next">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-open.svg" 
+           alt="メニューを開く">
+      <img id="iconClose" 
+           src="/theme/webcoach/img/icons/fixed-menu_modal-close.svg" 
+           alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </div>
+        </main>
+
+    </div>
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>&copy; 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- シンタックスハイライトの生成 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>
+        // ハイライトを実行
+        hljs.initHighlightingOnLoad();
+    </script>
+
+    <!-- 目次の生成 -->
+    <script type="text/javascript">toc();</script>
+
+    <!-- ブックマークの生成 -->
+    <script type="text/javascript">displayLinks();</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="BbU3vfT5oUxWrwjv9/2viQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>
+

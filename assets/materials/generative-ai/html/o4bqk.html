@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%902%20AI%E3%81%AB%E3%82%88%E3%82%8B%E8%A6%81%E4%BB%B6%E5%88%86%E6%9E%90%E3%81%A8%E6%8A%80%E8%A1%93%E8%A8%AD%E8%A8%88/o4BqK -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>1章 なぜ設計が重要？AI時代の設計術 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%902%20AI%E3%81%AB%E3%82%88%E3%82%8B%E8%A6%81%E4%BB%B6%E5%88%86%E6%9E%90%E3%81%A8%E6%8A%80%E8%A1%93%E8%A8%AD%E8%A8%88/o4BqK">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="1章 なぜ設計が重要？AI時代の設計術 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/089/medium/e24db66f-c652-464e-8b69-5b8f8d47c280.jpg?1753396193">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="1章 なぜ設計が重要？AI時代の設計術">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%902%20AI%E3%81%AB%E3%82%88%E3%82%8B%E8%A6%81%E4%BB%B6%E5%88%86%E6%9E%90%E3%81%A8%E6%8A%80%E8%A1%93%E8%A8%AD%E8%A8%88/o4BqK">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/089/large/e24db66f-c652-464e-8b69-5b8f8d47c280.jpg?1753396193">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="McySALdaYlpOsE17oBpNkQo-KwusWcac-AvrMFZ6k1lBIEzgJir4DoY1F-rnMKi9OhiJCSzXEhM1PBAZWD65Ag"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材2 AIによる要件分析と技術設計</div>
+
+          <div class="fw-bold h2">1章 なぜ設計が重要？AI時代の設計術</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章 なぜ設計が重要？AI時代の設計術</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：30分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】実装が楽になる「設計」の考え方</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">急がば回れ！「設計」が９割の理由</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li><li><a href="#heading7" class="tocLink">AIは最強の思考整理パートナー</a></li></ul></li><li><a href="#heading8" class="tocLink">【1-2】1章 -章末課題- [設計思考力チェック！]</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading10" class="tocLink">問題</a></li><li><a href="#heading11" class="tocLink">解答</a></li><li><a href="#heading12" class="tocLink">この章のまとめ</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item36235" data-item-id="36235" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%902%20AI%E3%81%AB%E3%82%88%E3%82%8B%E8%A6%81%E4%BB%B6%E5%88%86%E6%9E%90%E3%81%A8%E6%8A%80%E8%A1%93%E8%A8%AD%E8%A8%88/vhoXG" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%902%20AI%E3%81%AB%E3%82%88%E3%82%8B%E8%A6%81%E4%BB%B6%E5%88%86%E6%9E%90%E3%81%A8%E6%8A%80%E8%A1%93%E8%A8%AD%E8%A8%88/GalUd" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36079" data-item-id="36079" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">1章 なぜ設計が重要？AI時代の設計術</h2></div>
+        
+        <div class="article-item item_markdown " id="item36080" data-item-id="36080" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item36081" data-item-id="36081" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item36082" data-item-id="36082" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>Web制作における「設計」の工程が、なぜプロジェクトの成否を分けるほど重要なのかを説明できる。</li>
+  <li>AIを「思考のパートナー」として活用するメリットを理解できる。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item36083" data-item-id="36083" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【1-1】実装が楽になる「設計」の考え方</h2></div>
+        
+        <div class="article-item item_markdown " id="item36084" data-item-id="36084" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36085" data-item-id="36085" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">急がば回れ！「設計」が９割の理由</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36086" data-item-id="36086" data-item-type="ItemRichText"><div class="item-body-hbr">Web制作を学ぶと、すぐにHTMLやCSSを書いて、目に見えるものを作りたくなります。<br>
+しかし、プロの現場では、コードを書き始める前の<span class="decoration-02">「設計」</span>に多くの時間を費やします。<br>
+なぜなら、この工程がプロジェクトの成否の9割を決めると言っても過言ではないからです。<br>
+<br>
+もし設計を疎かにして、いきなり実装から始めてしまうと、様々なリスクが発生します。</div></div>
+        
+        <div class="article-item item_html " id="item36087" data-item-id="36087" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">大規模な手戻り</span>：<br>途中で「やっぱりこのページも必要だった」「構成を全部変えたい」となると、書いたコードの多くが無駄になり、作り直しに膨大な時間がかかります。</li>
+  <li><span class="decoration-01">方向性のブレ</span>：<br>サイトの目的が曖昧なまま進むと、デザインやコンテンツに一貫性がなくなり、誰にも響かないサイトになってしまいます。</li>
+  <li><span class="decoration-01">品質の低下</span>：<br>場当たり的な実装を繰り返すと、コードの構造が複雑化し、メンテナンス性の低い、バグの温床となるサイトが完成します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36088" data-item-id="36088" data-item-type="ItemRichText"><div class="item-body-hbr">これは、家を建てるプロセスに似ています。<br>
+立派な家を建てるには、まず建築家が詳細な設計図（間取り、構造、配管など）を描きます。<br>
+<span class="decoration-02">設計図なしに、いきなり基礎工事を始める職人はいません。 </span><br>
+Webサイト制作も全く同じで、高品質なサイトを効率的に作るためには、しっかりとした設計図が不可欠なのです。</div></div>
+        
+        <div class="article-item item_image " id="item36089" data-item-id="36089" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/036/089/medium/e24db66f-c652-464e-8b69-5b8f8d47c280.jpg?1753396193" title=""><img class="img-responsive item-image" alt=" (36089)" data-reference="" src="../../_assets/499910e5c5.webp" width="640" height="427"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item36090" data-item-id="36090" data-item-type="ItemHeading"><h3 class="item-body" id="heading7">AIは最強の思考整理パートナー</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36091" data-item-id="36091" data-item-type="ItemRichText"><div class="item-body-hbr">「設計が重要なのは分かったけど、何をどう考えればいいか分からない」と感じるかもしれません。<br>
+そこで登場するのがAIです。<br>
+AI、特にChatGPTのような対話型AIは、<span class="decoration-02">思考を整理するための最強のパートナー</span>になります。</div></div>
+        
+        <div class="article-item item_html " id="item36092" data-item-id="36092" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">思考の「壁打ち」相手になる</span>：<br>自分の頭の中にある漠然としたアイデアやクライアントの要望をAIに投げかけると、AIがそれを整理し、構造化して返してくれます。この対話のプロセスを通じて、考えが具体化・明確化していきます。</li>
+  <li><span class="decoration-01">客観的な視点を与えてくれる</span>：<br>人間は誰しも、自分の知識や経験に基づく思考の偏り（バイアス）を持っています。AIは、そうしたバイアスに囚われず、データに基づいた客観的な視点や、自分では思いつかなかった選択肢を提示してくれます。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36093" data-item-id="36093" data-item-type="ItemRichText"><div class="item-body-hbr">AIは単に答えを教えてくれる存在ではありません。<br>
+<span class="decoration-02">AIとの対話を通じて、自分自身の思考を深め、より質の高い設計を生み出すことができる</span>のです。</div></div>
+        
+        <div class="article-item item_html " id="item36094" data-item-id="36094" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>コラム：良い設計は、未来の自分を助ける</strong><br></span>
+    <div class="content-area">
+        <p>時間をかけて作成した設計書は、クライアントやチームメンバーとの共通認識を作るための重要なドキュメントです。それだけではありません。</p>
+        <p>数ヶ月後にサイトの修正や機能追加を依頼された時、その設計書は「なぜこの構造にしたんだっけ？」と思い出すための、<span class="decoration-02">未来の自分自身に向けた最高の引き継ぎ資料</span>にもなります。良い設計は、時を超えて仕事の質を支えてくれるのです。</p>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item36095" data-item-id="36095" data-item-type="ItemHeading"><h2 class="item-body" id="heading8">【1-2】1章 -章末課題- [設計思考力チェック！]</h2></div>
+        
+        <div class="article-item item_markdown " id="item36096" data-item-id="36096" data-item-type="ItemMarkdown"><h4 id="heading9">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item36097" data-item-id="36097" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36098" data-item-id="36098" data-item-type="ItemRichText"><div class="item-body-hbr">あなたの友人から「僕のバンドのカッコいい公式サイトを作ってほしい！」とだけ依頼されました。<br>
+あなたがまず最初に友人に質問すべきことは何ですか？<br>
+AI時代のWeb制作者として、少なくとも3つ挙げてください。</div></div>
+        
+        <div class="article-item item_heading " id="item36099" data-item-id="36099" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">解答</h3></div>
+        
+        <div class="article-item item_html " id="item36100" data-item-id="36100" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">目的の確認</span>: <br>「その公式サイトを通じて、何を達成したい？（例：ライブの集客を増やしたい、新しいファンを獲得したい、CDやグッズを販売したい など）」</li>
+  <li><span class="decoration-01">ターゲットの確認</span>: <br>「どんな人にそのサイトを見てほしい？（例：まだバンドを知らない10代のロックファン、いつもライブに来てくれるファン、ライブハウスのブッキング担当者 など）」</li>
+  <li><span class="decoration-01">コンテンツの確認</span>: <br>「サイトに必ず載せたい情報や機能は何？（例：メンバー紹介、ライブ日程、楽曲の試聴機能、ミュージックビデオ、お問い合わせフォーム など）」</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item36101" data-item-id="36101" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解説</span><br>
+素晴らしい解答です！<br>
+重要なのは、いきなり「どんなデザインがいい？」といった見た目の話に入るのではなく、<span class="decoration-02">サイトの「目的」と「ターゲット（誰に）」、そして「主要なコンテンツ（何を）」を明確にすること</span>です。<br>
+この3つの柱がしっかりしていれば、その後の設計で判断に迷ったときに、「目的を達成するためにはどちらが良いか？」「ターゲットに響くのはどちらか？」という明確な基準で意思決定ができます。<br>
+これが、成功するWebサイト設計の第一歩です。</div></div>
+        
+        <div class="article-item item_heading " id="item36102" data-item-id="36102" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">この章のまとめ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item36103" data-item-id="36103" data-item-type="ItemRichText"><div class="item-body-hbr">これで「1章：なぜ設計が重要？AI時代の設計術」の解説を終わります。<br>
+設計がプロジェクトの成否を分ける理由と、そのプロセスにおけるAIの強力なサポート役としての可能性を理解いただけたと思います。<br>
+次の章からは、いよいよ実践です。<br>
+架空の要件定義書を題材に、AIと共にプロジェクトの核心を読み解いていきましょう。</div></div>
+        
+        <div class="article-item item_html " id="item36234" data-item-id="36234" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%902%20AI%E3%81%AB%E3%82%88%E3%82%8B%E8%A6%81%E4%BB%B6%E5%88%86%E6%9E%90%E3%81%A8%E6%8A%80%E8%A1%93%E8%A8%AD%E8%A8%88/vhoXG" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%902%20AI%E3%81%AB%E3%82%88%E3%82%8B%E8%A6%81%E4%BB%B6%E5%88%86%E6%9E%90%E3%81%A8%E6%8A%80%E8%A1%93%E8%A8%AD%E8%A8%88/GalUd" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">1章 なぜ設計が重要？AI時代の設計術</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：30分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【1-1】実装が楽になる「設計」の考え方</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">急がば回れ！「設計」が９割の理由</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li><li><a href="#heading7" class="tocLink">AIは最強の思考整理パートナー</a></li></ul></li><li><a href="#heading8" class="tocLink">【1-2】1章 -章末課題- [設計思考力チェック！]</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading10" class="tocLink">問題</a></li><li><a href="#heading11" class="tocLink">解答</a></li><li><a href="#heading12" class="tocLink">この章のまとめ</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%902%20AI%E3%81%AB%E3%82%88%E3%82%8B%E8%A6%81%E4%BB%B6%E5%88%86%E6%9E%90%E3%81%A8%E6%8A%80%E8%A1%93%E8%A8%AD%E8%A8%88/vhoXG" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/AI_coding/%E6%95%99%E6%9D%902%20AI%E3%81%AB%E3%82%88%E3%82%8B%E8%A6%81%E4%BB%B6%E5%88%86%E6%9E%90%E3%81%A8%E6%8A%80%E8%A1%93%E8%A8%AD%E8%A8%88/GalUd" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

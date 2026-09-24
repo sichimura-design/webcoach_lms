@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+  <html lang="ja">
+
+<head><script async="async" data-label="saas" nonce="u0oXTplSna1fSTKmSUpigA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2513" data-domain="learn.webcoach.jp" data-url="/ai-designer/chapter-01/YlJsj" data-href="https://learn.webcoach.jp/media/beacon"></script>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Lesson1 AI著作権リスクと商用利用の確認フロー - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="https://unpkg.com/modern-css-reset/dist/reset.min.css" />
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/fontawesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/dracula.min.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/168/original/style.css?1788081716">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- カスタムJS -->
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/002/350/original/script.js?1779642402"></script>
+    <script src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/535/original/script.js?1743681771"></script>
+
+    <!-- clipkitデフォルトのJS -->
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/default-1.0.js?v=v15.9.0-20260915"></script>
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.clipkit.co/clipkit/favicons/square/missing.png" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="https://cdn.clipkit.co/clipkit/touch_icons/square/missing.png">
+    <link rel="alternate" type="application/rss+xml"
+        href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/ai-designer/chapter-01/YlJsj">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="Lesson1 AI著作権リスクと商用利用の確認フロー - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="Lesson1 AI著作権リスクと商用利用の確認フロー">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/ai-designer/chapter-01/YlJsj">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "NewsArticle",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id": "https://learn.webcoach.jp/ai-designer/chapter-01/YlJsj"
+    },
+    "headline": "Lesson1 AI著作権リスクと商用利用の確認フロー",
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://cdn.clipkit.co/clipkit/images/medium/missing.png",
+      "width": 800,
+      "height": 600
+    },
+    "datePublished": "2026-05-21T15:18:00+09:00",
+    "dateModified": "2026-05-29T13:35:13+09:00",
+    "author": {
+      "@type": "Person",
+      "name": "r_yoshitake"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "WEBCOACH",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367"
+      }
+    },
+    "description": ""
+  }
+  </script>
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="HWgVKAD_dVcNyMKqp1kpYRPXCnDxzoO3nhcDJ-GuOjfewVyWMMsmdcPWehECkBt3CUFj4Bn-TadhDtYydDftHw" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+
+<body class="device-desktop">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48923" data-item-id="48923" data-item-type="ItemHtml"><div class="item-body"><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ヘッダー — Solid White タグ + ブランドグラデ */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス — 白カード + グラデピル "GOAL" + 薄グラデアイテム */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 — Compact Pills */
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* 画像系 */
+.slide-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+.lightbox-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); }
+.img-placeholder { background: #FAF5F3; border: 2px dashed #E8D5CC; border-radius: 12px 12px 0 0; padding: 24px 20px; text-align: center; margin: 28px 0 0; }
+.img-placeholder-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #C4A59A; margin-bottom: 6px; }
+.img-placeholder-name { font-size: 12px; color: #B08880; font-family: monospace; }
+.prompt-box { background: #2A2220; border-radius: 0 0 12px 12px; padding: 16px 20px; margin: 0 0 28px; }
+.prompt-box-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #F5A64A; margin-bottom: 8px; }
+.prompt-text { color: #E8DDD8; font-size: 12px; line-height: 1.7; font-family: 'Courier New', monospace; white-space: pre-wrap; word-break: break-word; margin: 0; }
+
+/* コンポーネント */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+.point-box ol, .point-box ul { font-size: 15px; line-height: 1.9; color: #444; margin: 0; padding-left: 1.4em; }
+.point-box ol li, .point-box ul li { font-size: 15px; line-height: 1.9; color: #444; margin-bottom: 4px; }
+
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+.notice-box ol, .notice-box ul { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; padding-left: 1.4em; }
+.notice-box ol li, .notice-box ul li { font-size: 14.5px; line-height: 1.85; color: #444; margin-bottom: 4px; }
+
+/* 動画（キャプチャ動画埋め込み） */
+.video-wrap { position: relative; padding-top: 56.25%; margin: 0 0 28px; background: #2A2220; border-radius: 12px; overflow: hidden; }
+.video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+/* 仕様比較テーブル */
+.spec-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table .tbl-num { font-family: 'Inter', sans-serif; font-weight: 800; color: #E85D4A; font-size: 13px; margin-right: 4px; }
+.spec-table .tbl-name { font-weight: 700; color: #2D2D2D; }
+
+/* クイズ — Soft Pastel */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* まとめ — グリーンバッジ "SUMMARY" + 番号付きリスト */
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+/* 理解度チェック — 白カード + グラデピル "CHECK" */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+/* チャプター概要動画 */
+.chapter-intro-video { background: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 32px; box-shadow: 0 2px 16px rgba(0,0,0,0.06); position: relative; overflow: hidden; }
+.chapter-intro-video::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+.chapter-intro-video__label { font-size: 11px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 14px; }
+.chapter-intro-video__player { width: 100%; border-radius: 8px; display: block; background: #F7F8FA; }
+
+/* アニメーション */
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">CHAPTER 1</span>
+  <div class="lesson-hero__title">AI著作権リスクと商用利用の確認フロー</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 1-1</span>
+    <span class="lesson-hero__topic">案件を受ける前に必ず確認すること</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約20分</span>
+  </div>
+</div>
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+<!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="33kqh" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+
+<div class="chapter-intro-video">
+  <div class="chapter-intro-video__label">チャプター概要動画</div>
+  <video
+    src="https://www.dropbox.com/scl/fi/po5bqcn3g690d38tzkvzc/.mp4?rlkey=bhnvxid5iyc0pz06bz91g5oqn&st=1xp8wmwa&raw=1"
+    controls
+    preload="metadata"
+    class="chapter-intro-video__player"
+  ></video>
+</div>
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">AIで生成した画像の著作権リスクを自分の言葉で説明できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">商用利用可否の3ステップ確認フローを自分で実行できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">ChatGPT Images 2.0の学習データ設定を変更できる</div></li>
+  </ul>
+</div>
+
+<nav class="toc">
+  <div class="toc-head">
+    <div class="toc-icon">≡</div>
+    <div class="toc-title">目次</div>
+  </div>
+  <ul>
+    <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">AI生成物と著作権の考え方</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">商用利用OKの確認フロー3ステップ</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s3"><span class="toc-num">03</span><span class="toc-text">ChatGPT Images 2.0とCanvaの商用利用ルール</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s4"><span class="toc-num">04</span><span class="toc-text">納品前チェックリスト</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>AI生成物と著作権の考え方</h2>
+
+<p><strong>単なるAIの生成物に著作権はありません。</strong>プロンプトを入力してAIが出力した画像は、現時点の日本の著作権法の考え方では著作権の保護対象になりません。</p>
+
+<p>ただし、<strong>人間の創作的寄与があれば著作権は認められます。</strong>構図の指示・複数生成物からの選別・加筆修正・組み合わせなど、デザイナーが創作的判断を加えた部分には著作権が生じると考えられています。</p>
+
+<p>言い換えると、プロンプトを打っただけの素材をそのまま納品しても、あなた自身の著作物にはなりません。創作的寄与を加えることは、品質面でも権利面でも重要です。</p>
+
+<!-- =====================================================
+  📸 画像：ig-01-law
+  【差し替え手順】
+    ① 下の「LIGHTBOX BLOCK」のコメントを外す
+    ② 「DELETE BLOCK」を丸ごと削除する
+  ===================================================== -->
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/xk7nucja8foc5quotcub0/01.png?rlkey=xe9eddr3odez7eabynhh9xybe&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/xk7nucja8foc5quotcub0/01.png?rlkey=xe9eddr3odez7eabynhh9xybe&raw=1" alt="AI生成物と著作権" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">創作的寄与があなたの著作物を生む</div>
+  </div>
+  <p>プロンプトを打っただけの生成物はあなたの著作物にはなりません。<strong>構図の指定・候補の選別・加筆修正など、創作的判断を加えること</strong>がデザイナーの仕事であり、それがあなたの著作物になります。ツールの商用利用許諾は「そのツールを使うこと」の許諾であって、生成物の著作権とは別の話です。</p>
+</div>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>商用利用OKの確認フロー3ステップ</h2>
+
+<p>案件で使うAI生成画像を納品する前に、以下の3ステップを必ず確認してください。1つでもNGなら使用を中止します。</p>
+
+<!-- =====================================================
+  📸 画像：ig-02-flow
+  【差し替え手順】
+    ① 下の「LIGHTBOX BLOCK」のコメントを外す
+    ② 「DELETE BLOCK」を丸ごと削除する
+  ===================================================== -->
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/3yu2cwr9fsok0xawjc9v8/02.png?rlkey=4tx8yrstmd92fhtxf1x3vzhs1&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/3yu2cwr9fsok0xawjc9v8/02.png?rlkey=4tx8yrstmd92fhtxf1x3vzhs1&raw=1" alt="商用利用OK確認フロー3ステップ" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<table class="spec-table reveal">
+  <thead>
+    <tr>
+      <th style="width: 14%;">ステップ</th>
+      <th style="width: 28%;">確認内容</th>
+      <th>具体的なチェック</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-num">①</span></td>
+      <td><span class="tbl-name">ツールの利用規約を確認</span></td>
+      <td>使用するAIツールの利用規約に「商用利用可」「Commercial use allowed」と明記されているかを確認。有料プランでのみ商用利用が許可されているツールも多いので、現在のプランで使えるかも合わせてチェック。</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">②</span></td>
+      <td><span class="tbl-name">生成物の品質チェック</span></td>
+      <td>生成した画像に既存のキャラクター・ロゴ・著名人に似た要素が含まれていないかを確認。「なんとなく似ている」と感じたら使用を中止して再生成する。</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">③</span></td>
+      <td><span class="tbl-name">クライアントへの報告（推奨）</span></td>
+      <td>見積書または納品書に「AIを使用して制作」と明記することを推奨。信頼構築と事後トラブル回避の両面でメリットが大きい。</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="point-box reveal">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">AI使用の明記は信頼を築く機会</div>
+  </div>
+  <p>見積書への記載は、隠して後からバレるリスクを避けるだけでなく、<strong>誠実さを示す積極的なアピール</strong>にもなります。多くのクライアントはAI使用を容認しており、先に伝えておくことで安心して任せてもらえる関係を作れます。</p>
+</div>
+</section>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>ChatGPT Images 2.0とCanvaの商用利用ルール</h2>
+
+<p>このコースで使うChatGPT Images 2.0（ChatGPT）とCanva Proは、どちらも<strong>商用利用が認められています</strong>。ただし、ツールによって注意点が異なります。案件で使う前に、以下の3点を確認しておきましょう。</p>
+
+<!-- =====================================================
+  📸 画像：ig-03-tools
+  【差し替え手順】
+    ① 下の「LIGHTBOX BLOCK」のコメントを外す
+    ② 「DELETE BLOCK」を丸ごと削除する
+  ===================================================== -->
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/0mmm3g25xon21g7fx8tzx/03.png?rlkey=dsmwiv8m0t8k9gkozb4bcaf9a&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/0mmm3g25xon21g7fx8tzx/03.png?rlkey=dsmwiv8m0t8k9gkozb4bcaf9a&raw=1" alt="ツール別商用利用ルール" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">商用利用時に必ず確認する3点</div>
+  </div>
+  <ul>
+    <li><strong>ChatGPT Images 2.0 — 学習データの設定変更が必須：</strong>ChatGPTはデフォルトで会話内容・入力画像がモデル学習に使用されます。クライアントの資料や未公開素材をアップロードする前に、設定 → データコントロール →「全員のモデル改善に役立てる」をOFFにしてください。次のlessonの動画を見ながら設定してみましょう！</li>
+    <li><strong>ChatGPT Images 2.0 — 著名人・ブランドの再現は禁止：</strong>実在の著名人を模した画像、Apple・Nikeなど著名ブランドのロゴに酷似した画像の生成はOpenAIの利用規約で禁止されています。「なんとなく似ている」と感じたら使用しないでください。</li>
+    <li><strong>Canva Pro — 素材は必ず加工する：</strong>テンプレートやChatGPT Images 2.0で出力した写真素材をそのまま成果物として納品することは禁止されています。フォント変更・カラー変更・要素追加など、デザイナーとして手を加えた状態で使用してください。</li>
+  </ul>
+</div>
+
+<!-- クイズ1 -->
+<div class="quiz-box reveal">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">AI生成画像を商用利用する際に「最初に」確認すべきことはどれですか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">画像のクオリティが十分か確認する</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">使用するツールの利用規約に商用利用が許可されているか確認する</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">クライアントにAIを使ったことを報告する</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">似たような画像がインターネット上にないか検索する</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">まず利用規約の確認が最初のステップです。ツールが商用利用を許可していなければ、その後のチェックは意味がありません。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">3ステップの順番は<strong>ツール規約確認 → 生成物チェック → クライアント報告</strong>です。まずツールの利用規約から確認しましょう。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== セクション4 ===== -->
+<section id="s4">
+<h2>納品前チェックリスト</h2>
+
+<p>AI生成素材を使った制作物を納品する前に、以下のチェックリストを毎回確認してください。習慣化することで、プロとしての品質基準が身につきます。</p>
+
+<!-- =====================================================
+  📸 画像：ig-04-checklist
+  【差し替え手順】
+    ① 下の「LIGHTBOX BLOCK」のコメントを外す
+    ② 「DELETE BLOCK」を丸ごと削除する
+  ===================================================== -->
+
+<div style="margin: 24px 0; text-align: center;" class="reveal">
+  <a href="https://www.dropbox.com/scl/fi/k4odu9iyam2c8fe16wzxf/04.png?rlkey=bysi25uiyna9baoyolyklvjhu&raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="https://www.dropbox.com/scl/fi/k4odu9iyam2c8fe16wzxf/04.png?rlkey=bysi25uiyna9baoyolyklvjhu&raw=1" alt="納品前チェックリスト" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<p>毎回の制作の最後に、次の5項目を頭の中でチェックする習慣をつけてください。慣れてくると数十秒で済むようになり、クライアントへの納品物の品質が安定します。</p>
+
+<ul>
+  <li>ツールの商用利用規約を確認した</li>
+  <li>生成物に既存キャラクター・ロゴ・著名人との類似がない</li>
+  <li>解像度・サイズが仕様通り</li>
+  <li>見積書・納品書にAI使用を記載した（推奨）</li>
+  <li>納品形式を守った（指定フォーマットで書き出し）</li>
+</ul>
+</section>
+
+<!-- クイズ2 -->
+<div class="quiz-box reveal">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ</div>
+  </div>
+  <div class="quiz-q">ChatGPTでChatGPT Images 2.0を商用利用する前に必ず行うべき設定変更はどれですか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">GPT-4oモデルに切り替える</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">設定のデータコントロールで「全員のモデル改善に役立てる」をOFFにする</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">有料プランに加入する</div></button>
+    <button class="quiz-opt" data-q="q2" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">生成した画像を公開設定にしない</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q2-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">この設定をOFFにすることで、クライアントの資料や未公開素材がモデル学習に使われるリスクを防げます。一度設定すれば以降ずっと有効です。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q2-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">正解は<strong>設定 → データコントロール →「全員のモデル改善に役立てる」をOFF</strong>です。これがデフォルトで必要な設定変更です。</div>
+    </div>
+  </div>
+</div>
+
+<!-- まとめ -->
+<div class="summary-box reveal">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li>AI生成画像の著作権は法整備が追いついていない。「AIが作ったから大丈夫」では通用しない</li>
+    <li>商用利用の確認は3ステップ：<strong>ツール規約確認 → 生成物チェック → クライアントへの報告（推奨）</strong></li>
+    <li>ChatGPT Images 2.0・Canva Proはどちらも商用利用OK。ただしデータポリシーの確認と素材の加工が必須</li>
+    <li>納品前チェックリストを毎回確認する習慣をつけることで、プロとしての品質基準が身につく</li>
+  </ol>
+</div>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>商用利用確認の3ステップを順番通りに言える</summary>
+    <div class="check-box__detail">①ツールの利用規約で商用利用が許可されているか確認 → ②生成物に既存キャラクター・ロゴの類似がないか確認 → ③見積書・納品書にAI使用を明記してクライアントに報告。この順番が重要です。</div>
+  </details>
+  <details>
+    <summary>見積書にAI使用を記載することのメリットを説明できる</summary>
+    <div class="check-box__detail">後から「AIを使っていた」と判明するリスクを避けられます。正直に伝えることがプロとしての誠実さを示し、長期的な信頼構築につながります。多くのクライアントはAI使用を容認しています。</div>
+  </details>
+</div>
+<!-- 次の章に進むボタンの場合 -->    
+<div style="display: flex; justify-content: flex-end; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto;">
+  <a href="33kqh" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+</div><!-- /.lesson-wrapper -->
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+document.querySelectorAll('.quiz-opt').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const q = this.dataset.q;
+    const correct = this.dataset.correct === 'true';
+    const opts = document.querySelectorAll(`[data-q="${q}"]`);
+    opts.forEach(o => o.disabled = true);
+    this.classList.add(correct ? 'correct' : 'wrong');
+    opts.forEach(o => {
+      if (o === this) return;
+      if (o.dataset.correct === 'true') o.classList.add('correct');
+      else o.classList.add('dim');
+    });
+    document.getElementById(`${q}-${correct ? 'ok' : 'ng'}`).classList.add('show');
+  });
+});
+</script>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </div>
+        </main>
+
+    </div>
+
+    <script src="https://cdn.clipkit.co/clipkit/javascripts/application-1.0.js?v=v15.9.0-20260915" async></script>
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="u0oXTplSna1fSTKmSUpigA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+
+</html>

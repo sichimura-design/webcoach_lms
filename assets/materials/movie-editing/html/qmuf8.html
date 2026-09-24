@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/movie-editing/practice/web/QMUF8 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>5章 【実践③】TikTok広告向け縦型動画制作 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/movie-editing/practice/web/QMUF8">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="5章 【実践③】TikTok広告向け縦型動画制作 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/960/medium/4f2fbb19-3dbe-4c95-8ea5-872587abf658.png?1764395193">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="5章 【実践③】TikTok広告向け縦型動画制作">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/movie-editing/practice/web/QMUF8">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/960/large/4f2fbb19-3dbe-4c95-8ea5-872587abf658.png?1764395193">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="YsFr9uN3Kq46nrvsUIdwb381wiW_i3nNgI5lrtCYObobjrdeDHKbrx-PXggk264mdHFfVogKY3D39i6ZyZP0PQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>Web広告動画制作</div>
+
+          <div class="fw-bold h2">5章 【実践③】TikTok広告向け縦型動画制作</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">5章 【実践③】TikTok広告向け縦型動画制作</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1.5時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【5-1】TikTok広告の編集セオリー</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">"広告感"を消し、UGCに溶け込む</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading7" class="tocLink">【5-2】Premiere Pro制作フロー</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：40分</a></li></ul><ul><li><a href="#heading9" class="tocLink">9:16シーケンスとトレンド音源の活用</a></li><li><a href="#heading10" class="tocLink">ネイティブ感を出すテロップとエフェクト</a><ul><li><a href="#heading11" class="tocLink"></a></li></ul></li><li><a href="#heading12" class="tocLink">自然なCTAへの誘導</a></li></ul></li><li><a href="#heading13" class="tocLink">【5-3】5章 -章末課題- ファッション通販アプリのTikTok広告制作</a><ul><li><a href="#heading14" class="tocLink">目安の学習時間: 30分</a></li></ul><ul><li><a href="#heading15" class="tocLink">課題概要</a><ul><li><a href="#heading16" class="tocLink">提供素材一覧</a></li><li><a href="#heading17" class="tocLink">構成案と編集指示</a></li><li><a href="#heading18" class="tocLink">制作要件</a></li><li><a href="#heading19" class="tocLink">制作手順</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item44505" data-item-id="44505" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/jtcl5" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item43833" data-item-id="43833" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">5章 【実践③】TikTok広告向け縦型動画制作</h2></div>
+        
+        <div class="article-item item_markdown " id="item43834" data-item-id="43834" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：1.5時間</h4>
+
+<h4 id="heading2">この章で到達できるゴール</h4>
+
+<ul>
+  <li>広告感を消し、UGCに溶け込むTikTok広告の編集セオリーを理解できる</li>
+  <li>トレンド音源やエフェクトを活用し、ネイティブ感を演出できる</li>
+  <li>自然な形でCTA（行動喚起）へ誘導する構成が作れる</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item43835" data-item-id="43835" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【5-1】TikTok広告の編集セオリー</h2></div>
+        
+        <div class="article-item item_markdown " id="item43836" data-item-id="43836" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：20分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item43837" data-item-id="43837" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">"広告感"を消し、UGCに溶け込む</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43838" data-item-id="43838" data-item-type="ItemRichText"><div class="item-body-hbr">最後の実践は、近年最も勢いのあるプラットフォームの一つであるTikTok向けの広告動画制作です。<br>
+TikTok広告を成功させる上で、他のプラットフォームと決定的に異なる、そして最も重要なセオリーがあります。<br>
+<br>
+それは、<span class="decoration-02"><span class="decoration-01">徹底的に「広告感」を消すこと</span></span>です。<br>
+<br>
+TikTokユーザーは、「おすすめ」フィードを高速でスワイプしながら、面白いコンテンツを探しています。<br>
+その中で、美しく作り込まれたテレビCMのような動画が流れてくると、瞬時に「広告だ」と判断し、興味を示すことなく次の動画へ移動してしまいます。<br>
+では、どうすればよいのでしょうか。<br>
+<br>
+答えは、<span class="decoration-02"><span class="decoration-01">広告を、広告ではない一般ユーザーの投稿（UGC）のように見せること</span></span>です。<br>
+これを<span class="decoration-02"><span class="decoration-01">「ネイティブクリエイティブ」</span></span>と呼びます。<br>
+視聴者が「いつもの面白いTikTok動画だ」と思ってみていたら、実はそれが広告だった、という状態を目指します。<br>
+<br>
+<span class="decoration-02"><span class="decoration-01">TikTok広告のクリエイティブは、企業の宣伝ではなく、あくまでプラットフォーム上の「コンテンツ」の一つ</span></span>として、視聴者に楽しんでもらうという視点で企画・制作することが成功の鍵です。</div></div>
+        
+        <div class="article-item item_image " id="item44960" data-item-id="44960" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/960/medium/4f2fbb19-3dbe-4c95-8ea5-872587abf658.png?1764395193" title=""><img class="img-responsive item-image" alt=" (44960)" data-reference="" src="../../_assets/8da3a2c907.webp" width="640" height="427"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item43839" data-item-id="43839" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【5-2】Premiere Pro制作フロー</h2></div>
+        
+        <div class="article-item item_markdown " id="item43840" data-item-id="43840" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間：40分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43841" data-item-id="43841" data-item-type="ItemRichText"><div class="item-body-hbr">ここからは、Premiere Proを使って「広告感」のないTikTok向け縦型動画を制作するフローを学びます。<br>
+プロ用のソフトを使いながらも、いかに「素人感」「リアル感」を演出するかがポイントです。</div></div>
+        
+        <div class="article-item item_heading " id="item43842" data-item-id="43842" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">9:16シーケンスとトレンド音源の活用</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43843" data-item-id="43843" data-item-type="ItemRichText"><div class="item-body-hbr">まずは、TikTokのフォーマットに合わせたシーケンスを作成します。<br>
+スマートフォンでの視聴に最適化された<span class="decoration-02"><span class="decoration-01">9:16（縦型）</span></span>のアスペクト比に設定しましょう。<br>
+フレームサイズは「1080」×「1920」が一般的です。<br>
+<br>
+次に、TikTok広告で最も重要な要素である<span class="decoration-02"><span class="decoration-01">「トレンド音源」</span></span>を準備します。</div></div>
+        
+        <div class="article-item item_html " id="item43844" data-item-id="43844" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon attention"><span class="bold"><strong>音源の著作権について</strong><br></span>
+  <div class="content-area"><ul>
+    <li>TikTokアプリ内でユーザーが個人的に利用できる楽曲の多くは、広告として商用利用することが許可されていません。</li>
+    <li>広告を制作する際は、TikTokが提供する商用利用可能な楽曲ライブラリから選ぶか、別途著作権フリーの音源を使用する必要があります。</li>
+    <li>この教材では、トレンドの雰囲気に近い著作権フリー音源を使って「音ハメ」編集のテクニックを学びます。</li></ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item43845" data-item-id="43845" data-item-type="ItemRichText"><div class="item-body-hbr">音源の準備ができたら、そのリズムに合わせて映像を切り替える<span class="decoration-02"><span class="decoration-01">「音ハメ」</span></span>編集を行います。<br>
+Premiere Proでは、音源のビートに合わせてマーカーを打ち、そのマーカーを目印にカット編集をすると効率的です。</div></div>
+        
+        <div class="article-item item_link " id="item44962" data-item-id="44962" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=QMUF8&amp;item_id=44962" rel="nofollow noopener noreferrer" target="_blank">音ハメ見本動画</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="音ハメ見本動画" data-reference="https://www.dropbox.com/scl/fi/zutdh5vvpees5ke41szsx/ModelMovie_ch5_1_v1.mp4?rlkey=u31gc490f7x23l2u0s8mh96dy&amp;st=wauhiclb&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item43846" data-item-id="43846" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">ネイティブ感を出すテロップとエフェクト</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43847" data-item-id="43847" data-item-type="ItemRichText"><div class="item-body-hbr">TikTokの一般投稿に溶け込ませるためには、テロップのデザインも「TikTokアプリで作った感」を出すことが重要です。<br>
+Premiere Proの「エッセンシャルグラフィックス」で、TikTok風のテロップを作成しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item44937" data-item-id="44937" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">フォント</span></span>：TikTokでよく使われる日本語フォントに近い、丸みのあるゴシック体などを選びます。</li>
+  <li><span class="decoration-01"><span class="decoration-02">スタイル</span></span>：白文字に太めの黒い境界線（ストローク）をつけるのが定番のスタイルです。</li>
+  <li><span class="decoration-01"><span class="decoration-02">アニメーション</span></span>：テキストがタイプライターのように一文字ずつ表示されるアニメーションは、TikTokの標準機能にもあり、ネイティブ感を高めます。</li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item43849" data-item-id="43849" data-item-type="ItemRichText"><div class="item-body-hbr">また、映像にグリッチ（ノイズ）をかけたり、一瞬ズームしたりといったエフェクトも、一般ユーザーが多用する演出です。<br>
+Premiere Proの「エフェクト」パネルから<span class="decoration-02"><span class="decoration-01">「VRグリッチ」</span></span>や、キーフレームを使ったスケールの変更などを加えることで、よりTikTokらしい映像に近づけることができます。</div></div>
+        
+        <div class="article-item item_image " id="item44963" data-item-id="44963" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/044/963/medium/f392cdfd-3d9c-484a-a10e-b47b6bd6489d.png?1764395462" title=""><img class="img-responsive item-image" alt=" (44963)" data-reference="" src="../../_assets/e689e9a961.webp" width="640" height="360"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item43850" data-item-id="43850" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">自然なCTAへの誘導</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43851" data-item-id="43851" data-item-type="ItemRichText"><div class="item-body-hbr">TikTok広告では、「ご購入はこちら！」のような直接的なCTAは敬遠される傾向にあります。<br>
+動画の最後にいきなり広告感の強いCTAを出すと、それまで楽しんで見ていた視聴者が冷めてしまい、離脱に繋がります。<br>
+<br>
+そのため、CTAはコンテンツの流れの中で、<span class="decoration-02"><span class="decoration-01">より自然な形で</span></span>提示する必要があります。</div></div>
+        
+        <div class="article-item item_html " id="item44938" data-item-id="44938" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01"><span class="decoration-02">コンテンツ内で言及する</span></span>：商品の紹介であれば、「このコーデ、全部このアプリで買えるよ」のように、会話やテロップの中で自然に紹介します。</li>
+  <li><span class="decoration-01"><span class="decoration-02">プロフィールへの誘導</span></span>：「気になった人はプロフィールのリンクをチェックしてみてね！」のように、次のアクションを促しつつも、強制的な印象を与えない表現が好まれます。</li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item43853" data-item-id="43853" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"><span class="decoration-01">広告主としての目的（コンバージョン）と、ユーザー体験を損なわないことのバランスを取る</span></span>のが、TikTok広告におけるCTAのポイントです。</div></div>
+        
+        <div class="article-item item_heading " id="item43854" data-item-id="43854" data-item-type="ItemHeading"><h2 class="item-body" id="heading13">【5-3】5章 -章末課題- ファッション通販アプリのTikTok広告制作</h2></div>
+        
+        <div class="article-item item_markdown " id="item43855" data-item-id="43855" data-item-type="ItemMarkdown"><h4 id="heading14">目安の学習時間: 30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item43856" data-item-id="43856" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">課題概要</h3></div>
+        
+        <div class="article-item item_rich_text " id="item43857" data-item-id="43857" data-item-type="ItemRichText"><div class="item-body-hbr">この章の総仕上げとして、ファッション通販アプリ「StyLink」のTikTok広告制作に挑戦します。<br>
+今回は、提供される複数の<span class="decoration-02"><span class="decoration-01">ファッション写真</span></span>を使い、短い時間で視聴者の興味を惹きつけ、アプリのダウンロードに繋げるための動画構成と編集スキルを学びます。</div></div>
+        
+        <div class="article-item item_markdown " id="item44939" data-item-id="44939" data-item-type="ItemMarkdown"><h4 id="heading16">提供素材一覧</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43859" data-item-id="43859" data-item-type="ItemRichText"><div class="item-body-hbr">この課題では、以下の画像素材とナレーション音声が提供されます。<br>
+動画のBGMと効果音は、あなた自身で選んでみましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item43860" data-item-id="43860" data-item-type="ItemMarkdown"><ul>
+  <li>音声素材:
+    <ul>
+      <li>以下のナレーションが収録された音声ファイル
+        <ol>
+          <li>「このオシャレな服、どこのやつだろう…」</li>
+          <li>「このコーデ、全部アプリで買えるよ」</li>
+          <li>「アプリのダウンロードはプロフのリンクから」</li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_markdown " id="item43861" data-item-id="43861" data-item-type="ItemMarkdown"><ul>
+  <li>画像素材:
+    <ul>
+      <li>ファッション写真フォルダ: 様々なコーディネートのオシャレな写真複数枚</li>
+      <li>アプリアイコン.png: アプリ「StyLink」のアイコン画像</li>
+      <li>アプリ画面.png: アプリ「StyLink」のスクリーンショット画像</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_link " id="item43862" data-item-id="43862" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=QMUF8&amp;item_id=43862" rel="nofollow noopener noreferrer" target="_blank">5章　音声/画像素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="5章　音声/画像素材" data-reference="https://www.dropbox.com/scl/fo/reldg9rdy0uxerh0pwoub/AAZRpjDTz9CpI87C_o0X94I?rlkey=si08x1cjvu4c21xnl26volavj&amp;st=g4mro25a&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">リンク先からダウンロードしてお使いください</div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item44953" data-item-id="44953" data-item-type="ItemMarkdown"><h4 id="heading17">構成案と編集指示</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item43864" data-item-id="43864" data-item-type="ItemRichText"><div class="item-body-hbr">以下の構成案に沿って編集を進めてください。<br>
+短い動画の中に「課題提示→解決策→行動喚起」のストーリーを盛り込むのがポイントです。</div></div>
+        
+        <div class="article-item item_html " id="item43866" data-item-id="43866" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        </tbody><thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div>時間(秒)</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>ナレーションの区間</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>使用する映像・画像</div>
+                    </div>
+                </th>
+              <th scope="col">
+                    <div>
+                        <div>テロップ指示</div>
+                    </div>
+                </th>
+              <th scope="col">
+                    <div>
+                        <div>編集のポイント</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody><tr>
+            <th scope="row">
+                <div>
+                    <div>0-8</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>「このオシャレな服、どこのやつだろう…」</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>ファッション写真フォルダ内の写真を次々と表示</div>
+                </div>
+            </td>
+          <td>
+                <div>
+                    <div>このオシャレな服、<br>どこのやつだろう</div>
+                </div>
+            </td>
+          <td>
+                <div>
+                    <div>・アップテンポなBGMを選び、そのリズムに合わせて写真が切り替わる<br>
+      ・<strong>「音ハメ」編集</strong>を行う。</div>
+                </div>
+            </td>
+        </tr>
+      <tr>
+            <th scope="row">
+                <div>
+                    <div>9-12</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>「このコーデ、全部アプリで買えるよ」</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>アプリ画面.pngを表示</div>
+                </div>
+            </td>
+          <td>
+                <div>
+                    <div>このコーデ、全部アプリで買えるよ</div>
+                </div>
+            </td>
+          <td>
+                <div>
+                    <div>・テロップはTikTok風のデザイン（白文字＋黒縁など）にする。</div>
+                </div>
+            </td>
+        </tr>
+      <tr>
+            <th scope="row">
+                <div>
+                    <div>13-15</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>「アプリのダウンロードはプロフのリンクから」</div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div>アプリアイコン.pngを中央に表示</div>
+                </div>
+            </td>
+          <td>
+                <div>
+                    <div>ダウンロードはプロフのリンクから →</div>
+                </div>
+            </td>
+          <td>
+                <div>
+                    <div>・最後の画面で、視聴者が次に行うべきアクション（プロフィールへの移動）を明確に示す。</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_markdown " id="item44954" data-item-id="44954" data-item-type="ItemMarkdown"><h4 id="heading18">制作要件</h4>
+</div>
+        
+        <div class="article-item item_html " id="item43868" data-item-id="43868" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>シーケンス設定は<span class="decoration-02">1080px × 1920px（9:16）</span>にすること。</li>
+  <li>広告の雰囲気に合う、<span class="decoration-02">アップテンポなBGMと効果音を自分で選定</span>し、配置すること。</li>
+  <li> BGMのリズムに合わせて、複数のファッション写真が切り替わる<span class="decoration-02">「音ハメ」編集</span>を行うこと。</li>
+  <li>構成案の指示に従い、<span class="decoration-02">TikTokアプリ風のデザインのテロップ</span>を入れること。</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item44955" data-item-id="44955" data-item-type="ItemMarkdown"><h4 id="heading19">制作手順</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item43870" data-item-id="43870" data-item-type="ItemMarkdown"><ol>
+  <li>TikTokのトレンドを参考に、著作権フリーのサイトでアップテンポなBGMを探し、ダウンロードします。</li>
+  <li>Premiere Proで1080px × 1920pxの新規シーケンスを作成します。</li>
+  <li>ダウンロードしたBGMと、提供されたナレーションをタイムラインに配置します。</li>
+  <li>BGMのビートに合わせてマーカーを打ち、そのマーカーを目印にファッション写真フォルダの写真を次々と配置し、音ハメ編集を行います。</li>
+  <li>構成案の指示通りに、アプリ画面.pngとアプリアイコン.pngを配置します。</li>
+  <li>エッセンシャルグラフィックスでTikTok風のテロップを作成し、ナレーションに合わせた内容を入力・配置します。</li>
+  <li>全体を再生して、リズム感や情報の伝わりやすさを確認後、H.264形式で書き出して完成です。</li>
+</ol>
+</div>
+        
+        <div class="article-item item_link " id="item43872" data-item-id="43872" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=QMUF8&amp;item_id=43872" rel="nofollow noopener noreferrer" target="_blank">Web広告動画制作_5章</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Web広告動画制作_5章" data-reference="https://www.dropbox.com/scl/fi/6w4qpy3bqj1owo5zhk38p/Web-_5.mp4?rlkey=q8ahuh4z3g72hhx2cpyl0irk0&amp;st=re1h61j2&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item43873" data-item-id="43873" data-item-type="ItemHtml"><div class="item-body"><div class="callout white"><div class="title-area"><div class="icon bulb"></div><div class="title"><strong>制作物をチェックしよう！</strong></div>
+  </div>
+  <div class="content-area">
+    <ul><li>BGMのリズムと写真の切り替えがシンクロした、気持ちの良い「音ハメ」編集になっていますか？</li>
+      <li>静止画にズームなどの動き（Ken Burnsエフェクト）を加え、単調に見えない工夫ができていますか？</li>
+      <li>「これどこの服？→このアプリだよ！→ダウンロードしてね！」という短いストーリーが、視聴者に分かりやすく伝わりますか？</li>
+      <li>テロップのデザインや言葉遣いは、TikTokの文化に馴染んでいますか？</li>
+      <li>全体を通して、作り込まれた「広告感」がなく、思わず見てしまうような楽しげな雰囲気に仕上がっていますか？</li></ul>
+  </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item43874" data-item-id="43874" data-item-type="ItemRichText"><div class="item-body-hbr">これで「【実践③】TikTok広告向け縦型動画制作」の解説を終わります。<br>
+<br>
+お疲れさまでした！</div></div>
+        
+        <div class="article-item item_html " id="item44504" data-item-id="44504" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/jtcl5" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">5章 【実践③】TikTok広告向け縦型動画制作</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1.5時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール</a></li></ul></li><li><a href="#heading3" class="tocLink">【5-1】TikTok広告の編集セオリー</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：20分</a></li></ul><ul><li><a href="#heading5" class="tocLink">"広告感"を消し、UGCに溶け込む</a><ul><li><a href="#heading6" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading7" class="tocLink">【5-2】Premiere Pro制作フロー</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間：40分</a></li></ul><ul><li><a href="#heading9" class="tocLink">9:16シーケンスとトレンド音源の活用</a></li><li><a href="#heading10" class="tocLink">ネイティブ感を出すテロップとエフェクト</a><ul><li><a href="#heading11" class="tocLink"></a></li></ul></li><li><a href="#heading12" class="tocLink">自然なCTAへの誘導</a></li></ul></li><li><a href="#heading13" class="tocLink">【5-3】5章 -章末課題- ファッション通販アプリのTikTok広告制作</a><ul><li><a href="#heading14" class="tocLink">目安の学習時間: 30分</a></li></ul><ul><li><a href="#heading15" class="tocLink">課題概要</a><ul><li><a href="#heading16" class="tocLink">提供素材一覧</a></li><li><a href="#heading17" class="tocLink">構成案と編集指示</a></li><li><a href="#heading18" class="tocLink">制作要件</a></li><li><a href="#heading19" class="tocLink">制作手順</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/movie-editing/practice/web/jtcl5" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

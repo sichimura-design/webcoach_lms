@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/eSPwi -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Figma｜第8章 歯医者さんサイトのバナー画像を作成してみよう - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/eSPwi">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Figma｜第8章 歯医者さんサイトのバナー画像を作成してみよう - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/006/800/medium/86bab00c-2f10-49db-bea1-ba712c09895f.png?1732331515">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Figma｜第8章 歯医者さんサイトのバナー画像を作成してみよう">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/eSPwi">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_links/images/000/006/800/large/86bab00c-2f10-49db-bea1-ba712c09895f.png?1732331515">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="WPJl5MW4yomAWPi2CX2RglPVIGTSWcwjTcAFdCcNlGVFhRZIUTcdb4aGJrh0IYmf-N2j4GkKXcb5zvabuGSdJg"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">Figma｜第8章 歯医者さんサイトのバナー画像を作成してみよう</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">8章 歯医者さんサイトのバナー画像を作成してみよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:4時間</a></li></ul></li><li><a href="#heading2" class="tocLink">【8-1】バナー広告とは</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading4" class="tocLink">■ 他のWebページに誘導する為に設置する広告</a><ul><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading7" class="tocLink">【8-2】バナー画像を作る際の心得やコツなど</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading9" class="tocLink">■ まず初めにポイントを抑えよう</a></li></ul></li><li><a href="#heading10" class="tocLink">【8-3】実際に作ってみよう</a><ul><li><a href="#heading11" class="tocLink">目安の学習時間:30分</a></li><li><a href="#heading12" class="tocLink">バナー使用素材</a></li></ul><ul><li><a href="#heading13" class="tocLink">■ 作成時の注意点</a><ul><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading16" class="tocLink">【8-4】書き出ししてみよう（エクスポート）</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間:5分</a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">【8-5】リサイズしてみよう</a><ul><li><a href="#heading20" class="tocLink">目安の学習時間:10分</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25550" data-item-id="25550" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/Rx3Kj" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/sVaN2" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item40182" data-item-id="40182" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">8章 歯医者さんサイトのバナー画像を作成してみよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39350" data-item-id="39350" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:4時間</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item6799" data-item-id="6799" data-item-type="ItemRichText"><div class="item-body-hbr">☑️ <span class="decoration-02">サンプルデータはこちら</span></div></div>
+        
+        <div class="article-item item_link " id="item6800" data-item-id="6800" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=eSPwi&amp;item_id=6800" rel="nofollow noopener noreferrer" target="_blank">Figma</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Figma" data-reference="https://www.figma.com/design/DnheVjmAzrj2kLESM23ohv/Figma_Sample?node-id=1-144&amp;t=EMnGntcUfMAN8nus-1" src="../../_assets/e0a1410dc1.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">Created with Figma</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6801" data-item-id="6801" data-item-type="ItemRichText"><div class="item-body-hbr">📷 <span class="decoration-02">バナー画像素材はこちら</span></div></div>
+        
+        <div class="article-item item_link " id="item23972" data-item-id="23972" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=eSPwi&amp;item_id=23972" rel="nofollow noopener noreferrer" target="_blank">Figma 8章 使用素材</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Figma 8章 使用素材" data-reference="https://www.dropbox.com/scl/fi/xdirp00850z1rp5f6b6xc/figma-8.zip?rlkey=y92rxbd6n8jxhaps0lwlm1hps&amp;st=1z63qv2q&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item6803" data-item-id="6803" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">【8-1】バナー広告とは</h2></div>
+        
+        <div class="article-item item_markdown " id="item39351" data-item-id="39351" data-item-type="ItemMarkdown"><h4 id="heading3">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item6804" data-item-id="6804" data-item-type="ItemHeading"><h3 class="item-body" id="heading4">■ 他のWebページに誘導する為に設置する広告</h3></div>
+        
+        <div class="article-item item_image " id="item6805" data-item-id="6805" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/805/medium/e295fa13-44c2-4d94-9adb-50af91db862f.png?1732331657" title=""><img class="img-responsive item-image" alt=" (6805)" data-reference="" src="../../_assets/11c9e2721e.webp" width="451" height="640"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_image " id="item6806" data-item-id="6806" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/806/medium/91d4c276-7b18-40ba-b3c3-85c810ec0790.png?1732331667" title=""><img class="img-responsive item-image" alt=" (6806)" data-reference="" src="../../_assets/3f73454127.webp" width="474" height="268"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6807" data-item-id="6807" data-item-type="ItemRichText"><div class="item-body-hbr">✅ ポータルサイトやECサイト等で、見せたいページに誘導する為に良く使われます。<br>
+　 バナーのクオリティや見せ方によって、効果が変わることも良くあります。</div></div>
+        
+        <div class="article-item item_heading " id="item6808" data-item-id="6808" data-item-type="ItemHeading"><h2 class="item-body" id="heading7">【8-2】バナー画像を作る際の心得やコツなど</h2></div>
+        
+        <div class="article-item item_markdown " id="item39352" data-item-id="39352" data-item-type="ItemMarkdown"><h4 id="heading8">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item6809" data-item-id="6809" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">■ まず初めにポイントを抑えよう</h3></div>
+        
+        <div class="article-item item_html " id="item6810" data-item-id="6810" data-item-type="ItemHtml"><div class="item-body"><ul>
+    <li><strong><u>バナー画像の趣旨</u>は何か？</strong>を考えよう。</li>
+    <li><u>アイキャッチ・情報の優先順位</u>をどのようにするか？</li>
+    <li><u>必要な素材・文言・リンク先のトンマナ</u>（コンセプトや雰囲気に一貫性を持たせること）をチェック。</li>
+    <li>バナー画像のデータ容量の制限はあるか？（例えば、100KBまで…など。）</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item6811" data-item-id="6811" data-item-type="ItemHeading"><h2 class="item-body" id="heading10">【8-3】実際に作ってみよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39353" data-item-id="39353" data-item-type="ItemMarkdown"><h4 id="heading11">目安の学習時間:30分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item51069" data-item-id="51069" data-item-type="ItemHtml"><div class="item-body"><!-- Figma_banner-mosha（8章・バナー模写） -->
+<video src="../media/med-6f603cb702.mp4" controls="" playsinline="" preload="metadata" style="width: 100%; border-radius: 12px; display: block;"></video></div></div>
+        
+        <div class="article-item item_html " id="item6812" data-item-id="6812" data-item-type="ItemHtml"><div class="item-body"><p>下記にサンプルデータがあります。こちらを模写してみましょう。（各サイズ2種類ありますが、どちらでもOKです。）</p>
+
+<p><strong>模写をすることでFigmaのツールの使い方が身に付き、デザインスキルも上がります。まずは、オリジナルのデザインにこだわらず、模写をコツコツ進めてスキルアップを目指しましょう。</strong></p></div></div>
+        
+        <div class="article-item item_rich_text " id="item6813" data-item-id="6813" data-item-type="ItemRichText"><div class="item-body-hbr">☑️ <span class="decoration-02">サンプルデータはこちら</span></div></div>
+        
+        <div class="article-item item_link " id="item6814" data-item-id="6814" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=eSPwi&amp;item_id=6814" rel="nofollow noopener noreferrer" target="_blank">Figma</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="Figma" data-reference="https://www.figma.com/design/DnheVjmAzrj2kLESM23ohv/Figma_Sample?node-id=1-144&amp;t=EMnGntcUfMAN8nus-1" src="../../_assets/e0a1410dc1.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">Created with Figma</div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6815" data-item-id="6815" data-item-type="ItemRichText"><div class="item-body-hbr">📷 <span class="decoration-02">バナー画像素材はこちら</span></div></div>
+        
+        <div class="article-item item_file " id="item38445" data-item-id="38445" data-item-type="ItemFile"><div class="media"><div class="pull-left"><img class="item-image" src="../../_assets/1f37ad7044.webp"></div><div class="media-body"><h4 class="media-heading item-body" id="heading12">バナー使用素材</h4><div style="margin-top:10px"><a class="btn btn-default btn-download" href="https://learn.webcoach.jp/media/works/items/38445/download"><svg class="ck-icon ck-icon--download" viewBox="0 0 1792 1792" aria-hidden="true" focusable="false"><path d="M1344 1344q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h465l135 136q58 56 136 56t136-56l136-136h464q40 0 68 28t28 68zm-325-569q17 41-14 70l-448 448q-18 19-45 19t-45-19l-448-448q-31-29-14-70 17-39 59-39h256v-448q0-26 19-45t45-19h256q26 0 45 19t19 45v448h256q42 0 59 39z"></path></svg> ダウンロード</a></div><div class="small text-muted">figma_chapter8_banner.zip (477 KB)</div></div></div></div>
+        
+        <div class="article-item item_heading " id="item6817" data-item-id="6817" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">■ 作成時の注意点</h3></div>
+        
+        <div class="article-item item_markdown " id="item6818" data-item-id="6818" data-item-type="ItemMarkdown"><ul>
+  <li>バナーのサイズ<br>
+バナーで使用されるサイズはおおむね決まっており、以下ピクセル（横 x 縦）が良く使われるサイズになります。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_html " id="item6819" data-item-id="6819" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        <tr>
+            <td>
+                <div>300 x 250</div>
+            </td>
+            <td>
+                <div>336 x 280</div>
+            </td>
+            <td>
+                <div>300 x 300</div>
+            </td>
+            <td>
+                <div>468 x 60</div>
+            </td>
+            <td>
+                <div>728 x 90</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div>320 x 50</div>
+            </td>
+            <td>
+                <div>320 x 100</div>
+            </td>
+            <td>
+                <div>120 x 600</div>
+            </td>
+            <td>
+                <div>160 x 600</div>
+            </td>
+            <td>
+                <div></div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_markdown " id="item6820" data-item-id="6820" data-item-type="ItemMarkdown"><ul>
+  <li>基本的には “フレーム” で設定します。</li>
+</ul>
+</div>
+        
+        <div class="article-item item_image " id="item6821" data-item-id="6821" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/821/medium/411d5022-be5b-459c-9a84-4ff676bafd3c.png?1732332240" title=""><img class="img-responsive item-image" alt=" (6821)" data-reference="" src="../../_assets/0e50644720.webp" width="640" height="383"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item6822" data-item-id="6822" data-item-type="ItemRichText"><div class="item-body-hbr">※このテンプレートを入手したい場合は下記。<br>
+☑️ <span class="decoration-02">テンプレートはこちら</span><br>
+　 &nbsp;<span class="decoration-01">「2章【2-1】C」</span>にてこのファイルの利用方法を説明しております。</div></div>
+        
+        <div class="article-item item_file " id="item6823" data-item-id="6823" data-item-type="ItemFile"><div class="media"><div class="pull-left"><img class="item-image" src="../../_assets/1f37ad7044.webp"></div><div class="media-body"><h4 class="media-heading item-body" id="heading15"></h4><div style="margin-top:10px"><a class="btn btn-default btn-download" href="https://learn.webcoach.jp/media/works/items/6823/download"><svg class="ck-icon ck-icon--download" viewBox="0 0 1792 1792" aria-hidden="true" focusable="false"><path d="M1344 1344q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm256 0q0-26-19-45t-45-19-45 19-19 45 19 45 45 19 45-19 19-45zm128-224v320q0 40-28 68t-68 28h-1472q-40 0-68-28t-28-68v-320q0-40 28-68t68-28h465l135 136q58 56 136 56t136-56l136-136h464q40 0 68 28t28 68zm-325-569q17 41-14 70l-448 448q-18 19-45 19t-45-19l-448-448q-31-29-14-70 17-39 59-39h256v-448q0-26 19-45t45-19h256q26 0 45 19t19 45v448h256q42 0 59 39z"></path></svg> ダウンロード</a></div><div class="small text-muted">バナーテンプレート.fig (19.8 KB)</div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item6824" data-item-id="6824" data-item-type="ItemMarkdown"><ul>
+  <li>リンク先とのトンマナを維持。</li>
+  <li>フォントの可読性に注意。※限られたスペースの中、文字数が多いとそれだけ小さくする必要がある。</li>
+  <li>適度なスペースを確保（上下左右のスペースはなるべく均等に）</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item6825" data-item-id="6825" data-item-type="ItemHeading"><h2 class="item-body" id="heading16">【8-4】書き出ししてみよう（エクスポート）</h2></div>
+        
+        <div class="article-item item_markdown " id="item39354" data-item-id="39354" data-item-type="ItemMarkdown"><h4 id="heading17">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6826" data-item-id="6826" data-item-type="ItemHtml"><div class="item-body"><div>１つデザインが完成したら、書き出ししてみましょう。</div>
+<div>Figmaの画面右下「エクスポート」より、画像を書き出すことができます。</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item6827" data-item-id="6827" data-item-type="ItemRichText"><div class="item-body-hbr">☑️ <span class="decoration-01">エクスポートして書き出し</span></div></div>
+        
+        <div class="article-item item_image " id="item6828" data-item-id="6828" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/006/828/medium/03f0153d-1773-4384-9a7f-fec6b3483bc3.png?1732332438" title=""><img class="img-responsive item-image" alt=" (6828)" data-reference="" src="../../_assets/a9a0b9de19.webp" width="640" height="388"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_html " id="item6829" data-item-id="6829" data-item-type="ItemHtml"><div class="item-body"><div>一般的に良く使われる画像形式は「.png」 です。</div>
+<div>写真が多く占める場合は「.jpg」を選択するのがベターです。</div></div></div>
+        
+        <div class="article-item item_heading " id="item6830" data-item-id="6830" data-item-type="ItemHeading"><h2 class="item-body" id="heading19">【8-5】リサイズしてみよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39355" data-item-id="39355" data-item-type="ItemMarkdown"><h4 id="heading20">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item6831" data-item-id="6831" data-item-type="ItemHtml"><div class="item-body"><p>
+	</p><div>同じ広告バナーでも、様々な媒体・異なった場所に掲載されるのは良くあります。</div>
+	<div>配置場所に準じたサイズになるよう、リサイズしてみましょう。</div>
+<p></p>
+
+<p>どのサイズのバナーでも同じトンマナになるよう作成するのがポイントです。</p></div></div>
+        
+        <div class="article-item item_html " id="item25551" data-item-id="25551" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/web-design/Rx3Kj" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/sVaN2" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">8章 歯医者さんサイトのバナー画像を作成してみよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:4時間</a></li></ul></li><li><a href="#heading2" class="tocLink">【8-1】バナー広告とは</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading4" class="tocLink">■ 他のWebページに誘導する為に設置する広告</a><ul><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading7" class="tocLink">【8-2】バナー画像を作る際の心得やコツなど</a><ul><li><a href="#heading8" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading9" class="tocLink">■ まず初めにポイントを抑えよう</a></li></ul></li><li><a href="#heading10" class="tocLink">【8-3】実際に作ってみよう</a><ul><li><a href="#heading11" class="tocLink">目安の学習時間:30分</a></li><li><a href="#heading12" class="tocLink">バナー使用素材</a></li></ul><ul><li><a href="#heading13" class="tocLink">■ 作成時の注意点</a><ul><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading16" class="tocLink">【8-4】書き出ししてみよう（エクスポート）</a><ul><li><a href="#heading17" class="tocLink">目安の学習時間:5分</a></li><li><a href="#heading18" class="tocLink"></a></li></ul></li><li><a href="#heading19" class="tocLink">【8-5】リサイズしてみよう</a><ul><li><a href="#heading20" class="tocLink">目安の学習時間:10分</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/web-design/Rx3Kj" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/web-design/sVaN2" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/movie-editing/QJ6ap -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>CapCut｜5章 音声編集の基本 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/movie-editing/QJ6ap">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="CapCut｜5章 音声編集の基本 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/809/medium/c5414a26-7001-41ca-bb82-33967198254e.png?1743250712">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="CapCut｜5章 音声編集の基本">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/movie-editing/QJ6ap">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/809/large/c5414a26-7001-41ca-bb82-33967198254e.png?1743250712">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="NX03wfcn0sglZw1oQhrs-etcJrDHH1ujppEWjaKWyCnKxjeyJ2UMFTWJvXK82LlDBc0z8CwC18QWq1WWJCM_nw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>動画編集</div>
+
+          <div class="fw-bold h2">CapCut｜5章 音声編集の基本</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink"> CapCut｜5章 音声編集の基本</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:35分</a></li><li><a href="#heading2" class="tocLink"></a></li></ul></li><li><a href="#heading3" class="tocLink">【5-1】音楽やナレーションの追加をしよう</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間:15分</a></li></ul><ul><li><a href="#heading5" class="tocLink">音楽ファイルのインポート</a><ul><li><a href="#heading6" class="tocLink">操作手順</a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">ナレーションの録音と追加</a><ul><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading18" class="tocLink">【5-2】音量を調整しよう</a><ul><li><a href="#heading19" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading20" class="tocLink">各クリップの音量調整</a></li><li><a href="#heading21" class="tocLink">オーディオフェード</a><ul><li><a href="#heading22" class="tocLink">操作手順</a></li></ul></li></ul></li><li><a href="#heading23" class="tocLink">【5-3】効果音の追加をしよう</a><ul><li><a href="#heading24" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading25" class="tocLink">効果音ライブラリの使用</a><ul><li><a href="#heading26" class="tocLink"></a></li></ul></li><li><a href="#heading27" class="tocLink">タイミング調整</a><ul><li><a href="#heading28" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25905" data-item-id="25905" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/BYTfP" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/ILHde" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item39884" data-item-id="39884" data-item-type="ItemHeading"><h2 class="item-body" id="heading0"> CapCut｜5章 音声編集の基本</h2></div>
+        
+        <div class="article-item item_markdown " id="item39885" data-item-id="39885" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:35分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item9596" data-item-id="9596" data-item-type="ItemText"><div class="item-body-hbr">この章では音声の追加から高度な調整を学ぶことで、よりプロフェッショナルなクオリティの動画を編集できるようになることを目標とします。</div></div>
+        
+        <div class="article-item item_image " id="item9597" data-item-id="9597" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/597/medium/744dbb78-7c49-4a6a-9bce-3e04063ec9bc.png?1743243469" title=""><img class="img-responsive item-image" alt=" (9597)" data-reference="" src="../../_assets/688d2d6546.webp" width="640" height="400"></a><h4 id="heading2"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item9598" data-item-id="9598" data-item-type="ItemMarkdown"><h2 id="heading3">【5-1】音楽やナレーションの追加をしよう</h2>
+</div>
+        
+        <div class="article-item item_markdown " id="item39886" data-item-id="39886" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間:15分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item9639" data-item-id="9639" data-item-type="ItemText"><div class="item-body-hbr">音楽やナレーションを追加することで、動画に深みと感情を与えることができます。<br><br>音声素材をどのようにインポートし、タイムラインに配置するか、さらに編集するためのテクニックを紹介します。</div></div>
+        
+        <div class="article-item item_markdown " id="item9601" data-item-id="9601" data-item-type="ItemMarkdown"><h3 id="heading5">音楽ファイルのインポート</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9640" data-item-id="9640" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>適切な音楽選びは動画の質に影響するため、テーマに合った音楽を選びましょう。</li>
+            <li>音楽の著作権やライセンスを確認することが重要です。</li>
+            <li>音楽の位置や長さを動画に合わせて正確に調整します。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item9641" data-item-id="9641" data-item-type="ItemMarkdown"><h4 id="heading6">操作手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item9642" data-item-id="9642" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">オーディオファイルを選択</span><br>
+ &nbsp; &nbsp;・ CapCutを開き「<span class="decoration-01">インポート</span>」タブから使用する楽曲をタイムラインに追加します。</div></div>
+        
+        <div class="article-item item_html " id="item38497" data-item-id="38497" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/import_audio.png" class="lightbox">
+  <img src="../../_assets/00f3b575e5.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_image " id="item9669" data-item-id="9669" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/669/medium/a4eda6d8-93f3-447a-a6eb-1a2d187b1c92.png?1743246856" title=""><img class="img-responsive item-image" alt=" (9669)" data-reference="" src="../../_assets/02fcea34cc.webp" width="640" height="414"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item9643" data-item-id="9643" data-item-type="ItemRichText"><div class="item-body-hbr">・もしくは「<span class="decoration-02"><span class="decoration-01">オーディオ</span></span>」タブからCapCutが提供する<span class="decoration-02"><span class="decoration-01">無料音楽ライブラリ</span></span>を使うことも可能です。</div></div>
+        
+        <div class="article-item item_html " id="item38498" data-item-id="38498" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/audio_BGM.png" class="lightbox">
+  <img src="../../_assets/6480925bfd.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_image " id="item9667" data-item-id="9667" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/667/medium/09f76826-007c-4279-9bcc-d0310fd42a65.png?1743246806" title=""><img class="img-responsive item-image" alt=" (9667)" data-reference="" src="../../_assets/01592111fd.webp" width="640" height="414"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item9644" data-item-id="9644" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">音楽をタイムラインにドラッグ</span><br>
+ &nbsp; ・ インポートした音楽ファイルを<span class="decoration-01"><span class="decoration-02">タイムラインのオーディオトラック</span></span>にドラッグ&amp;ドロップします。</div></div>
+        
+        <div class="article-item item_image " id="item9666" data-item-id="9666" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/666/medium/4b17f713-0dd6-4e06-bdcc-45791ea88450.png?1743246719" title=""><img class="img-responsive item-image" alt=" (9666)" data-reference="" src="../../_assets/0edd7f221b.webp" width="640" height="414"></a><h4 id="heading9"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item9645" data-item-id="9645" data-item-type="ItemRichText"><div class="item-body-hbr">・音楽が<span class="decoration-01"><span class="decoration-02">始まる位置と終わる位置をトリムで調整</span></span>し、動画の流れに合わせて配置します。</div></div>
+        
+        <div class="article-item item_html " id="item38499" data-item-id="38499" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/audio_trim.png" class="lightbox">
+  <img src="../../_assets/1df6267b08.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item9646" data-item-id="9646" data-item-type="ItemRichText"><div class="item-body-hbr">3. <span class="decoration-01">音楽の長さを調整</span><br>
+ &nbsp; &nbsp;・ 音楽の長さが動画に対して長すぎる場合、<span class="decoration-01"><span class="decoration-02">カットツール</span></span>（赤枠の部分）を使用して音楽を動画の長さに合わせます。</div></div>
+        
+        <div class="article-item item_image " id="item9664" data-item-id="9664" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/664/medium/031d4fe7-1806-4783-a446-61f87f84114a.png?1743246676" title=""><img class="img-responsive item-image" alt=" (9664)" data-reference="" src="../../_assets/47e4e8e59c.webp" width="640" height="414"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item9647" data-item-id="9647" data-item-type="ItemRichText"><div class="item-body-hbr">・ 短い場合は音楽をループ再生させる方法もあります。<br>
+ &nbsp; &nbsp;・ タイムライン上の音楽クリップをクリックして選択します。</div></div>
+        
+        <div class="article-item item_image " id="item9663" data-item-id="9663" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/663/medium/9b1c0c3d-4980-42d0-b63b-3e9efe7c6ed5.png?1743246575" title=""><img class="img-responsive item-image" alt=" (9663)" data-reference="" src="../../_assets/11a4a2c7f9.webp" width="640" height="414"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item9648" data-item-id="9648" data-item-type="ItemRichText"><div class="item-body-hbr">・選択した音楽クリップをコピーし、タイムライン上でペーストします。これにより、同じ音楽クリップが連続して再生されます。必要な長さになるまで、この操作を繰り返します。</div></div>
+        
+        <div class="article-item item_image " id="item9662" data-item-id="9662" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/662/medium/a94ad4f1-b759-4c34-abee-46ef59ea230a.png?1743246557" title=""><img class="img-responsive item-image" alt=" (9662)" data-reference="" src="../../_assets/9a7607a434.webp" width="640" height="414"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item9649" data-item-id="9649" data-item-type="ItemRichText"><div class="item-body-hbr">・クリップ間のつなぎ目が不自然に感じられる場合は、フェードイン・フェードアウト効果（後述）を適用して、音のつながりを滑らかにしましょう。</div></div>
+        
+        <div class="article-item item_image " id="item9661" data-item-id="9661" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/661/medium/e2ea1887-bd59-4391-a926-5aa6b20f4d75.png?1743246541"><img class="img-responsive item-image" alt=" (9661)" src="../../_assets/060d752385.webp" width="640" height="414"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item9659" data-item-id="9659" data-item-type="ItemRichText"><div class="item-body-hbr">4. <span class="decoration-01">複数の音楽を組み合わせる</span><br>
+ &nbsp; &nbsp;・ 動画のシーンごとに異なる雰囲気を作りたい場合、複数の音楽ファイルをタイムラインに追加し、それぞれの<span class="decoration-01"><span class="decoration-02">音楽の開始と終了を調整</span></span>します。</div></div>
+        
+        <div class="article-item item_image " id="item9660" data-item-id="9660" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/660/medium/184ee16c-4cd1-4def-989a-6fbf8383dc5b.png?1743246523" title=""><img class="img-responsive item-image" alt=" (9660)" data-reference="" src="../../_assets/4b150d3c82.webp" width="640" height="414"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item9637" data-item-id="9637" data-item-type="ItemMarkdown"><h3 id="heading15">ナレーションの録音と追加</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9638" data-item-id="9638" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>ナレーションは動画の内容を補足し、視聴者にメッセージを直接伝える手段です。</li>
+            <li>音質がクリアであることが重要です。<span class="decoration-02">静かな環境で録音し、外部マイクを使用することを推奨します。</span></li>
+            <li>ナレーションは動画のテンポやストーリーに適したタイミングで配置しましょう。</li>
+      </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item9636" data-item-id="9636" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">アフレコを起動</span><br>
+ &nbsp; &nbsp;・ <span class="decoration-01"><span class="decoration-02">アフレコボタン</span></span>をクリックし、CapCut内で直接ナレーションを録音します。</div></div>
+        
+        <div class="article-item item_html " id="item38500" data-item-id="38500" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/NA.png" class="lightbox">
+  <img src="../../_assets/d73f6de74e.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item9635" data-item-id="9635" data-item-type="ItemRichText"><div class="item-body-hbr">・ 録音開始前に、動画を再生しながら適切なタイミングで話すように心がけます。<br>
+・ ナレーションの内容は前もって考え、原稿を作成するようにしましょう。</div></div>
+        
+        <div class="article-item item_html " id="item38501" data-item-id="38501" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/NA2.png" class="lightbox">
+  <img src="../../_assets/75c15c70f1.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_html " id="item38502" data-item-id="38502" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/NA3.png" class="lightbox">
+  <img src="../../_assets/16b6775b8b.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item9634" data-item-id="9634" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">ナレーションの編集</span><br>
+ &nbsp; &nbsp;・ 録音が完了したら、ナレーションファイルが自動的に<span class="decoration-01"><span class="decoration-02">タイムラインのオーディオトラック</span></span>に追加されます。<br>
+ &nbsp; &nbsp;・ 必要に応じてナレーションの開始や終了を<span class="decoration-01"><span class="decoration-02">カットツール</span></span>で調整します。<br>
+ &nbsp; &nbsp;・ 声が途切れる部分や不要な部分は削除し、スムーズな流れを確保します。</div></div>
+        
+        <div class="article-item item_image " id="item9655" data-item-id="9655" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/655/medium/4e4f4f44-2740-4055-93cb-d054432082d5.png?1743245851" title=""><img class="img-responsive item-image" alt=" (9655)" data-reference="" src="../../_assets/cebde75b2d.webp" width="640" height="414"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item9633" data-item-id="9633" data-item-type="ItemRichText"><div class="item-body-hbr">3. <span class="decoration-01">エフェクトを追加します</span><br>
+ &nbsp;・ ナレーションに<span class="decoration-01"><span class="decoration-02">ノイズリダクション</span></span>をかけることで、プロフェッショナルな音質を得られます。<br>
+ &nbsp;・ <span class="decoration-01"><span class="decoration-02">ボイスチェンジャータブ</span></span>から、声の雰囲気に合った効果を適用することも可能です。</div></div>
+        
+        <div class="article-item item_html " id="item38503" data-item-id="38503" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/NA5.png" class="lightbox">
+  <img src="../../_assets/5f9808a3d6.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_image " id="item9653" data-item-id="9653" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/653/medium/9ecc6a6d-8744-4587-b381-b86df2ff5ab3.png?1743245786" title=""><img class="img-responsive item-image" alt=" (9653)" data-reference="" src="../../_assets/65d1a445b9.webp" width="640" height="414"></a><h4 id="heading17"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item9599" data-item-id="9599" data-item-type="ItemHeading"><h2 class="item-body" id="heading18">【5-2】音量を調整しよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39887" data-item-id="39887" data-item-type="ItemMarkdown"><h4 id="heading19">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item9632" data-item-id="9632" data-item-type="ItemText"><div class="item-body-hbr">異なる音源（音楽、ナレーション、効果音）が組み合わさることで、音量バランスが重要になります。<br><br>ここでは、音量を調整し、視聴者がストレスなく聞けるバランスの取れた動画に仕上げるための方法を解説します。</div></div>
+        
+        <div class="article-item item_markdown " id="item9603" data-item-id="9603" data-item-type="ItemMarkdown"><h3 id="heading20">各クリップの音量調整</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9631" data-item-id="9631" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>音声のバランスを取ることで、動画の品質が向上します。</li>
+            <li>ナレーションと音楽が重なった場合、<span class="decoration-02">ナレーションを目立たせるために音楽の音量を適度に下げましょう。</span></li>
+            <li>適切な音量調整によって、視聴者が快適に聞き取れます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item9630" data-item-id="9630" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">音量スライダーを使用</span><br>
+ &nbsp;・ タイムラインで音声クリップを選択し、画面右上に表示される「<span class="decoration-02">音量</span>」のスライダーを使って、音量を調整します。<br>
+ &nbsp;・ ナレーションが聞き取りやすいように、音楽の音量を調整するのが一般的です。</div></div>
+        
+        <div class="article-item item_html " id="item38504" data-item-id="38504" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/Sound_volume.png" class="lightbox">
+  <img src="../../_assets/7b60df734a.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_html " id="item38505" data-item-id="38505" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/Sound_volume2.png" class="lightbox">
+  <img src="../../_assets/3c9e28123a.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item9629" data-item-id="9629" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">キーフレームを使った音量の微調整</span><br>
+ &nbsp; &nbsp;・ 動画内で音量を部分的に変えたい場合、<span class="decoration-01"><span class="decoration-02">キーフレーム</span></span>を使ってシーンごとに音量を調整します。<br>
+ &nbsp; &nbsp;・ これにより、シーンごとに音楽の強弱をつけたり、音声でより豊かに内容を伝えることができます。</div></div>
+        
+        <div class="article-item item_html " id="item38506" data-item-id="38506" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/sound_pen.png" class="lightbox">
+  <img src="../../_assets/9e765f8b4e.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item49516" data-item-id="49516" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">※キーフレームとは</span></div></div>
+        
+        <div class="article-item item_text " id="item49514" data-item-id="49514" data-item-type="ItemText"><div class="item-body-hbr">キーフレームとは、動画、画像、テキスト、音声などのあらゆる素材の位置・サイズ・不透明度・音量を時間経過とともに自由に変え、ズーム、移動、フェードイン・アウトといったあらゆるアニメーション演出を可能にするための変化の起点・終点となる基準点のことです。</div></div>
+        
+        <div class="article-item item_rich_text " id="item49515" data-item-id="49515" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">キーフレームの使い方</span></div></div>
+        
+        <div class="article-item item_text " id="item49517" data-item-id="49517" data-item-type="ItemText"><div class="item-body-hbr">1. タイムライン上で編集したい素材（動画・画像・テキストなど）を選択します。</div></div>
+        
+        <div class="article-item item_text " id="item49518" data-item-id="49518" data-item-type="ItemText"><div class="item-body-hbr">2. 再生ヘッド（タイムラインの白い縦線）を変化を始めたい位置に合わせます。</div></div>
+        
+        <div class="article-item item_text " id="item49519" data-item-id="49519" data-item-type="ItemText"><div class="item-body-hbr">3. メニュー（画面右上の調整パネルなど）から、変化させたい項目（位置、スケール、不透明度、音量など）の横にあるキーフレームマーク（◇）を選択して、開始時点の数値を設定します。</div></div>
+        
+        <div class="article-item item_text " id="item49520" data-item-id="49520" data-item-type="ItemText"><div class="item-body-hbr">4. 次に再生ヘッドを変化を終わらせたい位置に合わせ、同様に変化させたい項目の終了時点の数値を設定します。（数値を変更すると、終了時点のキーフレームが自動的に打たれます）</div></div>
+        
+        <div class="article-item item_markdown " id="item9604" data-item-id="9604" data-item-type="ItemMarkdown"><h3 id="heading21">オーディオフェード</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9628" data-item-id="9628" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>フェードイン・フェードアウトを使うことで、音楽や効果音が自然に始まり終わる動画を制作できます。</li>
+            <li>突然の音の切れを防ぎ、視聴者にストレスのない快適な体験を提供できます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_markdown " id="item9625" data-item-id="9625" data-item-type="ItemMarkdown"><h4 id="heading22">操作手順</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item9624" data-item-id="9624" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">フェードイン・フェードアウトの設定</span><br>
+ &nbsp; ・ タイムライン上で音声クリップを選択し、画面右上の「ベーシック」設定内で、フェードイン・フェードアウトの長さを調整します。<br>
+ &nbsp; &nbsp; &nbsp; ┗ タイムライン上のオーディオクリップのポイント（赤枠内の点）を左右に動かして調整することも可能です。<br>
+ &nbsp; ・ フェードの時間を短くすると急に、長くすると徐々に音が入る効果になります。</div></div>
+        
+        <div class="article-item item_html " id="item38507" data-item-id="38507" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/sound_fade.png" class="lightbox">
+  <img src="../../_assets/129f7b8c16.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item9623" data-item-id="9623" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">フェードエフェクトのプレビューと調整</span><br>
+ &nbsp; &nbsp;・ フェードエフェクトが自然かどうか、タイムラインで再生しながら確認します。<br>
+ &nbsp; &nbsp;・ 必要であれば、フェードの長さや開始位置を微調整し、スムーズな音声の挿入を実現します。</div></div>
+        
+        <div class="article-item item_html " id="item38508" data-item-id="38508" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/sound_fadeout.png" class="lightbox">
+  <img src="../../_assets/f89bfa5841.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_heading " id="item9600" data-item-id="9600" data-item-type="ItemHeading"><h2 class="item-body" id="heading23">【5-3】効果音の追加をしよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39888" data-item-id="39888" data-item-type="ItemMarkdown"><h4 id="heading24">目安の学習時間:10分</h4>
+</div>
+        
+        <div class="article-item item_text " id="item9622" data-item-id="9622" data-item-type="ItemText"><div class="item-body-hbr">効果音は動画に臨場感を与えます。<br><br>特にアクションシーンや説明動画では、適切な効果音を追加することで、視覚だけでなく聴覚も活用した豊かな動画体験を提供できます。</div></div>
+        
+        <div class="article-item item_markdown " id="item9606" data-item-id="9606" data-item-type="ItemMarkdown"><h3 id="heading25">効果音ライブラリの使用</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9621" data-item-id="9621" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>動画の雰囲気や動作に応じた効果音を選びましょう。</li>
+            <li>効果音を適切なタイミングで挿入し、動画に躍動感を与えましょう。</li>
+            <li>効果音のボリュームやトーンを調整し、視聴者に違和感を与えないようにしましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item9617" data-item-id="9617" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">効果音の検索</span><br>
+ &nbsp; &nbsp;・ <span class="decoration-01"><span class="decoration-02">「オーディオ」タブ</span></span>でサウンドエフェクトに移動し、動画に合った効果音を検索します。<br>
+ &nbsp; &nbsp; &nbsp; &nbsp;┗ CapCutには多種多様な効果音が揃っています。<br>
+ &nbsp; &nbsp;・ 必要な効果音が見つからない場合は、自分のライブラリから効果音をインポートすることも可能です。</div></div>
+        
+        <div class="article-item item_html " id="item38509" data-item-id="38509" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/soundeffects.png" class="lightbox">
+  <img src="../../_assets/ed1a0aa04e.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item9616" data-item-id="9616" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">タイムラインに挿入</span><br>
+ &nbsp; &nbsp;・ 選択した効果音をタイムライン上の正確なタイミングにドラッグ&amp;ドロップします。<br>
+ &nbsp; &nbsp;・ 動画の動作やイベントに合わせ、効果音がぴったり一致するように調整します。</div></div>
+        
+        <div class="article-item item_html " id="item38510" data-item-id="38510" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/soundeffcts.png" class="lightbox">
+  <img src="../../_assets/6f505f2cc0.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_rich_text " id="item9615" data-item-id="9615" data-item-type="ItemRichText"><div class="item-body-hbr">3. <span class="decoration-01">複数の効果音を組み合わせる</span><br>
+ &nbsp; &nbsp;・ 一つのシーンに複数の効果音を組み合わせることで、よりリアルな演出が可能です。<br>
+ &nbsp; &nbsp; &nbsp; &nbsp;┗ たとえば、ドアの開閉音と足音を同時に入れるなど。</div></div>
+        
+        <div class="article-item item_image " id="item38511" data-item-id="38511" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/511/medium/7c1f992b-ca6e-4e59-b6c1-6a7a801d9d5f.png?1756827929" title=""><img class="img-responsive item-image" alt=" (38511)" data-reference="" src="../../_assets/8d5029cd93.webp" width="640" height="414"></a><h4 id="heading26"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item9605" data-item-id="9605" data-item-type="ItemMarkdown"><h3 id="heading27">タイミング調整</h3>
+</div>
+        
+        <div class="article-item item_html " id="item9614" data-item-id="9614" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">キーポイント</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>効果音が正確なタイミングで再生されることが重要</li>
+            <li>動作にぴったり一致する音を入れることで、動画のクオリティが向上</li>
+            <li>フレーム単位で音声のタイミングを調整する</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item9609" data-item-id="9609" data-item-type="ItemRichText"><div class="item-body-hbr">1. <span class="decoration-01">効果音のタイミングを調整</span><br>
+ &nbsp; &nbsp;・ タイムラインを拡大し、効果音の開始位置を<span class="decoration-01"><span class="decoration-02">フレーム単位で微調整</span></span>します。<br>
+ &nbsp; &nbsp;・ 効果音が動画の動作と完璧に一致するようにします。</div></div>
+        
+        <div class="article-item item_html " id="item38512" data-item-id="38512" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/soundeffcts.png" class="lightbox">
+  <img src="../../_assets/6f505f2cc0.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_html " id="item9608" data-item-id="9608" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">タイムラインの拡大</div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>タイムラインを拡大・縮小することで、より精密な編集が可能になります。</li>
+            <li>タイムライン右上にあるスライダーの「＋」ボタンをクリックすると、タイムラインを拡大できます。逆に、「−」ボタンをクリックすると縮小できます。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_html " id="item38513" data-item-id="38513" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/timeline_closeup.png" class="lightbox">
+  <img src="../../_assets/2a410ce729.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_image " id="item9611" data-item-id="9611" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/009/611/medium/84a4b5d1-48aa-4fd0-9935-700229239e7f.png?1743244022" title=""><img class="img-responsive item-image" alt=" (9611)" data-reference="" src="../../_assets/12b27063db.webp" width="640" height="414"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item9607" data-item-id="9607" data-item-type="ItemRichText"><div class="item-body-hbr">2. <span class="decoration-01">音量とトーンの微調整</span><br>
+ &nbsp; &nbsp;・ 効果音が他の音声やBGMに埋もれないよう、音量を調整します。<br>
+ &nbsp; &nbsp;・ 音が不自然にならないよう、他の音声とのバランスも考慮します。<br>
+3. <span class="decoration-01">プレビューしながら確認</span><br>
+ &nbsp; &nbsp;・ 効果音が意図通りのタイミングで再生されているか、<span class="decoration-01"><span class="decoration-02">プレビュー機能</span></span>を使って確認します。<br>
+ &nbsp; &nbsp;・ 必要であれば再度調整し、音と映像がシンクロしていることを確認します。</div></div>
+        
+        <div class="article-item item_html " id="item38514" data-item-id="38514" data-item-type="ItemHtml"><div class="item-body"><a href="https://learn.webcoach.jp/theme/webcoach/img/capcut/chapter5/soundeffects2.png" class="lightbox">
+  <img src="../../_assets/11a8e2934a.webp" alt="画像" class="lightbox-img">
+</a></div></div>
+        
+        <div class="article-item item_html " id="item25906" data-item-id="25906" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/movie-editing/BYTfP" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/ILHde" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink"> CapCut｜5章 音声編集の基本</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:35分</a></li><li><a href="#heading2" class="tocLink"></a></li></ul></li><li><a href="#heading3" class="tocLink">【5-1】音楽やナレーションの追加をしよう</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間:15分</a></li></ul><ul><li><a href="#heading5" class="tocLink">音楽ファイルのインポート</a><ul><li><a href="#heading6" class="tocLink">操作手順</a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li><li><a href="#heading12" class="tocLink"></a></li><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li></ul></li><li><a href="#heading15" class="tocLink">ナレーションの録音と追加</a><ul><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading18" class="tocLink">【5-2】音量を調整しよう</a><ul><li><a href="#heading19" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading20" class="tocLink">各クリップの音量調整</a></li><li><a href="#heading21" class="tocLink">オーディオフェード</a><ul><li><a href="#heading22" class="tocLink">操作手順</a></li></ul></li></ul></li><li><a href="#heading23" class="tocLink">【5-3】効果音の追加をしよう</a><ul><li><a href="#heading24" class="tocLink">目安の学習時間:10分</a></li></ul><ul><li><a href="#heading25" class="tocLink">効果音ライブラリの使用</a><ul><li><a href="#heading26" class="tocLink"></a></li></ul></li><li><a href="#heading27" class="tocLink">タイミング調整</a><ul><li><a href="#heading28" class="tocLink"></a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/movie-editing/BYTfP" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/movie-editing/ILHde" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

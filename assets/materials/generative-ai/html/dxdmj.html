@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-2/dxdmj -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head><body><div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48607" data-item-id="48607" data-item-type="ItemHtml"><div class="item-body">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>コンテンツカレンダーとネタ切れ防止戦略</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* コンテンツピラー */
+  .pillar-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 20px 0; }
+  .pillar-card { border-radius: 10px; padding: 14px; text-align: center; border-top: 3px solid; }
+  .pillar-card:nth-child(1) { background: #EBF0FF; border-color: #5B7BE8; }
+  .pillar-card:nth-child(2) { background: #FFF3E6; border-color: #E0882A; }
+  .pillar-card:nth-child(3) { background: #FFE8E4; border-color: #E85D4A; }
+  .pillar-card:nth-child(4) { background: #F0FBF4; border-color: #4CAF7C; }
+  .pillar-card:nth-child(5) { background: #F3E8FF; border-color: #7B4FCC; }
+  .pillar-card__num { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+  .pillar-card:nth-child(1) .pillar-card__num { color: #5B7BE8; }
+  .pillar-card:nth-child(2) .pillar-card__num { color: #E0882A; }
+  .pillar-card:nth-child(3) .pillar-card__num { color: #E85D4A; }
+  .pillar-card:nth-child(4) .pillar-card__num { color: #4CAF7C; }
+  .pillar-card:nth-child(5) .pillar-card__num { color: #7B4FCC; }
+  .pillar-card__name { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+  .pillar-card__example { font-size: 11px; color: #666; line-height: 1.6; }
+
+  /* ネタ出しフレームワーク */
+  .neta-framework { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+  .neta-item { background: #F7F8FA; border-radius: 8px; padding: 14px 16px; display: flex; gap: 14px; align-items: flex-start; }
+  .neta-badge {
+    padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
+    flex-shrink: 0; white-space: nowrap;
+  }
+  .neta-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .neta-examples { font-size: 12px; color: #666; line-height: 1.7; }
+
+  /* コンテンツカレンダーサンプル */
+  .calendar-mock { margin: 20px 0; }
+  .calendar-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 8px; }
+  .cal-day { border-radius: 8px; padding: 8px; font-size: 11px; text-align: center; min-height: 60px; }
+  .cal-day__label { font-weight: 700; color: #888; margin-bottom: 4px; }
+  .cal-day--edu { background: #EBF0FF; }
+  .cal-day--emp { background: #FFF3E6; }
+  .cal-day--ent { background: #FFE8E4; }
+  .cal-day--cta { background: #F0FBF4; }
+  .cal-day--rest { background: #F7F8FA; }
+  .cal-day__type { font-size: 10px; font-weight: 700; margin-bottom: 3px; }
+  .cal-day--edu .cal-day__type { color: #5B7BE8; }
+  .cal-day--emp .cal-day__type { color: #E0882A; }
+  .cal-day--ent .cal-day__type { color: #E85D4A; }
+  .cal-day--cta .cal-day__type { color: #4CAF7C; }
+  .cal-day__title { font-size: 10px; color: #555; line-height: 1.4; }
+
+  /* AIプロンプトボックス */
+  .ai-box {
+    background: linear-gradient(135deg, #2D1B69 0%, #4A3080 100%);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 24px 0;
+    color: white;
+  }
+  .ai-box__header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .ai-box__icon { font-size: 20px; }
+  .ai-box__title { font-size: 15px; font-weight: 700; }
+  .ai-box__badge { font-size: 11px; background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 20px; }
+  .ai-prompt {
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    padding: 16px;
+    font-size: 13px;
+    line-height: 1.8;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre-wrap;
+    color: #E8E8E8;
+    margin-bottom: 12px;
+  }
+  .prompt-var { color: #F5A64A; font-weight: 700; }
+  .ai-box__note { font-size: 12px; opacity: 0.75; line-height: 1.7; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .pillar-grid { grid-template-columns: repeat(2, 1fr); }
+    .calendar-week { grid-template-columns: repeat(4, 1fr); }
+    .hero__title { font-size: 22px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="sxMPLdZKJ9wi2gGIbmVSQhESGdMaWXqM63rjaEDdbbqXk7IXVMHq24c2HBVqbdKwR19_Vk4qVqAIkX3bmsNISw"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale">
+
+
+<div class="hero">
+  <div class="hero__label">Course B — Chapter 2 / Lesson 2 【SNS運用者向け】</div>
+  <div class="hero__title">コンテンツカレンダーと<br>ネタ切れ防止戦略</div>
+  <div class="hero__meta">
+    <span>⏱ 40分</span>
+    <span>🛠 手順書</span>
+    <span>✨ AI活用あり</span>
+  </div>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-2/GvvB8" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-2/852SH" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<div class="container">
+
+  <div class="intro-box reveal visible">
+    <div class="intro-box__text">
+      「何を投稿するか毎回悩む」「ネタが思い浮かばない日は更新をサボってしまう」——この悩みは「仕組み不足」で解決できます。<br>
+      <strong>コンテンツピラーとコンテンツカレンダー</strong>を設計することで、1ヶ月分のネタを先に決め、悩まずに投稿できる体制が整います。
+    </div>
+  </div>
+
+  <!-- コンテンツピラー -->
+  <div class="card reveal visible">
+    <div class="card__title">コンテンツピラー——ネタ切れしない「5本柱」を設計する</div>
+    <p>コンテンツピラーとは、アカウントが継続的に扱う「テーマの柱」です。3〜5本のピラーを決めておくと、「今日何を投稿するか」の選択肢が常にある状態になります。</p>
+
+    <p style="font-size: 13px; color: #888; margin-bottom: 12px;">例: ヨガスタジオSNS運用の場合</p>
+    <div class="pillar-grid">
+      <div class="pillar-card">
+        <div class="pillar-card__num">P1</div>
+        <div class="pillar-card__name">毎日ヨガ</div>
+        <div class="pillar-card__example">朝5分ヨガ動画・初心者向けポーズ解説</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-card__num">P2</div>
+        <div class="pillar-card__name">体の悩み解決</div>
+        <div class="pillar-card__example">肩こり・腰痛・疲れ目への対策投稿</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-card__num">P3</div>
+        <div class="pillar-card__name">生徒さんの声</div>
+        <div class="pillar-card__example">体験談・Before/After・感想投稿</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-card__num">P4</div>
+        <div class="pillar-card__name">舞台裏</div>
+        <div class="pillar-card__example">スタジオの日常・インストラクターの話</div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-card__num">P5</div>
+        <div class="pillar-card__name">体験案内</div>
+        <div class="pillar-card__example">体験レッスンCTA・限定特典案内</div>
+      </div>
+    </div>
+
+    <p>このピラーがあれば「今日は肩こり対策ネタ（P2）を図解で」「今週末は体験告知（P5）を入れよう」と計画的に作れます。</p>
+  </div>
+
+  <!-- ネタ出しフレームワーク -->
+  <div class="card reveal visible">
+    <div class="card__title">30日分のネタを生み出す5つのフレームワーク</div>
+
+    <div class="neta-framework">
+      <div class="neta-item">
+        <span class="neta-badge" style="background:#EBF0FF; color:#5B7BE8;">FAQ型</span>
+        <div>
+          <div class="neta-title">よくある質問・疑問に答える</div>
+          <div class="neta-examples">「ヨガ初心者でも大丈夫？」「週何回来ればいい？」「体が硬くても参加できる？」→ ペルソナが検索・思い浮かべる質問をすべてリストアップして1つずつ投稿にする</div>
+        </div>
+      </div>
+      <div class="neta-item">
+        <span class="neta-badge" style="background:#FFF3E6; color:#E0882A;">比較型</span>
+        <div>
+          <div class="neta-title">「〇〇 vs △△」「NG vs OK」</div>
+          <div class="neta-examples">「効果がある運動 vs 続かない運動」「腰痛をひどくするNG姿勢 vs 改善する姿勢」→ 対比で見せると保存率が上がりやすい</div>
+        </div>
+      </div>
+      <div class="neta-item">
+        <span class="neta-badge" style="background:#FFE8E4; color:#E85D4A;">リスト型</span>
+        <div>
+          <div class="neta-title">「〇選・〇つのコツ」</div>
+          <div class="neta-examples">「忙しい人がヨガを続けるための3つのコツ」「体がかたい人こそやってほしい5ポーズ」→ スキャンしやすく保存されやすい定番フォーマット</div>
+        </div>
+      </div>
+      <div class="neta-item">
+        <span class="neta-badge" style="background:#F0FBF4; color:#2E9B6E;">物語型</span>
+        <div>
+          <div class="neta-title">「〇〇だった私が〇〇になった話」</div>
+          <div class="neta-examples">「残業で毎晩疲弊していた私がヨガを始めて変わったこと」→ 共感→驚き→行動の流れで感情が動きやすい</div>
+        </div>
+      </div>
+      <div class="neta-item">
+        <span class="neta-badge" style="background:#F3E8FF; color:#7B4FCC;">時事・季節型</span>
+        <div>
+          <div class="neta-title">トレンド・季節・行事に乗る</div>
+          <div class="neta-examples">「4月の新生活で体調を崩さないためのヨガ習慣」「夏前に試したいウエスト引き締めポーズ」→ 検索が増える時期に合わせて企画</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- カレンダーサンプル -->
+  <div class="card reveal visible">
+    <div class="card__title">コンテンツカレンダーのサンプル（週3投稿×4週）</div>
+    <p style="font-size: 13px; color: #888; margin-bottom: 12px;">週3投稿（月・水・金）のカレンダー例</p>
+
+    <div class="calendar-mock">
+      <div class="calendar-week">
+        <div class="cal-day cal-day--edu">
+          <div class="cal-day__label">月</div>
+          <div class="cal-day__type">教育</div>
+          <div class="cal-day__title">肩こりNG姿勢3選（図解）</div>
+        </div>
+        <div class="cal-day cal-day--rest">
+          <div class="cal-day__label">火</div>
+          <div class="cal-day__title" style="color:#CCC;">休</div>
+        </div>
+        <div class="cal-day cal-day--emp">
+          <div class="cal-day__label">水</div>
+          <div class="cal-day__type">共感</div>
+          <div class="cal-day__title">「残業後ヨガ行きたいけど疲れて無理」あるある</div>
+        </div>
+        <div class="cal-day cal-day--rest">
+          <div class="cal-day__label">木</div>
+          <div class="cal-day__title" style="color:#CCC;">休</div>
+        </div>
+        <div class="cal-day cal-day--ent">
+          <div class="cal-day__label">金</div>
+          <div class="cal-day__type">エンタメ</div>
+          <div class="cal-day__title">朝5分ヨガ動画（リール）</div>
+        </div>
+        <div class="cal-day cal-day--rest">
+          <div class="cal-day__label">土</div>
+          <div class="cal-day__title" style="color:#CCC;">休</div>
+        </div>
+        <div class="cal-day cal-day--rest">
+          <div class="cal-day__label">日</div>
+          <div class="cal-day__title" style="color:#CCC;">休</div>
+        </div>
+      </div>
+      <div class="calendar-week">
+        <div class="cal-day cal-day--edu">
+          <div class="cal-day__label">月</div>
+          <div class="cal-day__type">教育</div>
+          <div class="cal-day__title">体が硬くても大丈夫な5ポーズ</div>
+        </div>
+        <div class="cal-day cal-day--rest"><div class="cal-day__label">火</div></div>
+        <div class="cal-day cal-day--emp">
+          <div class="cal-day__label">水</div>
+          <div class="cal-day__type">共感</div>
+          <div class="cal-day__title">生徒Aさんの体験談ストーリー</div>
+        </div>
+        <div class="cal-day cal-day--rest"><div class="cal-day__label">木</div></div>
+        <div class="cal-day cal-day--cta">
+          <div class="cal-day__label">金</div>
+          <div class="cal-day__type">CTA</div>
+          <div class="cal-day__title">体験レッスン案内（土曜残枠2）</div>
+        </div>
+        <div class="cal-day cal-day--rest"><div class="cal-day__label">土</div></div>
+        <div class="cal-day cal-day--rest"><div class="cal-day__label">日</div></div>
+      </div>
+    </div>
+    <p style="font-size: 12px; color: #888;">カレンダーに投稿タイプ・テーマ・フォーマットまで書き込んでおくと、制作当日は「作るだけ」の状態になれる。</p>
+  </div>
+
+  <!-- AIプロンプト -->
+  <div class="ai-box reveal visible">
+    <div class="ai-box__header">
+      <div class="ai-box__icon">🤖</div>
+      <div class="ai-box__title">Claudeでコンテンツアイデア100本出し</div>
+      <div class="ai-box__badge">AI活用</div>
+    </div>
+    <div class="ai-prompt">あなたはSNSコンテンツプランナーです。以下の情報をもとに、Instagramの投稿アイデアを100本出してください。
+
+【アカウントのコンセプト】
+<span class="prompt-var">（例: 忙しい社会人向けのヨガアカウント。体の不調解消と自分時間を作ることをテーマに）</span>
+
+【ターゲットペルソナ】
+<span class="prompt-var">（例: 27歳・IT企業勤務・残業多め・体を動かしたい・自己投資に積極的）</span>
+
+【コンテンツピラー（3〜5本）】
+<span class="prompt-var">（例: ①毎日ヨガ②体の悩み解決③生徒の声④スタジオの日常⑤体験案内）</span>
+
+各アイデアは以下の形式で：
+・タイトル案（キャプションの冒頭1行）
+・ジャンル（教育/共感/エンタメ/CTA）
+・おすすめフォーマット（図解/動画/テキスト/カルーセル）</div>
+    <div class="ai-box__note">100本出してもらって、その中から「これは良さそう」を20本選ぶ。20本が1〜2ヶ月分のカレンダー素材になります。</div>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal visible">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">コンテンツピラーで軸を持ち、<br>フレームワーク+AIで無限にネタを生み出す。</div>
+    <div class="summary-card__sub">
+      3〜5本のコンテンツピラーがネタ切れを防ぐ土台になる。<br>
+      FAQ・比較・リスト・物語・季節の5型でネタを生産する。<br>
+      Claudeで100本出し→20本厳選でカレンダーを作る。<br><br>
+      次のレッスンでは「エンゲージメント分析と改善サイクル」を学びます。
+    </div>
+  </div>
+
+</div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-2/GvvB8" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/generative-ai/ai_web_marketing/B-2/852SH" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+</body></html>

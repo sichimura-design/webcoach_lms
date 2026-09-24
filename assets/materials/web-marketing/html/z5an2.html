@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-marketing/Z5an2 -->
+<!-- clipkit-fetched-at: 2026-09-18T09:16:03.297Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Facebook広告運用 -基礎編- - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-marketing/Z5an2">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Facebook広告運用 -基礎編- - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/958/medium/1770e05f-f93b-4efe-8c10-84d07781751a.png?1719295287">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Facebook広告運用 -基礎編-">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-marketing/Z5an2">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/958/large/1770e05f-f93b-4efe-8c10-84d07781751a.png?1719295287">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="DweObbDbuhM1BkG36wmrbLPTtmvEDdAO0kSUhcckd4CL7k04Aokk6ujlzJmaJ4EUXvMjD7U3vuvrL_oNdYPRrA"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBマーケティング</div>
+
+          <div class="fw-bold h2">Facebook広告運用 -基礎編-</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0.はじめに</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:40分</a></li></ul></li><li><a href="#heading2" class="tocLink">1. Facebook広告とは</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間:3分</a></li></ul><ul><li><a href="#heading4" class="tocLink">a. そもそもFacebookとは</a></li><li><a href="#heading5" class="tocLink">b. Facebook広告の配信先は4つ</a></li></ul></li><li><a href="#heading6" class="tocLink">2. Facebook広告のメリット</a><ul><li><a href="#heading7" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading8" class="tocLink">a. 日予算2000円からの低予算でスタートし結果を出せる</a></li><li><a href="#heading9" class="tocLink">b. SNSでの活動情報に基づく極めて高いターゲティング精度</a></li><li><a href="#heading10" class="tocLink">c. 認知度向上、問い合わせ獲得、商品購入などあらゆる目的に沿って広告配信できる</a></li><li><a href="#heading11" class="tocLink">d. 最適化アルゴリズムが優秀</a></li></ul></li><li><a href="#heading12" class="tocLink">3. Facebook広告の三層構造</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間:5分</a></li><li><a href="#heading14" class="tocLink"></a></li></ul><ul><li><a href="#heading15" class="tocLink">a. キャンペーンとは</a></li><li><a href="#heading16" class="tocLink">b. 広告セットとは</a></li><li><a href="#heading17" class="tocLink">c. 広告とは</a></li></ul></li><li><a href="#heading18" class="tocLink">4. キャンペーンにおける「目的」の解説</a><ul><li><a href="#heading19" class="tocLink">目安の学習時間:8分</a></li><li><a href="#heading20" class="tocLink"></a></li></ul><ul><li><a href="#heading21" class="tocLink">(認知①)ブランドの認知度アップ</a></li><li><a href="#heading22" class="tocLink">(認知②)リーチ</a></li><li><a href="#heading23" class="tocLink">(検討①)トラフィック</a></li><li><a href="#heading24" class="tocLink">(検討②)エンゲージメント</a></li><li><a href="#heading25" class="tocLink">(検討③)アプリのインストール</a></li><li><a href="#heading26" class="tocLink">(検討④)動画の再生数アップ</a></li><li><a href="#heading27" class="tocLink">(検討⑤)リード獲得</a></li><li><a href="#heading28" class="tocLink">(検討⑥)メッセージ</a></li><li><a href="#heading29" class="tocLink">(コンバージョン①)コンバージョン</a></li><li><a href="#heading30" class="tocLink">(コンバージョン②)カタログ販売</a></li><li><a href="#heading31" class="tocLink">(コンバージョン③)来店数の増加</a><ul><li><a href="#heading32" class="tocLink">一つ疑問が浮かびますよね。結局どの目的を設定すれば良いのか？</a></li></ul></li></ul></li><li><a href="#heading33" class="tocLink">5. キャンペーン予算の最適化 vs 広告セット単位での予算設定</a><ul><li><a href="#heading34" class="tocLink">目安の学習時間:3分</a></li></ul><ul><li><a href="#heading35" class="tocLink">キャンペーン予算の最適化とは</a></li></ul></li><li><a href="#heading36" class="tocLink">6. Facebook広告のフォーマットは大きく4つ</a><ul><li><a href="#heading37" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading38" class="tocLink">1.画像</a><ul><li><a href="#heading39" class="tocLink"></a></li></ul></li><li><a href="#heading40" class="tocLink">2. 動画</a></li><li><a href="#heading41" class="tocLink">3. カルーセル広告</a></li><li><a href="#heading42" class="tocLink">4. コレクション</a></li><li><a href="#heading43" class="tocLink">★ どのフォーマットを使用するべきなのか？</a></li></ul></li><li><a href="#heading44" class="tocLink">7. Facebookにおける広告作成のTIPS</a><ul><li><a href="#heading45" class="tocLink">目安の学習時間:6分</a></li></ul><ul><li><a href="#heading46" class="tocLink">1. 解像度が高い画像を使用する</a></li><li><a href="#heading47" class="tocLink">2. 配置別の推奨アスペクト比を活用する</a></li><li><a href="#heading48" class="tocLink">3. 画像自体にテキストを入れすぎない</a></li><li><a href="#heading49" class="tocLink">4. UGC風クリエイティブはパフォーマンスが高い傾向</a></li><li><a href="#heading50" class="tocLink">5. CTRとCVR両方意識したクリエイティブを作るべし</a></li><li><a href="#heading51" class="tocLink">Facebook広告の配置</a><ul><li><a href="#heading52" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading53" class="tocLink">8. Facebook広告のオークションの仕組み</a><ul><li><a href="#heading54" class="tocLink">目安の学習時間:5分</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item39614" data-item-id="39614" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">0.はじめに</h2></div>
+        
+        <div class="article-item item_markdown " id="item39615" data-item-id="39615" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:40分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item1939" data-item-id="1939" data-item-type="ItemHeading"><h2 class="item-body" id="heading2">1. Facebook広告とは</h2></div>
+        
+        <div class="article-item item_markdown " id="item39616" data-item-id="39616" data-item-type="ItemMarkdown"><h4 id="heading3">目安の学習時間:3分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1940" data-item-id="1940" data-item-type="ItemMarkdown"><p>Facebookの広告配信プラットフォームです。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1941" data-item-id="1941" data-item-type="ItemHeading"><h3 class="item-body" id="heading4">a. そもそもFacebookとは</h3></div>
+        
+        <div class="article-item item_markdown " id="item1942" data-item-id="1942" data-item-type="ItemMarkdown"><p>Facebookは全世界で26億を超えるユーザーが利用している巨大SNSです。</p>
+
+<p>日本においてもアクティブユーザー数が数千万人を超える大人気のSNSとなっており、使っている方も多いのではないでしょうか。</p>
+
+<p>運営母体はアメリカのMeta社です。</p>
+
+<p>Meta社はFacebookだけでなくInstagramも運用しています。</p>
+
+<p>※余談ですが、InstagramはかつてFacebook社が買収したという経緯があります。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1943" data-item-id="1943" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">b. Facebook広告の配信先は4つ</h3></div>
+        
+        <div class="article-item item_markdown " id="item1944" data-item-id="1944" data-item-type="ItemMarkdown"><p>Facebook, Instagram, Messenger, Audience Networkの4つです。</p>
+</div>
+        
+        <div class="article-item item_html " id="item5796" data-item-id="5796" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        </tbody><thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div>配信先</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>特徴</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody><tr>
+            <th scope="row">
+                <div>
+                    <div>Facebook</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>知人や家族と繋がれるSNSです。Instagramに比べると利用年齢層が高いです。</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>Messenger</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Facebookを利用している人々と連絡を取れるチャットツールです。ビジネスシーンではよく使われます。</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>Instagram</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Facebook社が運用している、写真・動画メインのSNSです。Facebookに比べると若い人が多く使っています。</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>Audience Network</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>Audience Networkとは、Facebook広告を活用してFacebookが提携しているメディア・スマホアプリにて広告掲載ができる仕組みです。</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item1945" data-item-id="1945" data-item-type="ItemHeading"><h2 class="item-body" id="heading6">2. Facebook広告のメリット</h2></div>
+        
+        <div class="article-item item_markdown " id="item39617" data-item-id="39617" data-item-type="ItemMarkdown"><h4 id="heading7">目安の学習時間:5分</h4>
+
+</div>
+        
+        <div class="article-item item_heading " id="item1946" data-item-id="1946" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">a. 日予算2000円からの低予算でスタートし結果を出せる</h3></div>
+        
+        <div class="article-item item_markdown " id="item1947" data-item-id="1947" data-item-type="ItemMarkdown"><p>Facebook広告は1日あたりの予算が2000円程度と破格の値段でスタートできます。</p>
+
+<p>そんな費用で結果が出るの？と思われる方いらっしゃるかもしれませんが、これが意外と結果が出ます。</p>
+</div>
+        
+        <div class="article-item item_html " id="item1948" data-item-id="1948" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">個人でビジネスをスタートされる方は、Facebook広告の活用を検討すると良いでしょう。</div></div></div>
+        
+        <div class="article-item item_heading " id="item1949" data-item-id="1949" data-item-type="ItemHeading"><h3 class="item-body" id="heading9">b. SNSでの活動情報に基づく極めて高いターゲティング精度</h3></div>
+        
+        <div class="article-item item_markdown " id="item1950" data-item-id="1950" data-item-type="ItemMarkdown"><p>Facebookは実名性で誕生日、職業、家族構成など個人情報を登録していくSNSになっているため、かなり詳細にターゲティングすることができます。</p>
+
+<p>実際に以下のような軸に沿ってターゲット設定ができます。</p>
+
+<ul>
+  <li>地域
+住んでいる地域</li>
+  <li>年齢</li>
+  <li>性別</li>
+  <li>言語</li>
+  <li>利用者層
+    <ul>
+      <li>学歴</li>
+      <li>ライフイベント</li>
+      <li>仕事</li>
+    </ul>
+  </li>
+  <li>趣味・関心
+    <ul>
+      <li>テクノロジー</li>
+      <li>スポーツ</li>
+      <li>レジャー</li>
+      <li>ファッション etc・・・</li>
+    </ul>
+  </li>
+  <li>行動
+    <ul>
+      <li>使用デバイス</li>
+      <li>WIFI使用しているか etc・・・</li>
+    </ul>
+  </li>
+</ul>
+</div>
+        
+        <div class="article-item item_rich_text " id="item1951" data-item-id="1951" data-item-type="ItemRichText"><div class="item-body-hbr">など、一部だけを紹介しましたが、<span class="decoration-02"><span class="decoration-01">これだけ詳細にターゲティングできるのはFacebook広告くらい</span></span>です。</div></div>
+        
+        <div class="article-item item_heading " id="item1952" data-item-id="1952" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">c. 認知度向上、問い合わせ獲得、商品購入などあらゆる目的に沿って広告配信できる</h3></div>
+        
+        <div class="article-item item_markdown " id="item1953" data-item-id="1953" data-item-type="ItemMarkdown"><p>以下がその例です。</p>
+
+<p><strong>&lt;認知&gt;</strong></p>
+
+<ul>
+  <li>ブランドの認知度アップ</li>
+  <li>リーチ</li>
+  <li>トラフィック</li>
+</ul>
+
+<p><strong>&lt;検討&gt;</strong></p>
+
+<ul>
+  <li>エンゲージメント</li>
+  <li>アプリのインストール</li>
+  <li>動画の再生数アップ</li>
+  <li>リード獲得</li>
+  <li>メッセージ</li>
+</ul>
+
+<p><strong>&lt;コンバージョン&gt;</strong></p>
+
+<ul>
+  <li>コンバージョン</li>
+  <li>カタログからの販売</li>
+  <li>来店数の増加</li>
+</ul>
+
+<p>すごい目的の数ですよね。選び方は後ほどまた解説しますが、ビジネス目的に沿った設定が必ずあるので効果が出やすいです。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1954" data-item-id="1954" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">d. 最適化アルゴリズムが優秀</h3></div>
+        
+        <div class="article-item item_markdown " id="item1955" data-item-id="1955" data-item-type="ItemMarkdown"><p>Facebookの「AI」は非常に優秀です。</p>
+
+<p>アルゴリズムとは、「問題を解決するための手順や計算方法」のことを指します。</p>
+
+<p>Facebook広告はAIのアルゴリズムが非常に優秀なため、広告を配信しているとAIが自動で最適化をかけて効果を最大化してくれます。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1956" data-item-id="1956" data-item-type="ItemHeading"><h2 class="item-body" id="heading12">3. Facebook広告の三層構造</h2></div>
+        
+        <div class="article-item item_markdown " id="item39618" data-item-id="39618" data-item-type="ItemMarkdown"><h4 id="heading13">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1957" data-item-id="1957" data-item-type="ItemMarkdown"><p>Facebook広告の構造について説明します。</p>
+
+<p>Facebook広告は<strong>キャンペーン・広告セット・広告の三層構造</strong>になっていると覚えておいてください。</p>
+</div>
+        
+        <div class="article-item item_image " id="item1958" data-item-id="1958" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/958/medium/1770e05f-f93b-4efe-8c10-84d07781751a.png?1719295287" title=""><img class="img-responsive item-image" alt=" (1958)" data-reference="" src="../../_assets/92c7c1121c.webp" width="640" height="354"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item1959" data-item-id="1959" data-item-type="ItemHeading"><h3 class="item-body" id="heading15">a. キャンペーンとは</h3></div>
+        
+        <div class="article-item item_markdown " id="item1960" data-item-id="1960" data-item-type="ItemMarkdown"><p>広告を掲載しよう！となったらまずはキャンペーンを作成しましょう。</p>
+
+<p><strong>キャンペーン単位で広告の目的を設定します。</strong></p>
+
+<p>またキャンペーン単位で予算を設定することも可能です。</p>
+
+<p><strong>&lt;キャンペーンでやることリスト&gt;</strong></p>
+</div>
+        
+        <div class="article-item item_html " id="item1961" data-item-id="1961" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>目的の設定</li>
+    <li>(任意) 予算の設定&amp;入札戦略の設定</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item1962" data-item-id="1962" data-item-type="ItemHeading"><h3 class="item-body" id="heading16">b. 広告セットとは</h3></div>
+        
+        <div class="article-item item_markdown " id="item1963" data-item-id="1963" data-item-type="ItemMarkdown"><p>広告セットにおいては、広告のターゲットの設定、(キャンペーン単位で予算設定していない場合は)予算の設定、配信スケジュールの設定を行うことができます。</p>
+
+<p><strong>&lt;広告セットでやることリスト&gt;</strong></p>
+</div>
+        
+        <div class="article-item item_html " id="item1964" data-item-id="1964" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>ターゲット設定</li>
+    <li>予算設定&amp;入札戦略の設定</li>
+    <li>配信スケジュールの設定</li>
+    <li>(任意) 入札価格の設定</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item1965" data-item-id="1965" data-item-type="ItemHeading"><h3 class="item-body" id="heading17">c. 広告とは</h3></div>
+        
+        <div class="article-item item_markdown " id="item1966" data-item-id="1966" data-item-type="ItemMarkdown"><p>広告とは、ターゲットに実際に表示される広告クリエイティブのことです。</p>
+
+<p>1つの広告セット内に複数の広告を作成することができます。</p>
+
+<p><strong>&lt;広告でやることリスト&gt;</strong></p>
+</div>
+        
+        <div class="article-item item_html " id="item1967" data-item-id="1967" data-item-type="ItemHtml"><div class="item-body"><ul class="checkbox">
+    <li>広告の作成</li>
+</ul></div></div>
+        
+        <div class="article-item item_markdown " id="item1968" data-item-id="1968" data-item-type="ItemMarkdown"><ul>
+  <li>広告の名前</li>
+  <li>画像・動画等のアップロード</li>
+  <li>コールトゥアクションボタンの設定</li>
+  <li>リンク先の設定
+    <ul>
+      <li>パラメータ設定</li>
+    </ul>
+  </li>
+  <li>見出し・説明などテキスト情報</li>
+</ul>
+</div>
+        
+        <div class="article-item item_heading " id="item1969" data-item-id="1969" data-item-type="ItemHeading"><h2 class="item-body" id="heading18">4. キャンペーンにおける「目的」の解説</h2></div>
+        
+        <div class="article-item item_markdown " id="item39619" data-item-id="39619" data-item-type="ItemMarkdown"><h4 id="heading19">目安の学習時間:8分</h4>
+</div>
+        
+        <div class="article-item item_image " id="item1970" data-item-id="1970" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/001/970/medium/aba62c6d-c78f-42c2-8543-a3dd219b20db.png?1719295523" title=""><img class="img-responsive item-image" alt=" (1970)" data-reference="" src="../../_assets/7cb2dce471.webp" width="604" height="529"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item1971" data-item-id="1971" data-item-type="ItemMarkdown"><p>キャンペーンを作成ボタンを押すとこちらのように目的を選択する画面に飛びます。</p>
+
+<p>購入タイプはオークションでOKです。</p>
+
+<p>各目的について解説します。</p>
+
+<p>顧客は一般に「認知→検討→コンバージョン」というプロセスを通じて新しいサービス・商品を購入すると考えられているため、</p>
+
+<p>Facebook広告においてもそのプロセスに沿って広告の目的が整理されています。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1972" data-item-id="1972" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">(認知①)ブランドの認知度アップ</h3></div>
+        
+        <div class="article-item item_markdown " id="item1973" data-item-id="1973" data-item-type="ItemMarkdown"><p>広告の記憶が残る見込みが最も高い人に広告を表示する設定となっています。</p>
+
+<p>主にブランドの認知度をとにかく上げたい場合に活用します。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1974" data-item-id="1974" data-item-type="ItemHeading"><h3 class="item-body" id="heading22">(認知②)リーチ</h3></div>
+        
+        <div class="article-item item_markdown " id="item1975" data-item-id="1975" data-item-type="ItemMarkdown"><p>できるだけ多くの人に広告を配信する設定です。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1976" data-item-id="1976" data-item-type="ItemHeading"><h3 class="item-body" id="heading23">(検討①)トラフィック</h3></div>
+        
+        <div class="article-item item_markdown " id="item1977" data-item-id="1977" data-item-type="ItemMarkdown"><p>ウェブサイトやアプリへのトラフィックをとにかく集めたい場合に活用します。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1978" data-item-id="1978" data-item-type="ItemHeading"><h3 class="item-body" id="heading24">(検討②)エンゲージメント</h3></div>
+        
+        <div class="article-item item_markdown " id="item1979" data-item-id="1979" data-item-type="ItemMarkdown"><p>ページの「いいね！」、イベントへの参加、リアクション・コメント・シェアの投稿を増やします。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1980" data-item-id="1980" data-item-type="ItemHeading"><h3 class="item-body" id="heading25">(検討③)アプリのインストール</h3></div>
+        
+        <div class="article-item item_markdown " id="item1981" data-item-id="1981" data-item-type="ItemMarkdown"><p>あなたのアプリをダウンロードしてアクションを実行する見込みが高い人に広告を表示します。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1982" data-item-id="1982" data-item-type="ItemHeading"><h3 class="item-body" id="heading26">(検討④)動画の再生数アップ</h3></div>
+        
+        <div class="article-item item_markdown " id="item1983" data-item-id="1983" data-item-type="ItemMarkdown"><p>動画広告を表示できます。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1984" data-item-id="1984" data-item-type="ItemHeading"><h3 class="item-body" id="heading27">(検討⑤)リード獲得</h3></div>
+        
+        <div class="article-item item_markdown " id="item1985" data-item-id="1985" data-item-type="ItemMarkdown"><p>こちらは、Facebookに標準搭載されているフォームを活用してリードを獲得するためのものです。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1986" data-item-id="1986" data-item-type="ItemHeading"><h3 class="item-body" id="heading28">(検討⑥)メッセージ</h3></div>
+        
+        <div class="article-item item_markdown " id="item1987" data-item-id="1987" data-item-type="ItemMarkdown"><p>広告を見た人がMessengerやWhatsApp、Instagramでアクションを実行できる広告を表示します。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1988" data-item-id="1988" data-item-type="ItemHeading"><h3 class="item-body" id="heading29">(コンバージョン①)コンバージョン</h3></div>
+        
+        <div class="article-item item_markdown " id="item1989" data-item-id="1989" data-item-type="ItemMarkdown"><p>何かを購入したり、あなたのウェブサイトから電話で問い合わせるなど、最もアクションを実行する可能性が高い人を対象に広告を表示します。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1990" data-item-id="1990" data-item-type="ItemHeading"><h3 class="item-body" id="heading30">(コンバージョン②)カタログ販売</h3></div>
+        
+        <div class="article-item item_markdown " id="item1991" data-item-id="1991" data-item-type="ItemMarkdown"><p>ターゲットオーディエンスを使用して、商品カタログからのアイテムを含む広告を表示します。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1992" data-item-id="1992" data-item-type="ItemHeading"><h3 class="item-body" id="heading31">(コンバージョン③)来店数の増加</h3></div>
+        
+        <div class="article-item item_markdown " id="item1993" data-item-id="1993" data-item-type="ItemMarkdown"><p>実店舗への来店の見込みが高い人に対し、近隣エリアにいるときに広告を表示します。</p>
+</div>
+        
+        <div class="article-item item_markdown " id="item1995" data-item-id="1995" data-item-type="ItemMarkdown"><h4 id="heading32">一つ疑問が浮かびますよね。結局どの目的を設定すれば良いのか？</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item1996" data-item-id="1996" data-item-type="ItemRichText"><div class="item-body-hbr">結論、ほとんどの場合(コンバージョン) <span class="decoration-01"><span class="decoration-02">コンバージョンを選択すればOK</span></span>です。<br>
+<br>
+コンバージョンを目的に設定すると、コンバージョンしやすいユーザー層に対して配信されます。<br>
+<br>
+<span class="decoration-01">認知や検討は結果につながりにくい傾向があります。</span><br>
+<br>
+よほど大手で資金的余裕がない限りは、認知を目的に活用することは少ないと考えられます。<br>
+<br>
+多くの広告主は問い合わせや無料相談、資料請求など明確な結果を求めていますので、コンバージョンを選択すればOKです。</div></div>
+        
+        <div class="article-item item_heading " id="item1997" data-item-id="1997" data-item-type="ItemHeading"><h2 class="item-body" id="heading33">5. キャンペーン予算の最適化 vs 広告セット単位での予算設定</h2></div>
+        
+        <div class="article-item item_markdown " id="item39620" data-item-id="39620" data-item-type="ItemMarkdown"><h4 id="heading34">目安の学習時間:3分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item1998" data-item-id="1998" data-item-type="ItemMarkdown"><p>先ほど三層構造について説明した通り、1つのキャンペーンの中に複数の広告セットが存在し、その中にさらに複数の広告クリエイティブが入っている構造になります。</p>
+
+<p>予算設定方法には2つあります。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item1999" data-item-id="1999" data-item-type="ItemHeading"><h3 class="item-body" id="heading35">キャンペーン予算の最適化とは</h3></div>
+        
+        <div class="article-item item_html " id="item2000" data-item-id="2000" data-item-type="ItemHtml"><div class="item-body"><div class="quote">キャンペーン予算の最適化により、配信の最適化の設定と入札戦略に応じてより多くの成果を得られるように広告セット間で予算が配分されます。各広告セットの消化金額をコントロールすることもできます。</div></div></div>
+        
+        <div class="article-item item_markdown " id="item2001" data-item-id="2001" data-item-type="ItemMarkdown"><p>と公式に書いてある通り、広告セット間での予算の割り振りを自動で行ってくれます。</p>
+
+<p>Facebook広告においては機械学習アルゴリズムが優秀なため、できるだけAIに任せる勇気も必要です。</p>
+
+<p>弊社では<strong>「キャンペーン予算の最適化」</strong>を推奨しています。</p>
+
+<p>広告セット単位での予算設定とは文字通り1つ下の階層である広告セット単位で予算を設定することを示します。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2002" data-item-id="2002" data-item-type="ItemHeading"><h2 class="item-body" id="heading36">6. Facebook広告のフォーマットは大きく4つ</h2></div>
+        
+        <div class="article-item item_markdown " id="item39621" data-item-id="39621" data-item-type="ItemMarkdown"><h4 id="heading37">目安の学習時間:5分</h4>
+
+</div>
+        
+        <div class="article-item item_heading " id="item2003" data-item-id="2003" data-item-type="ItemHeading"><h3 class="item-body" id="heading38">1.画像</h3></div>
+        
+        <div class="article-item item_image " id="item2004" data-item-id="2004" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/004/medium/ae413eb5-96df-4551-8b4e-9335ff55beef.png?1719296158" title=""><img class="img-responsive item-image" alt=" (2004)" data-reference="" src="../../_assets/9104fd9a44.webp" width="341" height="640"></a><h4 id="heading39"></h4></div></div>
+        
+        <div class="article-item item_markdown " id="item2005" data-item-id="2005" data-item-type="ItemMarkdown"><p>引用元：Facebook公式ガイドライン <a href="https://www.facebook.com/business/ads-guide/image">https://www.facebook.com/business/ads-guide/image</a></p>
+
+<p>上の写真のようにシンプルに画像とテキストで訴求するタイプになります。</p>
+
+<p>こちらが最も作成工数が少なく、配信しやすいフォーマットです。</p>
+
+<p>Facebook広告では意外とシンプルな画像の方がユーザーの興味を引いて結果が出たりします。</p>
+
+<p>「こんなシンプルな広告で成果が出るの？」と思うようなものも実際に効果を発揮することがあるので、積極的に試すのがおすすめです。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2006" data-item-id="2006" data-item-type="ItemHeading"><h3 class="item-body" id="heading40">2. 動画</h3></div>
+        
+        <div class="article-item item_html " id="item5797" data-item-id="5797" data-item-type="ItemHtml"><div class="item-body"><video playsinline="" controls="" preload="metadata" src="../media/med-9750f84ca4.mp4" style="display: block; width: 40%; background-color: rgb(242, 241, 238);"></video></div></div>
+        
+        <div class="article-item item_markdown " id="item2007" data-item-id="2007" data-item-type="ItemMarkdown"><p>引用元：Facebook公式ガイドライン <a href="https://www.facebook.com/business/ads-guide/video">https://www.facebook.com/business/ads-guide/video</a></p>
+
+<p>Facebook広告では動画のパフォーマンスも非常に高いです。</p>
+
+<p>画像と比べると作成に工数がかかりますが、その分高い成果も出しやすく、ライバルから模倣されづらいのでおすすめです。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2008" data-item-id="2008" data-item-type="ItemHeading"><h3 class="item-body" id="heading41">3. カルーセル広告</h3></div>
+        
+        <div class="article-item item_markdown " id="item2009" data-item-id="2009" data-item-type="ItemMarkdown"><p>カルーセル広告とは画像を複数枚用意した広告になります。</p>
+
+<p>上の動画で紹介されていますが、Instagramのストーリーで複数枚投稿されていて、タップして次に進む形式のものがありますよね。</p>
+
+<p>あれの広告版です。1枚だけの広告に比べると飛ばされにくく、おすすめのフォーマットです。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2010" data-item-id="2010" data-item-type="ItemHeading"><h3 class="item-body" id="heading42">4. コレクション</h3></div>
+        
+        <div class="article-item item_markdown " id="item2011" data-item-id="2011" data-item-type="ItemMarkdown"><p>コレクション広告では広告をタップした後、コレクション方で製品やサービスの宣伝ができます。</p>
+
+<p>シームレスに商品の訴求ができるため、購入までスムーズに誘導することが可能になります。</p>
+
+<p>アパレル、化粧品などに向いている広告形式です。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2012" data-item-id="2012" data-item-type="ItemHeading"><h3 class="item-body" id="heading43">★ どのフォーマットを使用するべきなのか？</h3></div>
+        
+        <div class="article-item item_markdown " id="item2013" data-item-id="2013" data-item-type="ItemMarkdown"><p>この質問の答えは「全て」です。</p>
+
+<p>全てのフォーマットで広告を作成しテストしていくことが効果を最大化します。</p>
+
+<p>広告において、静止画、カルーセル、動画、コレクションのそれぞれに反応しやすいユーザー層が存在します。</p>
+
+<p>「どれか1つのフォーマットは作らない」としてしまうと単純に「そのフォーマットに反応しやすいユーザーを取り逃している」ということを意味します。</p>
+</div>
+        
+        <div class="article-item item_html " id="item2014" data-item-id="2014" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title">プロマーケターから一言</div>
+    </div>
+    <div class="content-area">
+WEB広告においては「とにかくテストする」というマインドが必要です。
+正解はありません。WEB広告においては広告クリエイティブが枯渇するスピードはとてつもなく速いです。
+常に新しい広告を作り続け、テストを繰り返す姿勢が重要になってきます。
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item2015" data-item-id="2015" data-item-type="ItemHeading"><h2 class="item-body" id="heading44">7. Facebookにおける広告作成のTIPS</h2></div>
+        
+        <div class="article-item item_markdown " id="item39622" data-item-id="39622" data-item-type="ItemMarkdown"><h4 id="heading45">目安の学習時間:6分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item2016" data-item-id="2016" data-item-type="ItemMarkdown"><p>参考：<a href="https://www.facebook.com/business/help/388369961318508?id=1240182842783684">https://www.facebook.com/business/help/388369961318508?id=1240182842783684</a></p>
+</div>
+        
+        <div class="article-item item_heading " id="item2017" data-item-id="2017" data-item-type="ItemHeading"><h3 class="item-body" id="heading46">1. 解像度が高い画像を使用する</h3></div>
+        
+        <div class="article-item item_markdown " id="item2018" data-item-id="2018" data-item-type="ItemMarkdown"><p>ぼやけた画像の広告では、ユーザーがタップする気が起きないですよね。</p>
+
+<p>できるだけ解像度が高い広告画像を使用するようにしましょう。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2019" data-item-id="2019" data-item-type="ItemHeading"><h3 class="item-body" id="heading47">2. 配置別の推奨アスペクト比を活用する</h3></div>
+        
+        <div class="article-item item_markdown " id="item2020" data-item-id="2020" data-item-type="ItemMarkdown"><p>Facebook、Instagram、Messenger、Audience Networkにおいてはそれぞれ配置ごとにアスペクト比が異なります。</p>
+
+<p>※アスペクト比とは、縦横比率のことです。</p>
+
+<p>例えばInstagramのタイムライン投稿であれば1：1ですが、ストーリーにおいては9：16が推奨されています。</p>
+
+<p>推奨の比率で広告を設定することで、パフォーマンスの改善が期待できます。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2021" data-item-id="2021" data-item-type="ItemHeading"><h3 class="item-body" id="heading48">3. 画像自体にテキストを入れすぎない</h3></div>
+        
+        <div class="article-item item_markdown " id="item2022" data-item-id="2022" data-item-type="ItemMarkdown"><p>一般的にテキスト量を少なくし、視覚的に訴える広告の方がパフォーマンスは高い傾向にあります。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2023" data-item-id="2023" data-item-type="ItemHeading"><h3 class="item-body" id="heading49">4. UGC風クリエイティブはパフォーマンスが高い傾向</h3></div>
+        
+        <div class="article-item item_markdown " id="item2024" data-item-id="2024" data-item-type="ItemMarkdown"><p>UGCとはUser Generated Contentsの略で、企業ではなく一般ユーザーによって制作・生成されたコンテンツのことを指しています。</p>
+
+<p>Instagramのストーリーをよく見る方ならわかると思いますが、広告かそうでないかは直感的に一瞬でわかりますよね？</p>
+
+<p>一瞬で広告っぽいと判断されると、中身を読まれずに飛ばされてしまうのです。</p>
+
+<p>だからこそ、SNS広告においてはUGC風の広告クリエイティブが効果的だと言われています。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2025" data-item-id="2025" data-item-type="ItemHeading"><h3 class="item-body" id="heading50">5. CTRとCVR両方意識したクリエイティブを作るべし</h3></div>
+        
+        <div class="article-item item_markdown " id="item2026" data-item-id="2026" data-item-type="ItemMarkdown"><p>CTRとはクリック率のこと、CVRとはWEBサイトに遷移してからコンバージョンする確率のことです。</p>
+
+<p>よくある間違いの一つは、<strong>CTRだけを意識したクリエイティブを作ってしまうこと</strong>です。</p>
+
+<p>例えば、男性向けのヘアワックスの新商品をFacebook広告で宣伝したいとします。</p>
+
+<p>広告クリエイティブには、「ダメダメだった俺が1週間で20人に告白された方法とは？」としてみます。</p>
+
+<p>これは男性ならクリックしてみたくなると思いますが、実際の成果は全く出ないでしょう。</p>
+
+<p>これは極端な例ですが、意外とこれと同じようなことをやってしまう人は少なくありません。</p>
+
+<p>クリック率が最大化されても、CVRが低すぎると成果に繋がらないわけです。</p>
+</div>
+        
+        <div class="article-item item_heading " id="item2027" data-item-id="2027" data-item-type="ItemHeading"><h3 class="item-body" id="heading51">Facebook広告の配置</h3></div>
+        
+        <div class="article-item item_markdown " id="item2028" data-item-id="2028" data-item-type="ItemMarkdown"><ul>
+  <li>Facebook
+    <ul>
+      <li>PC
+        <ul>
+          <li>ニュースフィード</li>
+          <li>右側広告</li>
+        </ul>
+      </li>
+      <li>スマホ
+        <ul>
+          <li>ニュースフィード</li>
+          <li>インスタント記事</li>
+          <li>インストリーム動画</li>
+          <li>ストーリーズ</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Instagram
+    <ul>
+      <li>スマホ
+        <ul>
+          <li>フィード</li>
+          <li>ストーリーズ</li>
+          <li>発見タブ</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Audience Network
+    <ul>
+      <li>スマホ
+        <ul>
+          <li>バナー広告</li>
+          <li>ネイティブ広告</li>
+          <li>インストリーム動画</li>
+          <li>インターステシャルリワード広告</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Messenger
+    <ul>
+      <li>スマホ
+        <ul>
+          <li>受信箱</li>
+          <li>ストーリーズ</li>
+          <li>広告メッセージ</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>「配置が多すぎて、どこに配信すればいいかわからない！」と思われるかもしれませんが、安心してください。</p>
+</div>
+        
+        <div class="article-item item_image " id="item2029" data-item-id="2029" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/002/029/medium/cb2a7d41-83a5-4dd2-8789-f61410a815d4.png?1719296576" title=""><img class="img-responsive item-image" alt=" (2029)" data-reference="" src="../../_assets/1c8766f2ff.webp" width="627" height="280"></a><h4 id="heading52"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item2030" data-item-id="2030" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">自動配置を選択すればOKです。</span></div></div>
+        
+        <div class="article-item item_html " id="item2031" data-item-id="2031" data-item-type="ItemHtml"><div class="item-body"><div class="icon-card white bulb">Facebook広告はAIアルゴリズムが非常に優秀なため、あえて手動で設定するよりAIに任せた方が効果的だと言われています。</div></div></div>
+        
+        <div class="article-item item_heading " id="item2032" data-item-id="2032" data-item-type="ItemHeading"><h2 class="item-body" id="heading53">8. Facebook広告のオークションの仕組み</h2></div>
+        
+        <div class="article-item item_markdown " id="item39623" data-item-id="39623" data-item-type="ItemMarkdown"><h4 id="heading54">目安の学習時間:5分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item2033" data-item-id="2033" data-item-type="ItemMarkdown"><p>Facebook広告では広告が表示されるたびに<strong>オークションが発生</strong>します。</p>
+
+<p>Facebook広告だけでなく、さまざまな広告においては基本的に広告の品質・入札金額を加味したオークションを通じて、どの広告が配信されるか決定されます。</p>
+
+<p>Facebook広告においては以下3つの要素によってオークションの勝者が決定されます。</p>
+
+<ol>
+  <li>入札単価<br>
+広告主が広告枠に配信するために設定した入札金額</li>
+  <li>推定アクション率<br>
+ユーザーに広告を表示した際に、目標としているアクションを起こす確率</li>
+  <li>広告の品質<br>
+広告を見たユーザーのフィードバックなどに基づいて、広告の品質が判断される</li>
+</ol>
+
+<p>広告の品質に関しては、広告関連度診断を構成する3つの指標によって評価されるため、それを参考に改善することが効果的です。</p>
+
+<ul>
+  <li>品質ランキング<br>
+同じようなオーディエンスに対して広告を配信している競合企業と比較したときの、広告の品質</li>
+  <li>エンゲージメント率ランキング<br>
+同じようなオーディエンスに対して競合企業が配信している広告と比較したときの、予想エンゲージメント率</li>
+  <li>コンバージョン率ランキング<br>
+同じようなオーディエンスに対して競合している広告と比較したときの、予想コンバージョン率</li>
+</ul>
+</div>
+        
+        <div class="article-item item_rich_text " id="item2034" data-item-id="2034" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-02"><span class="decoration-01">実際、これら3つの指標が良いときは広告の成果がよく、悪い時は広告の成果は悪い傾向にあります。</span></span></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">0.はじめに</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:40分</a></li></ul></li><li><a href="#heading2" class="tocLink">1. Facebook広告とは</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間:3分</a></li></ul><ul><li><a href="#heading4" class="tocLink">a. そもそもFacebookとは</a></li><li><a href="#heading5" class="tocLink">b. Facebook広告の配信先は4つ</a></li></ul></li><li><a href="#heading6" class="tocLink">2. Facebook広告のメリット</a><ul><li><a href="#heading7" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading8" class="tocLink">a. 日予算2000円からの低予算でスタートし結果を出せる</a></li><li><a href="#heading9" class="tocLink">b. SNSでの活動情報に基づく極めて高いターゲティング精度</a></li><li><a href="#heading10" class="tocLink">c. 認知度向上、問い合わせ獲得、商品購入などあらゆる目的に沿って広告配信できる</a></li><li><a href="#heading11" class="tocLink">d. 最適化アルゴリズムが優秀</a></li></ul></li><li><a href="#heading12" class="tocLink">3. Facebook広告の三層構造</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間:5分</a></li><li><a href="#heading14" class="tocLink"></a></li></ul><ul><li><a href="#heading15" class="tocLink">a. キャンペーンとは</a></li><li><a href="#heading16" class="tocLink">b. 広告セットとは</a></li><li><a href="#heading17" class="tocLink">c. 広告とは</a></li></ul></li><li><a href="#heading18" class="tocLink">4. キャンペーンにおける「目的」の解説</a><ul><li><a href="#heading19" class="tocLink">目安の学習時間:8分</a></li><li><a href="#heading20" class="tocLink"></a></li></ul><ul><li><a href="#heading21" class="tocLink">(認知①)ブランドの認知度アップ</a></li><li><a href="#heading22" class="tocLink">(認知②)リーチ</a></li><li><a href="#heading23" class="tocLink">(検討①)トラフィック</a></li><li><a href="#heading24" class="tocLink">(検討②)エンゲージメント</a></li><li><a href="#heading25" class="tocLink">(検討③)アプリのインストール</a></li><li><a href="#heading26" class="tocLink">(検討④)動画の再生数アップ</a></li><li><a href="#heading27" class="tocLink">(検討⑤)リード獲得</a></li><li><a href="#heading28" class="tocLink">(検討⑥)メッセージ</a></li><li><a href="#heading29" class="tocLink">(コンバージョン①)コンバージョン</a></li><li><a href="#heading30" class="tocLink">(コンバージョン②)カタログ販売</a></li><li><a href="#heading31" class="tocLink">(コンバージョン③)来店数の増加</a><ul><li><a href="#heading32" class="tocLink">一つ疑問が浮かびますよね。結局どの目的を設定すれば良いのか？</a></li></ul></li></ul></li><li><a href="#heading33" class="tocLink">5. キャンペーン予算の最適化 vs 広告セット単位での予算設定</a><ul><li><a href="#heading34" class="tocLink">目安の学習時間:3分</a></li></ul><ul><li><a href="#heading35" class="tocLink">キャンペーン予算の最適化とは</a></li></ul></li><li><a href="#heading36" class="tocLink">6. Facebook広告のフォーマットは大きく4つ</a><ul><li><a href="#heading37" class="tocLink">目安の学習時間:5分</a></li></ul><ul><li><a href="#heading38" class="tocLink">1.画像</a><ul><li><a href="#heading39" class="tocLink"></a></li></ul></li><li><a href="#heading40" class="tocLink">2. 動画</a></li><li><a href="#heading41" class="tocLink">3. カルーセル広告</a></li><li><a href="#heading42" class="tocLink">4. コレクション</a></li><li><a href="#heading43" class="tocLink">★ どのフォーマットを使用するべきなのか？</a></li></ul></li><li><a href="#heading44" class="tocLink">7. Facebookにおける広告作成のTIPS</a><ul><li><a href="#heading45" class="tocLink">目安の学習時間:6分</a></li></ul><ul><li><a href="#heading46" class="tocLink">1. 解像度が高い画像を使用する</a></li><li><a href="#heading47" class="tocLink">2. 配置別の推奨アスペクト比を活用する</a></li><li><a href="#heading48" class="tocLink">3. 画像自体にテキストを入れすぎない</a></li><li><a href="#heading49" class="tocLink">4. UGC風クリエイティブはパフォーマンスが高い傾向</a></li><li><a href="#heading50" class="tocLink">5. CTRとCVR両方意識したクリエイティブを作るべし</a></li><li><a href="#heading51" class="tocLink">Facebook広告の配置</a><ul><li><a href="#heading52" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading53" class="tocLink">8. Facebook広告のオークションの仕組み</a><ul><li><a href="#heading54" class="tocLink">目安の学習時間:5分</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

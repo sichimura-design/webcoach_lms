@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/ai-designer/chapter-02/jpuiM -->
+<!-- clipkit-fetched-at: 2026-09-18T09:30:16.658Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Lesson4 AI品質チェック3ステップ - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+  <link rel="canonical" href="https://learn.webcoach.jp/ai-designer/chapter-02/jpuiM">
+  
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:domain" content="learn.webcoach.jp">
+  <meta name="twitter:title" content="Lesson4 AI品質チェック3ステップ - WEBCOACH">
+  <meta name="twitter:image" content="https://cdn.clipkit.co/clipkit/images/medium/missing.png">
+  <meta name="twitter:description" content="">
+  <meta property="og:site_name" content="WEBCOACH">
+  <meta property="og:title" content="Lesson4 AI品質チェック3ステップ">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://learn.webcoach.jp/ai-designer/chapter-02/jpuiM">
+  <meta property="og:image" content="https://cdn.clipkit.co/clipkit/images/large/missing.png">
+  
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="3vWuOT4DWtpSBG_AYnBUpaFIp1FOg-uBJDBMZWAX4xk-DUwc6zXkuLhwj_Oqu_xzDy0D_xAYE0ZSlKrdxAGU_w"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48929" data-item-id="48929" data-item-type="ItemHtml"><div class="item-body"><style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D; font-size: 16px; line-height: 1.9; background: #fff; }
+.lesson-wrapper { max-width: 70%; margin: 0 auto; padding: 40px 0 80px; }
+@media (max-width: 600px) { .lesson-wrapper { max-width: 92%; } }
+
+h2 { font-size: 24px; font-weight: 700; color: #2D2D2D; margin: 64px 0 24px; padding: 0 0 14px; position: relative; letter-spacing: -0.02em; line-height: 1.4; }
+h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, #E85D4A, #F5A64A); }
+h3 { font-size: 18px; font-weight: 700; color: #2D2D2D; margin: 48px 0 16px; border-left: 3px solid #2D2D2D; padding-left: 14px; }
+p { font-size: 16px; line-height: 2.0; color: #555; margin: 0 0 16px; }
+ul, ol { padding-left: 1.5em; margin: 0 0 16px; }
+li { font-size: 16px; line-height: 2.0; color: #555; margin-bottom: 6px; }
+strong { color: #2D2D2D; font-weight: 700; }
+
+/* ヘッダー */
+.lesson-hero { background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); border-radius: 16px; padding: 22px 28px; margin: 0 0 40px; color: #fff; }
+.lesson-hero__badge { display: inline-block; background: #fff; color: #E85D4A; padding: 5px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; margin-bottom: 14px; font-family: 'Inter', sans-serif; }
+.lesson-hero__title { font-size: 22px; font-weight: 800; line-height: 1.4; margin-bottom: 16px; letter-spacing: -0.01em; }
+.lesson-hero__meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.lesson-hero__chip { display: inline-flex; align-items: center; background: #fff; color: #333; padding: 5px 11px; border-radius: 6px; font-size: 11.5px; font-weight: 700; font-family: 'Inter', sans-serif; letter-spacing: 0.04em; }
+.lesson-hero__topic { font-size: 13px; font-weight: 600; opacity: 0.95; }
+.lesson-hero__time { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 600; opacity: 0.95; }
+
+/* ゴールボックス */
+.goal-box { background: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.goal-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.goal-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 6px 16px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 0.18em; }
+.goal-box__sub { font-size: 14px; font-weight: 700; color: #333; letter-spacing: 0.02em; }
+.goal-box ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.goal-box li { display: flex; gap: 12px; padding: 10px 14px; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 10px; align-items: flex-start; transition: transform 0.2s; }
+.goal-box li:hover { transform: translateX(2px); }
+.goal-box__check { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; margin-top: 1px; }
+.goal-box__text { flex: 1; font-size: 14px; color: #333; line-height: 1.7; font-weight: 500; }
+
+/* 目次 */
+.toc { background: #fff; border-radius: 14px; padding: 22px 26px; box-shadow: 0 2px 12px rgba(0,0,0,0.05); margin: 0 0 48px; }
+.toc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.toc-icon { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, #E85D4A, #F5A64A); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 11px; font-weight: 700; }
+.toc-title { font-size: 15px; font-weight: 700; color: #2D2D2D; }
+.toc ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 3px; }
+.toc li a { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #FAF9F8; border-radius: 8px; text-decoration: none; transition: background 0.2s; }
+.toc li a:hover { background: #F5EFEC; }
+.toc-num { font-size: 12px; font-weight: 700; color: #2D2D2D; letter-spacing: 0.05em; min-width: 22px; }
+.toc-text { flex: 1; font-size: 14px; color: #2D2D2D; font-weight: 500; }
+.toc-chev { color: #B8B8B8; font-size: 12px; }
+
+/* 画像系 */
+.slide-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); margin: 28px 0; }
+.lightbox-img { width: 100%; border-radius: 12px; display: block; box-shadow: 0 4px 24px rgba(0,0,0,0.10); }
+.img-placeholder { background: #FAF5F3; border: 2px dashed #E8D5CC; border-radius: 12px 12px 0 0; padding: 24px 20px; text-align: center; margin: 28px 0 0; }
+.img-placeholder-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #C4A59A; margin-bottom: 6px; }
+.img-placeholder-name { font-size: 12px; color: #B08880; font-family: monospace; }
+.prompt-box { background: #2A2220; border-radius: 0 0 12px 12px; padding: 16px 20px; margin: 0 0 28px; }
+.prompt-box-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #F5A64A; margin-bottom: 8px; }
+.prompt-text { color: #E8DDD8; font-size: 12px; line-height: 1.7; font-family: 'Courier New', monospace; white-space: pre-wrap; word-break: break-word; margin: 0; }
+
+/* コンポーネント */
+.point-box { background: #FFFBE6; border: 1.5px solid #F5C58F; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.point-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.point-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #F5A64A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.point-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.point-box p { font-size: 15px; line-height: 1.9; color: #444; margin: 0; }
+.point-box ol, .point-box ul { font-size: 15px; line-height: 1.9; color: #444; margin: 0; padding-left: 1.4em; }
+.point-box ol li, .point-box ul li { font-size: 15px; line-height: 1.9; color: #444; margin-bottom: 4px; }
+
+.notice-box { background: #FFF5F4; border: 1.5px solid #F5A8A0; border-radius: 10px; padding: 18px 22px 20px; margin: 0 0 28px; }
+.notice-box__head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.notice-box__tab { display: inline-flex; align-items: center; justify-content: center; gap: 5px; background: #D9433A; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 17px 5px 11px; min-width: 88px; letter-spacing: 0.05em; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 50%, 100% 100%, 0 100%); flex-shrink: 0; }
+.notice-box__icon { display: inline-flex; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #D9433A; font-size: 10px; font-weight: 700; align-items: center; justify-content: center; }
+.notice-box__sub { font-size: 13.5px; font-weight: 700; color: #2D2D2D; }
+.notice-box p { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; }
+.notice-box ul { font-size: 14.5px; line-height: 1.85; color: #444; margin: 0; padding-left: 1.4em; }
+.notice-box ul li { font-size: 14.5px; line-height: 1.85; color: #444; margin-bottom: 4px; }
+
+/* 仕様比較テーブル */
+.spec-table { width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04); margin: 0 0 28px; }
+.spec-table thead { background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; }
+.spec-table th { padding: 14px 16px; font-size: 13px; font-weight: 700; text-align: left; letter-spacing: 0.04em; }
+.spec-table td { padding: 14px 16px; font-size: 14px; color: #444; border-bottom: 1px solid #F0E5DC; vertical-align: top; line-height: 1.7; background: #fff; }
+.spec-table tr:nth-child(even) td { background: #FBF8F5; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table .tbl-num { font-family: 'Inter', sans-serif; font-weight: 800; color: #E85D4A; font-size: 13px; margin-right: 4px; }
+.spec-table .tbl-name { font-weight: 700; color: #2D2D2D; }
+
+/* 動画埋め込み */
+.video-wrap { position: relative; padding-top: 56.25%; margin: 0 0 28px; background: #2A2220; border-radius: 12px; overflow: hidden; }
+.video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+/* クイズ */
+.quiz-box { background: linear-gradient(135deg, #FFF1F2 0%, #FCE7F3 100%); border-radius: 20px; padding: 20px 22px; margin: 28px 0; }
+.quiz-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.quiz-icon { width: 30px; height: 30px; border-radius: 10px; background: #fff; color: #EC4899; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 2px 8px rgba(236,72,153,0.15); font-weight: 700; }
+.quiz-title { font-size: 15px; font-weight: 700; color: #831843; }
+.quiz-q { font-size: 15px; font-weight: 700; color: #831843; margin-bottom: 12px; line-height: 1.6; background: #fff; padding: 12px 16px; border-radius: 12px; box-shadow: 0 2px 8px rgba(236,72,153,0.06); }
+.quiz-options { display: flex; flex-direction: column; gap: 7px; }
+.quiz-opt { display: flex; align-items: center; gap: 12px; padding: 10px 16px; background: #fff; border: 2px solid transparent; border-radius: 12px; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: left; width: 100%; box-shadow: 0 2px 6px rgba(236,72,153,0.05); }
+.quiz-opt:hover:not(:disabled) { border-color: #F9A8D4; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(236,72,153,0.1); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-letter { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #FCE7F3; color: #831843; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.quiz-opt-text { font-size: 14px; color: #1F1F1F; flex: 1; font-weight: 500; line-height: 1.55; }
+.quiz-opt.correct { background: #ECFCCB; border-color: #84CC16; }
+.quiz-opt.correct .quiz-letter { background: #84CC16; color: #fff; }
+.quiz-opt.correct .quiz-opt-text { color: #365314; font-weight: 700; }
+.quiz-opt.wrong { background: #FFE4E6; border-color: #FB7185; }
+.quiz-opt.wrong .quiz-letter { background: #FB7185; color: #fff; }
+.quiz-opt.wrong .quiz-opt-text { color: #881337; font-weight: 700; }
+.quiz-opt.dim { opacity: 0.4; }
+.quiz-feedback { display: none; gap: 12px; padding: 12px 16px; background: #fff; border-radius: 12px; margin-top: 10px; box-shadow: 0 2px 8px rgba(132,204,22,0.1); align-items: flex-start; }
+.quiz-feedback.show { display: flex; }
+.quiz-feedback.ng { box-shadow: 0 2px 8px rgba(251,113,133,0.1); }
+.quiz-feedback-icon { flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: #84CC16; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+.quiz-feedback.ng .quiz-feedback-icon { background: #FB7185; }
+.quiz-feedback-body { flex: 1; }
+.quiz-feedback-title { font-size: 13px; font-weight: 800; color: #365314; margin-bottom: 4px; }
+.quiz-feedback.ng .quiz-feedback-title { color: #881337; }
+.quiz-feedback-text { font-size: 13px; color: #4D5552; line-height: 1.75; }
+.quiz-feedback.ng .quiz-feedback-text { color: #6B5258; }
+
+/* まとめ */
+.summary-box { background: #E8F5E0; border-radius: 14px; padding: 20px 24px; margin: 48px 0 40px; }
+.summary-box__head { margin-bottom: 14px; }
+.summary-box__badge { display: inline-block; background: linear-gradient(135deg, #4A8024 0%, #6BAA45 100%); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; letter-spacing: 0.18em; }
+.summary-box ol { list-style: none; padding: 0; margin: 0; counter-reset: sbc; }
+.summary-box li { counter-increment: sbc; position: relative; padding: 7px 0 7px 30px; font-size: 14.5px; line-height: 1.8; color: #2D2D2D; font-weight: 500; }
+.summary-box li::before { content: counter(sbc, decimal-leading-zero); position: absolute; left: 0; top: 7px; color: #4A8024; font-weight: 800; font-size: 13px; font-family: 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+/* 理解度チェック */
+.check-box { background: #fff; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 20px 24px; margin: 0 0 40px; }
+.check-box__head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 2px solid; border-image: linear-gradient(90deg, #F84744 0%, #FB9A3F 100%) 1; }
+.check-box__pill { display: inline-block; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); color: #fff; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; }
+.check-box__sub { font-size: 14px; font-weight: 700; color: #333; }
+.check-box details { margin-bottom: 7px; }
+.check-box summary { padding: 11px 18px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #2D2D2D; background: linear-gradient(135deg, #FFF5F0 0%, #FFFAEC 100%); border-radius: 22px; transition: all 0.2s; border: 1.5px solid transparent; font-weight: 500; list-style: none; }
+.check-box summary:hover { border-color: #F5A64A; }
+.check-box summary::-webkit-details-marker { display: none; }
+.check-box summary::before { content: '＋'; color: #fff; background: linear-gradient(135deg, #F84744 0%, #FB9A3F 100%); width: 22px; height: 22px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
+.check-box details[open] summary { border-color: #F5A64A; }
+.check-box details[open] summary::before { content: '−'; }
+.check-box__detail { padding: 12px 20px 4px 48px; font-size: 13.5px; color: #555; line-height: 1.85; }
+
+/* アニメーション */
+.reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+<div class="lesson-wrapper">
+
+<div class="lesson-hero">
+  <span class="lesson-hero__badge">CHAPTER 2</span>
+  <div class="lesson-hero__title">AI品質チェック3ステップ</div>
+  <div class="lesson-hero__meta">
+    <span class="lesson-hero__chip">LESSON 2-4</span>
+    <span class="lesson-hero__topic">使える素材・使えない素材を見極めて、Canvaへ進む判断を習慣化する</span>
+    <span class="lesson-hero__time">⏱ 所要時間：約15分</span>
+  </div>
+</div>
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-02/TClmk" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-02/0yTgV" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+
+<div class="goal-box">
+  <div class="goal-box__head">
+    <div class="goal-box__pill">GOAL</div>
+    <div class="goal-box__sub">このレッスンのゴール</div>
+  </div>
+  <ul>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">AI品質チェックの3ステップ（人体の違和感／著作物類似／色精度）を順番に言える</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">逆画像検索の手順を理解し、毎案件の習慣として実施できる</div></li>
+    <li><div class="goal-box__check">✓</div><div class="goal-box__text">チェック結果に基づいて、Canvaへ進むか再生成するかを正しく判断できる</div></li>
+  </ul>
+</div>
+
+<nav class="toc">
+  <div class="toc-head">
+    <div class="toc-icon">≡</div>
+    <div class="toc-title">目次</div>
+  </div>
+  <ul>
+    <li><a href="#s1"><span class="toc-num">01</span><span class="toc-text">なぜ品質チェックが必要なのか</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s2"><span class="toc-num">02</span><span class="toc-text">3ステップ チェックシート</span><span class="toc-chev">›</span></a></li>
+    <li><a href="#s3"><span class="toc-num">03</span><span class="toc-text">チェック後の判断フロー</span><span class="toc-chev">›</span></a></li>
+  </ul>
+</nav>
+
+<!-- ===== セクション1 ===== -->
+<section id="s1">
+<h2>なぜ品質チェックが必要なのか</h2>
+
+<p>ChatGPT Images 2.0で生成した画像は、そのままクライアントに渡せる状態ではないことがほとんどです。品質チェックなしで使い続けると、トラブルにつながりやすくなります。</p>
+
+<!-- =====================================================
+  📸 画像：ig-check-overview
+  【差し替え手順】
+    ① 下の「LIGHTBOX BLOCK」のコメントを外す
+    ② 「DELETE BLOCK」を丸ごと削除する
+  ===================================================== -->
+
+<div style="margin: 24px 0; text-align: center;" class="reveal visible">
+  <a href="https://www.dropbox.com/scl/fi/tjj938iba3yys3o6mndj1/01.png?rlkey=p0u5b9sb2b6elsi0rqh2vrc6k&amp;raw=1" class="lightbox" style="display: inline-block;" target="_blank" rel="noopener">
+    <img src="../../_assets/72010f2746.webp" alt="AI品質チェック3ステップ全体像" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+</div>
+
+<div class="notice-box reveal visible">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">チェックを怠ったときに起こりやすい問題</div>
+  </div>
+  <ul>
+    <li>手指が6本に見える・顔がぼやけているなどの違和感をクライアントに指摘される</li>
+    <li>有名ブランドのデザインに酷似した素材を使ってしまい、著作権問題に発展する</li>
+    <li>解像度が低い素材を拡大印刷してぼやけた仕上がりになる</li>
+  </ul>
+</div>
+
+<div class="point-box reveal visible">
+  <div class="point-box__head">
+    <div class="point-box__tab">✓ Point !</div>
+    <div class="point-box__sub">案件ごとに毎回行う1〜2分のチェック</div>
+  </div>
+  <p>3ステップのチェックは、毎案件の習慣にすることでトラブルを未然に防げます。慣れれば<strong>1〜2分で完了</strong>します。テキストの細部はCanvaで後から調整できるので、まずは構図と素材としての使えるかどうかをここで見極めます。</p>
+</div>
+</section>
+
+<!-- ===== セクション2 ===== -->
+<section id="s2">
+<h2>3ステップ チェックシート</h2>
+
+<p>生成した画像を保存する前に、次の3ステップを順番に確認します。<strong>③（色精度）はCanvaで多少修正できますが、①（人体の違和感）と②（著作物類似）はCanvaでは対処できないため、ここで気付くことがとても重要</strong>です。</p>
+
+<h3>3ステップの全体像</h3>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th style="width: 22%;">チェック項目</th>
+      <th style="width: 36%;">使える状態</th>
+      <th>要対処の例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-num">①</span><span class="tbl-name">人体の違和感</span></td>
+      <td>手指の本数が正常（5本）／顔のパーツが自然／体のラインに違和感がない</td>
+      <td>指が6本以上／指が曲がる方向がおかしい／顔のパーツが重なっている／腕が異様に長い</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">②</span><span class="tbl-name">著作物類似</span></td>
+      <td>逆画像検索で著名な商業作品・写真素材と一致するものが出てこない</td>
+      <td>有名ブランドのデザインと酷似／特定の写真家の作品に酷似／既存キャラクターの特徴が入っている</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">③</span><span class="tbl-name">色精度</span></td>
+      <td>指定カラーの色相・トーンがほぼ合っている（多少のズレはCanvaで調整可）</td>
+      <td>全く異なる色系統になっている（ピンク指定なのにネイビーになっているなど）</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>① 人体の違和感への対処</h3>
+
+<p>人物が含まれる画像で最も多い問題です。指の本数が異常だったり、顔のパーツが重なっていたりすると、そのままでは使えません。<strong>対処はChatGPT Images 2.0で再生成</strong>します。まずは同じプロンプトで何枚か出し直してみて、それでもうまくいかない場合は、撮影アングルや構図を変えて出力し直しましょう。</p>
+
+<h3>② 著作物類似の確認（逆画像検索）</h3>
+
+<p>3ステップの中で<strong>最も重要なチェック</strong>です。著作物との酷似は法的リスクに直結するため、毎案件で必ず実施してください。手順は以下の動画と説明を参考にしてください。</p>
+
+<!-- ====================================================
+  📹 Dropbox埋め込みURLをここに貼る
+  動画: キャプチャ動画 — Google逆画像検索で著作物類似をチェックする手順
+  手順: 下の <iframe src=""> の "" の中にDropboxの埋め込みURLを貼り付けてください
+  ==================================================== -->
+<div class="video-wrap reveal visible">
+  <iframe src="https://www.dropbox.com/scl/fi/bu3h6trmpx1pzxmn7ss4o/.mp4?rlkey=lly8nvm2g255309awdnuk524x&amp;st=w6zjynjp&amp;raw=1" allow="autoplay; fullscreen" allowfullscreen=""></iframe>
+</div>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th style="width: 18%;">手順</th>
+      <th>やること</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-num">①</span><span class="tbl-name">カメラ検索</span></td>
+      <td>Googleのトップページで、検索バー右側のカメラアイコン（Googleレンズ）をクリック</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">②</span><span class="tbl-name">画像をアップロード</span></td>
+      <td>生成画像をドラッグ＆ドロップ、または「ファイルをアップロード」から選択</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">③</span><span class="tbl-name">結果を確認</span></td>
+      <td>著名な商業作品・写真素材と一致するものが出ていないか確認する</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="notice-box reveal visible">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">そもそも、こうした類似は入口のプロンプトで防げます</div>
+  </div>
+  <p>逆画像検索で類似が強く出る画像は、プロンプトの指定そのものが原因のことがほとんどです。次のものは著作権や肖像権の侵害リスクを高めるため、生成プロンプトに含めないでください。</p>
+</div>
+
+<table class="spec-table reveal visible">
+  <thead>
+    <tr>
+      <th style="width: 34%;">入れてはいけない指定</th>
+      <th>具体例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-num">①</span><span class="tbl-name">作品・キャラ・ブランド名</span></td>
+      <td>実在する作品名・キャラクター名・ブランド名・企業ロゴの指定（ジブリ風、ディズニーの〇〇、スタバ風ロゴ など）</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">②</span><span class="tbl-name">特定作家の名前・作風</span></td>
+      <td>特定の作家・アーティスト・写真家の名前や、〇〇（作家名）風というスタイル指定</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">③</span><span class="tbl-name">実在の人物</span></td>
+      <td>有名人や実在の人物の名前、またはその人に似せる指示</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-num">④</span><span class="tbl-name">他人の写真の持ち込み</span></td>
+      <td>実在の人物写真を参考画像としてアップロードし、模倣させる行為</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>逆画像検索に加えて、最後は自分の目でも、実在する商品・作品・写真・ロゴに似ていないかを見て確認しましょう。判断に迷うときや少しでも不安が残るときは、コーチに相談しながら進めるようにしましょう。</p>
+
+<h3>③ 色精度の確認</h3>
+
+<p>このチェックは<strong>案件でブランドカラーや色味の指定がある場合</strong>に行います。依頼書にカラーコードやテーマカラーの記載があれば、生成画像の色がそれに沿っているかを確認します。多少のズレ（色相が同じで明度が違う、トーンが少しズレる程度）はCanvaの色調整機能で補正できますが、全く異なる色系統（たとえばピンク指定なのにネイビーが出ているなど）になっていれば、Canvaで直すよりも再生成した方が早いです。</p>
+
+<p>案件で色指定がない場合（「色味はおまかせ」など）は、このチェックはスキップしてOKです。デザイナー自身が選んだ配色なので、自分の意図通りに出ているかだけ確認します。</p>
+</section>
+
+<!-- クイズ1 -->
+<div class="quiz-box reveal visible">
+  <div class="quiz-top">
+    <div class="quiz-icon">Q</div>
+    <div class="quiz-title">確認クイズ 1</div>
+  </div>
+  <div class="quiz-q">3ステップの中で「法的リスク」に直結するため、必ず毎回実施すべきチェックはどれですか？</div>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">A</div><div class="quiz-opt-text">人体の違和感チェック（手指・顔・身体）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="true"><div class="quiz-letter">B</div><div class="quiz-opt-text">著作物類似チェック（逆画像検索）</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">C</div><div class="quiz-opt-text">色精度チェック</div></button>
+    <button class="quiz-opt" data-q="q1" data-correct="false"><div class="quiz-letter">D</div><div class="quiz-opt-text">解像度チェック</div></button>
+  </div>
+  <div class="quiz-feedback ok" id="q1-ok">
+    <div class="quiz-feedback-icon">✓</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">正解です！</div>
+      <div class="quiz-feedback-text">著作物類似チェックは法的リスクに直結します。逆画像検索は1〜2分で終わるので、毎案件で必ず行う習慣にしてください。</div>
+    </div>
+  </div>
+  <div class="quiz-feedback ng" id="q1-ng">
+    <div class="quiz-feedback-icon">✕</div>
+    <div class="quiz-feedback-body">
+      <div class="quiz-feedback-title">惜しい！</div>
+      <div class="quiz-feedback-text">他のステップも大切ですが、著作物類似はCanvaで修正できない問題だからこそ、最初の段階で確認することが重要です。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== セクション3 ===== -->
+<section id="s3">
+<h2>チェック後の判断フロー</h2>
+
+<p>3ステップのチェック結果に基づいて、次のアクションを判断します。判断ルールはシンプルで、すべてOKなら次のCanva仕上げに進み、致命的な問題があれば再生成です。</p>
+
+<table class="spec-table reveal">
+  <thead>
+    <tr>
+      <th style="width: 26%;">チェック結果</th>
+      <th>次のアクション</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span class="tbl-name">A. すべて問題なし</span></td>
+      <td><strong>Canvaへ進む</strong>。次のレッスン（2-5）でCanvaに取り込んで仕上げ、完成したらコーチに提出します。色や軽微な配置はCanvaで調整可能。</td>
+    </tr>
+    <tr>
+      <td><span class="tbl-name">B. 著作物類似・著しい人体違和感</span></td>
+      <td><strong>再生成する</strong>。プロンプトを修正してChatGPT Images 2.0で出力し直す。</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="notice-box reveal">
+  <div class="notice-box__head">
+    <div class="notice-box__tab"><span class="notice-box__icon">!</span> 注意</div>
+    <div class="notice-box__sub">Bの場合はCanvaへ進まない</div>
+  </div>
+  <p>著作物類似や著しい人体違和感がある画像は、<strong>Canvaへ進む前にプロンプトを修正して再生成</strong>してください。Canvaで上から修正してもリスクや違和感は解消されません。すべてのチェックをクリアしてからCanvaへ進みましょう。</p>
+</div>
+</section>
+
+<!-- まとめ -->
+<div class="summary-box reveal">
+  <div class="summary-box__head"><div class="summary-box__badge">SUMMARY</div></div>
+  <ol>
+    <li>AI生成画像はそのままでは使えないので、毎案件で3ステップのチェックを行う（1〜2分で終わる習慣）</li>
+    <li>3ステップ：①人体の違和感 → ②著作物類似（逆画像検索）→ ③色精度</li>
+    <li>②著作物類似は<strong>法的リスクに直結</strong>するため、最も重要なチェック。Canvaでは対処できない</li>
+    <li>判断フロー：すべてOK → <strong>Canvaへ進む</strong>／著作物類似・著しい人体違和感 → <strong>再生成</strong></li>
+  </ol>
+</div>
+
+<!-- 理解度チェック -->
+<div class="check-box reveal">
+  <div class="check-box__head">
+    <div class="check-box__pill">CHECK</div>
+    <div class="check-box__sub">理解度チェック</div>
+  </div>
+  <details>
+    <summary>AI品質チェック3ステップを順番に言える</summary>
+    <div class="check-box__detail">①人体の違和感（手指・顔・身体）→ ②著作物類似（逆画像検索）→ ③色精度。この順番で毎案件チェックする習慣をつけましょう。</div>
+  </details>
+  <details>
+    <summary>逆画像検索の手順を説明できる</summary>
+    <div class="check-box__detail">Googleのトップページでカメラアイコン（Googleレンズ）をクリック → 生成画像をアップロード → 著名な商業作品・写真素材と一致するものが出ていないか確認。1〜2分で完了します。毎案件の習慣にしてください。</div>
+  </details>
+  <details>
+    <summary>チェック結果から再生成かCanva進行かを判断できる</summary>
+    <div class="check-box__detail">著作物類似・著しい人体違和感がある場合は、Canvaへ進まずプロンプトを修正して再生成します。3ステップすべてクリアできればCanvaへ進んでOKです。</div>
+  </details>
+</div>
+<!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px; max-width: 1775px; margin-left: auto; margin-right: auto; width: 100%;">
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-02/TClmk" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">
+    前の章に戻る
+  </a>
+  
+  <a href="https://learn.webcoach.jp/ai-designer/chapter-02/0yTgV" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">
+    次の章に進む
+    <img src="../../_assets/47498cfebf.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);">
+  </a>
+</div>  
+<div class="back-to-roadmap" style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;"></div>
+</div><!-- /.lesson-wrapper -->
+
+
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+
+            </main></div>
+        
+
+    
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/web-design/ZFkxg -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>バナーの模写をしよう！ - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/web-design/ZFkxg">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="バナーの模写をしよう！ - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/761/medium/a9ee00f3-537a-4aec-9c4a-fe06b412f1fd.jpg?1757896527">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="バナーの模写をしよう！">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/web-design/ZFkxg">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/761/large/a9ee00f3-537a-4aec-9c4a-fe06b412f1fd.jpg?1757896527">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="MbX16DovVFTFGZxCf6ar9NpOnONDVcP_RjGg9wKgkA2WaYwPRNBDvdxg_-qXG9yi5qIgfM5N7ffDs3lSs9n66g"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEBデザイン</div>
+
+          <div class="fw-bold h2">バナーの模写をしよう！</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">バナーの模写をしよう！</a><ul><li><a href="#heading1" class="tocLink">教材全体の目安学習時間：2時間10分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">はじめに：この教材について</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li><li><a href="#heading5" class="tocLink">この教材がおすすめの人</a></li><li><a href="#heading6" class="tocLink">本教材で到達できるゴール</a></li><li><a href="#heading7" class="tocLink">学習の進め方と提出物</a></li></ul></li><li><a href="#heading8" class="tocLink">なぜ「模写」が重要なのか</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading10" class="tocLink">デザイン学習のよくある悩み</a></li><li><a href="#heading11" class="tocLink">デザインの意図を読み解く思考法</a><ul><li><a href="#heading12" class="tocLink"></a></li></ul></li><li><a href="#heading13" class="tocLink">模写がもたらす3つの効果</a></li><li><a href="#heading14" class="tocLink">考えてみよう！：好きなデザインの理由</a></li></ul></li><li><a href="#heading15" class="tocLink">"引き出し"を作る参考収集術</a><ul><li><a href="#heading16" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading17" class="tocLink">良いインプットが良い作品を生む</a></li><li><a href="#heading18" class="tocLink">Pinterestの基本操作</a></li><li><a href="#heading19" class="tocLink">バナーを見つける検索テクニック</a></li><li><a href="#heading20" class="tocLink">参考を整理するオリジナルボード作成</a><ul><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li></ul></li><li><a href="#heading24" class="tocLink">練習問題：テーマに沿ったバナー収集</a></li></ul></li><li><a href="#heading25" class="tocLink">模写の効果を最大化する「分解思考」</a><ul><li><a href="#heading26" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading27" class="tocLink">デザインを4要素に分解して観る</a><ul><li><a href="#heading28" class="tocLink"></a></li></ul></li><li><a href="#heading29" class="tocLink">チェックポイント1：レイアウトと余白</a></li><li><a href="#heading30" class="tocLink">チェックポイント2：タイポグラフィ</a></li><li><a href="#heading31" class="tocLink">チェックポイント3：配色</a></li><li><a href="#heading32" class="tocLink">チェックポイント4：あしらいと質感</a></li></ul></li><li><a href="#heading33" class="tocLink">章末課題：5つのバナー模写に挑戦しよう</a><ul><li><a href="#heading34" class="tocLink">目安の学習時間：30分 ※実際の制作時間は含みません</a></li></ul><ul><li><a href="#heading35" class="tocLink">課題の概要</a></li><li><a href="#heading36" class="tocLink">学びを言語化するポイント</a></li><li><a href="#heading37" class="tocLink">提出物と提出方法</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_heading " id="item38736" data-item-id="38736" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">バナーの模写をしよう！</h2></div>
+        
+        <div class="article-item item_markdown " id="item38737" data-item-id="38737" data-item-type="ItemMarkdown"><h4 id="heading1">教材全体の目安学習時間：2時間10分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item38738" data-item-id="38738" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item38739" data-item-id="38739" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>優れたバナーデザインを分析し、その意図を言語化できるようになる</li>
+  <li>Pinterestを活用し、目的に合った参考バナーを効率的に収集・整理できるようになる</li>
+  <li>自身の興味関心に基づいて選んだバナーを5つ模写し、学びを言語化して提出できるようになる</li>
+  <li>模写で得た学びを、次のオリジナル制作に活かす方法を理解できる</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item38740" data-item-id="38740" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">はじめに：この教材について</h2></div>
+        
+        <div class="article-item item_markdown " id="item38741" data-item-id="38741" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item38742" data-item-id="38742" data-item-type="ItemMarkdown"><h4 id="heading5">この教材がおすすめの人</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item38743" data-item-id="38743" data-item-type="ItemRichText"><div class="item-body-hbr">本教材は、以下のような目標や課題を持つ方に特におすすめです。</div></div>
+        
+        <div class="article-item item_html " id="item38744" data-item-id="38744" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>デザインの引き出しを増やしたい方</li>
+  <li>優れたデザインの理由を言語化したい方</li>
+  <li>オリジナルバナー制作の土台を固めたい方</li>
+  <li>デザイナーとして観察眼を鍛えたい方</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item38745" data-item-id="38745" data-item-type="ItemRichText"><div class="item-body-hbr">デザインの学習を始めたばかりの段階で、良い見本をたくさんインプットし、その構造を理解する訓練は、今後の成長を大きく左右します。<br>
+<br>
+この教材で、そのための強固な基礎を作りましょう。</div></div>
+        
+        <div class="article-item item_markdown " id="item38746" data-item-id="38746" data-item-type="ItemMarkdown"><h4 id="heading6">本教材で到達できるゴール</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item38747" data-item-id="38747" data-item-type="ItemRichText"><div class="item-body-hbr">この教材を終えると、優れたデザインをただ「見る」だけでなく、構造的に<span class="decoration-02">「観る」</span>ことができるようになります。<br>
+そして、その分析結果を元に、質の高い模写を5つ完成させ、次のオリジナル制作に繋がる確かなスキルと自信を手に入れることができます。<br>
+<br>
+ツールの操作方法だけでなく、デザイナーとしての「思考法」を身につけることが、本教材の最大のゴールです。</div></div>
+        
+        <div class="article-item item_markdown " id="item38748" data-item-id="38748" data-item-type="ItemMarkdown"><h4 id="heading7">学習の進め方と提出物</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item38749" data-item-id="38749" data-item-type="ItemRichText"><div class="item-body-hbr">本教材は、以下の流れで学習を進めていきます。</div></div>
+        
+        <div class="article-item item_html " id="item38750" data-item-id="38750" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">インプット</span>：<br>模写の重要性や、デザインを分析するための思考法を学びます。</li>
+  <li><span class="decoration-01">準備</span>：<br>デザインの参考を集めるための情報収集術を身につけます。</li>
+  <li><span class="decoration-01">アウトプット</span>：<br>実際に5つのバナーを模写し、そこから得た学びを言語化して提出します。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item38751" data-item-id="38751" data-item-type="ItemHeading"><h2 class="item-body" id="heading8">なぜ「模写」が重要なのか</h2></div>
+        
+        <div class="article-item item_markdown " id="item38752" data-item-id="38752" data-item-type="ItemMarkdown"><h4 id="heading9">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item38753" data-item-id="38753" data-item-type="ItemHeading"><h3 class="item-body" id="heading10">デザイン学習のよくある悩み</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38754" data-item-id="38754" data-item-type="ItemRichText"><div class="item-body-hbr">デザインの学習を始めると、多くの人が次のような壁にぶつかります。</div></div>
+        
+        <div class="article-item item_html " id="item38755" data-item-id="38755" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>良いデザインはたくさん知っているのに、自分では作れない</li>
+  <li>いざ制作しようとしても、アイデアが全く思い浮かばない</li>
+  <li>完成しても、見本と比べてなんだか素人っぽくなってしまう</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item38756" data-item-id="38756" data-item-type="ItemRichText"><div class="item-body-hbr">これらの悩みは、デザインの「正解」を知らないことや、良いデザインの「構造」を理解できていないことが原因で起こります。<br>
+この課題を解決する最も効果的なトレーニングが<span class="decoration-02">「模写」</span>です。</div></div>
+        
+        <div class="article-item item_heading " id="item38757" data-item-id="38757" data-item-type="ItemHeading"><h3 class="item-body" id="heading11">デザインの意図を読み解く思考法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38758" data-item-id="38758" data-item-type="ItemRichText"><div class="item-body-hbr">デザインスキルを向上させるためには、普段のデザインに対する接し方を少し変える必要があります。<br>
+それは、デザインを意識的に、そして深く観察する習慣を持つことです。<br>
+<br>
+優れたデザインをただ眺めるのではなく、<span class="decoration-02">「なぜこのデザインはこうなっているのか？」と常に問いを立てながら、細部まで観察・分析する行為</span>が、スキルアップの鍵を握ります。</div></div>
+        
+        <div class="article-item item_html " id="item38759" data-item-id="38759" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>なぜ、このフォントが選ばれているのだろう？</li>
+  <li>この余白の広さには、どんな意図があるのだろう？</li>
+  <li>この配色は、ターゲットにどんな印象を与えるのだろう？</li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item38760" data-item-id="38760" data-item-type="ItemRichText"><div class="item-body-hbr">このように一つ一つのデザイン要素に対して問いを持つことで、制作者の意図やデザインの構造を深く理解できます。<br>
+<br>
+プロのデザイナーは、日常的に優れたデザインを観察・分析することで、無数のデザインパターンをインプットしています。<br>
+模写は、この思考法を強制的に、かつ最も効率的に鍛えるためのトレーニングなのです。</div></div>
+        
+        <div class="article-item item_image " id="item38761" data-item-id="38761" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/761/medium/a9ee00f3-537a-4aec-9c4a-fe06b412f1fd.jpg?1757896527" title=""><img class="img-responsive item-image" alt=" (38761)" data-reference="" src="../../_assets/cc652a7831.webp" width="640" height="640"></a><h4 id="heading12"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item38762" data-item-id="38762" data-item-type="ItemHeading"><h3 class="item-body" id="heading13">模写がもたらす3つの効果</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38763" data-item-id="38763" data-item-type="ItemRichText"><div class="item-body-hbr">模写トレーニングを継続することで、具体的に以下の3つの効果が得られます。<br>
+これらはデザイナーとして成長するための重要な要素です。</div></div>
+        
+        <div class="article-item item_html " id="item38764" data-item-id="38764" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-02">効果1：インプットの質と量が飛躍的に向上する</span>
+    <ul class="nested-ul">
+      <li>優れたデザインをピクセル単位で再現しようとすることで、今まで気づかなかった細部のこだわりに気づけます。質の高いインプットが、アウトプットの質を劇的に向上させます。</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">効果2：デザインの引き出しが爆発的に増える</span>
+    <ul class="nested-ul">
+      <li>様々なパターンのデザインを自分の手で再現することで、レイアウト、配色、フォントの組み合わせなどが無意識のレベルでストックされます。これが「デザインの引き出し」となり、オリジナル制作でアイデアに困らなくなります。</li>
+    </ul>
+  </li>
+  <li><span class="decoration-02">効果3：ツールの使い方を身体で覚えられる</span>
+    <ul class="nested-ul">
+      <li>「この表現はどうやるんだろう？」と考えながら手を動かすことで、デザインツールの様々な機能を実践的に、かつ効率的に習得できます。</li>
+    </ul>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item38765" data-item-id="38765" data-item-type="ItemHeading"><h3 class="item-body" id="heading14">考えてみよう！：好きなデザインの理由</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38766" data-item-id="38766" data-item-type="ItemRichText"><div class="item-body-hbr">あなたが最近「素敵だな」と感じたWebサイトや広告バナーを一つ思い浮かべてみましょう。<br>
+それはなぜ素敵だと感じましたか？色、形、文字、雰囲気など、具体的な言葉で3つ挙げてみてください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item38767" data-item-id="38767" data-item-type="ItemRichText"><div class="item-body-hbr">解答例</div></div>
+        
+        <div class="article-item item_html " id="item38768" data-item-id="38768" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>例1：落ち着いた茶系の配色で、大人っぽい雰囲気が素敵だった。</li>
+  <li>例2：手書き風のフォントが使われていて、親しみやすさを感じた。</li>
+  <li>例3：写真が大きく使われていて、インパクトがあった。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item38769" data-item-id="38769" data-item-type="ItemHeading"><h2 class="item-body" id="heading15">"引き出し"を作る参考収集術</h2></div>
+        
+        <div class="article-item item_markdown " id="item38770" data-item-id="38770" data-item-type="ItemMarkdown"><h4 id="heading16">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item38771" data-item-id="38771" data-item-type="ItemHeading"><h3 class="item-body" id="heading17">良いインプットが良い作品を生む</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38772" data-item-id="38772" data-item-type="ItemRichText"><div class="item-body-hbr">優れたデザインを生み出すためには、まず優れたデザインをたくさん知ることが不可欠です。<br>
+<span class="decoration-02">デザインは情報収集が9割</span>と言っても過言ではありません。<br>
+日頃から質の高いインプットを心がけ、自分だけのデザインライブラリを構築していきましょう。<br>
+<br>
+そのために、現在最も効果的なツールが<span class="decoration-02">Pinterest（ピンタレスト）</span>です。<br>
+世界中のデザインが集まるプラットフォームであり、多くのプロデザイナーが情報収集やアイデア出しに活用しています。</div></div>
+        
+        <div class="article-item item_heading " id="item38773" data-item-id="38773" data-item-type="ItemHeading"><h3 class="item-body" id="heading18">Pinterestの基本操作</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38774" data-item-id="38774" data-item-type="ItemRichText"><div class="item-body-hbr">まずはPinterestの基本的な使い方をマスターしましょう。<br>
+アカウント作成から、基本的な機能である「Pin」と「Board」の概念を理解することが第一歩です。</div></div>
+        
+        <div class="article-item item_link " id="item38775" data-item-id="38775" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=ZFkxg&amp;item_id=38775" rel="nofollow noopener noreferrer" target="_blank">バナーの模写をしよう！ 1-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="バナーの模写をしよう！ 1-1" data-reference="https://www.dropbox.com/scl/fi/0ar842914byirciwey2z7/banner-tracing_1-1_1.0_.mp4?rlkey=c1wat9hbtax6dr48snn8xwcw7&amp;st=kf7vmss1&amp;dl=0" src="../../_assets/7d7fde7a64.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">この動画はデモンストレーション動画になります。
+音声は入っておりません。
+</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item38776" data-item-id="38776" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon note">
+    <span class="bold"><strong>重要語句</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li><strong>Pin（ピン）</strong>：Pinterest上にある個々の画像や動画のこと。</li>
+            <li><strong>Board（ボード）</strong>：Pinをテーマごとにまとめて保存しておくフォルダのようなもの。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item38777" data-item-id="38777" data-item-type="ItemHeading"><h3 class="item-body" id="heading19">バナーを見つける検索テクニック</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38778" data-item-id="38778" data-item-type="ItemRichText"><div class="item-body-hbr">Pinterestで質の高い参考デザインを見つけるには、検索キーワードが重要です。<br>
+ただ単語を並べるだけでなく、目的意識を持ってキーワードを組み合わせることで、効率的に参考とするバナーを見つけ出すことができます。</div></div>
+        
+        <div class="article-item item_html " id="item38779" data-item-id="38779" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon point">
+    <span class="bold"><strong>豆知識</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li>Pinterestの検索は、日本語だけでなく英語で検索すると、海外の優れたデザインも発見できるためおすすめです。</li>
+            <li>（例：「バナーデザイン」→「banner design」、「広告」→「ads design」）</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38780" data-item-id="38780" data-item-type="ItemRichText"><div class="item-body-hbr">以下に、参考バナーを探す際に役立つキーワードの例を挙げます。</div></div>
+        
+        <div class="article-item item_html " id="item38781" data-item-id="38781" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+    <tbody>
+        </tbody><thead>
+            <tr>
+                <th scope="col">
+                    <div>
+                        <div>目的・ジャンル</div>
+                    </div>
+                </th>
+                <th scope="col">
+                    <div>
+                        <div>キーワード例</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody><tr>
+            <th scope="row">
+                <div>
+                    <div>基本的な検索</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>バナー デザイン, webデザイン, 広告</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>業種で絞る</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>美容 バナー, 食品 広告, IT サービス デザイン</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>テイストで絞る</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>シンプル バナー, ポップ デザイン, 高級感 広告</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">
+                <div>
+                    <div>色で絞る</div>
+                </div>
+            </th>
+            <td>
+                <div>
+                    <div>青 デザイン, ピンク ポップ バナー</div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table></div></div>
+        
+        <div class="article-item item_heading " id="item38782" data-item-id="38782" data-item-type="ItemHeading"><h3 class="item-body" id="heading20">参考を整理するオリジナルボード作成</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38783" data-item-id="38783" data-item-type="ItemRichText"><div class="item-body-hbr">集めた参考デザインは、後から見返しやすいように整理することが非常に重要です。<br>
+自分なりのルールでボードを分類し<span class="decoration-02">、自分だけのデザインライブラリ</span>を育てていきましょう。<br>
+<br>
+ボードの分類方法に正解はありませんが、以下のような分け方がおすすめです。</div></div>
+        
+        <div class="article-item item_html " id="item38784" data-item-id="38784" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">テイスト別</span>：「シンプル」「ポップ」「高級感」など</li>
+  <li><span class="decoration-01">業種別</span>：「美容系」「食品系」「IT系」など</li>
+  <li><span class="decoration-01">レイアウト別</span>：「写真メイン」「イラストメイン」「文字メイン」など</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item38785" data-item-id="38785" data-item-type="ItemRichText"><div class="item-body-hbr">また、一つのボード内でも「サブボード」機能を使えば、さらに細かく分類できます。<br>
+例えば、「美容系」ボードの中に「スキンケア」「コスメ」「脱毛」といったセクションを作成すると、より探しやすくなります。</div></div>
+        
+        <div class="article-item item_html " id="item38787" data-item-id="38787" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>「＋」をクリックして「サブボード」を選択します。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item38788" data-item-id="38788" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/788/medium/8de49ff2-5c8e-4d56-8c68-0f1c34d8099e.png?1757897759" title=""><img class="img-responsive item-image" alt=" (38788)" data-reference="" src="../../_assets/7b80b87d0b.webp" width="640" height="334"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_html " id="item38789" data-item-id="38789" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item38790" data-item-id="38790" data-item-type="ItemHtml"><div class="item-body"><ol start="2">
+  <li>サブボードの名前を入力します。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item38791" data-item-id="38791" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/791/medium/66997194-5d05-4df0-8014-6142b3e25a48.png?1757897846" title=""><img class="img-responsive item-image" alt=" (38791)" data-reference="" src="../../_assets/6f570048e5.webp" width="640" height="407"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_html " id="item38792" data-item-id="38792" data-item-type="ItemHtml"><div class="item-body"><div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item38793" data-item-id="38793" data-item-type="ItemHtml"><div class="item-body"><ol start="3">
+  <li>サブボードが作成されました。ここに関連するバナーをまとめて保存できます。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_image " id="item38794" data-item-id="38794" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/794/medium/cc7d9f91-fbde-43a9-a4e8-b7e308c1a28f.png?1757897906" title=""><img class="img-responsive item-image" alt=" (38794)" data-reference="" src="../../_assets/f0bdd64e7f.webp" width="640" height="443"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item38795" data-item-id="38795" data-item-type="ItemHeading"><h3 class="item-body" id="heading24">練習問題：テーマに沿ったバナー収集</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38796" data-item-id="38796" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">問題</span><br>
+「20代女性向けの夏休み旅行キャンペーン」というテーマで、参考になりそうなバナーをPinterestで5つ探し、新しく作成した「旅行キャンペーン」ボードに保存してください。</div></div>
+        
+        <div class="article-item item_rich_text " id="item38797" data-item-id="38797" data-item-type="ItemRichText"><div class="item-body-hbr">解答手順</div></div>
+        
+        <div class="article-item item_html " id="item38798" data-item-id="38798" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li>Pinterestの検索窓で「旅行 キャンペーン バナー」「夏休み セール デザイン」などのキーワードで検索します。</li>
+  <li>テーマに合うと感じたバナー画像を5つ見つけます。</li>
+  <li>新規ボード「旅行キャンペーン」を作成し、見つけた5つの画像をすべてそのボードにPin（保存）します。</li>
+</ol>
+</div></div>
+        
+        <div class="article-item item_heading " id="item38799" data-item-id="38799" data-item-type="ItemHeading"><h2 class="item-body" id="heading25">模写の効果を最大化する「分解思考」</h2></div>
+        
+        <div class="article-item item_markdown " id="item38800" data-item-id="38800" data-item-type="ItemMarkdown"><h4 id="heading26">目安の学習時間：30分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item38801" data-item-id="38801" data-item-type="ItemHeading"><h3 class="item-body" id="heading27">デザインを4要素に分解して観る</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38802" data-item-id="38802" data-item-type="ItemRichText"><div class="item-body-hbr">いよいよ模写の実践…の前に、もう一つ重要な思考法を学びます。<br>
+それが<span class="decoration-02">「分解思考」</span>です。<br>
+<br>
+完成されたデザインを一つの塊として捉えるのではなく、複数の要素の集合体として分解して観ることで、模写の精度と学習効果が格段に上がります。<br>
+<br>
+ここでは、デザインを以下の<span class="decoration-02">4つのチェックポイント</span>で分解する方法を解説します。</div></div>
+        
+        <div class="article-item item_image " id="item38803" data-item-id="38803" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/038/803/medium/db274437-b7dd-44a5-b17e-939ffa1466a3.jpg?1757898123" title=""><img class="img-responsive item-image" alt=" (38803)" data-reference="" src="../../_assets/89e4c93bd0.webp" width="640" height="640"></a><h4 id="heading28"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item38804" data-item-id="38804" data-item-type="ItemHeading"><h3 class="item-body" id="heading29">チェックポイント1：レイアウトと余白</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38805" data-item-id="38805" data-item-type="ItemRichText"><div class="item-body-hbr">レイアウトはデザインの骨格です。<br>
+情報がどのような順序で、どのように配置されているかを読み解きます。</div></div>
+        
+        <div class="article-item item_html " id="item38806" data-item-id="38806" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">視線の流れ</span>：<br>人の視線は左上から右下へ流れる「Z型」や、左上から下へ、次に少し右を見て下へ流れる「F型」が基本です。バナーがどちらのパターンに近いか観察しましょう。</li>
+  <li><span class="decoration-01">余白の役割</span>：<br>要素が詰め込まれているか、ゆったりと配置されているかで印象は大きく変わります。余白は情報を整理し、高級感や清潔感を演出する重要な要素です。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item38807" data-item-id="38807" data-item-type="ItemHeading"><h3 class="item-body" id="heading30">チェックポイント2：タイポグラフィ</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38808" data-item-id="38808" data-item-type="ItemRichText"><div class="item-body-hbr">タイポグラフィは、<span class="decoration-02">文字のデザイン</span>全般を指します。<br>
+文字は情報を伝えるだけでなく、デザインの雰囲気を決定づけます。</div></div>
+        
+        <div class="article-item item_html " id="item38809" data-item-id="38809" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">フォントの印象</span>：<br>ゴシック体は力強く現代的、明朝体は繊細で伝統的な印象を与えます。どのようなフォントがなぜ選ばれているのか考えましょう。</li>
+  <li><span class="decoration-01">ジャンプ率</span>：<br>見出しと本文など、文字サイズの差の比率をジャンプ率と呼びます。ジャンプ率が高いとダイナミックで元気な印象に、低いと落ち着いて洗練された印象になります。</li>
+  <li><span class="decoration-01">文字組み</span>：<br>文字と文字の間（カーニング）や、行と行の間（行間）がどのように調整されているかも、読みやすさと美しさに直結します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item38810" data-item-id="38810" data-item-type="ItemHeading"><h3 class="item-body" id="heading31">チェックポイント3：配色</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38811" data-item-id="38811" data-item-type="ItemRichText"><div class="item-body-hbr">配色は、デザインの<span class="decoration-02">第一印象</span>を決定づける重要な要素です。<br>
+色が持つイメージと、それがターゲットにどう作用するかを考えます。</div></div>
+        
+        <div class="article-item item_html " id="item38812" data-item-id="38812" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">主要な色</span>：<br>デザイン全体で最も面積の大きい「メインカラー」、次に大きい「サブカラー」、そして最も目立たせたい部分に使う「アクセントカラー」の3つを見つけましょう。</li>
+  <li><span class="decoration-01">配色比率</span>：<br>一般的に「メインカラー70%：サブカラー25%：アクセントカラー5%」が美しいとされています。模写したいバナーがどのような比率になっているか観察してみましょう。</li>
+  <li><span class="decoration-01">色の持つイメージ</span>：<br>赤は情熱的、青は誠実、緑は自然的など、色が与える一般的な印象と、バナーの訴求内容が合っているかを確認します。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item38813" data-item-id="38813" data-item-type="ItemHeading"><h3 class="item-body" id="heading32">チェックポイント4：あしらいと質感</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38814" data-item-id="38814" data-item-type="ItemRichText"><div class="item-body-hbr">あしらいは、デザインの<span class="decoration-02">品質</span>をぐっと引き上げる細部の装飾です。<br>
+これらを丁寧に観察・再現できるかが、模写のクオリティを左右します。</div></div>
+        
+        <div class="article-item item_html " id="item38815" data-item-id="38815" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">影や光</span>：<br>ボタンに付けられた影（ドロップシャドウ）や、写真のキラキラした光（フレア）などは、立体感や特別感を演出します。</li>
+  <li><span class="decoration-01">図形や罫線</span>：<br>見出しの下に引かれた一本の線や、背景にうっすらと配置された幾何学模様など、情報を整理したり世界観を補強したりする役割があります。</li>
+  <li><span class="decoration-01">質感</span>：<br>紙のようなテクスチャ、金属のような光沢など、デザインに与えられた質感がどのような効果を生んでいるか観察しましょう。</li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item38816" data-item-id="38816" data-item-type="ItemHeading"><h2 class="item-body" id="heading33">章末課題：5つのバナー模写に挑戦しよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item38817" data-item-id="38817" data-item-type="ItemMarkdown"><h4 id="heading34">目安の学習時間：30分 ※実際の制作時間は含みません</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item38818" data-item-id="38818" data-item-type="ItemHeading"><h3 class="item-body" id="heading35">課題の概要</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38819" data-item-id="38819" data-item-type="ItemRichText"><div class="item-body-hbr">これまでの学習の総仕上げです。<br>
+自分の興味があるジャンルや、今後作れるようになりたいと感じる参考バナーを自由に5つ見つけて、模写をしてみましょう。<br>
+<br>
+制作した5つの作品から、それぞれどんなことが学べたのかを自分の言葉で言語化し、制作物とセットでコーチに送信しましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item38820" data-item-id="38820" data-item-type="ItemHeading"><h3 class="item-body" id="heading36">学びを言語化するポイント</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38821" data-item-id="38821" data-item-type="ItemRichText"><div class="item-body-hbr">ただ模写するだけでなく、<span class="decoration-02">制作から得られた学びを言語化</span>することが、スキルを定着させる上で非常に重要です。</div></div>
+        
+        <div class="article-item item_html " id="item38822" data-item-id="38822" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>言語化のヒント</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>難しく考えず、制作中に「なるほど！」と思ったことや、完成して気づいたことなどをメモしておきましょう。</li>
+            <li>これまでに学んだ「4つのチェックポイント」の観点（レイアウト、タイポグラフィ、配色、あしらい）から気づきを書き出すのがおすすめです。</li>
+            <li>「なぜこのデザインはターゲットに響くのか」を自分なりに考えたことをまとめることが、オリジナル制作への第一歩となります。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item38823" data-item-id="38823" data-item-type="ItemHeading"><h3 class="item-body" id="heading37">提出物と提出方法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item38824" data-item-id="38824" data-item-type="ItemRichText"><div class="item-body-hbr">学習の成果として、以下の2点をコーチに提出しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item38825" data-item-id="38825" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+    <span class="bold"><strong>提出物一覧</strong><br></span>
+    <div class="content-area">
+        <ul>
+            <li><strong>制作物：</strong>模写したバナーの画像ファイル5点</li>
+            <li><strong>言語化した学び：</strong>各作品から得られた学びをまとめたドキュメント</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38826" data-item-id="38826" data-item-type="ItemRichText"><div class="item-body-hbr">制作が完了したものは、模写したバナーと「学びの言語化」をセットでコーチに提出してください。<br>
+提出方法について不明な点があれば、コーチに確認しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item38827" data-item-id="38827" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+    <div class="title-area">
+        <div class="icon bulb"></div>
+        <div class="title"><strong>スキルアップを加速させる習慣</strong></div>
+    </div>
+    <div class="content-area">
+        <ul>
+            <li>この教材はゴールではなく、デザイナーとしての成長を続けるためのスタートラインです。</li>
+            <li><span class="decoration-02">本物のスキルにするために、今回学んだ「参考収集」と「模写」をぜひ習慣にしてください。</span></li>
+            <li>
+                具体的なアクション例：
+                <ul class="nested-ul">
+                    <li>通勤・通学中にPinterestで参考バナーを5つ見る。</li>
+                    <li>週末に1つだけ、時間を計って模写に挑戦する。</li>
+                </ul>
+            </li>
+            <li>この小さな積み重ねが、数ヶ月後には大きな実力差となって現れます。継続して取り組んでいきましょう。</li>
+        </ul>
+    </div>
+</div></div></div>
+        
+        <div class="article-item item_rich_text " id="item38828" data-item-id="38828" data-item-type="ItemRichText"><div class="item-body-hbr">これで「バナーの模写をしよう！」の解説を終わります。<br>
+お疲れ様でした！</div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">バナーの模写をしよう！</a><ul><li><a href="#heading1" class="tocLink">教材全体の目安学習時間：2時間10分</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">はじめに：この教材について</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li><li><a href="#heading5" class="tocLink">この教材がおすすめの人</a></li><li><a href="#heading6" class="tocLink">本教材で到達できるゴール</a></li><li><a href="#heading7" class="tocLink">学習の進め方と提出物</a></li></ul></li><li><a href="#heading8" class="tocLink">なぜ「模写」が重要なのか</a><ul><li><a href="#heading9" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading10" class="tocLink">デザイン学習のよくある悩み</a></li><li><a href="#heading11" class="tocLink">デザインの意図を読み解く思考法</a><ul><li><a href="#heading12" class="tocLink"></a></li></ul></li><li><a href="#heading13" class="tocLink">模写がもたらす3つの効果</a></li><li><a href="#heading14" class="tocLink">考えてみよう！：好きなデザインの理由</a></li></ul></li><li><a href="#heading15" class="tocLink">"引き出し"を作る参考収集術</a><ul><li><a href="#heading16" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading17" class="tocLink">良いインプットが良い作品を生む</a></li><li><a href="#heading18" class="tocLink">Pinterestの基本操作</a></li><li><a href="#heading19" class="tocLink">バナーを見つける検索テクニック</a></li><li><a href="#heading20" class="tocLink">参考を整理するオリジナルボード作成</a><ul><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li></ul></li><li><a href="#heading24" class="tocLink">練習問題：テーマに沿ったバナー収集</a></li></ul></li><li><a href="#heading25" class="tocLink">模写の効果を最大化する「分解思考」</a><ul><li><a href="#heading26" class="tocLink">目安の学習時間：30分</a></li></ul><ul><li><a href="#heading27" class="tocLink">デザインを4要素に分解して観る</a><ul><li><a href="#heading28" class="tocLink"></a></li></ul></li><li><a href="#heading29" class="tocLink">チェックポイント1：レイアウトと余白</a></li><li><a href="#heading30" class="tocLink">チェックポイント2：タイポグラフィ</a></li><li><a href="#heading31" class="tocLink">チェックポイント3：配色</a></li><li><a href="#heading32" class="tocLink">チェックポイント4：あしらいと質感</a></li></ul></li><li><a href="#heading33" class="tocLink">章末課題：5つのバナー模写に挑戦しよう</a><ul><li><a href="#heading34" class="tocLink">目安の学習時間：30分 ※実際の制作時間は含みません</a></li></ul><ul><li><a href="#heading35" class="tocLink">課題の概要</a></li><li><a href="#heading36" class="tocLink">学びを言語化するポイント</a></li><li><a href="#heading37" class="tocLink">提出物と提出方法</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons"></div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

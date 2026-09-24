@@ -1,0 +1,338 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48605" data-item-id="48605" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="NDJRXf1ad8OtGK50fwx3TA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="2295" data-domain="learn.webcoach.jp" data-url="/generative-ai/ai_web_marketing/B-1/t49jC" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データの読み方——数字から「次のアクション」を導く</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif; background: #F7F8FA; color: #3D3D3D; line-height: 1.7; }
+
+  .hero {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    padding: 48px 24px 40px;
+    color: white;
+    text-align: center;
+  }
+  .hero__label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.85; margin-bottom: 12px; }
+  .hero__title { font-size: 26px; font-weight: 800; line-height: 1.35; margin-bottom: 16px; }
+  .hero__meta { font-size: 13px; opacity: 0.85; display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #E85D4A, #F5A64A);
+  }
+  .card__title { font-size: 17px; font-weight: 700; color: #3D3D3D; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .card__title::before { content: ''; display: inline-block; width: 4px; height: 18px; background: linear-gradient(180deg, #E85D4A, #F5A64A); border-radius: 2px; }
+
+  .intro-box {
+    background: linear-gradient(135deg, #FAE8E0 0%, #FEF3EA 100%);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-left: 4px solid #E85D4A;
+  }
+  .intro-box__text { font-size: 15px; color: #3D3D3D; line-height: 1.8; }
+  .intro-box__text strong { color: #E85D4A; }
+
+  /* 3つの比較基準 */
+  .comparison-bases { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+  .base-card { border-radius: 10px; padding: 18px; text-align: center; border-top: 3px solid; }
+  .base-card:nth-child(1) { background: #EBF0FF; border-color: #5B7BE8; }
+  .base-card:nth-child(2) { background: #FFF3E6; border-color: #E0882A; }
+  .base-card:nth-child(3) { background: #FFE8E4; border-color: #E85D4A; }
+  .base-card__icon { font-size: 28px; margin-bottom: 8px; }
+  .base-card__title { font-size: 14px; font-weight: 800; margin-bottom: 6px; }
+  .base-card:nth-child(1) .base-card__title { color: #5B7BE8; }
+  .base-card:nth-child(2) .base-card__title { color: #E0882A; }
+  .base-card:nth-child(3) .base-card__title { color: #E85D4A; }
+  .base-card__desc { font-size: 12px; color: #555; line-height: 1.6; }
+
+  /* ドリルダウン */
+  .drill-chain { margin: 20px 0; }
+  .drill-item { display: flex; gap: 14px; margin-bottom: 0; padding: 14px 16px; align-items: flex-start; }
+  .drill-item:nth-child(1) { background: #FFF8F0; border-radius: 8px 8px 0 0; }
+  .drill-item:nth-child(2) { background: #FFF3EC; }
+  .drill-item:nth-child(3) { background: #FFE8E0; }
+  .drill-item:last-child { border-radius: 0 0 8px 8px; }
+  .drill-q-badge { font-size: 11px; font-weight: 700; color: #E85D4A; background: #FAE8E0; padding: 2px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+  .drill-body__q { font-size: 14px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px; }
+  .drill-body__a { font-size: 13px; color: #555; line-height: 1.65; }
+  .drill-body__action { font-size: 13px; color: #E85D4A; font-weight: 600; margin-top: 6px; }
+
+  /* NG/OK比較 */
+  .ngok-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+  .ngok-card { border-radius: 10px; padding: 18px; }
+  .ngok-card--ng { background: #FFF5F5; border: 1.5px solid #FFBDBD; }
+  .ngok-card--ok { background: #F0FBF4; border: 1.5px solid #6DCFA0; }
+  .ngok-card__badge { font-size: 11px; font-weight: 700; display: inline-block; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; }
+  .ngok-card--ng .ngok-card__badge { background: #FFBDBD; color: #C0392B; }
+  .ngok-card--ok .ngok-card__badge { background: #6DCFA0; color: white; }
+  .ngok-card__title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .ngok-card--ng .ngok-card__title { color: #C0392B; }
+  .ngok-card--ok .ngok-card__title { color: #2E9B6E; }
+  .ngok-card__text { font-size: 13px; line-height: 1.7; color: #4A4A4A; }
+
+  /* ツール紹介 */
+  .tools-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  .tools-table th { padding: 10px 12px; background: #F7F8FA; font-size: 12px; font-weight: 700; color: #888; border: 1px solid #EEE; text-align: left; }
+  .tools-table td { padding: 10px 12px; border: 1px solid #EEE; vertical-align: top; line-height: 1.65; }
+  .tools-table td:first-child { font-weight: 700; color: #3D3D3D; }
+
+  /* まとめカード */
+  .summary-card {
+    background: linear-gradient(135deg, #E85D4A 0%, #F5A64A 100%);
+    border-radius: 12px;
+    padding: 28px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card__title { font-size: 14px; font-weight: 700; opacity: 0.85; margin-bottom: 10px; }
+  .summary-card__main { font-size: 20px; font-weight: 800; line-height: 1.45; margin-bottom: 16px; }
+  .summary-card__sub { font-size: 13px; opacity: 0.9; line-height: 1.7; }
+
+  p { font-size: 14px; line-height: 1.8; color: #4A4A4A; margin-bottom: 12px; }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    .comparison-bases { grid-template-columns: 1fr; }
+    .ngok-grid { grid-template-columns: 1fr; }
+    .hero__title { font-size: 22px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="k0T1CDq8LGKMOr-FQ1foxlW-tm0EW9QNp2X7BGI5Y-ONv5u0N_O0orS6Ij68CH90_BysYqgQKQFBgDGZEodY0g" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+
+<div class="hero">
+  <div class="hero__label">Course B — Chapter 1 / Lesson 2</div>
+  <div class="hero__title">データの読み方<br>——数字から「次のアクション」を導く</div>
+  <div class="hero__meta">
+    <span>⏱ 35分</span>
+    <span>🛠 手順書</span>
+    <span>🎯 SNS・デザイン・動画</span>
+  </div>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="vV7ks" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+
+<div class="container">
+
+  <div class="intro-box reveal">
+    <div class="intro-box__text">
+      数字を見ることはできる。でも「この数字は良いの？悪いの？次何をすれば？」がわからない——これが多くのクリエイターの壁です。<br>
+      このレッスンでは、<strong>比較の基準を持つこと・「なぜ？」を3回掘り下げること・ツールを使いこなすこと</strong>の3つで、データから次のアクションを導く方法を学びます。
+    </div>
+  </div>
+
+  <!-- 3つの比較基準 -->
+  <div class="card reveal">
+    <div class="card__title">数字を「意味のある情報」にする——3つの比較基準</div>
+    <p>数字は単体では意味を持ちません。「何と比べるか」で初めて良いか悪いかがわかります。</p>
+
+    <div class="comparison-bases">
+      <div class="base-card">
+        <div class="base-card__icon">📅</div>
+        <div class="base-card__title">時系列比較</div>
+        <div class="base-card__desc">前週・前月・前年同期と比べる。改善・悪化のトレンドを掴む。「先週より保存率が0.5%上がった」</div>
+      </div>
+      <div class="base-card">
+        <div class="base-card__icon">🏭</div>
+        <div class="base-card__title">業界平均比較</div>
+        <div class="base-card__desc">業界・ジャンルの平均値と比べる。自分のパフォーマンスの相対的な位置を知る。「CV率2%は美容業界平均の2倍」</div>
+      </div>
+      <div class="base-card">
+        <div class="base-card__icon">🎯</div>
+        <div class="base-card__title">目標値比較</div>
+        <div class="base-card__desc">ブリーフで設定したKPI目標と比べる。「保存率3%目標に対して現在1.8%。進捗60%」</div>
+      </div>
+    </div>
+
+    <p>この3つを組み合わせることで、「過去比で改善しているが、業界平均には届いていない→まだ伸びしろがある」という多角的な分析ができます。</p>
+  </div>
+
+  <!-- ドリルダウン思考 -->
+  <div class="card reveal">
+    <div class="card__title">「なぜ？」を3回掘り下げる——ドリルダウン思考</div>
+    <p>「保存率が低い」という事実から、単純に「コンテンツを改善しよう」と飛びつくのは早計です。「なぜ？」を繰り返すことで、根本原因にたどり着けます。</p>
+
+    <p style="font-size: 13px; color: #888; margin-bottom: 10px;">例: 「体験LPのCV率が1.2%で目標2.5%に届いていない」</p>
+
+    <div class="drill-chain">
+      <div class="drill-item">
+        <div class="drill-q-badge">なぜ①</div>
+        <div class="drill-body">
+          <div class="drill-body__q">「なぜCV率が低いのか？」</div>
+          <div class="drill-body__a">スクロール深度を確認したところ、CTAボタンまで到達しているユーザーが45%しかいない（目標75%）。</div>
+          <div class="drill-body__action">→ ボタンより上のコンテンツに問題がある可能性</div>
+        </div>
+      </div>
+      <div class="drill-item">
+        <div class="drill-q-badge">なぜ②</div>
+        <div class="drill-body">
+          <div class="drill-body__q">「なぜ途中で離脱しているのか？」</div>
+          <div class="drill-body__a">ヒートマップを見ると「料金・コース内容」セクションで離脱が集中している。</div>
+          <div class="drill-body__action">→ 料金の見せ方、または料金に対する不安解消コンテンツが不足</div>
+        </div>
+      </div>
+      <div class="drill-item">
+        <div class="drill-q-badge">なぜ③</div>
+        <div class="drill-body">
+          <div class="drill-body__q">「なぜ料金セクションで不安が生じるのか？」</div>
+          <div class="drill-body__a">「体験後に入会を強要されないか」という不安が解消されていない。口コミや保証の記載がない。</div>
+          <div class="drill-body__action">→ 「体験後の強引な勧誘なし」の明記 + 口コミ・FAQセクションを追加する</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NG/OK分析 -->
+  <div class="card reveal">
+    <div class="card__title">データ解釈のNG/OK比較</div>
+
+    <div class="ngok-grid">
+      <div class="ngok-card ngok-card--ng">
+        <span class="ngok-card__badge">NG: 表面だけで判断</span>
+        <div class="ngok-card__title">「再生数が先月より少ない→動画が悪かった」</div>
+        <div class="ngok-card__text">再生数単体で見ても根本原因はわからない。投稿タイミング・サムネイル・アルゴリズム変化など複数要因がある。「少ない＝ダメ」と即断するのはNG。</div>
+      </div>
+      <div class="ngok-card ngok-card--ok">
+        <span class="ngok-card__badge">OK: 因果関係で分析</span>
+        <div class="ngok-card__title">「再生数は↓でも視聴維持率は↑→内容は良かった、CTRに問題」</div>
+        <div class="ngok-card__text">再生数が下がってもCTR（サムネイルクリック率）が低いのかもしれない。維持率が高ければ内容は評価されている→サムネイルを変えるアクションが導ける。</div>
+      </div>
+      <div class="ngok-card ngok-card--ng">
+        <span class="ngok-card__badge">NG: 1回のデータで断定</span>
+        <div class="ngok-card__title">「この投稿は失敗だった」</div>
+        <div class="ngok-card__text">1投稿のデータは偶然の要素が大きい。最低でも10〜20投稿のデータを蓄積してから傾向を語るべき。</div>
+      </div>
+      <div class="ngok-card ngok-card--ok">
+        <span class="ngok-card__badge">OK: パターンから改善仮説を立てる</span>
+        <div class="ngok-card__title">「20投稿のうち保存率上位5本に共通する要素を特定」</div>
+        <div class="ngok-card__text">「図解投稿の保存率が通常の3倍」→「図解形式を増やす」という再現性のある仮説が立てられる。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ツール一覧 -->
+  <div class="card reveal">
+    <div class="card__title">クリエイターが使うデータ収集ツール概説</div>
+
+    <table class="tools-table">
+      <thead>
+        <tr>
+          <th>ツール</th>
+          <th>主な用途</th>
+          <th>職種</th>
+          <th>費用</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Instagram/TikTokインサイト</td>
+          <td>投稿ごとのリーチ・保存率・エンゲージメント・プロフ遷移率</td>
+          <td>SNS運用者</td>
+          <td>無料（ビジネスアカウント）</td>
+        </tr>
+        <tr>
+          <td>YouTube Studio</td>
+          <td>再生数・視聴維持率グラフ・CTR・チャンネル登録転換率</td>
+          <td>動画編集者</td>
+          <td>無料</td>
+        </tr>
+        <tr>
+          <td>Google Analytics 4（GA4）</td>
+          <td>Webサイトのセッション・CVR・ユーザー属性・流入経路</td>
+          <td>デザイナー</td>
+          <td>無料</td>
+        </tr>
+        <tr>
+          <td>Microsoft Clarity</td>
+          <td>ヒートマップ・スクロール深度・クリック位置・セッション録画</td>
+          <td>デザイナー</td>
+          <td>無料</td>
+        </tr>
+        <tr>
+          <td>Google Search Console</td>
+          <td>検索クエリ・表示回数・CTR・順位</td>
+          <td>デザイナー・SNS</td>
+          <td>無料</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size: 13px; color: #888;">これらのツールの詳細な使い方はModule 3（Webアナリティクス&データ分析コース）で学べます。このコースでは「指標の意味と読み方」を中心に扱います。</p>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-card reveal">
+    <div class="summary-card__title">このレッスンのまとめ</div>
+    <div class="summary-card__main">数字は「比較の基準」を持って初めて意味を持つ。<br>「なぜ？」を3回掘り下げてアクションに変える。</div>
+    <div class="summary-card__sub">
+      3つの比較基準: ①時系列 ②業界平均 ③目標値<br>
+      ドリルダウン思考で表面の数字から根本原因へ<br>
+      1投稿で断定せず、パターンで判断する<br><br>
+      Chapter 1完了。次のChapter 2〜4は自分の職種に応じて選択受講してください。
+    </div>
+  </div>
+
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/ai_web_marketing" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>  
+</div>
+<!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="vV7ks" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="NDJRXf1ad8OtGK50fwx3TA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html>
+</div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

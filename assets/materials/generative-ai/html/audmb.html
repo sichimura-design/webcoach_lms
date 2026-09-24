@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%901%20%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3AI%E3%81%AE%E5%9F%BA%E6%9C%AC%E3%83%84%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E5%AE%9F%E8%B7%B5/aUdMB -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>3章 AIツールの具体的な使用ケースと使い分け - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%901%20%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3AI%E3%81%AE%E5%9F%BA%E6%9C%AC%E3%83%84%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E5%AE%9F%E8%B7%B5/aUdMB">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="3章 AIツールの具体的な使用ケースと使い分け - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/495/medium/d4f9d2c5-7ceb-4420-a36d-9731d657959c.png?1750893182">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="3章 AIツールの具体的な使用ケースと使い分け">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%901%20%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3AI%E3%81%AE%E5%9F%BA%E6%9C%AC%E3%83%84%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E5%AE%9F%E8%B7%B5/aUdMB">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/495/large/d4f9d2c5-7ceb-4420-a36d-9731d657959c.png?1750893182">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="6r2LoK9Ne6evreUdfK9WkxeT_cZYilLulrcnY5AnEPc4J6re2kJkAP_tUAO5q0Q2RVNCAos29k3bwfl2A3iBow"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>教材1 デザインAIの基本ツールとプロンプト実践</div>
+
+          <div class="fw-bold h2">3章 AIツールの具体的な使用ケースと使い分け</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 AIツールの具体的な使用ケースと使い分け</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】イントロダクション：目的別のツール選定</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading5" class="tocLink">「作りたいもの」から逆引きする思考法</a></li></ul></li><li><a href="#heading6" class="tocLink">【3-2】使用ケース①：SNSコンテンツの量産</a><ul><li><a href="#heading7" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading8" class="tocLink">「速く、たくさん」作りたい！</a><ul><li><a href="#heading9" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading10" class="tocLink">【3-3】使用ケース②：高品質なキービジュアル制作</a><ul><li><a href="#heading11" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading12" class="tocLink">LPの主役になる「特別な一枚」が欲しい！</a><ul><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading15" class="tocLink">【3-4】使用ケース③：UIデザインのワークフロー効率化</a><ul><li><a href="#heading16" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading17" class="tocLink">UIデザインの面倒な作業を「効率化」したい！</a><ul><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading25" class="tocLink">【3-5】プロンプトの基本概念と重要性</a><ul><li><a href="#heading26" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading27" class="tocLink">AIへの「伝え方」の基本</a></li></ul></li><li><a href="#heading28" class="tocLink">【3-6】章末課題：ツール選定プランの立案</a><ul><li><a href="#heading29" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading30" class="tocLink">問題</a></li><li><a href="#heading31" class="tocLink">解答解説</a></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item26550" data-item-id="26550" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%901%20%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3AI%E3%81%AE%E5%9F%BA%E6%9C%AC%E3%83%84%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E5%AE%9F%E8%B7%B5/oB9uH" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item26475" data-item-id="26475" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">3章 AIツールの具体的な使用ケースと使い分け</h2></div>
+        
+        <div class="article-item item_markdown " id="item26476" data-item-id="26476" data-item-type="ItemMarkdown"><h4 id="heading1">この章の目安学習時間：1時間</h4>
+</div>
+        
+        <div class="article-item item_markdown " id="item26477" data-item-id="26477" data-item-type="ItemMarkdown"><h4 id="heading2">この章で到達できるゴール：</h4>
+</div>
+        
+        <div class="article-item item_html " id="item26478" data-item-id="26478" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li>具体的なデザイン制作の場面を想定し、複数のAIツールをどう使い分けるかの思考プロセスを理解できる。</li>
+  <li>AIからより良い結果を引き出すための、プロンプトの基本的な考え方を理解できる。</li>
+  <li>自身の目標に合わせて、今後どのツールを重点的に学ぶべきかの計画を立てられるようになる。</li>
+</ul></div></div>
+        
+        <div class="article-item item_heading " id="item26479" data-item-id="26479" data-item-type="ItemHeading"><h2 class="item-body" id="heading3">【3-1】イントロダクション：目的別のツール選定</h2></div>
+        
+        <div class="article-item item_markdown " id="item26480" data-item-id="26480" data-item-type="ItemMarkdown"><h4 id="heading4">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26481" data-item-id="26481" data-item-type="ItemHeading"><h3 class="item-body" id="heading5">「作りたいもの」から逆引きする思考法</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26482" data-item-id="26482" data-item-type="ItemRichText"><div class="item-body-hbr">前の章では、代表的なAIツールのそれぞれの「個性」を学びました。<br>
+この章では、その知識を基に、具体的なデザイン制作の場面で「どのツールを、どのように組み合わせるか」という、より実践的な思考法をケーススタディを通じて学びます。</div></div>
+        
+        <div class="article-item item_html " id="item26483" data-item-id="26483" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title"><strong>重要：目的がツールを選ぶ</strong></div>
+  </div>
+  <div class="content-area">
+    <ul>
+      <li>AI活用で最も重要なのは、ツールありきで考えるのではなく、まず<span class="decoration-02">「何を作りたいか」「どんな課題を解決したいか」という目的を明確にすること</span>です。</li>
+      <li>目的が定まれば、どのツールのどの機能が最適か、自ずと見えてきます。この思考法は、新しいAIツールが登場した際にも役立つ、普遍的なスキルとなります。</li>
+    </ul>
+  </div>
+</div>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item26484" data-item-id="26484" data-item-type="ItemRichText"><div class="item-body-hbr">この章で紹介する3つのケーススタディを通じて、目的から逆引きして最適なツールを使い分ける感覚を養っていきましょう。</div></div>
+        
+        <div class="article-item item_heading " id="item26485" data-item-id="26485" data-item-type="ItemHeading"><h2 class="item-body" id="heading6">【3-2】使用ケース①：SNSコンテンツの量産</h2></div>
+        
+        <div class="article-item item_markdown " id="item26486" data-item-id="26486" data-item-type="ItemMarkdown"><h4 id="heading7">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26487" data-item-id="26487" data-item-type="ItemHeading"><h3 class="item-body" id="heading8">「速く、たくさん」作りたい！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26488" data-item-id="26488" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">課題設定：</span><br>
+Instagramのフィード投稿とストーリーズ用の画像を、ブランドの統一感を保ちつつ、毎日更新するために効率的に作成したい。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26489" data-item-id="26489" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">最適なツールの組み合わせ：</span><br>
+<span class="decoration-02">Canva AI</span> + <span class="decoration-02">ChatGPT</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item26490" data-item-id="26490" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解説：</span><br>
+このケースで最も重要なのは<span class="decoration-01"><span class="decoration-02">「スピード」と「量」</span></span>です。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26491" data-item-id="26491" data-item-type="ItemRichText"><div class="item-body-hbr">Canvaの豊富なテンプレートとAI機能を組み合わせることで、デザイン作業を劇的に高速化できます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26492" data-item-id="26492" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ワークフローのイメージ：</span></div></div>
+        
+        <div class="article-item item_html " id="item26493" data-item-id="26493" data-item-type="ItemHtml"><div class="item-body"><div class="card-with-icon check">
+  <span class="bold"><strong>SNSコンテンツ量産フロー</strong><br></span>
+  <div class="content-area">
+    <ol>
+      <li><strong>投稿テーマと文章作成（ChatGPT）：</strong>まずChatGPTに「1週間分のSNS投稿のテーマと、それぞれのキャッチコピー案」を生成させます。</li>
+      <li><strong>デザイン案の生成（Canva AI）：</strong>次にCanvaの「Magic Design」に、ChatGPTが生成したテーマのキーワード（例：「新商品セール」）を入力し、ベースとなるデザインテンプレートを複数作成させます。</li>
+      <li><strong>ビジュアルの調整（Canva AI）：</strong>テンプレート内の画像がイメージと合わない場合は、「Magic Media」で差し替え用の画像をプロンプトで生成します。</li>
+      <li><strong>仕上げ：</strong>ChatGPTが生成したキャッチコピーを配置し、ブランドカラーなどに合わせてデザインを微調整して完成です。</li>
+    </ol>
+  </div>
+</div>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item26494" data-item-id="26494" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">制作例</span></div></div>
+        
+        <div class="article-item item_image " id="item26495" data-item-id="26495" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/495/medium/d4f9d2c5-7ceb-4420-a36d-9731d657959c.png?1750893182" title=""><img class="img-responsive item-image" alt=" (26495)" data-reference="" src="../../_assets/c666ca8846.webp" width="360" height="640"></a><h4 id="heading9"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item26496" data-item-id="26496" data-item-type="ItemHeading"><h2 class="item-body" id="heading10">【3-3】使用ケース②：高品質なキービジュアル制作</h2></div>
+        
+        <div class="article-item item_markdown " id="item26497" data-item-id="26497" data-item-type="ItemMarkdown"><h4 id="heading11">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26498" data-item-id="26498" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">LPの主役になる「特別な一枚」が欲しい！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26499" data-item-id="26499" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">課題設定：</span><br>
+新しいサービスのLPで使用する、ブランドイメージを象徴するような、高品質でオリジナリティのあるキービジュアルを作成したい。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26500" data-item-id="26500" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">最適なツールの組み合わせ：<br>
+</span><span class="decoration-02">Image FX</span> + <span class="decoration-02">ChatGPT </span>+ <span class="decoration-02">Photoshop</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item26501" data-item-id="26501" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解説：</span><br>
+このケースでは<span class="decoration-02">「品質」と「独自性」</span>が最優先です。<br>
+高品質な画像生成を得意とするImage FXを主軸に、コンセプトの言語化や最終的な仕上げの工程で他のツールを組み合わせます。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26502" data-item-id="26502" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ワークフローのイメージ：</span></div></div>
+        
+        <div class="article-item item_html " id="item26503" data-item-id="26503" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">コンセプトの言語化（ChatGPT）：</span>
+    <ul>
+      <li>まずChatGPTと対話し、キービジュアルで表現したいコンセプトや世界観を、Image FXで使うための詳細なキーワードに落とし込みます。</li>
+    </ul>
+  </li>
+</ol></div></div>
+        
+        <div class="article-item item_link " id="item26504" data-item-id="26504" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=aUdMB&amp;item_id=26504" rel="nofollow noopener noreferrer" target="_blank">デザインAIの基本ツールとプロンプト実践 3-1</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="デザインAIの基本ツールとプロンプト実践 3-1" data-reference="https://www.dropbox.com/scl/fi/vp8ewdpam7aafvvd05gf4/design-ai_3.1-1.0_.mp4?rlkey=vh28btbr3buniom1g6728l4am&amp;st=twg3y73j&amp;dl=0" src="../../_assets/8068ac7adc.webp" width="75" height="75"></div><div class="media-body"><div class="item-body"></div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item26505" data-item-id="26505" data-item-type="ItemHtml"><div class="item-body"><ol start="2">
+  <li><span class="decoration-01">高品質な画像の生成（Image FX）：</span>
+    <ul>
+      <li>次に、言語化したキーワードを基に、Image FXで高品質な画像を複数生成し、最もイメージに近いものを数枚選びます。</li>
+    </ul>
+  </li>
+  <li><span class="decoration-01">プロ品質の仕上げ（Photoshop）：</span>
+    <ul>
+      <li>最後に、選んだ画像をPhotoshopに読み込みます。</li>
+        <li>AI機能（「生成拡張」や「生成塗りつぶし」）や通常の色調補正、レタッチ機能を使って細部を調整し、完成度を極限まで高めます。</li>
+    </ul>
+  </li>
+</ol></div></div>
+        
+        <div class="article-item item_rich_text " id="item26506" data-item-id="26506" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">作成例</span></div></div>
+        
+        <div class="article-item item_image " id="item26507" data-item-id="26507" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/507/medium/ddfd141e-3153-42f3-8adb-1f71a6226a75.png?1750894169" title=""><img class="img-responsive item-image" alt=" (26507)" data-reference="" src="../../_assets/16955a1a2a.webp" width="640" height="349"></a><h4 id="heading13"></h4></div></div>
+        
+        <div class="article-item item_image " id="item26508" data-item-id="26508" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/508/medium/8264322a-1257-4b96-a29f-332167b106c9.jpg?1750894199" title=""><img class="img-responsive item-image" alt=" (26508)" data-reference="" src="../../_assets/86b0821bbe.webp" width="640" height="445"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item26509" data-item-id="26509" data-item-type="ItemHeading"><h2 class="item-body" id="heading15">【3-4】使用ケース③：UIデザインのワークフロー効率化</h2></div>
+        
+        <div class="article-item item_markdown " id="item26510" data-item-id="26510" data-item-type="ItemMarkdown"><h4 id="heading16">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26511" data-item-id="26511" data-item-type="ItemHeading"><h3 class="item-body" id="heading17">UIデザインの面倒な作業を「効率化」したい！</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26512" data-item-id="26512" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">課題設定：<br>
+</span>モバイルアプリのデザイン制作において、情報整理、ワイヤーフレーム作成、UIパーツへのダミーデータ入力といった、創造的とは言えないものの時間のかかる作業を効率化したい。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26513" data-item-id="26513" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">最適なツールの組み合わせ：</span><br>
+<span class="decoration-02">Figma</span>（無料プラグイン含む） + <span class="decoration-02">ChatGPT</span></div></div>
+        
+        <div class="article-item item_rich_text " id="item26514" data-item-id="26514" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">解説：</span><br>
+このケースでは、UIデザインの<span class="decoration-02">「ワークフローとの親和性」</span>が鍵となります。<br>
+特に、<span class="decoration-02">反復的で量の多い単純作業をAIと無料プラグインで自動化</span>することで、作業の流れを止めずに効率化を図ります。</div></div>
+        
+        <div class="article-item item_rich_text " id="item26515" data-item-id="26515" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">ワークフローのイメージ：</span></div></div>
+        
+        <div class="article-item item_html " id="item26516" data-item-id="26516" data-item-type="ItemHtml"><div class="item-body"><ol>
+  <li><span class="decoration-01">情報整理（ChatGPT）：</span><br>まず、ChatGPTを使い、ブレインストーミングで出たアイデアやクライアントからの要件を、構成案の形に整理します。</li>
+</ol></div></div>
+        
+        <div class="article-item item_image " id="item26517" data-item-id="26517" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/517/medium/dd6b73e5-1564-497b-9009-ccaee6ddc404.png?1750894507" title=""><img class="img-responsive item-image" alt=" (26517)" data-reference="" src="../../_assets/7a7105d42a.webp" width="640" height="360"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_image " id="item26518" data-item-id="26518" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/518/medium/92f78857-c93b-4a60-a4ec-33425542b22a.png?1750894521" title=""><img class="img-responsive item-image" alt=" (26518)" data-reference="" src="../../_assets/3b2760502c.webp" width="640" height="360"></a><h4 id="heading19"></h4></div></div>
+        
+        <div class="article-item item_html " id="item26519" data-item-id="26519" data-item-type="ItemHtml"><div class="item-body"><ol start="2">
+  <li><span class="decoration-01">ワイヤーフレーム作成（Figmaの基本機能）：</span><br>
+    次に、Figmaに移動し、整理された構成案からワイヤーフレームを基本的な図形ツールで作成します。<br>
+    この段階では、まだ詳細な作り込みは行いません。<br><br>
+    <span class="decoration-02">AIプラグインを使えば、この工程を自動化することも可能</span>です。<br>
+    例えば<span class="decoration-02">「Relume」「Builder.io」</span>といったプラグインにテキストで指示を出すと、ワイヤーフレームのたたき台を生成してくれます。（2.5-EX① 特定AIツール深掘り講座_Figma編で学習）<br><br>
+    アイデア出しのきっかけとして非常に便利ですが、多くは無料での利用に制限があります。
+  </li>
+</ol></div></div>
+        
+        <div class="article-item item_image " id="item26520" data-item-id="26520" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/520/medium/a4a7cb58-b6bc-4602-abfc-e84356c9a901.png?1750894953" title=""><img class="img-responsive item-image" alt=" (26520)" data-reference="" src="../../_assets/ffcf7dd089.webp" width="640" height="388"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_html " id="item26521" data-item-id="26521" data-item-type="ItemHtml"><div class="item-body"><ol start="3">
+  <li><span class="decoration-01">コンテンツの流し込み（ChatGPT + 無料プラグイン）：</span><br>
+    最後に、ここが効率化のハイライトです。<br><br>
+    ワイヤーフレームに配置する<span class="decoration-02">大量のダミーテキスト</span>（ユーザー名、プロフィール文、メッセージなど）をChatGPTに生成させ、<span class="decoration-02">「Content Reel」などの無料プラグイン</span>を使ってデザイン上に一括で流し込みます。<br>
+    これにより、一件ずつ手入力する手間を省き、リアルな画面イメージを素早く作成できます。
+  </li>
+</ol></div></div>
+        
+        <div class="article-item item_image " id="item26522" data-item-id="26522" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/522/medium/c774a0b7-9af0-499c-99a7-275f3751696d.png?1750895271" title=""><img class="img-responsive item-image" alt=" (26522)" data-reference="" src="../../_assets/b99bc56929.webp" width="640" height="360"></a><h4 id="heading21"></h4></div></div>
+        
+        <div class="article-item item_image " id="item26523" data-item-id="26523" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/523/medium/d64ee5e0-d45b-43ff-89c1-9822c95119ba.png?1750895288" title=""><img class="img-responsive item-image" alt=" (26523)" data-reference="" src="../../_assets/5ead091fea.webp" width="640" height="339"></a><h4 id="heading22"></h4></div></div>
+        
+        <div class="article-item item_image " id="item26524" data-item-id="26524" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/524/medium/043b2080-284a-4dc5-871a-7af9ad25befe.png?1750895303" title=""><img class="img-responsive item-image" alt=" (26524)" data-reference="" src="../../_assets/967d5b456e.webp" width="546" height="640"></a><h4 id="heading23"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item26525" data-item-id="26525" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">作成例（テキストや画像は本物を流し込み済み）</span></div></div>
+        
+        <div class="article-item item_image " id="item26526" data-item-id="26526" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/026/526/medium/69585204-9021-4b2b-adde-e715134b9328.png?1750895357" title=""><img class="img-responsive item-image" alt=" (26526)" data-reference="" src="../../_assets/75c7b94488.webp" width="396" height="640"></a><h4 id="heading24"></h4></div></div>
+        
+        <div class="article-item item_heading " id="item26527" data-item-id="26527" data-item-type="ItemHeading"><h2 class="item-body" id="heading25">【3-5】プロンプトの基本概念と重要性</h2></div>
+        
+        <div class="article-item item_markdown " id="item26528" data-item-id="26528" data-item-type="ItemMarkdown"><h4 id="heading26">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26529" data-item-id="26529" data-item-type="ItemHeading"><h3 class="item-body" id="heading27">AIへの「伝え方」の基本</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26530" data-item-id="26530" data-item-type="ItemRichText"><div class="item-body-hbr">これまでのケーススタディで見たように、AIを効果的に使うには、的確な指示、すなわち<span class="decoration-02">「プロンプト」</span>が不可欠です。<br>
+このパートでは、ツール操作は行いませんが、後続の講座で実践的なプロンプトを学ぶための「考え方」の基礎を学びます。<br>
+<br>
+不安な人は「生成AI基礎講座」の「プロンプトエンジニアリング基本のキ」を復習しましょう！</div></div>
+        
+        <div class="article-item item_html " id="item26531" data-item-id="26531" data-item-type="ItemHtml"><div class="item-body"><div class="callout white">
+  <div class="title-area">
+    <div class="icon bulb"></div>
+    <div class="title"><strong>良いプロンプトの3要素</strong></div>
+  </div>
+  <div class="content-area">
+    <p>良いプロンプトは、多くの場合、以下の3つの要素を含んでいます。<br>AIと対話する際に、これらの要素を意識するだけで、アウトプットの質は大きく変わります。</p>
+    <ul>
+      <li><strong>役割 (Role):</strong> AIに「あなたはプロのコピーライターです」のように、特定の専門家としての役割を与えることで、その役割に沿った質の高い回答が期待できます。</li>
+      <li><strong>文脈 (Context):</strong> 「この商品は20代女性向けです」「ブランドイメージはミニマルで洗練されています」のように、前提となる背景情報を与えることで、AIはより的確なアウトプットを生成します。</li>
+      <li><strong>制約 (Constraint):</strong> 「3つの案を箇条書きで」「小学生にも分かる言葉で」「100字以内で」のように、アウトプットの形式や条件を具体的に指定することで、意図した通りの結果を得やすくなります。</li>
+    </ul>
+  </div>
+</div>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item26532" data-item-id="26532" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">考えてみよう！</span><br>
+「Webサイトのヒーローイメージを作って」というプロンプトは、なぜ「悪いプロンプト」なのでしょうか？<br>
+上記の3要素を踏まえて、改善案を考えてみましょう。</div></div>
+        
+        <div class="article-item item_html " id="item26533" data-item-id="26533" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">解答例</span>
+    <ul>
+      <li><span class="decoration-01">現状の問題点：</span>「役割」「文脈」「制約」の全ての要素が欠けているため、AIは何を作れば良いか分からず、非常に曖昧で一般的な画像しか生成できません。</li>
+    </ul>
+  </li>
+  <li><span class="decoration-01">改善案：</span>
+    <ul>
+      <li><span class="decoration-01">役割：</span>あなたは才能あるWebデザイナーです。</li>
+      <li><span class="decoration-01">文脈：</span>今、オーガニックな素材を使ったコスメブランドの新しいLPを制作しています。ターゲットは自然派志向の30代女性です。</li>
+      <li><span class="decoration-01">制約：</span>そのLPのキービジュアルとなるヒーローイメージを、横長の画像で、水彩画のような優しく透明感のあるスタイルで生成してください。朝の光が差し込む、穏やかな雰囲気でお願いします。</li>
+    </ul>
+  </li>
+</ul>
+</div></div>
+        
+        <div class="article-item item_heading " id="item26534" data-item-id="26534" data-item-type="ItemHeading"><h2 class="item-body" id="heading28">【3-6】章末課題：ツール選定プランの立案</h2></div>
+        
+        <div class="article-item item_markdown " id="item26535" data-item-id="26535" data-item-type="ItemMarkdown"><h4 id="heading29">目安の学習時間：10分</h4>
+</div>
+        
+        <div class="article-item item_heading " id="item26536" data-item-id="26536" data-item-type="ItemHeading"><h3 class="item-body" id="heading30">問題</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26537" data-item-id="26537" data-item-type="ItemRichText"><div class="item-body-hbr">この教材で、様々なAIツールの特徴と使い分けの考え方を学びました。<br>
+<br>
+次の教材「2-① AIで加速！アイデア発想と素材作成フロー: 発想支援編」では、これらのツールを使い、具体的なプロジェクトの「アイデア発想」のフローを実践的に学びます。<br>
+<br>
+それに先立ち、あなたが「発想支援編」で取り組んでみたい架空のプロジェクトのテーマを自由に設定し、その<span class="decoration-02">初期のアイデア発想段階</span>で、本教材で学んだどのAIツールが最も役立ちそうか、その理由と共に記述してください。</div></div>
+        
+        <div class="article-item item_heading " id="item26538" data-item-id="26538" data-item-type="ItemHeading"><h3 class="item-body" id="heading31">解答解説</h3></div>
+        
+        <div class="article-item item_rich_text " id="item26539" data-item-id="26539" data-item-type="ItemRichText"><div class="item-body-hbr">この課題は、自身の興味と学習内容を結びつけ、次の学習への目的意識を明確にするためのものです。<br>
+正解はありません。</div></div>
+        
+        <div class="article-item item_html " id="item26540" data-item-id="26540" data-item-type="ItemHtml"><div class="item-body"><ul>
+  <li><span class="decoration-01">設定したテーマ：</span>地元の小さなベーカリーの、若者向けオンライン宣伝用LP制作
+  </li>
+  <li><span class="decoration-01">活用したいAIツールと理由：</span>
+    <ol>
+      <li><span class="decoration-01">ChatGPT： </span>まず、若者に響くLPのコンセプトやキャッチコピーのアイデアを大量に壁打ちしたいから。また、「地元」「パン」「若者」といったキーワードから、LPに載せるべきコンテンツの構成案を相談したい。</li>
+      <li><span class="decoration-01">Image FX：</span>「焼きたてのパンのシズル感」や「おしゃれなカフェのような雰囲気」といった、コンセプトに合う高品質なキービジュアルのインスピレーションが欲しいから。フリー素材にはない、オリジナリティのある画像を生成してみたい。</li>
+    </ol>
+  </li>
+</ul></div></div>
+        
+        <div class="article-item item_rich_text " id="item26542" data-item-id="26542" data-item-type="ItemRichText"><div class="item-body-hbr">これで「3章 AIツールの具体的な使用ケースと使い分け」の解説を終わります。<br>
+お疲れ様でした！</div></div>
+        
+        <div class="article-item item_html " id="item26549" data-item-id="26549" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: flex-start;">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%901%20%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3AI%E3%81%AE%E5%9F%BA%E6%9C%AC%E3%83%84%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E5%AE%9F%E8%B7%B5/oB9uH" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">3章 AIツールの具体的な使用ケースと使い分け</a><ul><li><a href="#heading1" class="tocLink">この章の目安学習時間：1時間</a></li><li><a href="#heading2" class="tocLink">この章で到達できるゴール：</a></li></ul></li><li><a href="#heading3" class="tocLink">【3-1】イントロダクション：目的別のツール選定</a><ul><li><a href="#heading4" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading5" class="tocLink">「作りたいもの」から逆引きする思考法</a></li></ul></li><li><a href="#heading6" class="tocLink">【3-2】使用ケース①：SNSコンテンツの量産</a><ul><li><a href="#heading7" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading8" class="tocLink">「速く、たくさん」作りたい！</a><ul><li><a href="#heading9" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading10" class="tocLink">【3-3】使用ケース②：高品質なキービジュアル制作</a><ul><li><a href="#heading11" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading12" class="tocLink">LPの主役になる「特別な一枚」が欲しい！</a><ul><li><a href="#heading13" class="tocLink"></a></li><li><a href="#heading14" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading15" class="tocLink">【3-4】使用ケース③：UIデザインのワークフロー効率化</a><ul><li><a href="#heading16" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading17" class="tocLink">UIデザインの面倒な作業を「効率化」したい！</a><ul><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink"></a></li><li><a href="#heading21" class="tocLink"></a></li><li><a href="#heading22" class="tocLink"></a></li><li><a href="#heading23" class="tocLink"></a></li><li><a href="#heading24" class="tocLink"></a></li></ul></li></ul></li><li><a href="#heading25" class="tocLink">【3-5】プロンプトの基本概念と重要性</a><ul><li><a href="#heading26" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading27" class="tocLink">AIへの「伝え方」の基本</a></li></ul></li><li><a href="#heading28" class="tocLink">【3-6】章末課題：ツール選定プランの立案</a><ul><li><a href="#heading29" class="tocLink">目安の学習時間：10分</a></li></ul><ul><li><a href="#heading30" class="tocLink">問題</a></li><li><a href="#heading31" class="tocLink">解答解説</a></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/generative-ai/AI_design/%E6%95%99%E6%9D%901%20%E3%83%87%E3%82%B6%E3%82%A4%E3%83%B3AI%E3%81%AE%E5%9F%BA%E6%9C%AC%E3%83%84%E3%83%BC%E3%83%AB%E3%81%A8%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E5%AE%9F%E8%B7%B5/oB9uH" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

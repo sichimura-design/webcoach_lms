@@ -1,0 +1,588 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48543" data-item-id="48543" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="FwC1hJ+0iJVwb1YWDLROwA==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1267" data-domain="learn.webcoach.jp" data-url="/generative-ai/introduction-to-generative-ai/AI%E3%82%92%E5%91%B3%E6%96%B9%E3%81%AB%E3%81%99%E3%82%8B%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E3%82%A8%E3%83%B3%E3%82%B8%E3%83%8B%E3%82%A2%E3%83%AA%E3%83%B3%E3%82%B0%E3%81%AE%E5%9F%BA%E6%9C%AC/QU9Hm" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【実践①】プロンプトの型を使って精度を上げる | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p, .card ul { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .card ul { padding-left: 16px; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .prompt-example {
+    background: #2D2D2D; color: #E8E8E8; border-radius: 12px;
+    padding: 20px 24px; margin: 16px 0; font-size: 14px; line-height: 1.8;
+    font-family: 'Noto Sans JP', monospace; white-space: pre-wrap;
+  }
+  .prompt-example .prompt-label {
+    font-size: 11px; color: #F5A64A; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 8px;
+  }
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .compare-bad { background: #FFF3F0; border: 2px solid #E85D4A; border-radius: 16px; padding: 20px; }
+  .compare-good { background: #E8F5E9; border: 2px solid #4CAF50; border-radius: 16px; padding: 20px; }
+  .compare-bad .compare-label { font-size: 12px; font-weight: 700; color: #E85D4A; margin-bottom: 8px; }
+  .compare-good .compare-label { font-size: 12px; font-weight: 700; color: #4CAF50; margin-bottom: 8px; }
+  .try-box {
+    background: #fff; border: 2px dashed #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .try-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    .card-grid, .compare-grid { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+  }
+  .toc-link { color: #555; text-decoration: none; }
+  .toc-link:hover { color: #E85D4A; }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="eetmCKd0n3Ks0i2CNUN-qV22mqD1JS6ZGkovPtFwt6QGs9juFq0eKYX1EMBsrgRAetu4zoUKG_3fKlyI15mdCQ" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+<div class="lesson-wrapper">
+
+<!-- ヘッダー -->
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 5-3</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">【実践①】プロンプトの型を使って精度を上げる</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">Chapter 5: プロンプトエンジニアリング ／ 所要時間：約20分</p>
+</div>
+
+<!-- ゴールボックス -->
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約20分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">「役割」設定と「Markdown記法」を使い、AIの出力精度と品質を大幅に向上させる</p>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+ <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="d85kX" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="zNEDj" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- 目次 -->
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">「役割(Role)」を与えるだけでAIは別人格に</a></li>
+    <li><a href="#sec2" class="toc-link">実務で必須！Markdown記法の基本</a></li>
+    <li><a href="#sec3" class="toc-link">「出力形式」をMarkdownで指定する技術</a></li>
+    <li><a href="#sec4" class="toc-link">章末課題</a></li>
+  </ol>
+</div>
+
+
+<!-- イメージしてみよう -->
+<div class="imagine-box">
+  <div class="label">🎬 イメージしてみよう</div>
+  <p>
+    あなたは「健康のために毎日食べるべきもの」を知りたいとします。<br><br>
+    同じ質問を<strong class="accent">「栄養士」に聞くか「アスリート」に聞くか</strong>で、回答は全く違うものになりますよね？<br><br>
+    栄養士なら「バランスの良い食事」、アスリートなら「高たんぱく質の食品」を中心に答えるでしょう。<br>
+    AIも同じです。<strong class="accent">「誰として答えるか」を指定するだけで、回答の質と方向性が劇的に変わる</strong>のです。
+  </p>
+</div>
+
+
+<!-- 躓きポイント -->
+<div class="stumbling-box">
+  <div class="label">⚡ このレッスンで躓きやすいポイント</div>
+  <ul>
+    <li>Markdown記法の記号を全角で入力してしまう → <strong class="accent">必ず半角で入力</strong></li>
+    <li>役割設定を「おまじない」程度に思ってしまう → 実際に比較すると<strong class="accent">効果は歴然</strong></li>
+    <li>Markdownをすべて覚えようとする → <strong class="accent">見出し・リスト・太字・表の4つだけ</strong>で十分</li>
+  </ul>
+</div>
+
+
+<!-- ============================================================
+  セクション 1: 役割設定
+============================================================ -->
+<h2 class="section-heading" id="sec1">1. 「役割(Role)」を与えるだけでAIは別人格に</h2>
+
+<p class="text-body">
+  AIは膨大なテキストデータを学習しているため「何でも知っているが、専門家ではない」状態です。そこで重要になるのが<strong class="accent">「役割設定」</strong>です。
+</p>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>役割設定は「演技の台本」のようなもの。AIに台本を渡すことで、<strong class="accent">どの知識を、どの視点で、どの深さで使えばいいか</strong>が明確になります。</p>
+</div>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 32px 0 16px;">【実践】役割の有無で回答がどう変わるか</h3>
+
+<p class="text-body">
+  共通の質問「健康のために毎日食べるべきものは何ですか？」を、役割の有無で比較してみましょう。
+</p>
+
+<div class="prompt-example">
+  <div class="prompt-label">パターン1：役割なし</div>
+健康のために毎日食べるべきものは何ですか？</div>
+
+<div class="prompt-example">
+  <div class="prompt-label">パターン2：栄養士</div>
+あなたは経験豊富な栄養士です。
+健康のために毎日食べるべきものは何ですか？</div>
+
+<div class="prompt-example">
+  <div class="prompt-label">パターン3：アスリート</div>
+あなたは世界的に有名なアスリートです。
+健康のために毎日食べるべきものは何ですか？</div>
+
+<p class="text-body">
+  実際にChatGPTで試してみてください。同じ質問でも、回答の視点・内容・言葉遣いが大きく変わることを体感できるはずです。
+</p>
+
+<!-- 比較カード -->
+<div class="card-grid">
+  <div class="card">
+    <h3>役割なしの場合</h3>
+    <p>一般的で網羅的な回答になりがち。専門的な深みに欠ける</p>
+  </div>
+  <div class="card">
+    <h3>役割ありの場合</h3>
+    <p>その役割に最適な情報・視点・トーンで、目的に合った質の高い回答が得られる</p>
+  </div>
+</div>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>役割設定の応用テクニックとして、<strong class="accent">複数の役割を組み合わせる</strong>（例：マーケター兼ジャーナリスト）、<strong class="accent">ネガティブな役割を与える</strong>（例：批判的な顧客）といった方法もあります。目的に応じて使い分けましょう。</p>
+</div>
+
+<!-- 確認クイズ #1 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">AIに「役割」を与える最大のメリットは？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIの処理速度が速くなる</button>
+    <button class="quiz-opt" data-correct="true">B. AIが使う知識の視点・深さ・トーンが目的に合ったものになる</button>
+    <button class="quiz-opt" data-correct="false">C. AIが自動的に最新情報を取得してくれるようになる</button>
+    <button class="quiz-opt" data-correct="false">D. AIの回答が必ず正確になる</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> 役割設定により、AIは膨大な知識の中から「その役割に最も適した情報・視点・トーン」を選び出して回答を生成します。まるで別人格になったように、より専門的で目的に沿った回答が得られるのです。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>商品の改善点を知りたいとき、「あなたは批判的な顧客です。この新商品の問題点を3つ挙げてください」とすると、普段気づかないリスクや改善点を洗い出してくれます。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 2: Markdown記法
+============================================================ -->
+<h2 class="section-heading" id="sec2">2. 実務で必須！Markdown記法の基本</h2>
+
+<p class="text-body">
+  <strong class="accent">Markdown（マークダウン）</strong>とは、簡単な記号を使って文章に構造を付与する「軽量マークアップ言語」です。プロンプトで「出力形式」を指定するときに非常に役立ちます。
+</p>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 32px 0 16px;">なぜプロンプトでMarkdownを使うのか？</h3>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>構造化された出力</h3>
+    <p>見出し、リスト、表など、人間にとって分かりやすい形でAIに出力させることができる</p>
+  </div>
+  <div class="card">
+    <h3>再利用性が高い</h3>
+    <p>そのままブログ記事やドキュメント、メールなどにコピー＆ペーストして活用しやすい</p>
+  </div>
+</div>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 32px 0 16px;">これだけは覚えたい！基本のMarkdown記法</h3>
+
+<!-- Markdown記法テーブル -->
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">記法</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">書き方</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">用途</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">見出し</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-family: monospace;"># 見出し1<br>## 見出し2<br>### 見出し3</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">文章の構造化</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">箇条書き</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-family: monospace;">- りんご<br>- バナナ</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">情報の列挙</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">番号付きリスト</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-family: monospace;">1. 最初の項目<br>2. 次の項目</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">順序のある情報</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">太字</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-family: monospace;">**とても重要**</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">強調したい箇所</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; font-weight: 700;">表（テーブル）</td>
+        <td style="padding: 12px 16px; font-family: monospace;">| 列1 | 列2 |<br>|---|---|<br>| 内容 | 内容 |</td>
+        <td style="padding: 12px 16px;">比較・整理</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="note-box">
+  <div class="label">注意</div>
+  <p>Markdownの記号は必ず<strong class="accent">半角で入力</strong>してください。リストの記号の後には半角スペースを入れます。適宜空行を入れて構造を分かりやすくしましょう。</p>
+</div>
+
+<!-- 確認クイズ #2 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">Markdownで「太字」を表現する正しい書き方は？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. __太字__（アンダースコア1つずつ）</button>
+    <button class="quiz-opt" data-correct="true">B. **太字**（アスタリスク2つずつ）</button>
+    <button class="quiz-opt" data-correct="false">C. ##太字##（シャープ2つずつ）</button>
+    <button class="quiz-opt" data-correct="false">D. ~~太字~~（チルダ2つずつ）</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> Markdownでは <code>**テキスト**</code> のようにアスタリスク2つで囲むと太字になります。ちなみに <code>~~テキスト~~</code> は取り消し線になります。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>Markdownは、Notion、GitHub、Slack、VSCodeなど多くのツールで使えます。一度覚えれば、AIへの指示だけでなく、日常の文書作成にも活用できる汎用スキルです。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 3: 出力形式の指定
+============================================================ -->
+<h2 class="section-heading" id="sec3">3. 「出力形式」をMarkdownで指定する技術</h2>
+
+<p class="text-body">
+  AIに「表形式で出力して」「箇条書きで出力して」と指示することで、情報は整理され、思考のアシスタントとして役立つようになります。
+</p>
+
+<h3 style="font-size: 18px; font-weight: 700; color: #3D3D3D; margin: 32px 0 16px;">【実践】Markdown形式で出力させてみよう</h3>
+
+<div class="prompt-example">
+  <div class="prompt-label">プロンプト例</div>
+あなたはプロのITライターです。
+
+先ほど私が学習した「基本的なMarkdown記法」について、
+重要なポイントをまとめた解説記事を作成してください。
+
+1. Markdownとは何か
+2. 主な記法とその書き方（見出し、箇条書き、番号付き、太字、表）
+3. メリット
+
+出力は全体を見出しと本文で構成し、Markdown形式で記述してください。</div>
+
+<p class="text-body">
+  このプロンプトをChatGPTに入力すると、きれいに構造化された記事が出力されます。<strong class="accent">「Markdown形式で」と一言加えるだけ</strong>で、出力のクオリティが格段に上がるのです。
+</p>
+
+<div class="try-box">
+  <div class="label">やってみよう</div>
+  <p style="font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0;">
+    <strong>練習問題：</strong>「朝型人間になるための3つのコツ」を、専門家の役割を与え、タイトル・3つのコツ（太字見出し＋説明）・番号付きリストのMarkdown形式で生成させてみましょう。
+  </p>
+</div>
+
+<div class="prompt-example">
+  <div class="prompt-label">解答例プロンプト</div>
+あなたは生活改善の専門家です。
+
+「朝型人間になるための3つのコツ」というテーマで
+記事案をください。
+
+コツは番号付きリストで、見出しは太字にしてください。
+全体をMarkdownで出力してください。</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>「役割設定」×「Markdown出力形式」の組み合わせは、<strong class="accent">実務でのAI活用の基本中の基本</strong>です。この2つを押さえるだけで、AIの出力品質は飛躍的に向上します。</p>
+</div>
+
+<!-- 確認クイズ #3 -->
+<div class="inline-quiz">
+  <div class="quiz-label">✏️ 確認クイズ</div>
+  <p class="quiz-question">AIに「Markdown形式で出力して」と指示する最大のメリットは？</p>
+  <div class="quiz-options">
+    <button class="quiz-opt" data-correct="false">A. AIの回答速度が上がる</button>
+    <button class="quiz-opt" data-correct="false">B. AIが正確な情報を返してくれるようになる</button>
+    <button class="quiz-opt" data-correct="true">C. 構造化された出力が得られ、そのまま文書やツールに再利用しやすい</button>
+    <button class="quiz-opt" data-correct="false">D. AIが自動で画像を生成してくれる</button>
+  </div>
+  <div class="quiz-feedback">
+    <strong>正解！</strong> Markdown形式で出力させることで、見出し・リスト・表などに構造化された情報が得られ、そのままブログ、Notion、メールなどにコピー＆ペーストして使えます。<strong>後工程の作業を大幅に削減</strong>できるのが最大のメリットです。
+  </div>
+</div>
+
+<div class="usecase-box">
+  <div class="label">💡 こんな場面で使える！</div>
+  <p>会議の議事録をAIにまとめてもらうとき、「Markdown形式で、見出しと箇条書きを使って」と指示すれば、そのままNotionやGoogle Docsに貼り付けられる形で出力されます。</p>
+</div>
+
+
+<!-- ============================================================
+  セクション 4: 章末課題
+============================================================ -->
+<h2 class="section-heading" id="sec4">4. 章末課題 - Markdown達人への道</h2>
+
+<p class="text-body">
+  1章で学んだ「良いプロンプトの4大構成要素」について、Markdownのテーブル形式でまとめてみましょう。
+</p>
+
+<div class="try-box">
+  <div class="label">やってみよう</div>
+  <p style="font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0;">
+    <strong>課題：</strong>「良いプロンプトの4大構成要素」について、「構成要素」「意味・役割」「なぜ重要か」をまとめた解説表をMarkdownのテーブル形式で作成させてください。
+  </p>
+</div>
+
+<div class="prompt-example">
+  <div class="prompt-label">解答手順（プロンプト例）</div>
+あなたはプロンプトエンジニアリングの専門家です。
+
+「良いプロンプトの4大構成要素」について、表を作成してください。
+
+出力はMarkdownのテーブル形式で、
+列は「構成要素」「意味・役割」「なぜ重要か（具体例）」の3列にしてください。</div>
+
+<p class="text-body">以下のような出力が期待されます。</p>
+
+<div style="overflow-x: auto; margin: 20px 0; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.06);">
+  <table style="width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; font-size: 15px;">
+    <thead>
+      <tr>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">構成要素</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">意味・役割</th>
+        <th style="background: #E85D4A; color: #fff; padding: 12px 16px; font-weight: 700; text-align: left;">なぜ重要か（具体例）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">役割</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">特定の立場を演じさせる</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">専門性が定まる（例：医師として回答）</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">指示</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">実行タスクを伝える</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">的確に動ける（例：要約して）</td>
+      </tr>
+      <tr>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0; font-weight: 700;">文脈</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">背景や制約を伝える</td>
+        <td style="padding: 12px 16px; border-bottom: 1px solid #FAE8E0;">意図を汲み取れる（例：小学生向け）</td>
+      </tr>
+      <tr style="background: #FDF0ED;">
+        <td style="padding: 12px 16px; font-weight: 700;">出力形式</td>
+        <td style="padding: 12px 16px;">回答スタイルを指定</td>
+        <td style="padding: 12px 16px;">後工程が楽になる（例：表形式で）</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- まとめ -->
+<div class="summary-box">
+  <div class="label">まとめ</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">役割設定</strong> — AIに「あなたは〇〇です」と台本を渡すだけで、回答の専門性・視点・トーンが劇的に変わる</li>
+    <li><strong style="color: #3D3D3D;">Markdown記法</strong> — 見出し（#）、リスト（-）、番号付きリスト（1.）、太字（**）、表（|）の5つが基本</li>
+    <li><strong style="color: #3D3D3D;">出力形式の指定</strong> — 「Markdown形式で」と一言加えるだけで、構造化された再利用しやすい出力が得られる</li>
+    <li><strong style="color: #3D3D3D;">最強の組み合わせ</strong> — 「役割設定」×「Markdown出力形式」が実務AI活用の基本中の基本</li>
+  </ul>
+</div>
+
+
+<!-- 理解度チェック -->
+<details style="background: #F0FAF0; border: 1px solid #C8E6C9; border-radius: 12px; padding: 0; margin: 36px 0;">
+  <summary style="padding: 18px 24px; font-size: 14px; font-weight: 700; color: #4CAF50; cursor: pointer; letter-spacing: 0.1em;">理解度チェック（クリックして開く）</summary>
+  <div style="padding: 0 24px 18px;">
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">役割設定がAIの出力に与える影響を説明できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">AIに特定の役割を与えると、膨大な知識の中からその役割に最適な情報・視点・トーンが選ばれ、より専門的で目的に沿った回答が生成されます。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">基本的なMarkdown記法（見出し・リスト・太字・表）を書ける</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">見出しは # の数でレベル指定、箇条書きは -、番号付きは 1. 2.、太字は ** で囲む、表は | と - で作成します。すべて半角で入力します。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">AIにMarkdown形式での出力を指示できる</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">プロンプトの最後に「出力はMarkdown形式で記述してください」と加えるだけでOKです。必要に応じて「見出しと箇条書きを使って」「テーブル形式で」など具体的に指定しましょう。</div>
+    </details>
+
+    <details style="background: #fff; border: 1px solid #BBF7D0; border-radius: 10px; padding: 0; margin: 8px 0; overflow: hidden;">
+      <summary style="padding: 14px 18px; font-size: 15px; font-weight: 600; color: #166534; cursor: pointer;">4大構成要素の解説表をMarkdownテーブルで作成できた</summary>
+      <div style="padding: 0 18px 14px; font-size: 14px; color: #555; line-height: 1.7;">章末課題のプロンプト例を使って、4要素の表を生成できていればOKです。自分なりにアレンジして列を追加してみるのも良い練習です。</div>
+    </details>
+
+  </div>
+</details>
+   <!-- 前の章に戻るボタン / 次の章に進むボタン がある場合 -->  
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="d85kX" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+  <a href="zNEDj" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;">次の章に進む<img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); right: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%);"></a>
+</div>
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+
+
+</div><!-- /.lesson-wrapper -->
+
+<!-- JavaScript -->
+<script>
+document.querySelectorAll('.inline-quiz').forEach(function(quiz) {
+  var options = quiz.querySelectorAll('.quiz-opt');
+  var feedback = quiz.querySelector('.quiz-feedback');
+  var answered = false;
+  options.forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      if (answered) return;
+      answered = true;
+      var isCorrect = opt.dataset.correct === 'true';
+      options.forEach(function(o) {
+        o.style.pointerEvents = 'none';
+        o.style.opacity = '0.6';
+        o.classList.add('answered');
+        if (o.dataset.correct === 'true') {
+          o.style.borderColor = '#4CAF50';
+          o.style.background = '#E8F5E9';
+          o.style.opacity = '1';
+          o.style.color = '#2E7D32';
+        }
+      });
+      if (!isCorrect) {
+        opt.style.borderColor = '#E85D4A';
+        opt.style.background = '#FFF3F0';
+        opt.style.color = '#C62828';
+        opt.style.opacity = '1';
+      }
+      feedback.style.display = 'block';
+      feedback.style.background = isCorrect ? '#E8F5E9' : '#FFF3E0';
+      feedback.style.borderLeft = '4px solid ' + (isCorrect ? '#4CAF50' : '#E85D4A');
+    });
+  });
+});
+
+</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="FwC1hJ+0iJVwb1YWDLROwA==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html></div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->

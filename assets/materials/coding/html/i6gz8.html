@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<!-- clipkit-source-url: https://learn.webcoach.jp/coding/i6gz8 -->
+<!-- clipkit-fetched-at: 2026-09-17T11:14:00.275Z -->
+<html lang="ja"><head>
+    <!-- headタグ内の上部に挿入されます -->
+
+    <meta charset="UTF-8">
+    <title>Shopify-基礎編-【3章 商品を登録して販売開始しよう】 - WEBCOACH</title>
+
+    <!-- resetcssのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/17f8e278dc.css">
+
+    <!-- fontawesomeのCDNでのCSS読み込み -->
+    <link rel="stylesheet" href="../../_assets/799aeb25cc.css">
+
+    <!-- BootstrapのCDNでのCSS読み込み -->
+    <link href="../../_assets/7633b7c0c9.css" rel="stylesheet">
+
+    <!-- highlight.jsの読み込み -->
+    <link rel="stylesheet" href="../../_assets/e31ce2dd8c.css">
+
+    <!-- カスタムCSS -->
+    <link rel="stylesheet" href="../../_assets/c533dd7750.css">
+
+    <!-- clipkitデフォルトのCSS -->
+    <!--<link rel="stylesheet" media="screen" href="https://cdn.clipkit.co/clipkit/stylesheets/application-1.0.css?v=v15.9.0-20260915">-->
+
+    <!-- jQuery -->
+    
+
+    <!-- カスタムJS -->
+    
+    
+
+    <!-- clipkitデフォルトのJS -->
+    
+
+    <!-- フォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/">
+    <link href="../../_assets/8b5713f1fc.css" rel="stylesheet">
+
+    <link href="../../_assets/b83ae8ba65.webp" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    <link rel="apple-touch-icon" href="../../_assets/ea0aba163d.webp">
+    <link rel="alternate" type="application/rss+xml" href="https://learn.webcoach.jp/media.rss" title="WEBCOACH">
+    
+<link rel="canonical" href="https://learn.webcoach.jp/coding/i6gz8">
+
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="learn.webcoach.jp">
+<meta name="twitter:title" content="Shopify-基礎編-【3章 商品を登録して販売開始しよう】 - WEBCOACH">
+<meta name="twitter:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/828/medium/8c5656e2-39b1-4ed9-af8e-44113877f0a7.png?1743580876">
+<meta name="twitter:description" content="">
+<meta property="og:site_name" content="WEBCOACH">
+<meta property="og:title" content="Shopify-基礎編-【3章 商品を登録して販売開始しよう】">
+<meta property="og:description" content="">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://learn.webcoach.jp/coding/i6gz8">
+<meta property="og:image" content="https://cdn.clipkit.co/tenants/589/articles/images/000/000/828/large/8c5656e2-39b1-4ed9-af8e-44113877f0a7.png?1743580876">
+
+
+    <!-- headタグ内の下部に挿入されます -->
+
+
+<meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="2BSf3lXJ61_Ez9-D25IfN8JDam7xJq_cu2NHYSBboUPxjTTRF9F6mySJbWCHktg0bYVMGHBy3Nn4Uv3dgw7ESQ"><meta content="" name="routing-root-path"><meta content="media" name="site-name"><meta content="ja" name="i18n-default-locale"><meta content="ja" name="i18n-locale"><style data-clipkit-snapshot="force-visible">[data-aos],.reveal,.wow,.fade-in,.animate__animated,.js-reveal{opacity:1!important;transform:none!important;visibility:visible!important;animation:none!important;transition:none!important}</style></head>
+
+<body class="device-desktop" style="visibility: visible;">
+    <!-- bodyタグ内の上部に挿入されます -->
+
+
+    <!-- サイドバーとコンテンツのコンテナ -->
+    <div class="d-flex flex-row w-100 mb-5" style="min-height: calc(100vh - 400px);">
+
+        <!-- サイドバー -->
+        <!--<nav id="side-bar" class="d-flex flex-column fixed-top" style="width: 250px;">-->
+        <!--    <h1 class="d-block w-100 text-center">-->
+        <!--        <a class="d-block" href="/">-->
+        <!--            <img class="mw-100 p-3" src="https://cdn.clipkit.co/tenants/589/sites/logos/000/000/001/logo_sm/a8defd4b-1cc7-433b-a61c-08e7db0e3e4f.png?1714459367" alt="WEBCOACH">-->
+        <!--        </a>-->
+        <!--    </h1>-->
+        <!--    <ul class="nav flex-column m-0 p-3 fw-bold">-->
+        <!--        <li id="sidebar-top" class="nav-item mb-2" style="display: none;"><a href="/"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/233/original/home.png?1715353458">-->
+        <!--                <div>ホーム</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-knowledges" class="nav-item mb-2" style="display: none;"><a href="/knowledges"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;" src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/232/original/book.png?1715353458">-->
+        <!--                <div>学習の心得</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-designs" class="nav-item mb-2" style="display: none;"><a href="/web-designs"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/231/original/design.png?1715353457">-->
+        <!--                <div>WEBデザイン</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-web-marketing" class="nav-item mb-2" style="display: none;"><a href="/web-marketings"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/230/original/marketing.png?1715353457">-->
+        <!--                <div>WEBマーケティング</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-codings" class="nav-item mb-2" style="display: none;"><a href="/codings"-->
+        <!--                class="nav-link text-body d-flex align-items-center active">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/229/original/website.png?1715353457">-->
+        <!--                <div>WEBサイト構築</div>-->
+        <!--            </a></li>-->
+        <!--        <li id="sidebar-business-skills" class="nav-item mb-2" style="display: none;"><a href="/business-skills"-->
+        <!--                class="nav-link text-body d-flex align-items-center ">-->
+        <!--                <img class="me-3" style="width: 1.5rem;"-->
+        <!--                    src="https://cdn.clipkit.co/tenants/589/resources/assets/000/000/228/original/business.png?1715353456">-->
+        <!--                <div>ビジネススキル</div>-->
+        <!--            </a></li>-->
+        <!--    </ul>-->
+        <!--</nav>-->
+
+        <!-- コンテンツ -->
+        <!--<main class="ms-auto" style="width: calc(100vw - 250px);">-->
+        <main class="ms-auto" style="width: calc(100vw);">
+            <div id="sb-site">
+                
+
+
+<div class="container">
+  <div class="row">
+    <div class="article">
+      <div class="mb-3 text-light" style="
+        height: 180px;
+        background-image: url(&quot;../../_assets/e1d58e2b8a.webp&quot;);
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        align-items: flex-end;
+      ">
+        <div style="
+          margin: 0 0 30px 30px;
+        ">
+          <div>WEB制作</div>
+
+          <div class="fw-bold h2">Shopify-基礎編-【3章 商品を登録して販売開始しよう】</div>
+        </div>
+      </div>
+      <div class="article-content">
+        <!-- 目次 -->
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">第3章：商品を登録して販売開始しよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:80分</a></li></ul><ul><li><a href="#heading2" class="tocLink">【3-1】商品の登録</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間:40分</a></li><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li></ul></li><li><a href="#heading12" class="tocLink">【3-2】 コレクションの作成</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間:20分</a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink"></a></li></ul></li><li><a href="#heading21" class="tocLink">【3-3】 商品ページの魅力的な見せ方</a><ul><li><a href="#heading22" class="tocLink">目安の学習時間:20分</a></li><li><a href="#heading23" class="tocLink">■ SEOに強く、顧客の心を掴む商品説明文作成</a></li><li><a href="#heading24" class="tocLink">■ 高画質の商品写真で、商品の魅力を最大限に伝える</a></li><li><a href="#heading25" class="tocLink">■ 購入を後押しする訴求ポイントを明確に提示</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+
+        <!-- コンテンツ -->
+        
+        
+        <div class="article-item item_html " id="item25876" data-item-id="25876" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/coding/metsK" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/coding/Db1KT" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        <div class="article-item item_heading " id="item9997" data-item-id="9997" data-item-type="ItemHeading"><h2 class="item-body" id="heading0">第3章：商品を登録して販売開始しよう</h2></div>
+        
+        <div class="article-item item_markdown " id="item39837" data-item-id="39837" data-item-type="ItemMarkdown"><h4 id="heading1">この教材の学習時間:80分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item9999" data-item-id="9999" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">この章では、商品情報を登録して、商品ページを作成する手順について解説します。<br>
+<span class="decoration-02">ここからは手を動かして、実際に作成してみましょう！</span></span></div></div>
+        
+        <div class="article-item item_heading " id="item10001" data-item-id="10001" data-item-type="ItemHeading"><h3 class="item-body" id="heading2">【3-1】商品の登録</h3></div>
+        
+        <div class="article-item item_markdown " id="item39838" data-item-id="39838" data-item-type="ItemMarkdown"><h4 id="heading3">目安の学習時間:40分</h4>
+</div>
+        
+        <div class="article-item item_rich_text " id="item10005" data-item-id="10005" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.管理画面の左メニューから、<span class="decoration-02">商品管理 &gt; 商品を追加</span> の順にクリック　</span></div></div>
+        
+        <div class="article-item item_image " id="item10006" data-item-id="10006" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/006/medium/97dadb28-7573-4c42-9c35-1567a3729640.png?1743581190" title=""><img class="img-responsive item-image" alt=" (10006)" data-reference="" src="../../_assets/90ea1f1117.webp" width="640" height="278"></a><h4 id="heading4"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10007" data-item-id="10007" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10008" data-item-id="10008" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2. 商品名（タイトル）、説明、カテゴリー、価格など、<span class="decoration-02">商品情報</span>を入力</span><br>
+ &nbsp; &nbsp; ※商材は、ご自身で自由に設定して問題ございません。</div></div>
+        
+        <div class="article-item item_image " id="item10009" data-item-id="10009" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/009/medium/178c8ebc-4a98-41ec-87c8-b495cca2f7df.png?1743581261" title=""><img class="img-responsive item-image" alt=" (10009)" data-reference="" src="../../_assets/904b1bf891.webp" width="568" height="640"></a><h4 id="heading5"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10010" data-item-id="10010" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div>
+	</div></div>
+        
+        <div class="article-item item_rich_text " id="item10011" data-item-id="10011" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-03"></span><span class="decoration-01">生成AI活用がおすすめ！​</span><br>
+<span class="decoration-01">・商品説明の内容に迷った際には、AI文章生成を活用しましょう！<br>
+・説明欄の左上にある✨マークをクリックすると、生成画面が立ち上がります。</span><br>
+　　→特徴とキーワードを指定し、トーン（文調）を選んで文章を生成できます。<br>
+　　→再生成を押すと別の文章に変わりますので、ピッタリの文章を探しましょう。</div></div>
+        
+        <div class="article-item item_image " id="item10012" data-item-id="10012" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/012/medium/be5010f7-4262-481e-88d7-ca30026cc304.png?1743581804" title=""><img class="img-responsive item-image" alt=" (10012)" data-reference="" src="../../_assets/b34b386f22.webp" width="640" height="505"></a><h4 id="heading6"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10013" data-item-id="10013" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10015" data-item-id="10015" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3.メディアの<span class="decoration-02">【＋】ボタン</span>より、商品画像をアップロード</span></div></div>
+        
+        <div class="article-item item_image " id="item10040" data-item-id="10040" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/040/medium/9c22311b-e19a-4d6a-a0bd-6e5325220bc1.png?1743582825" title=""><img class="img-responsive item-image" alt=" (10040)" data-reference="" src="../../_assets/4df7c9777b.webp" width="640" height="227"></a><h4 id="heading7"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10014" data-item-id="10014" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10016" data-item-id="10016" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">理想の画像サイズ<br>
+<span class="decoration-03"></span></span><span class="decoration-01">・画像のサイズは、1080px × 1080pxの正方形画像がおすすめです。<br>
+・写真素材を、Canvaや写真ACなどで探して、3枚程設定してみましょう。</span></div></div>
+        
+        <div class="article-item item_link " id="item10017" data-item-id="10017" data-item-type="ItemLink"><div class="item-link-inline style-card"><h3 class="item-source"><a href="https://learn.webcoach.jp/media/works/conversions/redirect?article_key=i6gz8&amp;item_id=10017" rel="nofollow noopener noreferrer" target="_blank">写真素材なら「写真AC」無料（フリー）ダウンロードOK</a></h3><div class="media"><div class="pull-left"><img class="item-image" alt="写真素材なら「写真AC」無料（フリー）ダウンロードOK" data-reference="https://www.photo-ac.com/" src="../../_assets/d948989855.webp" width="75" height="75"></div><div class="media-body"><div class="item-body">無料写真素材を提供する「写真AC」のフリー写真素材は、個人、商用を問わず無料でお使いいただけます。クレジット表記やリンクは一切不要です。Web、DTP、動画などの写真素材としてお使いください。</div></div></div></div></div>
+        
+        <div class="article-item item_html " id="item10018" data-item-id="10018" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10019" data-item-id="10019" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">4．商品情報の入力完了後、右上の<span class="decoration-02">保存する</span>ボタンを押す</span></div></div>
+        
+        <div class="article-item item_image " id="item10020" data-item-id="10020" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/020/medium/e439b44d-fea8-4de0-be5d-423ee66e0157.png?1743582040" title=""><img class="img-responsive item-image" alt=" (10020)" data-reference="" src="../../_assets/c88cb3749c.webp" width="640" height="300"></a><h4 id="heading8"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10021" data-item-id="10021" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10022" data-item-id="10022" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">5.在庫数の設定<br>
+・在庫数を１以上に設定します。</span>（在庫数が0になると、売り切れの表示が出るため）<br>
+<span class="decoration-01">・SKUとバーコード</span>（ISBN、UPC、GTIN）<span class="decoration-01">の設定も可能です。</span></div></div>
+        
+        <div class="article-item item_image " id="item10023" data-item-id="10023" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/023/medium/f78a82db-c25d-45bb-a663-26669da188f5.png?1743582181" title=""><img class="img-responsive item-image" alt=" (10023)" data-reference="" src="../../_assets/5e9704cdfa.webp" width="640" height="383"></a><h4 id="heading9"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item10024" data-item-id="10024" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">SKUの設定メリット</span><br>
+・売上傾向や在庫回転率の分析が容易に<br>
+・商品の検索・特定が迅速になり、出荷ミスを防止<br>
+・商品の入出庫を正確に追跡し、在庫管理を効率化<br>
+<br>
+<span class="decoration-01">バーコード（ISBN、UPC、GTIN）の設定メリット</span><br>
+・Google ShoppingやAmazonへの展開が容易に<br>
+・スキャナーでの読み取りによる在庫管理の自動化<br>
+・POSシステムや物流システムとの連携が可能</div></div>
+        
+        <div class="article-item item_html " id="item10025" data-item-id="10025" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10026" data-item-id="10026" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">6.在庫状況の参照表</span><br>
+・在庫は以下の在庫状況に分類されます。</div></div>
+        
+        <div class="article-item item_html " id="item38222" data-item-id="38222" data-item-type="ItemHtml"><div class="item-body"><table class="simple">
+  <tbody>
+    </tbody><thead>
+      <tr>
+        <th scope="col">
+          <div><div>在庫状況</div></div>
+        </th>
+        <th scope="col">
+          <div><div>定義</div></div>
+        </th>
+      </tr>
+    </thead>
+
+    <tbody><tr>
+      <th scope="row">
+        <div><div>手持ち</div></div>
+      </th>
+      <td>
+        <div>
+          <div>
+            <strong>[手持ち]</strong> 在庫とは、すべての在庫個数のことです。<br>
+            <strong>[手持ち]</strong> 在庫は、<strong>[販売可能]</strong>、<strong>[確定済み]</strong>、および、<strong>[販売不可]</strong> 在庫の合計数で構成されています。
+          </div>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <th scope="row">
+        <div><div>販売可能（在庫数）</div></div>
+      </th>
+      <td>
+        <div>
+          <div>
+            <strong>[販売可能]</strong> 在庫とは、販売できる在庫数のことです。<br>
+            <strong>[販売可能]</strong> 在庫は、<strong>[手持ち]</strong> から <strong>[確定済み]</strong> と <strong>[販売不可]</strong> の在庫数を引いた数で構成されています。
+          </div>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <th scope="row">
+        <div><div>確定済み</div></div>
+      </th>
+      <td>
+        <div>
+          <div>
+            <strong>[確定済み]</strong> 在庫とは、注文を受けているものの未発送の在庫数のことです。<br>
+            <strong>[販売可能]</strong> な在庫には計上されません。
+          </div>
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <th scope="row">
+        <div><div>販売不可（利用できない）</div></div>
+      </th>
+      <td>
+        <div>
+          <div>
+            <strong>[販売不可]</strong> 在庫は、破損、品質管理、安全在庫など、在庫を保留にする理由がある個数のことです。<br>
+            <strong>[販売可能]</strong> な在庫には計上されません。
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+        
+        <div class="article-item item_html " id="item10028" data-item-id="10028" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10029" data-item-id="10029" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">7.右上の<span class="decoration-02">プレビュー</span>ボタンでページを確認</span></div></div>
+        
+        <div class="article-item item_image " id="item10030" data-item-id="10030" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/030/medium/34dc6e80-19d4-44e8-a372-23c2a3ebeb6c.png?1743582540" title=""><img class="img-responsive item-image" alt=" (10030)" data-reference="" src="../../_assets/5f5f441d93.webp" width="640" height="346"></a><h4 id="heading10"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10031" data-item-id="10031" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10033" data-item-id="10033" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">★プレビュー画面</span><br>
+<span class="decoration-01">・内容を確認して問題なければ、同じ手順で3つ商品を追加登録しましょう。</span></div></div>
+        
+        <div class="article-item item_image " id="item10034" data-item-id="10034" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/034/medium/083954ce-bafc-457d-8d49-117b904b82f9.png?1743582626" title=""><img class="img-responsive item-image" alt=" (10034)" data-reference="" src="../../_assets/83467e04d9.webp" width="640" height="552"></a><h4 id="heading11"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10032" data-item-id="10032" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div>
+</div></div>
+        
+        <div class="article-item item_heading " id="item10035" data-item-id="10035" data-item-type="ItemHeading"><h3 class="item-body" id="heading12">【3-2】 コレクションの作成</h3></div>
+        
+        <div class="article-item item_html " id="item10041" data-item-id="10041" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item39839" data-item-id="39839" data-item-type="ItemMarkdown"><h4 id="heading13">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item10037" data-item-id="10037" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10039" data-item-id="10039" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">・コレクションとは、商品をグループ化して、お客様がカテゴリー別に探しやすくする機能です。<br>
+・ 作成できるコレクションの例を以下にいくつか示します。3つの商品でカテゴリー作成しましょう。</span><br>
+ &nbsp; &nbsp;→男性用、女性用、子供用の服の商品一覧<br>
+ &nbsp; &nbsp;→半袖、長袖などの特定の種類の商品一覧<br>
+ &nbsp; &nbsp;→セール中の商品一覧<br>
+ &nbsp; &nbsp;→特定のサイズまたは色の商品一覧<br>
+ &nbsp; &nbsp;→春物・秋物などの季節の商品一覧</div></div>
+        
+        <div class="article-item item_html " id="item10038" data-item-id="10038" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10043" data-item-id="10043" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">1.管理メニュー：商品管理&gt;コレクションから、右上の<span class="decoration-02">コレクションを作成する</span>ボタンをクリック</span></div></div>
+        
+        <div class="article-item item_image " id="item10044" data-item-id="10044" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/044/medium/a7eb7d68-8520-4869-ac7e-8764d2fb4f30.png?1743583023" title=""><img class="img-responsive item-image" alt=" (10044)" data-reference="" src="../../_assets/f42b1a4fe4.webp" width="640" height="220"></a><h4 id="heading14"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10042" data-item-id="10042" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10046" data-item-id="10046" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">2. コレクション名（タイトル）、説明、画像など、商品情報を入力し、保存</span><br>
+ &nbsp; &nbsp;※3つの商品に共通する特徴をコレクション名に設定しましょう。</div></div>
+        
+        <div class="article-item item_image " id="item10047" data-item-id="10047" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/047/medium/cf4fd709-8290-472a-9c15-3184f5535584.png?1743583091" title=""><img class="img-responsive item-image" alt=" (10047)" data-reference="" src="../../_assets/6b89342f03.webp" width="640" height="436"></a><h4 id="heading15"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10045" data-item-id="10045" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item39841" data-item-id="39841" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">3.商品管理の「<span class="decoration-02">閲覧する</span>」ボタンをクリックして、コレクションに商品を登録</span><span class="decoration-01"></span></div></div>
+        
+        <div class="article-item item_image " id="item10051" data-item-id="10051" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/051/medium/0ac8e0e4-24be-4150-8eb8-7b882cb6ceab.png?1743583215" title=""><img class="img-responsive item-image" alt=" (10051)" data-reference="" src="../../_assets/35a221a3f9.webp" width="640" height="409"></a><h4 id="heading16"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10052" data-item-id="10052" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10048" data-item-id="10048" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">4.右上の「<span class="decoration-02">表示する</span>」ボタンをクリックして確認</span></div></div>
+        
+        <div class="article-item item_image " id="item10049" data-item-id="10049" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/049/medium/6a8edfcc-dbf5-4530-8058-baab16d4bec8.png?1743583144" title=""><img class="img-responsive item-image" alt=" (10049)" data-reference="" src="../../_assets/9f9a7d24e9.webp" width="640" height="510"></a><h4 id="heading17"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10053" data-item-id="10053" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10054" data-item-id="10054" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">★プレビュー画面</span></div></div>
+        
+        <div class="article-item item_image " id="item10055" data-item-id="10055" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/055/medium/29ab5ea6-276a-458e-8f80-d5f135f53781.png?1743583297" title=""><img class="img-responsive item-image" alt=" (10055)" data-reference="" src="../../_assets/87a6cc1040.webp" width="640" height="239"></a><h4 id="heading18"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10056" data-item-id="10056" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10057" data-item-id="10057" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">補足：金額表示の変更方法（￥ X,XXX JPY ）</span><br>
+・JPY （Japanese yen）日本円の通貨コードの表示を消しましょう。<br>
+・管理画面&gt;⚙設定&gt;一般設定&gt;ストアのデフォルト&gt;通貨表示&gt;・・・&gt;通貨のフォーマットを変更の順にクリック<br>
+</div></div>
+        
+        <div class="article-item item_image " id="item10058" data-item-id="10058" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/058/medium/2e6fa826-befd-4fe9-880e-bbc4489692be.png?1743583361" title=""><img class="img-responsive item-image" alt=" (10058)" data-reference="" src="../../_assets/4785df9b5a.webp" width="640" height="386"></a><h4 id="heading19"></h4></div></div>
+        
+        <div class="article-item item_rich_text " id="item10059" data-item-id="10059" data-item-type="ItemRichText"><div class="item-body-hbr">・通貨表示が含まれている-の部分に表示されているJPYを消して保存する</div></div>
+        
+        <div class="article-item item_image " id="item10060" data-item-id="10060" data-item-type="ItemImage"><div class="image-large"><a class="lightbox" href="https://cdn.clipkit.co/tenants/589/item_images/images/000/010/060/medium/1e64a5d2-d8ca-42f7-953e-81b60aa84901.png?1743583398" title=""><img class="img-responsive item-image" alt=" (10060)" data-reference="" src="../../_assets/90d2530a92.png" width="543" height="276"></a><h4 id="heading20"></h4></div></div>
+        
+        <div class="article-item item_html " id="item10061" data-item-id="10061" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_heading " id="item10063" data-item-id="10063" data-item-type="ItemHeading"><h3 class="item-body" id="heading21">【3-3】 商品ページの魅力的な見せ方</h3></div>
+        
+        <div class="article-item item_html " id="item10062" data-item-id="10062" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item39840" data-item-id="39840" data-item-type="ItemMarkdown"><h4 id="heading22">目安の学習時間:20分</h4>
+</div>
+        
+        <div class="article-item item_html " id="item10065" data-item-id="10065" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item10067" data-item-id="10067" data-item-type="ItemText"><div class="item-body-hbr">商品ページでは「商品タイトル」「キャッチコピー」「商品説明文」「商品詳細」「商品写真（動画）」の5つの構成要素が基本となります。<br><br>さらに顧客の心をつかむには、SEO対策、高画質写真、訴求ポイントの明確化が重要です。</div></div>
+        
+        <div class="article-item item_html " id="item10066" data-item-id="10066" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item19233" data-item-id="19233" data-item-type="ItemMarkdown"><h4 id="heading23">■ SEOに強く、顧客の心を掴む商品説明文作成</h4>
+</div>
+        
+        <div class="article-item item_html " id="item10068" data-item-id="10068" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item10071" data-item-id="10071" data-item-type="ItemText"><div class="item-body-hbr">検索エンジンで上位表示を実現し、顧客の検索意図とニーズに合致した訴求を行いましょう。</div></div>
+        
+        <div class="article-item item_html " id="item10070" data-item-id="10070" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10072" data-item-id="10072" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">具体例<br>
+- <span class="decoration-02">キーワード調査</span><br>
+ &nbsp; - GoogleキーワードプランナーやUbersuggestなどのツールを活用し、関連性の高いキーワードを調査します。<br>
+ &nbsp; - 例：商品が「オーガニックコットンTシャツ」なら、「オーガニックコットン」「Tシャツ」「メンズ」「レディース」「サステナブル」など<br>
+- <span class="decoration-02">キーワードを自然に盛り込む</span><br>
+ &nbsp; - 商品説明文のタイトル、見出し、本文にキーワードを自然な形で盛り込みます。<br>
+ &nbsp; - 例：「着心地抜群！オーガニックコットン100%のメンズTシャツ」<br>
+-<span class="decoration-02"> ベネフィットを伝える</span><br>
+ &nbsp; - 顧客が商品を購入することで得られるメリットを具体的に記述します。<br>
+ &nbsp; - 例：「肌に優しいオーガニックコットン100%で、敏感肌の方も安心」「吸水性・通気性に優れ、夏でも快適な着心地」<br>
+- <span class="decoration-02">ストーリーを語る</span><br>
+ &nbsp; - 商品にまつわるストーリーや開発秘話などを交え、顧客の感情に訴えかける文章を作成します。<br>
+ &nbsp; - 例：「インドの契約農家で丁寧に育てられたオーガニックコットンを使用」「環境に配慮したサステナブルな製造プロセスを採用」<br>
+- <span class="decoration-02">読みやすさに配慮</span><br>
+ &nbsp; - 箇条書き、改行、太字などを効果的に使い、読みやすい文章構成にします。<br>
+- <span class="decoration-02">行動喚起</span><br>
+ &nbsp; - 「今すぐ購入」「カートに入れる」など、顧客が次に取るべき行動を明確に促します。</span></div></div>
+        
+        <div class="article-item item_html " id="item10073" data-item-id="10073" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item19234" data-item-id="19234" data-item-type="ItemMarkdown"><h4 id="heading24">■ 高画質の商品写真で、商品の魅力を最大限に伝える</h4>
+</div>
+        
+        <div class="article-item item_html " id="item10074" data-item-id="10074" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item10077" data-item-id="10077" data-item-type="ItemText"><div class="item-body-hbr">商品の魅力を視覚的に伝え、購買意欲を高めましょう。</div></div>
+        
+        <div class="article-item item_html " id="item10075" data-item-id="10075" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10078" data-item-id="10078" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">具体例<br>
+-<span class="decoration-02"> 高画質カメラを使用</span><br>
+ &nbsp;- スマートフォンでも高画質撮影が可能ですが、一眼レフカメラなどを使用するとより高画質な写真が撮影できます。<br>
+- <span class="decoration-02">自然光で撮影</span><br>
+ &nbsp;- 自然光は商品を美しく見せる効果があります。<br>
+ &nbsp;- 可能な限り自然光で撮影しましょう。<br>
+- <span class="decoration-02">背景をシンプルに</span><br>
+ &nbsp;- 背景がごちゃごちゃしていると、商品が目立ちません。<br>
+ &nbsp;- 白や薄いグレーなど、シンプルな背景を選びましょう。<br>
+- <span class="decoration-02">様々な角度からの写真を掲載</span><br>
+ &nbsp;- 顧客が商品の全体像を把握できるよう、様々な角度からの写真を掲載します。<br>
+- <span class="decoration-02">ズーム機能を活用</span><br>
+ &nbsp;- 素材感やディテールが伝わるよう、ズーム機能を活用した写真も掲載します。<br>
+- <span class="decoration-02">ライフスタイル写真を取り入れる</span><br>
+ &nbsp;- 商品が実際に使用されているシーンをイメージできるような写真を掲載します。<br>
+- <span class="decoration-02">動画も効果的</span><br>
+ &nbsp;- 商品の質感や動きを伝えるには動画も効果的です。</span></div></div>
+        
+        <div class="article-item item_html " id="item10079" data-item-id="10079" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_markdown " id="item19235" data-item-id="19235" data-item-type="ItemMarkdown"><h4 id="heading25">■ 購入を後押しする訴求ポイントを明確に提示</h4>
+</div>
+        
+        <div class="article-item item_html " id="item10081" data-item-id="10081" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_text " id="item10084" data-item-id="10084" data-item-type="ItemText"><div class="item-body-hbr">顧客が購入を決断する最後のひと押しを記載しましょう。</div></div>
+        
+        <div class="article-item item_html " id="item10080" data-item-id="10080" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div>
+</div></div>
+        
+        <div class="article-item item_rich_text " id="item10085" data-item-id="10085" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">具体的な方法<br>
+- <span class="decoration-02">限定性</span><br>
+ &nbsp; - 「数量限定」「期間限定」など、希少性をアピールします。<br>
+- <span class="decoration-02">お得感</span><br>
+ &nbsp; - 「送料無料」「割引クーポン」など、価格面でのメリットを提示します。<br>
+-<span class="decoration-02"> 安心感</span><br>
+ &nbsp; - 「返品保証」「安心のサポート体制」など、購入後の不安を取り除きます。<br>
+- <span class="decoration-02">顧客の声</span><br>
+ &nbsp; - 実際に商品を購入した顧客からのレビューを掲載します。<br>
+- <span class="decoration-02">比較表</span><br>
+ &nbsp; - 類似商品との比較表を掲載し、自社商品の優位性を明確にします。<br>
+- <span class="decoration-02">FAQ</span><br>
+ &nbsp; - よくある質問をまとめたFAQページを作成し、顧客の疑問を解消します。</span></div></div>
+        
+        <div class="article-item item_html " id="item10082" data-item-id="10082" data-item-type="ItemHtml"><div class="item-body"><!-- 線 -->
+<div data-block-id="1bddd266-074f-8174-b892-c3154366829b" class="notion-selectable notion-divider-block" style="width: 100%; max-width: 1233px; margin-top: 1px; margin-bottom: 1px;"><div class="notion-cursor-default" style="display: flex; align-items: center; justify-content: center; pointer-events: auto; width: 100%; height: 13px; flex: 0 0 auto; color: rgba(55, 53, 47, 0.16);"><div role="separator" style="width: 100%; height: 1px; visibility: visible; border-bottom: 1px solid rgba(55, 53, 47, 0.16);"></div></div></div></div></div>
+        
+        <div class="article-item item_rich_text " id="item10086" data-item-id="10086" data-item-type="ItemRichText"><div class="item-body-hbr"><span class="decoration-01">これで「3章 商品を登録して販売開始しよう」の解説を終わります。<br>
+次の章に進みましょう。</span></div></div>
+        
+        <div class="article-item item_html " id="item25875" data-item-id="25875" data-item-type="ItemHtml"><div class="item-body"><div class="pagenation-buttons" style="justify-content: space-between;">
+  <a href="https://learn.webcoach.jp/coding/metsK" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/coding/Db1KT" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div></div></div>
+        
+        
+        
+        <div class="back-to-roadmap mb-4 text-center"></div>
+      </div>
+    </div>
+    
+    <div class="lightbox-modal" id="lightboxModal">
+      <img src="" alt="">
+    </div>
+    
+    <div id="modal" class="fixed-menu-modal">
+      <div class="fixed-menu-modal-content">
+        <div class="index mb-3" style="background-color: #FDF5E8;">
+          <div>
+            <div class="fw-light">INDEX</div>
+            <div class="h3">目次</div>
+          </div>
+          <div class="toc"><ul><li><a href="#heading0" class="tocLink">第3章：商品を登録して販売開始しよう</a><ul><li><a href="#heading1" class="tocLink">この教材の学習時間:80分</a></li></ul><ul><li><a href="#heading2" class="tocLink">【3-1】商品の登録</a><ul><li><a href="#heading3" class="tocLink">目安の学習時間:40分</a></li><li><a href="#heading4" class="tocLink"></a></li><li><a href="#heading5" class="tocLink"></a></li><li><a href="#heading6" class="tocLink"></a></li><li><a href="#heading7" class="tocLink"></a></li><li><a href="#heading8" class="tocLink"></a></li><li><a href="#heading9" class="tocLink"></a></li><li><a href="#heading10" class="tocLink"></a></li><li><a href="#heading11" class="tocLink"></a></li></ul></li><li><a href="#heading12" class="tocLink">【3-2】 コレクションの作成</a><ul><li><a href="#heading13" class="tocLink">目安の学習時間:20分</a></li><li><a href="#heading14" class="tocLink"></a></li><li><a href="#heading15" class="tocLink"></a></li><li><a href="#heading16" class="tocLink"></a></li><li><a href="#heading17" class="tocLink"></a></li><li><a href="#heading18" class="tocLink"></a></li><li><a href="#heading19" class="tocLink"></a></li><li><a href="#heading20" class="tocLink"></a></li></ul></li><li><a href="#heading21" class="tocLink">【3-3】 商品ページの魅力的な見せ方</a><ul><li><a href="#heading22" class="tocLink">目安の学習時間:20分</a></li><li><a href="#heading23" class="tocLink">■ SEOに強く、顧客の心を掴む商品説明文作成</a></li><li><a href="#heading24" class="tocLink">■ 高画質の商品写真で、商品の魅力を最大限に伝える</a></li><li><a href="#heading25" class="tocLink">■ 購入を後押しする訴求ポイントを明確に提示</a></li></ul></li></ul></li></ul></div>
+        </div>
+        
+        <!-- ボタン類 -->
+        <div id="fixed-menu_buttons" class="fixed-menu_buttons">
+  <a href="https://learn.webcoach.jp/coding/metsK" class="pagenation-buttons_prev"><img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon">前の章に戻る</a>
+  <a href="https://learn.webcoach.jp/coding/Db1KT" class="pagenation-buttons_next">次の章に進む<img src="../../_assets/47498cfebf.svg" class="pagenation-buttons_icon"></a>
+</div>
+        
+        <div class="back-to-roadmap text-center"></div>
+      </div>
+    </div>
+    
+    <button id="toggleBtn" class="floating-btn">
+      <img id="iconOpen" src="../../_assets/5feefcfc55.svg" alt="メニューを開く">
+      <img id="iconClose" src="../../_assets/ae4a1129c9.svg" alt="メニューを閉じる" style="display:none;">
+    </button>
+  </div>
+</div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
+            </main></div>
+        
+
+    
+
+    <div class="p-5" style="background-color: #B73E3D; color: white; height: 300px;">
+        <div class="">
+            <div class="h4 ps-3" style="border-left: 5px solid white;">WEBCOACH | キャリアチェンジまでの全てを学ぶマンツーマンWEBスクール</div>
+            <ul class="nav flex-column m-0 p-3 fw-light">
+                <li class="nav-item mb-2"><a href="https://www.webcoach.jp/" target="_blank">WEBCOACH | 公式HP</a></li>
+                <li class="nav-item mb-2"><a href="https://www.instagram.com/webcoach_officials/" target="_blank">WEBCOACH | 公式Instagram</a></li>
+                <li class="nav-item mb-2"><a href="https://vectorinc.co.jp/groupservice/webcoach-career/" target="_blank">WEBCOACH 公式メディア | WEBCOACH career</a></li>
+            </ul>
+        </div>
+        <div class="text-center">
+            <small>© 2020 by WEBCOACH</small>
+        </div>
+    </div>
+
+    
+
+    <!-- bodyタグ内の下部に挿入されます -->
+
+
+    <!-- BootstrapのCDNでのjs読み込み -->
+    
+
+    <!-- シンタックスハイライトの生成 -->
+    
+    
+
+    <!-- 目次の生成 -->
+    
+
+    <!-- ブックマークの生成 -->
+    
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z"></path></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z"></path></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z"></path></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z"></path></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z"></path></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z"></path></symbol></svg>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+
+
+
+
+<div class="dynmsg alert alert-info" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div><div class="dynmsg alert alert-danger" style="display:none;"><button class="close"><span class="fa fa-times"></span></button><div class="message"></div></div></body></html>

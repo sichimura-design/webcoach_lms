@@ -1,0 +1,364 @@
+
+
+
+<div>
+  
+    <div>
+      
+      
+        
+          <div class="article-item item_html " id="item48540" data-item-id="48540" data-item-type="ItemHtml"><div class="item-body"><!DOCTYPE html>
+<html lang="ja">
+<head><script async="async" data-label="saas" nonce="9GNqQAv/l3viW2qVivEIbQ==" src="//b.clipkit.co/"></script><script src="//cdn.clipkit.co/clipkit_assets/beacon-787bbf3225ec43d93f198af35f7d56fdef40fb50440a2909500bdf5b99225aab.js" async="async" id="clipkit-beacon" data-page-type="article" data-page-id="1295" data-domain="learn.webcoach.jp" data-url="/generative-ai/introduction-to-generative-ai/%E7%94%BB%E5%83%8F%E7%94%9F%E6%88%90AI%E3%81%A7%E6%8F%8F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%88%E3%81%86/iCED9" data-href="https://learn.webcoach.jp/media/beacon"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>まとめ -生成画像を実務に活かす | WEBCOACH</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+    color: #3D3D3D; font-size: 16px; line-height: 1.9;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; height: auto; display: block; }
+  .toc-link { color: #555; text-decoration: none; transition: color 0.2s; }
+  .toc-link:hover { color: #E85D4A; }
+  h2.section-heading {
+    font-size: 24px; font-weight: 700; color: #3D3D3D;
+    margin: 48px 0 20px; padding-bottom: 10px;
+    border-bottom: 3px solid #FAE8E0; line-height: 1.4;
+  }
+  h3.sub-heading {
+    font-size: 19px; font-weight: 700; color: #3D3D3D;
+    margin: 32px 0 14px; line-height: 1.5;
+  }
+  .text-body { font-size: 16px; line-height: 1.9; color: #444; margin: 0 0 16px; }
+  .accent { color: #E85D4A; font-weight: 700; }
+  .point-box {
+    background: #FFFBF0; border-left: 4px solid #F5A64A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .point-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .point-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .note-box {
+    background: #FFF3F0; border-left: 4px solid #E85D4A;
+    padding: 18px 22px; border-radius: 0 12px 12px 0; margin: 24px 0;
+  }
+  .note-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 6px; }
+  .note-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #555; }
+  .imagine-box {
+    background: #fff; border: 2px solid #E85D4A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .imagine-box .label { font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .imagine-box p { font-size: 16px; line-height: 1.8; color: #3D3D3D; margin: 0; }
+  .stumbling-box {
+    background: linear-gradient(135deg, #FFF8F0, #FFFBF0); border: 2px solid #F5A64A;
+    border-radius: 16px; padding: 24px; margin: 24px 0;
+  }
+  .stumbling-box .label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 8px; }
+  .stumbling-box ul { margin: 0; padding-left: 18px; font-size: 15px; line-height: 2; color: #555; }
+  .usecase-box {
+    background: #F0F7FF; border: 1px solid #C2DFF5;
+    border-radius: 12px; padding: 18px 22px; margin: 24px 0;
+  }
+  .usecase-box .label { font-size: 12px; font-weight: 700; color: #2E86DE; letter-spacing: 0.1em; margin-bottom: 6px; }
+  .usecase-box p { margin: 0; font-size: 15px; line-height: 1.8; color: #444; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .card {
+    background: #fff; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 22px;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; color: #E85D4A; margin: 0 0 8px; }
+  .card p, .card ul { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .card ul { padding-left: 16px; }
+  .inline-quiz {
+    background: #FFF8F0; border: 2px solid #FAE8E0;
+    border-radius: 16px; padding: 24px; margin: 36px 0;
+  }
+  .inline-quiz .quiz-label { font-size: 12px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px; }
+  .inline-quiz .quiz-question { font-size: 16px; font-weight: 700; color: #3D3D3D; margin: 0 0 16px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 2px solid #E8E8E8; border-radius: 10px;
+    padding: 12px 16px; font-size: 15px;
+    font-family: 'Noto Sans JP', sans-serif; color: #3D3D3D;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s; line-height: 1.6;
+  }
+  .quiz-opt:hover:not(.answered) { border-color: #F5A64A; background: #FFFBF0; }
+  .quiz-feedback {
+    display: none; margin-top: 16px; padding: 14px 18px;
+    border-radius: 8px; font-size: 14px; line-height: 1.7; color: #444;
+  }
+  .summary-box {
+    background: linear-gradient(135deg, #FDF0ED, #FFFBF0);
+    border: 2px solid #FAE8E0; border-radius: 16px;
+    padding: 28px; margin: 48px 0 28px;
+  }
+  .summary-box .label { font-size: 13px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em; margin-bottom: 18px; }
+  .summary-box ul { margin: 0; padding-left: 18px; font-size: 14px; line-height: 2; color: #444; }
+  .img-caption {
+    font-size: 13px; color: #999; text-align: center; margin: -8px 0 20px;
+  }
+  .step-block {
+    display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;
+  }
+  .step-num {
+    flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #F5A64A, #E85D4A);
+    color: #fff; font-weight: 700; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-block .step-title { font-size: 16px; font-weight: 700; color: #3D3D3D; margin-bottom: 4px; }
+  .step-block .step-desc { font-size: 14px; line-height: 1.7; color: #555; margin: 0; }
+  .lesson-wrapper { max-width: 70%; margin: 0 auto; }
+  @media (max-width: 600px) {
+    .lesson-wrapper { max-width: 92%; }
+    .card-grid { grid-template-columns: 1fr; }
+    h2.section-heading { font-size: 20px; }
+  }
+</style>
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="hdYAqu9HvIL-5gNYlnYR9b_E1GzyrAO5Qwxi3XpbxwLJCMHAEkzsNL22V50pi4X7cztQkHmjhy6j2sK66WoIyA" /><meta content="" name="routing-root-path" /><meta content="media" name="site-name" /><meta content="ja" name="i18n-default-locale" /><meta content="ja" name="i18n-locale" /></head>
+<body>
+<div class="lesson-wrapper">
+
+
+<div style="background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; padding: 32px 32px 28px; border-radius: 16px 16px 0 0; margin-top: 32px;">
+  <div style="font-size: 12px; font-weight: 700; opacity: 0.85; letter-spacing: 0.15em;">LESSON 4-4</div>
+  <h1 style="margin: 8px 0 0; font-size: 28px; font-weight: 700; line-height: 1.4; color: #fff;">まとめ -生成画像を実務に活かす</h1>
+  <p style="margin: 10px 0 0; font-size: 14px; opacity: 0.85; color: #fff;">画像AIハンズオンの振り返りと次へのステップ ／ 所要時間：約15分</p>
+</div>
+
+<div style="background: #FAE8E0; padding: 18px 26px; border-radius: 0 0 16px 16px; margin-bottom: 36px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+    <div style="font-size: 12px; font-weight: 700; color: #E85D4A; letter-spacing: 0.15em;">このレッスンのゴール</div>
+    <div style="font-size: 12px; font-weight: 500; color: #E85D4A;">⏱ 約15分</div>
+  </div>
+  <p style="margin: 0; font-size: 16px; font-weight: 700; color: #3D3D3D; line-height: 1.6;">画像生成AIの可能性を整理し、実務や創作活動における自身の活用イメージを具体化できている</p>
+</div>
+
+<!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+ <!-- 前の章に戻るボタンの場合 -->  
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="OfEnC" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+<div style="background: #fff; border: 1px solid #E8E8E8; border-radius: 12px; padding: 22px 26px; margin-bottom: 40px;">
+  <div style="font-size: 13px; font-weight: 700; color: #F5A64A; letter-spacing: 0.1em; margin-bottom: 12px;">目次</div>
+  <ol style="margin: 0; padding-left: 22px; font-size: 15px; color: #555; line-height: 2.2;">
+    <li><a href="#sec1" class="toc-link">体験の振り返り：プロンプトが形に変わるプロセス</a></li>
+    <li><a href="#sec2" class="toc-link">AIは表現の幅を広げる「共創のパートナー」</a></li>
+    <li><a href="#sec3" class="toc-link">章末課題 - 私のAI活用ビジョン</a></li>
+  </ol>
+</div>
+
+
+<div class="imagine-box">
+  <div class="label">🎬 振り返ってみよう</div>
+  <p>
+    「空飛ぶ猫」から始まり、実用的な「カフェのポスター画像」まで、あなたは自分の言葉で新しいビジュアルを作り出す体験をしました。<br><br>
+    <strong class="accent">「描く技術」がなくても、「伝える言葉」があれば形にできる。</strong><br>
+    2026年、AIはあなたの思考を瞬時に可視化する最も身近なツールとなりました。この体験を、これからの学習や実務の大きな自信に変えていきましょう。
+  </p>
+</div>
+
+
+<h2 class="section-heading" id="sec1">1. 体験の振り返り：プロンプトが形に変わるプロセス</h2>
+
+<h3 class="sub-heading">あなたの手で生み出した作品たち</h3>
+
+<p class="text-body">
+  本章を通じて、Canva AIとAdobe Fireflyという2つのツールを使い分けながら、プロンプトが具体的なイメージに変わるプロセスを体験しました。
+</p>
+
+<div style="margin: 24px 0;">
+  <div class="step-block">
+    <div class="step-num">1</div>
+    <div>
+      <div class="step-title">直感的な生成を体験</div>
+      <p class="step-desc">Canva AIを使い、同じキーワードでも「スタイル」を変えるだけで全く異なる世界観が生まれる面白さを実感しました。</p>
+    </div>
+  </div>
+  
+<div style="margin: 24px 0; text-align: center;">
+  <a href="/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img34.png" class="lightbox" style="display: inline-block;">
+    <img src="/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img34.png" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Canva生成例</p>
+</div>
+  <div class="step-block">
+    <div class="step-num">2</div>
+    <div>
+      <div class="step-title">アイデアを具体化する</div>
+      <p class="step-desc">キーワード：「空飛ぶクジラバス、星空の下」。自身の頭の中にあるイメージを他者に共有するための叩き台を作成しました。</p>
+    </div>
+  </div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img35.png" class="lightbox" style="display: inline-block;">
+    <img src="/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img35.png" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">生成されたクジラバス</p>
+</div>
+  <div class="step-block">
+    <div class="step-num">3</div>
+    <div>
+      <div class="step-title">実務レベルのクオリティ</div>
+      <p class="step-desc">Adobe Fireflyで、カフェのポスターに使用できるような、高品質かつ権利面でも安心な画像を生成しました。</p>
+    </div>
+  </div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img36.png" class="lightbox" style="display: inline-block;">
+    <img src="/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img36.png" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">Firefly生成例</p>
+</div>
+  <p class="img-caption">プロンプト：「コーヒーカップ、ハート型の湯気、温かい雰囲気、カフェのカウンター」</p>
+</div>
+
+<div class="point-box">
+  <div class="label">ポイント</div>
+  <p>自分が生成した画像を見返してみてください。<strong class="accent">最も納得がいった一枚はどれですか？</strong> そのためにどんな言葉を足しましたか？その試行錯誤こそが、AIを「パートナー」にするための第一歩です。</p>
+</div>
+
+
+<h2 class="section-heading" id="sec2">2. AIは表現を拡張する「共創のパートナー」</h2>
+
+<h3 class="sub-heading">AIは自己効力感を高めるツール</h3>
+
+<p class="text-body">
+  画像生成AIは、単に絵を描く手間を省くための道具ではありません。自分一人では思いつかなかったような配色、構図、アイデアに出会うための<strong class="accent">「発想のブースター」</strong>です。
+</p>
+
+<div class="card-grid">
+  <div class="card">
+    <h3>実務でのメリット</h3>
+    <p>SNS投稿、資料作成、ブログのアイキャッチなど、オリジナル画像が必要な場面ですぐにプロトタイプを用意できます。</p>
+  </div>
+  <div class="card">
+    <h3>意思疎通の円滑化</h3>
+    <p>曖昧なイメージを可視化することで、チームやクライアントとの合意形成を劇的にスムーズにします。</p>
+  </div>
+</div>
+
+<div class="note-box">
+  <div class="label">2026年現在の著作権と倫理</div>
+  <p>2026年3月現在、Adobe Firefly等で採用されているContent Credentials（C2PA規格）により、AI生成物の透明性確保が一般的です。公開の際は、最新の利用規約を確認し、責任ある発信を心がけましょう。</p>
+</div>
+
+<h3 class="sub-heading"> 次のステップへ：言葉を磨く技術</h3>
+
+<p class="text-body">
+  今回は簡単なキーワードで体験しましたが、AIの力をさらに引き出し、自分のイメージを100%形にするには、AIへの「伝え方」＝<strong class="accent">プロンプトの技術</strong>が不可欠です。
+</p>
+
+<div class="usecase-box">
+  <div class="label">💡 次のレッスン予告</div>
+  <p>次の教材『AIを味方にするプロンプトの基本』では、画像生成にも強力に応用できるロジカルな伝え方を学びます。言葉を磨くことで、あなたの創造性はさらに飛躍します。</p>
+</div>
+
+<div style="margin: 24px 0; text-align: center;">
+  <a href="/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img37.png" class="lightbox" style="display: inline-block;">
+    <img src="/theme/webcoach/img/introduction-to-generative-ai/image-ai-hands-on/img37.png" alt="" class="lightbox-img" style="display: block; margin: 0 auto; max-width: 100%;">
+  </a>
+  <p style="font-size: 13px; color: #999; margin-top: 8px;">次の学びへ</p>
+</div>
+
+<h2 class="section-heading" id="sec3">3. 章末課題 - 私のAI活用ビジョン</h2>
+
+<p class="text-body">
+  まとめとして、これからAIを使ってどのようなことに挑戦してみたいか、今のワクワクする気持ちを言葉にしてみましょう。
+</p>
+
+<div style="background: #fff; border: 2px solid #FAE8E0; border-radius: 16px; padding: 22px; margin: 24px 0;">
+  <div style="font-size: 14px; font-weight: 700; color: #E85D4A; margin-bottom: 12px;">回答の方向性の例</div>
+  <ul style="margin: 0; padding-left: 18px; font-size: 15px; line-height: 1.8; color: #555;">
+    <li>「自分のブログ記事の内容にぴったりな、オリジナルの挿絵を作りたい！」</li>
+    <li>「Webデザインの提案時に、イメージボードをAIでサッと用意して提案したい！」</li>
+    <li>「自分が考えた物語の世界観を、AIを使ってビジュアル化してみたい！」</li>
+  </ul>
+</div>
+
+<p class="text-body">この宣言をぜひコーチにも共有して、フィードバックをもらってみましょう！</p>
+
+
+<div class="summary-box">
+  <div class="label">チェックリスト</div>
+  <ul>
+    <li><strong style="color: #3D3D3D;">画像生成の基本</strong> — プロンプトを入力し、多様な画像を生成するプロセスを習得した</li>
+    <li><strong style="color: #3D3D3D;">パートナーとしてのAI</strong> — 短時間で発想を具体化し、自身の創造性を広げる協力者として理解した</li>
+    <li><strong style="color: #3D3D3D;">責任ある利用</strong> — 2026年の最新トレンドを意識し、著作権や倫理を守る重要性を理解した</li>
+    <li><strong style="color: #3D3D3D;">次への意欲</strong> — イメージをさらに正確に形にするため「プロンプト技術」を磨く必要性を知った</li>
+  </ul>
+</div>
+
+<p class="text-body" style="text-align: center; margin-top: 40px; font-weight: 700;">
+  お疲れ様でした！このレッスンの学習は終了です。<br>
+  次のステップで、あなたの「言葉の力」をさらに磨いていきましょう。
+</p>
+<!-- 前の章に戻るボタンの場合 -->  
+  <!-- ロードマップに戻るボタンの場合 --> 
+<div style="display: flex; justify-content: center; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="https://learn.webcoach.jp/2Q/introduction-to-generative-ai" style="display: inline-block; background: #fff; color: #E85D4A; border: 2px solid #E85D4A; font-weight: 700; padding: 10px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none; white-space: nowrap;">ロードマップに戻る</a>
+</div>
+<div style="display: flex; justify-content: flex-start; align-items: center; padding: 24px 0; margin-top: 24px;">
+  <a href="OfEnC" style="position: relative; display: inline-block; background: linear-gradient(135deg, #E85D4A, #F5A64A); color: #fff; font-weight: 700; padding: 12px clamp(24px, 7vw, 48px); border-radius: 8px; text-decoration: none;"><img src="/theme/webcoach/img/icons/arrow-right.svg" style="position: absolute; top: 50%; transform: translateY(-50%); left: 12px; filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg) brightness(103%) contrast(103%); transform: translateY(-50%) rotate(180deg);">前の章に戻る</a>
+</div>
+  
+</div><script>
+// Inline Quiz (if any used later) logic
+document.querySelectorAll('.inline-quiz').forEach(function(quiz) {
+  var options = quiz.querySelectorAll('.quiz-opt');
+  var feedback = quiz.querySelector('.quiz-feedback');
+  var answered = false;
+  options.forEach(function(opt) {
+    opt.addEventListener('click', function() {
+      if (answered) return;
+      answered = true;
+      var isCorrect = opt.dataset.correct === 'true';
+      options.forEach(function(o) {
+        o.style.pointerEvents = 'none';
+        o.style.opacity = '0.6';
+        o.classList.add('answered');
+        if (o.dataset.correct === 'true') {
+          o.style.borderColor = '#4CAF50';
+          o.style.background = '#E8F5E9';
+          o.style.opacity = '1';
+          o.style.color = '#2E7D32';
+        }
+      });
+      if (!isCorrect) {
+        opt.style.borderColor = '#E85D4A';
+        opt.style.background = '#FFF3F0';
+        opt.style.color = '#C62828';
+        opt.style.opacity = '1';
+      }
+      feedback.style.display = 'block';
+      feedback.style.background = isCorrect ? '#E8F5E9' : '#FFF3E0';
+      feedback.style.borderLeft = '4px solid ' + (isCorrect ? '#4CAF50' : '#E85D4A');
+    });
+  });
+});
+</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="ck-icon-arrow-down" viewBox="0 0 1792 1792"><path d="M1675 832q0 53-37 90l-651 652q-39 37-91 37-53 0-90-37l-651-652q-38-36-38-90 0-53 38-91l74-75q39-37 91-37 53 0 90 37l294 294v-704q0-52 38-90t90-38h128q52 0 90 38t38 90v704l294-294q37-37 90-37 52 0 91 37l75 75q37 39 37 91z" /></symbol><symbol id="ck-icon-arrow-up" viewBox="0 0 1792 1792"><path d="M1675 971q0 51-37 90l-75 75q-38 38-91 38-54 0-90-38l-294-293v704q0 52-37.5 84.5t-90.5 32.5h-128q-53 0-90.5-32.5t-37.5-84.5v-704l-294 293q-36 38-90 38t-90-38l-75-75q-38-38-38-90 0-53 38-91l651-651q35-37 90-37 54 0 91 37l651 651q37 39 37 91z" /></symbol><symbol id="ck-icon-calendar" viewBox="0 0 1792 1792"><path d="M192 1664h288v-288h-288v288zm352 0h320v-288h-320v288zm-352-352h288v-320h-288v320zm352 0h320v-320h-320v320zm-352-384h288v-288h-288v288zm736 736h320v-288h-320v288zm-384-736h320v-288h-320v288zm768 736h288v-288h-288v288zm-384-352h320v-320h-320v320zm-352-864v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm736 864h288v-320h-288v320zm-384-384h320v-288h-320v288zm384 0h288v-288h-288v288zm32-480v-288q0-13-9.5-22.5t-22.5-9.5h-64q-13 0-22.5 9.5t-9.5 22.5v288q0 13 9.5 22.5t22.5 9.5h64q13 0 22.5-9.5t9.5-22.5zm384-64v1280q0 52-38 90t-90 38h-1408q-52 0-90-38t-38-90v-1280q0-52 38-90t90-38h128v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h384v-96q0-66 47-113t113-47h64q66 0 113 47t47 113v96h128q52 0 90 38t38 90z" /></symbol><symbol id="ck-icon-chevron-left" viewBox="0 0 1792 1792"><path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-chevron-right" viewBox="0 0 1792 1792"><path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z" /></symbol><symbol id="ck-icon-clock-o" viewBox="0 0 1792 1792"><path d="M1024 544v448q0 14-9 23t-23 9h-320q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h224v-352q0-14 9-23t23-9h64q14 0 23 9t9 23zm416 352q0-148-73-273t-198-198-273-73-273 73-198 198-73 273 73 273 198 198 273 73 273-73 198-198 73-273zm224 0q0 209-103 385.5t-279.5 279.5-385.5 103-385.5-103-279.5-279.5-103-385.5 103-385.5 279.5-279.5 385.5-103 385.5 103 279.5 279.5 103 385.5z" /></symbol><symbol id="ck-icon-trash" viewBox="0 0 1792 1792"><path d="M704 1376v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm256 0v-704q0-14-9-23t-23-9h-64q-14 0-23 9t-9 23v704q0 14 9 23t23 9h64q14 0 23-9t9-23zm-544-992h448l-48-117q-7-9-17-11h-317q-10 2-17 11zm928 32v64q0 14-9 23t-23 9h-96v948q0 83-47 143.5t-113 60.5h-832q-66 0-113-58.5t-47-141.5v-952h-96q-14 0-23-9t-9-23v-64q0-14 9-23t23-9h309l70-167q15-37 54-63t79-26h320q40 0 79 26t54 63l70 167h309q14 0 23 9t9 23z" /></symbol><symbol id="ck-icon-undo" viewBox="0 0 1792 1792"><path d="M1664 896q0 156-61 298t-164 245-245 164-298 61q-172 0-327-72.5t-264-204.5q-7-10-6.5-22.5t8.5-20.5l137-138q10-9 25-9 16 2 23 12 73 95 179 147t225 52q104 0 198.5-40.5t163.5-109.5 109.5-163.5 40.5-198.5-40.5-198.5-109.5-163.5-163.5-109.5-198.5-40.5q-98 0-188 35.5t-160 101.5l137 138q31 30 14 69-17 40-59 40h-448q-26 0-45-19t-19-45v-448q0-42 40-59 39-17 69 14l130 129q107-101 244.5-156.5t284.5-55.5q156 0 298 61t245 164 164 245 61 298z" /></symbol></svg><script async="async" defer="defer" nonce="9GNqQAv/l3viW2qVivEIbQ==" src="//www.instagram.com/embed.js"></script>
+
+<!--Clipkit(R) v15.9.0-20260915 Copyright (C) 2026 VECTOR Inc.-->
+
+</body>
+</html></div></div>
+        
+      
+    </div>
+  
+  </div>
+</div>
+<!-- <script src="https://cdn.clipkit.co/clipkit/javascripts/item-shopify-1.0.js?v=v15.9.0-20260915" async></script> -->
