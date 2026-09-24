@@ -1373,6 +1373,16 @@ body.learning-immersive {
   gap: calc(var(--dc-sp-gap) * 0.55);
 }
 
+/* ランキング2枚（学習時間｜ストリーク、管理者のみ）。
+   🔴 fcef713 でランキングを外した際にこのクラスごと消したが、TSX 側で管理者向けに
+      復活したときに戻し忘れ、2枚が隙間ゼロで縦に密着していた。 */
+.studylog-rank-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--dc-sp-gap);
+  align-items: start;
+}
+
 /* 学習カレンダー ｜ 選んだ日の記録。
    広い画面ではほぼ 1:1。
    🔴 かつて詳細側を 320〜380px の固定寄りにしていた（中は1行1記録なので広げても
@@ -1492,6 +1502,7 @@ body.learning-immersive {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .studylog-rank-grid,
   .studylog-calendar-grid {
     grid-template-columns: 1fr;
   }
@@ -1510,6 +1521,7 @@ body.learning-immersive {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  body.sidebar-expanded .studylog-rank-grid,
   body.sidebar-expanded .studylog-calendar-grid,
   body.sidebar-expanded .mypage-3d-grid {
     grid-template-columns: 1fr;
