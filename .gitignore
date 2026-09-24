@@ -92,12 +92,8 @@ rds-migration/
 !frontend/public/mascot/*.png
 
 # Documentation (non-essential)
-# Claude 作業ルールとモック開発ガイドは追跡する
+# Claude 作業ルールは追跡する
 !CLAUDE.md
-!frontend/docs/*.md
-# UI/UXレビューの段取り・観点定義は複数人で共有するので追跡する。
-# 上の !frontend/docs/*.md は直下1階層しか拾わず、ui-review/ 配下が巻き込まれる。
-!frontend/docs/**/*.md
 
 # Temporary files
 *.temp
