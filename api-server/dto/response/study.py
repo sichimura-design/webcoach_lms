@@ -70,7 +70,7 @@ class StudyRankingResponse(BaseModel):
 # GET /api/study-ranking/{userid}, /api/study-ranking-streak/{userid}
 #
 # マイページ・学習記録ページ向け。自分の順位を必ず含み、他の受講者は
-# frontend/docs/design-token-spec.md の規約により仮名＋絵文字で返す(実名は返さない)。
+# デザイン規約により仮名＋絵文字で返す(実名は返さない)。
 # ------------------------------------------------------------------
 
 class PeerRankingEntryBase(BaseModel):

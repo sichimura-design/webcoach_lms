@@ -1,5 +1,4 @@
 -- webcoach_coaching_schedule / webcoach_study_note の新規作成
--- 設計レビュー内容: docs/dev-miyabe-backend-requirements.md 参照
 -- 適用済み環境: UAT (2026-08-09), prod (2026-09-21)
 
 CREATE TABLE `webcoach_coaching_schedule` (

@@ -464,7 +464,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
      * 🔴 レールの10pxより1px大きい。レールは幅72pxの中に全角5文字を収める都合で
      *    10pxだが、下部バーは1枠62.5px（375px÷6枠）あるので11pxが収まる。
      *    ui-review CL-A12 が「ラベル11px・枠を固定」を指しているのに合わせた値で、
-     *    typography.md の「12px未満を作らない」に対するこの枠限定の例外。
+     *    タイポグラフィ規約の「12px未満を作らない」に対するこの枠限定の例外。
      *    36 + 2 + 13 = 51px なので、バーの高さ64pxには収まる。
      */
     bottomLabelFont: 11,
@@ -649,7 +649,7 @@ export function AppHeader({ userName, avatarUrl }: AppHeaderProps) {
    *    開いたまま本文を操作できるのが要件）だが、シートは本文を覆うオーバーレイなので
    *    逆。ここをパネルに揃えて閉じないようにすると、行き先に着いても幕が残る。
    * 🔴 ラベルは14px。バーのラベル（11px）と違い、こちらは一覧行なので
-   *    typography.md の「UIの下限は14px」をそのまま守れる。
+   *    タイポグラフィ規約の「UIの下限は14px」をそのまま守れる。
    */
   const renderSheetRow = (label: string, Icon: any, path: string, active: boolean) => (
     <button

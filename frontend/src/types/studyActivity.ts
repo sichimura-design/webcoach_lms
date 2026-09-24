@@ -31,7 +31,7 @@ export type StudyActivityKind = 'study_session';
 
 /**
  * 達成度。★1〜5 や % にはしない。
- * docs/design-token-spec.md の「理解度%等の学習効果を数値化した指標は表示しない」に触れるため。
+ * デザイン規約の「理解度%等の学習効果を数値化した指標は表示しない」に触れるため。
  * 数値尺度にすると後から平均やグラフにされる余地が生まれる。3語のラベルなら自己申告の感覚だと伝わる。
  */
 export type Achievement = 'low' | 'mid' | 'high';

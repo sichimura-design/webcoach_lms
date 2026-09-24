@@ -2,7 +2,7 @@
  * frontend/src/components/learningPlan/LearningPlanPage.tsx
  * 長期学習ロードマップの全体表示と操作。ルートは /learning-plan。
  *
- * コーチはLMSを操作しない運用なので（docs/ai-coaching-notes-design.md）、
+ * コーチはLMSを操作しない運用なので、
  * 閲覧・編集・確定・更新案への回答をすべて受講生側のこの1画面で完結させる。
  * コーチングの場では受講生がこの画面を共有し、2人で見ながら調整する想定。
  *

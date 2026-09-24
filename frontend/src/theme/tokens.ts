@@ -176,7 +176,7 @@ export const t = {
   /**
    * 🔴 size はここに持たない。フォントサイズは index.css の :root にある
    *    CSS カスタムプロパティ（--dc-fs-caption / -body / -lead / -title /
-   *    -display）が唯一の情報源。詳細は frontend/docs/typography.md。
+   *    -display）が唯一の情報源。
    *
    *    かつてここに size を持っていたが、実際に参照されていたのは pageTitle の
    *    1箇所だけで、残りは各コンポーネントの生px直書き（13 / 12.5 / 11.5 / 11px）
@@ -189,7 +189,7 @@ export const t = {
      * 400 説明・補足 / 500 UIラベル・ナビ / 600 ボタン・タスク名 / 700 見出し・重要な数値。
      * 🔴 800〜900 は作らない。かつて black: 900 があり、この系統の画面は
      *    見出しから小さなバッジまで全部 900 で組まれていた。赤が強いUIなので
-     *    太字まで強くすると画面全体がうるさくなる（typography.md §4）。
+     *    太字まで強くすると画面全体がうるさくなる。
      */
     weight: { regular: 400, medium: 500, semibold: 600, bold: 700 },
     /** CONTINUE ラベル用 */

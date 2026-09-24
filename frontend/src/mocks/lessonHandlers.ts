@@ -4,7 +4,7 @@
  *
  * 実BFF（FastAPI）には以下のエンドポイントが存在しない。バックエンドは変更禁止のため、
  * ここで MSW を使って「あるべきAPI」を再現している。実装が固まったら
- * frontend/docs/learning-workspace-design.md の I/F をバックエンドチームへ渡す。
+ * このファイルの I/F をバックエンドチームへ渡す。
  *
  *   GET    /api/webcoach/courses/:courseId/outline
  *   GET    /api/webcoach/courses/:courseId/lessons/:lessonId

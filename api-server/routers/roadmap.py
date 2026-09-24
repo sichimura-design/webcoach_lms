@@ -1,7 +1,6 @@
 """
 Career roadmap endpoints (フェーズ制・スキル別テンプレートの学習ロードマップ)
 
-設計検討: docs/career-roadmap-table-design.md 参照
 """
 from typing import List
 import logging

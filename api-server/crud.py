@@ -3376,7 +3376,7 @@ def get_study_ranking(db: Session, period: str = "week", limit: int = 20) -> Lis
 #
 # 上のget_study_rankingとは呼び出し元が違う: あちらは集中ブースページ専用で
 # 上位N件のuseridを返すだけでよいが、こちらは「自分が何位か」を常に見せる必要があり、
-# かつ frontend/docs/design-token-spec.md の規約(他の受講者は仮名＋絵文字。実名は不可)
+# かつデザイン規約(他の受講者は仮名＋絵文字。実名は不可)
 # により実名の代わりに仮名を割り当てて返す。仮名は webcoach_user_profile.nick_name
 # (ユーザー自身がプロフィール画面で設定した値)をそのまま使う。未設定のユーザーだけ、
 # useridから決定的に算出したフォールバック仮名(動物名+番号)で補う。
