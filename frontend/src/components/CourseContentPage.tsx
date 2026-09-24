@@ -37,6 +37,7 @@ import {
 } from './learning/moodleContent';
 import NoteTargetPicker from './notes/NoteTargetPicker';
 import type { NoteSourceRef } from '../types/notes';
+import { useRecentCourseStore } from '../store/recentCourseStore';
 
 interface CourseContentPageProps {
   courseId: number;
@@ -338,6 +339,21 @@ function CourseContentPage({ courseId, initialModuleId, onBack }: CourseContentP
       setCompleting(false);
     }
   };
+
+  // 「最近開いたレッスン」の履歴に残す。マイページの「続きから学習」の見出しと飛び先、
+  // 集中ブースのレッスン候補がこれを読む。
+  // 🔴 以前は未ルーティングの LearningWorkspacePage（useLessonDoc）だけが書いていたので、
+  //    実際の教材ページで何を開いても履歴が空のままで、「続きから学習する」が毎回
+  //    コースの1本目に戻っていた。
+  useEffect(() => {
+    if (!selectedModule || !courseName) return;
+    useRecentCourseStore.getState().touch({
+      courseId,
+      courseTitle: courseName,
+      lessonId: selectedModule.id,
+      lessonTitle: selectedModule.name,
+    });
+  }, [courseId, courseName, selectedModule]);
 
   // ─── URL コンテンツの事前チェック ─────────
   const [iframeError, setIframeError] = useState(false);
