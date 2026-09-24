@@ -117,6 +117,15 @@ export function MyCoachingPage() {
     );
   }, [schedules]);
 
+  /**
+   * 「これまでのコーチング」の一覧。実施済みの回に、リスケで流れた回を「リスケ」表示付きで混ぜる。
+   * 予定が動いた経緯を受講生が追えるようにするため。日付順はAPIの降順のまま
+   */
+  const historySchedules = useMemo(() => {
+    const past = new Set(pastSchedules.map(s => s.id));
+    return schedules.filter(s => past.has(s.id) || s.status === 'rescheduled');
+  }, [schedules, pastSchedules]);
+
   /** 未実施の予約のうち最も近いもの。無ければヒーローカードは出さない */
   const nextSchedule = useMemo(() => {
     const today = toLocalDateKey(new Date());
@@ -132,13 +141,13 @@ export function MyCoachingPage() {
   }, [lastSchedule, loadNote]);
 
   useEffect(() => {
-    if (!linkedScheduleId || !pastSchedules.some(s => s.id === linkedScheduleId)) return;
+    if (!linkedScheduleId || !historySchedules.some(s => s.id === linkedScheduleId)) return;
     setOpenId(linkedScheduleId);
     loadNote(linkedScheduleId);
     document.getElementById(`coaching-schedule-${linkedScheduleId}`)?.scrollIntoView({ block: 'start' });
     // loadNote は notes が変わるたびに作り直されるので deps に入れると開き直しが繰り返される
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [linkedScheduleId, pastSchedules]);
+  }, [linkedScheduleId, historySchedules]);
 
   // --- 次回コーチングまでの目標 ---------------------------------------------
 
@@ -301,14 +310,15 @@ export function MyCoachingPage() {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <h2 style={{ ...font.sectionTitle, color: color.text, margin: '8px 0 0' }}>これまでのコーチング</h2>
-          {!loading && pastSchedules.length === 0 ? (
+          {!loading && historySchedules.length === 0 ? (
             <p style={{ ...font.meta, color: color.textSubtle, textAlign: 'center', padding: '48px 0' }}>
               まだ記録がありません。
             </p>
           ) : (
-            pastSchedules.map(schedule => {
+            historySchedules.map(schedule => {
               const isOpen = openId === schedule.id;
               const note = notes[schedule.id];
+              const rescheduled = schedule.status === 'rescheduled';
               return (
                 <div key={schedule.id} id={`coaching-schedule-${schedule.id}`} style={{ ...t.card, padding: '16px 18px', scrollMarginTop: 80 }}>
                   <button
@@ -331,6 +341,9 @@ export function MyCoachingPage() {
                           <Calendar className="w-3.5 h-3.5" />
                           {schedule.coaching_date}
                         </span>
+                        {rescheduled && (
+                          <span style={{ ...t.chip, background: '#F1EFEA', color: color.textMuted }}>リスケ</span>
+                        )}
                       </span>
                     </span>
                     {isOpen ? (
@@ -342,7 +355,7 @@ export function MyCoachingPage() {
 
                   {isOpen && (
                     <div style={{ marginTop: 14, paddingTop: 14, borderTop: `1px solid ${color.divider}`, display: 'flex', flexDirection: 'column', gap: 12 }}>
-                      {schedule.meeting_url && (
+                      {schedule.meeting_url && !rescheduled && (
                         <a
                           href={schedule.meeting_url}
                           target="_blank"
