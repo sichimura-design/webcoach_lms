@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Note, NoteBlockInput, NoteBlockPatch, NoteSourceRef } from '../../types/notes';
 import NoteBlockView from './NoteBlockView';
+import NoteBodyEditor, { replaceRange } from './NoteBodyEditor';
 import { InsertKind, NoteEditorToolbar, TEXT_PREFIX } from './NoteEditorToolbar';
 import QuoteFromLessonModal, { QuoteTarget } from './QuoteFromLessonModal';
 
 /**
  * ノート面。上から「タイトル → ツールバー → 本文 → 素材」。
  *
- * 🔴 本文は1枚の textarea。ブロックに割らない。
+ * 🔴 本文は1枚の textarea（NoteBodyEditor。記法は下に敷いたミラーで描く）。ブロックに割らない。
  *    v5 まではここが「1段落＝1ブロック」で、書くたびに blur か Ctrl+Enter か
  *    「保存する」ボタンでブロックを確定させ、次の段落はまた新しいブロックだった。
  *    段落を跨いだカーソル移動も Backspace での結合もできず、
@@ -47,34 +48,40 @@ interface NoteEditorProps {
 /** 行頭の記法（## / - / - [ ]）。差し替えるときに一度落とすために使う */
 const LINE_PREFIX_RE = /^(##\s+|-\s+\[[ xX]\]\s+|-\s+)/;
 
-/** ツールバーの記法を本文へ差し込んだ結果。選択範囲も返す（そこへカーソルを戻す） */
+/**
+ * ツールバーの記法を本文へ差し込む差分。[from, to) を insert で置き換え、選択を sel に置く。
+ * 全文ではなく差分で返すのは、textarea に execCommand で流し込んで Ctrl+Z を効かせるため。
+ */
 function applyInsert(
   kind: InsertKind,
   text: string,
   start: number,
   end: number
-): { text: string; selStart: number; selEnd: number } {
+): { from: number; to: number; insert: string; selStart: number; selEnd: number } {
   if (kind === 'marker') {
     // 選択があれば囲む。無ければ ==== を置いて真ん中にカーソルを入れる
     const selected = text.slice(start, end);
-    const next = `${text.slice(0, start)}==${selected}==${text.slice(end)}`;
-    return selected
-      ? { text: next, selStart: start + 2, selEnd: start + 2 + selected.length }
-      : { text: next, selStart: start + 2, selEnd: start + 2 };
+    return {
+      from: start,
+      to: end,
+      insert: `==${selected}==`,
+      selStart: start + 2,
+      selEnd: start + 2 + selected.length,
+    };
   }
 
   // 行頭の記法。カーソルのある行の頭に付ける（別の記法が付いていたら差し替える）
   const lineStart = text.lastIndexOf('\n', Math.max(0, start - 1)) + 1;
   const lineEnd = text.indexOf('\n', lineStart);
   const line = text.slice(lineStart, lineEnd === -1 ? text.length : lineEnd);
-  const bare = line.replace(LINE_PREFIX_RE, '');
-  const prefix = TEXT_PREFIX[kind];
-  const nextLine = `${prefix}${bare}`;
-  const next =
-    text.slice(0, lineStart) + nextLine + text.slice(lineEnd === -1 ? text.length : lineEnd);
+  const current = line.slice(0, line.length - line.replace(LINE_PREFIX_RE, '').length);
+  // 同じ記法がもう付いている行でもう一度押したら外す（付け外しのトグル）
+  const already =
+    kind === 'task' ? /^-\s+\[[ xX]\]\s+$/.test(current) : current === TEXT_PREFIX[kind];
+  const prefix = already ? '' : TEXT_PREFIX[kind];
   // カーソルは行末へ。付けた直後に続きを打てる
-  const caret = lineStart + nextLine.length;
-  return { text: next, selStart: caret, selEnd: caret };
+  const caret = lineStart + prefix.length + (line.length - current.length);
+  return { from: lineStart, to: lineStart + current.length, insert: prefix, selStart: caret, selEnd: caret };
 }
 
 export function NoteEditor({
@@ -123,14 +130,21 @@ export function NoteEditor({
   const handleInsert = (kind: InsertKind) => {
     const el = bodyRef.current;
     if (!el) return;
-    const { text, selStart, selEnd } = applyInsert(
+    const { from, to, insert, selStart, selEnd } = applyInsert(
       kind,
-      note.body,
-      el.selectionStart ?? note.body.length,
-      el.selectionEnd ?? note.body.length
+      el.value,
+      el.selectionStart ?? el.value.length,
+      el.selectionEnd ?? el.value.length
     );
-    onBodyChange(text);
-    // state が本文に反映されたあとでカーソルを置く
+    const done = replaceRange(el, from, to, insert, (next) => onBodyChange(next));
+    if (done) {
+      // execCommand が通れば textarea はもう書き換わっている。ここで選択を置けば終わり。
+      // 🔴 rAF で置き直さない。押してすぐ打ち始めると、打った文字の後ろから
+      //    キャレットを引き戻してしまう
+      el.setSelectionRange(selStart, selEnd);
+      return;
+    }
+    // 直書きの経路は state が textarea に反映されるのを待ってから置く
     requestAnimationFrame(() => {
       el.focus();
       el.setSelectionRange(selStart, selEnd);
@@ -232,28 +246,12 @@ export function NoteEditor({
            そこが何なのか画面から読めなかった。
       */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '20px 28px 8px' }}>
-        <textarea
+        <NoteBodyEditor
           ref={bodyRef}
-          aria-label="本文"
           value={note.body}
-          onChange={(e) => onBodyChange(e.target.value)}
+          onChange={onBodyChange}
           onBlur={onBodyFlush}
           placeholder="ここに入力して、自由に書いていきましょう…"
-          style={{
-            width: '100%',
-            boxSizing: 'border-box',
-            flex: 1,
-            minHeight: 220,
-            border: 0,
-            padding: 0,
-            background: 'transparent',
-            fontFamily: 'inherit',
-            fontSize: 13.5,
-            lineHeight: 1.9,
-            color: '#4A4245',
-            resize: 'none',
-            outline: 'none',
-          }}
         />
       </div>
 

@@ -5,24 +5,19 @@ import {
   GOAL_DECLARATION_STATUS_LABEL,
   GoalDeclaration,
 } from '../../types/goalDeclaration';
-import {
-  declarationMinutes,
-  declarationPhase,
-  declarationStudyDays,
-  daysLeft,
-} from '../../utils/goalDeclaration';
-import { formatMinutesHM, toLocalDateKey } from '../../utils/studyStats';
+import { declarationPhase, daysLeft } from '../../utils/goalDeclaration';
+import { toLocalDateKey } from '../../utils/studyStats';
 
 /**
- * 「あなたの目標」（/study-log の下部）。いま・期間が終わった分・これまでを1枚で持つ。
+ * 「あなたの目標」（/study-log の下部）。「いまの目標」と「これまでの目標」の2段だけ。
  * ============================================================
  * 🔴 目標を書く・直す入口はここだけ。カレンダー上のバー（GoalDeclarationBar）と
  *    マイページは表示専用で、押すとここへスクロールして着地する。
  *    同じデータの編集入口を画面に散らさない。
  *
- * 🔴 ブロックの並びは状態で変える。進行中があるときは「いまの目標」を先頭に、
- *    無いときは「期間が終わった目標」を先頭にする。着地したときに上から読んで
- *    「次に何をする画面か」が分かる順にするため。
+ * 🔴「期間が終わった目標」の段は置かない（いらない、という指摘で撤去）。
+ *    振り返りがまだのものは「これまでの目標」の行に混ぜ、状態の語を
+ *    「振り返り待ち」にする。押すと振り返りを書く画面が開く。
  *
  * 🔴 期間の経過をバーで出さない。「9/11〜9/24（あと12日）」の文字だけにする。
  *    経過バーを置くと達成度%に読めてしまい、学習効果を数値化した指標を
@@ -45,8 +40,8 @@ interface GoalDeclarationCardProps {
   active: GoalDeclaration | null;
   /** 期間が終わったのに振り返りがまだのもの */
   pendingReflection: GoalDeclaration[];
-  /** 期間中の学習時間を出すために使う。stats.dailyTotals をそのまま渡す */
-  daily: StudyDayTotal[];
+  /** 以前は期間終了ブロックの「この期間の学習」に使っていた。いまは未使用（呼び出し側を変えないため残す） */
+  daily?: StudyDayTotal[];
   loading: boolean;
   /** 着地の要求。受けたらスクロール＋フォーカス＋一瞬光らせて onJumpDone を呼ぶ */
   jump: GoalJump;
@@ -123,7 +118,6 @@ export function GoalDeclarationCard({
   items,
   active,
   pendingReflection,
-  daily,
   loading,
   jump,
   onJumpDone,
@@ -133,14 +127,15 @@ export function GoalDeclarationCard({
   onView,
 }: GoalDeclarationCardProps) {
   const todayKey = toLocalDateKey(new Date());
-  // 「いま出しているもの」以外を過去分として並べる
-  const shownIds = new Set([active?.id, ...pendingReflection.map((d) => d.id)].filter(Boolean));
-  const past = items.filter((d) => !shownIds.has(d.id));
+  // 「いまの目標」以外はすべて過去分として並べる。振り返り待ちもここに入れて語で示す
+  const pendingIds = new Set(pendingReflection.map((d) => d.id));
+  const past = items.filter((d) => d.id !== active?.id);
+  const firstPendingId = past.find((d) => pendingIds.has(d.id))?.id ?? null;
 
   const sectionRef = useRef<HTMLElement>(null);
   const currentRef = useRef<HTMLDivElement>(null);
-  const pendingRef = useRef<HTMLDivElement>(null);
   const editRef = useRef<HTMLButtonElement>(null);
+  /** 振り返り待ちの先頭行。「振り返り待ち」への着地先（ブロックとフォーカスを兼ねる） */
   const reviewRef = useRef<HTMLButtonElement>(null);
   const createRef = useRef<HTMLButtonElement>(null);
 
@@ -158,8 +153,8 @@ export function GoalDeclarationCard({
     const block =
       jump === 'current' && currentRef.current
         ? currentRef.current
-        : jump === 'pending' && pendingRef.current
-          ? pendingRef.current
+        : jump === 'pending' && reviewRef.current
+          ? reviewRef.current
           : sectionRef.current;
     const button =
       jump === 'current'
@@ -187,11 +182,8 @@ export function GoalDeclarationCard({
    * 新しい目標を作る入口。
    * 🔴 進行中があるときも消さない（併走の宣言が作れなくなる）。ただし主役では
    *    ないのでテキストリンクに格下げする。
-   * 🔴 進行中が無く振り返り待ちがあるときだけ、ここには出さない。そのときは
-   *    「振り返りを書く」と並べて期間終了ブロックの中に出すので、二重になる。
    */
-  const showCreateInHeader = Boolean(active) || pendingReflection.length === 0;
-  const createButton = !showCreateInHeader ? null : active ? (
+  const createButton = active ? (
     linkButton('新しい目標を設定する ›', onCreate, createRef)
   ) : (
     <button
@@ -270,63 +262,22 @@ export function GoalDeclarationCard({
     </div>
   );
 
-  /** ② 期間が終わった目標。放置されやすいので振り返りと次の目標を並べて出す */
-  const pendingBlock = pendingReflection.length > 0 && (
-    <div ref={pendingRef}>
-      <h3 style={BLOCK_HEADING}>期間が終わった目標</h3>
-      {pendingReflection.map((d, i) => (
-        <div
-          key={d.id}
-          style={{
-            marginBottom: 12,
-            padding: '12px 14px',
-            borderRadius: 'var(--dc-radius-md)',
-            background: 'var(--dc-gold-surface)',
-            border: '1px solid var(--dc-border)',
-            ...(flash === 'pending' && i === 0 ? FLASH : null),
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 4, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 'var(--dc-fs-caption)', fontWeight: 700, color: 'var(--dc-gold-text)' }}>
-              振り返り待ち
-            </span>
-            <span className="dc-num" style={{ flex: 1, fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)' }}>
-              {md(d.periodFrom)}〜{md(d.periodTo)}
-            </span>
-          </div>
-          <p style={{ margin: 0, fontSize: 'var(--dc-fs-body)', color: 'var(--dc-text)', overflowWrap: 'anywhere' }}>
-            {d.text}
-          </p>
-          {/* 振り返りを書くときの手がかり。目標に対する達成率ではなく、その期間の事実 */}
-          <p
-            className="dc-num"
-            style={{ margin: '8px 0 0', fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)' }}
-          >
-            この期間の学習 {formatMinutesHM(declarationMinutes(d, daily))} ・
-            {` ${declarationStudyDays(d, daily)}日`}
-          </p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 10, flexWrap: 'wrap' }}>
-            {linkButton('振り返りを書く ›', () => onReview(d), i === 0 ? reviewRef : undefined)}
-            {/* 進行中が無いときだけ。あるときはヘッダ右のリンクと二重になる */}
-            {!active && i === 0 && linkButton('新しい目標を設定する ›', onCreate, createRef)}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-
   /** ③ これまでの目標 */
   const pastBlock = past.length > 0 && (
     <div style={{ marginTop: 4, borderTop: '1px solid var(--dc-border)', paddingTop: 12 }}>
       <h3 style={BLOCK_HEADING}>これまでの目標</h3>
       {past.map((d) => {
         const phase = declarationPhase(d, todayKey);
+        const pending = pendingIds.has(d.id);
+        const isFirstPending = d.id === firstPendingId;
         return (
           <button
             key={d.id}
+            ref={isFirstPending ? reviewRef : undefined}
             type="button"
             className="studylog-goal-row focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F6B9BD]"
-            onClick={() => onView(d)}
+            // 振り返り待ちは押したら振り返りを書く画面へ。それ以外は中身を見るだけ
+            onClick={() => (pending ? onReview(d) : onView(d))}
             style={{
               display: 'flex', alignItems: 'center', gap: 12,
               width: '100%', minHeight: 44, padding: '10px 8px',
@@ -334,6 +285,7 @@ export function GoalDeclarationCard({
               background: 'transparent', borderRadius: 8,
               fontFamily: 'inherit', fontSize: 'var(--dc-fs-body)',
               textAlign: 'left', cursor: 'pointer',
+              ...(flash === 'pending' && isFirstPending ? FLASH : null),
             }}
           >
             <span className="dc-num" style={{ flex: 'none', width: 92, color: 'var(--dc-text-muted)', fontSize: 'var(--dc-fs-caption)' }}>
@@ -347,10 +299,22 @@ export function GoalDeclarationCard({
             >
               {d.text}
             </span>
-            {/* 状態は色ではなく語で出す */}
-            <span style={{ flex: 'none', fontSize: 'var(--dc-fs-caption)', color: 'var(--dc-text-muted)', whiteSpace: 'nowrap' }}>
-              {phase === 'upcoming' ? 'これから' : GOAL_DECLARATION_STATUS_LABEL[d.status]}
-              {d.reflectionAchievement ? ` ・ ${ACHIEVEMENT_LABEL[d.reflectionAchievement]}` : ''}
+            {/* 状態は色ではなく語で出す。
+                🔴 振り返り待ちは status が既定の値のままなので、それを出すと
+                   書いてもいない「達成した」に読める。語ごと差し替える */}
+            <span
+              style={{
+                flex: 'none', fontSize: 'var(--dc-fs-caption)', whiteSpace: 'nowrap',
+                color: pending ? 'var(--dc-gold-text)' : 'var(--dc-text-muted)',
+                fontWeight: pending ? 700 : undefined,
+              }}
+            >
+              {pending
+                ? '振り返り待ち'
+                : phase === 'upcoming'
+                  ? 'これから'
+                  : GOAL_DECLARATION_STATUS_LABEL[d.status]}
+              {!pending && d.reflectionAchievement ? ` ・ ${ACHIEVEMENT_LABEL[d.reflectionAchievement]}` : ''}
             </span>
             <span aria-hidden="true" style={{ flex: 'none', color: 'var(--dc-chevron)' }}>›</span>
           </button>
@@ -397,14 +361,10 @@ export function GoalDeclarationCard({
       ) : active ? (
         <>
           {currentBlock}
-          {pendingBlock}
           {pastBlock}
         </>
       ) : (
-        <>
-          {pendingBlock}
-          {pastBlock}
-        </>
+        pastBlock
       )}
     </section>
   );

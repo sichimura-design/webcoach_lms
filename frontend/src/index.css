@@ -2023,6 +2023,59 @@ body.learning-immersive {
   color: var(--dc-text-subtle);
 }
 
+/* ノート本文（NoteBodyEditor）。文字を透明にした textarea の下にミラーを敷いて記法を描く。
+   🔴 ここで幅の変わる指定（太字・字間・余白）を足さないこと。折り返しがずれてキャレットと食い違う */
+.notes-body-input::placeholder {
+  color: var(--dc-text-subtle);
+}
+
+.notes-body-input::selection {
+  background: rgba(246, 185, 189, 0.45);
+}
+
+/* □。記法 `- [ ] ` の透明な文字の上に重ねる */
+.notes-body-check {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  transform: translateY(-50%);
+  accent-color: var(--dc-primary);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.notes-body-done {
+  text-decoration: line-through;
+  color: var(--dc-text-subtle);
+}
+
+/* ・。記法 `- ` の上に重ねる */
+.notes-body-bullet {
+  position: absolute;
+  left: 1px;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 9999px;
+  background: var(--dc-primary);
+  transform: translateY(-50%);
+}
+
+/* 見出しの印。記法 `## ` の上に重ねる */
+.notes-body-heading-bar {
+  position: absolute;
+  left: 1px;
+  top: 50%;
+  width: 4px;
+  height: 1.05em;
+  border-radius: 2px;
+  background: var(--dc-primary);
+  transform: translateY(-50%);
+}
+
 /* コースタイルのグリッド。学習トップの領域ブロックと領域ページ
    （/courses/category/:code）が共有する。
    🔴 揃えているのは列数ではなく「1枚の実寸（約330px）」。本文の最大幅が
