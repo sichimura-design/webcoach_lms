@@ -1622,16 +1622,42 @@ def delete_avatar(db: Session, avatar_id: int) -> bool:
 
 # ==========================================
 # Next Coaching Goal CRUD
+#
+# 主キーは(coaching_schedule_id, no)。「受講生ごとに1本のリスト」ではなく
+# 「コーチング回ごとのリスト」で、表示側は受講生の直近のコーチング回の分だけを見せる
+# 想定（get_latest_coaching_schedule_idで解決する）。
+# mdl_user_idは検索・表示用の非キー列（webcoach_coaching_schedule.mdl_user_idの複製）。
 # ==========================================
 
-def create_next_coaching_goal(db: Session, mdl_user_id: int, no: int, description: str, is_completed: int = 0) -> "WebCoachNextCoachingGoal":
+def get_latest_coaching_schedule_id(db: Session, mdl_user_id: int) -> Optional[int]:
+    """
+    受講生の直近のコーチング回のIDを取得する（次回目標リストの紐付け先を決めるため）
+
+    Args:
+        db: Database session
+        mdl_user_id: 受講生のMoodleユーザーID
+
+    Returns:
+        直近のwebcoach_coaching_schedule.id。1件も無ければNone
+    """
+    schedule = db.query(WebCoachCoachingSchedule).filter(
+        WebCoachCoachingSchedule.mdl_user_id == mdl_user_id
+    ).order_by(
+        WebCoachCoachingSchedule.coaching_date.desc(),
+        WebCoachCoachingSchedule.id.desc()
+    ).first()
+    return schedule.id if schedule else None
+
+
+def create_next_coaching_goal(db: Session, coaching_schedule_id: int, mdl_user_id: int, no: int, description: str, is_completed: int = 0) -> "WebCoachNextCoachingGoal":
     """
     次回コーチングまでの目標を新規作成
 
     Args:
         db: Database session
-        mdl_user_id: MoodleユーザーID
-        no: 項目番号
+        coaching_schedule_id: 対象のコーチング回ID
+        mdl_user_id: 受講生のMoodleユーザーID
+        no: 項目番号（このコーチング回の中での連番）
         description: 目標内容
         is_completed: 完了フラグ（デフォルト: 0）
 
@@ -1643,13 +1669,14 @@ def create_next_coaching_goal(db: Session, mdl_user_id: int, no: int, descriptio
 
     # 既存の目標の最大display_orderを取得
     max_order = db.query(func.max(WebCoachNextCoachingGoal.display_order)).filter(
-        WebCoachNextCoachingGoal.mdl_user_id == mdl_user_id
+        WebCoachNextCoachingGoal.coaching_schedule_id == coaching_schedule_id
     ).scalar()
 
     # 新しいdisplay_orderを設定（既存がない場合は1、ある場合は+1）
     new_display_order = (max_order or 0) + 1
 
     goal = WebCoachNextCoachingGoal(
+        coaching_schedule_id=coaching_schedule_id,
         mdl_user_id=mdl_user_id,
         no=no,
         display_order=new_display_order,
@@ -1661,13 +1688,13 @@ def create_next_coaching_goal(db: Session, mdl_user_id: int, no: int, descriptio
     return goal
 
 
-def get_next_coaching_goal(db: Session, mdl_user_id: int, no: int) -> Optional["WebCoachNextCoachingGoal"]:
+def get_next_coaching_goal(db: Session, coaching_schedule_id: int, no: int) -> Optional["WebCoachNextCoachingGoal"]:
     """
     次回コーチングまでの目標を取得
 
     Args:
         db: Database session
-        mdl_user_id: MoodleユーザーID
+        coaching_schedule_id: 対象のコーチング回ID
         no: 項目番号
 
     Returns:
@@ -1676,18 +1703,18 @@ def get_next_coaching_goal(db: Session, mdl_user_id: int, no: int) -> Optional["
     from entities.webcoach import WebCoachNextCoachingGoal
 
     return db.query(WebCoachNextCoachingGoal).filter(
-        WebCoachNextCoachingGoal.mdl_user_id == mdl_user_id,
+        WebCoachNextCoachingGoal.coaching_schedule_id == coaching_schedule_id,
         WebCoachNextCoachingGoal.no == no
     ).first()
 
 
-def get_user_next_coaching_goals(db: Session, mdl_user_id: int) -> List["WebCoachNextCoachingGoal"]:
+def get_schedule_next_coaching_goals(db: Session, coaching_schedule_id: int) -> List["WebCoachNextCoachingGoal"]:
     """
-    ユーザーの次回コーチングまでの目標一覧を取得
+    あるコーチング回に紐づく次回目標一覧を取得
 
     Args:
         db: Database session
-        mdl_user_id: MoodleユーザーID
+        coaching_schedule_id: 対象のコーチング回ID
 
     Returns:
         List[WebCoachNextCoachingGoal]: 目標一覧
@@ -1695,7 +1722,7 @@ def get_user_next_coaching_goals(db: Session, mdl_user_id: int) -> List["WebCoac
     from entities.webcoach import WebCoachNextCoachingGoal
 
     return db.query(WebCoachNextCoachingGoal).filter(
-        WebCoachNextCoachingGoal.mdl_user_id == mdl_user_id
+        WebCoachNextCoachingGoal.coaching_schedule_id == coaching_schedule_id
     ).order_by(WebCoachNextCoachingGoal.display_order).all()
 
 
@@ -1717,13 +1744,13 @@ def get_all_next_coaching_goals(db: Session) -> List["WebCoachNextCoachingGoal"]
     ).all()
 
 
-def update_next_coaching_goal(db: Session, mdl_user_id: int, no: int, description: str = None, is_completed: int = None) -> Optional["WebCoachNextCoachingGoal"]:
+def update_next_coaching_goal(db: Session, coaching_schedule_id: int, no: int, description: str = None, is_completed: int = None) -> Optional["WebCoachNextCoachingGoal"]:
     """
     次回コーチングまでの目標を更新
 
     Args:
         db: Database session
-        mdl_user_id: MoodleユーザーID
+        coaching_schedule_id: 対象のコーチング回ID
         no: 項目番号
         description: 新しい目標内容（Noneの場合は更新しない）
         is_completed: 新しい完了フラグ（Noneの場合は更新しない）
@@ -1731,7 +1758,7 @@ def update_next_coaching_goal(db: Session, mdl_user_id: int, no: int, descriptio
     Returns:
         WebCoachNextCoachingGoal or None
     """
-    goal = get_next_coaching_goal(db, mdl_user_id, no)
+    goal = get_next_coaching_goal(db, coaching_schedule_id, no)
     if goal:
         if description is not None:
             goal.description = description
@@ -1741,19 +1768,19 @@ def update_next_coaching_goal(db: Session, mdl_user_id: int, no: int, descriptio
     return goal
 
 
-def delete_next_coaching_goal(db: Session, mdl_user_id: int, no: int) -> bool:
+def delete_next_coaching_goal(db: Session, coaching_schedule_id: int, no: int) -> bool:
     """
     次回コーチングまでの目標を削除
 
     Args:
         db: Database session
-        mdl_user_id: MoodleユーザーID
+        coaching_schedule_id: 対象のコーチング回ID
         no: 項目番号
 
     Returns:
         bool: 削除成功時True、失敗時False
     """
-    goal = get_next_coaching_goal(db, mdl_user_id, no)
+    goal = get_next_coaching_goal(db, coaching_schedule_id, no)
     if goal:
         db.delete(goal)
         db.flush()
@@ -1761,13 +1788,13 @@ def delete_next_coaching_goal(db: Session, mdl_user_id: int, no: int) -> bool:
     return False
 
 
-def reorder_next_coaching_goals(db: Session, mdl_user_id: int, moved_item_no: int, target_position: int) -> List["WebCoachNextCoachingGoal"]:
+def reorder_next_coaching_goals(db: Session, coaching_schedule_id: int, moved_item_no: int, target_position: int) -> List["WebCoachNextCoachingGoal"]:
     """
     次回コーチングまでの目標を並び替え
 
     Args:
         db: Database session
-        mdl_user_id: MoodleユーザーID
+        coaching_schedule_id: 対象のコーチング回ID
         moved_item_no: ドラッグしたアイテムの現在のno
         target_position: 新しい位置（1始まり）
 
@@ -1776,9 +1803,9 @@ def reorder_next_coaching_goals(db: Session, mdl_user_id: int, moved_item_no: in
     """
     from entities.webcoach import WebCoachNextCoachingGoal
 
-    # ユーザーの全ての目標を取得（display_orderでソート）
+    # このコーチング回の全ての目標を取得（display_orderでソート）
     goals = db.query(WebCoachNextCoachingGoal).filter(
-        WebCoachNextCoachingGoal.mdl_user_id == mdl_user_id
+        WebCoachNextCoachingGoal.coaching_schedule_id == coaching_schedule_id
     ).order_by(WebCoachNextCoachingGoal.display_order).all()
 
     if not goals:
@@ -1792,7 +1819,7 @@ def reorder_next_coaching_goals(db: Session, mdl_user_id: int, moved_item_no: in
             break
 
     if not moved_goal:
-        raise ValueError(f"Goal with no={moved_item_no} not found for user {mdl_user_id}")
+        raise ValueError(f"Goal with no={moved_item_no} not found for coaching_schedule_id {coaching_schedule_id}")
 
     # リストから移動対象を削除
     goals.remove(moved_goal)
@@ -1818,13 +1845,14 @@ def reorder_next_coaching_goals(db: Session, mdl_user_id: int, moved_item_no: in
     return goals
 
 
-def bulk_upsert_next_coaching_goals(db: Session, mdl_user_id: int, goals_data: List[Dict[str, Any]]) -> List["WebCoachNextCoachingGoal"]:
+def bulk_upsert_next_coaching_goals(db: Session, coaching_schedule_id: int, mdl_user_id: int, goals_data: List[Dict[str, Any]]) -> List["WebCoachNextCoachingGoal"]:
     """
     次回コーチングまでの目標を一括更新（作成・更新・削除・並び替え）
 
     Args:
         db: Database session
-        mdl_user_id: MoodleユーザーID
+        coaching_schedule_id: 対象のコーチング回ID
+        mdl_user_id: 受講生のMoodleユーザーID（新規作成分に使う）
         goals_data: 目標データのリスト（配列の順序が表示順）
                     例: [{"no": 1, "description": "...", "is_completed": 0}, ...]
 
@@ -1838,9 +1866,9 @@ def bulk_upsert_next_coaching_goals(db: Session, mdl_user_id: int, goals_data: L
     """
     from entities.webcoach import WebCoachNextCoachingGoal
 
-    # ユーザーの既存の全目標を取得
+    # このコーチング回の既存の全目標を取得
     existing_goals = db.query(WebCoachNextCoachingGoal).filter(
-        WebCoachNextCoachingGoal.mdl_user_id == mdl_user_id
+        WebCoachNextCoachingGoal.coaching_schedule_id == coaching_schedule_id
     ).all()
 
     # 既存の目標をnoでマッピング
@@ -1873,6 +1901,7 @@ def bulk_upsert_next_coaching_goals(db: Session, mdl_user_id: int, goals_data: L
         else:
             # 新しい目標を作成
             new_goal = WebCoachNextCoachingGoal(
+                coaching_schedule_id=coaching_schedule_id,
                 mdl_user_id=mdl_user_id,
                 no=no,
                 display_order=display_order,
@@ -1881,6 +1910,48 @@ def bulk_upsert_next_coaching_goals(db: Session, mdl_user_id: int, goals_data: L
             )
             db.add(new_goal)
             result_goals.append(new_goal)
+
+    db.flush()
+
+    return result_goals
+
+
+def sync_next_coaching_goals_from_note(db: Session, coaching_schedule_id: int, mdl_user_id: int, actions: List[str]) -> List["WebCoachNextCoachingGoal"]:
+    """
+    AIコーチングノートが「受講生に公開」された時点で、client_next_actions（配列）から
+    次回目標リストを作り直す。
+
+    このコーチング回の既存のgoal行を全て消して、渡されたactionsで作り直す
+    （完了チェックは公開のたびにリセットされる。ノートの再公開は運用上まれで、
+    かつ「公開しなおした＝内容が変わった」とみなせるため、チェック状態の引き継ぎはしない）。
+
+    Args:
+        db: Database session
+        coaching_schedule_id: 対象のコーチング回ID
+        mdl_user_id: 受講生のMoodleユーザーID
+        actions: 次回までのアクション文字列のリスト（空文字列は無視する）
+
+    Returns:
+        List[WebCoachNextCoachingGoal]: 作成された目標一覧
+    """
+    from entities.webcoach import WebCoachNextCoachingGoal
+
+    db.query(WebCoachNextCoachingGoal).filter(
+        WebCoachNextCoachingGoal.coaching_schedule_id == coaching_schedule_id
+    ).delete()
+
+    result_goals = []
+    for index, action in enumerate([a.strip() for a in actions if a and a.strip()]):
+        goal = WebCoachNextCoachingGoal(
+            coaching_schedule_id=coaching_schedule_id,
+            mdl_user_id=mdl_user_id,
+            no=index + 1,
+            display_order=index + 1,
+            description=action,
+            is_completed=0
+        )
+        db.add(goal)
+        result_goals.append(goal)
 
     db.flush()
 
@@ -2143,8 +2214,6 @@ def create_coaching_schedule(
     meeting_url: str,
     meeting_provider: Optional[str] = None,
     meet_space_name: Optional[str] = None,
-    coaching_summary: Optional[str] = None,
-    todo: Optional[str] = None,
 ) -> WebCoachCoachingSchedule:
     """
     コーチングスケジュールを作成します。coaching_noは該当ペアのMAX+1で自動採番します。
@@ -2157,8 +2226,6 @@ def create_coaching_schedule(
         meeting_url: ミーティングURL
         meeting_provider: ミーティングURLの発行元 (google_meet=システム自動発行, None=手動入力)
         meet_space_name: Google Meet APIのSpaceリソース名
-        coaching_summary: コーチング内容の要約
-        todo: 次回までのTODO
 
     Returns:
         WebCoachCoachingSchedule: 作成されたレコード
@@ -2177,8 +2244,6 @@ def create_coaching_schedule(
         meeting_url=meeting_url,
         meeting_provider=meeting_provider,
         meet_space_name=meet_space_name,
-        coaching_summary=coaching_summary,
-        todo=todo,
     )
     db.add(schedule)
     db.flush()
@@ -2307,8 +2372,6 @@ def update_coaching_schedule(
     coaching_date=None,
     status: Optional[str] = None,
     meeting_url: Optional[str] = None,
-    coaching_summary: Optional[str] = None,
-    todo: Optional[str] = None,
 ) -> Optional[WebCoachCoachingSchedule]:
     """
     コーチングスケジュールを更新します。mdl_user_idも一致するレコードのみ対象。
@@ -2336,10 +2399,6 @@ def update_coaching_schedule(
         schedule.status = status
     if meeting_url is not None:
         schedule.meeting_url = meeting_url
-    if coaching_summary is not None:
-        schedule.coaching_summary = coaching_summary
-    if todo is not None:
-        schedule.todo = todo
 
     db.flush()
     return schedule

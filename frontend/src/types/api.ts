@@ -243,8 +243,6 @@ export interface CoachingSchedule {
   meeting_url: string;
   meeting_provider: 'google_meet' | null;
   meet_space_name: string | null;
-  coaching_summary: string | null;
-  todo: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -254,16 +252,12 @@ export interface CreateCoachingScheduleRequest {
   coaching_date: string;
   meeting_url: string;
   meeting_provider?: 'google_meet' | null;
-  coaching_summary?: string | null;
-  todo?: string | null;
 }
 
 export interface UpdateCoachingScheduleRequest {
   coaching_date?: string;
   status?: CoachingScheduleStatus;
   meeting_url?: string;
-  coaching_summary?: string | null;
-  todo?: string | null;
 }
 
 // WebCoach AI Coaching Note

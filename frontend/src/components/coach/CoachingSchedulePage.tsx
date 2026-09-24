@@ -41,8 +41,6 @@ interface ScheduleFormState {
   status: CoachingScheduleStatus | '';
   meeting_url: string;
   meeting_provider: 'google_meet' | '';
-  coaching_summary: string;
-  todo: string;
 }
 
 const emptyForm: ScheduleFormState = {
@@ -54,8 +52,6 @@ const emptyForm: ScheduleFormState = {
   // AIコーチングノートが一部の回だけ生成されない不整合が生じる。
   meeting_provider: 'google_meet',
   meeting_url: '',
-  coaching_summary: '',
-  todo: '',
 };
 
 const SCHEDULE_STATUS_LABEL: Record<CoachingScheduleStatus, string> = {
@@ -153,8 +149,6 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
         coaching_date: addForm.coaching_date,
         meeting_url: addForm.meeting_provider === 'google_meet' ? '' : addForm.meeting_url,
         meeting_provider: addForm.meeting_provider || null,
-        coaching_summary: addForm.coaching_summary || null,
-        todo: addForm.todo || null,
       });
       setAddForm(emptyForm);
       setShowAddForm(false);
@@ -173,8 +167,6 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
       status: schedule.status || '',
       meeting_url: schedule.meeting_url,
       meeting_provider: schedule.meeting_provider || '',
-      coaching_summary: schedule.coaching_summary || '',
-      todo: schedule.todo || '',
     });
   };
 
@@ -186,8 +178,6 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
         coaching_date: editForm.coaching_date,
         status: editForm.status || undefined,
         meeting_url: editForm.meeting_url,
-        coaching_summary: editForm.coaching_summary || null,
-        todo: editForm.todo || null,
       });
       setEditingId(null);
       loadSchedules();
@@ -356,9 +346,6 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                             {SCHEDULE_STATUS_LABEL[schedule.status]}
                           </span>
                         )}
-                        {schedule.todo && (
-                          <span style={{ ...t.chip, background: '#FFF6E5', color: '#B26A00' }}>TODOあり</span>
-                        )}
                       </span>
                       {schedule.meeting_url && (
                         <a
@@ -370,17 +357,6 @@ export function CoachingSchedulePage({ studentId }: CoachingSchedulePageProps) {
                           <ExternalLink className="w-3 h-3" />
                           {schedule.meeting_url}
                         </a>
-                      )}
-                      {schedule.coaching_summary && (
-                        <span
-                          style={{
-                            ...font.meta, color: color.textMuted,
-                            display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden', lineHeight: 1.8,
-                          }}
-                        >
-                          {schedule.coaching_summary}
-                        </span>
                       )}
                     </div>
                     <button
@@ -527,28 +503,6 @@ function ScheduleForm({
           </div>
         )}
       </div>
-      {mode === 'edit' && (
-        <>
-          <div>
-            <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>コーチング内容の要約</label>
-            <textarea
-              value={form.coaching_summary}
-              onChange={e => onChange({ ...form, coaching_summary: e.target.value })}
-              rows={3}
-              style={{ ...inputStyle, resize: 'none' }}
-            />
-          </div>
-          <div>
-            <label style={{ ...font.label, color: color.textSubtle, display: 'block', marginBottom: 4 }}>次回までのTODO</label>
-            <textarea
-              value={form.todo}
-              onChange={e => onChange({ ...form, todo: e.target.value })}
-              rows={2}
-              style={{ ...inputStyle, resize: 'none' }}
-            />
-          </div>
-        </>
-      )}
     </div>
   );
 }

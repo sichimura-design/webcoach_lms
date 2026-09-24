@@ -75,7 +75,7 @@ function toSessionSummary(schedule: CoachingSchedule): CoachingSessionSummary {
     date: schedule.coaching_date,
     title: `第${schedule.coaching_no}回`,
     coach: '',
-    summary: schedule.coaching_summary || '',
+    summary: '',
     status: 'published',
     source: null,
     importedFrom: null,
@@ -356,21 +356,7 @@ export function MyCoachingPage() {
                           <Calendar className="w-3.5 h-3.5" />
                           {schedule.coaching_date}
                         </span>
-                        {schedule.todo && (
-                          <span style={{ ...t.chip, background: '#FFF6E5', color: '#B26A00' }}>TODOあり</span>
-                        )}
                       </span>
-                      {!isOpen && schedule.coaching_summary && (
-                        <span
-                          style={{
-                            ...font.meta, color: color.textMuted,
-                            display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden', lineHeight: 1.8,
-                          }}
-                        >
-                          {schedule.coaching_summary}
-                        </span>
-                      )}
                     </span>
                     {isOpen ? (
                       <ChevronUp className="w-4 h-4 flex-shrink-0" style={{ color: color.textFaint }} />
@@ -392,19 +378,6 @@ export function MyCoachingPage() {
                           {schedule.meeting_url}
                         </a>
                       )}
-                      <div>
-                        <p style={{ ...font.label, color: color.textSubtle, margin: '0 0 4px' }}>コーチング内容の要約</p>
-                        <p style={{ ...font.meta, color: color.textBody, margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.8 }}>
-                          {schedule.coaching_summary || '—'}
-                        </p>
-                      </div>
-                      <div>
-                        <p style={{ ...font.label, color: color.textSubtle, margin: '0 0 4px' }}>次回までのTODO</p>
-                        <p style={{ ...font.meta, color: color.textBody, margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.8 }}>
-                          {schedule.todo || '—'}
-                        </p>
-                      </div>
-
                       {note && (
                         <div style={{ borderTop: `1px solid ${color.divider}`, paddingTop: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
                           <p style={{ ...font.rowTitle, color: color.text, margin: 0 }}>AIコーチングノート</p>

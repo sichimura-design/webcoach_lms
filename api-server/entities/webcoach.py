@@ -136,17 +136,22 @@ class WebCoachAvatar(Base):
 class WebCoachNextCoachingGoal(Base):
     """
     WebCoach: 次回コーチングまでの目標
+
+    AIコーチングノートが「受講生に公開」された時点で、client_next_actionsから
+    自動的に行分割されて作成される（webcoach_coaching_note参照）。
+    表示側は原則「受講生の直近のコーチング回」に紐づく行だけを見せる想定。
     """
     __tablename__ = "webcoach_next_coaching_goal"
 
-    mdl_user_id = Column(BigInteger, primary_key=True, nullable=False, index=True, comment='MoodleユーザーID')
-    no = Column(BigInteger, primary_key=True, nullable=False, index=True, comment='項目番号')
+    coaching_schedule_id = Column(BigInteger, primary_key=True, nullable=False, comment='対象のコーチング回（webcoach_coaching_schedule.id）')
+    no = Column(BigInteger, primary_key=True, nullable=False, comment='項目番号（このコーチング回の中での連番）')
+    mdl_user_id = Column(BigInteger, nullable=False, index=True, comment='受講生のMoodleユーザーID（webcoach_coaching_schedule.mdl_user_idの複製。参照の都度JOINしなくて済むように持つ）')
     display_order = Column(BigInteger, nullable=False, default=0, comment='表示順序')
     is_completed = Column(SmallInteger, nullable=False, default=0, comment='完了フラグ')
     description = Column(String(256), nullable=True, comment='内容')
 
     __table_args__ = (
-        Index('idx_webcoach_next_goal_user', 'mdl_user_id', 'no'),
+        Index('idx_webcoach_next_goal_user', 'mdl_user_id'),
     )
 
 
@@ -265,8 +270,6 @@ class WebCoachCoachingSchedule(Base):
     meeting_url = Column(String(1024), nullable=False)
     meeting_provider = Column(String(32), nullable=True, comment='ミーティングURLの発行元 (google_meet=システム自動発行, NULL=手動入力)')
     meet_space_name = Column(String(255), nullable=True, comment='Google Meet APIのSpaceリソース名 (例: spaces/aBcD1234)。議事録取得時にConference Recordを検索するための内部ID')
-    coaching_summary = Column(Text, nullable=True, comment='コーチング内容の要約')
-    todo = Column(Text, nullable=True, comment='次回までのTODO')
     reminder_sent_at = Column(TIMESTAMP, nullable=True, comment='リマインドメール送信日時(前日通知、二重送信防止用)')
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp())
     updated_at = Column(TIMESTAMP, nullable=False, server_default=func.current_timestamp(), onupdate=func.current_timestamp())

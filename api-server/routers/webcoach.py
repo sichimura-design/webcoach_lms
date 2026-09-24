@@ -34,12 +34,13 @@ from crud import (
     delete_avatar,
     create_next_coaching_goal,
     get_next_coaching_goal,
-    get_user_next_coaching_goals,
+    get_schedule_next_coaching_goals,
     get_all_next_coaching_goals,
     update_next_coaching_goal,
     delete_next_coaching_goal,
     reorder_next_coaching_goals,
     bulk_upsert_next_coaching_goals,
+    get_latest_coaching_schedule_id,
     get_user_login_streak,
     get_peer_study_time_ranking,
     get_peer_study_streak_ranking,
@@ -1344,6 +1345,7 @@ def create_next_coaching_goal_endpoint(
 ):
     """
     次回コーチングまでの目標を登録します。
+    受講生の直近のコーチング回に紐付けます（コーチング回が1件も無い場合は404）。
 
     Args:
         data: 目標作成データ
@@ -1352,8 +1354,16 @@ def create_next_coaching_goal_endpoint(
         作成された目標情報
     """
     try:
+        schedule_id = get_latest_coaching_schedule_id(db, data.mdl_user_id)
+        if schedule_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No coaching schedule found for mdl_user_id={data.mdl_user_id}"
+            )
+
         goal = create_next_coaching_goal(
             db,
+            coaching_schedule_id=schedule_id,
             mdl_user_id=data.mdl_user_id,
             no=data.no,
             description=data.description,
@@ -1363,12 +1373,15 @@ def create_next_coaching_goal_endpoint(
         db.refresh(goal)
 
         return NextCoachingGoalResponse(
+            coaching_schedule_id=goal.coaching_schedule_id,
             mdl_user_id=goal.mdl_user_id,
             no=goal.no,
             display_order=goal.display_order,
             description=goal.description,
             is_completed=goal.is_completed
         )
+    except HTTPException:
+        raise
     except Exception as e:
         db.rollback()
         raise HTTPException(
@@ -1396,6 +1409,7 @@ def get_all_next_coaching_goals_endpoint(
 
         return [
             NextCoachingGoalResponse(
+                coaching_schedule_id=goal.coaching_schedule_id,
                 mdl_user_id=goal.mdl_user_id,
                 no=goal.no,
                 display_order=goal.display_order,
@@ -1421,7 +1435,8 @@ def get_next_coaching_goals_endpoint(
     db: Session = Depends(get_db)
 ):
     """
-    ユーザーの次回コーチングまでの目標一覧を取得します。
+    ユーザーの直近のコーチング回に紐づく次回目標一覧を取得します。
+    コーチング回が1件も無い場合は空配列を返します。
 
     Args:
         userid: ユーザーID
@@ -1430,10 +1445,15 @@ def get_next_coaching_goals_endpoint(
         目標一覧
     """
     try:
-        goals = get_user_next_coaching_goals(db, userid)
+        schedule_id = get_latest_coaching_schedule_id(db, userid)
+        if schedule_id is None:
+            return []
+
+        goals = get_schedule_next_coaching_goals(db, schedule_id)
 
         return [
             NextCoachingGoalResponse(
+                coaching_schedule_id=goal.coaching_schedule_id,
                 mdl_user_id=goal.mdl_user_id,
                 no=goal.no,
                 display_order=goal.display_order,
@@ -1470,7 +1490,8 @@ def get_next_coaching_goal_endpoint(
         目標情報
     """
     try:
-        goal = get_next_coaching_goal(db, userid, no)
+        schedule_id = get_latest_coaching_schedule_id(db, userid)
+        goal = get_next_coaching_goal(db, schedule_id, no) if schedule_id is not None else None
 
         if not goal:
             raise HTTPException(
@@ -1479,6 +1500,7 @@ def get_next_coaching_goal_endpoint(
             )
 
         return NextCoachingGoalResponse(
+            coaching_schedule_id=goal.coaching_schedule_id,
             mdl_user_id=goal.mdl_user_id,
             no=goal.no,
             display_order=goal.display_order,
@@ -1517,13 +1539,14 @@ def update_next_coaching_goal_endpoint(
         更新された目標情報
     """
     try:
+        schedule_id = get_latest_coaching_schedule_id(db, userid)
         goal = update_next_coaching_goal(
             db,
-            mdl_user_id=userid,
+            coaching_schedule_id=schedule_id,
             no=no,
             description=data.description,
             is_completed=data.is_completed
-        )
+        ) if schedule_id is not None else None
 
         if not goal:
             raise HTTPException(
@@ -1535,6 +1558,7 @@ def update_next_coaching_goal_endpoint(
         db.refresh(goal)
 
         return NextCoachingGoalResponse(
+            coaching_schedule_id=goal.coaching_schedule_id,
             mdl_user_id=goal.mdl_user_id,
             no=goal.no,
             display_order=goal.display_order,
@@ -1572,7 +1596,8 @@ def delete_next_coaching_goal_endpoint(
         削除結果
     """
     try:
-        success = delete_next_coaching_goal(db, userid, no)
+        schedule_id = get_latest_coaching_schedule_id(db, userid)
+        success = delete_next_coaching_goal(db, schedule_id, no) if schedule_id is not None else False
 
         if not success:
             raise HTTPException(
@@ -1617,9 +1642,16 @@ def reorder_next_coaching_goals_endpoint(
         並び替え後の目標一覧
     """
     try:
+        schedule_id = get_latest_coaching_schedule_id(db, userid)
+        if schedule_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No coaching schedule found for mdl_user_id={userid}"
+            )
+
         goals = reorder_next_coaching_goals(
             db,
-            mdl_user_id=userid,
+            coaching_schedule_id=schedule_id,
             moved_item_no=data.moved_item_no,
             target_position=data.target_position
         )
@@ -1628,6 +1660,7 @@ def reorder_next_coaching_goals_endpoint(
 
         return [
             NextCoachingGoalResponse(
+                coaching_schedule_id=goal.coaching_schedule_id,
                 mdl_user_id=goal.mdl_user_id,
                 no=goal.no,
                 display_order=goal.display_order,
@@ -1641,6 +1674,8 @@ def reorder_next_coaching_goals_endpoint(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e)
         )
+    except HTTPException:
+        raise
     except Exception as e:
         db.rollback()
         raise HTTPException(
@@ -1673,11 +1708,19 @@ def bulk_upsert_next_coaching_goals_endpoint(
         更新後の目標一覧
     """
     try:
+        schedule_id = get_latest_coaching_schedule_id(db, userid)
+        if schedule_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No coaching schedule found for mdl_user_id={userid}"
+            )
+
         # DTOをdictに変換
         goals_data = [item.model_dump() for item in data.goals]
 
         goals = bulk_upsert_next_coaching_goals(
             db,
+            coaching_schedule_id=schedule_id,
             mdl_user_id=userid,
             goals_data=goals_data
         )
@@ -1686,6 +1729,7 @@ def bulk_upsert_next_coaching_goals_endpoint(
 
         return [
             NextCoachingGoalResponse(
+                coaching_schedule_id=goal.coaching_schedule_id,
                 mdl_user_id=goal.mdl_user_id,
                 no=goal.no,
                 display_order=goal.display_order,
@@ -1694,6 +1738,8 @@ def bulk_upsert_next_coaching_goals_endpoint(
             )
             for goal in goals
         ]
+    except HTTPException:
+        raise
     except Exception as e:
         db.rollback()
         raise HTTPException(

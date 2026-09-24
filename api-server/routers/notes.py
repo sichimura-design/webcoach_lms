@@ -12,12 +12,36 @@ from sqlalchemy.orm import Session
 from database import get_db
 from dto.request import CoachingNoteUpsert, CoachingNoteUpdate, CoachingNoteGenerateRequest
 from dto.response import CoachingNoteResponse
-from crud import upsert_ai_coaching_note_draft, get_coaching_note, update_coaching_note
+from crud import (
+    upsert_ai_coaching_note_draft,
+    get_coaching_note,
+    update_coaching_note,
+    get_coaching_schedule_by_id,
+    sync_next_coaching_goals_from_note,
+)
 from coaching_note_generator import generate_coaching_note_draft
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/coaching/notes", tags=["Coaching Notes"])
+
+
+def _split_next_actions(text: str) -> list:
+    """
+    client_next_actions（1行1アクションを想定した複数行テキスト）を
+    次回目標リスト用の文字列配列に分割する。
+
+    AI生成（coaching_note_generator.py）は改行区切りで返す設計にしているが、
+    コーチが自由記述で追記した分やレガシーな一段落テキストにも耐えるよう、
+    改行が無ければ句点(。)区切りにフォールバックする。
+    """
+    if not text:
+        return []
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    if len(lines) > 1:
+        return lines
+    # 改行が無い一段落テキスト（フォールバック）
+    return [s.strip() for s in text.replace('。', '。\n').splitlines() if s.strip()]
 
 
 @router.post(
@@ -199,6 +223,21 @@ def update_note(
             coach_follow_up=request.coach_follow_up,
             next_session_check=request.next_session_check,
         )
+
+        # 「受講生に公開」された時点で、Clientの次回までのアクションを
+        # 次回コーチング目標リスト（webcoach_next_coaching_goal）へ反映する。
+        # ai_suggested/coach_confirmedの段階では受講生にまだ見せないため同期しない。
+        if request.status == "published":
+            schedule = get_coaching_schedule_by_id(db, coaching_schedule_id)
+            if schedule:
+                sync_next_coaching_goals_from_note(
+                    db,
+                    coaching_schedule_id=coaching_schedule_id,
+                    mdl_user_id=schedule.mdl_user_id,
+                    actions=_split_next_actions(updated.client_next_actions),
+                )
+                db.commit()
+
         return updated
     except Exception as e:
         db.rollback()

@@ -33,17 +33,19 @@ SYSTEM_PROMPT = """あなたはコーチング面談の文字起こしから、�
 - 文字起こしに書かれていない内容を推測・補完しない
 - 期限や次回日時など曖昧で文字起こしから確定できない情報は null にする
 - 出力は必ず次の8個のキーを持つ1つのJSONオブジェクトのみ。前置き・後書き・コードブロック記法は一切付けない
-- 各値は文字列またはnull。情報が無い項目は null にする
+- client_next_actions以外の値は文字列またはnull。情報が無い項目は null にする
 
 キーと内容:
-- session_summary: セッション概要
-- client_status_and_goal: Clientの現状と目標
-- main_issues: 主な課題
-- coach_feedback: Coachからのフィードバック
-- decisions: 今回決めたこと
-- client_next_actions: Clientの次回までのアクション
-- coach_follow_up: Coach側のフォロー事項
-- next_session_check: 次回確認すること
+- session_summary: セッション概要（文字列）
+- client_status_and_goal: Clientの現状と目標（文字列）
+- main_issues: 主な課題（文字列）
+- coach_feedback: Coachからのフィードバック（文字列）
+- decisions: 今回決めたこと（文字列）
+- client_next_actions: Clientの次回までのアクション。**1つの文字列にまとめず、1項目1文字列の文字列配列で返す**
+  （例: ["TypeScript入門コースの第2章まで進める", "職務経歴書のドラフトを作成する"]）。
+  該当する行動項目が無い場合は空配列 [] にする
+- coach_follow_up: Coach側のフォロー事項（文字列）
+- next_session_check: 次回確認すること（文字列）
 """
 
 _llm: Optional[ChatAnthropic] = None
@@ -89,7 +91,17 @@ def _parse_note_json(raw_text: str) -> Dict[str, Optional[str]]:
     result: Dict[str, Optional[str]] = {}
     for field in NOTE_FIELDS:
         value = parsed.get(field)
-        result[field] = value if isinstance(value, str) and value.strip() else None
+        if field == "client_next_actions":
+            # DBのclient_next_actionsはText(単一文字列)のまま、1行1項目の
+            # 改行区切りテキストとして保存する。公開時にこの改行で
+            # webcoach_next_coaching_goalへ分割する（routers/notes.py参照）。
+            if isinstance(value, list):
+                items = [str(item).strip() for item in value if str(item).strip()]
+                result[field] = "\n".join(items) if items else None
+            else:
+                result[field] = value if isinstance(value, str) and value.strip() else None
+        else:
+            result[field] = value if isinstance(value, str) and value.strip() else None
     return result
 
 

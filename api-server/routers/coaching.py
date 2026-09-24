@@ -471,8 +471,6 @@ def create_coaching_schedule_endpoint(
             meeting_url=data.meeting_url,
             meeting_provider=data.meeting_provider,
             meet_space_name=data.meet_space_name,
-            coaching_summary=data.coaching_summary,
-            todo=data.todo,
         )
         db.commit()
         db.refresh(schedule)
@@ -519,8 +517,6 @@ def update_coaching_schedule_endpoint(
             coaching_date=data.coaching_date,
             status=data.status,
             meeting_url=data.meeting_url,
-            coaching_summary=data.coaching_summary,
-            todo=data.todo,
         )
 
         if not schedule:

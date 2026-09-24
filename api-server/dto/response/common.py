@@ -50,6 +50,7 @@ class AvatarResponse(BaseModel):
 
 class NextCoachingGoalResponse(BaseModel):
     """次回コーチングまでの目標レスポンス"""
+    coaching_schedule_id: int
     mdl_user_id: int
     no: int
     display_order: int
@@ -92,8 +93,6 @@ class CoachingScheduleResponse(BaseModel):
     meeting_url: str
     meeting_provider: Optional[str] = None
     meet_space_name: Optional[str] = None
-    coaching_summary: Optional[str] = None
-    todo: Optional[str] = None
     reminder_sent_at: Optional[datetime] = None
     created_at: datetime
     updated_at: datetime
