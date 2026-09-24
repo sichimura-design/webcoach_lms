@@ -777,7 +777,7 @@ def get_peer_study_ranking_endpoint(
     """
     学習時間ランキング(自分+他の受講者)を取得します。period: 'week' | 'month'。
 
-    他の受講者は仮名＋絵文字で返します(design-token-spec.mdの規約により実名は返しません)。
+    他の受講者は仮名＋絵文字で返します(デザイン規約により実名は返しません)。
     """
     if period not in ("week", "month"):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="period must be one of: week, month")

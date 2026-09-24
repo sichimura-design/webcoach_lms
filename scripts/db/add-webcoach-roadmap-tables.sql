@@ -1,5 +1,4 @@
 -- webcoach_roadmap_* の新規作成
--- 設計検討: docs/career-roadmap-table-design.md 参照
 -- 適用済み環境: UAT, prod (2026-09-21)
 --
 -- 注: 移植元(feature/dify-ai-integrationブランチ等)では旧 webcoach_learning_roadmap /

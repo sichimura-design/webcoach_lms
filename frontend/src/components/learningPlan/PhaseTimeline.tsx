@@ -4,7 +4,7 @@
  *   - 'rail'  : マイページの横一本道／プラン画面の全体表示
  *   - 'gantt' : 編集モード（コーチと画面共有しながら期間を調整する）
  *
- * デザイントークンは theme/webcoachTheme.ts のみを参照する（docs/design-token-spec.md）。
+ * デザイントークンは theme/webcoachTheme.ts のみを参照する。
  */
 import { CSSProperties } from 'react';
 import { PhaseProgressStatus, PlanPhase } from '../../types/learningPlan';

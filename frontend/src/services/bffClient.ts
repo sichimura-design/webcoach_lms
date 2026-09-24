@@ -1165,8 +1165,7 @@ class BFFClient {
    *
    * 音声/動画の実体はこのAPIには通さない。1時間規模の音声・動画をAPIサーバーの
    * メモリと帯域に通すのは無理があるため、本番では presigned URL でブラウザから
-   * ストレージへ直接アップロードし、ここにはそのメタデータだけを送る設計にする
-   * （frontend/docs/ai-coaching-notes-design.md「6. 音声ファイルの保存」）。
+   * ストレージへ直接アップロードし、ここにはそのメタデータだけを送る設計にする。
    */
   async importCoachingRecord(
     sessionId: number,
@@ -1859,7 +1858,6 @@ class BFFClient {
   // 実BFFには存在しないエンドポイント群。frontend/src/mocks/lessonHandlers.ts が
   // MSW で応答する。モックOFF（本番）では 404 になるため、呼び出し側
   // （hooks/useLessonDoc.ts）が実Moodle教材へフォールバックする。
-  // 仕様は frontend/docs/learning-workspace-design.md を参照。
   // TODO(backend未実装): このセクション一式（教材目次/本文/lesson-ai/lesson-notes）。
 
   /**

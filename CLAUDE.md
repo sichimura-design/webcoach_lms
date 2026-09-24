@@ -7,7 +7,7 @@
 - 作業対象は **`frontend/`（React SPA）のみ**。
 
 ## 新機能に API が必要なとき
-実BFFに無い API は**必ずフロント側のモック（MSW）で作る**。実装手順の詳細は [`frontend/docs/mock-development.md`](frontend/docs/mock-development.md)。要点:
+実BFFに無い API は**必ずフロント側のモック（MSW）で作る**。要点:
 1. `frontend/src/services/bffClient.ts` に API メソッドを追加。
 2. `frontend/src/mocks/handlers.ts` に対応するモックハンドラを追加（パスは `*/api/...`）。
 3. 画面・ルートを作る。
